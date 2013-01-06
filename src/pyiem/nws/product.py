@@ -18,6 +18,7 @@ HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
 TORNADOTAG = re.compile(".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|OBSERVED|POSSIBLE)")
 TORNADODAMAGETAG = re.compile(".*TORNADO DAMAGE THREAT\.\.\.(?P<damage>SIGNIFICANT|CATASTROPHIC)")
+TORNADO = re.compile(r"^AT |^\* AT")
 
 class TextProductSegment(object):
     
@@ -50,6 +51,15 @@ class TextProductSegment(object):
         self.process_tags()
         
         self.bullets = self.process_bullets()
+    
+    def svs_search(self):
+        """ Special search the product for special text """
+        sections = self.unixtext.split("\n\n")
+        for s in sections:
+            if len(TORNADO.findall(s)) > 0:
+                return " ".join( s.replace("\n", " ").split() )
+        return ""
+
         
     def process_bullets(self):
         """ Figure out the bulleted segments """
@@ -101,8 +111,11 @@ class TextProductSegment(object):
         if pos == -1:
             return
         newdata = data[pos+9:]
-        pos2 = re.search(r"[^ 0-9]", newdata).start()
-        pairs = re.findall(LAT_LON, newdata[:pos2] )
+        m = re.search(r"[^ 0-9]", newdata)
+        if m is not None:
+            pos2 = m.start()
+            newdata = newdata[:pos2]
+        pairs = re.findall(LAT_LON, newdata )
         if len(pairs) == 0:
             return
         g = "SRID=4326;MULTIPOLYGON((("

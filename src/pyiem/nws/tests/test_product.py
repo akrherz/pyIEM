@@ -21,6 +21,16 @@ class TestObservation(unittest.TestCase):
         tp = product.TextProduct( open('data/product_examples/AFD.txt').read())
         self.assertEqual(tp.wmo, 'FXUS61')
 
+    def test_notml(self):
+        """ check TOR without TIME...MOT...LOC """
+        tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
+        self.assertEqual(tp.segments[0].tml_dir, None)
+
+    def test_svs_search(self):
+        """ check svs_search """
+        tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
+        self.assertEqual(tp.segments[0].svs_search(), "* AT 1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING THE WARNING PERIOD.")
+
     def test_valid(self):
         """ check valid Parsing """
         tp = product.TextProduct( open('data/product_examples/AFD.txt').read())
