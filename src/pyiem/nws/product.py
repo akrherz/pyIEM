@@ -52,6 +52,12 @@ class TextProductSegment(object):
         
         self.bullets = self.process_bullets()
     
+    def get_hvtec_nwsli(self):
+        """ Return the first hvtec NWSLI entry, if it exists """
+        if len(self.hvtec) == 0:
+            return None
+        return self.hvtec[0].nwsli
+    
     def svs_search(self):
         """ Special search the product for special text """
         sections = self.unixtext.split("\n\n")
@@ -204,6 +210,15 @@ class TextProduct(object):
         self.parse_valid()
         self.parse_wmo()
         self.parse_segments()
+        
+    def get_signature(self):
+        """ Find the signature at the bottom of the page 
+        """
+        pos = self.unixtext.find("$$")
+        if pos == -1:
+            return None
+        return " ".join(self.unixtext[pos+2:].replace("\n", 
+                                                      " ").strip().split())
         
     def parse_segments(self):
         """ Split the product by its && """

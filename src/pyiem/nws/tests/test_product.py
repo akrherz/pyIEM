@@ -26,6 +26,12 @@ class TestObservation(unittest.TestCase):
         tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
         self.assertEqual(tp.segments[0].tml_dir, None)
 
+    def test_signature(self):
+        """ check svs_search """
+        tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
+        self.assertEqual(tp.get_signature(), "CBD")
+                         
+
     def test_svs_search(self):
         """ check svs_search """
         tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
@@ -37,6 +43,11 @@ class TestObservation(unittest.TestCase):
         ts = datetime.datetime(2012,11,27,0,1)
         ts = ts.replace(tzinfo=iemtz.UTC())
         self.assertEqual(tp.valid, ts)
+
+    def test_FFA(self):
+        """ check FFA Parsing """
+        tp = product.TextProduct( open('data/product_examples/FFA.txt').read())
+        self.assertEqual(tp.segments[0].get_hvtec_nwsli(), "NWYI3")
 
     def test_valid_nomnd(self):
         """ check valid (no Mass News) Parsing """
