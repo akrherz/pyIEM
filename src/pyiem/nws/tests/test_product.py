@@ -58,6 +58,13 @@ class TestObservation(unittest.TestCase):
         self.assertEqual(tp.segments[0].tml_sknt, 39)
         self.assertEqual(tp.segments[0].tml_giswkt, 
                          'SRID=4326;POINT(-88.53 32.21)')
+  
+    def test_bullets(self):
+        """ Test bullets parsing """
+        tp = product.TextProduct( 
+                        open('data/product_examples/TORtag.txt').read())
+        self.assertEqual( len(tp.segments[0].bullets), 4)
+        self.assertEqual( tp.segments[0].bullets[3], "LOCATIONS IMPACTED INCLUDE... MARYSVILLE...LOVILIA...HAMILTON AND BUSSEY.")
     
     def test_tags(self):
         """ Test tags parsing """

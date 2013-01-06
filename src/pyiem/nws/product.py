@@ -49,6 +49,17 @@ class TextProductSegment(object):
         self.tornadodamagetag = None
         self.process_tags()
         
+        self.bullets = self.process_bullets()
+        
+    def process_bullets(self):
+        """ Figure out the bulleted segments """
+        parts = self.unixtext.split("\n\n")
+        bullets = []
+        for part in parts:
+            if len(part) > 1 and part[0] == "*":
+                bullets.append( " ".join(part[1:].replace("\n", " ").split()) )
+        return bullets
+    
     def process_tags(self):
         """ Find various tags in this segment """
         nolf = self.unixtext.replace("\n", " ")
