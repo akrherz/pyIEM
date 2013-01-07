@@ -29,8 +29,12 @@ class TestObservation(unittest.TestCase):
     def test_signature(self):
         """ check svs_search """
         tp = product.TextProduct( open('data/product_examples/TOR.txt').read())
-        self.assertEqual(tp.get_signature(), "CBD")
-                         
+        self.assertEqual(tp.get_signature(), "CBD")               
+
+    def test_spanishMWW(self):
+        """ check spanish MWW does not break things """
+        tp = product.TextProduct( open('data/product_examples/MWWspanish.txt').read())
+        self.assertEqual(tp.z, None)    
 
     def test_svs_search(self):
         """ check svs_search """

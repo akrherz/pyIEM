@@ -202,6 +202,7 @@ class TextProduct(object):
         self.wmo = None
         self.utcnow = utcnow
         self.segments = []
+        self.z = None
         if utcnow is None:
             utc = datetime.datetime.utcnow()
             self.utcnow = utc.replace(tzinfo=iemtz.UTC())
