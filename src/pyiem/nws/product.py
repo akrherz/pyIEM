@@ -229,7 +229,7 @@ class TextProduct(object):
     
     def get_product_id(self):
         """ Get an identifier of this product used by the IEM """
-        s = "%s-%s-%s-%s" % (self.issueTime.strftime("%Y%m%d%H%M"),
+        s = "%s-%s-%s-%s" % (self.valid.strftime("%Y%m%d%H%M"),
                 self.source, self.wmo, self.afos)
         return s.strip()
 
@@ -278,19 +278,14 @@ class TextProduct(object):
             return
         elif wmo_day - self.utcnow.day == 1: # Tomorrow
             self.valid = self.utcnow.replace(day=wmo_day)
-            return
         elif wmo_day > 25 and self.utcnow.day < 5: # Previous month!
             self.valid = self.utcnow + datetime.timedelta(days=-10)
             self.valid = self.valid.replace(day=wmo_day)
-            return
         elif wmo_day < 5 and self.utcnow.day > 25: # next month
             self.valid = self.utcnow + datetime.timedelta(days=10)
             self.valid = self.valid.replace(day=wmo_day)
-            return
-        
-        # IF we made it here, we are in trouble
-        print 'findvalid ERROR: gmtnow: %s wmo: D:%s H:%s M:%s' % (
-                        self.utcnow, wmo_day, wmo_hour, wmo_minute)
+        else:
+            self.valid = self.utcnow.replace(day=wmo_day)
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
