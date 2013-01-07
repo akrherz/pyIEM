@@ -99,7 +99,7 @@ class Observation(object):
         max_srad = coalesce(%(max_srad)s, max_srad),
         coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
         coop_valid = %(coop_valid)s       
-        FROM stations t WHERE t.iemid = s.iemid and s.day = %(valid)s
+        FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
         and t.id = %(station)s and t.network = %(network)s"""
         txn.execute(sql, self.data)
         if txn.rowcount != 1:
