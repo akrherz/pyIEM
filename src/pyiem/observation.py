@@ -71,7 +71,8 @@ class Observation(object):
         pcounter = %(pcounter)s,  discharge = %(discharge)s,  p03i = %(p03i)s,
         p06i = %(p06i)s,  p24i = %(p24i)s,  max_tmpf_6hr = %(max_tmpf_6hr)s,
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
-        min_tmpf_24hr = %(min_tmpf_24hr)s,  presentwx = %(presentwx)s
+        min_tmpf_24hr = %(min_tmpf_24hr)s,  presentwx = %(presentwx)s,
+        valid = %(valid)s
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s 
         and t.network = %(network)s and %(valid)s >= c.valid """
         txn.execute(sql, self.data)
