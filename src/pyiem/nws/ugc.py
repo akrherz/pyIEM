@@ -38,7 +38,7 @@ def parse(text, valid):
     parts = re.split('-', tokens[0][0])
     expire = str2time( tokens[0][2], valid)
     stateCode = ""
-    print tokens
+
     for i in range(len(parts) ):
         if i == 0:
             ugcType = parts[0][2]
