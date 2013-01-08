@@ -2,9 +2,20 @@ import unittest
 import datetime
 
 from pyiem import iemtz
-from pyiem.nws import product
+from pyiem.nws import product, ugc
 
 class TestObservation(unittest.TestCase):
+
+    def test_ugc_in_hwo(self):
+        """ Parse UGC codes in a HWO """
+        tp = product.TextProduct( open('data/product_examples/HWO.txt').read())
+        self.assertEqual(tp.segments[1].ugcs, [ugc.UGC("LM", "Z", 740),
+                                               ugc.UGC("LM", "Z", 741),
+                                               ugc.UGC("LM", "Z", 742),
+                                               ugc.UGC("LM", "Z", 743),
+                                               ugc.UGC("LM", "Z", 744),
+                                               ugc.UGC("LM", "Z", 745)
+                                               ])
 
     def test_afos(self):
         """ check AFOS PIL Parsing """
