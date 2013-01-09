@@ -6,7 +6,7 @@ import re
 import datetime
 
 #_re = "([A-Z][A-Z][C,Z][0-9][0-9][0-9][A-Z,0-9,\-,>]+)"
-_re = "(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-])+)([0-9]{6})-"
+_re = "(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?)+)([0-9]{6})-"
 
 def str2time(text, valid):
     """ Convert a string that is the UGC product expiration to a valid 
@@ -38,11 +38,11 @@ def parse(text, valid):
     parts = re.split('-', tokens[0][0])
     expire = str2time( tokens[0][2], valid)
     stateCode = ""
-
+    print tokens
     for i in range(len(parts) ):
         if i == 0:
             ugcType = parts[0][2]
-        thisPart = parts[i]
+        thisPart = parts[i].strip() 
         if len(thisPart) == 6: # We have a new state ID
             stateCode = thisPart[:3]
             ugcs.append( UGC(thisPart[:2], thisPart[2], thisPart[3:]) )

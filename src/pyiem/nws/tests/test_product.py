@@ -6,6 +6,11 @@ from pyiem.nws import product, ugc
 
 class TestObservation(unittest.TestCase):
 
+    def test_stray_space_in_ugc(self):
+        """ When there are stray spaces in the UGC! """
+        tp = product.TextProduct( open('data/product_examples/RVDCTP.txt').read())
+        self.assertEqual(len(tp.segments[0].ugcs), 28)
+
     def test_ugc_in_hwo(self):
         """ Parse UGC codes in a HWO """
         tp = product.TextProduct( open('data/product_examples/HWO.txt').read())
