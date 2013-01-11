@@ -14,6 +14,8 @@ def str2time(text, valid):
     @param text string to convert
     @param valid datetime instance
     """
+    if text in ["000000", "123456"]:
+        return None
     day = int(text[:2])
     hour = int(text[2:4])
     minute = int(text[4:])

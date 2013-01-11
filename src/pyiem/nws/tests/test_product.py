@@ -6,6 +6,11 @@ from pyiem.nws import product, ugc
 
 class TestObservation(unittest.TestCase):
 
+    def test_000000_ugctime(self):
+        """ When there is 000000 as UGC expiration time """
+        tp = product.TextProduct( open('data/product_examples/RECFGZ.txt').read())
+        self.assertEqual(tp.segments[0].ugcexpire, None)
+
     def test_stray_space_in_ugc(self):
         """ When there are stray spaces in the UGC! """
         tp = product.TextProduct( open('data/product_examples/RVDCTP.txt').read())
