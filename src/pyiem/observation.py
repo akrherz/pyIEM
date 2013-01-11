@@ -43,7 +43,22 @@ class Observation(object):
             self.data[col] = None
         for col in SUMMARY_COLS:
             self.data[col] = None
-            
+        
+    def load(self, txn):
+        """
+        Load the current observation for this site and time
+        """
+        sql = """SELECT * from current c, summary s, stations t WHERE
+        t.iemid = s.iemid and s.iemid = c.iemid and t.id = %(station)s and
+        t.network = %(network)s and s.day = date(%(valid)s) and 
+        c.valid = %(valid)s"""
+        txn.execute(sql, self.data)
+        if txn.rowcount < 1:
+            return False
+        row = txn.fetchone()
+        for key in row.keys():
+            self.data[key] = row[key]
+        return True
         
     def save(self, txn):
         """
