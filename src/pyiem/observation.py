@@ -48,6 +48,8 @@ class Observation(object):
         """
         Load the current observation for this site and time
         """
+        if self.data.get('tname'):
+            txn.execute("set local timezone to %s", self.data['tzname'])
         sql = """SELECT * from current c, summary s, stations t WHERE
         t.iemid = s.iemid and s.iemid = c.iemid and t.id = %(station)s and
         t.network = %(network)s and s.day = date(%(valid)s) and 
@@ -66,6 +68,9 @@ class Observation(object):
         @param txn is a psycopg2 transaction
         @return: boolean if this updated one row each
         """
+        if self.data.get('tname'):
+            txn.execute("set local timezone to %s", self.data['tzname'])
+
         # Update current table
         sql = """UPDATE current c SET
         tmpf = %(tmpf)s,  dwpf = %(dwpf)s,  drct = %(drct)s,  sknt = %(sknt)s,  
@@ -101,9 +106,11 @@ class Observation(object):
         max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),         
         max_gust = greatest(%(max_gust)s, max_gust, %(gust)s), 
         max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
+            or (max_sknt is null and %(sknt)s > 0)
             THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz 
             ELSE max_sknt_ts END),
         max_gust_ts = (CASE WHEN %(gust)s > max_gust or %(max_gust)s > max_gust
+            or (max_gust is null and %(gust)s > 0)
             THEN coalesce(%(max_gust_ts)s, %(valid)s)::timestamptz 
             ELSE max_gust_ts END),
         pday = coalesce(%(pday)s, pday),
