@@ -48,8 +48,9 @@ class Observation(object):
         """
         Load the current observation for this site and time
         """
-        if self.data.get('tname'):
-            txn.execute("set local timezone to %s", self.data['tzname'])
+        if self.data['valid'].tzinfo:
+            txn.execute("set local timezone to %s", ( 
+                        self.data['valid'].tzinfo.zone,))
         sql = """SELECT * from current c, summary s, stations t WHERE
         t.iemid = s.iemid and s.iemid = c.iemid and t.id = %(station)s and
         t.network = %(network)s and s.day = date(%(valid)s) and 
@@ -68,8 +69,9 @@ class Observation(object):
         @param txn is a psycopg2 transaction
         @return: boolean if this updated one row each
         """
-        if self.data.get('tname'):
-            txn.execute("set local timezone to %s", self.data['tzname'])
+        if self.data['valid'].tzinfo:
+            txn.execute("set local timezone to %s", ( 
+                        self.data['valid'].tzinfo.zone,))
 
         # Update current table
         sql = """UPDATE current c SET
@@ -125,6 +127,7 @@ class Observation(object):
         FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
         and t.id = %(station)s and t.network = %(network)s"""
         txn.execute(sql, self.data)
+        #print "Updated summary count %s valid: %s" % (txn.rowcount, self.data['valid'])
         if txn.rowcount != 1:
             return False
         
