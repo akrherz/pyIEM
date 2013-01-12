@@ -60,7 +60,8 @@ class Observation(object):
             return False
         row = txn.fetchone()
         for key in row.keys():
-            self.data[key] = row[key]
+            if key not in ['valid',]:
+                self.data[key] = row[key]
         return True
         
     def save(self, txn):
