@@ -8,6 +8,9 @@ import datetime
 #_re = "([A-Z][A-Z][C,Z][0-9][0-9][0-9][A-Z,0-9,\-,>]+)"
 _re = "(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?)+)([0-9]{6})-"
 
+class UGCParseException(Exception):
+    pass
+
 def str2time(text, valid):
     """ Convert a string that is the UGC product expiration to a valid 
     datetime
@@ -40,9 +43,12 @@ def parse(text, valid):
     parts = re.split('-', tokens[0][0])
     expire = str2time( tokens[0][2], valid)
     stateCode = ""
-    for i in range(len(parts) ):
-        if i == 0:
-            ugcType = parts[0][2]
+    for i, part in enumerate(parts):
+        if i == 0 and len(part) >= 6:
+            ugcType = part[2]
+        if i == 0 and len(part) < 6:
+            # This is bad encoding
+            raise UGCParseException('WHOA, bad UGC encoding detected "%s"' % ('-'.join(parts),))
         thisPart = parts[i].strip() 
         if len(thisPart) == 6: # We have a new state ID
             stateCode = thisPart[:3]

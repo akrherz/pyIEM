@@ -6,6 +6,21 @@ from pyiem.nws import product, ugc
 
 class TestObservation(unittest.TestCase):
 
+    def test_ugc_error130214(self):
+        """ Check parsing of SPSJAX  """
+        tp = product.TextProduct( open('data/product_examples/SPSJAX.txt').read())
+        self.assertEqual(tp.segments[0].ugcs, [ugc.UGC("FL", "Z", 23),
+                                               ugc.UGC("FL", "Z", 25),
+                                               ugc.UGC("FL", "Z", 30),
+                                               ugc.UGC("FL", "Z", 31),
+                                               ugc.UGC("FL", "Z", 32)
+                                               ])
+
+    def test_ugc_invalid_coding(self):
+        """ UGC code regression """
+        data = open('data/product_examples/FLW_badugc.txt').read()
+        self.assertRaises(ugc.UGCParseException, product.TextProduct, data )
+
     def test_000000_ugctime(self):
         """ When there is 000000 as UGC expiration time """
         tp = product.TextProduct( open('data/product_examples/RECFGZ.txt').read())
