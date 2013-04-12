@@ -1,13 +1,14 @@
 import unittest
 import datetime
+import pytz
 
-from pyiem import observation, iemtz, iemdb
+from pyiem import observation, iemdb
 
 class TestObservation(unittest.TestCase):
 
     def setUp(self):
         ts = datetime.datetime.utcnow()
-        ts = ts.replace(tzinfo=iemtz.UTC())
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
         self.ob = observation.Observation('DSM', 'IA_ASOS', ts)
         (self.conn, self.cursor) = iemdb.cnc('iem', host='127.0.0.1')
         

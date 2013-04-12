@@ -1,3 +1,16 @@
+README
+setup.cfg
 setup.py
 src/pyiem/__init__.py
+src/pyiem/iemdb.py
 src/pyiem/iemtz.py
+src/pyiem/observation.py
+src/pyiem/reference.py
+src/pyiem/wellknowntext.py
+src/pyiem/nws/__init__.py
+src/pyiem/nws/gini.py
+src/pyiem/nws/hvtec.py
+src/pyiem/nws/product.py
+src/pyiem/nws/spcpts.py
+src/pyiem/nws/ugc.py
+src/pyiem/nws/vtec.py
