@@ -132,6 +132,11 @@ class TestObservation(unittest.TestCase):
         self.assertEqual( len(tp.segments[0].bullets), 4)
         self.assertEqual( tp.segments[0].bullets[3], "LOCATIONS IMPACTED INCLUDE... MARYSVILLE...LOVILIA...HAMILTON AND BUSSEY.")
     
+        tp = product.TextProduct( 
+                        open('data/product_examples/FLSDMX.txt').read())
+        self.assertEqual( len(tp.segments[2].bullets), 7)
+        self.assertEqual( tp.segments[2].bullets[6], "IMPACT...AT 35.5 FEET...WATER AFFECTS 285TH AVENUE NEAR SEDAN BOTTOMS...OR JUST EAST OF THE INTERSECTION OF 285TH AVENUE AND 570TH STREET.")
+    
     def test_tags(self):
         """ Test tags parsing """
         tp = product.TextProduct( 

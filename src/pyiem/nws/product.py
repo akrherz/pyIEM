@@ -69,11 +69,14 @@ class TextProductSegment(object):
         
     def process_bullets(self):
         """ Figure out the bulleted segments """
-        parts = self.unixtext.split("\n\n")
+        parts = re.findall('^\*([^\*]*)', self.unixtext, re.M | re.DOTALL)
         bullets = []
         for part in parts:
-            if len(part) > 1 and part[0] == "*":
-                bullets.append( " ".join(part[1:].replace("\n", " ").split()) )
+            pos = part.find("\n\n")
+            if pos > 0:
+                bullets.append( " ".join(part[:pos].replace("\n", "").split()) )
+            else:
+                bullets.append( " ".join(part.replace("\n", "").split()) )
         return bullets
     
     def process_tags(self):
