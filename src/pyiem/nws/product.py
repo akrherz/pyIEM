@@ -25,7 +25,8 @@ class TextProductSegment(object):
     def __init__(self, text, tp):
         self.unixtext = text
         self.tp = tp # Reference to parent
-        self.ugcs, self.ugcexpire = ugc.parse(text, tp.valid)
+        self.ugcs, self.ugcexpire = ugc.parse(text, tp.valid,
+                                              ugc_provider=tp.ugc_provider)
         self.vtec = vtec.parse(text)
         self.headlines = self.parse_headlines()
         self.hvtec = hvtec.parse(text)
@@ -190,13 +191,15 @@ class TextProduct(object):
     '''
 
 
-    def __init__(self, text, utcnow=None):
+    def __init__(self, text, utcnow=None, ugc_provider={}):
         '''
         Constructor
         @param text string single text product
         @param utcnow used to compute offsets for when this product my be valid
+        @param ugc_provider a dictionary of UGC objects already setup
         '''
         self.text = text
+        self.ugc_provider = ugc_provider
         self.unixtext = text.replace("\r\r\n", "\n")
         self.sections = self.unixtext.split("\n\n")
         self.afos = None

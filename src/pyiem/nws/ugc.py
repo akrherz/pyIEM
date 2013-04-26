@@ -11,6 +11,26 @@ _re = "^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$"
 class UGCParseException(Exception):
     pass
 
+def ugcs_to_text(ugcs):
+    """ Convert a list of UGC objects to a textual string """
+    countyState = {}
+    c = []
+    for u in ugcs:
+        code = str(u)
+        stateAB = code[:2]
+        if not countyState.has_key(stateAB):
+            countyState[stateAB] = []
+        if u.name is None:
+            name = "((%s))" % (code,)
+        else:
+            name = u.name
+        countyState[stateAB].append(name)
+
+    for st in countyState.keys():
+        countyState[stateAB].sort()
+        c.append("%s [%s]" %(", ".join(countyState[st]), st))
+    return " and ".join(c)
+
 def str2time(text, valid):
     """ Convert a string that is the UGC product expiration to a valid 
     datetime
@@ -29,11 +49,14 @@ def str2time(text, valid):
 
     return valid.replace(day=day,hour=hour,minute=minute)
 
-def parse(text, valid):
+def parse(text, valid, ugc_provider={}):
     """ Helper method that parses text and yields UGC and expiration time 
     @param text to parse
-    @param valid is the issue time of the product this text was found in
+    @param valid is the issue time of the product this text was found in\
+    @param ugc_provider of UGC objects
     """
+    def _construct( code ):
+        return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))
     ugcs = []
     expire = None
     tokens = re.findall(_re, text, re.M)
@@ -53,9 +76,10 @@ def parse(text, valid):
         thisPart = parts[i].strip() 
         if len(thisPart) == 6: # We have a new state ID
             stateCode = thisPart[:3]
-            ugcs.append( UGC(thisPart[:2], thisPart[2], thisPart[3:]) )
+            ugcs.append( _construct(thisPart) )
         elif len(thisPart) == 3: # We have an individual Section
-            ugcs.append( UGC(stateCode[:2], stateCode[2], thisPart) )
+            ugcs.append( _construct("%s%s%s" % (stateCode[:2], stateCode[2],
+                                                thisPart) ) )
         elif len(thisPart) > 6: # We must have a > in there somewhere
             newParts = re.split('>', thisPart)
             firstPart = newParts[0]
@@ -67,20 +91,23 @@ def parse(text, valid):
             if ugcType == "C":
                 for j in range(0, lastVal+2 - firstVal, 2):
                     strCode = "%03i" % (firstVal+j,)
-                    ugcs.append( UGC(stateCode[:2], stateCode[2], strCode) )
+                    ugcs.append( _construct("%s%s%s" % (stateCode[:2], 
+                                                        stateCode[2], strCode)))
             else:
                 for j in range(firstVal, lastVal+1):
                     strCode = "%03i" % (j,)
-                    ugcs.append( UGC(stateCode[:2], stateCode[2], strCode) )
+                    ugcs.append( _construct("%s%s%s" % (stateCode[:2], 
+                                                        stateCode[2], strCode)))
     
     return ugcs, expire
 
 class UGC:
 
-    def __init__(self, state, geoclass, number):
+    def __init__(self, state, geoclass, number, name=None):
         self.state = state
         self.geoclass = geoclass
         self.number = int(number)
+        self.name = name
         
     def __str__(self):
         """ Override str() """

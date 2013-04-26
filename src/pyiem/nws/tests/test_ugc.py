@@ -9,6 +9,13 @@ STR2 = "DCZ001-MDZ004>007-009>011-013-014-016>018-VAZ036>042-050>057-170200-"
 
 class TestObservation(unittest.TestCase):
     
+    def test_totextstr(self):
+        """ See if we can generate a proper string from a UGCS """
+        ugcs = [ugc.UGC("DC", "Z", "001"),ugc.UGC("IA", "C", "001"),
+                ugc.UGC("IA", "C", "002")]
+        self.assertEquals(ugc.ugcs_to_text(ugcs), 
+                          "((IAC001)), ((IAC002)) [IA] and ((DCZ001)) [DC]")
+    
     def test_str1(self):
         """ check ugc.parse of STR1 parsing """
         valid = datetime.datetime(2008,12,17,3,0)

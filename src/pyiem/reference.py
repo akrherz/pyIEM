@@ -261,6 +261,14 @@ wfo_dict =  {
  "VEF": {"name": "LAS_VEGAS" ,"region": "WR"},
 }
 
+centertext = {
+    "SPC": "Storm Prediction Center",
+    "WNS": "Storm Prediction Center",
+    "NHC": "National Hurricane Center",
+    "WNH": "Hydrometeorological Prediction Center",
+    "WNO": "NCEP Central Operations",
+}
+
 prodDefinitions = {
     'TWO': 'Tropical Weather Outlook (TWO)',
     'PWO': 'Public Severe Weather Outlook (PWO)',
