@@ -2,6 +2,20 @@
  We do meteorological things, when necessary
 """
 import math
+import numpy as np
+
+def uv(speed, direction):
+    """
+    Compute the u and v components of the wind 
+    @param wind speed in whatever units
+    @param dir wind direction with zero as north
+    @return u and v components
+    """
+    dirr = direction * np.pi / 180.00
+    u = (0 - speed) * np.sin(dirr)
+    v = (0 - speed) * np.cos(dirr)
+    return u, v
+
 
 def feelslike(temperature, dewpoint, speed):
     """
