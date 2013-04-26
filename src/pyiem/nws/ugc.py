@@ -6,7 +6,7 @@ import re
 import datetime
 
 #_re = "([A-Z][A-Z][C,Z][0-9][0-9][0-9][A-Z,0-9,\-,>]+)"
-_re = "(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?)+)([0-9]{6})-"
+_re = "^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$"
 
 class UGCParseException(Exception):
     pass
@@ -36,11 +36,11 @@ def parse(text, valid):
     """
     ugcs = []
     expire = None
-    tokens = re.findall(_re, text.replace("\n", ""))
+    tokens = re.findall(_re, text, re.M)
     if len(tokens) == 0:
         return ugcs, expire
     
-    parts = re.split('-', tokens[0][0])
+    parts = re.split('-', tokens[0][0].replace(" ","").replace("\n", ""))
     expire = str2time( tokens[0][2], valid)
     stateCode = ""
     for i, part in enumerate(parts):
@@ -48,7 +48,8 @@ def parse(text, valid):
             ugcType = part[2]
         if i == 0 and len(part) < 6:
             # This is bad encoding
-            raise UGCParseException('WHOA, bad UGC encoding detected "%s"' % ('-'.join(parts),))
+            raise UGCParseException('WHOA, bad UGC encoding detected "%s"' % (
+                                                            '-'.join(parts),))
         thisPart = parts[i].strip() 
         if len(thisPart) == 6: # We have a new state ID
             stateCode = thisPart[:3]

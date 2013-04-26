@@ -15,11 +15,18 @@ class TestObservation(unittest.TestCase):
                                                ugc.UGC("FL", "Z", 31),
                                                ugc.UGC("FL", "Z", 32)
                                                ])
+    def test_no_ugc(self):
+        """ Product that does not have UGC encoding """
+        data = open('data/product_examples/CCFMOB.txt').read()
+        tp = product.TextProduct( data )
+        self.assertEqual(len(tp.segments[0].ugcs), 0 )
 
     def test_ugc_invalid_coding(self):
         """ UGC code regression """
         data = open('data/product_examples/FLW_badugc.txt').read()
-        self.assertRaises(ugc.UGCParseException, product.TextProduct, data )
+        tp = product.TextProduct( data )
+        #self.assertRaises(ugc.UGCParseException, product.TextProduct, data )
+        self.assertEqual(len(tp.segments[0].ugcs), 0 )
 
     def test_000000_ugctime(self):
         """ When there is 000000 as UGC expiration time """
