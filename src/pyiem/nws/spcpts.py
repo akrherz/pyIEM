@@ -209,11 +209,11 @@ class SPCPTS(object):
         valid = tp.valid.replace(day=day1,hour=hour1,minute=min1)
         expire = tp.valid.replace(day=day2,hour=hour2,minute=min2)
         if day1 < tp.valid.day and day1 == 1:
-            valid = valid + datetime.timedelta(days=25)
+            valid = tp.valid + datetime.timedelta(days=25)
             valid = valid.replace(day=day1,hour=hour1,minute=min1)
         if day2 < tp.valid.day and day2 == 1:
-            expire = expire - datetime.timedelta(days=25)
-            expire = expire.replace(day=day1,hour=hour1,minute=min1)
+            expire = tp.valid + datetime.timedelta(days=25)
+            expire = expire.replace(day=day2,hour=hour1,minute=min1)
         self.valid = valid
         self.expire = expire
     
