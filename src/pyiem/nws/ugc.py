@@ -44,8 +44,8 @@ def str2time(text, valid):
     minute = int(text[4:])
     if day < 5 and valid.day > 25: # Next month
         valid = valid + datetime.timedelta(days=25)
-    elif day > 25 and valid.day < 5: # previous month
-        valid = valid - datetime.timedelta(days=25)
+    #elif day > 25 and valid.day < 5: # previous month
+    #    valid = valid - datetime.timedelta(days=25)
 
     return valid.replace(day=day,hour=hour,minute=minute)
 
