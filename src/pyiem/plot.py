@@ -406,7 +406,8 @@ class MapPlot:
                 color=colorramp(range(len(bins))),
                 ec='None')
         
-    def postprocess(self, view=False, filename=None, web=False):
+    def postprocess(self, view=False, filename=None, web=False,
+                    memcache=None, memcachekey=None, memcacheexpire=300):
         """ postprocess into a slim and trim PNG """
         #if web:
         #    print "Content-Type: image/png\n"
@@ -417,6 +418,17 @@ class MapPlot:
         ram.seek(0)
         im = Image.open(ram)
         im2 = im.convert('RGB').convert('P', palette=Image.ADAPTIVE)
+        if memcache and memcachekey:
+            ram = cStringIO.StringIO()
+            im2.save( ram, format='png')
+            ram.seek(0)
+            r = ram.read()
+            memcache.set(memcachekey, r, time=memcacheexpire)
+            memcache.set('testkey', 'testval')
+            print 'Content-Type: text/plain\n'
+            print 'SET KEY: |%s|' % (memcachekey,)
+            print 'Len(r) is %s' % (len(r),)
+            sys.exit()
         if web:
             print "Content-Type: image/png\n"
             im2.save( sys.stdout, format='png' )
