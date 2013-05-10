@@ -425,10 +425,6 @@ class MapPlot:
             r = ram.read()
             memcache.set(memcachekey, r, time=memcacheexpire)
             memcache.set('testkey', 'testval')
-            print 'Content-Type: text/plain\n'
-            print 'SET KEY: |%s|' % (memcachekey,)
-            print 'Len(r) is %s' % (len(r),)
-            sys.exit()
         if web:
             print "Content-Type: image/png\n"
             im2.save( sys.stdout, format='png' )
