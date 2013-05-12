@@ -229,6 +229,13 @@ class MapPlot:
                                  hspace=0)
         self.ax = plt.axes([0.01,0.05,0.9,0.85], axisbg=(0.4471,0.6235,0.8117))
         self.sector = sector
+        self.ak_map = None
+        self.ak_ax = None
+        self.hi_map = None
+        self.hi_ax = None
+        self.pr_map = None
+        self.pr_ax = None
+        
         if self.sector == 'iowa':
             """ Standard view for Iowa """
             self.map = Basemap(projection='merc', fix_aspect=False,
@@ -249,17 +256,43 @@ class MapPlot:
                            resolution='i', ax=self.ax)
             self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
             self.map.drawcoastlines(zorder=Z_POLITICAL)
-        elif self.sector == 'conus':
-            # lat = 23.47693, 20.74123, 45.43908, 51.61555
-            # lon = 118.6713, 82.3469, 64.52023, 131.4471 ;
+        elif self.sector in ['conus', 'nws']:
             self.map = Basemap(projection='stere',lon_0=-105.0,lat_0=90.,
                             lat_ts=60.0,
                             llcrnrlat=23.47,urcrnrlat=45.44,
                             llcrnrlon=-118.67,urcrnrlon=-64.52,
                             rsphere=6371200.,resolution='l',area_thresh=10000,
-                            ax=self.ax)
+                            ax=self.ax,
+                                      fix_aspect=False)
             self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
             self.map.drawcoastlines(zorder=Z_POLITICAL)
+            if self.sector == 'nws':
+                """ Create PR, AK, and HI sectors """
+                self.pr_ax = plt.axes([0.78,0.055,0.125,0.1], 
+                                      axisbg=(0.4471,0.6235,0.8117))
+                self.hi_ax = plt.axes([0.56,0.055,0.2,0.1], 
+                                      axisbg=(0.4471,0.6235,0.8117))
+                self.ak_ax = plt.axes([0.015,0.055,0.2,0.15], 
+                                      axisbg=(0.4471,0.6235,0.8117))
+                self.pr_map = Basemap(projection='cyl', 
+                                      urcrnrlat=18.6, llcrnrlat=17.5, 
+                                      urcrnrlon=-65.0, llcrnrlon=-68.0,
+                                      resolution='l', ax=self.pr_ax,
+                                      fix_aspect=False)
+                self.ak_map = Basemap(projection='cyl', 
+                                      urcrnrlat=72.1, llcrnrlat=51.08, 
+                                      urcrnrlon=-129.0, llcrnrlon=-179.5, 
+                                      resolution='l', ax=self.ak_ax,
+                                      fix_aspect=False)
+                self.hi_map = Basemap(projection='cyl', 
+                                      urcrnrlat=22.5, llcrnrlat=18.5, 
+                                      urcrnrlon=-154.0, llcrnrlon=-161.0,
+                                      resolution='l', ax=self.hi_ax,
+                                      fix_aspect=False)
+                self.pr_map.fillcontinents(color='0.7',zorder=0)
+                self.ak_map.fillcontinents(color='0.7',zorder=0)
+                self.hi_map.fillcontinents(color='0.7',zorder=0)
+
         self.map.fillcontinents(color='1.0', zorder=0) # Read docs on 0 meaning
         self.map.drawstates(linewidth=1.0, zorder=Z_OVERLAY, ax=self.ax)
         self.iemlogo()
@@ -343,23 +376,51 @@ class MapPlot:
         self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
         plotted = []
         for nshape, seg in enumerate(self.map.cwas):
-            if not data.has_key(self.map.cwas_info[nshape]['CWA']):
+            cwa = self.map.cwas_info[nshape]['CWA']
+            thismap = self.map
+            thisax = self.ax
+            transform = False
+            if cwa in ['AFC', 'AFG', 'AJK']:
+                if self.ak_map is None:
+                    continue
+                thismap = self.ak_map
+                thisax = self.ak_ax
+                transform = True
+            elif cwa in ['HFO', 'PPG']:
+                if self.hi_map is None:
+                    continue
+                thismap = self.hi_map
+                thisax = self.hi_ax
+                transform = True
+            elif cwa in ['JSJ', 'SJU']:
+                if self.pr_map is None:
+                    continue
+                thismap = self.pr_map
+                thisax = self.pr_ax
+                transform = True
+            if not data.has_key( cwa ):
                 continue
-            val = data.get( self.map.cwas_info[nshape]['CWA'] )
+            val = data.get( cwa )
             idx = numpy.digitize([val],
                                  bins) 
             c = m( idx[0] - 1 )
             # Check area in meters... 100,000 x 100,000
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
-                mx, my = self.map(self.map.cwas_info[nshape]['LON'],
+                mx, my = thismap(self.map.cwas_info[nshape]['LON'],
                                   self.map.cwas_info[nshape]['LAT'])
-                txt = self.ax.text(mx, my, lblformat % (val,), zorder=100,
+                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
                          ha='center', va='center')
                 txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                          foreground="w")])
-                plotted.append( self.map.cwas_info[nshape]['CWA'] )
+                plotted.append( cwa )
+            if transform:
+                seg = numpy.array( seg )
+                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
+                xx, yy = thismap(xx, yy)
+                seg = zip(xx, yy)
+                
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
-            self.ax.add_patch(poly)
+            thisax.add_patch(poly)
 
         if self.colorbar is None:
             # Yipeee, we get to build one!
@@ -424,7 +485,8 @@ class MapPlot:
             ram.seek(0)
             r = ram.read()
             memcache.set(memcachekey, r, time=memcacheexpire)
-            memcache.set('testkey', 'testval')
+            sys.stderr.write("memcached key %s set time %s" % (memcachekey,
+                                                    memcacheexpire))
         if web:
             print "Content-Type: image/png\n"
             im2.save( sys.stdout, format='png' )
