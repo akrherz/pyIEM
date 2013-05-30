@@ -4,7 +4,7 @@ IA_EAST  = -90.1
 IA_NORTH = 43.61
 IA_SOUTH = 40.37
 
-MW_WEST  = -104.0
+MW_WEST  = -104.2
 MW_EAST  = -80.1
 MW_NORTH = 49.51
 MW_SOUTH = 35.47
@@ -282,6 +282,9 @@ centertext = {
 }
 
 prodDefinitions = {
+    'TOR': 'Tornado Warning (TOR)',
+    'SVR': 'Severe Thunderstorm Warning (SVR)',
+    'SVS': 'Severe Weather Statement (SVS)',
     'RFD': 'Grassland Fire Danger (RFD)',
     'TWO': 'Tropical Weather Outlook (TWO)',
     'PWO': 'Public Severe Weather Outlook (PWO)',
