@@ -310,7 +310,7 @@ class MapPlot:
         self.colorbar = None
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
-                    color='#000000'):
+                    color='#000000', textsize=14):
         """ Simply plot vals """        
         if valmask is None:
             valmask = [True] * len(lons)
@@ -319,7 +319,7 @@ class MapPlot:
             if m:
                 x,y = self.map(o, a)
                 t.append(self.ax.text(x, y, fmt % (v,) , color=color, 
-                                      zorder=Z_OVERLAY))
+                                      size=textsize, zorder=Z_OVERLAY))
                 
         white_glows = FilteredArtistList(t, GrowFilter(3))
         self.ax.add_artist(white_glows)
@@ -363,6 +363,148 @@ class MapPlot:
         cbar = self.map.colorbar(cs, location='right', pad="1%", 
                                  ticks=cs.levels)
         cbar.set_label( kwargs.get('units', ''))
+
+    def fill_climdiv(self, data, 
+                    shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
+                  bins=numpy.arange(0,100,10),
+                  lblformat='%.0f'):
+        m = maue(len(bins))
+        #m = cm.get_cmap('jet')
+        self.map.readshapefile(shapefile, 'climdiv', ax=self.ax)
+        plotted = []
+        for nshape, seg in enumerate(self.map.climdiv):
+            state = self.map.climdiv_info[nshape]['ST_ABBRV']
+            thismap = self.map
+            thisax = self.ax
+            transform = False
+            if state in ['AK',]:
+                if self.ak_map is None:
+                    continue
+                thismap = self.ak_map
+                thisax = self.ak_ax
+                transform = True
+            elif state in ['HI']:
+                if self.hi_map is None:
+                    continue
+                thismap = self.hi_map
+                thisax = self.hi_ax
+                transform = True
+            elif state in ['PR',]:
+                if self.pr_map is None:
+                    continue
+                thismap = self.pr_map
+                thisax = self.pr_ax
+                transform = True
+            clidiv = "%sC0%s" % (state, 
+                                  self.map.climdiv_info[nshape]['CD_2DIG'])
+            if not data.has_key( clidiv ):
+                continue
+            val = data.get( clidiv )
+            idx = numpy.digitize([val],
+                                 bins) 
+            c = m( idx[0] - 1 )
+            # Check area in meters... 100,000 x 100,000
+            if clidiv not in plotted:
+                seg = numpy.array( seg )
+                mx =  (numpy.max(seg[:,0]) + numpy.min(seg[:,0])) / 2.0
+                my =  (numpy.max(seg[:,1]) + numpy.min(seg[:,1])) / 2.0
+                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
+                         ha='center', va='center')
+                txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
+                                                         foreground="w")])
+                plotted.append( clidiv )
+            if transform:
+                seg = numpy.array( seg )
+                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
+                xx, yy = thismap(xx, yy)
+                seg = zip(xx, yy)
+                
+            poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
+            thisax.add_patch(poly)
+
+        if self.colorbar is None:
+            # Yipeee, we get to build one!
+            axaa = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
+                      yticks=[], xticks=[])
+            for i, mybin in enumerate(bins):
+                txt = axaa.text(0.5, i, lblformat % (mybin,), ha='center', 
+                                va='center', color='w')
+                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
+                                                     foreground="k")])
+
+            axaa.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
+                color=m(range(len(bins))),
+                ec='None')
+        
+
+    def fill_states(self, data, 
+                    shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/states',
+                  bins=numpy.arange(0,100,10),
+                  lblformat='%.0f'):
+        m = maue(15)
+        self.map.readshapefile(shapefile, 'states', ax=self.ax)
+        plotted = []
+        for nshape, seg in enumerate(self.map.states):
+            state = self.map.states_info[nshape]['STATE']
+            thismap = self.map
+            thisax = self.ax
+            transform = False
+            if state in ['AK',]:
+                if self.ak_map is None:
+                    continue
+                thismap = self.ak_map
+                thisax = self.ak_ax
+                transform = True
+            elif state in ['HI']:
+                if self.hi_map is None:
+                    continue
+                thismap = self.hi_map
+                thisax = self.hi_ax
+                transform = True
+            elif state in ['PR',]:
+                if self.pr_map is None:
+                    continue
+                thismap = self.pr_map
+                thisax = self.pr_ax
+                transform = True
+            if not data.has_key( state ):
+                continue
+            val = data.get( state )
+            idx = numpy.digitize([val],
+                                 bins) 
+            c = m( idx[0] - 1 )
+            # Check area in meters... 100,000 x 100,000
+            if state not in plotted:
+                mx, my = thismap(self.map.states_info[nshape]['LON'],
+                                  self.map.states_info[nshape]['LAT'])
+                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
+                         ha='center', va='center')
+                txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
+                                                         foreground="w")])
+                plotted.append( state )
+            if transform:
+                seg = numpy.array( seg )
+                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
+                xx, yy = thismap(xx, yy)
+                seg = zip(xx, yy)
+                
+            poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
+            thisax.add_patch(poly)
+
+        if self.colorbar is None:
+            # Yipeee, we get to build one!
+            axaa = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
+                      yticks=[], xticks=[])
+            for i, mybin in enumerate(bins):
+                txt = axaa.text(0.5, i, "%s" % (mybin,), ha='center', 
+                                va='center', color='w')
+                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
+                                                     foreground="k")])
+
+            axaa.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
+                color=m(range(len(bins))),
+                ec='None')
+        
 
     def fill_cwas(self, data,
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
