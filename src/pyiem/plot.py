@@ -115,23 +115,8 @@ def load_bounds(filename):
     """
     Load the boundary file into a [numpy array]
     """
-    res = []
-    # line for x, line for y, repeat...
-    is_x = True
-    for line in open("%s/%s" % (DATADIR, filename), 'r'):
-        tokens = line.split(",")
-        arr = []
-        for token in tokens:
-            arr.append( float(token) )
-        pos = 1
-        if is_x:
-            res.append( numpy.zeros((len(tokens),2), 'f') )
-            pos = 0
-            is_x = False
-    
-        res[-1][:,pos] = arr
-    
-    return res
+    res = numpy.loadtxt("%s/%s" % (DATADIR, filename))
+    return numpy.column_stack(res)
 
 def mask_outside_polygon(poly_verts, ax=None):
     """
@@ -218,7 +203,7 @@ def LevelColormap(levels, cmap=None):
 
     # Use 
     return mpcolors.LinearSegmentedColormap(
-        '%s_levels' % cmap.name, cdict, 256)
+        '%s_levels' % cmap.name, cdict, nlev -1)
 
 class MapPlot:
     
@@ -295,13 +280,15 @@ class MapPlot:
 
         self.map.fillcontinents(color='1.0', zorder=0) # Read docs on 0 meaning
         self.map.drawstates(linewidth=1.0, zorder=Z_OVERLAY, ax=self.ax)
-        self.iemlogo()
+        if not kwargs.get('nologo'):
+            self.iemlogo()
         if kwargs.has_key("title"):
             self.fig.text(0.13, 0.94, kwargs.get("title"), fontsize=18) 
         if kwargs.has_key("subtitle"):
             self.fig.text(0.13, 0.91, kwargs.get("subtitle") )
         
-        self.fig.text(0.01, 0.03, "Iowa Environmental Mesonet, generated %s" % (
+        self.fig.text(0.01, 0.03, "%s :: generated %s" % (
+                        kwargs.get('caption', 'Iowa Environmental Mesonet'),
                         mx.DateTime.now().strftime("%d %B %Y %I:%M %p %Z"),))
         
         self.pqstr = kwargs.get('pqstr', None)
@@ -324,6 +311,23 @@ class MapPlot:
         white_glows = FilteredArtistList(t, GrowFilter(3))
         self.ax.add_artist(white_glows)
         white_glows.set_zorder(t[0].get_zorder()-0.1)
+
+    def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
+        """ pcolormesh wrapper """
+        maue( len(clevs) )
+
+        cl = LevelColormap(clevs, cmap=kwargs.get('cmap', cm.get_cmap('maue')))
+        cl.set_under('#000000')
+        cl.set_over('#000000')
+        cl.set_bad('#FFFFFF')
+        
+        cs = self.map.pcolormesh(lons, lats, vals, vmax=max(clevs),
+                                 vmin=min(clevs),
+                               cmap=cl, zorder=Z_FILL, latlon=True)
+
+        cbar = self.map.colorbar(cs, location='right', pad="1%", ticks=clevs)
+        cbar.set_label( kwargs.get('units', ''))
+
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf """
@@ -355,7 +359,7 @@ class MapPlot:
                                cmap=cl, zorder=Z_FILL)
         
         if self.sector == 'iowa':
-            ia_border = load_bounds("iowa_bnds.txt")[0] # Only consider first
+            ia_border = load_bounds("iowa_bnds.txt") # Only consider first
             xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
             poly = zip(xx,yy)
             mask_outside_polygon(poly, ax=self.ax)

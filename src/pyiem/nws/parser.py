@@ -129,6 +129,10 @@ class Engine(object):
             j.append( JabberMessage(mess, htmlmess[:-1]) )
         return j
     
+    def handle_vtec_segment(self, tp, seg, res):
+        """ Process VTEC segment, lots to do! """
+        pass
+    
     def parse(self, raw ):
         """
         Parse the raw string into something we can use
@@ -139,10 +143,13 @@ class Engine(object):
         if tp.afos and tp.afos[:3] in SIMPLE_PRODUCTS:
             res['jabber_msgs'].append( self.simple_jabber_msg(tp) )
             res['tweets'].append( self.simple_tweet(tp) )
-        if tp.afos[:3] == 'RVF':
+        else:
             for seg in tp.segments:
-                js = self.jabber_rvf_segment_hander(tp, seg)
-                for j in js:
-                    res['jabber_msgs'].append( j )
+                if tp.afos[:3] == 'RVF':
+                    js = self.jabber_rvf_segment_hander(tp, seg)
+                    for j in js:
+                        res['jabber_msgs'].append( j )
+                elif len(seg.vtec) > 0:
+                    self.handle_vtec_segment(tp, seg, res)
         
         return res
