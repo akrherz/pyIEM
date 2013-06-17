@@ -18,6 +18,7 @@ from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
+import matplotlib.mpl as mpl
 import matplotlib.patheffects as PathEffects
 import mx.DateTime
 import numpy
@@ -161,49 +162,24 @@ that
 
     return patch
 
-def maue(N=-1):
+def maue():
     """ Pretty color ramp Dr Ryan Maue uses """
     cpool = ["#e6e6e6", "#d2d2d2", "#bcbcbc", "#969696", "#646464",
-"#1464d2", "#1e6eeb", "#2882f0", "#3c96f5", "#50a5f5", "#78b9fa", 
-           "#96d2fa", "#b4f0fa", "#e1ffff",
-"#0fa00f", "#1eb41e", "#37d23c", "#50f050", "#78f573", "#96f58c", 
-           "#b4faaa", "#c8ffbe",
-"#ffe878", "#ffc03c", "#ffa000", "#ff6000", "#ff3200", "#e11400", "#c00000", 
-           "#a50000", "#643c32",
-"#785046", "#8c645a", "#b48c82", "#e1beb4", "#f0dcd2", "#ffc8c8", "#f5a0a0", 
-           "#f5a0a0", "#e16464", "#c83c3c"]
-    if N == 15:
-        cpool = cpool[::2]
-    #cmap3 = mpcolors.ListedColormap(cpool[0:N], 'maue', N=N)
+             "#1464d2", "#1e6eeb", "#2882f0", "#3c96f5", "#50a5f5", "#78b9fa", 
+             "#96d2fa", "#b4f0fa", "#e1ffff",
+             "#0fa00f", "#1eb41e", "#37d23c", "#50f050", "#78f573", "#96f58c", 
+             "#b4faaa", "#c8ffbe",
+             "#ffe878", "#ffc03c", "#ffa000", "#ff6000", "#ff3200", "#e11400", 
+             "#c00000", "#a50000", "#643c32",
+             "#785046", "#8c645a", "#b48c82", "#e1beb4", "#f0dcd2", "#ffc8c8", 
+             "#f5a0a0", "#f5a0a0", "#e16464", "#c83c3c"]
+
     cmap3 = mpcolors.ListedColormap(cpool, 'maue')
+    cmap3.set_over("#000000")
+    cmap3.set_under("#FFFFFF")
+    cmap3.set_bad("#FFFFFF")
     cm.register_cmap(cmap=cmap3)
     return cmap3
-
-def LevelColormap(levels, cmap=None):
-    """Make a colormap based on an increasing sequence of levels"""
-    
-    # Start with an existing colormap
-    #if cmap == None:
-    #    cmap = pl.get_cmap()
-
-    # Spread the colours maximally
-    nlev = len(levels)
-    S = numpy.arange(nlev, dtype='float')/(nlev-1)
-    A = cmap(S)
-
-    # Normalize the levels to interval [0,1]
-    levels = numpy.array(levels, dtype='float')
-    L = (levels-levels[0])/(levels[-1]-levels[0])
-
-    # Make the colour dictionary
-    R = [(L[i], A[i,0], A[i,0]) for i in xrange(nlev)]
-    G = [(L[i], A[i,1], A[i,1]) for i in xrange(nlev)]
-    B = [(L[i], A[i,2], A[i,2]) for i in xrange(nlev)]
-    cdict = dict(red=tuple(R),green=tuple(G),blue=tuple(B))
-
-    # Use 
-    return mpcolors.LinearSegmentedColormap(
-        '%s_levels' % cmap.name, cdict, nlev -1)
 
 class MapPlot:
     
@@ -212,7 +188,9 @@ class MapPlot:
         self.fig = plt.figure(num=None, figsize=figsize )
         self.fig.subplots_adjust(bottom=0, left=0, right=1, top=1, wspace=0, 
                                  hspace=0)
-        self.ax = plt.axes([0.01,0.05,0.9,0.85], axisbg=(0.4471,0.6235,0.8117))
+        self.ax = plt.axes([0.01,0.05,0.928,0.85], axisbg=(0.4471,0.6235,0.8117))
+        self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
+                      yticks=[], xticks=[])
         self.sector = sector
         self.ak_map = None
         self.ak_ax = None
@@ -292,9 +270,31 @@ class MapPlot:
                         mx.DateTime.now().strftime("%d %B %Y %I:%M %p %Z"),))
         
         self.pqstr = kwargs.get('pqstr', None)
+
+    def draw_colorbar(self, clevs, cmap, norm, **kwargs):
+        """ Create our magic colorbar! """
         
-        # Lazy and let a method below actually construct this
-        self.colorbar = None
+
+
+        under = clevs[0]-(clevs[1]-clevs[0])
+        over = clevs[-1]+(clevs[-1]-clevs[-2])
+        blevels = numpy.concatenate([[under,], clevs, [over,]])
+        cb2 = mpl.colorbar.ColorbarBase(self.cax, cmap=cmap,
+                                     norm=norm,
+                                     boundaries=blevels,
+                                     extend='both',
+                                     ticks=None,
+                                     spacing='uniform',
+                                     orientation='vertical')
+        for i, lev in enumerate(clevs):
+            y = float(i) / (len(clevs) -1)
+            txt = cb2.ax.text(0.5, y, '%g' % (lev,), va='center', ha='center')
+            txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
+                                                         foreground="w")])
+            
+        if kwargs.has_key('units'):
+            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
+                          ha='right')
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14):
@@ -314,19 +314,13 @@ class MapPlot:
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
-        maue( len(clevs) )
-
-        cl = LevelColormap(clevs, cmap=kwargs.get('cmap', cm.get_cmap('maue')))
-        cl.set_under('#000000')
-        cl.set_over('#000000')
-        cl.set_bad('#FFFFFF')
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         
-        cs = self.map.pcolormesh(lons, lats, vals, vmax=max(clevs),
-                                 vmin=min(clevs),
-                               cmap=cl, zorder=Z_FILL, latlon=True)
+        cs = self.map.pcolormesh(lons, lats, vals, norm=norm,
+                               cmap=cmap, zorder=Z_FILL, latlon=True)
 
-        cbar = self.map.colorbar(cs, location='right', pad="1%", ticks=clevs)
-        cbar.set_label( kwargs.get('units', ''))
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
@@ -349,14 +343,13 @@ class MapPlot:
             lats = yi
         if lons.ndim == 1:
             lons, lats = numpy.meshgrid(lons, lats)
-        maue(len(clevs))
-
-        cl = LevelColormap(clevs, cmap=cm.get_cmap('maue'))
-        cl.set_under('#000000')
         
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+                
         x, y = self.map(lons, lats)
         cs = self.map.contourf(x, y, vals, clevs,
-                               cmap=cl, zorder=Z_FILL)
+                               cmap=cmap, norm=norm, zorder=Z_FILL)
         
         if self.sector == 'iowa':
             ia_border = load_bounds("iowa_bnds.txt") # Only consider first
@@ -364,15 +357,15 @@ class MapPlot:
             poly = zip(xx,yy)
             mask_outside_polygon(poly, ax=self.ax)
             
-        cbar = self.map.colorbar(cs, location='right', pad="1%", 
-                                 ticks=cs.levels)
-        cbar.set_label( kwargs.get('units', ''))
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+
 
     def fill_climdiv(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
-                  bins=numpy.arange(0,100,10),
-                  lblformat='%.0f'):
-        m = maue(len(bins))
+                  bins=numpy.arange(0,101,10),
+                  lblformat='%.0f', **kwargs):
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(bins, cmap.N)
         #m = cm.get_cmap('jet')
         self.map.readshapefile(shapefile, 'climdiv', ax=self.ax)
         plotted = []
@@ -404,9 +397,7 @@ class MapPlot:
             if not data.has_key( clidiv ):
                 continue
             val = data.get( clidiv )
-            idx = numpy.digitize([val],
-                                 bins) 
-            c = m( idx[0] - 1 )
+            c = cmap( norm([val,]) )[0]
             # Check area in meters... 100,000 x 100,000
             if clidiv not in plotted:
                 seg = numpy.array( seg )
@@ -426,26 +417,17 @@ class MapPlot:
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
 
-        if self.colorbar is None:
-            # Yipeee, we get to build one!
-            axaa = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
-                      yticks=[], xticks=[])
-            for i, mybin in enumerate(bins):
-                txt = axaa.text(0.5, i, lblformat % (mybin,), ha='center', 
-                                va='center', color='w')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
-                                                     foreground="k")])
+        self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-            axaa.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
-                color=m(range(len(bins))),
-                ec='None')
         
 
     def fill_states(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/states',
-                  bins=numpy.arange(0,100,10),
-                  lblformat='%.0f'):
-        m = maue(15)
+                  bins=numpy.arange(0,101,10),
+                  lblformat='%.0f', **kwargs):
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(bins, cmap.N)
+        
         self.map.readshapefile(shapefile, 'states', ax=self.ax)
         plotted = []
         for nshape, seg in enumerate(self.map.states):
@@ -474,9 +456,7 @@ class MapPlot:
             if not data.has_key( state ):
                 continue
             val = data.get( state )
-            idx = numpy.digitize([val],
-                                 bins) 
-            c = m( idx[0] - 1 )
+            c = cmap( norm([val,]) )[0]
             # Check area in meters... 100,000 x 100,000
             if state not in plotted:
                 mx, my = thismap(self.map.states_info[nshape]['LON'],
@@ -495,30 +475,21 @@ class MapPlot:
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
 
-        if self.colorbar is None:
-            # Yipeee, we get to build one!
-            axaa = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
-                      yticks=[], xticks=[])
-            for i, mybin in enumerate(bins):
-                txt = axaa.text(0.5, i, "%s" % (mybin,), ha='center', 
-                                va='center', color='w')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
-                                                     foreground="k")])
+        self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-            axaa.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
-                color=m(range(len(bins))),
-                ec='None')
         
 
     def fill_cwas(self, data,
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
-                  bins=numpy.arange(0,100,10),
-                  lblformat='%.0f'):
+                  bins=numpy.arange(0,101,10),
+                  lblformat='%.0f', **kwargs):
         """
         Added filled polygons to the plot based on key/value lookup pairs in
         the data dictionary
         """
-        m = maue(15)
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(bins, cmap.N)
+        
         self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
         plotted = []
         for nshape, seg in enumerate(self.map.cwas):
@@ -547,9 +518,7 @@ class MapPlot:
             if not data.has_key( cwa ):
                 continue
             val = data.get( cwa )
-            idx = numpy.digitize([val],
-                                 bins) 
-            c = m( idx[0] - 1 )
+            c = cmap( norm([val,]) )[0]
             # Check area in meters... 100,000 x 100,000
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
                 mx, my = thismap(self.map.cwas_info[nshape]['LON'],
@@ -568,19 +537,8 @@ class MapPlot:
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
 
-        if self.colorbar is None:
-            # Yipeee, we get to build one!
-            axaa = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
-                      yticks=[], xticks=[])
-            for i, mybin in enumerate(bins):
-                txt = axaa.text(0.5, i, "%s" % (mybin,), ha='center', 
-                                va='center', color='w')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
-                                                     foreground="k")])
+        self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-            axaa.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
-                color=m(range(len(bins))),
-                ec='None')
 
 
     def drawcounties(self):
