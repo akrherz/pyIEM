@@ -1,7 +1,6 @@
 """
  We do meteorological things, when necessary
 """
-import math
 import numpy as np
 
 def uv(speed, direction):
@@ -31,8 +30,8 @@ def relh(temperature, dewpoint):
     tmpc = temperature.value("C")
     dwpc = dewpoint.value("C")
     
-    e  = 6.112 * math.exp( (17.67 * dwpc) / (dwpc + 243.5));
-    es  = 6.112 * math.exp( (17.67 * tmpc) / (tmpc + 243.5));
+    e  = 6.112 * np.exp( (17.67 * dwpc) / (dwpc + 243.5));
+    es  = 6.112 * np.exp( (17.67 * tmpc) / (tmpc + 243.5));
     relh = ( e / es ) * 100.00;
     return relh
 
