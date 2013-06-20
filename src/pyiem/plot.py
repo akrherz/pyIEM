@@ -268,8 +268,6 @@ class MapPlot:
         self.fig.text(0.01, 0.03, "%s :: generated %s" % (
                         kwargs.get('caption', 'Iowa Environmental Mesonet'),
                         mx.DateTime.now().strftime("%d %B %Y %I:%M %p %Z"),))
-        
-        self.pqstr = kwargs.get('pqstr', None)
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """ Create our magic colorbar! """
@@ -317,10 +315,16 @@ class MapPlot:
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         
-        cs = self.map.pcolormesh(lons, lats, vals, norm=norm,
+        self.map.pcolormesh(lons, lats, vals, norm=norm,
                                cmap=cmap, zorder=Z_FILL, latlon=True)
 
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        if self.sector == 'iowa':
+            ia_border = load_bounds("iowa_bnds.txt") # Only consider first
+            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
+            poly = zip(xx,yy)
+            mask_outside_polygon(poly, ax=self.ax)
+
+        self.draw_colorbar(clevs, cmap, norm)
 
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
@@ -348,7 +352,7 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
                 
         x, y = self.map(lons, lats)
-        cs = self.map.contourf(x, y, vals, clevs,
+        self.map.contourf(x, y, vals, clevs,
                                cmap=cmap, norm=norm, zorder=Z_FILL)
         
         if self.sector == 'iowa':
@@ -357,7 +361,7 @@ class MapPlot:
             poly = zip(xx,yy)
             mask_outside_polygon(poly, ax=self.ax)
             
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        self.draw_colorbar(clevs, cmap, norm)
 
 
     def fill_climdiv(self, data, 
@@ -572,7 +576,8 @@ class MapPlot:
                 ec='None')
         
     def postprocess(self, view=False, filename=None, web=False,
-                    memcache=None, memcachekey=None, memcacheexpire=300):
+                    memcache=None, memcachekey=None, memcacheexpire=300,
+                    pqstr=None):
         """ postprocess into a slim and trim PNG """
         #if web:
         #    print "Content-Type: image/png\n"
@@ -598,8 +603,8 @@ class MapPlot:
         tmpfp = tempfile.mktemp()
         im2.save( tmpfp , format='PNG')
         
-        if self.pqstr is not None:
-            subprocess.call("/home/ldm/bin/pqinsert -p '%s' %s" % (self.pqstr, 
+        if pqstr is not None:
+            subprocess.call("/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, 
                                                                    tmpfp), 
                     shell=True)
         if view:
