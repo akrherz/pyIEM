@@ -1,6 +1,7 @@
 """
   Classes Representing various variables
 """
+import numpy as np
 
 class UnitsError(Exception):
     """ Exception for bad Units """
@@ -15,7 +16,10 @@ class basetype(object):
             raise UnitsError("unrecognized temperature unit: %s known: %s" % (
                                 units, self.known_units))
         self._units = units.upper()
-        self._value = value
+        if type(value) == type([]):
+            self._value = np.array(value)
+        else:
+            self._value = value
 
 class distance(basetype):
     """ Distance """
@@ -81,8 +85,10 @@ class speed(basetype):
     """ Speed """
     known_units = ['KT', 'MPH', 'MPS', 'KMH']
 
-    def value(self, units):
+    def value(self, units=None):
         """ Convert to a value in the given units """
+        if units is None:
+            units = self._units
         if units.upper() not in speed.known_units:
             raise UnitsError("unrecognized speed unit: %s known: %s" % (
                                 units, speed.known_units))
@@ -107,7 +113,33 @@ class speed(basetype):
         elif units == "MPS":
             return mps_value
 
+class humidity(basetype):
+    """ Humidity, this is not as straight forward as the others """
+    known_units = ['%',]
 
+    def value(self, units):
+        """ Convert to a value in the given units """
+        if units.upper() not in humidity.known_units:
+            raise UnitsError("unrecognized humidity unit: %s known: %s" % (
+                                units, humidity.known_units))
+        return self._value
+
+class direction(basetype):
+    """ Direction from North """
+    known_units = ['DEG', 'RAD']
+
+    def value(self, units):
+        """ Convert to a value in the given units """
+        if units.upper() not in direction.known_units:
+            raise UnitsError("unrecognized direction unit: %s known: %s" % (
+                                units, direction.known_units))
+        if units.upper() == self._units:
+            return self._value
+        
+        if self._units == "DEG" and units.upper() == 'RAD':
+            return self._value * 3.1415926535897931 / 180.0
+        if self._units == "RAD" and units.upper() == 'DEG':
+            return self._value * 180 / 3.1415926535897931 
 
 class pressure(basetype):
     """ Pressure """
