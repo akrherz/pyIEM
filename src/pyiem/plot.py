@@ -31,6 +31,8 @@ import os
 import sys
 import subprocess
 import shutil
+import datetime
+
 
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
@@ -208,13 +210,24 @@ class MapPlot:
                            llcrnrlon=reference.IA_WEST, 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
-        if self.sector == 'midwest':
+        elif self.sector == 'midwest':
             """ Standard view for Iowa """
             self.map = Basemap(projection='merc', fix_aspect=False,
                            urcrnrlat=reference.MW_NORTH, 
                            llcrnrlat=reference.MW_SOUTH, 
                            urcrnrlon=reference.MW_EAST, 
                            llcrnrlon=reference.MW_WEST, 
+                           lat_0=45.,lon_0=-92.,lat_ts=42.,
+                           resolution='i', ax=self.ax)
+            self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
+            self.map.drawcoastlines(zorder=Z_POLITICAL)
+        elif self.sector == 'custom':
+            """ Custom view """
+            self.map = Basemap(projection='merc', fix_aspect=False,
+                           urcrnrlat=kwargs.get('north'), 
+                           llcrnrlat=kwargs.get('south'), 
+                           urcrnrlon=kwargs.get('east'), 
+                           llcrnrlon=kwargs.get('west'), 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
             self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
@@ -257,7 +270,7 @@ class MapPlot:
                 self.hi_map.fillcontinents(color='0.7',zorder=0)
 
         self.map.fillcontinents(color='1.0', zorder=0) # Read docs on 0 meaning
-        self.map.drawstates(linewidth=1.0, zorder=Z_OVERLAY, ax=self.ax)
+        self.map.drawstates(linewidth=1.5, zorder=Z_OVERLAY, ax=self.ax)
         if not kwargs.get('nologo'):
             self.iemlogo()
         if kwargs.has_key("title"):
@@ -326,7 +339,9 @@ class MapPlot:
 
         self.draw_colorbar(clevs, cmap, norm)
 
-
+        if kwargs.has_key('units'):
+            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
+                          ha='right')
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf """
         if type(lons) == type([]):
@@ -352,6 +367,9 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
                 
         x, y = self.map(lons, lats)
+        #from scipy.signal import convolve2d
+        #window = numpy.ones((5, 5))
+        #vals = convolve2d(vals, window / window.sum(), mode='same', boundary='symm')
         self.map.contourf(x, y, vals, clevs,
                                cmap=cmap, norm=norm, zorder=Z_FILL)
         
@@ -363,7 +381,10 @@ class MapPlot:
             
         self.draw_colorbar(clevs, cmap, norm)
 
-
+        if kwargs.has_key('units'):
+            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
+                          ha='right')
+            
     def fill_climdiv(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
                   bins=numpy.arange(0,101,10),
@@ -491,6 +512,8 @@ class MapPlot:
         Added filled polygons to the plot based on key/value lookup pairs in
         the data dictionary
         """
+        if data.has_key('JSJ'):
+            data['SJU'] = data['JSJ']
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         
@@ -501,6 +524,8 @@ class MapPlot:
             thismap = self.map
             thisax = self.ax
             transform = False
+            if not data.has_key( cwa ):
+                continue
             if cwa in ['AFC', 'AFG', 'AJK']:
                 if self.ak_map is None:
                     continue
@@ -519,10 +544,8 @@ class MapPlot:
                 thismap = self.pr_map
                 thisax = self.pr_ax
                 transform = True
-            if not data.has_key( cwa ):
-                continue
             val = data.get( cwa )
-            c = cmap( norm([val,]) )[0]
+            c = cmap( norm([float(val),]) )[0]
             # Check area in meters... 100,000 x 100,000
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
                 mx, my = thismap(self.map.cwas_info[nshape]['LON'],
@@ -534,6 +557,7 @@ class MapPlot:
                 plotted.append( cwa )
             if transform:
                 seg = numpy.array( seg )
+                # convert read shapefile back into lat / lon
                 xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
                 xx, yy = thismap(xx, yy)
                 seg = zip(xx, yy)
@@ -575,14 +599,20 @@ class MapPlot:
                 color=colorramp(range(len(bins))),
                 ec='None')
         
+    def makefeature(self):
+        """ Special workflow for feature generation """
+        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
+        bigfn = "%s.png" % (tomorrow.strftime("%y%m%d"),)
+        littlefn = "%s_s.png" % (tomorrow.strftime("%y%m%d"),)
+        
+        plt.savefig(bigfn, dpi=100)
+        plt.savefig(littlefn, dpi=34)
+        
     def postprocess(self, view=False, filename=None, web=False,
                     memcache=None, memcachekey=None, memcacheexpire=300,
                     pqstr=None):
         """ postprocess into a slim and trim PNG """
-        #if web:
-        #    print "Content-Type: image/png\n"
-        #    self.fig.savefig( sys.stdout, format='png' )
-        #    return
+        tmpfn = tempfile.mktemp()
         ram = cStringIO.StringIO()
         plt.savefig(ram, format='png')
         ram.seek(0)
@@ -600,16 +630,15 @@ class MapPlot:
             print "Content-Type: image/png\n"
             im2.save( sys.stdout, format='png' )
             return
-        tmpfp = tempfile.mktemp()
-        im2.save( tmpfp , format='PNG')
+        im2.save( tmpfn , format='PNG')
         
         if pqstr is not None:
             subprocess.call("/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, 
-                                                                   tmpfp), 
+                                                                   tmpfn), 
                     shell=True)
         if view:
-            subprocess.call("xv %s" % (tmpfp,), shell=True)
+            subprocess.call("xv %s" % (tmpfn,), shell=True)
         if filename is not None:
-            shutil.copyfile(tmpfp, filename)
-        os.unlink(tmpfp)
+            shutil.copyfile(tmpfn, filename)
+        os.unlink(tmpfn)
         
