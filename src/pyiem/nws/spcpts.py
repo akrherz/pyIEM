@@ -133,11 +133,21 @@ def str2multipolygon(s):
     conus_sz = np.shape(CONUS)[0]
     cw_polygons = []
     ccw_polygons = []
+    interior = None
     for i, segment in enumerate(segments):
-        newls = LineString(segment).intersection(CONUSPOLY)
-        # TODO: .xy may not work
-        x,y = newls.xy
-        segment = zip(x,y)
+        if segment[0] == segment[-1]:
+            print '===== segment %s is interior polygon!' % (i,)
+            interior = segment
+            continue
+        
+        ls = LineString(segment)
+        if ls.is_valid:
+            newls = LineString(segment).intersection(CONUSPOLY)
+            if newls.is_valid:
+                x,y = newls.xy
+                segment = zip(x,y)
+        else:
+            print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
         distance = ((CONUS[:,0] - segment[0][0])**2 + 
                     (CONUS[:,1] - segment[0][1])**2)**.5
         idx1 = np.argmin(distance) 
@@ -155,7 +165,7 @@ def str2multipolygon(s):
         elif idx2 < (conus_sz * 0.25) and idx1 > (conus_sz * .75):
             print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CW' % (i,
                                                     idx1, idx2)
-            poly = np.concatenate([poly, CONUS[idx1:idx2]])
+            poly = np.concatenate([poly, CONUS[idx2:idx1]])
             cw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
         elif idx2 > idx1: # Simple case
             print 'i:%s idx1:%s idx2:%s Simple CW' % (i, idx1, idx2)
@@ -190,8 +200,16 @@ def str2multipolygon(s):
                 print '---> ccwpoly %s overlaps cwpoly %s result %s' % (i,j,
                                                         type(ccwpoly))
         res.append( ccwpoly )
-        
-    print res
+    if len(ccw_polygons) == 0:
+        respoly = cw_polygons[0]
+        for i in range(1, len(cw_polygons)):
+            print 'Running cw intersection for polygon %s' % (i,)
+            respoly = respoly.intersection(cw_polygons[i])
+        if interior:
+            print 'Setting interior polygon to this polygon!'
+            respoly = Polygon(list(respoly.exterior.coords), [interior])
+        return MultiPolygon([ respoly ])
+    
     return MultiPolygon(res)
     
     start_intersections = []
@@ -334,6 +352,7 @@ class SPCPTS(object):
         self.find_outlooks( tp )
     
     def draw_outlooks(self):
+        from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
         load_conus_data()
         i = 0
@@ -342,8 +361,8 @@ class SPCPTS(object):
             ax = fig.add_subplot(111)
             ax.plot(CONUS[:,0],CONUS[:,1], color='b', label='Conus')
             for poly in outlook.geometry:
-                x,y = poly.exterior.xy
-                ax.plot(x, y, color='r', label='Outlook')
+                patch = PolygonPatch(poly, fc='r', label='Outlook')
+                ax.add_patch(patch)
             ax.set_title('Category %s Threshold %s' % (outlook.category, 
                                                    outlook.threshold))
             ax.legend(loc=3)
