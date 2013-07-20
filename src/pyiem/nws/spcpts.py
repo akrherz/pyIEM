@@ -1,59 +1,61 @@
-# Something to deal with SPC PTS Product
+"""
+ Something to deal with SPC PTS Product
+ My life was not supposed to end like this, what a brutal format
+"""
 import re
 import shapelib
 from ctypes import c_void_p, byref
-import numpy
+import numpy as np
 
-from shapely.geometry import Polygon, LineString, Point
+from shapely.geometry import Polygon, LineString, Point, MultiPolygon
 from shapely.geometry.base import geom_factory
 import shapely.geos
 import datetime
+import os
+
+CONUS = None
+
+def load_conus_data():
+    """ Load up the conus datafile for our perusal """
+    global CONUS
+    if CONUS is not None:
+        return
+    fn = "%s/../data/conus_marine_bnds.txt" % (os.path.dirname(__file__),)
+    lons = []
+    lats = []
+    for line in open(fn):
+        tokens = line.split(",")
+        lons.append( float(tokens[0]) )
+        lats.append( float(tokens[1]) )
+    CONUS = np.column_stack([lons,lats])
 
 def ptchecker(pts):
     """
     Do some work on the line, buffer if necessary
     """
-    data = numpy.array( pts )
+    data = np.array( pts )
     if data[0,0] == data[-1,0] and data[0,1] == data[-1,1]:
         print 'I found a closed line segment, returning'
         return data
-    # We wish to extend the lines slightly to make sure they intersect
-    # We'll go 0.2 deg, make sure non zero
-    dx = data[1,0] - data[0,0] + 0.00001
-    dy = data[1,1] - data[0,1] + 0.00001
-    if abs(dx) > abs(dy):
-        x = data[0,0] - 1. * (abs(dx)/dx)
-        y = data[0,1] - 1. * (abs(dy)/abs(dx)) * (abs(dy)/dy)
-    elif abs(dy) > abs(dx):
-        y = data[0,1] - 1. * (abs(dy)/dy)
-        x = data[0,0] - 1. * (abs(dx)/abs(dy)) * (abs(dx)/dx)
-    else:
-        y = data[0,1] - 1. * (abs(dy)/dy)
-        x = data[0,0] - 1. * (abs(dx)/dx)
-    print 'Extender Start: New: %.2f %.2f P0: %s P1: %s' % (x,y, 
-                                                data[0,:], data[1,:])
-    pts.insert(0, [x,y] )
-    # Now we do the last point, extend it some
-    dx = data[-1,0] - data[-2,0] + 0.00001
-    dy = data[-1,1] - data[-2,1] + 0.00001
-    if abs(dx) > abs(dy):
-        x = data[-1,0] + 1. * (abs(dx)/dx)
-        y = data[-1,1] + 1. * (abs(dy)/abs(dx)) * (abs(dy)/dy)
-    elif abs(dy) > abs(dx):
-        y = data[-1,1] + 1. * (abs(dy)/dy)
-        x = data[-1,0] + 1. * (abs(dx)/abs(dy)) * (abs(dx)/dx)
-    else:
-        y = data[-1,1] + 1. * (abs(dy)/dy)
-        x = data[-1,0] + 1. * (abs(dx)/dx)
-    print 'Extender End: P-2: %s P-1: %s New: %.2f %.2f' % (
-                                                data[-2,:], data[-1,:], x, y)
-    pts.append( [x,y] )
+    load_conus_data()
+    distance = ((CONUS[:,0] - data[0,0])**2 + (CONUS[:,1] - data[0,1])**2)**.5
+    idx2 = np.argmin(distance)
+    distance = ((CONUS[:,0] - data[-1,0])**2 + (CONUS[:,1] - data[-1,1])**2)**.5
+    idx1 = np.argmin(distance)
+    # The -1 data index would be the start of the CW conus
+    if idx1 < idx2: # Simple
+        data = np.concatenate([data, CONUS[idx1:idx2+1,:]])
+    if idx1 > idx2: # we cross the start-finish line of our CONUS bounds
+        data = np.concatenate([data, CONUS[idx1:-1,:]])
+        data = np.concatenate([data, CONUS[:idx2+1,:]])
+    # Now we make our endpoints match for a closed circle
+    data = np.concatenate([data, data[-1,:]])
     
-    return numpy.array( pts )
+    return data
     
 def rightpoint(segment):
     
-    mid = int(numpy.shape(segment)[0] / 2. )
+    mid = int(np.shape(segment)[0] / 2. )
     x1, y1 = segment[mid,:]
     x0, y0 = segment[mid-1,:]
     dx = x1 - x0
@@ -99,9 +101,9 @@ def rightpoint(segment):
     
     
         
-def str2pts(s):
+def str2multipolygon(s):
     """
-    Convert string PTS data into an array of line segments
+    Convert string PTS data into a polygon
     """
     tokens = re.findall("([0-9]{8})", s.replace("\n",""))
     segments = []
@@ -112,28 +114,136 @@ def str2pts(s):
         if lon > -30:
             lon -= 100.
         if token == '99999999':        
-            segments.append( ptchecker(pts) )
+            segments.append( pts )
             pts = []
         else:
             pts.append( [lon, lat] )
-    segments.append( ptchecker(pts) )
-    return segments
+    segments.append( pts )
+    
+    ''' Simple case whereby the segment is its own circle, thank goodness '''
+    if (len(segments) == 1 and segments[0][0][0] == segments[0][-1][0] and
+        segments[0][0][1] == segments[0][-1][1]):
+        print 'We have a lone circle, horray'
+        return MultiPolygon([Polygon( segments[0] )])
+    
+    ''' We have some work to do '''
+    load_conus_data()
+    start_intersections = []
+    end_intersections = []
+    for segment in segments:
+        distance = ((CONUS[:,0] - segment[0][0])**2 + 
+                    (CONUS[:,1] - segment[0][1])**2)**.5
+        distance2 = ((CONUS[:,0] - segment[1][0])**2 + 
+                    (CONUS[:,1] - segment[1][1])**2)**.5
+        if np.min(distance2) < np.min(distance) and len(segment) > 3:
+            segment.pop(0)
+            distance = distance2
+        start_intersections.append( np.argmin(distance) )
+        distance = ((CONUS[:,0] - segment[-1][0])**2 + 
+                    (CONUS[:,1] - segment[-1][1])**2)**.5
+        distance2 = ((CONUS[:,0] - segment[-2][0])**2 + 
+                    (CONUS[:,1] - segment[-2][1])**2)**.5
+        if np.min(distance2) < np.min(distance) and len(segment) > 3:
+            segment.pop(0)
+            distance = distance2
+        end_intersections.append( np.argmin(distance) )
+        
+    ''' First, we need to figure out which points along the edge of the
+    CONUS domain do we actually care about '''
+    conus_sz = np.shape(CONUS)[0]
+    usepts = np.ones( np.shape(CONUS)[0] )
+    (cw, ccw) = range(2)
+    directions = []
+    for i, (idx1, idx2) in enumerate(zip(start_intersections, end_intersections)):
+        if idx2 > (conus_sz * 0.75) and idx1 < (conus_sz * .25):
+            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CCW' % (i,
+                                                    idx1, idx2)
+            usepts[idx1:idx2+1] = 0.
+            directions.append( ccw )            
+        elif idx2 < (conus_sz * 0.25) and idx1 > (conus_sz * .75):
+            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CW' % (i,
+                                                    idx1, idx2)
+            usepts[0:idx2] = 0.
+            usepts[idx1:] = 0.
+            directions.append( cw )            
+        elif idx2 > idx1: # Simple case
+            print 'i:%s idx1:%s idx2:%s Simple CW' % (i, idx1, idx2)
+            usepts[idx1:idx2] = 0.
+            directions.append( cw )            
+        elif idx1 > idx2: # Simple case
+            print 'i:%s idx1:%s idx2:%s Simple CCW' % (i, idx1, idx2)
+            usepts[0:idx2] = 0.
+            usepts[idx1:] = 0.
+            directions.append( ccw )            
+
+    ''' Now comes the tricky parts '''
+    print 'usepts counts: 0: %s 1: %s ' % (np.sum(np.where(usepts==0,1,0)),
+                                           np.sum(usepts))
+    res = []
+    if cw not in directions:
+        print 'All CCW segments found!'
+        for i in range(len(segments)):
+            idx1 = end_intersections[i]
+            idx2 = start_intersections[i]
+            poly = CONUS[idx1:idx2]
+            poly = np.concatenate([poly, segments[i]])
+            res.append( Polygon(np.vstack([poly, poly[0,:]])) )
+        return MultiPolygon(res)
+       
+    idx = list(usepts).index(1)
+    poly = None
+    usedsegs = []
+    print '---------------------------------------------------'
+    while idx < conus_sz:
+        print '--> Staring this loop with idx of %s/%s' % (idx, conus_sz)
+        travel = list(usepts[idx:]).index(0)
+        idx2 = idx+travel
+        ''' Figure out which segement starts at this '''
+        print 'Looking for %s in %s' % (idx2, ','.join(map(str,start_intersections)))
+        segid = start_intersections.index(idx2)
+        print 'Loop iteration idx: %s idx2: %s segid: %s' % (idx, idx2, segid)
+        if segid in usedsegs:
+            res.append( Polygon(np.vstack([poly, poly[0,:]])) )
+            poly = None
+        else:
+            usedsegs.append(segid)
+            if poly is None:
+                poly = CONUS[idx:idx2]
+            else:
+                poly = np.concatenate([poly, CONUS[idx:idx2]])
+            poly = np.concatenate([poly, segments[segid]])
+        print 'usepts status idx2: %s min: %s max: %s' % (idx2,
+                                                 np.min(usepts[idx2:]),
+                                                 np.max(usepts[idx2:]))
+        if np.max(usepts[idx2:]) == 0:
+            print 'End of circle'
+            res.append( Polygon(np.vstack([poly, poly[0,:]])) )
+            idx = conus_sz
+        else:
+            idx = idx2 + list(usepts[idx2:]).index(1)
+            if np.min(usepts[idx:]) == 1:
+                print 'Ride circle to the end!'
+                poly = np.concatenate([poly, CONUS[idx:]])
+                res.append( Polygon(np.vstack([poly, poly[0,:]])) )
+                idx = conus_sz
+       
+                   
+    return MultiPolygon(res)
 
 def read_poly():
     _shp = shapelib.open('/home/ldm/pyWWA/tables/conus.shp')
     _poly = _shp.read_object(0)
-    _data = numpy.array( _poly.vertices()[0] )
+    _data = np.array( _poly.vertices()[0] )
     return Polygon( _data )
 
-CONUSPOLY = read_poly()
+#CONUSPOLY = read_poly()
 
 class SPCOutlook(object):
 
-    def __init__(self, category, threshold, polygon, line):
+    def __init__(self, category, threshold, multipoly):
         self.category = category
         self.threshold = threshold
-        self.polygon = polygon
-        self.line = numpy.array(line)
+        self.geometry = multipoly
 
 class SPCPTS(object):
 
@@ -148,23 +258,19 @@ class SPCPTS(object):
     
     def draw_outlooks(self):
         import matplotlib.pyplot as plt
+        load_conus_data()
         i = 0
         for outlook in self.outlooks:
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            x, y = CONUSPOLY.exterior.xy
-            ax.plot(x,y, color='b', label='Conus')
-            x,y = outlook.polygon.exterior.xy
-            ax.plot(x, y, color='r', label='Outlook')
-            x = outlook.line[:,0]
-            y = outlook.line[:,1]
-            ax.plot(x, y, color='g', label='SPC Orig')
-            ax.text(x[0], y[0], 'Start')
-            ax.text(x[-1], y[-1], 'End')
+            ax.plot(CONUS[:,0],CONUS[:,1], color='b', label='Conus')
+            for poly in outlook.geometry:
+                x,y = poly.exterior.xy
+                ax.plot(x, y, color='r', label='Outlook')
             ax.set_title('Category %s Threshold %s' % (outlook.category, 
                                                    outlook.threshold))
             ax.legend(loc=3)
-            fig.savefig('%02d.png' % (i,))
+            fig.savefig('/tmp/%02d.png' % (i,))
             i+= 1
             del fig
             del ax
@@ -218,7 +324,7 @@ class SPCPTS(object):
         self.expire = expire
     
     def find_outlooks(self, tp):
-        # First we split the product by &&
+        """ Find the outlook sections within the text product! """
         data = ""
         for segment in tp.text.split("&&")[:-1]:
             # We need to figure out the probabilistic or category
@@ -229,7 +335,9 @@ class SPCPTS(object):
             for line in segment.split("\n"):
                 if re.match("^(D[3-8]|EXTM|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
                     if threshold is not None:
-                        self.consumer(category, threshold, data)
+                        print 'Category:', category, 'Threshold:', threshold
+                        self.outlooks.append(SPCOutlook(category, threshold,
+                                                 str2multipolygon( data  ) ) ) 
                     threshold = line.split()[0]
                     data = ""
                 if threshold is None:
@@ -237,62 +345,7 @@ class SPCPTS(object):
                 data += line
                 
             if threshold is not None:
-                self.consumer(category, threshold, data)
+                print 'Category:', category, 'Threshold:', threshold
+                self.outlooks.append(SPCOutlook(category, threshold,
+                                                str2multipolygon( data  ) ) ) 
                 
-    def consumer(self, category, threshold, data):
-        """
-        Actually do stuff
-        """
-        hasmore = False
-        # Compute our array of given points, each time we hit 99999999 this is a
-        # break, so we'll make the array multidimensional
-        segments = str2pts( data  )
-        print '%s %s Found %s line segment(s)' % (category, threshold, 
-                                                len(segments))
-        mypoly = CONUSPOLY
-        geomc = None
-        polygons = None
-        collection = None
-        rpt = None
-        geom_array = None
-        # Now we loop over the segments
-        for segment in segments:
-            # Check to see if we have a polygon, if so, our work is done!
-            if segment[0,0] == segment[-1,0] and segment[0,1] == segment[-1,1]:
-                self.outlooks.append( SPCOutlook(category, threshold,
-                                                 Polygon( segment ), segment ) ) 
-                continue
-
-            # Darn, we have some work to do
-            line = LineString( segment )
-            # Union this line with the conus polygon
-            geomc = mypoly.boundary.union( line )
-            geom_array_type = c_void_p * 1
-            geom_array = geom_array_type()
-            geom_array[0] = geomc._geom
-            polygons = shapely.geos.lgeos.GEOSPolygonize(byref(geom_array),1)
-            collection = geom_factory(polygons)
-            rpt = rightpoint( segment )
-            print 'Looking for %s' % (rpt,)
-            for i in range(len(collection)):
-                print "Polyon %s %s has centroid %s" % (i, collection[i].area,
-                                                        collection[i].centroid)
-                if collection[i].contains(rpt):
-                    print 'Found Polygon %s' % (i,)
-                    x,y = collection[i].exterior.xy
-                    mypoly = Polygon( zip(x,y) )
-                    print 'Found Polygon %s Area: %.4f Len collection %s' % (
-                                                i, mypoly.area, len(collection))
-            hasmore = True
-    
-        if hasmore:
-            x,y = mypoly.exterior.xy
-            ar = zip(x,y)
-            self.outlooks.append( SPCOutlook(category, threshold, 
-                                             Polygon( ar ), segment ) )
-        del mypoly
-        del geomc
-        del polygons
-        del geom_array
-        del collection
-        del rpt
