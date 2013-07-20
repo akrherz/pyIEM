@@ -14,10 +14,11 @@ import datetime
 import os
 
 CONUS = None
+CONUSPOLY = None
 
 def load_conus_data():
     """ Load up the conus datafile for our perusal """
-    global CONUS
+    global CONUS, CONUSPOLY
     if CONUS is not None:
         return
     fn = "%s/../data/conus_marine_bnds.txt" % (os.path.dirname(__file__),)
@@ -28,7 +29,8 @@ def load_conus_data():
         lons.append( float(tokens[0]) )
         lats.append( float(tokens[1]) )
     CONUS = np.column_stack([lons,lats])
-
+    CONUSPOLY = Polygon( CONUS ) 
+    
 def ptchecker(pts):
     """
     Do some work on the line, buffer if necessary
@@ -128,6 +130,70 @@ def str2multipolygon(s):
     
     ''' We have some work to do '''
     load_conus_data()
+    conus_sz = np.shape(CONUS)[0]
+    cw_polygons = []
+    ccw_polygons = []
+    for i, segment in enumerate(segments):
+        newls = LineString(segment).intersection(CONUSPOLY)
+        # TODO: .xy may not work
+        x,y = newls.xy
+        segment = zip(x,y)
+        distance = ((CONUS[:,0] - segment[0][0])**2 + 
+                    (CONUS[:,1] - segment[0][1])**2)**.5
+        idx1 = np.argmin(distance) 
+        distance = ((CONUS[:,0] - segment[-1][0])**2 + 
+                    (CONUS[:,1] - segment[-1][1])**2)**.5
+        idx2 = np.argmin(distance)
+
+        poly = np.array( segment )
+        if idx2 > (conus_sz * 0.75) and idx1 < (conus_sz * .25):
+            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CCW' % (i,
+                                                    idx1, idx2)
+            poly = np.concatenate([poly, CONUS[idx2:]])
+            poly = np.concatenate([poly, CONUS[:idx1]])
+            ccw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
+        elif idx2 < (conus_sz * 0.25) and idx1 > (conus_sz * .75):
+            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CW' % (i,
+                                                    idx1, idx2)
+            poly = np.concatenate([poly, CONUS[idx1:idx2]])
+            cw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
+        elif idx2 > idx1: # Simple case
+            print 'i:%s idx1:%s idx2:%s Simple CW' % (i, idx1, idx2)
+            poly = np.concatenate([poly, CONUS[idx2:]])
+            poly = np.concatenate([poly, CONUS[:idx1]])
+            cw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
+        elif idx1 > idx2: # Simple case
+            poly = np.concatenate([poly, CONUS[idx2:idx1]])
+            newpolys = Polygon(np.vstack([poly, poly[0,:]])).buffer(0)
+            if newpolys.geom_type == 'Polygon':
+                newpolys = [newpolys]
+            for poly in list(newpolys):
+                print 'i:%s idx1:%s idx2:%s type: %s Simple CCW' % (i, idx1, idx2,
+                                                                type(poly))
+                ccw_polygons.append( poly )
+
+    res = []    
+    for i, ccwpoly in enumerate(ccw_polygons):
+        if not ccwpoly.is_valid:
+            print 'ERROR: ccwpoly %s is invalid!' % (i,)
+            continue
+        print '-> Running check for CCW polygon: %s area: %s type: %s' % (i,
+                                                                 ccwpoly.area,
+                                                            type(ccwpoly))
+        for j, cwpoly in enumerate(cw_polygons):
+            if not cwpoly.is_valid:
+                print 'ERROR: cwpoly %s is invalid!' % (j,)
+                continue
+            print '--> checking against cwpoly %s' % (j,)
+            if ccwpoly.overlaps(cwpoly):
+                ccwpoly = ccwpoly.intersection(cwpoly)
+                print '---> ccwpoly %s overlaps cwpoly %s result %s' % (i,j,
+                                                        type(ccwpoly))
+        res.append( ccwpoly )
+        
+    print res
+    return MultiPolygon(res)
+    
     start_intersections = []
     end_intersections = []
     for segment in segments:
@@ -189,7 +255,18 @@ def str2multipolygon(s):
             poly = np.concatenate([poly, segments[i]])
             res.append( Polygon(np.vstack([poly, poly[0,:]])) )
         return MultiPolygon(res)
-       
+    
+    if np.max(usepts) == 0:
+        print '... Entire CONUS negated, attempting different logic'
+        for i, thisdir in enumerate(directions):
+            if thisdir == cw:
+                continue
+            startidx = start_intersections[i]
+            endidx = end_intersections[i]
+            print '... found CCW segment %s with startidx: %s endidx: %s' % (
+                                        i, startidx, endidx)
+            
+    
     idx = list(usepts).index(1)
     poly = None
     usedsegs = []
