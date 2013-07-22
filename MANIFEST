@@ -18,3 +18,7 @@ src/pyiem/nws/product.py
 src/pyiem/nws/spcpts.py
 src/pyiem/nws/ugc.py
 src/pyiem/nws/vtec.py
+src/pyiem/data/iowa_bnds.txt
+src/pyiem/data/midwest_bnds.txt
+src/pyiem/data/conus_bnds.txt
+src/pyiem/data/conus_marine_bnds.txt
