@@ -9,7 +9,7 @@ import ConfigParser
 import subprocess
 import os
 
-os.unlink("MANIFEST")
+#os.unlink("MANIFEST")
 
 # Step 1
 config = ConfigParser.ConfigParser()

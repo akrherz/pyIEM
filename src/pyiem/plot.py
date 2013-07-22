@@ -13,7 +13,7 @@ Like it or not, we care about zorder!
 [Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY] = range(1,6)
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.basemap import Basemap, maskoceans
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
@@ -22,7 +22,8 @@ import matplotlib.mpl as mpl
 import matplotlib.patheffects as PathEffects
 import mx.DateTime
 import numpy
-from scipy.interpolate import griddata
+from scipy.interpolate import griddata, Rbf
+from scipy.interpolate import NearestNDInterpolator
 from pyiem import reference
 import Image
 import cStringIO
@@ -357,7 +358,11 @@ class MapPlot:
                 xi = numpy.linspace(reference.MW_WEST, reference.MW_EAST, 100)
                 yi = numpy.linspace(reference.MW_SOUTH, reference.MW_NORTH, 100)
             xi, yi = numpy.meshgrid(xi, yi)
-            vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
+            #vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
+            #rbfi = Rbf(lons, lats, vals, function='cubic')
+            nn = NearestNDInterpolator((lons, lats), vals)
+            vals = nn(xi, yi)
+            #vals = rbfi(xi, yi)
             lons = xi
             lats = yi
         if lons.ndim == 1:
@@ -368,17 +373,22 @@ class MapPlot:
                 
         x, y = self.map(lons, lats)
         #from scipy.signal import convolve2d
-        #window = numpy.ones((5, 5))
+        #window = numpy.ones((6, 6))
         #vals = convolve2d(vals, window / window.sum(), mode='same', boundary='symm')
+        #vals = maskoceans(lons, lats, vals, resolution='h')
         self.map.contourf(x, y, vals, clevs,
                                cmap=cmap, norm=norm, zorder=Z_FILL)
-        
         if self.sector == 'iowa':
             ia_border = load_bounds("iowa_bnds.txt") # Only consider first
             xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
             poly = zip(xx,yy)
             mask_outside_polygon(poly, ax=self.ax)
-            
+        
+        if self.sector == 'midwest':
+            ia_border = load_bounds("midwest_bnds.txt") # Only consider first
+            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
+            poly = zip(xx,yy)
+            mask_outside_polygon(poly, ax=self.ax)         
         self.draw_colorbar(clevs, cmap, norm)
 
         if kwargs.has_key('units'):

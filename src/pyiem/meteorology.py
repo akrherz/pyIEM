@@ -7,6 +7,16 @@ import pyiem.datatypes as dt
 class InvalidArguments(Exception):
     pass
 
+def drct(u, v):
+    """
+    Compute the wind direction given a u and v wind speed
+    """
+    return 0 #TODO
+    if (v.value):
+        val = 1
+    
+    return dt.direction(val, 'DEG')
+
 def uv(speed, direction):
     """
     Compute the u and v components of the wind 
@@ -35,6 +45,9 @@ def heatindex(temperature, polyarg):
     
     Stull, Richard (2000). Meteorology for Scientists and Engineers, 
     Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.
+    
+    Another opinion on appropriate equation:
+    http://www.hpc.ncep.noaa.gov/html/heatindex_equation.shtml
     """
     if not isinstance(temperature, dt.temperature): 
         raise InvalidArguments("heatindex() needs temperature obj as first arg")

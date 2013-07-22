@@ -187,6 +187,9 @@ def str2multipolygon(s):
         if not ccwpoly.is_valid:
             print 'ERROR: ccwpoly %s is invalid!' % (i,)
             continue
+        if ccwpoly.exterior is None:
+            print 'ERROR ccwpoly.exterior is none?'
+            continue
         print '-> Running check for CCW polygon: %s area: %s type: %s' % (i,
                                                                  ccwpoly.area,
                                                             type(ccwpoly))
@@ -209,7 +212,7 @@ def str2multipolygon(s):
             print 'Setting interior polygon to this polygon!'
             respoly = Polygon(list(respoly.exterior.coords), [interior])
         return MultiPolygon([ respoly ])
-    
+    print res
     return MultiPolygon(res)
     
 
