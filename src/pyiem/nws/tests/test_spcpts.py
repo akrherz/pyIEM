@@ -8,7 +8,12 @@ from pyiem.nws import product
 
 class TestObservation(unittest.TestCase):
     
-    
+    def test_23jul_failure(self):
+        ''' CCW line near Boston '''
+        data = """40067377 40567433 41317429 42097381 42357259 42566991"""
+        res = spcpts.str2multipolygon(data)
+        self.assertAlmostEqual(res[0].area, 7.98403, 5)
+        
     def test_pts2polygon(self):
         """ See if we can try points into a polygon! """
         data = """49089764 47719319 46629132 45669060 44729137 44419302
@@ -26,8 +31,8 @@ class TestObservation(unittest.TestCase):
        41940912 42600962 43321020 44241040 45301038 45760895
        45790787 45940703 46320669 46740669 47430697 47810736
        48030915 48371232 48521381 48971567 49501688"""
-        spcpts.str2multipolygon(data)
-        self.assertEqual(1,1) #TODO
+        res = spcpts.str2multipolygon(data)
+        self.assertAlmostEqual(res[0].area, 624.10165, 5) 
     
     def test_str1(self):
         """ check spcpts parsing """

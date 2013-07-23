@@ -143,17 +143,19 @@ def str2multipolygon(s):
         ls = LineString(segment)
         if ls.is_valid:
             newls = LineString(segment).intersection(CONUSPOLY)
-            if newls.is_valid:
+            if newls.is_valid and newls.geom_type == 'LineString':
                 x,y = newls.xy
                 segment = zip(x,y)
         else:
             print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
+        ''' Be safe and always pick the point along the CONUS that is always
+            inside the polygon, otherwise could end up with slivers '''
         distance = ((CONUS[:,0] - segment[0][0])**2 + 
                     (CONUS[:,1] - segment[0][1])**2)**.5
-        idx1 = np.argmin(distance) 
+        idx1 = np.argmin(distance) -1
         distance = ((CONUS[:,0] - segment[-1][0])**2 + 
                     (CONUS[:,1] - segment[-1][1])**2)**.5
-        idx2 = np.argmin(distance)
+        idx2 = np.argmin(distance) +1
 
         poly = np.array( segment )
         if idx2 > (conus_sz * 0.75) and idx1 < (conus_sz * .25):
@@ -178,8 +180,8 @@ def str2multipolygon(s):
             if newpolys.geom_type == 'Polygon':
                 newpolys = [newpolys]
             for poly in list(newpolys):
-                print 'i:%s idx1:%s idx2:%s type: %s Simple CCW' % (i, idx1, idx2,
-                                                                type(poly))
+                print 'CCW i:%s idx1:%s idx2:%s type: %s' % (i, idx1, idx2,
+                                                                poly.geom_type)
                 ccw_polygons.append( poly )
 
     res = []    
