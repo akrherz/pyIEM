@@ -2,7 +2,8 @@ import unittest
 import datetime
 import os
 
-from pyiem import iemtz
+import pytz
+
 from pyiem.nws import product, ugc
 from pyiem.nws.product import TextProductException
 
@@ -105,7 +106,7 @@ class TestObservation(unittest.TestCase):
         """ check valid Parsing """
         tp = product.TextProduct( get_file('AFD.txt') )
         ts = datetime.datetime(2012,11,27,0,1)
-        ts = ts.replace(tzinfo=iemtz.UTC())
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
         self.assertEqual(tp.valid, ts)
 
     def test_FFA(self):
@@ -116,12 +117,12 @@ class TestObservation(unittest.TestCase):
     def test_valid_nomnd(self):
         """ check valid (no Mass News) Parsing """
         utcnow = datetime.datetime(2012,11,27,0,0)
-        utcnow = utcnow.replace(tzinfo=iemtz.UTC())
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         tp = product.TextProduct( 
                         get_file('AFD_noMND.txt'),
                         utcnow = utcnow)
         ts = datetime.datetime(2012,11,27,0,1)
-        ts = ts.replace(tzinfo=iemtz.UTC())
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
         self.assertEqual(tp.valid, ts)
 
     def test_headlines(self):
@@ -135,7 +136,7 @@ class TestObservation(unittest.TestCase):
     def test_tml(self):
         """ Test TIME...MOT...LOC parsing """
         ts = datetime.datetime(2012, 5, 31, 23, 10)
-        ts = ts.replace(tzinfo=iemtz.UTC())
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
         tp = product.TextProduct( 
                         get_file('SVRBMX.txt') )
         self.assertEqual(tp.segments[0].tml_dir, 238)

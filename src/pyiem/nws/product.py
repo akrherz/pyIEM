@@ -6,7 +6,9 @@ Created on Jan 5, 2013
 import datetime
 import re
 
-from pyiem import iemtz, reference
+import pytz
+
+from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
 
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
@@ -19,6 +21,10 @@ WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
 TORNADOTAG = re.compile(".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|OBSERVED|POSSIBLE)")
 TORNADODAMAGETAG = re.compile(".*TORNADO DAMAGE THREAT\.\.\.(?P<damage>SIGNIFICANT|CATASTROPHIC)")
 TORNADO = re.compile(r"^AT |^\* AT")
+
+class TextProductException(Exception):
+    ''' throwable '''
+    pass
 
 class TextProductSegment(object):
     
@@ -154,7 +160,7 @@ class TextProductSegment(object):
         if hh > self.ugcexpire.hour:
             self.tml_valid = self.tml_valid - datetime.timedelta(days=1)
 
-        self.tml_valid = self.tml_valid.replace(tzinfo=iemtz.UTC())
+        self.tml_valid = self.tml_valid.replace(tzinfo=pytz.timezone('UTC'))
 
         tokens = d['loc'].split()
         lats = []
@@ -211,7 +217,7 @@ class TextProduct(object):
         self.z = None
         if utcnow is None:
             utc = datetime.datetime.utcnow()
-            self.utcnow = utc.replace(tzinfo=iemtz.UTC())
+            self.utcnow = utc.replace(tzinfo=pytz.timezone('UTC'))
         
         self.parse_afos()
         self.parse_valid()
@@ -249,7 +255,7 @@ class TextProduct(object):
         # If we don't find anything, lets default to now, its the best
         if len(tokens) > 0:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
-            self.z = tokens[0][2]
+            self.z = pytz.timezone( reference.name2ptyz[tokens[0][2]] )
             if len(tokens[0][0]) < 3:
                 h = tokens[0][0]
                 m = 0
@@ -259,22 +265,15 @@ class TextProduct(object):
             dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][3], 
                                       tokens[0][4], tokens[0][5])
             now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-            offset = reference.offsets.get(self.z)
-            if offset is not None:
-                now =  now + datetime.timedelta(
-                                        hours=offset)
-                self.valid = now.replace(tzinfo=iemtz.UTC())
-                return
-            else:
-                print "Unknown TZ: %s " % (self.z,)
-
+            now = now.replace(tzinfo=self.z)
+            self.valid = now.astimezone(pytz.timezone('UTC'))
+            return
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
         
         tokens = re.findall(WMO_RE, self.unixtext[:100], re.M)
         if len(tokens) == 0:
-            print "FATAL: Could not find WMO Header timestamp, bad!"
-            return
+            raise TextProductException("FATAL: Could not find WMO Header timestamp, bad!")
         # Take the first hit, ignore others
         wmo_day = int(tokens[0][0])
         wmo_hour = int(tokens[0][1])
