@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pyIEM',
-    version='0.0.2',
+    version='0.0.3',
     author='daryl herzmann',
     author_email='akrherz@gmail.com',
     packages=['pyiem', 'pyiem.nws'],
