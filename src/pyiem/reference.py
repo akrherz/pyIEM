@@ -36,20 +36,20 @@ nwsli2state = {
 
 
 hailsize = {
- 0.25 : "pea",
- 0.50 : "marble",
- 0.75 : "penny",
- 0.88 : "nickel",
- 1.00 : "quarter",
- 1.25 : "half dollar",
- 1.50 : "ping pong ball",
- 1.75 : "golf ball",
- 2.00 : "egg",
- 2.50 : "tennis ball",
- 2.75 : "baseball",
- 3.00 : "teacup",
- 4.00 : "grapefruit",
- 4.50 : "softball"}
+ '0.25' : "pea",
+ '0.50' : "marble",
+ '0.75' : "penny",
+ '0.88' : "nickel",
+ '1.00' : "quarter",
+ '1.25' : "half dollar",
+ '1.50' : "ping pong ball",
+ '1.75' : "golf ball",
+ '2.00' : "egg",
+ '2.50' : "tennis ball",
+ '2.75' : "baseball",
+ '3.00' : "teacup",
+ '4.00' : "grapefruit",
+ '4.50' : "softball"}
 
 lsr_events = {
  'BLOWING SNOW': 'a',
@@ -128,6 +128,23 @@ lsr_events = {
  'COASTAL FLOOD': 'v',
  'LAKESHORE FLOOD': 'u',
  'SNEAKER WAVE': 't', 
+}
+
+name2ptyz = {
+    'GMT': 'UTC',
+    'CHDT': 'Etc/GMT-8', 'CHST': 'Etc/GMT-9', 'LST': 'Etc/GMT-10',
+    'ADT': 'Etc/GMT-3',
+    'VDT': 'Etc/GMT-3', 'VST': 'Etc/GMT-4',
+    'EDT': 'US/Eastern', 'AST': 'Etc/GMT-4',
+    'CDT': 'US/Central', 'EST': 'US/Eastern', 
+    'MDT': 'US/Mountain', 'CST': 'US/Central',
+    'PDT': 'US/Pacific', 'MST': 'US/Mountain',
+    'AKDT': 'US/Alaska', 'PST': 'US/Pacific',
+    'HDT': 'US/Hawaii', 'AKST': 'US/Alaska',
+           'HST': 'US/Hawaii',
+    'SST':'Etc/GMT+11',
+    'PLT': 'Etc/GMT-5',
+    'GSST': 'Etc/GMT-4',         
 }
 
 offsets = {
