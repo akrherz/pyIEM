@@ -59,7 +59,7 @@ class LSR(object):
             self.magnitude_units = tokens[0]
         val = MAG_UNITS.sub('', text).strip()
         if val != '':
-            self.magnitude = float(val)
+            self.magnitude_f = float(val)
 
     def sql(self, txn):
         ''' Provided a database transaction object, persist this LSR '''
@@ -77,37 +77,32 @@ class LSR(object):
 
     def tweet(self):
         ''' return a tweet text '''
-        return 'TODO'
+        msg = 'At %s, %s reports %s #%s' % (self.valid.strftime('%-I:%M %p'),
+                                        self.source, self.mag_string(),
+                                        self.wfo)
+        return msg
         
-    def jabber_html(self, uri='http://localhost'):
-        ''' return a plain text string representing this LSR '''
+    def get_jabbers(self, uri='http://localhost'):
+        ''' return a plain text and html string representing this LSR '''
         time_fmt = "%-I:%M %p %Z"
         now = datetime.datetime.utcnow()
         now = now.replace(tzinfo=pytz.timezone("UTC")) - datetime.timedelta(
                                                                     hours=24)
         if self.valid < now:
-            time_fmt = "%d %b, %-I:%M %p %Z"
+            time_fmt = "%-d %b, %-I:%M %p %Z"
 
-        return "%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at %s -- %s" % (
+        html = "%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at %s -- %s" % (
             self.city, self.county, self.state, self.source,
               uri, self.mag_string(),
               self.valid.strftime(time_fmt), self.remark)
         
-    def jabber_text(self, uri='http://localhost'):
-        ''' return a plain text string representing this LSR '''
-        time_fmt = "%-I:%M %p %Z"
-        now = datetime.datetime.utcnow()
-        now = now.replace(tzinfo=pytz.timezone("UTC")) - datetime.timedelta(
-                                                                    hours=24)
-        if self.valid < now:
-            time_fmt = "%d %b, %-I:%M %p %Z"
-
-        return "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
+        plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
             self.city, self.county, self.state, self.source,
               self.mag_string(),
               self.valid.strftime(time_fmt), self.remark, uri)
-
-
+        
+        return plain, html
+        
     def assign_timezone(self, tz):
         ''' retroactive assignment of timezone, so to improve attrs '''
         if self.valid is None:
@@ -119,15 +114,18 @@ class LSR(object):
         ''' Return a string representing the magnitude and units '''
         mag_long = "%s" % (self.typetext,)
         if (self.typetext == "HAIL" and 
-            reference.hailsize.has_key(float(self.mag))):
-            haildesc = reference.hailsize[float(self.mag)]
-            mag_long = "%s of %s %s size (%.2fin)" % (mag_long, haildesc, 
+            reference.hailsize.has_key("%.2f" % (self.magnitude_f,))):
+            haildesc = reference.hailsize["%.2f" % (self.magnitude_f,)]
+            mag_long = "%s of %s size (%s%.2f %s)" % (mag_long,
+                                                      haildesc, 
+                                                      self.magnitude_qualifier,
                                                       self.magnitude_f,
-                                                      self.magnitude_qualifier)
+                                                      self.magnitude_units)
         elif self.magnitude_f:
             mag_long = "%s of %.2f %s" % (mag_long, self.magnitude_f, 
                                         self.magnitude_units)
-
+        elif self.magnitude_str:
+            mag_long = "%s of %s" % (mag_long, self.magnitude_str)
         return mag_long
 
 class LSRProduct(TextProduct):
@@ -136,6 +134,7 @@ class LSRProduct(TextProduct):
     def __init__(self, text):
         ''' constructor '''
         self.lsrs = []
+        self.duplicates = 0
         TextProduct.__init__(self, text)
 
     def get_temporal_domain(self):
@@ -143,11 +142,54 @@ class LSRProduct(TextProduct):
         valids = []
         for lsr in self.lsrs:
             valids.append( lsr.valid )
+        if len(valids) == 0:
+            return None, None
         return min(valids), max(valids)
     
     def is_summary(self):
         ''' Returns is this LSR is a summary or not '''
         return self.unixtext.find("...SUMMARY") > 0
+        
+    def get_url(self, baseuri):
+        ''' Get the URL of this product '''
+        min_time, max_time = self.get_temporal_domain()
+        wfo = self.source[1:]
+        return "%s#%s/%s/%s" % (baseuri, wfo, 
+               min_time.strftime("%Y%m%d%H%M"),
+               max_time.strftime("%Y%m%d%H%M") )
+        
+    def get_jabbers(self, uri):
+        ''' return a text and html variant for Jabber stuff '''
+        wfo = self.source[1:]
+        uri =  self.get_url(uri)
+
+        extra_text = ""
+        if self.duplicates > 0:
+            extra_text = (", %s out of %s reports were previously "
+                        +"sent and not repeated here.") % (self.duplicates, 
+                                                    len(self.lsrs))
+        
+        text = "%s: %s issues Summary Local Storm Report %s %s" % (
+                                                wfo, wfo, extra_text, uri)
+        
+        html = ("%s issues "
+                      +"<a href='%s'>Summary Local Storm Report</a>%s") % (
+                                            wfo, uri, extra_text)
+        
+        return text, html
+
+def _mylowercase(text):
+    ''' Specialized lowercase function ''' 
+    tokens = text.split()
+    for i,t in enumerate(tokens):
+        if len(t) > 3:
+            tokens[i] = t.title()
+        elif t in ['N', 'NNE', 'NNW', 'NE',
+                   'E', 'ENE', 'ESE', 'SE',
+                   'S', 'SSE', 'SSW', 'SW',
+                   'W', 'WSW', 'WNW', 'NW']:
+            continue
+    return " ".join(tokens)
         
 def parse_lsr(text):
     ''' Emit a LSR object based on this text! 
@@ -169,7 +211,7 @@ def parse_lsr(text):
    
     lsr.typetext = lines[0][12:29].strip().upper()
 
-    lsr.city = lines[0][29:53].strip()
+    lsr.city = _mylowercase(lines[0][29:53].strip())
     
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
@@ -177,7 +219,7 @@ def parse_lsr(text):
     lsr.geometry = ShapelyPoint((lon,lat))
     
     lsr.consume_magnitude( lines[1][12:29].strip() )
-    lsr.county = lines[1][29:48].strip()
+    lsr.county = lines[1][29:48].strip().title()
     lsr.state = lines[1][48:50]
     lsr.source = lines[1][53:].strip()
     if len(lines) > 2:
