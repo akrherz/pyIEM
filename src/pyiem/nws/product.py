@@ -11,6 +11,7 @@ import pytz
 from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
 
+AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
 WMO_RE = "^[A-Z0-9]{6} [A-Z]{4} ([0-3][0-9])([0-2][0-9])([0-5][0-9])"
 TIME_MOT_LOC = re.compile(".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z (?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT (?P<loc>[0-9 ]+)")
@@ -309,3 +310,22 @@ class TextProduct(object):
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
         if len(tokens) > 0:
             self.afos = tokens[0]
+
+class SPSProduct(TextProduct):
+    ''' class for Special Weather Statements '''
+    
+    def __init__(self, text):
+        ''' constructor '''
+        self.geometry = None
+        TextProduct.__init(self, text)
+
+def parser( text ):
+    ''' generalized parser of a text product '''
+    tokens = AFOSRE.findall(text[:100].replace('\r\r\n', '\n'))
+    if len(tokens) == 0:
+        raise TextProductException("Could not locate AFOS Identifier")
+    afos = tokens[0][:3]
+    if afos == 'SPS':
+        return SPSProduct( text )
+    
+    return TextProduct( text )
