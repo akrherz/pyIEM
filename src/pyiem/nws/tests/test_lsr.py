@@ -1,13 +1,6 @@
 import unittest
-import os
 
-from pyiem.nws.lsr import _mylowercase
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
+from pyiem.nws.products.lsr import _mylowercase
 
 class TestLSR(unittest.TestCase):
     
