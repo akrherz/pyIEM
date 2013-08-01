@@ -1,7 +1,7 @@
 
 import re
 import datetime
-from pyiem import iemtz
+import pytz
 
 _re = "(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\.([0-9]+)\.([0-9,T,Z]+)-([0-9,T,Z]+)/)"
 
@@ -108,7 +108,7 @@ def contime(s):
         return None
     try:
         ts = datetime.datetime.strptime(s, '%y%m%dT%H%MZ')
-        return ts.replace( tzinfo=iemtz.UTC() )
+        return ts.replace( tzinfo=pytz.timezone('UTC') )
     except Exception, err:
         print err
         return None
@@ -127,13 +127,37 @@ class VTEC:
         self.begints = contime( tokens[7] )
         self.endts   = contime( tokens[8] )
 
+    def get_end_string(self, prod):
+        ''' Return an appropriate end string for this VTEC '''
+        if self.endts is None:
+            return 'until further notice'
+        fmt = "%b %-d, %-I:%M %p"
+        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
+        utcnow += datetime.timedelta(hours=1)
+        if self.endts < utcnow:
+            fmt = '%-I:%M %p'
+        localts = self.begints.astimezone( prod.z )
+        return "valid at %s" % (localts.strftime(fmt),)
+
+    def get_begin_string(self, prod):
+        ''' Return an appropriate beginning string for this VTEC '''
+        if self.begints is None:
+            return ''
+        fmt = "%b %-d, %-I:%M %p"
+        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
+        utcnow += datetime.timedelta(hours=1)
+        if self.begints < utcnow:
+            fmt = '%-I:%M %p'
+        localts = self.begints.astimezone( prod.z )
+        return "valid at %s" % (localts.strftime(fmt),)
+
     def url(self, year):
         """ Generate a VTEC url string needed """
         return "%s-%s-%s-%s-%s-%s-%04i" % (year, self.status, self.action,\
                self.office4, self.phenomena, self.significance, self.ETN)
 
     def __str__(self):
-        return self.raw
+        return self.line
 
     def product_string(self):
 
