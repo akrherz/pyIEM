@@ -7,6 +7,7 @@ import datetime
 import re
 
 import pytz
+from shapely.geometry import Polygon
 
 from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
@@ -45,9 +46,8 @@ class TextProductSegment(object):
         self.tml_dir = None
         self.process_time_mot_loc()
         
-        # segment GISWKT
-        self.giswkt = None
-        self.process_latlon()
+        # 
+        self.sbw = self.process_latlon()
 
         # tags
         self.windtag = None
@@ -126,7 +126,7 @@ class TextProductSegment(object):
         data = self.unixtext.replace("\n", " ")
         pos = data.find("LAT...LON")
         if pos == -1:
-            return
+            return None
         newdata = data[pos+9:]
         m = re.search(r"[^ 0-9]", newdata)
         if m is not None:
@@ -134,15 +134,14 @@ class TextProductSegment(object):
             newdata = newdata[:pos2]
         pairs = re.findall(LAT_LON, newdata )
         if len(pairs) == 0:
-            return
-        g = "SRID=4326;MULTIPOLYGON((("
+            return None
+        pts = []
         for pr in pairs:
             lat = float(pr[0]) / 100.00
             lon = float(pr[1]) / 100.00
-            g += "-%s %s," % (lon, lat)
-        g += "-%s %s" % ( float(pairs[0][1]) / 100.00, float(pairs[0][0]) / 100.00)
-        g += ")))"
-        self.giswkt = g
+            pts.append( (lon, lat) )
+        pts.append( pts[0] )
+        return Polygon( pts )
 
         
     def process_time_mot_loc(self):
@@ -228,10 +227,7 @@ class TextProduct(object):
     def get_signature(self):
         """ Find the signature at the bottom of the page 
         """
-        pos = self.unixtext.find("$$")
-        if pos == -1:
-            return None
-        return " ".join(self.unixtext[pos+2:].replace("\n", 
+        return " ".join(self.segments[-1].unixtext.replace("\n", 
                                                       " ").strip().split())
         
     def parse_segments(self):
