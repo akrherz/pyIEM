@@ -323,5 +323,8 @@ def parser( text ):
     afos = tokens[0][:3]
     if afos == 'SPS':
         return SPSProduct( text )
+    elif afos == 'CLI':
+        from pyiem.nws.products.cli import parser as cliparser
+        return cliparser( text )
     
     return TextProduct( text )

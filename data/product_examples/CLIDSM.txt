@@ -1,0 +1,100 @@
+157 
+CDUS43 KDMX 020706
+CLIDSM
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DES MOINES IA                               
+206 AM CDT FRI AUG 2 2013
+
+
+................................... 
+
+...THE DES MOINES IA CLIMATE SUMMARY FOR AUGUST 1 2013...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1878 TO 2013
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         89    309 PM 101    1987  85      4       99       
+  MINIMUM         63    545 AM  51    1898  67     -4       69       
+  AVERAGE         76                        76      0       84      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          2.61 1972   0.14  -0.14     0.00    
+  MONTH TO DATE    0.00                      0.14  -0.14     0.00    
+  SINCE JUN 1      4.25                      9.55  -5.30     3.41    
+  SINCE JAN 1     22.56                     22.73  -0.17    16.39    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0          MM      MM   0.0    0.0      0.0     
+  MONTH TO DATE    0.0                       0.0    0.0      0.0     
+  SINCE JUN 1      0.0                       0.0    0.0      0.0     
+  SINCE JUL 1      0.0                       0.0    0.0      0.0     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                         0      0        0       
+  SINCE JUN 1     19                        18      1        6       
+  SINCE JUL 1      0                         1     -1        0       
+                                                                     
+ COOLING                                                             
+  YESTERDAY       11                        11      0       19       
+  MONTH TO DATE   11                        11      0       19       
+  SINCE JUN 1    617                       581     36      964       
+  SINCE JAN 1    719                       657     62     1172       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    14   HIGHEST WIND DIRECTION    SW (240)      
+  HIGHEST GUST SPEED    20   HIGHEST GUST DIRECTION    SW (240)      
+  AVERAGE WIND SPEED     4.8                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.5                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    93           500 AM                                     
+ LOWEST     31           200 PM                                     
+ AVERAGE    62                                                       
+
+..........................................................
+
+                                                                     
+THE DES MOINES IA CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   85       100      1964                    
+                                             1930                    
+ MINIMUM TEMPERATURE (F)   67        51      1907                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+AUGUST  2 2013........SUNRISE   610 AM CDT   SUNSET   831 PM CDT   
+AUGUST  3 2013........SUNRISE   611 AM CDT   SUNSET   829 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

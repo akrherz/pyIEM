@@ -7,6 +7,7 @@ import pytz
 from pyiem.nws.products.mcd import parser as mcdparser
 from pyiem.nws.products.lsr import parser as lsrparser
 from pyiem.nws.products.vtec import parser as vtecparser
+from pyiem.nws.products.cli import parser as cliparser
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -22,6 +23,12 @@ class TestProducts(unittest.TestCase):
     
     def tearDown(self):
         self.dbconn.close()
+    
+    def test_cli(self):
+        ''' Test the processing of a CLI product '''
+        prod = cliparser( get_file('CLIDSM.txt') )
+        self.assertEqual(prod.valid, datetime.datetime(2013,8,1))
+        self.assertEqual(prod.data['temperature_maximum'], 89)
     
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
