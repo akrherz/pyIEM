@@ -130,7 +130,7 @@ def parser(text):
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr("".join(match.groups()))
         lsr.wfo = prod.source[1:]
-        lsr.assign_timezone( prod.z )
+        lsr.assign_timezone( prod.tz )
         prod.lsrs.append( lsr )
     
     return prod
