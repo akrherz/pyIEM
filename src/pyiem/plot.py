@@ -275,9 +275,9 @@ class MapPlot:
         if not kwargs.get('nologo'):
             self.iemlogo()
         if kwargs.has_key("title"):
-            self.fig.text(0.13, 0.94, kwargs.get("title"), fontsize=18) 
+            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94, kwargs.get("title"), fontsize=18) 
         if kwargs.has_key("subtitle"):
-            self.fig.text(0.13, 0.91, kwargs.get("subtitle") )
+            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91, kwargs.get("subtitle") )
         
         self.fig.text(0.01, 0.03, "%s :: generated %s" % (
                         kwargs.get('caption', 'Iowa Environmental Mesonet'),
