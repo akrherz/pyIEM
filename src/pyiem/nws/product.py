@@ -217,6 +217,7 @@ class TextProduct(object):
         self.utcnow = utcnow
         self.segments = []
         self.z = None
+        self.tz = None
         if utcnow is None:
             utc = datetime.datetime.utcnow()
             self.utcnow = utc.replace(tzinfo=pytz.timezone('UTC'))
@@ -248,13 +249,13 @@ class TextProduct(object):
     
     def parse_valid(self):
         """ Figre out the valid time of this product """
-        print 'parse_valid() called...'
         # Now lets look for a local timestamp in the product MND or elsewhere
         tokens = re.findall(TIME_RE, self.unixtext, re.M)
         # If we don't find anything, lets default to now, its the best
         if len(tokens) > 0:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
-            self.z = pytz.timezone( reference.name2ptyz[tokens[0][2]] )
+            self.z = tokens[0][2]
+            self.tz = pytz.timezone( reference.name2pytz.get(self.z, 'UTC') )
             if len(tokens[0][0]) < 3:
                 h = tokens[0][0]
                 m = 0
@@ -263,9 +264,10 @@ class TextProduct(object):
                 m = tokens[0][0][-2:]
             dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][3], 
                                       tokens[0][4], tokens[0][5])
+            ''' Careful here, need to go to UTC time first then come back! '''
             now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-            now = now.replace(tzinfo=self.z)
-            self.valid = now.astimezone(pytz.timezone('UTC'))
+            now += datetime.timedelta(hours= reference.offsets[self.z])
+            self.valid = now.replace(tzinfo=pytz.timezone('UTC'))
             return
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
