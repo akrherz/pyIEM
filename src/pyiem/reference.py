@@ -130,7 +130,7 @@ lsr_events = {
  'SNEAKER WAVE': 't', 
 }
 
-name2ptyz = {
+name2pytz = {
     'GMT': 'UTC',
     'CHDT': 'Etc/GMT-8', 'CHST': 'Etc/GMT-9', 'LST': 'Etc/GMT-10',
     'ADT': 'Etc/GMT-3',
@@ -148,7 +148,7 @@ name2ptyz = {
 }
 
 offsets = {
- 'GMT': 0,
+ 'GMT': 0, 'UTC': 0,
  'CHDT': -8, 'CHST': -9, 'LST': -10,
  'ADT': 3,
  'VDT': 3, 'VST': 4,
