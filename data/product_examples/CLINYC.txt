@@ -1,0 +1,99 @@
+795 
+CDUS41 KOKX 030616
+CLINYC
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE NEW YORK NY                                 
+116 AM EST THU JAN 3 2013
+
+
+................................... 
+
+...THE CENTRAL PARK NY CLIMATE SUMMARY FOR JANUARY 2 2013...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1869 TO 2013
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         33    301 PM  68    1876  39     -6       50       
+  MINIMUM         22    743 AM   2    1918  28     -6       33       
+  AVERAGE         28                        33     -5       42      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          1.92 1925   0.12  -0.12     0.00    
+  MONTH TO DATE    0.00                      0.24  -0.24     0.05    
+  SINCE DEC 1      4.80                      4.24   0.56     4.05    
+  SINCE JAN 1      0.00                      0.24  -0.24     0.05    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0          11.5  1925   0.2   -0.2      0.0     
+  MONTH TO DATE    0.0                       0.4   -0.4      0.0     
+  SINCE OCT 1      5.1                       5.5   -0.4      2.9     
+  SINCE JUL 1      5.1                       5.5   -0.4      2.9     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       37                        32      5       23       
+  MONTH TO DATE   69                        64      5       41       
+  SINCE DEC 1    788                       916   -128      706       
+  SINCE JUL 1   1659                      1749    -90     1368       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                         0      0        0       
+  SINCE DEC 1      0                         0      0        0       
+  SINCE JAN 1      0                         0      0        0       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION    NW (310)      
+  HIGHEST GUST SPEED    22   HIGHEST GUST DIRECTION     N (340)      
+  AVERAGE WIND SPEED     5.8                                         
+
+                                                                     
+SKY COVER                                                            
+  AVERAGE SKY COVER 0.0                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  HAZE                                                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    57           600 AM                                     
+ LOWEST     39           300 PM                                     
+ AVERAGE    48                                                       
+
+..........................................................
+
+                                                                     
+THE CENTRAL PARK NY CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   39        64      2000                    
+ MINIMUM TEMPERATURE (F)   28        -4      1879                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+JANUARY  3 2013.......SUNRISE   720 AM EST   SUNSET   441 PM EST   
+JANUARY  4 2013.......SUNRISE   720 AM EST   SUNSET   442 PM EST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

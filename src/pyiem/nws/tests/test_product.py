@@ -19,6 +19,13 @@ class TestObservation(unittest.TestCase):
         """ see what happens when we send a blank string """
         self.assertRaises(TextProductException, product.TextProduct, "")
 
+    def test_invalid_mnd_date(self):
+        """ Check parsing of timestamp  """
+        answer = datetime.datetime(2013,1,3,6,16)
+        answer = answer.replace(tzinfo=pytz.timezone("UTC"))
+        tp = product.TextProduct( get_file('CLINYC.txt') )
+        self.assertEqual(tp.valid, answer)
+
     def test_ugc_error130214(self):
         """ Check parsing of SPSJAX  """
         tp = product.TextProduct( get_file('SPSJAX.txt') )
