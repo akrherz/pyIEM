@@ -13,11 +13,16 @@ src/pyiem/wellknowntext.py
 src/pyiem/nws/__init__.py
 src/pyiem/nws/gini.py
 src/pyiem/nws/hvtec.py
-src/pyiem/nws/parser.py
+src/pyiem/nws/nwsli.py
 src/pyiem/nws/product.py
 src/pyiem/nws/spcpts.py
 src/pyiem/nws/ugc.py
 src/pyiem/nws/vtec.py
+src/pyiem/nws/products/__init__.py
+src/pyiem/nws/products/lsr.py
+src/pyiem/nws/products/vtec.py
+src/pyiem/nws/products/mcd.py
+src/pyiem/nws/products/cli.py
 src/pyiem/data/iowa_bnds.txt
 src/pyiem/data/midwest_bnds.txt
 src/pyiem/data/conus_bnds.txt
