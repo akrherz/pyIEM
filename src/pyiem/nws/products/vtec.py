@@ -10,6 +10,7 @@ import pytz
 from shapely.geometry import MultiPolygon
 
 from pyiem.nws.product import TextProduct, TextProductException
+from pyiem.nws.ugc import ugcs_to_text
 from pyiem import reference
 
 class VTECProductException(TextProductException):
@@ -20,14 +21,15 @@ class VTECProductException(TextProductException):
 class VTECProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
     
-    def __init__(self, text):
+    def __init__(self, text, utcnow=None, ugc_provider={}, nwsli_provider={}):
         ''' constructor '''
-        TextProduct.__init__(self, text)
+        TextProduct.__init__(self, text, utcnow, ugc_provider)
+        self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
 
     def do_sql_hvtec(self, txn, segment, vtec):
         ''' Process the HVTEC in this product '''
-        nwsli = segment.hvtec[0].nwsli
+        nwsli = segment.hvtec[0].nwsli.id
         if len(segment.bullets) > 3:
             stage_text = ""
             flood_text = ""
@@ -89,21 +91,36 @@ class VTECProduct(TextProduct):
         if len(segment.ugcs) == 1:
             ugcstring = "('%s')" % (segment.ugcs[0],)
         fcster = self.get_signature()
-        print 'Forecaster is |%s|' % (fcster,)
+        if fcster is not None:
+            fcster = fcster[:24]
         if vtec.action in ['NEW', 'EXB', 'EXA']:
+            bts = vtec.begints
+            if vtec.action in ["EXB", "EXA"]:
+                bts = self.valid
+
+            if segment.sbw:
+                giswkt = 'SRID=4326;%s' % (MultiPolygon([segment.sbw]).wkt,)
+                txn.execute("""
+                INSERT into """+ warning_table +""" (issue, expire, updated, 
+                gtype, wfo, eventid, status, fcster, report, phenomena, 
+                significance, geom) VALUES (%s, %s, %s, 'P', %s, %s, %s, %s, 
+                %s, %s, %s, %s)
+                RETURNING issue
+                """, (bts, vtec.endts, self.valid, vtec.office, 
+                      vtec.ETN, vtec.action, fcster, self.unixtext, 
+                      vtec.phenomena, vtec.significance, giswkt))
             for ugc in segment.ugcs:
-                print 'Insert %s with vtec: %s' % (ugc, vtec)
                 txn.execute("""
                 INSERT into """+ warning_table +""" (issue, expire, updated, 
                 gtype, wfo, eventid, status, fcster, report, ugc, phenomena, 
                 significance, geom) VALUES (%s, %s, %s, 'C', %s, %s, %s, %s, 
                 %s, %s, %s, %s, (SELECT geom from nws_ugc where ugc = %s))
                 RETURNING issue
-                """, (vtec.begints, vtec.endts, self.valid, vtec.office, 
+                """, (bts, vtec.endts, self.valid, vtec.office, 
                       vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc), 
                       vtec.phenomena, vtec.significance, str(ugc)))
-            if txn.rowcount != 1:
-                print 'Warning: do_sql_vtec inserted %s row, should be 1' % (
+                if txn.rowcount != 1:
+                    print 'Warning: do_sql_vtec inserted %s row, should be 1' % (
                                         txn.rowcount, )
         elif vtec.action in ['COR',]:
             txn.execute("""
@@ -253,17 +270,15 @@ class VTECProduct(TextProduct):
                  segment.tml_sknt, segment.tml_giswkt)
         txn.execute(sql, myargs)
 
-
-    def tweet(self):
-        ''' Get tweet text '''
-        if self.skip_con:
-            return 'Updated Flood Statement'
-        return ''
-
     def get_jabbers(self, uri):
         ''' Return a list[plain, html string] for jabber messages '''
+        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         wfo = self.source[1:]
+        xtra = {'product_id': self.get_product_id(),
+                'tweet': ''}
         if self.skip_con:
+            xtra['tweet'] = '%s issues updated FLS product %s?wfo=%s' % (wfo, 
+                                                                uri, wfo)
             text = ("%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult this website for more "
                     +"details. %s?wfo=%s") % (wfo, uri, wfo)
@@ -271,39 +286,44 @@ class VTECProduct(TextProduct):
                     +"were not reported here).  Consult "
                     +"<a href=\"%s?wfo=%s\">this website</a> for more "
                     +"details.") % (wfo, uri, wfo)
-            return [(text, html)]
+            return [(text, html, xtra)]
+        msgs = []
         for segment in self.segments:
-            '''
-                    # We need to get the County Name
-        affectedWFOS = {}
-        for k in range(len(ugc)):
-            cnty = str(ugc[k])
-            if (ugc2wfo.has_key(cnty)):
-                for c in ugc2wfo[cnty]:
-                    affectedWFOS[ c ] = 1
-        if 'PSR' in affectedWFOS.keys():
-            affectedWFOS = {vtec.office: 1}
-        # Test for affectedWFOS
-        if (len(affectedWFOS) == 0):
-            affectedWFOS[ vtec.office ] = 1
-            '''
+            # Compute affected WFOs
+            affected_wfos = {wfo: True}
+            for ugc in segment.ugcs:
+                for wfo in ugc.wfos:
+                    affected_wfos[ wfo ] = True
+            xtra['channels'] = ",".join(affected_wfos.keys(),)
             for vtec in segment.vtec:
                 # Set up Jabber Dict for stuff to fill in
                 jmsg_dict = {'wfo': vtec.office, 'product': vtec.product_string(),
-                             'county': ugc_to_text(ugc), 'sts': ' ', 'ets': ' ', 
+                             'county': ugcs_to_text(segment.ugcs), 
+                             'sts': ' ', 'ets': ' ', 
                              'svs_special': '',
-                             'year': text_product.valid.year, 'phenomena': vtec.phenomena,
+                             'year': self.valid.year, 'phenomena': vtec.phenomena,
                              'eventid': vtec.ETN, 'significance': vtec.significance,
-                             'url': "%s#%s" % (config.get('urls', 'vtec'), 
-                               vtec.url(text_product.valid.year)) }
-                jmsg_dict['sts'] = vtec.get_begin_string(self)
+                             'url': "%s#%s" % (uri, 
+                               vtec.url(self.valid.year)) }
+                if len(segment.hvtec) > 0:
+                    jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
+                if (vtec.begints is not None and
+                    vtec.begints > (utcnow + datetime.timedelta(hours=1))): 
+                    jmsg_dict['sts'] = vtec.get_begin_string(self)
                 jmsg_dict['ets'] = vtec.get_end_string(self)
 
                 if (vtec.phenomena in ['TO',] and vtec.significance == 'W'):
                     jmsg_dict['svs_special'] = segment.svs_search()
 
+                plain = ("%(wfo)s %(product)s %(sts)s for "
+                        +"%(county)s %(ets)s %(svs_special)s "
+                        +"%(url)s") % jmsg_dict
+                html = ("%(wfo)s <a href='%(url)s'>%(product)s</a> "
+                        +"%(sts)s for %(county)s "
+                        +"%(ets)s %(svs_special)s") % jmsg_dict
+                msgs.append([plain,html,xtra])
         
-        return []
+        return msgs
 
     def get_skip_con(self):
         ''' Should this product be skipped from generating jabber messages'''
@@ -311,10 +331,11 @@ class VTECProduct(TextProduct):
             return True
         return False
 
-def parser(text):
+def parser(text, utcnow=None, ugc_provider={}, nwsli_provider={}):
     ''' Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception'''
-    prod = VTECProduct(text)
+    prod = VTECProduct(text, utcnow=utcnow, ugc_provider=ugc_provider,
+                       nwsli_provider=nwsli_provider)
     
     
     return prod
