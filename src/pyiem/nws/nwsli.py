@@ -11,3 +11,9 @@ class NWSLI(object):
         self.name = name
         self.wfos = wfos
         self.geometry = Point([lon, lat])
+
+    def get_name(self):
+        ''' Return the name of this site '''
+        if self.name is None:
+            return '((%s))' % (self.id,)
+        return self.name
