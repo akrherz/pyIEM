@@ -13,23 +13,28 @@ class UGCParseException(Exception):
 
 def ugcs_to_text(ugcs):
     """ Convert a list of UGC objects to a textual string """
-    countyState = {}
-    c = []
+    states = {}
     for u in ugcs:
         code = str(u)
         stateAB = code[:2]
-        if not countyState.has_key(stateAB):
-            countyState[stateAB] = []
+        if not states.has_key(stateAB):
+            states[stateAB] = []
         if u.name is None:
             name = "((%s))" % (code,)
         else:
             name = u.name
-        countyState[stateAB].append(name)
+        states[stateAB].append(name)
 
-    for st in countyState.keys():
-        countyState[stateAB].sort()
-        c.append("%s [%s]" %(", ".join(countyState[st]), st))
-    return " and ".join(c)
+    txt = []
+    for st in states.keys():
+        states[st].sort()
+        s = " %s [%s]" % (", ".join(states[st]), st)
+        if len(s) > 350:
+            s = " %s counties/zones in [%s]" % (len(states[st]), st)
+        txt.append(s)
+
+    return (" and".join( txt )).strip()
+
 
 def str2time(text, valid):
     """ Convert a string that is the UGC product expiration to a valid 
@@ -98,16 +103,19 @@ def parse(text, valid, ugc_provider={}):
                     strCode = "%03i" % (j,)
                     ugcs.append( _construct("%s%s%s" % (stateCode[:2], 
                                                         stateCode[2], strCode)))
-    
     return ugcs, expire
 
 class UGC:
 
-    def __init__(self, state, geoclass, number, name=None):
+    def __init__(self, state, geoclass, number, name=None, wfos=[]):
+        '''
+        Constructor for UGC instances
+        '''
         self.state = state
         self.geoclass = geoclass
         self.number = int(number)
         self.name = name
+        self.wfos = wfos
         
     def __str__(self):
         """ Override str() """
