@@ -30,7 +30,7 @@ class TestProducts(unittest.TestCase):
         ''' Test the processing of a CLI product '''
         prod = cliparser( get_file('CLIJNU.txt') )
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,6,30))
-        self.assertEqual(prod.valid, datetime.datetime(2013,7,1,2,36).replace(
+        self.assertEqual(prod.valid, datetime.datetime(2013,7,1,0,36).replace(
                                     tzinfo=pytz.timezone("UTC")))
         self.assertEqual(prod.data['temperature_maximum'], 75)
         

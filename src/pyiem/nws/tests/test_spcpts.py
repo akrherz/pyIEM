@@ -32,7 +32,7 @@ class TestObservation(unittest.TestCase):
        45790787 45940703 46320669 46740669 47430697 47810736
        48030915 48371232 48521381 48971567 49501688"""
         res = spcpts.str2multipolygon(data)
-        self.assertAlmostEqual(res[0].area, 624.10165, 5) 
+        self.assertAlmostEqual(res[0].area, 624.10, 2) 
     
     def test_str1(self):
         """ check spcpts parsing """

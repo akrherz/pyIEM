@@ -112,7 +112,7 @@ class TestObservation(unittest.TestCase):
     def test_FFA(self):
         """ check FFA Parsing """
         tp = product.TextProduct( get_file('FFA.txt') )
-        self.assertEqual(tp.segments[0].get_hvtec_nwsli(), "NWYI3")
+        self.assertEqual(tp.segments[0].get_hvtec_nwsli().id, "NWYI3")
 
     def test_valid_nomnd(self):
         """ check valid (no Mass News) Parsing """
@@ -168,7 +168,6 @@ class TestObservation(unittest.TestCase):
         """ Test giswkt parsing """
         tp = product.TextProduct( 
                         get_file('SVRBMX.txt') )
-        self.assertEqual(tp.segments[0].giswkt, 
-                         'SRID=4326;MULTIPOLYGON(((-88.39 32.59,-88.13 32.76,-88.08 32.72,-88.11 32.69,-88.04 32.69,-88.06 32.64,-88.08 32.64,-88.06 32.59,-87.93 32.63,-87.87 32.57,-87.86 32.52,-87.92 32.52,-87.96 32.47,-88.03 32.43,-88.05 32.37,-87.97 32.35,-87.94 32.31,-88.41 32.31,-88.39 32.59)))')
+        self.assertAlmostEqual(tp.segments[0].sbw.area, 0.16, 2)
 if __name__ == '__main__':
     unittest.main()
