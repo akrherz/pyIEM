@@ -2,6 +2,7 @@
 import re
 import datetime
 from pyiem import iemtz
+from pyiem.nws.nwsli import NWSLI
 
 #         nwsli        sev         cause      
 _re = "(/([A-Z0-9]{5})\.([N0123U])\.([A-Z]{2})\.([0-9TZ]+)\.([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]{2})/)"
@@ -35,12 +36,12 @@ _severityDict = {'N': 'None',
                  'U': 'Unknown'}
 
 
-def parse(text):
+def parse(text, nwsli_provider={}):
     """ I look for and return hvtec objects as I find them """
     hvtec = []
     tokens = re.findall(_re, text)
     for t in tokens:
-        hvtec.append( HVTEC(t) )
+        hvtec.append( HVTEC(t, nwsli_provider) )
     return hvtec
 
 def contime(s):
@@ -55,9 +56,10 @@ def contime(s):
 
 class HVTEC:
 
-    def __init__(self, tokens):
+    def __init__(self, tokens, nwsli_provider={}):
+        ''' Constructor '''
         self.line    = tokens[0]
-        self.nwsli   = tokens[1]
+        self.nwsli   = nwsli_provider.get(tokens[1], NWSLI(tokens[1]))
         self.severity = tokens[2]
         self.cause = tokens[3]
         self.beginTS = contime( tokens[4] )
