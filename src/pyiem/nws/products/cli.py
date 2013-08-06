@@ -15,7 +15,7 @@ PRECIP_RE = re.compile(r"""PRECIPITATION \(IN\)\s+
 \s+(?:YESTERDAY|TODAY)\s+([0-9\.]+).*
 \s+MONTH TO DATE\s+([0-9\.]+)""", re.M )
 
-DATE_RE = re.compile(r"CLIMATE SUMMARY FOR ([A-Z]+\s[0-9]+\s[0-9]{4})\.\.\.")
+DATE_RE = re.compile(r"CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})\.\.\.")
 
 class CLIException(Exception):
     ''' Exception '''
@@ -28,9 +28,14 @@ class CLIProduct( TextProduct ):
     def __init__(self, text):
         ''' constructor '''
         TextProduct.__init__(self, text)
+        self.data = None
+        self.cli_valid = None
+        if self.wmo[:2] != 'CD':
+            print 'Product %s skipped due to wrong header' % (
+                                                    self.get_product_id(),)
+            return
         self.cli_valid = self.parse_cli_valid()
         self.data = self.parse_data()
-        print self.data
         
     def parse_data(self):
         ''' Actually do the parsing of this silly format '''
@@ -48,10 +53,16 @@ class CLIProduct( TextProduct ):
 
     def parse_cli_valid(self):
         ''' Figure out when this product is valid for '''
-        tokens = DATE_RE.findall( self.unixtext )
+        tokens = DATE_RE.findall( self.unixtext.replace("\n", " ") )
         if len(tokens) == 1:
-            return datetime.datetime.strptime(tokens[0], '%B %d %Y')
-        raise CLIException("Could not find valid date in product")
+            if len(tokens[0].split()[0]) == 3:
+                myfmt = '%b %d %Y'
+            else:
+                myfmt = '%B %d %Y'
+            return datetime.datetime.strptime(tokens[0], myfmt)
+        else:
+            print 'Could not find date valid in %s' % (self.get_product_id(),)
+            return None
 
 def parser(text):
     ''' Provide back CLI objects based on the parsing of this text '''
