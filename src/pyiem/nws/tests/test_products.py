@@ -8,6 +8,8 @@ from pyiem.nws.products.mcd import parser as mcdparser
 from pyiem.nws.products.lsr import parser as lsrparser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.products.cli import parser as cliparser
+from pyiem.nws.ugc import UGC
+from pyiem.nws.nwsli import NWSLI
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -26,9 +28,16 @@ class TestProducts(unittest.TestCase):
     
     def test_cli(self):
         ''' Test the processing of a CLI product '''
+        prod = cliparser( get_file('CLIJNU.txt') )
+        self.assertEqual(prod.cli_valid, datetime.datetime(2013,6,30))
+        self.assertEqual(prod.valid, datetime.datetime(2013,7,1,2,36).replace(
+                                    tzinfo=pytz.timezone("UTC")))
+        self.assertEqual(prod.data['temperature_maximum'], 75)
+        
         prod = cliparser( get_file('CLIDSM.txt') )
-        self.assertEqual(prod.valid, datetime.datetime(2013,8,1))
+        self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
         self.assertEqual(prod.data['temperature_maximum'], 89)
+ 
     
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
@@ -84,7 +93,10 @@ class TestProducts(unittest.TestCase):
     
     def test_vtec(self):
         ''' Simple test of VTEC parser '''
-        prod = vtecparser( get_file('TOR.txt') )
+        ugc_provider = {'MSC091': UGC('MS', 'C', '091', 'DARYL', ['XXX'])}
+        nwsli_provider = {'AMWI4': NWSLI('AMWI4', 'Ames', ['XXX'], -99, 44)}
+        prod = vtecparser( get_file('TOR.txt') , ugc_provider=ugc_provider,
+                           nwsli_provider=nwsli_provider)
         self.assertEqual(prod.skip_con, False)
         self.assertAlmostEqual(prod.segments[0].sbw.area, 0.3053, 4)
     
@@ -101,6 +113,8 @@ class TestProducts(unittest.TestCase):
         significance = 'W' and status = 'NEW' """)
         self.assertEqual( self.txn.rowcount, 1)
 
+        msgs = prod.get_jabbers('http://localhost')
+        self.assertEqual( msgs[0][0], 'JAN issues Tornado Warning   for ((MSC035)), ((MSC073)), DARYL [MS] till 1:15 PM CDT * AT 1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130')
     
     def test_01(self):
         """ process a valid LSR without blemish """

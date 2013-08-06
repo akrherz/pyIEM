@@ -1,0 +1,101 @@
+453 
+CDAK47 PAJK 010042
+CLIJNU
+AKZ025-011200-
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE JUNEAU, AK                                  
+436 PM AKDT SUN JUN 30 2013
+
+
+................................... 
+
+...THE JUNEAU CLIMATE SUMMARY FOR JUNE 30 2013...
+VALID TODAY AS OF 0300 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1943 TO 2013
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         75    259 PM  82    1992  63     12       49       
+  MINIMUM         52    431 AM  39    2000  49      3       46       
+  AVERAGE         64                        56      8       48      
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            T             2.26 1996   0.12  -0.12     0.63    
+  MONTH TO DATE    3.19                      3.24  -0.05     6.69    
+  SINCE JUN 1      3.19                      3.24  -0.05     6.69    
+  SINCE JAN 1     31.56                     22.84   8.72    26.43    
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY            1                         9     -8       17       
+  MONTH TO DATE  214                       314   -100      394       
+  SINCE JUN 1    214                       315   -101      394       
+  SINCE JUL 1   8750                      8351    399     8578       
+                                                                     
+ COOLING                                                             
+  TODAY            0                         0      0        0       
+  MONTH TO DATE    7                         1      6        1       
+  SINCE JUN 1      7                         1      6        1       
+  SINCE JAN 1      7                         1      6        1       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    14   HIGHEST WIND DIRECTION    SW (240)      
+  HIGHEST GUST SPEED    18   HIGHEST GUST DIRECTION    SW (220)      
+  AVERAGE WIND SPEED     6.6                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.6                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED TODAY.                            
+  LIGHT RAIN                                                         
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    83           300 AM                                     
+ LOWEST     46           200 PM                                     
+ AVERAGE    65                                                       
+
+..........................................................
+
+                                                                     
+THE JUNEAU CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   63        77      1989                    
+ MINIMUM TEMPERATURE (F)   49        41      1950                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+JUNE 30 2013..........SUNRISE   357 AM AKDT  SUNSET  1007 PM AKDT  
+JULY  1 2013..........SUNRISE   357 AM AKDT  SUNSET  1006 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+
+&&
+----------------------------
+AMOUNT OF DAYLIGHT TODAY  (HOUR:MIN)........18:11   
+GAIN/LOSS SINCE YESTERDAY (HOUR:MIN:SEC)....-0:01:24   
+
+

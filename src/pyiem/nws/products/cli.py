@@ -28,8 +28,9 @@ class CLIProduct( TextProduct ):
     def __init__(self, text):
         ''' constructor '''
         TextProduct.__init__(self, text)
-        self.valid = self.parse_valid()
+        self.cli_valid = self.parse_cli_valid()
         self.data = self.parse_data()
+        print self.data
         
     def parse_data(self):
         ''' Actually do the parsing of this silly format '''
@@ -45,7 +46,7 @@ class CLIProduct( TextProduct ):
 
         return data
 
-    def parse_valid(self):
+    def parse_cli_valid(self):
         ''' Figure out when this product is valid for '''
         tokens = DATE_RE.findall( self.unixtext )
         if len(tokens) == 1:

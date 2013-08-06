@@ -37,7 +37,7 @@ class TextProductSegment(object):
                                               ugc_provider=tp.ugc_provider)
         self.vtec = vtec.parse(text)
         self.headlines = self.parse_headlines()
-        self.hvtec = hvtec.parse(text)
+        self.hvtec = hvtec.parse(text, nwsli_provider=tp.nwsli_provider)
         
         # TIME...MOT...LOC Stuff!
         self.tml_giswkt = None
@@ -197,7 +197,8 @@ class TextProduct(object):
     '''
 
 
-    def __init__(self, text, utcnow=None, ugc_provider={}):
+    def __init__(self, text, utcnow=None, ugc_provider={},
+                 nwsli_provider={}):
         '''
         Constructor
         @param text string single text product
@@ -206,6 +207,7 @@ class TextProduct(object):
         '''
         self.text = text
         self.ugc_provider = ugc_provider
+        self.nwsli_provider = nwsli_provider
         self.unixtext = text.replace("\r\r\n", "\n")
         self.sections = self.unixtext.split("\n\n")
         self.afos = None
@@ -246,7 +248,7 @@ class TextProduct(object):
     
     def parse_valid(self):
         """ Figre out the valid time of this product """
-        
+        print 'parse_valid() called...'
         # Now lets look for a local timestamp in the product MND or elsewhere
         tokens = re.findall(TIME_RE, self.unixtext, re.M)
         # If we don't find anything, lets default to now, its the best
