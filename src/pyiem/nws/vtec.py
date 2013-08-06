@@ -131,23 +131,23 @@ class VTEC:
         ''' Return an appropriate end string for this VTEC '''
         if self.endts is None:
             return 'until further notice'
-        fmt = "%b %-d, %-I:%M %p"
+        fmt = "%b %-d, %-I:%M %p %Z"
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         utcnow += datetime.timedelta(hours=1)
         if self.endts < utcnow:
-            fmt = '%-I:%M %p'
-        localts = self.begints.astimezone( prod.z )
-        return "valid at %s" % (localts.strftime(fmt),)
+            fmt = '%-I:%M %p %Z'
+        localts = self.endts.astimezone( prod.tz )
+        return "till %s" % (localts.strftime(fmt),)
 
     def get_begin_string(self, prod):
         ''' Return an appropriate beginning string for this VTEC '''
         if self.begints is None:
             return ''
-        fmt = "%b %-d, %-I:%M %p"
+        fmt = "%b %-d, %-I:%M %p %Z"
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         utcnow += datetime.timedelta(hours=1)
         if self.begints < utcnow:
-            fmt = '%-I:%M %p'
+            fmt = '%-I:%M %p %Z'
         localts = self.begints.astimezone( prod.z )
         return "valid at %s" % (localts.strftime(fmt),)
 
