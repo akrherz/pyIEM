@@ -112,7 +112,7 @@ class TestObservation(unittest.TestCase):
     def test_FFA(self):
         """ check FFA Parsing """
         tp = product.TextProduct( get_file('FFA.txt') )
-        self.assertEqual(tp.segments[0].get_hvtec_nwsli().id, "NWYI3")
+        self.assertEqual(tp.segments[0].get_hvtec_nwsli(), "NWYI3")
 
     def test_valid_nomnd(self):
         """ check valid (no Mass News) Parsing """

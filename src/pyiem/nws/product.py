@@ -64,7 +64,7 @@ class TextProductSegment(object):
         """ Return the first hvtec NWSLI entry, if it exists """
         if len(self.hvtec) == 0:
             return None
-        return self.hvtec[0].nwsli
+        return self.hvtec[0].nwsli.id
     
     def svs_search(self):
         """ Special search the product for special text """
