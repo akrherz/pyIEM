@@ -138,7 +138,7 @@ class TextProductSegment(object):
         pts = []
         for pr in pairs:
             lat = float(pr[0]) / 100.00
-            lon = float(pr[1]) / 100.00
+            lon = 0 - float(pr[1]) / 100.00
             pts.append( (lon, lat) )
         pts.append( pts[0] )
         return Polygon( pts )

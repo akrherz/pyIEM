@@ -171,10 +171,14 @@ class TestObservation(unittest.TestCase):
         self.assertEqual(tp.segments[0].tornadotag, "OBSERVED")
         self.assertEqual(tp.segments[0].tornadodamagetag, "SIGNIFICANT")       
         
+    def test_longitude_processing(self):
+        ''' Make sure that parsed longitude values are negative! '''
+        tp = product.TextProduct( get_file('SVRBMX.txt') )
+        self.assertAlmostEqual(tp.segments[0].sbw.exterior.xy[0][0], -88.39, 2)
+        
     def test_giswkt(self):
         """ Test giswkt parsing """
-        tp = product.TextProduct( 
-                        get_file('SVRBMX.txt') )
+        tp = product.TextProduct( get_file('SVRBMX.txt') )
         self.assertAlmostEqual(tp.segments[0].sbw.area, 0.16, 2)
 if __name__ == '__main__':
     unittest.main()
