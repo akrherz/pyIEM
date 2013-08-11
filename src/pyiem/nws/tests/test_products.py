@@ -147,11 +147,13 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.attn_rfc, ['MARFC'])
         self.assertEqual(prod.tweet(), ('#WPC issues MPD 98: NRN VA...D.C'
                                         +'....CENTRAL MD INTO SERN PA '
-        +'http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php?md=98'))
+        +'http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php'
+        +'?md=98&yr=2013'))
         self.assertEqual(prod.find_cwsus(self.txn), ['ZDC', 'ZNY'])
         self.assertEqual(prod.get_jabbers('http://localhost')[0], ('Weather '
     +'Prediction Center issues Mesoscale Precipitation Discussion #98'
-    +' http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php?md=98'))
+    +' http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php'
+    +'?md=98&yr=2013'))
     
     def test_mcdparser(self):
         ''' Test Parsing of MCD Product '''

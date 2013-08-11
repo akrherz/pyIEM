@@ -62,8 +62,9 @@ class MCDProduct( TextProduct ):
                             self.valid.year, self.discussion_num)
         else:
             return ('http://www.wpc.ncep.noaa.gov/metwatch/'
-                    +'metwatch_mpd_multi.php?md=%s') % (
-                                                    self.discussion_num,)
+                    +'metwatch_mpd_multi.php?md=%s&yr=%s') % (
+                                                    self.discussion_num,
+                                                    self.valid.year)
         
     def parse_areas_affected(self):
         ''' Return the areas affected '''
