@@ -139,6 +139,20 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, LAW ENFORCEMENT "
                          +"reports TSTM WND DMG #DMX"))
     
+    def test_mpd_mcdparser(self):
+        ''' The mcdparser can do WPC's MPD as well, test it '''
+        prod = mcdparser( get_file('MPD.txt') )
+        self.assertAlmostEqual(prod.geometry.area, 4.657, 3)
+        self.assertEqual(prod.attn_wfo, ['PHI', 'AKQ', 'CTP', 'LWX'])
+        self.assertEqual(prod.attn_rfc, ['MARFC'])
+        self.assertEqual(prod.tweet(), ('#WPC issues MPD 98: NRN VA...D.C'
+                                        +'....CENTRAL MD INTO SERN PA '
+        +'http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php?md=98'))
+        self.assertEqual(prod.find_cwsus(self.txn), ['ZDC', 'ZNY'])
+        self.assertEqual(prod.get_jabbers('http://localhost')[0], ('Weather '
+    +'Prediction Center issues Mesoscale Precipitation Discussion #98'
+    +' http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php?md=98'))
+    
     def test_mcdparser(self):
         ''' Test Parsing of MCD Product '''
         prod = mcdparser( get_file('SWOMCD.txt') )
@@ -147,3 +161,8 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.attn_wfo[2], 'DLH')
         self.assertEqual(prod.areas_affected, ("PORTIONS OF NRN WI AND "
                                                +"THE UPPER PENINSULA OF MI"))
+
+        # With probability this time
+        prod = mcdparser( get_file('SWOMCDprob.txt') )
+        self.assertAlmostEqual(prod.geometry.area, 2.444, 3)
+        self.assertEqual(prod.watch_prob, 20)
