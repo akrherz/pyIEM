@@ -6,6 +6,7 @@ import re
 
 from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon as ShapelyPolygon
+from shapely.geometry import MultiPolygon
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)")
@@ -146,6 +147,14 @@ class MCDProduct( TextProduct ):
         for row in txn:
             cwsu.append( row[0] )
         return cwsu
+        
+    def database_save(self, txn):
+        ''' Save this product to the database '''
+        giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
+        sql = """INSERT into text_products(product, product_id, geom) 
+          values (%s, %s, %s)"""
+        args = (self.text, self.get_product_id(), giswkt)
+        txn.execute(sql, args)
         
 def parser(text):
     ''' Helper function '''
