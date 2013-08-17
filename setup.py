@@ -1,15 +1,17 @@
 from distutils.core import setup
 
+import pyiem
+
 setup(
     name='pyIEM',
-    version='0.0.3',
+    version=pyiem.__version__,
     author='daryl herzmann',
     author_email='akrherz@gmail.com',
     packages=['pyiem', 'pyiem.nws', 'pyiem.nws.products'],
     url='https://github.com/akrherz/pyIEM/',
-    package_dir={'pyiem':'src/pyiem',
-                 'pyiem.nws': 'src/pyiem/nws',
-                 'pyiem.nws.products': 'src/pyiem/nws/products'},
+    package_dir={'pyiem':'pyiem',
+                 'pyiem.nws': 'pyiem/nws',
+                 'pyiem.nws.products': 'pyiem/nws/products'},
     package_data={'pyiem': ['data/iowa_bnds.txt',
 		'data/conus_bnds.txt',
 		'data/conus_marine_bnds.txt',
