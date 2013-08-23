@@ -18,7 +18,7 @@ from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
-import matplotlib.colobar as mpcolorbar
+import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 import mx.DateTime
 import numpy
