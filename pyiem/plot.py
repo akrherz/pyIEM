@@ -18,7 +18,7 @@ from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
-import matplotlib.mpl as mpl
+import matplotlib.colobar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 import mx.DateTime
 import numpy
@@ -291,7 +291,7 @@ class MapPlot:
         under = clevs[0]-(clevs[1]-clevs[0])
         over = clevs[-1]+(clevs[-1]-clevs[-2])
         blevels = numpy.concatenate([[under,], clevs, [over,]])
-        cb2 = mpl.colorbar.ColorbarBase(self.cax, cmap=cmap,
+        cb2 = mpcolorbar.ColorbarBase(self.cax, cmap=cmap,
                                      norm=norm,
                                      boundaries=blevels,
                                      extend='both',
