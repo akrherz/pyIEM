@@ -211,6 +211,15 @@ class MapPlot:
                            llcrnrlon=reference.IA_WEST, 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
+        elif self.sector == 'ames':
+            """ Zoomed in for Ames """
+            self.map = Basemap(projection='merc', fix_aspect=False,
+                           urcrnrlat=42.085, 
+                           llcrnrlat=41.965, 
+                           urcrnrlon=-93.55, 
+                           llcrnrlon=-93.7, 
+                           lat_0=45.,lon_0=-92.,lat_ts=42.,
+                           resolution='i', ax=self.ax)
         elif self.sector == 'midwest':
             """ Standard view for Iowa """
             self.map = Basemap(projection='merc', fix_aspect=False,
