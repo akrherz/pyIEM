@@ -14,7 +14,7 @@ from pyiem.nws.nwsli import NWSLI
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
 class TestProducts(unittest.TestCase):
@@ -168,3 +168,9 @@ class TestProducts(unittest.TestCase):
         prod = mcdparser( get_file('SWOMCDprob.txt') )
         self.assertAlmostEqual(prod.geometry.area, 2.444, 3)
         self.assertEqual(prod.watch_prob, 20)
+
+        self.assertEqual(prod.get_jabbers('http://localhost')[1], ('Storm '
+            +'Prediction Center issues <a href="http://www.spc.noaa.gov/'
+            +'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
+            +'[watch probability: 20%] (<a href="http://localhost'
+            +'?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)'))
