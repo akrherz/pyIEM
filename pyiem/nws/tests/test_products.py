@@ -130,10 +130,14 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.is_summary(), True)
         self.assertEqual(prod.lsrs[57].wfo , 'DMX')
         
+        answer = datetime.datetime(2013,7,23,3,55)
+        answer = answer.replace(tzinfo=pytz.timezone("UTC"))
+        self.assertEqual(prod.lsrs[57].valid, answer)
+        
         self.assertEqual(prod.lsrs[57].get_jabbers()[0], ("Knoxville Airport "
         +"[Marion Co, IA] AWOS reports NON-TSTM WND GST of 73.00 MPH at 22 "
-        +"Jul, 10:55 PM CST -- HEAT BURST. TEMPERATURE ROSE FROM 70 TO 84 "
-        +"IN 15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
+        +"Jul, 10:55 PM CDT -- HEAT BURST. TEMPERATURE ROSE FROM 70 TO 84 IN "
+        +"15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
         +"http://localhost"))
         
         self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, LAW ENFORCEMENT "

@@ -89,12 +89,15 @@ class LSR(object):
         
         return plain, html
         
-    def assign_timezone(self, tz):
+    def assign_timezone(self, tz, z):
         ''' retroactive assignment of timezone, so to improve attrs '''
         if self.valid is None:
             return
-        self.valid = self.valid.replace(tzinfo=tz)
-        self.utcvalid = self.valid.astimezone( pytz.timezone("UTC") )
+        # We can't just assign the timezone as this does not work in pytz
+        self.utcvalid = self.valid + datetime.timedelta(
+                                                hours= reference.offsets[z] )
+        self.utcvalid = self.utcvalid.replace(tzinfo=pytz.timezone("UTC"))
+        self.valid = self.utcvalid.astimezone(tz)
         
     def mag_string(self):
         ''' Return a string representing the magnitude and units '''
