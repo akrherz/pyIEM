@@ -115,6 +115,13 @@ class FilteredArtistList(Artist):
         renderer.stop_filter(self._filter)
         renderer.stop_rasterizing()
 
+def load_bounds2(filename):
+    """
+    Load the boundary file into a [numpy array]
+    """
+    res = numpy.loadtxt("%s/%s" % (DATADIR, filename), delimiter=',')
+    return res
+
 def load_bounds(filename):
     """
     Load the boundary file into a [numpy array]
@@ -211,8 +218,17 @@ class MapPlot:
                            llcrnrlon=reference.IA_WEST, 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
-        elif self.sector == 'ames':
+        elif self.sector == 'dsm':
             """ Zoomed in for Ames """
+            self.map = Basemap(projection='merc', fix_aspect=False,
+                           urcrnrlat=42.1, 
+                           llcrnrlat=41.2, 
+                           urcrnrlon=-93.1, 
+                           llcrnrlon=-94.2, 
+                           lat_0=45.,lon_0=-92.,lat_ts=42.,
+                           resolution='i', ax=self.ax)
+        elif self.sector == 'ames':
+            """ Zoomed in for DSM """
             self.map = Basemap(projection='merc', fix_aspect=False,
                            urcrnrlat=42.085, 
                            llcrnrlat=41.965, 
@@ -363,6 +379,11 @@ class MapPlot:
             if self.sector == 'iowa':
                 xi = numpy.linspace(reference.IA_WEST, reference.IA_EAST, 100)
                 yi = numpy.linspace(reference.IA_SOUTH, reference.IA_NORTH, 100)
+            elif self.sector == 'conus':
+                xi = numpy.linspace(reference.CONUS_WEST, 
+                                    reference.CONUS_EAST, 100)
+                yi = numpy.linspace(reference.CONUS_SOUTH, 
+                                    reference.CONUS_NORTH, 100)
             else:
                 xi = numpy.linspace(reference.MW_WEST, reference.MW_EAST, 100)
                 yi = numpy.linspace(reference.MW_SOUTH, reference.MW_NORTH, 100)
@@ -381,9 +402,9 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
                 
         x, y = self.map(lons, lats)
-        #from scipy.signal import convolve2d
-        #window = numpy.ones((6, 6))
-        #vals = convolve2d(vals, window / window.sum(), mode='same', boundary='symm')
+        from scipy.signal import convolve2d
+        window = numpy.ones((6, 6))
+        vals = convolve2d(vals, window / window.sum(), mode='same', boundary='symm')
         #vals = maskoceans(lons, lats, vals, resolution='h')
         self.map.contourf(x, y, vals, clevs,
                                cmap=cmap, norm=norm, zorder=Z_FILL)
@@ -392,8 +413,12 @@ class MapPlot:
             xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
             poly = zip(xx,yy)
             mask_outside_polygon(poly, ax=self.ax)
-        
-        if self.sector == 'midwest':
+        elif self.sector == 'conus':
+            ia_border = load_bounds2("conus_bnds.txt") # Only consider first
+            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
+            poly = zip(xx,yy)
+            mask_outside_polygon(poly, ax=self.ax)          
+        elif self.sector == 'midwest':
             ia_border = load_bounds("midwest_bnds.txt") # Only consider first
             xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
             poly = zip(xx,yy)

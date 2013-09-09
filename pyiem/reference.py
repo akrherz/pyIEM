@@ -9,6 +9,10 @@ MW_EAST  = -80.1
 MW_NORTH = 49.51
 MW_SOUTH = 35.47
 
+CONUS_WEST  = -134.2
+CONUS_EAST  = -60.1
+CONUS_NORTH = 49.51
+CONUS_SOUTH = 24.47
 
 """ Convert NWSLI codes to a state code """
 nwsli2state = {
