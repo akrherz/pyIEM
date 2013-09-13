@@ -10,7 +10,7 @@ from pyiem.nws.product import TextProductException
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
 class TestObservation(unittest.TestCase):

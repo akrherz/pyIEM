@@ -6,6 +6,12 @@ import os
 from pyiem.nws import spcpts
 from pyiem.nws import product
 
+def get_file(name):
+    ''' Helper function to get the text file contents '''
+    basedir = os.path.dirname(__file__)
+    fn = "%s/../../../data/product_examples/%s" % (basedir, name)
+    return open(fn).read()
+
 class TestObservation(unittest.TestCase):
     
     def test_23jul_failure(self):
@@ -37,7 +43,7 @@ class TestObservation(unittest.TestCase):
     def test_str1(self):
         """ check spcpts parsing """
         basedir = os.path.dirname(__file__)
-        data = open('%s/../../../../data/product_examples/SPCPTS.txt' % (basedir,)).read()
+        data = get_file('SPCPTS.txt')
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
         spc.draw_outlooks()
