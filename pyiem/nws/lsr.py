@@ -63,7 +63,9 @@ class LSR(object):
 
     def tweet(self):
         ''' return a tweet text '''
-        msg = 'At %s, %s reports %s #%s' % (self.valid.strftime('%-I:%M %p'),
+        msg = 'At %s, %s [%s Co, %s] %s reports %s #%s' % (
+                                        self.valid.strftime('%-I:%M %p'),
+                                        self.city, self.county, self.state,
                                         self.source, self.mag_string(),
                                         self.wfo)
         return msg

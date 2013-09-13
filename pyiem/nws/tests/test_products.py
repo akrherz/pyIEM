@@ -140,7 +140,8 @@ class TestProducts(unittest.TestCase):
         +"15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
         +"http://localhost"))
         
-        self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, LAW ENFORCEMENT "
+        self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, Dows "
+                         +"[Wright Co, IA] LAW ENFORCEMENT "
                          +"reports TSTM WND DMG #DMX"))
     
     def test_mpd_mcdparser(self):
