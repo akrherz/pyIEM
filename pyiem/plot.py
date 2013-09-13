@@ -343,7 +343,7 @@ class MapPlot:
             if m:
                 x,y = self.map(o, a)
                 t.append(self.ax.text(x, y, fmt % (v,) , color=color, 
-                                      size=textsize, zorder=Z_OVERLAY))
+                                      size=textsize, zorder=Z_OVERLAY+1))
                 
         white_glows = FilteredArtistList(t, GrowFilter(3))
         self.ax.add_artist(white_glows)
