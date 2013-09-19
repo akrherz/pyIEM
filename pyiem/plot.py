@@ -551,14 +551,13 @@ class MapPlot:
     def fill_cwas(self, data,
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
                   bins=numpy.arange(0,101,10),
-                  lblformat='%.0f', **kwargs):
+                  lblformat='%.0f', cmap=maue(), **kwargs):
         """
         Added filled polygons to the plot based on key/value lookup pairs in
         the data dictionary
         """
         if data.has_key('JSJ'):
             data['SJU'] = data['JSJ']
-        cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         
         self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
