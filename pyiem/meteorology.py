@@ -55,6 +55,8 @@ def heatindex(temperature, polyarg):
         polyarg = relh(temperature, polyarg)
     rh = polyarg.value("%")
     t = temperature.value("F")
+    if t < 60 or t > 120:
+        return temperature
     hdx = (16.923 
              + ((1.85212e-1)*t)
              + (5.37941*rh)

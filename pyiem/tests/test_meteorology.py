@@ -4,6 +4,18 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_heatindex(self):
+        ''' Test our heat index calculations '''
+        t = datatypes.temperature(80.0, 'F')
+        td = datatypes.temperature(70.0, 'F')
+        hdx = meteorology.heatindex(t, td)
+        self.assertAlmostEqual( hdx.value("F"), 83.93, 2)
+
+        t = datatypes.temperature(30.0, 'F')
+        hdx = meteorology.heatindex(t, td)
+        self.assertAlmostEqual( hdx.value("F"), 30.00, 2)
+
+
     def test_uv(self):
         """ Test calculation of uv wind components """
         speed = datatypes.speed([10,], 'KT')
