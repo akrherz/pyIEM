@@ -172,6 +172,58 @@ that
 
     return patch
 
+def james2():
+    ''' David James suggested color ramp Yellow to Brown
+    
+255, 255, 128
+255, 238, 112
+252, 221,  96
+250, 205,  82
+247, 190,  67
+245, 175,  54
+230, 151,  41
+204, 120,  31
+179,  89,  21
+156,  64,  14
+130,  37,   7
+107,   0,   0
+    
+     '''
+    cpool = ['#FFFF80', '#FFEE70', '#FCDD60', '#FACD52', '#F7BE43', '#F5AF36',
+             '#E69729', '#CC781F', '#B35915', '#9C400E', '#822507', '#6B0000']
+    cmap3 = mpcolors.ListedColormap(cpool, 'james2')
+    cmap3.set_over("#000000")
+    cmap3.set_under("#FFFFFF")
+    cmap3.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap3)
+    return cmap3
+
+
+def james():
+    ''' David James suggested color ramp Yellow to Blue 
+255, 255, 128
+205, 250, 100
+152, 240,  70
+ 97, 232,  39
+ 59, 217,  35
+ 63, 196,  83
+ 55, 173, 122
+ 38, 152, 158
+ 33, 122, 163
+ 33,  83, 148
+ 27,  49, 135
+ 12,  16, 120
+    
+    '''
+    cpool = ['#FFFF80', '#CDFA64', '#98F046', '#61E827', '#3BD923', '#3FC453',
+             '#37AD7A', '#26989E', '#217AA3', '#215394', '#1B3187', '#0C1078']
+    cmap3 = mpcolors.ListedColormap(cpool, 'james')
+    cmap3.set_over("#000000")
+    cmap3.set_under("#FFFFFF")
+    cmap3.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap3)
+    return cmap3
+
 def maue():
     """ Pretty color ramp Dr Ryan Maue uses """
     cpool = ["#e6e6e6", "#d2d2d2", "#bcbcbc", "#969696", "#646464",
@@ -307,6 +359,10 @@ class MapPlot:
         self.fig.text(0.01, 0.03, "%s :: generated %s" % (
                         kwargs.get('caption', 'Iowa Environmental Mesonet'),
                         mx.DateTime.now().strftime("%d %B %Y %I:%M %p %Z"),))
+
+    def close(self):
+        ''' Close the figure in the case of batch processing '''
+        plt.close()
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """ Create our magic colorbar! """
