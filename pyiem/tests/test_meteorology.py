@@ -38,8 +38,18 @@ class TestDatatypes(unittest.TestCase):
         dwp = datatypes.temperature(24, 'C')
         relh = meteorology.relh(tmp, dwp)
         self.assertEquals(100.0, relh.value("%"))
-        
+
         tmp = datatypes.temperature(32, 'C')
         dwp = datatypes.temperature(10, 'C')
         relh = meteorology.relh(tmp, dwp)
         self.assertAlmostEquals(25.79, relh.value("%"), 2)
+        
+        tmp = datatypes.temperature(32, 'C')
+        dwp = datatypes.temperature(15, 'C')
+        relh = meteorology.relh(tmp, dwp)
+        self.assertAlmostEquals(35.81, relh.value("%"), 2)
+        
+        tmp = datatypes.temperature(5, 'C')
+        dwp = datatypes.temperature(4, 'C')
+        relh = meteorology.relh(tmp, dwp)
+        self.assertAlmostEquals(93.24, relh.value("%"), 2)
