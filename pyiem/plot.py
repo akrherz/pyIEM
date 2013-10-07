@@ -390,16 +390,26 @@ class MapPlot:
                           ha='right')
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
-                    color='#000000', textsize=14):
+                    color='#000000', textsize=14, labels=None):
         """ Simply plot vals """        
         if valmask is None:
             valmask = [True] * len(lons)
+        if labels is None:
+            labels = [''] * len(lons)
         t = []
-        for o,a,v,m in zip(lons, lats, vals, valmask):
+        for o,a,v,m, l in zip(lons, lats, vals, valmask, labels):
             if m:
                 x,y = self.map(o, a)
-                t.append(self.ax.text(x, y, fmt % (v,) , color=color, 
-                                      size=textsize, zorder=Z_OVERLAY+1))
+                t.append(self.ax.text(x, y, fmt % (v,) , color=color,  
+                                      size=textsize, zorder=Z_OVERLAY+2,
+                                      va='bottom'))
+                
+                if l:
+                    self.ax.text(x, y, l, color='k', 
+                                      size=textsize - 4, zorder=Z_OVERLAY+1,
+                                      va='top')
+                    
+                
                 
         white_glows = FilteredArtistList(t, GrowFilter(3))
         self.ax.add_artist(white_glows)
