@@ -15,6 +15,10 @@ PRECIP_RE = re.compile(r"""PRECIPITATION \(IN\)\s+
 \s+(?:YESTERDAY|TODAY)\s+([0-9\.]+).*
 \s+MONTH TO DATE\s+([0-9\.]+)""", re.M )
 
+SNOW_RE = re.compile(r"""SNOWFALL \(IN\)\s+
+\s+(?:YESTERDAY|TODAY)\s+([0-9\.]+).*
+\s+MONTH TO DATE\s+([0-9\.]+)""", re.M )
+
 DATE_RE = re.compile(r"CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})\.\.\.")
 
 class CLIException(Exception):
@@ -48,6 +52,11 @@ class CLIProduct( TextProduct ):
         if len(tokens) == 1:
             data['precip_today'] = float(tokens[0][0])
             data['precip_month'] = float(tokens[0][1])
+
+        tokens = SNOW_RE.findall( self.unixtext )
+        if len(tokens) == 1:
+            data['snow_today'] = float(tokens[0][0])
+            data['snow_month'] = float(tokens[0][1])
 
         return data
 

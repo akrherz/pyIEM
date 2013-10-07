@@ -37,6 +37,8 @@ class TestProducts(unittest.TestCase):
         prod = cliparser( get_file('CLIDSM.txt') )
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
         self.assertEqual(prod.data['temperature_maximum'], 89)
+        self.assertEqual(prod.data['snow_month'], 0)
+        self.assertEqual(prod.data['snow_today'], 0)
  
     
     def test_vtec_series(self):
