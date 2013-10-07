@@ -404,7 +404,7 @@ class MapPlot:
                                       size=textsize, zorder=Z_OVERLAY+2,
                                       va='bottom'))
                 
-                if l:
+                if l and l != '':
                     self.ax.text(x, y, l, color='k', 
                                       size=textsize - 4, zorder=Z_OVERLAY+1,
                                       va='top')
