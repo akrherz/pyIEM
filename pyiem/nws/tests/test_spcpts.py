@@ -40,6 +40,12 @@ class TestObservation(unittest.TestCase):
         res = spcpts.str2multipolygon(data)
         self.assertAlmostEqual(res[0].area, 624.10, 2) 
     
+    def test_111913(self):
+        ''' Test a exception with str2multipolygon '''
+        data = get_file('PTSDY3.txt')
+        tp = product.TextProduct( data )
+        self.assertRaises(Exception, spcpts.SPCPTS, tp )
+    
     def test_str1(self):
         """ check spcpts parsing """
         basedir = os.path.dirname(__file__)

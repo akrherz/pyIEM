@@ -137,6 +137,8 @@ def str2multipolygon(s):
     for i, segment in enumerate(segments):
         if segment[0] == segment[-1]:
             print '===== segment %s is interior polygon!' % (i,)
+            if interior is not None:
+                raise Exception("Found two interior rings, aborting...")
             interior = segment
             continue
         
