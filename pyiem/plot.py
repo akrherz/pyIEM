@@ -415,6 +415,21 @@ class MapPlot:
         self.ax.add_artist(white_glows)
         white_glows.set_zorder(t[0].get_zorder()-0.1)
 
+    def hexbin(self, lons, lats, vals, clevs, **kwargs):
+        """ hexbin wrapper """
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        
+        x, y = self.map(lons, lats)
+        self.map.hexbin(x, y, C=vals, norm=norm,
+                               cmap=cmap, zorder=Z_FILL)
+
+        self.draw_colorbar(clevs, cmap, norm)
+
+        if kwargs.has_key('units'):
+            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
+                          ha='right')
+
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
         cmap = kwargs.get('cmap', maue())
@@ -434,6 +449,7 @@ class MapPlot:
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
+
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf """
         if type(lons) == type([]):
