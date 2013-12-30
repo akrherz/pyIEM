@@ -5,10 +5,12 @@ pyiem/datatypes.py
 pyiem/iemdb.py
 pyiem/iemre.py
 pyiem/iemtz.py
+pyiem/mrms.py
 pyiem/meteorology.py
 pyiem/observation.py
 pyiem/plot.py
 pyiem/reference.py
+pyiem/tracker.py
 pyiem/wellknowntext.py
 pyiem/nws/__init__.py
 pyiem/nws/gini.py
@@ -17,6 +19,7 @@ pyiem/nws/nwsli.py
 pyiem/nws/product.py
 pyiem/nws/spcpts.py
 pyiem/nws/ugc.py
+pyiem/nws/lsr.py
 pyiem/nws/vtec.py
 pyiem/nws/products/__init__.py
 pyiem/nws/products/lsr.py
