@@ -280,19 +280,20 @@ class TextProduct(object):
         wmo_hour = int(tokens[0][1])
         wmo_minute = int(tokens[0][2])
 
-        self.valid = self.utcnow.replace(hour=wmo_hour,minute=wmo_minute)
+        self.valid = self.utcnow.replace(hour=wmo_hour, minute=wmo_minute,
+                                         second=0, microsecond=0)
         if wmo_day == self.utcnow.day:
             return
         elif wmo_day - self.utcnow.day == 1: # Tomorrow
-            self.valid = self.utcnow.replace(day=wmo_day)
+            self.valid = self.valid.replace(day=wmo_day)
         elif wmo_day > 25 and self.utcnow.day < 5: # Previous month!
-            self.valid = self.utcnow + datetime.timedelta(days=-10)
+            self.valid = self.valid + datetime.timedelta(days=-10)
             self.valid = self.valid.replace(day=wmo_day)
         elif wmo_day < 5 and self.utcnow.day > 25: # next month
-            self.valid = self.utcnow + datetime.timedelta(days=10)
+            self.valid = self.valid + datetime.timedelta(days=10)
             self.valid = self.valid.replace(day=wmo_day)
         else:
-            self.valid = self.utcnow.replace(day=wmo_day)
+            self.valid = self.valid.replace(day=wmo_day)
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""

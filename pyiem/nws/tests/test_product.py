@@ -13,7 +13,18 @@ def get_file(name):
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
-class TestObservation(unittest.TestCase):
+class TestProduct(unittest.TestCase):
+
+    def test_nomnd_with_timestamp(self):
+        ''' Make sure we process timestamps correctly when there is no MND'''
+        utcnow = datetime.datetime(2013,12,31,18,0)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        tp = product.TextProduct( 
+                        get_file('MAVWC0.txt'),
+                        utcnow = utcnow)
+        ts = datetime.datetime(2014,1,1,0,0)
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        self.assertEqual(tp.valid, ts)
 
     def test_empty(self):
         """ see what happens when we send a blank string """
