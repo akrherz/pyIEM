@@ -99,6 +99,7 @@ class Observation(object):
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s 
         and t.network = %(network)s and %(valid)s >= c.valid """
         txn.execute(sql, self.data)
+        #print self.data['valid'], self.data['station'], txn.rowcount
         
         # Update summary table
         sql = """UPDATE summary s SET
