@@ -25,7 +25,7 @@ import numpy
 from scipy.interpolate import griddata, Rbf
 from scipy.interpolate import NearestNDInterpolator
 from pyiem import reference
-import Image
+from PIL import Image
 import cStringIO
 import tempfile
 import os
@@ -383,7 +383,7 @@ class MapPlot:
             y = float(i) / (len(clevs) -1)
             txt = cb2.ax.text(0.5, y, '%g' % (lev,), va='center', ha='center')
             txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                         foreground="w")])
+                                                        foreground="w")])
             
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
@@ -486,10 +486,11 @@ class MapPlot:
         x, y = self.map(lons, lats)
         from scipy.signal import convolve2d
         window = numpy.ones((6, 6))
-        vals = convolve2d(vals, window / window.sum(), mode='same', boundary='symm')
+        vals = convolve2d(vals, window / window.sum(), mode='same', 
+                          boundary='symm')
         #vals = maskoceans(lons, lats, vals, resolution='h')
         self.map.contourf(x, y, vals, clevs,
-                               cmap=cmap, norm=norm, zorder=Z_FILL)
+                          cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
         if self.sector == 'iowa':
             ia_border = load_bounds("iowa_bnds.txt") # Only consider first
             xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
