@@ -21,7 +21,7 @@ import matplotlib.colors as mpcolors
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 import mx.DateTime
-import numpy
+import numpy as np
 from scipy.interpolate import griddata, Rbf
 from scipy.interpolate import NearestNDInterpolator
 from pyiem import reference
@@ -42,26 +42,26 @@ from matplotlib.artist import Artist
 def smooth1d(x, window_len):
     # copied from http://www.scipy.org/Cookbook/SignalSmooth
 
-    s=numpy.r_[2*x[0]-x[window_len:1:-1],x,2*x[-1]-x[-1:-window_len:-1]]
-    w = numpy.hanning(window_len)
-    y=numpy.convolve(w/w.sum(),s,mode='same')
+    s=np.r_[2*x[0]-x[window_len:1:-1],x,2*x[-1]-x[-1:-window_len:-1]]
+    w = np.hanning(window_len)
+    y=np.convolve(w/w.sum(),s,mode='same')
     return y[window_len-1:-window_len+1]
 
 def smooth2d(A, sigma=3):
 
     window_len = max(int(sigma), 3)*2+1
-    A1 = numpy.array([smooth1d(x, window_len) for x in numpy.asarray(A)])
-    A2 = numpy.transpose(A1)
-    A3 = numpy.array([smooth1d(x, window_len) for x in A2])
-    A4 = numpy.transpose(A3)
+    A1 = np.array([smooth1d(x, window_len) for x in np.asarray(A)])
+    A2 = np.transpose(A1)
+    A3 = np.array([smooth1d(x, window_len) for x in A2])
+    A4 = np.transpose(A3)
 
     return A4
 
 class BaseFilter(object):
     def prepare_image(self, src_image, dpi, pad):
         ny, nx, depth = src_image.shape
-        #tgt_image = numpy.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
-        padded_src = numpy.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
+        #tgt_image = np.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
+        padded_src = np.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
         padded_src[pad:-pad, pad:-pad,:] = src_image[:,:,:]
 
         return padded_src#, tgt_image
@@ -87,11 +87,11 @@ class GrowFilter(BaseFilter):
     def __call__(self, im, dpi):
         pad = self.pixels
         ny, nx, depth = im.shape
-        new_im = numpy.empty([pad*2+ny, pad*2+nx, depth], dtype="d")
+        new_im = np.empty([pad*2+ny, pad*2+nx, depth], dtype="d")
         alpha = new_im[:,:,3]
         alpha.fill(0)
         alpha[pad:-pad, pad:-pad] = im[:,:,-1]
-        alpha2 = numpy.clip(smooth2d(alpha, self.pixels/72.*dpi) * 5, 0, 1)
+        alpha2 = np.clip(smooth2d(alpha, self.pixels/72.*dpi) * 5, 0, 1)
         new_im[:,:,-1] = alpha2
         new_im[:,:,:-1] = self.color
         offsetx, offsety = -pad, -pad
@@ -115,30 +115,18 @@ class FilteredArtistList(Artist):
         renderer.stop_filter(self._filter)
         renderer.stop_rasterizing()
 
-def load_bounds2(filename):
-    """
-    Load the boundary file into a [numpy array]
-    """
-    res = numpy.loadtxt("%s/%s" % (DATADIR, filename), delimiter=',')
-    return res
-
 def load_bounds(filename):
     """
-    Load the boundary file into a [numpy array]
+    Load the boundary file into a [np array]
     """
-    res = numpy.loadtxt("%s/%s" % (DATADIR, filename))
-    return numpy.column_stack(res)
+    return np.load("%s/%s.npy" % (DATADIR, filename))
 
 def mask_outside_polygon(poly_verts, ax=None):
     """
-    Plots a mask on the specified axis ("ax", defaults to plt.gca()) such
-that
-    all areas outside of the polygon specified by "poly_verts" are masked.
-
-    "poly_verts" must be a list of tuples of the verticies in the polygon in
-    counter-clockwise order.
-
-    Returns the matplotlib.patches.PathPatch instance plotted on the figure.
+    We produce a polygon that lies between the plot border and some interior
+    polygon.  
+    
+    POLY_VERTS is in CCW order, as this is the interior of the polygon
     """
     import matplotlib.patches as mpatches
     import matplotlib.path as mpath
@@ -151,9 +139,9 @@ that
     ylim = ax.get_ylim()
 
     # Verticies of the plot boundaries in clockwise order
-    bound_verts = [(xlim[0], ylim[0]), (xlim[0], ylim[1]),
+    bound_verts = np.array( [(xlim[0], ylim[0]), (xlim[0], ylim[1]),
                    (xlim[1], ylim[1]), (xlim[1], ylim[0]),
-                   (xlim[0], ylim[0])]
+                   (xlim[0], ylim[0])] )
 
     # A series of codes (1 and 2) to tell matplotlib whether to draw a lineor
     # move the "pen" (So that there's no connecting line)
@@ -161,7 +149,7 @@ that
     poly_codes = [mpath.Path.MOVETO] + (len(poly_verts) - 1) *[mpath.Path.LINETO]
 
     # Plot the masking patch
-    path = mpath.Path(bound_verts + poly_verts, bound_codes + poly_codes)
+    path = mpath.Path(np.concatenate([bound_verts,poly_verts]), bound_codes + poly_codes)
     patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none', 
                                zorder=Z_CLIP)
     patch = ax.add_patch(patch)
@@ -371,7 +359,7 @@ class MapPlot:
 
         under = clevs[0]-(clevs[1]-clevs[0])
         over = clevs[-1]+(clevs[-1]-clevs[-2])
-        blevels = numpy.concatenate([[under,], clevs, [over,]])
+        blevels = np.concatenate([[under,], clevs, [over,]])
         cb2 = mpcolorbar.ColorbarBase(self.cax, cmap=cmap,
                                      norm=norm,
                                      boundaries=blevels,
@@ -438,11 +426,7 @@ class MapPlot:
         self.map.pcolormesh(lons, lats, vals, norm=norm,
                                cmap=cmap, zorder=Z_FILL, latlon=True)
 
-        if self.sector == 'iowa':
-            ia_border = load_bounds("iowa_bnds.txt") # Only consider first
-            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
-            poly = zip(xx,yy)
-            mask_outside_polygon(poly, ax=self.ax)
+        self.draw_mask()
 
         self.draw_colorbar(clevs, cmap, norm)
 
@@ -450,26 +434,37 @@ class MapPlot:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
+    def draw_mask(self):
+        ''' Draw the mask, when appropriate '''
+        # can't mask what we don't know
+        if self.sector not in ('midwest', 'conus', 'iowa'):
+            return
+        # in lon,lat
+        ccw = load_bounds('%s_ccw' % (self.sector,))
+        # in map coords
+        x,y = self.map(ccw[:,0], ccw[:,1])
+        mask_outside_polygon(zip(x,y), ax=self.ax)
+
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf """
         if type(lons) == type([]):
-            lons = numpy.array( lons )
-            lats = numpy.array( lats )
-            vals = numpy.array( vals )
+            lons = np.array( lons )
+            lats = np.array( lats )
+            vals = np.array( vals )
         if vals.ndim == 1:
             # We need to grid!
             if self.sector == 'iowa':
-                xi = numpy.linspace(reference.IA_WEST, reference.IA_EAST, 100)
-                yi = numpy.linspace(reference.IA_SOUTH, reference.IA_NORTH, 100)
+                xi = np.linspace(reference.IA_WEST, reference.IA_EAST, 100)
+                yi = np.linspace(reference.IA_SOUTH, reference.IA_NORTH, 100)
             elif self.sector == 'conus':
-                xi = numpy.linspace(reference.CONUS_WEST, 
+                xi = np.linspace(reference.CONUS_WEST, 
                                     reference.CONUS_EAST, 100)
-                yi = numpy.linspace(reference.CONUS_SOUTH, 
+                yi = np.linspace(reference.CONUS_SOUTH, 
                                     reference.CONUS_NORTH, 100)
             else:
-                xi = numpy.linspace(reference.MW_WEST, reference.MW_EAST, 100)
-                yi = numpy.linspace(reference.MW_SOUTH, reference.MW_NORTH, 100)
-            xi, yi = numpy.meshgrid(xi, yi)
+                xi = np.linspace(reference.MW_WEST, reference.MW_EAST, 100)
+                yi = np.linspace(reference.MW_SOUTH, reference.MW_NORTH, 100)
+            xi, yi = np.meshgrid(xi, yi)
             #vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
             #rbfi = Rbf(lons, lats, vals, function='cubic')
             nn = NearestNDInterpolator((lons, lats), vals)
@@ -478,34 +473,21 @@ class MapPlot:
             lons = xi
             lats = yi
         if lons.ndim == 1:
-            lons, lats = numpy.meshgrid(lons, lats)
+            lons, lats = np.meshgrid(lons, lats)
         
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
                 
         x, y = self.map(lons, lats)
         from scipy.signal import convolve2d
-        window = numpy.ones((6, 6))
+        window = np.ones((6, 6))
         vals = convolve2d(vals, window / window.sum(), mode='same', 
                           boundary='symm')
         #vals = maskoceans(lons, lats, vals, resolution='h')
         self.map.contourf(x, y, vals, clevs,
                           cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
-        if self.sector == 'iowa':
-            ia_border = load_bounds("iowa_bnds.txt") # Only consider first
-            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
-            poly = zip(xx,yy)
-            mask_outside_polygon(poly, ax=self.ax)
-        elif self.sector == 'conus':
-            ia_border = load_bounds2("conus_bnds.txt") # Only consider first
-            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
-            poly = zip(xx,yy)
-            mask_outside_polygon(poly, ax=self.ax)          
-        elif self.sector == 'midwest':
-            ia_border = load_bounds("midwest_bnds.txt") # Only consider first
-            xx,yy = self.map(ia_border[::-1,0], ia_border[::-1,1])            
-            poly = zip(xx,yy)
-            mask_outside_polygon(poly, ax=self.ax)         
+        self.draw_mask()
+            
         self.draw_colorbar(clevs, cmap, norm)
 
         if kwargs.has_key('units'):
@@ -514,7 +496,7 @@ class MapPlot:
             
     def fill_climdiv(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
-                  bins=numpy.arange(0,101,10),
+                  bins=np.arange(0,101,10),
                   lblformat='%.0f', **kwargs):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
@@ -552,16 +534,16 @@ class MapPlot:
             c = cmap( norm([val,]) )[0]
             # Check area in meters... 100,000 x 100,000
             if clidiv not in plotted:
-                seg = numpy.array( seg )
-                mx =  (numpy.max(seg[:,0]) + numpy.min(seg[:,0])) / 2.0
-                my =  (numpy.max(seg[:,1]) + numpy.min(seg[:,1])) / 2.0
+                seg = np.array( seg )
+                mx =  (np.max(seg[:,0]) + np.min(seg[:,0])) / 2.0
+                my =  (np.max(seg[:,1]) + np.min(seg[:,1])) / 2.0
                 txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
                          ha='center', va='center')
                 txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                          foreground="w")])
                 plotted.append( clidiv )
             if transform:
-                seg = numpy.array( seg )
+                seg = np.array( seg )
                 xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
                 xx, yy = thismap(xx, yy)
                 seg = zip(xx, yy)
@@ -575,7 +557,7 @@ class MapPlot:
 
     def fill_states(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/states',
-                  bins=numpy.arange(0,101,10),
+                  bins=np.arange(0,101,10),
                   lblformat='%.0f', **kwargs):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
@@ -619,7 +601,7 @@ class MapPlot:
                                                          foreground="w")])
                 plotted.append( state )
             if transform:
-                seg = numpy.array( seg )
+                seg = np.array( seg )
                 xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
                 xx, yy = thismap(xx, yy)
                 seg = zip(xx, yy)
@@ -633,7 +615,7 @@ class MapPlot:
 
     def fill_cwas(self, data,
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
-                  bins=numpy.arange(0,101,10),
+                  bins=np.arange(0,101,10),
                   lblformat='%.0f', cmap=maue(), **kwargs):
         """
         Added filled polygons to the plot based on key/value lookup pairs in
@@ -682,7 +664,7 @@ class MapPlot:
                                                          foreground="w")])
                 plotted.append( cwa )
             if transform:
-                seg = numpy.array( seg )
+                seg = np.array( seg )
                 # convert read shapefile back into lat / lon
                 xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
                 xx, yy = thismap(xx, yy)
@@ -721,7 +703,7 @@ class MapPlot:
                           color='w')
             txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                      foreground="k")])
-        ax.barh(numpy.arange(len(bins)), [1]*len(bins), height=1,
+        ax.barh(np.arange(len(bins)), [1]*len(bins), height=1,
                 color=colorramp(range(len(bins))),
                 ec='None')
         
