@@ -388,9 +388,11 @@ class MapPlot:
         for o,a,v,m, l in zip(lons, lats, vals, valmask, labels):
             if m:
                 x,y = self.map(o, a)
-                t.append(self.ax.text(x, y, fmt % (v,) , color=color,  
+                t0 = self.ax.text(x, y, fmt % (v,) , color=color,  
                                       size=textsize, zorder=Z_OVERLAY+2,
-                                      va='bottom').set_clip_on(True))
+                                      va='bottom')
+                t0.set_clip_on(True)
+                t.append(t0)
                 
                 if l and l != '':
                     self.ax.text(x, y, l, color='k', 

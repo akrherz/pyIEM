@@ -4,6 +4,18 @@ from pyiem import plot
 
 class TestObservation(unittest.TestCase):
     
+    def test_textplot(self):
+        ''' Can we plot text and place labels on them '''
+        m = plot.MapPlot(sector='iowa')
+        m.plot_values(range(-99,-94), range(40,45), range(5))
+        m.postprocess(filename='/tmp/test_plot_1.png')
+
+        m = plot.MapPlot(sector='iowa')
+        m.plot_values(range(-99,-94), range(40,45), range(5), 
+                      labels=range(5,11))
+        m.postprocess(filename='/tmp/test_plot_2.png')
+
+    
     def test_plot(self):
         """ Exercise the API """
         m = plot.MapPlot(sector='midwest')
