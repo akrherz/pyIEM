@@ -214,10 +214,7 @@ def james():
 
 def whitebluegreenyellowred():
     ''' Rip off NCL's WhiteBlueGreenYellowRed '''
-    cpool = ['#ffffff', '#fcfeff', '#fafdff', '#f7fcfe', '#f4fbfe', '#f2fafe', 
-             '#eff9fe', '#ecf8fd', '#eaf7fd', '#e7f6fd', '#e5f5fd', '#e2f4fd', 
-             '#dff3fc', '#ddf2fc', '#daf1fc', '#d7f0fc', '#d5effc', '#d2eefb', 
-             '#cfedfb', '#cdecfb', '#caebfb', '#c7eafa', '#c5e9fa', '#c2e8fa', 
+    cpool = ['#cfedfb', '#cdecfb', '#caebfb', '#c7eafa', '#c5e9fa', '#c2e8fa', 
              '#bfe7fa', '#bde6fa', '#bae5f9', '#b7e4f9', '#b5e3f9', '#b2e2f9', 
              '#b0e1f9', '#ade0f8', '#aadff8', '#a8def8', '#a5ddf8', '#a2dcf7', 
              '#9ddaf7', '#9bd8f6', '#98d6f5', '#96d4f3', '#94d2f2', '#92d0f1', 
