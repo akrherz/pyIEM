@@ -1,0 +1,3 @@
+recursive-include pyiem *.py
+recursive-include pyiem *.txt
+recursive-include pyiem *.npy
