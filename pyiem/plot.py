@@ -486,7 +486,8 @@ class MapPlot:
         self.map.pcolormesh(lons, lats, vals, norm=norm,
                                cmap=cmap, zorder=Z_FILL, latlon=True)
 
-        self.draw_mask()
+        if kwargs.get("clip_on", True):
+            self.draw_mask()
 
         self.draw_colorbar(clevs, cmap, norm)
 
@@ -553,7 +554,7 @@ class MapPlot:
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
-            
+
     def fill_climdiv(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
                   bins=np.arange(0,101,10),
