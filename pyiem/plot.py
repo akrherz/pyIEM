@@ -413,7 +413,7 @@ class MapPlot:
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """ Create our magic colorbar! """
         
-
+        clevlabels = kwargs.get('clevlabels', clevs)
 
         under = clevs[0]-(clevs[1]-clevs[0])
         over = clevs[-1]+(clevs[-1]-clevs[-2])
@@ -425,9 +425,10 @@ class MapPlot:
                                      ticks=None,
                                      spacing='uniform',
                                      orientation='vertical')
-        for i, lev in enumerate(clevs):
+        for i, (lev, lbl) in enumerate(zip(clevs, clevlabels)):
             y = float(i) / (len(clevs) -1)
-            txt = cb2.ax.text(0.5, y, '%g' % (lev,), va='center', ha='center')
+            fmt = '%s' if type(lbl) == type('a') else '%g'
+            txt = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
             txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                         foreground="w")])
             
@@ -472,7 +473,7 @@ class MapPlot:
         self.map.hexbin(x, y, C=vals, norm=norm,
                                cmap=cmap, zorder=Z_FILL)
 
-        self.draw_colorbar(clevs, cmap, norm)
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
@@ -489,7 +490,7 @@ class MapPlot:
         if kwargs.get("clip_on", True):
             self.draw_mask()
 
-        self.draw_colorbar(clevs, cmap, norm)
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
@@ -549,7 +550,7 @@ class MapPlot:
                           cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
         self.draw_mask()
             
-        self.draw_colorbar(clevs, cmap, norm)
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
