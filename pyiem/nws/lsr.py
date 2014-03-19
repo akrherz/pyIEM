@@ -47,6 +47,10 @@ class LSR(object):
         if val != '':
             self.magnitude_f = float(val)
 
+    def get_dbtype(self):
+        ''' Return the typecode used in the database for this event type '''
+        return reference.lsr_events.get(self.typetext, None)
+
     def sql(self, txn):
         ''' Provided a database transaction object, persist this LSR '''
         table = "lsrs_%s" % (self.utcvalid.year,)
@@ -56,7 +60,7 @@ class LSR(object):
                values (%s, %s, %s, %s, %s, %s, 
                %s, %s, %s, %s, %s)"""
         args = (self.utcvalid, 
-                reference.lsr_events.get(self.typetext, None),
+                self.get_dbtype(),
                 self.magnitude_f, self.city, self.county, self.state,
                 self.source, self.remark, wkt, self.wfo, self.typetext)
         txn.execute(sql, args)
