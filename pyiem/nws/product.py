@@ -7,7 +7,7 @@ import datetime
 import re
 
 import pytz
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, MultiPolygon
 
 from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
@@ -47,6 +47,7 @@ class TextProductSegment(object):
         self.process_time_mot_loc()
         
         # 
+        self.giswkt = None
         self.sbw = self.process_latlon()
 
         # tags
@@ -141,6 +142,8 @@ class TextProductSegment(object):
             lon = 0 - float(pr[1]) / 100.00
             pts.append( (lon, lat) )
         pts.append( pts[0] )
+        
+        self.giswkt = 'SRID=4326;%s' % (MultiPolygon([ Polygon( pts ) ]).wkt,)
         return Polygon( pts )
 
         
