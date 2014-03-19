@@ -8,6 +8,7 @@ setup(
     author='daryl herzmann',
     author_email='akrherz@gmail.com',
     packages=['pyiem', 'pyiem.nws', 'pyiem.nws.products'],
+    package_data={'pyiem': ['data/*',]},
     url='https://github.com/akrherz/pyIEM/',
     license='Apache',
     description='Collection of things that may help with processing weather data.',
