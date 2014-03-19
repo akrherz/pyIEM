@@ -153,8 +153,15 @@ class VTEC:
 
     def url(self, year):
         """ Generate a VTEC url string needed """
-        return "%s-%s-%s-%s-%s-%s-%04i" % (year, self.status, self.action,\
+        return "%s-%s-%s-%s-%s-%s-%04i" % (year, self.status, self.action,
                self.office4, self.phenomena, self.significance, self.ETN)
+
+    def getID(self, year):
+        ''' Return a custom string identifier for this VTEC product 
+        This is used by the Live client '''
+        return '%s-%s-%s-%s-%04i' % (year, self.office4,
+                                     self.phenomena, self.significance, 
+                                     self.ETN)
 
     def __str__(self):
         return self.line

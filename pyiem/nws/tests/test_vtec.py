@@ -6,6 +6,11 @@ from pyiem import iemtz
 
 class TestObservation(unittest.TestCase):
     
+    def test_getID(self):
+        ''' check that getID() works as we expect '''
+        v = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
+        self.assertEqual(v[0].getID(2005), '2005-KJAN-TO-W-0130')
+    
     def test_begints(self):
         """ check vtec.begints Parsing """
         v = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
