@@ -549,7 +549,8 @@ class MapPlot:
         self.map.contourf(x, y, vals, clevs,
                           cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
         self.draw_mask()
-            
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
