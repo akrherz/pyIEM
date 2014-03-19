@@ -472,7 +472,8 @@ class MapPlot:
         x, y = self.map(lons, lats)
         self.map.hexbin(x, y, C=vals, norm=norm,
                                cmap=cmap, zorder=Z_FILL)
-
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
@@ -489,7 +490,8 @@ class MapPlot:
 
         if kwargs.get("clip_on", True):
             self.draw_mask()
-
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
         if kwargs.has_key('units'):
@@ -613,7 +615,9 @@ class MapPlot:
                 
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
-
+            
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
         
@@ -671,7 +675,8 @@ class MapPlot:
                 
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
-
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
         
@@ -735,7 +740,8 @@ class MapPlot:
                 
             poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
-
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
 
