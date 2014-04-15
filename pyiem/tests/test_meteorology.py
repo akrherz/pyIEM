@@ -4,6 +4,14 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_dewpoint(self):
+        """ test out computation of dew point """
+        for t0,r0,a0 in [[80,80,73.42], [80,20,35.87]]:
+            t = datatypes.temperature(t0, 'F')
+            rh = datatypes.humidity(r0, '%')
+            dwpk = meteorology.dewpoint(t, rh)
+            self.assertAlmostEqual( dwpk.value("F"), a0, 2)
+
     def test_heatindex(self):
         ''' Test our heat index calculations '''
         t = datatypes.temperature(80.0, 'F')

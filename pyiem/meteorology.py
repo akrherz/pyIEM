@@ -75,6 +75,14 @@ def heatindex(temperature, polyarg):
              -((4.81975e-11)*t**3*rh**3))
     return dt.temperature(hdx, 'F')
     
+def dewpoint(temperature, relhumid):
+    """
+    Compute Dew Point given a temperature and RH%
+    """
+    tmpk = temperature.value("K")
+    relh = relhumid.value("%")
+    dwpk = tmpk / (1+ 0.000425 * tmpk * -(np.log10(relh/100.0)) )
+    return dt.temperature(dwpk, 'K')
 
 def relh(temperature, dewpoint):
     """
