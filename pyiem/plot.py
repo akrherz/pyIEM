@@ -681,7 +681,7 @@ class MapPlot:
 
         
 
-    def fill_cwas(self, data,
+    def fill_cwas(self, data, labels={},
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
                   bins=np.arange(0,101,10),
                   lblformat='%.0f', cmap=maue(), **kwargs):
@@ -726,7 +726,7 @@ class MapPlot:
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
                 mx, my = thismap(self.map.cwas_info[nshape]['LON'],
                                   self.map.cwas_info[nshape]['LAT'])
-                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
+                txt = thisax.text(mx, my, lblformat % (labels.get(cwa, val),), zorder=100,
                          ha='center', va='center')
                 txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                          foreground="w")])
