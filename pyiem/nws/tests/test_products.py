@@ -95,6 +95,18 @@ class TestProducts(unittest.TestCase):
     
     def test_vtec(self):
         ''' Simple test of VTEC parser '''
+        # Remove cruft first
+        self.txn.execute("""
+            DELETE from warnings_2005 WHERE 
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
+            significance = 'W' and gtype = 'C'
+        """)
+        self.txn.execute("""
+            SELECT issue from sbw_2005 WHERE
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
+            significance = 'W' and status = 'NEW'
+        """)
+        
         ugc_provider = {'MSC091': UGC('MS', 'C', '091', 'DARYL', ['XXX'])}
         nwsli_provider = {'AMWI4': NWSLI('AMWI4', 'Ames', ['XXX'], -99, 44)}
         prod = vtecparser( get_file('TOR.txt') , ugc_provider=ugc_provider,
