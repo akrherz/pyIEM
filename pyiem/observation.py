@@ -64,10 +64,13 @@ class Observation(object):
                 self.data[key] = row[key]
         return True
         
-    def save(self, txn):
+    def save(self, txn, force_current_log=False):
         """
         Save this observation to the database via a psycopg2 transaction
         @param txn is a psycopg2 transaction
+        @param force_current_log boolean - make sure this observation goes to
+        the current_log table in the case that it is old, this allows 
+        reprocessing by the METAR ingestor et al
         @return: boolean if this updated one row each
         """
         if self.data['valid'].tzinfo:
@@ -99,7 +102,32 @@ class Observation(object):
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s 
         and t.network = %(network)s and %(valid)s >= c.valid """
         txn.execute(sql, self.data)
-        #print self.data['valid'], self.data['station'], txn.rowcount
+        if force_current_log and txn.rowcount == 0:
+            sql = """
+            INSERT into current_log (iemid, tmpf, dwpf, drct, sknt, indoor_tmpf,
+            tsf0, tsf1, tsf2, tsf3, rwis_subf, scond0, scond1, scond2, scond3,
+            valid, pday, c1smv, c2smv, c3smv, c4smv, c5smv, c1tmpf, c2tmpf, 
+            c3tmpf, c4tmpf, c5tmpf, pres, relh, srad, vsby, phour, gust, raw,
+            alti, mslp, qc_tmpf, qc_dwpf, rstage, ozone, co2, pmonth, skyc1,
+            skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter, 
+            discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
+            max_tmpf_24hr, min_tmpf_24hr, presentwx) VALUES(
+            (SELECT iemid from stations where id = %(station)s and
+            network = %(network)s), %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s, 
+            %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s, 
+            %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
+            %(valid)s, %(pday)s, %(c1smv)s, %(c2smv)s, %(c3smv)s, %(c4smv)s, 
+            %(c5smv)s, %(c1tmpf)s, %(c2tmpf)s, %(c3tmpf)s, %(c4tmpf)s, 
+            %(c5tmpf)s, %(pres)s, %(relh)s, %(srad)s, %(vsby)s, %(phour)s, 
+            %(gust)s, %(raw)s, %(alti)s, %(mslp)s, %(qc_tmpf)s, %(qc_dwpf)s, 
+            %(rstage)s, %(ozone)s, %(co2)s, %(pmonth)s, %(skyc1)s,
+            %(skyc2)s, %(skyc3)s, %(skyc4)s, %(skyl1)s, %(skyl2)s, %(skyl3)s, 
+            %(skyl4)s, %(pcounter)s, %(discharge)s, %(p03i)s, %(p06i)s, 
+            %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
+            %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(presentwx)s
+            )
+            """
+            txn.execute(sql, self.data)
         
         # Update summary table
         sql = """UPDATE summary s SET
