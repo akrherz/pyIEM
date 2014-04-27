@@ -20,6 +20,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
+from matplotlib.collections import PatchCollection
 import mx.DateTime
 import numpy as np
 from scipy.interpolate import griddata, Rbf
@@ -33,6 +34,8 @@ import sys
 import subprocess
 import shutil
 import datetime
+import psycopg2
+from shapely.wkb import loads
 
 
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
@@ -389,12 +392,19 @@ class MapPlot:
                                       urcrnrlon=-154.0, llcrnrlon=-161.0,
                                       resolution='l', ax=self.hi_ax,
                                       fix_aspect=False)
-                self.pr_map.fillcontinents(color='0.7',zorder=0)
-                self.ak_map.fillcontinents(color='0.7',zorder=0)
-                self.hi_map.fillcontinents(color='0.7',zorder=0)
+        
+        if self.pr_map:
+            self.pr_map.fillcontinents(color='0.7',zorder=0)
+        if self.ak_map:
+            self.ak_map.fillcontinents(color='0.7',zorder=0)
+        if self.hi_map:
+            self.hi_map.fillcontinents(color='0.7',zorder=0)
+        self.map.fillcontinents(color='0.7', zorder=0) # Read docs on 0 meaning
 
-        self.map.fillcontinents(color='1.0', zorder=0) # Read docs on 0 meaning
-        self.map.drawstates(linewidth=1.5, zorder=Z_OVERLAY, ax=self.ax)
+        if not kwargs.has_key('nostates'):
+            self.map.drawstates(linewidth=1.5, zorder=Z_OVERLAY, ax=self.ax)
+        if kwargs.has_key('cwas'):
+            self.drawcwas()
         if not kwargs.get('nologo'):
             self.iemlogo()
         if kwargs.has_key("title"):
@@ -620,8 +630,78 @@ class MapPlot:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
+    def fill_ugc_counties(self, data, bins=np.arange(0,101,10), **kwargs):
+        """ Fill UGC counties based on the data dict provided, please """
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(bins, cmap.N)
         
+        pgconn = psycopg2.connect(database='postgis', host='iemdb', 
+                                  user='nobody')
+        cursor = pgconn.cursor()
 
+        cursor.execute("""
+        SELECT ugc, ST_asEWKB(simple_geom) from ugcs WHERE end_ts is null
+        and substr(ugc,3,1) = 'C'
+        """)
+        akpatches = []
+        hipatches = []
+        prpatches = []
+        patches = []
+        for row in cursor:
+            ugc = row[0]
+            if data.get(ugc) is None:
+                c = 'white'
+            else:
+                c = cmap( norm([data[ugc],]) )[0]
+            geom = loads( str(row[1]) )
+            for polygon in geom:
+                if polygon.exterior is None:
+                    continue
+                a = np.asarray(polygon.exterior)
+                if ugc[:2] == 'AK':
+                    if self.ak_ax is None:
+                        continue
+                    x,y = self.ak_map(a[:,0], a[:,1])
+                    a = zip(x,y)
+                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
+                    akpatches.append(p)
+                    pass
+                elif ugc[:2] == 'HI':
+                    if self.hi_ax is None:
+                        continue
+                    x,y = self.hi_map(a[:,0], a[:,1])
+                    a = zip(x,y)
+                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
+                    hipatches.append(p)
+                elif ugc[:2] == 'PR':
+                    if self.pr_ax is None:
+                        continue
+                    x,y = self.pr_map(a[:,0], a[:,1])
+                    a = zip(x,y)
+                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
+                    prpatches.append(p)
+                else:
+                    x,y = self.map(a[:,0], a[:,1])
+                    a = zip(x,y)
+                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
+                    patches.append(p)
+
+        if len(patches) > 0:
+            self.ax.add_collection(
+                        PatchCollection(patches,match_original=True))
+        if len(akpatches) > 0 and self.ak_ax is not None:
+            self.ak_ax.add_collection(
+                        PatchCollection(akpatches,match_original=True))
+        if len(hipatches) > 0 and self.hi_ax is not None:
+            self.hi_ax.add_collection(
+                        PatchCollection(hipatches,match_original=True))
+        if len(prpatches) > 0 and self.pr_ax is not None:
+            self.pr_ax.add_collection(
+                        PatchCollection(prpatches,match_original=True))
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
+        self.draw_colorbar(bins, cmap, norm, **kwargs)
+    
     def fill_states(self, data, 
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/states',
                   bins=np.arange(0,101,10),
@@ -744,7 +824,12 @@ class MapPlot:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-
+    def drawcwas(self):
+        ''' Draw CWAS '''
+        self.map.readshapefile('/mesonet/data/gis/static/shape/4326/nws/cwas', 'c')
+        for nshape, seg in enumerate(self.map.c):
+            poly=Polygon(seg, fill=False, ec='k', lw=.8, zorder=Z_POLITICAL)
+            self.ax.add_patch(poly)
 
     def drawcounties(self):
         """ Draw counties """
