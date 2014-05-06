@@ -47,6 +47,14 @@ class TestObservation(unittest.TestCase):
         spc = spcpts.SPCPTS( tp )
         self.assertAlmostEqual(spc.outlooks[0].geometry.area, 10.12 , 2)
     
+    def test_bug_140506_day2(self):
+        ''' Bug found in production '''
+        data = get_file('PTSDY2.txt')
+        tp = product.TextProduct( data )
+        spc = spcpts.SPCPTS(tp)
+        #spc.draw_outlooks()
+        self.assertEquals(len(spc.outlooks), 6 )
+    
     def test_bug(self):
         ''' Test bug list index outof range '''
         data = get_file('PTSDY1_2.txt')
@@ -65,7 +73,7 @@ class TestObservation(unittest.TestCase):
         data = get_file('SPCPTS.txt')
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
-        spc.draw_outlooks()
+        #spc.draw_outlooks()
         self.assertEqual(spc.issue, datetime.datetime(2013, 7, 19, 19, 52, 
                                 tzinfo=pytz.timezone("UTC")) )
         self.assertEqual(spc.valid, datetime.datetime(2013, 7, 19, 20, 0, 

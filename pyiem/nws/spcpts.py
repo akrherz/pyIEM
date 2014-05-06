@@ -163,10 +163,19 @@ def str2multipolygon(s):
         
         ls = LineString(segment)
         if ls.is_valid:
-            newls = LineString(segment).intersection(CONUSPOLY)
-            if newls.is_valid and newls.geom_type == 'LineString':
+            newls = ls.intersection(CONUSPOLY)
+            if newls.is_valid:
+                if newls.geom_type == 'MultiLineString':
+                    maxlength = 0
+                    for geom in newls.geoms:
+                        if geom.length > maxlength:
+                            newls2 = geom
+                            maxlength = geom.length
+                    newls = newls2
                 x,y = newls.xy
                 segment = zip(x,y)
+            else:
+                print '     Intersection landed here? %s' % (newls.is_valid,)
         else:
             print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
 
@@ -224,6 +233,8 @@ def str2multipolygon(s):
             continue
         print '     polygon: %s has area: %s' % (i, p.area)
         res.append( p )
+    if len(res) == 0:
+        raise Exception("Processed no geometries, this is a bug!")
     return MultiPolygon(res)
     
 
