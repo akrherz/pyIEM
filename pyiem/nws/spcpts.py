@@ -9,6 +9,7 @@ import numpy as np
 
 from shapely.geometry import Polygon, LineString, Point, MultiPolygon
 from shapely.geometry.base import geom_factory
+from shapely.geometry.polygon import LinearRing, orient
 import shapely.geos
 import datetime
 import os
@@ -108,6 +109,7 @@ def str2multipolygon(s):
     Convert string PTS data into a polygon
     """
     tokens = re.findall("([0-9]{8})", s.replace("\n",""))
+    ''' First we generate a list of segments, based on what we found '''
     segments = []
     pts = []
     for token in tokens:
@@ -130,17 +132,34 @@ def str2multipolygon(s):
     
     ''' We have some work to do '''
     load_conus_data()
-    conus_sz = np.shape(CONUS)[0]
-    cw_polygons = []
-    ccw_polygons = []
-    interior = None
+    pie = CONUS
+
+    current_exterior = None
+    current_interior = []
+    polys = []
+    
     for i, segment in enumerate(segments):
+        print 'Iterate: %s/%s, len(segment): %s' % (i+1, len(segments), 
+                                                    len(segment))
         if segment[0] == segment[-1]:
-            print '===== segment %s is interior polygon!' % (i,)
-            if interior is not None:
-                raise Exception("Found two interior rings, aborting...")
-            interior = segment
+            print '     segment %s is closed polygon!' % (i,)
+            lr = LinearRing( LineString(segment))
+            if not lr.is_ccw:
+                print '     segment %s is clockwise!' % (i,)
+                if current_exterior is not None:
+                    print '     Creating Polygon as we have two CW polys!'
+                    polys.append( Polygon(current_exterior, current_interior))
+                current_exterior = segment
+                continue
+            if current_exterior is None:
+                raise Exception("Found interior with no exterior! aborting...")
+            current_interior.append( Polygon(segment) )
             continue
+        
+        if current_exterior is not None:
+            print '     Creating Polygon because current_exterior is defined'
+            polys.append( Polygon(current_exterior, current_interior))
+            current_exterior = None
         
         ls = LineString(segment)
         if ls.is_valid:
@@ -150,73 +169,61 @@ def str2multipolygon(s):
                 segment = zip(x,y)
         else:
             print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
-        ''' Be safe and always pick the point along the CONUS that is always
-            inside the polygon, otherwise could end up with slivers '''
-        distance = ((CONUS[:,0] - segment[0][0])**2 + 
-                    (CONUS[:,1] - segment[0][1])**2)**.5
+
+        line = np.array( segment )
+
+        ''' Compute the intersection points of this segment and what is left
+            of the pie'''                    
+        distance = ((pie[:,0] - line[0,0])**2 + 
+                    (pie[:,1] - line[0,1])**2)**.5
         idx1 = np.argmin(distance) -1
-        distance = ((CONUS[:,0] - segment[-1][0])**2 + 
-                    (CONUS[:,1] - segment[-1][1])**2)**.5
+        distance = ((pie[:,0] - line[-1,0])**2 + 
+                    (pie[:,1] - line[-1,1])**2)**.5
         idx2 = np.argmin(distance) +1
 
-        poly = np.array( segment )
-        if idx2 > (conus_sz * 0.75) and idx1 < (conus_sz * .25):
-            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CCW' % (i,
-                                                    idx1, idx2)
-            poly = np.concatenate([poly, CONUS[idx2:]])
-            poly = np.concatenate([poly, CONUS[:idx1]])
-            ccw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
-        elif idx2 < (conus_sz * 0.25) and idx1 > (conus_sz * .75):
-            print 'i:%s idx1:%s idx2:%s Crossing start/finish line in CW' % (i,
-                                                    idx1, idx2)
-            poly = np.concatenate([poly, CONUS[idx2:idx1]])
-            cw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
-        elif idx2 > idx1: # Simple case
-            print 'i:%s idx1:%s idx2:%s Simple CW' % (i, idx1, idx2)
-            poly = np.concatenate([poly, CONUS[idx2:]])
-            poly = np.concatenate([poly, CONUS[:idx1]])
-            cw_polygons.append( Polygon(np.vstack([poly, poly[0,:]])).buffer(0) )
+        sz = np.shape(pie)[0]
+        print '     computed intersections idx1: %s/%s idx2: %s/%s' % (idx1,
+                                                                sz, idx2, sz)
+
+        if idx2 > (sz * 0.75) and idx1 < (sz * .25):
+            print '     CASE 1: idx1:%s idx2:%s Crossing start/finish line' % (
+                idx1, idx2)
+            ''' We we piece the puzzle together! '''
+            line = np.concatenate([line, pie[idx2:]])
+            line = np.concatenate([line, pie[:idx1]])
+            pie = line
+
+        elif idx2 < (sz * 0.25) and idx1 > (sz * .75):
+            print '     CASE 2 idx1:%s idx2:%s outside of start finish' % (
+                idx1, idx2)
+            ''' We we piece the puzzle together! '''
+            line = np.concatenate([pie[idx2:idx1], line])
+            pie = line
         elif idx1 > idx2: # Simple case
-            poly = np.concatenate([poly, CONUS[idx2:idx1]])
-            newpolys = Polygon(np.vstack([poly, poly[0,:]])).buffer(0)
-            if newpolys.geom_type == 'Polygon':
-                newpolys = [newpolys]
-            for poly in list(newpolys):
-                print 'CCW i:%s idx1:%s idx2:%s type: %s' % (i, idx1, idx2,
-                                                                poly.geom_type)
-                ccw_polygons.append( poly )
+            print '     CASE 3 idx1:%s idx2:%s Simple CCW' % (idx1, idx2)
+            line = np.concatenate([line, pie[idx2:idx1]])
+            pie = line
+        elif idx2 > idx1: # Simple case
+            print '     CASE 4 idx1:%s idx2:%s Simple CW' % (idx1, idx2)
+            line = np.concatenate([pie[:idx1], line])
+            line = np.concatenate([line, pie[idx2:]])
+            pie = line
+        else:
+            raise Exception('this should not happen!')
+
+    print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
+                                                    np.shape(pie)[0],)
+    polys.append( Polygon(pie) )
+
 
     res = []    
-    for i, ccwpoly in enumerate(ccw_polygons):
-        if not ccwpoly.is_valid:
-            print 'ERROR: ccwpoly %s is invalid!' % (i,)
+    print 'Resulted in len(polys): %s, now quality controlling' % (len(polys),)
+    for i, p in enumerate(polys):
+        if not p.is_valid:
+            print '     ERROR: polygon %s is invalid!' % (i,)
             continue
-        if ccwpoly.exterior is None:
-            print 'ERROR ccwpoly.exterior is none?'
-            continue
-        print '-> Running check for CCW polygon: %s area: %s type: %s' % (i,
-                                                                 ccwpoly.area,
-                                                            type(ccwpoly))
-        for j, cwpoly in enumerate(cw_polygons):
-            if not cwpoly.is_valid:
-                print 'ERROR: cwpoly %s is invalid!' % (j,)
-                continue
-            print '--> checking against cwpoly %s' % (j,)
-            if ccwpoly.overlaps(cwpoly):
-                ccwpoly = ccwpoly.intersection(cwpoly)
-                print '---> ccwpoly %s overlaps cwpoly %s result %s' % (i,j,
-                                                        type(ccwpoly))
-        res.append( ccwpoly )
-    if len(ccw_polygons) == 0:
-        respoly = cw_polygons[0]
-        for i in range(1, len(cw_polygons)):
-            print 'Running cw intersection for polygon %s' % (i,)
-            respoly = respoly.intersection(cw_polygons[i])
-        if interior:
-            print 'Setting interior polygon to this polygon!'
-            respoly = Polygon(list(respoly.exterior.coords), [interior])
-        return MultiPolygon([ respoly ])
-    print res
+        print '     polygon: %s has area: %s' % (i, p.area)
+        res.append( p )
     return MultiPolygon(res)
     
 
@@ -326,7 +333,8 @@ class SPCPTS(object):
             for line in segment.split("\n"):
                 if re.match("^(D[3-8]|EXTM|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
                     if threshold is not None:
-                        print 'Category:', category, 'Threshold:', threshold
+                        print '\n===== Category: %s Threshold: %s ======' % (
+                                    category, threshold)
                         self.outlooks.append(SPCOutlook(category, threshold,
                                                  str2multipolygon( data  ) ) ) 
                     threshold = line.split()[0]

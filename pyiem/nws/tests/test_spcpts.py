@@ -40,15 +40,28 @@ class TestObservation(unittest.TestCase):
         res = spcpts.str2multipolygon(data)
         self.assertAlmostEqual(res[0].area, 624.10, 2) 
     
-    def test_111913(self):
-        ''' Test a exception with str2multipolygon '''
+    def test_complex(self):
+        ''' Test our processing '''
         data = get_file('PTSDY3.txt')
+        tp = product.TextProduct( data )
+        spc = spcpts.SPCPTS( tp )
+        self.assertAlmostEqual(spc.outlooks[0].geometry.area, 10.12 , 2)
+    
+    def test_bug(self):
+        ''' Test bug list index outof range '''
+        data = get_file('PTSDY1_2.txt')
         tp = product.TextProduct( data )
         self.assertRaises(Exception, spcpts.SPCPTS, tp )
     
+    def test_complex_2(self):
+        ''' Test our processing '''
+        data = get_file('PTSDY1.txt')
+        tp = product.TextProduct( data )
+        spc = spcpts.SPCPTS( tp )
+        self.assertAlmostEqual(spc.outlooks[0].geometry.area,  23.25, 2 )
+    
     def test_str1(self):
         """ check spcpts parsing """
-        basedir = os.path.dirname(__file__)
         data = get_file('SPCPTS.txt')
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
