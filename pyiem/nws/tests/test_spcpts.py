@@ -45,7 +45,8 @@ class TestObservation(unittest.TestCase):
         data = get_file('PTSDY3.txt')
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
-        self.assertAlmostEqual(spc.outlooks[0].geometry.area, 10.12 , 2)
+        outlook = spc.get_outlook('ANY SEVERE', '0.05')
+        self.assertAlmostEqual(outlook.geometry.area, 10.12 , 2)
     
     def test_bug_140506_day2(self):
         ''' Bug found in production '''
@@ -59,14 +60,17 @@ class TestObservation(unittest.TestCase):
         ''' Test bug list index outof range '''
         data = get_file('PTSDY1_2.txt')
         tp = product.TextProduct( data )
-        self.assertRaises(Exception, spcpts.SPCPTS, tp )
+        spc = spcpts.SPCPTS( tp )
+        self.assertEquals( len(spc.outlooks), 1)
     
     def test_complex_2(self):
         ''' Test our processing '''
         data = get_file('PTSDY1.txt')
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
-        self.assertAlmostEqual(spc.outlooks[0].geometry.area,  23.25, 2 )
+        #spc.draw_outlooks()
+        outlook = spc.get_outlook('HAIL', '0.05')
+        self.assertAlmostEqual(outlook.geometry.area,  47.65, 2 )
     
     def test_str1(self):
         """ check spcpts parsing """

@@ -4,13 +4,10 @@
 """
 import re
 import shapelib
-from ctypes import c_void_p, byref
 import numpy as np
 
 from shapely.geometry import Polygon, LineString, Point, MultiPolygon
-from shapely.geometry.base import geom_factory
-from shapely.geometry.polygon import LinearRing, orient
-import shapely.geos
+from shapely.geometry.polygon import LinearRing
 import datetime
 import os
 
@@ -137,7 +134,7 @@ def str2multipolygon(s):
     current_exterior = None
     current_interior = []
     polys = []
-    
+    dangling = False
     for i, segment in enumerate(segments):
         print 'Iterate: %s/%s, len(segment): %s' % (i+1, len(segments), 
                                                     len(segment))
@@ -161,6 +158,7 @@ def str2multipolygon(s):
             polys.append( Polygon(current_exterior, current_interior))
             current_exterior = None
         
+        dangling = True
         ls = LineString(segment)
         if ls.is_valid:
             newls = ls.intersection(CONUSPOLY)
@@ -181,6 +179,13 @@ def str2multipolygon(s):
 
         line = np.array( segment )
 
+        ''' Does this line segment reside inside the current polygon? '''
+        if not Polygon(pie).intersects(ls):
+            print '     ! New line segment does not intersect current polygon'
+            print '     Creating Polygon from current polygon'
+            polys.append( Polygon(pie) )
+            pie = CONUS
+
         ''' Compute the intersection points of this segment and what is left
             of the pie'''                    
         distance = ((pie[:,0] - line[0,0])**2 + 
@@ -194,35 +199,29 @@ def str2multipolygon(s):
         print '     computed intersections idx1: %s/%s idx2: %s/%s' % (idx1,
                                                                 sz, idx2, sz)
 
-        if idx2 > (sz * 0.75) and idx1 < (sz * .25):
-            print '     CASE 1: idx1:%s idx2:%s Crossing start/finish line' % (
+        if idx1 < idx2:
+            print '     CASE 1: idx1:%s idx2:%s Crosses start finish' % (
                 idx1, idx2)
             ''' We we piece the puzzle together! '''
             line = np.concatenate([line, pie[idx2:]])
             line = np.concatenate([line, pie[:idx1]])
             pie = line
-
-        elif idx2 < (sz * 0.25) and idx1 > (sz * .75):
-            print '     CASE 2 idx1:%s idx2:%s outside of start finish' % (
-                idx1, idx2)
-            ''' We we piece the puzzle together! '''
-            line = np.concatenate([pie[idx2:idx1], line])
-            pie = line
-        elif idx1 > idx2: # Simple case
-            print '     CASE 3 idx1:%s idx2:%s Simple CCW' % (idx1, idx2)
+        elif idx1 > idx2:
+            print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
             line = np.concatenate([line, pie[idx2:idx1]])
             pie = line
-        elif idx2 > idx1: # Simple case
-            print '     CASE 4 idx1:%s idx2:%s Simple CW' % (idx1, idx2)
-            line = np.concatenate([pie[:idx1], line])
-            line = np.concatenate([line, pie[idx2:]])
-            pie = line
         else:
-            raise Exception('this should not happen!')
+            raise Exception('this should not happen, idx1 == idx2!')
 
-    print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
+    if current_exterior is not None:
+        print '     Creating Polygon because current_exterior is defined'
+        polys.append( Polygon(current_exterior, current_interior))
+        current_exterior = None
+
+    if dangling:
+        print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
                                                     np.shape(pie)[0],)
-    polys.append( Polygon(pie) )
+        polys.append( Polygon(pie) )
 
 
     res = []    
@@ -264,11 +263,18 @@ class SPCPTS(object):
         self.find_issue_expire( tp )
         self.find_outlooks( tp )
     
+    def get_outlook(self, category, threshold):
+        ''' Get an outlook by category and threshold '''
+        for outlook in self.outlooks:
+            if outlook.category == category and outlook.threshold == threshold:
+                return outlook
+        return None
+    
     def draw_outlooks(self):
+        ''' For debugging, draw the outlooks on a simple map for inspection!'''
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
         load_conus_data()
-        i = 0
         for outlook in self.outlooks:
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -279,8 +285,10 @@ class SPCPTS(object):
             ax.set_title('Category %s Threshold %s' % (outlook.category, 
                                                    outlook.threshold))
             ax.legend(loc=3)
-            fig.savefig('/tmp/%02d.png' % (i,))
-            i+= 1
+            fn = '/tmp/%s_%s_%s.png' % (self.issue.strftime("%Y%m%d%H%M"),
+                                        outlook.category, outlook.threshold)
+            print ':: creating plot %s' % (fn,)
+            fig.savefig( fn )
             del fig
             del ax
     
@@ -334,28 +342,28 @@ class SPCPTS(object):
     
     def find_outlooks(self, tp):
         """ Find the outlook sections within the text product! """
-        data = ""
         for segment in tp.text.split("&&")[:-1]:
             # We need to figure out the probabilistic or category
             tokens = re.findall("\.\.\. (.*) \.\.\.", segment)
             category = tokens[0].strip()
+            point_data = {}
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
                 if re.match("^(D[3-8]|EXTM|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
-                    if threshold is not None:
-                        print '\n===== Category: %s Threshold: %s ======' % (
-                                    category, threshold)
-                        self.outlooks.append(SPCOutlook(category, threshold,
-                                                 str2multipolygon( data  ) ) ) 
-                    threshold = line.split()[0]
-                    data = ""
+                    newthreshold = line.split()[0]
+                    if threshold is not None and threshold == newthreshold:
+                        point_data[threshold] += " 99999999 "
+                    threshold = newthreshold
                 if threshold is None:
                     continue
-                data += line
+                if not point_data.has_key(threshold):
+                    point_data[threshold] = ""
+                point_data[threshold] += line.replace(threshold, " ")
                 
-            if threshold is not None:
-                print 'Category:', category, 'Threshold:', threshold
-                self.outlooks.append(SPCOutlook(category, threshold,
-                                                str2multipolygon( data  ) ) ) 
+            for threshold in point_data.keys():
+                print "==== Category: '%s' Threshold; '%s' =====" % (category, 
+                                                                    threshold)
+                mp = str2multipolygon( point_data[threshold]  )
+                self.outlooks.append( SPCOutlook(category, threshold, mp) ) 
                 
