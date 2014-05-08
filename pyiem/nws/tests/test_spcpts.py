@@ -48,6 +48,14 @@ class TestObservation(unittest.TestCase):
         outlook = spc.get_outlook('ANY SEVERE', '0.05')
         self.assertAlmostEqual(outlook.geometry.area, 10.12 , 2)
     
+    def test_bug_140507_day1(self):
+        ''' Bug found in production with GEOS Topology Exception '''
+        data = get_file('PTSDY1_topoexp.txt')
+        tp = product.TextProduct( data )
+        spc = spcpts.SPCPTS(tp)
+        #spc.draw_outlooks()
+        self.assertEquals(len(spc.outlooks), 14 )
+    
     def test_bug_140506_day2(self):
         ''' Bug found in production '''
         data = get_file('PTSDY2.txt')
