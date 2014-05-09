@@ -172,7 +172,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.get_jabbers('http://localhost')[0], ('Weather '
     +'Prediction Center issues Mesoscale Precipitation Discussion #98'
     +' http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php'
-    +'?md=98&yr=2013'))
+    +'?md=98&amp;yr=2013'))
     
     def test_mcdparser(self):
         ''' Test Parsing of MCD Product '''

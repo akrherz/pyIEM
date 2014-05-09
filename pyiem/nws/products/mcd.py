@@ -3,6 +3,7 @@
  parsing of Weather Prediction Center's MPD
 '''
 import re
+import cgi
 
 from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon as ShapelyPolygon
@@ -76,7 +77,8 @@ class MCDProduct( TextProduct ):
 
     def get_jabbers(self, uri):
         ''' Return plain text and html variants for a Jabber msg '''
-        spcuri = self.get_url()
+        # convert htmlentities
+        spcuri = cgi.escape( self.get_url() )
         center = 'Storm Prediction Center'
         pextra = ''
         if self.afos == 'FFGMPD':
