@@ -21,7 +21,7 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'max_gust_ts', 'max_dwpf', 'min_dwpf', 'pday', 'pmonth',
                 'snow', 'snowd', 'max_tmpf_qc', 'min_tmpf_qc', 'pday_qc',
                 'snow_qc', 'snoww', 'max_drct', 'max_srad', 'coop_tmpf',
-                'coop_valid']
+                'coop_valid', 'et_inch', 'srad_mj']
 
 
 class Observation(object):
@@ -153,7 +153,8 @@ class Observation(object):
         max_drct = coalesce(%(max_drct)s, max_drct),
         max_srad = coalesce(%(max_srad)s, max_srad),
         coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
-        coop_valid = %(coop_valid)s       
+        coop_valid = %(coop_valid)s, et_inch = %(et_inch)s,
+        srad_mj = %(srad_mj)s       
         FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
         and t.id = %(station)s and t.network = %(network)s"""
         txn.execute(sql, self.data)
