@@ -142,15 +142,18 @@ def str2multipolygon(s):
             print '     segment %s is closed polygon!' % (i,)
             lr = LinearRing( LineString(segment))
             if not lr.is_ccw:
-                print '     segment %s is clockwise!' % (i,)
+                print '     segment is clockwise!'
                 if current_exterior is not None:
                     print '     Creating Polygon as we have two CW polys!'
                     polys.append( Polygon(current_exterior, current_interior))
                 current_exterior = segment
                 continue
-            if current_exterior is None:
-                raise Exception("Found interior with no exterior! aborting...")
-            current_interior.append( Polygon(segment) )
+            print '     segment is counterclockwise!'
+            if current_exterior is None and pie is None:
+                raise Exception("Found interior with no exterior or pie defined! aborting...")
+            current_interior.append( segment )
+            print '     segment is added to current_interior, now sz=%s' % (
+                                                    len(current_interior),)
             continue
         
         if current_exterior is not None:
@@ -164,6 +167,8 @@ def str2multipolygon(s):
             newls = ls.intersection(CONUSPOLY)
             if newls.is_valid:
                 if newls.geom_type == 'MultiLineString':
+                    print '     intersection with conuspoly found %s segments' % (
+                                                len(newls.geoms),)
                     maxlength = 0
                     for geom in newls.geoms:
                         if geom.length > maxlength:
@@ -221,7 +226,7 @@ def str2multipolygon(s):
     if dangling:
         print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
                                                     np.shape(pie)[0],)
-        polys.append( Polygon(pie) )
+        polys.append( Polygon(pie, current_interior) )
 
 
     res = []    
