@@ -71,6 +71,14 @@ class TestObservation(unittest.TestCase):
         spc = spcpts.SPCPTS(tp)
         #spc.draw_outlooks()
         self.assertEquals(len(spc.outlooks), 1 )
+ 
+    def test_bug_140519_day1(self):
+        ''' 19 May 2014 tripped error with no exterior polygon found '''
+        data = get_file('PTSDY1_interior.txt')
+        tp = product.TextProduct( data )
+        spc = spcpts.SPCPTS(tp)
+        #spc.draw_outlooks()
+        self.assertEquals(len(spc.outlooks), 7 )
     
     def test_bug(self):
         ''' Test bug list index outof range '''

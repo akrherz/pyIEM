@@ -160,6 +160,7 @@ def str2multipolygon(s):
             print '     Creating Polygon because current_exterior is defined'
             polys.append( Polygon(current_exterior, current_interior))
             current_exterior = None
+            current_interior = []
         
         dangling = True
         ls = LineString(segment)
@@ -188,7 +189,9 @@ def str2multipolygon(s):
         if not Polygon(pie).intersects(ls):
             print '     ! New line segment does not intersect current polygon'
             print '     Creating Polygon from current polygon'
-            polys.append( Polygon(pie) )
+            polys.append( Polygon(pie, current_interior) )
+            print '     Resetting pie to be the CONUS'
+            current_interior = []
             pie = CONUS
 
         ''' Compute the intersection points of this segment and what is left
@@ -221,7 +224,6 @@ def str2multipolygon(s):
     if current_exterior is not None:
         print '     Creating Polygon because current_exterior is defined'
         polys.append( Polygon(current_exterior, current_interior))
-        current_exterior = None
 
     if dangling:
         print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
