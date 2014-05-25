@@ -50,7 +50,7 @@ class TestProducts(unittest.TestCase):
         ''' Did Marshall County IAZ049 get a ZR.Y '''
         self.txn.execute("""SELECT issue from warnings_2013 WHERE
         wfo = 'DMX' and eventid = 1 and phenomena = 'ZR' and 
-        significance = 'Y' and gtype = 'C' and status = 'EXB'
+        significance = 'Y' and status = 'EXB'
         and ugc = 'IAZ049' """)
         self.assertEqual( self.txn.rowcount, 1)
 
@@ -63,7 +63,7 @@ class TestProducts(unittest.TestCase):
                                                 tzinfo=pytz.timezone("UTC"))
         self.txn.execute("""SELECT expire from warnings_2013 WHERE
         wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and 
-        significance = 'W' and gtype = 'C' and status = 'CON'
+        significance = 'W' and status = 'CON'
         and ugc = 'IAZ006' """)
 
         self.assertEqual( self.txn.rowcount, 1)
@@ -85,7 +85,7 @@ class TestProducts(unittest.TestCase):
                                                 tzinfo=pytz.timezone("UTC"))
         self.txn.execute("""SELECT expire from warnings_2013 WHERE
         wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and 
-        significance = 'W' and gtype = 'C' and status = 'CAN'
+        significance = 'W' and status = 'CAN'
         and ugc = 'IAZ006' """)
 
         self.assertEqual( self.txn.rowcount, 1)
@@ -99,10 +99,10 @@ class TestProducts(unittest.TestCase):
         self.txn.execute("""
             DELETE from warnings_2005 WHERE 
             wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
-            significance = 'W' and gtype = 'C'
+            significance = 'W' 
         """)
         self.txn.execute("""
-            SELECT issue from sbw_2005 WHERE
+            DELETE from sbw_2005 WHERE
             wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
             significance = 'W' and status = 'NEW'
         """)
@@ -119,7 +119,7 @@ class TestProducts(unittest.TestCase):
         # See if we got it in the database!
         self.txn.execute("""SELECT issue from warnings_2005 WHERE
         wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
-        significance = 'W' and gtype = 'C' and status = 'NEW' """)
+        significance = 'W' and status = 'NEW' """)
         self.assertEqual( self.txn.rowcount, 3)
 
         self.txn.execute("""SELECT issue from sbw_2005 WHERE
@@ -128,7 +128,13 @@ class TestProducts(unittest.TestCase):
         self.assertEqual( self.txn.rowcount, 1)
 
         msgs = prod.get_jabbers('http://localhost')
-        self.assertEqual( msgs[0][0], 'JAN issues Tornado Warning   for ((MSC035)), ((MSC073)), DARYL [MS] till 1:15 PM CDT * AT 1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130')
+        self.assertEqual( msgs[0][0], ('JAN issues Tornado Warning for '
+            +'((MSC035)), ((MSC073)), DARYL [MS] till 1:15 PM CDT * AT '
+            +'1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A '
+            +'TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE '
+            +'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '
+            +'WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING '
+            +'THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130'))
     
     def test_01(self):
         """ process a valid LSR without blemish """

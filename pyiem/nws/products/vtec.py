@@ -93,55 +93,53 @@ class VTECProduct(TextProduct):
         fcster = self.get_signature()
         if fcster is not None:
             fcster = fcster[:24]
+        
         if vtec.action in ['NEW', 'EXB', 'EXA']:
+            ''' New Event Types! '''
             bts = vtec.begints
             if vtec.action in ["EXB", "EXA"]:
                 bts = self.valid
 
-            if segment.sbw:
-                giswkt = 'SRID=4326;%s' % (MultiPolygon([segment.sbw]).wkt,)
-                txn.execute("""
-                INSERT into """+ warning_table +""" (issue, expire, updated, 
-                gtype, wfo, eventid, status, fcster, report, phenomena, 
-                significance, geom) VALUES (%s, %s, %s, 'P', %s, %s, %s, %s, 
-                %s, %s, %s, %s)
-                RETURNING issue
-                """, (bts, vtec.endts, self.valid, vtec.office, 
-                      vtec.ETN, vtec.action, fcster, self.unixtext, 
-                      vtec.phenomena, vtec.significance, giswkt))
+            ''' For each UGC code in this segment, we create a database entry
+            TODO: we should check that these are unique before entering! '''
             for ugc in segment.ugcs:
                 txn.execute("""
                 INSERT into """+ warning_table +""" (issue, expire, updated, 
-                gtype, wfo, eventid, status, fcster, report, ugc, phenomena, 
-                significance, geom) VALUES (%s, %s, %s, 'C', %s, %s, %s, %s, 
-                %s, %s, %s, %s, (SELECT geom from nws_ugc where ugc = %s))
+                wfo, eventid, status, fcster, report, ugc, phenomena, 
+                significance, gid, init_expire, product_issue, hvtec_nwsli) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                get_gid(%s, %s), %s, %s, %s)
                 RETURNING issue
                 """, (bts, vtec.endts, self.valid, vtec.office, 
                       vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc), 
-                      vtec.phenomena, vtec.significance, str(ugc)))
+                      vtec.phenomena, vtec.significance, str(ugc), 
+                      self.valid, vtec.endts, self.valid, 
+                      segment.get_hvtec_nwsli()))
                 if txn.rowcount != 1:
                     print 'Warning: do_sql_vtec inserted %s row, should be 1' % (
                                         txn.rowcount, )
+
         elif vtec.action in ['COR',]:
+            ''' A previous issued product is being corrected '''
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
-            svs = svs || %s, issue = %s WHERE
-            wfo = %s and eventid = %s and ugc in """+ugcstring+""" and significance = %s
-            and phenomena = %s and gtype = 'C' 
+            svs = svs || %s, issue = %s, init_expire = %s WHERE
+            wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
+            and significance = %s and phenomena = %s  
             """, (vtec.endts, vtec.action, self.unixtext, vtec.begints,
-                  vtec.office, vtec.ETN, 
+                  vtec.endts, vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
                 print 'Warning: do_sql_vtec updated %s row, should %s rows' %(
                                         txn.rowcount, len(segment.ugcs))
 
         elif vtec.action in ['CAN','UPG', 'EXT']:
+            ''' These are terminate actions, so we act accordingly '''
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
             svs = svs || %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+"""
-            and significance = %s
-            and phenomena = %s and gtype = 'C' 
+            and significance = %s and phenomena = %s
             """, (vtec.endts, vtec.action, self.unixtext,
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
@@ -150,18 +148,21 @@ class VTECProduct(TextProduct):
                                         txn.rowcount, len(segment.ugcs))
 
         elif vtec.action in ['CON','EXP', 'ROU']:
+            ''' These are no-ops, just updates '''
             txn.execute("""
             UPDATE """+ warning_table +""" SET status = %s,
             svs = svs || %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
-            and significance = %s
-            and phenomena = %s and gtype = 'C'
+            and significance = %s and phenomena = %s 
             """, (vtec.action, self.unixtext, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):
                 print 'Warning: do_sql_vtec updated %s row, should %s rows' %(
                                         txn.rowcount, len(segment.ugcs))
 
+        else:
+            print 'Warning: do_sql_vtec() encountered %s VTEC status' % (
+                                                    vtec.action,)
         
     def do_sbw_geometry(self, txn, segment, vtec):
         ''' Do SBW stuff '''
@@ -296,6 +297,14 @@ class VTECProduct(TextProduct):
                     affected_wfos[ wfo ] = True
             xtra['channels'] = ",".join(affected_wfos.keys(),)
             for vtec in segment.vtec:
+                xtra['status'] = vtec.status
+                xtra['vtec']  = vtec.getID(self.valid.year)
+                xtra['ptype'] = vtec.phenomena
+                if segment.giswkt is not None:
+                    xtra['category'] = 'SBW'
+                    xtra['geometry'] = segment.giswkt.replace("SRID=4326;", "")
+                if vtec.endts is not None:
+                    xtra['expire'] = vtec.endts.strftime("%Y%m%dT%H:%M:00")
                 # Set up Jabber Dict for stuff to fill in
                 jmsg_dict = {'wfo': vtec.office, 'product': vtec.product_string(),
                              'county': ugcs_to_text(segment.ugcs), 
@@ -321,7 +330,11 @@ class VTECProduct(TextProduct):
                 html = ("%(wfo)s <a href='%(url)s'>%(product)s</a> "
                         +"%(sts)s for %(county)s "
                         +"%(ets)s %(svs_special)s") % jmsg_dict
-                msgs.append([plain,html,xtra])
+                xtra['tweet'] = ("%(product)s%(sts)sfor %(county)s till "
+                                 +"%(ets)s") % jmsg_dict
+                # brute force removal of duplicate spaces
+                msgs.append([" ".join(plain.split()),
+                             " ".join(html.split()),xtra])
         
         return msgs
 
