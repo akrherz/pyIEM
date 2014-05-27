@@ -29,6 +29,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140527_astimezone(self):
+        ''' Test the processing of a begin timestamp '''
+        prod = vtecparser( get_file('MWWSEW.txt') )
+        prod.sql( self.txn )
+        j = prod.get_jabbers('http://localhost/')
+        self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory valid '
+            +'at May 27, 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till '
+            +'May 28, 5:00 AM PDT '
+            +'http://localhost/#2014-O-CON-KSEW-SC-Y-0113'))
+    
     def test_140527_00000_hvtec_nwsli(self):
         ''' Test the processing of a HVTEC NWSLI of 00000 '''
         prod = vtecparser( get_file('FLSBOU.txt') )

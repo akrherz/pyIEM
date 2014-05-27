@@ -148,7 +148,7 @@ class VTEC:
         utcnow += datetime.timedelta(hours=1)
         if self.begints < utcnow:
             fmt = '%-I:%M %p %Z'
-        localts = self.begints.astimezone( prod.z )
+        localts = self.begints.astimezone( prod.tz )
         return "valid at %s" % (localts.strftime(fmt),)
 
     def url(self, year):
