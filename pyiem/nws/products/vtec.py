@@ -331,9 +331,10 @@ class VTECProduct(TextProduct):
                 html = ("%(wfo)s <a href='%(url)s'>%(product)s</a> "
                         +"%(sts)s for %(county)s "
                         +"%(ets)s %(svs_special)s") % jmsg_dict
-                xtra['tweet'] = ("%(product)s%(sts)sfor %(county)s till "
+                xtra['tweet'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
                                  +"%(ets)s") % jmsg_dict
                 # brute force removal of duplicate spaces
+                xtra['tweet'] = ' '.join( xtra['tweet'].split())
                 msgs.append([" ".join(plain.split()),
                              " ".join(html.split()),xtra])
         
