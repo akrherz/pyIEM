@@ -20,15 +20,19 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     
     def setUp(self):
+        ''' This is called for each test, beware '''
         self.dbconn = psycopg2.connect(database='postgis')
         self.txn = self.dbconn.cursor()
     
     def tearDown(self):
+        ''' This is called after each test, beware '''
+        self.dbconn.rollback()
         self.dbconn.close()
     
     def test_140527_00000_hvtec_nwsli(self):
         ''' Test the processing of a HVTEC NWSLI of 00000 '''
         prod = vtecparser( get_file('FLSBOU.txt') )
+        prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/')
         self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
             +'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
