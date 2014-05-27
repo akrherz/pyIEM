@@ -26,6 +26,14 @@ class TestProducts(unittest.TestCase):
     def tearDown(self):
         self.dbconn.close()
     
+    def test_140527_00000_hvtec_nwsli(self):
+        ''' Test the processing of a HVTEC NWSLI of 00000 '''
+        prod = vtecparser( get_file('FLSBOU.txt') )
+        j = prod.get_jabbers('http://localhost/')
+        self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
+            +'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
+            +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
+    
     def test_cli(self):
         ''' Test the processing of a CLI product '''
         prod = cliparser( get_file('CLIJNU.txt') )

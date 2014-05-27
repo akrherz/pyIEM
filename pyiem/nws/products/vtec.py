@@ -314,8 +314,9 @@ class VTECProduct(TextProduct):
                              'eventid': vtec.ETN, 'significance': vtec.significance,
                              'url': "%s#%s" % (uri, 
                                vtec.url(self.valid.year)) }
-                if len(segment.hvtec) > 0:
-                    jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
+                if (len(segment.hvtec) > 0 and 
+                    segment.hvtec[0].nwsli.id != '00000'):
+                        jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
                 if (vtec.begints is not None and
                     vtec.begints > (utcnow + datetime.timedelta(hours=1))): 
                     jmsg_dict['sts'] = vtec.get_begin_string(self)
