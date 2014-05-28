@@ -29,6 +29,12 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140522_blowingdust(self):
+        ''' Make sure we can deal with invalid LSR type '''
+        prod = lsrparser( get_file('LSRTWC.txt') )
+        self.assertEqual(len(prod.lsrs), 1)
+        self.assertEqual( prod.lsrs[0].get_dbtype(), None)
+    
     def test_140527_astimezone(self):
         ''' Test the processing of a begin timestamp '''
         prod = vtecparser( get_file('MWWSEW.txt') )
