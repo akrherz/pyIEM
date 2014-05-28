@@ -91,9 +91,9 @@ class MCDProduct( TextProduct ):
                                                         self.discussion_num,
                                                         prob_extra,
                                                         spcuri)
-        html = ('%s issues <a href="%s">'
+        html = ('<p>%s issues <a href="%s">'
                 +'Mesoscale %sDiscussion #%s</a> %s'
-                +'(<a href="%s?pid=%s">View text</a>)') % (center, spcuri, pextra,
+                +'(<a href="%s?pid=%s">View text</a>)</p>') % (center, spcuri, pextra,
                                                            self.discussion_num,
                                                            prob_extra, uri,
                                                     self.get_product_id()

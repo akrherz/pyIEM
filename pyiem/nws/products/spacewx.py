@@ -25,7 +25,8 @@ class SpaceWxProduct( TextProduct ):
                 }
         plain = 'Space Weather Prediction Center issues %s %s' % (self.title,
                         url)
-        html = 'Space Weather Prediction Center <a href="%s">issues %s</a>' % (
+        html = ('<p>Space Weather Prediction Center '
+                +'<a href="%s">issues %s</a></p>') % (
                                     url, self.title)
         return [(plain, html, xtra)]
         

@@ -239,7 +239,7 @@ class TextProduct(object):
         plain = "%s issues %s %s" % (self.source[1:], 
                     reference.prodDefinitions.get(self.afos[:3], 
                                                   self.afos[:3]), url)
-        html = '%s issues <a href="%s">%s</a>' % (self.source[1:], url,
+        html = '<p>%s issues <a href="%s">%s</a></p>' % (self.source[1:], url,
                     reference.prodDefinitions.get(self.afos[:3], 
                                                   self.afos[:3]))
         xtra = {

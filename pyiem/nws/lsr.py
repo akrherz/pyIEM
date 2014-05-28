@@ -27,6 +27,7 @@ class LSR(object):
         self.source = None
         self.text = None
         self.wfo = None
+        self.duplicate = False
     
     def get_lat(self):
         return self.geometry.xy[1][0]
@@ -73,28 +74,7 @@ class LSR(object):
                                         self.source, self.mag_string(),
                                         self.wfo)
         return msg
-        
-    def get_jabbers(self, uri='http://localhost'):
-        ''' return a plain text and html string representing this LSR '''
-        time_fmt = "%-I:%M %p %Z"
-        now = datetime.datetime.utcnow()
-        now = now.replace(tzinfo=pytz.timezone("UTC")) - datetime.timedelta(
-                                                                    hours=24)
-        if self.valid < now:
-            time_fmt = "%-d %b, %-I:%M %p %Z"
-
-        html = "%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at %s -- %s" % (
-            self.city, self.county, self.state, self.source,
-              uri, self.mag_string(),
-              self.valid.strftime(time_fmt), self.remark)
-        
-        plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
-            self.city, self.county, self.state, self.source,
-              self.mag_string(),
-              self.valid.strftime(time_fmt), self.remark, uri)
-        
-        return plain, html
-        
+                
     def assign_timezone(self, tz, z):
         ''' retroactive assignment of timezone, so to improve attrs '''
         if self.valid is None:

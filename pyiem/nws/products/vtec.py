@@ -283,10 +283,10 @@ class VTECProduct(TextProduct):
             text = ("%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult this website for more "
                     +"details. %s?wfo=%s") % (wfo, uri, wfo)
-            html = ("%s has sent an updated FLS product (continued products "
+            html = ("<p>%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult "
                     +"<a href=\"%s?wfo=%s\">this website</a> for more "
-                    +"details.") % (wfo, uri, wfo)
+                    +"details.</p>") % (wfo, uri, wfo)
             return [(text, html, xtra)]
         msgs = []
         for segment in self.segments:
@@ -328,9 +328,9 @@ class VTECProduct(TextProduct):
                 plain = ("%(wfo)s %(product)s %(sts)s for "
                         +"%(county)s %(ets)s %(svs_special)s "
                         +"%(url)s") % jmsg_dict
-                html = ("%(wfo)s <a href='%(url)s'>%(product)s</a> "
+                html = ("<p>%(wfo)s <a href='%(url)s'>%(product)s</a> "
                         +"%(sts)s for %(county)s "
-                        +"%(ets)s %(svs_special)s") % jmsg_dict
+                        +"%(ets)s %(svs_special)s</p>") % jmsg_dict
                 xtra['tweet'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
                                  +"%(ets)s") % jmsg_dict
                 # brute force removal of duplicate spaces

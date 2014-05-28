@@ -193,12 +193,12 @@ class TestProducts(unittest.TestCase):
         answer = datetime.datetime(2013,7,23,3,55)
         answer = answer.replace(tzinfo=pytz.timezone("UTC"))
         self.assertEqual(prod.lsrs[57].valid, answer)
-        
-        self.assertEqual(prod.lsrs[57].get_jabbers()[0], ("Knoxville Airport "
+        j = prod.get_jabbers('http://localhost')
+        self.assertEqual(j[57][0], ("Knoxville Airport "
         +"[Marion Co, IA] AWOS reports NON-TSTM WND GST of 73.00 MPH at 22 "
         +"Jul, 10:55 PM CDT -- HEAT BURST. TEMPERATURE ROSE FROM 70 TO 84 IN "
         +"15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
-        +"http://localhost"))
+        +"http://localhost#DMX/201307230355/201307230355"))
         
         self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, Dows "
                          +"[Wright Co, IA] LAW ENFORCEMENT "
@@ -234,8 +234,8 @@ class TestProducts(unittest.TestCase):
         self.assertAlmostEqual(prod.geometry.area, 2.444, 3)
         self.assertEqual(prod.watch_prob, 20)
 
-        self.assertEqual(prod.get_jabbers('http://localhost')[1], ('Storm '
+        self.assertEqual(prod.get_jabbers('http://localhost')[1], ('<p>Storm '
             +'Prediction Center issues <a href="http://www.spc.noaa.gov/'
             +'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
             +'[watch probability: 20%] (<a href="http://localhost'
-            +'?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)'))
+            +'?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)</p>'))

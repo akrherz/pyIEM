@@ -55,23 +55,63 @@ class LSRProduct(TextProduct):
         
     def get_jabbers(self, uri):
         ''' return a text and html variant for Jabber stuff '''
+        res = []
         wfo = self.source[1:]
-        uri =  self.get_url(uri)
+        url =  self.get_url(uri)
 
-        extra_text = ""
-        if self.duplicates > 0:
-            extra_text = (", %s out of %s reports were previously "
-                        +"sent and not repeated here.") % (self.duplicates, 
+        for mylsr in self.lsrs:
+            if mylsr.duplicate:
+                continue
+            time_fmt = "%-I:%M %p %Z"
+            now = datetime.datetime.utcnow()
+            now = now.replace(tzinfo=pytz.timezone("UTC")) - datetime.timedelta(
+                                                                hours=24)
+            url = "%s#%s/%s/%s" % (uri, mylsr.wfo, 
+                                   mylsr.utcvalid.strftime("%Y%m%d%H%M"),
+                                   mylsr.utcvalid.strftime("%Y%m%d%H%M") )
+            if mylsr.valid < now:
+                time_fmt = "%-d %b, %-I:%M %p %Z"
+            xtra = {
+        'product_id': self.get_product_id(),
+        'channels': mylsr.wfo,        
+        'geometry': 'POINT(%s %s)' % (mylsr.get_lon(), mylsr.get_lat()),
+        'ptype' : mylsr.get_dbtype(),
+        'valid' : mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
+        'category' : 'LSR',
+        'tweet' : "%s %s" % (mylsr.tweet(), url),
+        'lat': str(mylsr.get_lat()),
+        'long': str(mylsr.get_lon()),
+            }
+            html = ("<p>%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at "
+            +"%s -- %s</p>") % (
+                        mylsr.city, mylsr.county, mylsr.state, mylsr.source,
+                        url, mylsr.mag_string(),
+                        mylsr.valid.strftime(time_fmt), mylsr.remark)
+    
+            plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
+                        mylsr.city, mylsr.county, mylsr.state, mylsr.source,
+                        mylsr.mag_string(),
+                        mylsr.valid.strftime(time_fmt), mylsr.remark, url)
+            res.append( [plain, html, xtra])
+        
+        if self.is_summary():
+            extra_text = ""
+            if self.duplicates > 0:
+                extra_text = (", %s out of %s reports were previously "
+                            +"sent and not repeated here.") % (self.duplicates, 
                                                     len(self.lsrs))
-        
-        text = "%s: %s issues Summary Local Storm Report %s %s" % (
-                                                wfo, wfo, extra_text, uri)
-        
-        html = ("%s issues "
-                      +"<a href='%s'>Summary Local Storm Report</a>%s") % (
-                                            wfo, uri, extra_text)
-        
-        return text, html
+            text = "%s: %s issues Summary Local Storm Report %s %s" % (
+                                                    wfo, wfo, extra_text, url)
+            
+            html = ("<p>%s issues "
+                          +"<a href='%s'>Summary Local Storm Report</a>%s</p>") % (
+                                                wfo, url, extra_text)
+            xtra = {
+                'product_id': self.get_product_id(),
+                'channels': wfo,
+                }
+            res.append([text, html, xtra] )
+        return res
 
 def _mylowercase(text):
     ''' Specialized lowercase function ''' 
