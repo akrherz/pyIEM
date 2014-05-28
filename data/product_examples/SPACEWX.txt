@@ -1,0 +1,23 @@
+555 
+WOXX22 KWNP 101416
+WATA50
+
+Space Weather Message Code: WATA50
+Serial Number: 49
+Issue Time: 2014 Jan 10 1411 UTC
+
+CANCEL WATCH: Geomagnetic Storm Category G3 Predicted
+Cancel Serial Number: 48
+Original Issue Time: 2014 Jan 08 1214 UTC
+
+Comment: G3 Watch cancellation . G3 conditions are no longer expected.
+Potential Impacts: Area of impact primarily poleward of 50 degrees Geomagnetic Latitude.
+Induced Currents - Power system voltage irregularities possible, false alarms may be triggered on some protection devices.
+Spacecraft - Systems may experience surface charging; increased drag on low Earth-orbit satellites and orientation problems may occur.
+Navigation - Intermittent satellite navigation (GPS) problems, including loss-of-lock and increased range error may occur.
+Radio - HF (high frequency) radio may be intermittent.
+Aurora - Aurora may be seen as low as Pennsylvania to Iowa to Oregon.
+
+# Issued by the US Dept. of Commerce, NOAA, Space Weather Prediction Center
+# Recent messages, data, and help at http://swpc.noaa.gov/alerts/
+# Send questions to SWPC.Webmaster@noaa.gov

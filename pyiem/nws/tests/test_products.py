@@ -8,6 +8,7 @@ from pyiem.nws.products.mcd import parser as mcdparser
 from pyiem.nws.products.lsr import parser as lsrparser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.products.cli import parser as cliparser
+from pyiem.nws.products.spacewx import parser as spacewxparser
 from pyiem.nws.ugc import UGC
 from pyiem.nws.nwsli import NWSLI
 
@@ -28,6 +29,14 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+    
+    def test_spacewx(self):
+        ''' See if we can parse a space weather product '''
+        prod = spacewxparser( get_file('SPACEWX.txt') )
+        j = prod.get_jabbers('http://localhost/')
+        self.assertEqual(j[0][0], ('Space Weather Prediction Center issues '
+            +'CANCEL WATCH: Geomagnetic Storm Category G3 Predicted '
+            +'http://localhost/201405101416-KWNP-WOXX22-WATA50'))
     
     def test_140522_blowingdust(self):
         ''' Make sure we can deal with invalid LSR type '''
