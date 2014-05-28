@@ -15,6 +15,13 @@ def get_file(name):
 
 class TestProduct(unittest.TestCase):
 
+    def test_now_jabber(self):
+        ''' See if we can process a NOW and get the jabber result '''
+        tp = product.TextProduct( get_file('NOWDMX.txt') )
+        j = tp.get_jabbers("http://localhost")
+        self.assertEqual(j[0][0], ("DMX issues Short-term Forecast (NOW) "
+                    +"http://localhost201003041442-KDMX-FPUS73-NOWDMX"))
+
     def test_nomnd_with_timestamp(self):
         ''' Make sure we process timestamps correctly when there is no MND'''
         utcnow = datetime.datetime(2013,12,31,18,0)

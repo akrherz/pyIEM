@@ -230,6 +230,26 @@ class TextProduct(object):
         self.parse_wmo()
         self.parse_segments()
         
+    def get_jabbers(self, uri):
+        ''' Return a list of triples representing what we should send to 
+        our precious jabber routing bot, this should be overridden by the
+        specialty parsers '''
+        res = []
+        url = "%s%s" % (uri, self.get_product_id())
+        plain = "%s issues %s %s" % (self.source[1:], 
+                    reference.prodDefinitions.get(self.afos[:3], 
+                                                  self.afos[:3]), url)
+        html = '%s issues <a href="%s">%s</a>' % (self.source[1:], url,
+                    reference.prodDefinitions.get(self.afos[:3], 
+                                                  self.afos[:3]))
+        xtra = {
+                'channels': self.afos,
+                'product_id': self.get_product_id(),
+                'tweet': plain
+                }
+        res.append( (plain, html, xtra))
+        return res
+        
     def get_signature(self):
         """ Find the signature at the bottom of the page 
         """
