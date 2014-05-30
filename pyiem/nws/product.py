@@ -208,6 +208,8 @@ class TextProduct(object):
         @param utcnow used to compute offsets for when this product my be valid
         @param ugc_provider a dictionary of UGC objects already setup
         '''
+        self.warnings = []
+        
         self.text = text
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider

@@ -22,7 +22,7 @@ class VTECProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
     
     def __init__(self, text, utcnow=None, ugc_provider={}, nwsli_provider={}):
-        ''' constructor '''
+        ''' constructor '''        
         TextProduct.__init__(self, text, utcnow, ugc_provider)
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
@@ -116,8 +116,9 @@ class VTECProduct(TextProduct):
                       self.valid, vtec.endts, self.valid, 
                       segment.get_hvtec_nwsli()))
                 if txn.rowcount != 1:
-                    print 'Warning: do_sql_vtec inserted %s row, should be 1' % (
-                                        txn.rowcount, )
+                    self.warnings.append(('Failed to add entry for UGC: %s, '
+                                          +'rowcount was: %s') % ( str(ugc),
+                                                               txn.rowcount ))
 
         elif vtec.action in ['COR',]:
             ''' A previous issued product is being corrected '''
@@ -130,8 +131,9 @@ class VTECProduct(TextProduct):
                   vtec.endts, vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
-                print 'Warning: do_sql_vtec updated %s row, should %s rows' %(
-                                        txn.rowcount, len(segment.ugcs))
+                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
+                                      +'should %s rows') %(
+                                        txn.rowcount, len(segment.ugcs)))
 
         elif vtec.action in ['CAN','UPG', 'EXT']:
             ''' These are terminate actions, so we act accordingly '''
@@ -144,8 +146,9 @@ class VTECProduct(TextProduct):
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
-                print 'Warning: do_sql_vtec updated %s row, should %s rows' %(
-                                        txn.rowcount, len(segment.ugcs))
+                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
+                                      +'should %s rows') %(
+                                        txn.rowcount, len(segment.ugcs)))
 
         elif vtec.action in ['CON','EXP', 'ROU']:
             ''' These are no-ops, just updates '''
@@ -157,12 +160,14 @@ class VTECProduct(TextProduct):
             """, (vtec.action, self.unixtext, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):
-                print 'Warning: do_sql_vtec updated %s row, should %s rows' %(
-                                        txn.rowcount, len(segment.ugcs))
+                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
+                                      +'should %s rows') %(
+                                        txn.rowcount, len(segment.ugcs)))
 
         else:
-            print 'Warning: do_sql_vtec() encountered %s VTEC status' % (
-                                                    vtec.action,)
+            self.warnings.append( ('Warning: do_sql_vtec() encountered %s '
+                                   +'VTEC status') % (
+                                                    vtec.action,))
         
     def do_sbw_geometry(self, txn, segment, vtec):
         ''' Do SBW stuff '''
