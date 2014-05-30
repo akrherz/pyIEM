@@ -99,6 +99,11 @@ class VTECProduct(TextProduct):
             bts = vtec.begints
             if vtec.action in ["EXB", "EXA"]:
                 bts = self.valid
+            # If this product has no expiration time, just set it ahead
+            # 24 hours in time...
+            ets = vtec.endts
+            if vtec.endts is None:
+                ets = bts + datetime.timedelta(hours=24)
 
             ''' For each UGC code in this segment, we create a database entry
             TODO: we should check that these are unique before entering! '''
@@ -110,7 +115,7 @@ class VTECProduct(TextProduct):
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
                 get_gid(%s, %s), %s, %s, %s)
                 RETURNING issue
-                """, (bts, vtec.endts, self.valid, vtec.office, 
+                """, (bts, ets, self.valid, vtec.office, 
                       vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc), 
                       vtec.phenomena, vtec.significance, str(ugc), 
                       self.valid, vtec.endts, self.valid, 
@@ -152,12 +157,16 @@ class VTECProduct(TextProduct):
 
         elif vtec.action in ['CON','EXP', 'ROU']:
             ''' These are no-ops, just updates '''
+            ets = vtec.endts
+            if vtec.endts is None:
+                ets = self.valid + datetime.timedelta(hours=24)
+
             txn.execute("""
             UPDATE """+ warning_table +""" SET status = %s,
-            svs = svs || %s WHERE
+            svs = svs || %s , expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s 
-            """, (vtec.action, self.unixtext, vtec.office, vtec.ETN,
+            """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(('Warning: do_sql_vtec updated %s row, '
