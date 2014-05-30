@@ -179,8 +179,12 @@ class VTECProduct(TextProduct):
                                                     vtec.action,))
         
     def do_sbw_geometry(self, txn, segment, vtec):
-        ''' Do SBW stuff '''
+        ''' Storm Based Warnings are stored in seperate tables as we need
+        to track geometry changes, etc '''
         sbw_table = "sbw_%s" % (self.valid.year,)
+        
+        # If this is a cancel or upgrade action and there is only one 
+        # segment, then we should update the current active polygon
         if vtec.action in ["CAN", "UPG"] and len(self.segments) == 1:
             txn.execute("""UPDATE """+ sbw_table +""" SET 
                 polygon_end = (CASE WHEN polygon_end = expire
@@ -190,17 +194,25 @@ class VTECProduct(TextProduct):
                 and phenomena = %s and significance = %s""", (
                 self.valid, self.valid, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance) )
-            if txn.rowcount < 1:
-                #TODO
-                pass
+            if txn.rowcount != 1:
+                self.warnings.append(("CAN/UPG sbw table update resulted in "
+                    +"update of %s rows, should have been 1") % (
+                                                    txn.rowcount,))
         
+        # If this is a continues action, we should cut off the previous 
+        # active polygon by setting its polygon_end
         if vtec.action == "CON":
             txn.execute("""UPDATE """+ sbw_table +""" SET 
                 polygon_end = %s WHERE polygon_end = expire and 
                 eventid = %s and wfo = %s 
                 and phenomena = %s and significance = %s""" , ( self.valid, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
-          
+            if txn.rowcount != 1:
+                self.warnings.append(("CON sbw table update resulted in "
+                    +"update of %s rows, should have been 1") % (
+                                                    txn.rowcount, ))
+        
+        # Account for vagarities with VTEC
         my_sts = "'%s'" % (vtec.begints,)
         if vtec.begints is None:
             my_sts = """(SELECT issue from %s WHERE eventid = %s 
@@ -214,12 +226,15 @@ class VTECProduct(TextProduct):
               LIMIT 1)""" % (sbw_table, vtec.ETN, vtec.office, 
               vtec.phenomena, vtec.significance)
 
+        # Prepare the TIME...MOT...LOC information
         tml_valid = None
         tml_column = 'tml_geom'
         if segment.tml_giswkt and segment.tml_giswkt.find("LINE") > 0:
             tml_column = 'tml_geom_line'
         if segment.tml_valid:
             tml_valid = segment.tml_valid
+        
+        
         if vtec.action in ['CAN',]:
             sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
                 significance, phenomena, issue, expire, init_expire, polygon_begin, 
