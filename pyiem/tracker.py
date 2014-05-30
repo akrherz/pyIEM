@@ -12,18 +12,14 @@ def loadqc():
     
     pcursor.execute("""
     select s_mid, sensor, status from tt_base WHERE sensor is not null 
-    and status != 'CLOSED' 
-    and portfolio in ('kccisnet','kelosnet','kimtsnet', 'iaawos', 'iarwis')
+    and status != 'CLOSED' and s_mid is not null
     """)
     for row in pcursor:
+        sid = row[0]
         if not qdict.has_key(row[0]):
-            qdict[row[0]] = {}
-        if row[1].find("precip") > -1:
-            qdict[row[0]]['precip'] = True
-        if row[1].find("tmpf") > -1:
-            qdict[row[0]]['tmpf'] = True
-        if row[1].find("drct") > -1 or row[1].find("sknt") > -1 or row[1].find("wind") > -1:
-            qdict[row[0]]['wind'] = True    
+            qdict[sid] = {}
+        for vname in row[1].split(","):
+            qdict[sid][vname.strip()] = True
     pcursor.close()
     portfolio.close()
     return qdict
