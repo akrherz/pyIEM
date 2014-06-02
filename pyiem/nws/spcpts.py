@@ -357,7 +357,7 @@ class SPCPTS(object):
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
-                if re.match("^(D[3-8]|EXTM|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
+                if re.match("^(D[3-8]\-?[3-8]?|EXTM|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
                     newthreshold = line.split()[0]
                     if threshold is not None and threshold == newthreshold:
                         point_data[threshold] += " 99999999 "
