@@ -78,7 +78,7 @@ class LSRProduct(TextProduct):
         'ptype' : mylsr.get_dbtype(),
         'valid' : mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
         'category' : 'LSR',
-        'tweet' : "%s %s" % (mylsr.tweet(), url),
+        'twitter' : "%s %s" % (mylsr.tweet(), url),
         'lat': str(mylsr.get_lat()),
         'long': str(mylsr.get_lon()),
             }

@@ -21,7 +21,7 @@ class SpaceWxProduct( TextProduct ):
         ''' Custom Implementation of the TextProduct#get_jabbers '''
         url = "%s%s" % (uri, self.get_product_id())
         xtra = {'channels': 'WNP,%s' % (self.afos,),
-                'tweet': 'SWPC issues %s %s' % (self.title, url)
+                'twitter': 'SWPC issues %s %s' % (self.title, url)
                 }
         plain = 'Space Weather Prediction Center issues %s %s' % (self.title,
                         url)

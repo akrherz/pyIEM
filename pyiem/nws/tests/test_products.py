@@ -62,7 +62,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
             +'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
             +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
-        self.assertEqual(j[0][2]['tweet'], ('BOU extends time of Areal Flood '
+        self.assertEqual(j[0][2]['twitter'], ('BOU extends time of Areal Flood '
             +'Advisory for ((COC049)), ((COC057)) [CO] till '
             +'May 29, 9:30 PM MDT'))
     

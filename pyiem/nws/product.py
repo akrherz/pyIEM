@@ -247,7 +247,7 @@ class TextProduct(object):
         xtra = {
                 'channels': self.afos,
                 'product_id': self.get_product_id(),
-                'tweet': plain
+                'twitter': plain
                 }
         res.append( (plain, html, xtra))
         return res

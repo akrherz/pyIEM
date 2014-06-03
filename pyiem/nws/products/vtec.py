@@ -305,9 +305,9 @@ class VTECProduct(TextProduct):
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         wfo = self.source[1:]
         xtra = {'product_id': self.get_product_id(),
-                'tweet': ''}
+                'twitter': ''}
         if self.skip_con:
-            xtra['tweet'] = '%s issues updated FLS product %s?wfo=%s' % (wfo, 
+            xtra['twitter'] = '%s issues updated FLS product %s?wfo=%s' % (wfo, 
                                                                 uri, wfo)
             text = ("%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult this website for more "
@@ -360,10 +360,10 @@ class VTECProduct(TextProduct):
                 html = ("<p>%(wfo)s <a href='%(url)s'>%(product)s</a> "
                         +"%(sts)s for %(county)s "
                         +"%(ets)s %(svs_special)s</p>") % jmsg_dict
-                xtra['tweet'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
+                xtra['twitter'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
                                  +"%(ets)s") % jmsg_dict
                 # brute force removal of duplicate spaces
-                xtra['tweet'] = ' '.join( xtra['tweet'].split())
+                xtra['twitter'] = ' '.join( xtra['twitter'].split())
                 msgs.append([" ".join(plain.split()),
                              " ".join(html.split()),xtra])
         
