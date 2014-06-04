@@ -204,7 +204,7 @@ class VTECProduct(TextProduct):
         if vtec.action == "CON":
             txn.execute("""UPDATE """+ sbw_table +""" SET 
                 polygon_end = %s WHERE polygon_end = expire and 
-                eventid = %s and wfo = %s 
+                eventid = %s and wfo = %s and status != 'CAN'
                 and phenomena = %s and significance = %s""" , ( self.valid, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
             if txn.rowcount != 1:

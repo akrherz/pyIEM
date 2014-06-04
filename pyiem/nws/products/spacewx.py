@@ -5,9 +5,9 @@ from pyiem.nws.product import TextProduct
 class SpaceWxProduct( TextProduct ):
     ''' Class for parsing and representing Space Wx Products '''
     
-    def __init__(self, text):
+    def __init__(self, text, utcnow=None):
         ''' constructor '''
-        TextProduct.__init__(self, text)
+        TextProduct.__init__(self, text, utcnow=utcnow)
         self.title = "Unknown (AWIPSID: %s)" % (self.afos,)
         self.parse_title()
         
@@ -31,6 +31,6 @@ class SpaceWxProduct( TextProduct ):
         return [(plain, html, xtra)]
         
 
-def parser(buf):
+def parser(buf, utcnow=None):
     ''' A parser implementation '''
-    return SpaceWxProduct( buf )
+    return SpaceWxProduct( buf, utcnow=utcnow )

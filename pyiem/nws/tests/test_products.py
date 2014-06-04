@@ -32,11 +32,44 @@ class TestProducts(unittest.TestCase):
     
     def test_spacewx(self):
         ''' See if we can parse a space weather product '''
-        prod = spacewxparser( get_file('SPACEWX.txt') )
+        utcnow = datetime.datetime(2014,5,10)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        prod = spacewxparser( get_file('SPACEWX.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost/')
         self.assertEqual(j[0][0], ('Space Weather Prediction Center issues '
             +'CANCEL WATCH: Geomagnetic Storm Category G3 Predicted '
             +'http://localhost/201405101416-KWNP-WOXX22-WATA50'))
+    
+    def test_140604_sbwupdate(self):
+        ''' Make sure we are updating the right info in the sbw table '''
+        utcnow = datetime.datetime(2014,6,4)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        
+        prod = vtecparser( get_file('SVRLMK_1.txt') , utcnow=utcnow)
+        prod.sql( self.txn )    
+
+        self.txn.execute("""SELECT expire from sbw_2014 WHERE
+        wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
+        significance = 'W' """)
+        self.assertEqual( self.txn.rowcount, 1)
+
+        prod = vtecparser( get_file('SVRLMK_2.txt') , utcnow=utcnow)
+        prod.sql( self.txn )    
+
+        self.txn.execute("""SELECT expire from sbw_2014 WHERE
+        wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
+        significance = 'W' """)
+        self.assertEqual( self.txn.rowcount, 3)
+        
+        self.assertEqual( len(prod.warnings), 0, "\n".join(prod.warnings))
+
+    
+    def test_140321_invalidgeom(self):
+        ''' See what we do with an invalid geometry from IWX '''
+        prod = vtecparser( get_file('FLW_badgeom.txt') )
+        self.assertEqual(prod.segments[0].giswkt, ('SRID=4326;MULTIPOLYGON ((('
+            +'-85.68 41.86, -85.64 41.97, -85.54 41.97, -85.54 41.96, '
+            +'-85.61 41.93, -85.66 41.84, -85.68 41.86)))'))
     
     def test_140522_blowingdust(self):
         ''' Make sure we can deal with invalid LSR type '''
@@ -46,25 +79,29 @@ class TestProducts(unittest.TestCase):
     
     def test_140527_astimezone(self):
         ''' Test the processing of a begin timestamp '''
-        prod = vtecparser( get_file('MWWSEW.txt') )
+        utcnow = datetime.datetime(2014,5,27)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        prod = vtecparser( get_file('MWWSEW.txt') , utcnow=utcnow)
         prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/')
-        self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory valid '
-            +'at May 27, 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till '
-            +'May 28, 5:00 AM PDT '
+        self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory '
+            +'for ((PZZ131)), ((PZZ132)) [PZ] till '
+            +'5:00 AM PDT '
             +'http://localhost/#2014-O-CON-KSEW-SC-Y-0113'))
     
     def test_140527_00000_hvtec_nwsli(self):
         ''' Test the processing of a HVTEC NWSLI of 00000 '''
-        prod = vtecparser( get_file('FLSBOU.txt') )
+        utcnow = datetime.datetime(2014,5,27)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        prod = vtecparser( get_file('FLSBOU.txt') , utcnow=utcnow)
         prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/')
         self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
-            +'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
+            +'for ((COC049)), ((COC057)) [CO] till 9:30 PM MDT '
             +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
         self.assertEqual(j[0][2]['twitter'], ('BOU extends time of Areal Flood '
             +'Advisory for ((COC049)), ((COC057)) [CO] till '
-            +'May 29, 9:30 PM MDT'))
+            +'9:30 PM MDT'))
     
     def test_cli(self):
         ''' Test the processing of a CLI product '''

@@ -8,6 +8,7 @@ import re
 
 import pytz
 from shapely.geometry import Polygon, MultiPolygon
+from shapely.wkt import dumps
 
 from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
@@ -16,7 +17,7 @@ AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
 WMO_RE = "^[A-Z0-9]{6} [A-Z]{4} ([0-3][0-9])([0-2][0-9])([0-5][0-9])"
 TIME_MOT_LOC = re.compile(".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z (?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT (?P<loc>[0-9 ]+)")
-LAT_LON = re.compile("([0-9]+)\s+([0-9]+)")
+LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile(".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
@@ -129,21 +130,55 @@ class TextProductSegment(object):
         if pos == -1:
             return None
         newdata = data[pos+9:]
-        m = re.search(r"[^ 0-9]", newdata)
+        # Go find our next non-digit, non-space character, if we find it, we
+        # should truncate our string, this could be improved, I suspect
+        m = re.search(r"[^\s0-9]", newdata)
         if m is not None:
             pos2 = m.start()
             newdata = newdata[:pos2]
-        pairs = re.findall(LAT_LON, newdata )
-        if len(pairs) == 0:
-            return None
+
         pts = []
-        for pr in pairs:
-            lat = float(pr[0]) / 100.00
-            lon = 0 - float(pr[1]) / 100.00
-            pts.append( (lon, lat) )
-        pts.append( pts[0] )
+        partial = None
+        def checker(lon, lat):
+            ''' make sure our values are legit! '''
+            if lat >= 90 or lat <= -90:
+                raise TextProductException("invalid latitude %s from %s" % (
+                                                        lat, newdata))
+            if lon > 180 or lon < -180:
+                raise TextProductException("invalid longitude %s from %s" % (
+                                                        lon, newdata))
+            return (lon, lat)
         
-        self.giswkt = 'SRID=4326;%s' % (MultiPolygon([ Polygon( pts ) ]).wkt,)
+        # We have two potential formats, one with 4 or 5 places and one 
+        # with eight!
+        vals = re.findall(LAT_LON, newdata )
+        for val in vals:
+            if len(val) == 8:
+                lat = float(val[:4]) / 100.00
+                lon = float(val[4:]) / 100.00
+                if lon < 40:
+                    lon += 100.
+                lon = 0 - lon
+                pts.append( checker(lon, lat) )
+            else:
+                s = float(val) / 100.00
+                if partial is None: # we have lat
+                    partial = s 
+                    continue
+                # we have a lon
+                if s < 40:
+                    s += 100.
+                s = 0 - s
+                pts.append( checker(s, partial) )
+                partial = None
+        
+        if len(pts) == 0:
+            return None
+        if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
+            pts.append( pts[0] )
+        
+        self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([ Polygon( pts ) ]),
+                                              rounding_precision=6),)
         return Polygon( pts )
 
         
