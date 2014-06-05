@@ -23,7 +23,7 @@ class VTECProduct(TextProduct):
     
     def __init__(self, text, utcnow=None, ugc_provider={}, nwsli_provider={}):
         ''' constructor '''        
-        TextProduct.__init__(self, text, utcnow, ugc_provider)
+        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
 
