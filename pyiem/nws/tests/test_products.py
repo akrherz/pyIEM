@@ -37,7 +37,7 @@ class TestProducts(unittest.TestCase):
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         
         prod = vtecparser( get_file('TORtag.txt') , utcnow=utcnow)
-        j = prod.get_jabbers('http://localhost/')
+        j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][1], ("<p>DMX <a href='http://localhost/#2011-"
             +"O-NEW-KDMX-TO-W-0057'>issues Tornado Warning</a> [tornado: "
@@ -62,7 +62,7 @@ class TestProducts(unittest.TestCase):
 
         prod = vtecparser( get_file('SVS.txt') , utcnow=utcnow,
                            ugc_provider=ugc_provider)
-        j = prod.get_jabbers('http://localhost/')
+        j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], ('DMX updates Severe '
             +'Thunderstorm Warning (cancels 1 area, continues 1 area) '
@@ -71,7 +71,7 @@ class TestProducts(unittest.TestCase):
 
         prod = vtecparser( get_file('WCN.txt') , utcnow=utcnow,
                            ugc_provider=ugc_provider)
-        j = prod.get_jabbers('http://localhost/')
+        j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], ('DMX updates Tornado Watch '
             +'(cancels 5 areas, continues 12 areas) '
@@ -136,7 +136,7 @@ class TestProducts(unittest.TestCase):
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         prod = vtecparser( get_file('MWWSEW.txt') , utcnow=utcnow)
         prod.sql( self.txn )
-        j = prod.get_jabbers('http://localhost/')
+        j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory '
             +'for ((PZZ131)), ((PZZ132)) [PZ] till '
             +'5:00 AM PDT '
@@ -148,7 +148,7 @@ class TestProducts(unittest.TestCase):
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         prod = vtecparser( get_file('FLSBOU.txt') , utcnow=utcnow)
         prod.sql( self.txn )
-        j = prod.get_jabbers('http://localhost/')
+        j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
             +'for ((COC049)), ((COC057)) [CO] till 9:30 PM MDT '
             +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
@@ -257,7 +257,7 @@ class TestProducts(unittest.TestCase):
         significance = 'W' and status = 'NEW' """)
         self.assertEqual( self.txn.rowcount, 1)
 
-        msgs = prod.get_jabbers('http://localhost')
+        msgs = prod.get_jabbers('http://localhost', 'http://localhost/')
         self.assertEqual( msgs[0][0], ('JAN issues Tornado Warning for '
             +'((MSC035)), ((MSC073)), DARYL [MS] till 1:15 PM CDT * AT '
             +'1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A '

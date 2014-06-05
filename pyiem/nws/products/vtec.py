@@ -312,7 +312,7 @@ class VTECProduct(TextProduct):
         
         return len(keys) == 1
 
-    def get_jabbers(self, uri):
+    def get_jabbers(self, uri, river_uri):
         ''' Return a list[plain, html string, dict] for jabber messages '''
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         wfo = self.source[1:]
