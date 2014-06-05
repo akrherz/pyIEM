@@ -129,6 +129,8 @@ class VTEC:
 
     def get_end_string(self, prod):
         ''' Return an appropriate end string for this VTEC '''
+        if self.action == 'CAN':
+            return ''
         if self.endts is None:
             return 'until further notice'
         fmt = "%b %-d, %-I:%M %p %Z"
@@ -166,13 +168,18 @@ class VTEC:
     def __str__(self):
         return self.line
 
-    def product_string(self):
-
-        q = _actionDict.get( self.action , "unknown %s" % (self.action,))
+    def get_ps_string(self):
+        ''' Return the combination of Phenomena + Significance as string '''
         p = _phenDict.get(self.phenomena, "Unknown %s" % (self.phenomena,))
         a = _sigDict.get(self.significance, "Unknown %s" % (self.significance,))
         # Hack for special FW case
         if self.significance == 'A' and self.phenomena == 'FW':
             p = "Fire Weather"
-        return "%s %s %s" % (q, p,a)
+        return "%s %s" % (p, a)
+    
+    def get_action_string(self):
+        return _actionDict.get( self.action , "unknown %s" % (self.action,))
+    
+    def product_string(self):
+        return "%s %s" % (self.get_action_string(), self.get_ps_string())
 

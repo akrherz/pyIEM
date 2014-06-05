@@ -300,6 +300,18 @@ class VTECProduct(TextProduct):
                  segment.tml_sknt, segment.tml_giswkt)
         txn.execute(sql, myargs)
 
+    def is_homogeneous(self):
+        ''' Test to see if this product contains just one VTEC event '''
+        keys = []
+        for segment in self.segments:
+            for vtec in segment.vtec:
+                key = "%s.%s.%s" % (vtec.phenomena, vtec.ETN, 
+                                    vtec.significance)
+                if key not in keys:
+                    keys.append(key)
+        
+        return len(keys) == 1
+
     def get_jabbers(self, uri):
         ''' Return a list[plain, html string, dict] for jabber messages '''
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
@@ -319,15 +331,18 @@ class VTECProduct(TextProduct):
             return [(text, html, xtra)]
         msgs = []
         
+        actions = []
+        long_actions = []
+        
         for segment in self.segments:
             # Compute affected WFOs
-            affected_wfos = []
-            for ugc in segment.ugcs:
-                for wfo in ugc.wfos:
-                    if wfo not in affected_wfos:
-                        affected_wfos.append( wfo )
-            xtra['channels'] = ",".join(affected_wfos)
+            xtra['channels'] = ",".join( segment.get_affected_wfos() )
             for vtec in segment.vtec:
+                long_actions.append("%s %s" % (vtec.get_action_string(),
+                                              ugcs_to_text(segment.ugcs) ))
+                actions.append("%s %s area%s" % (vtec.get_action_string(),
+                                                len(segment.ugcs),
+                                        "s" if len(segment.ugcs) > 1 else ""))
                 xtra['status'] = vtec.status
                 xtra['vtec']  = vtec.getID(self.valid.year)
                 xtra['ptype'] = vtec.phenomena
@@ -368,6 +383,29 @@ class VTECProduct(TextProduct):
                 xtra['twitter'] = ' '.join( xtra['twitter'].split())
                 msgs.append([" ".join(plain.split()),
                              " ".join(html.split()), xtra])
+ 
+        # If we have a homogeneous product and we have more than one 
+        # message, lets try to condense it down
+        if self.is_homogeneous() and len(msgs) > 1:
+            vtec = self.segments[0].vtec[0]
+            xtra['channels'] = ",".join( self.get_affected_wfos() )
+            jdict = {
+                'as' : ", ".join(actions),
+                'asl' : ", ".join(long_actions),
+                'wfo': vtec.office, 
+                'product': vtec.get_ps_string(),
+                'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
+            }
+            plain = ("%(wfo)s updates %(product)s (%(asl)s) %(url)s") % jdict
+            xtra['twitter'] = ("%(wfo)s updates %(product)s (%(asl)s)") % jdict
+            if len(xtra['twitter']) > (140-25):
+                xtra['twitter'] = ("%(wfo)s updates %(product)s (%(as)s)") % jdict
+                if len(xtra['twitter']) > (140-25):
+                    xtra['twitter'] = ("%(wfo)s updates %(product)s") % jdict
+            xtra['twitter'] += " %(url)s" % jdict
+            html = ("%(wfo)s <a href=\"%(url)s\">updates %(product)s</a> (%(asl)s)") % jdict
+            return [(plain, html, xtra)]
+
         
         return msgs
 

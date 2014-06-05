@@ -3,6 +3,7 @@ import os
 import psycopg2
 import datetime
 import pytz
+import re
 
 from pyiem.nws.products.mcd import parser as mcdparser
 from pyiem.nws.products.lsr import parser as lsrparser
@@ -24,11 +25,45 @@ class TestProducts(unittest.TestCase):
         ''' This is called for each test, beware '''
         self.dbconn = psycopg2.connect(database='postgis')
         self.txn = self.dbconn.cursor()
-    
+
     def tearDown(self):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+    
+    def test_wcn(self):
+        ''' See about processing a watch update that cancels some and
+        continues others, we want special tweet logic for this '''
+        utcnow = datetime.datetime(2014,6,3)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))        
+        ugc_provider = {}
+        for u in range(1,201,2):
+            n =  'a' * min((u+1/2),40)
+            ugc_provider["IAC%03i" % (u,)] = UGC('IA', 'C', "%03i" % (u,), 
+                              name=n, wfos=['DMX'])
+
+        prod = vtecparser( get_file('SVS.txt') , utcnow=utcnow,
+                           ugc_provider=ugc_provider)
+        j = prod.get_jabbers('http://localhost/')
+        self.assertTrue(prod.is_homogeneous())
+        self.assertEqual(j[0][2]['twitter'], ('DMX updates Severe '
+            +'Thunderstorm Warning (cancels 1 area, continues 1 area) '
+            +'http://localhost/#2014-O-CAN-KDMX-SV-W-0143'))
+
+
+        prod = vtecparser( get_file('WCN.txt') , utcnow=utcnow,
+                           ugc_provider=ugc_provider)
+        j = prod.get_jabbers('http://localhost/')
+        self.assertTrue(prod.is_homogeneous())
+        self.assertEqual(j[0][2]['twitter'], ('DMX updates Tornado Watch '
+            +'(cancels 5 areas, continues 12 areas) '
+            +'http://localhost/#2014-O-CAN-KDMX-TO-A-0210'))
+        self.assertEqual(j[0][0], ('DMX updates Tornado Watch (cancels a, '
+            +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+            +'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
+            +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties/zones '
+            +'in [IA]) '
+            +'http://localhost/#2014-O-CAN-KDMX-TO-A-0210'))
     
     def test_spacewx(self):
         ''' See if we can parse a space weather product '''
@@ -43,8 +78,8 @@ class TestProducts(unittest.TestCase):
     def test_140604_sbwupdate(self):
         ''' Make sure we are updating the right info in the sbw table '''
         utcnow = datetime.datetime(2014,6,4)
-        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
-        
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))        
+
         prod = vtecparser( get_file('SVRLMK_1.txt') , utcnow=utcnow)
         prod.sql( self.txn )    
 
