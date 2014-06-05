@@ -355,6 +355,7 @@ class VTECProduct(TextProduct):
                 jmsg_dict = {'wfo': vtec.office, 'product': vtec.product_string(),
                              'county': ugcs_to_text(segment.ugcs), 
                              'sts': ' ', 'ets': ' ', 
+                             'svr_special': segment.special_tags_to_text(),
                              'svs_special': '',
                              'year': self.valid.year, 'phenomena': vtec.phenomena,
                              'eventid': vtec.ETN, 'significance': vtec.significance,
@@ -371,11 +372,11 @@ class VTECProduct(TextProduct):
                 if (vtec.phenomena in ['TO',] and vtec.significance == 'W'):
                     jmsg_dict['svs_special'] = segment.svs_search()
 
-                plain = ("%(wfo)s %(product)s %(sts)s for "
+                plain = ("%(wfo)s %(product)s %(svr_special)s%(sts)s for "
                         +"%(county)s %(ets)s %(svs_special)s "
                         +"%(url)s") % jmsg_dict
                 html = ("<p>%(wfo)s <a href='%(url)s'>%(product)s</a> "
-                        +"%(sts)s for %(county)s "
+                        +"%(svr_special)s%(sts)s for %(county)s "
                         +"%(ets)s %(svs_special)s</p>") % jmsg_dict
                 xtra['twitter'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
                                  +"%(ets)s") % jmsg_dict

@@ -31,6 +31,24 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_tortag(self):
+        ''' See what we can do with warnings with tags in them '''
+        utcnow = datetime.datetime(2011, 8, 6)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        
+        prod = vtecparser( get_file('TORtag.txt') , utcnow=utcnow)
+        j = prod.get_jabbers('http://localhost/')
+        self.assertTrue(prod.is_homogeneous())
+        self.assertEqual(j[0][1], ("<p>DMX <a href='http://localhost/#2011-"
+            +"O-NEW-KDMX-TO-W-0057'>issues Tornado Warning</a> [tornado: "
+            +"OBSERVED, tornado damage threat: SIGNIFICANT, hail: 2.75 IN] "
+            +"for ((IAC117)), ((IAC125)), ((IAC135)) [IA] till 12:15 AM CDT "
+            +"* AT 1132 PM CDT...NATIONAL WEATHER SERVICE DOPPLER RADAR "
+            +"INDICATED A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A TORNADO. "
+            +"THIS DANGEROUS STORM WAS LOCATED 8 MILES EAST OF CHARITON..."
+            +"OR 27 MILES NORTHWEST OF CENTERVILLE...AND MOVING NORTHEAST "
+            +"AT 45 MPH.</p>"))
+        
     def test_wcn(self):
         ''' See about processing a watch update that cancels some and
         continues others, we want special tweet logic for this '''

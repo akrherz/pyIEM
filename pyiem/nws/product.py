@@ -122,6 +122,31 @@ class TextProductSegment(object):
             d = m.groupdict()
             self.tornadodamagetag = d['damage']
 
+    def special_tags_to_text(self):
+        """
+        Convert the special tags into a nice text
+        """
+        if (self.windtag is None and self.tornadotag is None and
+            self.hailtag is None and self.tornadodamagetag is None):
+            return ""
+
+        parts = []
+        if self.tornadotag is not None:
+            parts.append("tornado: %s" % (
+                self.tornadotag  ))
+        if self.tornadodamagetag is not None:
+            parts.append("tornado damage threat: %s" % (
+                self.tornadodamagetag  ))
+        if self.windtag is not None:
+            parts.append("wind: %s%s MPH" % (
+                self.winddirtag.replace(">","&gt;").replace("<", "&lt;"),
+                self.windtag))
+        if self.hailtag is not None:
+            parts.append("hail: %s%s IN" % (
+                self.haildirtag.replace(">","&gt;").replace("<", "&lt;"),
+                self.hailtag  ))
+        return " ["+ ", ".join(parts) +"] "
+
 
     def process_latlon(self):
         """ FIND the LAT...LON data """
