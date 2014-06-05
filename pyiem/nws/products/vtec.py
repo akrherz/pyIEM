@@ -301,7 +301,7 @@ class VTECProduct(TextProduct):
         txn.execute(sql, myargs)
 
     def get_jabbers(self, uri):
-        ''' Return a list[plain, html string] for jabber messages '''
+        ''' Return a list[plain, html string, dict] for jabber messages '''
         utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
         wfo = self.source[1:]
         xtra = {'product_id': self.get_product_id(),
@@ -318,13 +318,15 @@ class VTECProduct(TextProduct):
                     +"details.</p>") % (wfo, uri, wfo)
             return [(text, html, xtra)]
         msgs = []
+        
         for segment in self.segments:
             # Compute affected WFOs
-            affected_wfos = {wfo: True}
+            affected_wfos = []
             for ugc in segment.ugcs:
                 for wfo in ugc.wfos:
-                    affected_wfos[ wfo ] = True
-            xtra['channels'] = ",".join(affected_wfos.keys(),)
+                    if wfo not in affected_wfos:
+                        affected_wfos.append( wfo )
+            xtra['channels'] = ",".join(affected_wfos)
             for vtec in segment.vtec:
                 xtra['status'] = vtec.status
                 xtra['vtec']  = vtec.getID(self.valid.year)
@@ -365,7 +367,7 @@ class VTECProduct(TextProduct):
                 # brute force removal of duplicate spaces
                 xtra['twitter'] = ' '.join( xtra['twitter'].split())
                 msgs.append([" ".join(plain.split()),
-                             " ".join(html.split()),xtra])
+                             " ".join(html.split()), xtra])
         
         return msgs
 
