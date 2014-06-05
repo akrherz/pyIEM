@@ -229,6 +229,17 @@ class TextProductSegment(object):
             ar[h] = " ".join(ar[h].replace("...",", ").replace("\n", " ").split())
         return ar
 
+    def get_affected_wfos(self):
+        ''' Based on the ugc_provider, figure out which WFOs are impacted by
+        this product segment '''
+        affected_wfos = []
+        for ugc in self.ugcs:
+            for wfo in ugc.wfos:
+                if wfo not in affected_wfos:
+                    affected_wfos.append( wfo )
+        
+        return affected_wfos
+
 class TextProduct(object):
     '''
     class representing a NWS Text Product
@@ -363,6 +374,17 @@ class TextProduct(object):
             self.wmo = t[0][0]
             self.source = t[0][1]
 
+    def get_affected_wfos(self):
+        ''' Based on the ugc_provider, figure out which WFOs are impacted by
+        this product '''
+        affected_wfos = []
+        for segment in self.segments:
+            for ugc in segment.ugcs:
+                for wfo in ugc.wfos:
+                    if wfo not in affected_wfos:
+                        affected_wfos.append( wfo )
+        
+        return affected_wfos
     
     def parse_afos(self):
         """ Figure out what the AFOS PIL is """
