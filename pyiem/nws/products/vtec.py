@@ -105,9 +105,18 @@ class VTECProduct(TextProduct):
             if vtec.endts is None:
                 ets = bts + datetime.timedelta(hours=24)
 
-            ''' For each UGC code in this segment, we create a database entry
-            TODO: we should check that these are unique before entering! '''
+            # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
+                # Check to see if we have entries already for this UGC
+                txn.execute("""
+                SELECT issue, expire, updated from """+ warning_table +"""
+                WHERE ugc = %s and eventid = %s and significance = %s and
+                wfo = %s and phenomena = %s 
+                """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
+                      vtec.phenomena))
+                if txn.rowcount > 0:
+                    self.warnings.append(("Duplicate(s) WWA found, "
+                        +"rowcount: %s for UGC: %s") % (txn.rowcount, ugc))
                 txn.execute("""
                 INSERT into """+ warning_table +""" (issue, expire, updated, 
                 wfo, eventid, status, fcster, report, ugc, phenomena, 
@@ -333,12 +342,16 @@ class VTECProduct(TextProduct):
         
         actions = []
         long_actions = []
+        html_long_actions = []
         
         for segment in self.segments:
             # Compute affected WFOs
             xtra['channels'] = ",".join( segment.get_affected_wfos() )
             for vtec in segment.vtec:
                 long_actions.append("%s %s" % (vtec.get_action_string(),
+                                              ugcs_to_text(segment.ugcs) ))
+                html_long_actions.append(("<span style='font-weight: bold;'>"
+                        +"%s</span> %s") % (vtec.get_action_string(),
                                               ugcs_to_text(segment.ugcs) ))
                 actions.append("%s %s area%s" % (vtec.get_action_string(),
                                                 len(segment.ugcs),
@@ -393,6 +406,7 @@ class VTECProduct(TextProduct):
             jdict = {
                 'as' : ", ".join(actions),
                 'asl' : ", ".join(long_actions),
+                'hasl' : ", ".join(html_long_actions),
                 'wfo': vtec.office, 
                 'product': vtec.get_ps_string(),
                 'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
@@ -404,7 +418,8 @@ class VTECProduct(TextProduct):
                 if len(xtra['twitter']) > (140-25):
                     xtra['twitter'] = ("%(wfo)s updates %(product)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
-            html = ("%(wfo)s <a href=\"%(url)s\">updates %(product)s</a> (%(asl)s)") % jdict
+            html = ("%(wfo)s <a href=\"%(url)s\">updates %(product)s</a> "
+                    +"(%(hasl)s)") % jdict
             return [(plain, html, xtra)]
 
         
