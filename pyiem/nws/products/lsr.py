@@ -26,11 +26,11 @@ class LSRProductException(TextProductException):
 class LSRProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
     
-    def __init__(self, text):
+    def __init__(self, text, utcnow=None):
         ''' constructor '''
         self.lsrs = []
         self.duplicates = 0
-        TextProduct.__init__(self, text)
+        TextProduct.__init__(self, text, utcnow=utcnow)
 
     def get_temporal_domain(self):
         ''' Return the min and max timestamps of lsrs '''
@@ -63,13 +63,10 @@ class LSRProduct(TextProduct):
             if mylsr.duplicate:
                 continue
             time_fmt = "%-I:%M %p %Z"
-            now = datetime.datetime.utcnow()
-            now = now.replace(tzinfo=pytz.timezone("UTC")) - datetime.timedelta(
-                                                                hours=24)
             url = "%s#%s/%s/%s" % (uri, mylsr.wfo, 
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M"),
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M") )
-            if mylsr.valid < now:
+            if mylsr.valid.day != self.utcnow.day:
                 time_fmt = "%-d %b, %-I:%M %p %Z"
             xtra = {
         'product_id': self.get_product_id(),
@@ -162,10 +159,10 @@ def parse_lsr(text):
         lsr.remark = " ".join( meat.split())
     return lsr
 
-def parser(text):
+def parser(text, utcnow=None):
     ''' Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception'''
-    prod = LSRProduct(text)
+    prod = LSRProduct(text, utcnow)
     
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr("".join(match.groups()))

@@ -31,6 +31,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_jabber_lsrtime(self):
+        ''' Make sure delayed LSRs have proper dates associated with them'''
+        utcnow = datetime.datetime(2014, 6, 6, 16)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        prod = lsrparser( get_file('LSRFSD.txt') , utcnow=utcnow)
+        j = prod.get_jabbers('http://iem.local')
+        self.assertEqual(j[0][1], ('<p>2 SSE Harrisburg [Lincoln Co, SD] '
+            +'TRAINED SPOTTER <a href="http://iem.local#FSD/201406052040/'
+            +'201406052040">reports TORNADO</a> at 5 Jun, 3:40 PM CDT -- '
+            +'ON GROUND ALONG HIGHWAY 11 NORTH OF 275TH ST</p>'))
+    
     def test_tortag(self):
         ''' See what we can do with warnings with tags in them '''
         utcnow = datetime.datetime(2011, 8, 6)
