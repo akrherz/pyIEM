@@ -345,11 +345,12 @@ class VTECProduct(TextProduct):
         html_long_actions = []
         
         for segment in self.segments:
-            xtra = {'product_id': self.get_product_id(),
-                'twitter': ''}
-            # Compute affected WFOs
-            xtra['channels'] = ",".join( segment.get_affected_wfos() )
             for vtec in segment.vtec:
+                # define xtra each loop to prevent pass-by-ref errors!
+                xtra = {'product_id': self.get_product_id(),
+                    'twitter': ''}
+                # Compute affected WFOs
+                xtra['channels'] = ",".join( segment.get_affected_wfos() )
                 long_actions.append("%s %s" % (vtec.get_action_string(),
                                               ugcs_to_text(segment.ugcs) ))
                 html_long_actions.append(("<span style='font-weight: bold;'>"

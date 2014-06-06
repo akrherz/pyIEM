@@ -165,7 +165,7 @@ class TestProducts(unittest.TestCase):
             +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
         self.assertEqual(j[0][2]['twitter'], ('BOU extends time of Areal Flood '
             +'Advisory for ((COC049)), ((COC057)) [CO] till '
-            +'9:30 PM MDT'))
+            +'9:30 PM MDT http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
     
     def test_cli(self):
         ''' Test the processing of a CLI product '''
@@ -181,6 +181,11 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data['snow_month'], 0)
         self.assertEqual(prod.data['snow_today'], 0)
  
+    def test_affected_wfos(self):
+        ''' see what affected WFOs we have '''
+        ugc_provider = {'IAZ006': UGC('IA', 'Z', '006', wfos=['DMX'])}
+        prod = vtecparser( get_file('WSWDMX/WSW_00.txt') , ugc_provider=ugc_provider)
+        self.assertEqual(prod.segments[0].get_affected_wfos()[0], 'DMX')
     
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
