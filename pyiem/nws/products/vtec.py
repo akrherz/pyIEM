@@ -345,6 +345,8 @@ class VTECProduct(TextProduct):
         html_long_actions = []
         
         for segment in self.segments:
+            xtra = {'product_id': self.get_product_id(),
+                'twitter': ''}
             # Compute affected WFOs
             xtra['channels'] = ",".join( segment.get_affected_wfos() )
             for vtec in segment.vtec:
@@ -392,7 +394,7 @@ class VTECProduct(TextProduct):
                         +"%(svr_special)s%(sts)s for %(county)s "
                         +"%(ets)s %(svs_special)s</p>") % jmsg_dict
                 xtra['twitter'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
-                                 +"%(ets)s") % jmsg_dict
+                                 +"%(ets)s %(url)s") % jmsg_dict
                 # brute force removal of duplicate spaces
                 xtra['twitter'] = ' '.join( xtra['twitter'].split())
                 msgs.append([" ".join(plain.split()),
