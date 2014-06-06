@@ -22,7 +22,13 @@ class VTECProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
     
     def __init__(self, text, utcnow=None, ugc_provider={}, nwsli_provider={}):
-        ''' constructor '''        
+        ''' constructor '''
+        # Make sure we are CRLF above all else
+        if text.find("\r\r\n") == -1:
+            text = text.replace("\n", "\r\r\n")
+        #  Get rid of extraneous whitespace on right hand side only
+        text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
+        
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
@@ -385,7 +391,8 @@ class VTECProduct(TextProduct):
                     jmsg_dict['sts'] = vtec.get_begin_string(self)
                 jmsg_dict['ets'] = vtec.get_end_string(self)
 
-                if (vtec.phenomena in ['TO',] and vtec.significance == 'W'):
+                # Include the special bulletin for Tornado Warnings
+                if vtec.phenomena in ['TO',] and vtec.significance == 'W':
                     jmsg_dict['svs_special'] = segment.svs_search()
 
                 plain = ("%(wfo)s %(product)s %(svr_special)s%(sts)s for "

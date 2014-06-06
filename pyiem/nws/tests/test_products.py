@@ -31,6 +31,18 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_svs_search(self):
+        ''' See that we get the SVS search done right '''
+        utcnow = datetime.datetime(2014, 6, 6, 20)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        
+        prod = vtecparser( get_file('TORBOU_ibw.txt') , utcnow=utcnow)
+        j = prod.segments[0].svs_search()
+        self.assertEqual(j, ('* AT 250 PM MDT...A SEVERE THUNDERSTORM '
+            +'CAPABLE OF PRODUCING A TORNADO WAS LOCATED 9 MILES WEST OF '
+            +'WESTPLAINS...OR 23 MILES SOUTH OF KIMBALL...MOVING EAST AT '
+            +'20 MPH.'))
+        
     def test_jabber_lsrtime(self):
         ''' Make sure delayed LSRs have proper dates associated with them'''
         utcnow = datetime.datetime(2014, 6, 6, 16)
