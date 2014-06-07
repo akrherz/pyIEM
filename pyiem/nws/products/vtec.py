@@ -210,9 +210,10 @@ class VTECProduct(TextProduct):
                 self.valid, self.valid, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance) )
             if txn.rowcount != 1:
-                self.warnings.append(("CAN/UPG sbw table update resulted in "
-                    +"update of %s rows, should have been 1") % (
-                                                    txn.rowcount,))
+                self.warnings.append(("%s.%s.%s CAN/UPG sbw table update "
+                    +"resulted in update of %s rows, should be 1") % (
+                    vtec.phenomena, vtec.significance, vtec.ETN,
+                                                    txn.rowcount))
         
         # If this is a continues action, we should cut off the previous 
         # active polygon by setting its polygon_end
@@ -223,9 +224,10 @@ class VTECProduct(TextProduct):
                 and phenomena = %s and significance = %s""" , ( self.valid, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
             if txn.rowcount != 1:
-                self.warnings.append(("CON sbw table update resulted in "
-                    +"update of %s rows, should have been 1") % (
-                                                    txn.rowcount, ))
+                self.warnings.append(("%s.%s.%s CON sbw table update "
+                    +"resulted in update of %s rows, should be 1") % (
+                    vtec.phenomena, vtec.significance, vtec.ETN, 
+                    txn.rowcount))
         
         # Account for vagarities with VTEC
         my_sts = "'%s'" % (vtec.begints,)
