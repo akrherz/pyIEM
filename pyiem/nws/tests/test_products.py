@@ -31,6 +31,61 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140609_ext_backwards(self):
+        """ Sometimes the EXT goes backwards in time, so we have fun """
+        utcnow = datetime.datetime(2014, 6, 6, 15, 40)
+        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+
+        self.txn.execute("""DELETE from warnings_2014 where wfo = 'LBF'
+        and eventid = 2 and phenomena = 'FL' and significance = 'W' """)
+        self.txn.execute("""DELETE from sbw_2014 where wfo = 'LBF'
+        and eventid = 2 and phenomena = 'FL' and significance = 'W' """)
+
+        # --> num  issue   expire  p_begin  p_end
+        # 1040 AM CDT FRI JUN 6 2014 NEW 140608T1800Z-000000T0000Z
+        # --> 1    08 18   09 18   08 18    09 18 
+        #  915 PM CDT FRI JUN 6 2014 EXT 140608T0900Z-000000T0000Z
+        # --> 1    08 18   09 18   08 18    08 18!
+        # --> 2    08 09   09 09   08 09    09 09
+        # 1043 AM CDT SAT JUN 7 2014 EXT 140608T1000Z-000000T0000Z
+        # --> 1    08 18   09 18   08 18    08 18
+        # --> 2    08 09   09 09   08 09    08 10! set to vtec bts
+        # --> 3    08 10   09 10   08 10    09 10
+        # 1048 AM CDT SUN JUN 8 2014 EXT 000000T0000Z-140613T0600Z
+        # --> 1    08 18   09 18   08 18    08 18
+        # --> 2    08 09   09 09   08 09    08 09
+        # --> 3    08 10   09 10   08 10    08 15! set to product issue
+        # --> 4    08 10   13 06   08 15    13 06 
+        # 1030 AM CDT MON JUN 9 2014 CON 000000T0000Z-140613T0600Z
+        # --> 1    08 18   09 18   08 18    08 18
+        # --> 2    08 09   09 09   08 09    08 09
+        # --> 3    08 10   09 10   08 10    08 15
+        # --> 4    08 10   13 06   08 15    09 15! set to product issue 
+        # --> 5    08 10   13 06   09 15    13 06
+        for i in range(1,6):
+            prod = vtecparser( get_file('FLWLBF/FLWLBF_%s.txt' % (i,)) , 
+                               utcnow=utcnow)
+            prod.sql( self.txn )
+
+        self.txn.execute("""SET TIME ZONE 'UTC'""")            
+        self.txn.execute("""
+        select status, updated, issue, expire, init_expire, polygon_begin, 
+        polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and 
+        significance = 'W' and wfo = 'LBF' ORDER by updated ASC
+        """)
+        print 'sta update issue  expire init_e p_begi p_end'
+        rows = []
+        for row in self.txn:
+            rows.append( row )
+            print '%s %s %s %s %s %s %s' % (row[0], row[1].strftime("%d%H%M"),
+                    row[2].strftime("%d%H%M"), row[3].strftime("%d%H%M"),
+                    row[4].strftime("%d%H%M"), row[5].strftime("%d%H%M"), 
+                    row[6].strftime("%d%H%M"))
+    
+        self.assertEqual(rows[0][6], 
+                         datetime.datetime(2014, 6, 8, 9).replace(
+                                                tzinfo=pytz.timezone("UTC")))
+    
     def test_svs_search(self):
         ''' See that we get the SVS search done right '''
         utcnow = datetime.datetime(2014, 6, 6, 20)
