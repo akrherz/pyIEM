@@ -15,7 +15,7 @@ from pyiem.nws import ugc, vtec, hvtec
 
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
-WMO_RE = "^[A-Z0-9]{6} [A-Z]{4} ([0-3][0-9])([0-2][0-9])([0-5][0-9])"
+WMO_RE = re.compile("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) (?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s?(?P<bbb>[ACR][ACR][A-Z])?$", re.M)
 TIME_MOT_LOC = re.compile(".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z (?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT (?P<loc>[0-9 ]+)")
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile(".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
@@ -294,6 +294,8 @@ class TextProduct(object):
         self.valid = None
         self.source = None
         self.wmo = None
+        self.ddhhmm = None
+        self.bbb = None
         self.utcnow = utcnow
         self.segments = []
         self.z = None
@@ -302,10 +304,14 @@ class TextProduct(object):
             utc = datetime.datetime.utcnow()
             self.utcnow = utc.replace(tzinfo=pytz.timezone('UTC'))
         
+        self.parse_wmo()
         self.parse_afos()
         self.parse_valid()
-        self.parse_wmo()
         self.parse_segments()
+        
+    def is_correction(self):
+        """Returns boolean on if this product is some form of correction """
+        return self.bbb is not None
         
     def get_jabbers(self, uri, uri2=None):
         ''' Return a list of triples representing what we should send to 
@@ -372,13 +378,10 @@ class TextProduct(object):
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
         
-        tokens = re.findall(WMO_RE, self.unixtext[:100], re.M)
-        if len(tokens) == 0:
-            raise TextProductException("FATAL: Could not find WMO Header timestamp, bad!")
         # Take the first hit, ignore others
-        wmo_day = int(tokens[0][0])
-        wmo_hour = int(tokens[0][1])
-        wmo_minute = int(tokens[0][2])
+        wmo_day = int(self.ddhhmm[:2])
+        wmo_hour = int(self.ddhhmm[2:4])
+        wmo_minute = int(self.ddhhmm[4:])
 
         self.valid = self.utcnow.replace(hour=wmo_hour, minute=wmo_minute,
                                          second=0, microsecond=0)
@@ -397,11 +400,14 @@ class TextProduct(object):
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
-        t = re.findall("^([A-Z]{4}[0-9][0-9]) ([A-Z]{4})", self.sections[0], 
-                       re.M)
-        if len(t) > 0:
-            self.wmo = t[0][0]
-            self.source = t[0][1]
+        m = WMO_RE.search( self.unixtext[:100] )
+        if m is None:
+            raise TextProductException("FATAL: Could not parse WMO header! %s" % (self.text[:100]))
+        d = m.groupdict()
+        self.wmo = d['ttaaii']
+        self.source = d['cccc']
+        self.ddhhmm = d['ddhhmm']
+        self.bbb = d['bbb']
 
     def get_affected_wfos(self):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by

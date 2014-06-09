@@ -19,6 +19,11 @@ def get_file(name):
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
+def utc(year, month, day, hour=0, minute=0):
+    """UTC Timestamp generator"""
+    return datetime.datetime(year, month, day, hour, minute).replace(
+                        tzinfo=pytz.timezone("UTC"))
+
 class TestProducts(unittest.TestCase):
     
     def setUp(self):
@@ -31,10 +36,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_correction(self):
+        ''' Can we properly parse a product correction '''
+        utcnow = utc(2014, 6, 6, 21, 30)
+        prod = vtecparser( get_file('CCA.txt'), utcnow=utcnow)
+        self.assertTrue( prod.is_correction() )
+        
+    
     def test_140609_ext_backwards(self):
         """ Sometimes the EXT goes backwards in time, so we have fun """
-        utcnow = datetime.datetime(2014, 6, 6, 15, 40)
-        utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
+        utcnow = utc(2014, 6, 6, 15, 40)
 
         self.txn.execute("""DELETE from warnings_2014 where wfo = 'LBF'
         and eventid = 2 and phenomena = 'FL' and significance = 'W' """)
