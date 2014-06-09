@@ -56,7 +56,7 @@ class TestProducts(unittest.TestCase):
     
     def test_tortag(self):
         ''' See what we can do with warnings with tags in them '''
-        utcnow = datetime.datetime(2011, 8, 6)
+        utcnow = datetime.datetime(2011, 8, 7, 4, 36)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         
         prod = vtecparser( get_file('TORtag.txt') , utcnow=utcnow)
@@ -155,13 +155,13 @@ class TestProducts(unittest.TestCase):
     
     def test_140527_astimezone(self):
         ''' Test the processing of a begin timestamp '''
-        utcnow = datetime.datetime(2014,5,27)
+        utcnow = datetime.datetime(2014, 5, 27, 16, 3)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         prod = vtecparser( get_file('MWWSEW.txt') , utcnow=utcnow)
         prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory '
-            +'for ((PZZ131)), ((PZZ132)) [PZ] till '
+            +'valid at 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till '
             +'5:00 AM PDT '
             +'http://localhost/#2014-O-CON-KSEW-SC-Y-0113'))
     

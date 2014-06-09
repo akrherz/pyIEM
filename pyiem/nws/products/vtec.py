@@ -3,7 +3,6 @@ VTEC enabled TextProduct
 '''
 # Stand Library Imports
 import datetime
-import re
 
 # Third party
 import pytz
@@ -11,7 +10,30 @@ from shapely.geometry import MultiPolygon
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
-from pyiem import reference
+
+def do_sql_hvtec(txn, segment):
+    ''' Process the HVTEC in this product '''
+    nwsli = segment.hvtec[0].nwsli.id
+    if len(segment.bullets) < 4:
+        return
+    stage_text = ""
+    flood_text = ""
+    forecast_text = ""
+    for qqq in range(len(segment.bullets)):
+        if segment.bullets[qqq].strip().find("FLOOD STAGE") == 0:
+            flood_text = segment.bullets[qqq]
+        if segment.bullets[qqq].strip().find("FORECAST") == 0:
+            forecast_text = segment.bullets[qqq]
+        if (segment.bullets[qqq].strip().find("AT ") == 0 and 
+            stage_text == ""):
+            stage_text = segment.bullets[qqq]
+
+
+    txn.execute("""INSERT into riverpro(nwsli, stage_text, 
+      flood_text, forecast_text, severity) VALUES 
+      (%s,%s,%s,%s,%s) """, (nwsli, stage_text, flood_text, 
+                             forecast_text, 
+                             segment.hvtec[0].severity) )
 
 class VTECProductException(TextProductException):
     ''' Something we can raise when bad things happen! '''
@@ -21,7 +43,8 @@ class VTECProductException(TextProductException):
 class VTECProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
     
-    def __init__(self, text, utcnow=None, ugc_provider={}, nwsli_provider={}):
+    def __init__(self, text, utcnow=None, ugc_provider=None, 
+                 nwsli_provider=None):
         ''' constructor '''
         # Make sure we are CRLF above all else
         if text.find("\r\r\n") == -1:
@@ -33,27 +56,7 @@ class VTECProduct(TextProduct):
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
 
-    def do_sql_hvtec(self, txn, segment, vtec):
-        ''' Process the HVTEC in this product '''
-        nwsli = segment.hvtec[0].nwsli.id
-        if len(segment.bullets) > 3:
-            stage_text = ""
-            flood_text = ""
-            forecast_text = ""
-            for qqq in range(len(segment.bullets)):
-                if segment.bullets[qqq].strip().find("FLOOD STAGE") == 0:
-                    flood_text = segment.bullets[qqq]
-                if segment.bullets[qqq].strip().find("FORECAST") == 0:
-                    forecast_text = segment.bullets[qqq]
-                if segment.bullets[qqq].strip().find("AT ") == 0 and stage_text == "":
-                    stage_text = segment.bullets[qqq]
 
-
-            txn.execute("""INSERT into riverpro(nwsli, stage_text, 
-              flood_text, forecast_text, severity) VALUES 
-              (%s,%s,%s,%s,%s) """, (nwsli, stage_text, flood_text, 
-                                     forecast_text, 
-                                     segment.hvtec[0].severity) )
 
 
     def sql(self, txn):
@@ -86,12 +89,18 @@ class VTECProduct(TextProduct):
                 # Check for Hydro-VTEC stuff
                 if (len(segment.hvtec) > 0 and 
                     segment.hvtec[0].nwsli != "00000"):
-                    self.do_sql_hvtec(txn, segment, vtec)
+                    do_sql_hvtec(txn, segment)
 
                 self.do_sql_vtec(txn, segment, vtec)
 
     def do_sql_vtec(self, txn, segment, vtec):
-        ''' Exec the needed VTEC SQL statements '''
+        """ Persist the non-SBW stuff to the database 
+        
+        Arguments:
+        txn -- A pyscopg2 transaction
+        segment -- A TextProductSegment instance
+        vtec -- A vtec instance
+        """
         warning_table = "warnings_%s" % (self.valid.year,)
         ugcstring = str(tuple([str(u) for u in segment.ugcs]))
         if len(segment.ugcs) == 1:
@@ -101,7 +110,7 @@ class VTECProduct(TextProduct):
             fcster = fcster[:24]
         
         if vtec.action in ['NEW', 'EXB', 'EXA']:
-            ''' New Event Types! '''
+            # New Event Types!
             bts = vtec.begints
             if vtec.action in ["EXB", "EXA"]:
                 bts = self.valid
@@ -117,7 +126,7 @@ class VTECProduct(TextProduct):
                 txn.execute("""
                 SELECT issue, expire, updated from """+ warning_table +"""
                 WHERE ugc = %s and eventid = %s and significance = %s and
-                wfo = %s and phenomena = %s 
+                wfo = %s and phenomena = %s and status not in ('EXP', 'CAN')
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
                       vtec.phenomena))
                 if txn.rowcount > 0:
@@ -141,7 +150,7 @@ class VTECProduct(TextProduct):
                                                                txn.rowcount ))
 
         elif vtec.action in ['COR',]:
-            ''' A previous issued product is being corrected '''
+            # A previous issued product is being corrected
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
             svs = svs || %s, issue = %s, init_expire = %s WHERE
@@ -155,13 +164,14 @@ class VTECProduct(TextProduct):
                                       +'should %s rows') %(
                                         txn.rowcount, len(segment.ugcs)))
 
-        elif vtec.action in ['CAN','UPG', 'EXT']:
-            ''' These are terminate actions, so we act accordingly '''
+        elif vtec.action in ['CAN', 'UPG', 'EXT']:
+            # These are terminate actions, so we act accordingly
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
             svs = svs || %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+"""
-            and significance = %s and phenomena = %s
+            and significance = %s and phenomena = %s 
+            and status not in ('EXP', 'CAN')
             """, (vtec.endts, vtec.action, self.unixtext,
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
@@ -170,8 +180,8 @@ class VTECProduct(TextProduct):
                                       +'should %s rows') %(
                                         txn.rowcount, len(segment.ugcs)))
 
-        elif vtec.action in ['CON','EXP', 'ROU']:
-            ''' These are no-ops, just updates '''
+        elif vtec.action in ['CON', 'EXP', 'ROU']:
+            # These are no-ops, just updates
             ets = vtec.endts
             if vtec.endts is None:
                 ets = self.valid + datetime.timedelta(hours=24)
@@ -181,6 +191,7 @@ class VTECProduct(TextProduct):
             svs = svs || %s , expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s 
+            and status not in ('EXP', 'CAN')
             """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):
@@ -254,10 +265,10 @@ class VTECProduct(TextProduct):
         
         if vtec.action in ['CAN',]:
             sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
-                significance, phenomena, issue, expire, init_expire, polygon_begin, 
-                polygon_end, geom, status, report, windtag, hailtag, tornadotag,
-                tornadodamagetag, tml_valid, tml_direction, tml_sknt,
-                """+ tml_column +""") VALUES (%s,
+                significance, phenomena, issue, expire, init_expire, 
+                polygon_begin, polygon_end, geom, status, report, windtag, 
+                hailtag, tornadotag, tornadodamagetag, tml_valid, 
+                tml_direction, tml_sknt, """+ tml_column +""") VALUES (%s,
                 %s,%s,%s,"""+ my_sts +""",%s,"""+ my_ets +""",%s,%s,%s,%s,%s,
                 %s,%s,%s,%s, %s, %s, %s, %s)"""
             myargs = (vtec.office, vtec.ETN, 
@@ -278,8 +289,8 @@ class VTECProduct(TextProduct):
                 status, report, windtag, hailtag, tornadotag, tornadodamagetag, 
                 tml_valid, tml_direction, tml_sknt,
                 """+ tml_column +""") VALUES (%s,
-                %s,%s,%s, """+ my_sts +""","""+ my_ets +""","""+ my_ets +""",%s,%s, 
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                %s,%s,%s, """+ my_sts +""","""+ my_ets +""","""+ my_ets +""",
+                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
             vvv = self.valid
             if vtec.endts:
                 vvv = vtec.endts
@@ -329,22 +340,27 @@ class VTECProduct(TextProduct):
         
         return len(keys) == 1
 
-    def get_jabbers(self, uri, river_uri):
-        ''' Return a list[plain, html string, dict] for jabber messages '''
-        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
+    def get_jabbers(self, uri, river_uri=None):
+        """Return a list of triples representing how this goes to social
+        Arguments:
+        uri -- The URL for the VTEC Browser
+        river_uri -- The URL of the River App
+        
+        Returns:
+        [[plain, html, xtra]] -- A list of triples of plain text, html, xtra
+        """
         wfo = self.source[1:]
-        xtra = {'product_id': self.get_product_id(),
-                'twitter': ''}
         if self.skip_con:
-            xtra['twitter'] = '%s issues updated FLS product %s?wfo=%s' % (wfo, 
-                                                                uri, wfo)
+            xtra = {'product_id': self.get_product_id(),
+                    'twitter' : '%s issues updated FLS product %s?wfo=%s' % (
+                                wfo, river_uri, wfo)}
             text = ("%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult this website for more "
-                    +"details. %s?wfo=%s") % (wfo, uri, wfo)
+                    +"details. %s?wfo=%s") % (wfo, river_uri, wfo)
             html = ("<p>%s has sent an updated FLS product (continued products "
                     +"were not reported here).  Consult "
                     +"<a href=\"%s?wfo=%s\">this website</a> for more "
-                    +"details.</p>") % (wfo, uri, wfo)
+                    +"details.</p>") % (wfo, river_uri, wfo)
             return [(text, html, xtra)]
         msgs = []
         
@@ -354,11 +370,15 @@ class VTECProduct(TextProduct):
         
         for segment in self.segments:
             for vtec in segment.vtec:
-                # define xtra each loop to prevent pass-by-ref errors!
+                # CRITICAL: redefine this for each loop as it gets passed by
+                # reference below and is subsequently overwritten otherwise!
                 xtra = {'product_id': self.get_product_id(),
-                    'twitter': ''}
-                # Compute affected WFOs
-                xtra['channels'] = ",".join( segment.get_affected_wfos() )
+                        'channels': ",".join( segment.get_affected_wfos() ),
+                        'status' : vtec.status,
+                        'vtec' : vtec.getID(self.valid.year),
+                        'ptype': vtec.phenomena,
+                        'twitter': ''}
+                
                 long_actions.append("%s %s" % (vtec.get_action_string(),
                                               ugcs_to_text(segment.ugcs) ))
                 html_long_actions.append(("<span style='font-weight: bold;'>"
@@ -367,29 +387,31 @@ class VTECProduct(TextProduct):
                 actions.append("%s %s area%s" % (vtec.get_action_string(),
                                                 len(segment.ugcs),
                                         "s" if len(segment.ugcs) > 1 else ""))
-                xtra['status'] = vtec.status
-                xtra['vtec']  = vtec.getID(self.valid.year)
-                xtra['ptype'] = vtec.phenomena
+
                 if segment.giswkt is not None:
                     xtra['category'] = 'SBW'
                     xtra['geometry'] = segment.giswkt.replace("SRID=4326;", "")
                 if vtec.endts is not None:
                     xtra['expire'] = vtec.endts.strftime("%Y%m%dT%H:%M:00")
                 # Set up Jabber Dict for stuff to fill in
-                jmsg_dict = {'wfo': vtec.office, 'product': vtec.product_string(),
+                jmsg_dict = {'wfo': vtec.office, 
+                             'product': vtec.product_string(),
                              'county': ugcs_to_text(segment.ugcs), 
                              'sts': ' ', 'ets': ' ', 
                              'svr_special': segment.special_tags_to_text(),
                              'svs_special': '',
-                             'year': self.valid.year, 'phenomena': vtec.phenomena,
-                             'eventid': vtec.ETN, 'significance': vtec.significance,
+                             'year': self.valid.year, 
+                             'phenomena': vtec.phenomena,
+                             'eventid': vtec.ETN, 
+                             'significance': vtec.significance,
                              'url': "%s#%s" % (uri, 
                                vtec.url(self.valid.year)) }
                 if (len(segment.hvtec) > 0 and 
                     segment.hvtec[0].nwsli.id != '00000'):
-                        jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
+                    jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
                 if (vtec.begints is not None and
-                    vtec.begints > (utcnow + datetime.timedelta(hours=1))): 
+                    vtec.begints > (self.utcnow + datetime.timedelta(
+                                    hours=1))): 
                     jmsg_dict['sts'] = vtec.get_begin_string(self)
                 jmsg_dict['ets'] = vtec.get_end_string(self)
 
@@ -411,7 +433,8 @@ class VTECProduct(TextProduct):
                              " ".join(html.split()), xtra])
  
         # If we have a homogeneous product and we have more than one 
-        # message, lets try to condense it down
+        # message, lets try to condense it down, some of the xtra settings
+        # from above will be used here, this is probably bad design
         if self.is_homogeneous() and len(msgs) > 1:
             vtec = self.segments[0].vtec[0]
             xtra['channels'] = ",".join( self.get_affected_wfos() )
@@ -426,7 +449,8 @@ class VTECProduct(TextProduct):
             plain = ("%(wfo)s updates %(product)s (%(asl)s) %(url)s") % jdict
             xtra['twitter'] = ("%(wfo)s updates %(product)s (%(asl)s)") % jdict
             if len(xtra['twitter']) > (140-25):
-                xtra['twitter'] = ("%(wfo)s updates %(product)s (%(as)s)") % jdict
+                xtra['twitter'] = ("%(wfo)s updates %(product)s "
+                                   +"(%(as)s)") % jdict
                 if len(xtra['twitter']) > (140-25):
                     xtra['twitter'] = ("%(wfo)s updates %(product)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
@@ -443,7 +467,7 @@ class VTECProduct(TextProduct):
             return True
         return False
 
-def parser(text, utcnow=None, ugc_provider={}, nwsli_provider={}):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception'''
     prod = VTECProduct(text, utcnow=utcnow, ugc_provider=ugc_provider,

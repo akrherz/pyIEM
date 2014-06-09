@@ -271,8 +271,8 @@ class TextProduct(object):
     '''
 
 
-    def __init__(self, text, utcnow=None, ugc_provider={},
-                 nwsli_provider={}):
+    def __init__(self, text, utcnow=None, ugc_provider=None,
+                 nwsli_provider=None):
         '''
         Constructor
         @param text string single text product
@@ -282,6 +282,10 @@ class TextProduct(object):
         self.warnings = []
         
         self.text = text
+        if ugc_provider is None:
+            ugc_provider = {}
+        if nwsli_provider is None:
+            nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
         self.unixtext = text.replace("\r\r\n", "\n")
@@ -303,7 +307,7 @@ class TextProduct(object):
         self.parse_wmo()
         self.parse_segments()
         
-    def get_jabbers(self, uri):
+    def get_jabbers(self, uri, uri2=None):
         ''' Return a list of triples representing what we should send to 
         our precious jabber routing bot, this should be overridden by the
         specialty parsers '''
