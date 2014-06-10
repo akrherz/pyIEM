@@ -441,7 +441,7 @@ class VTECProduct(TextProduct):
                 if (vtec.begints is not None and
                     vtec.begints > (self.utcnow + datetime.timedelta(
                                     hours=1))): 
-                    jmsg_dict['sts'] = vtec.get_begin_string(self)
+                    jmsg_dict['sts'] = ' %s ' % (vtec.get_begin_string(self),)
                 jmsg_dict['ets'] = vtec.get_end_string(self)
 
                 # Include the special bulletin for Tornado Warnings

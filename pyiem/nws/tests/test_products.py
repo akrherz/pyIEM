@@ -35,6 +35,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140610_tweet_spacing(self):
+        ''' Saw spacing issue in tweet message '''
+        utcnow = utc(2014, 6, 10, 13, 23)
+        prod = vtecparser( get_file('FLWLCH.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals( j[0][2]['twitter'], ('LCH issues Flood Warning '
+            +'valid at Jun 10, 9:48 AM CDT for ((VLSL1)) till Jun 12, 1:00 '
+            +'PM CDT http://localhost#2014-O-NEW-KLCH-FL-W-0015') )
+    
+    
     def test_correction(self):
         ''' Can we properly parse a product correction '''
         utcnow = utc(2014, 6, 6, 21, 30)
