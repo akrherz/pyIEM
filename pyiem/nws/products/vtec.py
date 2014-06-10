@@ -327,9 +327,12 @@ class VTECProduct(TextProduct):
                 tml_valid, segment.tml_dir, 
                 segment.tml_sknt, segment.tml_giswkt, self.valid)
         else:
+            vvv = self.valid
+            if vtec.begints is not None:
+                vvv = vtec.begints
             _expire = vtec.endts
             if vtec.endts is None:
-                _expire = vtec.begints + datetime.timedelta(hours=24)
+                _expire = vvv + datetime.timedelta(hours=24)
             sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
                 significance, phenomena, issue, expire, init_expire, 
                 polygon_begin, polygon_end, geom, 
@@ -338,9 +341,6 @@ class VTECProduct(TextProduct):
                 """+ tml_column +""", updated) VALUES (%s,
                 %s,%s,%s, """+ my_sts +""",%s,%s,%s,%s, %s,%s,%s,%s,%s,%s,%s,
                 %s,%s,%s,%s, %s)""" 
-            vvv = self.valid
-            if vtec.begints is not None:
-                vvv = vtec.begints
             wkt = "SRID=4326;%s" % (MultiPolygon([segment.sbw]).wkt,)
             myargs = (vtec.office, vtec.ETN, 
                  vtec.significance, vtec.phenomena, _expire, 

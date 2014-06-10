@@ -3,7 +3,6 @@ import os
 import psycopg2
 import datetime
 import pytz
-import re
 
 from pyiem.nws.products.mcd import parser as mcdparser
 from pyiem.nws.products.lsr import parser as lsrparser
@@ -41,7 +40,14 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2014, 6, 6, 21, 30)
         prod = vtecparser( get_file('CCA.txt'), utcnow=utcnow)
         self.assertTrue( prod.is_correction() )
-        
+    
+    def test_140610_no_vtec_time(self):
+        """ A VTEC Product with both 0000 for start and end time, sigh """
+        utcnow = utc(2014,6,10, 0, 56)
+        prod = vtecparser( get_file('FLSLZK_notime.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        self.assertTrue(prod.segments[0].vtec[0].begints is None)
+        self.assertTrue(prod.segments[0].vtec[0].endts is None)
     
     def test_140609_ext_backwards(self):
         """ Sometimes the EXT goes backwards in time, so we have fun """
