@@ -217,7 +217,7 @@ class VTECProduct(TextProduct):
             txn.execute("""UPDATE """+sbw_table+""" SET 
                 polygon_end = %s
                 WHERE eventid = %s and wfo = %s and phenomena = %s and
-                significance = %s and polygon_end = expire
+                significance = %s and polygon_end = expire and status != 'CAN'
                 """, (ets, vtec.ETN, vtec.office, vtec.phenomena, 
                       vtec.significance))
             if txn.rowcount != 1:
