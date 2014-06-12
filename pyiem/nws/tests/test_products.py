@@ -94,7 +94,14 @@ class TestProducts(unittest.TestCase):
                                utcnow=utcnow)
             prod.sql( self.txn )
 
-        self.txn.execute("""SET TIME ZONE 'UTC'""")            
+        self.txn.execute("""SET TIME ZONE 'UTC'""")      
+        
+        self.txn.execute("""SELECT max(length(svs)) from warnings_2014 WHERE
+        eventid = 2 and phenomena = 'FL' and significance = 'W' and wfo = 'LBF'
+        """)
+        row = self.txn.fetchone()
+        self.assertEqual(6693, 11)
+              
         self.txn.execute("""
         select status, updated, issue, expire, init_expire, polygon_begin, 
         polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and 

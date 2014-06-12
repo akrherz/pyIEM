@@ -153,7 +153,8 @@ class VTECProduct(TextProduct):
             # A previous issued product is being corrected
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
-            svs = svs || %s, issue = %s, init_expire = %s WHERE
+            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
+                   || %s || '__', issue = %s, init_expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s  
             """, (vtec.endts, vtec.action, self.unixtext, vtec.begints,
@@ -168,7 +169,8 @@ class VTECProduct(TextProduct):
             # These are terminate actions, so we act accordingly
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
-            svs = svs || %s WHERE
+            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
+                   || %s || '__' WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+"""
             and significance = %s and phenomena = %s 
             and status not in ('EXP', 'CAN')
@@ -188,7 +190,8 @@ class VTECProduct(TextProduct):
 
             txn.execute("""
             UPDATE """+ warning_table +""" SET status = %s,
-            svs = svs || %s , expire = %s WHERE
+            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
+                   || %s || '__' , expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s 
             and status not in ('EXP', 'CAN')
