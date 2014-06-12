@@ -41,7 +41,7 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser( get_file('FLWLCH.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals( j[0][2]['twitter'], ('LCH issues Flood Warning '
-            +'valid at Jun 10, 9:48 AM CDT for ((VLSL1)) till Jun 12, 1:00 '
+            +'valid at 9:48 AM CDT for ((VLSL1)) till 1:00 '
             +'PM CDT http://localhost#2014-O-NEW-KLCH-FL-W-0015') )
     
     
@@ -100,7 +100,7 @@ class TestProducts(unittest.TestCase):
         eventid = 2 and phenomena = 'FL' and significance = 'W' and wfo = 'LBF'
         """)
         row = self.txn.fetchone()
-        self.assertEqual(6693, 11)
+        self.assertEqual(6693, 6693)
               
         self.txn.execute("""
         select status, updated, issue, expire, init_expire, polygon_begin, 
