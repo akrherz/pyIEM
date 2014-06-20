@@ -403,6 +403,8 @@ class VTECProduct(TextProduct):
         
         for segment in self.segments:
             for vtec in segment.vtec:
+                if vtec.action == 'ROU':
+                    continue
                 # CRITICAL: redefine this for each loop as it gets passed by
                 # reference below and is subsequently overwritten otherwise!
                 xtra = {'product_id': self.get_product_id(),
