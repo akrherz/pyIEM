@@ -260,21 +260,16 @@ class VTECProduct(TextProduct):
                     vtec.phenomena, vtec.significance, vtec.ETN, 
                     txn.rowcount))
         
-        # Account for vagarities with VTEC
+        # When the start time is undefined, we need to go looking for it
+        # from the previously processed data
         my_sts = "'%s'" % (vtec.begints,)
         if vtec.begints is None:
-            my_sts = """(SELECT issue from %s WHERE eventid = %s 
-              and wfo = '%s' and phenomena = '%s' and significance = '%s' 
-              ORDER by polygon_end DESC LIMIT 1)""" % (sbw_table, 
+            my_sts = """(SELECT issue from %s WHERE 
+                eventid = %s and wfo = '%s' and phenomena = '%s' 
+                and significance = '%s' ORDER by updated DESC LIMIT 1)""" % (
+                sbw_table, 
                 vtec.ETN, vtec.office, vtec.phenomena, vtec.significance)
  
-        my_ets = "'%s'" % (vtec.endts,)
-        if vtec.endts is None:
-            my_ets = """(SELECT expire from %s WHERE eventid = %s 
-                and wfo = '%s' and phenomena = '%s' and significance = '%s' 
-                ORDER by polygon_end DESC LIMIT 1)""" % (sbw_table, 
-                vtec.ETN, vtec.office, vtec.phenomena, vtec.significance)
-
         # Prepare the TIME...MOT...LOC information
         tml_valid = None
         tml_column = 'tml_geom'
@@ -285,19 +280,22 @@ class VTECProduct(TextProduct):
         
         
         if vtec.action in ['CAN',]:
+            # issue :: we find from previous entries
+            # expire :: we set to the product time
+            # init_expire :: we set to the product time
+            # polygon_begin :: product time
+            # polygon_end :: product time
             sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
                 significance, phenomena, issue, expire, init_expire, 
                 polygon_begin, polygon_end, geom, status, report, windtag, 
                 hailtag, tornadotag, tornadodamagetag, tml_valid, 
                 tml_direction, tml_sknt, """+ tml_column +""", updated) 
                 VALUES (%s,
-                %s,%s,%s,"""+ my_sts +""",%s,"""+ my_ets +""",%s,%s,%s,%s,%s,
+                %s,%s,%s,"""+ my_sts +""",%s,%s,%s,%s,%s,%s,%s,
                 %s,%s,%s,%s, %s, %s, %s, %s, %s)"""
             myargs = (vtec.office, vtec.ETN, 
                  vtec.significance, vtec.phenomena, 
-                 self.valid, 
-                 self.valid, 
-                 self.valid, 
+                 self.valid, self.valid, self.valid, self.valid, 
                   segment.giswkt, vtec.action, self.unixtext,
                  segment.windtag, segment.hailtag, 
                  segment.tornadotag, segment.tornadodamagetag,
@@ -305,6 +303,9 @@ class VTECProduct(TextProduct):
                  segment.tml_giswkt, self.valid)
 
         elif vtec.action in ['EXP', 'UPG', 'EXT']:
+            # issue :: get from previous entries
+            # expire :: get from VTEC or in indefinite, set one day
+            # init_expire :: ditto
             sql = """INSERT into """+ sbw_table +"""(
                 wfo, eventid, significance, phenomena, 
                 issue, expire, init_expire, polygon_begin, polygon_end, 
@@ -313,7 +314,7 @@ class VTECProduct(TextProduct):
                 tml_valid, tml_direction, tml_sknt,
                 """+ tml_column +""", updated) VALUES (
                 %s, %s,%s,%s, 
-                """+ my_sts +""","""+ my_ets +""","""+ my_ets +""", %s,%s,
+                """+ my_sts +""",%s, %s, %s,%s,
                 %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)"""
             _expire = self.valid + datetime.timedelta(hours=24)
             if vtec.endts is not None:
@@ -322,7 +323,7 @@ class VTECProduct(TextProduct):
             if vtec.begints is not None:
                 _begin = vtec.begints
             myargs = (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena, 
-                _begin, _expire, 
+                _expire, _expire, _begin, _expire, 
                 segment.giswkt, 
                 vtec.action, self.unixtext, 
                 segment.windtag, segment.hailtag,
