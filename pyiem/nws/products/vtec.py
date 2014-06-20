@@ -82,7 +82,7 @@ class VTECProduct(TextProduct):
             if len(segment.vtec) == 0:
                 continue
             for vtec in segment.vtec:
-                if vtec.status == 'T':
+                if vtec.status == 'T' or vtec.action == 'ROU':
                     return
                 if segment.sbw:
                     self.do_sbw_geometry(txn, segment, vtec)    

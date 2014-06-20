@@ -43,7 +43,13 @@ class TestProducts(unittest.TestCase):
         self.assertEquals( j[0][2]['twitter'], ('LCH issues Flood Warning '
             +'valid at 9:48 AM CDT for ((VLSL1)) till 1:00 '
             +'PM CDT http://localhost#2014-O-NEW-KLCH-FL-W-0015') )
-    
+
+    def test_routine(self):
+        ''' what can we do with a ROU VTEC product '''
+        utcnow = utc(2014, 6, 19, 2, 56)
+        prod = vtecparser( get_file('FLWMKX_ROU.txt'), utcnow=utcnow)
+        prod.sql( self.txn )
+        self.assertEquals( len(prod.warnings), 0)
     
     def test_correction(self):
         ''' Can we properly parse a product correction '''
