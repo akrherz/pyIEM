@@ -167,6 +167,9 @@ class VTECProduct(TextProduct):
 
         elif vtec.action in ['CAN', 'UPG', 'EXT']:
             # These are terminate actions, so we act accordingly
+            ets = vtec.endts
+            if vtec.action in ['CAN', 'UPG']:
+                ets = self.valid
             txn.execute("""
             UPDATE """+ warning_table +""" SET expire = %s, status = %s,
             svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
@@ -174,7 +177,7 @@ class VTECProduct(TextProduct):
             wfo = %s and eventid = %s and ugc in """+ugcstring+"""
             and significance = %s and phenomena = %s 
             and status not in ('EXP', 'CAN')
-            """, (vtec.endts, vtec.action, self.unixtext,
+            """, (ets, vtec.action, self.unixtext,
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
@@ -256,8 +259,7 @@ class VTECProduct(TextProduct):
                                   +"active SBW") % (vtec.phenomena, 
                                         vtec.significance, vtec.ETN))
         if txn.rowcount > 0:
-            row = txn.fetchone()
-            current = {'polygon_end': row[0]}
+            current = txn.fetchone()
             
         # If ncessary, lets find the current active polygon and truncate it
         # to when our new polygon starts
