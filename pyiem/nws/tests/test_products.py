@@ -1,6 +1,7 @@
 import unittest
 import os
 import psycopg2
+import psycopg2.extras
 import datetime
 import pytz
 
@@ -28,7 +29,7 @@ class TestProducts(unittest.TestCase):
     def setUp(self):
         ''' This is called for each test, beware '''
         self.dbconn = psycopg2.connect(database='postgis')
-        self.txn = self.dbconn.cursor()
+        self.txn = self.dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     def tearDown(self):
         ''' This is called after each test, beware '''
