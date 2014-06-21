@@ -338,7 +338,7 @@ class TestProducts(unittest.TestCase):
         prod.sql( self.txn )
 
         # IAZ006 should be cancelled
-        answer = datetime.datetime(2013,1,28,6).replace(
+        answer = datetime.datetime(2013,1,28,5, 38).replace(
                                                 tzinfo=pytz.timezone("UTC"))
         self.txn.execute("""SELECT expire from warnings_2013 WHERE
         wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and 
