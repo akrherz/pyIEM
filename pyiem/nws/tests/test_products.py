@@ -115,15 +115,18 @@ class TestProducts(unittest.TestCase):
         """)
         print 'sta update issue  expire init_e p_begi p_end'
         rows = []
+        def safe(val):
+            if val is None:
+                return '(null)'
+            return val.strftime("%d%H%M")
         for row in self.txn:
             rows.append( row )
-            print '%s %s %s %s %s %s %s' % (row[0], row[1].strftime("%d%H%M"),
-                    row[2].strftime("%d%H%M"), row[3].strftime("%d%H%M"),
-                    row[4].strftime("%d%H%M"), row[5].strftime("%d%H%M"), 
-                    row[6].strftime("%d%H%M"))
+            print '%s %s %s %s %s %s %s' % (row[0], safe(row[1]),
+                    safe(row[2]), safe(row[3]), safe(row[4]), safe(row[5]),
+                    safe(row[6]))
     
         self.assertEqual(rows[0][6], 
-                         datetime.datetime(2014, 6, 8, 9).replace(
+                         datetime.datetime(2014, 6, 7, 2, 15).replace(
                                                 tzinfo=pytz.timezone("UTC")))
     
     def test_svs_search(self):

@@ -210,66 +210,72 @@ class VTECProduct(TextProduct):
     def do_sbw_geometry(self, txn, segment, vtec):
         ''' Storm Based Warnings are stored in seperate tables as we need
         to track geometry changes, etc '''
+        
+        # Technically, this is a bug as the it would be based on VTEC issuance
         sbw_table = "sbw_%s" % (self.valid.year,)
         
-        # Some SBWs can be extended in space/time, so we need to cover these
-        if vtec.action in ['EXT', 'EXA', 'EXB']:
-            ets = self.valid
-            if vtec.begints is not None:
-                ets = vtec.begints
-            txn.execute("""UPDATE """+sbw_table+""" SET 
-                polygon_end = %s
-                WHERE eventid = %s and wfo = %s and phenomena = %s and
-                significance = %s and polygon_end = expire and status != 'CAN'
-                """, (ets, vtec.ETN, vtec.office, vtec.phenomena, 
-                      vtec.significance))
+        # The following time columns are set in the database
+        # issue         - VTEC encoded issuance time, can be null
+        # init_expire   - VTEC encoded expiration 
+        # expire        - VTEC encoded expiration
+        # polygon_begin - Time domain this polygon is valid for inclusive
+        # polygon_end   - Time domain this polygon is valid for exclusive
+        # updated       - Product time of this product
+        
+        # Figure out when this polygon begins and ends
+        polygon_begin = self.valid
+        if vtec.action == 'NEW' and vtec.begints is not None:
+            polygon_begin = vtec.begints
+        polygon_end = self.valid
+        if vtec.action not in ['CAN', 'UPG']:
+            if vtec.endts is not None:
+                polygon_end = vtec.endts
+            else:
+                polygon_end = self.valid + datetime.timedelta(hours=24)
+        
+        # Lets go find the initial warning (status == NEW)
+        txn.execute("""
+        SELECT issue, expire from """+sbw_table+""" WHERE status = 'NEW' and
+        eventid = %s and wfo = %s and phenomena = %s and significance = %s
+        """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+        if txn.rowcount > 0:
+            if vtec.action == 'NEW': # Uh-oh, we have a duplicate
+                self.warnings.append(("%s.%s.%s is a SBW duplicate! %s other "
+                +"row(s) found.") % (vtec.phenomena, vtec.significance, vtec.ETN,
+                                   txn.rowcount))
+            
+        # Lets go find our current active polygon
+        txn.execute("""
+        SELECT polygon_end from """+ sbw_table +""" WHERE 
+        eventid = %s and wfo = %s and phenomena = %s and significance = %s
+        and polygon_begin != polygon_end ORDER by updated DESC LIMIT 1
+        """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+        current = None
+        if txn.rowcount == 0 and vtec.action != 'NEW':
+            self.warnings.append(("%s.%s.%s Failed to find currently "
+                                  +"active SBW") % (vtec.phenomena, 
+                                        vtec.significance, vtec.ETN))
+        if txn.rowcount > 0:
+            row = txn.fetchone()
+            current = {'polygon_end': row[0]}
+            
+        # If ncessary, lets find the current active polygon and truncate it
+        # to when our new polygon starts
+        if vtec.action != 'NEW' and current is not None:
+            txn.execute(""" 
+            UPDATE """+ sbw_table +""" SET polygon_end = %s WHERE 
+            eventid = %s and wfo = %s and phenomena = %s and significance = %s
+            and polygon_end != polygon_begin 
+            and polygon_end = %s and status != 'CAN'
+            """, (polygon_begin, 
+                  vtec.ETN, vtec.office, vtec.phenomena, vtec.significance,
+                  current['polygon_end'])) 
             if txn.rowcount != 1:
-                self.warnings.append(("%s.%s.%s EXT/EXA/EXB sbw table update "
+                self.warnings.append(("%s.%s.%s SBW prev polygon update "
                     +"resulted in update of %s rows, should be 1") % (
                     vtec.phenomena, vtec.significance, vtec.ETN,
                                                     txn.rowcount))
-        
-        # If this is a cancel or upgrade action and there is only one 
-        # segment, then we should update the current active polygon
-        if vtec.action in ["CAN", "UPG"] and len(self.segments) == 1:
-            txn.execute("""UPDATE """+ sbw_table +""" SET 
-                polygon_end = (CASE WHEN polygon_end = expire
-                               THEN %s ELSE polygon_end END), 
-                expire = %s WHERE 
-                eventid = %s and wfo = %s 
-                and phenomena = %s and significance = %s""", (
-                self.valid, self.valid, 
-                vtec.ETN, vtec.office, vtec.phenomena, vtec.significance) )
-            if txn.rowcount != 1:
-                self.warnings.append(("%s.%s.%s CAN/UPG sbw table update "
-                    +"resulted in update of %s rows, should be 1") % (
-                    vtec.phenomena, vtec.significance, vtec.ETN,
-                                                    txn.rowcount))
-        
-        # If this is a continues action, we should cut off the previous 
-        # active polygon by setting its polygon_end
-        if vtec.action == "CON":
-            txn.execute("""UPDATE """+ sbw_table +""" SET 
-                polygon_end = %s WHERE polygon_end = expire and 
-                eventid = %s and wfo = %s and status != 'CAN'
-                and phenomena = %s and significance = %s""" , ( self.valid, 
-                vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
-            if txn.rowcount != 1:
-                self.warnings.append(("%s.%s.%s CON sbw table update "
-                    +"resulted in update of %s rows, should be 1") % (
-                    vtec.phenomena, vtec.significance, vtec.ETN, 
-                    txn.rowcount))
-        
-        # When the start time is undefined, we need to go looking for it
-        # from the previously processed data
-        my_sts = "'%s'" % (vtec.begints,)
-        if vtec.begints is None:
-            my_sts = """(SELECT issue from %s WHERE 
-                eventid = %s and wfo = '%s' and phenomena = '%s' 
-                and significance = '%s' ORDER by updated DESC LIMIT 1)""" % (
-                sbw_table, 
-                vtec.ETN, vtec.office, vtec.phenomena, vtec.significance)
- 
+         
         # Prepare the TIME...MOT...LOC information
         tml_valid = None
         tml_column = 'tml_geom'
@@ -278,82 +284,29 @@ class VTECProduct(TextProduct):
         if segment.tml_valid:
             tml_valid = segment.tml_valid
         
-        
-        if vtec.action in ['CAN',]:
-            # issue :: we find from previous entries
-            # expire :: we set to the product time
-            # init_expire :: we set to the product time
-            # polygon_begin :: product time
-            # polygon_end :: product time
-            sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
-                significance, phenomena, issue, expire, init_expire, 
-                polygon_begin, polygon_end, geom, status, report, windtag, 
-                hailtag, tornadotag, tornadodamagetag, tml_valid, 
-                tml_direction, tml_sknt, """+ tml_column +""", updated) 
-                VALUES (%s,
-                %s,%s,%s,"""+ my_sts +""",%s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s, %s, %s, %s, %s, %s)"""
-            myargs = (vtec.office, vtec.ETN, 
-                 vtec.significance, vtec.phenomena, 
-                 self.valid, self.valid, self.valid, self.valid, 
-                  segment.giswkt, vtec.action, self.unixtext,
-                 segment.windtag, segment.hailtag, 
-                 segment.tornadotag, segment.tornadodamagetag,
-                 tml_valid, segment.tml_dir, segment.tml_sknt, 
-                 segment.tml_giswkt, self.valid)
 
-        elif vtec.action in ['EXP', 'UPG', 'EXT']:
-            # issue :: get from previous entries
-            # expire :: get from VTEC or in indefinite, set one day
-            # init_expire :: ditto
-            sql = """INSERT into """+ sbw_table +"""(
-                wfo, eventid, significance, phenomena, 
-                issue, expire, init_expire, polygon_begin, polygon_end, 
-                geom, 
-                status, report, windtag, hailtag, tornadotag, tornadodamagetag, 
-                tml_valid, tml_direction, tml_sknt,
-                """+ tml_column +""", updated) VALUES (
-                %s, %s,%s,%s, 
-                """+ my_sts +""",%s, %s, %s,%s,
-                %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)"""
-            _expire = self.valid + datetime.timedelta(hours=24)
-            if vtec.endts is not None:
-                _expire = vtec.endts
-            _begin = self.valid
-            if vtec.begints is not None:
-                _begin = vtec.begints
-            myargs = (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena, 
-                _expire, _expire, _begin, _expire, 
-                segment.giswkt, 
-                vtec.action, self.unixtext, 
-                segment.windtag, segment.hailtag,
-                segment.tornadotag, segment.tornadodamagetag,
-                tml_valid, segment.tml_dir, 
-                segment.tml_sknt, segment.tml_giswkt, self.valid)
-        else:
-            vvv = self.valid
-            if vtec.begints is not None:
-                vvv = vtec.begints
-            _expire = vtec.endts
-            if vtec.endts is None:
-                _expire = vvv + datetime.timedelta(hours=24)
-            sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
-                significance, phenomena, issue, expire, init_expire, 
-                polygon_begin, polygon_end, geom, 
-                status, report, windtag, hailtag, tornadotag, tornadodamagetag, 
-                tml_valid, tml_direction, tml_sknt,
-                """+ tml_column +""", updated) VALUES (%s,
-                %s,%s,%s, """+ my_sts +""",%s,%s,%s,%s, %s,%s,%s,%s,%s,%s,%s,
-                %s,%s,%s,%s, %s)""" 
-            wkt = "SRID=4326;%s" % (MultiPolygon([segment.sbw]).wkt,)
-            myargs = (vtec.office, vtec.ETN, 
-                 vtec.significance, vtec.phenomena, _expire, 
-                 _expire, vvv, 
-                 _expire, wkt, vtec.action, self.unixtext,
-                 segment.windtag, segment.hailtag, 
-                 segment.tornadotag, segment.tornadodamagetag,
-                 tml_valid, segment.tml_dir, 
-                 segment.tml_sknt, segment.tml_giswkt, self.valid)
+        # OK, ready to insert away!
+        sql = """INSERT into """+ sbw_table +"""(wfo, eventid, 
+            significance, phenomena, issue, expire, init_expire, 
+            polygon_begin, polygon_end, geom, status, report, windtag, 
+            hailtag, tornadotag, tornadodamagetag, tml_valid, 
+            tml_direction, tml_sknt, """+ tml_column +""", updated) 
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+            %s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        myargs = (
+            vtec.office,
+            vtec.ETN, 
+            vtec.significance,
+            vtec.phenomena, 
+            vtec.begints, 
+            vtec.endts, 
+            vtec.endts,
+            polygon_begin,  #polygon_begin 
+            polygon_end,    #polygon_end
+            segment.giswkt, vtec.action, self.unixtext, segment.windtag, 
+            segment.hailtag, segment.tornadotag, segment.tornadodamagetag,
+            tml_valid, segment.tml_dir, segment.tml_sknt, segment.tml_giswkt, 
+            self.valid)
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(("%s.%s.%s sbw table insert "
