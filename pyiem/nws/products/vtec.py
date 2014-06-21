@@ -338,6 +338,7 @@ class VTECProduct(TextProduct):
         wfo = self.source[1:]
         if self.skip_con:
             xtra = {'product_id': self.get_product_id(),
+                    'channels' : ",".join( self.get_affected_wfos()),
                     'twitter' : '%s issues updated FLS product %s?wfo=%s' % (
                                 wfo, river_uri, wfo)}
             text = ("%s has sent an updated FLS product (continued products "
