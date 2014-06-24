@@ -4,10 +4,6 @@ VTEC enabled TextProduct
 # Stand Library Imports
 import datetime
 
-# Third party
-import pytz
-from shapely.geometry import MultiPolygon
-
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 
@@ -201,9 +197,12 @@ class VTECProduct(TextProduct):
             """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
-                                      +'should %s rows') %(
-                                        txn.rowcount, len(segment.ugcs)))
+                self.warnings.append(('Warning: %s.%s.%s do_sql_vtec updated '
+                                      +'%s row, should %s rows %s') %(
+                                        vtec.phenomena, vtec.significance,
+                                        vtec.ETN,
+                                        txn.rowcount, len(segment.ugcs),
+                                        segment.ugcs))
 
         else:
             self.warnings.append( ('Warning: do_sql_vtec() encountered %s '
