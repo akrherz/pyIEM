@@ -126,8 +126,24 @@ class VTECProduct(TextProduct):
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
                       vtec.phenomena))
                 if txn.rowcount > 0:
-                    self.warnings.append(("Duplicate(s) WWA found, "
+                    if self.is_correction():
+                        # We'll delete old entries, gulp
+                        txn.execute("""
+                        DELETE from """+warning_table+""" WHERE ugc = %s
+                        and eventid = %s and significance = %s and
+                        wfo = %s and phenomena = %s and 
+                        status in ('NEW', 'EXB', 'EXA')
+                        """, (str(ugc), vtec.ETN, vtec.significance, 
+                              vtec.office, vtec.phenomena))
+                        self.warnings.append(("%s.%s.%s %s duplicated via "
+                            +"product correction, deleted %s old rows") % (
+                                        vtec.phenomena, vtec.significance,
+                                        vtec.ETN, str(ugc), txn.rowcount))
+
+                    else:
+                        self.warnings.append(("Duplicate(s) WWA found, "
                         +"rowcount: %s for UGC: %s") % (txn.rowcount, ugc))
+
                 txn.execute("""
                 INSERT into """+ warning_table +""" (issue, expire, updated, 
                 wfo, eventid, status, fcster, report, ugc, phenomena, 
