@@ -98,6 +98,16 @@ class GINIFile(object):
         Return a string label for this satellite
         """
         return ENTITIES[self.metadata['creating_entity']]
+    
+    def get_sector(self):
+        """
+        """
+        return SECTORS[self.metadata['sector']]
+
+    def get_channel(self):
+        """
+        """
+        return CHANNELS[self.metadata['channel']]
         
     def archive_filename(self):
         """
