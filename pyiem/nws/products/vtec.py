@@ -193,9 +193,11 @@ class VTECProduct(TextProduct):
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
-                                      +'should %s rows') %(
-                                        txn.rowcount, len(segment.ugcs)))
+                if not self.is_correction():
+                    self.warnings.append(('CAN/UPG/EXT: %s.%s.%s do_sql_vtec '
+                        +'updated %s row, should %s rows %s') % (
+                        vtec.phenomena, vtec.significance, vtec.ETN,
+                        txn.rowcount, len(segment.ugcs), segment.ugcs))
 
         elif vtec.action in ['CON', 'EXP', 'ROU']:
             # These are no-ops, just updates
