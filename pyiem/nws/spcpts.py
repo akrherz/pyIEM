@@ -6,9 +6,10 @@ import re
 import shapelib
 import numpy as np
 
-from shapely.geometry import Polygon, LineString, Point, MultiPolygon
+from shapely.geometry import Polygon, LineString, MultiPolygon
 from shapely.geometry.polygon import LinearRing
 import datetime
+import copy
 import os
 
 CONUS = None
@@ -28,85 +29,11 @@ def load_conus_data():
         lats.append( float(tokens[1]) )
     CONUS = np.column_stack([lons,lats])
     CONUSPOLY = Polygon( CONUS ) 
-    
-def ptchecker(pts):
-    """
-    Do some work on the line, buffer if necessary
-    """
-    data = np.array( pts )
-    if data[0,0] == data[-1,0] and data[0,1] == data[-1,1]:
-        print 'I found a closed line segment, returning'
-        return data
-    load_conus_data()
-    distance = ((CONUS[:,0] - data[0,0])**2 + (CONUS[:,1] - data[0,1])**2)**.5
-    idx2 = np.argmin(distance)
-    distance = ((CONUS[:,0] - data[-1,0])**2 + (CONUS[:,1] - data[-1,1])**2)**.5
-    idx1 = np.argmin(distance)
-    # The -1 data index would be the start of the CW conus
-    if idx1 < idx2: # Simple
-        data = np.concatenate([data, CONUS[idx1:idx2+1,:]])
-    if idx1 > idx2: # we cross the start-finish line of our CONUS bounds
-        data = np.concatenate([data, CONUS[idx1:-1,:]])
-        data = np.concatenate([data, CONUS[:idx2+1,:]])
-    # Now we make our endpoints match for a closed circle
-    data = np.concatenate([data, data[-1,:]])
-    
-    return data
-    
-def rightpoint(segment):
-    
-    mid = int(np.shape(segment)[0] / 2. )
-    x1, y1 = segment[mid,:]
-    x0, y0 = segment[mid-1,:]
-    dx = x1 - x0
-    dy = y1 - y0
-    # Going north
-    if dx == 0 and dy > 0:
-        right = [x0 + 0.1, y0 + dy*0.5]
-    # Going east
-    elif dy == 0 and dx > 0:
-        right = [x0 + dx*0.5, y0 - 0.2]
-    # Going south
-    elif dx == 0 and dy < 0:
-        right = [x0 - 0.1, y0 + dy*.5]
-    # Going west
-    elif dx < 0 and dy == 0:
-        right = [x0 + dx*.5, y0 + 0.2]
-    # Going NE
-    elif dx > 0 and dy > 0:
-        right = [x0 + dx*0.5, y0 ]
-    # Going SE
-    elif dx > 0 and dy < 0:
-        right = [x0 , y0 + dy*0.5]
-    # Going SW
-    elif dx < 0 and dy < 0:
-        right = [x0 + dx*.5, y0 ]
-    # Going NW
-    else:
-        right = [x0 , y0 + dy*0.5]
 
-    
-    #fp = "%s.png" % (segment[0,1],)
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111)
-    #ax.plot( segment[:,0], segment[:,1], color='r' )
-    #x,y = CONUSPOLY.exterior.xy
-    #ax.plot(x, y, color='b')
-    #ax.scatter( right[0], right[1] )
-    
-    #ax.plot( segment[0,0], segment[0,1], marker="+", color='#000000')
-    #fig.savefig(fp)
-        
-    return Point( right )
-    
-    
-        
-def str2multipolygon(s):
-    """
-    Convert string PTS data into a polygon
-    """
-    tokens = re.findall("([0-9]{8})", s.replace("\n",""))
-    ''' First we generate a list of segments, based on what we found '''
+def get_segments_from_text(text):
+    """ Return list of segments for this text """
+    tokens = re.findall("([0-9]{8})", text.replace("\n",""))
+    # First we generate a list of segments, based on what we found 
     segments = []
     pts = []
     for token in tokens:
@@ -119,50 +46,55 @@ def str2multipolygon(s):
             pts = []
         else:
             pts.append( [lon, lat] )
-    segments.append( pts )
+    if len(pts) > 0:
+        segments.append( pts )
+
+    return segments
+
+def str2multipolygon(s):
+    """ Convert string PTS data into a polygon
+    """
+    segments = get_segments_from_text(s)
     
-    ''' Simple case whereby the segment is its own circle, thank goodness '''
-    if (len(segments) == 1 and segments[0][0][0] == segments[0][-1][0] and
+    # Simple case whereby the segment is its own circle, thank goodness
+    if (len(segments) == 1 and 
+        segments[0][0][0] == segments[0][-1][0] and
         segments[0][0][1] == segments[0][-1][1]):
-        print 'We have a lone circle, horray'
+        print 'Single closed polygon found, done and done'
         return MultiPolygon([Polygon( segments[0] )])
     
-    ''' We have some work to do '''
+    # We have some work to do
     load_conus_data()
-    pie = CONUS
 
-    current_exterior = None
-    current_interior = []
-    polys = []
-    dangling = False
+    # We start with just a conus polygon and we go from here, down the rabbit
+    # hole
+    polys = [copy.deepcopy(CONUSPOLY),]
+
     for i, segment in enumerate(segments):
-        print 'Iterate: %s/%s, len(segment): %s' % (i+1, len(segments), 
-                                                    len(segment))
+        print 'Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)' % (
+                i+1, len(segments), len(segment), segment[0][0], segment[0][1], 
+                                segment[-1][0],
+                                        segment[-1][1])
         if segment[0] == segment[-1]:
             print '     segment %s is closed polygon!' % (i,)
             lr = LinearRing( LineString(segment))
             if not lr.is_ccw:
-                print '     segment is clockwise!'
-                if current_exterior is not None:
-                    print '     Creating Polygon as we have two CW polys!'
-                    polys.append( Polygon(current_exterior, current_interior))
-                current_exterior = segment
+                print '     polygon is counter-clockwise (exterior)'
+                polys.insert(0, Polygon(segment) )
                 continue
-            print '     segment is counterclockwise!'
-            if current_exterior is None and pie is None:
-                raise Exception("Found interior with no exterior or pie defined! aborting...")
-            current_interior.append( segment )
-            print '     segment is added to current_interior, now sz=%s' % (
-                                                    len(current_interior),)
+            print '     polygon is clockwise (interior), compute to which poly'
+            found = False
+            for j, poly in enumerate(polys):
+                if poly.intersection(lr):
+                    print '     polygon is interior to polys #%s' % (j,)
+                    polys[j]._interiors.append( lr )
+                    found = True
+                    break
+            if not found:
+                print '      ERROR: did not find intersection!'
             continue
-        
-        if current_exterior is not None:
-            print '     Creating Polygon because current_exterior is defined'
-            polys.append( Polygon(current_exterior, current_interior))
-            current_exterior = None
-            current_interior = []
-        
-        dangling = True
+    
+        # Attempt to 'clean' this string against the CONUS Polygon
         ls = LineString(segment)
         if ls.is_valid:
             newls = ls.intersection(CONUSPOLY)
@@ -185,57 +117,57 @@ def str2multipolygon(s):
 
         line = np.array( segment )
 
-        ''' Does this line segment reside inside the current polygon? '''
-        if not Polygon(pie).intersects(ls):
-            print '     ! New line segment does not intersect current polygon'
-            print '     Creating Polygon from current polygon'
-            polys.append( Polygon(pie, current_interior) )
-            print '     Resetting pie to be the CONUS'
-            current_interior = []
-            pie = CONUS
+        # Figure out which polygon this line intersects
+        found = False
+        for j, poly in enumerate(polys):
+            if not poly.intersection(ls):
+                continue
+            found = True
+            # Compute the intersection points of this segment and what 
+            # is left of the pie                    
+            x,y = poly.exterior.xy
+            pie = np.array( zip(x,y) )
+            distance = ((pie[:,0] - line[0,0])**2 + 
+                        (pie[:,1] - line[0,1])**2)**.5
+            idx1 = np.argmin(distance) -1
+            distance = ((pie[:,0] - line[-1,0])**2 + 
+                        (pie[:,1] - line[-1,1])**2)**.5
+            idx2 = np.argmin(distance) +1
 
-        ''' Compute the intersection points of this segment and what is left
-            of the pie'''                    
-        distance = ((pie[:,0] - line[0,0])**2 + 
-                    (pie[:,1] - line[0,1])**2)**.5
-        idx1 = np.argmin(distance) -1
-        distance = ((pie[:,0] - line[-1,0])**2 + 
-                    (pie[:,1] - line[-1,1])**2)**.5
-        idx2 = np.argmin(distance) +1
+            sz = np.shape(pie)[0]
+            print '     computed intersections idx1: %s/%s idx2: %s/%s' % (idx1,
+                                                            sz, idx2, sz)
+            if idx1 < idx2:
+                print '     CASE 1: idx1:%s idx2:%s Crosses start finish' % (
+                    idx1, idx2)
+                # We we piece the puzzle together!
+                line = np.concatenate([line, pie[idx2:]])
+                line = np.concatenate([line, pie[:idx1]])
+                pie = line
+                polys[j] = Polygon(pie, polys[j].interiors)
+                print '     replacing polygon index: %s area: %.2f' % (j, 
+                                                            polys[j].area)
+            elif idx1 > idx2:
+                print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
+                line = np.concatenate([line, pie[idx2:idx1]])
+                polys.append( Polygon(line))
+                print '     + adding polygon'
+            else:
+                raise Exception('this should not happen, idx1 == idx2!')
 
-        sz = np.shape(pie)[0]
-        print '     computed intersections idx1: %s/%s idx2: %s/%s' % (idx1,
-                                                                sz, idx2, sz)
-
-        if idx1 < idx2:
-            print '     CASE 1: idx1:%s idx2:%s Crosses start finish' % (
-                idx1, idx2)
-            ''' We we piece the puzzle together! '''
-            line = np.concatenate([line, pie[idx2:]])
-            line = np.concatenate([line, pie[:idx1]])
-            pie = line
-        elif idx1 > idx2:
-            print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
-            line = np.concatenate([line, pie[idx2:idx1]])
-            pie = line
-        else:
-            raise Exception('this should not happen, idx1 == idx2!')
-
-    if current_exterior is not None:
-        print '     Creating Polygon because current_exterior is defined'
-        polys.append( Polygon(current_exterior, current_interior))
-
-    if dangling:
-        print '     Creating Polygon from what is left of pie, len(pie) = %s!' % (
-                                                    np.shape(pie)[0],)
-        polys.append( Polygon(pie, current_interior) )
-
+            break
+        
+        if not found:
+            print '     segment did not intersect' 
 
     res = []    
     print 'Resulted in len(polys): %s, now quality controlling' % (len(polys),)
     for i, p in enumerate(polys):
         if not p.is_valid:
             print '     ERROR: polygon %s is invalid!' % (i,)
+            continue
+        if p.area == CONUSPOLY.area:
+            print '     polygon %s is just CONUS, skipping' % (i,)
             continue
         print '     polygon: %s has area: %s' % (i, p.area)
         res.append( p )
