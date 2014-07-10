@@ -15,6 +15,12 @@ def get_file(name):
 
 class TestProduct(unittest.TestCase):
 
+    def test_140710_wmoheader_fail(self):
+        """ Make sure COR in WMO header does not trip us up"""
+        tp = product.TextProduct( get_file('MANANN.txt') )
+        self.assertEqual(tp.afos, 'MANANN')
+        self.assertTrue(tp.is_correction())
+
     def test_now_jabber(self):
         ''' See if we can process a NOW and get the jabber result '''
         tp = product.TextProduct( get_file('NOWDMX.txt') )
