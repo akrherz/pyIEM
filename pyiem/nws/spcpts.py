@@ -86,8 +86,16 @@ def str2multipolygon(s):
             found = False
             for j, poly in enumerate(polys):
                 if poly.intersection(lr):
-                    print '     polygon is interior to polys #%s' % (j,)
-                    polys[j]._interiors.append( lr )
+                    interiors = [l for l in polys[j]._interiors]
+                    interiors.append( lr )
+                    newp = Polygon(polys[j].exterior, interiors)
+                    if newp.is_valid:
+                        polys[j] = newp
+                        print ('     polygon is interior to polys #%s, '
+                           +'area now %.2f') % (j, polys[j].area)
+                    else:
+                        raise Exception(('Adding interior polygon resulted '
+                                        +'in an invalid geometry, aborting'))
                     found = True
                     break
             if not found:

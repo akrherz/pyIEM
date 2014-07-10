@@ -14,6 +14,12 @@ def get_file(name):
 
 class TestObservation(unittest.TestCase):
     
+    def test_140710_nogeom(self):
+        """ Had a failure with no geometries parsed """
+        tp = product.TextProduct( get_file('PTSDY2_nogeom.txt') )
+        self.assertRaises(Exception, spcpts.SPCPTS, tp )
+        #spc.draw_outlooks()   
+
     def test_23jul_failure(self):
         ''' CCW line near Boston '''
         data = """40067377 40567433 41317429 42097381 42357259 42566991"""
