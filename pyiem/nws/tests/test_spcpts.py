@@ -26,8 +26,8 @@ class TestObservation(unittest.TestCase):
         tp = product.TextProduct( data )
         spc = spcpts.SPCPTS( tp )
         #spc.draw_outlooks()
-        outlook = spc.get_outlook('ANY SEVERE', '0.05')
-        self.assertAlmostEqual(outlook.geometry.area, 10.12 , 2)
+        outlook = spc.get_outlook('CATEGORICAL', 'TSTM')
+        self.assertAlmostEqual(outlook.geometry.area, 606.33 , 2)
     
     def test_complex(self):
         ''' Test our processing '''
