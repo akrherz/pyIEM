@@ -15,7 +15,7 @@ from pyiem.nws import ugc, vtec, hvtec
 
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
-WMO_RE = re.compile("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) (?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s?(?P<bbb>[ACR][ACOR][A-Z])?\s?$", re.M)
+WMO_RE = re.compile("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) (?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*(?P<bbb>[ACR][ACOR][A-Z])?\s*$", re.M)
 TIME_MOT_LOC = re.compile(".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z (?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT (?P<loc>[0-9 ]+)")
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile(".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")

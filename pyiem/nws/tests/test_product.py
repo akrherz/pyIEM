@@ -5,6 +5,7 @@ import os
 import pytz
 
 from pyiem.nws import product, ugc
+from pyiem.nws.product import WMO_RE
 from pyiem.nws.product import TextProductException
 
 def get_file(name):
@@ -14,6 +15,16 @@ def get_file(name):
     return open(fn).read()
 
 class TestProduct(unittest.TestCase):
+
+    def test_wmoheader(self):
+        """" Make sure we can handle some header variations """
+        ar = ["FTUS43 KOAX 102320    ",
+             "FTUS43 KOAX 102320  COR ",
+             "FTUS43 KOAX 102320  COR  ",
+             "FTUS43 KOAX 102320",
+             ]
+        for a in ar:
+            self.assertTrue( WMO_RE.match(a) is not None) 
 
     def test_140710_wmoheader_fail(self):
         """ Make sure COR in WMO header does not trip us up"""
