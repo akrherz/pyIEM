@@ -437,7 +437,7 @@ class SPSProduct(TextProduct):
         self.geometry = None
         TextProduct.__init(self, text)
 
-def parser( text ):
+def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' generalized parser of a text product '''
     tokens = AFOSRE.findall(text[:100].replace('\r\r\n', '\n'))
     if len(tokens) == 0:
@@ -449,4 +449,4 @@ def parser( text ):
         from pyiem.nws.products.cli import parser as cliparser
         return cliparser( text )
     
-    return TextProduct( text )
+    return TextProduct( text, utcnow, ugc_provider, nwsli_provider )
