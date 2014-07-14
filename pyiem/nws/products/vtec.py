@@ -356,6 +356,14 @@ class VTECProduct(TextProduct):
         
         return len(keys) == 1
 
+    def get_first_non_cancel_vtec(self):
+        """ Return the first non-CANcel VTEC """
+        for segment in self.segments:
+            for vtec in segment.vtec:
+                if vtec.action != 'CAN':
+                    return vtec
+        return None
+    
     def get_jabbers(self, uri, river_uri=None):
         """Return a list of triples representing how this goes to social
         Arguments:
@@ -455,27 +463,37 @@ class VTECProduct(TextProduct):
         # message, lets try to condense it down, some of the xtra settings
         # from above will be used here, this is probably bad design
         if self.is_homogeneous() and len(msgs) > 1:
-            vtec = self.segments[0].vtec[0]
+            vtec = self.get_first_non_cancel_vtec()
+            if vtec is None:
+                vtec = self.segments[0].vtec[0]
             xtra['channels'] = ",".join( self.get_affected_wfos() )
             jdict = {
                 'as' : ", ".join(actions),
                 'asl' : ", ".join(long_actions),
                 'hasl' : ", ".join(html_long_actions),
                 'wfo': vtec.office, 
+                'ets' : vtec.get_end_string(self),
+                'sts' : '',
                 'action' : self.get_action(),
                 'product': vtec.get_ps_string(),
                 'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
             }
-            plain = ("%(wfo)s %(action)s %(product)s (%(asl)s) %(url)s") % jdict
-            xtra['twitter'] = ("%(wfo)s %(action)s %(product)s (%(asl)s)") % jdict
+            if (vtec.begints is not None and
+                    vtec.begints > (self.utcnow + datetime.timedelta(
+                                    hours=1))): 
+                jdict['sts'] = ' %s ' % (vtec.get_begin_string(self),)
+            plain = ("%(wfo)s %(action)s %(product)s%(sts)s (%(asl)s) "
+                     +"%(ets)s %(url)s") % jdict
+            xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s (%(asl)s) "
+                    +"%(ets)s") % jdict
             if len(xtra['twitter']) > (140-25):
-                xtra['twitter'] = ("%(wfo)s %(action)s %(product)s "
-                                   +"(%(as)s)") % jdict
+                xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s "
+                                   +"(%(as)s) %(ets)s") % jdict
                 if len(xtra['twitter']) > (140-25):
-                    xtra['twitter'] = ("%(wfo)s %(action)s %(product)s") % jdict
+                    xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s %(ets)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
-            html = ("%(wfo)s <a href=\"%(url)s\">%(action)s %(product)s</a> "
-                    +"(%(hasl)s)") % jdict
+            html = ("%(wfo)s <a href=\"%(url)s\">%(action)s %(product)s</a>%(sts)s "
+                    +"(%(hasl)s) %(ets)s") % jdict
             return [(plain, html, xtra)]
 
         

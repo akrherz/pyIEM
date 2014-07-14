@@ -51,7 +51,7 @@ class TestProducts(unittest.TestCase):
             +"((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
             +"((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
             +"((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
-            +"((ANZ454)), ((ANZ455)) [AN]) "
+            +"((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT "
             +"http://localhost#2014-O-NEW-KPHI-SV-A-0418") )
     
     def test_140610_tweet_spacing(self):
@@ -206,7 +206,8 @@ class TestProducts(unittest.TestCase):
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], ('DMX updates Severe '
             +'Thunderstorm Warning (cancels 1 area, continues 1 area) '
-            +'http://localhost/#2014-O-CAN-KDMX-SV-W-0143'))
+            +'till 10:45 PM CDT '
+            +'http://localhost/#2014-O-CON-KDMX-SV-W-0143'))
 
 
         prod = vtecparser( get_file('WCN.txt') , utcnow=utcnow,
@@ -214,14 +215,14 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], ('DMX updates Tornado Watch '
-            +'(cancels 5 areas, continues 12 areas) '
-            +'http://localhost/#2014-O-CAN-KDMX-TO-A-0210'))
+            +'(cancels 5 areas, continues 12 areas) till 1:00 AM CDT '
+            +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
         self.assertEqual(j[0][0], ('DMX updates Tornado Watch (cancels a, '
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             +'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties/zones '
-            +'in [IA]) '
-            +'http://localhost/#2014-O-CAN-KDMX-TO-A-0210'))
+            +'in [IA]) till 1:00 AM CDT '
+            +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
     
     def test_spacewx(self):
         ''' See if we can parse a space weather product '''
