@@ -36,6 +36,24 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140714_segmented_watch(self):
+        """ Two segmented watch text formatting stinks """
+        utcnow = utc(2014, 7, 14, 17, 25)
+        prod = vtecparser( get_file('WCNPHI.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals( j[0][0], ("PHI issues Severe Thunderstorm Watch "
+            +"(issues ((MDC011)), ((MDC015)), ((MDC029)), ((MDC035)), "
+            +"((MDC041)) [MD] and ((NJC001)), ((NJC005)), ((NJC007)), "
+            +"((NJC009)), ((NJC011)), ((NJC015)), ((NJC019)), ((NJC021)), "
+            +"((NJC023)), ((NJC025)), ((NJC027)), ((NJC029)), ((NJC033)), "
+            +"((NJC035)), ((NJC037)), ((NJC041)) [NJ] and ((DEC001)), "
+            +"((DEC003)), ((DEC005)) [DE] and ((PAC011)), ((PAC017)), "
+            +"((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
+            +"((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
+            +"((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
+            +"((ANZ454)), ((ANZ455)) [AN]) "
+            +"http://localhost#2014-O-NEW-KPHI-SV-A-0418") )
+    
     def test_140610_tweet_spacing(self):
         ''' Saw spacing issue in tweet message '''
         utcnow = utc(2014, 6, 10, 13, 23)

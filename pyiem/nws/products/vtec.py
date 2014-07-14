@@ -333,6 +333,17 @@ class VTECProduct(TextProduct):
                     vtec.phenomena, vtec.significance, vtec.ETN,
                                                     txn.rowcount))            
 
+    def get_action(self):
+        """ How to describe the action of this product """
+        keys = []
+        for segment in self.segments:
+            for vtec in segment.vtec:
+                if vtec.action not in keys:
+                    keys.append(vtec.action)
+        if len(keys) == 1:
+            return self.segments[0].vtec[0].get_action_string()
+        return "updates"
+
     def is_homogeneous(self):
         ''' Test to see if this product contains just one VTEC event '''
         keys = []
@@ -451,18 +462,19 @@ class VTECProduct(TextProduct):
                 'asl' : ", ".join(long_actions),
                 'hasl' : ", ".join(html_long_actions),
                 'wfo': vtec.office, 
+                'action' : self.get_action(),
                 'product': vtec.get_ps_string(),
                 'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
             }
-            plain = ("%(wfo)s updates %(product)s (%(asl)s) %(url)s") % jdict
-            xtra['twitter'] = ("%(wfo)s updates %(product)s (%(asl)s)") % jdict
+            plain = ("%(wfo)s %(action)s %(product)s (%(asl)s) %(url)s") % jdict
+            xtra['twitter'] = ("%(wfo)s %(action)s %(product)s (%(asl)s)") % jdict
             if len(xtra['twitter']) > (140-25):
-                xtra['twitter'] = ("%(wfo)s updates %(product)s "
+                xtra['twitter'] = ("%(wfo)s %(action)s %(product)s "
                                    +"(%(as)s)") % jdict
                 if len(xtra['twitter']) > (140-25):
-                    xtra['twitter'] = ("%(wfo)s updates %(product)s") % jdict
+                    xtra['twitter'] = ("%(wfo)s %(action)s %(product)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
-            html = ("%(wfo)s <a href=\"%(url)s\">updates %(product)s</a> "
+            html = ("%(wfo)s <a href=\"%(url)s\">%(action)s %(product)s</a> "
                     +"(%(hasl)s)") % jdict
             return [(plain, html, xtra)]
 
