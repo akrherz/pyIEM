@@ -439,7 +439,15 @@ class SPSProduct(TextProduct):
 
 def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' generalized parser of a text product '''
-    tokens = AFOSRE.findall(text[:100].replace('\r\r\n', '\n'))
+    tmp = text[:100].replace('\r\r\n', '\n')
+    m = WMO_RE.match(tmp)
+    if m is not None:
+        d = m.groupdict()
+        if d['cccc'] == 'KWNP':
+            from pyiem.nws.products.spacewx import parser as spacewxparser
+            return spacewxparser( text )
+
+    tokens = AFOSRE.findall(tmp)
     if len(tokens) == 0:
         raise TextProductException("Could not locate AFOS Identifier")
     afos = tokens[0][:3]
