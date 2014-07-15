@@ -14,6 +14,11 @@ def get_file(name):
 
 class TestObservation(unittest.TestCase):
     
+    def test_140709_nogeoms(self):
+        """ Make sure we don't have another failure with geom parsing """
+        tp = product.TextProduct( get_file('PTSDY3_nogeoms.txt') )
+        self.assertRaises(Exception, spcpts.SPCPTS, tp )
+    
     def test_140710_nogeom(self):
         """ Had a failure with no geometries parsed """
         tp = product.TextProduct( get_file('PTSDY2_nogeom.txt') )
