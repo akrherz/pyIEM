@@ -36,6 +36,18 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_140715_condensed(self):
+        """ Make sure our Tags and svs_special works for combined message """
+        utcnow = utc(2014, 7, 6, 2, 1)
+        prod = vtecparser( get_file('TORSVS.txt'), utcnow=utcnow) 
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('DMX updates Tornado Warning '
+            +'[tornado: OBSERVED, hail: &lt;.75 IN] (cancels ((IAC049)) [IA], '
+            +'continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A '
+            +'CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING '
+            +'SOUTHEAST AT 30 MPH. '
+            +'http://localhost#2014-O-CON-KDMX-TO-W-0051'))
+    
     def test_140714_segmented_watch(self):
         """ Two segmented watch text formatting stinks """
         utcnow = utc(2014, 7, 14, 17, 25)
@@ -51,7 +63,7 @@ class TestProducts(unittest.TestCase):
             +"((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
             +"((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
             +"((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
-            +"((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT "
+            +"((ANZ454)), ((ANZ455)) [AN]) till 8:00 PM EDT. "
             +"http://localhost#2014-O-NEW-KPHI-SV-A-0418") )
     
     def test_140610_tweet_spacing(self):
@@ -221,7 +233,7 @@ class TestProducts(unittest.TestCase):
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             +'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties/zones '
-            +'in [IA]) till 1:00 AM CDT '
+            +'in [IA]) till 1:00 AM CDT. '
             +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
     
     def test_spacewx(self):

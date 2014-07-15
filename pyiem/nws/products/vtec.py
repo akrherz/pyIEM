@@ -364,6 +364,13 @@ class VTECProduct(TextProduct):
                     return vtec
         return None
     
+    def get_first_non_cancel_segment(self):
+        """ Return the first segment that is a non-CAN """
+        for segment in self.segments:
+            if len(segment.vtec) > 0 and segment.vtec[0].action != 'CAN':
+                return segment
+        return None
+    
     def get_jabbers(self, uri, river_uri=None):
         """Return a list of triples representing how this goes to social
         Arguments:
@@ -466,6 +473,9 @@ class VTECProduct(TextProduct):
             vtec = self.get_first_non_cancel_vtec()
             if vtec is None:
                 vtec = self.segments[0].vtec[0]
+            segment = self.get_first_non_cancel_segment()
+            if segment is None:
+                segment = self.segments[0]
             xtra['channels'] = ",".join( self.get_affected_wfos() )
             jdict = {
                 'as' : ", ".join(actions),
@@ -473,18 +483,24 @@ class VTECProduct(TextProduct):
                 'hasl' : ", ".join(html_long_actions),
                 'wfo': vtec.office, 
                 'ets' : vtec.get_end_string(self),
+                'svr_special': segment.special_tags_to_text(),
+                'svs_special': '',
                 'sts' : '',
                 'action' : self.get_action(),
                 'product': vtec.get_ps_string(),
                 'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
             }
+            # Include the special bulletin for Tornado Warnings
+            if vtec.phenomena in ['TO',] and vtec.significance == 'W':
+                jdict['svs_special'] = segment.svs_search()
             if (vtec.begints is not None and
                     vtec.begints > (self.utcnow + datetime.timedelta(
                                     hours=1))): 
                 jdict['sts'] = ' %s ' % (vtec.get_begin_string(self),)
-            plain = ("%(wfo)s %(action)s %(product)s%(sts)s (%(asl)s) "
-                     +"%(ets)s %(url)s") % jdict
-            xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s (%(asl)s) "
+            
+            plain = ("%(wfo)s %(action)s %(product)s%(svr_special)s%(sts)s (%(asl)s) "
+                     +"%(ets)s. %(svs_special)s %(url)s") % jdict
+            xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(svr_special)s%(sts)s (%(asl)s) "
                     +"%(ets)s") % jdict
             if len(xtra['twitter']) > (140-25):
                 xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s "
@@ -492,9 +508,11 @@ class VTECProduct(TextProduct):
                 if len(xtra['twitter']) > (140-25):
                     xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s %(ets)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
-            html = ("%(wfo)s <a href=\"%(url)s\">%(action)s %(product)s</a>%(sts)s "
-                    +"(%(hasl)s) %(ets)s") % jdict
-            return [(plain, html, xtra)]
+            html = ("<p>%(wfo)s <a href=\"%(url)s\">%(action)s %(product)s</a>%(svr_special)s%(sts)s "
+                    +"(%(hasl)s) %(ets)s. %(svs_special)s</p>") % jdict
+            return [(" ".join(plain.split()), 
+                     " ".join(html.split()), 
+                     xtra)]
 
         
         return msgs
