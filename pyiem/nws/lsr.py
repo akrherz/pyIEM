@@ -89,8 +89,9 @@ class LSR(object):
         ''' Return a string representing the magnitude and units '''
         mag_long = "%s" % (self.typetext,)
         if self.magnitude_units == 'MPH':
-            mag_long = "%s of %.0f %s" % (mag_long, self.magnitude_f, 
-                                        self.magnitude_units)
+            mag_long = "%s of %s%.0f %s" % (mag_long, self.magnitude_qualifier,
+                                            self.magnitude_f, 
+                                            self.magnitude_units)
         elif (self.typetext == "HAIL" and 
             reference.hailsize.has_key("%.2f" % (self.magnitude_f,))):
             haildesc = reference.hailsize["%.2f" % (self.magnitude_f,)]
