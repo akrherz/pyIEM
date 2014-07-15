@@ -5,6 +5,14 @@ from pyiem.nws.products import lsr
 
 class TestLSR(unittest.TestCase):
     
+    def test_mag_string(self):
+        """ Magnitude string for various events """
+        l = lsr.LSR()
+        l.typetext = "TSTM WND GST"
+        l.magnitude_units = "MPH"
+        l.magnitude_f = 59
+        self.assertEqual(l.mag_string(), "TSTM WND GST of 59 MPH")
+    
     def test_get_dbtype(self):
         ''' See what we get for a given LSR typetext '''
         l = lsr.LSR()
