@@ -13,7 +13,7 @@ Like it or not, we care about zorder!
 [Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY] = range(1,6)
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap, maskoceans
+from mpl_toolkits.basemap import Basemap
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
@@ -23,7 +23,6 @@ import matplotlib.patheffects as PathEffects
 from matplotlib.collections import PatchCollection
 import mx.DateTime
 import numpy as np
-from scipy.interpolate import griddata, Rbf
 from scipy.interpolate import NearestNDInterpolator
 from pyiem import reference
 from PIL import Image
@@ -526,18 +525,13 @@ class MapPlot:
             lats = np.array( lats )
             vals = np.array( vals )
         if vals.ndim == 1:
-            # We need to grid!
-            if self.sector == 'iowa':
-                xi = np.linspace(reference.IA_WEST, reference.IA_EAST, 100)
-                yi = np.linspace(reference.IA_SOUTH, reference.IA_NORTH, 100)
-            elif self.sector == 'conus':
-                xi = np.linspace(reference.CONUS_WEST, 
-                                    reference.CONUS_EAST, 100)
-                yi = np.linspace(reference.CONUS_SOUTH, 
-                                    reference.CONUS_NORTH, 100)
-            else:
-                xi = np.linspace(reference.MW_WEST, reference.MW_EAST, 100)
-                yi = np.linspace(reference.MW_SOUTH, reference.MW_NORTH, 100)
+            # We need to grid, get current plot bounds in display proj
+            xbnds = self.ax.get_xlim()
+            ybnds = self.ax.get_ylim()
+            ll = self.map(xbnds[0], ybnds[0], inverse=True)
+            ur = self.map(xbnds[1], ybnds[1], inverse=True)
+            xi = np.linspace(ll[0], ur[0], 100)
+            yi = np.linspace(ll[1], ur[1], 100)
             xi, yi = np.meshgrid(xi, yi)
             #vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
             #rbfi = Rbf(lons, lats, vals, function='cubic')
