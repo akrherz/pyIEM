@@ -473,6 +473,16 @@ class MapPlot:
         self.ax.add_artist(white_glows)
         white_glows.set_zorder(t[0].get_zorder()-0.1)
 
+    def scatter(self, lons, lats, vals, clevs, **kwargs):
+        """ Plot scatter points with some colorized symbology """
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+
+        colors = cmap( norm(vals) )
+        x,y = self.map(lons, lats)
+        self.ax.scatter(x, y, c=colors, edgecolors=colors)
+        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
         """ hexbin wrapper """
         cmap = kwargs.get('cmap', maue())

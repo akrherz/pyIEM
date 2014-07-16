@@ -1,13 +1,21 @@
 import unittest
-
+import numpy as np
 from pyiem import plot
 
 class TestObservation(unittest.TestCase):
     
+    def test_scatter(self):
+        """ Test scatter plots """
+        m = plot.MapPlot(sector='midwest')
+        m.scatter(np.linspace(-99,-94, 100), 
+                  np.linspace(40,45,100), range(100), np.arange(0,101,10))
+        m.postprocess(filename='/tmp/test_plot_scatter.png')
+        m.close()
+    
     def test_contourf(self):
         ''' Test the contourf plot with labels specified '''
         m = plot.MapPlot(sector='iowa')
-        m.contourf(range(-99,-94), range(40,45), range(5), range(5),
+        m.contourf(range(-94,-89), range(40,45), range(5), range(5),
                    clevlabels=['a','b', 'c', 'd', 'e'])
         m.postprocess(filename='/tmp/test_plot_contourf.png')
         m.close()
