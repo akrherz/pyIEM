@@ -289,7 +289,8 @@ class MapPlot:
         self.fig = plt.figure(num=None, figsize=figsize )
         self.fig.subplots_adjust(bottom=0, left=0, right=1, top=1, wspace=0, 
                                  hspace=0)
-        self.ax = plt.axes([0.01,0.05,0.928,0.85], axisbg=(0.4471,0.6235,0.8117))
+        self.ax = plt.axes([0.01,0.05,0.928,0.85], 
+                           axisbg=(0.4471,0.6235,0.8117))
         self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                       yticks=[], xticks=[])
         self.sector = sector
@@ -398,7 +399,7 @@ class MapPlot:
             self.ak_map.fillcontinents(color='0.7',zorder=0)
         if self.hi_map:
             self.hi_map.fillcontinents(color='0.7',zorder=0)
-        self.map.fillcontinents(color='0.7', zorder=0) # Read docs on 0 meaning
+        self.map.fillcontinents(color=kwargs.get('axisbg', (0.4471,0.6235,0.8117)), zorder=0) # Read docs on 0 meaning
 
         if not kwargs.has_key('nostates'):
             self.map.drawstates(linewidth=1.5, zorder=Z_OVERLAY, ax=self.ax)
@@ -481,6 +482,8 @@ class MapPlot:
         colors = cmap( norm(vals) )
         x,y = self.map(lons, lats)
         self.ax.scatter(x, y, c=colors, edgecolors=colors)
+        if kwargs.has_key('cmap'):
+            del kwargs['cmap']
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
