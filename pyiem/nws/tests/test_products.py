@@ -35,7 +35,26 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
-    
+        
+    def test_tornado_emergency(self):
+        """ See what we do with Tornado Emergencies """
+        utcnow = utc(2012, 4, 15, 3, 27)
+        prod = vtecparser( get_file('TOR_emergency.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][1], ("<p>ICT <a href=\"http://localhost"
+        +"#2012-O-NEW-KICT-TO-W-0035\">issues Tornado Warning</a> "
+        +"[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
+        +"hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
+        +"* AT 1019 PM CDT...<span style=\"color: #FF0000;\">TORNADO "
+        +"EMERGENCY</span> FOR THE WICHITA METRO AREA. A CONFIRMED LARGE..."
+        +"VIOLENT AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR "
+        +"HAYSVILLE...AND MOVING NORTHEAST AT 50 MPH.</p>"))        
+    def test_badtimestamp(self):
+        """ See what happens when the MND provides a bad timestamp """
+        utcnow = utc(2005, 8, 29, 16, 56)
+        self.assertRaises(Exception, vtecparser,
+                          get_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow) 
+  
     def test_140715_condensed(self):
         """ Make sure our Tags and svs_special works for combined message """
         utcnow = utc(2014, 7, 6, 2, 1)
@@ -191,8 +210,8 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser( get_file('TORtag.txt') , utcnow=utcnow)
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
-        self.assertEqual(j[0][1], ("<p>DMX <a href='http://localhost/#2011-"
-            +"O-NEW-KDMX-TO-W-0057'>issues Tornado Warning</a> [tornado: "
+        self.assertEqual(j[0][1], ("<p>DMX <a href=\"http://localhost/#2011-"
+            +"O-NEW-KDMX-TO-W-0057\">issues Tornado Warning</a> [tornado: "
             +"OBSERVED, tornado damage threat: SIGNIFICANT, hail: 2.75 IN] "
             +"for ((IAC117)), ((IAC125)), ((IAC135)) [IA] till 12:15 AM CDT "
             +"* AT 1132 PM CDT...NATIONAL WEATHER SERVICE DOPPLER RADAR "
@@ -443,7 +462,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.lsrs[57].valid, answer)
         j = prod.get_jabbers('http://localhost')
         self.assertEqual(j[57][0], ("Knoxville Airport "
-        +"[Marion Co, IA] AWOS reports NON-TSTM WND GST of 73.00 MPH at 22 "
+        +"[Marion Co, IA] AWOS reports NON-TSTM WND GST of M73 MPH at 22 "
         +"Jul, 10:55 PM CDT -- HEAT BURST. TEMPERATURE ROSE FROM 70 TO 84 IN "
         +"15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
         +"http://localhost#DMX/201307230355/201307230355"))

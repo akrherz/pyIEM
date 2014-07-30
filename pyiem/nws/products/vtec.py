@@ -383,7 +383,7 @@ class VTECProduct(TextProduct):
         wfo = self.source[1:]
         if self.skip_con:
             xtra = {'product_id': self.get_product_id(),
-                    'channels' : ",".join( self.get_affected_wfos()),
+                'channels' : ",".join( self.get_affected_wfos()) + ",FLS"+wfo,
                     'twitter' : '%s issues updated FLS product %s?wfo=%s' % (
                                 wfo, river_uri, wfo)}
             text = ("%s has sent an updated FLS product (continued products "
@@ -406,8 +406,21 @@ class VTECProduct(TextProduct):
                     continue
                 # CRITICAL: redefine this for each loop as it gets passed by
                 # reference below and is subsequently overwritten otherwise!
+                if self.afos[:3] in ['MWW', 'RFW']:                
+                    channels = ["%s%s" % (self.afos[:3], s) for s in
+                                self.get_affected_wfos()]
+                else:
+                    channels = self.get_affected_wfos()
+                channels.append('%s.%s' % (vtec.phenomena, vtec.significance))
+                channels.append(self.afos)
+                channels.append('%s.%s.%s' % (vtec.phenomena, 
+                                              vtec.significance, vtec.office))
+                for ugc in segment.ugcs:
+                    channels.append('%s.%s.%s' % (vtec.phenomena, 
+                                                  vtec.significance, str(ugc)))
+                    channels.append( str(ugc) )
                 xtra = {'product_id': self.get_product_id(),
-                        'channels': ",".join( segment.get_affected_wfos() ),
+                        'channels': ",".join( channels ),
                         'status' : vtec.status,
                         'vtec' : vtec.getID(self.valid.year),
                         'ptype': vtec.phenomena,
@@ -434,6 +447,7 @@ class VTECProduct(TextProduct):
                              'sts': ' ', 'ets': ' ', 
                              'svr_special': segment.special_tags_to_text(),
                              'svs_special': '',
+                             'svs_special_html': '',
                              'year': self.valid.year, 
                              'phenomena': vtec.phenomena,
                              'eventid': vtec.ETN, 
@@ -450,15 +464,33 @@ class VTECProduct(TextProduct):
                 jmsg_dict['ets'] = vtec.get_end_string(self)
 
                 # Include the special bulletin for Tornado Warnings
-                if vtec.phenomena in ['TO',] and vtec.significance == 'W':
+                if vtec.phenomena == 'TO' and vtec.significance == 'W':
                     jmsg_dict['svs_special'] = segment.svs_search()
+                    jmsg_dict['svs_special_html'] = segment.svs_search()
+
+                # Emergencies
+                if vtec.phenomena in ['TO','FF'] and vtec.significance == 'W':
+                    _btext = segment.svs_search()
+                    if (_btext == "" and vtec.phenomena == 'TO' and
+                        vtec.action not in ['CAN', 'EXP']):
+                        self.warnings.append(("Could not find bullet text in "
+                                            +"segment!"), self.raw)
+                    elif (_btext != "" and vtec.phenomena == 'FF' and
+                          _btext.find("FLASH FLOOD EMERGENCY") > 0):
+                        jmsg_dict['svs_special'] = _btext
+                        jmsg_dict['svs_special_html'] = _btext.replace("FLASH FLOOD EMERGENCY",
+                                            '<span style="color: #FF0000;">FLASH FLOOD EMERGENCY</span>')
+                    elif _btext != "" and vtec.phenomena == 'TO':
+                        jmsg_dict['svs_special_html'] = _btext.replace("TORNADO EMERGENCY",
+                                            '<span style="color: #FF0000;">TORNADO EMERGENCY</span>')
+
 
                 plain = ("%(wfo)s %(product)s %(svr_special)s%(sts)s for "
                         +"%(county)s %(ets)s %(svs_special)s "
                         +"%(url)s") % jmsg_dict
-                html = ("<p>%(wfo)s <a href='%(url)s'>%(product)s</a> "
+                html = ("<p>%(wfo)s <a href=\"%(url)s\">%(product)s</a> "
                         +"%(svr_special)s%(sts)s for %(county)s "
-                        +"%(ets)s %(svs_special)s</p>") % jmsg_dict
+                        +"%(ets)s %(svs_special_html)s</p>") % jmsg_dict
                 xtra['twitter'] = ("%(wfo)s %(product)s%(sts)sfor %(county)s "
                                  +"%(ets)s %(url)s") % jmsg_dict
                 # brute force removal of duplicate spaces
@@ -476,7 +508,21 @@ class VTECProduct(TextProduct):
             segment = self.get_first_non_cancel_segment()
             if segment is None:
                 segment = self.segments[0]
-            xtra['channels'] = ",".join( self.get_affected_wfos() )
+            if self.afos[:3] in ['MWW', 'RFW']:                
+                channels = ["%s%s" % (self.afos[:3], s) for s in
+                            self.get_affected_wfos()]
+            else:
+                channels = self.get_affected_wfos()
+            channels.append('%s.%s' % (vtec.phenomena, vtec.significance))
+            channels.append(self.afos)
+            channels.append('%s.%s.%s' % (vtec.phenomena, 
+                                              vtec.significance, vtec.office))
+            for seg in self.segments:
+                for ugc in seg.ugcs:
+                    channels.append('%s.%s.%s' % (vtec.phenomena, 
+                                                  vtec.significance, str(ugc)))
+                    channels.append( str(ugc) )
+            xtra['channels'] = ",".join( channels )
             jdict = {
                 'as' : ", ".join(actions),
                 'asl' : ", ".join(long_actions),

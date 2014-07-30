@@ -5,6 +5,7 @@ Created on Jan 5, 2013
 '''
 import datetime
 import re
+import sys
 
 import pytz
 from shapely.geometry import Polygon, MultiPolygon
@@ -26,7 +27,7 @@ TORNADODAMAGETAG = re.compile(".*TORNADO DAMAGE THREAT\.\.\.(?P<damage>SIGNIFICA
 TORNADO = re.compile(r"^AT |^\* AT")
 
 class TextProductException(Exception):
-    ''' throwable '''
+    """ throwable """
     pass
 
 class TextProductSegment(object):
@@ -371,7 +372,14 @@ class TextProduct(object):
             dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][3], 
                                       tokens[0][4], tokens[0][5])
             ''' Careful here, need to go to UTC time first then come back! '''
-            now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
+            try:
+                now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
+            except ValueError:
+                msg = ("Invalid timestamp [%s] found in product "
+                       +"[%s %s %s] header") % (dstr, self.wmo, self.source,
+                                                self.afos)
+                sys.exc_clear()
+                raise TextProductException(self.source[1:], msg)
             now += datetime.timedelta(hours= reference.offsets[self.z])
             self.valid = now.replace(tzinfo=pytz.timezone('UTC'))
             return
