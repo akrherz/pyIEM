@@ -14,6 +14,7 @@ from shapely.wkt import dumps
 from pyiem import reference
 from pyiem.nws import ugc, vtec, hvtec
 
+
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
 WMO_RE = re.compile("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) (?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*(?P<bbb>[ACR][ACOR][A-Z])?\s*$", re.M)
@@ -314,6 +315,10 @@ class TextProduct(object):
         """Returns boolean on if this product is some form of correction """
         return self.bbb is not None
         
+    def get_channels(self):
+        """ Return a list of channels """
+        return [self.afos,]
+        
     def get_jabbers(self, uri, uri2=None):
         ''' Return a list of triples representing what we should send to 
         our precious jabber routing bot, this should be overridden by the
@@ -327,7 +332,7 @@ class TextProduct(object):
                     reference.prodDefinitions.get(self.afos[:3], 
                                                   self.afos[:3]))
         xtra = {
-                'channels': self.afos,
+                'channels': ",".join( self.get_channels() ),
                 'product_id': self.get_product_id(),
                 'twitter': plain
                 }
@@ -447,22 +452,27 @@ class SPSProduct(TextProduct):
 
 def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' generalized parser of a text product '''
+    import pyiem.nws.products.spacewx as SPACEWX
+    import pyiem.nws.products.cli as CLI
+    import pyiem.nws.products.hwo as HWO
+
     tmp = text[:100].replace('\r\r\n', '\n')
     m = WMO_RE.match(tmp)
     if m is not None:
         d = m.groupdict()
         if d['cccc'] == 'KWNP':
-            from pyiem.nws.products.spacewx import parser as spacewxparser
-            return spacewxparser( text )
+            return SPACEWX.parser( text )
 
     tokens = AFOSRE.findall(tmp)
     if len(tokens) == 0:
         raise TextProductException("Could not locate AFOS Identifier")
+ 
     afos = tokens[0][:3]
     if afos == 'SPS':
         return SPSProduct( text )
     elif afos == 'CLI':
-        from pyiem.nws.products.cli import parser as cliparser
-        return cliparser( text )
+        return CLI.parser( text )
+    elif afos == 'HWO':
+        return HWO.parser( text )
     
     return TextProduct( text, utcnow, ugc_provider, nwsli_provider )

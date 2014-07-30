@@ -1,13 +1,13 @@
 # A parser for stuff that the Space Weather Center issues
 
-from pyiem.nws.product import TextProduct
+import pyiem.nws.product as product
 
-class SpaceWxProduct( TextProduct ):
+class SpaceWxProduct( product.TextProduct ):
     ''' Class for parsing and representing Space Wx Products '''
     
     def __init__(self, text, utcnow=None):
         ''' constructor '''
-        TextProduct.__init__(self, text, utcnow=utcnow)
+        product.TextProduct.__init__(self, text, utcnow=utcnow)
         self.title = "Unknown (AWIPSID: %s)" % (self.afos,)
         self.parse_title()
         

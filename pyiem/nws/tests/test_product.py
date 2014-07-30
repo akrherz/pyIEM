@@ -26,6 +26,14 @@ class TestProduct(unittest.TestCase):
         for a in ar:
             self.assertTrue( WMO_RE.match(a) is not None) 
 
+    def test_HWO(self):
+        """ Parse a HWO """
+        tp = product.parser( get_file('HWO.txt') )
+        self.assertEqual( tp.get_channels()[0], 'HWOLOT')
+        j = tp.get_jabbers('http://localhost')
+        self.assertEqual( j[0][0], ('LOT issues Hazardous Weather Outlook '
+            +'(HWO) http://localhost201301082123-KLOT-FLUS43-HWOLOT'))
+
     def test_140710_wmoheader_fail(self):
         """ Make sure COR in WMO header does not trip us up"""
         tp = product.TextProduct( get_file('MANANN.txt') )
