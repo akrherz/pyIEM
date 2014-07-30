@@ -251,7 +251,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(j[0][0], ('DMX updates Tornado Watch (cancels a, '
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             +'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
-            +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties/zones '
+            +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties '
             +'in [IA]) till 1:00 AM CDT. '
             +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
     

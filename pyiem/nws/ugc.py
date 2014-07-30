@@ -30,7 +30,12 @@ def ugcs_to_text(ugcs):
         states[st].sort()
         s = " %s [%s]" % (", ".join(states[st]), st)
         if len(s) > 350:
-            s = " %s counties/zones in [%s]" % (len(states[st]), st)
+            geotype = 'counties'
+            if st == 'LA' and states[st][0][2] == 'C':
+                geotype = 'parishes'
+            elif states[st][0][2] == 'Z':
+                geotype = 'forecast zones'
+            s = " %s %s in [%s]" % (len(states[st]), geotype, st)
         txt.append(s)
 
     return (" and".join( txt )).strip()
