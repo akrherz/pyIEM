@@ -55,6 +55,29 @@ class TestProducts(unittest.TestCase):
         self.assertRaises(Exception, vtecparser,
                           get_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow) 
   
+    def test_wcn_updates(self):
+        """ Make sure our Tags and svs_special works for combined message """
+        utcnow = utc(2014, 6, 6, 20, 37)
+        ugc_provider = {}
+        for u in range(1,201,2):
+            n =  'a' * min((u+1/2),40)
+            for st in ['AR', 'MS', 'TN', 'MO']:
+                ugc_provider["%sC%03i" % (st, u)] = UGC(st, 'C', "%03i" % (u,), 
+                              name=n, wfos=['DMX'])
+        prod = vtecparser( get_file('WCNMEG.txt'), utcnow=utcnow,
+                           ugc_provider=ugc_provider) 
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('MEG updates Severe Thunderstorm Watch '
+        +'(extends area of 11 counties in [TN] and '
+        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO], continues '
+        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaa'
+        +'aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaa'
+        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+        +'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
+        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
+        +'22 counties in [MS]) till 7:00 PM CDT. '
+        +'http://localhost#2014-O-EXA-KMEG-SV-A-0240'))
+  
     def test_140715_condensed(self):
         """ Make sure our Tags and svs_special works for combined message """
         utcnow = utc(2014, 7, 6, 2, 1)
