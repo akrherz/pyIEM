@@ -16,15 +16,23 @@ from pyiem.nws import ugc, vtec, hvtec
 
 
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
-TIME_RE = "^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] ([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
-WMO_RE = re.compile("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) (?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*(?P<bbb>[ACR][ACOR][A-Z])?\s*$", re.M)
-TIME_MOT_LOC = re.compile(".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z (?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT (?P<loc>[0-9 ]+)")
+TIME_RE = ("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] "
+           +"([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$")
+WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
+                     +"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
+                     +"(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
+TIME_MOT_LOC = re.compile((".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z "
+                           +"(?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT "
+                           +"(?P<loc>[0-9 ]+)"))
 LAT_LON = re.compile("([0-9]{4,8})\s+")
-WINDHAIL = re.compile(".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
+WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
+                       +"MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
 HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
-TORNADOTAG = re.compile(".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|OBSERVED|POSSIBLE)")
-TORNADODAMAGETAG = re.compile(".*TORNADO DAMAGE THREAT\.\.\.(?P<damage>SIGNIFICANT|CATASTROPHIC)")
+TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
+                         +"OBSERVED|POSSIBLE)"))
+TORNADODAMAGETAG = re.compile((".*TORNADO DAMAGE THREAT\.\.\."
+                               +"(?P<damage>SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
 
 class TextProductException(Exception):
@@ -32,8 +40,10 @@ class TextProductException(Exception):
     pass
 
 class TextProductSegment(object):
+    """ A segment of a Text Product """
     
     def __init__(self, text, tp):
+        """ Constructor """
         self.unixtext = text
         self.tp = tp # Reference to parent
         self.ugcs, self.ugcexpire = ugc.parse(text, tp.valid,
@@ -234,7 +244,7 @@ class TextProductSegment(object):
             tokens = tokens[:-1]
         if len(tokens) == 0:
             return
-        for i in range(0,len(tokens),2):
+        for i in range(0, len(tokens), 2):
             lats.append( float(tokens[i]) / 100.0 )
             lons.append( 0 - float(tokens[i+1]) / 100.0 )
 
@@ -242,7 +252,7 @@ class TextProductSegment(object):
             self.tml_giswkt = 'SRID=4326;POINT(%s %s)' % (lons[0], lats[0])
         else:
             pairs = []
-            for lat,lon in zip(lats,lons):
+            for lat, lon in zip(lats, lons):
                 pairs.append( '%s %s' % (lon, lat) )
             self.tml_giswkt = 'SRID=4326;LINESTRING(%s)' % (','.join(pairs),)
         self.tml_sknt = int( d['sknt'] )
@@ -253,15 +263,16 @@ class TextProductSegment(object):
         ar = re.findall("^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext, 
                         re.M | re.S)
         for h in range(len(ar)):
-            ar[h] = " ".join(ar[h].replace("...",", ").replace("\n", " ").split())
+            ar[h] = " ".join(ar[h].replace("...",", ").replace("\n", 
+                                                               " ").split())
         return ar
 
     def get_affected_wfos(self):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by
         this product segment '''
         affected_wfos = []
-        for ugc in self.ugcs:
-            for wfo in ugc.wfos:
+        for u in self.ugcs:
+            for wfo in u.wfos:
                 if wfo not in affected_wfos:
                     affected_wfos.append( wfo )
         
@@ -302,6 +313,7 @@ class TextProduct(object):
         self.segments = []
         self.z = None
         self.tz = None
+        self.geometry = None
         if utcnow is None:
             utc = datetime.datetime.utcnow()
             self.utcnow = utc.replace(tzinfo=pytz.timezone('UTC'))
@@ -376,7 +388,7 @@ class TextProduct(object):
                 m = tokens[0][0][-2:]
             dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][3], 
                                       tokens[0][4], tokens[0][5])
-            ''' Careful here, need to go to UTC time first then come back! '''
+            # Careful here, need to go to UTC time first then come back!
             try:
                 now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
             except ValueError:
@@ -415,7 +427,8 @@ class TextProduct(object):
         """ Parse things related to the WMO header"""
         m = WMO_RE.search( self.unixtext[:100] )
         if m is None:
-            raise TextProductException("FATAL: Could not parse WMO header! %s" % (self.text[:100]))
+            raise TextProductException(("FATAL: Could not parse WMO header! "
+                                        +"%s") % (self.text[:100]))
         d = m.groupdict()
         self.wmo = d['ttaaii']
         self.source = d['cccc']
@@ -427,8 +440,8 @@ class TextProduct(object):
         this product '''
         affected_wfos = []
         for segment in self.segments:
-            for ugc in segment.ugcs:
-                for wfo in ugc.wfos:
+            for u in segment.ugcs:
+                for wfo in u.wfos:
                     if wfo not in affected_wfos:
                         affected_wfos.append( wfo )
         
@@ -441,14 +454,6 @@ class TextProduct(object):
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
         if len(tokens) > 0:
             self.afos = tokens[0]
-
-class SPSProduct(TextProduct):
-    ''' class for Special Weather Statements '''
-    
-    def __init__(self, text):
-        ''' constructor '''
-        self.geometry = None
-        TextProduct.__init(self, text)
 
 def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' generalized parser of a text product '''
@@ -468,9 +473,7 @@ def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
         raise TextProductException("Could not locate AFOS Identifier")
  
     afos = tokens[0][:3]
-    if afos == 'SPS':
-        return SPSProduct( text )
-    elif afos == 'CLI':
+    if afos == 'CLI':
         return CLI.parser( text )
     elif afos == 'HWO':
         return HWO.parser( text )
