@@ -70,7 +70,8 @@ class LSRProduct(TextProduct):
                 time_fmt = "%-d %b, %-I:%M %p %Z"
             xtra = {
         'product_id': self.get_product_id(),
-        'channels': mylsr.wfo,        
+        'channels': "LSR%s,LSR.ALL,LSR.%s" % (mylsr.wfo, 
+                                              mylsr.typetext.replace(" ", "_")),        
         'geometry': 'POINT(%s %s)' % (mylsr.get_lon(), mylsr.get_lat()),
         'ptype' : mylsr.get_dbtype(),
         'valid' : mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
@@ -105,7 +106,7 @@ class LSRProduct(TextProduct):
                                                 wfo, url, extra_text)
             xtra = {
                 'product_id': self.get_product_id(),
-                'channels': wfo,
+                'channels': 'LSR%s' % (wfo,),
                 }
             res.append([text, html, xtra] )
         return res
