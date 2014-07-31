@@ -14,9 +14,12 @@ class UGCParseException(Exception):
 def ugcs_to_text(ugcs):
     """ Convert a list of UGC objects to a textual string """
     states = {}
+    geotype = "counties"
     for u in ugcs:
         code = str(u)
         stateAB = code[:2]
+        if code[2] == 'Z':
+            geotype = "forecast zones"
         if not states.has_key(stateAB):
             states[stateAB] = []
         if u.name is None:
@@ -30,11 +33,8 @@ def ugcs_to_text(ugcs):
         states[st].sort()
         s = " %s [%s]" % (", ".join(states[st]), st)
         if len(s) > 350:
-            geotype = 'counties'
-            if st == 'LA' and states[st][0][2] == 'C':
+            if st == 'LA' and geotype == 'counties':
                 geotype = 'parishes'
-            elif states[st][0][2] == 'Z':
-                geotype = 'forecast zones'
             s = " %s %s in [%s]" % (len(states[st]), geotype, st)
         txt.append(s)
 

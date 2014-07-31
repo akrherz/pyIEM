@@ -31,6 +31,22 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+    
+    def test_140731_badugclabel(self):
+        """ Make sure this says zones and not counties! """
+        ugc_provider = {}
+        for u in range(530,550,1):
+            n =  'a' * min((u+1/2),80)
+            ugc_provider["ANZ%03i" % (u,)] = UGC('AN', 'Z', "%03i" % (u,), 
+                              name=n, wfos=['DMX'])
+            
+        utcnow = utc(2014, 7, 31, 17, 35)
+        prod = vtecparser( get_file('MWWLWX.txt'), utcnow=utcnow,
+                           ugc_provider=ugc_provider)
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('LWX issues Small Craft Advisory '
+            +'valid at Jul 31, 6:00 PM EDT for 7 forecast zones in [AN] till '
+            +'Aug 1, 6:00 AM EDT http://localhost#2014-O-NEW-KLWX-SC-Y-0151'))
         
     def test_tornado_emergency(self):
         """ See what we do with Tornado Emergencies """
@@ -45,6 +61,7 @@ class TestProducts(unittest.TestCase):
         +"EMERGENCY</span> FOR THE WICHITA METRO AREA. A CONFIRMED LARGE..."
         +"VIOLENT AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR "
         +"HAYSVILLE...AND MOVING NORTHEAST AT 50 MPH.</p>"))        
+    
     def test_badtimestamp(self):
         """ See what happens when the MND provides a bad timestamp """
         utcnow = utc(2005, 8, 29, 16, 56)
