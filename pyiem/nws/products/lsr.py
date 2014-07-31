@@ -160,7 +160,7 @@ def parse_lsr(text):
         lsr.remark = " ".join( meat.split())
     return lsr
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception'''
     prod = LSRProduct(text, utcnow)

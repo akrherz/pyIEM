@@ -73,6 +73,6 @@ class CLIProduct( TextProduct ):
             print 'Could not find date valid in %s' % (self.get_product_id(),)
             return None
 
-def parser(text):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Provide back CLI objects based on the parsing of this text '''
     return CLIProduct( text )

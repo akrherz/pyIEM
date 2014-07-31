@@ -455,27 +455,3 @@ class TextProduct(object):
         if len(tokens) > 0:
             self.afos = tokens[0]
 
-def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
-    ''' generalized parser of a text product '''
-    import pyiem.nws.products.spacewx as SPACEWX
-    import pyiem.nws.products.cli as CLI
-    import pyiem.nws.products.hwo as HWO
-
-    tmp = text[:100].replace('\r\r\n', '\n')
-    m = WMO_RE.match(tmp)
-    if m is not None:
-        d = m.groupdict()
-        if d['cccc'] == 'KWNP':
-            return SPACEWX.parser( text )
-
-    tokens = AFOSRE.findall(tmp)
-    if len(tokens) == 0:
-        raise TextProductException("Could not locate AFOS Identifier")
- 
-    afos = tokens[0][:3]
-    if afos == 'CLI':
-        return CLI.parser( text )
-    elif afos == 'HWO':
-        return HWO.parser( text )
-    
-    return TextProduct( text, utcnow, ugc_provider, nwsli_provider )

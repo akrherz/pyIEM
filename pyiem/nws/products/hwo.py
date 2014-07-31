@@ -41,6 +41,6 @@ class HWOProduct( TextProduct ):
         return channels
 
         
-def parser(text):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function '''
     return HWOProduct( text )

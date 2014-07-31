@@ -31,6 +31,6 @@ class SpaceWxProduct( product.TextProduct ):
         return [(plain, html, xtra)]
         
 
-def parser(buf, utcnow=None):
+def parser(buf, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' A parser implementation '''
     return SpaceWxProduct( buf, utcnow=utcnow )

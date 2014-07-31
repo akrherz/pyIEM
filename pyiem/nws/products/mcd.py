@@ -160,6 +160,6 @@ class MCDProduct( TextProduct ):
         args = (self.text, self.get_product_id(), giswkt)
         txn.execute(sql, args)
         
-def parser(text):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function '''
     return MCDProduct( text )

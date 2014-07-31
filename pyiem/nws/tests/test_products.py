@@ -1,15 +1,11 @@
 import unittest
 import os
-import psycopg2
 import psycopg2.extras
 import datetime
 import pytz
 
-from pyiem.nws.products.mcd import parser as mcdparser
-from pyiem.nws.products.lsr import parser as lsrparser
+from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
-from pyiem.nws.products.cli import parser as cliparser
-from pyiem.nws.products.spacewx import parser as spacewxparser
 from pyiem.nws.ugc import UGC
 from pyiem.nws.nwsli import NWSLI
 
@@ -218,7 +214,7 @@ class TestProducts(unittest.TestCase):
         ''' Make sure delayed LSRs have proper dates associated with them'''
         utcnow = datetime.datetime(2014, 6, 6, 16)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
-        prod = lsrparser( get_file('LSRFSD.txt') , utcnow=utcnow)
+        prod = parser( get_file('LSRFSD.txt') , utcnow=utcnow)
         j = prod.get_jabbers('http://iem.local')
         self.assertEqual(j[0][1], ('<p>2 SSE Harrisburg [Lincoln Co, SD] '
             +'TRAINED SPOTTER <a href="http://iem.local#FSD/201406052040/'
@@ -282,7 +278,7 @@ class TestProducts(unittest.TestCase):
         ''' See if we can parse a space weather product '''
         utcnow = datetime.datetime(2014,5,10)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
-        prod = spacewxparser( get_file('SPACEWX.txt'), utcnow=utcnow)
+        prod = parser( get_file('SPACEWX.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost/')
         self.assertEqual(j[0][0], ('Space Weather Prediction Center issues '
             +'CANCEL WATCH: Geomagnetic Storm Category G3 Predicted '
@@ -321,7 +317,7 @@ class TestProducts(unittest.TestCase):
     
     def test_140522_blowingdust(self):
         ''' Make sure we can deal with invalid LSR type '''
-        prod = lsrparser( get_file('LSRTWC.txt') )
+        prod = parser( get_file('LSRTWC.txt') )
         self.assertEqual(len(prod.lsrs), 1)
         self.assertEqual( prod.lsrs[0].get_dbtype(), None)
     
@@ -353,13 +349,13 @@ class TestProducts(unittest.TestCase):
     
     def test_cli(self):
         ''' Test the processing of a CLI product '''
-        prod = cliparser( get_file('CLIJNU.txt') )
+        prod = parser( get_file('CLIJNU.txt') )
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,6,30))
         self.assertEqual(prod.valid, datetime.datetime(2013,7,1,0,36).replace(
                                     tzinfo=pytz.timezone("UTC")))
         self.assertEqual(prod.data['temperature_maximum'], 75)
         
-        prod = cliparser( get_file('CLIDSM.txt') )
+        prod = parser( get_file('CLIDSM.txt') )
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
         self.assertEqual(prod.data['temperature_maximum'], 89)
         self.assertEqual(prod.data['snow_month'], 0)
@@ -468,7 +464,7 @@ class TestProducts(unittest.TestCase):
     
     def test_01(self):
         """ process a valid LSR without blemish """
-        prod = lsrparser( get_file("LSR.txt") )
+        prod = parser( get_file("LSR.txt") )
         self.assertEqual(len(prod.lsrs), 58)
         
         self.assertAlmostEqual(prod.lsrs[57].magnitude_f, 73, 0)
@@ -496,7 +492,7 @@ class TestProducts(unittest.TestCase):
     
     def test_mpd_mcdparser(self):
         ''' The mcdparser can do WPC's MPD as well, test it '''
-        prod = mcdparser( get_file('MPD.txt') )
+        prod = parser( get_file('MPD.txt') )
         self.assertAlmostEqual(prod.geometry.area, 4.657, 3)
         self.assertEqual(prod.attn_wfo, ['PHI', 'AKQ', 'CTP', 'LWX'])
         self.assertEqual(prod.attn_rfc, ['MARFC'])
@@ -512,7 +508,7 @@ class TestProducts(unittest.TestCase):
     
     def test_mcdparser(self):
         ''' Test Parsing of MCD Product '''
-        prod = mcdparser( get_file('SWOMCD.txt') )
+        prod = parser( get_file('SWOMCD.txt') )
         self.assertAlmostEqual(prod.geometry.area, 4.302, 3)
         self.assertEqual(prod.discussion_num, 1525 )
         self.assertEqual(prod.attn_wfo[2], 'DLH')
@@ -520,7 +516,7 @@ class TestProducts(unittest.TestCase):
                                                +"THE UPPER PENINSULA OF MI"))
 
         # With probability this time
-        prod = mcdparser( get_file('SWOMCDprob.txt') )
+        prod = parser( get_file('SWOMCDprob.txt') )
         self.assertAlmostEqual(prod.geometry.area, 2.444, 3)
         self.assertEqual(prod.watch_prob, 20)
 
