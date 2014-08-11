@@ -128,15 +128,13 @@ class VTEC:
         self.endts   = contime( tokens[8] )
 
     def get_end_string(self, prod):
-        ''' Return an appropriate end string for this VTEC '''
+        """ Return an appropriate end string for this VTEC """
         if self.action == 'CAN':
             return ''
         if self.endts is None:
             return 'until further notice'
         fmt = "%b %-d, %-I:%M %p %Z"
-        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
-        utcnow += datetime.timedelta(hours=1)
-        if self.endts < utcnow:
+        if self.endts < (prod.valid + datetime.timedelta(hours=1)):
             fmt = '%-I:%M %p %Z'
         localts = self.endts.astimezone( prod.tz )
         return "till %s" % (localts.strftime(fmt),)
@@ -146,9 +144,7 @@ class VTEC:
         if self.begints is None:
             return ''
         fmt = "%b %-d, %-I:%M %p %Z"
-        utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone("UTC"))
-        utcnow += datetime.timedelta(hours=1)
-        if self.begints < utcnow:
+        if self.begints < (prod.valid + datetime.timedelta(hours=1)):
             fmt = '%-I:%M %p %Z'
         localts = self.begints.astimezone( prod.tz )
         return "valid at %s" % (localts.strftime(fmt),)
