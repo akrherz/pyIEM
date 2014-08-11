@@ -336,7 +336,7 @@ class TextProduct(object):
         our precious jabber routing bot, this should be overridden by the
         specialty parsers '''
         res = []
-        url = "%s%s" % (uri, self.get_product_id())
+        url = "%s?pid=%s" % (uri, self.get_product_id())
         plain = "%s issues %s %s" % (self.source[1:], 
                     reference.prodDefinitions.get(self.afos[:3], 
                                                   self.afos[:3]), url)
