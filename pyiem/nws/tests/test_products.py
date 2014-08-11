@@ -32,6 +32,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_tcp(self):
+        """ See what we can do with TCP """
+        prod = parser( get_file('TCPAT1.txt') )
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('National Hurricance Center issues '
+            +'ADVISORY 19 for POST-TROPICAL CYCLONE ARTHUR '
+            +'http://localhost?pid=201407051500-KNHC-WTNT31-TCPAT1'))
+        self.assertEquals(j[0][2]['twitter'], ('Post-Tropical Cyclone '
+            +'#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H'))
+    
     def test_140731_badugclabel(self):
         """ Make sure this says zones and not counties! """
         ugc_provider = {}
@@ -88,7 +98,7 @@ class TestProducts(unittest.TestCase):
         +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
         +'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
         +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
-        +'22 counties in [MS]) till 7:00 PM CDT. '
+        +'22 counties in [MS]) till Jun 6, 7:00 PM CDT. '
         +'http://localhost#2014-O-EXA-KMEG-SV-A-0240'))
   
     def test_140715_condensed(self):
@@ -118,7 +128,7 @@ class TestProducts(unittest.TestCase):
             +"((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
             +"((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
             +"((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
-            +"((ANZ454)), ((ANZ455)) [AN]) till 8:00 PM EDT. "
+            +"((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT. "
             +"http://localhost#2014-O-NEW-KPHI-SV-A-0418") )
     
     def test_140610_tweet_spacing(self):
@@ -127,7 +137,7 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser( get_file('FLWLCH.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals( j[0][2]['twitter'], ('LCH issues Flood Warning '
-            +'valid at 9:48 AM CDT for ((VLSL1)) till 1:00 '
+            +'valid at Jun 10, 9:48 AM CDT for ((VLSL1)) till Jun 12, 1:00 '
             +'PM CDT http://localhost#2014-O-NEW-KLCH-FL-W-0015') )
 
     def test_routine(self):
@@ -282,13 +292,13 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], ('DMX updates Tornado Watch '
-            +'(cancels 5 areas, continues 12 areas) till 1:00 AM CDT '
+            +'(cancels 5 areas, continues 12 areas) till Jun 4, 1:00 AM CDT '
             +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
         self.assertEqual(j[0][0], ('DMX updates Tornado Watch (cancels a, '
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             +'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
             +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties '
-            +'in [IA]) till 1:00 AM CDT. '
+            +'in [IA]) till Jun 4, 1:00 AM CDT. '
             +'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
     
     def test_spacewx(self):
@@ -346,8 +356,8 @@ class TestProducts(unittest.TestCase):
         prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertEqual(j[0][0], ('SEW continues Small Craft Advisory '
-            +'valid at 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till '
-            +'5:00 AM PDT '
+            +'valid at May 27, 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till '
+            +'May 28, 5:00 AM PDT '
             +'http://localhost/#2014-O-CON-KSEW-SC-Y-0113'))
     
     def test_140527_00000_hvtec_nwsli(self):
@@ -358,11 +368,11 @@ class TestProducts(unittest.TestCase):
         prod.sql( self.txn )
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertEqual(j[0][0], ('BOU extends time of Areal Flood Advisory '
-            +'for ((COC049)), ((COC057)) [CO] till 9:30 PM MDT '
+            +'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
             +'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
         self.assertEqual(j[0][2]['twitter'], ('BOU extends time of Areal Flood '
             +'Advisory for ((COC049)), ((COC057)) [CO] till '
-            +'9:30 PM MDT http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
+            +'May 29, 9:30 PM MDT http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
     
     def test_cli(self):
         ''' Test the processing of a CLI product '''
@@ -472,7 +482,7 @@ class TestProducts(unittest.TestCase):
 
         msgs = prod.get_jabbers('http://localhost', 'http://localhost/')
         self.assertEqual( msgs[0][0], ('JAN issues Tornado Warning for '
-            +'((MSC035)), ((MSC073)), DARYL [MS] till 1:15 PM CDT * AT '
+            +'((MSC035)), ((MSC073)), DARYL [MS] till Aug 29, 1:15 PM CDT * AT '
             +'1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A '
             +'TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE '
             +'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '

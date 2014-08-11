@@ -4,25 +4,18 @@ Template:
 
 from pyiem.nws.product import TextProduct
 
-class XXXException(Exception):
-    ''' Exception '''
+class NHCException(Exception):
     pass
 
-class XXXProduct( TextProduct ):
-    '''
-    Represents a XXX
-    '''
-    
-    def __init__(self, text):
-        ''' constructor '''
-        TextProduct.__init__(self, text)
+class NHCProduct( TextProduct ):
+    def __init__(self, text, utcnow=None, ugc_provider=None, 
+                 nwsli_provider=None):
+        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         
 
         
-def parser(text):
-    ''' Helper function '''
-    return XXXProduct( text )
-
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    return NHCProduct( text, utcnow, ugc_provider, nwsli_provider )
 
 """
 import re
@@ -34,6 +27,7 @@ import cli
 import hwo
 import lsr
 import mcd
+import nhc
     
 def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ generalized parser of a text product """
@@ -52,6 +46,8 @@ def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
     afos = tokens[0]
     if afos[:3] == 'CLI':
         return cli.parser( text, utcnow, ugc_provider, nwsli_provider )
+    elif afos[:3] == 'TCP':
+        return nhc.parser( text, utcnow, ugc_provider, nwsli_provider )
     elif afos[:3] == 'HWO':
         return hwo.parser( text, utcnow, ugc_provider, nwsli_provider )
     elif afos in ['SWOMCD', 'FFGMPD']:

@@ -7,6 +7,8 @@ import pytz
 from pyiem.nws import product, ugc
 from pyiem.nws.product import WMO_RE
 from pyiem.nws.product import TextProductException
+from pyiem.nws.products import parser as productparser
+
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -28,11 +30,11 @@ class TestProduct(unittest.TestCase):
 
     def test_HWO(self):
         """ Parse a HWO """
-        tp = product.parser( get_file('HWO.txt') )
+        tp = productparser( get_file('HWO.txt') )
         self.assertEqual( tp.get_channels()[0], 'HWOLOT')
         j = tp.get_jabbers('http://localhost')
         self.assertEqual( j[0][0], ('LOT issues Hazardous Weather Outlook '
-            +'(HWO) http://localhost201301082123-KLOT-FLUS43-HWOLOT'))
+            +'(HWO) http://localhost?pid=201301082123-KLOT-FLUS43-HWOLOT'))
 
     def test_140710_wmoheader_fail(self):
         """ Make sure COR in WMO header does not trip us up"""
@@ -45,7 +47,7 @@ class TestProduct(unittest.TestCase):
         tp = product.TextProduct( get_file('NOWDMX.txt') )
         j = tp.get_jabbers("http://localhost")
         self.assertEqual(j[0][0], ("DMX issues Short-term Forecast (NOW) "
-                    +"http://localhost201003041442-KDMX-FPUS73-NOWDMX"))
+                    +"http://localhost?pid=201003041442-KDMX-FPUS73-NOWDMX"))
 
     def test_nomnd_with_timestamp(self):
         ''' Make sure we process timestamps correctly when there is no MND'''
