@@ -49,6 +49,7 @@ class SIGMET(object):
         self.label = None
         self.areatext = ""
         self.centers = []
+        self.raw = None
 
 class SIGMETException(Exception):
     ''' Exception '''
@@ -247,7 +248,7 @@ class SIGMETProduct( TextProduct ):
                 lon = 0 - lon
             pts.append((lon,lat))
         s.geom = Polygon(pts)
-                
+        s.raw = self.unixtext
         self.sigmets.append( s )
 
     def process_SIGC(self):
