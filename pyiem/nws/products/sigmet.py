@@ -299,7 +299,7 @@ class SIGMETProduct( TextProduct ):
             channels.append("SIGMET.%s" % (self.source[1:],))
             xtra = {
                     'channels': ",".join(channels),
-                    'tweet': txt
+                    'twitter': txt
                     }
             
             j.append( [txt,html,xtra] )
