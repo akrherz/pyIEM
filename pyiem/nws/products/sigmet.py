@@ -32,6 +32,10 @@ AREA_RE = re.compile(r"""
 AREA\s(?P<areanum>[0-9]+)\.\.\.FROM\s(?P<locs>[0-9A-Z \-]+)\n
 """, re.VERBOSE)
 
+LINE_RE = re.compile(r"""
+(?P<distance>[0-9]*)NM\s+EITHER\s+SIDE\s+OF\s+LINE\s+
+""", re.VERBOSE)
+
 dirs = {'NNE': 22.5, 'ENE': 67.5, 'NE':  45.0, 'E': 90.0, 'ESE': 112.5,
         'SSE': 157.5, 'SE': 135.0, 'S': 180.0, 'SSW': 202.5,
         'WSW': 247.5, 'SW': 225.0, 'W': 270.0, 'WNW': 292.5,
@@ -172,6 +176,24 @@ def locs2lonslats(loc_provider, locstr, geotype, widthstr, diameterstr):
 
     return lons, lats
 
+def compute_esol(pts, distance):
+    """ Figure out the box points given the two points and the distance """
+    newpts = []
+    deltax = pts[1][0] - pts[0][0]
+    deltay = pts[1][1] - pts[0][1]
+    # Compute unit vector
+    linedistance = (deltax**2 + deltay**2)**0.5
+    deltax = deltax / linedistance
+    deltay = deltay / linedistance
+    N = distance / 111.0 # approx
+    newpts.append( [ pts[0][0] - N*deltay, pts[0][1] + N*deltax] )
+    newpts.append( [ pts[1][0] - N*deltay, pts[1][1] + N*deltax] )
+    newpts.append( [ pts[1][0] + N*deltay, pts[1][1] - N*deltax] )
+    newpts.append( [ pts[0][0] + N*deltay, pts[0][1] - N*deltax] )
+    newpts.append( [ newpts[0][0], newpts[0][1] ])
+
+    return newpts
+
 class SIGMETProduct( TextProduct ):
     '''
     Represents a Storm Prediction Center Mesoscale Convective Discussion
@@ -247,6 +269,10 @@ class SIGMETProduct( TextProduct ):
             if pair[1][0] == 'W':
                 lon = 0 - lon
             pts.append((lon,lat))
+        m = LINE_RE.search(meat)
+        if m is not None:
+            d = m.groupdict()
+            pts = compute_esol(pts, int(d['distance']))
         s.geom = Polygon(pts)
         s.raw = self.unixtext
         self.sigmets.append( s )

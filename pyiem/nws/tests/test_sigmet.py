@@ -3,7 +3,7 @@ import os
 import datetime
 import pytz
 
-from pyiem.nws.products.sigmet import parser 
+from pyiem.nws.products.sigmet import parser, compute_esol
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -17,6 +17,28 @@ def utc(year, month, day, hour=0, minute=0):
                         tzinfo=pytz.timezone("UTC"))
 
 class TestObservation(unittest.TestCase):
+   
+    def test_compute_esol(self):
+        """ Test our algo on either side of a line """
+        pts = [ [0,0], [5,0] ]
+        pts = compute_esol(pts, 111)
+        print pts
+        self.assertAlmostEqual(pts[0][0], 0.00, 2)
+        self.assertAlmostEqual(pts[0][1], 1.00, 2)
+        self.assertAlmostEqual(pts[1][0], 5.00, 2)
+        self.assertAlmostEqual(pts[1][1], 1.00, 2)
+        self.assertAlmostEqual(pts[2][0], 5.00, 2)
+        self.assertAlmostEqual(pts[2][1], -1.00, 2)
+        self.assertAlmostEqual(pts[3][0], 0.00, 2)
+        self.assertAlmostEqual(pts[3][1], -1.00, 2)
+        self.assertAlmostEqual(pts[4][0], 0.00, 2)
+        self.assertAlmostEqual(pts[4][1], 1.00, 2)
+    
+    def test_140813_line(self):
+        """ See about parsing a SIGMET that is a either side of line """
+        utcnow = utc(2014, 8, 12, 13, 15)
+        tp = parser( get_file('SIGP0A_line.txt'), utcnow)
+        self.assertAlmostEquals(tp.sigmets[0].geom.area, 4.32, 2)
    
     def test_sigaoa(self):
         """ See about parsing 50E properly """
