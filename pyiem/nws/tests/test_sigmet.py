@@ -39,9 +39,15 @@ class TestObservation(unittest.TestCase):
         utcnow = utc(2014, 8, 12, 13, 15)
         tp = parser( get_file('SIGP0A_line.txt'), utcnow)
         self.assertAlmostEquals(tp.sigmets[0].geom.area, 4.32, 2)
+
+    def test_140815_cancel(self):
+        """ See about parsing a SIGMET that is a either side of line """
+        utcnow = utc(2014, 8, 15, 23, 41)
+        tp = parser( get_file('SIG_cancel.txt'), utcnow)
+        self.assertAlmostEquals(len(tp.sigmets), 0)
    
     def test_sigaoa(self):
-        """ See about parsing 50E properly """
+        """ SIGAOA """
         utcnow = utc(2014, 8, 11, 19, 15)
         tp = parser( get_file('SIGA0A.txt'), utcnow)
         self.assertAlmostEquals(tp.sigmets[0].geom.area, 24.35, 2)
@@ -50,7 +56,7 @@ class TestObservation(unittest.TestCase):
         """ See about parsing 50E properly """
         utcnow = utc(2014, 8, 11, 19, 15)
         tp = parser( get_file('SIGA0B.txt'), utcnow)
-        self.assertAlmostEquals(tp.sigmets[0].geom.area, 2.15, 2)
+        self.assertEquals( len(tp.sigmets), 0)
     
     def test_50e(self):
         """ See about parsing 50E properly """

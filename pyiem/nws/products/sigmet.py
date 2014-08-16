@@ -259,6 +259,9 @@ class SIGMETProduct( TextProduct ):
         s.ets = self.compute_time(d['ets'])
         m = re.findall(O_PAIRS, meat)
         if len(m) == 0:
+            # TODO: resolve what SIGMET cancels are
+            if meat.find("CNL SIGMET") > 0:
+                return
             raise SIGMETException("Failed to parse 0_PAIRS: %s" % (meat,))
         pts = []
         for pair in m:
