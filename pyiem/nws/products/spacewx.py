@@ -19,7 +19,7 @@ class SpaceWxProduct( product.TextProduct ):
         
     def get_jabbers(self, uri):
         ''' Custom Implementation of the TextProduct#get_jabbers '''
-        url = "%s%s" % (uri, self.get_product_id())
+        url = "%s?pid=%s" % (uri, self.get_product_id())
         xtra = {'channels': 'WNP,%s' % (self.afos,),
                 'twitter': 'SWPC issues %s %s' % (self.title, url)
                 }
