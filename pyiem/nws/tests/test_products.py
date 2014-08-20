@@ -42,6 +42,16 @@ class TestProducts(unittest.TestCase):
         self.assertEquals(j[0][2]['twitter'], ('Post-Tropical Cyclone '
             +'#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H'))
     
+    def test_140820_badtimestamp(self):
+        """ Check our invalid timestamp exception and how it is written """
+        try:
+            parser( get_file('RWSGTF_badtime.txt') )
+        except Exception, msg:
+            # Note to self, unsure how this even works :)
+            self.assertEquals(msg[1], ("Invalid timestamp "
+                +"[130 PM MDT WED TUE 19 2014] found in product "
+                +"[NZUS01 KTFX RWSGTF] header"))
+    
     def test_140731_badugclabel(self):
         """ Make sure this says zones and not counties! """
         ugc_provider = {}
@@ -309,7 +319,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost/')
         self.assertEqual(j[0][0], ('Space Weather Prediction Center issues '
             +'CANCEL WATCH: Geomagnetic Storm Category G3 Predicted '
-            +'http://localhost/201405101416-KWNP-WOXX22-WATA50'))
+            +'http://localhost/?pid=201405101416-KWNP-WOXX22-WATA50'))
     
     def test_140604_sbwupdate(self):
         ''' Make sure we are updating the right info in the sbw table '''

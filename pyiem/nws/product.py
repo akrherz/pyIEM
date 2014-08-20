@@ -16,7 +16,7 @@ from pyiem.nws import ugc, vtec, hvtec
 
 
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
-TIME_RE = ("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) [A-Z][A-Z][A-Z] "
+TIME_RE = ("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
            +"([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$")
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
                      +"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
@@ -386,15 +386,15 @@ class TextProduct(object):
             else:
                 h = tokens[0][0][:-2]
                 m = tokens[0][0][-2:]
-            dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][3], 
-                                      tokens[0][4], tokens[0][5])
+            dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][4], 
+                                      tokens[0][5], tokens[0][6])
             # Careful here, need to go to UTC time first then come back!
             try:
                 now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
             except ValueError:
                 msg = ("Invalid timestamp [%s] found in product "
-                       +"[%s %s %s] header") % (dstr, self.wmo, self.source,
-                                                self.afos)
+                       +"[%s %s %s] header") % (" ".join(tokens[0]), self.wmo, 
+                                                self.source, self.afos)
                 sys.exc_clear()
                 raise TextProductException(self.source[1:], msg)
             now += datetime.timedelta(hours= reference.offsets[self.z])
