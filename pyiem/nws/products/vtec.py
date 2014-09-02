@@ -122,7 +122,7 @@ class VTECProduct(TextProduct):
                 txn.execute("""
                 SELECT issue, expire, updated from """+ warning_table +"""
                 WHERE ugc = %s and eventid = %s and significance = %s and
-                wfo = %s and phenomena = %s and status not in ('EXP', 'CAN')
+                wfo = %s and phenomena = %s and status != 'CAN'
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
                       vtec.phenomena))
                 if txn.rowcount > 0:
