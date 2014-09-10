@@ -437,6 +437,8 @@ class MapPlot:
                                      orientation='vertical')
         for i, (lev, lbl) in enumerate(zip(clevs, clevlabels)):
             y = float(i) / (len(clevs) -1)
+            y2 = float(i+1) / (len(clevs) -1)
+            dy = (y2-y)/2
             fmt = '%s' if type(lbl) == type('a') else '%g'
             txt = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
             txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
