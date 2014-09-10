@@ -79,7 +79,7 @@ class VTECProduct(TextProduct):
                 continue
             for vtec in segment.vtec:
                 if vtec.status == 'T' or vtec.action == 'ROU':
-                    return
+                    continue
                 if segment.sbw:
                     self.do_sbw_geometry(txn, segment, vtec)    
                 # Check for Hydro-VTEC stuff
