@@ -541,12 +541,19 @@ class MapPlot:
             vals = np.array( vals )
         if vals.ndim == 1:
             # We need to grid, get current plot bounds in display proj
+            # Careful here as a rotated projection may have maxes not in ul
             xbnds = self.ax.get_xlim()
             ybnds = self.ax.get_ylim()
             ll = self.map(xbnds[0], ybnds[0], inverse=True)
+            ul = self.map(xbnds[0], ybnds[1], inverse=True)
             ur = self.map(xbnds[1], ybnds[1], inverse=True)
-            xi = np.linspace(ll[0], ur[0], 100)
-            yi = np.linspace(ll[1], ur[1], 100)
+            lr = self.map(xbnds[1], ybnds[0], inverse=True)
+            maxy = max(ul[1], ur[1])
+            miny = min(ll[1], ul[1])
+            maxx = max(lr[0], ur[0])
+            minx = min(ll[0], ul[0])
+            xi = np.linspace(minx, maxx, 100)
+            yi = np.linspace(miny, maxy, 100)
             xi, yi = np.meshgrid(xi, yi)
             #vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
             #rbfi = Rbf(lons, lats, vals, function='cubic')
