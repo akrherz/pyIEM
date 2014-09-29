@@ -384,19 +384,7 @@ class TestProducts(unittest.TestCase):
             +'Advisory for ((COC049)), ((COC057)) [CO] till '
             +'May 29, 9:30 PM MDT http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
     
-    def test_cli(self):
-        ''' Test the processing of a CLI product '''
-        prod = parser( get_file('CLIJNU.txt') )
-        self.assertEqual(prod.cli_valid, datetime.datetime(2013,6,30))
-        self.assertEqual(prod.valid, datetime.datetime(2013,7,1,0,36).replace(
-                                    tzinfo=pytz.timezone("UTC")))
-        self.assertEqual(prod.data['temperature_maximum'], 75)
-        
-        prod = parser( get_file('CLIDSM.txt') )
-        self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
-        self.assertEqual(prod.data['temperature_maximum'], 89)
-        self.assertEqual(prod.data['snow_month'], 0)
-        self.assertEqual(prod.data['snow_today'], 0)
+
  
     def test_affected_wfos(self):
         ''' see what affected WFOs we have '''
