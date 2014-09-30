@@ -27,6 +27,8 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.valid, datetime.datetime(2013,7,1,0,36).replace(
                                     tzinfo=pytz.timezone("UTC")))
         self.assertEqual(prod.data['temperature_maximum'], 75)
+        self.assertEqual(prod.data['temperature_maximum_time'], "259 PM")
+        self.assertEqual(prod.data['temperature_minimum_time'], "431 AM")
         self.assertEqual(prod.data['precip_today'], 0.0001)
         
         prod = cliparser(get_file('CLIDSM.txt'))
@@ -36,3 +38,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data['temperature_minimum_record_years'][0], 
                          1898)
         self.assertEqual(prod.data['snow_today'], 0)
+        
+        prod = cliparser(get_file('CLINYC.txt'))
+        self.assertEqual(prod.data['snow_today_record_years'][0], 1925)
+        self.assertEqual(prod.data['snow_today_record'], 11.5)

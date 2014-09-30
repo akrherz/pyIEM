@@ -32,11 +32,20 @@ SNOWFALL (IN)
   SINCE JUL 1      0.0                       0.0    0.0      0.0
   SNOW DEPTH       0
     """
-    for line in lines:
+    for linenum, line in enumerate(lines):
         line = (line+" ").replace(" T ", "0.0001")
         tokens = line.split()
         if line.startswith("YESTERDAY") or line.startswith("TODAY"):
             data['snow_today'] = trace(tokens[1])
+            if len(tokens) == 7 and tokens[2] != 'MM' and tokens[3] != 'MM':
+                data['snow_today_record'] = trace(tokens[2])
+                data['snow_today_record_years'] = [int(tokens[3]),]
+                # Check next line(s) for more years
+                while ((linenum+1)<len(lines) and 
+                       len(lines[linenum+1].strip()) == 4):
+                    data['snow_today_record_years'].append(
+                                                    int(lines[linenum+1]))
+                    linenum += 1
         elif line.startswith("MONTH TO DATE"):
             data['snow_month'] = trace(tokens[3])
         elif line.startswith("SINCE JUN 1"):
@@ -65,6 +74,7 @@ def parse_precipitation(lines, data):
                        len(lines[linenum+1].strip()) == 4):
                     data['precip_today_record_years'].append(
                                                     int(lines[linenum+1]))
+                    linenum += 1
         elif line.startswith("MONTH TO DATE"):
             data['precip_month'] = float(numbers[0])
             if len(numbers) == 4:
@@ -98,6 +108,9 @@ TEMPERATURE (F)
         numbers = re.findall("\d+", line)
         if line.startswith("MAXIMUM"):
             data['temperature_maximum'] = float(numbers[0])
+            tokens = re.findall("([0-9]{3,4} [AP]M)", line)
+            if len(tokens) == 1:
+                data['temperature_maximum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
                 data['temperature_maximum_record'] = int(numbers[2])
                 data['temperature_maximum_record_years'] = [int(numbers[3]),]
@@ -110,6 +123,9 @@ TEMPERATURE (F)
                     linenum += 1
         if line.startswith("MINIMUM"):
             data['temperature_minimum'] = float(numbers[0])
+            tokens = re.findall("([0-9]{3,4} [AP]M)", line)
+            if len(tokens) == 1:
+                data['temperature_minimum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
                 data['temperature_minimum_record'] = int(numbers[2])
                 data['temperature_minimum_record_years'] = [int(numbers[3]),]
