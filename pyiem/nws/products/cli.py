@@ -6,7 +6,7 @@ import datetime
 
 from pyiem.nws.product import TextProduct
 
-DATE_RE = re.compile(r"CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})\.\.\.")
+DATE_RE = re.compile(r"CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})")
 
 class CLIException(Exception):
     """ Exception """
@@ -33,6 +33,7 @@ SNOWFALL (IN)
   SNOW DEPTH       0
     """
     for line in lines:
+        line = (line+" ").replace(" T ", "0.0001")
         tokens = line.split()
         if line.startswith("YESTERDAY") or line.startswith("TODAY"):
             data['snow_today'] = trace(tokens[1])
@@ -42,27 +43,39 @@ SNOWFALL (IN)
             data['snow_jun1'] = trace(tokens[3])
         elif line.startswith("SINCE JUL 1"):
             data['snow_jul1'] = trace(tokens[3])
+        elif line.startswith("SINCE DEC 1"):
+            data['snow_dec1'] = trace(tokens[3])
 
 def parse_precipitation(lines, data):
     """ Parse the precipitation data """
     for line in lines:
-        line = line.replace(" T ", "0.0001")
-        tokens = line.split()
+        # careful here as if T is only value, the trailing space is stripped
+        line = (line+" ").replace(" T ", "0.0001")
         numbers = re.findall("(\d\.?\d*)+", line)
         if line.startswith("YESTERDAY") or line.startswith("TODAY"):
+            if len(numbers) == 0:
+                continue
             data['precip_today'] = float(numbers[0])
-            if len(tokens) == 6:
+            if len(numbers) == 6:
                 data['precip_today_normal'] = float(numbers[3])
                 data['precip_today_record'] = float(numbers[1])
                 data['precip_today_record_year'] = int(numbers[2])
         elif line.startswith("MONTH TO DATE"):
             data['precip_month'] = float(numbers[0])
-            if len(tokens) == 4:
+            if len(numbers) == 4:
                 data['precip_month_normal'] = float(numbers[1])
         elif line.startswith("SINCE JAN 1"):
             data['precip_jan1'] = float(numbers[0])
+            if len(numbers) == 4:
+                data['precip_jan1_normal'] = float(numbers[1])
         elif line.startswith("SINCE JUL 1"):
             data['precip_jul1'] = float(numbers[0])
+            if len(numbers) == 4:
+                data['precip_jul1_normal'] = float(numbers[1])
+        elif line.startswith("SINCE DEC 1"):
+            data['precip_dec1'] = float(numbers[0])
+            if len(numbers) == 4:
+                data['precip_dec1_normal'] = float(numbers[1])
 
 def parse_temperature(lines, data):
     """ Here we parse a temperature section
@@ -76,21 +89,31 @@ TEMPERATURE (F)
   MINIMUM         63    545 AM  51    1898  67     -4       69
   AVERAGE         76                        76      0       84
     """
-    for line in lines:
-        tokens = line.split()
+    for linenum, line in enumerate(lines):
         numbers = re.findall("\d+", line)
         if line.startswith("MAXIMUM"):
             data['temperature_maximum'] = float(numbers[0])
             if len(numbers) == 7: # we know this
                 data['temperature_maximum_record'] = int(numbers[2])
-                data['temperature_maximum_record_year'] = int(numbers[3])
+                data['temperature_maximum_record_years'] = [int(numbers[3]),]
                 data['temperature_maximum_normal'] = int(numbers[4])
+                # Check next line(s) for more years
+                while ((linenum+1)<len(lines) and 
+                       len(lines[linenum+1].strip()) == 4):
+                    data['temperature_maximum_record_years'].append(
+                                                    int(lines[linenum+1]))
+                    linenum += 1
         if line.startswith("MINIMUM"):
             data['temperature_minimum'] = float(numbers[0])
             if len(numbers) == 7: # we know this
                 data['temperature_minimum_record'] = int(numbers[2])
-                data['temperature_minimum_record_year'] = int(numbers[3])
+                data['temperature_minimum_record_years'] = [int(numbers[3]),]
                 data['temperature_minimum_normal'] = int(numbers[4])
+                while ((linenum+1)<len(lines) and 
+                       len(lines[linenum+1].strip()) == 4):
+                    data['temperature_minimum_record_years'].append(
+                                                    int(lines[linenum+1]))
+                    linenum += 1
 
 class CLIProduct( TextProduct ):
     """
@@ -107,25 +130,29 @@ class CLIProduct( TextProduct ):
                                                     self.get_product_id(),)
             return
         self.cli_valid = self.parse_cli_valid()
-        self.data = self.parse_data()
+        # If we failed above
+        if self.cli_valid is not None:
+            self.data = self.parse_data()
         
     def parse_data(self):
         """ Actually do the parsing of this silly format """
         data = {}
         pos = self.unixtext.find("TEMPERATURE (F)")
         if pos == -1:
-            raise CLIException('Failed to find TEMPERATURE (F), aborting')
+            pos = self.unixtext.find("TEMPERATURE")
+            if pos == -1:
+                raise CLIException('Failed to find TEMPERATURE (F), aborting')
 
         # Strip extraneous spaces
         meat = "\n".join([l.strip() for l in self.unixtext[pos:].split("\n")])
         sections = meat.split("\n\n")
         for section in sections:
             lines = section.split("\n")
-            if lines[0] == "TEMPERATURE (F)":
+            if lines[0] in ["TEMPERATURE (F)", 'TEMPERATURE']:
                 parse_temperature(lines, data)
-            elif lines[0] == 'PRECIPITATION (IN)':
+            elif lines[0] in ['PRECIPITATION (IN)', 'PRECIPITATION']:
                 parse_precipitation(lines, data)
-            elif lines[0] == 'SNOWFALL (IN)':
+            elif lines[0] in ['SNOWFALL (IN)', 'SNOWFALL']:
                 parse_snowfall(lines, data)
 
         return data
@@ -140,8 +167,11 @@ class CLIProduct( TextProduct ):
                 myfmt = '%B %d %Y'
             return datetime.datetime.strptime(tokens[0], myfmt)
         else:
-            print 'Could not find date valid in %s' % (self.get_product_id(),)
-            return None
+            # Known sources of bad data...
+            if self.source in ['PKMR', 'NSTU', 'PTTP', 'PTKK']:
+                return None
+            raise CLIException('Could not find date valid in %s' % (
+                                                self.get_product_id(),))
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Provide back CLI objects based on the parsing of this text """

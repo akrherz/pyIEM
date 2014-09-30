@@ -1,0 +1,84 @@
+884 
+CDUS42 KTAE 300632
+CLIABY
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE TALLAHASSEE FL                              
+231 AM EDT TUE SEP 30 2014
+
+
+................................... 
+
+...THE ALBANY CLIMATE SUMMARY FOR SEPTEMBER 29 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1930 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         79    418 PM  99    1986  85     -6       83       
+  MINIMUM         72   1041 AM  42    1967  63      9       58       
+  AVERAGE         76                        74      2       71      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY       MM                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                         0      0        0       
+  SINCE SEP 1      0                         0      0        0       
+  SINCE JUL 1      0                         0      0        0       
+                                                                     
+ COOLING                                                             
+  YESTERDAY       11                         9      2        6       
+  MONTH TO DATE  367                       375     -8      396       
+  SINCE SEP 1    367                       375     -8      396       
+  SINCE JAN 1   2300                      2348    -48     2217       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    13   HIGHEST WIND DIRECTION    NE (50)       
+  HIGHEST GUST SPEED    16   HIGHEST GUST DIRECTION    NE (40)       
+  AVERAGE WIND SPEED     5.9                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST   100                                                       
+ LOWEST     82                                                       
+ AVERAGE    91                                                       
+
+..........................................................
+
+                                                                     
+THE ALBANY CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   85        95      1934                    
+ MINIMUM TEMPERATURE (F)   63        37      1967                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+SEPTEMBER 30 2014.....SUNRISE   730 AM EDT   SUNSET   723 PM EDT   
+OCTOBER  1 2014.......SUNRISE   730 AM EDT   SUNSET   722 PM EDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

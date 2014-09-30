@@ -15,6 +15,11 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
     
+    def test_140930_mm_precip(self):
+        """ Make sure having MM as today's precip does not error out """
+        prod = cliparser(get_file('CLIABY.txt'))
+        self.assertTrue(prod.data.get('precip_today') is None)
+    
     def test_cli(self):
         """ Test the processing of a CLI product """
         prod = cliparser(get_file('CLIJNU.txt'))
@@ -28,5 +33,6 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
         self.assertEqual(prod.data['temperature_maximum'], 89)
         self.assertEqual(prod.data['snow_month'], 0)
-        self.assertEqual(prod.data['temperature_minimum_record_year'], 1898)
+        self.assertEqual(prod.data['temperature_minimum_record_years'][0], 
+                         1898)
         self.assertEqual(prod.data['snow_today'], 0)
