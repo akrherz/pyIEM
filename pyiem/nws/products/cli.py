@@ -48,7 +48,7 @@ SNOWFALL (IN)
 
 def parse_precipitation(lines, data):
     """ Parse the precipitation data """
-    for line in lines:
+    for linenum, line in enumerate(lines):
         # careful here as if T is only value, the trailing space is stripped
         line = (line+" ").replace(" T ", "0.0001")
         numbers = re.findall("(\d\.?\d*)+", line)
@@ -59,7 +59,12 @@ def parse_precipitation(lines, data):
             if len(numbers) == 6:
                 data['precip_today_normal'] = float(numbers[3])
                 data['precip_today_record'] = float(numbers[1])
-                data['precip_today_record_year'] = int(numbers[2])
+                data['precip_today_record_years'] = [int(numbers[2]),]
+                # Check next line(s) for more years
+                while ((linenum+1)<len(lines) and 
+                       len(lines[linenum+1].strip()) == 4):
+                    data['precip_today_record_years'].append(
+                                                    int(lines[linenum+1]))
         elif line.startswith("MONTH TO DATE"):
             data['precip_month'] = float(numbers[0])
             if len(numbers) == 4:
