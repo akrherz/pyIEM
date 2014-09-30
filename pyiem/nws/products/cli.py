@@ -189,7 +189,7 @@ class CLIProduct( TextProduct ):
             return datetime.datetime.strptime(tokens[0], myfmt)
         else:
             # Known sources of bad data...
-            if self.source in ['PKMR', 'NSTU', 'PTTP', 'PTKK']:
+            if self.source in ['PKMR', 'NSTU', 'PTTP', 'PTKK', 'PTKR']:
                 return None
             raise CLIException('Could not find date valid in %s' % (
                                                 self.get_product_id(),))
