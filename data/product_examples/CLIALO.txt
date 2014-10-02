@@ -1,0 +1,101 @@
+079 
+CDUS43 KDMX 032330
+CLIALO
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DES MOINES IA                               
+527 PM CST FRI JAN 3 2014
+
+
+................................... 
+
+...THE WATERLOO IA CLIMATE SUMMARY FOR JANUARY 3 2014...
+VALID TODAY AS OF 0500 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1895 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         19    456 PM  51    2007  27     -8       28       
+  MINIMUM        -21R   355 AM -21    1904  10    -31        8       
+  AVERAGE         -1                        19    -20       18      
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.00          1.77 1906   0.03  -0.03     0.00    
+  MONTH TO DATE    0.07                      0.09  -0.02      T      
+  SINCE DEC 1      1.01                      1.29  -0.28     1.74    
+  SINCE JAN 1      0.07                      0.09  -0.02      T      
+                                                                     
+SNOWFALL (IN)                                                        
+  TODAY            0.0          13.2  1971   0.3   -0.3      0.0     
+  MONTH TO DATE    1.0                       0.8    0.2       T      
+  SINCE DEC 1     19.9                      10.7    9.2     11.3     
+  SINCE JUL 1     25.8                      14.1   11.7     11.3     
+  SNOW DEPTH       4                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY           66                        46     20       47       
+  MONTH TO DATE  198                       138     60      159       
+  SINCE DEC 1   1746                      1466    280     1347       
+  SINCE JUL 1   3352                      2949    403     2835       
+                                                                     
+ COOLING                                                             
+  TODAY            0                         0      0        0       
+  MONTH TO DATE    0                         0      0        0       
+  SINCE DEC 1      0                         0      0        0       
+  SINCE JAN 1      0                         0      0        0       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    28   HIGHEST WIND DIRECTION     S (170)      
+  HIGHEST GUST SPEED    35   HIGHEST GUST DIRECTION     S (180)      
+  AVERAGE WIND SPEED    11.4                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.3                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED TODAY.                            
+  FOG                                                                
+  HAZE                                                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    86           100 AM                                     
+ LOWEST     67           500 PM                                     
+ AVERAGE    77                                                       
+
+..........................................................
+
+                                                                     
+THE WATERLOO IA CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   27        50      1909                    
+ MINIMUM TEMPERATURE (F)   10       -28      1919                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+JANUARY  3 2014.......SUNRISE   740 AM CST   SUNSET   449 PM CST   
+JANUARY  4 2014.......SUNRISE   740 AM CST   SUNSET   450 PM CST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

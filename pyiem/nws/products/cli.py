@@ -105,7 +105,7 @@ TEMPERATURE (F)
   AVERAGE         76                        76      0       84
     """
     for linenum, line in enumerate(lines):
-        numbers = re.findall("\d+", line)
+        numbers = re.findall("\-?\d+", line)
         if line.startswith("MAXIMUM"):
             data['temperature_maximum'] = float(numbers[0])
             tokens = re.findall("([0-9]{3,4} [AP]M)", line)
@@ -187,6 +187,8 @@ class CLIProduct( TextProduct ):
             else:
                 myfmt = '%B %d %Y'
             return datetime.datetime.strptime(tokens[0], myfmt)
+        if len(tokens) > 1:
+            raise CLIException("Found two headers in product, unsupported!")
         else:
             # Known sources of bad data...
             if self.source in ['PKMR', 'NSTU', 'PTTP', 'PTKK', 'PTKR']:

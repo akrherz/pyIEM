@@ -3,6 +3,7 @@ import datetime
 import pytz
 import unittest
 from pyiem.nws.products.cli import parser as cliparser
+from pyiem.nws.products.cli import CLIException
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -14,6 +15,16 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    
+    def test_141002_houston(self):
+        """ See what we do with this invalid product """
+        self.assertRaises(CLIException, cliparser, get_file('CLIHOU.txt'))
+    
+    def test_140930_negative_temps(self):
+        """ Royal screwup not supporting negative numbers """
+        prod = cliparser(get_file('CLIALO.txt'))
+        self.assertEqual(prod.data.get('temperature_minimum'), -21)
+        self.assertEqual(prod.data.get('temperature_minimum_record'), -21)
     
     def test_140930_mm_precip(self):
         """ Make sure having MM as today's precip does not error out """
