@@ -1,0 +1,104 @@
+580 
+CDUS42 KFFC 032032
+CLIFFC
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE PEACHTREE CITY GA                           
+432 PM EDT FRI OCT 3 2014
+
+
+................................... 
+
+...THE PEACHTREE CITY CLIMATE SUMMARY FOR OCTOBER 3 2014...
+VALID TODAY AS OF 0400 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 9999 TO 9999
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         79    226 PM  MM      MM  78      1       83       
+  MINIMUM         67    106 AM  MM      MM  53     14       58       
+  AVERAGE         73                        66      7       71      
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.87         MM      MM   0.13   0.74     0.00    
+  MONTH TO DATE    0.87                      0.41   0.46     0.00    
+  SINCE SEP 1      3.21                      4.25  -1.04     2.33    
+                                                                     
+SNOWFALL (IN)                                                        
+  TODAY           MM            MM      MM  MM     MM       MM       
+  MONTH TO DATE    0.0                      MM     MM        0.0     
+  SINCE SEP 1      0.0                      MM     MM        0.0     
+  SINCE JUL 1      0.0                      MM     MM        0.0     
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY            0                         2     -2        0       
+  MONTH TO DATE    0                         6     -6        0       
+  SINCE SEP 1      0                        19    -19        1       
+  SINCE JUL 1      0                        19    -19        1       
+                                                                     
+ COOLING                                                             
+  TODAY            8                         3      5        6       
+  MONTH TO DATE   22                         9     13       14       
+  SINCE SEP 1    333                       237     96      253       
+  SINCE JAN 1   1725                      1617    108     1515       
+..................................................................
+
+
+WIND (MPH)                                                           
+  RESULTANT WIND SPEED   4   RESULTANT WIND DIRECTION   S (170)      
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION    NW (300)      
+  HIGHEST GUST SPEED    18   HIGHEST GUST DIRECTION    NW (300)      
+  AVERAGE WIND SPEED     5.1                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.7                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED TODAY.                            
+  THUNDERSTORM                                                       
+  HEAVY RAIN                                                         
+  RAIN                                                               
+  LIGHT RAIN                                                         
+  FOG                                                                
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    93           800 AM                                     
+ LOWEST     67           300 PM                                     
+ AVERAGE    80                                                       
+
+..........................................................
+
+                                                                     
+THE PEACHTREE CITY CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   78        MM        MM                    
+ MINIMUM TEMPERATURE (F)   53        MM        MM                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+OCTOBER  3 2014.......SUNRISE   734 AM EDT   SUNSET   720 PM EDT   
+OCTOBER  4 2014.......SUNRISE   735 AM EDT   SUNSET   719 PM EDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

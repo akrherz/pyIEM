@@ -16,6 +16,11 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
     
+    def test_141003_missing(self):
+        """ We are missing some data! """
+        prod = cliparser(get_file("CLIFFC.txt"))
+        self.assertEqual(prod.data['temperature_maximum_normal'], 78)
+    
     def test_141003_alaska(self):
         """ Some alaska data was not getting processed"""
         prod = cliparser(get_file("CLIBET.txt"))

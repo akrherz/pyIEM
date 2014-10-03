@@ -92,6 +92,12 @@ def parse_precipitation(lines, data):
             if len(numbers) == 4:
                 data['precip_dec1_normal'] = float(numbers[1])
 
+def no99(val):
+    """ Giveme int val of null! """
+    if val == '-99':
+        return None
+    return int(val)
+
 def parse_temperature(lines, data):
     """ Here we parse a temperature section
 WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
@@ -105,16 +111,16 @@ TEMPERATURE (F)
   AVERAGE         76                        76      0       84
     """
     for linenum, line in enumerate(lines):
-        numbers = re.findall("\-?\d+", line)
+        numbers = re.findall("\-?\d+", line.replace(" MM ", " -99 "))
         if line.startswith("MAXIMUM"):
-            data['temperature_maximum'] = float(numbers[0])
+            data['temperature_maximum'] = no99(numbers[0])
             tokens = re.findall("([0-9]{3,4} [AP]M)", line)
             if len(tokens) == 1:
                 data['temperature_maximum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
-                data['temperature_maximum_record'] = int(numbers[2])
-                data['temperature_maximum_record_years'] = [int(numbers[3]),]
-                data['temperature_maximum_normal'] = int(numbers[4])
+                data['temperature_maximum_record'] = no99(numbers[2])
+                data['temperature_maximum_record_years'] = [no99(numbers[3]),]
+                data['temperature_maximum_normal'] = no99(numbers[4])
                 # Check next line(s) for more years
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
@@ -122,14 +128,14 @@ TEMPERATURE (F)
                                                     int(lines[linenum+1]))
                     linenum += 1
         if line.startswith("MINIMUM"):
-            data['temperature_minimum'] = float(numbers[0])
+            data['temperature_minimum'] = no99(numbers[0])
             tokens = re.findall("([0-9]{3,4} [AP]M)", line)
             if len(tokens) == 1:
                 data['temperature_minimum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
-                data['temperature_minimum_record'] = int(numbers[2])
-                data['temperature_minimum_record_years'] = [int(numbers[3]),]
-                data['temperature_minimum_normal'] = int(numbers[4])
+                data['temperature_minimum_record'] = no99(numbers[2])
+                data['temperature_minimum_record_years'] = [no99(numbers[3]),]
+                data['temperature_minimum_normal'] = no99(numbers[4])
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
                     data['temperature_minimum_record_years'].append(
