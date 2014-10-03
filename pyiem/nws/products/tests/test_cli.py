@@ -16,6 +16,12 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
     
+    def test_141003_alaska(self):
+        """ Some alaska data was not getting processed"""
+        prod = cliparser(get_file("CLIBET.txt"))
+        self.assertEqual(prod.data['temperature_maximum'], 17)
+        self.assertEqual(prod.data['snow_jul1'], 14.4)
+    
     def test_141002_houston(self):
         """ See what we do with this invalid product """
         self.assertRaises(CLIException, cliparser, get_file('CLIHOU.txt'))

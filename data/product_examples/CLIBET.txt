@@ -1,0 +1,95 @@
+733 
+CDAK48 PABE 021251
+CLIBET
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE BETHEL, AK
+351 AM AKST THU JAN 2 2014
+
+...................................
+...THE BETHEL AP CLIMATE SUMMARY FOR JANUARY 1 2014... 
+
+CLIMATE NORMAL PERIOD  1981 TO  2010 
+CLIMATE RECORD PERIOD  1948 TO  2014 
+
+WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST 
+               VALUE    (LST)   VALUE       VALUE  FROM      YEAR 
+                                                   NORMAL 
+................................................................... 
+TEMPERATURE 
+YESTERDAY 
+ MAXIMUM            17  1159 PM    41  1968     13       4     35 
+ MINIMUM            11  0922 AM   -44  1949      1      10     21 
+ AVERAGE            14                           7       7     28 
+
+PRECIPITATION 
+(INCHES) 
+ YESTERDAY        0.03           0.35  1993   0.03    0.00   0.00 
+ MONTH TO DATE    0.03                        0.03    0.00   0.00 
+ SINCE DEC 1      2.09                        1.15    0.94   1.10 
+ SINCE JAN 1      0.03                        0.03    0.00   0.00 
+
+SNOWFALL 
+(INCHES) 
+ YESTERDAY         0.2            4.1  1955    0.4    -0.2    0.0 
+ MONTH TO DATE     0.2                         0.4    -0.2    0.0 
+ SINCE DEC 1       7.5                        11.8    -4.3   11.5 
+ SINCE JUL 1      14.4                        29.7   -15.3   12.7
+ SNOW DEPTH (IN)     3                                         11 
+
+DEGREE DAYS 
+ HEATING 
+  YESTERDAY         51                          58      -7     37 
+  MONTH TO DATE     51                          58      -7     37 
+  SINCE DEC 1     1595                        1752    -157   1918 
+  SINCE JUL 1     4939                        5482    -543   5995
+
+ COOLING 
+  YESTERDAY          0                           0       0      0 
+  MONTH TO DATE      0                           0       0      0 
+  SINCE DEC 1        0                           0       0      0 
+  SINCE JAN 1        0                           0       0      0 
+................................................................... 
+
+WIND (MPH) 
+ HIGHEST WIND SPEED    23     HIGHEST WIND DIRECTION     40      
+ HIGHEST GUST SPEED    29     HIGHEST GUST DIRECTION     40 
+ AVERAGE WIND SPEED  10.5 
+
+SKY COVER
+  POSSIBLE SUNSHINE    MM          AVERAGE SKY COVER     MM
+ 
+WEATHER CONDITIONS 
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY. 
+  FOG
+SNOW
+ 
+
+RELATIVE HUMIDITY
+ HIGHEST RH     MM PERCENT       MM
+ LOWEST  RH     MM PERCENT       MM
+ AVERAGE RH     MM PERCENT       MM
+................................................................... 
+
+THE BETHEL CLIMATE NORMALS FOR TODAY 
+                           NORMAL    RECORD   YEAR 
+ MAXIMUM TEMPERATURE (F)     13        38     1995 
+ MINIMUM TEMPERATURE (F)      1       -41     1949 
+
+SUNRISE AND SUNSET 
+ JAN 2 2014..........SUNRISE 10:57 AM      SUNSET  4:48 PM   
+ JAN 3 2014..........SUNRISE 10:56 AM      SUNSET  4:49 PM   
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD HAS BEEN SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE OF PRECIPITATION.
+
+&&
+-------------------------------------------------------------------
+
+AMOUNT OF DAYLIGHT TODAY  (HOUR:MIN)........5 HOURS 51 MINUTES
+GAIN/LOSS SINCE YESTERDAY (HOUR:MIN:SEC)....+0:02:12
+
+$$
+BDW JAN 14

@@ -6,7 +6,7 @@ import datetime
 
 from pyiem.nws.product import TextProduct
 
-DATE_RE = re.compile(r"CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})")
+HEADLINE_RE = re.compile(r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})\.\.\.")
 
 class CLIException(Exception):
     """ Exception """
@@ -146,11 +146,12 @@ class CLIProduct( TextProduct ):
         TextProduct.__init__(self, text)
         self.data = None
         self.cli_valid = None
+        self.cli_station = None
         if self.wmo[:2] != 'CD':
             print 'Product %s skipped due to wrong header' % (
                                                     self.get_product_id(),)
             return
-        self.cli_valid = self.parse_cli_valid()
+        self.parse_cli_headline()
         # If we failed above
         if self.cli_valid is not None:
             self.data = self.parse_data()
@@ -158,11 +159,9 @@ class CLIProduct( TextProduct ):
     def parse_data(self):
         """ Actually do the parsing of this silly format """
         data = {}
-        pos = self.unixtext.find("TEMPERATURE (F)")
+        pos = self.unixtext.find("TEMPERATURE")
         if pos == -1:
-            pos = self.unixtext.find("TEMPERATURE")
-            if pos == -1:
-                raise CLIException('Failed to find TEMPERATURE (F), aborting')
+            raise CLIException('Failed to find TEMPERATURE, aborting')
 
         # Strip extraneous spaces
         meat = "\n".join([l.strip() for l in self.unixtext[pos:].split("\n")])
@@ -178,16 +177,17 @@ class CLIProduct( TextProduct ):
 
         return data
 
-    def parse_cli_valid(self):
+    def parse_cli_headline(self):
         """ Figure out when this product is valid for """
-        tokens = DATE_RE.findall( self.unixtext.replace("\n", " ") )
+        tokens = HEADLINE_RE.findall( self.unixtext.replace("\n", " ") )
         if len(tokens) == 1:
-            if len(tokens[0].split()[0]) == 3:
+            if len(tokens[0][1].split()[0]) == 3:
                 myfmt = '%b %d %Y'
             else:
                 myfmt = '%B %d %Y'
-            return datetime.datetime.strptime(tokens[0], myfmt)
-        if len(tokens) > 1:
+            self.cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt)
+            self.cli_station = (tokens[0][0]).strip()  
+        elif len(tokens) > 1:
             raise CLIException("Found two headers in product, unsupported!")
         else:
             # Known sources of bad data...
