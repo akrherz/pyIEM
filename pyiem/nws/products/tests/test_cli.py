@@ -53,6 +53,11 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data['temperature_minimum_time'], "431 AM")
         self.assertEqual(prod.data['precip_today'], 0.0001)
         
+        j = prod.get_jabbers("http://localhost")
+        self.assertEqual(j[0][0], ('JUNEAU Jun 30 Climate Report: High: 75 '
+                                   +'Low: 52 Precip: Trace Snow: M '
+                    +'http://localhostpid=201307010036-PAJK-CDAK47-CLIJNU'))
+        
         prod = cliparser(get_file('CLIDSM.txt'))
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))
         self.assertEqual(prod.data['temperature_maximum'], 89)

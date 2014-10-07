@@ -190,10 +190,13 @@ class CLIProduct( TextProduct ):
                     self.data.get('precip_today', 'M'),
                     self.data.get('snow_today', 'M')
                     )
-        return [mess, htmlmess, {
+        res = []
+        res.append([mess.replace("0.0001", "Trace"), 
+                    htmlmess.replace("0.0001", "Trace"), {
                         'channels': self.afos,
                         'twitter': tweet
-                }]
+                }])
+        return res
 
     def parse_data(self):
         """ Actually do the parsing of this silly format """
