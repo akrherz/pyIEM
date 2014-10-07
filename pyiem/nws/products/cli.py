@@ -119,7 +119,8 @@ TEMPERATURE (F)
                 data['temperature_maximum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
                 data['temperature_maximum_record'] = no99(numbers[2])
-                data['temperature_maximum_record_years'] = [no99(numbers[3]),]
+                if int(numbers[3]) > 0:
+                    data['temperature_maximum_record_years'] = [int(numbers[3]),]
                 data['temperature_maximum_normal'] = no99(numbers[4])
                 # Check next line(s) for more years
                 while ((linenum+1)<len(lines) and 
@@ -134,7 +135,8 @@ TEMPERATURE (F)
                 data['temperature_minimum_time'] = tokens[0]
             if len(numbers) == 7: # we know this
                 data['temperature_minimum_record'] = no99(numbers[2])
-                data['temperature_minimum_record_years'] = [no99(numbers[3]),]
+                if int(numbers[3]) > 0:
+                    data['temperature_minimum_record_years'] = [int(numbers[3]),]
                 data['temperature_minimum_normal'] = no99(numbers[4])
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
