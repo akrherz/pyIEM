@@ -163,7 +163,38 @@ class CLIProduct( TextProduct ):
         # If we failed above
         if self.cli_valid is not None:
             self.data = self.parse_data()
+
+    def get_jabbers(self, uri, _=None):
+        """ Override the jabber message formatter """
+        url = "%spid=%s" % (uri, self.get_product_id())
         
+        mess = "%s %s Climate Report: High: %s Low: %s Precip: %s Snow: %s %s" % (
+                    self.cli_station, self.cli_valid.strftime("%b %-d"),
+                    self.data.get('temperature_maximum', 'M'),
+                    self.data.get('temperature_minimum', 'M'),
+                    self.data.get('precip_today', 'M'),
+                    self.data.get('snow_today', 'M'), url
+                    )
+        htmlmess = ("%s <a href=\"%s\">%s Climate Report</a>: High: %s "
+                    +"Low: %s Precip: %s Snow: %s") % (
+                    self.cli_station, url, self.cli_valid.strftime("%b %-d"),
+                    self.data.get('temperature_maximum', 'M'),
+                    self.data.get('temperature_minimum', 'M'),
+                    self.data.get('precip_today', 'M'),
+                    self.data.get('snow_today', 'M')
+                    )
+        tweet = "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s" % (
+                    self.cli_station, self.cli_valid.strftime("%b %-d"),
+                    self.data.get('temperature_maximum', 'M'),
+                    self.data.get('temperature_minimum', 'M'),
+                    self.data.get('precip_today', 'M'),
+                    self.data.get('snow_today', 'M')
+                    )
+        return [mess, htmlmess, {
+                        'channels': self.afos,
+                        'twitter': tweet
+                }]
+
     def parse_data(self):
         """ Actually do the parsing of this silly format """
         data = {}
