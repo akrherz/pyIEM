@@ -1,0 +1,103 @@
+342 
+CDUS43 KDMX 122227
+CLIDSM
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DES MOINES IA                
+526 PM CDT SUN OCT 12 2014
+
+
+................................... 
+
+...THE DES MOINES IA CLIMATE SUMMARY FOR OCTOBER 12 2014...
+VALID TODAY AS OF 0500 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1878 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         56   1204 PM  91    1899  65     -9       68       
+  MINIMUM         43    322 AM  24    1909  44     -1       46       
+  AVERAGE         50                        54     -4       57      
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            T             1.96 1997   0.09  -0.09     0.00    
+  MONTH TO DATE    1.83                      1.03   0.80     2.55    
+  SINCE SEP 1      6.06                      4.08   1.98     4.91    
+  SINCE JAN 1     38.43                     30.80   7.63    28.46    
+                                                                     
+SNOWFALL (IN)                                                        
+  TODAY            0.0           T    2009   0.0    0.0      0.0     
+                                      1986                          
+  MONTH TO DATE    0.0                       0.0    0.0      0.0     
+  SINCE SEP 1      0.0                       0.0    0.0      0.0     
+  SINCE JUL 1      0.0                       0.0    0.0      0.0     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY           15                        11      4        8       
+  MONTH TO DATE  121                       110     11       40       
+  SINCE SEP 1    199                       204     -5       64       
+  SINCE JUL 1    201                       210     -9       64       
+                                                                     
+ COOLING                                                             
+  TODAY            0                         0      0        0       
+  MONTH TO DATE    1                        11    -10       31       
+  SINCE SEP 1    106                       124    -18      252       
+  SINCE JAN 1   1075                      1063     12     1353       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    14   HIGHEST WIND DIRECTION    SE (150)      
+  HIGHEST GUST SPEED    16   HIGHEST GUST DIRECTION    SE (130)      
+  AVERAGE WIND SPEED     8.4                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.7                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED TODAY.                            
+  FOG                                                                
+  HAZE                                                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    83           600 AM                                     
+ LOWEST     71          1200 AM                                     
+ AVERAGE    77                                                       
+
+..........................................................
+
+                                                                     
+THE DES MOINES IA CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   64        88      1975                    
+ MINIMUM TEMPERATURE (F)   44        20      1917                    
+                                             1909                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+OCTOBER 12 2014.......SUNRISE   723 AM CDT   SUNSET   638 PM CDT   
+OCTOBER 13 2014.......SUNRISE   724 AM CDT   SUNSET   637 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

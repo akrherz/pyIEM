@@ -16,6 +16,15 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
     
+    def test_141013_tracetweet(self):
+        """ Make sure we convert trace amounts in tweet to trace! """
+        prod = cliparser(get_file('CLIDSM2.txt'))
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][2]['twitter'], 
+                          ('DES MOINES IA Oct 12 Climate: Hi: 56 '
+                                    +'Lo: 43 Precip: Trace Snow: 0.0'
+                    +' http://localhost?pid=201410122226-KDMX-CDUS43-CLIDSM'))
+
     def test_141003_missing(self):
         """ We are missing some data! """
         prod = cliparser(get_file("CLIFFC.txt"))
@@ -56,7 +65,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers("http://localhost")
         self.assertEqual(j[0][0], ('JUNEAU Jun 30 Climate Report: High: 75 '
                                    +'Low: 52 Precip: Trace Snow: M '
-                    +'http://localhostpid=201307010036-PAJK-CDAK47-CLIJNU'))
+                    +'http://localhost?pid=201307010036-PAJK-CDAK47-CLIJNU'))
         
         prod = cliparser(get_file('CLIDSM.txt'))
         self.assertEqual(prod.cli_valid, datetime.datetime(2013,8,1))

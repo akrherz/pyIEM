@@ -20,6 +20,12 @@ def trace(val):
         return 0.0001
     return float(val)
 
+def trace_r(val):
+    """ Convert our value back into meaningful string """
+    if val == 0.0001:
+        return 'Trace'
+    return val
+
 def parse_snowfall(lines, data):
     """ Parse the snowfall data 
 WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
@@ -166,29 +172,29 @@ class CLIProduct( TextProduct ):
 
     def get_jabbers(self, uri, _=None):
         """ Override the jabber message formatter """
-        url = "%spid=%s" % (uri, self.get_product_id())
+        url = "%s?pid=%s" % (uri, self.get_product_id())
         
         mess = "%s %s Climate Report: High: %s Low: %s Precip: %s Snow: %s %s" % (
                     self.cli_station, self.cli_valid.strftime("%b %-d"),
                     self.data.get('temperature_maximum', 'M'),
                     self.data.get('temperature_minimum', 'M'),
-                    self.data.get('precip_today', 'M'),
-                    self.data.get('snow_today', 'M'), url
+                    trace_r(self.data.get('precip_today', 'M')),
+                    trace_r(self.data.get('snow_today', 'M')), url
                     )
         htmlmess = ("%s <a href=\"%s\">%s Climate Report</a>: High: %s "
                     +"Low: %s Precip: %s Snow: %s") % (
                     self.cli_station, url, self.cli_valid.strftime("%b %-d"),
                     self.data.get('temperature_maximum', 'M'),
                     self.data.get('temperature_minimum', 'M'),
-                    self.data.get('precip_today', 'M'),
-                    self.data.get('snow_today', 'M')
+                    trace_r(self.data.get('precip_today', 'M')),
+                    trace_r(self.data.get('snow_today', 'M'))
                     )
-        tweet = "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s" % (
+        tweet = "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s" % (
                     self.cli_station, self.cli_valid.strftime("%b %-d"),
                     self.data.get('temperature_maximum', 'M'),
                     self.data.get('temperature_minimum', 'M'),
-                    self.data.get('precip_today', 'M'),
-                    self.data.get('snow_today', 'M')
+                    trace_r(self.data.get('precip_today', 'M')),
+                    trace_r(self.data.get('snow_today', 'M')), url
                     )
         res = []
         res.append([mess.replace("0.0001", "Trace"), 
