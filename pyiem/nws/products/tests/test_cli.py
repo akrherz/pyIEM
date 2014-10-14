@@ -15,7 +15,13 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
-    
+
+    def test_141013_missing(self):
+        """ See why Esterville was not going to the database! """
+        prod = cliparser(get_file('CLIEST.txt'))
+        self.assertEqual(prod.data['temperature_maximum'], 62)
+        self.assertEqual(prod.data['precip_month'], 1.22)
+
     def test_141013_tracetweet(self):
         """ Make sure we convert trace amounts in tweet to trace! """
         prod = cliparser(get_file('CLIDSM2.txt'))

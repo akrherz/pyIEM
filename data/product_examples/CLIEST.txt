@@ -1,0 +1,90 @@
+620 
+CDUS43 KDMX 130647 RRA
+CLIEST
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DES MOINES IA                               
+143 AM CDT MON OCT 13 2014
+
+
+................................... 
+
+...THE ESTHERVILLE IA CLIMATE SUMMARY FOR OCTOBER 12 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 9999 TO 9999
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         62    246 PM  MM      MM  62      0       64       
+  MINIMUM         33    221 AM  MM      MM  37     -4       34       
+  AVERAGE         48                        50     -2       49      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00                      0.08  -0.08             
+  MONTH TO DATE    1.22                      1.13   0.09             
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       17                        16      1       16       
+  MONTH TO DATE  208                       163     45       77       
+  SINCE SEP 1    390                       339     51      180       
+  SINCE JUL 1    422                       371     51      225       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                         4     -4        0       
+  SINCE SEP 1     26                        51    -25      118       
+  SINCE JAN 1    435                       591   -156      712       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    24   HIGHEST WIND DIRECTION    SE (150)      
+  HIGHEST GUST SPEED    31   HIGHEST GUST DIRECTION     S (160)      
+  AVERAGE WIND SPEED    13.3                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.2                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  FOG                                                                
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST   100           600 AM                                     
+ LOWEST     46           100 PM                                     
+ AVERAGE    73                                                       
+
+..........................................................
+
+                                                                     
+THE ESTHERVILLE IA CLIMATE NORMALS FOR TODAY
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   61                                        
+ MINIMUM TEMPERATURE (F)   37                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+OCTOBER 13 2014.......SUNRISE   731 AM CDT   SUNSET   639 PM CDT   
+OCTOBER 14 2014.......SUNRISE   732 AM CDT   SUNSET   637 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
