@@ -21,6 +21,17 @@ class basetype(object):
         else:
             self._value = value
 
+class mixingratio(basetype):
+    known_units = ["KG/KG", ]
+    
+    def value(self, units):
+        """ Convert the value into the provided units """
+        if units.upper() not in mixingratio.known_units:
+            raise UnitsError("unrecognized mixingratio unit: %s known: %s" % (
+                                units, mixingratio.known_units))
+        if units.upper() == self._units:
+            return self._value   
+
 class distance(basetype):
     """ Distance """
     known_units = [ "SM", "MI", "M", "KM", "FT" ]
@@ -143,7 +154,7 @@ class direction(basetype):
 
 class pressure(basetype):
     """ Pressure """
-    known_units = ['MB', 'HPA', 'IN']
+    known_units = ['MB', 'HPA', 'IN', 'PA']
 
     def value(self, units):
         """ Convert to a value in the given units """
@@ -159,9 +170,11 @@ class pressure(basetype):
         else:
             mb_value = self._value
         # Now convert
-        if units in ["MB","HPA"]:
+        if units.upper() in ["MB","HPA"]:
             return mb_value
-        elif units == "IN":
+        elif units.upper() == 'PA':
+            return mb_value * 100.0
+        elif units.upper() == "IN":
             return mb_value / 33.86398
 
 

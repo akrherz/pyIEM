@@ -74,7 +74,18 @@ def heatindex(temperature, polyarg):
              +((8.43296e-10)*t**2*rh**3)
              -((4.81975e-11)*t**3*rh**3))
     return dt.temperature(hdx, 'F')
-    
+
+def dewpoint_from_pq(pressure, mixingratio):
+    """
+    Compute the Dew Point given a Pressure and Mixing Ratio
+    """
+    p = pressure.value("hPa")
+    mr = mixingratio.value("kg/kg")
+    e = (p * mr)/(0.622 + mr)
+    b = 26.66082 - np.log(e)
+    t = (b - (b*b - 223.1986)**.5)/0.0182758048
+    return dt.temperature(t, 'K')
+
 def dewpoint(temperature, relhumid):
     """
     Compute Dew Point given a temperature and RH%

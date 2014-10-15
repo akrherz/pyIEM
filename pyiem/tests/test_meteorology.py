@@ -4,6 +4,13 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_dewpoint_from_pq(self):
+        """ See if we can produce dew point from pressure and mixing ratio """
+        p = datatypes.pressure(1013.25, "MB")
+        mr = datatypes.mixingratio(0.012, "kg/kg")
+        dwpk = meteorology.dewpoint_from_pq(p, mr)
+        self.assertAlmostEqual(dwpk.value("C"), 16.84, 2)
+
     def test_dewpoint(self):
         """ test out computation of dew point """
         for t0,r0,a0 in [[80,80,73.42], [80,20,35.87]]:
