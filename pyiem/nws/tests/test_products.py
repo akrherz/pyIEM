@@ -32,6 +32,18 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141016_tsuwca(self):
+        """ Got a null vtec timestamp with this product """
+        utcnow = utc(2014, 10, 16, 17, 10)
+        prod = vtecparser( get_file('TSUWCA.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('AAQ issues Tsunami Warning for '
+            +'((ORZ001)), ((ORZ002)), ((ORZ021)), ((ORZ022)) [OR] and '
+            +'((WAZ001)), ((WAZ021)), ((WAZ503)), ((WAZ506)), ((WAZ507)), '
+            +'((WAZ508)), ((WAZ509)), ((WAZ510)), ((WAZ511)), ((WAZ514)), '
+            +'((WAZ515)), ((WAZ516)), ((WAZ517)) [WA] till 10:30 AM PDT '
+            +'http://localhost#2014-T-NEW-PAAQ-TS-W-0016'))
+    
     def test_tcp(self):
         """ See what we can do with TCP """
         prod = parser( get_file('TCPAT1.txt') )
