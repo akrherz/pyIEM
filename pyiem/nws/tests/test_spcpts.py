@@ -14,6 +14,15 @@ def get_file(name):
 
 class TestObservation(unittest.TestCase):
     
+    def test_141022_newcats(self):
+        """ Make sure we can parse the new categories """
+        tp = product.TextProduct(get_file('PTSDY1_new.txt'))
+        spc = spcpts.SPCPTS(tp)
+        outlook = spc.get_outlook('CATEGORICAL', 'ENH')
+        self.assertAlmostEqual(outlook.geometry.area, 13.02, 2)
+        outlook = spc.get_outlook('CATEGORICAL', 'MRGL')
+        self.assertAlmostEqual(outlook.geometry.area, 47.01, 2)
+        
     def test_140709_nogeoms(self):
         """ Make sure we don't have another failure with geom parsing """
         tp = product.TextProduct( get_file('PTSDY3_nogeoms.txt') )
