@@ -1,0 +1,101 @@
+687
+CDUS42 KMHX 181330
+CLIEWN
+
+
+CLIMATE REPORT (CORRECTION)
+NATIONAL WEATHER SERVICE NEWPORT/MOREHEAD CITY NC
+928 AM EDT SAT OCT 18 2014
+
+
+...................................
+
+...THE NEW BERN NC CLIMATE SUMMARY FOR SEPTEMBER 28 2014 CORRECTION...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1948 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR
+                                                  NORMAL
+..................................................................
+TEMPERATURE (F)
+ YESTERDAY
+  MAXIMUM         83    213 PM  90    1954  80      3       79
+  MINIMUM         62    617 AM  49    1962  61      1       60
+  AVERAGE         73                        70      3       70
+
+PRECIPITATION (IN)
+  YESTERDAY        0.00*         1.03 1970   0.18  -0.18     0.00
+  MONTH TO DATE    7.56                      5.54   2.02     3.25
+  SINCE SEP 1      7.56                      5.54   2.02     3.25
+  SINCE JAN 1     44.57                     42.34   2.23    32.62
+
+SNOWFALL (IN)
+  YESTERDAY        0.0
+  MONTH TO DATE    0.0
+  SINCE NOV 1     14.0
+  SINCE JUL 1      0.0
+  SNOW DEPTH       0
+
+DEGREE DAYS
+ HEATING
+  YESTERDAY        0                         1     -1        0
+  MONTH TO DATE    0                         3     -3        2
+  SINCE SEP 1      0                         3     -3        2
+  SINCE JUL 1      0                         3     -3        2
+
+ COOLING
+  YESTERDAY        8                         6      2        5
+  MONTH TO DATE  338                       262     76      261
+  SINCE SEP 1    338                       262     76      261
+  SINCE JAN 1   2049                      1791    258     1878
+..................................................................
+
+
+WIND (MPH)
+  HIGHEST WIND SPEED     9   HIGHEST WIND DIRECTION    NE (50)
+  HIGHEST GUST SPEED    12   HIGHEST GUST DIRECTION    NE (50)
+  AVERAGE WIND SPEED     2.8
+
+
+SKY COVER
+  POSSIBLE SUNSHINE  MM
+  AVERAGE SKY COVER 0.1
+
+
+WEATHER CONDITIONS
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.
+  FOG
+  HAZE
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    93           200 AM
+ LOWEST     51           200 PM
+ AVERAGE    72
+
+..........................................................
+
+
+THE NEW BERN NC CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR
+ MAXIMUM TEMPERATURE (F)   80        89      1974
+ MINIMUM TEMPERATURE (F)   60        48      1970
+
+
+SUNRISE AND SUNSET
+SEPTEMBER 29 2014.....SUNRISE   701 AM EDT   SUNSET   655 PM EDT
+SEPTEMBER 30 2014.....SUNRISE   702 AM EDT   SUNSET   654 PM EDT
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+NOTES: REMOVED FALSE TIP. PRECIPITATION IS 0.00.
+
+
+$$

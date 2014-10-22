@@ -15,6 +15,10 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_141022_correction(self):
+        """ See what happens if we have a valid(?) product correction """
+        prod = cliparser(get_file('CLIEWN.txt'))
+        self.assertEqual(prod.data['temperature_maximum'], 83)
 
     def test_141013_missing(self):
         """ See why Esterville was not going to the database! """

@@ -6,7 +6,7 @@ import datetime
 
 from pyiem.nws.product import TextProduct
 
-HEADLINE_RE = re.compile(r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})\.\.\.")
+HEADLINE_RE = re.compile(r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\.")
 
 class CLIException(Exception):
     """ Exception """
