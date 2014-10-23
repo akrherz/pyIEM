@@ -122,7 +122,7 @@ class VTECProduct(TextProduct):
                 txn.execute("""
                 SELECT issue, expire, updated from """+ warning_table +"""
                 WHERE ugc = %s and eventid = %s and significance = %s and
-                wfo = %s and phenomena = %s and status != 'CAN'
+                wfo = %s and phenomena = %s and status not in ('CAN', 'UPG')
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
                       vtec.phenomena))
                 if txn.rowcount > 0:
@@ -211,7 +211,7 @@ class VTECProduct(TextProduct):
                    || %s || '__' , expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s 
-            and status not in ('EXP', 'CAN')
+            and status not in ('EXP', 'CAN', 'UPG')
             """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                   vtec.significance, vtec.phenomena ))
             if txn.rowcount != len(segment.ugcs):

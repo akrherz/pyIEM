@@ -404,6 +404,13 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser( get_file('WSWDMX/WSW_00.txt') , ugc_provider=ugc_provider)
         self.assertEqual(prod.segments[0].get_affected_wfos()[0], 'DMX')
     
+    def test_141023_upgrade(self):
+        """ See that we can handle the upgrade and downgrade dance """
+        for i in range(1,8):
+            prod = vtecparser(get_file('NPWBOX/NPW_%02i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+    
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
         prod = vtecparser( get_file('WSWDMX/WSW_00.txt') )
