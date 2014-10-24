@@ -1,0 +1,102 @@
+196 
+CDAK49 PAOM 240904
+CLIOME
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE NOME, AK
+105 AM AKDT FRI OCT 24 2014
+
+...................................
+...THE NOME WSO AP CLIMATE SUMMARY FOR OCTOBER 23 2014... 
+
+CLIMATE NORMAL PERIOD  1981 TO  2010 
+CLIMATE RECORD PERIOD  1906 TO  2014 
+
+WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST 
+               VALUE    (LST)   VALUE       VALUE  FROM      YEAR 
+                                                   NORMAL 
+................................................................... 
+TEMPERATURE 
+YESTERDAY 
+ MAXIMUM            33  0714 PM    46  1926     31       2     37 
+ MINIMUM            19  1149 PM     2  1967     20      -1     29 
+ AVERAGE            26                          26       0     33 
+
+PRECIPITATION 
+(INCHES) 
+ YESTERDAY        0.35           0.75  1914   0.04    0.31   0.00 
+ MONTH TO DATE    0.35                        1.26   -0.91   3.00 
+ SINCE SEP 1      2.93                        3.71   -0.78   4.98 
+ SINCE JAN 1     11.95                       14.16   -2.21  18.09 
+
+SNOWFALL 
+(INCHES) 
+ YESTERDAY         3.6R           2.3  1978    0.2     3.4    0.0 
+ MONTH TO DATE     3.6                         2.7     0.9    0.2 
+ SINCE SEP 1       3.6                         3.3     0.3    1.3 
+ SINCE JUL 1       3.6                         3.3     0.3    1.3
+ SNOW DEPTH (IN)     3                                          0 
+
+DEGREE DAYS 
+ HEATING 
+  YESTERDAY         39                          40      -1     32 
+  MONTH TO DATE    797                         794       3    652 
+  SINCE SEP 1     1380                        1460     -80   1398 
+  SINCE JUL 1     2083                        2324    -241   2172
+
+ COOLING 
+  YESTERDAY          0                           0       0      0 
+  MONTH TO DATE      0                           0       0      0 
+  SINCE SEP 1        0                           0       0      0 
+  SINCE JAN 1        3                           0       3      7 
+................................................................... 
+
+WIND (MPH) 
+ HIGHEST WIND SPEED    23     HIGHEST WIND DIRECTION    120      
+ HIGHEST GUST SPEED    29     HIGHEST GUST DIRECTION    120 
+ AVERAGE WIND SPEED  10.3 
+
+SKY COVER
+  POSSIBLE SUNSHINE    MM          AVERAGE SKY COVER     MM
+ 
+WEATHER CONDITIONS 
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY. 
+  FOG
+SNOW
+ 
+
+RELATIVE HUMIDITY
+ HIGHEST RH     MM PERCENT       MM
+ LOWEST  RH     MM PERCENT       MM
+ AVERAGE RH     MM PERCENT       MM
+................................................................... 
+
+THE NOME CLIMATE NORMALS FOR TODAY 
+                           NORMAL    RECORD   YEAR 
+ MAXIMUM TEMPERATURE (F)     31        49     1926 
+ MINIMUM TEMPERATURE (F)     19         1     1996 
+
+SUNRISE AND SUNSET 
+ OCT 24 2014..........SUNRISE 10:23 AM      SUNSET  7:09 PM   
+ OCT 25 2014..........SUNRISE 10:26 AM      SUNSET  7:05 PM   
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD HAS BEEN SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE OF PRECIPITATION.
+
+&&
+-------------------------------------------------------------------
+
+AMOUNT OF DAYLIGHT TODAY  (HOUR:MIN)........8 HOURS 46 MINUTES
+GAIN/LOSS SINCE YESTERDAY (HOUR:MIN:SEC)....-0:06:37
+
+TIDE INFORMATION FOR FRIDAY OCTOBER 24 2014
+ 5:36 AM HIGH 1.2 FT
+12:05 PM LOW  0.3 FT
+ 6:40 PM HIGH 1.2 FT
+
+$$
+RWM OCT 14
+
+
