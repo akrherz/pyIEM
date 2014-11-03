@@ -41,14 +41,14 @@ SNOWFALL (IN)
     for linenum, line in enumerate(lines):
         line = (line+" ").replace(" T ", "0.0001")
         tokens = line.split()
-        numbers = re.findall("(\d\.?\d*)+", line)
+        numbers = re.findall("[-+]?\d*\.\d+|\d+", line)
         if len(numbers) == 0:
             continue
         if line.startswith("YESTERDAY") or line.startswith("TODAY"):
             data['snow_today'] = trace(numbers[0])
             if len(tokens) == 7 and tokens[2] != 'MM' and tokens[3] != 'MM':
-                data['snow_today_record'] = trace(tokens[2])
-                data['snow_today_record_years'] = [int(tokens[3]),]
+                data['snow_today_record'] = float(numbers[1])
+                data['snow_today_record_years'] = [int(numbers[2]),]
                 # Check next line(s) for more years
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):

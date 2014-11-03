@@ -15,6 +15,11 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_141103_recordsnow(self):
+        """ Make sure we can deal with record snowfall, again... """
+        prod = cliparser(get_file('CLIBGR.txt'))
+        self.assertEqual(prod.data['snow_today'], 12.0)
+
     def test_141024_recordsnow(self):
         """ See that we can handle record snowfall """
         prod = cliparser(get_file('CLIOME.txt'))

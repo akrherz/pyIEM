@@ -1,0 +1,112 @@
+891 
+CDUS41 KCAR 030527
+CLIBGR
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE CARIBOU, ME                                 
+1227 AM EST MON NOV 3 2014
+
+
+................................... 
+
+...THE BANGOR ME CLIMATE SUMMARY FOR NOVEMBER 2 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1925 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         35    324 AM  67    1979  51    -16       64       
+                                      1927                          
+  MINIMUM         31    815 PM  17    1947  32     -1       40       
+  AVERAGE         33                        42     -9       52      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.59          1.75 1988   0.13   0.46      T      
+  MONTH TO DATE    0.79                      0.27   0.52     0.55    
+  SINCE SEP 1      8.53                      8.27   0.26     8.74    
+  SINCE JAN 1     36.27                     34.52   1.75    33.92    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY       12.0 R         0.5  1951   0.0             0.0     
+  MONTH TO DATE   12.0                       0.0             0.0     
+  SINCE SEP 1     12.0                       0.1             0.0     
+  SINCE JUL 1     12.0                       0.1             0.0     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       32                        23      9       13       
+  MONTH TO DATE   57                        46     11       17       
+  SINCE SEP 1    682                       809   -127      679       
+  SINCE JUL 1    703                       872   -169      711       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                         0      0        0       
+  SINCE SEP 1     49                        24     25       33       
+  SINCE JAN 1    363                       318     45      355       
+..................................................................
+
+
+WIND (MPH)                                                           
+  RESULTANT WIND SPEED  24   RESULTANT WIND DIRECTION   N (350)      
+  HIGHEST WIND SPEED    37   HIGHEST WIND DIRECTION     N (350)      
+  HIGHEST GUST SPEED    47   HIGHEST GUST DIRECTION     N (350)      
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.9                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  LIGHT RAIN                                                         
+  HEAVY SNOW                                                         
+  SNOW                                                               
+  LIGHT SNOW                                                         
+  FOG                                                                
+  FOG W/VISIBILITY <= 1/4 MILE                                       
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST   100                                                       
+ LOWEST     75                                                       
+ AVERAGE    88                                                       
+
+..........................................................
+
+                                                                     
+THE BANGOR ME CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   50        67      1990                    
+                                             1975                    
+                                             1927                    
+ MINIMUM TEMPERATURE (F)   32        19      2002                    
+                                             1965                    
+                                             1939                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+NOVEMBER  3 2014......SUNRISE   616 AM EST   SUNSET   421 PM EST   
+NOVEMBER  4 2014......SUNRISE   617 AM EST   SUNSET   420 PM EST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+
