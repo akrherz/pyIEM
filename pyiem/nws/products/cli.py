@@ -69,7 +69,8 @@ def parse_precipitation(lines, data):
     for linenum, line in enumerate(lines):
         # careful here as if T is only value, the trailing space is stripped
         line = (line+" ").replace(" T ", "0.0001")
-        numbers = re.findall("(\d\.?\d*)+", line)
+        numbers = re.findall("[-+]?\d*\.\d+|\d+", line)
+        print numbers
         if line.startswith("YESTERDAY") or line.startswith("TODAY"):
             if len(numbers) == 0:
                 continue
@@ -89,17 +90,21 @@ def parse_precipitation(lines, data):
             if len(numbers) == 4:
                 data['precip_month_normal'] = float(numbers[1])
         elif line.startswith("SINCE JAN 1"):
-            data['precip_jan1'] = float(numbers[0])
+            data['precip_jan1'] = float(numbers[1])
             if len(numbers) == 4:
-                data['precip_jan1_normal'] = float(numbers[1])
+                data['precip_jan1_normal'] = float(numbers[2])
         elif line.startswith("SINCE JUL 1"):
-            data['precip_jul1'] = float(numbers[0])
+            data['precip_jul1'] = float(numbers[1])
             if len(numbers) == 4:
-                data['precip_jul1_normal'] = float(numbers[1])
+                data['precip_jul1_normal'] = float(numbers[2])
+        elif line.startswith("SINCE JUN 1"):
+            data['precip_jun1'] = float(numbers[1])
+            if len(numbers) == 4:
+                data['precip_jun1_normal'] = float(numbers[2])
         elif line.startswith("SINCE DEC 1"):
-            data['precip_dec1'] = float(numbers[0])
+            data['precip_dec1'] = float(numbers[1])
             if len(numbers) == 4:
-                data['precip_dec1_normal'] = float(numbers[1])
+                data['precip_dec1_normal'] = float(numbers[2])
 
 def no99(val):
     """ Giveme int val of null! """

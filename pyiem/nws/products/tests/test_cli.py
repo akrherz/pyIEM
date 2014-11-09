@@ -94,6 +94,8 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data['temperature_minimum_record_years'][0], 
                          1898)
         self.assertEqual(prod.data['snow_today'], 0)
+        self.assertEqual(prod.data['precip_jun1'], 4.25)
+        self.assertEqual(prod.data['precip_jan1'], 22.56)
         
         prod = cliparser(get_file('CLINYC.txt'))
         self.assertEqual(prod.data['snow_today_record_years'][0], 1925)
