@@ -15,6 +15,11 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_141114_coopaux(self):
+        """ Product had aux COOP data, which confused ingest """
+        prod = cliparser(get_file('CLIEAR.txt'))
+        self.assertEqual(prod.data['precip_today'], 0)
+
     def test_141103_recordsnow(self):
         """ Make sure we can deal with record snowfall, again... """
         prod = cliparser(get_file('CLIBGR.txt'))

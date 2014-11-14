@@ -220,6 +220,9 @@ class CLIProduct( TextProduct ):
 
         # Strip extraneous spaces
         meat = "\n".join([l.strip() for l in self.unixtext[pos:].split("\n")])
+        # Don't look into aux data for things we should not be parsing
+        if meat.find("&&") > 0:
+            meat = meat[:meat.find("&&")]
         sections = meat.split("\n\n")
         for section in sections:
             lines = section.split("\n")

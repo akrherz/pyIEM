@@ -1,0 +1,109 @@
+015 
+CDUS43 KGID 132331
+CLIEAR
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE HASTINGS NE                  
+527 PM CST THU NOV 13 2014
+
+
+................................... 
+
+...THE KEARNEY CLIMATE SUMMARY FOR NOVEMBER 13 2014...
+VALID TODAY AS OF 0500 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1894 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE LAST                 
+                VALUE   (LST)  VALUE  FROM      YEAR                 
+                                      NORMAL                         
+......................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         25    255 PM  51    -26       59                   
+  MINIMUM          5    555 PM  26    -21       25                   
+  AVERAGE         15            38    -23       42                  
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.00                                              
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY           50            27     23       23                   
+  MONTH TO DATE  329           309     20      310                   
+  SINCE SEP 1    789           886    -97      770                   
+  SINCE JUL 1    796           903   -107      778                   
+                                                                     
+ COOLING                                                             
+  TODAY            0             0      0        0                   
+  MONTH TO DATE    0             0      0        0                   
+  SINCE SEP 1     75            93    -18      178                   
+  SINCE JAN 1    914           871     43     1094                   
+......................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION    NW (300)      
+  HIGHEST GUST SPEED    17   HIGHEST GUST DIRECTION    NW (310)      
+  AVERAGE WIND SPEED    10.2                                         
+
+                                                                     
+SKY COVER                                                            
+  AVERAGE SKY COVER 0.1                                              
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    83           700 AM                                     
+ LOWEST     35           300 PM                                     
+ AVERAGE    59                                                       
+
+..........................................................
+
+                                                                     
+THE KEARNEY CLIMATE NORMALS FOR TOMORROW
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   50                                        
+ MINIMUM TEMPERATURE (F)   26                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+NOVEMBER 13 2014......SUNRISE   721 AM CST   SUNSET   520 PM CST   
+NOVEMBER 14 2014......SUNRISE   722 AM CST   SUNSET   519 PM CST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+&&
+THE PRECIPITATION DATA SHOWN ABOVE IS RECORDED BY THE AUTOMATED 
+WEATHER OBSERVING SYSTEM AT THE KEARNEY AIRPORT. THE 
+PRECIPITATION IS DEPICTED FOR A CALENDAR DAY FROM MIDNIGHT TO 
+MIDNIGHT. SNOWFALL IS NOT RECORDED BY THAT SYSTEM.
+
+THE OFFICIAL PRECIPITATION...SNOWFALL...AND SNOW DEPTH 
+OBSERVATION FOR KEARNEY IS RECORDED DAILY BY THE 
+COOPERATIVE OBSERVER AT 7 AM.  THAT INFORMATION FOLLOWS... 
+
+...KEARNEY 4NE COOPERATIVE OBSERVER REPORT...
+
+PRECIPITATION (IN) 
+     24 HOUR TOTAL ENDING AT 7 AM... 0.00 
+     MONTH TO DATE.................. T
+     YEAR TO DATE................... 24.50
+
+SNOWFALL (IN) 
+     24 HOUR TOTAL ENDING AT 7 AM... 0.0
+     SNOW DEPTH AT 7 AM............. 0
+     MONTH TO DATE.................. T
+     SEASONAL TOTAL (SINCE JULY 1ST) T
+
+$$
+
