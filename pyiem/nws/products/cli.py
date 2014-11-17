@@ -26,6 +26,37 @@ def trace_r(val):
         return 'Trace'
     return val
 
+def get_number(s):
+    """ Convert a string into a number, preferable a float! """
+    s = s.strip()
+    if s == '':
+        return None
+    if s == 'MM':
+        return None
+    if s == 'T':
+        return 0.0001
+    number = re.findall("[-+]?\d*\.\d+|\d+", s)
+    if len(number) == 1:
+        if s.find("."):
+            return float(number[0])
+        else:
+            return int(number[0])
+    print 'get_number() failed for |%s|' % (s,)
+    return None
+
+def convert_key(s):
+    """ Convert a key value to something we store """
+    if s == 'YESTERDAY':
+        return 'today'
+    if s == 'TODAY':
+        return 'today'
+    if s == 'MONTH TO DATE':
+        return 'month'
+    if s.startswith('SINCE '):
+        return s.replace('SINCE ', '').replace(' ', "").lower()
+    print 'convert_key() failed for |%s|' % (s,)
+    return 'fail'
+
 def parse_snowfall(lines, data):
     """ Parse the snowfall data 
 WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
@@ -39,30 +70,29 @@ SNOWFALL (IN)
   SNOW DEPTH       0
     """
     for linenum, line in enumerate(lines):
-        line = (line+" ").replace(" T ", "0.0001").replace("R ", "  ")
-        tokens = line.split()
-        numbers = re.findall("[-+]?\d*\.\d+|\d+", line)
+        # Replace trace with IEM internal storage of 0.0001
+        numbers = re.findall("[-+]?\d*\.\d+|\d+| T ", line)
         if len(numbers) == 0:
             continue
-        if line.startswith("YESTERDAY") or line.startswith("TODAY"):
-            data['snow_today'] = trace(tokens[1])
-            if len(tokens) == 7 and tokens[2] != 'MM' and tokens[3] != 'MM':
-                data['snow_today_record'] = trace(tokens[2])
-                data['snow_today_record_years'] = [int(tokens[3]),]
-                # Check next line(s) for more years
+        # Spaces are stripped by this point
+        line = "%-70s" % (line,)
+        key = line[:14].strip()
+        if key == 'SNOW DEPTH':
+            continue
+        key = convert_key(key)
+        data['snow_%s' % (key,)] = get_number(line[15:21])
+        data['snow_%s_record' % (key,)] = get_number(line[29:35])
+        data['snow_%s_record_years' % (key,)] = [get_number(line[36:40]),]
+        data['snow_%s_normal' % (key,)] = get_number(line[41:47])
+        data['snow_%s_departure' % (key,)] = get_number(line[48:54])
+        data['snow_%s_last' % (key,)] = get_number(line[57:63])
+        if (key == 'today' and 
+            data['snow_%s_record_years' % (key,)][0] is not None):
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
                     data['snow_today_record_years'].append(
                                                     int(lines[linenum+1]))
                     linenum += 1
-        elif line.startswith("MONTH TO DATE"):
-            data['snow_month'] = trace(tokens[3])
-        elif line.startswith("SINCE JUN 1"):
-            data['snow_jun1'] = trace(tokens[3])
-        elif line.startswith("SINCE JUL 1"):
-            data['snow_jul1'] = trace(tokens[3])
-        elif line.startswith("SINCE DEC 1"):
-            data['snow_dec1'] = trace(tokens[3])
 
 def parse_precipitation(lines, data):
     """ Parse the precipitation data """

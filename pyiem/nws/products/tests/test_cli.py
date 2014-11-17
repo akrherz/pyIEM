@@ -70,6 +70,11 @@ class TestProducts(unittest.TestCase):
         prod = cliparser(get_file('CLIALO.txt'))
         self.assertEqual(prod.data.get('temperature_minimum'), -21)
         self.assertEqual(prod.data.get('temperature_minimum_record'), -21)
+        self.assertEqual(prod.data.get('snow_today'), 0.0)
+        self.assertEqual(prod.data.get('snow_today_record'), 13.2)
+        self.assertEqual(prod.data.get('snow_today_last'), 0.0)
+        self.assertEqual(prod.data.get('snow_month_last'), 0.0001)
+        self.assertEqual(prod.data.get('snow_jul1_last'), 11.3)
     
     def test_140930_mm_precip(self):
         """ Make sure having MM as today's precip does not error out """
