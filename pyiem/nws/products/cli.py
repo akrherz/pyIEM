@@ -82,11 +82,13 @@ SNOWFALL (IN)
         key = convert_key(key)
         data['snow_%s' % (key,)] = get_number(line[15:21])
         data['snow_%s_record' % (key,)] = get_number(line[29:35])
-        data['snow_%s_record_years' % (key,)] = [get_number(line[36:40]),]
+        yeartest = get_number(line[36:40])
+        if yeartest is not None:
+            data['snow_%s_record_years' % (key,)] = [yeartest,]
         data['snow_%s_normal' % (key,)] = get_number(line[41:47])
         data['snow_%s_departure' % (key,)] = get_number(line[48:54])
         data['snow_%s_last' % (key,)] = get_number(line[57:63])
-        if (key == 'today' and 
+        if (key == 'today' and yeartest is not None and
             data['snow_%s_record_years' % (key,)][0] is not None):
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
