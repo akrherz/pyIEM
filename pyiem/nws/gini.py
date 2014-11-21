@@ -247,6 +247,10 @@ lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f"
         meta['nx'] = struct.unpack(">H", hdata[16:18] )[0]
         meta['ny'] = struct.unpack(">H", hdata[18:20] )[0]
         meta['res'] = struct.unpack(">B", hdata[41] )[0]
+        # Is Calibration Info included?
+        # http://www.nws.noaa.gov/noaaport/document/ICD%20CH5-2005-1.pdf
+        # page24
+        #print struct.unpack(">B", hdata[46] )[0]
         # Mercator
         if meta['map_projection'] == 1:
             meta['lat1'] = int24( hdata[20:23] )
