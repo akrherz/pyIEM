@@ -18,6 +18,11 @@ def get_file(name):
 
 class TestProduct(unittest.TestCase):
 
+    def test_resent(self):
+        """ Make sure we can tell a ...RESENT product """
+        tp = productparser( get_file('MWWBRO.txt') )
+        self.assertTrue(tp.is_resent())
+
     def test_wmoheader(self):
         """" Make sure we can handle some header variations """
         ar = ["FTUS43 KOAX 102320    ",

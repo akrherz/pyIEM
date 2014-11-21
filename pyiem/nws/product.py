@@ -322,7 +322,11 @@ class TextProduct(object):
         self.parse_afos()
         self.parse_valid()
         self.parse_segments()
-        
+    
+    def is_resent(self):
+        """ Check to see if this product is a ...RESENT product """
+        return (self.unixtext.find("...RESENT") > 0)
+
     def is_correction(self):
         """Returns boolean on if this product is some form of correction """
         return self.bbb is not None
