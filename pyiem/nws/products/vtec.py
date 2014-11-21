@@ -119,13 +119,15 @@ class VTECProduct(TextProduct):
             # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
                 # Check to see if we have entries already for this UGC
+                # Some previous entries may not be in a terminated state, so
+                # also check the expiration time
                 txn.execute("""
                 SELECT issue, expire, updated from """+ warning_table +"""
                 WHERE ugc = %s and eventid = %s and significance = %s and
                 wfo = %s and phenomena = %s 
-                and status not in ('CAN', 'UPG', 'EXP')
+                and status not in ('CAN', 'UPG', 'EXP') and expire > %s
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
-                      vtec.phenomena))
+                      vtec.phenomena, self.valid))
                 if txn.rowcount > 0:
                     if self.is_correction():
                         # We'll delete old entries, gulp
