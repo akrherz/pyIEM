@@ -10,6 +10,9 @@ import zlib
 import datetime
 import pytz
 import logging
+import os
+
+DATADIR = os.sep.join([os.path.dirname(__file__), '../data'])
 
 M_PI_2 = 1.57079632679489661923
 M_PI = 3.14159265358979323846
@@ -65,6 +68,14 @@ def int24(data):
         u *= -1
     return u
 
+def get_ir_ramp():
+    """ Return a np 256x3 array of colors to use for IR """
+    fn = "%s/gini_ir_ramp.txt" % (DATADIR,)
+    data = np.zeros((256,3), np.uint8)
+    for i, line in enumerate(open(fn)):
+        tokens = line.split()
+        data[i,:] = [int(tokens[0]), int(tokens[1]), int(tokens[2])]
+    return data
 
 class GINIFile(object):
     
