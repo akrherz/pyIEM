@@ -189,69 +189,74 @@ TEMPERATURE (F)
                                                     int(lines[linenum+1]))
                     linenum += 1
 
-class CLIProduct( TextProduct ):
+class CLIProduct(TextProduct):
     """
-    Represents a Storm Prediction Center Mesoscale Convective Discussion
+    Represents a CLI Daily Climate Report Product
     """
 
     def __init__(self, text):
         """ constructor """
         TextProduct.__init__(self, text)
-        self.data = None
-        self.cli_valid = None
-        self.cli_station = None
+        # Hold our parsing results as an array of dicts
+        self.data = []
         if self.wmo[:2] != 'CD':
             print 'Product %s skipped due to wrong header' % (
                                                     self.get_product_id(),)
             return
-        self.parse_cli_headline()
-        # If we failed above
-        if self.cli_valid is not None:
-            self.data = self.parse_data()
+        for section in self.unixtext.split("&&"):
+            if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
+                continue
+            # We have meat!
+            valid, station = self.parse_cli_headline(section)
+            data = self.parse_data(section)
+            self.data.append(dict(cli_valid=valid,
+                                  cli_station=station,
+                                  data=data))
 
     def get_jabbers(self, uri, _=None):
         """ Override the jabber message formatter """
         url = "%s?pid=%s" % (uri, self.get_product_id())
-        
-        mess = "%s %s Climate Report: High: %s Low: %s Precip: %s Snow: %s %s" % (
-                    self.cli_station, self.cli_valid.strftime("%b %-d"),
-                    self.data.get('temperature_maximum', 'M'),
-                    self.data.get('temperature_minimum', 'M'),
-                    trace_r(self.data.get('precip_today', 'M')),
-                    trace_r(self.data.get('snow_today', 'M')), url
-                    )
-        htmlmess = ("%s <a href=\"%s\">%s Climate Report</a>: High: %s "
-                    +"Low: %s Precip: %s Snow: %s") % (
-                    self.cli_station, url, self.cli_valid.strftime("%b %-d"),
-                    self.data.get('temperature_maximum', 'M'),
-                    self.data.get('temperature_minimum', 'M'),
-                    trace_r(self.data.get('precip_today', 'M')),
-                    trace_r(self.data.get('snow_today', 'M'))
-                    )
-        tweet = "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s" % (
-                    self.cli_station, self.cli_valid.strftime("%b %-d"),
-                    self.data.get('temperature_maximum', 'M'),
-                    self.data.get('temperature_minimum', 'M'),
-                    trace_r(self.data.get('precip_today', 'M')),
-                    trace_r(self.data.get('snow_today', 'M')), url
-                    )
         res = []
-        res.append([mess.replace("0.0001", "Trace"), 
-                    htmlmess.replace("0.0001", "Trace"), {
-                        'channels': self.afos,
-                        'twitter': tweet
-                }])
+        for data in self.data:
+            mess = "%s %s Climate Report: High: %s Low: %s Precip: %s Snow: %s %s" % (
+                        data['cli_station'], 
+                        data['cli_valid'].strftime("%b %-d"),
+                        data['data'].get('temperature_maximum', 'M'),
+                        data['data'].get('temperature_minimum', 'M'),
+                        trace_r(data['data'].get('precip_today', 'M')),
+                        trace_r(data['data'].get('snow_today', 'M')), url
+                        )
+            htmlmess = ("%s <a href=\"%s\">%s Climate Report</a>: High: %s "
+                        +"Low: %s Precip: %s Snow: %s") % (
+                        data['cli_station'], url, data['cli_valid'].strftime("%b %-d"),
+                        data['data'].get('temperature_maximum', 'M'),
+                        data['data'].get('temperature_minimum', 'M'),
+                        trace_r(data['data'].get('precip_today', 'M')),
+                        trace_r(data['data'].get('snow_today', 'M'))
+                        )
+            tweet = "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s" % (
+                        data['cli_station'], data['cli_valid'].strftime("%b %-d"),
+                        data['data'].get('temperature_maximum', 'M'),
+                        data['data'].get('temperature_minimum', 'M'),
+                        trace_r(data['data'].get('precip_today', 'M')),
+                        trace_r(data['data'].get('snow_today', 'M')), url
+                        )
+            res.append([mess.replace("0.0001", "Trace"), 
+                        htmlmess.replace("0.0001", "Trace"), {
+                            'channels': self.afos,
+                            'twitter': tweet
+                    }])
         return res
 
-    def parse_data(self):
+    def parse_data(self, section):
         """ Actually do the parsing of this silly format """
         data = {}
-        pos = self.unixtext.find("TEMPERATURE")
+        pos = section.find("TEMPERATURE")
         if pos == -1:
             raise CLIException('Failed to find TEMPERATURE, aborting')
 
         # Strip extraneous spaces
-        meat = "\n".join([l.strip() for l in self.unixtext[pos:].split("\n")])
+        meat = "\n".join([l.strip() for l in section[pos:].split("\n")])
         # Don't look into aux data for things we should not be parsing
         if meat.find("&&") > 0:
             meat = meat[:meat.find("&&")]
@@ -267,16 +272,17 @@ class CLIProduct( TextProduct ):
 
         return data
 
-    def parse_cli_headline(self):
+    def parse_cli_headline(self, section):
         """ Figure out when this product is valid for """
-        tokens = HEADLINE_RE.findall( self.unixtext.replace("\n", " ") )
+        tokens = HEADLINE_RE.findall( section.replace("\n", " ") )
         if len(tokens) == 1:
             if len(tokens[0][1].split()[0]) == 3:
                 myfmt = '%b %d %Y'
             else:
                 myfmt = '%B %d %Y'
-            self.cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt)
-            self.cli_station = (tokens[0][0]).strip()  
+            cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt)
+            cli_station = (tokens[0][0]).strip()
+            return cli_valid, cli_station  
         elif len(tokens) > 1:
             raise CLIException("Found two headers in product, unsupported!")
         else:
@@ -288,4 +294,5 @@ class CLIProduct( TextProduct ):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Provide back CLI objects based on the parsing of this text """
+    # Careful here, see if we have two CLIs in one product!
     return CLIProduct( text )
