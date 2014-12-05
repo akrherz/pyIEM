@@ -206,7 +206,7 @@ class VTECProduct(TextProduct):
                    || %s || '__' WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+"""
             and significance = %s and phenomena = %s 
-            and status not in ('EXP', 'CAN')
+            and status not in ('EXP', 'CAN', 'UPG')
             """, (ets, vtec.action, self.unixtext,
                   vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))

@@ -413,6 +413,16 @@ class TestProducts(unittest.TestCase):
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
     
+    def test_141205_vtec_series(self):
+        """ Make sure we don't get any warnings processing this series """
+        for i in range(9):
+            fn = "WSWOTX/WSW_%02i.txt" % (i,)
+            prod = vtecparser(get_file(fn))
+            prod.sql(self.txn)
+            if len(prod.warnings) > 0:
+                print i, prod.warnings
+            self.assertEquals(len(prod.warnings), 0)
+    
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
         prod = vtecparser( get_file('WSWDMX/WSW_00.txt') )
