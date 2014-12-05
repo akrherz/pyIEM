@@ -361,8 +361,10 @@ class TestProducts(unittest.TestCase):
         ''' See what we do with an invalid geometry from IWX '''
         prod = vtecparser( get_file('FLW_badgeom.txt') )
         self.assertEqual(prod.segments[0].giswkt, ('SRID=4326;MULTIPOLYGON ((('
-            +'-85.68 41.86, -85.64 41.97, -85.54 41.97, -85.54 41.96, '
-            +'-85.61 41.93, -85.66 41.84, -85.68 41.86)))'))
+            +'-85.680000 41.860000, -85.640000 41.970000, '
+            +'-85.540000 41.970000, -85.540000 41.960000, '
+            +'-85.610000 41.930000, -85.660000 41.840000, '
+            +'-85.680000 41.860000)))'))
     
     def test_140522_blowingdust(self):
         ''' Make sure we can deal with invalid LSR type '''
