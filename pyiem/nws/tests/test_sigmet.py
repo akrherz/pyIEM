@@ -38,7 +38,7 @@ class TestObservation(unittest.TestCase):
         """ See about parsing a SIGMET that is circle? """
         utcnow = utc(2014, 9, 6, 22, 15)
         tp = parser( get_file('SIGP0H.txt'), utcnow)
-        self.assertAlmostEquals(tp.sigmets[0].geom.area, 4.32, 2)
+        self.assertAlmostEquals(tp.sigmets[0].geom.area, 11.70, 2)
 
     def test_140813_line(self):
         """ See about parsing a SIGMET that is a either side of line """

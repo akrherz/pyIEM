@@ -5,7 +5,7 @@ import datetime
 import math
 
 # Third Party
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, Point
 
 # Local stuff
 from pyiem.nws.product import TextProduct
@@ -35,6 +35,11 @@ AREA\s(?P<areanum>[0-9]+)\.\.\.FROM\s(?P<locs>[0-9A-Z \-]+)\n
 LINE_RE = re.compile(r"""
 (?P<distance>[0-9]*)NM\s+EITHER\s+SIDE\s+OF\s+LINE\s+
 """, re.VERBOSE)
+
+CIRCLE_RE = re.compile(r"""
+WI\s+(?P<distance>[0-9]*)NM\s+OF\s+
+""", re.VERBOSE)
+
 
 dirs = {'NNE': 22.5, 'ENE': 67.5, 'NE':  45.0, 'E': 90.0, 'ESE': 112.5,
         'SSE': 157.5, 'SE': 135.0, 'S': 180.0, 'SSW': 202.5,
@@ -276,7 +281,14 @@ class SIGMETProduct( TextProduct ):
         if m is not None:
             d = m.groupdict()
             pts = compute_esol(pts, int(d['distance']))
-        s.geom = Polygon(pts)
+        m = CIRCLE_RE.search(meat)
+        if m is not None and len(pts) == 1:
+            d = m.groupdict()
+            # buffer a point, approximate 1 deg as 100 km :/
+            s.geom = Point(pts[0]).buffer(float(d['distance'])*KM_SM / 100.)
+        else:
+            s.geom = Polygon(pts)
+        
         s.raw = self.unixtext
         self.sigmets.append( s )
 
