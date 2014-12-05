@@ -105,6 +105,21 @@ class VTECProduct(TextProduct):
         if fcster is not None:
             fcster = fcster[:24]
         
+        # If this product is ...RESENT, lets check to make sure we did not
+        # already get it
+        if self.is_resent():
+            txn.execute("""SELECT max(updated) as maxtime
+            from """+warning_table+"""
+            WHERE eventid = %s and significance = %s and wfo = %s and
+            phenomena = %s
+            """, (vtec.ETN, vtec.significance, vtec.office, vtec.phenomena))
+            maxtime = txn.fetchone()['maxtime']
+            if maxtime is not None:
+                if maxtime == self.valid:
+                    print("RESENT Match, skipping SQL for %s!" % (
+                                                    self.get_product_id(),))
+                    return
+        
         if vtec.action in ['NEW', 'EXB', 'EXA']:
             # New Event Types!
             bts = vtec.begints
