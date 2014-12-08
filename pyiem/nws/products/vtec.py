@@ -191,9 +191,10 @@ class VTECProduct(TextProduct):
                   vtec.endts, vtec.office, vtec.ETN, 
                   vtec.significance, vtec.phenomena))
             if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(('Warning: do_sql_vtec updated %s row, '
-                                      +'should %s rows') %(
-                                        txn.rowcount, len(segment.ugcs)))
+                self.warnings.append(('COR: %s.%s.%s do_sql_vtec '
+                        +'updated %s row, should %s rows %s') % (
+                        vtec.phenomena, vtec.significance, vtec.ETN,
+                        txn.rowcount, len(segment.ugcs), segment.ugcs))
 
         elif vtec.action in ['CAN', 'UPG', 'EXT']:
             # These are terminate actions, so we act accordingly
@@ -224,19 +225,19 @@ class VTECProduct(TextProduct):
                 ets = self.valid + datetime.timedelta(hours=24)
 
             txn.execute("""
-            UPDATE """+ warning_table +""" SET status = %s,
-            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
+                UPDATE """+ warning_table +""" SET status = %s,
+                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
                    || %s || '__' , expire = %s WHERE
-            wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
-            and significance = %s and phenomena = %s 
-            and status not in ('EXP', 'CAN', 'UPG')
-            """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
-                  vtec.significance, vtec.phenomena ))
+                wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
+                and significance = %s and phenomena = %s 
+                and status not in ('EXP', 'CAN', 'UPG') and expire >= %s
+                """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
+                      vtec.significance, vtec.phenomena, ets))
             if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(('Warning: %s.%s.%s do_sql_vtec updated '
-                                      +'%s row, should %s rows %s') %(
+                self.warnings.append(('Warning: %s.%s.%s do_sql_vtec %s '
+                                      +'updated %s row, should %s rows %s') % (
                                         vtec.phenomena, vtec.significance,
-                                        vtec.ETN,
+                                        vtec.ETN, vtec.action,
                                         txn.rowcount, len(segment.ugcs),
                                         segment.ugcs))
 

@@ -32,6 +32,13 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141208_upgrade(self):
+        """ See that we can handle the EXB case """
+        for i in range(0,18):
+            prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            
     def test_141016_tsuwca(self):
         """ Got a null vtec timestamp with this product """
         utcnow = utc(2014, 10, 16, 17, 10)
