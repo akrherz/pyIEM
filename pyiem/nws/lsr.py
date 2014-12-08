@@ -64,7 +64,7 @@ class LSR(object):
                 self.get_dbtype(),
                 self.magnitude_f, self.city, self.county, self.state,
                 self.source, self.remark, wkt, self.wfo, self.typetext)
-        txn.execute(sql, args)
+        txn.execute(sql.upper(), args)
 
     def tweet(self):
         ''' return a tweet text '''
