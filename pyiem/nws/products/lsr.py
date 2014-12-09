@@ -82,12 +82,13 @@ class LSRProduct(TextProduct):
             }
             html = ("<p>%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at "
             +"%s -- %s</p>") % (
-                        mylsr.city, mylsr.county, mylsr.state, mylsr.source,
+                        _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state, mylsr.source,
                         url, mylsr.mag_string(),
                         mylsr.valid.strftime(time_fmt), mylsr.remark)
     
             plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
-                        mylsr.city, mylsr.county, mylsr.state, mylsr.source,
+                        _mylowercase(mylsr.city), mylsr.county.title(), 
+                        mylsr.state, mylsr.source,
                         mylsr.mag_string(),
                         mylsr.valid.strftime(time_fmt), mylsr.remark, url)
             res.append( [plain, html, xtra])
@@ -144,7 +145,7 @@ def parse_lsr(text):
    
     lsr.typetext = lines[0][12:29].strip().upper()
 
-    lsr.city = _mylowercase(lines[0][29:53].strip())
+    lsr.city = lines[0][29:53].strip()
     
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
@@ -152,7 +153,7 @@ def parse_lsr(text):
     lsr.geometry = ShapelyPoint((lon,lat))
     
     lsr.consume_magnitude( lines[1][12:29].strip() )
-    lsr.county = lines[1][29:48].strip().title()
+    lsr.county = lines[1][29:48].strip()
     lsr.state = lines[1][48:50]
     lsr.source = lines[1][53:].strip()
     if len(lines) > 2:

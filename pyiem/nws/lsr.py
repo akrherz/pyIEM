@@ -6,6 +6,19 @@ from pyiem import reference
 
 MAG_UNITS = re.compile(r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)")
 
+def _mylowercase(text):
+    ''' Specialized lowercase function ''' 
+    tokens = text.split()
+    for i,t in enumerate(tokens):
+        if len(t) > 3:
+            tokens[i] = t.title()
+        elif t in ['N', 'NNE', 'NNW', 'NE',
+                   'E', 'ENE', 'ESE', 'SE',
+                   'S', 'SSE', 'SSW', 'SW',
+                   'W', 'WSW', 'WNW', 'NW']:
+            continue
+    return " ".join(tokens)
+
 class LSR(object):
     ''' Represents a single Local Storm Report within the LSRProduct '''
 
@@ -62,15 +75,17 @@ class LSR(object):
                %s, %s, %s, %s, %s)"""
         args = (self.utcvalid, 
                 self.get_dbtype(),
-                self.magnitude_f, self.city, self.county, self.state,
+                self.magnitude_f, 
+                self.city, self.county, self.state,
                 self.source, self.remark, wkt, self.wfo, self.typetext)
-        txn.execute(sql.upper(), args)
+        txn.execute(sql, args)
 
     def tweet(self):
         ''' return a tweet text '''
         msg = 'At %s, %s [%s Co, %s] %s reports %s #%s' % (
                                         self.valid.strftime('%-I:%M %p'),
-                                        self.city, self.county, self.state,
+                                        _mylowercase(self.city), 
+                                        self.county.title(), self.state,
                                         self.source, self.mag_string(),
                                         self.wfo)
         return msg

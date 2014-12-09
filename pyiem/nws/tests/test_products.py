@@ -531,7 +531,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(len(prod.lsrs), 58)
         
         self.assertAlmostEqual(prod.lsrs[57].magnitude_f, 73, 0)
-        self.assertEqual(prod.lsrs[57].county, "Marion")
+        self.assertEqual(prod.lsrs[57].county, "MARION")
         self.assertEqual(prod.lsrs[57].state, "IA")
         self.assertAlmostEqual(prod.lsrs[57].get_lon(), -93.11, 2)
         self.assertAlmostEqual(prod.lsrs[57].get_lat(), 41.3, 1)
