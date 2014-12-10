@@ -32,6 +32,13 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141210_continues(self):
+        """ See that we handle CON with infinite time A-OK """
+        for i in range(0,2):
+            prod = vtecparser(get_file('FFAEKA/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))            
+    
     def test_141208_upgrade(self):
         """ See that we can handle the EXB case """
         for i in range(0,18):
