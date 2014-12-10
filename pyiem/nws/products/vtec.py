@@ -129,7 +129,7 @@ class VTECProduct(TextProduct):
             # 24 hours in time...
             ets = vtec.endts
             if vtec.endts is None:
-                ets = bts + datetime.timedelta(hours=24)
+                ets = bts + datetime.timedelta(hours=72)
 
             # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
@@ -222,7 +222,7 @@ class VTECProduct(TextProduct):
             # These are no-ops, just updates
             ets = vtec.endts
             if vtec.endts is None:
-                ets = self.valid + datetime.timedelta(hours=24)
+                ets = self.valid + datetime.timedelta(hours=72)
 
             txn.execute("""
                 UPDATE """+ warning_table +""" SET status = %s,
