@@ -34,7 +34,7 @@ class mixingratio(basetype):
 
 class distance(basetype):
     """ Distance """
-    known_units = [ "SM", "MI", "M", "KM", "FT" ]
+    known_units = ["SM", "MI", "M", "KM", "FT", "MM", "IN", "CM"]
     
     def value(self, units):
         """ Convert to a value in the given units """
@@ -51,17 +51,28 @@ class distance(basetype):
             meters = self._value / 3.28084
         elif self._units == "KM":
             meters = self._value * 1000.0
+        elif self._units == "MM":
+            meters = self._value / 1000.0
+        elif self._units == "CM":
+            meters = self._value / 100.0
+        elif self._units == "IN":
+            meters = self._value * 0.0254
         else:
             meters = self._value
         # Output
-        if units in ["SM","MI"]:
+        if units in ["SM", "MI"]:
             return meters / 1609.344
         elif units == "FT":
             return meters * 3.28084
         elif units == "KM":
             return meters / 1000.0
-        elif units == "M":
-            return meters
+        elif units == "MM":
+            return meters * 1000.0
+        elif units == "CM":
+            return meters * 100.0
+        elif units == "IN":
+            return meters / 0.0254
+        return meters
 
 
 class precipitation(basetype):

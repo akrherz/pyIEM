@@ -47,6 +47,9 @@ class TestDatatypes(unittest.TestCase):
         self.assertAlmostEquals(5280.0, mi.value('FT'), 1)
         self.assertAlmostEquals(1.0, mi.value('SM'), 1)
         self.assertAlmostEquals(1.61, mi.value('KM'), 2)
+        self.assertAlmostEquals(63360.00, mi.value('IN'), 2)
+        self.assertAlmostEquals(1609344.00, mi.value('MM'), 2)
+        self.assertAlmostEquals(160934.40, mi.value('CM'), 2)
 
     def test_direction_conv(self):
         """ Direction, which is DEG to RAD """
