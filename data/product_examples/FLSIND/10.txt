@@ -1,0 +1,95 @@
+437 
+WGUS83 KIND 101138
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+638 AM EST WED DEC 10 2014
+
+......The Flood Warning is no longer in effect for portions of the
+following river in Indiana...
+
+  White River...
+
+
+.The White River in the Edwardsport area has fallen below flood stage
+in southwest Indiana.
+
+Precautionary/Preparedness Actions...
+
+Be alert to flood debris on previously flooded roads. Keep children 
+away from flooded areas. Recreational and agricultural interests 
+should remain alert to changing river conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+
+INC027-051-083-125-101208-
+/O.CAN.KIND.FL.W.0215.000000T0000Z-141211T0000Z/
+/FREI3.1.ER.000000T0000Z.141208T1200Z.000000T0000Z.NO/
+638 AM EST WED DEC 10 2014
+
+The Flood Warning is cancelled for
+  The White River at Edwardsport.
+* At  5:30 AM Wednesday the stage was 14.8 feet.
+* Flood stage is 15.0 feet.
+* Forecast...The river will fall to 12.8 feet by sunset.
+
+
+&&
+
+LAT...LON 3887 8715 3879 8729 3855 8726 3855 8723
+      3877 8723 3885 8712             
+
+$$
+
+
+228 
+WGUS83 KIND 091707
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1207 PM EST TUE DEC 9 2014
+
+......The Flood Warning is no longer in effect for portions of the
+following river in southern Indiana...
+
+  East Fork White River...
+
+.The East Fork White River has fallen below flood stage at Seymour in
+southern Indiana.
+
+Precautionary/Preparedness Actions...
+
+Be alert to flood debris on previously flooded roads. Keep children 
+away from flooded areas. Recreational and agricultural interests 
+should remain alert to changing river conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+
+INC071-093-175-091737-
+/O.CAN.KIND.FL.W.0212.000000T0000Z-141210T0518Z/
+/SERI3.1.ER.141207T0230Z.141208T1000Z.141209T1620Z.NO/
+1207 PM EST TUE DEC 9 2014
+
+The Flood Warning is cancelled for
+  The East Fork White River at Seymour.
+* At 11:48 AM Tuesday the stage was 11.9 feet.
+* Flood stage is 12.0 feet.
+* Fell below flood stage at 11:20 AM Tuesday.
+* Forecast...The river will continue to fall to 9.9 feet by tomorrow 
+  morning.
+
+
+&&
+
+LAT...LON 3906 8587 3893 8604 3879 8620 3877 8613
+      3886 8599 3905 8583             
+
+$$

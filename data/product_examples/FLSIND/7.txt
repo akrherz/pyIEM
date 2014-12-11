@@ -1,0 +1,194 @@
+215 
+WGUS83 KIND 080303
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1003 PM EST SUN DEC 7 2014
+
+...A Flood Warning continues for portions of the following rivers in 
+Indiana...
+
+  East Fork White River...Muscatatuck River...White River...
+
+.Lowland flooding will continue along portions of the
+White...Wabash and East Fork White in central and southern Indiana
+into next week. 
+
+Rain of 1 to nearly 3 inches fell across much of the southern half
+of Indiana on Friday contributing to flooding that is similar to that
+seen at the end of November. Significant flooding is not expected.  
+
+Flooding will affect some local and state roads...low agricultural
+land and some river parks. 
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+INC071-093-175-090303-
+/O.EXT.KIND.FL.W.0212.000000T0000Z-141210T1630Z/
+/SERI3.1.ER.141207T0230Z.141208T0600Z.141210T0430Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The East Fork White River at Seymour.
+* until Wednesday morning.
+* At 9:00 PM Sunday the stage was 14.9 feet.
+* Flood stage is 12.0 feet.
+* Minor flooding is occurring and minor flooding is forecast.
+* Forecast...The river will continue rising to near 15.0 feet by 
+  after midnight tomorrow. The river will fall below flood stage 
+  Tuesday before midnight.
+* At 15.0 feet...Lowland agricultural flooding in progress.  County 
+  road 725 N (near Rockford) floods.  Indiana 258 east of Cortland 
+  may flood.
+
+&&
+
+LAT...LON 3906 8587 3893 8604 3879 8620 3877 8613
+      3886 8599 3905 8583             
+
+$$
+
+INC071-093-175-090302-
+/O.CON.KIND.FL.W.0213.141209T1645Z-141211T1114Z/
+/WHLI3.1.ER.141209T1645Z.141210T0600Z.141211T0514Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The Muscatatuck River at Wheeler Hollow.
+* from Tuesday morning to Thursday morning.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 16.8 
+  feet early Wednesday morning.
+* At 16.0 feet...High water begins to affect lowland areas along the 
+  river.
+
+&&
+
+LAT...LON 3878 8591 3878 8603 3880 8615 3876 8618
+      3873 8605 3874 8591             
+
+$$
+
+INC027-055-083-090302-
+/O.EXT.KIND.FL.W.0214.000000T0000Z-141210T1200Z/
+/ELLI3.1.ER.000000T0000Z.141208T0600Z.141210T0000Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Elliston.
+* until Wednesday morning.
+* At 8:00 AM Sunday the stage was 19.2 feet.
+* Flood stage is 18.0 feet.
+* Minor flooding is occurring and minor flooding is forecast.
+* At 20.0 feet...River road north of Greene CR 150 W is flooded.  Low 
+  agricultural fields flood.
+
+&&
+
+LAT...LON 3913 8696 3905 8699 3900 8697 3900 8693
+      3908 8694 3912 8692             
+
+$$
+
+INC027-055-083-090302-
+/O.EXT.KIND.FL.W.0222.000000T0000Z-141209T0422Z/
+/NWBI3.1.ER.141207T0022Z.141207T1545Z.141208T1622Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Newberry.
+* until Monday evening.
+* At 9:30 PM Sunday the stage was 13.3 feet.
+* Flood stage is 13.0 feet.
+* Minor flooding is occurring and minor flooding is forecast.
+* Forecast...The river will continue rising to near 13.4 feet by 
+  after midnight tomorrow. The river will fall below flood stage 
+  tomorrow late morning.
+* At 13.5 feet...High water may affect CR 550 S in the Mary Long 
+  Cutoff area.   
+
+&&
+
+LAT...LON 3900 8696 3894 8708 3887 8715 3885 8712
+      3892 8700 3900 8694             
+
+$$
+
+INC027-051-083-125-090302-
+/O.EXT.KIND.FL.W.0215.000000T0000Z-141211T0900Z/
+/FREI3.1.ER.000000T0000Z.141209T0600Z.141210T2100Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Edwardsport.
+* until late Wednesday night.
+* At 7:00 AM Sunday the stage was 16.6 feet.
+* Flood stage is 15.0 feet.
+* Minor flooding is occurring and minor flooding is forecast.
+* At 17.5 feet...Flooding closes Old Vincennes Road.  High water 
+  crosses SR 358 on the Daviess County side just west of the levee.  
+  Flooding begins to affect higher bottomlands.  Residential property
+  of river cabins begins to flood.
+
+&&
+
+LAT...LON 3887 8715 3879 8729 3855 8726 3855 8723
+      3877 8723 3885 8712             
+
+$$
+
+ILC185-INC027-051-083-125-090302-
+/O.EXT.KIND.FL.W.0216.000000T0000Z-141215T0400Z/
+/PTRI3.1.ER.141207T1140Z.141210T0600Z.141214T1600Z.NO/
+1003 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Petersburg.
+* until Sunday December 14.
+* At 9:30 PM Sunday the stage was 17.3 feet.
+* Flood stage is 16.0 feet.
+* Minor flooding is occurring and minor flooding is forecast.
+* Forecast...The river will continue rising to near 19.0 feet by 
+  Wednesday morning. The river will fall below flood stage late 
+  Sunday morning.
+* At 19.0 feet...Low bottomlands flood and flooding begins on higher 
+  bottomlands.  State Road 257 may begin to flood if Shoals gage 
+  reading is over 17 feet.  Private levees may be overtopped in many 
+  cases.
+
+&&
+
+LAT...LON 3855 8726 3855 8739 3854 8744 3851 8744
+      3850 8727 3855 8723             
+
+$$
+
+ILC185-INC051-083-090302-
+/O.EXT.KIND.FL.W.0223.141208T0925Z-141215T0900Z/
+/HAZI3.1.ER.141208T0925Z.141210T1800Z.141214T2100Z.NO/
+903 PM CST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Hazleton.
+* from late tonight to Monday December 15.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 19.1 
+  feet Wednesday early afternoon.
+* At 19.0 feet...Flood waters cover the Hazleton softball field. 
+  Pottsville Road is underwater and impassable.
+
+&&
+
+LAT...LON 3854 8744 3852 8755 3843 8773 3841 8773
+      3844 8760 3851 8744             
+
+$$

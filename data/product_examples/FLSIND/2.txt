@@ -1,0 +1,135 @@
+427 
+WGUS43 KIND 061602
+FLWIND
+FLOOD WARNING
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1102 AM EST SAT DEC 6 2014
+
+...The National Weather Service in Indianapolis has issued a Flood 
+Warning for portions of the following rivers in central and southern 
+Indiana...
+
+  White River...Wabash River...
+
+.Lowland flooding will develop along rivers in central and southern 
+Indiana due to rainfall Friday and Friday night of 1 to nearly 3
+inches across the area. Significant flooding is not expected.
+Flooding will affect some local and state roads...low agricultural
+land and some river parks. Expect flooding in some areas to last
+well into next week.
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+INC055-105-119-071602-
+/O.NEW.KIND.FL.W.0221.141207T1832Z-141210T1030Z/
+/SPNI3.1.ER.141207T1832Z.141208T1200Z.141209T2230Z.NO/
+1102 AM EST SAT DEC 6 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Spencer.
+* from Sunday afternoon to late Tuesday night.
+* At 10:30 AM Saturday the stage was 8.3 feet.
+* Flood stage is 14.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by tomorrow early afternoon and 
+  continue to rise to near 16.1 feet by Monday morning.the river will
+  fall below flood stage by Tuesday afternoon.
+* At 16.0 feet...Flood water affects gravel pit.  High water concerns 
+  farmers in agricultural season about crops and livestock.  Lowest 
+  portions of Trails 1 and 7 in McCormicks Creek Park flood.
+
+&&
+
+LAT...LON 3936 8666 3933 8674 3913 8696 3911 8692
+      3928 8675 3934 8665             
+
+$$
+
+INC027-055-083-071602-
+/O.NEW.KIND.FL.W.0222.141206T2334Z-141211T0544Z/
+/NWBI3.1.ER.141206T2334Z.141208T1800Z.141210T1744Z.NO/
+1102 AM EST SAT DEC 6 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Newberry.
+* from this evening to late Wednesday night.
+* At 10:30 AM Saturday the stage was 11.8 feet.
+* Flood stage is 13.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by this evening and continue to 
+  rise to near 16.0 feet by Monday early afternoon.the river will 
+  fall below flood stage by Wednesday early afternoon.
+* At 16.0 feet...Higher bottomlands begin to flood.
+
+&&
+
+LAT...LON 3900 8696 3894 8708 3887 8715 3885 8712
+      3892 8700 3900 8694             
+
+$$
+
+ILC185-INC051-083-071602-
+/O.NEW.KIND.FL.W.0223.141207T2118Z-141215T1400Z/
+/HAZI3.1.ER.141207T2118Z.141213T0600Z.141215T0200Z.NO/
+1002 AM CST SAT DEC 6 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Hazleton.
+* from Sunday afternoon to Monday December 15.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 19.3 
+  feet early Saturday morning.
+* At 19.0 feet...Flood waters cover the Hazleton softball field. 
+  Pottsville Road is underwater and impassable.
+
+&&
+
+LAT...LON 3854 8744 3852 8755 3843 8773 3841 8773
+      3844 8760 3851 8744             
+
+$$
+
+ILC047-059-185-193-INC051-083-129-071602-
+/O.NEW.KIND.FL.W.0224.141208T1300Z-141212T1200Z/
+/MCRI2.1.ER.141208T1300Z.141210T0000Z.141212T0000Z.NO/
+1002 AM CST SAT DEC 6 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Wabash River at Mount Carmel.
+* from Monday morning to Friday morning.
+* At  8:45 AM Saturday the stage was 12.1 feet.
+* Flood stage is 19.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by Monday morning and continue to
+  rise to near 20.5 feet by early Wednesday morning.the river will 
+  fall below flood stage by Thursday evening.
+* At 21.0 feet...River Road in the Mount Carmel, Illinois area begins 
+  to flood.  Lowland flooding in progress.  A few local river roads 
+  are closed by high water.  During June 2010...backwater from the 
+  Wabash River was noted on the Bon Pas river gage near Browns 
+  Illinois.
+
+&&
+
+LAT...LON 3847 8777 3827 8800 3822 8800 3822 8794
+      3828 8781 3846 8765             
+
+$$

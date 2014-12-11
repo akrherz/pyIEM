@@ -1,0 +1,245 @@
+769 
+WGUS43 KIND 051654
+FLWIND
+FLOOD WARNING
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1154 AM EST FRI DEC 5 2014
+
+...The National Weather Service in Indianapolis has issued a Flood 
+Warning for portions of the following rivers in western and southern 
+Indiana...
+
+  East Fork White...White...Wabash... and Muscatatuck Rivers
+
+
+.Lowland flooding will develop along portions of the White...
+Wabash...East Fork White and Muscatatuck Rivers in western and
+southern Indiana this weekend.  Rain of 1 to possibly 2 inches is
+expected by Saturday afternoon in central and southern Indiana. 
+Flooding will be similar to that seen at the end of November.
+
+Significant flooding is not expected.  Flood crests will range from
+near bankfull to possibly 2 feet above flood stage and occur from
+Sunday through Thursday.  
+
+Flooding will affect some local and state roads...low agricultural
+land and some river parks. 
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+
+INC071-093-175-061654-
+/O.NEW.KIND.FL.W.0212.141209T0600Z-141210T0000Z/
+/SERI3.1.ER.141209T0600Z.141209T0600Z.141209T1200Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the East Fork White River at Seymour.
+* from late Monday night to Tuesday evening.
+* At 11:00 AM Friday the stage was 4.2 feet.
+* Flood stage is 12.0 feet.
+* Minor flooding is forecast.
+* Forecast...The river is expected to rise to near flood stage early 
+  Tuesday morning.
+* At 12.0 feet...Significant agricultural lands begins to flood. 
+High
+  water affects some local roads.
+
+&&
+
+LAT...LON 3906 8587 3893 8604 3879 8620 3877 8613
+      3886 8599 3905 8583             
+
+$$
+
+INC071-093-175-061653-
+/O.NEW.KIND.FL.W.0213.141209T1645Z-141211T1114Z/
+/WHLI3.1.ER.141209T1645Z.141210T0600Z.141211T0514Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Muscatatuck River at Wheeler Hollow.
+* from Tuesday morning to Thursday morning.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 16.8 
+  feet early Wednesday morning.
+* At 16.0 feet...High water begins to affect lowland areas along the 
+  river.
+
+&&
+
+LAT...LON 3878 8591 3878 8603 3880 8615 3876 8618
+      3873 8605 3874 8591             
+
+$$
+
+INC027-055-083-061653-
+/O.NEW.KIND.FL.W.0214.141208T1047Z-141211T1030Z/
+/ELLI3.1.ER.141208T1047Z.141209T0600Z.141210T2230Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Elliston.
+* from late Sunday night to late Wednesday night.
+* Flood stage is 18.0 feet.
+* Forecast...The river is forecast to have a maximum value of 19.2 
+  feet early Tuesday morning.
+* At 20.0 feet...River road north of Greene CR 150 W is flooded.  Low 
+  agricultural fields flood.
+
+&&
+
+LAT...LON 3913 8696 3905 8699 3900 8697 3900 8693
+      3908 8694 3912 8692             
+
+$$
+
+INC027-051-083-125-061653-
+/O.NEW.KIND.FL.W.0215.141209T0600Z-141212T1330Z/
+/FREI3.1.ER.141209T0600Z.141210T1200Z.141212T0130Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Edwardsport.
+* from late Monday night to Friday December 12.
+* At  7:00 AM Friday the stage was 7.8 feet.
+* Flood stage is 15.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by early Tuesday morning and 
+  continue to rise to near 16.3 feet by Wednesday morning.the river 
+  will fall below flood stage by Thursday evening.
+* At 16.0 feet...Old Vincennes Road and residential property in this 
+  area begin to flood.  Flooding of low agricultural fields occurs 
+  along portions of the river.
+
+&&
+
+LAT...LON 3887 8715 3879 8729 3855 8726 3855 8723
+      3877 8723 3885 8712             
+
+$$
+
+ILC185-INC027-051-083-125-061653-
+/O.NEW.KIND.FL.W.0216.141211T0000Z-141213T0600Z/
+/PTRI3.1.ER.141211T0000Z.141211T1200Z.141212T1800Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the White River at Petersburg.
+* from Wednesday evening to Saturday December 13.
+* At 11:30 AM Friday the stage was 7.3 feet.
+* Flood stage is 16.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by Wednesday evening and continue
+  to rise to near 16.3 feet by Thursday early afternoon.the river 
+  will fall below flood stage by Friday early afternoon.
+* At 16.0 feet...Flooding affects agricultural lands.
+
+&&
+
+LAT...LON 3855 8726 3855 8739 3854 8744 3851 8744
+      3850 8727 3855 8723             
+
+$$
+
+ILC023-033-INC153-167-061653-
+/O.NEW.KIND.FL.W.0217.141207T1930Z-141209T0300Z/
+/HUFI3.1.ER.141207T1930Z.141208T0000Z.141208T1500Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Wabash River at Terre Haute.
+* from Sunday afternoon to Monday evening.
+* At 11:00 AM Friday the stage was 7.3 feet.
+* Flood stage is 14.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by Sunday early afternoon and 
+  continue to rise to near 14.3 feet by Sunday evening.the river will
+  fall below flood stage by late Monday morning.
+* At 14.0 feet...Flood waters begin to enter the two breaks in the 
+  Honey Creek Levee maintained by the Honey Creek Levee Association.
+  These two breaks occurred during the April 2013 flood.
+
+&&
+
+LAT...LON 3960 8741 3945 8747 3932 8763 3930 8757
+      3943 8740 3960 8736             
+
+$$
+
+ILC033-101-INC083-153-061653-
+/O.NEW.KIND.FL.W.0218.141207T1636Z-141211T0730Z/
+/HUTI2.1.ER.141207T1636Z.141209T0000Z.141210T1930Z.NO/
+1054 AM CST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Wabash River at Hutsonville Legacy Power Plant Site.
+* from Sunday morning to late Wednesday night.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 17.0 
+  feet Monday evening.
+* At 18.0 feet...Seep water occurs behind levees on Indiana side.  
+  Hutson Creek begins to overflow from backwater.  Old Darwin Road 
+  and a few rural roads in eastern Clark and Crawford counties in 
+  Illinois are impassable.  Low agricultural land floods.
+
+&&
+
+LAT...LON 3932 8763 3922 8762 3914 8768 3912 8762
+      3923 8754 3930 8757             
+
+$$
+
+ILC033-101-INC083-153-061653-
+/O.NEW.KIND.FL.W.0219.141208T0000Z-141210T2000Z/
+/RVTI3.1.ER.141208T0000Z.141209T0000Z.141210T0800Z.NO/
+1154 AM EST FRI DEC 5 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Wabash River at Riverton.
+* from Sunday evening to Wednesday afternoon.
+* At 11:00 AM Friday the stage was 9.9 feet.
+* Flood stage is 15.0 feet.
+* Minor flooding is forecast.
+* Forecast...Rise above flood stage by Sunday evening and continue to
+  rise to near 15.5 feet by early Tuesday morning.the river will fall
+  below flood stage by Wednesday morning.
+* At 16.0 feet...Some agricultural lands underwater.  A few rural 
+  roads in Crawford County, Illinois close as water backs up Minnow 
+  slough.  High water affects campground at Leaverton Park in 
+  Palestine.  A few private roads near the Gill Township levee in 
+  Sullivan County may flood.  Water level is at the top of most 
+  makeshift levees.
+
+&&
+
+LAT...LON 3913 8767 3898 8759 3885 8756 3886 8750
+      3899 8748 3913 8761             
+
+$$

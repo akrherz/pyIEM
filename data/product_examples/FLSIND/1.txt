@@ -1,0 +1,56 @@
+542 
+WGUS43 KIND 061542
+FLWIND
+FLOOD WARNING
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1042 AM EST SAT DEC 6 2014
+
+...The National Weather Service in Indianapolis has issued a Flood 
+Warning for a portion of the following river in central Indiana...
+
+  Youngs Creek...
+
+.Lowland flooding has developed along Youngs Creek near Amity in
+central Indiana due to rain of one to two inches falling across the
+area. Significant flooding is not expected. Flooding will affect 
+some local and state roads...low agricultural land and some river 
+parks. 
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+INC081-071542-
+/O.NEW.KIND.FL.W.0220.141206T1542Z-141208T0304Z/
+/AMTI3.1.ER.141206T1020Z.141207T0500Z.141207T2104Z.NO/
+1042 AM EST SAT DEC 6 2014
+
+The National Weather Service in Indianapolis has issued a 
+
+* Flood Warning for 
+  the Youngs Creek at Amity.
+* until Sunday evening.
+* At 10:15 AM Saturday the stage was 7.4 feet.
+* Flood stage is 7.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue rising to near 7.9 feet by after
+  midnight tomorrow. The river will fall below flood stage tomorrow 
+  afternoon.
+* At 7.0 feet...Youngs Creek at flood stage.  Most low areas along 
+  creek are flooded.   Aproaches to CR 400S bridge over Youngs Creek 
+  begin to flood.
+
+&&
+
+LAT...LON 3945 8605 3942 8602 3937 8602 3938 8598
+      3943 8599 3945 8602             
+
+$$

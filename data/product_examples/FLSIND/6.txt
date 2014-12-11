@@ -1,0 +1,43 @@
+930 
+WGUS83 KIND 080259
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+959 PM EST SUN DEC 7 2014
+
+......The Flood Warning is no longer in effect for portions of the
+following rivers in Indiana...
+
+  Wabash River...
+
+.The Wabash River at Mount Carmel is no longer expected to go above
+flood stage. Therefore...the warning has been cancelled.
+
+Precautionary/Preparedness Actions...
+
+Be alert to flood debris on previously flooded roads. Keep children 
+away from flooded areas. Recreational and agricultural interests 
+should remain alert to changing river conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+ILC047-059-185-193-INC051-083-129-080329-
+/O.CAN.KIND.FL.W.0224.000000T0000Z-141211T0600Z/
+/MCRI2.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.NO/
+859 PM CST SUN DEC 7 2014
+
+The Flood Warning is cancelled for
+  The Wabash River at Mount Carmel.
+* At 8:00 PM Sunday the stage was 16.5 feet.
+* Flood stage is 19.0 feet.
+* Forecast...The river will crest below flood stage at 18.5 feet 
+  early Tuesday morning.
+
+&&
+
+LAT...LON 3847 8777 3827 8800 3822 8800 3822 8794
+      3828 8781 3846 8765             
+
+$$

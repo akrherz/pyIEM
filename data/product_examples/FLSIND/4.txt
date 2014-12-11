@@ -1,0 +1,307 @@
+302 
+WGUS83 KIND 071712
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+1211 PM EST SUN DEC 7 2014
+
+...A Flood Warning continues for portions of the following rivers in 
+Indiana...
+
+  East Fork White River...Muscatatuck River...East Fork River...White 
+  River...Youngs Creek...
+
+.Lowland flooding will continue along portions of the
+White...Wabash...East Fork White and Muscatatuck Rivers as well as
+Youngs Creek in western...central and southern Indiana this weekend.
+
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+
+INC071-093-175-081711-
+/O.EXT.KIND.FL.W.0212.000000T0000Z-141210T1200Z/
+/SERI3.1.ER.141207T0230Z.141208T0000Z.141210T0000Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The East Fork White River at Seymour.
+* until Wednesday morning.
+* At 11:00 AM Sunday the stage was 14.6 feet.
+* Flood stage is 12.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue rising to near 15.1 feet by this
+  evening. The river will fall below flood stage Tuesday evening.
+* At 15.0 feet...Lowland agricultural flooding in progress.  County 
+  road 725 N (near Rockford) floods.  Indiana 258 east of Cortland 
+  may flood.
+
+&&
+
+LAT...LON 3906 8587 3893 8604 3879 8620 3877 8613
+      3886 8599 3905 8583             
+
+$$
+
+INC081-080304-
+/O.CON.KIND.FL.W.0220.000000T0000Z-141208T0304Z/
+/AMTI3.1.ER.141206T1020Z.141207T0115Z.141207T2104Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The Youngs Creek at Amity.
+* until this evening.
+* At 11:15 AM Sunday the stage was 5.1 feet.
+* Flood stage is 7.0 feet.
+* Minor flooding is forecast.
+* At 7.0 feet...Youngs Creek at flood stage.  Most low areas along 
+  creek are flooded.   Aproaches to CR 400S bridge over Youngs Creek 
+  begin to flood.
+
+&&
+
+LAT...LON 3945 8605 3942 8602 3937 8602 3938 8598
+      3943 8599 3945 8602             
+
+$$
+
+INC071-093-175-081711-
+/O.CON.KIND.FL.W.0213.141209T1645Z-141211T1114Z/
+/WHLI3.1.ER.141209T1645Z.141210T0600Z.141211T0514Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The Muscatatuck River at Wheeler Hollow.
+* from Tuesday morning to Thursday morning.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 16.8 
+  feet early Wednesday morning.
+* At 16.0 feet...High water begins to affect lowland areas along the 
+  river.
+
+&&
+
+LAT...LON 3878 8591 3878 8603 3880 8615 3876 8618
+      3873 8605 3874 8591             
+
+$$
+
+INC055-105-119-071741-
+/O.CAN.KIND.FL.W.0221.000000T0000Z-141210T1030Z/
+/SPNI3.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning is cancelled for
+  The White River at Spencer.
+* At 11:30 AM Sunday the stage was 10.8 feet.
+* Flood stage is 14.0 feet.
+* Forecast...The river crested below flood stage at 11.2 feet. The 
+  river will fall to 9.5 feet by .
+
+
+&&
+
+LAT...LON 3936 8666 3933 8674 3913 8696 3911 8692
+      3928 8675 3934 8665             
+
+$$
+
+INC027-055-083-081710-
+/O.EXT.KIND.FL.W.0214.000000T0000Z-141210T0900Z/
+/ELLI3.1.ER.000000T0000Z.141208T0600Z.141209T2100Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Elliston.
+* until late Tuesday night.
+* At  8:00 AM Sunday the stage was 19.2 feet.
+* Flood stage is 18.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue rising to near 21.1 feet by 
+  after midnight tomorrow. The river will fall below flood stage 
+  Tuesday afternoon.
+* At 21.0 feet...Eastern portion of Greene CR 100 S floods leading to 
+  Plummer.  Flooding covers all low bottomlands
+
+&&
+
+LAT...LON 3913 8696 3905 8699 3900 8697 3900 8693
+      3908 8694 3912 8692             
+
+$$
+
+INC027-055-083-081710-
+/O.EXT.KIND.FL.W.0222.000000T0000Z-141209T0430Z/
+/NWBI3.1.ER.141207T0022Z.141207T1545Z.141208T1630Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The wabashwaba River at Newberry.
+* until Monday evening.
+* At 11:30 AM Sunday the stage was 13.5 feet.
+* Flood stage is 13.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue to fall to below flood stage by 
+  tomorrow late morning.
+* At 13.5 feet...High water may affect CR 550 S in the Mary Long 
+  Cutoff area.   
+
+&&
+
+LAT...LON 3900 8696 3894 8708 3887 8715 3885 8712
+      3892 8700 3900 8694             
+
+$$
+
+INC027-051-083-125-081710-
+/O.EXT.KIND.FL.W.0215.000000T0000Z-141211T0600Z/
+/FREI3.1.ER.000000T0000Z.141208T0600Z.141210T1800Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Edwardsport.
+* until late Wednesday night.
+* At  7:00 AM Sunday the stage was 16.6 feet.
+* Flood stage is 15.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue rising to near 17.5 feet by 
+  tomorrow morning. The river will fall below flood stage Wednesday 
+  early afternoon.
+* At 17.5 feet...Flooding closes Old Vincennes Road.  High water 
+  crosses SR 358 on the Daviess County side just west of the levee.  
+  Flooding begins to affect higher bottomlands.  Residential property
+  of river cabins begins to flood.
+
+&&
+
+LAT...LON 3887 8715 3879 8729 3855 8726 3855 8723
+      3877 8723 3885 8712             
+
+$$
+
+ILC185-INC027-051-083-125-081710-
+/O.EXT.KIND.FL.W.0216.000000T0000Z-141214T1600Z/
+/PTRI3.1.ER.141207T1140Z.141210T0000Z.141214T0400Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Petersburg.
+* until Sunday December 14.
+* At 11:30 AM Sunday the stage was 16.5 feet.
+* Flood stage is 16.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue rising to near 19.0 feet by 
+  Tuesday evening. The river will fall below flood stage Saturday 
+  before midnight.
+* At 19.0 feet...Low bottomlands flood and flooding begins on higher 
+  bottomlands.  State Road 257 may begin to flood if Shoals gage 
+  reading is over 17 feet.  Private levees may be overtopped in many 
+  cases.
+
+&&
+
+LAT...LON 3855 8726 3855 8739 3854 8744 3851 8744
+      3850 8727 3855 8723             
+
+$$
+
+ILC185-INC051-083-081710-
+/O.EXT.KIND.FL.W.0223.141208T0900Z-141215T0900Z/
+/HAZI3.1.ER.141208T0900Z.141211T0600Z.141214T2100Z.NO/
+1111 AM CST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The White River at Hazleton.
+* from late tonight to Monday December 15.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 19.7 
+  feet early Thursday morning.
+* At 20.0 feet...Most of the low bottomlands flood. Flooding begins
+in
+  higher bottomlands. High water affects any residents in Pottsville 
+  river cabins. Pottsville Road...North C Street on river side of 
+  railroad tracks and Catt Street near U. S. Highway 41 are flooded. 
+  Water is near or starting on Giro Road in the vicinity of submerged
+  Pottsville Road. Oil stripped fields flood. Flood gates must be 
+  installed at Hazleton.
+
+&&
+
+LAT...LON 3854 8744 3852 8755 3843 8773 3841 8773
+      3844 8760 3851 8744             
+
+$$
+
+ILC033-101-INC083-153-071741-
+/O.CAN.KIND.FL.W.0218.000000T0000Z-141209T0700Z/
+/HUTI2.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.NO/
+1111 AM CST SUN DEC 7 2014
+
+The Flood Warning is cancelled for
+  The Wabash River at Hutsonville Legacy Power Plant Site.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast below flood stage with a maximum 
+  value of 15.4 feet this afternoon.
+* At 16.0 feet...Old Darwin Road and a few low rural roads between 
+  York and Hutsonville, Illinois begin to flood.  Agricultural 
+  flooding begins along portions of the river.
+
+&&
+
+LAT...LON 3932 8763 3922 8762 3914 8768 3912 8762
+      3923 8754 3930 8757             
+
+$$
+
+ILC033-101-INC083-153-071741-
+/O.CAN.KIND.FL.W.0219.000000T0000Z-141209T1240Z/
+/RVTI3.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.NO/
+1211 PM EST SUN DEC 7 2014
+
+The Flood Warning is cancelled for
+  The Wabash River at Riverton.
+* At 12:00 PM Sunday the stage was 12.9 feet.
+* Flood stage is 15.0 feet.
+* Forecast...The river crested below flood stage at 13.3 feet. The 
+  river will fall to 12.1 feet by .
+* At 14.0 feet...Lowest agricultural lands begin to flood.  Makeshift 
+  levees offer some protection.  Lowest rural roads flood.
+
+&&
+
+LAT...LON 3913 8767 3898 8759 3885 8756 3886 8750
+      3899 8748 3913 8761             
+
+$$
+
+ILC047-059-185-193-INC051-083-129-081710-
+/O.EXT.KIND.FL.W.0224.141209T1200Z-141211T0600Z/
+/MCRI2.1.ER.141209T1200Z.141209T1200Z.141210T1800Z.NO/
+1111 AM CST SUN DEC 7 2014
+
+The Flood Warning continues for
+  The Wabash River at Mount Carmel.
+* from Tuesday morning to late Wednesday night.
+* At 10:45 AM Sunday the stage was 15.9 feet.
+* Flood stage is 19.0 feet.
+* Forecast...The river is expected to rise to near flood stage 
+  Tuesday morning.
+* At 18.4 feet...Pumping started at Mt. Carmel.
+
+&&
+
+LAT...LON 3847 8777 3827 8800 3822 8800 3822 8794
+      3828 8781 3846 8765             
+
+$$
+

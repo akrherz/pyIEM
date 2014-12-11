@@ -1,0 +1,179 @@
+273 
+WGUS83 KIND 091434
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+934 AM EST TUE DEC 9 2014
+
+...A Flood Warning continues for portions of the following rivers in 
+southern Indiana...
+
+  East Fork White River...Muscatatuck River...White River...
+
+
+.High river levels and minor flooding continued along rivers 
+in southern Indiana.  The crest on the White River was at Petersburg
+and will arrive at Hazleton on Wednesday.  The crest on the East
+Fork White River was near Sparksville.  Flood levels ranged from
+bankfull to 3.5 feet above flood stage.
+
+River levels in the Bedford and Williams areas will continue to
+slowly rise through Thursday...slightly exceeding levels seen this
+past weekend.  Water levels in the Shoals area will remain below
+levels of the past weekend.  The White River will remain near crest
+in the Petersburg and Hazleton areas for 1 to 2 days. 
+
+Flooding will end in southern Indiana by Monday...December 15. 
+Little rain is expected during this time.
+
+Precautionary/Preparedness Actions...
+
+Motorists should never drive into flood water. Turn around and go 
+another way. Keep children away from flooded areas. Recreational and 
+agricultural interests should remain alert to changing river 
+conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+
+INC071-093-175-100518-
+/O.EXT.KIND.FL.W.0212.000000T0000Z-141210T0518Z/
+/SERI3.1.ER.141207T0230Z.141208T1000Z.141209T1718Z.NO/
+934 AM EST TUE DEC 9 2014
+
+The Flood Warning continues for
+  The East Fork White River at Seymour.
+* until late tonight.
+* At  8:00 AM Tuesday the stage was 12.6 feet.
+* Flood stage is 12.0 feet.
+* Minor flooding is occurring.
+* Forecast...The river will continue to fall to below flood stage by 
+  this afternoon.
+* At 12.0 feet...Significant agricultural lands begins to flood. 
+High
+  water affects some local roads.
+
+&&
+
+LAT...LON 3906 8587 3893 8604 3879 8620 3877 8613
+      3886 8599 3905 8583             
+
+$$
+
+INC071-093-175-101433-
+/O.CON.KIND.FL.W.0213.000000T0000Z-000000T0000Z/
+/WHLI3.1.ER.000000T0000Z.141208T2100Z.000000T0000Z.NO/
+934 AM EST TUE DEC 9 2014
+
+The Flood Warning continues for
+  The Muscatatuck River at Wheeler Hollow.
+* until further notice.
+* At  4:00 PM Monday the stage was 19.4 feet.
+* Flood stage is 16.0 feet.
+* At 20.0 feet...High water is noticed along the river.  Flood waters 
+  in a few backyards.  A few roads are flooded.
+
+&&
+
+LAT...LON 3878 8591 3878 8603 3880 8615 3876 8618
+      3873 8605 3874 8591             
+
+$$
+
+INC027-055-083-091504-
+/O.CAN.KIND.FL.W.0214.000000T0000Z-141210T1200Z/
+/ELLI3.1.ER.000000T0000Z.141208T1300Z.000000T0000Z.NO/
+934 AM EST TUE DEC 9 2014
+
+The Flood Warning is cancelled for
+  The White River at Elliston.
+* At  8:00 AM Tuesday the stage was 16.6 feet.
+* Flood stage is 18.0 feet.
+* Forecast...The river crested below flood stage at 16.6 feet. The 
+  river will fall to 13.9 feet by .
+* At 18.0 feet...River approaching River Road north of Greene CR 150 
+  W.  Some low lying agricultural land begins to flood.
+
+&&
+
+LAT...LON 3913 8696 3905 8699 3900 8697 3900 8693
+      3908 8694 3912 8692             
+
+$$
+
+INC027-051-083-125-101433-
+/O.EXT.KIND.FL.W.0215.000000T0000Z-141211T0000Z/
+/FREI3.1.ER.000000T0000Z.141208T1200Z.141210T1200Z.NO/
+934 AM EST TUE DEC 9 2014
+
+The Flood Warning continues for
+  The White River at Edwardsport.
+* until Wednesday evening.
+* At  7:00 AM Tuesday the stage was 16.8 feet.
+* Flood stage is 15.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue to fall to below flood stage by 
+  tomorrow morning.
+* At 17.5 feet...Flooding closes Old Vincennes Road.  High water 
+  crosses SR 358 on the Daviess County side just west of the levee.  
+  Flooding begins to affect higher bottomlands.  Residential property
+  of river cabins begins to flood.
+
+&&
+
+LAT...LON 3887 8715 3879 8729 3855 8726 3855 8723
+      3877 8723 3885 8712             
+
+$$
+
+ILC185-INC027-051-083-125-101433-
+/O.EXT.KIND.FL.W.0216.000000T0000Z-141212T2100Z/
+/PTRI3.1.ER.141207T1140Z.141209T0830Z.141212T0900Z.NO/
+934 AM EST TUE DEC 9 2014
+
+The Flood Warning continues for
+  The White River at Petersburg.
+* until Friday afternoon.
+* At  8:30 AM Tuesday the stage was 18.3 feet.
+* Flood stage is 16.0 feet.
+* Minor flooding is occurring and Minor flooding is forecast.
+* Forecast...The river will continue to fall to below flood stage by 
+  Friday morning.
+* At 18.0 feet...Lowland flooding begins to flood several Pike County 
+  roads.  Many of the following county roads begin to flood around 
+  this level...east of SR 57 include CR 750N...CR 600N and CR 1000E.
+  Pike county road subject to flooding west of SR 57 include...CR 250
+  W...CR 400W...CR 675N...CR 700 N...CR  1000w...CR 900W...CR 700W 
+  and CR 775W.
+
+&&
+
+LAT...LON 3855 8726 3855 8739 3854 8744 3851 8744
+      3850 8727 3855 8723             
+
+$$
+
+ILC185-INC051-083-101433-
+/O.EXT.KIND.FL.W.0223.000000T0000Z-141212T1800Z/
+/HAZI3.1.ER.000000T0000Z.141210T0000Z.141212T0600Z.NO/
+834 AM CST TUE DEC 9 2014
+
+The Flood Warning continues for
+  The White River at Hazleton.
+* until Friday afternoon.
+* Flood stage is 16.0 feet.
+* Forecast...The river is forecast to have a maximum value of 18.3 
+  feet this evening.
+* At 18.0 feet...Floodwaters cover much low ground in agricultural 
+  season.  Low lying oil fields...Pottsville Road and possibly a few 
+  other low rural roads flood.  High water isolates Pottstown, a 
+  river cabin community.
+
+&&
+
+LAT...LON 3854 8744 3852 8755 3843 8773 3841 8773
+      3844 8760 3851 8744             
+
+$$

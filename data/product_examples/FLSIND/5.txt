@@ -1,0 +1,42 @@
+863 
+WGUS83 KIND 072305
+FLSIND
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE INDIANAPOLIS IN
+605 PM EST SUN DEC 7 2014
+
+......The Flood Warning is no longer in effect for portions of the
+following rivers in Indiana...
+
+  Youngs Creek...
+
+.Youngs Creek at Amity in central Indiana has fallen below flood
+stage. Therefore...the warning has been cancelled.
+
+Precautionary/Preparedness Actions...
+
+Be alert to flood debris on previously flooded roads. Keep children 
+away from flooded areas. Recreational and agricultural interests 
+should remain alert to changing river conditions.
+
+For detailed flood information go to weather.gov/ind on the web. From
+the blue menu bar on the left side of the page...click on rivers and 
+lakes.
+
+INC081-072335-
+/O.CAN.KIND.FL.W.0220.000000T0000Z-141208T0304Z/
+/AMTI3.1.ER.141206T1020Z.141207T0115Z.141207T0706Z.NO/
+605 PM EST SUN DEC 7 2014
+
+The Flood Warning is cancelled for
+  The Youngs Creek at Amity.
+* At 5:15 PM Sunday the stage was 4.6 feet.
+* Flood stage is 7.0 feet.
+* Fell below flood stage at 2:06 AM Sunday.
+
+&&
+
+LAT...LON 3945 8605 3942 8602 3937 8602 3938 8598
+      3943 8599 3945 8602             
+
+$$

@@ -32,6 +32,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141211_null_expire(self):
+        """ Figure out why the database has a null expiration for this FL.W"""
+        for i in range(0,12):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings)) 
+    
     def test_141210_continues(self):
         """ See that we handle CON with infinite time A-OK """
         for i in range(0,2):
@@ -430,12 +438,11 @@ class TestProducts(unittest.TestCase):
     def test_141205_vtec_series(self):
         """ Make sure we don't get any warnings processing this series """
         for i in range(9):
+            print("Processing product: %s" % (i,))
             fn = "WSWOTX/WSW_%02i.txt" % (i,)
             prod = vtecparser(get_file(fn))
             prod.sql(self.txn)
-            if len(prod.warnings) > 0:
-                print i, prod.warnings
-            self.assertEquals(len(prod.warnings), 0)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
     
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
