@@ -53,6 +53,32 @@ class VTECProduct(TextProduct):
         self.skip_con = self.get_skip_con()
 
 
+    def debug_warning(self, txn, warning_table, ugcstring, vtec, segment,
+                      ets):
+        """ Get a more useful warning message for this failure """
+        cnt = txn.rowcount
+        txn.execute("""SELECT ugc, 
+                    issue at time zone 'UTC' as utc_issue, 
+                    expire at time zone 'UTC' as utc_expire, 
+                    updated at time zone 'UTC' as utc_updated, 
+                    status from """+warning_table+""" 
+                    WHERE wfo = %s and eventid = %s
+                    and ugc in """+ugcstring+""" and significance = %s
+                    and phenomena = %s ORDER by ugc ASC, issue ASC""",
+                    (vtec.office, vtec.ETN, vtec.significance,
+                     vtec.phenomena))
+        debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
+        for row in txn:
+            debugmsg += "%s %s %s %s %s\n" % (row['ugc'], row['status'],
+                        row['utc_issue'].strftime("%Y-%m-%d %H:%M"), 
+                        row['utc_expire'].strftime("%Y-%m-%d %H:%M"),
+                        row['utc_updated'].strftime("%Y-%m-%d %H:%M"))
+        return ('Warning: %s.%s.%s do_sql_vtec %s '
+                    +'updated %s row, should %s rows\nUGCS: %s\n'
+                    +'valid: %s expire: %s\n%s') % (
+                    vtec.phenomena, vtec.significance, vtec.ETN, vtec.action,
+                    cnt, len(segment.ugcs), segment.ugcs, self.valid,
+                    ets, debugmsg)
 
 
     def sql(self, txn):
@@ -206,21 +232,26 @@ class VTECProduct(TextProduct):
                 ets = self.valid + datetime.timedelta(hours=72)
 
             txn.execute("""
-            UPDATE """+ warning_table +""" SET expire = %s, status = %s,
-            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
-                   || %s || '__' WHERE
-            wfo = %s and eventid = %s and ugc in """+ugcstring+"""
-            and significance = %s and phenomena = %s 
-            and status not in ('EXP', 'CAN', 'UPG')
-            """, (ets, vtec.action, self.unixtext,
-                  vtec.office, vtec.ETN, 
-                  vtec.significance, vtec.phenomena))
+                UPDATE """+ warning_table +""" SET 
+                expire = %s, 
+                status = %s,
+                updated = %s,
+                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
+                   || %s || '__' 
+                WHERE wfo = %s and eventid = %s and ugc in """+ugcstring+"""
+                and significance = %s and phenomena = %s 
+                and status not in ('EXP', 'CAN', 'UPG') and
+                (expire + '1 hour'::interval) >= %s
+                """, (ets, vtec.action, self.valid, self.unixtext,
+                      vtec.office, vtec.ETN, 
+                      vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 if not self.is_correction():
-                    self.warnings.append(('CAN/UPG/EXT: %s.%s.%s do_sql_vtec '
-                        +'updated %s row, should %s rows %s') % (
-                        vtec.phenomena, vtec.significance, vtec.ETN,
-                        txn.rowcount, len(segment.ugcs), segment.ugcs))
+                    self.warnings.append(
+                        self.debug_warning(txn, warning_table, ugcstring, 
+                                           vtec, segment, ets)
+                    )
+
 
         elif vtec.action in ['CON', 'EXP', 'ROU']:
             # These are no-ops, just updates
@@ -240,27 +271,10 @@ class VTECProduct(TextProduct):
                 """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                       vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
-                cnt = txn.rowcount
-                txn.execute("""SELECT ugc, issue at time zone 'UTC', 
-                    expire at time zone 'UTC', 
-                    updated at time zone 'UTC', status from """+warning_table+""" 
-                    WHERE wfo = %s and eventid = %s
-                    and ugc in """+ugcstring+""" and significance = %s
-                    and phenomena = %s ORDER by ugc ASC, issue ASC""",
-                    (vtec.office, vtec.ETN, vtec.significance,
-                     vtec.phenomena))
-                debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
-                for row in txn:
-                    debugmsg += "%s %s %s %s %s\n" % (row[0], row[4],
-                        row[1].strftime("%Y-%m-%d %H:%M"), 
-                        row[2].strftime("%Y-%m-%d %H:%M"),
-                        row[3].strftime("%Y-%m-%d %H:%M"))
-                self.warnings.append(('Warning: %s.%s.%s do_sql_vtec %s '
-                    +'updated %s row, should %s rows\nUGCS: %s\n'
-                    +'valid: %s expire: %s\n%s') % (
-                    vtec.phenomena, vtec.significance, vtec.ETN, vtec.action,
-                    cnt, len(segment.ugcs), segment.ugcs, self.valid,
-                    ets, debugmsg))
+                self.warnings.append(
+                    self.debug_warning(txn, warning_table, ugcstring, 
+                                       vtec, segment, ets)
+                )
 
         else:
             self.warnings.append( ('Warning: do_sql_vtec() encountered %s '

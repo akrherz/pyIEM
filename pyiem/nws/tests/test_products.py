@@ -32,9 +32,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141212_mqt(self):
+        """ Updated four rows instead of three, better check on it """
+        for i in range(4):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('MWWMQT/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings)) 
+    
     def test_141211_null_expire(self):
         """ Figure out why the database has a null expiration for this FL.W"""
-        for i in range(0,12):
+        for i in range(0, 13):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
             prod.sql(self.txn)
