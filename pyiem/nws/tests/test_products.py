@@ -32,6 +32,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
     
+    def test_141215_correction(self):
+        """ I have a feeling we are not doing the right thing for COR """
+        for i in range(6):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('NPWMAF/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            answer = 0 if i != 2 else 2
+            self.assertEquals(len(prod.warnings), answer, 
+                              "\n".join(prod.warnings))
+    
     def test_141212_mqt(self):
         """ Updated four rows instead of three, better check on it """
         for i in range(4):
