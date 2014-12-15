@@ -76,6 +76,9 @@ SNOWFALL (IN)
             continue
         # Spaces are stripped by this point
         line = "%-70s" % (line,)
+        # skipme
+        if len(line.strip()) < 14:
+            continue
         key = line[:14].strip()
         if key == 'SNOW DEPTH':
             continue

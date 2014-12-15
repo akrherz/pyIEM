@@ -1,0 +1,76 @@
+519 
+CDUS44 KFWD 152225
+CLIACT
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE FORT WORTH TX                               
+424 PM CST MON DEC 15 2014
+
+
+................................... 
+
+...THE WACO CLIMATE SUMMARY FOR DECEMBER 15 2014...
+VALID AS OF 0400 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1901 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         69    328 PM  81    1995  59     10       59       
+  MINIMUM         52    804 AM  13    1901  37     15       24       
+  AVERAGE         61                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.02          1.90 1996   0.09  -0.07     0.00    
+  MONTH TO DATE    0.07                      1.33  -1.26     0.34    
+  SINCE DEC 1      0.07                      1.33  -1.26     0.34    
+  SINCE JAN 1     29.62                     33.27  -3.65    36.89    
+                                                                     
+SNOWFALL (IN)                                                        
+  TODAY            0.0           T    1947   0.0    0.0      0.0     
+                                      1925                          
+  MONTH TO DATE    0.0                       0.0    0.0       T      
+  SINCE DEC 1      0.0                       0.0    0.0       T      
+  SINCE JUL 1      0.0                       0.1   -0.1       T      
+  SNOW DEPTH       0                                                 
+                                                                     
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    18   HIGHEST WIND DIRECTION     W (290)      
+  HIGHEST GUST SPEED    24   HIGHEST GUST DIRECTION     W (270)      
+  AVERAGE WIND SPEED    11.8                                         
+
+
+
+
+..........................................................
+
+                                                                     
+THE WACO CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   59        84      1977                    
+ MINIMUM TEMPERATURE (F)   37        11      1989                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 15 2014......SUNRISE   721 AM CST   SUNSET   527 PM CST   
+DECEMBER 16 2014......SUNRISE   722 AM CST   SUNSET   527 PM CST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

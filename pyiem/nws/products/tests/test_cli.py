@@ -15,6 +15,14 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_141215_convkey(self):
+        """ Get a warning about covert key """
+        prod = cliparser(get_file('CLIACT.txt'))
+        self.assertEqual(prod.data[0]['data']['snow_today_record_years'][0],
+                         1947)
+        self.assertEqual(prod.data[0]['data']['snow_today_record_years'][1],
+                         1925)
+
     def test_141201_clihou(self):
         """ See that we can finally parse the CLIHOU product! """
         prod = cliparser(get_file('CLIHOU.txt'))
