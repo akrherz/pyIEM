@@ -21,7 +21,6 @@ import matplotlib.colors as mpcolors
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 from matplotlib.collections import PatchCollection
-import mx.DateTime
 import numpy as np
 from scipy.interpolate import NearestNDInterpolator
 from pyiem import reference
@@ -414,7 +413,7 @@ class MapPlot:
         
         self.fig.text(0.01, 0.03, "%s :: generated %s" % (
                         kwargs.get('caption', 'Iowa Environmental Mesonet'),
-                        mx.DateTime.now().strftime("%d %B %Y %I:%M %p %Z"),))
+                        datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
 
     def close(self):
         ''' Close the figure in the case of batch processing '''
