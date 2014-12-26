@@ -68,11 +68,16 @@ class VTECProduct(TextProduct):
                     (vtec.office, vtec.ETN, vtec.significance,
                      vtec.phenomena))
         debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
+        def myfmt(val):
+            """ Be more careful """
+            if val is None:
+                return '%-16s' % ('((NULL))',)
+            return val.strftime("%Y-%m-%d %H:%M")
         for row in txn:
             debugmsg += "%s %s %s %s %s\n" % (row['ugc'], row['status'],
-                        row['utc_issue'].strftime("%Y-%m-%d %H:%M"), 
-                        row['utc_expire'].strftime("%Y-%m-%d %H:%M"),
-                        row['utc_updated'].strftime("%Y-%m-%d %H:%M"))
+                        myfmt(row['utc_issue']), 
+                        myfmt(row['utc_expire']),
+                        myfmt(row['utc_updated']))
         return ('Warning: %s.%s.%s do_sql_vtec %s '
                     +'updated %s row, should %s rows\nUGCS: %s\n'
                     +'valid: %s expire: %s\n%s') % (

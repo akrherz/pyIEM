@@ -72,6 +72,9 @@ def parse(text, valid, ugc_provider={}):
     tokens = re.findall(_re, text, re.M)
     if len(tokens) == 0:
         return ugcs, expire
+    if len(tokens) > 1:
+        raise UGCParseException("More than 1 UGC encoding in text:\n%s\n" % (
+                                                            str(tokens),))
     
     parts = re.split('-', tokens[0][0].replace(" ","").replace("\n", ""))
     expire = str2time( tokens[0][2], valid)

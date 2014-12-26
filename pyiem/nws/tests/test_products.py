@@ -6,7 +6,7 @@ import pytz
 
 from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
-from pyiem.nws.ugc import UGC
+from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
 
 def get_file(name):
@@ -31,7 +31,11 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
-    
+
+    def test_141226_correction(self):
+        """ Add another test for product corrections """
+        self.assertRaises(UGCParseException, vtecparser, get_file('FLSRAH.txt'))
+
     def test_141215_correction(self):
         """ I have a feeling we are not doing the right thing for COR """
         for i in range(6):
