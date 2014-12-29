@@ -8,6 +8,28 @@ from pyiem.nws.product import TextProduct
 
 HEADLINE_RE = re.compile(r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) CLIMATE SUMMARY FOR\s+([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\.")
 
+REGIMES = [
+"WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST",
+"WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE LAST",
+"WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST",
+"WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE LAST",
+"WEATHER ITEM   OBSERVED TIME   RECORD YEAR",
+"WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE",
+"WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE",
+"WEATHER ITEM   OBSERVED",
+]
+# label, value, time, record, year, normal, departure, last
+COLS = [
+[  16,     23,   30,   37,     42,   49,    56,         65],
+[  16,     23,   30,   None,   None, 37,    44,         53],
+[  16,     22,   31,   37,     43,   50,    58,         65],
+[  16,     23,  None,  30,     35,   42,    49,         58],
+[  16,     23,   25,   37,     42,   None,  None,      None],
+[  16,     23,   30,   37,     42,   49,    56,        None],
+[  16,     23,  None,  30,     35,   42,    49,        None],
+[  16,     23,  None,  None,   None, None,  None,      None],
+]
+
 class CLIException(Exception):
     """ Exception """
     pass
@@ -28,6 +50,8 @@ def trace_r(val):
 
 def get_number(s):
     """ Convert a string into a number, preferable a float! """
+    if s is None:
+        return None
     s = s.strip()
     if s == '':
         return None
@@ -35,9 +59,9 @@ def get_number(s):
         return None
     if s == 'T':
         return 0.0001
-    number = re.findall("[-+]?\d*\.\d+|\d+", s)
+    number = re.findall("[\-\+]?\d*\.\d+|[\-\+]?\d+", s)
     if len(number) == 1:
-        if s.find("."):
+        if s.find(".") > 0:
             return float(number[0])
         else:
             return int(number[0])
@@ -57,7 +81,20 @@ def convert_key(s):
     print 'convert_key() failed for |%s|' % (s,)
     return 'fail'
 
-def parse_snowfall(lines, data):
+def make_tokens(regime, line):
+    """ Turn a line into tokens based on a regime """
+    mycols = COLS[regime]
+    tokens = []
+    pos = 0
+    for e in mycols:
+        if e is None:
+            tokens.append(None)
+            continue
+        tokens.append(line[pos:e].strip() if line[pos:e].strip() != "" else None)
+        pos = e
+    return tokens
+
+def parse_snowfall(regime, lines, data):
     """ Parse the snowfall data 
 WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
                 VALUE   (LST)  VALUE       VALUE  FROM      YEAR 
@@ -70,27 +107,22 @@ SNOWFALL (IN)
   SNOW DEPTH       0
     """
     for linenum, line in enumerate(lines):
-        # Replace trace with IEM internal storage of 0.0001
-        numbers = re.findall("[-+]?\d*\.\d+|\d+| T ", line)
-        if len(numbers) == 0:
-            continue
-        # Spaces are stripped by this point
-        line = "%-70s" % (line,)
         # skipme
         if len(line.strip()) < 14:
             continue
-        key = line[:14].strip()
+        tokens = make_tokens(regime, line)
+        key = tokens[0].strip()
         if key == 'SNOW DEPTH':
             continue
         key = convert_key(key)
-        data['snow_%s' % (key,)] = get_number(line[15:21])
-        data['snow_%s_record' % (key,)] = get_number(line[29:35])
-        yeartest = get_number(line[36:40])
+        data['snow_%s' % (key,)] = get_number(tokens[1])
+        data['snow_%s_record' % (key,)] = get_number(tokens[3])
+        yeartest = get_number(tokens[4])
         if yeartest is not None:
             data['snow_%s_record_years' % (key,)] = [yeartest,]
-        data['snow_%s_normal' % (key,)] = get_number(line[41:47])
-        data['snow_%s_departure' % (key,)] = get_number(line[48:54])
-        data['snow_%s_last' % (key,)] = get_number(line[57:63])
+        data['snow_%s_normal' % (key,)] = get_number(tokens[5])
+        data['snow_%s_departure' % (key,)] = get_number(tokens[6])
+        data['snow_%s_last' % (key,)] = get_number(tokens[7])
         if (key == 'today' and yeartest is not None and
             data['snow_%s_record_years' % (key,)][0] is not None):
                 while ((linenum+1)<len(lines) and 
@@ -99,46 +131,29 @@ SNOWFALL (IN)
                                                     int(lines[linenum+1]))
                     linenum += 1
 
-def parse_precipitation(lines, data):
+def parse_precipitation(regime, lines, data):
     """ Parse the precipitation data """
     for linenum, line in enumerate(lines):
-        # careful here as if T is only value, the trailing space is stripped
-        line = (line+" ").replace(" T ", "0.0001")
-        numbers = re.findall("[-+]?\d*\.\d+|\d+", line)
-        if line.startswith("YESTERDAY") or line.startswith("TODAY"):
-            if len(numbers) == 0:
-                continue
-            data['precip_today'] = float(numbers[0])
-            if len(numbers) == 6:
-                data['precip_today_normal'] = float(numbers[3])
-                data['precip_today_record'] = float(numbers[1])
-                data['precip_today_record_years'] = [int(numbers[2]),]
-                # Check next line(s) for more years
+        if len(line.strip()) < 20:
+            continue
+        tokens = make_tokens(regime, line)
+        key = convert_key(tokens[0])
+        
+        data['precip_%s' % (key,)] = get_number(tokens[1])
+        data['precip_%s_record' % (key,)] = get_number(tokens[3])
+        yeartest = get_number(tokens[4])
+        if yeartest is not None:
+            data['precip_%s_record_years' % (key,)] = [yeartest,]
+        data['precip_%s_normal' % (key,)] = get_number(tokens[5])
+        data['precip_%s_departure' % (key,)] = get_number(tokens[6])
+        data['precip_%s_last' % (key,)] = get_number(tokens[7])
+        if (key == 'today' and yeartest is not None and
+            data['precip_%s_record_years' % (key,)][0] is not None):
                 while ((linenum+1)<len(lines) and 
                        len(lines[linenum+1].strip()) == 4):
                     data['precip_today_record_years'].append(
                                                     int(lines[linenum+1]))
                     linenum += 1
-        elif line.startswith("MONTH TO DATE"):
-            data['precip_month'] = float(numbers[0])
-            if len(numbers) == 4:
-                data['precip_month_normal'] = float(numbers[1])
-        elif line.startswith("SINCE JAN 1"):
-            data['precip_jan1'] = float(numbers[1])
-            if len(numbers) == 4:
-                data['precip_jan1_normal'] = float(numbers[2])
-        elif line.startswith("SINCE JUL 1"):
-            data['precip_jul1'] = float(numbers[1])
-            if len(numbers) == 4:
-                data['precip_jul1_normal'] = float(numbers[2])
-        elif line.startswith("SINCE JUN 1"):
-            data['precip_jun1'] = float(numbers[1])
-            if len(numbers) == 4:
-                data['precip_jun1_normal'] = float(numbers[2])
-        elif line.startswith("SINCE DEC 1"):
-            data['precip_dec1'] = float(numbers[1])
-            if len(numbers) == 4:
-                data['precip_dec1_normal'] = float(numbers[2])
 
 def no99(val):
     """ Giveme int val of null! """
@@ -146,7 +161,7 @@ def no99(val):
         return None
     return int(val)
 
-def parse_temperature(lines, data):
+def parse_temperature(regime, lines, data):
     """ Here we parse a temperature section
 WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
                 VALUE   (LST)  VALUE       VALUE  FROM      YEAR
@@ -159,38 +174,31 @@ TEMPERATURE (F)
   AVERAGE         76                        76      0       84
     """
     for linenum, line in enumerate(lines):
-        numbers = re.findall("\-?\d+", line.replace(" MM ", " -99 "))
-        if line.startswith("MAXIMUM"):
-            data['temperature_maximum'] = no99(numbers[0])
-            tokens = re.findall("([0-9]{3,4} [AP]M)", line)
-            if len(tokens) == 1:
-                data['temperature_maximum_time'] = tokens[0]
-            if len(numbers) == 7: # we know this
-                data['temperature_maximum_record'] = no99(numbers[2])
-                if int(numbers[3]) > 0:
-                    data['temperature_maximum_record_years'] = [int(numbers[3]),]
-                data['temperature_maximum_normal'] = no99(numbers[4])
-                # Check next line(s) for more years
-                while ((linenum+1)<len(lines) and 
-                       len(lines[linenum+1].strip()) == 4):
-                    data['temperature_maximum_record_years'].append(
-                                                    int(lines[linenum+1]))
-                    linenum += 1
-        if line.startswith("MINIMUM"):
-            data['temperature_minimum'] = no99(numbers[0])
-            tokens = re.findall("([0-9]{3,4} [AP]M)", line)
-            if len(tokens) == 1:
-                data['temperature_minimum_time'] = tokens[0]
-            if len(numbers) == 7: # we know this
-                data['temperature_minimum_record'] = no99(numbers[2])
-                if int(numbers[3]) > 0:
-                    data['temperature_minimum_record_years'] = [int(numbers[3]),]
-                data['temperature_minimum_normal'] = no99(numbers[4])
-                while ((linenum+1)<len(lines) and 
-                       len(lines[linenum+1].strip()) == 4):
-                    data['temperature_minimum_record_years'].append(
-                                                    int(lines[linenum+1]))
-                    linenum += 1
+        if len(line.strip()) < 18:
+            continue
+        tokens = make_tokens(regime, line)
+        if tokens[0] is None:
+            continue
+        key = tokens[0].strip().lower()
+        if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
+            continue
+        data['temperature_%s' % (key,)] = get_number(tokens[1])
+        if tokens[2] is not None:
+            data['temperature_%s_time' % (key,)] = tokens[2]
+        if tokens[3] is not None:
+            data['temperature_%s_record' % (key,)] = get_number(tokens[3])
+        if tokens[4] is not None:
+            n = get_number(tokens[4])
+            if n is not None:
+                data['temperature_%s_record_years' % (key,)] = [n,]
+        if tokens[5] is not None:    
+            data['temperature_%s_normal' % (key,)] = get_number(tokens[5])
+            # Check next line(s) for more years
+            while ((linenum+1)<len(lines) and 
+                   len(lines[linenum+1].strip()) == 4):
+                data['temperature_%s_record_years' % (key,)].append(
+                                                int(lines[linenum+1]))
+                linenum += 1
 
 class CLIProduct(TextProduct):
     """
@@ -202,6 +210,9 @@ class CLIProduct(TextProduct):
         TextProduct.__init__(self, text)
         # Hold our parsing results as an array of dicts
         self.data = []
+        self.regime = None
+        # Sometimes, we get products that are not really in CLI format but 
+        # are RER (record event reports) with a CLI AWIPS ID
         if self.wmo[:2] != 'CD':
             print 'Product %s skipped due to wrong header' % (
                                                     self.get_product_id(),)
@@ -210,12 +221,28 @@ class CLIProduct(TextProduct):
             if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
                 continue
             # We have meat!
+            self.compute_diction(section)
             valid, station = self.parse_cli_headline(section)
             data = self.parse_data(section)
             self.data.append(dict(cli_valid=valid,
                                   cli_station=station,
                                   data=data))
 
+    def compute_diction(self, text):
+        """ Try to determine what we have for a format """
+        tokens = re.findall("^WEATHER ITEM.*$", text, re.M)
+        if len(tokens) == 0:
+            raise CLIException("Could not find 'WEATHER ITEM' within text")
+        if len(tokens) > 1:
+            raise CLIException("Found %s 'WEATHER ITEM' in text" % (
+                                                                len(tokens),))
+        diction = tokens[0].strip()
+        if not diction in REGIMES:
+            raise CLIException(("Unknown diction found in 'WEATHER ITEM'\n"
+                                +"|%s|") % (diction,))
+        
+        self.regime = REGIMES.index(diction)
+        
     def get_jabbers(self, uri, _=None):
         """ Override the jabber message formatter """
         url = "%s?pid=%s" % (uri, self.get_product_id())
@@ -257,9 +284,11 @@ class CLIProduct(TextProduct):
         pos = section.find("TEMPERATURE")
         if pos == -1:
             raise CLIException('Failed to find TEMPERATURE, aborting')
+        if self.regime is None:
+            return data
 
         # Strip extraneous spaces
-        meat = "\n".join([l.strip() for l in section[pos:].split("\n")])
+        meat = "\n".join([l.rstrip() for l in section[pos:].split("\n")])
         # Don't look into aux data for things we should not be parsing
         if meat.find("&&") > 0:
             meat = meat[:meat.find("&&")]
@@ -267,11 +296,11 @@ class CLIProduct(TextProduct):
         for section in sections:
             lines = section.split("\n")
             if lines[0] in ["TEMPERATURE (F)", 'TEMPERATURE']:
-                parse_temperature(lines, data)
+                parse_temperature(self.regime, lines, data)
             elif lines[0] in ['PRECIPITATION (IN)', 'PRECIPITATION']:
-                parse_precipitation(lines, data)
+                parse_precipitation(self.regime, lines, data)
             elif lines[0] in ['SNOWFALL (IN)', 'SNOWFALL']:
-                parse_snowfall(lines, data)
+                parse_snowfall(self.regime, lines, data)
 
         return data
 

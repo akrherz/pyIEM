@@ -15,8 +15,39 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+
+    def test_141229_newregime4(self):
+        """ CLIOLF has a new regime """
+        prod = cliparser(get_file('CLIOLF.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_average'],
+                         -2)
+
+    def test_141229_newregime5(self):
+        """ CLIICT has a new regime """
+        prod = cliparser(get_file('CLIICT.txt'))
+        self.assertEqual(prod.data[0]['data']['precip_today'],
+                         0.00)
+
+    def test_141229_newregime3(self):
+        """ CLIDRT has a new regime """
+        prod = cliparser(get_file('CLIDRT.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                         37)
+
+    def test_141229_newregime2(self):
+        """ CLIFMY has a new regime """
+        prod = cliparser(get_file('CLIFMY.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                         63)
+
+    def test_141229_newregime(self):
+        """ CLIEKA has a new regime """
+        prod = cliparser(get_file('CLIEKA.txt'))
+        self.assertEqual(prod.data[0]['data']['precip_today_record_years'][0],
+                         1896)
+
     def test_141215_convkey(self):
-        """ Get a warning about covert key """
+        """ CLIACT Get a warning about convert key """
         prod = cliparser(get_file('CLIACT.txt'))
         self.assertEqual(prod.data[0]['data']['snow_today_record_years'][0],
                          1947)
@@ -24,39 +55,39 @@ class TestProducts(unittest.TestCase):
                          1925)
 
     def test_141201_clihou(self):
-        """ See that we can finally parse the CLIHOU product! """
+        """ CLIHOU See that we can finally parse the CLIHOU product! """
         prod = cliparser(get_file('CLIHOU.txt'))
         self.assertEqual(prod.data[0]['cli_station'], 'HOUSTON INTERCONTINENTAL')
         self.assertEqual(prod.data[1]['cli_station'], 'HOUSTON/HOBBY AIRPORT')
 
     def test_141114_coopaux(self):
-        """ Product had aux COOP data, which confused ingest """
+        """ CLIEAR Product had aux COOP data, which confused ingest """
         prod = cliparser(get_file('CLIEAR.txt'))
         self.assertEqual(prod.data[0]['data']['precip_today'], 0)
 
     def test_141103_recordsnow(self):
-        """ Make sure we can deal with record snowfall, again... """
+        """ CLIBGR Make sure we can deal with record snowfall, again... """
         prod = cliparser(get_file('CLIBGR.txt'))
         self.assertEqual(prod.data[0]['data']['snow_today'], 12.0)
 
     def test_141024_recordsnow(self):
-        """ See that we can handle record snowfall """
+        """ CLIOME See that we can handle record snowfall """
         prod = cliparser(get_file('CLIOME.txt'))
         self.assertEqual(prod.data[0]['data']['snow_today'], 3.6)
 
     def test_141022_correction(self):
-        """ See what happens if we have a valid(?) product correction """
+        """ CLIEWN See what happens if we have a valid(?) product correction """
         prod = cliparser(get_file('CLIEWN.txt'))
         self.assertEqual(prod.data[0]['data']['temperature_maximum'], 83)
 
     def test_141013_missing(self):
-        """ See why Esterville was not going to the database! """
+        """ CLIEST See why Esterville was not going to the database! """
         prod = cliparser(get_file('CLIEST.txt'))
         self.assertEqual(prod.data[0]['data']['temperature_maximum'], 62)
         self.assertEqual(prod.data[0]['data']['precip_month'], 1.22)
 
     def test_141013_tracetweet(self):
-        """ Make sure we convert trace amounts in tweet to trace! """
+        """ CLIDSM2 Make sure we convert trace amounts in tweet to trace! """
         prod = cliparser(get_file('CLIDSM2.txt'))
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][2]['twitter'], 
@@ -65,18 +96,18 @@ class TestProducts(unittest.TestCase):
                     +' http://localhost?pid=201410122226-KDMX-CDUS43-CLIDSM'))
 
     def test_141003_missing(self):
-        """ We are missing some data! """
+        """ CLIFFC We are missing some data! """
         prod = cliparser(get_file("CLIFFC.txt"))
         self.assertEqual(prod.data[0]['data']['temperature_maximum_normal'], 78)
     
     def test_141003_alaska(self):
-        """ Some alaska data was not getting processed"""
+        """ CLIBET Some alaska data was not getting processed"""
         prod = cliparser(get_file("CLIBET.txt"))
         self.assertEqual(prod.data[0]['data']['temperature_maximum'], 17)
         self.assertEqual(prod.data[0]['data']['snow_jul1'], 14.4)
     
     def test_140930_negative_temps(self):
-        """ Royal screwup not supporting negative numbers """
+        """ CLIALO Royal screwup not supporting negative numbers """
         prod = cliparser(get_file('CLIALO.txt'))
         self.assertEqual(prod.data[0]['data'].get('temperature_minimum'), -21)
         self.assertEqual(prod.data[0]['data'].get('temperature_minimum_record'), -21)
@@ -87,12 +118,12 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data[0]['data'].get('snow_jul1_last'), 11.3)
     
     def test_140930_mm_precip(self):
-        """ Make sure having MM as today's precip does not error out """
+        """ CLIABY Make sure having MM as today's precip does not error out """
         prod = cliparser(get_file('CLIABY.txt'))
         self.assertTrue(prod.data[0]['data'].get('precip_today') is None)
     
     def test_cli(self):
-        """ Test the processing of a CLI product """
+        """ CLIJUN Test the processing of a CLI product """
         prod = cliparser(get_file('CLIJNU.txt'))
         self.assertEqual(prod.data[0]['cli_valid'], datetime.datetime(2013,6,30))
         self.assertEqual(prod.valid, datetime.datetime(2013,7,1,0,36).replace(
@@ -107,6 +138,8 @@ class TestProducts(unittest.TestCase):
                                    +'Low: 52 Precip: Trace Snow: M '
                     +'http://localhost?pid=201307010036-PAJK-CDAK47-CLIJNU'))
         
+    def test_cli2(self):
+        """ CLIDSM test """
         prod = cliparser(get_file('CLIDSM.txt'))
         self.assertEqual(prod.data[0]['cli_valid'], datetime.datetime(2013,8,1))
         self.assertEqual(prod.data[0]['data']['temperature_maximum'], 89)
@@ -117,6 +150,8 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.data[0]['data']['precip_jun1'], 4.25)
         self.assertEqual(prod.data[0]['data']['precip_jan1'], 22.56)
         
+    def test_cli3(self):
+        """ CLINYC test """
         prod = cliparser(get_file('CLINYC.txt'))
         self.assertEqual(prod.data[0]['data']['snow_today_record_years'][0], 1925)
         self.assertEqual(prod.data[0]['data']['snow_today_record'], 11.5)

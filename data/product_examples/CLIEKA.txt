@@ -1,0 +1,109 @@
+912 
+CDUS46 KEKA 291216
+CLIEKA
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE EUREKA CA                                   
+416 AM PST MON DEC 29 2014
+
+
+................................... 
+
+...THE EUREKA CA CLIMATE SUMMARY FOR DECEMBER 28 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1886 TO 2014
+
+
+WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE LAST            
+                VALUE   VALUE       VALUE  FROM      YEAR            
+                                           NORMAL                    
+...........................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         55     63    1937  55      0       53               
+  MINIMUM         42     32    2006  41      1       37               
+                               1978                                 
+                               1955                                 
+  AVERAGE         49                 48      1       45             
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.01   2.67 1896   0.25  -0.24     0.00           
+  MONTH TO DATE    9.65               7.40   2.25     0.56           
+  SINCE JUL 1     21.41              16.33   5.08     5.12           
+  SINCE JAN 1     37.40              39.61  -2.21    16.60           
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY       MM     MM      MM   0.0   MM        0.0            
+  MONTH TO DATE    0.0                0.0    0.0       T             
+  SINCE DEC 1      0.0                0.0    0.0       T             
+  SINCE JUL 1      0.0                0.0    0.0       T             
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       16                 17     -1       20              
+  MONTH TO DATE  304                475   -171      636              
+  SINCE DEC 1    304                475   -171      636              
+  SINCE JUL 1   1324               1897   -573     2087              
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                  0      0        0              
+  MONTH TO DATE    0                  0      0        0              
+  SINCE DEC 1      0                  0      0        0              
+  SINCE JAN 1      4                  0      4        6              
+...........................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED     9   HIGHEST WIND DIRECTION    NW (330)      
+  HIGHEST GUST SPEED    16   HIGHEST GUST DIRECTION    MM            
+  AVERAGE WIND SPEED     2.7                                         
+
+                                                                     
+SKY COVER                                                            
+  AVERAGE SKY COVER 0.6                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  LIGHT RAIN                                                         
+  FOG                                                                
+
+
+..........................................................
+
+                                                                     
+THE EUREKA CA CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   55        65      1979                    
+                                             1917                    
+ MINIMUM TEMPERATURE (F)   41        30      1955                    
+                                             1895                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 29 2014......SUNRISE   740 AM PST   SUNSET   457 PM PST   
+DECEMBER 30 2014......SUNRISE   741 AM PST   SUNSET   458 PM PST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+&&
+
+..........................................................
+
+TOTAL SEASON     NORMAL   % OF NORMAL     LAST SEASON
+
+    21.41         16.33        131             5.12
+
+
+$$
+
