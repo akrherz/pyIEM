@@ -16,6 +16,12 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
 
+    def test_141229_newregime6(self):
+        """ CLIMSO has a new regime """
+        prod = cliparser(get_file('CLIMSO.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                         12)
+
     def test_141229_newregime4(self):
         """ CLIOLF has a new regime """
         prod = cliparser(get_file('CLIOLF.txt'))

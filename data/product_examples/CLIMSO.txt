@@ -1,0 +1,55 @@
+264 
+CDUS45 KMSO 291531
+CLIMSO
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE MISSOULA, MT                                
+831 AM MST MON DEC 29 2014
+
+
+................................... 
+
+...THE MISSOULA MT CLIMATE SUMMARY FOR DECEMBER 29 2014...
+VALID AS OF 0800 AM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1893 TO 2014
+
+
+WEATHER ITEM   OBSERVED RECORD YEAR NORMAL                           
+                VALUE   VALUE       VALUE                            
+............................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MINIMUM         12    -28    1990  16                               
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.00                                              
+                                                                     
+............................................
+
+
+
+
+
+
+                                                                     
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 29 2014......SUNRISE   822 AM MST   SUNSET   455 PM MST   
+DECEMBER 30 2014......SUNRISE   822 AM MST   SUNSET   456 PM MST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+
