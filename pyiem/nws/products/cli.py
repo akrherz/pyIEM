@@ -18,6 +18,7 @@ REGIMES = [
 "WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE",
 "WEATHER ITEM   OBSERVED",
 "WEATHER ITEM   OBSERVED RECORD YEAR NORMAL",
+"WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL  LAST",
 ]
 # label, value, time, record, year, normal, departure, last
 COLS = [
@@ -30,6 +31,7 @@ COLS = [
 [  16,     23,  None,  30,     35,   42,    49,        None],
 [  16,     23,  None,  None,   None, None,  None,      None],
 [  16,     23,  None,  30,     None, 42,    None,      None],
+[  16,     23,   30,   37,     42,   49,    None,       57],
 ]
 
 class CLIException(Exception):

@@ -1,0 +1,93 @@
+820 
+CDUS45 KBOI 291631
+CLIBOI
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE BOISE ID                                    
+931 AM MST MON DEC 29 2014
+
+
+................................... 
+
+...THE BOISE ID CLIMATE SUMMARY FOR DECEMBER 29 2014...
+VALID AS OF 0900 AM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1878 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL  LAST              
+                VALUE   (LST)  VALUE       VALUE   YEAR              
+..........................................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         28    148 AM  64    1917  36      39               
+  MINIMUM         23    701 AM -17    1990  23      17               
+  AVERAGE         26                        30      28              
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            T             0.63 1924           0.00            
+  MONTH TO DATE    3.28                              0.66            
+  SINCE OCT 1      5.85                              2.91            
+  SINCE JAN 1     15.38                              9.57            
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY           39                                37               
+  MONTH TO DATE  757                              1192               
+  SINCE DEC 1    757                              1192               
+  SINCE JUL 1   1896                              2486               
+                                                                     
+ COOLING                                                             
+  TODAY            0                                 0               
+  MONTH TO DATE    0                                 0               
+  SINCE DEC 1      0                                 0               
+  SINCE JAN 1   1129                              1320               
+..........................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    10   HIGHEST WIND DIRECTION    SE (130)      
+  HIGHEST GUST SPEED    14   HIGHEST GUST DIRECTION    SE (130)      
+  AVERAGE WIND SPEED     2.2                                         
+
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED TODAY.                            
+  LIGHT SNOW                                                         
+  FOG                                                                
+  FOG W/VISIBILITY <= 1/4 MILE                                       
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST   100           200 AM                                     
+ LOWEST     88           700 AM                                     
+ AVERAGE    94                                                       
+
+..........................................................
+
+                                                                     
+THE BOISE ID CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   36        57      1917                    
+ MINIMUM TEMPERATURE (F)   23        -9      1990                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 29 2014......SUNRISE   818 AM MST   SUNSET   516 PM MST   
+DECEMBER 30 2014......SUNRISE   818 AM MST   SUNSET   517 PM MST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

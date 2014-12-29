@@ -3,7 +3,6 @@ import datetime
 import pytz
 import unittest
 from pyiem.nws.products.cli import parser as cliparser
-from pyiem.nws.products.cli import CLIException
 
 def get_file(name):
     ''' Helper function to get the text file contents '''
@@ -15,6 +14,12 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    
+    def test_141229_newregime7(self):
+        """ CLIBOI has a new regime """
+        prod = cliparser(get_file('CLIBOI.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                         23)
 
     def test_141229_newregime6(self):
         """ CLIMSO has a new regime """
