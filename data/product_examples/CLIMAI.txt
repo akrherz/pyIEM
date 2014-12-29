@@ -1,0 +1,61 @@
+945 
+CDUS42 KTAE 292235
+CLIMAI
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE TALLAHASSEE FL                              
+534 PM EST MON DEC 29 2014
+
+
+................................... 
+
+...THE MARIANNA CLIMATE SUMMARY FOR DECEMBER 29 2014...
+VALID TODAY AS OF 0500 PM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1950 TO 2014
+
+
+WEATHER ITEM   OBSERVED NORMAL DEPARTURE LAST                        
+                VALUE   VALUE  FROM      YEAR                        
+                               NORMAL                                
+...............................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         69     61      8       59                           
+  MINIMUM         61     39     22       42                           
+  AVERAGE         65                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            1.29   0.11   1.18     0.33                       
+  MONTH TO DATE    5.37   3.68   1.69     4.45                       
+  SINCE DEC 1      5.37   3.68   1.69     4.45                       
+  SINCE JAN 1     61.09  53.35   7.74    63.09                       
+                                                                     
+...............................................
+
+
+
+
+
+
+                                                                     
+THE MARIANNA CLIMATE NORMALS FOR TOMORROW
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   61                                        
+ MINIMUM TEMPERATURE (F)   39                                        
+
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

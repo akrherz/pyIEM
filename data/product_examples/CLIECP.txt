@@ -1,0 +1,55 @@
+946 
+CDUS42 KTAE 292235
+CLIECP
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE TALLAHASSEE FL                              
+534 PM EST MON DEC 29 2014
+
+
+................................... 
+
+...THE PANAMA CITY NW CLIMATE SUMMARY FOR DECEMBER 29 2014...
+VALID TODAY AS OF 0500 PM LOCAL TIME.
+
+CLIMATE RECORD PERIOD 2010 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME       LAST                              
+                VALUE   (LST)      YEAR                              
+........................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         70    151 AM                                       
+  MINIMUM         62    857 AM                                       
+  AVERAGE         66                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            2.72           MM                                 
+  MONTH TO DATE    7.14            1.32                              
+  SINCE DEC 1      7.14            1.32                              
+  SINCE JAN 1     66.18           52.40                              
+                                                                     
+........................................
+
+
+
+
+
+
+                                                                     
+
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+
