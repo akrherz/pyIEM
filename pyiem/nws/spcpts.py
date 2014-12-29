@@ -3,7 +3,6 @@
  My life was not supposed to end like this, what a brutal format
 """
 import re
-import shapelib
 import numpy as np
 
 from shapely.geometry import Polygon, LineString, MultiPolygon
@@ -182,15 +181,6 @@ def str2multipolygon(s):
     if len(res) == 0:
         raise Exception("Processed no geometries, this is a bug!")
     return MultiPolygon(res)
-    
-
-def read_poly():
-    _shp = shapelib.open('/home/ldm/pyWWA/tables/conus.shp')
-    _poly = _shp.read_object(0)
-    _data = np.array( _poly.vertices()[0] )
-    return Polygon( _data )
-
-#CONUSPOLY = read_poly()
 
 class SPCOutlook(object):
 
