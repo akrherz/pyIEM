@@ -1,0 +1,81 @@
+079 
+CDUS46 KSEW 300829
+CLISEW
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE SEATTLE WA                                  
+1229 AM PST TUE DEC 30 2014
+
+
+................................... 
+
+...THE SEATTLE WA WFO CLIMATE SUMMARY FOR DECEMBER 29 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1986 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR     LAST                  
+                VALUE   (LST)  VALUE           YEAR                  
+....................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         44        MM  54    1998    43                      
+  MINIMUM         34        MM  11    1990    37                      
+  AVERAGE         39                          40                    
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          2.66 1996     0.01                  
+  MONTH TO DATE    5.38                        1.64                  
+  SINCE OCT 1     16.56                        5.82                  
+  SINCE JAN 1     46.77                       29.73                  
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0                         0.0                   
+  MONTH TO DATE    0.0                         0.9                   
+  SINCE OCT 1      T                           0.9                   
+  SINCE JUL 1      T                           0.9                   
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       26                          25                     
+  MONTH TO DATE  545                         770                     
+  SINCE DEC 1    545                         770                     
+  SINCE JUL 1   1357                        1866                     
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                           0                     
+  MONTH TO DATE    0                           0                     
+  SINCE DEC 1      0                           0                     
+  SINCE JAN 1    366                         314                     
+....................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    MM   HIGHEST WIND DIRECTION    MM            
+  HIGHEST GUST SPEED    MM   HIGHEST GUST DIRECTION    MM            
+  AVERAGE WIND SPEED    MM                                           
+
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+
+                                                                     
+
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+

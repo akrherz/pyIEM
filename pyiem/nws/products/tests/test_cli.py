@@ -14,7 +14,31 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+
+    def test_141230_newregime4(self):
+        """ CLIMBS has a new regime """
+        prod = cliparser(get_file('CLIMBS.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                        18)
+
+    def test_141230_newregime3(self):
+        """ CLICKV has a new regime """
+        prod = cliparser(get_file('CLICKV.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                        33)
     
+    def test_141230_newregime2(self):
+        """ CLISEW has a new regime """
+        prod = cliparser(get_file('CLISEW.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                        34)
+
+    def test_141230_newregime(self):
+        """ CLITCS has a new regime """
+        prod = cliparser(get_file('CLITCS.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                        22)
+
     def test_141229_newregime9(self):
         """ CLIMAI has a new regime """
         prod = cliparser(get_file('CLIMAI.txt'))

@@ -1,0 +1,87 @@
+609 
+CDUS45 KEPZ 300929
+CLITCS
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE EL PASO, TX                                 
+226 AM MST TUE DEC 30 2014
+
+
+................................... 
+
+...THE TRUTH OR CONSEQUENCES CLIMATE SUMMARY FOR DECEMBER 29 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1951 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   NORMAL  LAST                          
+                VALUE   (LST)  VALUE   YEAR                          
+..............................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         60    424 PM  52      53                           
+  MINIMUM         22    450 AM  27      31                           
+  AVERAGE         41                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00                  0.00                        
+  MONTH TO DATE    0.12                  0.50                        
+  SINCE DEC 1      0.12                  0.50                        
+  SINCE JAN 1      9.22                 12.21                        
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       24                                                 
+  MONTH TO DATE  563                                                 
+  SINCE DEC 1    563                                                 
+  SINCE JUL 1   1086                                                 
+..............................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    18   HIGHEST WIND DIRECTION     W (280)      
+  HIGHEST GUST SPEED    23   HIGHEST GUST DIRECTION     W (280)      
+  AVERAGE WIND SPEED     5.6                                         
+
+                                                                     
+SKY COVER                                                            
+  AVERAGE SKY COVER 0.0                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    81           700 AM                                     
+ LOWEST      8           500 PM                                     
+ AVERAGE    45                                                       
+
+..........................................................
+
+                                                                     
+THE TRUTH OR CONSEQUENCES CLIMATE NORMALS FOR TODAY
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   52                                        
+ MINIMUM TEMPERATURE (F)   27                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 30 2014......SUNRISE   712 AM MST   SUNSET   511 PM MST   
+DECEMBER 31 2014......SUNRISE   712 AM MST   SUNSET   512 PM MST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

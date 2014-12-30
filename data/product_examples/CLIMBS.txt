@@ -1,0 +1,93 @@
+076 
+CDUS43 KDTX 300541
+CLIMBS
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DETROIT/PONTIAC MI                          
+1241 AM EST TUE DEC 30 2014
+
+
+................................... 
+
+...THE  TRI CITIES MI CLIMATE SUMMARY FOR DECEMBER 29 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1898 TO 2014
+
+
+WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE                      
+                VALUE   (LST)  VALUE  FROM                           
+                                      NORMAL                         
+...................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         29    423 PM  30     -1                            
+  MINIMUM         18   1126 PM  18      0                            
+  AVERAGE         24            24      0                           
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        T             0.06  -0.06                         
+  MONTH TO DATE    1.47          1.75  -0.28                         
+  SINCE DEC 1      1.47          1.75  -0.28                         
+  SINCE JAN 1     31.84         31.43   0.41                         
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        T                                                 
+  MONTH TO DATE    0.9                                               
+  SINCE DEC 1      0.9                                               
+  SINCE JUL 1      3.8                                               
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       41                    0                            
+  MONTH TO DATE  922                 -163                            
+  SINCE DEC 1    922                 -163                            
+  SINCE JUL 1   2418                 -140                            
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                    0                            
+  MONTH TO DATE    0                    0                            
+  SINCE DEC 1      0                    0                            
+  SINCE JAN 1    539                  -18                            
+...................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION    NW (330)      
+  HIGHEST GUST SPEED    17   HIGHEST GUST DIRECTION     N (340)      
+  AVERAGE WIND SPEED     8.0                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    68                                                       
+ LOWEST     42                                                       
+ AVERAGE    55                                                       
+
+..........................................................
+
+                                                                     
+THE  TRI CITIES MI CLIMATE NORMALS FOR TODAY
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   30                                        
+ MINIMUM TEMPERATURE (F)   18                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 30 2014......SUNRISE   809 AM EST   SUNSET   509 PM EST   
+DECEMBER 31 2014......SUNRISE   809 AM EST   SUNSET   510 PM EST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+

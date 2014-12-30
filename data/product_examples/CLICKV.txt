@@ -1,0 +1,79 @@
+237 
+CDUS44 KOHX 300814
+CLICKV
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE NASHVILLE TN                                
+212 AM CST TUE DEC 30 2014
+
+
+................................... 
+
+...THE CLARKSVILLE CLIMATE SUMMARY FOR DECEMBER 29 2014...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 9999 TO 9999
+
+
+WEATHER ITEM   OBSERVED TIME                                         
+                VALUE   (LST)                                        
+.................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         39    344 PM                                       
+  MINIMUM         33   1159 PM                                       
+  AVERAGE         36                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00                                              
+  MONTH TO DATE    3.46                                              
+  SINCE DEC 1      3.46                                              
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       29                                                 
+  MONTH TO DATE  658                                                 
+  SINCE JUL 1   1549                                                 
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                                 
+  MONTH TO DATE    0                                                 
+.................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION     N (10)       
+  HIGHEST GUST SPEED    17   HIGHEST GUST DIRECTION     N (20)       
+  AVERAGE WIND SPEED     8.8                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    89                                                       
+ LOWEST     70                                                       
+ AVERAGE    80                                                       
+
+..........................................................
+
+                                                                     
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+DECEMBER 30 2014......SUNRISE   701 AM CST   SUNSET   443 PM CST   
+DECEMBER 31 2014......SUNRISE   702 AM CST   SUNSET   444 PM CST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+
+
