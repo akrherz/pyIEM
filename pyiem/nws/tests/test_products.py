@@ -32,6 +32,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150102_mutiyear(self):
+        """ WSWOUN See how well we span multiple years """
+        for i in range(13):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('WSWOUN/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_141226_correction(self):
         """ Add another test for product corrections """
         self.assertRaises(UGCParseException, vtecparser, get_file('FLSRAH.txt'))

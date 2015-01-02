@@ -120,6 +120,29 @@ class VTECProduct(TextProduct):
 
                 self.do_sql_vtec(txn, segment, vtec)
 
+    def which_warning_table(self, txn, vtec):
+        """ Figure out which table we should work against """
+        if vtec.action in ["NEW",]:
+            return "warnings_%s" % (self.valid.year,)
+        # Look this year
+        txn.execute("""SELECT 
+        min(product_issue at time zone 'UTC') from warnings
+        WHERE wfo = %s and eventid = %s and significance = %s and
+        phenomena = %s and (expire + '1 hour'::interval) > %s""", (
+            vtec.office, vtec.ETN, vtec.significance, vtec.phenomena, 
+            self.valid) )
+        row = txn.fetchone()
+        if row['min'] is None:
+            self.warnings.append(("Failed to find active year:\n"
+                                  +"  VTEC:%s\n  PRODUCT: %s") % (
+                str(vtec), self.get_product_id()))
+            return "warnings_%s" % (self.valid.year,)
+        year = row['min'].year
+        if abs(year - self.valid.year) > 1:
+            self.warnings.append("Thought this warning was %s" % (year,))
+            return "warnings_%s" % (self.valid.year,)
+        return "warnings_%s" % (year,)
+
     def do_sql_vtec(self, txn, segment, vtec):
         """ Persist the non-SBW stuff to the database 
         
@@ -128,7 +151,7 @@ class VTECProduct(TextProduct):
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
-        warning_table = "warnings_%s" % (self.valid.year,)
+        warning_table = self.which_warning_table(txn, vtec)
         ugcstring = str(tuple([str(u) for u in segment.ugcs]))
         if len(segment.ugcs) == 1:
             ugcstring = "('%s')" % (segment.ugcs[0],)
