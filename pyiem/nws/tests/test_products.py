@@ -32,6 +32,18 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150105_considerable_tag(self):
+        """ TORFSD has considerable tag """
+        prod = vtecparser(get_file('TORFSD.txt'))
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0], ('FSD issues Tornado Warning '
+            +'[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, '
+            +'hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 '
+            +'PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE '
+            +'AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND '
+            +'MOVING NORTHEAST AT 30 MPH. '
+            +'http://localhost#2013-O-NEW-KFSD-TO-W-0020'))
+
     def test_150105_sbw(self):
         """ FLSLBF SBW that spans two years! """
         for i in range(7):

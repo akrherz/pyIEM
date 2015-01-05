@@ -32,7 +32,7 @@ WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
 TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
                          +"OBSERVED|POSSIBLE)"))
 TORNADODAMAGETAG = re.compile((".*TORNADO DAMAGE THREAT\.\.\."
-                               +"(?P<damage>SIGNIFICANT|CATASTROPHIC)"))
+                        +"(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
 
 class TextProductException(Exception):
