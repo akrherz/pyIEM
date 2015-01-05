@@ -65,6 +65,12 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('WSWOUN/%i.txt' % (i,)))
             prod.sql(self.txn)
+            if i == 5:
+                self.txn.execute("""SELECT issue from warnings_2014
+                WHERE ugc = 'OKZ036' and wfo = 'OUN' and eventid = 16
+                and phenomena = 'WW' and significance = 'Y' """)
+                row = self.txn.fetchone()
+                self.assertEquals(row[0], utc(2015, 1, 1, 6, 0))
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
 
     def test_141226_correction(self):
