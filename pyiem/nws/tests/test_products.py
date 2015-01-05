@@ -32,6 +32,15 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150105_sbw(self):
+        """ FLSLBF SBW that spans two years! """
+        for i in range(7):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('FLSLBF/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
+
     def test_150105_manycors(self):
         """ WSWGRR We had some issues with this series, lets test it """
         for i in range(15):

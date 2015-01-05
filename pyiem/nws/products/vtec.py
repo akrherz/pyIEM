@@ -315,7 +315,8 @@ class VTECProduct(TextProduct):
         to track geometry changes, etc '''
         
         # Technically, this is a bug as the it would be based on VTEC issuance
-        sbw_table = "sbw_%s" % (self.valid.year,)
+        sbw_table = self.which_warning_table(txn, vtec).replace("warnings",
+                                                                    "sbw")
         
         # The following time columns are set in the database
         # issue         - VTEC encoded issuance time, can be null
