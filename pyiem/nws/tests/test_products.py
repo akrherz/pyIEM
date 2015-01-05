@@ -32,6 +32,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150105_manycors(self):
+        """ WSWGRR We had some issues with this series, lets test it """
+        for i in range(15):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('WSWGRR/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            answer = 0 if i != 14 else 1
+            self.assertEquals(len(prod.warnings), answer,
+                              "\n".join(prod.warnings))
+
     def test_150102_mutiyear2(self):
         """ WSWSTO See how well we span multiple years """
         for i in range(17):

@@ -240,15 +240,16 @@ class VTECProduct(TextProduct):
             svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
                    || %s || '__', issue = %s, init_expire = %s WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
-            and significance = %s and phenomena = %s  
+            and significance = %s and phenomena = %s and 
+            (expire + '1 hour'::interval) >= %s
             """, (vtec.endts, vtec.action, self.unixtext, vtec.begints,
                   vtec.endts, vtec.office, vtec.ETN, 
-                  vtec.significance, vtec.phenomena))
+                  vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(('COR: %s.%s.%s do_sql_vtec '
-                        +'updated %s row, should %s rows %s') % (
-                        vtec.phenomena, vtec.significance, vtec.ETN,
-                        txn.rowcount, len(segment.ugcs), segment.ugcs))
+                self.warnings.append(
+                        self.debug_warning(txn, warning_table, ugcstring, 
+                                           vtec, segment, vtec.endts)
+                    )
 
         elif vtec.action in ['CAN', 'UPG', 'EXT']:
             ets = vtec.endts
