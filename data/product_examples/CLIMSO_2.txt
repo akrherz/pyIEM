@@ -1,0 +1,57 @@
+144 
+CDUS45 KMSO 091531
+CLIMSO
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE MISSOULA, MT                                
+831 AM MST FRI JAN 9 2015
+
+
+................................... 
+
+...THE MISSOULA MT CLIMATE SUMMARY FOR JANUARY 9 2015...
+VALID AS OF 0800 AM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1893 TO 2015
+
+
+WEATHER ITEM   OBSERVED RECORD YEAR NORMAL                           
+                VALUE   VALUE       VALUE                            
+............................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MINIMUM         16    -16    1979  17                               
+                               1973                                 
+                               1962                                 
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.00                                              
+                                                                     
+............................................
+
+
+
+
+
+
+                                                                     
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+JANUARY  9 2015.......SUNRISE   820 AM MST   SUNSET   507 PM MST   
+JANUARY 10 2015.......SUNRISE   820 AM MST   SUNSET   508 PM MST   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

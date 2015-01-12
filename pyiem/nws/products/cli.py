@@ -36,7 +36,7 @@ COLS = [
 [  16,     23,   30,   37,     42,   49,    56,        None],
 [  16,     23,  None,  30,     35,   42,    49,        None],
 [  16,     23,  None,  None,   None, None,  None,      None],
-[  16,     23,  None,  30,     None, 42,    None,      None],
+[  16,     23,  None,  30,     37,   None,  None,      None],
 [  16,     23,   30,   37,     42,   49,    None,       57],
 [  16,     23,   30,   None,   None,  None,    None,       39],
 [  16,     23,   None,   None,   None,  30,    37,       46],

@@ -14,6 +14,11 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_150112_climso(self):
+        """ CLIMSO_2 found some issue with this in production? """
+        prod = cliparser(get_file('CLIMSO_2.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_minimum'],
+                        16)
 
     def test_141230_newregime4(self):
         """ CLIMBS has a new regime """
