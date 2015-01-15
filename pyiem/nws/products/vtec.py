@@ -207,8 +207,10 @@ class VTECProduct(TextProduct):
                         status in ('NEW', 'EXB', 'EXA')
                         """, (str(ugc), vtec.ETN, vtec.significance, 
                               vtec.office, vtec.phenomena))
-                        self.warnings.append(("%s.%s.%s %s duplicated via "
-                            +"product correction, deleted %s old rows") % (
+                        if txn.rowcount != 1:
+                            self.warnings.append(("%s.%s.%s %s duplicated via "
+                            +"product correction, deleted %s old rows instead "
+                            +"of 1") % (
                                         vtec.phenomena, vtec.significance,
                                         vtec.ETN, str(ugc), txn.rowcount))
 
@@ -336,6 +338,17 @@ class VTECProduct(TextProduct):
                 polygon_end = vtec.endts
             else:
                 polygon_end = self.valid + datetime.timedelta(hours=24)
+        
+        if self.is_correction() and vtec.action == 'NEW':
+            # Go delete the previous NEW polygon
+            txn.execute("""
+            DELETE from """+sbw_table+""" WHERE status = 'NEW' and
+            eventid = %s and wfo = %s and phenomena = %s and significance = %s
+            """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+            if txn.rowcount != 1:
+                self.warnings.append(("%s.%s.%s product is a correction"
+                    +", but SBW delete removed %s rows instead of 1" % (
+                    vtec.phenomena, vtec.significance, vtec.ETN, txn.rowcount)))
         
         # Lets go find the initial warning (status == NEW)
         txn.execute("""

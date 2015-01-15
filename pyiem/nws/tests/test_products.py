@@ -32,6 +32,15 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150115_correction_sbw(self):
+        """ FLWMHX make sure a correction does not result in two polygons """
+        prod = vtecparser(get_file('FLWMHX/0.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        prod = vtecparser(get_file('FLWMHX/1.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_150105_considerable_tag(self):
         """ TORFSD has considerable tag """
         prod = vtecparser(get_file('TORFSD.txt'))
@@ -59,8 +68,7 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('WSWGRR/%i.txt' % (i,)))
             prod.sql(self.txn)
-            answer = 0 if i != 14 else 1
-            self.assertEquals(len(prod.warnings), answer,
+            self.assertEquals(len(prod.warnings), 0,
                               "\n".join(prod.warnings))
 
     def test_150102_mutiyear2(self):
@@ -95,8 +103,7 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('NPWMAF/%i.txt' % (i,)))
             prod.sql(self.txn)
-            answer = 0 if i != 2 else 2
-            self.assertEquals(len(prod.warnings), answer, 
+            self.assertEquals(len(prod.warnings), 0, 
                               "\n".join(prod.warnings))
     
     def test_141212_mqt(self):
@@ -434,6 +441,10 @@ class TestProducts(unittest.TestCase):
         ''' Make sure we are updating the right info in the sbw table '''
         utcnow = datetime.datetime(2014,6,4)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))        
+
+        self.txn.execute("""DELETE from sbw_2014 where
+        wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
+        significance = 'W' """)
 
         prod = vtecparser( get_file('SVRLMK_1.txt') , utcnow=utcnow)
         prod.sql( self.txn )    
