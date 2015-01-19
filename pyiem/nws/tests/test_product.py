@@ -33,6 +33,14 @@ class TestProduct(unittest.TestCase):
         for a in ar:
             self.assertTrue( WMO_RE.match(a) is not None) 
 
+    def test_RFD(self):
+        """ Parse a RFD """
+        tp = productparser( get_file('RFDOAX.txt') )
+        self.assertEqual( tp.get_channels()[0], 'RFDOAX')
+        j = tp.get_jabbers('http://localhost')
+        self.assertEqual( j[0][0], ('OAX issues Grassland Fire Danger '
+            +'(RFD) http://localhost?pid=201501191010-KOAX-FNUS63-RFDOAX'))
+
     def test_HWO(self):
         """ Parse a HWO """
         tp = productparser( get_file('HWO.txt') )
