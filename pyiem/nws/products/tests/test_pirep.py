@@ -17,7 +17,13 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
-
+    def test_150120_latlonloc(self):
+        """ latlonloc.txt Turns out there is a LAT/LON option for OV """
+        prod = pirepparser(get_file('PIREPS/latlonloc.txt'))
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        self.assertEquals(prod.reports[0].latitude, 25.00)
+        self.assertEquals(prod.reports[0].longitude, -70.00)
+    
     def test_150120_OVO(self):
         """ PIREPS/OVO.txt has a location of OV 0 """
         nwsli_provider = {'AVK': {'lat': 44, 'lon': 99}}

@@ -7,6 +7,8 @@ import re
 import math
 from pyiem.datatypes import distance
 
+LAT_LON = re.compile(".*[0-9]{4}[NS][0-9]{5}[EW]")
+
 class PilotReport:
     """ A Pilot Report Object """
 
@@ -76,6 +78,15 @@ class Pirep( product.TextProduct ):
                     loc = therest
                 elif len(therest) == 4 and therest[0] == 'K':
                     loc = therest[1:]
+                elif len(therest) == 11 and re.match(LAT_LON, therest):
+                    # 2500N07000W
+                    _pr.latitude = float(therest[:4]) / 100.
+                    if therest[4] == 'S':
+                        _pr.latitude = 0 - _pr.latitude
+                    _pr.longitude = float(therest[5:10]) / 100.
+                    if therest[10] == 'W':
+                        _pr.longitude = 0 - _pr.longitude
+                    continue
                 elif therest == 'O':
                     # Use the first part of the report in this case
                     loc = report[:3]
