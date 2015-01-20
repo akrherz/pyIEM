@@ -76,8 +76,11 @@ class Pirep( product.TextProduct ):
                 therest = token[3:]
                 if len(therest) == 3:
                     loc = therest
-                elif len(therest) == 4 and therest[0] == 'K':
-                    loc = therest[1:]
+                elif len(therest) == 4:
+                    if therest[0] == 'K':
+                        loc = therest[1:]
+                    else:
+                        loc = therest
                 elif len(therest) >= 11 and re.match(LAT_LON, therest):
                     # 2500N07000W
                     therest = therest.replace(" ", "")

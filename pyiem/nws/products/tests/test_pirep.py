@@ -28,6 +28,10 @@ class TestProducts(unittest.TestCase):
         prod = pirepparser(get_file('PIREPS/latlonloc2.txt'))
         self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
 
+        nwsli_provider = {'PKTN': {'lat': 44, 'lon': -99}}
+        prod = pirepparser(get_file('PIREPS/PKTN.txt'), nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     
     def test_150120_OVO(self):
         """ PIREPS/OVO.txt has a location of OV 0 """
