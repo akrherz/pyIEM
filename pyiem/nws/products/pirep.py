@@ -90,7 +90,6 @@ class Pirep( product.TextProduct ):
                         loc = loc[1:]
                     bearing = int(d['dir'])
                     dist = int(d['dist'])
-                    continue
                 elif len(therest) >= 11 and re.match(LAT_LON, therest):
                     # 2500N07000W
                     therest = therest.replace(" ", "")

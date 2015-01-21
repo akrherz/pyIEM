@@ -24,6 +24,7 @@ class TestProducts(unittest.TestCase):
         prod = pirepparser(get_file('PIREPS/fourchar.txt'),
                            nwsli_provider=nwsli_provider)
         self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        self.assertAlmostEquals(prod.reports[0].latitude, 44.10, 2)
     
     def test_150120_latlonloc(self):
         """ latlonloc.txt Turns out there is a LAT/LON option for OV """
