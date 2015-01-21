@@ -8,6 +8,7 @@ import math
 from pyiem.datatypes import distance
 
 LAT_LON = re.compile(".*[0-9]{4}[NS]\s?[0-9]{5}[EW]")
+OV_LOCDIR = re.compile("(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
 
 class PilotReport:
     """ A Pilot Report Object """
@@ -81,6 +82,15 @@ class Pirep( product.TextProduct ):
                         loc = therest[1:]
                     else:
                         loc = therest
+                elif re.match(OV_LOCDIR, therest):
+                    # KFAR330008
+                    d = re.match(OV_LOCDIR, therest).groupdict()
+                    loc = d['loc']
+                    if len(loc) == 4 and loc[0] == 'K':
+                        loc = loc[1:]
+                    bearing = int(d['dir'])
+                    dist = int(d['dist'])
+                    continue
                 elif len(therest) >= 11 and re.match(LAT_LON, therest):
                     # 2500N07000W
                     therest = therest.replace(" ", "")

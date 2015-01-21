@@ -18,6 +18,13 @@ def utc(year, month, day, hour=0, minute=0):
 class TestProducts(unittest.TestCase):
     """ Tests """
     
+    def test_150121_fourchar(self):
+        """ Another coding edition with four char identifiers """
+        nwsli_provider = {'FAR': {'lat': 44, 'lon': -99}}
+        prod = pirepparser(get_file('PIREPS/fourchar.txt'),
+                           nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+    
     def test_150120_latlonloc(self):
         """ latlonloc.txt Turns out there is a LAT/LON option for OV """
         prod = pirepparser(get_file('PIREPS/latlonloc.txt'))
