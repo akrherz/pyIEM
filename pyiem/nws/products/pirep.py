@@ -9,7 +9,7 @@ from pyiem.datatypes import distance
 
 LAT_LON = re.compile(".*[0-9]{4}[NS]\s?[0-9]{5}[EW]")
 OV_LOCDIR = re.compile("(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
-OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s+(?P<dir>N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(?P<loc>[A-Z0-9]{3,4})")
+OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(?P<loc>[A-Z0-9]{3,4})")
 
 DRCT2DIR = {'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90,
             'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
