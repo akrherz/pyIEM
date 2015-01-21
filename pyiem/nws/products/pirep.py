@@ -77,6 +77,10 @@ class Pirep( product.TextProduct ):
                 therest = token[3:]
                 if len(therest) == 3:
                     loc = therest
+                elif therest.startswith("FINAL RWY"):
+                    loc = report[:8].split()[0]
+                    if len(loc) == 4 and loc[0] == 'K':
+                        loc = loc[1:]
                 elif len(therest) == 4:
                     if therest[0] == 'K':
                         loc = therest[1:]

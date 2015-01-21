@@ -17,7 +17,14 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
-    
+    def test_150121_runway(self):
+        """ runway.txt has KATW on the runway, this was not good """
+        nwsli_provider = {'ATW': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file('PIREPS/runway.txt'),
+                           nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        self.assertAlmostEquals(prod.reports[0].latitude, 44.26, 2)
+        
     def test_150121_fourchar(self):
         """ Another coding edition with four char identifiers """
         nwsli_provider = {'FAR': {'lat': 44, 'lon': -99}}
