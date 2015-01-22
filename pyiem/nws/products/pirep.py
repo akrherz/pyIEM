@@ -20,12 +20,13 @@ from pyiem.datatypes import distance
 
 OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
 OV_LOCDIR = re.compile("(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
-OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(?P<loc>[A-Z0-9]{3,4})")
+OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>NORTH|EAST|SOUTH|WEST|N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(OF )?(?P<loc>[A-Z0-9]{3,4})")
 
 DRCT2DIR = {'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90,
             'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
             'SSW': 202.5, 'SW': 225, 'WSW': 247.5, 'W': 270,
-            'WNW': 292.5, 'NW': 305, 'NNW': 327.5}
+            'WNW': 292.5, 'NW': 305, 'NNW': 327.5,
+            'NORTH': 0, 'EAST': 90, 'SOUTH': 180, 'WEST': 270}
 
 class PilotReport:
     """ A Pilot Report Object """

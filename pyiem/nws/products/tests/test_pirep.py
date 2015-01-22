@@ -20,12 +20,14 @@ class TestProducts(unittest.TestCase):
     def test_150121_offset(self):
         """ offset.txt and yet another /OV iteration """
         nwsli_provider = {'MRF': {'lat': 44.26, 'lon': -88.52},
-                          'PDT': {'lat': 44.26, 'lon': -88.52}}
+                          'PDT': {'lat': 44.26, 'lon': -88.52},
+                          'HQZ': {'lat': 44.26, 'lon': -88.52}}
         prod = pirepparser(get_file('PIREPS/offset.txt'),
                            nwsli_provider=nwsli_provider)
         self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
         self.assertAlmostEquals(prod.reports[0].latitude, 44.48, 2)
         self.assertAlmostEquals(prod.reports[1].latitude, 44.26, 2)
+        self.assertAlmostEquals(prod.reports[2].latitude, 44.22, 2)
 
     def test_150121_runway(self):
         """ runway.txt has KATW on the runway, this was not good """
