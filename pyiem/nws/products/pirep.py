@@ -1,5 +1,16 @@
-"""
- Parser of Pilot Reports
+"""Pilot Reports (PIREP)
+
+This module attempts to process and store atomic data from PIREPs.  These are
+encoded products that look like so:
+
+  UBUS01 KMSC 221700
+  EAU UA /OV EAU360030/TM 1715/FL350/TP B737/TB CONT LGT-MOD CHOP =
+  EHY UA /OV MBW253036 /TM 1729 /FL105 /TP C206 /SK FEW250 /TA M06
+  /TB NEG /RM SMTH=
+
+Unfortunately, there is not much documentation of this format and the feed of
+this data contains a bunch of formatting errors.
+
 """
 import pyiem.nws.product as product
 import datetime
@@ -7,7 +18,7 @@ import re
 import math
 from pyiem.datatypes import distance
 
-LAT_LON = re.compile(".*[0-9]{4}[NS]\s?[0-9]{5}[EW]")
+OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
 OV_LOCDIR = re.compile("(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
 OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(?P<loc>[A-Z0-9]{3,4})")
 
@@ -108,14 +119,14 @@ class Pirep( product.TextProduct ):
                         loc = loc[1:]
                     bearing = int(d['dir'])
                     dist = int(d['dist'])
-                elif len(therest) >= 11 and re.match(LAT_LON, therest):
+                elif re.match(OV_LATLON, therest):
                     # 2500N07000W
-                    therest = therest.replace(" ", "")
-                    _pr.latitude = float(therest[:4]) / 100.
-                    if therest[4] == 'S':
+                    d = re.match(OV_LATLON, therest).groupdict()
+                    _pr.latitude = float(d['lat'][:-1]) / 100.
+                    if d['lat'][-1] == 'S':
                         _pr.latitude = 0 - _pr.latitude
-                    _pr.longitude = float(therest[5:10]) / 100.
-                    if therest[10] == 'W':
+                    _pr.longitude = float(d['lon'][:-1]) / 100.
+                    if d['lon'][-1] == 'W':
                         _pr.longitude = 0 - _pr.longitude
                     continue
                 elif therest == 'O':

@@ -49,6 +49,8 @@ class TestProducts(unittest.TestCase):
         self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
         self.assertEquals(prod.reports[0].latitude, 25.00)
         self.assertEquals(prod.reports[0].longitude, -70.00)
+        self.assertEquals(prod.reports[1].latitude, 39.00)
+        self.assertEquals(prod.reports[1].longitude, -45.00)
 
         prod = pirepparser(get_file('PIREPS/latlonloc2.txt'))
         self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
