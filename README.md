@@ -3,12 +3,8 @@ pyIEM
 
 A collection of python support things that make my weather processing work, work.
 
-|docs|
+[![Docs](https://readthedocs.org/projects/pyiem/badge/?version=latest)](https://readthedocs.org/projects/pyiem/)
 
 External Dependencies
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. |docs| image:: https://readthedocs.org/projects/pyiem/badge/?version=latest
-    :alt: Documentation Status
-    :scale: 100%
-    :target: https://readthedocs.org/projects/pyiem/
