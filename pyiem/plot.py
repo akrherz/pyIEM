@@ -1,5 +1,9 @@
-"""
-  OO interface to properly generate fancy pants IEM plots
+"""A module to allow simple creation of IEM plots, namely spatial ones.
+
+For example:
+
+    plot = plot.MapPlot(sector="midwest", title="My Image Title")
+    plot.postprocess(filename='test.png')
 
 Like it or not, we care about zorder!
 
@@ -162,22 +166,7 @@ def mask_outside_polygon(poly_verts, ax=None):
     return patch
 
 def james2():
-    ''' David James suggested color ramp Yellow to Brown
-    
-255, 255, 128
-255, 238, 112
-252, 221,  96
-250, 205,  82
-247, 190,  67
-245, 175,  54
-230, 151,  41
-204, 120,  31
-179,  89,  21
-156,  64,  14
-130,  37,   7
-107,   0,   0
-    
-     '''
+    """David James suggested color ramp Yellow to Brown"""
     cpool = ['#FFFF80', '#FFEE70', '#FCDD60', '#FACD52', '#F7BE43', '#F5AF36',
              '#E69729', '#CC781F', '#B35915', '#9C400E', '#822507', '#6B0000']
     cmap3 = mpcolors.ListedColormap(cpool, 'james2')
@@ -189,21 +178,7 @@ def james2():
 
 
 def james():
-    ''' David James suggested color ramp Yellow to Blue 
-255, 255, 128
-205, 250, 100
-152, 240,  70
- 97, 232,  39
- 59, 217,  35
- 63, 196,  83
- 55, 173, 122
- 38, 152, 158
- 33, 122, 163
- 33,  83, 148
- 27,  49, 135
- 12,  16, 120
-    
-    '''
+    """David James suggested color ramp Yellow to Blue """
     cpool = ['#FFFF80', '#CDFA64', '#98F046', '#61E827', '#3BD923', '#3FC453',
              '#37AD7A', '#26989E', '#217AA3', '#215394', '#1B3187', '#0C1078']
     cmap3 = mpcolors.ListedColormap(cpool, 'james')
