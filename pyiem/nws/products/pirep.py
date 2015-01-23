@@ -19,8 +19,9 @@ import math
 from pyiem.datatypes import distance
 
 OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
-OV_LOCDIR = re.compile("(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
-OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>NORTH|EAST|SOUTH|WEST|N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(OF )?(?P<loc>[A-Z0-9]{3,4})")
+OV_LOCDIR = re.compile(".*(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
+OV_TWOLOC = re.compile("(?P<loc1>[A-Z0-9]{3,4})\s?-\s?(?P<loc2>[A-Z0-9]{3,4})")
+OV_OFFSET = re.compile("(?P<dist>[0-9]{1,3})\s?(?P<dir>NORTH|EAST|SOUTH|WEST|N|NNE|NE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(OF )?(?P<loc>[A-Z0-9]{3,4})""")
 
 DRCT2DIR = {'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90,
             'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
@@ -111,7 +112,7 @@ class Pirep( product.TextProduct ):
                         loc = loc[1:]
                     dist = int(d['dist'])
                     bearing = DRCT2DIR[d['dir']]
-                    
+                 
                 elif re.match(OV_LOCDIR, therest):
                     # KFAR330008
                     d = re.match(OV_LOCDIR, therest).groupdict()
@@ -134,12 +135,30 @@ class Pirep( product.TextProduct ):
                     # Use the first part of the report in this case
                     loc = report[:3]
                 elif therest.find("-") > 0:
-                    loc = therest.split("-")[1]
-                    numbers = re.findall("[0-9]{6}", loc)
+                    d = re.match(OV_TWOLOC, therest).groupdict()
+                    numbers = re.findall("[0-9]{6}", therest)
                     if len(numbers) > 0:
                         bearing = int(numbers[0][:3])
                         dist = int(numbers[0][3:])
-                    loc = loc[:3]
+                        loc = d['loc2']
+                        if len(loc) == 4 and loc[0] == 'K':
+                            loc = loc[1:]
+                    else:
+                        # Split the distance between the two points
+                        lats = []
+                        lons = []
+                        for loc in [d['loc1'], d['loc2']]:
+                            if len(loc) == 4 and loc[0] == 'K':
+                                loc = loc[1:]
+                            if not self.nwsli_provider.has_key(loc):
+                                self.warnings.append("Unknown location: %s '%s'" % (loc,
+                                                                report))
+                                return None
+                            lats.append(self.nwsli_provider[loc]['lat'])
+                            lons.append(self.nwsli_provider[loc]['lon'])
+                        _pr.latitude = sum(lats) / 2.0
+                        _pr.longitude = sum(lons) / 2.0
+                        continue                                
                 else:
                     loc = therest[:3]
 
