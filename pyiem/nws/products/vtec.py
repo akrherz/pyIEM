@@ -1,6 +1,6 @@
-'''
-VTEC enabled TextProduct
-'''
+"""A NWS TextProduct that contains VTEC information
+"""
+
 # Stand Library Imports
 import datetime
 
@@ -87,22 +87,13 @@ class VTECProduct(TextProduct):
 
 
     def sql(self, txn):
-        ''' 
-        Do necessary database work for this VTEC Product, so what all do we 
-        have to support:
-       'NEW' -> insert
-       'EXA' -> insert
-       'EXB' -> insert and update
+        """Persist to the database
 
-       'CON' -> update 
-       'EXT' -> update
-       'UPG' -> update
-       'CAN' -> update
-       'EXP' -> update
-       'ROU' -> update
-       'COR' -> update
+        Args:
+          txn (psycopg2.transaction): A database transaction object that we can
+            exec() database calls against.
         
-        '''
+        """
         for segment in self.segments:
             if len(segment.ugcs) == 0:
                 continue

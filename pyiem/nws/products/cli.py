@@ -1,5 +1,4 @@
-"""
-Parser for NWS Climate Report text format
+"""Parser and object storage of information within NWS CLI Product. 
 """
 import re
 import datetime
@@ -112,15 +111,6 @@ def make_tokens(regime, line):
 
 def parse_snowfall(regime, lines, data):
     """ Parse the snowfall data 
-WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
-                VALUE   (LST)  VALUE       VALUE  FROM      YEAR 
-                                                  NORMAL
-SNOWFALL (IN)
-  YESTERDAY        0.0          MM      MM   0.0    0.0      0.0
-  MONTH TO DATE    0.0                       0.0    0.0      0.0
-  SINCE JUN 1      0.0                       0.0    0.0      0.0
-  SINCE JUL 1      0.0                       0.0    0.0      0.0
-  SNOW DEPTH       0
     """
     for linenum, line in enumerate(lines):
         # skipme
@@ -179,15 +169,6 @@ def no99(val):
 
 def parse_temperature(regime, lines, data):
     """ Here we parse a temperature section
-WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
-                VALUE   (LST)  VALUE       VALUE  FROM      YEAR
-                                                  NORMAL
-..................................................................
-TEMPERATURE (F)
- YESTERDAY
-  MAXIMUM         89    309 PM 101    1987  85      4       99
-  MINIMUM         63    545 AM  51    1898  67     -4       69
-  AVERAGE         76                        76      0       84
     """
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 18:

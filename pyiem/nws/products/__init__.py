@@ -1,25 +1,4 @@
-""" module 
-
-Template:
-
-from pyiem.nws.product import TextProduct
-
-class NHCException(Exception):
-    pass
-
-class NHCProduct( TextProduct ):
-    def __init__(self, text, utcnow=None, ugc_provider=None, 
-                 nwsli_provider=None):
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        
-
-        
-def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    return NHCProduct( text, utcnow, ugc_provider, nwsli_provider )
-
-"""
 import re
-
 
 from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
 import spacewx
@@ -29,8 +8,29 @@ import lsr
 import mcd
 import nhc
     
-def parser( text , utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ generalized parser of a text product """
+def parser(text , utcnow=None, ugc_provider=None, nwsli_provider=None):
+    """Omnibus parser of NWS Text Data
+    
+    This is intended to be a catch-all parser of text data.  As it currently
+    stands, it does not correctly hand products off to the correct sub-processor
+    , but some day it will!
+    
+    Args:
+      text (str): The actual product text, this can have the <cntr>-a 
+        character to start the string.
+      utcnow (datetime, optional): What is the current time, this is useful
+        for when ingesting old data.  Many times, the product does not contain
+        enough information to assign a current valid timestamp to it.  So we 
+        need to know the current timestamp to do the relative computation.
+      ugc_provider (dict, optional): Provides NWS UGC metadata, the dictionary
+        keys are UGC codes.
+      nwsli_provider (dict, optional): Provides NWS Location Identifiers to
+        allow lookup of geographic information for station identifiers.
+        
+    Returns:
+      TextProduct: A TextProduct instance
+    
+    """
 
     tmp = text[:100].replace('\r\r\n', '\n')
     m = WMO_RE.search(tmp)

@@ -424,16 +424,34 @@ class MapPlot:
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None):
-        """ Simply plot vals """        
+        """Plot values onto the map
+        
+        Args:
+          lons (list): longitude values to use for placing `vals`
+          lats (list): latitude values to use for placing `vals`
+          vals (list): actual values to place on the map
+          fmt (str, optional): Format specification to use for representing the 
+          values. For example, the default is '%s'.
+          valmask (list, optional): Boolean list to use as masking of the
+          `vals` while adding to the map.
+          color (str, list, optional): Color to use while plotting the `vals`.
+          This can be a list to specify each color to use with each value.
+          textsize (str, optional): Font size to draw text.
+          labels (list, optional): Optional list of labels to place below the
+          plotting of `vals`
+        
+        """        
         if valmask is None:
             valmask = [True] * len(lons)
         if labels is None:
             labels = [''] * len(lons)
+        if type(color) == type(''):
+            color = [color]* len(lons)
         t = []
-        for o,a,v,m, l in zip(lons, lats, vals, valmask, labels):
+        for o,a,v,m,c,l in zip(lons, lats, vals, valmask, color, labels):
             if m:
                 x,y = self.map(o, a)
-                t0 = self.ax.text(x, y, fmt % (v,) , color=color,  
+                t0 = self.ax.text(x, y, fmt % (v,) , color=c,  
                                       size=textsize, zorder=Z_OVERLAY+2,
                                       va='bottom')
                 t0.set_clip_on(True)
