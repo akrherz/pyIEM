@@ -34,6 +34,7 @@ class PilotReport:
 
     def __init__(self):
         """ Constructor"""
+        self.base_loc = None
         self.text = None
         self.priority = None
         self.latitude = None
@@ -84,6 +85,11 @@ class Pirep( product.TextProduct ):
                     _pr.priority = "UUA"
                 else:
                     _pr.priority = "UA"
+                parts = token.split()
+                if len(parts) == 2:
+                    _pr.base_loc = parts[0]
+                    if len(_pr.base_loc) == 4 and _pr.base_loc[0] == 'K':
+                        _pr.base_loc = _pr.base_loc[1:]
                 continue
             # Aircraft Type
             if token.startswith("TP "):
@@ -163,9 +169,17 @@ class Pirep( product.TextProduct ):
                     loc = therest[:3]
 
                 if not self.nwsli_provider.has_key(loc):
-                    self.warnings.append("Unknown location: %s '%s'" % (loc,
+                    if _pr.base_loc is None:
+                        self.warnings.append("Unknown location: %s '%s'" % (loc,
                                                                 report))
-                    return None
+                        return None
+                    loc = _pr.base_loc
+                    if not self.nwsli_provider.has_key(loc):
+                        self.warnings.append("Double-unknown location: %s" %(
+                                                                    report,))
+                        return None
+                    dist = 0
+                    bearing = 0
                 _pr.longitude, _pr.latitude = self.compute_loc(loc, dist,
                                                                bearing)
                 continue
