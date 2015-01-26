@@ -1,1 +1,8 @@
 sphinxcontrib-napoleon
+basemap
+matplotlib
+numpy
+scipy
+Pillow
+psycopg2
+Shapely

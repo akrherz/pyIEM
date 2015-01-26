@@ -1,34 +1,6 @@
-"""A module to allow simple creation of IEM plots, namely spatial ones.
-
-For example:
-
-    plot = plot.MapPlot(sector="midwest", title="My Image Title")
-    plot.postprocess(filename='test.png')
-
-Like it or not, we care about zorder!
-
-  z
-  1 Continent fill
-  2 contour or fill
-  3 polygon clipping
-  4 states
-  5 overlay text
+"""plotting interface
 """
-[Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY] = range(1,6)
-
-import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
-from matplotlib.colors import rgb2hex
-from matplotlib.patches import Polygon
-import matplotlib.cm as cm
-import matplotlib.colors as mpcolors
-import matplotlib.colorbar as mpcolorbar
-import matplotlib.patheffects as PathEffects
-from matplotlib.collections import PatchCollection
-import numpy as np
-from scipy.interpolate import NearestNDInterpolator
-from pyiem import reference
-from PIL import Image
+#stdlib
 import cStringIO
 import tempfile
 import os
@@ -36,13 +8,34 @@ import sys
 import subprocess
 import shutil
 import datetime
+#
+from pyiem import reference
+# Matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.colors import rgb2hex
+from matplotlib.patches import Polygon
+import matplotlib.cm as cm
+import matplotlib.colors as mpcolors
+import matplotlib.colorbar as mpcolorbar
+import matplotlib.patheffects as PathEffects
+from matplotlib.collections import PatchCollection
+from matplotlib.artist import Artist
+# Basemap
+from mpl_toolkits.basemap import Basemap
+#
+import numpy as np
+#
+from scipy.interpolate import NearestNDInterpolator
+#
+from PIL import Image
+#
 import psycopg2
+#
 from shapely.wkb import loads
 
-
+[Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY] = range(1,6)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
-from matplotlib.artist import Artist
 
 def smooth1d(x, window_len):
     # copied from http://www.scipy.org/Cookbook/SignalSmooth
@@ -256,7 +249,26 @@ def maue():
     cm.register_cmap(cmap=cmap3)
     return cmap3
 
-class MapPlot:
+class MapPlot(object):
+    """An object representing a basemap plot.
+    
+    An object that allows one to quickly and easily generate map plots of data
+    with some customization possible.  This is what drives most of the plots
+    you see on the IEM website.
+    
+    Example:
+      Here is an example of usage::
+    
+        mplot = MapPlot(sector='midwest', title='My Plot Title')
+        mplot.plot_values([-99,-95], [44,45], ['hi','there'])
+        mplot.postprocess(filename='test.png')
+        mplot.close()
+    
+    Attributes:
+        fig (matplotlib.Figure): figure object
+        ax (matplotlib.Axes): main figure plot axes
+    
+    """
     
     def __init__(self, sector='iowa', figsize=(10.24,7.68), **kwargs):
         """ Initializer """
@@ -772,13 +784,31 @@ class MapPlot:
     def fill_cwas(self, data, labels={},
                   shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
                   bins=np.arange(0,101,10),
-                  lblformat='%.0f', cmap=maue(), **kwargs):
-        """
-        Added filled polygons to the plot based on key/value lookup pairs in
-        the data dictionary
+                  lblformat='%.0f', cmap=None, **kwargs):
+        """Add overlay of filled polygons for NWS Forecast Offices.
+        
+        Method adds a colorized overlay of NWS Forecast Offices based on a 
+        data dictionary of values provided. This method also places a color 
+        bar on the image.
+        
+        Args:
+          data (dict): Dictionary of values with keys representing the 3 char
+            or 4 char idenitifer for the WFO.  This assumes the 3 char sites 
+            are the K ones.
+          labels (dict, optional): Optional dictionary that follows the ``data``
+            attribute, but hard codes what should be plotted as a label.
+          shapefile (str, optional): Location of a CWA shapefile to use for
+            plotting.  Defaults to one provided by IEM code.
+          bins (list, optional): List of increasing values to use as bins to
+            determine color levels.
+          lblformat (str, optional): Format string to use to place labels.
+          cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
+         
         """
         if data.has_key('JSJ'):
             data['SJU'] = data['JSJ']
+        if cmap is None:
+            cmap = maue()
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         
         self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
@@ -812,10 +842,10 @@ class MapPlot:
             c = cmap( norm([float(val),]) )[0]
             # Check area in meters... 100,000 x 100,000
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
-                mx, my = thismap(self.map.cwas_info[nshape]['LON'],
-                                  self.map.cwas_info[nshape]['LAT'])
-                txt = thisax.text(mx, my, lblformat % (labels.get(cwa, val),), zorder=100,
-                         ha='center', va='center')
+                mx, my = thismap(float(self.map.cwas_info[nshape]['LON']),
+                                 float(self.map.cwas_info[nshape]['LAT']))
+                txt = thisax.text(mx, my, lblformat % (labels.get(cwa, val),),
+                                  zorder=100, ha='center', va='center')
                 txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
                                                          foreground="w")])
                 plotted.append( cwa )

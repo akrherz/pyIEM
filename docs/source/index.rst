@@ -9,10 +9,9 @@ Welcome to pyIEM's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
-   :glob:
-   
-   api/*
+   :maxdepth: 3
+
+   api/modules.rst
 
 Indices and tables
 ==================
