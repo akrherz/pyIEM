@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
 import matplotlib.cm as cm
+import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
@@ -942,3 +943,204 @@ class MapPlot(object):
             shutil.copyfile(tmpfn, filename)
         os.unlink(tmpfn)
         
+def windrose(station, database='asos', fp=None, months=np.arange(1,13),
+    hours=np.arange(0,24), sts=datetime.datetime(1970,1,1),
+    ets=datetime.datetime(2050,1,1), units="mph", nsector=36,
+    justdata=False):
+    """Utility function that generates a windrose plot
+    
+    Args:
+      station (str): station identifier to search database for
+      database (str,optional): database name to look for data within
+      fp (str,optional): filename to write the image to, if it is `None` then
+        write to stdout (aka web server)
+      months (list,optional): optional list of months to limit plot to
+      hours (list,optional): optional list of hours to limit plot to
+      sts (datetime,optional): start datetime
+      ets (datetime,optional): end datetime
+      units (str,optional): units to plot values as
+      nsector (int,optional): number of bins to devide the windrose into
+      justdata (boolean,optional): if True, write out the data only
+    """
+    from pyiem.windrose import windrose as wr
+    windunits = {
+        'mph': {'label': 'miles per hour', 'dbmul': 1.15,
+                'bins':(0,2,5,7,10,15,20), 'abbr': 'mph',
+                'binlbl':('2-5','5-7','7-10','10-15','15-20','20+')},
+        'kts': {'label': 'knots', 'dbmul': 1.0,
+                'bins':(0,2,5,7,10,15,20), 'abbr': 'kts',
+                'binlbl':('2-5','5-7','7-10','10-15','15-20','20+')},
+        'mps': {'label': 'meters per second', 'dbmul': 0.5144,
+                'bins':(0,2,4,6,8,10,12), 'abbr': 'm s$^{-1}$',
+                'binlbl':('2-4','4-6','6-8','8-10','10-12','12+')},    
+        'kph': {'label': 'kilometers per hour', 'dbmul': 1.609,
+                'bins':(0,4,10,14,20,30,40), 'abbr': '$km h^{-1}$',
+                'binlbl':('4-10','10-14','14-20','20-30','30-40','40+')},              
+    }
+    
+    # Query metadata
+    db = psycopg2.connect(database='mesosite', host='iemdb', user='nobody')
+    mcursor = db.cursor()
+    mcursor.execute("""SELECT name from stations where id = %s""" ,(station,))
+    row = mcursor.fetchall()
+    sname = row[0][0]
+    mcursor.close()
+    db.close()
+
+    monthLimiter = ""
+    month_limit_text = "All included"
+    if len(months) == 1:
+        monthLimiter = "and extract(month from valid) = %s" % (months[0],)
+        month_limit_text = str(tuple(months))
+    elif len(months) < 12:
+        monthLimiter = "and extract(month from valid) in %s" % (
+                                    (str(tuple(months))).replace("'",""),)
+        month_limit_text = str(tuple(months))
+
+
+    hour_limit_text = "All included"
+    hourLimiter = ""
+    if len(hours) == 1:
+        hourLimiter = "and extract(hour from valid) = %s" % (hours[0],)
+        hour_limit_text = str(tuple(hours))
+    elif len(hours) < 24:
+        hourLimiter = "and extract(hour from valid) in %s" % (
+                                    (str(tuple(hours))).replace("'",""),)
+        hour_limit_text = str(tuple(hours))
+
+    # Query observations
+    db = psycopg2.connect(database=database, host='iemdb', user='nobody')
+    acursor = db.cursor()
+    sql = """SELECT sknt, drct, valid from alldata WHERE station = '%s'
+        and valid > '%s' and valid < '%s'
+        %s
+        %s """ % (
+        station, sts, ets, monthLimiter, hourLimiter)
+    acursor.execute( sql )
+    sped = np.zeros( (acursor.rowcount,), 'f')
+    drct = np.zeros( (acursor.rowcount,), 'f')
+    i = 0
+    for row in acursor:
+        #if row[2].month not in months or row[2].hour not in hours:
+        #    continue
+        if i == 0:
+            minvalid = row[2]
+            maxvalid = row[2]
+        if row[2] < minvalid:
+            minvalid = row[2]
+        if row[2] > maxvalid:
+            maxvalid = row[2]
+        if row[0] is None or row[0] < 3 or row[1] is None or row[1] < 0:
+            sped[i] = 0 
+            drct[i] = 0
+        elif row[0] == 0 or row[1] == 0:
+            sped[i] = 0
+            drct[i] = 0
+        else:
+            sped[i] =  row[0] * windunits[units]['dbmul'] 
+            drct[i] =  row[1] 
+        i += 1
+
+    acursor.close()
+    db.close()
+    if i < 5 or max(sped) == 0:
+        _ = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
+        label = 'Not enough data available to generate plot'
+        plt.gcf().text(0.17,0.89, label)
+        if fp is not None:
+            plt.savefig(fp)
+        else:
+            print "Content-Type: image/png\n"
+            plt.savefig( sys.stdout, format='png' )
+        return
+
+    if justdata:
+        sys.stdout.write('Content-type: text/plain\n\n')
+        dir_edges, var_bins, table = wr.histogram(drct, sped, 
+                                        np.asarray(windunits[units]['bins']), 
+                                        nsector, normed=True)
+        sys.stdout.write(("# Windrose Data Table (Percent Frequency) "
+                          +"for %s (%s)\n") % (sname, station))
+        sys.stdout.write("# Observation Count: %s\n" % (len(sped),))
+        sys.stdout.write("# Period: %s - %s\n" % (minvalid.strftime("%-d %b %Y"),
+                                                  maxvalid.strftime("%-d %b %Y")
+                                                  ))
+        sys.stdout.write("# Hour Limiter: %s\n" % (hour_limit_text,))
+        sys.stdout.write("# Month Limiter: %s\n" % (month_limit_text,))
+        sys.stdout.write("# Wind Speed Units: %s\n" % (
+                                                windunits[units]['label'],))
+        sys.stdout.write("# Generated %s UTC, contact: akrherz@iastate.edu\n" % (
+                    datetime.datetime.utcnow().strftime("%d %b %Y %H:%M"),))
+        sys.stdout.write("# First value in table is CALM\n")
+        sys.stdout.write("       ,")
+        for j in range(len(var_bins)-1):
+            sys.stdout.write(" %4.1f-%4.1f," % (var_bins[j], var_bins[j+1]-0.1))
+        sys.stdout.write("\n")
+        dir_edges2 = np.concatenate((np.array(dir_edges), 
+                            [dir_edges[-1] + (dir_edges[-1] - dir_edges[-2]),]))
+        for i in range(len(dir_edges2)-1):
+            sys.stdout.write("%03i-%03i," % (dir_edges2[i], dir_edges2[i+1]))
+            for j in range(len(var_bins)-1):
+                sys.stdout.write(" %9.3f," % (table[j,i],))
+            sys.stdout.write("\n")
+        return
+
+    # Generate figure
+    fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
+    rect = [0.1, 0.1, 0.8, 0.8]
+    ax = wr.WindroseAxes(fig, rect, axisbg='w')
+    fig.add_axes(ax)
+    ax.bar(drct, sped, normed=True, bins=windunits[units]['bins'], opening=0.8, 
+           edgecolor='white', nsector=nsector)
+    handles = []
+    for p in ax.patches_list:
+        color = p.get_facecolor()
+        handles.append( plt.Rectangle((0, 0), 0.1, 0.3,
+                    facecolor=color, edgecolor='black'))
+    l = fig.legend( handles, windunits[units]['binlbl'] , loc=3,
+     ncol=6, title='Wind Speed [%s]' % (windunits[units]['abbr'],), 
+     mode=None, columnspacing=0.9, handletextpad=0.45)
+    plt.setp(l.get_texts(), fontsize=10)
+    # Now we put some fancy debugging info on the plot
+    tlimit = "Time Domain: "
+    if len(hours) == 24 and len(months) == 12:
+        tlimit = "All Year"
+    if len(hours) < 24:
+        if len(hours) > 4:
+            tlimit += "%s-%s" % (
+                    datetime.datetime(2000,1,1,hours[0]).strftime("%-I %p"),
+                    datetime.datetime(2000,1,1,hours[-1]).strftime("%-I %p")                                 
+                                 )
+        else:
+            for h in hours: 
+                tlimit += "%s," % (
+                            datetime.datetime(2000,1,1,h).strftime("%-I %p"),)
+    if len(months) < 12:
+        for h in months: 
+            tlimit += "%s," % (datetime.datetime(2000,h,1).strftime("%b"),)
+    label = """[%s] %s  
+Windrose Plot [%s]
+Period of Record: %s - %s
+Obs Count: %s Calm: %.1f%% Avg Speed: %.1f %s""" % (station, sname, 
+                                                             tlimit,
+        minvalid.strftime("%d %b %Y"), maxvalid.strftime("%d %b %Y"), 
+        np.shape(sped)[0], 
+        np.sum( np.where(sped < 2., 1., 0.)) / np.shape(sped)[0] * 100.,
+        np.average(sped), windunits[units]['abbr'])
+    plt.gcf().text(0.17,0.89, label)
+    plt.gcf().text(0.01,0.1, "Generated: %s" % (
+                   datetime.datetime.now().strftime("%d %b %Y"),),
+                   verticalalignment="bottom")
+    # Make a logo
+    im = mpimage.imread('/mesonet/www/apps/iemwebsite/htdocs/images/logo_small.png')
+    #im[:,:,-1] = 0.8
+
+    plt.figimage(im, 10, 625)
+
+    if fp is not None:
+        plt.savefig(fp)
+    else:
+        sys.stdout.write("Content-Type: image/png\n\n")
+        plt.savefig( sys.stdout, format='png' )
+   
+    del sped, drct, im
