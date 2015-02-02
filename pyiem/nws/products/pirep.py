@@ -143,7 +143,7 @@ class Pirep( product.TextProduct ):
                 elif therest == 'O':
                     # Use the first part of the report in this case
                     loc = report[:3]
-                elif therest.find("-") > 0:
+                elif therest.find("-") > 0 and re.match(OV_TWOLOC, therest):
                     d = re.match(OV_TWOLOC, therest).groupdict()
                     numbers = re.findall("[0-9]{6}", therest)
                     if len(numbers) > 0:

@@ -17,6 +17,13 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_150202_groupdict(self):
+        """groupdict.txt threw an error"""
+        nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file("PIREPS/groupdict.txt"),
+                           nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.reports), 1)
+
     def test_150202_airmet(self):
         """airmet.txt has no valid data, so don't error out """
         prod = pirepparser(get_file('PIREPS/airmet.txt'))
