@@ -81,6 +81,9 @@ class Pirep( product.TextProduct ):
             token = token.strip()
             # First token is always priority
             if i == 0:
+                if len(token) > 10:
+                    print("Aborting as not-PIREP? |%s|" % (report,))
+                    return
                 if token.find(" UUA") > 0:
                     _pr.priority = "UUA"
                 else:

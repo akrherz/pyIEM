@@ -17,6 +17,11 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_150202_airmet(self):
+        """airmet.txt has no valid data, so don't error out """
+        prod = pirepparser(get_file('PIREPS/airmet.txt'))
+        self.assertEquals(len(prod.reports), 0)
+
     def test_150126_space(self):
         """ space.txt has a space where it should not """
         nwsli_provider = {'CZBA': {'lat': 44.26, 'lon': -88.52}}
