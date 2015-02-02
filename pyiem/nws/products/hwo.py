@@ -23,9 +23,13 @@ class HWOProduct( TextProduct ):
             if len(segment.ugcs) == 0:
                 continue
             day1 = segment.unixtext.find(".DAY ONE...")
+            if day1 == -1:
+                raise HWOException("segment %s is missing DAY ONE section" % (
+                                                                    segnum,))
             day27 = segment.unixtext.find(".DAYS TWO THROUGH SEVEN...")
-            if day1 == -1 or day27 == -1:
-                raise HWOException("segment %s has missing blah" % (segnum,))
+            if day27 == -1:
+                raise HWOException(("segment %s is missing DAYS TWO "
+                                    +"THROUGH SEVEN section") % (segnum,))
             
             day1text = re.search(r'(NO HAZARDOUS WEATHER IS EXPECTED AT THIS TIME|THE PROBABILITY FOR WIDESPREAD HAZARDOUS WEATHER IS LOW)', segment.unixtext[day1:day27])
             day27text = re.search(r'(NO HAZARDOUS WEATHER IS EXPECTED AT THIS TIME|THE PROBABILITY FOR WIDESPREAD HAZARDOUS WEATHER IS LOW)', segment.unixtext[day27:])

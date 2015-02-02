@@ -32,6 +32,12 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150202_hwo(self):
+        """HWORNK emitted a poorly worded error message"""
+        prod = parser(get_file('HWORNK.txt'))
+        self.assertRaises(Exception, prod.get_jabbers,
+                          'http://localhost', 'http://localhost')
+
     def test_150115_correction_sbw(self):
         """ FLWMHX make sure a correction does not result in two polygons """
         prod = vtecparser(get_file('FLWMHX/0.txt'))
