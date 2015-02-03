@@ -32,6 +32,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150203_exp_does_not_end(self):
+        """MWWCAR a VTEC EXP action should not terminate it """
+        for i in range(24):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('MWWCAR/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0)
+
     def test_150203_null_issue(self):
         """WSWOKX had null issue times, bad! """
         for i in range(18):
@@ -468,6 +476,9 @@ class TestProducts(unittest.TestCase):
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))        
 
         self.txn.execute("""DELETE from sbw_2014 where
+        wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
+        significance = 'W' """)
+        self.txn.execute("""DELETE from warnings_2014 where
         wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
         significance = 'W' """)
 

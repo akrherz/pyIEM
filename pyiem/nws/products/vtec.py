@@ -185,7 +185,7 @@ class VTECProduct(TextProduct):
                 SELECT issue, expire, updated from """+ warning_table +"""
                 WHERE ugc = %s and eventid = %s and significance = %s and
                 wfo = %s and phenomena = %s 
-                and status not in ('CAN', 'UPG', 'EXP') and expire > %s
+                and status not in ('CAN', 'UPG') and expire > %s
                 """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
                       vtec.phenomena, self.valid))
                 if txn.rowcount > 0:
@@ -265,7 +265,7 @@ class VTECProduct(TextProduct):
                    || %s || '__' 
                 WHERE wfo = %s and eventid = %s and ugc in """+ugcstring+"""
                 and significance = %s and phenomena = %s 
-                and status not in ('EXP', 'CAN', 'UPG') and
+                and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
                 """, (ets, vtec.action, self.valid, self.unixtext,
                       vtec.office, vtec.ETN, 
@@ -291,7 +291,7 @@ class VTECProduct(TextProduct):
                    || %s || '__' , expire = %s WHERE
                 wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
                 and significance = %s and phenomena = %s 
-                and status not in ('EXP', 'CAN', 'UPG') and 
+                and status not in ('CAN', 'UPG') and 
                 (expire + '1 hour'::interval) >= %s
                 """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
                       vtec.significance, vtec.phenomena, self.valid))
