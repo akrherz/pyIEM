@@ -32,6 +32,19 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150203_null_issue(self):
+        """WSWOKX had null issue times, bad! """
+        for i in range(18):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('WSWOKX/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            # Make sure there are no null issue times
+            self.txn.execute("""SELECT count(*) from warnings_2015
+            where wfo = 'OKX' and eventid = 6
+            and phenomena = 'WW' and significance = 'Y'
+            and issue is null""")
+            self.assertEquals(self.txn.fetchone()[0], 0)
+
     def test_150202_hwo(self):
         """HWORNK emitted a poorly worded error message"""
         prod = parser(get_file('HWORNK.txt'))
@@ -91,6 +104,12 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('WSWOUN/%i.txt' % (i,)))
             prod.sql(self.txn)
+            # Make sure there are no null issue times
+            self.txn.execute("""SELECT count(*) from warnings_2014
+            where wfo = 'OUN' and eventid = 16
+            and phenomena = 'WW' and significance = 'Y'
+            and issue is null""")
+            self.assertEquals(self.txn.fetchone()[0], 0)
             if i == 5:
                 self.txn.execute("""SELECT issue from warnings_2014
                 WHERE ugc = 'OKZ036' and wfo = 'OUN' and eventid = 16

@@ -229,9 +229,12 @@ class VTECProduct(TextProduct):
         elif vtec.action in ['COR',]:
             # A previous issued product is being corrected
             txn.execute("""
-            UPDATE """+ warning_table +""" SET expire = %s, status = %s,
+            UPDATE """+ warning_table +""" 
+            SET expire = coalesce(%s, expire), status = %s,
             svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
-                   || %s || '__', issue = %s, init_expire = %s WHERE
+                   || %s || '__', 
+            issue = coalesce(%s, issue), 
+            init_expire = coalesce(%s, init_expire) WHERE
             wfo = %s and eventid = %s and ugc in """+ugcstring+""" 
             and significance = %s and phenomena = %s and 
             (expire + '1 hour'::interval) >= %s
