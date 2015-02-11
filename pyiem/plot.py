@@ -556,10 +556,10 @@ class MapPlot(object):
                                       va='top', ha='center').set_clip_on(True)
                     
                 
-                
-        white_glows = FilteredArtistList(t, GrowFilter(3))
-        self.ax.add_artist(white_glows)
-        white_glows.set_zorder(t[0].get_zorder()-0.1)
+        if len(t) > 0:
+            white_glows = FilteredArtistList(t, GrowFilter(3))
+            self.ax.add_artist(white_glows)
+            white_glows.set_zorder(t[0].get_zorder()-0.1)
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
         """ Plot scatter points with some colorized symbology """
