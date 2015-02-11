@@ -4,6 +4,19 @@
 This module contains utility functions used by various parts of the codebase.
 
 """
+import psycopg2
+
+
+def get_properties():
+    """Fetch the properties set"""
+    pgconn = psycopg2.connect(database='mesosite', host='iemdb')
+    cursor = pgconn.cursor()
+    cursor.execute("""SELECT propname, propvalue from properties""")
+    res = {}
+    for row in cursor:
+        res[row[0]] = row[1]
+    return res
+
 
 def drct2text(drct):
     """Convert an degree value to text representation of direction.
