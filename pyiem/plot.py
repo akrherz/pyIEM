@@ -10,6 +10,8 @@ import shutil
 import datetime
 #
 from pyiem import reference
+from pyiem.datatypes import speed, direction
+import pyiem.meteorology as meteorology
 # Matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import rgb2hex
@@ -17,6 +19,7 @@ from matplotlib.patches import Polygon
 import matplotlib.cm as cm
 import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
+from matplotlib.patches import Wedge
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 from matplotlib.collections import PatchCollection
@@ -435,8 +438,84 @@ class MapPlot(object):
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
+    def plot_station(self, data):
+        """Plot values on a map in a station plot like manner
+
+        the positions are a list of 1-9 values, where top row is 1,2,3 and
+        then the middle row is 4,5,6 and bottom row is 7,8,9
+
+        Args:
+          data (list): list of dicts with station data to plot
+        """
+        (x0, x1) = self.ax.set_xlim()
+        # size to use for circles
+        circlesz = (x1 - x0) / 180.
+        # (y0, y1) = self.ax.set_ylim()
+        offsets = {1: [-4, 4, 'right', 'bottom'],
+                   2: [0, 4, 'center', 'bottom'],
+                   3: [4, 4, 'left', 'bottom'],
+                   4: [-4, 0, 'right', 'center'],
+                   5: [0, 0, 'center', 'center'],
+                   6: [4, 0, 'left', 'center'],
+                   7: [-4, -4, 'right', 'top'],
+                   8: [0, -4, 'center', 'top'],
+                   9: [4, -4, 'left', 'top']}
+
+        mask = np.zeros(self.fig.canvas.get_width_height(), bool)
+        for stdata in data:
+            (x, y) = self.map(stdata['lon'], stdata['lat'])
+            (imgx, imgy) = self.ax.transData.transform([x, y])
+            # Check to see if this overlaps
+            _cnt = np.sum(np.where(mask[imgx-15:imgx+15, imgy-15:imgy+15], 1,
+                                   0))
+            if _cnt > 5:
+                continue
+            mask[imgx-15:imgx+15, imgy-15:imgy+15] = True
+            # Plot bars
+            if stdata.get('sknt', 0) > 1:
+                (u, v) = meteorology.uv(speed(stdata.get('sknt', 0), 'KT'),
+                                        direction(stdata.get('drct', 0),
+                                                  'DEG'))
+                if u is not None and v is not None:
+                    self.ax.barbs(x, y, u.value('KT'), v.value('KT'), zorder=1)
+
+            # Sky Coverage
+            skycoverage = stdata.get('coverage')
+            if skycoverage >= 0 and skycoverage <= 100:
+                w = Wedge((x, y), circlesz, 0, 360, ec='k', fc='white',
+                          zorder=2)
+                self.ax.add_artist(w)
+                w = Wedge((x, y), circlesz, 0, 360. * skycoverage / 100.,
+                          ec='k', fc='k', zorder=3)
+                self.ax.add_artist(w)
+
+            # Temperature
+            val = stdata.get('tmpf')
+            (offx, offy, ha, va) = offsets[1]
+            self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                             xytext=(offx, offy), color='r',
+                             textcoords="offset points",
+                             clip_on=True)
+            # Dew Point
+            val = stdata.get('dwpf')
+            (offx, offy, ha, va) = offsets[7]
+            self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                             xytext=(offx, offy), color='b',
+                             textcoords="offset points",
+                             clip_on=True)
+            # Plot identifier
+            val = stdata.get('id')
+            if val is not None:
+                (offx, offy, ha, va) = offsets[6]
+                self.ax.annotate("%s" % (val, ), xy=(x, y), ha=ha, va=va,
+                                 xytext=(offx, offy), color='tan',
+                                 textcoords="offset points", zorder=1,
+                                 clip_on=True, fontsize=8)
+
+
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
-                    color='#000000', textsize=14, labels=None):
+                    color='#000000', textsize=14, labels=None,
+                    labeltextsize=10, labelcolor='#000000'):
         """Plot values onto the map
         
         Args:
@@ -444,15 +523,16 @@ class MapPlot(object):
           lats (list): latitude values to use for placing `vals`
           vals (list): actual values to place on the map
           fmt (str, optional): Format specification to use for representing the 
-          values. For example, the default is '%s'.
+            values. For example, the default is '%s'.
           valmask (list, optional): Boolean list to use as masking of the
-          `vals` while adding to the map.
+            `vals` while adding to the map.
           color (str, list, optional): Color to use while plotting the `vals`.
-          This can be a list to specify each color to use with each value.
+            This can be a list to specify each color to use with each value.
           textsize (str, optional): Font size to draw text.
-          labels (list, optional): Optional list of labels to place below the
-          plotting of `vals`
-        
+            labels (list, optional): Optional list of labels to place below the
+            plotting of `vals`
+          labeltextsize (int, optional): Size of the label text
+          labelcolor (str, optional): Color to use for drawing labels
         """        
         if valmask is None:
             valmask = [True] * len(lons)
@@ -471,9 +551,9 @@ class MapPlot(object):
                 t.append(t0)
                 
                 if l and l != '':
-                    self.ax.text(x, y, l, color='k', 
-                                      size=textsize - 4, zorder=Z_OVERLAY+1,
-                                      va='top').set_clip_on(True)
+                    self.ax.text(x, y, l, color=labelcolor, 
+                                      size=labeltextsize, zorder=Z_OVERLAY+1,
+                                      va='top', ha='center').set_clip_on(True)
                     
                 
                 
@@ -870,11 +950,17 @@ class MapPlot(object):
             poly=Polygon(seg, fill=False, ec='k', lw=.8, zorder=Z_POLITICAL)
             self.ax.add_patch(poly)
 
-    def drawcounties(self):
-        """ Draw counties """
+    def drawcounties(self, color='k'):
+        """ Draw counties onto the map (only Iowa at this time)
+
+        Args:
+          color (color,optional): line color to use
+
+        """
         self.map.readshapefile('/mesonet/data/gis/static/shape/4326/iowa/iacounties', 'c')
         for nshape, seg in enumerate(self.map.c):
-            poly=Polygon(seg, fill=False, ec='k', lw=.4, zorder=Z_POLITICAL)
+            poly = Polygon(seg, fill=False, ec=color, lw=.4,
+                           zorder=Z_POLITICAL)
             self.ax.add_patch(poly)
 
         

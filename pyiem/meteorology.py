@@ -28,6 +28,8 @@ def uv(speed, direction):
         raise InvalidArguments("uv() needs speed and direction objects as args")
     # Get radian units
     rad = direction.value("RAD")
+    if rad is None or speed.value() is None:
+        return None, None
     u = (0 - speed.value()) * np.sin(rad)
     v = (0 - speed.value()) * np.cos(rad)
     return dt.speed(u, speed._units), dt.speed(v, speed._units)

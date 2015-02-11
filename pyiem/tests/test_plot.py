@@ -2,8 +2,19 @@ import unittest
 import numpy as np
 from pyiem import plot
 
-class TestObservation(unittest.TestCase):
-    
+
+class TestPlot(unittest.TestCase):
+
+    def test_barbs(self):
+        """Testing the plotting of wind barbs"""
+        m = plot.MapPlot(axisbg='white')
+        data = [dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
+                dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
+                ]
+        m.plot_station(data)
+        m.postprocess(filename='/tmp/test_plot_barbs.png')
+        m.close()
+
     def test_scatter(self):
         """ Test scatter plots """
         m = plot.MapPlot(sector='midwest')
