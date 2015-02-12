@@ -465,6 +465,8 @@ class MapPlot(object):
         for stdata in data:
             (x, y) = self.map(stdata['lon'], stdata['lat'])
             (imgx, imgy) = self.ax.transData.transform([x, y])
+            imgx = int(imgx)
+            imgy = int(imgy)
             # Check to see if this overlaps
             _cnt = np.sum(np.where(mask[imgx-15:imgx+15, imgy-15:imgy+15], 1,
                                    0))
