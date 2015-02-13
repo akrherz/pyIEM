@@ -8,6 +8,8 @@ class Table(object):
         Construct with either a single network, or list of networks
         """
         self.sts = {}
+        if network is None:
+            return
 
         dbconn = psycopg2.connect(database='mesosite', host='iemdb', user='nobody')
         cursor = dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
