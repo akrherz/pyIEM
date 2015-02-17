@@ -26,10 +26,14 @@ class TrackerEngine(object):
         self.icursor = icursor
         self.pcursor = pcursor
         self.maxoffline = maxoffline
+        self.action_count = 0
         self.emails = {}
 
     def send_emails(self):
         """Send out those SPAM emails!"""
+        # Don't do anything if we have exceeded maxoffline
+        if self.action_count >= self.maxoffline and self.maxoffline > 0:
+            return
         s = smtplib.SMTP()
         s.connect()
         for email in self.emails:
@@ -232,6 +236,7 @@ please directly respond to this email.
                 # print '%s is online, offlinekeys: %s' % (sid,
                 #                                         str(offline.keys()))
                 if sid in offline:
+                    self.action_count += 1
                     self.online_logic(sid, offline, ob, pnetwork, nt)
                 continue
             elif sid in offline:
@@ -240,6 +245,7 @@ please directly respond to this email.
                 continue
             # We must act!
             # print '%s is offline' % (sid, )
+            self.action_count += 1
             self.offline_logic(sid, ob, pnetwork, nt)
 
 
