@@ -493,18 +493,20 @@ class MapPlot(object):
 
             # Temperature
             val = stdata.get('tmpf')
-            (offx, offy, ha, va) = offsets[1]
-            self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
-                             xytext=(offx, offy), color='r',
-                             textcoords="offset points",
-                             clip_on=True)
+            if val is not None:
+                (offx, offy, ha, va) = offsets[1]
+                self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                                 xytext=(offx, offy), color='r',
+                                 textcoords="offset points",
+                                 clip_on=True)
             # Dew Point
             val = stdata.get('dwpf')
-            (offx, offy, ha, va) = offsets[7]
-            self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
-                             xytext=(offx, offy), color='b',
-                             textcoords="offset points",
-                             clip_on=True)
+            if val is not None:
+                (offx, offy, ha, va) = offsets[7]
+                self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                                 xytext=(offx, offy), color='b',
+                                 textcoords="offset points",
+                                 clip_on=True)
             # Plot identifier
             val = stdata.get('id')
             if val is not None:
