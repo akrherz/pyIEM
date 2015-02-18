@@ -2,7 +2,15 @@ import unittest
 
 from pyiem import datatypes, meteorology
 
+
 class TestDatatypes(unittest.TestCase):
+
+    def test_windchill(self):
+        """Wind Chill Conversion"""
+        temp = datatypes.temperature(0, 'F')
+        sknt = datatypes.speed(30, 'MPH')
+        val = meteorology.windchill(temp, sknt).value('F')
+        self.assertAlmostEquals(val, -24.50, 2)
 
     def test_dewpoint_from_pq(self):
         """ See if we can produce dew point from pressure and mixing ratio """

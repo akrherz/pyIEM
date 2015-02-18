@@ -1,11 +1,14 @@
 """
  We do meteorological things, when necessary
 """
+import math
 import numpy as np
 import pyiem.datatypes as dt
 
+
 class InvalidArguments(Exception):
     pass
+
 
 def drct(u, v):
     """
@@ -14,8 +17,9 @@ def drct(u, v):
     return 0 #TODO
     if (v.value):
         val = 1
-    
+
     return dt.direction(val, 'DEG')
+
 
 def uv(speed, direction):
     """
@@ -36,18 +40,51 @@ def uv(speed, direction):
 
 
 def feelslike(temperature, dewpoint, speed):
+    """Compute a feels like temperature
+
+    Args:
+      temperature (temperature): The dry bulb temperature
+      dewpoint (temperature): The dew point temperature
+      speed (speed): the wind speed
+
+    Returns:
+      temperature (temperature): The feels like temperature
     """
-    Compute a feels like temperature
+    if temperature.value("F") >= 70:
+        return heatindex(temperature, dewpoint)
+    elif temperature.value("F") < 50:
+        return windchill(temperature, speed)
+
+    return temperature
+
+
+def windchill(temperature, speed):
+    """Compute the wind chill temperature
+
+    Args:
+      temperature (temperature): The Air Temperature
+      speed (speed): The Wind Speed
+
+    Returns:
+      temperature (temperature): The Wind Chill Temperature
     """
-    pass
+    tmpf = temperature.value("F")
+    sknt = speed.value('KT')
+    if sknt < 3 or tmpf > 50:
+        return temperature
+    wci = (35.74 + .6215 * tmpf
+           - 35.75 * math.pow(sknt, 0.16)
+           + .4275 * tmpf * math.pow(sknt, 0.16))
+    return dt.temperature(wci, 'F')
+
 
 def heatindex(temperature, polyarg):
     """
     Compute the heat index based on
-    
+
     Stull, Richard (2000). Meteorology for Scientists and Engineers, 
     Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.
-    
+
     Another opinion on appropriate equation:
     http://www.hpc.ncep.noaa.gov/html/heatindex_equation.shtml
     """
