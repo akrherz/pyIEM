@@ -253,27 +253,28 @@ def maue():
     cm.register_cmap(cmap=cmap3)
     return cmap3
 
+
 class MapPlot(object):
     """An object representing a basemap plot.
-    
+
     An object that allows one to quickly and easily generate map plots of data
     with some customization possible.  This is what drives most of the plots
     you see on the IEM website.
-    
+
     Example:
       Here is an example of usage::
-    
+
         mplot = MapPlot(sector='midwest', title='My Plot Title')
         mplot.plot_values([-99,-95], [44,45], ['hi','there'])
         mplot.postprocess(filename='test.png')
         mplot.close()
-    
+
     Attributes:
         fig (matplotlib.Figure): figure object
         ax (matplotlib.Axes): main figure plot axes
-    
+
     """
-    
+
     def __init__(self, sector='iowa', figsize=(10.24,7.68), **kwargs):
         """ Initializer """
         self.fig = plt.figure(num=None, figsize=figsize )
@@ -290,7 +291,7 @@ class MapPlot(object):
         self.hi_ax = None
         self.pr_map = None
         self.pr_ax = None
-        
+
         if self.sector == 'iowa':
             """ Standard view for Iowa """
             self.map = Basemap(projection='merc', fix_aspect=False,
@@ -347,8 +348,7 @@ class MapPlot(object):
                                resolution='l',area_thresh=1000.,projection='lcc',
                                lat_1=50.,lon_0=-107.,
                                ax=self.ax, fix_aspect=False)
-            self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
-            self.map.drawcoastlines(zorder=Z_POLITICAL)           
+           
         elif self.sector in ['conus', 'nws']:
             self.map = Basemap(projection='stere',lon_0=-105.0,lat_0=90.,
                             lat_ts=60.0,
@@ -382,17 +382,22 @@ class MapPlot(object):
                                       urcrnrlon=-154.0, llcrnrlon=-161.0,
                                       resolution='l', ax=self.hi_ax,
                                       fix_aspect=False)
-        
-        if self.pr_map:
-            self.pr_map.fillcontinents(color='0.7',zorder=0)
-        if self.ak_map:
-            self.ak_map.fillcontinents(color='0.7',zorder=0)
-        if self.hi_map:
-            self.hi_map.fillcontinents(color='0.7',zorder=0)
-        self.map.fillcontinents(color=kwargs.get('axisbg', (0.4471,0.6235,0.8117)), zorder=0) # Read docs on 0 meaning
 
-        if not kwargs.has_key('nostates'):
-            self.map.drawstates(linewidth=1.5, zorder=Z_OVERLAY, ax=self.ax)
+        for _a in [self.map, self.pr_map, self.ak_map, self.hi_map]:
+            if _a is None:
+                continue
+            _a.fillcontinents(color=kwargs.get('axisbg',
+                                               (0.4471, 0.6235, 0.8117)),
+                              zorder=0)
+            _a.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
+            _a.drawcoastlines(zorder=Z_POLITICAL)
+
+        if 'nostates' not in kwargs:
+            for _a in [self.map, self.pr_map, self.ak_map, self.hi_map]:
+                if _a is None:
+                    continue
+                _a.drawstates(linewidth=1.5, zorder=Z_OVERLAY,
+                              color=kwargs.get('statecolor', 'k'))
         if kwargs.has_key('cwas'):
             self.drawcwas()
         if not kwargs.get('nologo'):
@@ -516,17 +521,16 @@ class MapPlot(object):
                                  textcoords="offset points", zorder=1,
                                  clip_on=True, fontsize=8)
 
-
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None,
                     labeltextsize=10, labelcolor='#000000'):
         """Plot values onto the map
-        
+
         Args:
           lons (list): longitude values to use for placing `vals`
           lats (list): latitude values to use for placing `vals`
           vals (list): actual values to place on the map
-          fmt (str, optional): Format specification to use for representing the 
+          fmt (str, optional): Format specification to use for representing the
             values. For example, the default is '%s'.
           valmask (list, optional): Boolean list to use as masking of the
             `vals` while adding to the map.
@@ -537,32 +541,56 @@ class MapPlot(object):
             plotting of `vals`
           labeltextsize (int, optional): Size of the label text
           labelcolor (str, optional): Color to use for drawing labels
-        """        
+        """
         if valmask is None:
             valmask = [True] * len(lons)
         if labels is None:
             labels = [''] * len(lons)
-        if type(color) == type(''):
-            color = [color]* len(lons)
+        if isinstance(color, str):
+            color = [color] * len(lons)
         t = []
-        for o,a,v,m,c,l in zip(lons, lats, vals, valmask, color, labels):
-            if m:
-                x,y = self.map(o, a)
-                t0 = self.ax.text(x, y, fmt % (v,) , color=c,  
-                                      size=textsize, zorder=Z_OVERLAY+2,
-                                      va='bottom')
-                t0.set_clip_on(True)
-                t.append(t0)
-                
-                if l and l != '':
-                    self.ax.text(x, y, l, color=labelcolor, 
-                                      size=labeltextsize, zorder=Z_OVERLAY+1,
-                                      va='top', ha='center').set_clip_on(True)
-                    
-                
+        mask = np.zeros(self.fig.canvas.get_width_height(), bool)
+        for o, a, v, m, c, l in zip(lons, lats, vals, valmask, color, labels):
+            if not m:
+                continue
+            thismap = self.map
+            thisax = self.ax
+            if o < -125 and a > 40 and self.ak_map is not None:
+                thismap = self.ak_map
+                thisax = self.ak_ax
+            elif o < -125 and a < 40 and self.hi_map is not None:
+                thismap = self.hi_map
+                thisax = self.hi_ax
+            (x, y) = thismap(o, a)
+            (imgx, imgy) = thisax.transData.transform([x, y])
+            imgx = int(imgx)
+            imgy = int(imgy)
+            # Check to see if this overlaps
+            _cnt = np.sum(np.where(mask[imgx-textsize:imgx+textsize,
+                                        imgy-textsize:imgy+textsize], 1,
+                                   0))
+            if _cnt > 15:
+                continue
+            mask[imgx-textsize:imgx+textsize,
+                 imgy-textsize:imgy+textsize] = True
+            t0 = thisax.text(x, y, fmt % (v,), color=c,
+                             size=textsize, zorder=Z_OVERLAY+2,
+                             va='center', ha='center')
+            t0.set_clip_on(True)
+            t.append(t0)
+
+            if l and l != '':
+                thisax.annotate("%s" % (l, ), xy=(x, y), ha='left',
+                                va='top',
+                                xytext=(0, 0 - textsize/2 - 1),
+                                color=labelcolor,
+                                textcoords="offset points",
+                                zorder=Z_OVERLAY+1,
+                                clip_on=True, fontsize=labeltextsize)
+
         if len(t) > 0:
             white_glows = FilteredArtistList(t, GrowFilter(3))
-            self.ax.add_artist(white_glows)
+            thisax.add_artist(white_glows)
             white_glows.set_zorder(t[0].get_zorder()-0.1)
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
