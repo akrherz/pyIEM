@@ -15,6 +15,7 @@ SOUTH = 20.
 XAXIS = np.arange(WEST, EAST, 0.01)
 YAXIS = np.arange(SOUTH, NORTH, 0.01)
 
+
 def make_colorramp():
     """
     Make me a crude color ramp
@@ -109,17 +110,17 @@ def random_zeros():
     return "%s" % ("0" * random.randint(0, 20),)
 
 
-def write_worldfile( filename ):
-    """
-    Write a world file to given filename
-    @param filename to write the data to
+def write_worldfile(filename):
+    """Write a worldfile to the given filename
+
+    Args:
+      filename (str): filename to write the world file information to
     """
     output = open(filename, 'w')
-    output.write("""0.010%s
-0.00%s
-0.00%s
--0.010%s
+    output.write("""0.01
+0.00
+0.00
+-0.01
 %s
-%s""" % (random_zeros(), random_zeros(), random_zeros(), random_zeros(),
-            WEST, NORTH))
+%s""" % (WEST, NORTH))
     output.close()
