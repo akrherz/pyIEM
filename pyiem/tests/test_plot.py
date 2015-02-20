@@ -5,6 +5,17 @@ from pyiem import plot
 
 class TestPlot(unittest.TestCase):
 
+    def test_overlap(self):
+        """ Do some checking of our overlaps logic """
+        m = plot.MapPlot(sector='midwest', axisbg='white')
+        lons = np.linspace(-99, -90, 100)
+        lats = np.linspace(38, 44, 100)
+        vals = lats
+        labels = ['%.2f' % (s,) for s in lats]
+        m.plot_values(lons, lats, vals, fmt='%.2f', labels=labels)
+        m.postprocess(filename='/tmp/test_plot_overlap.png')
+        m.close()
+
     def test_barbs(self):
         """Testing the plotting of wind barbs"""
         m = plot.MapPlot(axisbg='white')
@@ -22,7 +33,7 @@ class TestPlot(unittest.TestCase):
                   np.linspace(40,45,100), range(100), np.arange(0,101,10))
         m.postprocess(filename='/tmp/test_plot_scatter.png')
         m.close()
-    
+
     def test_contourf(self):
         ''' Test the contourf plot with labels specified '''
         m = plot.MapPlot(sector='iowa')
@@ -30,7 +41,7 @@ class TestPlot(unittest.TestCase):
                    clevlabels=['a','b', 'c', 'd', 'e'])
         m.postprocess(filename='/tmp/test_plot_contourf.png')
         m.close()
-    
+
     def test_textplot(self):
         ''' Can we plot text and place labels on them '''
         m = plot.MapPlot(sector='iowa')
@@ -43,7 +54,6 @@ class TestPlot(unittest.TestCase):
         m.postprocess(filename='/tmp/test_plot_2.png')
         m.close()
 
-    
     def test_plot(self):
         """ Exercise the API """
         m = plot.MapPlot(sector='midwest')
@@ -51,11 +61,11 @@ class TestPlot(unittest.TestCase):
                     units='midwest')
         m.postprocess(filename='/tmp/midwest_plot_example.png')
         m.close()
-        
+
     def test_plot2(self):
         """ Exercise NWS plot API """
         m = plot.MapPlot(sector='nws')
-        m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO':50},
+        m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another')
         m.postprocess(filename='/tmp/us_plot_example.png')
         m.close()
@@ -63,7 +73,7 @@ class TestPlot(unittest.TestCase):
     def test_plot3(self):
         """ Exercise climdiv plot API """
         m = plot.MapPlot(sector='iowa')
-        m.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30, 
-                     'AJK': 40, 'HFO':50})
+        m.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30,
+                        'AJK': 40, 'HFO': 50})
         m.postprocess(filename='/tmp/iowa_climdiv_example.png')
         m.close()

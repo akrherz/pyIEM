@@ -13,6 +13,8 @@ from pyiem import reference
 from pyiem.datatypes import speed, direction
 import pyiem.meteorology as meteorology
 # Matplotlib
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Polygon
@@ -274,14 +276,12 @@ class MapPlot(object):
         ax (matplotlib.Axes): main figure plot axes
 
     """
-
-    def __init__(self, sector='iowa', figsize=(10.24,7.68), **kwargs):
+    def __init__(self, sector='iowa', figsize=(10.24, 7.68), **kwargs):
         """ Initializer """
-        self.fig = plt.figure(num=None, figsize=figsize )
-        self.fig.subplots_adjust(bottom=0, left=0, right=1, top=1, wspace=0, 
-                                 hspace=0)
-        self.ax = plt.axes([0.01,0.05,0.928,0.85], 
-                           axisbg=(0.4471,0.6235,0.8117))
+        self.fig = plt.figure(num=None, figsize=figsize,
+                              dpi=kwargs.get('dpi', 100))
+        self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
+                           axisbg=(0.4471, 0.6235, 0.8117))
         self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                       yticks=[], xticks=[])
         self.sector = sector
@@ -561,28 +561,41 @@ class MapPlot(object):
             elif o < -125 and a < 40 and self.hi_map is not None:
                 thismap = self.hi_map
                 thisax = self.hi_ax
+
+            # compute the pixel coordinate of this data point
             (x, y) = thismap(o, a)
             (imgx, imgy) = thisax.transData.transform([x, y])
             imgx = int(imgx)
             imgy = int(imgy)
-            # Check to see if this overlaps
-            _cnt = np.sum(np.where(mask[imgx-textsize:imgx+textsize,
-                                        imgy-textsize:imgy+textsize], 1,
-                                   0))
+
+            # Our text is centered, so we can make some approximations on the
+            # bounding box size it will fill, we have to do it this way as
+            # waiting for rendering is too late, we picked 0.7 out of a hat
+            # as it appears to be a good approx
+            mystr = fmt % (v,)
+            bwidth = len(mystr) * textsize
+            _cnt = np.sum(np.where(mask[imgx-bwidth/2:imgx+bwidth/2,
+                                        imgy-textsize:imgy+textsize], 1, 0))
+            # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
                 continue
+            # Useful for debugging this algo
+            # rec = plt.Rectangle((imgx-bwidth/2, imgy-textsize),
+            #                    bwidth, textsize*2, transform=None,
+            #                    facecolor='None', edgecolor='k')
+            # thisax.add_patch(rec)
             mask[imgx-textsize:imgx+textsize,
                  imgy-textsize:imgy+textsize] = True
-            t0 = thisax.text(x, y, fmt % (v,), color=c,
+            t0 = thisax.text(x, y, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center', ha='center')
             t0.set_clip_on(True)
             t.append(t0)
 
             if l and l != '':
-                thisax.annotate("%s" % (l, ), xy=(x, y), ha='left',
+                thisax.annotate("%s" % (l, ), xy=(x, y), ha='center',
                                 va='top',
-                                xytext=(0, 0 - textsize/2 - 1),
+                                xytext=(0, 0 - textsize/2),
                                 color=labelcolor,
                                 textcoords="offset points",
                                 zorder=Z_OVERLAY+1,
