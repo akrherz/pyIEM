@@ -60,7 +60,7 @@ class TrackerEngine(object):
         ORDER by id DESC""", (pnetwork, sid))
         for row in self.pcursor:
             open_tickets += (" %-6s %16s     %s\n"
-                             "") % (row[0], row[1].strftime("%Y-%m-%d %H %P"),
+                             "") % (row[0], row[1].strftime("%Y-%m-%d %I %p"),
                                     row[2])
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
@@ -70,7 +70,7 @@ class TrackerEngine(object):
         for row in self.pcursor:
             closed_tickets += (" %-6s %16s     %s\n"
                                "") % (row[0],
-                                      row[1].strftime("%Y-%m-%d %H %P"),
+                                      row[1].strftime("%Y-%m-%d %I %p"),
                                       row[2])
         if closed_tickets == "":
             closed_tickets = " --None-- "
