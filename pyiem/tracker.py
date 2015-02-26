@@ -98,22 +98,23 @@ class TrackerEngine(object):
 ----------------------
 | IEM TRACKER REPORT |  New Ticket Generated: # %s
 ================================================================
- Station Name      :  [%s] - %s
+ ID                :  %s [IEM Network: %s]
+ Station Name      :  %s
  Status Change     :  [OFFLINE] Site is NOT reporting to the IEM
  Last Observation  :  %s
 
  Other Currently 'Open' Tickets for this Site:
- #      OPENED_ON           TICKET TITLE
+ #      OPENED_ON            TICKET TITLE
 %s
 
  Most Recently 'Closed' Trouble Tickets for this Site:
- #      CLOSED_ON           TICKET TITLE
+ #      CLOSED_ON            TICKET TITLE
 %s
-
 ================================================================
 """
-        mailstr = mformat % (trackerid, sid, nt.sts[sid]['name'],
-                             lts.strftime("%d %b %Y %H:%M %P"),
+        mailstr = mformat % (trackerid, sid, nt.sts[sid]['network'],
+                             nt.sts[sid]['name'],
+                             lts.strftime("%d %b %Y %I:%M %p %Z"),
                              open_tickets, closed_tickets)
         # Get contacts for site
         self.pcursor.execute("""SELECT distinct email from
@@ -164,8 +165,7 @@ class TrackerEngine(object):
    ---------------------------------
    |  *** IEM TRACKER REPORT ***   |
 ------------------------------------------------------------
-
-ID                :  %s
+ID                :  %s [IEM Network: %s]
 Station Name      :  %s
 Status Change     :  [ONLINE] Site is reporting to the IEM
 Trouble Ticket#   :  %s
@@ -174,15 +174,14 @@ Last Observation  :  %s
 Outage Duration   :  %s
 
 IEM Tracker Action:  This trouble ticket has been marked
-           CLOSED pending any further information.
+                     CLOSED pending any further information.
 ------------------------------------------------------------
 
-* If you have any information pertaining to this outage,
-please directly respond to this email.
-* Questions about this alert?  Email:  akrherz@iastate.edu
-* Thanks!!!
-
-        """
+  * If you have any information pertaining to this outage,
+    please directly respond to this email.
+  * Questions about this alert?  Email:  akrherz@iastate.edu
+  * Thanks!!!
+"""
         ltz = pytz.timezone(nt.sts[sid]['tzname'])
         lts = ob['valid'].astimezone(ltz)
         delta = (ob['valid'] - offline[sid]['valid'])
@@ -192,8 +191,9 @@ please directly respond to this email.
         duration = "%.0f days %.0f hours %.0f minutes" % (days,
                                                           hours,
                                                           minutes)
-        mailstr = mformat % (sid, nt.sts[sid]['name'], trackerid,
-                             lts.strftime("%d %b %Y %H:%M %Z"),
+        mailstr = mformat % (sid, nt.sts[sid]['name'],
+                             nt.sts[sid]['network'], trackerid,
+                             lts.strftime("%d %b %Y %I:%M %p %Z"),
                              duration)
         # Get contacts for site
         self.pcursor.execute("""SELECT distinct email from
