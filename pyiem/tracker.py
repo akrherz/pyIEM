@@ -191,8 +191,8 @@ IEM Tracker Action:  This trouble ticket has been marked
         duration = "%.0f days %.0f hours %.0f minutes" % (days,
                                                           hours,
                                                           minutes)
-        mailstr = mformat % (sid, nt.sts[sid]['name'],
-                             nt.sts[sid]['network'], trackerid,
+        mailstr = mformat % (sid, nt.sts[sid]['network'],
+                             nt.sts[sid]['name'], trackerid,
                              lts.strftime("%d %b %Y %I:%M %p %Z"),
                              duration)
         # Get contacts for site
