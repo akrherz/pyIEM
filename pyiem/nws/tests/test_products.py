@@ -32,6 +32,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150302_badcode(self):
+        """FLSMFL correction had a python code bug """
+        for i in range(2):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('FLSMFL/%i.txt' % (i,)))
+            prod.sql(self.txn)
+            self.assertEquals(len(prod.warnings), 0)
+
     def test_150203_exp_does_not_end(self):
         """MWWCAR a VTEC EXP action should not terminate it """
         for i in range(24):

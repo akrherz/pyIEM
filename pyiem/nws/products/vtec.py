@@ -341,8 +341,10 @@ class VTECProduct(TextProduct):
             """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
             if txn.rowcount != 1:
                 self.warnings.append(("%s.%s.%s product is a correction"
-                    +", but SBW delete removed %s rows instead of 1" % (
-                    vtec.phenomena, vtec.significance, vtec.ETN, txn.rowcount)))
+                                      ", but SBW delete removed %s rows "
+                                      "instead of 1"
+                                      ) % (vtec.phenomena, vtec.significance,
+                                           vtec.ETN, txn.rowcount))
         
         # Lets go find the initial warning (status == NEW)
         txn.execute("""
