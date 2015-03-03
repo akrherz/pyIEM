@@ -4,6 +4,7 @@ import pytz
 import unittest
 from pyiem.nws.products.cli import parser as cliparser
 
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
@@ -11,9 +12,14 @@ def get_file(name):
     return open(fn).read()
 
 
-
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_150303_alaska(self):
+        """CLIANN Attempt to account for the badly formatted CLIs"""
+        prod = cliparser(get_file('CLIANN.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_maximum_time'],
+                         '0151 PM')
+
     def test_150112_climso(self):
         """ CLIMSO_2 found some issue with this in production? """
         prod = cliparser(get_file('CLIMSO_2.txt'))

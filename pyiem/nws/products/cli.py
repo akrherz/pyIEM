@@ -107,6 +107,9 @@ def make_tokens(regime, line):
             continue
         tokens.append(line[pos:e].strip() if line[pos:e].strip() != "" else None)
         pos = e
+    for i, token in enumerate(tokens):
+        if token is not None and token.startswith("R "):
+            tokens[i] = token.replace("R ", "")
     return tokens
 
 def parse_snowfall(regime, lines, data):

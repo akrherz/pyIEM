@@ -1,0 +1,94 @@
+150 
+CDAK47 PANT 030905
+CLIANN
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE ANNETTE, AK
+1205 AM AKST TUE MAR 3 2015
+
+...................................
+...THE ANNETTE WSO AP CLIMATE SUMMARY FOR MARCH 2 2015... 
+
+CLIMATE NORMAL PERIOD  1981 TO  2010 
+CLIMATE RECORD PERIOD  1948 TO  2015 
+
+WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST 
+               VALUE    (LST)   VALUE       VALUE  FROM      YEAR 
+                                                   NORMAL 
+................................................................... 
+TEMPERATURE 
+YESTERDAY 
+ MAXIMUM            53R 0151 PM    50  2003     43      10     27 
+ MINIMUM            33  1149 PM     4  1955     33       0     22 
+ AVERAGE            43                          38       5     25 
+
+PRECIPITATION 
+(INCHES) 
+ YESTERDAY        0.00           2.49  1979   0.25   -0.25   0.00 
+ MONTH TO DATE    0.14                        0.50   -0.36   0.00 
+ SINCE MAR 1      0.14                        0.50   -0.36   0.00 
+ SINCE JAN 1     21.20                       18.54    2.66  12.10 
+
+SNOWFALL 
+(INCHES) 
+ YESTERDAY         0.0            5.1  1972    0.3    -0.3    0.0 
+ MONTH TO DATE     0.0                         0.6    -0.6    0.0 
+ SINCE MAR 1       0.0                         0.6    -0.6    0.0 
+ SINCE JUL 1      10.2                        27.1   -16.9   25.1
+ SNOW DEPTH (IN)     0                                          0 
+
+DEGREE DAYS 
+ HEATING 
+  YESTERDAY         22                          27      -5     40 
+  MONTH TO DATE     44                          54     -10     76 
+  SINCE MAR 1       44                          54     -10     76 
+  SINCE JUL 1     4128                        4592    -464   4565
+
+ COOLING 
+  YESTERDAY          0                           0       0      0 
+  MONTH TO DATE      0                           0       0      0 
+  SINCE MAR 1        0                           0       0      0 
+  SINCE JAN 1        0                           0       0      0 
+................................................................... 
+
+WIND (MPH) 
+ HIGHEST WIND SPEED    13     HIGHEST WIND DIRECTION    330      
+ HIGHEST GUST SPEED    17     HIGHEST GUST DIRECTION    320 
+ AVERAGE WIND SPEED   4.9 
+
+SKY COVER
+  POSSIBLE SUNSHINE    MM          AVERAGE SKY COVER     MM
+ 
+WEATHER CONDITIONS 
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY. 
+  NO SIGNIFICANT WEATHER WAS OBSERVED. 
+
+RELATIVE HUMIDITY
+ HIGHEST RH     MM PERCENT       MM
+ LOWEST  RH     MM PERCENT       MM
+ AVERAGE RH     MM PERCENT       MM
+................................................................... 
+
+THE ANNETTE CLIMATE NORMALS FOR TODAY 
+                           NORMAL    RECORD   YEAR 
+ MAXIMUM TEMPERATURE (F)     43        50     1994 
+ MINIMUM TEMPERATURE (F)     33         1     1955 
+
+SUNRISE AND SUNSET 
+ MAR 3 2015..........SUNRISE  6:32 AM      SUNSET  5:26 PM   
+ MAR 4 2015..........SUNRISE  6:29 AM      SUNSET  5:28 PM   
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD HAS BEEN SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE OF PRECIPITATION.
+
+&&
+-------------------------------------------------------------------
+
+AMOUNT OF DAYLIGHT TODAY  (HOUR:MIN)........10 HOURS 54 MINUTES
+GAIN/LOSS SINCE YESTERDAY (HOUR:MIN:SEC)....+0:04:28
+
+$$
+JZ MAR 15
+
