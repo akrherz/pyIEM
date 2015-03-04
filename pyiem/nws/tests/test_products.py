@@ -9,19 +9,22 @@ from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
 
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
+
 def utc(year, month, day, hour=0, minute=0):
     """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour, minute).replace(
-                        tzinfo=pytz.timezone("UTC"))
+    return datetime.datetime(year, month, day, hour,
+                             minute).replace(tzinfo=pytz.timezone("UTC"))
+
 
 class TestProducts(unittest.TestCase):
-    
+
     def setUp(self):
         ''' This is called for each test, beware '''
         self.dbconn = psycopg2.connect(database='postgis')
@@ -31,6 +34,12 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_150304_testtor(self):
+        """TORILX is a test, we had better handle it!"""
+        prod = vtecparser(get_file('TORILX.txt'))
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(len(j), 0)
 
     def test_150302_badcode(self):
         """FLSMFL correction had a python code bug """
@@ -176,19 +185,14 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
-            
+
     def test_141016_tsuwca(self):
-        """ Got a null vtec timestamp with this product """
+        """TSUWCA Got a null vtec timestamp with this product """
         utcnow = utc(2014, 10, 16, 17, 10)
-        prod = vtecparser( get_file('TSUWCA.txt'), utcnow=utcnow)
+        prod = vtecparser(get_file('TSUWCA.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('AAQ issues Tsunami Warning for '
-            +'((ORZ001)), ((ORZ002)), ((ORZ021)), ((ORZ022)) [OR] and '
-            +'((WAZ001)), ((WAZ021)), ((WAZ503)), ((WAZ506)), ((WAZ507)), '
-            +'((WAZ508)), ((WAZ509)), ((WAZ510)), ((WAZ511)), ((WAZ514)), '
-            +'((WAZ515)), ((WAZ516)), ((WAZ517)) [WA] till 10:30 AM PDT '
-            +'http://localhost#2014-T-NEW-PAAQ-TS-W-0016'))
-    
+        self.assertEquals(len(j), 0)
+
     def test_tcp(self):
         """ See what we can do with TCP """
         prod = parser( get_file('TCPAT1.txt') )

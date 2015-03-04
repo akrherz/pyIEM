@@ -495,7 +495,7 @@ class VTECProduct(TextProduct):
         
         for segment in self.segments:
             for vtec in segment.vtec:
-                if vtec.action == 'ROU':
+                if vtec.action == 'ROU' or vtec.status == 'T':
                     continue
                 # CRITICAL: redefine this for each loop as it gets passed by
                 # reference below and is subsequently overwritten otherwise!
@@ -567,7 +567,8 @@ class VTECProduct(TextProduct):
                     if (_btext == "" and vtec.phenomena == 'TO' and
                         vtec.action not in ['CAN', 'EXP']):
                         self.warnings.append(("Could not find bullet text in "
-                                            +"segment!"), self.raw)
+                                              "segment! %s"
+                                              ) % (segment.unixtext,))
                     elif (_btext != "" and vtec.phenomena == 'FF' and
                           _btext.find("FLASH FLOOD EMERGENCY") > 0):
                         jmsg_dict['svs_special'] = _btext
