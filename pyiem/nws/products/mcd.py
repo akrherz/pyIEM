@@ -149,22 +149,6 @@ class MCDProduct(TextProduct):
             pts.append((lon, lat))
         return ShapelyPolygon(pts)
 
-    def find_cwsus(self, txn):
-        '''
-        Provided a database transaction, go look for CWSUs that
-        overlap the discussion geometry.
-        ST_Overlaps do the geometries overlap
-        ST_Covers does polygon exist inside CWSU
-        '''
-        wkt = 'SRID=4326;%s' % (self.geometry.wkt,)
-        sql = """select distinct id from cwsu WHERE
-               st_overlaps('%s', geom) or
-               st_covers(geom, '%s') ORDER by id ASC""" % (wkt, wkt)
-        txn.execute(sql)
-        for row in txn:
-            self.cwsus.append(row[0])
-        return self.cwsus
-
     def database_save(self, txn):
         ''' Save this product to the database '''
         giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
