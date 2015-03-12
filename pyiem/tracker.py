@@ -10,7 +10,7 @@ from email.mime.text import MIMEText
 class TrackerEngine(object):
     """A processing engine of tracking offline/online events"""
 
-    def __init__(self, icursor, pcursor, maxoffline=0):
+    def __init__(self, icursor, pcursor, maxactions=0):
         """Constructor of TrackerEngine object
 
         We need to be provided with psycopg2 cursors to both the `iem` database
@@ -19,20 +19,20 @@ class TrackerEngine(object):
         Args:
           icursor (cursor): psycopg2 cursor to the iem database
           pcursor (cursor): psycopg2 cursor to the portfolio database
-          maxoffline (int, optional): threshold of offline stations that we use
-            before deciding not to send emails.  0 implies no limit
+          maxactions (int, optional): threshold for now many email actions we
+            allow before we don't wish to spam our users.  0 implies no limit
 
         """
         self.icursor = icursor
         self.pcursor = pcursor
-        self.maxoffline = maxoffline
+        self.maxactions = maxactions
         self.action_count = 0
         self.emails = {}
 
     def send_emails(self):
         """Send out those SPAM emails!"""
         # Don't do anything if we have exceeded maxoffline
-        if self.action_count >= self.maxoffline and self.maxoffline > 0:
+        if self.action_count >= self.maxactions and self.maxactions > 0:
             return
         s = smtplib.SMTP()
         s.connect()
