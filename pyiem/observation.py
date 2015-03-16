@@ -129,8 +129,7 @@ class Observation(object):
             """
             txn.execute(sql, self.data)
 
-        table = "summary_%s" % (
-                self.data['valid'].astimezone(self.data['valid'].tzinfo).year,)
+        table = "summary_%s" % (self.data['valid'].year,)
 
         # Update summary table
         sql = """UPDATE """+table+""" s SET
