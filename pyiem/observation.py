@@ -130,7 +130,7 @@ class Observation(object):
             txn.execute(sql, self.data)
 
         table = "summary_%s" % (
-                self.data['valid'].astimezone(pytz.timezone("UTC")).year,)
+                self.data['valid'].astimezone(self.data['valid'].tzinfo).year,)
 
         # Update summary table
         sql = """UPDATE """+table+""" s SET
