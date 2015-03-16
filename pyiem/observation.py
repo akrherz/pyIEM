@@ -1,8 +1,9 @@
-'''
+"""
  Class Representing an observation that the IEM tracks
 
  @author daryl herzmann
-'''
+"""
+import pytz
 
 # Not including iemid, valid
 CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
@@ -128,8 +129,11 @@ class Observation(object):
             """
             txn.execute(sql, self.data)
 
+        table = "summary_%s" % (
+                self.data['valid'].astimezone(pytz.timezone("UTC")).year,)
+
         # Update summary table
-        sql = """UPDATE summary s SET
+        sql = """UPDATE """+table+""" s SET
         max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
         max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
         min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
