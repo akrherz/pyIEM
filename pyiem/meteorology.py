@@ -13,11 +13,17 @@ class InvalidArguments(Exception):
 def drct(u, v):
     """
     Compute the wind direction given a u and v wind speed
-    """
-    return 0 #TODO
-    if (v.value):
-        val = 1
 
+    Args:
+      u (dt.speed): u component wind speed
+      v (dt.speed): v component wind speed
+
+    Returns:
+      dt.direction value
+    """
+    umps = u.value('MPS')
+    vmps = v.value('MPS')
+    val = (math.atan2(umps, vmps) * 180. / math.pi) + 180
     return dt.direction(val, 'DEG')
 
 

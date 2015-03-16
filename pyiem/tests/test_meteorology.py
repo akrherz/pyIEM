@@ -5,6 +5,21 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_drct(self):
+        """Conversion of u and v to direction"""
+        self.assertEquals(meteorology.drct(datatypes.speed(10, 'KT'),
+                                           datatypes.speed(10, 'KT')
+                                           ).value("DEG"), 225)
+        self.assertEquals(meteorology.drct(datatypes.speed(-10, 'KT'),
+                                           datatypes.speed(10, 'KT')
+                                           ).value("DEG"), 135)
+        self.assertEquals(meteorology.drct(datatypes.speed(-10, 'KT'),
+                                           datatypes.speed(-10, 'KT')
+                                           ).value("DEG"), 45)
+        self.assertEquals(meteorology.drct(datatypes.speed(10, 'KT'),
+                                           datatypes.speed(-10, 'KT')
+                                           ).value("DEG"), 315)
+
     def test_windchill(self):
         """Wind Chill Conversion"""
         temp = datatypes.temperature(0, 'F')
