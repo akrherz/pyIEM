@@ -154,6 +154,17 @@ class nwnformat:
         self.aSknt = []
         self.aDrct = []
 
+    def setTS(self, newval):
+        try:
+            self.ts = datetime.datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
+        except:
+            traceback.print_exc()
+            self.error = 100
+            return
+        now = datetime.datetime.now()
+        if (now - self.ts) > 7200:
+            self.error = 101
+
     def avgWinds(self):
         if (len(self.aSknt) == 0):
             self.sped = None
