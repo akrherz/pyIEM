@@ -278,11 +278,11 @@ class TextProductSegment(object):
         
         return affected_wfos
 
+
 class TextProduct(object):
     '''
     class representing a NWS Text Product
     '''
-
 
     def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None):
@@ -293,7 +293,7 @@ class TextProduct(object):
         @param ugc_provider a dictionary of UGC objects already setup
         '''
         self.warnings = []
-        
+
         self.text = text
         if ugc_provider is None:
             ugc_provider = {}
@@ -317,20 +317,24 @@ class TextProduct(object):
         if utcnow is None:
             utc = datetime.datetime.utcnow()
             self.utcnow = utc.replace(tzinfo=pytz.timezone('UTC'))
-        
+
         self.parse_wmo()
         self.parse_afos()
         self.parse_valid()
         self.parse_segments()
-    
+
     def is_resent(self):
         """ Check to see if this product is a ...RESENT product """
         return (self.unixtext.find("...RESENT") > 0)
 
     def is_correction(self):
         """Returns boolean on if this product is some form of correction """
-        return self.bbb is not None
-        
+        if self.bbb is None or len(self.bbb) == 0:
+            return False
+        if self.bbb[0] in ['A', 'C']:
+            return True
+        return False
+
     def get_channels(self):
         """ Return a list of channels """
         return [self.afos,]
