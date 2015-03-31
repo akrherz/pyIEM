@@ -162,7 +162,7 @@ class nwnformat:
             self.error = 100
             return
         now = datetime.datetime.now()
-        if (now - self.ts) > 7200:
+        if (now - self.ts).total_seconds() > 7200:
             self.error = 101
 
     def avgWinds(self):
