@@ -64,7 +64,7 @@ class TestPlot(unittest.TestCase):
 
     def test_plot2(self):
         """ Exercise NWS plot API """
-        m = plot.MapPlot(sector='nws')
+        m = plot.MapPlot(sector='nws', axisbg='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another')
         m.postprocess(filename='/tmp/us_plot_example.png')

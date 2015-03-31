@@ -328,8 +328,6 @@ class MapPlot(object):
                            llcrnrlon=reference.MW_WEST, 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
-            self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
-            self.map.drawcoastlines(zorder=Z_POLITICAL)
         elif self.sector == 'custom':
             """ Custom view """
             self.map = Basemap(projection='merc', fix_aspect=False,
@@ -339,8 +337,6 @@ class MapPlot(object):
                            llcrnrlon=kwargs.get('west'), 
                            lat_0=45.,lon_0=-92.,lat_ts=42.,
                            resolution='i', ax=self.ax)
-            self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
-            self.map.drawcoastlines(zorder=Z_POLITICAL)
         elif self.sector == 'north_america':
             self.map = Basemap(llcrnrlon=-145.5,llcrnrlat=1.,urcrnrlon=-2.566,
                                urcrnrlat=46.352,
@@ -348,17 +344,15 @@ class MapPlot(object):
                                resolution='l',area_thresh=1000.,projection='lcc',
                                lat_1=50.,lon_0=-107.,
                                ax=self.ax, fix_aspect=False)
-           
+
         elif self.sector in ['conus', 'nws']:
-            self.map = Basemap(projection='stere',lon_0=-105.0,lat_0=90.,
-                            lat_ts=60.0,
-                            llcrnrlat=23.47,urcrnrlat=45.44,
-                            llcrnrlon=-118.67,urcrnrlon=-64.52,
-                            rsphere=6371200.,resolution='l',area_thresh=10000,
-                            ax=self.ax,
-                                      fix_aspect=False)
-            self.map.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
-            self.map.drawcoastlines(zorder=Z_POLITICAL)
+            self.map = Basemap(projection='stere', lon_0=-105.0, lat_0=90.,
+                               lat_ts=60.0,
+                               llcrnrlat=23.47, urcrnrlat=45.44,
+                               llcrnrlon=-118.67, urcrnrlon=-64.52,
+                               rsphere=6371200., resolution='l',
+                               area_thresh=10000, ax=self.ax,
+                               fix_aspect=False)
             if self.sector == 'nws':
                 """ Create PR, AK, and HI sectors """
                 self.pr_ax = plt.axes([0.78,0.055,0.125,0.1], 
@@ -392,13 +386,11 @@ class MapPlot(object):
             _a.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
             _a.drawcoastlines(zorder=Z_POLITICAL)
 
-        if 'nostates' not in kwargs:
-            for _a in [self.map, self.pr_map, self.ak_map, self.hi_map]:
-                if _a is None:
-                    continue
+            if 'nostates' not in kwargs:
                 _a.drawstates(linewidth=1.5, zorder=Z_OVERLAY,
                               color=kwargs.get('statecolor', 'k'))
-        if kwargs.has_key('cwas'):
+
+        if 'cwas' in kwargs:
             self.drawcwas()
         if not kwargs.get('nologo'):
             self.iemlogo()
@@ -406,7 +398,7 @@ class MapPlot(object):
             self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94, kwargs.get("title"), fontsize=18) 
         if kwargs.has_key("subtitle"):
             self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91, kwargs.get("subtitle") )
-        
+
         self.fig.text(0.01, 0.03, "%s :: generated %s" % (
                         kwargs.get('caption', 'Iowa Environmental Mesonet'),
                         datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
@@ -905,38 +897,37 @@ class MapPlot(object):
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-        
-
     def fill_cwas(self, data, labels={},
-                  shapefile='/mesonet/data/gis/static/shape/4326/nws/cwas',
-                  bins=np.arange(0,101,10),
+                  shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/cwas',
+                  bins=np.arange(0, 101, 10),
                   lblformat='%.0f', cmap=None, **kwargs):
         """Add overlay of filled polygons for NWS Forecast Offices.
-        
-        Method adds a colorized overlay of NWS Forecast Offices based on a 
-        data dictionary of values provided. This method also places a color 
+
+        Method adds a colorized overlay of NWS Forecast Offices based on a
+        data dictionary of values provided. This method also places a color
         bar on the image.
-        
+
         Args:
           data (dict): Dictionary of values with keys representing the 3 char
-            or 4 char idenitifer for the WFO.  This assumes the 3 char sites 
+            or 4 char idenitifer for the WFO.  This assumes the 3 char sites
             are the K ones.
-          labels (dict, optional): Optional dictionary that follows the ``data``
-            attribute, but hard codes what should be plotted as a label.
+          labels (dict, optional): Optional dictionary that follows the
+            ``data`` attribute, but hard codes what should be plotted as a
+            label.
           shapefile (str, optional): Location of a CWA shapefile to use for
             plotting.  Defaults to one provided by IEM code.
           bins (list, optional): List of increasing values to use as bins to
             determine color levels.
           lblformat (str, optional): Format string to use to place labels.
           cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
-         
+
         """
-        if data.has_key('JSJ'):
+        if 'JSJ' in data:
             data['SJU'] = data['JSJ']
         if cmap is None:
             cmap = maue()
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
-        
+
         self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
         plotted = []
         for nshape, seg in enumerate(self.map.cwas):
@@ -944,7 +935,7 @@ class MapPlot(object):
             thismap = self.map
             thisax = self.ax
             transform = False
-            if not data.has_key( cwa ):
+            if cwa not in data:
                 continue
             if cwa in ['AFC', 'AFG', 'AJK']:
                 if self.ak_map is None:
@@ -964,27 +955,27 @@ class MapPlot(object):
                 thismap = self.pr_map
                 thisax = self.pr_ax
                 transform = True
-            val = data.get( cwa )
-            c = cmap( norm([float(val),]) )[0]
+            val = data.get(cwa)
+            c = cmap(norm([float(val), ]))[0]
             # Check area in meters... 100,000 x 100,000
             if self.map.cwas_info[nshape]['CWA'] not in plotted:
                 mx, my = thismap(float(self.map.cwas_info[nshape]['LON']),
                                  float(self.map.cwas_info[nshape]['LAT']))
                 txt = thisax.text(mx, my, lblformat % (labels.get(cwa, val),),
                                   zorder=100, ha='center', va='center')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                         foreground="w")])
-                plotted.append( cwa )
+                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
+                                                             foreground="w")])
+                plotted.append(cwa)
             if transform:
-                seg = np.array( seg )
+                seg = np.array(seg)
                 # convert read shapefile back into lat / lon
-                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
+                xx, yy = self.map(seg[:, 0], seg[:, 1], inverse=True)
                 xx, yy = thismap(xx, yy)
                 seg = zip(xx, yy)
-                
-            poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
+
+            poly = Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
             thisax.add_patch(poly)
-        if kwargs.has_key('cmap'):
+        if 'cmap' in kwargs:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
