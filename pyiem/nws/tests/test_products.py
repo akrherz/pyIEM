@@ -36,19 +36,33 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150422_tornadomag(self):
+        """LSRTAE see what we do with tornado magitnudes"""
+        prod = parser(get_file('LSRTAE.txt'))
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEqual(j[0][1], (
+            '<p>4 W Bruce [Walton Co, FL] NWS EMPLOYEE '
+            '<a href="http://iem.local/#TAE/201504191322/201504191322">'
+            'reports TORNADO of EF0</a> at 19 Apr, 9:22 AM EDT -- '
+            'SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL POL RADAR DEBRIS '
+            'SIGNATURE IN A RURAL AREA WEST OF BRUCE. DAMAGE LIKELY CONFINED '
+            'TO TREES. ESTIMATED DURATION 3 MINUTES. PATH LENGTH '
+            'APPROXIMATELY 1 MILE.</p>'))
+        self.assertEqual(j[0][2]['twitter'], (
+            'At 9:22 AM, 4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports '
+            'TORNADO of EF0 #TAE '
+            'http://iem.local/#TAE/201504191322/201504191322'))
+
+    def test_150331_notcorrection(self):
+        """SVRMEG is not a product correction"""
+        prod = vtecparser(get_file('SVRMEG.txt'))
+        self.assertTrue(not prod.is_correction())
+
     def test_150304_testtor(self):
         """TORILX is a test, we had better handle it!"""
         prod = vtecparser(get_file('TORILX.txt'))
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(len(j), 0)
-
-    def test_150302_badcode(self):
-        """FLSMFL correction had a python code bug """
-        for i in range(2):
-            print('Parsing Product: %s.txt' % (i,))
-            prod = vtecparser(get_file('FLSMFL/%i.txt' % (i,)))
-            prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0)
 
     def test_150203_exp_does_not_end(self):
         """MWWCAR a VTEC EXP action should not terminate it """
@@ -332,7 +346,7 @@ class TestProducts(unittest.TestCase):
         prod.sql(self.txn)
         self.assertTrue(prod.segments[0].vtec[0].begints is None)
         self.assertTrue(prod.segments[0].vtec[0].endts is None)
-    
+
     def test_140609_ext_backwards(self):
         """ Sometimes the EXT goes backwards in time, so we have fun """
         utcnow = utc(2014, 6, 6, 15, 40)
@@ -673,34 +687,36 @@ class TestProducts(unittest.TestCase):
             +'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '
             +'WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING '
             +'THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130'))
-    
+
     def test_01(self):
-        """ process a valid LSR without blemish """
-        prod = parser( get_file("LSR.txt") )
+        """LSR.txt process a valid LSR without blemish """
+        utcnow = utc(2013, 7, 23, 23, 54)
+        prod = parser(get_file("LSR.txt"), utcnow=utcnow)
         self.assertEqual(len(prod.lsrs), 58)
-        
+
         self.assertAlmostEqual(prod.lsrs[57].magnitude_f, 73, 0)
         self.assertEqual(prod.lsrs[57].county, "MARION")
         self.assertEqual(prod.lsrs[57].state, "IA")
         self.assertAlmostEqual(prod.lsrs[57].get_lon(), -93.11, 2)
         self.assertAlmostEqual(prod.lsrs[57].get_lat(), 41.3, 1)
-        
+
         self.assertEqual(prod.is_summary(), True)
-        self.assertEqual(prod.lsrs[57].wfo , 'DMX')
-        
-        answer = datetime.datetime(2013,7,23,3,55)
-        answer = answer.replace(tzinfo=pytz.timezone("UTC"))
+        self.assertEqual(prod.lsrs[57].wfo, 'DMX')
+
+        answer = utc(2013, 7, 23, 3, 55)
         self.assertEqual(prod.lsrs[57].valid, answer)
-        j = prod.get_jabbers('http://localhost')
-        self.assertEqual(j[57][0], ("Knoxville Airport "
-        +"[Marion Co, IA] AWOS reports NON-TSTM WND GST of M73 MPH at 22 "
-        +"Jul, 10:55 PM CDT -- HEAT BURST. TEMPERATURE ROSE FROM 70 TO 84 IN "
-        +"15 MINUTES AND DEW POINT DROPPED FROM 63 TO 48 IN 10 MINUTES. "
-        +"http://localhost#DMX/201307230355/201307230355"))
-        
-        self.assertEqual(prod.lsrs[5].tweet(), ("At 4:45 PM, Dows "
-                         +"[Wright Co, IA] LAW ENFORCEMENT "
-                         +"reports TSTM WND DMG #DMX"))
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEqual(j[57][0], (
+            "Knoxville Airport [Marion Co, IA] AWOS reports NON-TSTM WND "
+            "GST of M73 MPH at 22 Jul, 10:55 PM CDT -- HEAT BURST. "
+            "TEMPERATURE ROSE FROM 70 TO 84 IN 15 MINUTES AND DEW POINT "
+            "DROPPED FROM 63 TO 48 IN 10 MINUTES. "
+            "http://iem.local/#DMX/201307230355/201307230355"))
+
+        self.assertEqual(prod.lsrs[5].tweet(),
+                         ("At 4:45 PM, Dows "
+                          "[Wright Co, IA] LAW ENFORCEMENT "
+                          "reports TSTM WND DMG #DMX"))
 
     def test_mpd_mcdparser(self):
         ''' The mcdparser can do WPC's MPD as well, test it '''
@@ -713,7 +729,7 @@ class TestProducts(unittest.TestCase):
             '....CENTRAL MD INTO SERN PA '
             'http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php'
             '?md=98&yr=2013'))
-        self.assertEqual(prod.find_cwsus(self.txn), ['ZDC', 'ZNY'])
+        # self.assertEqual(prod.find_cwsus(self.txn), ['ZDC', 'ZNY'])
         self.assertEqual(prod.get_jabbers('http://localhost')[0][0], (
             'Weather Prediction Center issues '
             'Mesoscale Precipitation Discussion #98'

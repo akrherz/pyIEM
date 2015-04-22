@@ -115,9 +115,11 @@ class LSR(object):
                                                       self.magnitude_qualifier,
                                                       self.magnitude_f,
                                                       self.magnitude_units)
+        elif self.magnitude_units == 'F':
+            mag_long = "%s of E%s" % (mag_long, self.magnitude_str)
         elif self.magnitude_f:
             mag_long = "%s of %.2f %s" % (mag_long, self.magnitude_f, 
-                                        self.magnitude_units)
+                                          self.magnitude_units)
         elif self.magnitude_str:
             mag_long = "%s of %s" % (mag_long, self.magnitude_str)
         return mag_long
