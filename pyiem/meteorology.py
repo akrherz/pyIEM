@@ -10,6 +10,53 @@ class InvalidArguments(Exception):
     pass
 
 
+def clearsky_shortwave_irradiance_year(lon, lat, elevation):
+    """Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2
+
+    Args:
+      lon (float): longitude
+      lat (float): latitude
+      elevation (float): location elevation in meters
+
+    Returns:
+      irradiance (list)
+    """
+    # Mean pressure in kPa
+    pa = 101.3 * math.exp((0 - elevation) / 8200.0)
+    # TOA radiation Wm**2
+    spo = 1360.0
+    # assume clearsky
+    tau = 0.75
+    # julian days
+    j = np.arange(1, 366, 1)
+    # solar declination
+    # delta = asind(0.39785.*sind((278.97+0.9856.*J+1.9165.*sind((356.6+0.9856.*J)))))
+    _a = np.sin(np.radians(356.6 + 0.9856 * j))
+    _b = np.sin(np.radians(278.97 + 0.9856 * j + 1.9165 * _a))
+    delta = np.degrees(np.arcsin(0.39785 * _b))
+    data = []
+    for jday in j:
+        running = 0
+        for t in np.arange(0, 12.001, 5./60.):
+            # acosd((sind(gamma(l))*sind(delta(j))+cosd(gamma(l))*cosd(delta(j))*cosd(15*(t-12))))
+            _a = math.cos(np.radians(15 * (t - 12)))
+            _b = math.sin(np.radians(lat))
+            _c = math.sin(np.radians(delta[jday-1]))
+            theta = np.degrees(math.acos(_b *
+                                         _c +
+                                         math.cos(np.radians(lat)) *
+                                         math.cos(np.radians(delta[jday-1])) *
+                               _a))
+            if theta >= 90:
+                continue
+            m = pa / (101.3 * math.cos(np.radians(theta)))
+            direct = spo * tau**m * math.cos(np.radians(theta))
+            diffuse = 0.3 * (1 - tau**m) * spo * math.cos(np.radians(theta))
+            running += (5.0 * 60) * (direct + diffuse)
+        data.append((running * 2.) / 1000000.0)
+    return data
+
+
 def drct(u, v):
     """
     Compute the wind direction given a u and v wind speed
