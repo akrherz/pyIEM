@@ -1,0 +1,63 @@
+484 
+WGUS83 KMKX 111541
+FLSMKX
+ 
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE MILWAUKEE/SULLIVAN WI
+1041 AM CDT SAT APR 11 2015
+
+...The flood warning is cancelled for the following rivers in 
+Wisconsin...Illinois...
+ 
+  Fox River Near New Munster AFFECTING Kenosha and Lake Counties
+ 
+
+&& 
+WIC059-ILC097-111611-
+/O.CAN.KMKX.FL.W.0006.000000T0000Z-150414T1200Z/
+/NMSW3.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.UU/
+1041 AM CDT SAT APR 11 2015
+
+The Flood Warning is cancelled for
+  The Fox River Near New Munster.
+* At 10:00 AM Saturday the stage was 10.6 feet.
+* Flood stage is 11.0 feet.
+* Forecast...The river crested below flood stage at 10.6 feet. The 
+  river will fall to 10.5 feet by 12:00 PM Saturday.
+* Impact...At 10.8 feet...Floodwaters are near some homes along 
+  Highway W in the Silver Lake area.
+
+&&
+ 
+LAT...LON 4262 8832 4262 8813 4252 8812 4245 8810
+      4245 8827 4255 8825
+
+$$
+
+&& 
+
+River forecasts are available for some but not all river gaging
+locations. The 7 day river forecast takes into account past
+precipitation...soil moisture conditions etc..and predicted
+future 24 hour basin-average precipitation.
+ 
+(stages in ft.)        Bank-      Latest         Forecast stages
+-               Flood  full      observed        ...for 7 am...
+Location       stage  stage    stage/time       Sun  Mon  Tue  Wed
+New Munster     11.0  10.0  10.63 10 AM 04/11  10.5 10.2  9.7  9.3
+
+-                   Highest      24 hour change
+-                   observed     in river stage
+-                   stage in      (ft.) up to      Highest stage
+-                   the last    latest observed     forecast in
+-                   7 days          stage           next 7 days
+New Munster     10.65  10 AM 04/11    1.01      10.60 01 PM 04/11
+
+...Below is predicted 24 hour precipitation information...
+
+(nmsw3) predicted 6-hour precipitation amounts (in.)
+New Munster: 6 am-noon   0.00
+New Munster: noon-6 pm   0.00
+New Munster: 6 pm-midn   0.00
+New Munster: midn-6 am   0.00
+

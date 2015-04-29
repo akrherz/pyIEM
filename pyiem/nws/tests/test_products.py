@@ -36,6 +36,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150429_flswithsign(self):
+        """FLSMKX see that we are okay with the signature"""
+        prod = vtecparser(get_file('FLSMKX.txt'))
+        self.assertEqual(prod.segments[0].giswkt,
+                         ('SRID=4326;MULTIPOLYGON '
+                          '(((-88.320000 42.620000, -88.130000 42.620000, '
+                          '-88.120000 42.520000, -88.100000 42.450000, '
+                          '-88.270000 42.450000, -88.250000 42.550000, '
+                          '-88.320000 42.620000)))'))
+
     def test_150422_tornadomag(self):
         """LSRTAE see what we do with tornado magitnudes"""
         prod = parser(get_file('LSRTAE.txt'))
