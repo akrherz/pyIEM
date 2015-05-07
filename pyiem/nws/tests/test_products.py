@@ -36,6 +36,11 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150507_notcor(self):
+        """SVROUN is not a product correction!"""
+        prod = vtecparser(get_file('SVROUN.txt'))
+        self.assertEquals(prod.is_correction(), False)
+
     def test_150429_flswithsign(self):
         """FLSMKX see that we are okay with the signature"""
         prod = vtecparser(get_file('FLSMKX.txt'))
