@@ -7,6 +7,7 @@ import datetime
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 
+
 def do_sql_hvtec(txn, segment):
     ''' Process the HVTEC in this product '''
     nwsli = segment.hvtec[0].nwsli.id
@@ -15,21 +16,23 @@ def do_sql_hvtec(txn, segment):
     stage_text = ""
     flood_text = ""
     forecast_text = ""
-    for qqq in range(len(segment.bullets)):
-        if segment.bullets[qqq].strip().find("FLOOD STAGE") == 0:
-            flood_text = segment.bullets[qqq]
-        if segment.bullets[qqq].strip().find("FORECAST") == 0:
-            forecast_text = segment.bullets[qqq]
-        if (segment.bullets[qqq].strip().find("AT ") == 0 and 
-            stage_text == ""):
-            stage_text = segment.bullets[qqq]
+    for _, bullet in enumerate(segment.bullets):
+        # print("Enumerated bullet is ||%s||" % (bullet,))
+        if bullet.strip().upper().find("FLOOD STAGE") == 0:
+            flood_text = bullet
+        if bullet.strip().upper().find("FORECAST") == 0:
+            forecast_text = bullet
+        if (bullet.strip().upper().find("AT ") == 0 and
+                stage_text == ""):
+            stage_text = bullet
 
+    txn.execute("""
+        INSERT into riverpro(nwsli, stage_text,
+          flood_text, forecast_text, severity) VALUES
+          (%s,%s,%s,%s,%s)
+        """, (nwsli, stage_text, flood_text, forecast_text,
+              segment.hvtec[0].severity))
 
-    txn.execute("""INSERT into riverpro(nwsli, stage_text, 
-      flood_text, forecast_text, severity) VALUES 
-      (%s,%s,%s,%s,%s) """, (nwsli, stage_text, flood_text, 
-                             forecast_text, 
-                             segment.hvtec[0].severity) )
 
 class VTECProductException(TextProductException):
     ''' Something we can raise when bad things happen! '''
@@ -38,8 +41,8 @@ class VTECProductException(TextProductException):
 
 class VTECProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
-    
-    def __init__(self, text, utcnow=None, ugc_provider=None, 
+
+    def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None):
         ''' constructor '''
         # Make sure we are CRLF above all else
@@ -47,7 +50,7 @@ class VTECProduct(TextProduct):
             text = text.replace("\n", "\r\r\n")
         #  Get rid of extraneous whitespace on right hand side only
         text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
-        
+
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
@@ -85,16 +88,19 @@ class VTECProduct(TextProduct):
                     cnt, len(segment.ugcs), segment.ugcs, self.valid,
                     ets, debugmsg)
 
-
     def sql(self, txn):
         """Persist to the database
 
         Args:
           txn (psycopg2.transaction): A database transaction object that we can
             exec() database calls against.
-        
+
         """
         for segment in self.segments:
+            if len(segment.ugcs) == 0 and len(segment.vtec) > 0:
+                self.warnings.append(("UGC is missing for segment "
+                                      "that has VTEC!"))
+                continue
             if len(segment.ugcs) == 0:
                 continue
             if len(segment.vtec) == 0:
@@ -103,10 +109,10 @@ class VTECProduct(TextProduct):
                 if vtec.status == 'T' or vtec.action == 'ROU':
                     continue
                 if segment.sbw:
-                    self.do_sbw_geometry(txn, segment, vtec)    
+                    self.do_sbw_geometry(txn, segment, vtec)
                 # Check for Hydro-VTEC stuff
-                if (len(segment.hvtec) > 0 and 
-                    segment.hvtec[0].nwsli != "00000"):
+                if (len(segment.hvtec) > 0 and
+                        segment.hvtec[0].nwsli != "00000"):
                     do_sql_hvtec(txn, segment)
 
                 self.do_sql_vtec(txn, segment, vtec)
