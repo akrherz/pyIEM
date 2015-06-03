@@ -4,6 +4,8 @@
 import math
 import numpy as np
 import pyiem.datatypes as dt
+from fractions import Rational
+from metar.datatypes import temperature
 
 
 class InvalidArguments(Exception):
@@ -200,4 +202,16 @@ def relh(temperature, dewpoint):
     relh = ( e / es ) * 100.00
     return dt.humidity(relh, '%')
 
-    
+
+def mixing_ratio(dewpoint):
+    """Compute the mixing ratio
+
+    Args:
+      dewpoint (temperature): Dew Point temperature
+
+    Returns:
+      mixing ratio
+    """
+    dwpc = dewpoint.value('C')
+    e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
+    return dt.mixingratio(0.62197 * e / (1000.0 - e), 'KG/KG')

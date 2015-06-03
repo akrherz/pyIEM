@@ -6,6 +6,11 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_mixingratio(self):
+        """Test the mixing ratio calculation"""
+        r = meteorology.mixing_ratio(datatypes.temperature(70, 'F'))
+        self.assertAlmostEquals(r.value('KG/KG'), 0.016, 3)
+
     def test_sw(self):
         """Test shortwave flux calculation"""
         r = meteorology.clearsky_shortwave_irradiance_year(-95, 42, 100)
