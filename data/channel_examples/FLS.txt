@@ -1,0 +1,33 @@
+047 
+WGUS82 KFFC 312312
+FLSFFC
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE PEACHTREE CITY GA
+712 PM EDT SUN MAY 31 2015
+
+...The Flood Warning is cancelled for the following rivers in 
+Georgia...
+ 
+  Level Creek near Suwanee affecting Gwinnett County
+
+ 
+GAC135-312342-
+/O.CAN.KFFC.FL.W.0035.000000T0000Z-150531T2312Z/
+/SWAG1.1.ER.150531T1909Z.150531T2000Z.150531T2054Z.UU/
+712 PM EDT SUN MAY 31 2015
+
+The Flood Warning is cancelled for
+  The Level Creek near Suwanee.
+* This takes affect immediately.
+* At 7 PM Sunday the stage was 5 feet...and falling.
+* Flood stage is 9 feet.
+* The creek/river will continue to fall.
+
+
+&&
+
+LAT...LON 3412 8410 3412 8406 3407 8406 3405 8410 3408 8411
+
+
+$$

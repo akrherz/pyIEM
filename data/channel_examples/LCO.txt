@@ -1,0 +1,91 @@
+427 
+SXUS55 KPUB 091420
+LCOPUB
+
+COCORAHS PRECIPITATION SUMMARY
+NATIONAL WEATHER SERVICE PUEBLO CO
+819 AM MDT TUE JUN 09 2015
+
+COCORAHS PRECIPITATION REPORTS
+THESE REPORTS ARE CONSIDERED SUPPLEMENTAL AND UNOFFICIAL
+VALUES ARE FOR THE PREVIOUS 24 HOURS ENDING AROUND 7 AM LOCAL TIME
+
+
+:COCORAHS PRECIPITATION REPORTS FOR THE LOCAL AREA
+
+:                                               SNOW   SNOW  WATER  
+:                                        PCPN   FALL  DEPTH  EQUIV
+  
+CO-LA-13  : BONCARBO 1.5 WSW         *   : 0.03 /  MM /   MM /   MM
+CO-LA-33  : AGUILAR 7.2 WSW          *   : 0.02 /  MM /   MM /   MM
+CO-EP-58  : IVYWILD 0.6 E            *   : 0.00 / 0.0 /  0.0 /   MM
+CO-EP-180 : COLORADO SPRINGS 6.6 SE  *   : 0.00 / 0.0 /  0.0 /   MM
+CO-EP-343 : PEYTON 6.8 WSW           *   : 0.00 / 0.0 /  0.0 / 0.00
+CO-AM-10  : GREAT SAND DUNES 7.0 SSW *   : 0.00 / 0.0 /   MM /   MM
+CO-AM-21  : ALAMOSA 1.2 NE           *   : 0.00 / 0.0 /   MM /   MM
+CO-AM-32  : GREAT SAND DUNES 7.6 SSW *   : 0.00 / 0.0 /   MM /   MM
+CO-BA-19  : DEORA 10.7 SW            *   : 0.00 / 0.0 /   MM /   MM
+CO-CF-06  : BUENA VISTA 1.5 WNW      *   : 0.00 / 0.0 /   MM /   MM
+CO-CF-20  : MAYSVILLE 2.2 NE         *   : 0.00 / 0.0 /   MM /   MM
+CO-CF-25  : BUENA VISTA 4.0 WNW      *   : 0.00 / 0.0 /   MM /   MM
+CO-CF-32  : GRANITE 2.3 SE           *   : 0.00 / 0.0 /   MM /   MM
+CO-CF-35  : BUENA VISTA 0.8 WNW      *   : 0.00 / 0.0 /   MM /   MM
+CO-CS-11  : FORT GARLAND 5.8 ESE     *   : 0.00 / 0.0 /   MM /   MM
+CO-CU-25  : WESTCLIFFE 8.4 WNW       *   : 0.00 / 0.0 /   MM /   MM
+CO-CU-28  : WESTCLIFFE 6.2 W         *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-07  : CALHAN 3.1 N             *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-17  : MONUMENT 2.1 ENE         *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-65  : WIDEFIELD 13.7 ESE       *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-66  : BLACK FOREST 3.9 NNE     *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-165 : COLORADO SPRNGS 6.1 NE   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-169 : FOUNTAIN 0.5 E           *   : 0.00 /  MM /   MM /   MM
+CO-EP-189 : FALCON ESTATES 2.4 WNW   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-207 : COLORADO SPRINGS 7.1 NNW *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-210 : COLORADO SPRINGS 3.0 S   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-226 : COLORADO SPRINGS 2.0 N   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-228 : COLORADO SPRINGS 5.0 NNE *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-234 : COLORADO SPRINGS 7.0 NNE *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-235 : MONUMENT 6.6 ENE         *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-256 : PEYTON 8.3 SW            *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-264 : COLORADO SPRINGS 3.5 S   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-271 : BLACK FOREST 4.7 WSW     *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-291 : COLORADO SPRINGS 8.2 SE  *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-303 : COLORADO SPRINGS 1.1 W   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-337 : COLORADO SPRINGS 4.1 S   *   : 0.00 / 0.0 /   MM /   MM
+CO-EP-347 : COLORADO SPRINGS 6.9 ENE *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-09  : CANON CITY .84 SE        *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-11  : CANON CITY 1.0 NNE       *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-21  : COTOPAXI 4.8 SSE         *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-48  : CANON CITY 0.7 NNW       *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-59  : CANON CITY 0.7 SSE       *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-64  : COTOPAXI 9.6 E           *   : 0.00 / 0.0 /   MM /   MM
+CO-FM-88  : ROYAL GORGE 0.4 NNE      *   : 0.00 / 0.0 /   MM /   MM
+CO-HF-14  : WALSENBURG 8.7 W         *   : 0.00 / 0.0 /   MM /   MM
+CO-HF-24  : WALSENBURG 1.0 WNW       *   : 0.00 / 0.0 /   MM /   MM
+CO-HF-31  : WALSENBURG 9.3 NNW       *   : 0.00 / 0.0 /   MM /   MM
+CO-HF-39  : WALSENBURG 5.5 SW        *   : 0.00 / 0.0 /   MM /   MM
+CO-HF-40  : WALSENBURG 0.5 W         *   : 0.00 / 0.0 /   MM /   MM
+CO-KW-04  : EADS .45 E               *   : 0.00 / 0.0 /   MM /   MM
+CO-LK-10  : LEADVILLE 6.3 S          *   : 0.00 / 0.0 /   MM /   MM
+CO-LA-12  : MODEL 7.9 ESE            *   : 0.00 / 0.0 /   MM /   MM
+CO-LA-18  : TRINIDAD 9 NE            *   : 0.00 / 0.0 /   MM /   MM
+CO-LA-65  : TRINIDAD 11.9 ENE        *   : 0.00 / 0.0 /   MM /   MM
+CO-OT-13  : CHERAW 1.9 W             *   : 0.00 / 0.0 /   MM /   MM
+CO-PW-34  : LAMAR 2.9 S              *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-14  : PUEBLO 17 W              *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-41  : PUEBLO WEST 2.3 WSW      *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-55  : PUEBLO WEST 6.0 W        *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-92  : RYE 5.9 ESE              *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-98  : PUEBLO WEST 6.2 WSW      *   : 0.00 / 0.0 /   MM /   MM
+CO-PU-109 : PUEBLO 2.5 SSW           *   : 0.00 / 0.0 /   MM /   MM
+CO-RG-19  : DEL NORTE 2.5 ENE        *   : 0.00 / 0.0 /   MM /   MM
+CO-RG-21  : MONTE VISTA 10.8 SW      *   : 0.00 /  MM /   MM /   MM
+CO-RG-23  : MONTE VISTA 0.8 W        *   : 0.00 / 0.0 /   MM /   MM
+CO-RG-26  : SOUTH FORK 0.6 S         *   : 0.00 / 0.0 /   MM /   MM
+CO-SA-61  : BONANZA 6.6 S            *   : 0.00 / 0.0 /   MM /   MM
+CO-TL-19  : FLORISSANT 5.0 N         *   : 0.00 / 0.0 /   MM /   MM
+CO-TL-28  : WOODLAND PARK 1.1 NNW    *   : 0.00 /  MM /   MM /   MM
+CO-TL-29  : DIVIDE 1.0 E             *   : 0.00 / 0.0 /   MM /   MM
+
+
+$$

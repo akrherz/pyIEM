@@ -1,0 +1,108 @@
+020 
+AGUS73 KKRF 091602
+HMDKRF
+
+Daily Hydrologic Activities Discussion
+NWS Missouri Basin River Forecast Center Pleasant Hill MO
+Tuesday June  9, 2015
+
+
+During the past 24 hours ending at 7AM CDT Tuesday, light precipitation
+occurred over portions of North Dakota, Missouri, and Wyoming. No 
+significant rainfall amounts were reported. Mostly dry conditions
+prevailed across the remainder of the Missouri Basin.
+
+During the next 24-hour period ending at 7am CDT Wednesday, light 
+precipitation is expected over portions of the Rocky Mountain states
+and the Dakotas. Basin-average rainfall amounts are not forecasted
+to exceed a quarter of an inch.
+
+Minor to moderate flooding is occurring or is forecasted to occur at
+many locations across the Missouri River Basin, including the following:
+
+Missouri River downstream from Napoleon, MO
+
+in Missouri:
+Blackwater River
+
+in Kansas:
+Big Blue River
+
+in Nebraska:
+Big Blue River
+Turkey Creek
+Platte River
+North Platte River
+
+in Colorado:
+South Platte River
+Cache La Poudre River
+
+in Wyoming:
+Laramie River
+Wind River
+
+in Montana:
+Boulder River
+
+in South Dakota:
+James River
+Cheyenne River
+
+in North Dakota:
+Missouri River
+
+
+.................................................
+Forecasts issued today:
+RVF 	Group                              Time Z
+-------------------------------------------------
+BBL     BIG BLUE                          01:16 Z
+BBL     BIG BLUE                          02:37 Z
+BBL     BIG BLUE                          04:39 Z
+BBL     BIG BLUE                          14:05 Z
+BGH     BIGHORN                           00:21 Z
+BGH     BIGHORN                           00:23 Z
+BGH     BIGHORN                           14:02 Z
+BGH     BIGHORN                           14:39 Z
+ELK     ELKHORN/PLATTE                    00:21 Z
+ELK     ELKHORN/PLATTE                    14:15 Z
+GRA     GRAND/CHARITON                    00:11 Z
+GRA     GRAND/CHARITON                    14:59 Z
+JAM     JAMES/VERMILLION                  00:54 Z
+JAM     JAMES/VERMILLION                  13:49 Z
+KRF     MISSOURI TRIBUTARY RIVER FLOWS    13:35 Z
+KRF     MISSOURI TRIBUTARY RIVER FLOWS    15:35 Z
+KSR     KANSAS                            14:37 Z
+LDT     LOWER DAKOTA TRIBS                01:00 Z
+LDT     LOWER DAKOTA TRIBS                13:46 Z
+MDT     MIDDLE DAKOTA TRIBS               00:27 Z
+MDT     MIDDLE DAKOTA TRIBS               14:19 Z
+MIL     MILK                              15:30 Z
+MIL     MILK                              15:30 Z
+MOM     MISSOURI MAINSTEM                 01:02 Z
+MOM     MISSOURI MAINSTEM                 09:43 Z
+MOM     MISSOURI MAINSTEM                 14:38 Z
+MTA     MISSOURI TRIBS ABOVE KANSAS CITY  00:03 Z
+MTA     MISSOURI TRIBS ABOVE KANSAS CITY  13:13 Z
+MTB     MISSOURI TRIBS BELOW KANSAS CITY  01:10 Z
+MTB     MISSOURI TRIBS BELOW KANSAS CITY  09:54 Z
+MTB     MISSOURI TRIBS BELOW KANSAS CITY  13:07 Z
+NPL     NORTH PLATTE                      00:25 Z
+NPL     NORTH PLATTE                      14:35 Z
+OSG     OSAGE                             14:01 Z
+SPL     SOUTH PLATTE                      00:49 Z
+SPL     SOUTH PLATTE                      14:42 Z
+SPL     SOUTH PLATTE                      14:45 Z
+SPL     SOUTH PLATTE                      14:45 Z
+UMO     UPPER MISSOURI                    00:05 Z
+UMO     UPPER MISSOURI                    15:25 Z
+UMO     UPPER MISSOURI                    15:26 Z
+YEL     YELLOWSTONE                       00:01 Z
+YEL     YELLOWSTONE                       14:38 Z
+YEL     YELLOWSTONE                       14:40 Z
+
+MBRFC
+
+$$
+

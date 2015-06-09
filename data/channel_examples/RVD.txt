@@ -1,0 +1,54 @@
+656 
+FGUS52 KMHX 091306
+RVDMHX
+NCZ029-044>047-079>081-090>095-098-103-104-101306-
+
+
+DAILY RIVER AND LAKE SUMMARY
+NATIONAL WEATHER SERVICE NEWPORT/MOREHEAD CITY, NC
+906 AM EDT TUE JUN 9 2015
+
+.B MHX 0609 DC15060909 DH12/HG/DRH+24/HGIFF/DRH+48/HGIFF/DRH+72/HGIFF
+
+
+:   Station            Flood    8AM    24-Hr             8AM
+: Id       Name        Stage   Stage   Change         Forecasts
+:                                                Wed     Thu     Fri
+:
+: Northeast Cape Fear River
+CHIN7   :Chinquapin     13.0:  4.66 /: -0.47:      M /     M /     M
+:
+: New River
+GUMN7   :Gum Branch      N/A:  3.78 /: -0.58:      M /     M /     M
+:
+: Neuse River
+BCKN7   :Mays Store      N/A:  2.99 /: -0.05:      M /     M /     M
+KINN7   :Kinston        14.0:  4.90 /: -0.32:      M /     M /     M
+FTBN7   :Fort Barnwell  12.5:  5.98 /: -0.34:      M /     M /     M
+SWFN7   :Streets Ferry   4.0:  0.90 /: -1.56:      M /     M /     M
+:
+: Contentnea Creek
+NAHN7   :Shine           N/A:  2.91 /: -0.22:      M /     M /     M
+HOKN7   :Hookerton      13.0:  9.41 /: -1.02:      M /     M /     M
+:
+: Tar River
+PGVN7   :Greenville     13.0:  3.59 /: -1.09:      M /     M /     M
+SIMN7   :Simpson        10.0:  7.73 /: -0.23:      M /     M /     M
+PAMN7   :Washington      4.5:  0.72 /: -0.89:      M /     M /     M
+:
+: Trent River
+TNTN7   :Trenton        14.0:  6.13 /: -1.21:      M /     M /     M
+PLLN7   :Pollocksville   5.0:  0.46 /: -1.26:      M /     M /     M
+:
+: Roanoke River
+OAKN7   :Oak City       23.0:  5.70 /:  0.13:      M /     M /     M
+HMLN7   :Hamilton       19.0:  4.34 /:  0.18:      M /     M /     M
+WLLN7   :Williamston    12.0:  5.27 /:  0.26:      M /     M /     M
+JAMN7   :Jamesville      N/A:  1.61 /:  0.31:      M /     M /     M
+WESN7   :Westover        N/A:  1.62 /:  0.31:      M /     M /     M
+:
+.END
+
+
+$$
+

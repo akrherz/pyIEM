@@ -1,0 +1,7 @@
+915
+NZUS03 KLZK 201703
+WRKPUG
+The MTR340 program was last run on 04/20/15 at 17:03Z
+Status: Temp and wind data OK
+Status: Pressure data does not match system time
+Status: Sky available

@@ -1,0 +1,147 @@
+111 
+ASUS63 KGLD 091604
+RTPGLD
+
+TEMPERATURE AND PRECIPITATION SUMMARY
+NATIONAL WEATHER SERVICE GOODLAND KS
+952 AM MDT TUE JUN 9 2015
+
+.BR GLD  0609  CS DH00/TAIRZX/DH06/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ
+:
+:VALUES REPRESENT YESTERDAY'S HIGHS....LOWS OVER THE LAST 12 HOURS
+:AND PRECIPITATION OVER THE LAST 24 HOURS ENDING AT 6 AM CST/7 AM CDT
+:CENTRAL TIME ZONE 
+:
+:..............................................................
+: ID    STATION              MAX  / MIN  /    24 HR    / SNOW
+:        NAME                TEMP / TEMP / PCPN / SNOW / DEPTH
+:..............................................................
+:
+: FIRST ORDER /ASOS/ SITES 
+ HLC : HILL CITY KS AIRPORT:  90  /  59  / 0.00 /      /     
+ MCK : MCCOOK NE AIRPORT   :  89  /  58  / 0.00 /      /     
+.END
+:
+:
+.BR GLD  0609  MS DH00/TAIRZX/DH05/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ
+:
+:VALUES REPRESENT YESTERDAY'S HIGHS....LOWS OVER THE LAST 12 HOURS
+:AND PRECIPITATION OVER THE LAST 24 HOURS ENDING AT 5 AM MST/6 AM MDT
+:MOUNTAIN TIME ZONE 
+:
+:
+: FIRST ORDER /ASOS/ SITES 
+ GLD : GOODLAND KS AIRPORT :  84  /  60  / 0.00 /  0.0 /    0
+ ITR : BURLINGTON CO ARPT  :  83  /  57  / 0.00 /      /     
+.END
+:
+:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+:
+.BR GLD  0609  C DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:
+:NORTHWEST KANSAS
+:COOPERATIVE OBSERVATIONS
+:VALUES ARE FOR THE PREVIOUS 24 HOURS ENDING AT 7 AM LOCAL TIME
+:CENTRAL TIME ZONE 
+:
+:....................................................................
+: ID    STATION            OBS   / MAX  / MIN  /    24 HR    / SNOW
+:        NAME              TIME  / TEMP / TEMP / PCPN / SNOW / DEPTH
+:....................................................................
+:
+:
+ATDK1: ATWOOD            : DH0700/  88  /  57  / 0.00 /  0.0 /     
+OAKK1: OAKLEY 4 W        : DH0600/  86  /  58  / 0.00 /      /     
+OBRK1: OBERLIN           : DH0700/  89  /  56  / 0.00 /  0.0 /    0
+RLLK1: RUSSELL SPRINGS 3N: DH0600/  88  /  58  / 0.00 /  0.0 /    0
+DNSK1: DENSMORE 2 N      : DH0600/      /      / 0.00 /  0.0 /    0
+DRSK1: DRESDEN           : DH0600/      /      / 0.00 /  0.0 /    0
+GRFK1: GRAINFIELD        : DH0600/      /      / 0.00 /  0.0 /    0
+CDBK1: CEDAR BLUFFS      : DH    /      /      / 0.00 /      / 
+NCRK1: NORCATUR 15 NE    : DH    /      /      / 0.00 /      / 
+SFAK1: ST. FRANCIS 14 SW : DH    /      /      / 0.00 /      / 
+:
+.END
+:
+:MOUNTAIN TIME ZONE 
+:
+.BR GLD  0609  M DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+SHRK1: SHARON SPRINGS    : DH0700/  88  /  60  / 0.00 /  0.0 /    0
+TRBK1: TRIBUNE 1 W       : DH0700/  87  /  56  / 0.00 /      /     
+GRWK1: TRIBUNE 13 NNE    : DH0612/  89  /  56  / 0.00 /      /     
+:
+.END
+:
+:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+:
+.BR GLD  0609  M DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:
+:EASTERN COLORADO
+:COOPERATIVE OBSERVATIONS
+:VALUES ARE FOR THE PREVIOUS 24 HOURS ENDING AT 7 AM LOCAL TIME
+:MOUNTAIN TIME ZONE 
+:
+:....................................................................
+: ID    STATION            OBS   / MAX  / MIN  /    24 HR    / SNOW
+:        NAME              TIME  / TEMP / TEMP / PCPN / SNOW / DEPTH
+:....................................................................
+:
+:
+IDAC2: IDALIA            : DH0600/  80  /  55  / 0.00 /      /     
+YUMC2: YUMA              : DH0700/  87  /  59  / 0.00 /  0.0 /    0
+WHNC2: WILD HORSE 6 N    : DH    /      /  69  / 0.69 /      /     
+:
+.END
+:
+:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+:
+.BR GLD  0609  C DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:
+:SOUTHWEST NEBRASKA
+:COOPERATIVE OBSERVATIONS
+:VALUES ARE FOR THE PREVIOUS 24 HOURS ENDING AT 7 AM LOCAL TIME
+:CENTRAL TIME ZONE 
+:
+:....................................................................
+: ID    STATION            OBS   / MAX  / MIN  /    24 HR    / SNOW
+:        NAME              TIME  / TEMP / TEMP / PCPN / SNOW / DEPTH
+:....................................................................
+:
+:
+TTNN1: TRENTON DAM        : DH0600/  90  /  61  / 0.00 /      /     
+CBRN1: CULBERTSON         : DH0500/  90  /  58  / 0.00 /  0.0 /    0
+MCON1: MCCOOK #2          : DH0600/      /      / 0.00 /  0.0 /    0
+STTN1: STRATTON RIVER SITE: DH    /      /      / 0.00 /      / 
+MCKN1: MCCOOK 4 SW        : DH    /      /      / 0.00 /      / 
+MKRN1: MCCOOK 1 SE        : DH    /      /      / 0.00 /      / 
+CULN1: CULBERTSON DCP     : DH    /      /      / 0.00 /      / 
+:
+.END
+:
+:MOUNTAIN TIME ZONE 
+:
+.BR GLD  0609  M DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:
+BEKN1: BENKELMAN 2 SSW    : DH    /      /      / 0.00 /      / 
+:
+:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+:
+.END
+ 
+THESE DATA ARE PRELIMINARY AND HAVE NOT UNDERGONE FINAL QUALITY 
+CONTROL BY THE NATIONAL CLIMATIC DATA CENTER (NCDC).  THEREFORE, 
+THESE DATA ARE SUBJECT TO REVISION.  FINAL AND CERTIFIED CLIMATE
+DATA CAN BE ACCESSED AT HTTP://WWW.NCDC.NOAA.GOV 
+:
+&&
+:
+:UNOFFICIAL PRECIPITATION REPORTS
+:THESE REPORTS ARE CONSIDERED SUPPLEMENTAL TO THE ABOVE REPORTS
+:VALUES ARE FOR THE PREVIOUS 24 HOURS ENDING AT 7 AM LOCAL TIME
+:
+:                                                   SNOW  SNOW
+:                                MAX  MIN    PCPN   FALL  DEPTH
+:
+DDTK1: NORTHEAST GOODLAND *     :      /      /  0.00/      /   
+
+$$

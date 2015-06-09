@@ -1,0 +1,278 @@
+775 
+FOUS54 KHUN 091606
+PFMHUN
+
+POINT FORECAST MATRICES
+NATIONAL WEATHER SERVICE HUNTSVILLE AL
+ISSUED BY NATIONAL WEATHER SERVICE JACKSON MS
+1106 AM CDT TUE JUN 9 2015
+
+ALZ006-092215-
+HUNTSVILLE-MADISON AL
+34.65N  86.77W ELEV. 608 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      90          68          91          69          89
+TEMP                   88 90 86 76 72 69 70 83 89 91 87 77 72 69 71 81 87 89 85
+DEWPT                  68 67 65 66 66 65 67 68 65 64 65 67 66 66 67 68 67 66 68
+RH                     52 47 50 71 81 87 90 61 45 41 48 71 81 90 87 65 52 47 57
+WIND DIR               NW  W NW SE SE SE  S SW SW  S  S  S  S SE  S  S  S  S  S
+WIND SPD                3  4  2  1  1  1  1  2  3  3  2  2  2  1  2  3  5  6  4
+CLOUDS                 SC SC SC SC FW FW SC SC SC SC SC SC FW FW SC SC B1 B1 SC
+POP 12HR                     20          20          20          10          30
+QPF 12HR                      0           0           0           0        0.09
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              S  S  S  S              S  S              C  C  C  C  S
+TSTMS                   S  S  S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          71    86      71    88      72    89      71    90
+TEMP          74 72 84 82   73 72 87 85   74 73 87 85   74 73 88 86
+DEWPT         68 69 69 69   68 69 67 68   68 69 67 68   68 69 67 69
+PWIND DIR         S     S       S     S       S     S       S     S
+WIND CHAR        LT    GN      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    SC SC B1 B2   B1 SC SC SC   SC SC SC SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ005-092215-
+DECATUR-LIMESTONE AL
+34.66N  86.94W ELEV. 592 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      90          68          91          68          89
+TEMP                   89 90 86 76 71 68 70 82 89 91 86 76 72 68 70 81 87 89 85
+DEWPT                  68 67 65 66 66 65 67 68 66 64 66 67 67 66 67 68 67 66 69
+RH                     50 47 50 71 84 90 90 63 47 41 51 74 84 93 90 65 52 47 59
+WIND DIR               NW  W NW SE SE SE  S SW SW  S  S  S  S SE  S  S  S  S  S
+WIND SPD                3  4  2  1  1  1  1  3  3  3  2  2  2  1  2  3  5  6  5
+CLOUDS                 SC SC SC SC FW FW SC SC SC SC SC SC FW FW SC SC B1 B1 SC
+POP 12HR                     20          20          20          10          30
+QPF 12HR                      0           0           0           0        0.08
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              S  S  S  S              S  S              C  C  C  C  S
+TSTMS                   S  S  S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          70    85      70    87      70    88      70    89
+TEMP          73 72 84 82   72 71 86 84   73 72 87 85   73 72 88 85
+DEWPT         68 69 69 69   68 69 68 69   68 69 68 69   68 69 68 70
+PWIND DIR         S     S       S     S       S     S       S     S
+WIND CHAR        LT    GN      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    SC SC B1 B2   B1 SC SC B1   SC SC SC SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ002-092215-
+MUSCLE SHOALS-COLBERT AL
+34.75N  87.61W ELEV. 562 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      91          67          91          68          90
+TEMP                   89 91 86 76 71 68 69 82 89 91 86 76 71 68 70 82 88 90 86
+DEWPT                  69 68 66 66 66 65 67 68 67 65 67 67 66 66 67 68 68 67 69
+RH                     52 47 51 71 84 90 93 63 48 42 53 74 84 93 90 63 52 47 57
+WIND DIR               NW  W  N  E  E SE  S SW SW  S  S  S  S  S  S  S  S  S  S
+WIND SPD                2  4  2  1  1  1  1  4  4  3  3  2  2  1  1  4  5  8  6
+CLOUDS                 SC SC SC SC FW FW SC SC SC SC FW FW FW FW SC SC B1 B1 SC
+POP 12HR                     20          20          20          10          30
+QPF 12HR                      0           0           0           0        0.07
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS                    S  S              S  S              C  C  C  C  S
+TSTMS                         S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          70    86      70    88      71    89      71    90
+TEMP          73 72 85 83   73 72 86 84   73 72 87 85   73 72 88 86
+DEWPT         67 68 69 69   68 68 68 69   68 69 67 69   68 69 68 71
+PWIND DIR         S     S       S     S       S     S       S     S
+WIND CHAR        LT    GN      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    SC SC B1 B1   B1 SC SC B1   B1 SC B1 SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ010-092215-
+FORT PAYNE-DEKALB AL
+34.47N  85.72W ELEV. 877 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      86          65          88          65          86
+TEMP                   85 86 81 72 68 65 66 79 86 88 83 74 69 66 67 78 84 86 82
+DEWPT                  68 66 64 64 63 62 64 66 63 61 64 65 63 62 64 66 65 64 66
+RH                     57 51 56 76 84 90 93 64 46 40 53 74 81 87 90 67 53 48 58
+WIND DIR                W  W  W  N  N  N  N SW  S SW  S  S  N  W  S  S  S  S  S
+WIND SPD                5  5  2  0  0  0  0  1  3  3  1  1  0  1  1  2  4  4  2
+CLOUDS                 B1 B1 SC SC SC SC SC SC SC SC SC SC FW FW SC SC SC SC SC
+POP 12HR                     30          20          20          10          30
+QPF 12HR                      0           0           0           0        0.12
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              C  C  S  S              S  S              C  C  C  C  S
+TSTMS                   C  C  S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          68    83      68    86      68    87      68    88
+TEMP          70 69 82 80   70 69 84 82   71 70 85 83   71 70 86 84
+DEWPT         65 67 66 66   66 67 64 66   66 67 65 65   66 67 64 66
+PWIND DIR         S    SW       S    SW      SW    SW      SW    SW
+WIND CHAR        LT    LT      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    SC SC B1 B1   B1 SC SC SC   SC SC SC B1   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ016-092215-
+VINEMONT-CULLMAN AL
+34.27N  86.86W ELEV. 969 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      87          66          88          67          87
+TEMP                   86 87 82 73 69 66 67 80 86 88 84 74 70 67 69 79 85 87 83
+DEWPT                  70 69 67 67 67 66 67 69 66 65 67 68 67 66 68 69 68 67 70
+RH                     59 55 61 81 93100100 69 51 47 57 82 90 97 97 72 57 52 65
+WIND DIR                W  W  W  S SW  S  S SW  S  S  S  S  S  S  S  S  S  S  S
+WIND SPD                4  4  2  2  1  1  1  2  3  3  2  2  2  1  2  3  4  5  4
+CLOUDS                 SC SC SC SC SC SC SC SC SC SC SC SC FW FW SC SC B1 B1 B1
+POP 12HR                     30          20          20          10          30
+QPF 12HR                      0           0           0           0        0.10
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              C  C  S  S              S  S              C  C  C  C  S
+TSTMS                   C  C  S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          68    83      69    86      70    87      70    87
+TEMP          71 70 82 80   71 70 84 82   72 71 85 83   72 71 86 84
+DEWPT         68 68 69 69   68 69 68 70   68 69 67 69   69 69 67 70
+PWIND DIR         S     S       S     S       S     S       S     S
+WIND CHAR        LT    LT      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    B1 B1 B1 B2   B1 SC SC SC   SC SC SC SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ006-092215-
+MERIDIANVILLE-MADISON AL
+34.86N  86.56W ELEV. 756 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      88          66          89          66          87
+TEMP                   86 88 83 74 69 66 68 80 87 89 84 74 70 66 68 79 85 87 83
+DEWPT                  66 65 63 65 64 64 65 66 63 61 63 65 65 64 65 66 64 64 66
+RH                     51 47 51 74 84 93 90 62 45 39 49 74 84 93 90 64 50 46 57
+WIND DIR               NW NW NW  E SE SE  S SW SW SW  S SE  S SE  S  S  S  S  S
+WIND SPD                3  5  3  2  1  1  1  2  3  4  3  1  2  1  2  3  5  6  5
+CLOUDS                 SC SC SC SC FW FW SC SC SC SC SC SC FW FW SC SC B1 B1 SC
+POP 12HR                     20          20          20          10          30
+QPF 12HR                      0           0           0           0        0.09
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              S  S  S  S                                C  C  C  C  S
+TSTMS                   S  S  S  S                                C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          69    84      70    86      70    87      70    89
+TEMP          72 71 83 81   72 71 85 83   73 72 86 84   73 72 87 85
+DEWPT         66 69 69 69   68 69 68 69   68 70 68 69   68 70 69 70
+PWIND DIR         S     S       S     S       S     S       S    SW
+WIND CHAR        LT    GN      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    SC SC B1 B2   B1 B1 SC B1   SC SC SC SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+ALZ008-092215-
+ALBERTVILLE-MARSHALL AL
+34.23N  86.26W ELEV. 1032 FT
+1106 AM CDT TUE JUN 9 2015
+
+DATE             TUE 06/09/15            WED 06/10/15            THU 06/11/15
+CDT 3HRLY     04 07 10 13 16 19 22 01 04 07 10 13 16 19 22 01 04 07 10 13 16 19
+UTC 3HRLY     09 12 15 18 21 00 03 06 09 12 15 18 21 00 03 06 09 12 15 18 21 00
+
+MAX/MIN                      86          65          88          66          87
+TEMP                   85 86 82 73 68 65 67 79 86 88 83 74 69 66 68 79 85 87 83
+DEWPT                  71 70 67 66 66 65 67 68 66 64 66 66 66 65 67 68 66 66 68
+RH                     63 59 61 79 93100100 69 51 45 57 76 90 97 97 69 53 50 61
+WIND DIR                W  W SW SW SW SW SW SW  S  S  S  S  S  S  S  S  S  S  S
+WIND SPD                5  5  2  2  1  1  1  2  3  3  2  2  1  1  1  3  4  5  3
+CLOUDS                 B1 B1 SC SC SC SC SC SC SC SC SC SC SC SC SC SC SC SC B1
+POP 12HR                     30          20          20          10          30
+QPF 12HR                      0           0           0           0        0.11
+SNOW 12HR                 00-00       00-00       00-00                        
+RAIN SHWRS              C  C  S  S              S  S              C  C  C  C  S
+TSTMS                   C  C  S  S              S  S              C  C  C  C  S
+
+
+DATE          FRI 06/12/15  SAT 06/13/15  SUN 06/14/15  MON 06/15/15
+CDT 6HRLY     01 07 13 19   01 07 13 19   01 07 13 19   01 07 13 19
+UTC 6HRLY     06 12 18 00   06 12 18 00   06 12 18 00   06 12 18 00
+
+MIN/MAX          68    83      69    86      69    87      69    88
+TEMP          71 70 82 80   71 70 84 82   71 70 85 83   72 71 86 84
+DEWPT         66 68 70 69   68 68 69 70   68 69 68 69   68 69 69 70
+PWIND DIR         S     S       S     S       S     S       S     S
+WIND CHAR        LT    GN      LT    LT      LT    LT      LT    LT
+AVG CLOUDS    B1 B1 B1 B2   B1 SC SC SC   SC SC SC SC   SC SC SC SC
+POP 12HR         20    40      20    20      20    20      10    20
+RAIN SHWRS     S  S  C  C    S  S  S  S    S  S  S  S          S  S
+TSTMS          S  S  C  C    S  S  S  S    S  S  S  S          S  S
+
+$$
+
+99
+

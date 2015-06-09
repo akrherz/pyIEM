@@ -1,0 +1,22 @@
+325 
+NOUS85 KBOI 261530
+FWABOI
+
+INCIDENT METEOROLOGIST STATUS REPORT
+NATIONAL WEATHER SERVICE BOISE IDAHO
+930 AM MDT TUE MAY 26 2015
+
+IMET               CWA  INCIDENT            STATUS   ONSITE   RELEASE
+HOME OFFICE             LOCATION
+------------------------------------------------------------------------
+PENDERGRAST        MFL  MUD LAKE COMPLEX    ON SITE  5/13     5/28 EST   
+MELBOURNE FL            NEAR OCHOPEE FL               
+
+BYRD               MFL  MUD LAKE COMPLEX    ENROUTE  5/26                
+JACKSON MS              NEAR OCHOPEE FL               
+
+KEENE - T          MFL  MUD LAKE COMPLEX    DEMOB    5/16     5/24       
+MEDFORD OR              NEAR OCHOPEE FL               
+
+$$
+LVB

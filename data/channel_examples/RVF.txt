@@ -1,0 +1,48 @@
+63 
+FGUS54 KTUA 091331
+RVFOUN
+
+RIVER FORECAST
+NWS - ARKANSAS RED BASIN RIVER FORECAST CENTER - TULSA, OK
+0830 AM CDT TUE JUN 09 2015
+:
+:THIS IS A NWS GUIDANCE PRODUCT FROM THE RIVER FORECAST CENTER.
+:OFFICIAL FORECASTS/WARNINGS ARE ISSUED ONLY BY VARIOUS LOCAL NWS OFFICES.
+:BELOW ARE 6-HOURLY FORECASTS.
+:    FORECAST GROUP IS ARC_FULTON
+:
+:*************************************************************************
+:BLUE RIVER NEAR BLUE OK
+:FLOOD STAGE  28.0  
+:
+:LATEST STAGE     9.18 FT AT 730 AM CDT ON 0609
+.ER BLUO2    0609 C DC201506090830/DH13/HGIFF/DIH6
+:QPF FORECAST        7AM        1PM        7PM        1AM
+.E1 :0609:              /       9.2/       9.1/       9.1
+.E2 :0610:   /       9.0/       9.0/       8.9/       8.9
+.E3 :0611:   /       8.8/       8.8/       8.7/       8.7
+.E4 :0612:   /       8.7/       8.6/       8.6/       8.6
+.E5 :0613:   /       8.5/       8.5/       8.5/       8.5
+.E6 :0614:   /       8.4
+.ER BLUO2    0609 C DC201506090830/DH13/PPQFZ/DIH6/  0.00/0.00/0.00  
+.ER BLUO2    0609 C DC201506090830/DH13/HGIFZ/DIH6
+:NON-QPF FORECAST    7AM        1PM        7PM        1AM
+.E1 :0609:              /       9.2/       9.1/       9.1
+.E2 :0610:   /       9.0/       9.0/       8.9/       8.9
+.E3 :0611:   /       8.8/       8.8/       8.7/       8.7
+.E4 :0612:   /       8.7/       8.6/       8.6/       8.6
+.E5 :0613:   /       8.5/       8.5/       8.5/       8.5
+.E6 :0614:   /       8.4
+:***********************************************************************
+:COMMENT
+:
+:
+:
+:
+:
+:
+.AR TUA 0609 C DT201506090830/YIIRZ   23: mab
+:
+:...END OF MESSAGE...
+
+$$

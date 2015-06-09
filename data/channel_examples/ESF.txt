@@ -1,0 +1,242 @@
+693 
+FGUS73 KGID 071725
+ESFGID
+NEC129-NEC175-NEC077-NEC125-NEC163-NEC093-NEC019-NEC079-NEC019-
+KSC147-KSC163-051800-
+
+PROBABILISTIC HYDROLOGIC OUTLOOK
+NATIONAL WEATHER SERVICE HASTINGS NE
+1150 AM CDT SUN JUN 07 2015
+
+In Table 1 below...the current (CS) and historical (HS) or normal
+probabilities of exceeding minor...moderate...and major flood stages
+are listed for the valid time period.
+
+CS values indicate the probability of reaching a flood category
+based on current conditions.
+
+HS values indicate the probability of reaching a flood category
+based on historical or normal conditions.
+
+When the value of CS is more than HS...the probability of
+exceeding that level is higher than normal. When the value of CS is
+less than HS...the probability of exceeding that level is lower
+than normal.
+
+
+...Table 1--Probabilities for minor...moderate and major flooding...
+                    Valid Period:  05/30/2015  - 08/28/2015
+
+                                       :    Current and Historical
+                                       :     Chances of Exceeding
+                                       :       Flood Categories
+                                       :      as a Percentage (%)
+                      Categorical      :
+                   Flood Stages (ft)   :   Minor    Moderate   Major
+Location           Minor   Mod   Major :  CS   HS   CS   HS   CS   HS
+--------           -----  -----  ----- : ---  ---  ---  ---  ---  ---
+:Little Blue River
+Deweese             10.0   16.0   17.0 :  20   20    5    8   <5    5
+:North Fork Solomon
+Glade               11.0   16.0   18.0 :   7    5   <5   <5   <5   <5
+:Bow Creek
+Stockton             9.0   12.0   13.6 :   8   11   <5   <5   <5   <5
+:Platte River
+Cozad                6.5    8.0   10.0 : >98   33   40    6   <5   <5
+Overton              8.0   12.0   14.0 : >98    8    8   <5   <5   <5
+Kearney              6.0    8.0    9.0 : >98   29   38    6   24   <5
+Grand Island         6.5    7.0    7.5 : >98   14  >98   13   37    8
+:Wood River
+Riverdale           11.0   15.0   20.0 :   5   11   <5   <5   <5   <5
+Gibbon              15.0   16.0   16.5 :   6   13    5    9    5    8
+Alda                10.0   11.0   12.2 :   8   16    6   14    5    9
+:South Loup River
+Ravenna              5.0    8.0   10.0 :  17   26    9   10   <5   <5
+:Mud Creek
+Sweetwater          15.0   18.0   20.0 :  12   18    7    7   <5   <5
+:South Loup River
+Saint Michael        6.5    9.0   12.0 :  15   18   10   11   <5   <5
+:Middle Loup River
+Saint Paul           8.0   10.0   12.0 :  <5   <5   <5   <5   <5   <5
+:North Loup River
+Saint Paul           7.0   10.0   12.0 :  <5   <5   <5   <5   <5   <5
+:Cedar River
+Fullerton            9.0   17.0   18.0 :   7    7   <5   <5   <5   <5
+:Loup River
+Genoa               10.5   12.0   13.0 :  10   10   <5    5   <5   <5
+:Beaver Creek
+Genoa               15.0   17.0   19.0 :  15   10   13    5   <5   <5
+:Republican River
+Riverton             9.0   10.5   13.5 :  14    9    9    8    6    5
+Guide Rock          11.0   14.0   16.0 :  22   16    6    7    5   <5
+Hardy               11.0   11.5   12.0 :   9   13    9    9    8    7
+:South Fork Solomon River
+Woodston            12.0   16.0   27.0 :  10   25    8   17   <5   <5
+:South Fork Solomon
+Osborne             14.0   20.0   27.0 :  23   27    8   13   <5   <5
+:North Fork Solomon
+Portis              15.0   20.0   25.0 :  19   20    8   14   <5   <5
+:Solomon River
+Beloit              20.0   25.0   30.0 :  21   23   16   15   <5    9
+:Republican River
+Cambridge            9.0   10.0   16.0 :  <5   <5   <5   <5   <5   <5
+Orleans              9.0   11.0   13.0 :  <5    5   <5   <5   <5   <5
+:Beaver Creek
+Beaver City         11.0   13.0   15.0 :  11    7   <5   <5   <5   <5
+:Sappa Creek
+Beaver City         16.0   18.0   20.0 :   7   <5   <5   <5   <5   <5
+Stamford            19.0   22.0   26.0 :  <5   <5   <5   <5   <5   <5
+:Prairie Dog Creek
+Woodruff            21.0   24.0   30.0 :  <5   <5   <5   <5   <5   <5
+
+Legend
+CS = Conditional Simulation (Current Outlook)
+HS = Historical Simulation
+FT = Feet
+
+In Table 2 below...the 95 through 5 percent columns indicate the
+probability of exceeding the listed stage levels (FT) for the valid
+time period.
+
+...Table 2--Exceedance Probabilities...
+
+                               Chance of Exceeding Stages
+                                  at Specific Locations
+                          Valid Period: 05/30/2015  - 08/28/2015
+Location              95%    90%    75%    50%    25%    10%     5%
+--------            ------ ------ ------ ------ ------ ------ ------
+:Little Blue River
+Deweese               4.1    4.3    5.0    6.8    8.7   13.4   16.0
+:North Fork Solomon
+Glade                 3.2    3.2    3.6    5.4    7.5   10.0   12.2
+:Bow Creek
+Stockton              3.6    3.6    3.6    4.5    6.1    8.3   10.1
+:Platte River
+Cozad                 7.7    7.7    7.7    7.8    8.4    9.0    9.4
+Overton               8.3    8.3    8.3    8.4    9.9   11.5   13.0
+Kearney               7.6    7.6    7.6    7.7    9.0   10.1   10.9
+Grand Island          7.1    7.1    7.1    7.1    8.2    9.0    9.5
+:Wood River
+Riverdale             2.2    2.2    2.4    3.3    5.5    8.8   11.2
+Gibbon                4.2    4.2    4.4    5.6    9.4   11.5   16.4
+Alda                  4.5    4.5    4.6    5.2    7.4    9.5   12.3
+:South Loup River
+Ravenna               3.0    3.2    3.6    4.2    4.5    7.0    9.0
+:Mud Creek
+Sweetwater            6.0    6.4    8.2   10.5   12.9   15.9   18.2
+:South Loup River
+Saint Michael         3.0    3.3    3.7    4.2    5.2    8.7   10.2
+:Middle Loup River
+Saint Paul            2.5    2.6    3.0    3.2    4.0    5.0    6.6
+:North Loup River
+Saint Paul            3.3    3.4    3.6    4.0    4.3    4.6    5.3
+:Cedar River
+Fullerton             3.0    3.8    4.4    5.0    6.1    7.6   10.0
+:Loup River
+Genoa                 4.7    4.7    5.9    7.1    8.2   10.5   11.8
+:Beaver Creek
+Genoa                 4.6    5.0    6.1    7.6   12.0   17.5   18.7
+:Republican River
+Riverton              3.0    3.1    3.5    4.8    7.4   10.2   14.6
+Guide Rock            4.2    5.1    6.1    8.0   10.4   11.7   16.1
+Hardy                 3.3    3.8    5.5    6.9    8.3   10.6   12.7
+:South Fork Solomon River
+Woodston              3.9    3.9    3.9    5.2    6.6   11.9   20.3
+:South Fork Solomon
+Osborne               4.3    4.3    4.4    5.7   11.1   19.1   21.6
+:North Fork Solomon
+Portis                3.6    3.6    3.8    4.9   11.7   19.4   22.1
+:Solomon River
+Beloit                3.9    3.9    4.4    5.7   12.3   26.2   28.6
+:Republican River
+Cambridge             4.0    4.1    4.2    4.4    5.4    6.0    6.6
+Orleans               2.7    2.8    3.2    4.2    5.9    7.6    8.5
+:Beaver Creek
+Beaver City           5.8    5.8    5.8    6.3    9.0   11.1   12.0
+:Sappa Creek
+Beaver City           3.1    3.1    3.7    5.9   10.4   15.5   16.3
+Stamford              9.0    9.0    9.0   10.5   12.7   14.4   15.5
+:Prairie Dog Creek
+Woodruff              1.7    1.7    3.2    6.0    8.3   11.1   12.2
+
+In Table 3 below...the 95 through 5 percent columns indicate the
+probability of falling below the listed stage levels (FT) for the
+valid time period.
+
+...Table 3--Nonexceedance Probabilities...
+
+                            Chance of Falling Below Stages
+                                 at Specific Locations
+                          Valid Period: 05/30/2015  - 08/28/2015
+Location              95%    90%    75%    50%    25%    10%     5%
+--------            ------ ------ ------ ------ ------ ------ ------
+:Little Blue River
+Deweese               2.4    2.3    2.0    1.8    1.8    1.8    1.8
+:North Fork Solomon
+Glade                 3.1    2.6    2.0    2.0    2.0    2.0    2.0
+:Bow Creek
+Stockton              3.6    3.1    2.0    2.0    2.0    2.0    2.0
+:Platte River
+Cozad                 1.7    1.6    1.6    1.6    1.6    1.6    1.6
+Overton               2.5    2.3    2.3    2.3    2.3    2.3    2.3
+Kearney               2.8    2.6    2.6    2.6    2.5    2.5    2.5
+Grand Island          3.3    3.2    3.1    3.1    3.1    3.1    3.1
+:Wood River
+Riverdale             2.2    2.2    2.1    2.1    2.1    2.1    2.1
+Gibbon                4.2    4.2    4.1    4.1    4.1    4.1    4.1
+Alda                  4.5    4.5    4.4    4.4    4.4    4.4    4.4
+:South Loup River
+Ravenna               2.5    2.5    2.5    2.5    2.5    2.4    2.4
+:Mud Creek
+Sweetwater            5.7    5.6    5.4    5.3    5.3    4.0    4.0
+:South Loup River
+Saint Michael         2.4    2.4    2.4    2.3    2.3    2.3    2.3
+:Middle Loup River
+Saint Paul            1.9    1.7    1.5    1.5    1.5    1.5    1.5
+:North Loup River
+Saint Paul            3.1    3.1    3.0    3.0    2.9    2.9    2.9
+:Cedar River
+Fullerton             2.0    2.0    2.0    2.0    2.0    2.0    2.0
+:Loup River
+Genoa                 4.7    4.7    4.7    4.7    4.7    4.7    4.7
+:Beaver Creek
+Genoa                 3.4    3.2    3.0    2.7    2.4    2.4    2.4
+:Republican River
+Riverton              1.7    1.7    1.7    1.7    1.6    1.6    1.6
+Guide Rock            3.0    2.3    2.3    2.3    2.3    2.3    2.3
+Hardy                 1.9    1.5    1.4    1.3    1.3    1.3    1.3
+:South Fork Solomon River
+Woodston              3.9    3.9    3.8    3.8    3.0    3.0    3.0
+:South Fork Solomon
+Osborne               3.9    3.7    3.6    3.5    3.5    3.4    3.4
+:North Fork Solomon
+Portis                3.6    3.6    3.6    3.5    3.5    3.5    3.5
+:Solomon River
+Beloit                3.5    3.4    3.1    3.0    2.9    2.9    2.9
+:Republican River
+Cambridge             2.1    2.0    1.4    1.1    1.1    1.1    1.1
+:Beaver Creek
+Beaver City           3.0    3.0    3.0    3.0    3.0    3.0    3.0
+:Sappa Creek
+Beaver City           2.8    2.8    2.8    2.8    2.8    2.8    2.8
+Stamford              6.9    6.5    5.5    5.5    5.5    5.5    5.5
+:Prairie Dog Creek
+Woodruff              0.0    0.0    0.0    0.0    0.0    0.0    0.0
+
+These long-range probabilistic outlooks contain forecast values that
+are calculated using multiple season scenarios from 30 or more years
+of climatological data...including current conditions of the
+river...soil moisture...snow cover...and 30 to 90 day long-range
+outlooks of temperature and precipitation. By providing a range of
+probabilities...the level of risk associated with long-range planning
+decisions can be determined. These probabilistic forecasts are part
+of the National Weather Service's Advanced Hydrologic Prediction
+Service.
+
+Visit our web site weather.gov/gid for more weather and water
+information.
+
+The next outlook will be issued July 22nd.
+
+$$
+

@@ -1,0 +1,29 @@
+232 
+FGUS84 KBMX 091352
+RVSBMX
+ALC001-005-007-009-011-015-017-019-021-027-029-037-043-047-
+051-055-057-063-065-073-075-081-085-087-091-093-101-105-109-
+111-113-115-117-119-121-123-125-127-133-101350- 
+
+HYDROLOGIC STATEMENT 
+NATIONAL WEATHER SERVICE BIRMINGHAM AL
+852 AM CDT TUE JUN 9 2015
+
+...Daily River Forecast For North And Central Alabama...
+
+                            7 AM  Stage Forecast at 7 AM CST for:
+River Forecast Point  FS    OBSV  06/10  06/11  06/12  06/13  06/14
+
+Alabama River 
+Montgomery            35    22.4   21.9   22.0   22.0   21.8   21.7
+R.F. Henry Lock and D122    81.0   84.0   84.6   85.0   84.4   84.3
+
+Tombigbee River
+Bevill Lock and Dam  122   109.4  109.3  109.3  109.2  109.1  109.0
+Gainesville Lock and 101    74.2   74.5   74.5   74.3   74.3   74.3
+Demopolis Lock and Da 68    34.2   34.2   34.5   34.6   34.6   34.4
+
+Black Warrior River
+Oliver Lock and Dam  129    95.9   95.9   96.1   96.5   96.4   95.8
+
+$$

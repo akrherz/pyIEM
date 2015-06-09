@@ -1,0 +1,132 @@
+315 
+SRUS43 KTOP 091440
+RVATOP
+KSC003-013-027-029-031-041-045-059-061-085-087-111-117-127-131-139-
+143-149-157-161-177-197-201-092240-
+ 
+HYDROLOGIC SUMMARY
+NATIONAL WEATHER SERVICE TOPEKA KS
+940 AM CDT TUE JUN 9 2015
+
+
+DAILY RIVER STAGE ROUNDUP
+
+                   Flood                         24 Hour    
+LOCATION           Stage   Stage  Day Time       Change
+Big Blue River
+Blue Rapids          26     35.2  Tue 09 AM        -4.1
+Marysville           35     28.3  Tue 08 AM        -3.1
+
+
+Black Vermillion River
+Frankfort            19      7.3  Tue 08 AM        -2.1
+
+
+Little Blue River
+Hollenberg           19      7.2  Tue 09 AM        -4.1
+
+
+Chapman Creek
+Chapman 5 NW         19      5.3  Tue 09 AM        -0.6
+
+
+Dragoon Creek
+Burlingame 3 S       ND      8.3  Tue 09 AM        -0.1
+
+
+Kansas River
+Fort Riley           21      9.7  Tue 08 AM        -0.5
+Manhattan            18                                
+Wamego               19      7.8  Tue 08 AM         0.5
+Belvue 4 SE          20     10.0  Tue 08 AM         0.1
+Topeka               26     10.7  Tue 08 AM        -0.4
+Lecompton            17      7.8  Tue 08 AM         0.3
+Lawrence             18     14.5  Tue 09 AM         0.8
+
+
+Kings Creek
+Manhattan 5 S        ND      4.2  Tue 09 AM        -0.0
+
+
+Marais des Cygnes River
+Reading 3 N          19      2.9  Tue 09 AM        -0.2
+Pomona 2 S           20     15.4  Tue 08 AM         2.7
+Ottawa               31     16.8  Tue 08 AM         4.2
+
+
+Mill Creek in Wabaunsee County
+Paxico               21      4.4  Tue 09 AM        -0.3
+
+
+Mill Creek in Washington County
+Washington 1 ESE     18      4.7  Tue 09 AM        -3.9
+
+
+Neosho River
+Dunlap 1 SSW         32     16.6  Tue 08 AM        -0.2
+Americus 2 S         26      8.9  Tue 09 AM        -0.2
+Burlington           27     18.9  Tue 09 AM         2.2
+
+
+Pottawatomie Creek
+Scipio 1 SE          23      4.4  Tue 09 AM        -0.2
+Lane                 23      6.4  Tue 08 AM        -0.2
+
+
+Republican River
+Hardy Nebraska 1 S   11      3.5  Tue 08 AM        -1.1
+Concordia 1 N        15      7.4  Tue 09 AM        -1.6
+Clay Center 1 S      15     12.1  Tue 09 AM        -1.3
+
+
+Rock Creek
+near Dunlap          ND      9.8  Tue 09 AM        -0.2
+
+
+Saline River
+Tescott              25      5.5  Tue 08 AM        -0.7
+
+
+Shunganunga Creek
+Topeka Gage Blvd     15      5.7  Tue 09 AM            
+Topeka 21st Street   24      5.3  Tue 09 AM        -0.2
+
+
+Salt Creek in Ottawa County
+Ada 3 ESE            18      4.6  Tue 09 AM        -0.1
+
+
+Salt Creek in Osage County
+Lyndon 0.5 S         10      0.9  Tue 08 AM        -0.2
+
+
+Smoky Hill River
+Enterprise           26     11.3  Tue 09 AM        -3.8
+
+
+Soldier Creek
+Delia 3 E            26      8.7  Tue 08 AM        -0.7
+Topeka 4 NW          29      2.2  Tue 09 AM        -0.6
+
+
+Solomon River
+Simpson 1.5 S        24      7.5  Tue 09 AM        -0.2
+Niles                24      7.6  Tue 08 AM        -2.9
+
+
+Turkey Creek
+Seneca 8 NW          21      3.9  Tue 09 AM        -1.0
+
+
+Wakarusa River
+Wakarusa             15      4.1  Tue 09 AM        -1.2
+Richland 3 WSW       ND      5.5  Tue 08 AM        -2.3
+Lawrence 4 S         23     17.7  Tue 09 AM        10.0
+
+
+Wildcat Creek
+Keats                ND      7.8  Tue 09 AM        -0.2
+Manhattan Scenic Dr  14      3.4  Tue 09 AM        -0.2
+Manhattan Sethchilds ND      3.1  Tue 09 AM        -0.2
+
+$$

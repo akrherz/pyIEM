@@ -1,0 +1,118 @@
+622 
+FPUS65 KLKN 090916
+SFTLKN
+NVZ030-041-100100-
+
+TABULAR STATE FORECAST FOR NORTHERN AND CENTRAL NEVADA
+NATIONAL WEATHER SERVICE ELKO NV
+216 AM PDT TUE JUN 9 2015
+
+ROWS INCLUDE...
+   DAILY PREDOMINANT DAYTIME WEATHER 6AM-6PM
+   FORECAST TEMPERATURES...EARLY MORNING LOW/DAYTIME HIGH
+         PROBABILITY OF PRECIPITATION NIGHTTIME 6PM-6AM/DAYTIME 6AM-6PM
+          - INDICATES TEMPERATURES BELOW ZERO
+         MM INDICATES MISSING DATA
+
+
+   FCST     FCST     FCST     FCST     FCST     FCST     FCST     
+   TODAY    WED      THU      FRI      SAT      SUN      MON      
+   JUN 09   JUN 10   JUN 11   JUN 12   JUN 13   JUN 14   JUN 15   
+
+...HUMBOLDT COUNTY...
+   WINNEMUCCA
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /89    63/78    51/85    49/86    49/86    51/86    48/86    
+      /30    30/60    50/10    00/00    00/00    00/10    10/10   
+
+   MCDERMITT
+   PTCLDY   MOCLDY   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /88    60/80    51/84    48/85    48/84    49/83    48/84    
+      /30    30/40    20/10    00/00    00/00    00/10    10/10   
+
+...ELKO COUNTY...
+   ELKO
+   PTCLDY   TSTRMS   MOCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /86    58/76    54/80    49/84    49/85    51/88    49/86    
+      /10    30/70    70/40    10/00    00/00    00/10    10/10   
+
+   SPRING CREEK
+   PTCLDY   TSTRMS   MOCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /86    58/75    54/79    50/84    50/85    52/86    51/85    
+      /10    30/70    70/40    10/00    00/00    00/10    10/10   
+
+   CARLIN
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /87    59/76    56/79    52/82    52/84    53/85    52/85    
+      /10    30/70    70/40    10/00    00/00    00/10    10/10   
+
+   WELLS
+   PTCLDY   TSTRMS   MOCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /82    57/75    50/75    47/78    47/79    49/82    49/79    
+      /10    30/80    80/40    20/10    10/10    00/20    20/10   
+
+   JACKPOT
+   PTCLDY   TSTRMS   MOCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /83    58/76    53/74    49/77    48/76    49/77    48/79    
+      /20    30/50    50/30    10/10    10/00    00/10    10/10   
+
+   WILDHORSE
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /80    55/72    46/75    41/77    40/77    40/78    41/79    
+      /30    40/90    50/30    10/00    00/10    10/10    10/10   
+
+   LAMOILLE CANYON (7800 FEET)
+   PTCLDY   TSTRMS   TSTRMS   SUNNY    SUNNY    PTCLDY   PTCLDY   
+     /70    53/62    47/63    46/68    46/70    49/73    48/70    
+      /10    30/100   80/50    20/10    10/10    10/20    20/30   
+
+   WEST WENDOVER
+   SUNNY    TSTRMS   TSTRMS   PTCLDY   PTCLDY   PTCLDY   SUNNY    
+     /87    66/81    65/79    63/84    64/85    64/85    64/86    
+      /10    10/60    60/50    30/10    10/10    10/10    10/10   
+
+...WHITE PINE COUNTY...
+   ELY
+   PTCLDY   TSTRMS   TSTRMS   PTCLDY   PTCLDY   SUNNY    SUNNY    
+     /82    56/73    51/72    49/78    49/82    50/82    50/83    
+      /20    20/60    60/50    30/20    20/10    10/10    10/10   
+
+   RUTH
+   PTCLDY   TSTRMS   TSTRMS   PTCLDY   PTCLDY   SUNNY    SUNNY    
+     /78    52/70    45/69    44/75    45/80    46/80    46/79    
+      /20    20/70    70/50    30/20    20/10    10/10    10/10   
+
+   MCGILL
+   PTCLDY   TSTRMS   TSTRMS   PTCLDY   PTCLDY   SUNNY    SUNNY    
+     /81    56/72    49/71    47/77    48/81    50/81    49/81    
+      /20    20/70    70/50    30/20    20/10    10/10    10/10   
+
+   GREAT BASIN NATIONAL PARK
+   PTCLDY   TSTRMS   TSTRMS   PTCLDY   PTCLDY   SUNNY    SUNNY    
+     /75    55/69    50/69    48/72    51/78    53/79    52/79    
+      /20    30/80    70/60    30/20    20/10    10/10    10/10   
+
+...LANDER AND EUREKA COUNTIES...
+   BATTLE MOUNTAIN
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /90    63/78    56/86    54/87    55/88    55/90    55/89    
+      /20    30/80    80/20    10/00    00/00    00/10    10/10   
+
+   AUSTIN
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /80    56/66    50/72    55/77    55/80    55/81    54/80    
+      /20    40/90    70/30    10/10    10/10    10/20    20/10   
+
+   EUREKA
+   PTCLDY   TSTRMS   MOCLDY   SUNNY    SUNNY    PTCLDY   SUNNY    
+     /84    57/73    48/77    47/83    48/87    51/86    49/87    
+      /10    30/80    70/40    20/10    10/10    10/20    20/10   
+
+...NORTHERN NYE COUNTY...
+   TONOPAH
+   PTCLDY   TSTRMS   PTCLDY   SUNNY    SUNNY    SUNNY    SUNNY    
+     /84    59/76    54/83    57/88    56/89    61/90    59/88    
+      /20    30/60    60/20    10/10    10/10    10/10    10/10   
+
+
+$$

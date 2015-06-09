@@ -1,0 +1,103 @@
+160 
+CDUS43 KFGF 090652
+CLIFGF
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE EASTERN NORTH DAKOTA/GRAND FORKS            
+151 AM CDT TUE JUN 9 2015
+
+
+................................... 
+
+...THE GRAND FORKS UNIV. (NWS) ND CLIMATE SUMMARY FOR JUNE 8 2015...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1890 TO 2015
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         86        MM  94    1970  75     11       73        
+  MINIMUM         54        MM  34    1941  52      2       47        
+                                      1938                          
+  AVERAGE         70                        63      7       60      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.12          2.69 1984   0.12   0.00      T      
+  MONTH TO DATE    1.37                      0.96   0.41     2.39    
+  SINCE JUN 1      1.37                      0.96   0.41     2.39    
+  SINCE JAN 1      7.27                      7.01   0.26     9.38    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0           0.0    MM   0.0    0.0      0.0     
+  MONTH TO DATE    0.0                       0.0    0.0      0.0     
+  SINCE JUN 1      0.0                       0.0    0.0      0.0     
+  SINCE JUL 1     19.3                      43.4  -24.1     60.3     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         4     -4        5       
+  MONTH TO DATE   16                        36    -20       20       
+  SINCE JUN 1     16                        36    -20       20       
+  SINCE JUL 1   8815                      9161   -346    10391       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        5                         2      3        0       
+  MONTH TO DATE   13                        14     -1       11       
+  SINCE JUN 1     13                        14     -1       11       
+  SINCE JAN 1     24                        40    -16       66       
+..................................................................
+
+
+WIND (MPH)                                                           
+  RESULTANT WIND SPEED  MM   RESULTANT WIND DIRECTION  MM            
+  HIGHEST WIND SPEED    MM   HIGHEST WIND DIRECTION    MM            
+  HIGHEST GUST SPEED    MM   HIGHEST GUST DIRECTION    MM            
+  AVERAGE WIND SPEED    MM                                           
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER  MM                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    MM                                                       
+ LOWEST     MM                                                       
+ AVERAGE    MM                                                       
+
+..........................................................
+
+                                                                     
+THE GRAND FORKS UNIV. (NWS) ND CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   75        95      2000                    
+                                             1976                    
+ MINIMUM TEMPERATURE (F)   52        32      1915                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+JUNE  9 2015..........SUNRISE   530 AM CDT   SUNSET   926 PM CDT   
+JUNE 10 2015..........SUNRISE   529 AM CDT   SUNSET   927 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

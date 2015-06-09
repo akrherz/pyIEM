@@ -1,0 +1,107 @@
+097 
+SXUS53 KOAX 091600
+HYDOAX
+
+EASTERN NEBRASKA/WESTERN IOWA TEMPERATURE/PRECIPITATION REPORTS
+NATIONAL WEATHER SERVICE OMAHA/VALLEY NE
+1019 AM CDT TUE JUN 9 2015
+
+DATA FROM INDIVIDUAL COOPERATIVE (COOP) OBSERVERS IS FOR THE 24 HOURS
+ENDING AROUND 7 AM LOCAL TIME.  THE MAXIMUM TEMPERATURE FROM AIRPORTS
+AND THE NWS IS FOR THE PERIOD FROM MIDNIGHT TO MIDNIGHT STANDARD
+TIME. THE MINIMUM TEMPERATURE FROM AIRPORTS AT ASOS (AUTOMATED
+SURFACE OBSERVING SYSTEM) SITES, THE NWS, AND FROM AIRPORTS AT AWOS
+(AUTOMATED WEATHER OBSERVING SYSTEM) SITES IS FOR THE 14 HOURS ENDING
+AROUND 8 AM STANDARD TIME. PRECIPITATION MEASUREMENTS AT THE AIRPORTS
+ARE TAKEN BY HEATED AUTOMATED RAIN GAGES AND ARE AVAILABLE PRIMARILY
+FROM MARCH THROUGH NOVEMBER. THESE AIRPORT PRECIPITATION MEASUREMENTS
+ARE FOR THE 24 HOURS ENDING AROUND 6 AM STANDARD TIME.  THIS REPORT
+IS COMPILED BY AN AUTOMATED COMPUTER PROGRAM. THE DATA IS ONLY
+PARTIALLY QUALITY-CONTROLLED, SO ERRORS MAY OCCUR. DATA IS PROVIDED
+BY AUTOMATED OBSERVING SITES AND VOLUNTEER COOP WEATHER OBSERVERS.
+  
+                                                           NEW  SNOW
+                                          MAX  MIN  PCPN. SNOW DEPTH
+-ID-   -COUNTY-       -LOCATION-         TEMP TEMP  (IN.) (IN.) (IN.)
+                                       
+       -EASTERN NEBRASKA (ASOS/AWOS)-
+BVN    BOONE          ALBION AWOS          NA   NA    58 0.00     M
+BIE    GAGE           BEATRICE AWOS        NA   NA    62 0.00     M
+BTA    WASHINGTON     BLAIR AWOS           NA   NA    63 0.00     M
+OLU    PLATTE         COLUMBUS AWOS        NA   NA    61 0.00     M
+FNB    RICHARDSON     FALLS CITY ASOS      NA   NA    62 0.00     M
+FET    DODGE          FREMONT AWOS         NA   NA    62 0.00     M
+LNK    LANCASTER      LINCOLN ARPT ASOS    NA   NA    61 0.00   0.0
+AFK    OTOE           NEBRASKA CITY AWOS   NA   NA    64 0.00     M
+OFK    MADISON        NORFOLK ASOS         NA   NA    62 0.00   0.0
+OFF    SARPY          OFFUTT AFB           NA   NA    57 0.00   0.0
+OMA    DOUGLAS        OMAHA EPPLEY ASOS    NA   NA    64 0.00   0.0
+MLE    DOUGLAS        MILLARD AWOS         NA   NA    61 0.00     M
+PMV    CASS           PLATTSMOUTH AWOS     NA   NA    68 0.00     M
+TQE    BURT           TEKAMAH ASOS         NA   NA    61 0.00     M
+OAX    DOUGLAS        VALLEY NWS           NA   NA    65 0.00   0.0
+LCG    WAYNE          WAYNE AWOS           NA   NA    59 0.00     M
+          
+          -SOUTHWEST IOWA (AWOS)-
+ICL    PAGE           CLARINDA AWOS        NA   NA    59 0.00     M
+CBF    POTTAWATTAMIE  COUNCIL BLUFFS AWOS  NA   NA    66 0.00     M
+HNR    SHELBY         HARLAN AWOS          NA   NA    59 0.00     M
+RDK    MONTGOMERY     RED OAK AWOS         NA   NA    59 0.00     M
+SDA    FREMONT        SHENANDOAH AWOS      NA   NA    61 0.00     M
+          
+          -EASTERN NEBRASKA (COOP)-
+OAXN1  DOUGLAS        VALLEY NWS           NA   NA    65 0.00   0.0
+ALBN1  BOONE          ALBION               NA   NA    88   62  0.00
+AUBN1  NEMAHA         AUBURN 5 ESE         NA   NA    89   59  0.00
+AHLN1  SAUNDERS       ASHLAND              NA   NA    88   59  0.00
+CTEN1  SALINE         CRETE                NA   NA    86   64  0.00
+DVDN1  BUTLER         DAVID CITY           NA   NA    86   58  0.00
+ELGN1  ANTELOPE       ELGIN                NA   NA    85   62  0.00
+FCYN1  RICHARDSON     FALLS CITY 4 NE      NA   NA    88   63  0.00
+FABN1  JEFFERSON      FAIRBURY             NA   NA    88   59  0.00
+FCLN1  WASHINGTON     FORT CALHOUN         NA   NA    86   63  0.00
+FMTN1  DODGE          FREMONT              NA   NA    87   61  0.00
+FNDN1  SALINE         FRIEND 3 E           NA   NA    86   64  0.00
+GRAN1  SARPY          GRETNA 4 NE          NA   NA    86   63  0.00
+MEDN1  SAUNDERS       MEAD 6 S             NA   NA    87   61  0.00
+OKDN1  ANTELOPE       OAKDALE              NA   NA    85   58  0.00
+PAWN1  PAWNEE         PAWNEE CITY          NA   NA    85   59  0.00
+RYMN1  LANCASTER      RAYMOND 2 NE         NA   NA    88   63  0.00
+SEWN1  SEWARD         SEWARD               NA   NA    86   60  0.00
+SPNN1  SARPY          SPRINGFIELD 7 E      NA   NA    85   63  0.00
+TBLN1  PAWNEE         TABLE ROCK 4 N       NA   NA    86   61  0.00
+TCMN1  JOHNSON        TECUMSEH             NA   NA    87   58  0.00
+VDLN1  KNOX           VERDEL 6 SSW         NA   NA    89   59  0.00
+VRGN1  GAGE           VIRGINIA 4 SSE       NA   NA    86   61  0.00
+WYNN1  WAYNE          WAYNE                NA   NA    87   61  0.00
+WPTN1  CUMING         WEST POINT           NA   NA    85   61  0.00
+BRCN1  GAGE           BEATRICE 1N          NA   NA  0.00  0.0     0
+BNTN1  DOUGLAS        BENNINGTON 3WSW      NA   NA  0.00  0.0     0
+MALN1  LANCASTER      MALCOLM              NA   NA  0.00    M     M
+NLHN1  ANTELOPE       NELIGH               NA   NA  0.00    M     M
+PPLN1  SARPY          PAPILLION            NA   NA  0.00    M     M
+PIRN1  PIERCE         PIERCE               NA   NA  0.00    M     M
+PRGN1  SAUNDERS       PRAGUE               NA   NA  0.00    M     M
+ROYN1  ANTELOPE       ROYAL 2 SE           NA   NA  0.00  0.0     0
+SLMN1  RICHARDSON     SALEM 5SW            NA   NA  0.00  0.0     0
+SBTN1  RICHARDSON     SHUBERT              NA   NA  0.00  0.0     0
+UTCN1  SEWARD         UTICA                NA   NA  0.00    M     M
+WSTN1  SALINE         WESTERN              NA   NA  0.00    M     M
+                    
+          -SOUTHWEST IOWA (COOP)-
+CSAI4  MONONA         CASTANA              NA   NA    85   64  0.00
+CLDI4  PAGE           CLARINDA             NA   NA    86   59  0.00
+GLNI4  MILLS          GLENWOOD             NA   NA    87   59  0.00
+LSXI4  HARRISON       LITTLE SIOUX 2 NW    NA   NA    88   58  0.00
+LOGI4  HARRISON       LOGAN                NA   NA    87   58  0.00
+OAKI4  POTTAWATTAMIE  OAKLAND              NA   NA    84   61  0.00
+ROKI4  MONTGOMERY     RED OAK              NA   NA    88   59  0.00
+SDHI4  PAGE           SHENANDOAH           NA   NA    88   61  0.00
+HSII4  MILLS          HASTINGS             NA   NA  0.00  0.0     0
+KENI4  MONONA         KENNEBEC             NA   NA  0.00    M     M
+RANI4  FREMONT        RANDOLPH             NA   NA  0.00    M     M
+UNDI4  POTTAWATTAMIE  UNDERWOOD            NA   NA  0.00  0.0     0
+          
+$$
+
+NWS OMAHA/VALLEY

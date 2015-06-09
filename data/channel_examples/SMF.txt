@@ -1,0 +1,324 @@
+271 
+FNUS72 KMLB 081927
+SMFMLB
+
+EAST CENTRAL FLORIDA DISPERSION FORECAST UPDATE
+NATIONAL WEATHER SERVICE MELBOURNE FL
+327 PM EDT MON JUN 8 2015
+
+FLZ044-090900-
+NORTHERN LAKE COUNTY-
+INCLUDING THE CITIES OF...LEESBURG...EUSTIS...LADY LAKE...
+TAVARES...MOUNT DORA...THE VILLAGES
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  71           81           87           88           
+MIXING HGT (FT)       3200         1300         900          500          
+WIND/(20 FT MPH)      SE  5        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 12        SE 10        S  8         S  9         
+DISPERSION INDEX      7            6            4            4            
+LVORI                 3            5            6            6            
+                                                                          
+MAX LVORI                                       6            6            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ041-090900-
+INLAND VOLUSIA COUNTY-
+INCLUDING THE CITIES OF...DELTONA...DE LAND
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           MCLEAR       PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  75           84           90           90           
+MIXING HGT (FT)       3000         1900         800          400          
+WIND/(20 FT MPH)      LGT/VAR      LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 12        SE 10        S  7         S  8         
+DISPERSION INDEX      5            5            3            4            
+LVORI                 4            5            6            6            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ141-090900-
+COASTAL VOLUSIA COUNTY-
+INCLUDING THE CITIES OF...DAYTONA BEACH...PORT ORANGE...
+ORMOND BEACH...EDGEWATER
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           MCLEAR       PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  77           86           88           89           
+MIXING HGT (FT)       2600         1900         900          400          
+WIND/(20 FT MPH)      SE  5        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 13        SE 10        S  7         S  9         
+DISPERSION INDEX      6            5            3            4            
+LVORI                 4            6            6            8            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ144-090900-
+SOUTHERN LAKE COUNTY-
+INCLUDING THE CITIES OF...CLERMONT...MINNEOLA...MASCOTTE...
+GROVELAND
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  68           78           84           87           
+MIXING HGT (FT)       3600         1000         800          600          
+WIND/(20 FT MPH)      SE  6        SE  5        S  5         LGT/VAR      
+TRANSPORT WND (MPH)   SE 10        SE 10        S  9         S  9         
+DISPERSION INDEX      13           7            6            4            
+LVORI                 3            4            5            6            
+                                                                          
+MAX LVORI                                       6            6            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ045-090900-
+ORANGE-
+INCLUDING THE CITIES OF...ORLANDO
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  72           83           87           89           
+MIXING HGT (FT)       2900         1000         400          300          
+WIND/(20 FT MPH)      SE  8        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 13        SE 10        S  8         S  8         
+DISPERSION INDEX      11           6            4            4            
+LVORI                 4            6            6            8            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ046-090900-
+SEMINOLE-
+INCLUDING THE CITIES OF...ALTAMONTE SPRINGS...SANFORD...
+WINTER SPRINGS...OVIEDO...CASSELBERRY...LONGWOOD...GOLDENROD
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           MCLEAR       PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  75           84           87           88           
+MIXING HGT (FT)       3200         1900         1100         600          
+WIND/(20 FT MPH)      SE  8        SE  5        LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 12        SE 10        S  7         S  8         
+DISPERSION INDEX      8            5            3            4            
+LVORI                 4            6            6            6            
+                                                                          
+MAX LVORI                                       6            6            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ147-090900-
+NORTHERN BREVARD COUNTY-
+INCLUDING THE CITIES OF...TITUSVILLE...COCOA
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        MCLEAR       
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  80           88           91           95           
+MIXING HGT (FT)       2700         1400         700          400          
+WIND/(20 FT MPH)      SE  6        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 13        SE 10        S  7         S  7         
+DISPERSION INDEX      7            5            3            3            
+LVORI                 5            6            6            8            
+                                                                          
+MAX LVORI                                       9            9            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ053-090900-
+OSCEOLA-
+INCLUDING THE CITIES OF...KISSIMMEE...YEEHAW JUNCTION
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  71           81           87           91           
+MIXING HGT (FT)       2100         400          300          300          
+WIND/(20 FT MPH)      SE  6        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 13        SE 10        S  7         S  7         
+DISPERSION INDEX      12           5            3            3            
+LVORI                 3            6            6            8            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ047-090900-
+SOUTHERN BREVARD COUNTY-
+INCLUDING THE CITIES OF...PALM BAY...MELBOURNE...ROCKLEDGE
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        MCLEAR       
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  70           78           87           91           
+MIXING HGT (FT)       2900         800          400          300          
+WIND/(20 FT MPH)      SE  9        SE  5        LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 13        SE 10        S  7         S  6         
+DISPERSION INDEX      8            5            3            3            
+LVORI                 4            5            6            8            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ058-090900-
+OKEECHOBEE-
+INCLUDING THE CITIES OF...OKEECHOBEE...TAYLOR CREEK
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        PCLDY        
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  73           83           90           89           
+MIXING HGT (FT)       2000         400          300          300          
+WIND/(20 FT MPH)      SE  8        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 14        SE 10        S  6         S  5         
+DISPERSION INDEX      18           7            3            2            
+LVORI                 3            5            7            7            
+                                                                          
+MAX LVORI                                       7            7            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ054-090900-
+INDIAN RIVER-
+INCLUDING THE CITIES OF...VERO BEACH SOUTH...VERO BEACH...GIFFORD
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        MCLEAR       
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  71           81           89           91           
+MIXING HGT (FT)       3000         900          400          300          
+WIND/(20 FT MPH)      SE  9        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 14        SE 10        S  6         S  5         
+DISPERSION INDEX      9            5            3            2            
+LVORI                 3            5            6            7            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ059-090900-
+ST. LUCIE-
+INCLUDING THE CITIES OF...FORT PIERCE...LAKEWOOD PARK
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        MCLEAR       
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  74           85           92           90           
+MIXING HGT (FT)       3100         500          300          300          
+WIND/(20 FT MPH)      SE  8        LGT/VAR      LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 14        SE 10        S  5         S  3         
+DISPERSION INDEX      16           6            2            2            
+LVORI                 4            6            8            7            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
+
+FLZ064-090900-
+MARTIN-
+INCLUDING THE CITIES OF...PALM CITY...STUART...HOBE SOUND...
+JENSEN BEACH...PORT SALERNO...INDIANTOWN
+327 PM EDT MON JUN 8 2015
+
+                                                                          
+                      TONIGHT  
+                      9PM          MIDNIGHT     3AM          6AM  
+CLOUD COVER           PCLDY        PCLDY        PCLDY        MCLEAR       
+CEILING               NO CIG       NO CIG       NO CIG       NO CIG       
+RH %                  75           81           87           87           
+MIXING HGT (FT)       3300         500          300          300          
+WIND/(20 FT MPH)      SE  9        SE  5        LGT/VAR      LGT/VAR      
+TRANSPORT WND (MPH)   SE 14        SE  9        S  3         S  2         
+DISPERSION INDEX      19           6            2            1            
+LVORI                 3            4            7            7            
+                                                                          
+MAX LVORI                                       8            8            
+
+REMARKS...MAXIMUM LVORI VALUES ARE BETWEEN MIDNIGHT AND 7 AM.
+
+ 
+$$
