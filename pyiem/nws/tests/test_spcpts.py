@@ -6,14 +6,23 @@ import os
 from pyiem.nws import spcpts
 from pyiem.nws import product
 
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
 
+
 class TestObservation(unittest.TestCase):
-    
+
+    def test_150612_ptsdy1_3(self):
+        """We got an error with this, so we shall test"""
+        tp = product.TextProduct(get_file('PTSDY1_3.txt'))
+        spc = spcpts.SPCPTS(tp)
+        outlook = spc.get_outlook('CATEGORICAL', 'SLGT')
+        self.assertAlmostEqual(outlook.geometry.area, 53.94, 2)
+
     def test_141022_newcats(self):
         """ Make sure we can parse the new categories """
         tp = product.TextProduct(get_file('PTSDY1_new.txt'))

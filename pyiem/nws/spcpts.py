@@ -50,18 +50,19 @@ def get_segments_from_text(text):
 
     return segments
 
+
 def str2multipolygon(s):
     """ Convert string PTS data into a polygon
     """
     segments = get_segments_from_text(s)
-    
+
     # Simple case whereby the segment is its own circle, thank goodness
     if (len(segments) == 1 and 
         segments[0][0][0] == segments[0][-1][0] and
         segments[0][0][1] == segments[0][-1][1]):
         print 'Single closed polygon found, done and done'
         return MultiPolygon([Polygon( segments[0] )])
-    
+
     # We have some work to do
     load_conus_data()
 
@@ -74,7 +75,7 @@ def str2multipolygon(s):
                 i+1, len(segments), len(segment), segment[0][0], segment[0][1], 
                                 segment[-1][0],
                                         segment[-1][1])
-        if segment[0] == segment[-1]:
+        if segment[0] == segment[-1] and len(segment) > 2:
             print '     segment %s is closed polygon!' % (i,)
             lr = LinearRing( LineString(segment))
             if not lr.is_ccw:
@@ -297,10 +298,9 @@ class SPCPTS(object):
                 if not point_data.has_key(threshold):
                     point_data[threshold] = ""
                 point_data[threshold] += line.replace(threshold, " ")
-                
-            for threshold in point_data.keys():
-                print "==== Category: '%s' Threshold; '%s' =====" % (category, 
-                                                                    threshold)
-                mp = str2multipolygon( point_data[threshold]  )
-                self.outlooks.append( SPCOutlook(category, threshold, mp) ) 
-                
+
+            for threshold in point_data:
+                print(("==== Category: '%s' Threshold; '%s' ====="
+                       ) % (category, threshold))
+                mp = str2multipolygon(point_data[threshold])
+                self.outlooks.append(SPCOutlook(category, threshold, mp))
