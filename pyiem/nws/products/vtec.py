@@ -177,10 +177,10 @@ class VTECProduct(TextProduct):
             if bts is None or vtec.action in ["EXB",]:
                 bts = self.valid
             # If this product has no expiration time, just set it ahead
-            # 24 hours in time...
+            # 6 days in time...
             ets = vtec.endts
             if vtec.endts is None:
-                ets = bts + datetime.timedelta(hours=72)
+                ets = bts + datetime.timedelta(hours=144)
 
             # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
@@ -258,9 +258,9 @@ class VTECProduct(TextProduct):
             # These are terminate actions, so we act accordingly
             if vtec.action in ['CAN', 'UPG']:
                 ets = self.valid
-            # If we are extending into infinity, lets call this +72 HRS
+            # If we are extending into infinity, lets call this +144 HRS
             if vtec.action == 'EXT' and vtec.endts is None:
-                ets = self.valid + datetime.timedelta(hours=72)
+                ets = self.valid + datetime.timedelta(hours=144)
 
             txn.execute("""
                 UPDATE """+ warning_table +""" SET 
@@ -288,7 +288,7 @@ class VTECProduct(TextProduct):
             # These are no-ops, just updates
             ets = vtec.endts
             if vtec.endts is None:
-                ets = self.valid + datetime.timedelta(hours=72)
+                ets = self.valid + datetime.timedelta(hours=144)
 
             # Offices have 1 hour to expire something :), actually 30 minutes
             txn.execute("""
