@@ -4,27 +4,29 @@ import re
 
 from pyiem.nws.product import TextProduct
 
+
 class NHCException(Exception):
     """ Exception """
     pass
 
-class NHCProduct( TextProduct ):
+
+class NHCProduct(TextProduct):
     """
     Represents a NHC
     """
-    
-    def __init__(self, text, utcnow=None, ugc_provider=None, 
+
+    def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
 
     def get_jabbers(self, uri, uri2=None):
         """ Get the jabber variant of this message """
-        myurl = "%s?pid=%s" % (uri, self.get_product_id() )
-        
+        myurl = "%s?pid=%s" % (uri, self.get_product_id())
+
         tokens = re.findall("(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) (DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) NUMBER\s+([0-9A-Z]+)", self.unixtext )
         if len(tokens) == 0:
-            raise NHCException("Count not parse header from NHC Prodct!")
+            raise NHCException("Could not parse header from NHC Prodct!")
 
         classification = tokens[0][0]
         name = tokens[0][1]
@@ -57,9 +59,9 @@ class NHCProduct( TextProduct ):
                 headline = headline[:headline.find(",")]
                 if (144 - len(tformat % tdict)) > len(headline):
                     tdict['headline'] = headline
-    
+
         tweet = tformat % tdict
-    
+
         return [[mess.replace("#","") % tdict, 
                 htmlmess.replace("#","") % tdict, 
             {
@@ -69,7 +71,6 @@ class NHCProduct( TextProduct ):
             }],]
 
 
-        
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Helper function """
-    return NHCProduct( text, utcnow, ugc_provider, nwsli_provider )
+    return NHCProduct(text, utcnow, ugc_provider, nwsli_provider)
