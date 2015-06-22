@@ -16,6 +16,13 @@ def get_file(name):
 
 class TestObservation(unittest.TestCase):
 
+    def test_150622_ptsdy1(self):
+        """PTSDY1_nogeom.txt """
+        tp = product.TextProduct(get_file('PTSDY1_nogeom.txt'))
+        spc = spcpts.SPCPTS(tp)
+        outlook = spc.get_outlook('CATEGORICAL', 'SLGT')
+        self.assertAlmostEqual(outlook.geometry.area, 95.88, 2)
+
     def test_150612_ptsdy1_3(self):
         """We got an error with this, so we shall test"""
         tp = product.TextProduct(get_file('PTSDY1_3.txt'))

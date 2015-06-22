@@ -57,73 +57,72 @@ def str2multipolygon(s):
     segments = get_segments_from_text(s)
 
     # Simple case whereby the segment is its own circle, thank goodness
-    if (len(segments) == 1 and 
-        segments[0][0][0] == segments[0][-1][0] and
-        segments[0][0][1] == segments[0][-1][1]):
+    if (len(segments) == 1 and
+            segments[0][0][0] == segments[0][-1][0] and
+            segments[0][0][1] == segments[0][-1][1]):
         print 'Single closed polygon found, done and done'
-        return MultiPolygon([Polygon( segments[0] )])
+        return MultiPolygon([Polygon(segments[0])])
 
     # We have some work to do
     load_conus_data()
 
     # We start with just a conus polygon and we go from here, down the rabbit
     # hole
-    polys = [copy.deepcopy(CONUSPOLY),]
+    polys = [copy.deepcopy(CONUSPOLY), ]
 
     for i, segment in enumerate(segments):
-        print 'Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)' % (
-                i+1, len(segments), len(segment), segment[0][0], segment[0][1], 
-                                segment[-1][0],
-                                        segment[-1][1])
+        print(('Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)'
+               ) % (i+1, len(segments), len(segment), segment[0][0],
+                    segment[0][1], segment[-1][0], segment[-1][1]))
         if segment[0] == segment[-1] and len(segment) > 2:
             print '     segment %s is closed polygon!' % (i,)
-            lr = LinearRing( LineString(segment))
+            lr = LinearRing(LineString(segment))
             if not lr.is_ccw:
                 print '     polygon is counter-clockwise (exterior)'
-                polys.insert(0, Polygon(segment) )
+                polys.insert(0, Polygon(segment))
                 continue
             print '     polygon is clockwise (interior), compute to which poly'
             found = False
             for j, poly in enumerate(polys):
                 if poly.intersection(lr):
                     interiors = [l for l in polys[j]._interiors]
-                    interiors.append( lr )
+                    interiors.append(lr)
                     newp = Polygon(polys[j].exterior, interiors)
                     if newp.is_valid:
                         polys[j] = newp
                         print ('     polygon is interior to polys #%s, '
-                           +'area now %.2f') % (j, polys[j].area)
+                               'area now %.2f') % (j, polys[j].area)
                     else:
                         raise Exception(('Adding interior polygon resulted '
-                                        +'in an invalid geometry, aborting'))
+                                         'in an invalid geometry, aborting'))
                     found = True
                     break
             if not found:
                 print '      ERROR: did not find intersection!'
             continue
-    
+
         # Attempt to 'clean' this string against the CONUS Polygon
         ls = LineString(segment)
         if ls.is_valid:
             newls = ls.intersection(CONUSPOLY)
             if newls.is_valid:
                 if newls.geom_type == 'MultiLineString':
-                    print '     intersection with conuspoly found %s segments' % (
-                                                len(newls.geoms),)
+                    print(('     intersection with conuspoly found %s segments'
+                           ) % (len(newls.geoms),))
                     maxlength = 0
                     for geom in newls.geoms:
                         if geom.length > maxlength:
                             newls2 = geom
                             maxlength = geom.length
                     newls = newls2
-                x,y = newls.xy
-                segment = zip(x,y)
+                (x, y) = newls.xy
+                segment = zip(x, y)
             else:
                 print '     Intersection landed here? %s' % (newls.is_valid,)
         else:
             print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
 
-        line = np.array( segment )
+        line = np.array(segment)
 
         # Figure out which polygon this line intersects
         found = False
@@ -131,44 +130,49 @@ def str2multipolygon(s):
             if not poly.intersection(ls):
                 continue
             found = True
-            # Compute the intersection points of this segment and what 
-            # is left of the pie                    
-            x,y = poly.exterior.xy
-            pie = np.array( zip(x,y) )
-            distance = ((pie[:,0] - line[0,0])**2 + 
-                        (pie[:,1] - line[0,1])**2)**.5
-            idx1 = np.argmin(distance) -1
-            distance = ((pie[:,0] - line[-1,0])**2 + 
-                        (pie[:,1] - line[-1,1])**2)**.5
-            idx2 = np.argmin(distance) +1
+            for q in range(5):
+                # Compute the intersection points of this segment and what
+                # is left of the pie
+                (x, y) = poly.exterior.xy
+                pie = np.array(zip(x, y))
+                distance = ((pie[:, 0] - line[q, 0])**2 +
+                            (pie[:, 1] - line[q, 1])**2)**.5
+                idx1 = np.argmin(distance) - 1
+                distance = ((pie[:, 0] - line[0 - (q+1), 0])**2 +
+                            (pie[:, 1] - line[0 - (q+1), 1])**2)**.5
+                idx2 = np.argmin(distance) + 1
 
-            sz = np.shape(pie)[0]
-            print '     computed intersections idx1: %s/%s idx2: %s/%s' % (idx1,
-                                                            sz, idx2, sz)
-            if idx1 < idx2:
-                print '     CASE 1: idx1:%s idx2:%s Crosses start finish' % (
-                    idx1, idx2)
-                # We we piece the puzzle together!
-                line = np.concatenate([line, pie[idx2:]])
-                line = np.concatenate([line, pie[:idx1]])
-                pie = line
-                polys[j] = Polygon(pie, polys[j].interiors)
-                print '     replacing polygon index: %s area: %.2f' % (j, 
-                                                            polys[j].area)
-            elif idx1 > idx2:
-                print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
-                line = np.concatenate([line, pie[idx2:idx1]])
-                polys.append( Polygon(line))
-                print '     + adding polygon'
-            else:
-                raise Exception('this should not happen, idx1 == idx2!')
+                sz = np.shape(pie)[0]
+                print(('     Q:%s computed intersections '
+                       'idx1: %s/%s idx2: %s/%s'
+                       ) % (q, idx1, sz, idx2, sz))
+                if idx1 < idx2:
+                    print(('     CASE 1: idx1:%s idx2:%s Crosses start finish'
+                           ) % (idx1, idx2))
+                    # We we piece the puzzle together!
+                    tmpline = np.concatenate([line, pie[idx2:]])
+                    tmpline = np.concatenate([tmpline, pie[:idx1]])
+                    if Polygon(tmpline, polys[j].interiors).is_valid:
+                        pie = tmpline
+                        polys[j] = Polygon(pie, polys[j].interiors)
+                        print(('     replacing polygon index: %s area: %.2f'
+                               ) % (j, polys[j].area))
+                    else:
+                        continue
+                elif idx1 > idx2:
+                    print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
+                    tmpline = np.concatenate([line, pie[idx2:idx1]])
+                    polys.append(Polygon(tmpline))
+                    print '     + adding polygon'
+                else:
+                    raise Exception('this should not happen, idx1 == idx2!')
 
-            break
-        
+                break
+
         if not found:
-            print '     segment did not intersect' 
+            print '     segment did not intersect'
 
-    res = []    
+    res = []
     print 'Resulted in len(polys): %s, now quality controlling' % (len(polys),)
     for i, p in enumerate(polys):
         if not p.is_valid:
@@ -178,10 +182,11 @@ def str2multipolygon(s):
             print '     polygon %s is just CONUS, skipping' % (i,)
             continue
         print '     polygon: %s has area: %s' % (i, p.area)
-        res.append( p )
+        res.append(p)
     if len(res) == 0:
         raise Exception("Processed no geometries, this is a bug!")
     return MultiPolygon(res)
+
 
 class SPCOutlook(object):
 
