@@ -422,7 +422,10 @@ class MapPlot(object):
                                      ticks=None,
                                      spacing='uniform',
                                      orientation='vertical')
+        clevstride = int(kwargs.get('clevstride', 1))
         for i, (lev, lbl) in enumerate(zip(clevs, clevlabels)):
+            if i % clevstride != 0:
+                continue
             y = float(i) / (len(clevs) -1)
             y2 = float(i+1) / (len(clevs) -1)
             dy = (y2-y)/2
