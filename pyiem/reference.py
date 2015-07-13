@@ -349,6 +349,10 @@ centertext = {
 }
 
 prodDefinitions = {
+    'FFA': 'Areal Flood Watch (FFA)',
+    'MWW': 'Marine Weather Warning (MWW)',
+    'EWW': 'Extreme Wind Warning (EWW)',
+    'CFW': 'Coastal Hazzard Message (CFW)',
     'TOR': 'Tornado Warning (TOR)',
     'SVR': 'Severe Thunderstorm Warning (SVR)',
     'SVS': 'Severe Weather Statement (SVS)',
