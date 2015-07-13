@@ -1,0 +1,46 @@
+926 
+WGUS83 KICT 271310
+FLSICT
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE WICHITA KS 
+810 AM CDT WED MAY 27 2015
+
+...The flood warning continues for the following river in Kansas...
+ 
+  Neosho River Near Oswego affecting Cherokee and Labette Counties.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Do not drive into flooded areas or go around barricades. Shallow 
+flowing water can wash a car from the roadway.
+
+&&
+
+KSC021-099-280310-
+/O.EXT.KICT.FL.W.0019.000000T0000Z-150529T1615Z/
+/OSWK1.2.ER.150524T2019Z.150526T1200Z.150528T2215Z.NO/
+810 AM CDT WED MAY 27 2015
+
+The Flood Warning continues for
+  The Neosho River Near Oswego.
+* Until Friday morning.
+* At  7:00 AM Wednesday the stage was 21.0 feet.
+* Flood stage is 17.0 feet.
+* Moderate flooding is occurring and Moderate flooding is forecast.
+* Impact...At 21.0 feet...Xavier Road leading north from the river 
+  gage bridge floods. Also 13000 Road next to the left river bank 
+  becomes affected by flood waters. 
+
+&&
+
+
+                  FLD    OBSERVED           FORECAST 7 AM
+Location          STG    STG  DAY TIME     Thu    Fri    Sat
+  Oswego          17.0  21.0  Wed 07 AM   20.7   10.8   10.5
+    
+&&
+     
+LAT...LON 3726 9518 3703 9513 3703 9507 3727 9507
+
+
+$$
