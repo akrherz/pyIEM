@@ -27,9 +27,8 @@ class TestObservation(unittest.TestCase):
     def test_150622_ptsdy2(self):
         """PTSDY2_invalid.txt """
         tp = product.TextProduct(get_file('PTSDY2_invalid.txt'))
-        spc = spcpts.SPCPTS(tp)
-        outlook = spc.get_outlook('CATEGORICAL', 'SLGT')
-        self.assertAlmostEqual(outlook.geometry.area, 95.88, 2)
+        with self.assertRaises(Exception):
+            spcpts.SPCPTS(tp)
 
     def test_150622_ptsdy1(self):
         """PTSDY1_nogeom.txt """
