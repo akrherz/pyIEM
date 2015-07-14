@@ -1,5 +1,10 @@
+sudo: required
+virtualenv:
+  system_site_packages: true
 language: python
 python:
   - "2.7"
+before_install:
+  - sudo apt-get install -qq python-numpy python-scipy
 install: "pip install --allow-external basemap -r requirements.txt"
 script: nosetests
