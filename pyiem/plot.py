@@ -1072,14 +1072,16 @@ class MapPlot(object):
                            zorder=Z_POLITICAL)
             self.ax.add_patch(poly)
 
-        
     def iemlogo(self):
         """ Draw a logo """
-        logo = Image.open('/mesonet/www/apps/iemwebsite/htdocs/images/logo_small.png')
+        fn = '/mesonet/www/apps/iemwebsite/htdocs/images/logo_small.png'
+        if not os.path.isfile(fn):
+            return
+        logo = Image.open(fn)
         ax3 = plt.axes([0.02,0.89,0.1,0.1], frameon=False, 
                        axisbg=(0.4471,0.6235,0.8117), yticks=[], xticks=[])
         ax3.imshow(logo, origin='upper')
-        
+
     def make_colorbar(self, bins, colorramp):
         """ Manual Color Bar """
         ax = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,

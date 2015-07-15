@@ -18,13 +18,14 @@ install:
 before_script:
   - psql -c 'create database postgis;' -U postgres
   - psql -c 'create user nobody;' -U postgres
-  - psql -U postgres -c "create extension postgis" postgis
+  - psql -c 'create user apache;' -U postgres
   - psql -c 'create database portfolio;' -U postgres
   - psql -c 'create database iem;' -U postgres
-  - psql -U postgres -c "create extension postgis" iem
+  - psql -c 'create database mesosite;' -U postgres
   - psql -U postgres -f data/schema/iem.sql iem
   - psql -U postgres -f data/schema/postgis.sql postgis
   - psql -U postgres -f data/schema/portfolio.sql portfolio
+  - psql -U postgres -f data/schema/mesosite.sql mesosite
 script:
   "coverage run --source=pyiem setup.py test"
 after_success:

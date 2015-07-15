@@ -29,10 +29,12 @@ class TrackerEngine(object):
         self.action_count = 0
         self.emails = {}
 
-    def send_emails(self):
+    def send_emails(self, really_send=True):
         """Send out those SPAM emails!"""
         # Don't do anything if we have exceeded maxoffline
         if self.action_count >= self.maxactions and self.maxactions > 0:
+            return
+        if not really_send:
             return
         s = smtplib.SMTP()
         s.connect()
