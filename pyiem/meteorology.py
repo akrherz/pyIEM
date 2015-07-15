@@ -5,7 +5,6 @@ import math
 import numpy as np
 import pyiem.datatypes as dt
 from fractions import Rational
-from metar.datatypes import temperature
 
 
 class InvalidArguments(Exception):
