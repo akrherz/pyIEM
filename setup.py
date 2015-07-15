@@ -1,6 +1,18 @@
 from distutils.core import setup
-
+from setuptools.command.test import test as TestCommand
+import sys
 import pyiem
+
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 setup(
     name='pyIEM',
@@ -11,5 +23,6 @@ setup(
     package_data={'pyiem': ['data/*',]},
     url='https://github.com/akrherz/pyIEM/',
     license='Apache',
+    cmdclass={'test': PyTest},
     description='Collection of things that may help with processing weather data.',
 )
