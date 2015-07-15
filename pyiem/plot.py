@@ -784,6 +784,9 @@ class MapPlot(object):
                     shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
                   bins=np.arange(0,101,10),
                   lblformat='%.0f', **kwargs):
+        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv.shp'
+        if not os.path.isfile(fn):
+            return
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         #m = cm.get_cmap('jet')
@@ -995,6 +998,9 @@ class MapPlot(object):
           cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
 
         """
+        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/cwas.shp'
+        if not os.path.isfile(fn):
+            return
         if 'JSJ' in data:
             data['SJU'] = data['JSJ']
         if cmap is None:
@@ -1054,7 +1060,10 @@ class MapPlot(object):
 
     def drawcwas(self):
         ''' Draw CWAS '''
-        self.map.readshapefile('/mesonet/data/gis/static/shape/4326/nws/cwas', 'c')
+        fn = '/mesonet/data/gis/static/shape/4326/nws/cwas.shp'
+        if not os.path.isfile(fn):
+            return
+        self.map.readshapefile(fn[:-4], 'c')
         for nshape, seg in enumerate(self.map.c):
             poly=Polygon(seg, fill=False, ec='k', lw=.8, zorder=Z_POLITICAL)
             self.ax.add_patch(poly)
