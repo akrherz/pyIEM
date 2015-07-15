@@ -17,8 +17,14 @@ install:
 #  - "pip install --allow-external basemap -r requirements.txt"
 before_script:
   - psql -c 'create database postgis;' -U postgres
+  - psql -c 'create user nobody;' -U postgres
   - psql -U postgres -c "create extension postgis" postgis
   - psql -c 'create database portfolio;' -U postgres
+  - psql -c 'create database iem;' -U postgres
+  - psql -U postgres -c "create extension postgis" iem
+  - psql -U postgres -f data/schema/iem.sql iem
+  - psql -U postgres -f data/schema/postgis.sql postgis
+  - psql -U postgres -f data/schema/portfolio.sql portfolio
 script:
   "coverage run --source=pyiem setup.py test"
 after_success:
