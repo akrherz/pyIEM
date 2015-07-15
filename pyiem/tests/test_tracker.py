@@ -55,14 +55,14 @@ class TrackerTests(unittest.TestCase):
                               'mesonet'))
         tracker = TrackerEngine(self.icursor, self.pcursor)
         tracker.process_network(obs, pnetwork, nt, threshold)
-        tracker.send_emails()
+        tracker.send_emails(really_send=False)
         self.assertEquals(len(tracker.emails), 1)
 
         tracker.emails = {}
         obs[sid1]['valid'] = valid - datetime.timedelta(hours=6)
         obs[sid2]['valid'] = valid
         tracker.process_network(obs, pnetwork, nt, threshold)
-        tracker.send_emails()
+        tracker.send_emails(really_send=False)
         self.assertEquals(len(tracker.emails), 2)
 
         tracker.emails = {}
