@@ -1,7 +1,6 @@
-
 import re
 import datetime
-from pyiem import iemtz
+import pytz
 from pyiem.nws.nwsli import NWSLI
 
 #         nwsli        sev         cause      
@@ -49,7 +48,7 @@ def contime(s):
         return None
     try:
         ts = datetime.datetime.strptime(s, '%y%m%dT%H%MZ')
-        return ts.replace( tzinfo=iemtz.UTC() )
+        return ts.replace(tzinfo=pytz.timezone('UTC'))
     except Exception, err:
         print err
         return None
@@ -66,7 +65,6 @@ class HVTEC:
         self.crestTS = contime( tokens[5] )
         self.endTS   = contime( tokens[6] )
         self.record = tokens[7]
-        
 
     def __str__(self):
         return self.raw
