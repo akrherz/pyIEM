@@ -5,10 +5,11 @@ language: python
 python:
   - "2.7"
 before_install:
-  - sudo apt-get install -qq python-mpltoolkits.basemap python-matplotlib python-numpy python-scipy python-psycopg2 python-shapely
+  - sudo apt-get install -qq python-pyproj python-mpltoolkits.basemap python-matplotlib python-numpy python-scipy python-psycopg2 python-shapely
 install:
   - "pip install coveralls"
   - "pip install Pillow"
+  - "pip install python-metar"
 #  - "pip install --allow-external basemap -r requirements.txt"
 script:
   "coverage run --source=pyiem setup.py test"

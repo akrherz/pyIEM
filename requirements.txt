@@ -6,3 +6,5 @@ scipy
 Pillow
 psycopg2
 Shapely
+pyproj
+python-metar
