@@ -1,16 +1,7 @@
-# Class library for the NWN Baron format
-#  OO is fun!
-#  Daryl Herzmann 16 May 2003
-# 18 Nov 2003    Fix a very stupid error in parseLineRT :(
-#  5 Jan 2004    Forgot what a pleasure temperatures below zero are.  For 
-#        whatever reason, the values from some KELO sites are reported
-#        differently "0-5F".  This is not good
-# 21 Oct 2004    Support wind averaging
+"""Supports parsing of the NWNFormat
 
-# A 058  09:23 05/16/03 ESE 08MPH 050K 460F 057F 088% 30.02R 00.01"D 02.79"M 00.00"R
-# H 025   Max  05/16/03 SE  08MPH 057K 460F 057F 100% 30.04" 00.00"D 03.55"M 00.00"R
-# K 072   Min  05/16/03 NE  00MPH 000K 075F 048F 083% 30.02" 00.00"D 02.53"M 00.00"R
-
+Which is a format used by the Texas Weather Sensors KCCI-TV Operates
+"""
 import datetime
 import pytz
 import re
