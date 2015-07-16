@@ -3,6 +3,7 @@ from setuptools.command.test import test as TestCommand
 import sys
 import pyiem
 
+
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -19,10 +20,11 @@ setup(
     version=pyiem.__version__,
     author='daryl herzmann',
     author_email='akrherz@gmail.com',
-    packages=['pyiem', 'pyiem.nws', 'pyiem.nws.products', 'pyiem.windrose'],
-    package_data={'pyiem': ['data/*',]},
+    packages=['pyiem', 'pyiem.nws', 'pyiem.nws.products'],
+    package_data={'pyiem': ['data/*', ]},
     url='https://github.com/akrherz/pyIEM/',
     license='Apache',
     cmdclass={'test': PyTest},
-    description='Collection of things that may help with processing weather data.',
+    description=('Collection of things that may help with processing '
+                 'weather data.'),
 )

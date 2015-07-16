@@ -1148,7 +1148,8 @@ class MapPlot(object):
         if filename is not None:
             shutil.copyfile(tmpfn, filename)
         os.unlink(tmpfn)
-        
+
+
 def windrose(station, database='asos', fp=None, months=np.arange(1,13),
     hours=np.arange(0,24), sts=datetime.datetime(1970,1,1),
     ets=datetime.datetime(2050,1,1), units="mph", nsector=36,
@@ -1168,7 +1169,7 @@ def windrose(station, database='asos', fp=None, months=np.arange(1,13),
       nsector (int,optional): number of bins to devide the windrose into
       justdata (boolean,optional): if True, write out the data only
     """
-    from pyiem.windrose import windrose as wr
+    from windrose import WindroseAxes
     windunits = {
         'mph': {'label': 'miles per hour', 'dbmul': 1.15,
                 'bins':(0,2,5,7,10,15,20), 'abbr': 'mph',
@@ -1237,7 +1238,7 @@ def windrose(station, database='asos', fp=None, months=np.arange(1,13),
         if row[2] > maxvalid:
             maxvalid = row[2]
         if row[0] is None or row[0] < 3 or row[1] is None or row[1] < 0:
-            sped[i] = 0 
+            sped[i] = 0
             drct[i] = 0
         elif row[0] == 0 or row[1] == 0:
             sped[i] = 0
@@ -1294,7 +1295,7 @@ def windrose(station, database='asos', fp=None, months=np.arange(1,13),
     # Generate figure
     fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
     rect = [0.1, 0.1, 0.8, 0.8]
-    ax = wr.WindroseAxes(fig, rect, axisbg='w')
+    ax = WindroseAxes(fig, rect, axisbg='w')
     fig.add_axes(ax)
     ax.bar(drct, sped, normed=True, bins=windunits[units]['bins'], opening=0.8, 
            edgecolor='white', nsector=nsector)
