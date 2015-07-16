@@ -17,28 +17,30 @@ DATADIR = os.sep.join([os.path.dirname(__file__), '../data'])
 M_PI_2 = 1.57079632679489661923
 M_PI = 3.14159265358979323846
 RE_METERS = 6371200.0
-ENTITIES = ['UNK','UNK','MISC','JERS','ERS','POES','COMP','DMSP','GMS',
-            'METEOSAT','GOES7', 'GOES8',
-            'GOES9', 'GOES10', 'GOES11', 'GOES12', 'GOES13', 'GOES14', 'GOES15']
-LABELS = ['UNK','UNK','MISC','JERS','ERS','POES','COMP','DMSP','GMS',
-            'METEOSAT','GOES', 'GOES',
-            'GOES', 'GOES', 'GOES', 'GOES', 'GOES', 'GOES', 'GOES']
-CHANNELS = ['','VIS','3.9', 'WV', 'IR', '12', '13.3', '1.3', 'U8', 'U9', 'U10',
-            'U11', 'U12', 'LI', 'PW', 'SKIN', 'CAPE', 'TSURF', 'WINDEX']
-for u in range(22,100):
+ENTITIES = ['UNK', 'UNK', 'MISC', 'JERS', 'ERS', 'POES', 'COMP', 'DMSP', 'GMS',
+            'METEOSAT', 'GOES7', 'GOES8',
+            'GOES9', 'GOES10', 'GOES11', 'GOES12', 'GOES13', 'GOES14',
+            'GOES15']
+LABELS = ['UNK', 'UNK', 'MISC', 'JERS', 'ERS', 'POES', 'COMP', 'DMSP', 'GMS',
+          'METEOSAT', 'GOES', 'GOES',
+          'GOES', 'GOES', 'GOES', 'GOES', 'GOES', 'GOES', 'GOES']
+CHANNELS = ['', 'VIS', '3.9', 'WV', 'IR', '12', '13.3', '1.3', 'U8', 'U9',
+            'U10', 'U11', 'U12', 'LI', 'PW', 'SKIN', 'CAPE', 'TSURF', 'WINDEX']
+for u in range(22, 100):
     CHANNELS.append("U%s" % (u,))
-SECTORS = ['NHCOMP', 'EAST', 'WEST', 'AK', 'AKNAT', 'HI', 'HINAT', 'PR', 'PRNAT',
-           'SUPER', 'NHCOMP', 'CCONUS', 'EFLOAT', 'WFLOAT', 'CFLOAT', 'PFLOAT']
+SECTORS = ['NHCOMP', 'EAST', 'WEST', 'AK', 'AKNAT', 'HI', 'HINAT', 'PR',
+           'PRNAT', 'SUPER', 'NHCOMP', 'CCONUS', 'EFLOAT', 'WFLOAT', 'CFLOAT',
+           'PFLOAT']
 
 AWIPS_GRID_GUESS = {
-  'A': 207, 
-  'B': 203, 
-  'E': 211, 
+  'A': 207,
+  'B': 203,
+  'E': 211,
   'F': 0,
-  'H': 208, 
-  'I': 204, 
+  'H': 208,
+  'I': 204,
   'N': 0,
-  'P': 210, 
+  'P': 210,
   'Q': 205,
   'W': 211}
 
@@ -54,62 +56,66 @@ AWIPS_GRID = {'TIGB': 203,
               'TICF': 201,
               }
 
+
 def uint24(data):
-    u = int(struct.unpack('>B', data[0] )[0]) << 16
-    u += int(struct.unpack('>B', data[1] )[0]) << 8
-    u += int(struct.unpack('>B', data[2] )[0])
+    """convert three byte data that represents an unsigned int"""
+    u = int(struct.unpack('>B', data[0])[0]) << 16
+    u += int(struct.unpack('>B', data[1])[0]) << 8
+    u += int(struct.unpack('>B', data[2])[0])
     return u
 
+
 def int24(data):
-    u = int(struct.unpack('>B', data[0] )[0] & 127) << 16
-    u += int(struct.unpack('>B', data[1] )[0]) << 8
-    u += int(struct.unpack('>B', data[2] )[0])
-    if (struct.unpack('>B', data[0] )[0] & 128) != 0:
+    u = int(struct.unpack('>B', data[0])[0] & 127) << 16
+    u += int(struct.unpack('>B', data[1])[0]) << 8
+    u += int(struct.unpack('>B', data[2])[0])
+    if (struct.unpack('>B', data[0])[0] & 128) != 0:
         u *= -1
     return u
+
 
 def get_ir_ramp():
     """ Return a np 256x3 array of colors to use for IR """
     fn = "%s/gini_ir_ramp.txt" % (DATADIR,)
-    data = np.zeros((256,3), np.uint8)
+    data = np.zeros((256, 3), np.uint8)
     for i, line in enumerate(open(fn)):
         tokens = line.split()
-        data[i,:] = [int(tokens[0]), int(tokens[1]), int(tokens[2])]
+        data[i, :] = [int(tokens[0]), int(tokens[1]), int(tokens[2])]
     return data
 
+
 class GINIFile(object):
-    
 
     def __str__(self):
         s = "%s Line Size: %s Num Lines: %s" % (self.wmo,
-                                            self.metadata['linesize'],
-                                            self.metadata['numlines'])
+                                                self.metadata['linesize'],
+                                                self.metadata['numlines'])
         return s
-    
+
     def awips_grid(self):
         """
         Return the awips grid number based on the WMO header
         """
         try1 = AWIPS_GRID.get(self.wmo[:4], None)
-        if try1: 
+        if try1:
             return try1
         return AWIPS_GRID_GUESS.get(self.wmo[3], None)
-    
+
     def current_filename(self):
         """
         Return a filename for this product, we'll use the format
         {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png
         """
         return "%s_%s_%s.png" % (LABELS[self.metadata['creating_entity']],
-                                    SECTORS[self.metadata['sector']],
-                                    CHANNELS[self.metadata['channel']])
-        
+                                 SECTORS[self.metadata['sector']],
+                                 CHANNELS[self.metadata['channel']])
+
     def get_bird(self):
         """
         Return a string label for this satellite
         """
         return ENTITIES[self.metadata['creating_entity']]
-    
+
     def get_sector(self):
         """
         """
@@ -119,103 +125,118 @@ class GINIFile(object):
         """
         """
         return CHANNELS[self.metadata['channel']]
-        
+
     def archive_filename(self):
         """
         Return a filename for this product, we'll use the format
         {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png
         """
-        return "%s_%s_%s_%s.png" % (LABELS[self.metadata['creating_entity']],
-                                    SECTORS[self.metadata['sector']],
-                                    CHANNELS[self.metadata['channel']],
-                                    self.metadata['valid'].strftime("%Y%m%d%H%M"))
+        return ("%s_%s_%s_%s.png"
+                ) % (LABELS[self.metadata['creating_entity']],
+                     SECTORS[self.metadata['sector']],
+                     CHANNELS[self.metadata['channel']],
+                     self.metadata['valid'].strftime("%Y%m%d%H%M"))
+
     def init_llc(self):
         """
         Initialize Lambert Conic Comformal
         """
-        self.metadata['proj'] = pyproj.Proj(proj='lcc', 
+        self.metadata['proj'] = pyproj.Proj(proj='lcc',
                                             lat_0=self.metadata['latin'],
-                                            lat_1=self.metadata['latin'], 
-                                            lat_2=self.metadata['latin'], 
+                                            lat_1=self.metadata['latin'],
+                                            lat_2=self.metadata['latin'],
                                             lon_0=self.metadata['lov'],
                                             a=6371200.0, b=6371200.0)
 
-        #s = 1.0
-        #if self.metadata['proj_center_flag'] != 0:
+        # s = 1.0
+        # if self.metadata['proj_center_flag'] != 0:
         #    s = -1.0
-        psi = M_PI_2 - abs( math.radians( self.metadata['latin'] ))
+        psi = M_PI_2 - abs(math.radians(self.metadata['latin']))
         cos_psi = math.cos(psi)
-        #r_E = RE_METERS / cos_psi
+        # r_E = RE_METERS / cos_psi
         alpha = math.pow(math.tan(psi/2.0), cos_psi) / math.sin(psi)
-    
-        x0, y0 = self.metadata['proj'](self.metadata['lon1'], self.metadata['lat1'])
+
+        x0, y0 = self.metadata['proj'](self.metadata['lon1'],
+                                       self.metadata['lat1'])
         self.metadata['x0'] = x0
         self.metadata['y0'] = y0
-        #self.metadata['dx'] *= alpha
-        #self.metadata['dy'] *= alpha
-        self.metadata['y1'] = y0 + ( self.metadata['dy'] * self.metadata['ny'])
+        # self.metadata['dx'] *= alpha
+        # self.metadata['dy'] *= alpha
+        self.metadata['y1'] = y0 + (self.metadata['dy'] * self.metadata['ny'])
 
-        self.metadata['lon_ul'], self.metadata['lat_ul'] =  self.metadata['proj'](self.metadata['x0'],
-                                                    self.metadata['y1'], inverse=True)
+        (self.metadata['lon_ul'],
+         self.metadata['lat_ul']) = self.metadata['proj'](self.metadata['x0'],
+                                                          self.metadata['y1'],
+                                                          inverse=True)
         logging.info("""lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f
 lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f""" % (
-                    self.metadata['lat1'], y0, self.metadata['y1'], 
+                    self.metadata['lat1'], y0, self.metadata['y1'],
                     self.metadata['lat_ul'], self.metadata['lat_ur'],
                     self.metadata['lon_ur'], alpha, self.metadata['dy']))
 
     def init_mercator(self):
         """
-        Compute mercator projection stuff 
+        Compute mercator projection stuff
         """
-        self.metadata['proj'] = pyproj.Proj(proj='merc', 
-                        lat_ts=self.metadata['latin'], x_0=0, y_0=0,
-                        a=6371200.0, b=6371200.0)
-        x0, y0 = self.metadata['proj'](self.metadata['lon1'], self.metadata['lat1'])
+        self.metadata['proj'] = pyproj.Proj(proj='merc',
+                                            lat_ts=self.metadata['latin'],
+                                            x_0=0, y_0=0,
+                                            a=6371200.0, b=6371200.0)
+        x0, y0 = self.metadata['proj'](self.metadata['lon1'],
+                                       self.metadata['lat1'])
         self.metadata['x0'] = x0
         self.metadata['y0'] = y0
- 
-        x1, y1 = self.metadata['proj'](self.metadata['lon2'], self.metadata['lat2'])
+
+        x1, y1 = self.metadata['proj'](self.metadata['lon2'],
+                                       self.metadata['lat2'])
         self.metadata['x1'] = x1
         self.metadata['y1'] = y1
- 
+
         self.metadata['dx'] = (x1 - x0) / self.metadata['nx']
         self.metadata['dy'] = (y1 - y0) / self.metadata['ny']
- 
-        self.metadata['lon_ul'], self.metadata['lat_ul'] =  self.metadata['proj'](self.metadata['x0'],
-                                                    self.metadata['y1'], inverse=True)
-        
-        logging.info("""latin: %.2f lat_ul: %.3f lon_ul: %.3f 
+
+        (self.metadata['lon_ul'],
+         self.metadata['lat_ul']) = self.metadata['proj'](self.metadata['x0'],
+                                                          self.metadata['y1'],
+                                                          inverse=True)
+
+        logging.info("""latin: %.2f lat_ul: %.3f lon_ul: %.3f
 y0: %5.f y1: %.5f dx: %.3f dy: %.3f""" % (
-                    self.metadata['latin'], self.metadata['lat_ul'], 
-                    self.metadata['lon_ul'], y0, y1, 
+                    self.metadata['latin'], self.metadata['lat_ul'],
+                    self.metadata['lon_ul'], y0, y1,
                     self.metadata['dx'], self.metadata['dy']))
 
     def init_stereo(self):
         """
         Compute Polar Stereographic
         """
-        self.metadata['proj'] = pyproj.Proj(proj='stere', 
-                        lat_ts=60, lat_0=90, 
-                        lon_0=self.metadata['lov'], 
-                        x_0=0, y_0=0,a=6371200.0, b=6371200.0)
+        self.metadata['proj'] = pyproj.Proj(proj='stere',
+                                            lat_ts=60, lat_0=90,
+                                            lon_0=self.metadata['lov'],
+                                            x_0=0, y_0=0, a=6371200.0,
+                                            b=6371200.0)
         # First point!
-        x0, y0 = self.metadata['proj'](self.metadata['lon1'], self.metadata['lat1'])
+        x0, y0 = self.metadata['proj'](self.metadata['lon1'],
+                                       self.metadata['lat1'])
         self.metadata['x0'] = x0
         self.metadata['y0'] = y0
 
         self.metadata['y1'] = y0 + (self.metadata['dy'] * self.metadata['ny'])
-        self.metadata['lon_ul'], self.metadata['lat_ul'] = self.metadata['proj'](
-                                                        x0, self.metadata['y1'],
-                                                        inverse=True)
-        
-        logging.info("""lon_ul: %.2f lat_ul: %.2f 
-lon_ll: %.2f lat_ll: %.2f 
-lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f""" % (
-                    self.metadata['lon_ul'], self.metadata['lat_ul'],
-                    self.metadata['lon1'], self.metadata['lat1'], 
-                    self.metadata['lov'], self.metadata['latin'], self.metadata['lat1'], 
-                    self.metadata['lat2'], y0, self.metadata['y1'], 
-                    self.metadata['dx'], self.metadata['dy']))
+        (self.metadata['lon_ul'],
+         self.metadata['lat_ul']) = self.metadata['proj'](x0,
+                                                          self.metadata['y1'],
+                                                          inverse=True)
+
+        logging.info("""lon_ul: %.2f lat_ul: %.2f
+lon_ll: %.2f lat_ll: %.2f
+lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f
+""" % (
+            self.metadata['lon_ul'], self.metadata['lat_ul'],
+            self.metadata['lon1'], self.metadata['lat1'],
+            self.metadata['lov'], self.metadata['latin'],
+            self.metadata['lat1'],
+            self.metadata['lat2'], y0, self.metadata['y1'],
+            self.metadata['dx'], self.metadata['dy']))
 
     def init_projection(self):
         """
@@ -231,62 +252,61 @@ lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f"
             logging.info('Unknown Projection: %s' % (
                                 self.metadata['map_projection'],))
 
-
     def read_header(self, hdata):
         meta = {}
-        meta['source'] = struct.unpack("> B", hdata[0] )[0]
-        meta['creating_entity'] = struct.unpack("> B", hdata[1] )[0]
-        meta['sector'] = struct.unpack("> B", hdata[2] )[0]
-        meta['channel'] = struct.unpack("> B", hdata[3] )[0]
-    
-        meta['numlines'] = struct.unpack(">H", hdata[4:6] )[0]
-        meta['linesize'] = struct.unpack(">H", hdata[6:8] )[0]
-    
-        yr = 1900 + struct.unpack("> B", hdata[8] )[0]
-        mo = struct.unpack("> B", hdata[9] )[0]
-        dy = struct.unpack("> B", hdata[10] )[0]
-        hh = struct.unpack("> B", hdata[11] )[0]
-        mi = struct.unpack("> B", hdata[12] )[0]
-        ss = struct.unpack("> B", hdata[13] )[0]
-        #hs = struct.unpack("> B", hdata[14] )[0]
-        meta['valid'] = datetime.datetime(yr,mo,dy,hh,mi,ss).replace(
-                                                tzinfo = pytz.timezone("UTC"))
-        meta['map_projection'] = struct.unpack("> B", hdata[15] )[0]
-        meta['proj_center_flag'] = (struct.unpack("> B", hdata[36] )[0] >> 7)
-        meta['scan_mode'] = struct.unpack("> B", hdata[37] )[0]
-    
-        meta['nx'] = struct.unpack(">H", hdata[16:18] )[0]
-        meta['ny'] = struct.unpack(">H", hdata[18:20] )[0]
-        meta['res'] = struct.unpack(">B", hdata[41] )[0]
+        meta['source'] = struct.unpack("> B", hdata[0])[0]
+        meta['creating_entity'] = struct.unpack("> B", hdata[1])[0]
+        meta['sector'] = struct.unpack("> B", hdata[2])[0]
+        meta['channel'] = struct.unpack("> B", hdata[3])[0]
+
+        meta['numlines'] = struct.unpack(">H", hdata[4:6])[0]
+        meta['linesize'] = struct.unpack(">H", hdata[6:8])[0]
+
+        yr = 1900 + struct.unpack("> B", hdata[8])[0]
+        mo = struct.unpack("> B", hdata[9])[0]
+        dy = struct.unpack("> B", hdata[10])[0]
+        hh = struct.unpack("> B", hdata[11])[0]
+        mi = struct.unpack("> B", hdata[12])[0]
+        ss = struct.unpack("> B", hdata[13])[0]
+        # hs = struct.unpack("> B", hdata[14] )[0]
+        meta['valid'] = datetime.datetime(yr, mo, dy, hh, mi, ss).replace(
+                            tzinfo=pytz.timezone("UTC"))
+        meta['map_projection'] = struct.unpack("> B", hdata[15])[0]
+        meta['proj_center_flag'] = (struct.unpack("> B", hdata[36])[0] >> 7)
+        meta['scan_mode'] = struct.unpack("> B", hdata[37])[0]
+
+        meta['nx'] = struct.unpack(">H", hdata[16:18])[0]
+        meta['ny'] = struct.unpack(">H", hdata[18:20])[0]
+        meta['res'] = struct.unpack(">B", hdata[41])[0]
         # Is Calibration Info included?
         # http://www.nws.noaa.gov/noaaport/document/ICD%20CH5-2005-1.pdf
         # page24
-        #print struct.unpack(">B", hdata[46] )[0]
+        # print struct.unpack(">B", hdata[46] )[0]
         # Mercator
         if meta['map_projection'] == 1:
-            meta['lat1'] = int24( hdata[20:23] )
-            meta['lon1'] = int24( hdata[23:26] )
+            meta['lat1'] = int24(hdata[20:23])
+            meta['lon1'] = int24(hdata[23:26])
             meta['lov'] = 0
-            meta['dx'] = struct.unpack(">H", hdata[33:35] )[0]
-            meta['dy'] = struct.unpack(">H", hdata[35:37] )[0]
-            meta['latin'] = int24( hdata[38:41] )
-            meta['lat2'] = int24( hdata[27:30] )
-            meta['lon2'] = int24( hdata[30:33] )
-            meta['lat_ur'] = int24( hdata[55:58] )
-            meta['lon_ur'] = int24( hdata[58:61] )
+            meta['dx'] = struct.unpack(">H", hdata[33:35])[0]
+            meta['dy'] = struct.unpack(">H", hdata[35:37])[0]
+            meta['latin'] = int24(hdata[38:41])
+            meta['lat2'] = int24(hdata[27:30])
+            meta['lon2'] = int24(hdata[30:33])
+            meta['lat_ur'] = int24(hdata[55:58])
+            meta['lon_ur'] = int24(hdata[58:61])
         # lambert == 3, polar == 5
         else:
-            meta['lat1'] = int24( hdata[20:23] )
-            meta['lon1'] = int24( hdata[23:26] )
-            meta['lov'] = int24( hdata[27:30] )
-            meta['dx'] = uint24( hdata[30:33] )
-            meta['dy'] = uint24( hdata[33:36] )
-            meta['latin'] = int24( hdata[38:41] )
+            meta['lat1'] = int24(hdata[20:23])
+            meta['lon1'] = int24(hdata[23:26])
+            meta['lov'] = int24(hdata[27:30])
+            meta['dx'] = uint24(hdata[30:33])
+            meta['dy'] = uint24(hdata[33:36])
+            meta['latin'] = int24(hdata[38:41])
             meta['lat2'] = 0
             meta['lon2'] = 0
-            meta['lat_ur'] = int24( hdata[55:58] )
-            meta['lon_ur'] = int24( hdata[58:61] )
-    
+            meta['lat_ur'] = int24(hdata[55:58])
+            meta['lon_ur'] = int24(hdata[58:61])
+
         meta['dx'] = meta['dx'] / 10.0
         meta['dy'] = meta['dy'] / 10.0
         meta['lat1'] = meta['lat1'] / 10000.0
@@ -297,14 +317,15 @@ lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f"
         meta['lon2'] = meta['lon2'] / 10000.0
         meta['lat_ur'] = meta['lat_ur'] / 10000.0
         meta['lon_ur'] = meta['lon_ur'] / 10000.0
-    
+
         return meta
 
-"""
-Deal with compressed GINI files, which are the standard on NOAAPORT
-"""
+
 class GINIZFile(GINIFile):
-    
+    """
+    Deal with compressed GINI files, which are the standard on NOAAPORT
+    """
+
     def __init__(self, fobj):
         fobj.seek(0)
         # WMO HEADER
@@ -323,7 +344,7 @@ class GINIZFile(GINIFile):
                 continue
             chunk += part
             try:
-                sdata += zlib.decompress( chunk )
+                sdata += zlib.decompress(chunk)
                 i += 1
                 totsz -= len(chunk)
                 chunk = 'x\xda'
@@ -332,19 +353,7 @@ class GINIZFile(GINIFile):
                 pass
         if totsz != 0:
             logging.info("Totalsize left: %s" % (totsz,))
-        # Last row!
-        #data[row,:] = np.fromstring( zlib.decompress(d.unused_data[marker:]), np.int8)
-        #trunc = 0 - self.metadata['linesize']
-#        pad = self.metadata['linesize'] * self.metadata['numlines'] - np.shape(self.data)[0]
-#        if pad > 0:
-#            fewer = pad / self.metadata['linesize']
-#            logging.info("Missing %s lines" % (fewer,))
-            #data = np.append(data, np.zeros( (pad), np.int8))
-#            self.metadata['numlines'] -= fewer
-#            self.metadata['dy'] = self.metadata['dy'] / (float(self.metadata['ny'] - fewer) / float(self.metadata['ny']))
-#            print 'New dy', self.metadata['dy']
-            # Erm, this bothers me, but need to redo, if ny changed!
-            #self.init_projection()
-        self.data = np.reshape(np.fromstring(sdata, np.int8), 
-                        (self.metadata['numlines']+1, self.metadata['linesize']))
 
+        self.data = np.reshape(np.fromstring(sdata, np.int8),
+                               (self.metadata['numlines'] + 1,
+                                self.metadata['linesize']))
