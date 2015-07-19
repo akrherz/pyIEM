@@ -866,8 +866,8 @@ class MapPlot(object):
             if data.get(ugc) is None:
                 c = 'white'
             else:
-                c = cmap( norm([data[ugc],]) )[0]
-            geom = loads( str(row[1]) )
+                c = cmap(norm([data[ugc], ]))[0]
+            geom = loads(str(row[1]))
             for polygon in geom:
                 if polygon.exterior is None:
                     continue
@@ -875,11 +875,10 @@ class MapPlot(object):
                 if ugc[:2] == 'AK':
                     if self.ak_ax is None:
                         continue
-                    x,y = self.ak_map(a[:,0], a[:,1])
-                    a = zip(x,y)
+                    (x, y) = self.ak_map(a[:, 0], a[:, 1])
+                    a = zip(x, y)
                     p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
                     akpatches.append(p)
-                    pass
                 elif ugc[:2] == 'HI':
                     if self.hi_ax is None:
                         continue

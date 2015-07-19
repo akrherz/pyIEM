@@ -50,7 +50,6 @@ AWIPS_GRID = {'TIGB': 203,
               'TIGH': 208,
               'TIGP': 210,
               'TIGA': 207,
-              'TIGB': 203,
               'TIGI': 204,
               'TIGQ': 205,
               'TICF': 201,
@@ -350,7 +349,6 @@ class GINIZFile(GINIFile):
                 chunk = 'x\xda'
             except:
                 chunk += 'x\xda'
-                pass
         if totsz != 0:
             logging.info("Totalsize left: %s" % (totsz,))
 
