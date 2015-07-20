@@ -8,7 +8,7 @@ class TestPlot(unittest.TestCase):
 
     def test_windrose(self):
         """Exercise the windrose code"""
-        plot.windrose('AMW')
+        plot.windrose('AMW22')
         self.assertEquals(1, 1)
 
     def test_colorramps(self):

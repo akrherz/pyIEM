@@ -1193,7 +1193,7 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
     mcursor = db.cursor()
     mcursor.execute("""SELECT name from stations where id = %s""", (station,))
     row = mcursor.fetchall()
-    if row is None:
+    if len(row) == 0:
         sname = "((%s))" % (station,)
     else:
         sname = row[0][0]
