@@ -35,16 +35,19 @@ _severityDict = {'N': 'None',
                  'U': 'Unknown'}
 
 
-def parse(text, nwsli_provider={}):
+def parse(text, nwsli_provider=None):
     """ I look for and return hvtec objects as I find them """
+    if nwsli_provider is None:
+        nwsli_provider = dict()
     hvtec = []
     tokens = re.findall(_re, text)
     for t in tokens:
-        hvtec.append( HVTEC(t, nwsli_provider) )
+        hvtec.append(HVTEC(t, nwsli_provider))
     return hvtec
 
+
 def contime(s):
-    if ( len(re.findall("0000*T",s)) > 0 ):
+    if len(re.findall("0000*T", s)) > 0:
         return None
     try:
         ts = datetime.datetime.strptime(s, '%y%m%dT%H%MZ')
@@ -53,17 +56,20 @@ def contime(s):
         print err
         return None
 
+
 class HVTEC:
 
-    def __init__(self, tokens, nwsli_provider={}):
+    def __init__(self, tokens, nwsli_provider=None):
         ''' Constructor '''
-        self.line    = tokens[0]
-        self.nwsli   = nwsli_provider.get(tokens[1], NWSLI(tokens[1]))
+        if nwsli_provider is None:
+            nwsli_provider = dict()
+        self.line = tokens[0]
+        self.nwsli = nwsli_provider.get(tokens[1], NWSLI(tokens[1]))
         self.severity = tokens[2]
         self.cause = tokens[3]
-        self.beginTS = contime( tokens[4] )
-        self.crestTS = contime( tokens[5] )
-        self.endTS   = contime( tokens[6] )
+        self.beginTS = contime(tokens[4])
+        self.crestTS = contime(tokens[5])
+        self.endTS = contime(tokens[6])
         self.record = tokens[7]
 
     def __str__(self):

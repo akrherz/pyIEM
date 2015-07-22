@@ -306,7 +306,7 @@ class CLIProduct(TextProduct):
 
     def parse_cli_headline(self, section):
         """ Figure out when this product is valid for """
-        tokens = HEADLINE_RE.findall( section.replace("\n", " ") )
+        tokens = HEADLINE_RE.findall(section.replace("\n", " "))
         if len(tokens) == 1:
             if len(tokens[0][1].split()[0]) == 3:
                 myfmt = '%b %d %Y'
@@ -314,17 +314,18 @@ class CLIProduct(TextProduct):
                 myfmt = '%B %d %Y'
             cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt)
             cli_station = (tokens[0][0]).strip()
-            return cli_valid, cli_station  
+            return (cli_valid, cli_station)
         elif len(tokens) > 1:
             raise CLIException("Found two headers in product, unsupported!")
         else:
             # Known sources of bad data...
             if self.source in ['PKMR', 'NSTU', 'PTTP', 'PTKK', 'PTKR']:
-                return None
+                return (None, None)
             raise CLIException('Could not find date valid in %s' % (
                                                 self.get_product_id(),))
+
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Provide back CLI objects based on the parsing of this text """
     # Careful here, see if we have two CLIs in one product!
-    return CLIProduct( text )
+    return CLIProduct(text)

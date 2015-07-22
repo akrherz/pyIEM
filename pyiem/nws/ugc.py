@@ -62,12 +62,15 @@ def str2time(text, valid):
     return valid.replace(day=day, hour=hour, minute=minute)
 
 
-def parse(text, valid, ugc_provider={}):
+def parse(text, valid, ugc_provider=None):
     """ Helper method that parses text and yields UGC and expiration time
     @param text to parse
     @param valid is the issue time of the product this text was found in
     @param ugc_provider of UGC objects
     """
+    if ugc_provider is None:
+        ugc_provider = dict()
+
     def _construct(code):
         return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))
     ugcs = []
@@ -119,7 +122,7 @@ def parse(text, valid, ugc_provider={}):
 
 class UGC:
 
-    def __init__(self, state, geoclass, number, name=None, wfos=[]):
+    def __init__(self, state, geoclass, number, name=None, wfos=None):
         '''
         Constructor for UGC instances
         '''
@@ -127,7 +130,7 @@ class UGC:
         self.geoclass = geoclass
         self.number = int(number)
         self.name = name
-        self.wfos = wfos
+        self.wfos = wfos if wfos is not None else []
 
     def __str__(self):
         """ Override str() """

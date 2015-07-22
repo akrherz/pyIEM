@@ -27,9 +27,9 @@ def dwpf(tmpf, relh):
     if tmpf is None or relh is None:
         return None
 
-    tmpk = 273.15 + ( 5.00/9.00 * ( tmpf - 32.00) )
+    tmpk = 273.15 + (5.00/9.00 * (tmpf - 32.00) )
     dwpk = tmpk / (1+ 0.000425 * tmpk * -(math.log10(relh/100.0)) )
-    return int(float( ( dwpk - 273.15 ) * 9.00/5.00 + 32 ))
+    return int(float((dwpk - 273.15 ) * 9.00/5.00 + 32))
 
 
 def mydir(u, v):
@@ -59,15 +59,15 @@ def feelslike(tmpf, relh, sped):
 
 def heatidx(tmpf, relh):
     if tmpf < 70:
-      return tmpf
+        return tmpf
     if (tmpf > 140):
-      return -99
+        return -99
     if (relh == 0):
-      return -99
+        return -99
 
     PR_HEAT =  61 + ( tmpf - 68 ) * 1.2 + relh * .094
     if (PR_HEAT < 77):
-      return PR_HEAT
+        return PR_HEAT
 
     t2 = tmpf * tmpf;
     t3 = tmpf * tmpf * tmpf
@@ -94,8 +94,7 @@ def heatidx(tmpf, relh):
 def wchtidx(tmpf, sped):
     if sped < 3 or tmpf > 50:
         return tmpf
-    import math
-    wci = math.pow(sped,0.16);
+    wci = math.pow(sped, 0.16)
 
     return 35.74 + .6215 * tmpf - 35.75 * wci + .4275 * tmpf * wci
 
