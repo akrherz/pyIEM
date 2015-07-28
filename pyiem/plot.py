@@ -381,14 +381,33 @@ class MapPlot(object):
         self.hi_ax = None
         self.pr_map = None
         self.pr_ax = None
+        self.state = None
+        self.cwa = None
 
         if self.sector == 'iowa':
+            self.state = 'IA'
             self.map = Basemap(projection='merc', fix_aspect=False,
                                urcrnrlat=reference.IA_NORTH,
                                llcrnrlat=reference.IA_SOUTH,
                                urcrnrlon=reference.IA_EAST,
                                llcrnrlon=reference.IA_WEST,
                                lat_0=45., lon_0=-92., lat_ts=42.,
+                               resolution='i', ax=self.ax)
+        elif self.sector == 'cwa':
+            self.cwa = kwargs.get('cwa', 'DMX')
+            self.map = Basemap(projection='merc', fix_aspect=True,
+                               urcrnrlat=reference.wfo_bounds[self.cwa][3],
+                               llcrnrlat=reference.wfo_bounds[self.cwa][1],
+                               urcrnrlon=reference.wfo_bounds[self.cwa][2],
+                               llcrnrlon=reference.wfo_bounds[self.cwa][0],
+                               resolution='i', ax=self.ax)
+        elif self.sector == 'state':
+            self.state = kwargs.get('state', 'IA')
+            self.map = Basemap(projection='merc', fix_aspect=True,
+                               urcrnrlat=reference.state_bounds[self.state][3],
+                               llcrnrlat=reference.state_bounds[self.state][1],
+                               urcrnrlon=reference.state_bounds[self.state][2],
+                               llcrnrlon=reference.state_bounds[self.state][0],
                                resolution='i', ax=self.ax)
         elif self.sector == 'dsm':
             self.map = Basemap(projection='merc', fix_aspect=False,
@@ -497,32 +516,33 @@ class MapPlot(object):
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """ Create our magic colorbar! """
-        
+
         clevlabels = kwargs.get('clevlabels', clevs)
 
         under = clevs[0]-(clevs[1]-clevs[0])
         over = clevs[-1]+(clevs[-1]-clevs[-2])
-        blevels = np.concatenate([[under,], clevs, [over,]])
+        blevels = np.concatenate([[under, ], clevs, [over, ]])
         cb2 = mpcolorbar.ColorbarBase(self.cax, cmap=cmap,
-                                     norm=norm,
-                                     boundaries=blevels,
-                                     extend='both',
-                                     ticks=None,
-                                     spacing='uniform',
-                                     orientation='vertical')
+                                      norm=norm,
+                                      boundaries=blevels,
+                                      extend='both',
+                                      ticks=None,
+                                      spacing='uniform',
+                                      orientation='vertical')
         clevstride = int(kwargs.get('clevstride', 1))
         for i, (lev, lbl) in enumerate(zip(clevs, clevlabels)):
             if i % clevstride != 0:
                 continue
-            y = float(i) / (len(clevs) -1)
-            y2 = float(i+1) / (len(clevs) -1)
-            dy = (y2-y)/2
+            y = float(i) / (len(clevs) - 1)
+            y2 = float(i+1) / (len(clevs) - 1)
+            dy = (y2 - y) / 2
             fmt = '%s' if type(lbl) == type('a') else '%g'
             txt = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
-            txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                        foreground="w")])
-            
-        if kwargs.has_key('units'):
+            txt.set_path_effects([PathEffects.withStroke(linewidth=4,
+                                                         foreground="w")])
+        cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
+
+        if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
@@ -862,6 +882,67 @@ class MapPlot(object):
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
+    def fill_ugcs(self, data, bins=np.arange(0, 101, 10), **kwargs):
+        """Fill UGCs on the map"""
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(bins, cmap.N)
+        # Figure out if we have zones or counties/parishes
+        counties = True
+        for key in data:
+            if key[2] == 'Z':
+                counties = False
+            break
+        pgconn = psycopg2.connect(database='postgis', host='iemdb',
+                                  user='nobody')
+        cursor = pgconn.cursor()
+        state_limiter = ''
+        if self.sector in ('state', 'iowa'):
+            state_limiter = " and substr(ugc, 1, 2) = '%s'" % (self.state, )
+        elif self.sector == 'cwa':
+            state_limiter = " and wfo = '%s'" % (self.cwa, )
+        cursor.execute("""
+        SELECT ugc, ST_asEWKB(simple_geom) from ugcs WHERE end_ts is null
+        and substr(ugc,3,1) = %s """ + state_limiter + """
+        """, ("C" if counties else "Z", ))
+        patches = []
+        plotted = []
+        for row in cursor:
+            ugc = row[0]
+            if data.get(ugc) is None:
+                c = 'white'
+                val = '-'
+            else:
+                c = cmap(norm([data[ugc], ]))[0]
+                val = data[ugc]
+            geom = loads(str(row[1]))
+            for polygon in geom:
+                if polygon.exterior is None:
+                    continue
+                a = np.asarray(polygon.exterior)
+                (x, y) = self.map(a[:, 0], a[:, 1])
+                a = zip(x, y)
+                p = Polygon(a, fc=c, ec='k', zorder=2, lw=.1)
+                patches.append(p)
+                """
+                if ugc not in plotted:
+                    mx = polygon.centroid.x
+                    my = polygon.centroid.y
+                    (x, y) = self.map(mx, my)
+                    txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
+                                       ha='center', va='center')
+                    txt.set_path_effects([
+                            PathEffects.withStroke(linewidth=2,
+                                                   foreground="w")])
+                    plotted.append(ugc)
+                """
+
+        if len(patches) > 0:
+            self.ax.add_collection(
+                        PatchCollection(patches, match_original=True))
+        if 'cmap' in kwargs:
+            del kwargs['cmap']
+        self.draw_colorbar(bins, cmap, norm, **kwargs)
+
     def fill_ugc_counties(self, data, bins=np.arange(0, 101, 10), **kwargs):
         """ Fill UGC counties based on the data dict provided, please """
         cmap = kwargs.get('cmap', maue())
@@ -1077,9 +1158,10 @@ class MapPlot(object):
 
     def drawcwas(self):
         ''' Draw CWAS '''
-        fn = '/mesonet/data/gis/static/shape/4326/nws/cwas.shp'
+        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/cwas.shp'
         if not os.path.isfile(fn):
             return
+        sys.stderr.write("HERE!")
         self.map.readshapefile(fn[:-4], 'c')
         for nshape, seg in enumerate(self.map.c):
             poly=Polygon(seg, fill=False, ec='k', lw=.8, zorder=Z_POLITICAL)

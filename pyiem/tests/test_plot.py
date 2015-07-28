@@ -6,6 +6,20 @@ import datetime
 
 class TestPlot(unittest.TestCase):
 
+    def test_states(self):
+        """Exercise the state plotting routines"""
+        m = plot.MapPlot(sector='state', state='CA')
+        m.postprocess(filename='/tmp/test_plot_CA.png')
+        m.close()
+        self.assertEquals(m.state, 'CA')
+
+    def test_cwa(self):
+        """Exercise the cwa plotting routines"""
+        m = plot.MapPlot(sector='cwa', cwa='MKX')
+        m.postprocess(filename='/tmp/test_plot_MKX.png')
+        m.close()
+        self.assertEquals(m.cwa, 'MKX')
+
     def test_windrose(self):
         """Exercise the windrose code"""
         plot.windrose('AMW22')
