@@ -1,12 +1,13 @@
 """plotting interface
 """
-#stdlib
+# stdlib
 import cStringIO
 import tempfile
 import os
 import sys
 import subprocess
 import shutil
+import cPickle
 import datetime
 #
 from pyiem import reference
@@ -39,8 +40,23 @@ import psycopg2
 #
 from shapely.wkb import loads
 
-[Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY] = range(1,6)
+[Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY, Z_OVERLAY2] = range(1, 7)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
+
+
+def true_filter(bm, key, val):
+    """Always return true"""
+    return True
+
+
+def cwa_filter(bm, key, val):
+    """A filter for checking a key against current basemap"""
+    return (val.get('cwa') == bm.cwa)
+
+
+def state_filter(bm, key, val):
+    """A filter for checking a key against current basemap"""
+    return (key[:2] == bm.state)
 
 
 def calendar_plot(sts, ets, data, **kwargs):
@@ -207,6 +223,22 @@ def load_bounds(filebase):
         print("load_bounds(%s) is missing!" % (fn,))
         return
     return np.load(fn)
+
+
+def load_pickle_geo(filename):
+    """Load pickled dictionaries containing geometries and other metadata
+
+    Args:
+      filename(str): The filename to load, contained in project data/
+
+    Returns:
+      dict: The dictionary of data
+    """
+    fn = "%s/%s" % (DATADIR, filename)
+    if not os.path.isfile(fn):
+        print("load_pickle_geo(%s) failed, file is missing!" % (fn,))
+        return dict()
+    return cPickle.load(open(fn, 'rb'))
 
 
 def mask_outside_polygon(poly_verts, ax=None):
@@ -883,7 +915,17 @@ class MapPlot(object):
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
     def fill_ugcs(self, data, bins=np.arange(0, 101, 10), **kwargs):
-        """Fill UGCs on the map"""
+        """Overlay filled UGC geometries
+
+        The logic for plotting is a bit tricky due to fire zones overlapping
+        forecast zones.  In general, provide the zone code if you want it to
+        display on top.  Otherwise, I attempt to place forecast zones overtop
+        fire weather zones.
+
+        Args:
+          data(dict): A dictionary of 6 char UGC code keys and values
+          bins(list, optional): Bins to use for cloropleth
+        """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         # Figure out if we have zones or counties/parishes
@@ -892,124 +934,58 @@ class MapPlot(object):
             if key[2] == 'Z':
                 counties = False
             break
-        pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                                  user='nobody')
-        cursor = pgconn.cursor()
-        state_limiter = ''
+        ugcs = load_pickle_geo(
+            "ugcs_county.pickle" if counties else "ugcs_zone.pickle")
+        filter_func = true_filter
         if self.sector in ('state', 'iowa'):
-            state_limiter = " and substr(ugc, 1, 2) = '%s'" % (self.state, )
+            filter_func = state_filter
         elif self.sector == 'cwa':
-            state_limiter = " and wfo = '%s'" % (self.cwa, )
-        cursor.execute("""
-        SELECT ugc, ST_asEWKB(simple_geom) from ugcs WHERE end_ts is null
-        and substr(ugc,3,1) = %s """ + state_limiter + """
-        """, ("C" if counties else "Z", ))
+            filter_func = cwa_filter
         patches = []
-        plotted = []
-        for row in cursor:
-            ugc = row[0]
+        patches2 = []
+        for ugc in ugcs:
+            ugcdict = ugcs[ugc]
+            if not filter_func(self, ugc, ugcdict):
+                continue
             if data.get(ugc) is None:
+                # Holy cow, it appears values above 300 are always firewx,
+                # so lets ignore these when we have no data!
+                if int(ugc[3:]) >= 300:
+                    continue
                 c = 'white'
-                val = '-'
+                # val = '-'
+                z = Z_OVERLAY
             else:
                 c = cmap(norm([data[ugc], ]))[0]
-                val = data[ugc]
-            geom = loads(str(row[1]))
-            for polygon in geom:
+                # val = data[ugc]
+                z = Z_OVERLAY2
+            for polygon in ugcdict.get('geom', []):
                 if polygon.exterior is None:
                     continue
                 a = np.asarray(polygon.exterior)
                 (x, y) = self.map(a[:, 0], a[:, 1])
                 a = zip(x, y)
-                p = Polygon(a, fc=c, ec='k', zorder=2, lw=.1)
-                patches.append(p)
-                """
-                if ugc not in plotted:
-                    mx = polygon.centroid.x
-                    my = polygon.centroid.y
-                    (x, y) = self.map(mx, my)
-                    txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
-                                       ha='center', va='center')
-                    txt.set_path_effects([
-                            PathEffects.withStroke(linewidth=2,
-                                                   foreground="w")])
-                    plotted.append(ugc)
-                """
-
-        if len(patches) > 0:
-            self.ax.add_collection(
-                        PatchCollection(patches, match_original=True))
-        if 'cmap' in kwargs:
-            del kwargs['cmap']
-        self.draw_colorbar(bins, cmap, norm, **kwargs)
-
-    def fill_ugc_counties(self, data, bins=np.arange(0, 101, 10), **kwargs):
-        """ Fill UGC counties based on the data dict provided, please """
-        cmap = kwargs.get('cmap', maue())
-        norm = mpcolors.BoundaryNorm(bins, cmap.N)
-
-        pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                                  user='nobody')
-        cursor = pgconn.cursor()
-
-        cursor.execute("""
-        SELECT ugc, ST_asEWKB(simple_geom) from ugcs WHERE end_ts is null
-        and substr(ugc,3,1) = 'C'
-        """)
-        akpatches = []
-        hipatches = []
-        prpatches = []
-        patches = []
-        for row in cursor:
-            ugc = row[0]
-            if data.get(ugc) is None:
-                c = 'white'
-            else:
-                c = cmap(norm([data[ugc], ]))[0]
-            geom = loads(str(row[1]))
-            for polygon in geom:
-                if polygon.exterior is None:
-                    continue
-                a = np.asarray(polygon.exterior)
-                if ugc[:2] == 'AK':
-                    if self.ak_ax is None:
-                        continue
-                    (x, y) = self.ak_map(a[:, 0], a[:, 1])
-                    a = zip(x, y)
-                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
-                    akpatches.append(p)
-                elif ugc[:2] == 'HI':
-                    if self.hi_ax is None:
-                        continue
-                    (x, y) = self.hi_map(a[:, 0], a[:, 1])
-                    a = zip(x, y)
-                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
-                    hipatches.append(p)
-                elif ugc[:2] == 'PR':
-                    if self.pr_ax is None:
-                        continue
-                    (x, y) = self.pr_map(a[:, 0], a[:, 1])
-                    a = zip(x, y)
-                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
-                    prpatches.append(p)
-                else:
-                    (x, y) = self.map(a[:, 0], a[:, 1])
-                    a = zip(x, y)
-                    p = Polygon(a, fc=c, ec='None', zorder=2, lw=.1)
+                p = Polygon(a, fc=c, ec='k', zorder=z, lw=.1)
+                if z == Z_OVERLAY:
                     patches.append(p)
-
+                if z == Z_OVERLAY2:
+                    patches2.append(p)
+                """
+                mx = polygon.centroid.x
+                my = polygon.centroid.y
+                (x, y) = self.map(mx, my)
+                txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
+                                   ha='center', va='center')
+                txt.set_path_effects([
+                        PathEffects.withStroke(linewidth=2,
+                                               foreground="w")])
+                """
         if len(patches) > 0:
             self.ax.add_collection(
                         PatchCollection(patches, match_original=True))
-        if len(akpatches) > 0 and self.ak_ax is not None:
-            self.ak_ax.add_collection(
-                        PatchCollection(akpatches, match_original=True))
-        if len(hipatches) > 0 and self.hi_ax is not None:
-            self.hi_ax.add_collection(
-                        PatchCollection(hipatches, match_original=True))
-        if len(prpatches) > 0 and self.pr_ax is not None:
-            self.pr_ax.add_collection(
-                        PatchCollection(prpatches, match_original=True))
+        if len(patches2) > 0:
+            self.ax.add_collection(
+                        PatchCollection(patches2, match_original=True))
         if 'cmap' in kwargs:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
@@ -1020,7 +996,7 @@ class MapPlot(object):
                   lblformat='%.0f', **kwargs):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
-        
+
         self.map.readshapefile(shapefile, 'states', ax=self.ax)
         plotted = []
         for nshape, seg in enumerate(self.map.states):

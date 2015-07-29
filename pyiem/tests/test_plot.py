@@ -6,6 +6,24 @@ import datetime
 
 class TestPlot(unittest.TestCase):
 
+    def test_drawugcs(self):
+        """test drawing of UGCS"""
+        m = plot.MapPlot(sector='conus', title='Counties, 3 filled in Iowa')
+        m.fill_ugcs({"IAC001": 10, "IAC003": 20, "IAC005": 30})
+        m.postprocess(filename='/tmp/test_plot_ugcs_counties.png')
+        m = plot.MapPlot(sector='iowa', title='Zones, 3 filled in Iowa')
+        m.fill_ugcs({"IAZ001": 10, "IAZ003": 20, "IAZ005": 30})
+        m.postprocess(filename='/tmp/test_plot_ugcs_zones.png')
+        self.assertTrue(True)
+
+    def test_filter_functions(self):
+        """Make sure our filter functions are doing what we want!"""
+        m = plot.MapPlot(sector='iowa')
+        self.assertTrue(plot.state_filter(m, 'IAC001', dict()))
+        self.assertTrue(not plot.state_filter(m, 'MNC001', dict()))
+        m = plot.MapPlot(cwa='DMX')
+        self.assertTrue(plot.state_filter(m, 'IAC001', dict()))
+
     def test_states(self):
         """Exercise the state plotting routines"""
         m = plot.MapPlot(sector='state', state='CA')
