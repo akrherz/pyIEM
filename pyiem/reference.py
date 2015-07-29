@@ -424,6 +424,8 @@ prodDefinitions = {
 
 """State bounds (buffered by 0.2 degrees)
 
+! BE CAREFUL WITH ALASKA
+
 with data as (
     select state_abbr, st_extent(the_geom) as ext from states
     GROUP by state_abbr)
@@ -490,6 +492,9 @@ state_bounds = {
 }
 
 """WFO bounds
+
+! BE CAREFUL WITH AFC, CHECK THE BOUNDS!
+
 with data as (
     select wfo, st_extent(geom) as ext from ugcs
     GROUP by wfo)
@@ -503,7 +508,7 @@ with data as (
 wfo_bounds = {
  "ABQ": [-109.25, 32.32, -102.80, 37.20],
  "ABR": [-102.20, 43.30, -95.90, 46.22],
- "AFC": [-179.35, 51.02, 179.98, 63.75],
+ "AFC": [-179.35, 51.02, -139.81, 63.75],
  "AFG": [-172.05, 61.02, -140.80, 71.59],
  "AJK": [-144.10, 54.47, -129.78, 60.87],
  "AKQ": [-78.94, 35.61, -74.85, 38.90],
