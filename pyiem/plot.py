@@ -950,6 +950,7 @@ class MapPlot(object):
             filter_func = cwa_filter
         patches = []
         patches2 = []
+        ilabel = kwargs.get('ilabel', False)
         for ugc in ugcs:
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
@@ -960,13 +961,13 @@ class MapPlot(object):
                 if int(ugc[3:]) >= 300:
                     continue
                 c = 'white'
-                # val = '-'
+                val = '-'
                 z = Z_OVERLAY
             else:
                 c = cmap(norm([data[ugc], ]))[0]
-                # val = data[ugc]
+                val = data[ugc]
                 z = Z_OVERLAY2
-            for polygon in ugcdict.get('geom', []):
+            for polyi, polygon in enumerate(ugcdict.get('geom', [])):
                 if polygon.exterior is None:
                     continue
                 a = np.asarray(polygon.exterior)
@@ -977,16 +978,16 @@ class MapPlot(object):
                     patches.append(p)
                 if z == Z_OVERLAY2:
                     patches2.append(p)
-                """
-                mx = polygon.centroid.x
-                my = polygon.centroid.y
-                (x, y) = self.map(mx, my)
-                txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
-                                   ha='center', va='center')
-                txt.set_path_effects([
-                        PathEffects.withStroke(linewidth=2,
-                                               foreground="w")])
-                """
+                if polyi == 0 and ilabel:
+                    mx = polygon.centroid.x
+                    my = polygon.centroid.y
+                    (x, y) = self.map(mx, my)
+                    txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
+                                       ha='center', va='center')
+                    txt.set_path_effects([
+                            PathEffects.withStroke(linewidth=2,
+                                                   foreground="w")])
+
         if len(patches) > 0:
             self.ax.add_collection(
                         PatchCollection(patches, match_original=True))
