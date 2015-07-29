@@ -11,6 +11,25 @@ import datetime
 print("Be sure to run this against Mesonet database and not laptop!")
 
 
+def dump_cwa(fn):
+    pgconn = psycopg2.connect(database='mesosite', host='iemdb',
+                              user='nobody')
+    cursor = pgconn.cursor()
+
+    cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(the_geom, 0.01))
+    from cwa""")
+
+    data = {}
+    for row in cursor:
+        data[row[0]] = dict(geom=loads(str(row[1])))
+        # for polygon in geom:
+        #    data[row[0]].append(np.asarray(polygon.exterior))
+
+    f = open('../pyiem/data/%s' % (fn, ), 'wb')
+    cPickle.dump(data, f, 2)
+    f.close()
+
+
 def dump_ugc(gtype, fn):
     pgconn = psycopg2.connect(database='postgis', host='iemdb',
                               user='nobody')
@@ -41,3 +60,5 @@ dump_ugc('C', 'ugcs_county.pickle')
 dump_ugc('Z', 'ugcs_zone.pickle')
 check_file('ugcs_county.pickle')
 check_file('ugcs_zone.pickle')
+dump_cwa("cwa.pickle")
+check_file('cwa.pickle')

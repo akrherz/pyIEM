@@ -147,6 +147,12 @@ class TestPlot(unittest.TestCase):
         m.postprocess(filename='/tmp/us_plot_example.png')
         m.close()
 
+        m = plot.MapPlot(sector='iowa', axisbg='white')
+        m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
+                    units='NWS Something or Another')
+        m.postprocess(filename='/tmp/iowa_plot_example.png')
+        m.close()
+
     def test_plot3(self):
         """ Exercise climdiv plot API """
         m = plot.MapPlot(sector='iowa')

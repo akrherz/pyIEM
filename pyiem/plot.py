@@ -526,8 +526,6 @@ class MapPlot(object):
                 _a.drawstates(linewidth=1.5, zorder=Z_OVERLAY,
                               color=kwargs.get('statecolor', 'k'))
 
-        if 'cwas' in kwargs:
-            self.drawcwas()
         if not kwargs.get('nologo'):
             self.iemlogo()
         if "title" in kwargs:
@@ -1055,8 +1053,7 @@ class MapPlot(object):
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-    def fill_cwas(self, data, labels={},
-                  shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/cwas',
+    def fill_cwas(self, data, labels=None,
                   bins=np.arange(0, 101, 10),
                   lblformat='%.0f', cmap=None, **kwargs):
         """Add overlay of filled polygons for NWS Forecast Offices.
@@ -1072,84 +1069,64 @@ class MapPlot(object):
           labels (dict, optional): Optional dictionary that follows the
             ``data`` attribute, but hard codes what should be plotted as a
             label.
-          shapefile (str, optional): Location of a CWA shapefile to use for
-            plotting.  Defaults to one provided by IEM code.
           bins (list, optional): List of increasing values to use as bins to
             determine color levels.
           lblformat (str, optional): Format string to use to place labels.
           cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
 
         """
-        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/cwas.shp'
-        if not os.path.isfile(fn):
-            return
+        if labels is None:
+            labels = dict()
         if 'JSJ' in data:
             data['SJU'] = data['JSJ']
         if cmap is None:
             cmap = maue()
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
 
-        self.map.readshapefile(shapefile, 'cwas', ax=self.ax)
-        plotted = []
-        for nshape, seg in enumerate(self.map.cwas):
-            cwa = self.map.cwas_info[nshape]['CWA']
+        cwas = load_pickle_geo('cwa.pickle')
+        for cwa in cwas:
             thismap = self.map
             thisax = self.ax
-            transform = False
-            if cwa not in data:
-                continue
+            val = data.get(cwa)
+            if val is None:
+                c = 'white'
+            else:
+                c = cmap(norm([float(val), ]))[0]
             if cwa in ['AFC', 'AFG', 'AJK']:
                 if self.ak_map is None:
                     continue
                 thismap = self.ak_map
                 thisax = self.ak_ax
-                transform = True
             elif cwa in ['HFO', 'PPG']:
                 if self.hi_map is None:
                     continue
                 thismap = self.hi_map
                 thisax = self.hi_ax
-                transform = True
             elif cwa in ['JSJ', 'SJU']:
                 if self.pr_map is None:
                     continue
                 thismap = self.pr_map
                 thisax = self.pr_ax
-                transform = True
-            val = data.get(cwa)
-            c = cmap(norm([float(val), ]))[0]
-            # Check area in meters... 100,000 x 100,000
-            if self.map.cwas_info[nshape]['CWA'] not in plotted:
-                mx, my = thismap(float(self.map.cwas_info[nshape]['LON']),
-                                 float(self.map.cwas_info[nshape]['LAT']))
-                txt = thisax.text(mx, my, lblformat % (labels.get(cwa, val),),
-                                  zorder=100, ha='center', va='center')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2,
-                                                             foreground="w")])
-                plotted.append(cwa)
-            if transform:
-                seg = np.array(seg)
-                # convert read shapefile back into lat / lon
-                xx, yy = self.map(seg[:, 0], seg[:, 1], inverse=True)
-                xx, yy = thismap(xx, yy)
-                seg = zip(xx, yy)
 
-            poly = Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
-            thisax.add_patch(poly)
+            for polyi, polygon in enumerate(cwas[cwa]['geom']):
+                if polyi == 0:
+                    mx, my = thismap(polygon.centroid.x, polygon.centroid.y)
+                    if val is None:
+                        lbl = '-'
+                    else:
+                        lbl = lblformat % (labels.get(cwa, val),)
+                    txt = thisax.text(mx, my, lbl,
+                                      zorder=100, ha='center', va='center')
+                    txt.set_path_effects([
+                        PathEffects.withStroke(linewidth=2, foreground="w")])
+                a = np.asarray(polygon.exterior)
+                (x, y) = thismap(a[:, 0], a[:, 1])
+                a = zip(x, y)
+                poly = Polygon(a, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
+                thisax.add_patch(poly)
         if 'cmap' in kwargs:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
-
-    def drawcwas(self):
-        ''' Draw CWAS '''
-        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/cwas.shp'
-        if not os.path.isfile(fn):
-            return
-        sys.stderr.write("HERE!")
-        self.map.readshapefile(fn[:-4], 'c')
-        for nshape, seg in enumerate(self.map.c):
-            poly=Polygon(seg, fill=False, ec='k', lw=.8, zorder=Z_POLITICAL)
-            self.ax.add_patch(poly)
 
     def drawcounties(self, color='k'):
         """ Draw counties onto the map (only Iowa at this time)
