@@ -43,7 +43,7 @@ import psycopg2
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
 
-def true_filter(_, _, _):
+def true_filter(bm, key, val):
     """Always return true"""
     return True
 
