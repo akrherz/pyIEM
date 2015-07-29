@@ -1,4 +1,5 @@
-"""plotting interface
+"""Plotting utility for generating maps, windroses and everything else under
+the sun.
 """
 # stdlib
 import cStringIO
@@ -28,7 +29,7 @@ import matplotlib.patheffects as PathEffects
 from matplotlib.collections import PatchCollection
 from matplotlib.artist import Artist
 # Basemap
-from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.basemap import Basemap  #@UnresolvedImport
 #
 import numpy as np
 #
@@ -37,14 +38,12 @@ from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
 #
 import psycopg2
-#
-from shapely.wkb import loads
 
 [Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY, Z_OVERLAY2] = range(1, 7)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
 
-def true_filter(bm, key, val):
+def true_filter(_, _, _):
     """Always return true"""
     return True
 
@@ -368,7 +367,7 @@ def maue():
              "#ffe878", "#ffc03c", "#ffa000", "#ff6000", "#ff3200", "#e11400",
              "#c00000", "#a50000", "#643c32",
              "#785046", "#8c645a", "#b48c82", "#e1beb4", "#f0dcd2", "#ffc8c8",
-             "#f5a0a0", "#f5a0a0", "#e16464", "#c83c3c"]
+             "#f5a0a0", "#e16464", "#c83c3c"]
 
     cmap3 = mpcolors.ListedColormap(cpool, 'maue')
     cmap3.set_over("#000000")
@@ -492,24 +491,24 @@ class MapPlot(object):
                                fix_aspect=False)
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
-                self.pr_ax = plt.axes([0.78,0.055,0.125,0.1], 
-                                      axisbg=(0.4471,0.6235,0.8117))
-                self.hi_ax = plt.axes([0.56,0.055,0.2,0.1], 
-                                      axisbg=(0.4471,0.6235,0.8117))
-                self.ak_ax = plt.axes([0.015,0.055,0.2,0.15], 
-                                      axisbg=(0.4471,0.6235,0.8117))
-                self.pr_map = Basemap(projection='cyl', 
-                                      urcrnrlat=18.6, llcrnrlat=17.5, 
+                self.pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
+                                      axisbg=(0.4471, 0.6235, 0.8117))
+                self.hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
+                                      axisbg=(0.4471, 0.6235, 0.8117))
+                self.ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
+                                      axisbg=(0.4471, 0.6235, 0.8117))
+                self.pr_map = Basemap(projection='cyl',
+                                      urcrnrlat=18.6, llcrnrlat=17.5,
                                       urcrnrlon=-65.0, llcrnrlon=-68.0,
                                       resolution='l', ax=self.pr_ax,
                                       fix_aspect=False)
-                self.ak_map = Basemap(projection='cyl', 
-                                      urcrnrlat=72.1, llcrnrlat=51.08, 
-                                      urcrnrlon=-129.0, llcrnrlon=-179.5, 
+                self.ak_map = Basemap(projection='cyl',
+                                      urcrnrlat=72.1, llcrnrlat=51.08,
+                                      urcrnrlon=-129.0, llcrnrlon=-179.5,
                                       resolution='l', ax=self.ak_ax,
                                       fix_aspect=False)
-                self.hi_map = Basemap(projection='cyl', 
-                                      urcrnrlat=22.5, llcrnrlat=18.5, 
+                self.hi_map = Basemap(projection='cyl',
+                                      urcrnrlat=22.5, llcrnrlat=18.5,
                                       urcrnrlon=-154.0, llcrnrlon=-161.0,
                                       resolution='l', ax=self.hi_ax,
                                       fix_aspect=False)
@@ -532,9 +531,11 @@ class MapPlot(object):
         if not kwargs.get('nologo'):
             self.iemlogo()
         if "title" in kwargs:
-            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94, kwargs.get("title"), fontsize=18) 
+            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94,
+                          kwargs.get("title"), fontsize=18)
         if "subtitle" in kwargs:
-            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91, kwargs.get("subtitle") )
+            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91,
+                          kwargs.get("subtitle"))
 
         if 'nocaption' not in kwargs:
             self.fig.text(0.01, 0.03, ("%s :: generated %s"
@@ -547,12 +548,18 @@ class MapPlot(object):
         plt.close()
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
-        """ Create our magic colorbar! """
+        """Draw the colorbar on the structed plot using `self.cax`
+
+        Args:
+          clevs (list): The levels used in the classification
+          cmap (matplotlib.colormap): The colormap
+          norm (normalize): The value normalizer
+        """
 
         clevlabels = kwargs.get('clevlabels', clevs)
 
-        under = clevs[0]-(clevs[1]-clevs[0])
-        over = clevs[-1]+(clevs[-1]-clevs[-2])
+        under = clevs[0] - (clevs[1] - clevs[0])
+        over = clevs[-1] + (clevs[-1] - clevs[-2])
         blevels = np.concatenate([[under, ], clevs, [over, ]])
         cb2 = mpcolorbar.ColorbarBase(self.cax, cmap=cmap,
                                       norm=norm,
@@ -562,16 +569,16 @@ class MapPlot(object):
                                       spacing='uniform',
                                       orientation='vertical')
         clevstride = int(kwargs.get('clevstride', 1))
-        for i, (lev, lbl) in enumerate(zip(clevs, clevlabels)):
+        for i, (_, lbl) in enumerate(zip(clevs, clevlabels)):
             if i % clevstride != 0:
                 continue
             y = float(i) / (len(clevs) - 1)
-            y2 = float(i+1) / (len(clevs) - 1)
-            dy = (y2 - y) / 2
-            fmt = '%s' if type(lbl) == type('a') else '%g'
-            txt = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
-            txt.set_path_effects([PathEffects.withStroke(linewidth=4,
-                                                         foreground="w")])
+            # y2 = float(i+1) / (len(clevs) - 1)
+            # dy = (y2 - y) / 2
+            fmt = '%s' if isinstance(lbl, str) else '%g'
+            cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center',
+                        bbox=dict(boxstyle='square,pad=0', color='white'))
+        # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
 
         if 'units' in kwargs:
@@ -1180,16 +1187,7 @@ class MapPlot(object):
         ax.barh(np.arange(len(bins)), [1]*len(bins), height=1,
                 color=colorramp(range(len(bins))),
                 ec='None')
-        
-    def makefeature(self):
-        """ Special workflow for feature generation """
-        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
-        bigfn = "%s.png" % (tomorrow.strftime("%y%m%d"),)
-        littlefn = "%s_s.png" % (tomorrow.strftime("%y%m%d"),)
-        
-        plt.savefig(bigfn, dpi=100)
-        plt.savefig(littlefn, dpi=34)
-        
+
     def postprocess(self, view=False, filename=None, web=False,
                     memcache=None, memcachekey=None, memcacheexpire=300,
                     pqstr=None):
@@ -1202,22 +1200,22 @@ class MapPlot(object):
         im2 = im.convert('RGB').convert('P', palette=Image.ADAPTIVE)
         if memcache and memcachekey:
             ram = cStringIO.StringIO()
-            im2.save( ram, format='png')
+            im2.save(ram, format='png')
             ram.seek(0)
             r = ram.read()
             memcache.set(memcachekey, r, time=memcacheexpire)
             sys.stderr.write("memcached key %s set time %s" % (memcachekey,
-                                                    memcacheexpire))
+                                                               memcacheexpire))
         if web:
-            print "Content-Type: image/png\n"
-            im2.save( sys.stdout, format='png' )
+            sys.stdout.write("Content-Type: image/png\n\n")
+            im2.save(sys.stdout, format='png')
             return
-        im2.save( tmpfn , format='PNG')
-        
+        im2.save(tmpfn, format='PNG')
+
         if pqstr is not None:
-            subprocess.call("/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, 
-                                                                   tmpfn), 
-                    shell=True)
+            subprocess.call("/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr,
+                                                                   tmpfn),
+                            shell=True)
         if view:
             subprocess.call("xv %s" % (tmpfn,), shell=True)
         if filename is not None:

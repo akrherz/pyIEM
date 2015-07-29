@@ -2,18 +2,39 @@ import unittest
 import numpy as np
 from pyiem import plot
 import datetime
+import matplotlib.colors as mpcolors
 
 
 class TestPlot(unittest.TestCase):
+
+    def test_colorbar(self):
+        """Run tests against the colorbar algorithm"""
+        m = plot.MapPlot(sector='iowa')
+        cmap = plot.maue()
+        clevs = range(0, 101, 10)
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        m.draw_colorbar(clevs, cmap, norm)
+        m.postprocess(filename='/tmp/test_plot_colorbar1.png')
+        m.close()
+
+        m = plot.MapPlot(sector='iowa')
+        cmap = plot.maue()
+        clevs = range(0, 101, 1)
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        m.draw_colorbar(clevs, cmap, norm, clevstride=10)
+        m.postprocess(filename='/tmp/test_plot_colorbar2.png')
+        m.close()
 
     def test_drawugcs(self):
         """test drawing of UGCS"""
         m = plot.MapPlot(sector='conus', title='Counties, 3 filled in Iowa')
         m.fill_ugcs({"IAC001": 10, "IAC003": 20, "IAC005": 30})
         m.postprocess(filename='/tmp/test_plot_ugcs_counties.png')
+        m.close()
         m = plot.MapPlot(sector='iowa', title='Zones, 3 filled in Iowa')
         m.fill_ugcs({"IAZ001": 10, "IAZ003": 20, "IAZ005": 30})
         m.postprocess(filename='/tmp/test_plot_ugcs_zones.png')
+        m.close()
         self.assertTrue(True)
 
     def test_filter_functions(self):
