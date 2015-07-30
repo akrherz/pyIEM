@@ -1,5 +1,5 @@
 sphinxcontrib-napoleon
-git+https://github.com/matplotlib/basemap.git#egg=basemap >= 1.0.8
+basemap
 matplotlib
 numpy
 scipy
