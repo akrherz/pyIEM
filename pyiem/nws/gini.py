@@ -169,9 +169,9 @@ class GINIFile(object):
                                                           inverse=True)
         logging.info(("lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f "
                       "lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f"),
-                     (self.metadata['lat1'], y0, self.metadata['y1'],
-                      self.metadata['lat_ul'], self.metadata['lat_ur'],
-                      self.metadata['lon_ur'], alpha, self.metadata['dy']))
+                     self.metadata['lat1'], y0, self.metadata['y1'],
+                     self.metadata['lat_ul'], self.metadata['lat_ur'],
+                     self.metadata['lon_ur'], alpha, self.metadata['dy'])
 
     def init_mercator(self):
         """
