@@ -397,7 +397,10 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
       mymap (MapPlot): The MapPlot instance
       geo_provider (dict): The dictionary of keys and geometries
       data (dict): The dictionary of keys and values used for picking colors
-      **kwargs (optional): Other things needed for mapping
+      **kwargs (Optional): Other things needed for mapping
+        ilabel (Optional[bool]): should values be labelled? Defaults to `False`
+        plotmissing (bool): should geometries not included in the `data`
+        be mapped? Defaults to `True`
     """
     cmap = kwargs.get('cmap', maue())
     ilabel = kwargs.get('ilabel', False)
@@ -405,9 +408,12 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     norm = mpcolors.BoundaryNorm(bins, cmap.N)
     lblformat = kwargs.get('lblformat', '%s')
     labels = kwargs.get('labels', dict())
+    plotmissing = kwargs.get('plotmissing', True)
     for polykey, polydict in geo_provider.iteritems():
-        val = data.get(polykey, '-')
-        if val == '-':
+        val = data.get(polykey, None)
+        if val is None:
+            if not plotmissing:
+                continue
             lbl = labels.get(polykey, '-')
             c = 'white'
         else:
