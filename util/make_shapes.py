@@ -56,13 +56,14 @@ def dump_cwa(fn):
                               user='nobody')
     cursor = pgconn.cursor()
 
-    cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(the_geom, 0.01)),
-    ST_x(ST_Centroid(the_geom)), ST_Y(ST_Centroid(the_geom))
+    cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(geom, 0.01)),
+    ST_x(ST_Centroid(geom)), ST_Y(ST_Centroid(geom)), region
     from cwa""")
 
     data = {}
     for row in cursor:
-        data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3])
+        data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3],
+                            region=row[4])
         # for polygon in geom:
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
