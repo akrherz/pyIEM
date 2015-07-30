@@ -11,17 +11,58 @@ import datetime
 print("Be sure to run this against Mesonet database and not laptop!")
 
 
+def dump_states(fn):
+    pgconn = psycopg2.connect(database='postgis', host='iemdb',
+                              user='nobody')
+    cursor = pgconn.cursor()
+
+    cursor.execute(""" SELECT state_abbr,
+    ST_asEWKB(ST_Simplify(the_geom, 0.01)),
+    ST_x(ST_Centroid(the_geom)), ST_Y(ST_Centroid(the_geom)) from states""")
+
+    data = {}
+    for row in cursor:
+        data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3])
+        # for polygon in geom:
+        #    data[row[0]].append(np.asarray(polygon.exterior))
+
+    f = open('../pyiem/data/%s' % (fn, ), 'wb')
+    cPickle.dump(data, f, 2)
+    f.close()
+
+
+def dump_climdiv(fn):
+    pgconn = psycopg2.connect(database='postgis', host='iemdb',
+                              user='nobody')
+    cursor = pgconn.cursor()
+
+    cursor.execute(""" SELECT iemid, ST_asEWKB(geom),
+    ST_x(ST_Centroid(geom)), ST_Y(ST_Centroid(geom))
+    from climdiv""")
+
+    data = {}
+    for row in cursor:
+        data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3])
+        # for polygon in geom:
+        #    data[row[0]].append(np.asarray(polygon.exterior))
+
+    f = open('../pyiem/data/%s' % (fn, ), 'wb')
+    cPickle.dump(data, f, 2)
+    f.close()
+
+
 def dump_cwa(fn):
     pgconn = psycopg2.connect(database='mesosite', host='iemdb',
                               user='nobody')
     cursor = pgconn.cursor()
 
-    cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(the_geom, 0.01))
+    cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(the_geom, 0.01)),
+    ST_x(ST_Centroid(the_geom)), ST_Y(ST_Centroid(the_geom))
     from cwa""")
 
     data = {}
     for row in cursor:
-        data[row[0]] = dict(geom=loads(str(row[1])))
+        data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3])
         # for polygon in geom:
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
@@ -35,12 +76,14 @@ def dump_ugc(gtype, fn):
                               user='nobody')
     cursor = pgconn.cursor()
 
-    cursor.execute(""" SELECT ugc, wfo, ST_asEWKB(simple_geom) from ugcs
+    cursor.execute(""" SELECT ugc, wfo, ST_asEWKB(simple_geom),
+        ST_x(centroid), ST_Y(centroid) from ugcs
         WHERE end_ts is null and substr(ugc, 3, 1) = %s""", (gtype,))
 
     data = {}
     for row in cursor:
-        data[row[0]] = dict(cwa=row[1][:3], geom=loads(str(row[2])))
+        data[row[0]] = dict(cwa=row[1][:3], geom=loads(str(row[2])),
+                            lon=row[3], lat=row[4])
         # for polygon in geom:
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
@@ -62,3 +105,7 @@ check_file('ugcs_county.pickle')
 check_file('ugcs_zone.pickle')
 dump_cwa("cwa.pickle")
 check_file('cwa.pickle')
+dump_climdiv("climdiv.pickle")
+check_file("climdiv.pickle")
+dump_states('us_states.pickle')
+check_file('us_states.pickle')

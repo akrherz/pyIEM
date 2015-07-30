@@ -7,6 +7,29 @@ import matplotlib.colors as mpcolors
 
 class TestPlot(unittest.TestCase):
 
+    def test_fillstates(self):
+        """Can we fill states"""
+        data = {'AK': 10, 'HI': 30, 'IA': 40, 'NY': 80}
+        m = plot.MapPlot(sector='nws', title='Fill States')
+        m.fill_states(data, ilabel=True)
+        m.postprocess(filename='/tmp/test_plot_states.png')
+        m.close()
+
+    def test_drawcounties(self):
+        """draw counties on the map"""
+        m = plot.MapPlot(sector='midwest', title='Counties')
+        m.drawcounties()
+        m.postprocess(filename='/tmp/test_plot_counties.png')
+        m.close()
+
+    def test_climdiv(self):
+        """Run tests agains the fill_climdiv"""
+        m = plot.MapPlot(sector='conus', title="Climate Divisions")
+        data = {'IAC001':  10, 'MNC001': 20, 'NMC001': 30}
+        m.fill_climdiv(data, ilabel=True)
+        m.postprocess(filename='/tmp/test_plot_climdiv.png')
+        m.close()
+
     def test_colorbar(self):
         """Run tests against the colorbar algorithm"""
         m = plot.MapPlot(sector='iowa')
@@ -135,7 +158,7 @@ class TestPlot(unittest.TestCase):
         """ Exercise the API """
         m = plot.MapPlot(sector='midwest')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40},
-                    units='midwest')
+                    units='no units')
         m.postprocess(filename='/tmp/midwest_plot_example.png')
         m.close()
 
@@ -143,7 +166,7 @@ class TestPlot(unittest.TestCase):
         """ Exercise NWS plot API """
         m = plot.MapPlot(sector='nws', axisbg='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
-                    units='NWS Something or Another')
+                    units='NWS Something or Another', ilabel=True)
         m.postprocess(filename='/tmp/us_plot_example.png')
         m.close()
 

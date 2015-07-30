@@ -1,5 +1,19 @@
+# -*- coding: utf-8 -*-
 """Plotting utility for generating maps, windroses and everything else under
 the sun.
+
+This module provides a wrapper around `Basemap` and `windrose` packages.  It
+tries to be general so to work for others, but may contain some unfortunate
+hard coded values.  Bad daryl!
+
+Example:
+    Here is a basic example of usage.
+
+    >>> from pyiem.plot import MapPlot
+    >>> m = MapPlot(sector='conus', title='My Fancy Title')
+    >>> m.postprocess(filename='myplot.png')
+    >>> m.close()
+
 """
 # stdlib
 import cStringIO
@@ -377,6 +391,52 @@ def maue():
     return cmap3
 
 
+def polygon_fill(mymap, geo_provider, data, **kwargs):
+    """Generalized function for overlaying filled polygons on the map
+
+    Args:
+      mymap (MapPlot): The MapPlot instance
+      geo_provider (dict): The dictionary of keys and geometries
+      data (dict): The dictionary of keys and values used for picking colors
+      **kwargs (optional): Other things needed for mapping
+    """
+    cmap = kwargs.get('cmap', maue())
+    ilabel = kwargs.get('ilabel', False)
+    bins = kwargs.get('bins', np.arange(0, 101, 10))
+    norm = mpcolors.BoundaryNorm(bins, cmap.N)
+    lblformat = kwargs.get('lblformat', '%s')
+    labels = kwargs.get('labels', dict())
+    for polykey, polydict in geo_provider.iteritems():
+        val = data.get(polykey, '-')
+        if val == '-':
+            lbl = labels.get(polykey, '-')
+            c = 'white'
+        else:
+            lbl = labels.get(polykey, lblformat % (val, ))
+            c = cmap(norm([val, ]))[0]
+        for polyi, polygon in enumerate(polydict.get('geom', [])):
+            if polygon.exterior is None:
+                continue
+            a = np.asarray(polygon.exterior)
+            for themap in mymap.maps:
+                (x, y) = themap(a[:, 0], a[:, 1])
+                a2 = zip(x, y)
+                p = Polygon(a2, fc=c, ec='k', zorder=Z_FILL, lw=.1)
+                themap.ax.add_patch(p)
+                if ilabel and polyi == 0:
+                    mx = polydict.get('lon', polygon.centroid.x)
+                    my = polydict.get('lat', polygon.centroid.y)
+                    (x, y) = themap(mx, my)
+                    txt = themap.ax.text(x, y, lbl, zorder=100, clip_on=True,
+                                         ha='center', va='center')
+                    txt.set_path_effects([
+                        PathEffects.withStroke(linewidth=2, foreground="w")])
+
+    kwargs.pop('cmap', None)
+    kwargs.pop('bins', None)
+    mymap.draw_colorbar(bins, cmap, norm, **kwargs)
+
+
 class MapPlot(object):
     """An object representing a basemap plot.
 
@@ -405,115 +465,102 @@ class MapPlot(object):
                            axisbg=(0.4471, 0.6235, 0.8117))
         self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                             yticks=[], xticks=[])
-        self.sector = sector
-        self.ak_map = None
-        self.ak_ax = None
-        self.hi_map = None
-        self.hi_ax = None
-        self.pr_map = None
-        self.pr_ax = None
+        # Storage of basemaps within this plot
+        self.maps = []
         self.state = None
         self.cwa = None
+        self.sector = sector
 
         if self.sector == 'iowa':
             self.state = 'IA'
-            self.map = Basemap(projection='merc', fix_aspect=False,
-                               urcrnrlat=reference.IA_NORTH,
-                               llcrnrlat=reference.IA_SOUTH,
-                               urcrnrlon=reference.IA_EAST,
-                               llcrnrlon=reference.IA_WEST,
-                               lat_0=45., lon_0=-92., lat_ts=42.,
-                               resolution='i', ax=self.ax)
+            bm = Basemap(projection='merc', fix_aspect=False,
+                         urcrnrlat=reference.IA_NORTH,
+                         llcrnrlat=reference.IA_SOUTH,
+                         urcrnrlon=reference.IA_EAST,
+                         llcrnrlon=reference.IA_WEST,
+                         lat_0=45., lon_0=-92., lat_ts=42.,
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'cwa':
             self.cwa = kwargs.get('cwa', 'DMX')
-            self.map = Basemap(projection='merc', fix_aspect=True,
-                               urcrnrlat=reference.wfo_bounds[self.cwa][3],
-                               llcrnrlat=reference.wfo_bounds[self.cwa][1],
-                               urcrnrlon=reference.wfo_bounds[self.cwa][2],
-                               llcrnrlon=reference.wfo_bounds[self.cwa][0],
-                               resolution='i', ax=self.ax)
+            bm = Basemap(projection='merc', fix_aspect=True,
+                         urcrnrlat=reference.wfo_bounds[self.cwa][3],
+                         llcrnrlat=reference.wfo_bounds[self.cwa][1],
+                         urcrnrlon=reference.wfo_bounds[self.cwa][2],
+                         llcrnrlon=reference.wfo_bounds[self.cwa][0],
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
-            self.map = Basemap(projection='merc', fix_aspect=True,
-                               urcrnrlat=reference.state_bounds[self.state][3],
-                               llcrnrlat=reference.state_bounds[self.state][1],
-                               urcrnrlon=reference.state_bounds[self.state][2],
-                               llcrnrlon=reference.state_bounds[self.state][0],
-                               resolution='i', ax=self.ax)
-        elif self.sector == 'dsm':
-            self.map = Basemap(projection='merc', fix_aspect=False,
-                               urcrnrlat=42.1,
-                               llcrnrlat=41.2,
-                               urcrnrlon=-93.1,
-                               llcrnrlon=-94.2,
-                               lat_0=45., lon_0=-92., lat_ts=42.,
-                               resolution='i', ax=self.ax)
-        elif self.sector == 'ames':
-            self.map = Basemap(projection='merc', fix_aspect=False,
-                               urcrnrlat=42.085,
-                               llcrnrlat=41.965,
-                               urcrnrlon=-93.55,
-                               llcrnrlon=-93.7,
-                               lat_0=45., lon_0=-92., lat_ts=42.,
-                               resolution='i', ax=self.ax)
+            bm = Basemap(projection='merc', fix_aspect=True,
+                         urcrnrlat=reference.state_bounds[self.state][3],
+                         llcrnrlat=reference.state_bounds[self.state][1],
+                         urcrnrlon=reference.state_bounds[self.state][2],
+                         llcrnrlon=reference.state_bounds[self.state][0],
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'midwest':
-            self.map = Basemap(projection='merc', fix_aspect=False,
-                               urcrnrlat=reference.MW_NORTH,
-                               llcrnrlat=reference.MW_SOUTH,
-                               urcrnrlon=reference.MW_EAST,
-                               llcrnrlon=reference.MW_WEST,
-                               lat_0=45., lon_0=-92., lat_ts=42.,
-                               resolution='i', ax=self.ax)
+            bm = Basemap(projection='merc', fix_aspect=False,
+                         urcrnrlat=reference.MW_NORTH,
+                         llcrnrlat=reference.MW_SOUTH,
+                         urcrnrlon=reference.MW_EAST,
+                         llcrnrlon=reference.MW_WEST,
+                         lat_0=45., lon_0=-92., lat_ts=42.,
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'custom':
-            self.map = Basemap(projection='merc', fix_aspect=False,
-                               urcrnrlat=kwargs.get('north'),
-                               llcrnrlat=kwargs.get('south'),
-                               urcrnrlon=kwargs.get('east'),
-                               llcrnrlon=kwargs.get('west'),
-                               lat_0=45., lon_0=-92., lat_ts=42.,
-                               resolution='i', ax=self.ax)
+            bm = Basemap(projection='merc', fix_aspect=False,
+                         urcrnrlat=kwargs.get('north'),
+                         llcrnrlat=kwargs.get('south'),
+                         urcrnrlon=kwargs.get('east'),
+                         llcrnrlon=kwargs.get('west'),
+                         lat_0=45., lon_0=-92., lat_ts=42.,
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'north_america':
-            self.map = Basemap(llcrnrlon=-145.5, llcrnrlat=1.,
-                               urcrnrlon=-2.566, urcrnrlat=46.352,
-                               rsphere=(6378137.00, 6356752.3142),
-                               resolution='l', area_thresh=1000.,
-                               projection='lcc',
-                               lat_1=50., lon_0=-107.,
-                               ax=self.ax, fix_aspect=False)
+            bm = Basemap(llcrnrlon=-145.5, llcrnrlat=1.,
+                         urcrnrlon=-2.566, urcrnrlat=46.352,
+                         rsphere=(6378137.00, 6356752.3142),
+                         resolution='l', area_thresh=1000.,
+                         projection='lcc',
+                         lat_1=50., lon_0=-107.,
+                         ax=self.ax, fix_aspect=False)
+            self.maps.append(bm)
 
         elif self.sector in ['conus', 'nws']:
-            self.map = Basemap(projection='stere', lon_0=-105.0, lat_0=90.,
-                               lat_ts=60.0,
-                               llcrnrlat=23.47, urcrnrlat=45.44,
-                               llcrnrlon=-118.67, urcrnrlon=-64.52,
-                               rsphere=6371200., resolution='l',
-                               area_thresh=10000, ax=self.ax,
-                               fix_aspect=False)
+            bm = Basemap(projection='stere', lon_0=-105.0, lat_0=90.,
+                         lat_ts=60.0,
+                         llcrnrlat=23.47, urcrnrlat=45.44,
+                         llcrnrlon=-118.67, urcrnrlon=-64.52,
+                         rsphere=6371200., resolution='l',
+                         area_thresh=10000, ax=self.ax,
+                         fix_aspect=False)
+            self.maps.append(bm)
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
-                self.pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
-                                      axisbg=(0.4471, 0.6235, 0.8117))
-                self.hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
-                                      axisbg=(0.4471, 0.6235, 0.8117))
-                self.ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
-                                      axisbg=(0.4471, 0.6235, 0.8117))
-                self.pr_map = Basemap(projection='cyl',
-                                      urcrnrlat=18.6, llcrnrlat=17.5,
-                                      urcrnrlon=-65.0, llcrnrlon=-68.0,
-                                      resolution='l', ax=self.pr_ax,
-                                      fix_aspect=False)
-                self.ak_map = Basemap(projection='cyl',
-                                      urcrnrlat=72.1, llcrnrlat=51.08,
-                                      urcrnrlon=-129.0, llcrnrlon=-179.5,
-                                      resolution='l', ax=self.ak_ax,
-                                      fix_aspect=False)
-                self.hi_map = Basemap(projection='cyl',
-                                      urcrnrlat=22.5, llcrnrlat=18.5,
-                                      urcrnrlon=-154.0, llcrnrlon=-161.0,
-                                      resolution='l', ax=self.hi_ax,
-                                      fix_aspect=False)
+                pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
+                                 axisbg=(0.4471, 0.6235, 0.8117))
+                hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
+                                 axisbg=(0.4471, 0.6235, 0.8117))
+                ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
+                                 axisbg=(0.4471, 0.6235, 0.8117))
+                self.maps.append(Basemap(projection='cyl',
+                                         urcrnrlat=18.6, llcrnrlat=17.5,
+                                         urcrnrlon=-65.0, llcrnrlon=-68.0,
+                                         resolution='l', ax=pr_ax,
+                                         fix_aspect=False))
+                self.maps.append(Basemap(projection='cyl',
+                                         urcrnrlat=72.1, llcrnrlat=51.08,
+                                         urcrnrlon=-129.0, llcrnrlon=-179.5,
+                                         resolution='l', ax=ak_ax,
+                                         fix_aspect=False))
+                self.maps.append(Basemap(projection='cyl',
+                                         urcrnrlat=22.5, llcrnrlat=18.5,
+                                         urcrnrlon=-154.0, llcrnrlon=-161.0,
+                                         resolution='l', ax=hi_ax,
+                                         fix_aspect=False))
 
-        for _a in [self.map, self.pr_map, self.ak_map, self.hi_map]:
+        for _a in self.maps:
             if _a is None:
                 continue
             _a.fillcontinents(color=kwargs.get('axisbg',
@@ -540,6 +587,8 @@ class MapPlot(object):
                                        ) % (
                     kwargs.get('caption', 'Iowa Environmental Mesonet'),
                     datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
+
+        self.map = self.maps[0]
 
     def close(self):
         ''' Close the figure in the case of batch processing '''
@@ -695,12 +744,6 @@ class MapPlot(object):
                 continue
             thismap = self.map
             thisax = self.ax
-            if o < -125 and a > 40 and self.ak_map is not None:
-                thismap = self.ak_map
-                thisax = self.ak_ax
-            elif o < -125 and a < 40 and self.hi_map is not None:
-                thismap = self.hi_map
-                thisax = self.hi_ax
 
             # compute the pixel coordinate of this data point
             (x, y) = thismap(o, a)
@@ -747,30 +790,36 @@ class MapPlot(object):
             white_glows.set_zorder(t[0].get_zorder()-0.1)
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
-        """ Plot scatter points with some colorized symbology """
+        """Draw points on the map
+
+        Args:
+          lons (list): longitude values
+          lats (list): latitude values
+          vals (list): Data values for the points to use for colormapping
+          clevs (list): Levels to use for ramp
+          **kwargs: additional options
+        """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        colors = cmap( norm(vals) )
-        x,y = self.map(lons, lats)
+        colors = cmap(norm(vals))
+        (x, y) = self.map(lons, lats)
         self.ax.scatter(x, y, c=colors, edgecolors=colors)
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
+        kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
         """ hexbin wrapper """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        
+
         x, y = self.map(lons, lats)
         self.map.hexbin(x, y, C=vals, norm=norm,
-                               cmap=cmap, zorder=Z_FILL)
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
+                        cmap=cmap, zorder=Z_FILL)
+        kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
-        if kwargs.has_key('units'):
+        if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
@@ -778,17 +827,16 @@ class MapPlot(object):
         """ pcolormesh wrapper """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        
+
         self.map.pcolormesh(lons, lats, vals, norm=norm,
-                               cmap=cmap, zorder=Z_FILL, latlon=True)
+                            cmap=cmap, zorder=Z_FILL, latlon=True)
 
         if kwargs.get("clip_on", True):
             self.draw_mask()
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
+        kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
-        if kwargs.has_key('units'):
+        if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
@@ -800,15 +848,15 @@ class MapPlot(object):
         # in lon,lat
         ccw = load_bounds('%s_ccw' % (self.sector,))
         # in map coords
-        x,y = self.map(ccw[:,0], ccw[:,1])
-        mask_outside_polygon(zip(x,y), ax=self.ax)
+        (x, y) = self.map(ccw[:, 0], ccw[:, 1])
+        mask_outside_polygon(zip(x, y), ax=self.ax)
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf """
-        if type(lons) == type([]):
-            lons = np.array( lons )
-            lats = np.array( lats )
-            vals = np.array( vals )
+        if isinstance(lons, list):
+            lons = np.array(lons)
+            lats = np.array(lats)
+            vals = np.array(vals)
         if vals.ndim == 1:
             # We need to grid, get current plot bounds in display proj
             # Careful here as a rotated projection may have maxes not in ul
@@ -825,99 +873,46 @@ class MapPlot(object):
             xi = np.linspace(minx, maxx, 100)
             yi = np.linspace(miny, maxy, 100)
             xi, yi = np.meshgrid(xi, yi)
-            #vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
-            #rbfi = Rbf(lons, lats, vals, function='cubic')
+            # vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
+            # rbfi = Rbf(lons, lats, vals, function='cubic')
             nn = NearestNDInterpolator((lons, lats), vals)
             vals = nn(xi, yi)
-            #vals = rbfi(xi, yi)
+            # vals = rbfi(xi, yi)
             lons = xi
             lats = yi
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
-        
+
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-                
+
         x, y = self.map(lons, lats)
         from scipy.signal import convolve2d
         window = np.ones((6, 6))
-        vals = convolve2d(vals, window / window.sum(), mode='same', 
+        vals = convolve2d(vals, window / window.sum(), mode='same',
                           boundary='symm')
-        #vals = maskoceans(lons, lats, vals, resolution='h')
+        # vals = maskoceans(lons, lats, vals, resolution='h')
         self.map.contourf(x, y, vals, clevs,
                           cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
         self.draw_mask()
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
+        kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
-        if kwargs.has_key('units'):
+        if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
 
-    def fill_climdiv(self, data, 
-                    shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv',
-                  bins=np.arange(0,101,10),
-                  lblformat='%.0f', **kwargs):
-        fn = '/mesonet/data/gis/static/shape/4326/nws/0.01/climdiv.shp'
-        if not os.path.isfile(fn):
-            return
-        cmap = kwargs.get('cmap', maue())
-        norm = mpcolors.BoundaryNorm(bins, cmap.N)
-        #m = cm.get_cmap('jet')
-        self.map.readshapefile(shapefile, 'climdiv', ax=self.ax)
-        plotted = []
-        for nshape, seg in enumerate(self.map.climdiv):
-            state = self.map.climdiv_info[nshape]['ST_ABBRV']
-            thismap = self.map
-            thisax = self.ax
-            transform = False
-            if state in ['AK',]:
-                if self.ak_map is None:
-                    continue
-                thismap = self.ak_map
-                thisax = self.ak_ax
-                transform = True
-            elif state in ['HI']:
-                if self.hi_map is None:
-                    continue
-                thismap = self.hi_map
-                thisax = self.hi_ax
-                transform = True
-            elif state in ['PR',]:
-                if self.pr_map is None:
-                    continue
-                thismap = self.pr_map
-                thisax = self.pr_ax
-                transform = True
-            clidiv = "%sC0%s" % (state, 
-                                  self.map.climdiv_info[nshape]['CD_2DIG'])
-            if clidiv not in data:
-                continue
-            val = data.get(clidiv)
-            c = cmap(norm([val, ]))[0]
-            # Check area in meters... 100,000 x 100,000
-            if clidiv not in plotted:
-                seg = np.array( seg )
-                mx =  (np.max(seg[:,0]) + np.min(seg[:,0])) / 2.0
-                my =  (np.max(seg[:,1]) + np.min(seg[:,1])) / 2.0
-                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
-                         ha='center', va='center')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                         foreground="w")])
-                plotted.append( clidiv )
-            if transform:
-                seg = np.array( seg )
-                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
-                xx, yy = thismap(xx, yy)
-                seg = zip(xx, yy)
+    def fill_climdiv(self, data, **kwargs):
+        """Fill climate divisions using provided data dictionary
 
-            poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
-            thisax.add_patch(poly)
-
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
-        self.draw_colorbar(bins, cmap, norm, **kwargs)
+        Args:
+          data (dict): A dictionary of climate division IDs and values
+          bins (optional[list]): a list of values for classification
+          lblformat (optional[str]): a format specifier to use
+          **kwargs (optional): other values
+        """
+        clidict = load_pickle_geo('climdiv.pickle')
+        polygon_fill(self, clidict, data, **kwargs)
 
     def fill_ugcs(self, data, bins=np.arange(0, 101, 10), **kwargs):
         """Overlay filled UGC geometries
@@ -996,66 +991,12 @@ class MapPlot(object):
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
 
-    def fill_states(self, data, 
-                    shapefile='/mesonet/data/gis/static/shape/4326/nws/0.01/states',
-                  bins=np.arange(0,101,10),
-                  lblformat='%.0f', **kwargs):
-        cmap = kwargs.get('cmap', maue())
-        norm = mpcolors.BoundaryNorm(bins, cmap.N)
+    def fill_states(self, data, **kwargs):
+        """Add overlay of filled state polygons"""
+        states = load_pickle_geo('us_states.pickle')
+        polygon_fill(self, states, data, **kwargs)
 
-        self.map.readshapefile(shapefile, 'states', ax=self.ax)
-        plotted = []
-        for nshape, seg in enumerate(self.map.states):
-            state = self.map.states_info[nshape]['STATE']
-            thismap = self.map
-            thisax = self.ax
-            transform = False
-            if state in ['AK',]:
-                if self.ak_map is None:
-                    continue
-                thismap = self.ak_map
-                thisax = self.ak_ax
-                transform = True
-            elif state in ['HI']:
-                if self.hi_map is None:
-                    continue
-                thismap = self.hi_map
-                thisax = self.hi_ax
-                transform = True
-            elif state in ['PR',]:
-                if self.pr_map is None:
-                    continue
-                thismap = self.pr_map
-                thisax = self.pr_ax
-                transform = True
-            if not data.has_key( state ):
-                continue
-            val = data.get( state )
-            c = cmap( norm([val,]) )[0]
-            # Check area in meters... 100,000 x 100,000
-            if state not in plotted:
-                mx, my = thismap(self.map.states_info[nshape]['LON'],
-                                  self.map.states_info[nshape]['LAT'])
-                txt = thisax.text(mx, my, lblformat % (val,), zorder=100,
-                         ha='center', va='center')
-                txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                         foreground="w")])
-                plotted.append( state )
-            if transform:
-                seg = np.array( seg )
-                xx, yy = self.map( seg[:,0], seg[:,1] , inverse=True)
-                xx, yy = thismap(xx, yy)
-                seg = zip(xx, yy)
-                
-            poly=Polygon(seg, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
-            thisax.add_patch(poly)
-        if kwargs.has_key('cmap'):
-            del kwargs['cmap']
-        self.draw_colorbar(bins, cmap, norm, **kwargs)
-
-    def fill_cwas(self, data, labels=None,
-                  bins=np.arange(0, 101, 10),
-                  lblformat='%.0f', cmap=None, **kwargs):
+    def fill_cwas(self, data, **kwargs):
         """Add overlay of filled polygons for NWS Forecast Offices.
 
         Method adds a colorized overlay of NWS Forecast Offices based on a
@@ -1075,71 +1016,24 @@ class MapPlot(object):
           cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
 
         """
-        if labels is None:
-            labels = dict()
-        if 'JSJ' in data:
-            data['SJU'] = data['JSJ']
-        if cmap is None:
-            cmap = maue()
-        norm = mpcolors.BoundaryNorm(bins, cmap.N)
-
         cwas = load_pickle_geo('cwa.pickle')
-        for cwa in cwas:
-            thismap = self.map
-            thisax = self.ax
-            val = data.get(cwa)
-            if val is None:
-                c = 'white'
-            else:
-                c = cmap(norm([float(val), ]))[0]
-            if cwa in ['AFC', 'AFG', 'AJK']:
-                if self.ak_map is None:
-                    continue
-                thismap = self.ak_map
-                thisax = self.ak_ax
-            elif cwa in ['HFO', 'PPG']:
-                if self.hi_map is None:
-                    continue
-                thismap = self.hi_map
-                thisax = self.hi_ax
-            elif cwa in ['JSJ', 'SJU']:
-                if self.pr_map is None:
-                    continue
-                thismap = self.pr_map
-                thisax = self.pr_ax
-
-            for polyi, polygon in enumerate(cwas[cwa]['geom']):
-                if polyi == 0:
-                    mx, my = thismap(polygon.centroid.x, polygon.centroid.y)
-                    if val is None:
-                        lbl = '-'
-                    else:
-                        lbl = lblformat % (labels.get(cwa, val),)
-                    txt = thisax.text(mx, my, lbl,
-                                      zorder=100, ha='center', va='center')
-                    txt.set_path_effects([
-                        PathEffects.withStroke(linewidth=2, foreground="w")])
-                a = np.asarray(polygon.exterior)
-                (x, y) = thismap(a[:, 0], a[:, 1])
-                a = zip(x, y)
-                poly = Polygon(a, fc=c, ec='k', lw=.4, zorder=Z_POLITICAL)
-                thisax.add_patch(poly)
-        if 'cmap' in kwargs:
-            del kwargs['cmap']
-        self.draw_colorbar(bins, cmap, norm, **kwargs)
+        polygon_fill(self, cwas, data, **kwargs)
 
     def drawcounties(self, color='k'):
-        """ Draw counties onto the map (only Iowa at this time)
+        """ Draw counties onto the map
 
         Args:
           color (color,optional): line color to use
-
         """
-        self.map.readshapefile('/mesonet/data/gis/static/shape/4326/iowa/iacounties', 'c')
-        for nshape, seg in enumerate(self.map.c):
-            poly = Polygon(seg, fill=False, ec=color, lw=.4,
-                           zorder=Z_POLITICAL)
-            self.ax.add_patch(poly)
+        ugcdict = load_pickle_geo("ugcs_county.pickle")
+        for ugc in ugcdict:
+            for polygon in ugcdict[ugc].get('geom', []):
+                a = np.asarray(polygon.exterior)
+                (x, y) = self.map(a[:, 0], a[:, 1])
+                a = zip(x, y)
+                poly = Polygon(a, fill=False, ec=color, lw=.4,
+                               zorder=Z_POLITICAL)
+                self.ax.add_patch(poly)
 
     def iemlogo(self):
         """ Draw a logo """
@@ -1150,21 +1044,6 @@ class MapPlot(object):
         ax3 = plt.axes([0.02, 0.89, 0.1, 0.1], frameon=False,
                        axisbg=(0.4471, 0.6235, 0.8117), yticks=[], xticks=[])
         ax3.imshow(logo, origin='upper')
-
-    def make_colorbar(self, bins, colorramp):
-        """ Manual Color Bar """
-        ax = plt.axes([0.92, 0.1, 0.07, 0.8], frameon=False,
-                      yticks=[], xticks=[])
-        colors = []
-        for i in range(len(bins)):
-            colors.append( rgb2hex(colorramp(i)) )
-            txt = ax.text(0.5, i, "%s" % (bins[i],), ha='center', va='center',
-                          color='w')
-            txt.set_path_effects([PathEffects.withStroke(linewidth=2, 
-                                                     foreground="k")])
-        ax.barh(np.arange(len(bins)), [1]*len(bins), height=1,
-                color=colorramp(range(len(bins))),
-                ec='None')
 
     def postprocess(self, view=False, filename=None, web=False,
                     memcache=None, memcachekey=None, memcacheexpire=300,
@@ -1317,31 +1196,35 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
     if justdata:
         sys.stdout.write('Content-type: text/plain\n\n')
         dir_edges, var_bins, table = histogram(drct, sped,
-                                        np.asarray(windunits[units]['bins']), 
-                                        nsector, normed=True)
+                                               np.asarray(
+                                                windunits[units]['bins']),
+                                               nsector, normed=True)
         sys.stdout.write(("# Windrose Data Table (Percent Frequency) "
-                          +"for %s (%s)\n") % (sname, station))
+                          "for %s (%s)\n") % (sname, station))
         sys.stdout.write("# Observation Count: %s\n" % (len(sped),))
-        sys.stdout.write("# Period: %s - %s\n" % (minvalid.strftime("%-d %b %Y"),
-                                                  maxvalid.strftime("%-d %b %Y")
-                                                  ))
+        sys.stdout.write(("# Period: %s - %s\n"
+                          ) % (minvalid.strftime("%-d %b %Y"),
+                               maxvalid.strftime("%-d %b %Y")))
         sys.stdout.write("# Hour Limiter: %s\n" % (hour_limit_text,))
         sys.stdout.write("# Month Limiter: %s\n" % (month_limit_text,))
         sys.stdout.write("# Wind Speed Units: %s\n" % (
                                                 windunits[units]['label'],))
-        sys.stdout.write("# Generated %s UTC, contact: akrherz@iastate.edu\n" % (
-                    datetime.datetime.utcnow().strftime("%d %b %Y %H:%M"),))
+        sys.stdout.write(("# Generated %s UTC, contact: akrherz@iastate.edu\n"
+                          ) % (
+            datetime.datetime.utcnow().strftime("%d %b %Y %H:%M"),))
         sys.stdout.write("# First value in table is CALM\n")
         sys.stdout.write("       ,")
         for j in range(len(var_bins)-1):
-            sys.stdout.write(" %4.1f-%4.1f," % (var_bins[j], var_bins[j+1]-0.1))
+            sys.stdout.write(" %4.1f-%4.1f," % (var_bins[j],
+                                                var_bins[j+1]-0.1))
         sys.stdout.write("\n")
-        dir_edges2 = np.concatenate((np.array(dir_edges), 
-                            [dir_edges[-1] + (dir_edges[-1] - dir_edges[-2]),]))
+        dir_edges2 = np.concatenate((np.array(dir_edges),
+                                     [dir_edges[-1] +
+                                      (dir_edges[-1] - dir_edges[-2]), ]))
         for i in range(len(dir_edges2)-1):
             sys.stdout.write("%03i-%03i," % (dir_edges2[i], dir_edges2[i+1]))
             for j in range(len(var_bins)-1):
-                sys.stdout.write(" %9.3f," % (table[j,i],))
+                sys.stdout.write(" %9.3f," % (table[j, i], ))
             sys.stdout.write("\n")
         return
 
@@ -1350,15 +1233,16 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
     rect = [0.1, 0.1, 0.8, 0.8]
     ax = WindroseAxes(fig, rect, axisbg='w')
     fig.add_axes(ax)
-    ax.bar(drct, sped, normed=True, bins=windunits[units]['bins'], opening=0.8, 
+    ax.bar(drct, sped, normed=True, bins=windunits[units]['bins'], opening=0.8,
            edgecolor='white', nsector=nsector, rmax=rmax)
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
-        handles.append( plt.Rectangle((0, 0), 0.1, 0.3,
-                    facecolor=color, edgecolor='black'))
-    l = fig.legend(handles, windunits[units]['binlbl'] , loc=3,
-                   ncol=6, title='Wind Speed [%s]' % (windunits[units]['abbr'],), 
+        handles.append(plt.Rectangle((0, 0), 0.1, 0.3,
+                                     facecolor=color, edgecolor='black'))
+    l = fig.legend(handles, windunits[units]['binlbl'], loc=3,
+                   ncol=6,
+                   title='Wind Speed [%s]' % (windunits[units]['abbr'],),
                    mode=None, columnspacing=0.9, handletextpad=0.45)
     plt.setp(l.get_texts(), fontsize=10)
     # Now we put some fancy debugging info on the plot
@@ -1374,17 +1258,18 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
         else:
             for h in hours:
                 tlimit += "%s," % (
-                            datetime.datetime(2000, 1, 1, h).strftime("%-I %p"),)
+                    datetime.datetime(2000, 1, 1, h).strftime("%-I %p"),)
     if len(months) < 12:
         for h in months:
-            tlimit += "%s," % (datetime.datetime(2000,h,1).strftime("%b"),)
+            tlimit += "%s," % (datetime.datetime(2000, h, 1).strftime("%b"),)
     label = """[%s] %s
 Windrose Plot [%s]
 Period of Record: %s - %s
-Obs Count: %s Calm: %.1f%% Avg Speed: %.1f %s""" % (station, sname, tlimit,
-                                                    minvalid.strftime("%d %b %Y"), maxvalid.strftime("%d %b %Y"), 
-        np.shape(sped)[0], 
-        np.sum( np.where(sped < 2., 1., 0.)) / np.shape(sped)[0] * 100.,
+Obs Count: %s Calm: %.1f%% Avg Speed: %.1f %s""" % (
+        station, sname, tlimit,
+        minvalid.strftime("%d %b %Y"), maxvalid.strftime("%d %b %Y"),
+        np.shape(sped)[0],
+        np.sum(np.where(sped < 2., 1., 0.)) / np.shape(sped)[0] * 100.,
         np.average(sped), windunits[units]['abbr'])
     plt.gcf().text(0.17, 0.89, label)
     plt.gcf().text(0.01, 0.1, "Generated: %s" % (
