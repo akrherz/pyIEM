@@ -17,26 +17,10 @@ pyiem Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`iemdb` Module
--------------------
-
-.. automodule:: pyiem.iemdb
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`iemre` Module
 -------------------
 
 .. automodule:: pyiem.iemre
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`iemtz` Module
--------------------
-
-.. automodule:: pyiem.iemtz
     :members:
     :undoc-members:
     :show-inheritance:

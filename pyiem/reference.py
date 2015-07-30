@@ -1,6 +1,18 @@
 """Reference values and dictionaries
 
 No functional code found within this module, just a bunch of statics
+
+.. data:: nwsli2state
+
+    A dictionary mapping 2 letter NWSLI codes to their corresponding state
+    two letter code.  For locations outside of the US, some of these are
+    guesses on my part.
+
+.. data:: nwsli2country
+
+    A dictionary mapping 2 letter NWSLI codes to their correspionding two
+    letter country code.  Some of these are sketchy.
+
 """
 
 IA_WEST = -96.7
@@ -422,21 +434,21 @@ prodDefinitions = {
     'VAA': 'Volcanic Ash Advisory (VAA)',
 }
 
-"""State bounds (buffered by 0.2 degrees)
-
-! BE CAREFUL WITH ALASKA
-
-with data as (
-    select state_abbr, st_extent(the_geom) as ext from states
-    GROUP by state_abbr)
-
- SELECT '"'||state_abbr||'": ['||
- round((ST_xmin(ext) - 0.2)::numeric, 2) ||', '||
- round((ST_ymin(ext) - 0.2)::numeric, 2) ||', '||
- round((ST_xmax(ext) + 0.2)::numeric, 2) ||', '||
- round((ST_ymax(ext) + 0.2)::numeric, 2) ||'],'
- from data ORDER by state_abbr ASC
-"""
+# State bounds (buffered by 0.2 degrees)
+#
+# ! BE CAREFUL WITH ALASKA
+#
+# with data as (
+#    select state_abbr, st_extent(the_geom) as ext from states
+#    GROUP by state_abbr)
+#
+# SELECT '"'||state_abbr||'": ['||
+# round((ST_xmin(ext) - 0.2)::numeric, 2) ||', '||
+# round((ST_ymin(ext) - 0.2)::numeric, 2) ||', '||
+# round((ST_xmax(ext) + 0.2)::numeric, 2) ||', '||
+# round((ST_ymax(ext) + 0.2)::numeric, 2) ||'],'
+# from data ORDER by state_abbr ASC
+#
 state_bounds = {
  "AK": [-178.43, 51.39, -129.81, 71.58],
  "AL": [-88.67, 30.02, -84.69, 35.21],
@@ -491,20 +503,19 @@ state_bounds = {
  "WY": [-111.26, 40.79, -103.85, 45.21],
 }
 
-"""WFO bounds
-
-! BE CAREFUL WITH AFC, CHECK THE BOUNDS!
-
-with data as (
-    select wfo, st_extent(geom) as ext from ugcs
-    GROUP by wfo)
- SELECT '"'||wfo||'": ['||
- round((ST_xmin(ext) - 0.2)::numeric, 2) ||', '||
- round((ST_ymin(ext) - 0.2)::numeric, 2) ||', '||
- round((ST_xmax(ext) + 0.2)::numeric, 2) ||', '||
- round((ST_ymax(ext) + 0.2)::numeric, 2) ||'],'
- from data WHERE length(wfo) = 3 ORDER by wfo ASC;
-"""
+# WFO bounds
+#
+# ! BE CAREFUL WITH AFC, CHECK THE BOUNDS!
+#
+# with data as (
+#    select wfo, st_extent(geom) as ext from ugcs
+#    GROUP by wfo)
+# SELECT '"'||wfo||'": ['||
+# round((ST_xmin(ext) - 0.2)::numeric, 2) ||', '||
+# round((ST_ymin(ext) - 0.2)::numeric, 2) ||', '||
+# round((ST_xmax(ext) + 0.2)::numeric, 2) ||', '||
+# round((ST_ymax(ext) + 0.2)::numeric, 2) ||'],'
+# from data WHERE length(wfo) = 3 ORDER by wfo ASC;
 wfo_bounds = {
  "ABQ": [-109.25, 32.32, -102.80, 37.20],
  "ABR": [-102.20, 43.30, -95.90, 46.22],
@@ -631,10 +642,9 @@ wfo_bounds = {
  "VEF": [-118.99, 33.83, -112.33, 38.88],
 }
 
-"""state names
- select '"'||state_abbr||'": "'||state_name||'",' from states
- ORDER by state_abbr ASC
-"""
+# state names
+# select '"'||state_abbr||'": "'||state_name||'",' from states
+# ORDER by state_abbr ASC
 state_names = {
  "AK": "Alaska",
  "AL": "Alabama",
@@ -686,5 +696,5 @@ state_names = {
  "WA": "Washington",
  "WI": "Wisconsin",
  "WV": "West Virginia",
- "WY": "Wyoming",              
+ "WY": "Wyoming",
 }

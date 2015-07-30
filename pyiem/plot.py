@@ -25,26 +25,6 @@ import shutil
 import cPickle
 import datetime
 #
-from pyiem import reference
-from pyiem.datatypes import speed, direction
-import pyiem.meteorology as meteorology
-# Matplotlib
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt
-from matplotlib.colors import rgb2hex
-from matplotlib.patches import Polygon, Rectangle
-import matplotlib.cm as cm
-import matplotlib.image as mpimage
-import matplotlib.colors as mpcolors
-from matplotlib.patches import Wedge
-import matplotlib.colorbar as mpcolorbar
-import matplotlib.patheffects as PathEffects
-from matplotlib.collections import PatchCollection
-from matplotlib.artist import Artist
-# Basemap
-from mpl_toolkits.basemap import Basemap  #@UnresolvedImport
-#
 import numpy as np
 #
 from scipy.interpolate import NearestNDInterpolator
@@ -52,6 +32,25 @@ from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
 #
 import psycopg2
+#
+from pyiem import reference
+from pyiem.datatypes import speed, direction
+import pyiem.meteorology as meteorology
+# Matplotlib
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt  # nopep8
+from matplotlib.patches import Polygon, Rectangle  # nopep8
+import matplotlib.cm as cm  # nopep8
+import matplotlib.image as mpimage  # nopep8
+import matplotlib.colors as mpcolors  # nopep8
+from matplotlib.patches import Wedge  # nopep8
+import matplotlib.colorbar as mpcolorbar  # nopep8
+import matplotlib.patheffects as PathEffects  # nopep8
+from matplotlib.collections import PatchCollection  # nopep8
+from matplotlib.artist import Artist  # nopep8
+# Basemap
+from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
 
 [Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY, Z_OVERLAY2] = range(1, 7)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
@@ -424,9 +423,8 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
                 p = Polygon(a2, fc=c, ec='k', zorder=Z_FILL, lw=.1)
                 themap.ax.add_patch(p)
                 if ilabel and polyi == 0:
-                    mx = polydict.get('lon', polygon.centroid.x)
-                    my = polydict.get('lat', polygon.centroid.y)
-                    (x, y) = themap(mx, my)
+                    (x, y) = themap(polydict.get('lon', polygon.centroid.x),
+                                    polydict.get('lat', polygon.centroid.y))
                     txt = themap.ax.text(x, y, lbl, zorder=100, clip_on=True,
                                          ha='center', va='center')
                     txt.set_path_effects([
