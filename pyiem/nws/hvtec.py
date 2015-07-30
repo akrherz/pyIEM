@@ -3,7 +3,7 @@ import datetime
 import pytz
 from pyiem.nws.nwsli import NWSLI
 
-#         nwsli        sev         cause      
+#         nwsli        sev         cause
 _re = "(/([A-Z0-9]{5})\.([N0123U])\.([A-Z]{2})\.([0-9TZ]+)\.([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]{2})/)"
 
 _statusDict = {'00': 'is not applicable',
@@ -57,7 +57,7 @@ def contime(s):
         return None
 
 
-class HVTEC:
+class HVTEC(object):
 
     def __init__(self, tokens, nwsli_provider=None):
         ''' Constructor '''

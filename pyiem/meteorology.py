@@ -10,11 +10,10 @@ class InvalidArguments(Exception):
     pass
 
 
-def clearsky_shortwave_irradiance_year(lon, lat, elevation):
+def clearsky_shortwave_irradiance_year(lat, elevation):
     """Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2
 
     Args:
-      lon (float): longitude
       lat (float): latitude
       elevation (float): location elevation in meters
 
@@ -30,7 +29,8 @@ def clearsky_shortwave_irradiance_year(lon, lat, elevation):
     # julian days
     j = np.arange(1, 366, 1)
     # solar declination
-    # delta = asind(0.39785.*sind((278.97+0.9856.*J+1.9165.*sind((356.6+0.9856.*J)))))
+    # delta = asind(0.39785.*sind((278.97+0.9856.*J+1.9165.
+    # *sind((356.6+0.9856.*J)))))
     _a = np.sin(np.radians(356.6 + 0.9856 * j))
     _b = np.sin(np.radians(278.97 + 0.9856 * j + 1.9165 * _a))
     delta = np.degrees(np.arcsin(0.39785 * _b))
@@ -38,7 +38,8 @@ def clearsky_shortwave_irradiance_year(lon, lat, elevation):
     for jday in j:
         running = 0
         for t in np.arange(0, 12.001, 5./60.):
-            # acosd((sind(gamma(l))*sind(delta(j))+cosd(gamma(l))*cosd(delta(j))*cosd(15*(t-12))))
+            # acosd((sind(gamma(l))*sind(delta(j))+cosd(gamma(l))*
+            # cosd(delta(j))*cosd(15*(t-12))))
             _a = math.cos(np.radians(15 * (t - 12)))
             _b = math.sin(np.radians(lat))
             _c = math.sin(np.radians(delta[jday-1]))
@@ -76,20 +77,22 @@ def drct(u, v):
 
 def uv(speed, direction):
     """
-    Compute the u and v components of the wind 
+    Compute the u and v components of the wind
     @param wind speed in whatever units
     @param dir wind direction with zero as north
     @return u and v components
     """
-    if not isinstance(speed, dt.speed) or not isinstance(direction, dt.direction):
-        raise InvalidArguments("uv() needs speed and direction objects as args")
+    if (not isinstance(speed, dt.speed) or
+            not isinstance(direction, dt.direction)):
+        raise InvalidArguments(("uv() needs speed and direction "
+                                "objects as args"))
     # Get radian units
     rad = direction.value("RAD")
     if rad is None or speed.value() is None:
         return None, None
     u = (0 - speed.value()) * np.sin(rad)
     v = (0 - speed.value()) * np.cos(rad)
-    return dt.speed(u, speed._units), dt.speed(v, speed._units)
+    return (dt.speed(u, speed.get_units()), dt.speed(v, speed.get_units()))
 
 
 def feelslike(temperature, dewpoint, speed):

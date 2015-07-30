@@ -1,4 +1,3 @@
-import re
 
 from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
 import spacewx

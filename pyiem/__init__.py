@@ -5,4 +5,4 @@ package is used by many parts of the IEM codebase and hopefully somewhat
 useful to others!?!?
 
 """
-__version__ = '0.2.7'
+__version__ = '0.2.8'

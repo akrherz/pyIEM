@@ -167,11 +167,11 @@ class GINIFile(object):
          self.metadata['lat_ul']) = self.metadata['proj'](self.metadata['x0'],
                                                           self.metadata['y1'],
                                                           inverse=True)
-        logging.info("""lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f
-lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f""" % (
-                    self.metadata['lat1'], y0, self.metadata['y1'],
-                    self.metadata['lat_ul'], self.metadata['lat_ur'],
-                    self.metadata['lon_ur'], alpha, self.metadata['dy']))
+        logging.info(("lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f "
+                      "lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f"),
+                     (self.metadata['lat1'], y0, self.metadata['y1'],
+                      self.metadata['lat_ul'], self.metadata['lat_ur'],
+                      self.metadata['lon_ur'], alpha, self.metadata['dy']))
 
     def init_mercator(self):
         """
@@ -199,11 +199,11 @@ lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f""" % (
                                                           self.metadata['y1'],
                                                           inverse=True)
 
-        logging.info("""latin: %.2f lat_ul: %.3f lon_ul: %.3f
-y0: %5.f y1: %.5f dx: %.3f dy: %.3f""" % (
-                    self.metadata['latin'], self.metadata['lat_ul'],
-                    self.metadata['lon_ul'], y0, y1,
-                    self.metadata['dx'], self.metadata['dy']))
+        logging.info(("latin: %.2f lat_ul: %.3f lon_ul: %.3f "
+                      "y0: %5.f y1: %.5f dx: %.3f dy: %.3f"),
+                     self.metadata['latin'], self.metadata['lat_ul'],
+                     self.metadata['lon_ul'], y0, y1,
+                     self.metadata['dx'], self.metadata['dy'])
 
     def init_stereo(self):
         """
@@ -226,16 +226,16 @@ y0: %5.f y1: %.5f dx: %.3f dy: %.3f""" % (
                                                           self.metadata['y1'],
                                                           inverse=True)
 
-        logging.info("""lon_ul: %.2f lat_ul: %.2f
-lon_ll: %.2f lat_ll: %.2f
-lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f
-""" % (
-            self.metadata['lon_ul'], self.metadata['lat_ul'],
-            self.metadata['lon1'], self.metadata['lat1'],
-            self.metadata['lov'], self.metadata['latin'],
-            self.metadata['lat1'],
-            self.metadata['lat2'], y0, self.metadata['y1'],
-            self.metadata['dx'], self.metadata['dy']))
+        logging.info(("lon_ul: %.2f lat_ul: %.2f "
+                      "lon_ll: %.2f lat_ll: %.2f "
+                      " lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f "
+                      "y0: %5.f y1: %.5f dx: %.3f dy: %.3f"),
+                     self.metadata['lon_ul'], self.metadata['lat_ul'],
+                     self.metadata['lon1'], self.metadata['lat1'],
+                     self.metadata['lov'], self.metadata['latin'],
+                     self.metadata['lat1'],
+                     self.metadata['lat2'], y0, self.metadata['y1'],
+                     self.metadata['dx'], self.metadata['dy'])
 
     def init_projection(self):
         """
@@ -248,8 +248,8 @@ lov: %.2f latin: %.2f lat1: %.2f lat2: %.2f y0: %5.f y1: %.5f dx: %.3f dy: %.3f
         elif self.metadata['map_projection'] == 5:
             self.init_stereo()
         else:
-            logging.info('Unknown Projection: %s' % (
-                                self.metadata['map_projection'],))
+            logging.info('Unknown Projection: %s',
+                         self.metadata['map_projection'])
 
     def read_header(self, hdata):
         meta = {}
@@ -350,7 +350,7 @@ class GINIZFile(GINIFile):
             except:
                 chunk += 'x\xda'
         if totsz != 0:
-            logging.info("Totalsize left: %s" % (totsz,))
+            logging.info("Totalsize left: %s", totsz)
 
         self.data = np.reshape(np.fromstring(sdata, np.int8),
                                (self.metadata['numlines'] + 1,

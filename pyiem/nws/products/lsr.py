@@ -6,26 +6,22 @@ import datetime
 import re
 
 # Third party
-import pytz
 from shapely.geometry import Point as ShapelyPoint
+from pyiem.nws.product import TextProduct, TextProductException
+from pyiem.nws.lsr import LSR
 
 SPLITTER = re.compile(r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)",
                       re.MULTILINE)
 
-
-from pyiem.nws.product import TextProduct, TextProductException
-from pyiem import reference
-from pyiem.nws.lsr import LSR
 
 class LSRProductException(TextProductException):
     ''' Something we can raise when bad things happen! '''
     pass
 
 
-
 class LSRProduct(TextProduct):
     ''' Represents a text product of the LSR variety '''
-    
+
     def __init__(self, text, utcnow=None):
         ''' constructor '''
         self.lsrs = []
@@ -40,32 +36,32 @@ class LSRProduct(TextProduct):
         if len(valids) == 0:
             return None, None
         return min(valids), max(valids)
-    
+
     def is_summary(self):
         ''' Returns is this LSR is a summary or not '''
         return self.unixtext.find("...SUMMARY") > 0
-        
+
     def get_url(self, baseuri):
         ''' Get the URL of this product '''
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
-        return "%s#%s/%s/%s" % (baseuri, wfo, 
-               min_time.strftime("%Y%m%d%H%M"),
-               max_time.strftime("%Y%m%d%H%M") )
-        
-    def get_jabbers(self, uri):
+        return "%s#%s/%s/%s" % (baseuri, wfo,
+                                min_time.strftime("%Y%m%d%H%M"),
+                                max_time.strftime("%Y%m%d%H%M") )
+
+    def get_jabbers(self, uri, uri2=None):
         ''' return a text and html variant for Jabber stuff '''
         res = []
         wfo = self.source[1:]
-        url =  self.get_url(uri)
+        url = self.get_url(uri)
 
         for mylsr in self.lsrs:
             if mylsr.duplicate:
                 continue
             time_fmt = "%-I:%M %p %Z"
-            url = "%s#%s/%s/%s" % (uri, mylsr.wfo, 
+            url = "%s#%s/%s/%s" % (uri, mylsr.wfo,
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M"),
-                                   mylsr.utcvalid.strftime("%Y%m%d%H%M") )
+                                   mylsr.utcvalid.strftime("%Y%m%d%H%M"))
             if mylsr.valid.day != self.utcnow.day:
                 time_fmt = "%-d %b, %-I:%M %p %Z"
             xtra = {
@@ -85,14 +81,14 @@ class LSRProduct(TextProduct):
                         _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state, mylsr.source,
                         url, mylsr.mag_string(),
                         mylsr.valid.strftime(time_fmt), mylsr.remark)
-    
+
             plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
                         _mylowercase(mylsr.city), mylsr.county.title(), 
                         mylsr.state, mylsr.source,
                         mylsr.mag_string(),
                         mylsr.valid.strftime(time_fmt), mylsr.remark, url)
             res.append( [plain, html, xtra])
-        
+
         if self.is_summary():
             extra_text = ""
             if self.duplicates > 0:
@@ -101,7 +97,7 @@ class LSRProduct(TextProduct):
                                                     len(self.lsrs))
             text = "%s: %s issues Summary Local Storm Report %s %s" % (
                                                     wfo, wfo, extra_text, url)
-            
+
             html = ("<p>%s issues "
                           +"<a href='%s'>Summary Local Storm Report</a>%s</p>") % (
                                                 wfo, url, extra_text)
@@ -111,6 +107,7 @@ class LSRProduct(TextProduct):
                 }
             res.append([text, html, xtra] )
         return res
+
 
 def _mylowercase(text):
     ''' Specialized lowercase function ''' 
@@ -124,7 +121,8 @@ def _mylowercase(text):
                    'W', 'WSW', 'WNW', 'NW']:
             continue
     return " ".join(tokens)
-        
+
+
 def parse_lsr(text):
     ''' Emit a LSR object based on this text! 
     0914 PM     HAIL             SHAW                    33.60N 90.77W
@@ -142,16 +140,16 @@ def parse_lsr(text):
     ampm = tokens[1]
     dstr = "%s:%s %s %s" % (h12, mm, ampm, lines[1][:10])
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
-   
+
     lsr.typetext = lines[0][12:29].strip().upper()
 
     lsr.city = lines[0][29:53].strip()
-    
+
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
     lsr.geometry = ShapelyPoint((lon,lat))
-    
+
     lsr.consume_magnitude( lines[1][12:29].strip() )
     lsr.county = lines[1][29:48].strip()
     lsr.state = lines[1][48:50]
@@ -161,15 +159,16 @@ def parse_lsr(text):
         lsr.remark = " ".join( meat.split())
     return lsr
 
+
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception'''
     prod = LSRProduct(text, utcnow)
-    
+
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr("".join(match.groups()))
         lsr.wfo = prod.source[1:]
         lsr.assign_timezone( prod.tz, prod.z )
         prod.lsrs.append( lsr )
-    
+
     return prod

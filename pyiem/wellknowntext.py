@@ -10,18 +10,16 @@ Main entry point is the convert_well_known_text function which takes a
 geometry in Well-Known Text format and returns a python object with the
 geometry.
 """
+import re
 
 __version__ = "$Revision: 1.1 $"
 # $Source: /thubanrepository/thuban/Thuban/Model/wellknowntext.py,v $
 # $Id: wellknowntext.py,v 1.1 2003/08/19 11:00:40 bh Exp $
 
-import re
-
-
 _open_parens = r"[ \t]*(\([ \t]*)*"
 _close_parens = r"[ \t]*(\)[ \t]*)+"
-rx_point_list = re.compile(_open_parens + r"(?P<coords>[^\)]+)"
-                           + _close_parens + ",?")
+rx_point_list = re.compile(_open_parens + r"(?P<coords>[^\)]+)" +
+                           _close_parens + ",?")
 
 
 def parse_coordinate_lists(wkt):
@@ -54,9 +52,11 @@ def parse_multipolygon(wkt):
     """
     return parse_coordinate_lists(wkt)
 
+
 def parse_polygon(wkt):
     """Return the POLYGON geometry in wkt as a list of float pairs"""
     return parse_coordinate_lists(wkt)
+
 
 def parse_multilinestring(wkt):
     """
@@ -64,9 +64,11 @@ def parse_multilinestring(wkt):
     """
     return parse_coordinate_lists(wkt)
 
+
 def parse_linestring(wkt):
     """Return the LINESTRING geometry in wkt as a list of float pairs"""
     return parse_coordinate_lists(wkt)[0]
+
 
 def parse_point(wkt):
     """Return the POINT geometry in wkt format as pair of floats"""
@@ -81,6 +83,7 @@ _function_map = [
     ("LINESTRING", parse_linestring),
     ("POINT", parse_point),
     ]
+
 
 def convert_well_known_text(wkt):
     """Return the geometry given in well-known text format as python objects
@@ -112,6 +115,7 @@ def convert_well_known_text(wkt):
     else:
         # there were no recognized geometries in the WKT string
         raise ValueError("No recognized geometry in WKT string")
+
 
 def parse_wkt_thuban(wkt):
     """Like convert_well_known_text, but return lists of lists of pairs"""

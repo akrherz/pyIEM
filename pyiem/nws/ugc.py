@@ -120,7 +120,7 @@ def parse(text, valid, ugc_provider=None):
     return ugcs, expire
 
 
-class UGC:
+class UGC(object):
 
     def __init__(self, state, geoclass, number, name=None, wfos=None):
         '''

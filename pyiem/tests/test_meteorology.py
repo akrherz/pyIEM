@@ -1,5 +1,4 @@
 import unittest
-import datetime
 
 from pyiem import datatypes, meteorology
 
@@ -13,7 +12,7 @@ class TestDatatypes(unittest.TestCase):
 
     def test_sw(self):
         """Test shortwave flux calculation"""
-        r = meteorology.clearsky_shortwave_irradiance_year(-95, 42, 100)
+        r = meteorology.clearsky_shortwave_irradiance_year(42, 100)
         self.assertAlmostEquals(r[0], 7.20, 2)
         self.assertAlmostEquals(r[90], 22.45, 2)
         self.assertAlmostEquals(r[182], 32.74, 2)

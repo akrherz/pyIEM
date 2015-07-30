@@ -264,7 +264,7 @@ def loadqc():
     """)
     for row in pcursor:
         sid = row[0]
-        if not qdict.has_key(row[0]):
+        if row[0] not in qdict:
             qdict[sid] = {}
         for vname in row[1].split(","):
             qdict[sid][vname.strip()] = True

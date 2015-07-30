@@ -23,6 +23,14 @@ class basetype(object):
         else:
             self._value = value
 
+    def get_units(self):
+        """Returns the units for this current datatype
+
+        Returns:
+          (str): the unit of this datatype
+        """
+        return self._units
+
 
 class mixingratio(basetype):
     known_units = ["KG/KG", ]
