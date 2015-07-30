@@ -1204,7 +1204,7 @@ class MapPlot(object):
 def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
-             justdata=False):
+             justdata=False, rmax=None):
     """Utility function that generates a windrose plot
 
     Args:
@@ -1351,7 +1351,7 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
     ax = WindroseAxes(fig, rect, axisbg='w')
     fig.add_axes(ax)
     ax.bar(drct, sped, normed=True, bins=windunits[units]['bins'], opening=0.8, 
-           edgecolor='white', nsector=nsector)
+           edgecolor='white', nsector=nsector, rmax=rmax)
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
