@@ -1,9 +1,4 @@
-"""
- Class Representing an observation that the IEM tracks
-
- @author daryl herzmann
-"""
-import pytz
+"""A class representing an observation stored in the IEM database"""
 
 # Not including iemid, valid
 CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',

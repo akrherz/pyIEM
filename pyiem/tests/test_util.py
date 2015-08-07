@@ -13,3 +13,6 @@ class TestUtil(unittest.TestCase):
         """ Test conversion of drct2text """
         self.assertEquals(util.drct2text(360), "N")
         self.assertEquals(util.drct2text(90), "E")
+        # A hack to get move coverage
+        for i in range(360):
+            util.drct2text(i)

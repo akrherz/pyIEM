@@ -118,7 +118,7 @@ class TestProduct(unittest.TestCase):
 
     def test_ugc_in_hwo(self):
         """ Parse UGC codes in a HWO """
-        tp = product.TextProduct( get_file('HWO.txt') )
+        tp = product.TextProduct(get_file('HWO.txt'))
         self.assertEqual(tp.segments[1].ugcs, [ugc.UGC("LM", "Z", 740),
                                                ugc.UGC("LM", "Z", 741),
                                                ugc.UGC("LM", "Z", 742),

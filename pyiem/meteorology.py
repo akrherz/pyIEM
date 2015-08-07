@@ -141,7 +141,7 @@ def heatindex(temperature, polyarg):
     Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.
 
     Another opinion on appropriate equation:
-    http://www.hpc.ncep.noaa.gov/html/heatindex_equation.shtml
+    http://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml
     """
     if not isinstance(temperature, dt.temperature):
         raise InvalidArguments("heatindex() needs temperature obj as arg")

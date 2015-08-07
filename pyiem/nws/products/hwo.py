@@ -2,19 +2,24 @@ import re
 
 from pyiem.nws.product import TextProduct
 
+
 class HWOException(Exception):
     ''' Exception '''
     pass
 
-class HWOProduct( TextProduct ):
+
+class HWOProduct(TextProduct):
     '''
     Represents a XXX
     '''
-    
-    def __init__(self, text):
+
+    def __init__(self, text, utcnow=None, ugc_provider=None,
+                 nwsli_provider=None):
         ''' constructor '''
-        TextProduct.__init__(self, text)
-    
+        TextProduct.__init__(self, text, utcnow=utcnow,
+                             ugc_provider=ugc_provider,
+                             nwsli_provider=nwsli_provider)
+
     def get_channels(self):
         """ overridden TextProduct#get_channels """
         no_storms_day1 = True
@@ -29,22 +34,29 @@ class HWOProduct( TextProduct ):
             day27 = segment.unixtext.find(".DAYS TWO THROUGH SEVEN...")
             if day27 == -1:
                 raise HWOException(("segment %s is missing DAYS TWO "
-                                    +"THROUGH SEVEN section") % (segnum,))
-            
-            day1text = re.search(r'(NO HAZARDOUS WEATHER IS EXPECTED AT THIS TIME|THE PROBABILITY FOR WIDESPREAD HAZARDOUS WEATHER IS LOW)', segment.unixtext[day1:day27])
-            day27text = re.search(r'(NO HAZARDOUS WEATHER IS EXPECTED AT THIS TIME|THE PROBABILITY FOR WIDESPREAD HAZARDOUS WEATHER IS LOW)', segment.unixtext[day27:])
+                                    "THROUGH SEVEN section") % (segnum, ))
+
+            day1text = re.search((r'(NO HAZARDOUS WEATHER IS EXPECTED AT '
+                                  'THIS TIME|THE PROBABILITY FOR WIDESPREAD '
+                                  'HAZARDOUS WEATHER IS LOW)'),
+                                 segment.unixtext[day1:day27])
+            day27text = re.search((r'(NO HAZARDOUS WEATHER IS EXPECTED AT '
+                                   'THIS TIME|THE PROBABILITY FOR WIDESPREAD '
+                                   'HAZARDOUS WEATHER IS LOW)'),
+                                  segment.unixtext[day27:])
             if day1text is None:
                 no_storms_day1 = False
             if day27text is None:
                 no_storms_day27 = False
 
-        channels = [self.afos,]
+        channels = [self.afos, ]
         if no_storms_day1 and no_storms_day27:
             channels[0] = "%s.NONE" % (self.afos,)
 
         return channels
 
-        
+
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function '''
-    return HWOProduct( text )
+    return HWOProduct(text, utcnow=utcnow, ugc_provider=ugc_provider,
+                      nwsli_provider=nwsli_provider)
