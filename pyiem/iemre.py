@@ -1,5 +1,10 @@
-"""
-Support library for the IEM Reanalysis code
+"""Support library for the IEM Reanalysis code
+
+.. data:: SOUTH
+
+    Latitude of the southern edge of the IEM Reanalysis.
+
+
 """
 import numpy as np
 import datetime

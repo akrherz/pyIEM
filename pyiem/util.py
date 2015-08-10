@@ -2,13 +2,16 @@
 """Utility functions for pyIEM package
 
 This module contains utility functions used by various parts of the codebase.
-
 """
 import psycopg2
 
 
 def get_properties():
-    """Fetch the properties set"""
+    """Fetch the properties set
+
+    Returns:
+      dict: a dictionary of property names and values (both str)
+    """
     pgconn = psycopg2.connect(database='mesosite', host='iemdb')
     cursor = pgconn.cursor()
     cursor.execute("""SELECT propname, propvalue from properties""")

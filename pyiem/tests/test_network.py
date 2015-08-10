@@ -8,3 +8,6 @@ class TestNetwork(unittest.TestCase):
         ''' basic test of constructor '''
         nt = network.Table("BOGUS")
         self.assertEqual(len(nt.sts.keys()), 0)
+
+        nt = network.Table(["BOGUS", "BOGUS2"])
+        self.assertEqual(len(nt.sts.keys()), 0)
