@@ -7,6 +7,15 @@ from pyiem import mrms
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_colorramp(self):
+        """See what we can do with a colorramp"""
+        c = mrms.make_colorramp()
+        self.assertEqual(len(c), 256*3)
+
+    def test_write_worldfile(self):
+        """see if we can write a world file"""
+        mrms.write_worldfile('/tmp/bah.wld')
+
     def test_get_fn(self):
         """ Test filename func """
         ts = datetime.datetime(2000, 1, 1, 12, 35)
