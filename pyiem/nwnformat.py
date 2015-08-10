@@ -156,12 +156,12 @@ class nwnformat(object):
         self.avg_sknt = int(float(sum(self.aSknt)) / float(len(self.aSknt)))
         utot = 0
         vtot = 0
-        for i in range(len(self.aSknt)):
-            u, v = uv(self.aSknt[i], self.aDrct[i])
-            if (self.aSknt[i] > self.xsped):
-                self.xsped = self.aSknt[i] * 1.150
-                self.xdrct = self.aDrct[i]
-                self.xdrctTxt = util.drct2text(self.aDrct[i])
+        for s, d in zip(self.aSknt, self.aDrct):
+            u, v = uv(s, d)
+            if s > self.xsped:
+                self.xsped = s * 1.150
+                self.xdrct = d
+                self.xdrctTxt = util.drct2text(d)
 
             utot += u
             vtot += v

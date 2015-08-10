@@ -42,6 +42,8 @@ class TestNWNFORMAT(unittest.TestCase):
                           '100% 29.81" 00.00"D 00.00"M 00.00"R').split())
         n.parseMaxLineRT(('A 263    Min 07/16/15   S 01MPH 000K 460F 882F '
                           '100% 29.65" 00.00"D 00.00"M 00.00"R').split())
+        n.parseLineRT(('A 263  14:59 07/16/15   S 19MPH 000K 460F 460F '
+                       '100% 29.66F 00.00"D 00.00"M 00.00"R').split())
         n.avgWinds()
         n.currentLine()
         n.maxLine()
