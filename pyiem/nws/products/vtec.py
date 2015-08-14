@@ -141,8 +141,8 @@ class VTECProduct(TextProduct):
         return "warnings_%s" % (year,)
 
     def do_sql_vtec(self, txn, segment, vtec):
-        """ Persist the non-SBW stuff to the database 
-        
+        """ Persist the non-SBW stuff to the database
+
         Arguments:
         txn -- A pyscopg2 transaction
         segment -- A TextProductSegment instance
@@ -155,7 +155,7 @@ class VTECProduct(TextProduct):
         fcster = self.get_signature()
         if fcster is not None:
             fcster = fcster[:24]
-        
+
         # If this product is ...RESENT, lets check to make sure we did not
         # already get it
         if self.is_resent():
@@ -170,7 +170,7 @@ class VTECProduct(TextProduct):
                     print("RESENT Match, skipping SQL for %s!" % (
                                                     self.get_product_id(),))
                     return
-        
+
         if vtec.action in ['NEW', 'EXB', 'EXA']:
             # New Event Types!
             bts = vtec.begints
@@ -216,21 +216,21 @@ class VTECProduct(TextProduct):
                         +"rowcount: %s for UGC: %s") % (txn.rowcount, ugc))
 
                 txn.execute("""
-                INSERT into """+ warning_table +""" (issue, expire, updated, 
-                wfo, eventid, status, fcster, report, ugc, phenomena, 
-                significance, gid, init_expire, product_issue, hvtec_nwsli) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+                INSERT into """ + warning_table + """ (issue, expire, updated,
+                wfo, eventid, status, fcster, report, ugc, phenomena,
+                significance, gid, init_expire, product_issue, hvtec_nwsli)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                 get_gid(%s, %s), %s, %s, %s)
                 RETURNING issue
-                """, (bts, ets, self.valid, vtec.office, 
-                      vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc), 
-                      vtec.phenomena, vtec.significance, str(ugc), 
-                      self.valid, vtec.endts, self.valid, 
+                """, (bts, ets, self.valid, vtec.office,
+                      vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc),
+                      vtec.phenomena, vtec.significance, str(ugc),
+                      self.valid, ets, self.valid,
                       segment.get_hvtec_nwsli()))
                 if txn.rowcount != 1:
                     self.warnings.append(('Failed to add entry for UGC: %s, '
-                                          +'rowcount was: %s') % ( str(ugc),
-                                                               txn.rowcount ))
+                                          'rowcount was: %s'
+                                          ) % (str(ugc), txn.rowcount))
 
         elif vtec.action in ['COR',]:
             # A previous issued product is being corrected

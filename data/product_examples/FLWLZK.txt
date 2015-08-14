@@ -1,0 +1,77 @@
+275 
+WGUS44 KLZK 061628
+FLWLZK
+
+
+FLOOD WARNING
+NATIONAL WEATHER SERVICE LITTLE ROCK AR
+1128 AM CDT THU AUG 6 2015
+
+...The National Weather Service in Little Rock has issued a Flood 
+Warning for the following rivers in Arkansas...
+
+  Cache River Near Patterson affecting Jackson and Woodruff Counties
+
+
+River forecasts are based on current conditions and rainfall
+forecasted to occur over the next 12 hours. During periods of
+flooding...Evening forecasts are reissued with updated rainfall
+forecasts.
+ 
+Observed and forecasted stage data plots are available on our  
+Advanced Hydrologic Prediction Service web page at...
+www.srh.noaa.gov/lzk
+Under the Current Conditions section...Select River and Lakes AHPS.
+
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Safety message...Remember to Turn Around...Don't Drown
+Do not drive cars through flooded areas.
+
+Everyone with property or other interest along streams and rivers
+should remain alert to changing weather forecast. Should conditions
+change...Look for river forecast or Flood Warnings for use in
+
+&&
+
+ARC067-147-070728-
+/O.NEW.KLZK.FL.W.0108.150809T1342Z-000000T0000Z/
+/PTTA4.1.ER.150809T1342Z.150810T1800Z.000000T0000Z.NO/
+1128 AM CDT THU AUG 6 2015
+
+The National Weather Service in Little Rock has issued a 
+
+* Flood Warning for 
+  The Cache River Near Patterson.
+* from Sunday morning until further notice...or until the warning is 
+  cancelled.
+* At 10:00 AM Thursday the stage was 7.2 feet.
+* Minor flooding is forecast.
+* Flood stage is 8.0 feet.
+* Forecast...Rise above flood stage by Sunday morning and continue to
+  rise to near 9.0 feet by Monday afternoon.
+* Impacts at 8.0 feet...Low swampy timberland along the river begins 
+  to flood. Flood gates should be closed and equipment moved out of 
+  the low grounds along the river and tributaries.
+
+
+&&
+
+
+             Fld     Observed                 Forecast 7 AM
+Location     Stg   Stg  Day Time    Fri    Sat    Sun    Mon    Tue
+
+Cache River
+  Patterson    8   7.2 Thu 10 AM    7.6    7.7    7.8    8.9    8.8
+
+
+&&
+
+
+LAT...LON 3510 9133 3522 9128 3539 9123 3538 9113
+ 3521 9117 3508 9122                  
+
+
+
+$$

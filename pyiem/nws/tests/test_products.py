@@ -36,6 +36,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150814_init_expire(self):
+        """ Make sure init_expire is not null"""
+        prod = vtecparser(get_file('FLWLZK.txt'))
+        prod.sql(self.txn)
+        self.txn.execute("""SELECT count(*) from warnings_2015
+            where wfo = 'LZK' and eventid = 18
+            and phenomena = 'FL' and significance = 'W'
+            and init_expire is null""")
+        self.assertEquals(self.txn.fetchone()[0], 0)
+
     def test_150507_notcor(self):
         """SVROUN is not a product correction!"""
         prod = vtecparser(get_file('SVROUN.txt'))
