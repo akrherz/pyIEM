@@ -173,9 +173,7 @@ class VTECProduct(TextProduct):
 
         if vtec.action in ['NEW', 'EXB', 'EXA']:
             # New Event Types!
-            bts = vtec.begints
-            if bts is None or vtec.action in ["EXB",]:
-                bts = self.valid
+            bts = self.valid if vtec.begints is None else vtec.begints
             # If this product has no expiration time, just set it ahead
             # 6 days in time...
             ets = vtec.endts

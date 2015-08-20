@@ -36,6 +36,20 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150820_exb(self):
+        """Found a bug with setting of issuance for EXB case!"""
+        for i in range(3):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('CFWLWX/%i.txt' % (i,)))
+            prod.sql(self.txn)
+        # Make sure the issuance time is correct for MDZ014
+        self.txn.execute("""SELECT issue at time zone 'UTC' from warnings_2015
+        where wfo = 'LWX' and eventid = 30
+        and phenomena = 'CF' and significance = 'Y'
+        and ugc = 'MDZ014'""")
+        self.assertEquals(self.txn.fetchone()[0],
+                          datetime.datetime(2015, 8, 11, 13))
+
     def test_150814_init_expire(self):
         """ Make sure init_expire is not null"""
         prod = vtecparser(get_file('FLWLZK.txt'))
