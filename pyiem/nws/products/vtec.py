@@ -260,24 +260,28 @@ class VTECProduct(TextProduct):
             if vtec.action == 'EXT' and vtec.endts is None:
                 ets = self.valid + datetime.timedelta(hours=144)
 
+            # An EXT action could change the issuance time, gasp
+            issuesql = ""
+            if vtec.action == 'EXT' and vtec.begints is not None:
+                issuesql = " issue = '%s', " % (vtec.begints,)
             txn.execute("""
-                UPDATE """+ warning_table +""" SET 
-                expire = %s, 
+                UPDATE """ + warning_table + """ SET """ + issuesql + """
+                expire = %s,
                 status = %s,
                 updated = %s,
-                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) 
-                   || %s || '__' 
+                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
+                   || %s || '__'
                 WHERE wfo = %s and eventid = %s and ugc in """+ugcstring+"""
-                and significance = %s and phenomena = %s 
+                and significance = %s and phenomena = %s
                 and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
                 """, (ets, vtec.action, self.valid, self.unixtext,
-                      vtec.office, vtec.ETN, 
+                      vtec.office, vtec.ETN,
                       vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 if not self.is_correction():
                     self.warnings.append(
-                        self.debug_warning(txn, warning_table, ugcstring, 
+                        self.debug_warning(txn, warning_table, ugcstring,
                                            vtec, segment, ets)
                     )
 

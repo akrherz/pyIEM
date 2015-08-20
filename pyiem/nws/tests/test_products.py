@@ -232,13 +232,20 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file('FFAEKA/%i.txt' % (i,)))
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))            
-    
+
     def test_141208_upgrade(self):
         """ See that we can handle the EXB case """
-        for i in range(0,18):
+        for i in range(0, 18):
             prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        # Check the issuance time for UGC ANZ532
+        self.txn.execute("""SELECT issue at time zone 'UTC' from warnings_2014
+        where wfo = 'LWX' and eventid = 221
+        and phenomena = 'SC' and significance = 'Y'
+        and ugc = 'ANZ532'""")
+        self.assertEquals(self.txn.fetchone()[0],
+                          datetime.datetime(2014, 12, 7, 19, 13))
 
     def test_141016_tsuwca(self):
         """TSUWCA Got a null vtec timestamp with this product """
