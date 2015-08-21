@@ -250,5 +250,6 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['mpl_toolkits.basemap', 'shapely.geometry', 'shapely.wkt']
+MOCK_MODULES = ['mpl_toolkits.basemap', 'shapely.geometry', 'shapely.wkt',
+                'shapely.geometry.polygon']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
