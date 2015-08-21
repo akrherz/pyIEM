@@ -25,9 +25,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['mpl_toolkits', 'basemap', 'matplotlib', 'numpy',
-                'scipy', 'PIL', 'psycopg2', 'shapely', 'pyproj',
-                'metar', 'windrose']
+MOCK_MODULES = ['mpl_toolkits']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration -----------------------------------------------------
@@ -37,7 +35,7 @@ needs_sphinx = '1.3'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+extensions = ['sphinx.ext.autodoc', 'sphinx.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
