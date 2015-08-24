@@ -847,10 +847,15 @@ class MapPlot(object):
     def draw_mask(self):
         ''' Draw the mask, when appropriate '''
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'iowa'):
+        if self.sector not in ('midwest', 'conus', 'iowa', 'state'):
             return
         # in lon,lat
-        ccw = load_bounds('%s_ccw' % (self.sector,))
+        if self.sector == 'state':
+            s = load_pickle_geo('us_states.pickle')
+            geo = s[self.state]['geom'][0]
+            ccw = np.asarray(geo.exterior)[::-1]
+        else:
+            ccw = load_bounds('%s_ccw' % (self.sector,))
         # in map coords
         (x, y) = self.map(ccw[:, 0], ccw[:, 1])
         mask_outside_polygon(zip(x, y), ax=self.ax)
