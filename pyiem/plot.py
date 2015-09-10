@@ -620,6 +620,7 @@ class MapPlot(object):
                                       spacing='uniform',
                                       orientation='vertical')
         clevstride = int(kwargs.get('clevstride', 1))
+        t = []
         for i, (_, lbl) in enumerate(zip(clevs, clevlabels)):
             if i % clevstride != 0:
                 continue
@@ -627,8 +628,11 @@ class MapPlot(object):
             # y2 = float(i+1) / (len(clevs) - 1)
             # dy = (y2 - y) / 2
             fmt = '%s' if isinstance(lbl, str) else '%g'
-            cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center',
-                        bbox=dict(boxstyle='square,pad=0', color='white'))
+            t.append(cb2.ax.text(0.5, y, fmt % (lbl,), va='center',
+                                 ha='center'))
+        white_glows = FilteredArtistList(t, GrowFilter(3))
+        self.cax.add_artist(white_glows)
+        white_glows.set_zorder(t[0].get_zorder()-0.1)
         # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
 
