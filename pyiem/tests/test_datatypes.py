@@ -4,6 +4,15 @@ from pyiem import datatypes
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_unitserror(self):
+        """ Make sure that unknown units actually raise an error """
+        for _, cls in datatypes.__dict__.items():
+            if isinstance(cls, type) and hasattr(cls, 'known_units'):
+                a = cls(10, cls.known_units[0])
+                self.assertRaises(datatypes.UnitsError, a.value, 'ZZzZZ')
+                for unit in cls.known_units:
+                    self.assertTrue(a.value(unit) is not None)
+
     def test_mixingratio(self):
         """ Mixing Ratio"""
         mixr = datatypes.mixingratio(10, 'KG/KG')
