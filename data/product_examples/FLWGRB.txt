@@ -1,0 +1,41 @@
+910 
+WGUS43 KGRB 070726
+FLWGRB
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD WARNING
+NATIONAL WEATHER SERVICE GREEN BAY WI
+226 AM CDT MON SEP 7 2015
+
+...The National Weather Service in Green Bay has issued a flood 
+warning for the following rivers in Wisconsin... 
+
+  Big Eau Pleine River near Stratford affecting Marathon County
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Persons with interests along this river need to prepare for flooding.
+Stay tuned for further updates on this flooding situation.
+
+&&
+
+WIC073-072226-
+/O.NEW.KGRB.FL.W.0003.000000T0000Z-000000T0000Z/
+/STRW3.1.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+226 AM CDT MON SEP 7 2015
+
+The National Weather Service in Green Bay has issued a 
+
+* Flood Warning For 
+  the Big Eau Pleine River near Stratford.
+* at 12:15 AM Monday the stage was 8.4 feet. 
+* Flood stage is 15.5 feet.
+* The river is expected to crest near 17 feet this morning...then fall back below
+  flood stage on Tuesday. 
+
+&&
+
+LAT...LON 4503 9021 4487 9003 4477 8973 4470 8972
+      4478 9021 4495 9031             
+
+$$

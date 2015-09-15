@@ -36,6 +36,20 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_150915_noexpire(self):
+        """Check that we set an expiration for initial infinity SBW geo"""
+        prod = vtecparser(get_file('FLWGRB.txt'))
+        self.assertTrue(prod.segments[0].vtec[0].endts is None)
+        prod.sql(self.txn)
+        self.txn.execute("""
+            SELECT init_expire, expire from sbw_2015 where wfo = 'GRB'
+            and phenomena = 'FL' and eventid = 3 and significance = 'W'
+            and status = 'NEW'
+        """)
+        row = self.txn.fetchone()
+        self.assertTrue(row[0] is not None)
+        self.assertTrue(row[1] is not None)
+
     def test_150820_exb(self):
         """Found a bug with setting of issuance for EXB case!"""
         for i in range(3):
