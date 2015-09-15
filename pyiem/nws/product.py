@@ -1,8 +1,4 @@
-'''
-Created on Jan 5, 2013
-
-@author: akrherz
-'''
+"""Base Class encapsulating a NWS Text Product"""
 import datetime
 import re
 import sys
@@ -17,49 +13,52 @@ from pyiem.nws import ugc, vtec, hvtec
 
 AFOSRE = re.compile(r"^([A-Z0-9\s]{6})$", re.M)
 TIME_RE = ("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
-           +"([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$")
+           "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$")
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
-                     +"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
-                     +"(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
+                     "(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
+                     "(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
 TIME_MOT_LOC = re.compile((".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z "
-                           +"(?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT "
-                           +"(?P<loc>[0-9 ]+)"))
+                           "(?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT "
+                           "(?P<loc>[0-9 ]+)"))
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
-                       +"MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
+                       "MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
 HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
 TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
-                         +"OBSERVED|POSSIBLE)"))
-TORNADODAMAGETAG = re.compile((".*TORNADO DAMAGE THREAT\.\.\."
-                        +"(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
+                         "OBSERVED|POSSIBLE)"))
+TORNADODAMAGETAG = re.compile((
+    ".*TORNADO DAMAGE THREAT\.\.\."
+    "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
+
 
 class TextProductException(Exception):
     """ throwable """
     pass
 
+
 class TextProductSegment(object):
     """ A segment of a Text Product """
-    
+
     def __init__(self, text, tp):
         """ Constructor """
         self.unixtext = text
-        self.tp = tp # Reference to parent
+        self.tp = tp  # Reference to parent
         self.ugcs, self.ugcexpire = ugc.parse(text, tp.valid,
                                               ugc_provider=tp.ugc_provider)
         self.vtec = vtec.parse(text)
         self.headlines = self.parse_headlines()
         self.hvtec = hvtec.parse(text, nwsli_provider=tp.nwsli_provider)
-        
+
         # TIME...MOT...LOC Stuff!
         self.tml_giswkt = None
         self.tml_valid = None
         self.tml_sknt = None
         self.tml_dir = None
         self.process_time_mot_loc()
-        
-        # 
+
+        #
         self.giswkt = None
         self.sbw = self.process_latlon()
 
@@ -71,24 +70,23 @@ class TextProductSegment(object):
         self.tornadotag = None
         self.tornadodamagetag = None
         self.process_tags()
-        
+
         self.bullets = self.process_bullets()
-    
+
     def get_hvtec_nwsli(self):
         """ Return the first hvtec NWSLI entry, if it exists """
         if len(self.hvtec) == 0:
             return None
         return self.hvtec[0].nwsli.id
-    
+
     def svs_search(self):
         """ Special search the product for special text """
         sections = self.unixtext.split("\n\n")
         for s in sections:
             if len(TORNADO.findall(s)) > 0:
-                return " ".join( s.replace("\n", " ").split() )
+                return " ".join(s.replace("\n", " ").split())
         return ""
 
-        
     def process_bullets(self):
         """ Figure out the bulleted segments """
         parts = re.findall('^\*([^\*]*)', self.unixtext, re.M | re.DOTALL)
@@ -96,15 +94,15 @@ class TextProductSegment(object):
         for part in parts:
             pos = part.find("\n\n")
             if pos > 0:
-                bullets.append( " ".join(part[:pos].replace("\n", "").split()) )
+                bullets.append(" ".join(part[:pos].replace("\n", "").split()))
             else:
-                bullets.append( " ".join(part.replace("\n", "").split()) )
+                bullets.append(" ".join(part.replace("\n", "").split()))
         return bullets
-    
+
     def process_tags(self):
         """ Find various tags in this segment """
         nolf = self.unixtext.replace("\n", " ")
-        m = WINDHAIL.match( nolf )
+        m = WINDHAIL.match(nolf)
         if m:
             d = m.groupdict()
             self.windtag = d['wind']
@@ -112,24 +110,24 @@ class TextProductSegment(object):
             self.winddirtag = d['winddir']
             self.hailtag = d['hail']
 
-        m = WINDTAG.match( nolf )
+        m = WINDTAG.match(nolf)
         if m:
             d = m.groupdict()
             self.winddirtag = d['winddir']
             self.windtag = d['wind']
 
-        m = HAILTAG.match( nolf )
+        m = HAILTAG.match(nolf)
         if m:
             d = m.groupdict()
             self.haildirtag = d['haildir']
             self.hailtag = d['hail']
 
-        m = TORNADOTAG.match( nolf )
+        m = TORNADOTAG.match(nolf)
         if m:
             d = m.groupdict()
             self.tornadotag = d['tornado']
 
-        m = TORNADODAMAGETAG.match( nolf )
+        m = TORNADODAMAGETAG.match(nolf)
         if m:
             d = m.groupdict()
             self.tornadodamagetag = d['damage']
@@ -139,26 +137,25 @@ class TextProductSegment(object):
         Convert the special tags into a nice text
         """
         if (self.windtag is None and self.tornadotag is None and
-            self.hailtag is None and self.tornadodamagetag is None):
+                self.hailtag is None and self.tornadodamagetag is None):
             return ""
 
         parts = []
         if self.tornadotag is not None:
             parts.append("tornado: %s" % (
-                self.tornadotag  ))
+                self.tornadotag))
         if self.tornadodamagetag is not None:
             parts.append("tornado damage threat: %s" % (
-                self.tornadodamagetag  ))
+                self.tornadodamagetag))
         if self.windtag is not None:
             parts.append("wind: %s%s MPH" % (
-                self.winddirtag.replace(">","&gt;").replace("<", "&lt;"),
+                self.winddirtag.replace(">", "&gt;").replace("<", "&lt;"),
                 self.windtag))
         if self.hailtag is not None:
             parts.append("hail: %s%s IN" % (
-                self.haildirtag.replace(">","&gt;").replace("<", "&lt;"),
-                self.hailtag  ))
-        return " ["+ ", ".join(parts) +"] "
-
+                self.haildirtag.replace(">", "&gt;").replace("<", "&lt;"),
+                self.hailtag))
+        return " [" + ", ".join(parts) + "] "
 
     def process_latlon(self):
         """ FIND the LAT...LON data """
@@ -176,6 +173,7 @@ class TextProductSegment(object):
 
         pts = []
         partial = None
+
         def checker(lon, lat):
             ''' make sure our values are legit! '''
             if lat >= 90 or lat <= -90:
@@ -185,10 +183,10 @@ class TextProductSegment(object):
                 raise TextProductException("invalid longitude %s from %s" % (
                                                         lon, newdata))
             return (lon, lat)
-        
-        # We have two potential formats, one with 4 or 5 places and one 
+
+        # We have two potential formats, one with 4 or 5 places and one
         # with eight!
-        vals = re.findall(LAT_LON, newdata )
+        vals = re.findall(LAT_LON, newdata)
         for val in vals:
             if len(val) == 8:
                 lat = float(val[:4]) / 100.00
@@ -196,36 +194,35 @@ class TextProductSegment(object):
                 if lon < 40:
                     lon += 100.
                 lon = 0 - lon
-                pts.append( checker(lon, lat) )
+                pts.append(checker(lon, lat))
             else:
                 s = float(val) / 100.00
-                if partial is None: # we have lat
-                    partial = s 
+                if partial is None:  # we have lat
+                    partial = s
                     continue
                 # we have a lon
                 if s < 40:
                     s += 100.
                 s = 0 - s
-                pts.append( checker(s, partial) )
+                pts.append(checker(s, partial))
                 partial = None
-        
+
         if len(pts) == 0:
             return None
         if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
-            pts.append( pts[0] )
-        
-        self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([ Polygon( pts ) ]),
-                                              rounding_precision=6),)
-        return Polygon( pts )
+            pts.append(pts[0])
 
-        
+        self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([Polygon(pts)]),
+                                              rounding_precision=6),)
+        return Polygon(pts)
+
     def process_time_mot_loc(self):
         """ Try to parse the TIME...MOT...LOC """
         # TODO: The checking of time against self.ugcexpire is not perfect
-        m = TIME_MOT_LOC.match( self.unixtext.replace("\n", " ") )
+        m = TIME_MOT_LOC.match(self.unixtext.replace("\n", " "))
         if not m:
             return
-        
+
         d = m.groupdict()
         if len(d['ztime']) != 4 or self.ugcexpire is None:
             return
@@ -245,26 +242,26 @@ class TextProductSegment(object):
         if len(tokens) == 0:
             return
         for i in range(0, len(tokens), 2):
-            lats.append( float(tokens[i]) / 100.0 )
-            lons.append( 0 - float(tokens[i+1]) / 100.0 )
+            lats.append(float(tokens[i]) / 100.0)
+            lons.append(0 - float(tokens[i+1]) / 100.0)
 
         if len(lats) == 1:
             self.tml_giswkt = 'SRID=4326;POINT(%s %s)' % (lons[0], lats[0])
         else:
             pairs = []
             for lat, lon in zip(lats, lons):
-                pairs.append( '%s %s' % (lon, lat) )
+                pairs.append('%s %s' % (lon, lat))
             self.tml_giswkt = 'SRID=4326;LINESTRING(%s)' % (','.join(pairs),)
-        self.tml_sknt = int( d['sknt'] )
-        self.tml_dir = int( d['dir'] )
+        self.tml_sknt = int(d['sknt'])
+        self.tml_dir = int(d['dir'])
 
     def parse_headlines(self):
         """ Find headlines in this segment """
-        ar = re.findall("^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext, 
+        ar = re.findall("^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext,
                         re.M | re.S)
         for h in range(len(ar)):
-            ar[h] = " ".join(ar[h].replace("...",", ").replace("\n", 
-                                                               " ").split())
+            ar[h] = " ".join(ar[h].replace("...", ", ").replace("\n",
+                                                                " ").split())
         return ar
 
     def get_affected_wfos(self):
@@ -274,8 +271,8 @@ class TextProductSegment(object):
         for u in self.ugcs:
             for wfo in u.wfos:
                 if wfo not in affected_wfos:
-                    affected_wfos.append( wfo )
-        
+                    affected_wfos.append(wfo)
+
         return affected_wfos
 
 
@@ -337,48 +334,46 @@ class TextProduct(object):
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos,]
-        
+        return [self.afos, ]
+
     def get_jabbers(self, uri, uri2=None):
-        ''' Return a list of triples representing what we should send to 
+        ''' Return a list of triples representing what we should send to
         our precious jabber routing bot, this should be overridden by the
         specialty parsers '''
         res = []
         url = "%s?pid=%s" % (uri, self.get_product_id())
-        plain = "%s issues %s %s" % (self.source[1:], 
-                    reference.prodDefinitions.get(self.afos[:3], 
-                                                  self.afos[:3]), url)
-        html = '<p>%s issues <a href="%s">%s</a></p>' % (self.source[1:], url,
-                    reference.prodDefinitions.get(self.afos[:3], 
-                                                  self.afos[:3]))
+        plain = "%s issues %s %s" % (
+            self.source[1:],
+            reference.prodDefinitions.get(self.afos[:3], self.afos[:3]), url)
+        html = '<p>%s issues <a href="%s">%s</a></p>' % (
+            self.source[1:], url,
+            reference.prodDefinitions.get(self.afos[:3], self.afos[:3]))
         xtra = {
-                'channels': ",".join( self.get_channels() ),
+                'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),
                 'twitter': plain
                 }
-        res.append( (plain, html, xtra))
+        res.append((plain, html, xtra))
         return res
-        
+
     def get_signature(self):
-        """ Find the signature at the bottom of the page 
+        """ Find the signature at the bottom of the page
         """
-        return " ".join(self.segments[-1].unixtext.replace("\n", 
-                                                      " ").strip().split())
-        
+        return " ".join(self.segments[-1].unixtext.replace(
+            "\n", " ").strip().split())
+
     def parse_segments(self):
         """ Split the product by its && """
         segs = self.unixtext.split("$$")
         for s in segs:
             self.segments.append(TextProductSegment(s, self))
 
-    
     def get_product_id(self):
         """ Get an identifier of this product used by the IEM """
         s = "%s-%s-%s-%s" % (self.valid.strftime("%Y%m%d%H%M"),
-                self.source, self.wmo, self.afos)
+                             self.source, self.wmo, self.afos)
         return s.strip()
 
-    
     def parse_valid(self):
         """ Figre out the valid time of this product """
         # Now lets look for a local timestamp in the product MND or elsewhere
@@ -387,30 +382,30 @@ class TextProduct(object):
         if len(tokens) > 0:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
             self.z = tokens[0][2]
-            self.tz = pytz.timezone( reference.name2pytz.get(self.z, 'UTC') )
+            self.tz = pytz.timezone(reference.name2pytz.get(self.z, 'UTC'))
             if len(tokens[0][0]) < 3:
                 h = tokens[0][0]
                 m = 0
             else:
                 h = tokens[0][0][:-2]
                 m = tokens[0][0][-2:]
-            dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][4], 
-                                      tokens[0][5], tokens[0][6])
+            dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][4],
+                                          tokens[0][5], tokens[0][6])
             # Careful here, need to go to UTC time first then come back!
             try:
                 now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
             except ValueError:
                 msg = ("Invalid timestamp [%s] found in product "
-                       +"[%s %s %s] header") % (" ".join(tokens[0]), self.wmo, 
-                                                self.source, self.afos)
+                       "[%s %s %s] header") % (" ".join(tokens[0]), self.wmo,
+                                               self.source, self.afos)
                 sys.exc_clear()
                 raise TextProductException(self.source[1:], msg)
-            now += datetime.timedelta(hours= reference.offsets[self.z])
+            now += datetime.timedelta(hours=reference.offsets[self.z])
             self.valid = now.replace(tzinfo=pytz.timezone('UTC'))
             return
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
-        
+
         # Take the first hit, ignore others
         wmo_day = int(self.ddhhmm[:2])
         wmo_hour = int(self.ddhhmm[2:4])
@@ -420,12 +415,12 @@ class TextProduct(object):
                                          second=0, microsecond=0)
         if wmo_day == self.utcnow.day:
             return
-        elif wmo_day - self.utcnow.day == 1: # Tomorrow
+        elif wmo_day - self.utcnow.day == 1:  # Tomorrow
             self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day > 25 and self.utcnow.day < 5: # Previous month!
+        elif wmo_day > 25 and self.utcnow.day < 5:  # Previous month!
             self.valid = self.valid + datetime.timedelta(days=-10)
             self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day < 5 and self.utcnow.day > 25: # next month
+        elif wmo_day < 5 and self.utcnow.day > 25:  # next month
             self.valid = self.valid + datetime.timedelta(days=10)
             self.valid = self.valid.replace(day=wmo_day)
         else:
@@ -433,10 +428,10 @@ class TextProduct(object):
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
-        m = WMO_RE.search( self.unixtext[:100] )
+        m = WMO_RE.search(self.unixtext[:100])
         if m is None:
             raise TextProductException(("FATAL: Could not parse WMO header! "
-                                        +"%s") % (self.text[:100]))
+                                        "%s") % (self.text[:100]))
         d = m.groupdict()
         self.wmo = d['ttaaii']
         self.source = d['cccc']
@@ -451,10 +446,10 @@ class TextProduct(object):
             for u in segment.ugcs:
                 for wfo in u.wfos:
                     if wfo not in affected_wfos:
-                        affected_wfos.append( wfo )
-        
+                        affected_wfos.append(wfo)
+
         return affected_wfos
-    
+
     def parse_afos(self):
         """ Figure out what the AFOS PIL is """
         data = "\n".join([line.strip()
@@ -462,4 +457,3 @@ class TextProduct(object):
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
         if len(tokens) > 0:
             self.afos = tokens[0]
-
