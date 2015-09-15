@@ -6,10 +6,11 @@ from pyiem import reference
 
 MAG_UNITS = re.compile(r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)")
 
+
 def _mylowercase(text):
-    ''' Specialized lowercase function ''' 
+    ''' Specialized lowercase function '''
     tokens = text.split()
-    for i,t in enumerate(tokens):
+    for i, t in enumerate(tokens):
         if len(t) > 3:
             tokens[i] = t.title()
         elif t in ['N', 'NNE', 'NNW', 'NE',
@@ -18,6 +19,7 @@ def _mylowercase(text):
                    'W', 'WSW', 'WNW', 'NW']:
             continue
     return " ".join(tokens)
+
 
 class LSR(object):
     ''' Represents a single Local Storm Report within the LSRProduct '''
@@ -41,13 +43,13 @@ class LSR(object):
         self.text = None
         self.wfo = None
         self.duplicate = False
-    
+
     def get_lat(self):
         return self.geometry.xy[1][0]
-    
+
     def get_lon(self):
         return self.geometry.xy[0][0]
-                
+
     def consume_magnitude(self, text):
         ''' Convert LSR magnitude text into something atomic '''
         self.magnitude_str = text
@@ -69,13 +71,13 @@ class LSR(object):
         ''' Provided a database transaction object, persist this LSR '''
         table = "lsrs_%s" % (self.utcvalid.year,)
         wkt = "SRID=4326;%s" % (self.geometry.wkt,)
-        sql = """INSERT into """+table +""" (valid, type, magnitude, city, 
-               county, state, source, remark, geom, wfo, typetext) 
-               values (%s, %s, %s, %s, %s, %s, 
+        sql = """INSERT into """ + table + """ (valid, type, magnitude, city,
+               county, state, source, remark, geom, wfo, typetext)
+               values (%s, %s, %s, %s, %s, %s,
                %s, %s, %s, %s, %s)"""
-        args = (self.utcvalid, 
+        args = (self.utcvalid,
                 self.get_dbtype(),
-                self.magnitude_f, 
+                self.magnitude_f,
                 self.city, self.county, self.state,
                 self.source, self.remark, wkt, self.wfo, self.typetext)
         txn.execute(sql, args)
@@ -84,41 +86,41 @@ class LSR(object):
         ''' return a tweet text '''
         msg = 'At %s, %s [%s Co, %s] %s reports %s #%s' % (
                                         self.valid.strftime('%-I:%M %p'),
-                                        _mylowercase(self.city), 
+                                        _mylowercase(self.city),
                                         self.county.title(), self.state,
                                         self.source, self.mag_string(),
                                         self.wfo)
         return msg
-                
+
     def assign_timezone(self, tz, z):
         ''' retroactive assignment of timezone, so to improve attrs '''
         if self.valid is None:
             return
         # We can't just assign the timezone as this does not work in pytz
         self.utcvalid = self.valid + datetime.timedelta(
-                                                hours= reference.offsets[z] )
+                                                hours=reference.offsets[z])
         self.utcvalid = self.utcvalid.replace(tzinfo=pytz.timezone("UTC"))
         self.valid = self.utcvalid.astimezone(tz)
-        
+
     def mag_string(self):
         ''' Return a string representing the magnitude and units '''
         mag_long = "%s" % (self.typetext,)
         if self.magnitude_units == 'MPH':
             mag_long = "%s of %s%.0f %s" % (mag_long, self.magnitude_qualifier,
-                                            self.magnitude_f, 
+                                            self.magnitude_f,
                                             self.magnitude_units)
-        elif (self.typetext == "HAIL" and 
-            reference.hailsize.has_key("%.2f" % (self.magnitude_f,))):
+        elif (self.typetext == "HAIL" and
+              ("%.2f" % (self.magnitude_f,)) in reference.hailsize):
             haildesc = reference.hailsize["%.2f" % (self.magnitude_f,)]
             mag_long = "%s of %s size (%s%.2f %s)" % (mag_long,
-                                                      haildesc, 
+                                                      haildesc,
                                                       self.magnitude_qualifier,
                                                       self.magnitude_f,
                                                       self.magnitude_units)
         elif self.magnitude_units == 'F':
             mag_long = "%s of E%s" % (mag_long, self.magnitude_str)
         elif self.magnitude_f:
-            mag_long = "%s of %.2f %s" % (mag_long, self.magnitude_f, 
+            mag_long = "%s of %.2f %s" % (mag_long, self.magnitude_f,
                                           self.magnitude_units)
         elif self.magnitude_str:
             mag_long = "%s of %s" % (mag_long, self.magnitude_str)
