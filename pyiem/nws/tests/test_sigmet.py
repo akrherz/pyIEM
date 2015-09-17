@@ -21,6 +21,12 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestSIGMET(unittest.TestCase):
 
+    def test_150917_cancel(self):
+        """Don't error out on a CANCELs SIGMET"""
+        utcnow = utc(2015, 9, 17, 0, 0)
+        tp = parser(get_file('SIGPAP_cancel.txt'), utcnow)
+        self.assertEquals(len(tp.sigmets), 0)
+
     def test_compute_esol(self):
         """ Test our algo on either side of a line """
         pts = [[0, 0], [5, 0]]

@@ -272,7 +272,7 @@ class SIGMETProduct(TextProduct):
         m = re.findall(O_PAIRS, meat)
         if len(m) == 0:
             # TODO: resolve what SIGMET cancels are
-            if meat.find("CNL SIGMET") > 0:
+            if meat.find("CNL SIGMET") > 0 or meat.find("CANCEL SIGMET") > 0:
                 return
             raise SIGMETException("Failed to parse 0_PAIRS: %s" % (meat,))
         pts = []
