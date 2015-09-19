@@ -115,25 +115,3 @@ def convert_well_known_text(wkt):
     else:
         # there were no recognized geometries in the WKT string
         raise ValueError("No recognized geometry in WKT string")
-
-
-def parse_wkt_thuban(wkt):
-    """Like convert_well_known_text, but return lists of lists of pairs"""
-    parts = wkt.split(";")
-    for part in parts:
-        part = part.strip()
-        if part.startswith("SRID"):
-            # ignore SRIDs
-            continue
-        else:
-            # split on "(" to separate the geometry type from the
-            # coordinate values
-            components = part.split("(", 1)
-            if len(components) > 1:
-                return parse_coordinate_lists(components[1])
-            else:
-                raise ValueError("WKT part %r doesn't contain opening"
-                                 " parenthesis" % part)
-    else:
-        # there were no recognized geometries in the WKT string
-        raise ValueError("No recognized geometry in WKT string")
