@@ -91,7 +91,8 @@ class TestProducts(unittest.TestCase):
 
     def test_150422_tornadomag(self):
         """LSRTAE see what we do with tornado magitnudes"""
-        prod = parser(get_file('LSRTAE.txt'))
+        utcnow = utc(2015, 4, 22, 15, 20)
+        prod = parser(get_file('LSRTAE.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://iem.local/')
         self.assertEqual(j[0][1], (
             '<p>4 W Bruce [Walton Co, FL] NWS EMPLOYEE '
@@ -157,13 +158,14 @@ class TestProducts(unittest.TestCase):
         """ TORFSD has considerable tag """
         prod = vtecparser(get_file('TORFSD.txt'))
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('FSD issues Tornado Warning '
-            +'[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, '
-            +'hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 '
-            +'PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE '
-            +'AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND '
-            +'MOVING NORTHEAST AT 30 MPH. '
-            +'http://localhost#2013-O-NEW-KFSD-TO-W-0020'))
+        self.assertEquals(j[0][0], (
+            'FSD issues Tornado Warning '
+            '[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, '
+            'hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 '
+            'PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE '
+            'AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND '
+            'MOVING NORTHEAST AT 30 MPH. '
+            'http://localhost#2013-O-NEW-KFSD-TO-W-0020'))
 
     def test_150105_sbw(self):
         """ FLSLBF SBW that spans two years! """
@@ -172,7 +174,6 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file('FLSLBF/%i.txt' % (i,)))
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
-
 
     def test_150105_manycors(self):
         """ WSWGRR We had some issues with this series, lets test it """
@@ -213,7 +214,8 @@ class TestProducts(unittest.TestCase):
 
     def test_141226_correction(self):
         """ Add another test for product corrections """
-        self.assertRaises(UGCParseException, vtecparser, get_file('FLSRAH.txt'))
+        self.assertRaises(UGCParseException, vtecparser,
+                          get_file('FLSRAH.txt'))
 
     def test_141215_correction(self):
         """ I have a feeling we are not doing the right thing for COR """
@@ -221,31 +223,31 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('NPWMAF/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, 
+            self.assertEquals(len(prod.warnings), 0,
                               "\n".join(prod.warnings))
-    
+
     def test_141212_mqt(self):
         """ Updated four rows instead of three, better check on it """
         for i in range(4):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('MWWMQT/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings)) 
-    
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_141211_null_expire(self):
         """ Figure out why the database has a null expiration for this FL.W"""
         for i in range(0, 13):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings)) 
-    
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_141210_continues(self):
         """ See that we handle CON with infinite time A-OK """
-        for i in range(0,2):
+        for i in range(0, 2):
             prod = vtecparser(get_file('FFAEKA/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))            
+            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
 
     def test_141208_upgrade(self):
         """ See that we can handle the EXB case """
@@ -270,113 +272,121 @@ class TestProducts(unittest.TestCase):
 
     def test_tcp(self):
         """ See what we can do with TCP """
-        prod = parser( get_file('TCPAT1.txt') )
+        prod = parser(get_file('TCPAT1.txt'))
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('National Hurricance Center issues '
-            +'ADVISORY 19 for POST-TROPICAL CYCLONE ARTHUR '
-            +'http://localhost?pid=201407051500-KNHC-WTNT31-TCPAT1'))
-        self.assertEquals(j[0][2]['twitter'], ('Post-Tropical Cyclone '
-            +'#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H'))
-    
+        self.assertEquals(j[0][0], (
+            'National Hurricance Center issues '
+            'ADVISORY 19 for POST-TROPICAL CYCLONE ARTHUR '
+            'http://localhost?pid=201407051500-KNHC-WTNT31-TCPAT1'))
+        self.assertEquals(j[0][2]['twitter'], (
+            'Post-Tropical Cyclone '
+            '#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H'))
+
     def test_140820_badtimestamp(self):
         """ Check our invalid timestamp exception and how it is written """
         try:
-            parser( get_file('RWSGTF_badtime.txt') )
+            parser(get_file('RWSGTF_badtime.txt'))
         except Exception, msg:
             # Note to self, unsure how this even works :)
-            self.assertEquals(msg[1], ("Invalid timestamp "
-                +"[130 PM MDT WED TUE 19 2014] found in product "
-                +"[NZUS01 KTFX RWSGTF] header"))
-    
+            self.assertEquals(msg[1], (
+                "Invalid timestamp "
+                "[130 PM MDT WED TUE 19 2014] found in product "
+                "[NZUS01 KTFX RWSGTF] header"))
+
     def test_140731_badugclabel(self):
         """ Make sure this says zones and not counties! """
         ugc_provider = {}
-        for u in range(530,550,1):
-            n =  'a' * min((u+1/2),80)
-            ugc_provider["ANZ%03i" % (u,)] = UGC('AN', 'Z', "%03i" % (u,), 
-                              name=n, wfos=['DMX'])
-            
+        for u in range(530, 550, 1):
+            n = 'a' * min((u+1/2), 80)
+            ugc_provider["ANZ%03i" % (u,)] = UGC('AN', 'Z', "%03i" % (u,),
+                                                 name=n, wfos=['DMX'])
+
         utcnow = utc(2014, 7, 31, 17, 35)
-        prod = vtecparser( get_file('MWWLWX.txt'), utcnow=utcnow,
-                           ugc_provider=ugc_provider)
+        prod = vtecparser(get_file('MWWLWX.txt'), utcnow=utcnow,
+                          ugc_provider=ugc_provider)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('LWX issues Small Craft Advisory '
-            +'valid at Jul 31, 6:00 PM EDT for 7 forecast zones in [AN] till '
-            +'Aug 1, 6:00 AM EDT http://localhost#2014-O-NEW-KLWX-SC-Y-0151'))
-        
+        self.assertEquals(j[0][0], (
+            'LWX issues Small Craft Advisory '
+            'valid at Jul 31, 6:00 PM EDT for 7 forecast zones in [AN] till '
+            'Aug 1, 6:00 AM EDT http://localhost#2014-O-NEW-KLWX-SC-Y-0151'))
+
     def test_tornado_emergency(self):
         """ See what we do with Tornado Emergencies """
         utcnow = utc(2012, 4, 15, 3, 27)
-        prod = vtecparser( get_file('TOR_emergency.txt'), utcnow=utcnow)
+        prod = vtecparser(get_file('TOR_emergency.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][1], ("<p>ICT <a href=\"http://localhost"
-        +"#2012-O-NEW-KICT-TO-W-0035\">issues Tornado Warning</a> "
-        +"[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
-        +"hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
-        +"* AT 1019 PM CDT...<span style=\"color: #FF0000;\">TORNADO "
-        +"EMERGENCY</span> FOR THE WICHITA METRO AREA. A CONFIRMED LARGE..."
-        +"VIOLENT AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR "
-        +"HAYSVILLE...AND MOVING NORTHEAST AT 50 MPH.</p>"))        
-    
+        self.assertEquals(j[0][1], (
+            "<p>ICT <a href=\"http://localhost"
+            "#2012-O-NEW-KICT-TO-W-0035\">issues Tornado Warning</a> "
+            "[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
+            "hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
+            "* AT 1019 PM CDT...<span style=\"color: #FF0000;\">TORNADO "
+            "EMERGENCY</span> FOR THE WICHITA METRO AREA. A CONFIRMED LARGE..."
+            "VIOLENT AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR "
+            "HAYSVILLE...AND MOVING NORTHEAST AT 50 MPH.</p>"))
+
     def test_badtimestamp(self):
         """ See what happens when the MND provides a bad timestamp """
         utcnow = utc(2005, 8, 29, 16, 56)
         self.assertRaises(Exception, vtecparser,
-                          get_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow) 
-  
+                          get_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow)
+
     def test_wcn_updates(self):
         """ Make sure our Tags and svs_special works for combined message """
         utcnow = utc(2014, 6, 6, 20, 37)
         ugc_provider = {}
-        for u in range(1,201,2):
-            n =  'a' * min((u+1/2),40)
+        for u in range(1, 201, 2):
+            n = 'a' * min((u+1/2), 40)
             for st in ['AR', 'MS', 'TN', 'MO']:
-                ugc_provider["%sC%03i" % (st, u)] = UGC(st, 'C', "%03i" % (u,), 
-                              name=n, wfos=['DMX'])
-        prod = vtecparser( get_file('WCNMEG.txt'), utcnow=utcnow,
-                           ugc_provider=ugc_provider) 
+                ugc_provider["%sC%03i" % (st, u)] = UGC(st, 'C', "%03i" % (u,),
+                                                        name=n, wfos=['DMX'])
+        prod = vtecparser(get_file('WCNMEG.txt'), utcnow=utcnow,
+                          ugc_provider=ugc_provider)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('MEG updates Severe Thunderstorm Watch '
-        +'(extends area of 11 counties in [TN] and '
-        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO], continues '
-        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaa'
-        +'aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaa'
-        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-        +'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
-        +'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
-        +'22 counties in [MS]) till Jun 6, 7:00 PM CDT. '
-        +'http://localhost#2014-O-EXA-KMEG-SV-A-0240'))
-  
+        self.assertEquals(j[0][0], (
+         'MEG updates Severe Thunderstorm Watch '
+         '(extends area of 11 counties in [TN] and '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO], continues '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaa'
+         'aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaa'
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+         'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
+         '22 counties in [MS]) till Jun 6, 7:00 PM CDT. '
+         'http://localhost#2014-O-EXA-KMEG-SV-A-0240'))
+
     def test_140715_condensed(self):
         """ Make sure our Tags and svs_special works for combined message """
         utcnow = utc(2014, 7, 6, 2, 1)
-        prod = vtecparser( get_file('TORSVS.txt'), utcnow=utcnow) 
+        prod = vtecparser(get_file('TORSVS.txt'), utcnow=utcnow) 
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], ('DMX updates Tornado Warning '
-            +'[tornado: OBSERVED, hail: &lt;.75 IN] (cancels ((IAC049)) [IA], '
-            +'continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A '
-            +'CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING '
-            +'SOUTHEAST AT 30 MPH. '
-            +'http://localhost#2014-O-CON-KDMX-TO-W-0051'))
-    
+        self.assertEquals(j[0][0], (
+            'DMX updates Tornado Warning '
+            '[tornado: OBSERVED, hail: &lt;.75 IN] (cancels ((IAC049)) [IA], '
+            'continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A '
+            'CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING '
+            'SOUTHEAST AT 30 MPH. '
+            'http://localhost#2014-O-CON-KDMX-TO-W-0051'))
+
     def test_140714_segmented_watch(self):
         """ Two segmented watch text formatting stinks """
         utcnow = utc(2014, 7, 14, 17, 25)
-        prod = vtecparser( get_file('WCNPHI.txt'), utcnow=utcnow)
+        prod = vtecparser(get_file('WCNPHI.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals( j[0][0], ("PHI issues Severe Thunderstorm Watch "
-            +"(issues ((MDC011)), ((MDC015)), ((MDC029)), ((MDC035)), "
-            +"((MDC041)) [MD] and ((NJC001)), ((NJC005)), ((NJC007)), "
-            +"((NJC009)), ((NJC011)), ((NJC015)), ((NJC019)), ((NJC021)), "
-            +"((NJC023)), ((NJC025)), ((NJC027)), ((NJC029)), ((NJC033)), "
-            +"((NJC035)), ((NJC037)), ((NJC041)) [NJ] and ((DEC001)), "
-            +"((DEC003)), ((DEC005)) [DE] and ((PAC011)), ((PAC017)), "
-            +"((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
-            +"((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
-            +"((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
-            +"((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT. "
-            +"http://localhost#2014-O-NEW-KPHI-SV-A-0418") )
-    
+        self.assertEquals(j[0][0], (
+            "PHI issues Severe Thunderstorm Watch "
+            "(issues ((MDC011)), ((MDC015)), ((MDC029)), ((MDC035)), "
+            "((MDC041)) [MD] and ((NJC001)), ((NJC005)), ((NJC007)), "
+            "((NJC009)), ((NJC011)), ((NJC015)), ((NJC019)), ((NJC021)), "
+            "((NJC023)), ((NJC025)), ((NJC027)), ((NJC029)), ((NJC033)), "
+            "((NJC035)), ((NJC037)), ((NJC041)) [NJ] and ((DEC001)), "
+            "((DEC003)), ((DEC005)) [DE] and ((PAC011)), ((PAC017)), "
+            "((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
+            "((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
+            "((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
+            "((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT. "
+            "http://localhost#2014-O-NEW-KPHI-SV-A-0418"))
+
     def test_140610_tweet_spacing(self):
         ''' Saw spacing issue in tweet message '''
         utcnow = utc(2014, 6, 10, 13, 23)
@@ -418,7 +428,7 @@ class TestProducts(unittest.TestCase):
 
         # --> num  issue   expire  p_begin  p_end
         # 1040 AM CDT FRI JUN 6 2014 NEW 140608T1800Z-000000T0000Z
-        # --> 1    08 18   09 18   08 18    09 18 
+        # --> 1    08 18   09 18   08 18    09 18
         #  915 PM CDT FRI JUN 6 2014 EXT 140608T0900Z-000000T0000Z
         # --> 1    08 18   09 18   08 18    08 18!
         # --> 2    08 09   09 09   08 09    09 09
@@ -430,52 +440,54 @@ class TestProducts(unittest.TestCase):
         # --> 1    08 18   09 18   08 18    08 18
         # --> 2    08 09   09 09   08 09    08 09
         # --> 3    08 10   09 10   08 10    08 15! set to product issue
-        # --> 4    08 10   13 06   08 15    13 06 
+        # --> 4    08 10   13 06   08 15    13 06
         # 1030 AM CDT MON JUN 9 2014 CON 000000T0000Z-140613T0600Z
         # --> 1    08 18   09 18   08 18    08 18
         # --> 2    08 09   09 09   08 09    08 09
         # --> 3    08 10   09 10   08 10    08 15
-        # --> 4    08 10   13 06   08 15    09 15! set to product issue 
+        # --> 4    08 10   13 06   08 15    09 15! set to product issue
         # --> 5    08 10   13 06   09 15    13 06
-        for i in range(1,6):
-            prod = vtecparser( get_file('FLWLBF/FLWLBF_%s.txt' % (i,)) , 
-                               utcnow=utcnow)
-            prod.sql( self.txn )
+        for i in range(1, 6):
+            prod = vtecparser(get_file('FLWLBF/FLWLBF_%s.txt' % (i,)),
+                              utcnow=utcnow)
+            prod.sql(self.txn)
 
-        self.txn.execute("""SET TIME ZONE 'UTC'""")      
-        
+        self.txn.execute("""SET TIME ZONE 'UTC'""")
+
         self.txn.execute("""SELECT max(length(svs)) from warnings_2014 WHERE
         eventid = 2 and phenomena = 'FL' and significance = 'W' and wfo = 'LBF'
         """)
         row = self.txn.fetchone()
         self.assertEqual(6693, 6693)
-              
+
         self.txn.execute("""
-        select status, updated, issue, expire, init_expire, polygon_begin, 
-        polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and 
+        select status, updated, issue, expire, init_expire, polygon_begin,
+        polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and
         significance = 'W' and wfo = 'LBF' ORDER by updated ASC
         """)
         print 'sta update issue  expire init_e p_begi p_end'
         rows = []
+
         def safe(val):
             if val is None:
                 return '(null)'
             return val.strftime("%d%H%M")
         for row in self.txn:
-            rows.append( row )
-            print '%s %s %s %s %s %s %s' % (row[0], safe(row[1]),
-                    safe(row[2]), safe(row[3]), safe(row[4]), safe(row[5]),
-                    safe(row[6]))
-    
-        self.assertEqual(rows[0][6], 
+            rows.append(row)
+            print(('%s %s %s %s %s %s %s' % (
+                row[0], safe(row[1]),
+                safe(row[2]), safe(row[3]), safe(row[4]), safe(row[5]),
+                safe(row[6]))))
+
+        self.assertEqual(rows[0][6],
                          datetime.datetime(2014, 6, 7, 2, 15).replace(
                                                 tzinfo=pytz.timezone("UTC")))
-    
+
     def test_svs_search(self):
         ''' See that we get the SVS search done right '''
         utcnow = datetime.datetime(2014, 6, 6, 20)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
-        
+
         prod = vtecparser( get_file('TORBOU_ibw.txt') , utcnow=utcnow)
         j = prod.segments[0].svs_search()
         self.assertEqual(j, ('* AT 250 PM MDT...A SEVERE THUNDERSTORM '
@@ -570,7 +582,7 @@ class TestProducts(unittest.TestCase):
         significance = 'W' """)
 
         prod = vtecparser( get_file('SVRLMK_1.txt') , utcnow=utcnow)
-        prod.sql( self.txn )    
+        prod.sql(self.txn)
 
         self.txn.execute("""SELECT expire from sbw_2014 WHERE
         wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
@@ -578,16 +590,15 @@ class TestProducts(unittest.TestCase):
         self.assertEqual( self.txn.rowcount, 1)
 
         prod = vtecparser( get_file('SVRLMK_2.txt') , utcnow=utcnow)
-        prod.sql( self.txn )    
+        prod.sql( self.txn )
 
         self.txn.execute("""SELECT expire from sbw_2014 WHERE
         wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and 
         significance = 'W' """)
         self.assertEqual( self.txn.rowcount, 3)
-        
-        self.assertEqual( len(prod.warnings), 0, "\n".join(prod.warnings))
 
-    
+        self.assertEqual(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_140321_invalidgeom(self):
         ''' See what we do with an invalid geometry from IWX '''
         prod = vtecparser( get_file('FLW_badgeom.txt') )
@@ -652,24 +663,26 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file(fn))
             prod.sql(self.txn)
             self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
-    
+
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''
-        prod = vtecparser( get_file('WSWDMX/WSW_00.txt') )
+        prod = vtecparser(get_file('WSWDMX/WSW_00.txt'))
         self.assertEqual(prod.afos, 'WSWDMX')
-        prod.sql( self.txn )
-    
-        ''' Did Marshall County IAZ049 get a ZR.Y '''
-        self.txn.execute("""SELECT issue from warnings_2013 WHERE
-        wfo = 'DMX' and eventid = 1 and phenomena = 'ZR' and 
-        significance = 'Y' and status = 'EXB'
-        and ugc = 'IAZ049' """)
-        self.assertEqual( self.txn.rowcount, 1)
+        prod.sql(self.txn)
 
-        prod = vtecparser( get_file('WSWDMX/WSW_01.txt') )
+        ''' Did Marshall County IAZ049 get a ZR.Y '''
+        self.txn.execute("""
+            SELECT issue from warnings_2013 WHERE
+            wfo = 'DMX' and eventid = 1 and phenomena = 'ZR' and
+            significance = 'Y' and status = 'EXB'
+            and ugc = 'IAZ049'
+        """)
+        self.assertEqual(self.txn.rowcount, 1)
+
+        prod = vtecparser(get_file('WSWDMX/WSW_01.txt'))
         self.assertEqual(prod.afos, 'WSWDMX')
-        prod.sql( self.txn )
-    
+        prod.sql(self.txn)
+
         ''' Is IAZ006 in CON status with proper end time '''
         answer = datetime.datetime(2013,1,28,6).replace(
                                                 tzinfo=pytz.timezone("UTC"))
@@ -700,53 +713,57 @@ class TestProducts(unittest.TestCase):
         significance = 'W' and status = 'CAN'
         and ugc = 'IAZ006' """)
 
-        self.assertEqual( self.txn.rowcount, 1)
+        self.assertEqual(self.txn.rowcount, 1)
         row = self.txn.fetchone()
-        self.assertEqual( row[0], answer )
+        self.assertEqual(row[0], answer)
 
-    
     def test_vtec(self):
         ''' Simple test of VTEC parser '''
         # Remove cruft first
         self.txn.execute("""
-            DELETE from warnings_2005 WHERE 
-            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
-            significance = 'W' 
+            DELETE from warnings_2005 WHERE
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
+            significance = 'W'
         """)
         self.txn.execute("""
             DELETE from sbw_2005 WHERE
-            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
             significance = 'W' and status = 'NEW'
         """)
-        
+
         ugc_provider = {'MSC091': UGC('MS', 'C', '091', 'DARYL', ['XXX'])}
         nwsli_provider = {'AMWI4': NWSLI('AMWI4', 'Ames', ['XXX'], -99, 44)}
-        prod = vtecparser( get_file('TOR.txt') , ugc_provider=ugc_provider,
-                           nwsli_provider=nwsli_provider)
+        prod = vtecparser(get_file('TOR.txt'), ugc_provider=ugc_provider,
+                          nwsli_provider=nwsli_provider)
         self.assertEqual(prod.skip_con, False)
         self.assertAlmostEqual(prod.segments[0].sbw.area, 0.3053, 4)
-    
-        prod.sql( self.txn )
-        
-        # See if we got it in the database!
-        self.txn.execute("""SELECT issue from warnings_2005 WHERE
-        wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
-        significance = 'W' and status = 'NEW' """)
-        self.assertEqual( self.txn.rowcount, 3)
 
-        self.txn.execute("""SELECT issue from sbw_2005 WHERE
-        wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and 
-        significance = 'W' and status = 'NEW' """)
-        self.assertEqual( self.txn.rowcount, 1)
+        prod.sql(self.txn)
+
+        # See if we got it in the database!
+        self.txn.execute("""
+            SELECT issue from warnings_2005 WHERE
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
+            significance = 'W' and status = 'NEW'
+        """)
+        self.assertEqual(self.txn.rowcount, 3)
+
+        self.txn.execute("""
+            SELECT issue from sbw_2005 WHERE
+            wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
+            significance = 'W' and status = 'NEW'
+        """)
+        self.assertEqual(self.txn.rowcount, 1)
 
         msgs = prod.get_jabbers('http://localhost', 'http://localhost/')
-        self.assertEqual( msgs[0][0], ('JAN issues Tornado Warning for '
-            +'((MSC035)), ((MSC073)), DARYL [MS] till Aug 29, 1:15 PM CDT * AT '
-            +'1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A '
-            +'TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE '
-            +'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '
-            +'WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING '
-            +'THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130'))
+        self.assertEqual(msgs[0][0], (
+            'JAN issues Tornado Warning for '
+            '((MSC035)), ((MSC073)), DARYL [MS] till Aug 29, 1:15 PM CDT * AT '
+            '1150 AM CDT...THE NATIONAL WEATHER SERVICE HAS ISSUED A '
+            'TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE '
+            'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '
+            'WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING '
+            'THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130'))
 
     def test_01(self):
         """LSR.txt process a valid LSR without blemish """
