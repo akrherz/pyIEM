@@ -4,6 +4,21 @@ from pyiem import nwnformat
 
 class TestNWNFORMAT(unittest.TestCase):
 
+    def test_heatindex(self):
+        """Exercise the heatindex func"""
+        d = nwnformat.heatidx(100, 50)
+        self.assertAlmostEqual(d, 119.48, 2)
+        d = nwnformat.heatidx(69, 50)
+        self.assertAlmostEqual(d, 69.00, 2)
+        d = nwnformat.heatidx(169, 50)
+        self.assertAlmostEqual(d, -99.00, 2)
+        d = nwnformat.heatidx(79, 0)
+        self.assertAlmostEqual(d, -99.00, 2)
+        d = nwnformat.heatidx(75, 40)
+        self.assertAlmostEqual(d, 73.16, 2)
+        d = nwnformat.wchtidx(15, 1)
+        self.assertAlmostEqual(d, 15.00, 2)
+
     def test_feels(self):
         """test the output of the feelslike() method"""
         d = nwnformat.feelslike(100, 50, 10)
@@ -21,11 +36,14 @@ class TestNWNFORMAT(unittest.TestCase):
         self.assertAlmostEquals(d, 45)
         d = nwnformat.mydir(10, -10)
         self.assertAlmostEquals(d, 315)
+        d = nwnformat.mydir(10, 0)
+        self.assertAlmostEquals(d, 270)
 
     def test_dwpf(self):
         """test the output of the dwpf() method"""
         d = nwnformat.dwpf(50, 50)
         self.assertAlmostEqual(d, 32)
+        self.assertTrue(nwnformat.dwpf(None, 32) is None)
 
     def test_uv(self):
         """test the output of the uv() method"""
@@ -44,6 +62,10 @@ class TestNWNFORMAT(unittest.TestCase):
                           '100% 29.65" 00.00"D 00.00"M 00.00"R').split())
         n.parseLineRT(('A 263  14:59 07/16/15   S 19MPH 000K 460F 460F '
                        '100% 29.66F 00.00"D 00.00"M 00.00"R').split())
+        # n.setTS("BAH")
+        # self.assertEqual(n.error, 100)
+        n.setTS("07/16/15 14:58:50")
+        n.sanityCheck()
         n.avgWinds()
         n.currentLine()
         n.maxLine()

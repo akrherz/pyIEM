@@ -46,8 +46,7 @@ def mydir(u, v):
         ddir = ddir
     elif (u < 0 and v > 0):
         ddir = 180 + ddir
-
-    return int(math.fabs(ddir))
+    return int(round(math.fabs(ddir), 0))
 
 
 def feelslike(tmpf, relh, sped):
