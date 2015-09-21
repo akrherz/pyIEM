@@ -13,7 +13,7 @@ from pyiem.nws.product import TextProduct
 O_LINE1 = re.compile(("SIGMET (?P<name>[A-Z]*) (?P<num>[0-9]*) "
                       "VALID (?P<sts>[0-9]{6})/(?P<ets>[0-9]{6})"))
 
-O_PAIRS = re.compile("(?P<lat>[NS][0-9]{4})\s?(?P<lon>[EW][0-9]{5})")
+O_PAIRS = re.compile("(?P<lat>[NS][0-9]{2,4})\s?(?P<lon>[EW][0-9]{3,5})")
 
 CS_RE = re.compile(r"""CONVECTIVE\sSIGMET\s(?P<label>[0-9A-Z]+)\s
 VALID\sUNTIL\s(?P<hour>[0-2][0-9])(?P<minute>[0-5][0-9])Z\s
@@ -277,10 +277,16 @@ class SIGMETProduct(TextProduct):
             raise SIGMETException("Failed to parse 0_PAIRS: %s" % (meat,))
         pts = []
         for pair in m:
-            lat = float(pair[0][1:]) / 100.0
+            if len(pair[0][1:]) == 2:
+                lat = float(pair[0][1:])
+            else:
+                lat = float(pair[0][1:]) / 100.0
             if pair[0][0] == 'S':
                 lat = 0 - lat
-            lon = float(pair[1][1:]) / 100.0
+            if len(pair[1][1:]) == 3:
+                lon = float(pair[1][1:])
+            else:
+                lon = float(pair[1][1:]) / 100.0
             if pair[1][0] == 'W':
                 lon = 0 - lon
             pts.append((lon, lat))

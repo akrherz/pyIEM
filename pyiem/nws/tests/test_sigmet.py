@@ -21,6 +21,12 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestSIGMET(unittest.TestCase):
 
+    def test_150921_SIGPAS(self):
+        """Got an error with this product"""
+        utcnow = utc(2015, 9, 21, 10, 57)
+        tp = parser(get_file('SIGPAS.txt'), utcnow)
+        self.assertEquals(len(tp.sigmets), 1)
+
     def test_150917_cancel(self):
         """Don't error out on a CANCELs SIGMET"""
         utcnow = utc(2015, 9, 17, 0, 0)
