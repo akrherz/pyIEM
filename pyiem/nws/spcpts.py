@@ -14,6 +14,7 @@ import os
 CONUS = None
 CONUSPOLY = None
 
+
 def load_conus_data():
     """ Load up the conus datafile for our perusal """
     global CONUS, CONUSPOLY
@@ -24,15 +25,16 @@ def load_conus_data():
     lats = []
     for line in open(fn):
         tokens = line.split(",")
-        lons.append( float(tokens[0]) )
-        lats.append( float(tokens[1]) )
-    CONUS = np.column_stack([lons,lats])
-    CONUSPOLY = Polygon( CONUS ) 
+        lons.append(float(tokens[0]))
+        lats.append(float(tokens[1]))
+    CONUS = np.column_stack([lons, lats])
+    CONUSPOLY = Polygon(CONUS)
+
 
 def get_segments_from_text(text):
     """ Return list of segments for this text """
-    tokens = re.findall("([0-9]{8})", text.replace("\n",""))
-    # First we generate a list of segments, based on what we found 
+    tokens = re.findall("([0-9]{8})", text.replace("\n", ""))
+    # First we generate a list of segments, based on what we found
     segments = []
     pts = []
     for token in tokens:
@@ -40,13 +42,13 @@ def get_segments_from_text(text):
         lon = 0 - (float(token[-4:]) / 100.0)
         if lon > -30:
             lon -= 100.
-        if token == '99999999':        
-            segments.append( pts )
+        if token == '99999999':
+            segments.append(pts)
             pts = []
         else:
-            pts.append( [lon, lat] )
+            pts.append([lon, lat])
     if len(pts) > 0:
-        segments.append( pts )
+        segments.append(pts)
 
     return segments
 
@@ -195,6 +197,7 @@ class SPCOutlook(object):
         self.threshold = threshold
         self.geometry = multipoly
 
+
 class SPCPTS(object):
 
     def __init__(self, tp):
@@ -202,17 +205,17 @@ class SPCPTS(object):
         self.valid = None
         self.expire = None
         self.issue = tp.valid
-        self.set_metadata( tp )
-        self.find_issue_expire( tp )
-        self.find_outlooks( tp )
-    
+        self.set_metadata(tp)
+        self.find_issue_expire(tp)
+        self.find_outlooks(tp)
+
     def get_outlook(self, category, threshold):
         ''' Get an outlook by category and threshold '''
         for outlook in self.outlooks:
             if outlook.category == category and outlook.threshold == threshold:
                 return outlook
         return None
-    
+
     def draw_outlooks(self):
         ''' For debugging, draw the outlooks on a simple map for inspection!'''
         from descartes.patch import PolygonPatch
@@ -221,26 +224,26 @@ class SPCPTS(object):
         for outlook in self.outlooks:
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ax.plot(CONUS[:,0],CONUS[:,1], color='b', label='Conus')
+            ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
             for poly in outlook.geometry:
                 patch = PolygonPatch(poly, fc='r', label='Outlook')
                 ax.add_patch(patch)
-            ax.set_title('Category %s Threshold %s' % (outlook.category, 
-                                                   outlook.threshold))
+            ax.set_title('Category %s Threshold %s' % (outlook.category,
+                                                       outlook.threshold))
             ax.legend(loc=3)
             fn = '/tmp/%s_%s_%s.png' % (self.issue.strftime("%Y%m%d%H%M"),
                                         outlook.category, outlook.threshold)
             print ':: creating plot %s' % (fn,)
-            fig.savefig( fn )
+            fig.savefig(fn)
             del fig
             del ax
-    
+
     def set_metadata(self, tp):
         """
         Set some metadata about this product
         """
         if tp.afos == 'PTSDY1':
-            self.day  = '1'
+            self.day = '1'
             self.outlook_type = 'C'
         if tp.afos == "PTSDY2":
             self.day = '2'
@@ -260,8 +263,8 @@ class SPCPTS(object):
         if tp.afos == "PFWF38":
             self.day = '3'
             self.outlook_type = 'F'
-    
-    def find_issue_expire(self, tp ):
+
+    def find_issue_expire(self, tp):
         """
         Determine the period this product is valid for
         """
@@ -272,17 +275,17 @@ class SPCPTS(object):
         day2 = int(tokens[0][1][:2])
         hour2 = int(tokens[0][1][2:4])
         min2 = int(tokens[0][1][4:])
-        valid = tp.valid.replace(day=day1,hour=hour1,minute=min1)
-        expire = tp.valid.replace(day=day2,hour=hour2,minute=min2)
+        valid = tp.valid.replace(day=day1, hour=hour1, minute=min1)
+        expire = tp.valid.replace(day=day2, hour=hour2, minute=min2)
         if day1 < tp.valid.day and day1 == 1:
             valid = tp.valid + datetime.timedelta(days=25)
-            valid = valid.replace(day=day1,hour=hour1,minute=min1)
+            valid = valid.replace(day=day1, hour=hour1, minute=min1)
         if day2 < tp.valid.day and day2 == 1:
             expire = tp.valid + datetime.timedelta(days=25)
-            expire = expire.replace(day=day2,hour=hour1,minute=min1)
+            expire = expire.replace(day=day2, hour=hour1, minute=min1)
         self.valid = valid
         self.expire = expire
-    
+
     def find_outlooks(self, tp):
         """ Find the outlook sections within the text product! """
         for segment in tp.text.split("&&")[:-1]:
@@ -293,14 +296,16 @@ class SPCPTS(object):
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
-                if re.match("^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) ", line) is not None:
+                if re.match(("^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|"
+                             "HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) "),
+                            line) is not None:
                     newthreshold = line.split()[0]
                     if threshold is not None and threshold == newthreshold:
                         point_data[threshold] += " 99999999 "
                     threshold = newthreshold
                 if threshold is None:
                     continue
-                if not point_data.has_key(threshold):
+                if threshold not in point_data:
                     point_data[threshold] = ""
                 point_data[threshold] += line.replace(threshold, " ")
 
