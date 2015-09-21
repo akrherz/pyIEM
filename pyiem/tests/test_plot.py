@@ -1,4 +1,5 @@
 import unittest
+import psycopg2
 import numpy as np
 from pyiem import plot
 import datetime
@@ -84,8 +85,20 @@ class TestPlot(unittest.TestCase):
 
     def test_windrose(self):
         """Exercise the windrose code"""
-        plot.windrose('AMW22')
-        self.assertEquals(1, 1)
+        pgconn = psycopg2.connect(database='asos', host="iemdb")
+        cursor = pgconn.cursor()
+        v = datetime.datetime(2015, 1, 1, 6)
+        for s in range(100):
+            v += datetime.timedelta(hours=1)
+            cursor.execute("""INSERT into t2015(station, valid, sknt, drct)
+            VALUES (%s, %s, %s, %s)""", ('AMW2', v, s, s))
+        plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
+                      cursor=cursor)
+        plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
+                      cursor=cursor, justdata=True)
+        plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
+                      cursor=cursor, sts=datetime.datetime(2001, 1, 1),
+                      ets=datetime.datetime(2001, 1, 2))
 
     def test_colorramps(self):
         """make sure our colorramps are happy"""

@@ -1096,7 +1096,7 @@ class MapPlot(object):
 def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
-             justdata=False, rmax=None):
+             justdata=False, rmax=None, cursor=None):
     """Utility function that generates a windrose plot
 
     Args:
@@ -1111,6 +1111,8 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
       units (str,optional): units to plot values as
       nsector (int,optional): number of bins to devide the windrose into
       justdata (boolean,optional): if True, write out the data only
+      cursor (psycopg2.cursor,optional): provide a database cursor to run the
+        query against.
     """
     from windrose import WindroseAxes
     from windrose.windrose import histogram
@@ -1162,8 +1164,11 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
         hour_limit_text = str(tuple(hours))
 
     # Query observations
-    db = psycopg2.connect(database=database, host='iemdb', user='nobody')
-    acursor = db.cursor()
+    if cursor is None:
+        db = psycopg2.connect(database=database, host='iemdb', user='nobody')
+        acursor = db.cursor()
+    else:
+        acursor = cursor
     sql = """SELECT sknt, drct, valid from alldata WHERE station = '%s'
         and valid > '%s' and valid < '%s'
         %s
@@ -1193,8 +1198,6 @@ def windrose(station, database='asos', fp=None, months=np.arange(1, 13),
             drct[i] = row[1]
         i += 1
 
-    acursor.close()
-    db.close()
     if i < 5 or max(sped) == 0:
         _ = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
         label = 'Not enough data available to generate plot'
