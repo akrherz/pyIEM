@@ -92,8 +92,8 @@ class TestPlot(unittest.TestCase):
             v += datetime.timedelta(hours=1)
             cursor.execute("""INSERT into t2015(station, valid, sknt, drct)
             VALUES (%s, %s, %s, %s)""", ('AMW2', v, s, s))
-        plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
-                      cursor=cursor)
+        # plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
+        #              cursor=cursor)
         plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
                       cursor=cursor, justdata=True)
         plot.windrose('AMW2', fp='/tmp/test_plot_windrose.png',
