@@ -38,8 +38,6 @@ _severityDict = {'N': 'None',
 
 def parse(text, nwsli_provider=None):
     """ I look for and return hvtec objects as I find them """
-    if nwsli_provider is None:
-        nwsli_provider = dict()
     hvtec = []
     tokens = re.findall(_re, text)
     for t in tokens:
@@ -74,4 +72,5 @@ class HVTEC(object):
         self.record = tokens[7]
 
     def __str__(self):
-        return self.raw
+        """string representation of this HVTEC"""
+        return self.line
