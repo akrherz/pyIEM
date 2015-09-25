@@ -2,7 +2,7 @@ import unittest
 import psycopg2
 import datetime
 import pytz
-from pyiem.tracker import TrackerEngine
+from pyiem.tracker import TrackerEngine, loadqc
 from pyiem.network import Table as NetworkTable
 
 
@@ -21,6 +21,19 @@ class TrackerTests(unittest.TestCase):
         self.POSTGIS.close()
         self.IEM.rollback()
         self.IEM.close()
+
+    def test_loadqc(self):
+        """Make sure we exercise the loadqc stuff"""
+        q = loadqc()
+        self.assertEquals(len(q), 0)
+        q = loadqc(cursor=self.pcursor)
+        self.assertEquals(len(q), 0)
+        self.pcursor.execute("""
+            INSERT into tt_base(s_mid, sensor, status) VALUES
+            ('BOGUS', 'tmpf', 'OPEN')
+        """)
+        q = loadqc(cursor=self.pcursor)
+        self.assertEquals(len(q), 1)
 
     def test_workflow(self):
         """ Test that we can do stuff! """
