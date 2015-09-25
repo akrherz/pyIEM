@@ -10,10 +10,13 @@ from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
-DISCUSSIONNUM = re.compile(r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)")
-ATTN_WFO = re.compile(r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
+DISCUSSIONNUM = re.compile(
+    r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)")
+ATTN_WFO = re.compile(
+    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
 ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
-WATCH_PROB = re.compile(r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT")
+WATCH_PROB = re.compile(
+    r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT")
 
 
 class MCDException(Exception):

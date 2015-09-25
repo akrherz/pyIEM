@@ -24,7 +24,11 @@ class NHCProduct(TextProduct):
         """ Get the jabber variant of this message """
         myurl = "%s?pid=%s" % (uri, self.get_product_id())
 
-        tokens = re.findall("(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) (DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) NUMBER\s+([0-9A-Z]+)", self.unixtext )
+        tokens = re.findall(
+            ("(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"
+             "TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "
+             "(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "
+             "NUMBER\s+([0-9A-Z]+)"), self.unixtext)
         if len(tokens) == 0:
             raise NHCException("Could not parse header from NHC Prodct!")
 
@@ -35,14 +39,15 @@ class NHCProduct(TextProduct):
         prodnumber = tokens[0][3]
         center = "National Hurricance Center"
 
-        tformat = "%(classification)s #%(storm_name)s %(btype)s %(num)s issued. %(headline)s http://go.usa.gov/W3H"
+        tformat = ("%(classification)s #%(storm_name)s "
+                   "%(btype)s %(num)s issued. %(headline)s "
+                   "http://go.usa.gov/W3H")
         tdict = {'classification': classification.title(),
-             'storm_name': twitter_name,
-             'num': prodnumber,
-             'btype': prodtype,
-             'headline': '',
-             'url': myurl
-             }
+                 'storm_name': twitter_name,
+                 'num': prodnumber,
+                 'btype': prodtype,
+                 'headline': '',
+                 'url': myurl}
 
         mess = "%s issues %s #%s for %s %s %s" % (
                center, prodtype, prodnumber, classification, name, myurl)
@@ -51,8 +56,9 @@ class NHCProduct(TextProduct):
 
         if len(self.segments[0].headlines) > 0:
             headline = self.segments[0].headlines[0]
-            headline = headline.lower().replace(name.lower(), '#%s' % (twitter_name,))
-            headline = headline[0].upper() + headline[1:] +"."
+            headline = headline.lower().replace(name.lower(),
+                                                '#%s' % (twitter_name, ))
+            headline = headline[0].upper() + headline[1:] + "."
             if (144 - len(tformat % tdict)) > len(headline):
                 tdict['headline'] = headline
             else:
@@ -62,13 +68,13 @@ class NHCProduct(TextProduct):
 
         tweet = tformat % tdict
 
-        return [[mess.replace("#","") % tdict, 
-                htmlmess.replace("#","") % tdict, 
-            {
-                'channels':"NHC,%s,%s,%s" % (self.afos[:5],name, self.afos),
+        return [[mess.replace("#", "") % tdict,
+                htmlmess.replace("#", "") % tdict,
+                {
+                'channels': "NHC,%s,%s,%s" % (self.afos[:5], name, self.afos),
                 'product_id': self.get_product_id(),
-                'twitter': ' '.join( tweet.split(),)
-            }],]
+                'twitter': ' '.join(tweet.split(), )
+                }], ]
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):

@@ -32,7 +32,7 @@ class LSRProduct(TextProduct):
         ''' Return the min and max timestamps of lsrs '''
         valids = []
         for lsr in self.lsrs:
-            valids.append( lsr.valid )
+            valids.append(lsr.valid)
         if len(valids) == 0:
             return None, None
         return min(valids), max(valids)
@@ -47,7 +47,7 @@ class LSRProduct(TextProduct):
         wfo = self.source[1:]
         return "%s#%s/%s/%s" % (baseuri, wfo,
                                 min_time.strftime("%Y%m%d%H%M"),
-                                max_time.strftime("%Y%m%d%H%M") )
+                                max_time.strftime("%Y%m%d%H%M"))
 
     def get_jabbers(self, uri, uri2=None):
         ''' return a text and html variant for Jabber stuff '''
@@ -64,55 +64,54 @@ class LSRProduct(TextProduct):
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M"))
             if mylsr.valid.day != self.utcnow.day:
                 time_fmt = "%-d %b, %-I:%M %p %Z"
-            xtra = {
-        'product_id': self.get_product_id(),
-        'channels': "LSR%s,LSR.ALL,LSR.%s" % (mylsr.wfo, 
-                                              mylsr.typetext.replace(" ", "_")),        
-        'geometry': 'POINT(%s %s)' % (mylsr.get_lon(), mylsr.get_lat()),
-        'ptype' : mylsr.get_dbtype(),
-        'valid' : mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
-        'category' : 'LSR',
-        'twitter' : "%s %s" % (mylsr.tweet(), url),
-        'lat': str(mylsr.get_lat()),
-        'long': str(mylsr.get_lon()),
-            }
+            xtra = dict(
+                product_id=self.get_product_id(),
+                channels="LSR%s,LSR.ALL,LSR.%s" % (
+                    mylsr.wfo, mylsr.typetext.replace(" ", "_")),
+                geometry='POINT(%s %s)' % (mylsr.get_lon(), mylsr.get_lat()),
+                ptype=mylsr.get_dbtype(),
+                valid=mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
+                category='LSR',
+                twitter="%s %s" % (mylsr.tweet(), url),
+                lat=str(mylsr.get_lat()),
+                long=str(mylsr.get_lon()))
             html = ("<p>%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at "
-            +"%s -- %s</p>") % (
-                        _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state, mylsr.source,
-                        url, mylsr.mag_string(),
-                        mylsr.valid.strftime(time_fmt), mylsr.remark)
+                    "%s -- %s</p>") % (
+                _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state,
+                mylsr.source, url, mylsr.mag_string(),
+                mylsr.valid.strftime(time_fmt), mylsr.remark)
 
             plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
-                        _mylowercase(mylsr.city), mylsr.county.title(), 
-                        mylsr.state, mylsr.source,
-                        mylsr.mag_string(),
-                        mylsr.valid.strftime(time_fmt), mylsr.remark, url)
-            res.append( [plain, html, xtra])
+                _mylowercase(mylsr.city), mylsr.county.title(),
+                mylsr.state, mylsr.source,
+                mylsr.mag_string(),
+                mylsr.valid.strftime(time_fmt), mylsr.remark, url)
+            res.append([plain, html, xtra])
 
         if self.is_summary():
             extra_text = ""
             if self.duplicates > 0:
                 extra_text = (", %s out of %s reports were previously "
-                            +"sent and not repeated here.") % (self.duplicates, 
-                                                    len(self.lsrs))
+                              "sent and not repeated here.") % (
+                    self.duplicates, len(self.lsrs))
             text = "%s: %s issues Summary Local Storm Report %s %s" % (
-                                                    wfo, wfo, extra_text, url)
+                wfo, wfo, extra_text, url)
 
             html = ("<p>%s issues "
-                          +"<a href='%s'>Summary Local Storm Report</a>%s</p>") % (
-                                                wfo, url, extra_text)
+                    "<a href='%s'>Summary Local Storm Report</a>%s</p>") % (
+                wfo, url, extra_text)
             xtra = {
                 'product_id': self.get_product_id(),
                 'channels': 'LSR%s' % (wfo,),
                 }
-            res.append([text, html, xtra] )
+            res.append([text, html, xtra])
         return res
 
 
 def _mylowercase(text):
-    ''' Specialized lowercase function ''' 
+    ''' Specialized lowercase function '''
     tokens = text.split()
-    for i,t in enumerate(tokens):
+    for i, t in enumerate(tokens):
         if len(t) > 3:
             tokens[i] = t.title()
         elif t in ['N', 'NNE', 'NNW', 'NE',
@@ -124,7 +123,7 @@ def _mylowercase(text):
 
 
 def parse_lsr(text):
-    ''' Emit a LSR object based on this text! 
+    ''' Emit a LSR object based on this text!
     0914 PM     HAIL             SHAW                    33.60N 90.77W
     04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR
     '''
@@ -148,15 +147,15 @@ def parse_lsr(text):
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
-    lsr.geometry = ShapelyPoint((lon,lat))
+    lsr.geometry = ShapelyPoint((lon, lat))
 
-    lsr.consume_magnitude( lines[1][12:29].strip() )
+    lsr.consume_magnitude(lines[1][12:29].strip())
     lsr.county = lines[1][29:48].strip()
     lsr.state = lines[1][48:50]
     lsr.source = lines[1][53:].strip()
     if len(lines) > 2:
-        meat = " ".join( lines[2:] ).strip()
-        lsr.remark = " ".join( meat.split())
+        meat = " ".join(lines[2:]).strip()
+        lsr.remark = " ".join(meat.split())
     return lsr
 
 
@@ -168,7 +167,7 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr("".join(match.groups()))
         lsr.wfo = prod.source[1:]
-        lsr.assign_timezone( prod.tz, prod.z )
-        prod.lsrs.append( lsr )
+        lsr.assign_timezone(prod.tz, prod.z)
+        prod.lsrs.append(lsr)
 
     return prod
