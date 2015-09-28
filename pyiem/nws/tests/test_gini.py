@@ -11,6 +11,20 @@ def get_filepath(name):
 
 class TestGINI(unittest.TestCase):
 
+    def test_getirramp(self):
+        """Make sure get_irramp works"""
+        d = gini.get_ir_ramp()
+        self.assertEqual(len(d), 256)
+
+    def test_conus(self):
+        """Test processing a national product"""
+        fn = get_filepath('TIGN02')
+        sat = gini.GINIZFile(open(fn))
+        self.assertEqual(sat.archive_filename(),
+                         "GOES_SUPER_IR_201509281745.png")
+        self.assertEqual(sat.awips_grid(), 0)
+        self.assertEqual(sat.metadata['map_projection'], 5)
+
     def test_gini(self):
         """ check GINI Processing of Goes East VIS parsing """
         fn = get_filepath("TIGH05")

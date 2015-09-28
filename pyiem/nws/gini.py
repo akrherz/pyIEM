@@ -326,6 +326,11 @@ class GINIZFile(GINIFile):
     """
 
     def __init__(self, fobj):
+        """Create a GNIFile instance with a compressed file object
+
+        Args:
+          fobj (file): A fileobject
+        """
         fobj.seek(0)
         # WMO HEADER
         self.wmo = (fobj.read(21)).strip()
