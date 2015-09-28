@@ -11,7 +11,9 @@ class TestDatatypes(unittest.TestCase):
                 a = cls(10, cls.known_units[0])
                 self.assertRaises(datatypes.UnitsError, a.value, 'ZZzZZ')
                 for unit in cls.known_units:
-                    self.assertTrue(a.value(unit) is not None)
+                    a = cls(10, unit)
+                    for unit in cls.known_units:
+                        self.assertTrue(a.value(unit) is not None)
 
     def test_mixingratio(self):
         """ Mixing Ratio"""
