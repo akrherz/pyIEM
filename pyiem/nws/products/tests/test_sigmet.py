@@ -9,7 +9,7 @@ from pyiem.nws.products.sigmet import parser, compute_esol
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../../../data/product_examples/SIGMETS/%s" % (basedir, name)
     return open(fn).read()
 
 
@@ -20,6 +20,12 @@ def utc(year, month, day, hour=0, minute=0):
 
 
 class TestSIGMET(unittest.TestCase):
+
+    def test_150930_SIGAK2(self):
+        """Got an error with this product"""
+        utcnow = utc(2015, 9, 30, 16, 56)
+        tp = parser(get_file('SIGAK2.txt'), utcnow)
+        self.assertEquals(len(tp.sigmets), 0)
 
     def test_150921_SIGPAS(self):
         """Got an error with this product"""
