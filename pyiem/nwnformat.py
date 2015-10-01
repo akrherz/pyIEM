@@ -271,46 +271,40 @@ class nwnformat(object):
             self.feel = None
 
     def currentLine(self):
-        try:
-            return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF %03i%s "
-                    "%05.2f%s %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
-                    ) % ("A", self.sid, self.ts.strftime("%H:%M"),
-                         self.ts.strftime("%m/%d/%y"), self.drctTxt, self.sped,
-                         self.rad, self.insideTemp, self.tmpf, self.humid,
-                         "%", self.pres, self.presTend, self.pDay,
-                         self.pMonth, self.pRate)
-        except:
-            print("A", self.sid, self.ts.strftime("%H:%M"),
-                  self.ts.strftime("%m/%d/%y"), self.drctTxt, self.sped,
-                  self.rad, self.insideTemp, self.tmpf, self.humid, "%",
-                  self.pres, self.presTend, self.pDay, self.pMonth, self.pRate)
+        """Return NWN formatted string for current ob
+
+        Returns:
+          str: A NWN format string"""
+        return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF %03i%s "
+                "%05.2f%s %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
+                ) % ("A", self.sid, self.ts.strftime("%H:%M"),
+                     self.ts.strftime("%m/%d/%y"), self.drctTxt, self.sped,
+                     self.rad, self.insideTemp, self.tmpf, self.humid,
+                     "%", self.pres, self.presTend, self.pDay,
+                     self.pMonth, self.pRate)
 
     def maxLine(self):
-        try:
-            return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF "
-                    "%03i%s %05.2f%s %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
-                    ) % ("A", self.sid, "Max ",
-                         self.ts.strftime("%m/%d/%y"), "N", self.xsped,
-                         self.rad, self.insideTemp, self.xtmpf, self.xhumid,
-                         "%", self.xpres, self.presTend, 0, 0, 0)
-        except:
-            print ("A", self.sid, "Max ",
-                   self.ts.strftime("%m/%d/%y"), self.drctTxt, self.sped,
-                   self.rad, self.insideTemp, self.xtmpf, self.xhumid, "%",
-                   self.xpres, self.presTend, self.pDay, self.pMonth,
-                   self.pRate)
+        """Return NWN formatted string for max ob
+
+        Returns:
+          str: A NWN format string"""
+        return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF "
+                "%03i%s %05.2f%s %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
+                ) % ("A", self.sid, "Max ",
+                     self.ts.strftime("%m/%d/%y"), "N", self.xsped,
+                     self.rad, self.insideTemp, self.xtmpf, self.xhumid,
+                     "%", self.xpres, self.presTend, 0, 0, 0)
 
     def minLine(self):
-        try:
-            return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF %03i%s "
-                    "%05.2f\" %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
-                    ) % ("A", self.sid, "Min ", self.ts.strftime("%m/%d/%y"),
-                         self.drctTxt, 0, 0, self.insideTemp, self.ntmpf,
-                         self.nhumid, "%", self.npres, 0, 0, 0)
-        except:
-            print("A", self.sid, "Min ", self.ts.strftime("%m/%d/%y"),
-                  self.drctTxt, 0, 0, self.insideTemp, self.ntmpf,
-                  self.nhumid, "%", self.npres, 0, 0, 0)
+        """Return NWN formatted string for min ob
+
+        Returns:
+          str: A NWN format string"""
+        return ("%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF %03i%s "
+                "%05.2f\" %05.2f\"D %05.2f\"M %05.2f\"R\015\012"
+                ) % ("A", self.sid, "Min ", self.ts.strftime("%m/%d/%y"),
+                     self.drctTxt, 0, 0, self.insideTemp, self.ntmpf,
+                     self.nhumid, "%", self.npres, 0, 0, 0)
 
     def setPMonth(self, newval):
         if (newval != "NA"):
