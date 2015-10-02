@@ -12,7 +12,7 @@ before_install:
 install:
   - "pip install Shapely"
   - "pip install coveralls"
-  - "pip install Pillow<3.0"
+  - "pip install 'Pillow<3.0'"
   - "pip install python-metar"
   - "pip install windrose"
 #  - "pip install --allow-external basemap -r requirements.txt"
