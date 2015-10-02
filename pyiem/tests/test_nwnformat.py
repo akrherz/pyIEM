@@ -54,6 +54,7 @@ class TestNWNFORMAT(unittest.TestCase):
     def test_basic(self):
         ''' basic test of constructor '''
         n = nwnformat.nwnformat()
+        n.sid = 100
         n.parseLineRT(('A 263  14:58 07/16/15   S 09MPH 000K 460F 460F '
                        '100% 29.66F 00.00"D 00.00"M 00.00"R').split())
         n.parseMaxLineRT(('A 263    Max 07/16/15   S 21MPH 000K 460F 460F '
@@ -70,4 +71,4 @@ class TestNWNFORMAT(unittest.TestCase):
         n.currentLine()
         n.maxLine()
         n.minLine()
-        self.assertEqual(n.pres, '29.66')
+        self.assertAlmostEqual(n.pres, 29.66, 2)

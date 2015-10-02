@@ -254,13 +254,13 @@ class nwnformat(object):
             self.humid = int(re.findall("([0-9][0-9][0-9])%", tokens[9])[0])
 
         if (len(tokens[10]) == 6):
-            self.pres = re.findall("(.*).", tokens[10])[0]
+            self.pres = float(re.findall("(.*).", tokens[10])[0])
 
         if (len(tokens[11]) == 7):
-            self.pDay = re.findall("(.*)\"D", tokens[11])[0]
+            self.pDay = float(re.findall("(.*)\"D", tokens[11])[0])
 
         if (len(tokens[12]) == 7):
-            self.pMonth = re.findall("(.*)\"M", tokens[12])[0]
+            self.pMonth = float(re.findall("(.*)\"M", tokens[12])[0])
 
         if (self.tmpf > -50 and self.tmpf < 120 and
                 self.humid > 5 and self.humid < 100.1):
