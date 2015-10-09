@@ -10,14 +10,15 @@ CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
                 'pmonth', 'skyc1', 'skyc2', 'skyc3', 'skyc4', 'skyl1', 'skyl2',
                 'skyl3', 'skyl4', 'pcounter', 'discharge', 'p03i', 'p06i',
                 'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
-                'min_tmpf_24hr', 'presentwx']
+                'min_tmpf_24hr', 'presentwx', 'battery', 'water_tmpf']
 
 # Not including iemid, day
 SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'max_gust_ts', 'max_dwpf', 'min_dwpf', 'pday', 'pmonth',
                 'snow', 'snowd', 'max_tmpf_qc', 'min_tmpf_qc', 'pday_qc',
                 'snow_qc', 'snoww', 'max_drct', 'max_srad', 'coop_tmpf',
-                'coop_valid', 'et_inch', 'srad_mj']
+                'coop_valid', 'et_inch', 'srad_mj', 'max_water_tmpf',
+                'min_water_tmpf']
 
 
 class Observation(object):
@@ -93,7 +94,7 @@ class Observation(object):
         p06i = %(p06i)s,  p24i = %(p24i)s,  max_tmpf_6hr = %(max_tmpf_6hr)s,
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
         min_tmpf_24hr = %(min_tmpf_24hr)s,  presentwx = %(presentwx)s,
-        valid = %(valid)s
+        battery = %(battery)s, water_tmpf = %(water_tmpf)s, valid = %(valid)s
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s
         and t.network = %(network)s and %(valid)s >= c.valid """
         txn.execute(sql, self.data)
@@ -106,7 +107,8 @@ class Observation(object):
             alti, mslp, qc_tmpf, qc_dwpf, rstage, ozone, co2, pmonth, skyc1,
             skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter,
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
-            max_tmpf_24hr, min_tmpf_24hr, presentwx) VALUES(
+            max_tmpf_24hr, min_tmpf_24hr, presentwx, battery,
+            water_tmpf) VALUES(
             (SELECT iemid from stations where id = %(station)s and
             network = %(network)s), %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
@@ -119,7 +121,8 @@ class Observation(object):
             %(skyc2)s, %(skyc3)s, %(skyc4)s, %(skyl1)s, %(skyl2)s, %(skyl3)s,
             %(skyl4)s, %(pcounter)s, %(discharge)s, %(p03i)s, %(p06i)s,
             %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
-            %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(presentwx)s
+            %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(presentwx)s,
+            %(battery)s, %(water_tmpf)s
             )
             """
             txn.execute(sql, self.data)
@@ -128,6 +131,8 @@ class Observation(object):
 
         # Update summary table
         sql = """UPDATE """+table+""" s SET
+max_water_tmpf = greatest(%(max_water_tmpf)s, max_water_tmpf, %(water_tmpf)s),
+min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
         max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
         min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
