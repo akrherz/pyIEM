@@ -265,7 +265,9 @@ CREATE TABLE current_tmp(
     min_tmpf_6hr real,
     max_tmpf_24hr real,
     min_tmpf_24hr real,
-    presentwx varchar(24)
+    presentwx varchar(24),
+    battery real,
+    water_tmpf real
 );
 
 CREATE TABLE current (
@@ -328,7 +330,9 @@ CREATE TABLE current (
     min_tmpf_6hr real,
     max_tmpf_24hr real,
     min_tmpf_24hr real,
-    presentwx varchar(24)
+    presentwx varchar(24),
+    battery real,
+    water_tmpf real
 );
 CREATE UNIQUE index current_iemid_idx on current(iemid);
 GRANT SELECT on current to apache,nobody;
@@ -393,7 +397,9 @@ CREATE TABLE current_log (
     min_tmpf_6hr real,
     max_tmpf_24hr real,
     min_tmpf_24hr real,
-    presentwx varchar(24)
+    presentwx varchar(24),
+    battery real,
+    water_tmpf real
 );
 
 CREATE OR REPLACE FUNCTION current_update_log() RETURNS trigger
@@ -436,7 +442,9 @@ CREATE TABLE summary (
     coop_tmpf real,
     coop_valid timestamp with time zone,
     et_inch real,
-    srad_mj real
+    srad_mj real,
+    max_water_tmpf real,
+    min_water_tmpf real
 );
 GRANT SELECT on summary to nobody,apache;
 
