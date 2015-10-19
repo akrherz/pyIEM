@@ -1,0 +1,78 @@
+346 
+CDUS44 KOHX 191422
+CLIBNA
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE NASHVILLE TN                                
+921 AM CDT MON OCT 19 2015
+
+
+................................... 
+
+...THE NASHVILLE CLIMATE SUMMARY FOR OCTOBER 19 2015...
+VALID AS OF 0900 AM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1871 TO 2015
+
+
+WEATHER ITEM   OBSERVED NORMAL DEPARTURE                             
+                VALUE   VALUE  FROM                                  
+                               NORMAL                                
+............................................
+TEMPERATURE (F)                                                     
+ TODAY                                                               
+  MAXIMUM         47                                                  
+  MINIMUM         34                                                  
+  AVERAGE         41                                                
+                                                                     
+PRECIPITATION (IN)                                                   
+  TODAY            0.00   0.09  -0.09                                
+  MONTH TO DATE    1.52   1.83  -0.31                                
+  SINCE JAN 1     38.24  37.49   0.75                                
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY           24            17                                   
+  MONTH TO DATE   99             9                                   
+  SINCE JUL 1    102           -12                                   
+                                                                     
+ COOLING                                                             
+  TODAY            0            -1                                   
+  MONTH TO DATE   42             5                                   
+  SINCE JAN 1   1856           225                                   
+............................................
+
+
+WIND (MPH)                                                           
+  AVERAGE WIND SPEED     1.5                                         
+
+
+
+
+..........................................................
+
+                                                                     
+THE NASHVILLE CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD                            
+ MAXIMUM TEMPERATURE (F)   70        87                              
+ MINIMUM TEMPERATURE (F)   48        30                              
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+OCTOBER 19 2015.......SUNRISE   657 AM CDT   SUNSET   606 PM CDT   
+OCTOBER 20 2015.......SUNRISE   658 AM CDT   SUNSET   605 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

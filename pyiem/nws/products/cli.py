@@ -26,6 +26,7 @@ REGIMES = [
     "WEATHER ITEM   OBSERVED TIME   RECORD YEAR     LAST",
     "WEATHER ITEM   OBSERVED TIME",
     "WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE",
+    "WEATHER ITEM   OBSERVED NORMAL DEPARTURE",
 ]
 #   label, value, time, record, year, normal, departure, last
 COLS = [
@@ -45,6 +46,7 @@ COLS = [
     [16,     23,   30,   37,     42,   None,   None,      51],
     [16,     23,   30,   None,   None, None,   None,      None],
     [16,     23,   30,   None,   None, 37,     44,        None],
+    [16,     23,   None, None,   None, 30,     37,        None],
     ]
 
 

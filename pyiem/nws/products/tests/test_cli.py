@@ -8,12 +8,18 @@ from pyiem.nws.products.cli import parser as cliparser
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../../../data/product_examples/CLI/%s" % (basedir, name)
     return open(fn).read()
 
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_151019_clibna(self):
+        """CLIBNA is a new diction"""
+        prod = cliparser(get_file('CLIBNA.txt'))
+        self.assertEqual(prod.data[0]['data']['temperature_maximum'],
+                         47)
+
     def test_150303_alaska(self):
         """CLIANN Attempt to account for the badly formatted CLIs"""
         prod = cliparser(get_file('CLIANN.txt'))
