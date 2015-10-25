@@ -19,6 +19,11 @@ def get_file(name):
 
 class TestProduct(unittest.TestCase):
 
+    def test_151024_cae(self):
+        """Make sure this CAE product works and does not throw an UGC error"""
+        tp = productparser(get_file('CAEIA.txt'))
+        self.assertEquals(tp.afos, 'CAEIA')
+
     def test_resent(self):
         """ Make sure we can tell a ...RESENT product """
         tp = productparser(get_file('MWWBRO.txt'))
