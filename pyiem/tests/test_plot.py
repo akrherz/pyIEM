@@ -90,6 +90,8 @@ class TestPlot(unittest.TestCase):
         self.assertEquals(c.N, 12)
         c = plot.whitebluegreenyellowred()
         self.assertEquals(c.N, 236)
+        c = plot.nwssnow()
+        self.assertEquals(c.N, 11)
 
     def test_calendar(self):
         """See if we can make a calendar plot!"""

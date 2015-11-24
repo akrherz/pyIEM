@@ -293,6 +293,27 @@ def mask_outside_polygon(poly_verts, ax=None):
     return patch
 
 
+def nwssnow():
+    """A Color Ramp Suggested by the NWS for Snowfall"""
+    cpool = [[0.74117647, 0.84313725, 0.90588235],
+             [0.41960784, 0.68235294, 0.83921569],
+             [0.19215686, 0.50980392, 0.74117647],
+             [0.03137255, 0.31764706, 0.61176471],
+             [0.03137255, 0.14901961, 0.58039216],
+             [1.,  1.,  0.58823529],
+             [1.,  0.76862745, 0.],
+             [1.,  0.52941176, 0.],
+             [0.85882353,  0.07843137, 0.],
+             [0.61960784,  0., 0.],
+             [0.41176471,  0., 0.]]
+    cmap = mpcolors.ListedColormap(cpool, 'nwssnow')
+    cmap.set_over([0.16862745,  0., 0.18039216])
+    cmap.set_under('#FFFFFF')
+    cmap.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap)
+    return cmap
+
+
 def james2():
     """David James suggested color ramp Yellow to Brown"""
     cpool = ['#FFFF80', '#FFEE70', '#FCDD60', '#FACD52', '#F7BE43', '#F5AF36',
