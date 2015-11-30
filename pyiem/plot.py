@@ -480,7 +480,14 @@ class MapPlot(object):
 
     """
     def __init__(self, sector='iowa', figsize=(10.24, 7.68), **kwargs):
-        """ Initializer """
+        """Construct a MapPlot
+
+        Args:
+          sector (str): plot domain
+          kwargs:
+            titlefontsize (int): fontsize to use for the plot title
+            subtitlefontsize (int): fontsize to use for the plot subtitle
+        """
         self.fig = plt.figure(num=None, figsize=figsize,
                               dpi=kwargs.get('dpi', 100))
         self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
@@ -599,10 +606,12 @@ class MapPlot(object):
             self.iemlogo()
         if "title" in kwargs:
             self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94,
-                          kwargs.get("title"), fontsize=18)
+                          kwargs.get("title"),
+                          fontsize=kwargs.get('titlefontsize', 18))
         if "subtitle" in kwargs:
             self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91,
-                          kwargs.get("subtitle"))
+                          kwargs.get("subtitle"),
+                          fontsize=kwargs.get('subtitlefontsize', 12))
 
         if 'nocaption' not in kwargs:
             self.fig.text(0.01, 0.03, ("%s :: generated %s"
