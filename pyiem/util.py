@@ -4,6 +4,66 @@
 This module contains utility functions used by various parts of the codebase.
 """
 import psycopg2
+import netrc
+from ftplib import FTP_TLS  # requires python 2.7
+import time
+import random
+from socket import error as socket_error
+
+
+def exponential_backoff(func, *args, **kwargs):
+    for i in range(5):
+        try:
+            return func(*args, **kwargs)
+        except socket_error as serr:
+            print("%s/5 %s traceback: %s" % (i+1, func.__name__, serr))
+            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
+        except Exception, exp:
+            print("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
+            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
+        except:
+            print("%s/5 uncaught exception, exiting!" % (i+1, ))
+            return None
+    return None
+
+
+def send2box(filenames, remote_path, remotenames=None,
+             ftpserver='ftp.box.com'):
+    """Send one or more files to CyBox
+
+    Args:
+      filenames (str or list): filenames to upload
+      remote_path (str): location to place the filenames
+      remotenames (str or list): filenames to use on the remote FTP server
+        should match size and type of filenames
+      ftpserver (str): FTP server to connect to...
+    """
+    credentials = netrc.netrc().hosts[ftpserver]
+    paths = remote_path.split("/")
+
+    def _send2box_sender(filename, remotename):
+        ftps = FTP_TLS(ftpserver)
+        ftps.login(credentials[0], credentials[2])
+        ftps.prot_p()
+        for dirname in paths:
+            if dirname == '':
+                continue
+            bah = []
+            ftps.retrlines('NLST', bah.append)
+            if dirname not in bah:
+                ftps.mkd(dirname)
+            ftps.cwd(dirname)
+        ftps.storbinary('STOR %s' % (remotename, ), open(filename))
+        ftps.quit()
+        pass
+    if isinstance(filenames, str):
+        filenames = [filenames, ]
+    if remotenames is None:
+        remotenames = filenames
+    if isinstance(remotenames, str):
+        remotenames = [remotenames, ]
+    for filename, remotename in zip(filenames, remotenames):
+        exponential_backoff(_send2box_sender, filename, remotename)
 
 
 def get_properties():
@@ -71,3 +131,6 @@ def drct2text(drct):
     elif drct >= 324 and drct < 350:
         text = "NNW"
     return text
+
+if __name__ == '__main__':
+    send2box('util.py', '/bah1/bah2', remotenames='util2.py')
