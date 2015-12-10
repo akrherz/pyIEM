@@ -20,6 +20,13 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_151210_badgeom(self):
+        """prevent geom parse error"""
+        nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file("PIREPS/badgeom.txt"),
+                           nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.reports), 0)
+
     def test_150202_groupdict(self):
         """groupdict.txt threw an error"""
         nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}

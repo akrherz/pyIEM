@@ -207,7 +207,7 @@ class Pirep(product.TextProduct):
                 _pr.valid = self.compute_pirep_valid(hour, minute)
                 continue
 
-        return _pr
+        return _pr if _pr.latitude is not None else None
 
     def compute_loc(self, loc, dist, bearing):
         """ Figure out the lon/lat for this location """
