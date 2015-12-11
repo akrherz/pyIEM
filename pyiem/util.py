@@ -8,6 +8,9 @@ import netrc
 from ftplib import FTP_TLS  # requires python 2.7
 import time
 import random
+import os
+import subprocess
+import glob
 from socket import error as socket_error
 
 
@@ -28,8 +31,11 @@ def exponential_backoff(func, *args, **kwargs):
 
 
 def send2box(filenames, remote_path, remotenames=None,
-             ftpserver='ftp.box.com'):
+             ftpserver='ftp.box.com', tmpdir='/tmp'):
     """Send one or more files to CyBox
+
+    Box has a filesize limit of 15 GB, so if we find any files larger than
+    that, we shall split them into chunks prior to uploading.
 
     Args:
       filenames (str or list): filenames to upload
@@ -37,6 +43,8 @@ def send2box(filenames, remote_path, remotenames=None,
       remotenames (str or list): filenames to use on the remote FTP server
         should match size and type of filenames
       ftpserver (str): FTP server to connect to...
+      tmpdir (str, optional): Temperary folder to if an individual file is over
+        15 GB in size
     """
     credentials = netrc.netrc().hosts[ftpserver]
     paths = remote_path.split("/")
@@ -63,7 +71,22 @@ def send2box(filenames, remote_path, remotenames=None,
     if isinstance(remotenames, str):
         remotenames = [remotenames, ]
     for filename, remotename in zip(filenames, remotenames):
-        exponential_backoff(_send2box_sender, filename, remotename)
+        sz = os.path.getsize(filename)
+        if sz > 14000000000:
+            # Step 1 Split this big file into 14GB chunks, each file will have
+            # suffix .aa then .ab then .ac etc
+            basefn = os.path.basename(filename)
+            cmd = "split --bytes=14000M %s %s/%s." % (filename, tmpdir,
+                                                      basefn)
+            subprocess.call(cmd, shell=True, stderr=subprocess.PIPE)
+            files = glob.glob("%s/%s.??" % (tmpdir, basefn))
+            for filename in files:
+                suffix = filename.split(".")[-1]
+                exponential_backoff(_send2box_sender, filename,
+                                    "%s.%s" % (remotename, suffix))
+                os.unlink(filename)
+        else:
+            exponential_backoff(_send2box_sender, filename, remotename)
 
 
 def get_properties():
