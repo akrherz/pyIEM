@@ -69,7 +69,14 @@ def state_filter(bm, key, val):
 
 
 def calendar_plot(sts, ets, data, **kwargs):
-    # Figure out how many weeks we have to plot
+    """Create a plot that looks like a calendar
+
+    Args:
+      sts (datetime.date): start date of this plot
+      ets (datetime.date): end date of this plot
+      data (dict[dict]): dictionary with keys of dates and dicts for
+        `val` value and optionally `color` for color
+    """
     weeks = 1
     now = sts
     while now <= ets:
@@ -120,14 +127,15 @@ def calendar_plot(sts, ets, data, **kwargs):
         fmt = '%-d'
         if now.day == 1:
             fmt = '%b %-d'
-            color = 'b'
+            color = 'g'
         ax.text(x + offx3, y + dy - offy3, "%s" % (now.strftime(fmt), ),
                 transform=ax.transAxes, va='top', color=color)
         val = data.get(now, dict()).get('val')
         if val is not None:
+            color = data[now].get('color', 'k')
             ax.text(x + offx3 + (dx/2.), y + (dy/2.5) - offy3,
                     val, transform=ax.transAxes, va='center',
-                    ha='center', color='k', fontsize=16)
+                    ha='center', color=color, fontsize=16)
 
         rect = Rectangle((x, y), dx, dy, zorder=2,
                          facecolor='None', edgecolor='tan')
