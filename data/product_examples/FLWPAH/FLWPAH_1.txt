@@ -1,0 +1,56 @@
+706 
+WGUS43 KPAH 241627
+FLWPAH
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD WARNING
+NATIONAL WEATHER SERVICE PADUCAH KENTUCKY
+1026 AM CST THU DEC 24 2015
+
+...The National Weather Service in Paducah, Kentucky has issued a 
+   flood warning for the Skillet Fork River affecting areas in 
+   southern Illinois... 
+
+   At Wayne City affecting Wayne and White Counties
+
+.Due to the anticipated heavy rainfall across portions of the Skillet
+Fork River Basin over the next 3 days, minor to moderate flood conditions 
+are forecast to develop on Saturday. The river is forecast to crest on 
+Sunday and fall below flood stage early next week. 
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+SAFETY MESSAGE...
+
+Never drive cars...trucks or sport utility vehicles through flooded 
+areas. The water may be too deep to allow safe passage. Never allow 
+children to play in or near flood waters. Stay tuned to NOAA Weather 
+Radio or your local media for further statements and possible updated
+forecasts.
+
+Additional information is available at
+http://www.crh.noaa.gov/ahps2/index.php?wfo=pah /lower case/
+
+&&
+
+ILC191-193-252026-
+/O.NEW.KPAH.FL.W.0093.151227T0517Z-151228T1727Z/
+/WYNI2.2.ER.151227T0517Z.151227T1800Z.151228T1127Z.NO/
+1026 AM CST THU DEC 24 2015
+
+The National Weather Service in Paducah, Kentucky has issued a 
+
+* Flood Warning for the Skillet Fork River at Wayne City.
+* from Saturday evening to Monday morning.
+* At 10 AM Thursday the stage was 11.3 feet. 
+* Flood Stage is 15.0 feet. 
+* Moderate flooding is forecast. 
+* Forecast...Rise above flood stage Saturday evening and crest 
+  near 19.5 feet Sunday afternoon. The river is forecast to fall
+  below flood stage on Monday.
+
+&&
+
+LAT...LON 3857 8866 3836 8865 3826 8846 3827 8838
+      3839 8856 3858 8855             
+
+$$

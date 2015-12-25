@@ -1,0 +1,56 @@
+277 
+WGUS43 KPAH 251449
+FLWPAH
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD WARNING
+NATIONAL WEATHER SERVICE PADUCAH KENTUCKY
+849 AM CST FRI DEC 25 2015
+
+...Forecast Flooding Changed from Moderate to Major Severity for the 
+   Skillet Fork River affecting areas in Illinois...
+ 
+   At Wayne City affecting Wayne and White Counties
+
+.With the accumulated rainfall over the Skillet Fork River basin over
+the past couple of days, and the anticipated rains forecast through the
+weekend, the river is forecast to rise quickly with major flood conditions
+expected by Sunday afternoon. Fortunately the river is forecast to recede
+almost as fast as it will rise. 
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+SAFETY MESSAGE...
+
+Never drive cars...trucks or sport utility vehicles through flooded 
+areas. The water may be too deep to allow safe passage. Never allow 
+children to play in or near flood waters. Stay tuned to NOAA Weather 
+Radio or your local media for further statements and possible updated
+forecasts.
+
+Additional information is available at
+http://www.crh.noaa.gov/ahps2/index.php?wfo=pah /lower case/
+
+&&
+
+INC051-193-261849-
+/O.EXT.KPAH.FL.W.0093.151227T0358Z-151229T0442Z/
+/WYNI2.3.ER.151227T0358Z.151227T1800Z.151228T2242Z.NO/
+849 AM CST FRI DEC 25 2015
+
+...forecast flooding increased from Moderate to Major severity...
+The Flood Warning continues for the Skillet Fork River at Wayne City
+* from Saturday evening to Monday evening.
+* At 8 AM Friday the stage was 10.0 feet. 
+* Flood Stage is 15.0 feet. 
+* Major flooding is forecast. 
+* Forecast...Rise above flood stage Saturday evening with major flood
+  conditions developing Sunday morning with a crest of 22 feet expected
+  later in the afternoon. The river is forecast to fal below
+  below flood stage by Monday afternoon.
+
+&&
+
+LAT...LON 3857 8866 3836 8865 3826 8846 3827 8838
+      3839 8856 3858 8855             
+
+$$

@@ -36,6 +36,22 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_151225_extfuture(self):
+        """Warning failure jumps states!"""
+        # /O.NEW.KPAH.FL.W.0093.151227T0517Z-151228T1727Z/
+        prod = vtecparser(get_file('FLWPAH/FLWPAH_1.txt'))
+        prod.sql(self.txn)
+        self.txn.execute("""
+            SELECT ugc, issue, expire from warnings_2015 where wfo = 'PAH'
+            and phenomena = 'FL' and eventid = 93 and significance = 'W'
+            and status = 'NEW'
+        """)
+        self.assertEquals(self.txn.rowcount, 2)
+        # /O.EXT.KPAH.FL.W.0093.151227T0358Z-151229T0442Z/
+        prod = vtecparser(get_file('FLWPAH/FLWPAH_2.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 1, '\n'.join(prod.warnings))
+
     def test_150915_noexpire(self):
         """Check that we set an expiration for initial infinity SBW geo"""
         prod = vtecparser(get_file('FLWGRB.txt'))
