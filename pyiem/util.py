@@ -63,7 +63,6 @@ def send2box(filenames, remote_path, remotenames=None,
             ftps.cwd(dirname)
         ftps.storbinary('STOR %s' % (remotename, ), open(filename))
         ftps.quit()
-        pass
     if isinstance(filenames, str):
         filenames = [filenames, ]
     if remotenames is None:
