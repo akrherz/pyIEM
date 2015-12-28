@@ -81,7 +81,7 @@ _phenDict = {
     'SR': 'Storm',
     'SU': 'High Surf',
     'SV': 'Severe Thunderstorm',
-    'SW': 'Small Craft for Hazardous',
+    'SW': 'Small Craft for Hazardous Seas',
     'TI': 'Inland Tropical Storm',
     'TO': 'Tornado',
     'TR': 'Tropical Storm',
