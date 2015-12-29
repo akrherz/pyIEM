@@ -8,6 +8,7 @@ from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
+from pyiem.nws.products.lsr import LSRProductException
 
 
 def get_file(name):
@@ -35,6 +36,12 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_151229_badgeo_lsr(self):
+        """Make sure we reject a bad Geometry LSR"""
+        utcnow = utc(2015, 12, 29, 18, 23)
+        self.assertRaises(LSRProductException,
+                          parser, get_file('LSRBOX.txt'), utcnow=utcnow)
 
     def test_151225_extfuture(self):
         """Warning failure jumps states!"""

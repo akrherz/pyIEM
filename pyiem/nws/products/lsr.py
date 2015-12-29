@@ -147,6 +147,9 @@ def parse_lsr(text):
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
+    if lon <= -180 or lon >= 180 or lat >= 90 or lat <= -90:
+        raise LSRProductException(("Invalid Geometry Lat: %s Lon: %s"
+                                   ) % (lat, lon))
     lsr.geometry = ShapelyPoint((lon, lat))
 
     lsr.consume_magnitude(lines[1][12:29].strip())
