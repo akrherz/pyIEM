@@ -1,5 +1,5 @@
 import unittest
-
+import numpy as np
 from pyiem import datatypes, meteorology
 
 
@@ -21,9 +21,10 @@ class TestDatatypes(unittest.TestCase):
 
     def test_drct(self):
         """Conversion of u and v to direction"""
-        self.assertEquals(meteorology.drct(datatypes.speed(10, 'KT'),
-                                           datatypes.speed(10, 'KT')
-                                           ).value("DEG"), 225)
+        self.assertEquals(
+            meteorology.drct(datatypes.speed(np.array([10, 20]), 'KT'),
+                             datatypes.speed(np.array([10, 20]), 'KT')
+                             ).value("DEG")[0], 225)
         self.assertEquals(meteorology.drct(datatypes.speed(-10, 'KT'),
                                            datatypes.speed(10, 'KT')
                                            ).value("DEG"), 135)

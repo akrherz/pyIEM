@@ -71,7 +71,7 @@ def drct(u, v):
     """
     umps = u.value('MPS')
     vmps = v.value('MPS')
-    val = (math.atan2(umps, vmps) * 180. / math.pi) + 180
+    val = (np.arctan2(umps, vmps) * 180. / np.pi) + 180
     return dt.direction(val, 'DEG')
 
 
