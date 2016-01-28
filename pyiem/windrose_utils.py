@@ -3,7 +3,6 @@ import datetime
 import numpy as np
 import psycopg2
 import os
-import sys
 from pyiem.datatypes import speed
 import matplotlib
 matplotlib.use('agg')
@@ -107,7 +106,7 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         %s
         """ % (station, level, sts, ets, monthinfo['sqltext'],
                hourinfo['sqltext'])
-        sys.stderr.write(sql.replace("\n", " "))
+        # sys.stderr.write(sql.replace("\n", " "))
     acursor.execute(sql)
     sped = np.zeros((acursor.rowcount,), 'f')
     drct = np.zeros((acursor.rowcount,), 'f')
