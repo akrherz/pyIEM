@@ -545,6 +545,15 @@ class MapPlot(object):
                          lat_0=45., lon_0=-92., lat_ts=42.,
                          resolution='i', ax=self.ax)
             self.maps.append(bm)
+        elif self.sector == 'iowawfo':
+            bm = Basemap(projection='merc', fix_aspect=False,
+                         urcrnrlat=45.5,
+                         llcrnrlat=39.8,
+                         urcrnrlon=-89.0,
+                         llcrnrlon=-99.6,
+                         lat_0=45., lon_0=-92., lat_ts=42.,
+                         resolution='i', ax=self.ax)
+            self.maps.append(bm)
         elif self.sector == 'custom':
             bm = Basemap(projection='merc', fix_aspect=False,
                          urcrnrlat=kwargs.get('north'),
@@ -755,7 +764,8 @@ class MapPlot(object):
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None,
-                    labeltextsize=10, labelcolor='#000000'):
+                    labeltextsize=10, labelcolor='#000000',
+                    showmarker=False, labelspacingfactor=1):
         """Plot values onto the map
 
         Args:
@@ -773,6 +783,8 @@ class MapPlot(object):
             plotting of `vals`
           labeltextsize (int, optional): Size of the label text
           labelcolor (str, optional): Color to use for drawing labels
+          showmarker (bool, optional): Place a marker on the map for the label
+          labelspacingfactor (float): how aggressively do we place labels
         """
         if valmask is None:
             valmask = [True] * len(lons)
@@ -810,11 +822,14 @@ class MapPlot(object):
             #                    bwidth, textsize*2, transform=None,
             #                    facecolor='None', edgecolor='k')
             # thisax.add_patch(rec)
-            mask[imgx-textsize:imgx+textsize,
-                 imgy-textsize:imgy+textsize] = True
+            f = textsize * labelspacingfactor
+            mask[imgx-f:imgx+f, imgy-f:imgy+f] = True
             t0 = thisax.text(x, y, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
-                             va='center', ha='center')
+                             va='center' if not showmarker else 'bottom',
+                             ha='center')
+            if showmarker:
+                thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
             t0.set_clip_on(True)
             t.append(t0)
 
@@ -886,12 +901,16 @@ class MapPlot(object):
     def draw_mask(self):
         ''' Draw the mask, when appropriate '''
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'iowa', 'state'):
+        if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo'):
             return
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
             geo = s[self.state]['geom'][0]
+            ccw = np.asarray(geo.exterior)[::-1]
+        elif self.sector == 'iowawfo':
+            s = load_pickle_geo('iowawfo.pickle')
+            geo = s['iowawfo']['geom']
             ccw = np.asarray(geo.exterior)[::-1]
         else:
             ccw = load_bounds('%s_ccw' % (self.sector,))
@@ -1066,6 +1085,63 @@ class MapPlot(object):
         """
         cwas = load_pickle_geo('cwa.pickle')
         polygon_fill(self, cwas, data, **kwargs)
+
+    def drawcities(self):
+        """Overlay some cities (this is a hack, atm)"""
+        data = """          -90.6042 |          41.5568 | DAVENPORT
+          -90.4762 |          41.5642 | BETTENDORF
+            -90.69 |          42.5045 | DUBUQUE
+          -91.8126 |          42.9587 | WEST UNION
+          -91.0717 |          41.4177 | MUSCATINE
+          -93.6174 |          41.5767 | DES MOINES
+          -91.6696 |           41.973 | CEDAR RAPIDS
+          -91.4035 |          40.4096 | KEOKUK
+           -96.394 |          42.5002 | SIOUX CITY
+          -91.1229 |          40.8087 | BURLINGTON
+          -92.3511 |          42.4916 | WATERLOO
+          -91.5351 |          41.6583 | IOWA CITY
+          -95.8595 |            41.24 | COUNCIL BLUFFS
+          -93.6256 |          42.0234 | AMES
+          -92.4528 |          42.5206 | CEDAR FALLS
+          -93.7529 |          41.5707 | WEST DES MOINES
+           -90.233 |          41.8432 | CLINTON
+          -93.1985 |          43.1513 | MASON CITY
+          -96.1699 |          42.7876 | LE MARS
+          -91.3522 |          40.6197 | FORT MADISON
+          -94.1768 |          42.5079 | FORT DODGE
+          -92.9118 |          42.0355 | MARSHALLTOWN
+          -92.4182 |          41.0199 | OTTUMWA
+          -93.7409 |          41.6365 | URBANDALE
+          -93.6053 |          41.7248 | ANKENY
+          -93.0451 |          41.6951 | NEWTON
+          -93.8792 |          42.0525 | BOONE
+          -93.5655 |          41.3607 | INDIANOLA
+          -95.1511 |          43.1459 | SPENCER
+          -92.6396 |           41.293 | OSKALOOSA
+          -91.6007 |           41.691 | CORALVILLE
+          -91.9671 |          41.0071 | FAIRFIELD
+          -94.8647 |          42.0692 | CARROLL
+           -92.919 |          41.4087 | PELLA
+          -92.7227 |          41.7408 | GRINNELL
+          -95.1999 |           42.645 | STORM LAKE
+          -92.4698 |          42.7254 | WAVERLY
+          -93.1013 |          41.3191 | KNOXVILLE
+          -93.3736 |          43.1351 | CLEAR LAKE
+          -91.7933 |          43.3053 | DECORAH
+          -91.5465 |          40.9631 | MOUNT PLEASANT
+          -94.3641 |           41.059 | CRESTON
+          -93.8165 |          42.4634 | WEBSTER CITY
+           -92.675 |          43.0673 | CHARLES CITY"""
+        lons = []
+        lats = []
+        labels = []
+        for line in data.split("\n"):
+            tokens = line.strip().split("|")
+            lons.append(float(tokens[0]))
+            lats.append(float(tokens[1]))
+            labels.append(tokens[2])
+        self.plot_values(lons, lats, labels, showmarker=True,
+                         labelspacingfactor=5)
 
     def drawcounties(self, color='k'):
         """ Draw counties onto the map
