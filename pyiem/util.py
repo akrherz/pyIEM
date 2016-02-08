@@ -3,6 +3,7 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
+import sys
 import psycopg2
 import netrc
 from ftplib import FTP_TLS  # requires python 2.7
@@ -15,19 +16,51 @@ from socket import error as socket_error
 
 
 def exponential_backoff(func, *args, **kwargs):
+    """ Exponentially backoff some function until it stops erroring"""
+    msgs = []
     for i in range(5):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
-            print("%s/5 %s traceback: %s" % (i+1, func.__name__, serr))
+            msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, serr))
             time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
         except Exception, exp:
-            print("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
+            msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
             time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
         except:
-            print("%s/5 uncaught exception, exiting!" % (i+1, ))
-            return None
+            msgs.append("%s/5 uncaught exception, exiting!" % (i+1, ))
+            break
+    sys.stderr.write("\n".join(msgs))
     return None
+
+
+def mirror2box(local_path, remote_path, ftpserver='ftp.box.com',
+               tmpdir='/tmp'):
+    """Mirror logic to sync a directory to CyBox
+
+    Up until this, I was using `lftp mirror` to make this happen, but it has
+    some issues and can not automatically deal with 15+ GB files.
+
+    Args:
+      local_path (str): local directory to sync
+      remote_path (str): remote directory to sync to
+      ftpserver (str,optional): FTPS server to connect to
+      tmpdir (str,optional): Where to write temporary files necessary to
+        transfer 15+ GB files.
+    """
+    credentials = netrc.netrc().hosts[ftpserver]
+
+    def _mirrordir(localdir, remotedir):
+        """Do the mirror work for a given directory"""
+        ftps = FTP_TLS(ftpserver)
+        ftps.login(credentials[0], credentials[2])
+        ftps.prot_p()
+
+    basedir = None
+    for root, dirs, files in os.walk(local_path, topdown=True):
+        # Change Local Directory
+        os.chdir(root)
+        # Change Remote Directory
 
 
 def send2box(filenames, remote_path, remotenames=None,
@@ -155,4 +188,5 @@ def drct2text(drct):
     return text
 
 if __name__ == '__main__':
-    send2box('util.py', '/bah1/bah2', remotenames='util2.py')
+    # send2box('util.py', '/bah1/bah2', remotenames='util2.py')
+    mirror2box("/tmp/mytest", "mytest")
