@@ -7,6 +7,35 @@ import matplotlib.colors as mpcolors
 
 class TestPlot(unittest.TestCase):
 
+    def test_drawcities(self):
+        """Fill the Iowa WFOs"""
+        m = plot.MapPlot(title='Fill and Draw Cities', axisbg='white',
+                         sector='iowa')
+        m.drawcities()
+        m.postprocess(filename='/tmp/test_plot_drawcities.png')
+        m.close()
+        # self.assertTrue(1 == 2)
+
+    def test_drawrandomtext(self):
+        """See if we can handle the fun that is drawing random text"""
+        m = plot.MapPlot(sector='iowa', title='Fun Text, here and there',
+                         axisbg='white', debug=True)
+        m.plot_values([-94, -92, -91, -92],
+                      [42, 41, 43, 42.4],
+                      ['One', 'Two\nTwo', 'Three\nThree\nThree',
+                       'Four\nFour\nFour\nFour'], showmarker=True)
+        m.postprocess(filename='/tmp/test_plot_drawrandom.png')
+        m.close()
+        # self.assertTrue(1 == 2)
+
+    def test_drawiowawfo(self):
+        """Fill the Iowa WFOs"""
+        m = plot.MapPlot(sector='iowawfo', title='Fill Iowa WFOs')
+        m.contourf(range(-94, -85), range(36, 45), range(9), range(9),
+                   clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
+        m.postprocess(filename='/tmp/test_plot_iowawfo.png')
+        m.close()
+
     def test_fillstates(self):
         """Can we fill states"""
         data = {'AK': 10, 'HI': 30, 'IA': 40, 'NY': 80}

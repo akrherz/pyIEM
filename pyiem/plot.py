@@ -26,6 +26,7 @@ import cPickle
 import datetime
 #
 import numpy as np
+import pandas as pd
 #
 from scipy.interpolate import NearestNDInterpolator
 #
@@ -240,6 +241,22 @@ def load_bounds(filebase):
         print("load_bounds(%s) is missing!" % (fn,))
         return
     return np.load(fn)
+
+
+def load_pickle_pd(filename):
+    """Load a pickled pandas dataframe
+
+    Args:
+      filename(str): The filename to load, relative to project data/
+
+    Returns:
+      pandas.DataFrame
+    """
+    fn = "%s/%s" % (DATADIR, filename)
+    if not os.path.isfile(fn):
+        print("load_pickle_pd(%s) failed, file is missing" % (fn,))
+        return fn
+    return pd.read_pickle(fn)
 
 
 def load_pickle_geo(filename):
@@ -495,7 +512,10 @@ class MapPlot(object):
           kwargs:
             titlefontsize (int): fontsize to use for the plot title
             subtitlefontsize (int): fontsize to use for the plot subtitle
+            axisbg (str): color to fill the background (defaults to blue)
+            debug (bool): enable debugging
         """
+        self.debug = kwargs.get('debug', False)
         self.fig = plt.figure(num=None, figsize=figsize,
                               dpi=kwargs.get('dpi', 100))
         self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
@@ -765,7 +785,7 @@ class MapPlot(object):
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None,
                     labeltextsize=10, labelcolor='#000000',
-                    showmarker=False, labelspacingfactor=1):
+                    showmarker=False, labelbuffer=25):
         """Plot values onto the map
 
         Args:
@@ -784,7 +804,7 @@ class MapPlot(object):
           labeltextsize (int, optional): Size of the label text
           labelcolor (str, optional): Color to use for drawing labels
           showmarker (bool, optional): Place a marker on the map for the label
-          labelspacingfactor (float): how aggressively do we place labels
+          labelbuffer (int): pixel buffer around labels
         """
         if valmask is None:
             valmask = [True] * len(lons)
@@ -793,41 +813,86 @@ class MapPlot(object):
         if isinstance(color, str):
             color = [color] * len(lons)
         t = []
-        mask = np.zeros(self.fig.canvas.get_width_height(), bool)
+        bbox = self.fig.get_window_extent().transformed(
+            self.fig.dpi_scale_trans.inverted())
+        axbbox = self.ax.get_window_extent().transformed(
+            self.fig.dpi_scale_trans.inverted())
+        axx0 = axbbox.x0 * self.fig.dpi
+        axx1 = (axbbox.x0 + axbbox.width) * self.fig.dpi
+        # axy0 = axbbox.y0 * self.fig.dpi
+        # axy1 = (axbbox.y0 + axbbox.height) * self.fig.dpi
+        figwidth = bbox.width * self.fig.dpi
+        figheight = bbox.height * self.fig.dpi
+        mask = np.zeros((figwidth, figheight), bool)
+        thismap = self.map
+        thisax = self.ax
+        # Create a fake label, to test out our scaling
+        t0 = self.fig.text(0.5, 0.5, "ABCDEFGHIJ", transform=thisax.transAxes,
+                           color='None')
+        bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
+        xpixels_per_char = bbox.width / 10.
+        ypixels = bbox.height
         for o, a, v, m, c, l in zip(lons, lats, vals, valmask, color, labels):
             if not m:
                 continue
-            thismap = self.map
-            thisax = self.ax
 
+            ha = 'center'
+            mystr = fmt % (v,)
+            max_mystr_len = max([len(s) for s in mystr.split("\n")])
+            mystr_lines = len(mystr.split("\n"))
             # compute the pixel coordinate of this data point
             (x, y) = thismap(o, a)
             (imgx, imgy) = thisax.transData.transform([x, y])
-            imgx = int(imgx)
-            imgy = int(imgy)
-
-            # Our text is centered, so we can make some approximations on the
-            # bounding box size it will fill, we have to do it this way as
-            # waiting for rendering is too late, we picked 0.7 out of a hat
-            # as it appears to be a good approx
-            mystr = fmt % (v,)
-            bwidth = len(mystr) * textsize
-            _cnt = np.sum(np.where(mask[imgx-bwidth/2:imgx+bwidth/2,
-                                        imgy-textsize:imgy+textsize], 1, 0))
+            imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
+            if imgx0 < axx0:
+                ha = 'left'
+                imgx0 = imgx
+            imgx1 = imgx0 + max_mystr_len * xpixels_per_char
+            if imgx1 > axx1:
+                imgx1 = imgx
+                imgx0 = imgx1 - max_mystr_len * xpixels_per_char
+                ha = 'right'
+            imgy0 = int(imgy)
+            imgy1 = imgy0 + mystr_lines * ypixels
+            # Now we buffer
+            imgx0 = max([0, imgx0 - labelbuffer])
+            imgx1 = min([figwidth, (imgx0 + 2 * labelbuffer +
+                                    max_mystr_len * xpixels_per_char)])
+            imgy0 = max([0, imgy0 - labelbuffer * 0.75])
+            imgy1 = min([figheight, (imgy0 +
+                                     mystr_lines * ypixels +
+                                     2 * labelbuffer * 0.75)])
+            _cnt = np.sum(np.where(mask[imgx0:imgx1, imgy0:imgy1], 1, 0))
             # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
+                if self.debug:
+                    print("culling |%s| due to overlap, %s" % (repr(mystr),
+                                                               _cnt))
                 continue
+            if self.debug:
+                rec = plt.Rectangle([imgx0,
+                                     imgy0],
+                                    (imgx1 - imgx0),
+                                    (imgy1 - imgy0),
+                                    facecolor='None', edgecolor='r')
+                self.fig.patches.append(rec)
             # Useful for debugging this algo
-            # rec = plt.Rectangle((imgx-bwidth/2, imgy-textsize),
-            #                    bwidth, textsize*2, transform=None,
-            #                    facecolor='None', edgecolor='k')
-            # thisax.add_patch(rec)
-            f = textsize * labelspacingfactor
-            mask[imgx-f:imgx+f, imgy-f:imgy+f] = True
+            if self.debug:
+                print(("label: %s imgx: %s/%s imgy: %s/%s "
+                       "x:%s-%s y:%s-%s _cnt:%s"
+                       ) % (repr(mystr), imgx, figwidth, imgy, figheight,
+                            imgx0, imgx1, imgy0, imgy1, _cnt))
+            mask[imgx0:imgx1, imgy0:imgy1] = True
             t0 = thisax.text(x, y, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center' if not showmarker else 'bottom',
-                             ha='center')
+                             ha=ha)
+            bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
+            if self.debug:
+                rec = plt.Rectangle([bbox.x0, bbox.y0],
+                                    bbox.width, bbox.height,
+                                    facecolor='None', edgecolor='k')
+                self.fig.patches.append(rec)
             if showmarker:
                 thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
             t0.set_clip_on(True)
@@ -1086,62 +1151,25 @@ class MapPlot(object):
         cwas = load_pickle_geo('cwa.pickle')
         polygon_fill(self, cwas, data, **kwargs)
 
-    def drawcities(self):
-        """Overlay some cities (this is a hack, atm)"""
-        data = """          -90.6042 |          41.5568 | DAVENPORT
-          -90.4762 |          41.5642 | BETTENDORF
-            -90.69 |          42.5045 | DUBUQUE
-          -91.8126 |          42.9587 | WEST UNION
-          -91.0717 |          41.4177 | MUSCATINE
-          -93.6174 |          41.5767 | DES MOINES
-          -91.6696 |           41.973 | CEDAR RAPIDS
-          -91.4035 |          40.4096 | KEOKUK
-           -96.394 |          42.5002 | SIOUX CITY
-          -91.1229 |          40.8087 | BURLINGTON
-          -92.3511 |          42.4916 | WATERLOO
-          -91.5351 |          41.6583 | IOWA CITY
-          -95.8595 |            41.24 | COUNCIL BLUFFS
-          -93.6256 |          42.0234 | AMES
-          -92.4528 |          42.5206 | CEDAR FALLS
-          -93.7529 |          41.5707 | WEST DES MOINES
-           -90.233 |          41.8432 | CLINTON
-          -93.1985 |          43.1513 | MASON CITY
-          -96.1699 |          42.7876 | LE MARS
-          -91.3522 |          40.6197 | FORT MADISON
-          -94.1768 |          42.5079 | FORT DODGE
-          -92.9118 |          42.0355 | MARSHALLTOWN
-          -92.4182 |          41.0199 | OTTUMWA
-          -93.7409 |          41.6365 | URBANDALE
-          -93.6053 |          41.7248 | ANKENY
-          -93.0451 |          41.6951 | NEWTON
-          -93.8792 |          42.0525 | BOONE
-          -93.5655 |          41.3607 | INDIANOLA
-          -95.1511 |          43.1459 | SPENCER
-          -92.6396 |           41.293 | OSKALOOSA
-          -91.6007 |           41.691 | CORALVILLE
-          -91.9671 |          41.0071 | FAIRFIELD
-          -94.8647 |          42.0692 | CARROLL
-           -92.919 |          41.4087 | PELLA
-          -92.7227 |          41.7408 | GRINNELL
-          -95.1999 |           42.645 | STORM LAKE
-          -92.4698 |          42.7254 | WAVERLY
-          -93.1013 |          41.3191 | KNOXVILLE
-          -93.3736 |          43.1351 | CLEAR LAKE
-          -91.7933 |          43.3053 | DECORAH
-          -91.5465 |          40.9631 | MOUNT PLEASANT
-          -94.3641 |           41.059 | CRESTON
-          -93.8165 |          42.4634 | WEBSTER CITY
-           -92.675 |          43.0673 | CHARLES CITY"""
-        lons = []
-        lats = []
-        labels = []
-        for line in data.split("\n"):
-            tokens = line.strip().split("|")
-            lons.append(float(tokens[0]))
-            lats.append(float(tokens[1]))
-            labels.append(tokens[2])
-        self.plot_values(lons, lats, labels, showmarker=True,
-                         labelspacingfactor=5)
+    def drawcities(self, minarea=None):
+        """Overlay some cities
+
+        Args:
+          minarea (int,optional): Minimum Urban Area size (km2) to plot
+        """
+        df = load_pickle_pd("pd_cities.pickle")
+        south = self.map.llcrnrlat
+        north = self.map.urcrnrlat
+        west = self.map.llcrnrlon
+        east = self.map.urcrnrlon
+        if minarea is None:
+            minarea = 500. if self.sector in ['nws', 'conus'] else 10.
+        df2 = df[((df['lat'] > south) & (df['lat'] < north) &
+                  (df['lon'] > west) & (df['lon'] < east) &
+                  (df['area_km2'] > minarea))]
+        # df2 = df[(df['name'] == 'DES MOINES') & (df['st'] == 'IA')]
+        self.plot_values(df2.lon.values, df2.lat.values, df2.name.values,
+                         showmarker=True, labelbuffer=25)
 
     def drawcounties(self, color='k'):
         """ Draw counties onto the map
