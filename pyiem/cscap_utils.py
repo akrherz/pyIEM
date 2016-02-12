@@ -14,6 +14,7 @@ import json
 import os
 import sys
 import random
+import re
 
 
 def save_config(config):
@@ -29,6 +30,19 @@ def get_config(fn="mytokens.json"):
                          )
         return None
     return json.load(open(fn))
+
+
+def translate_years(val):
+    """ Convert X ('YY-'YY) into an array"""
+    if val.find("-") > 0:
+        tokens = re.findall('[0-9]+', val)
+        one = int(tokens[0])
+        two = int(tokens[1])
+        one = (1900 + one) if one > 50 else (2000 + one)
+        two = (1900 + two) if two > 50 else (2000 + two)
+        return range(one, two+1)
+    tokens = re.findall('[0-9]+', val)
+    return [int("%s%s" % ("19" if int(t) > 50 else "20", t)) for t in tokens]
 
 
 def exponential_backoff(func, *args, **kwargs):
@@ -154,6 +168,12 @@ class Worksheet(object):
         while self.trim_columns():
             print 'Trimming Columns!'
 
+    def expand_cols(self, amount=1):
+        """ Expand this sheet by the number of columns desired"""
+        self.cols = self.cols + amount
+        self.entry.col_count.text = "%s" % (self.cols,)
+        self.entry = exponential_backoff(self.spr_client.update, self.entry)
+
     def add_column(self, label, row2=None, row3=None):
         """ Add a column, if it does not exist """
         self.get_cell_feed()
@@ -161,9 +181,7 @@ class Worksheet(object):
             if self.get_cell_value("1", col) == label:
                 print 'Column %s with label already found: %s' % (col, label)
                 return
-        self.cols = self.cols + 1
-        self.entry.col_count.text = "%s" % (self.cols,)
-        self.entry = exponential_backoff(self.spr_client.update, self.entry)
+        self.expand_cols(1)
 
         for i, lbl in enumerate([label, row2, row3]):
             if lbl is None:
