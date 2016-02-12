@@ -9,7 +9,7 @@ class TestPlot(unittest.TestCase):
 
     def test_drawcities(self):
         """Fill the Iowa WFOs"""
-        m = plot.MapPlot(title='Fill and Draw Cities', axisbg='white',
+        m = plot.MapPlot(title='Fill and Draw Cities', axisbg='blue',
                          sector='iowa')
         m.drawcities()
         m.postprocess(filename='/tmp/test_plot_drawcities.png')

@@ -46,7 +46,6 @@ from matplotlib.patches import Wedge  # nopep8
 import matplotlib.colorbar as mpcolorbar  # nopep8
 import matplotlib.patheffects as PathEffects  # nopep8
 from matplotlib.collections import PatchCollection  # nopep8
-from matplotlib.artist import Artist  # nopep8
 # Basemap
 from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
 
@@ -163,68 +162,6 @@ def smooth2d(A, sigma=3):
     A4 = np.transpose(A3)
 
     return A4
-
-
-class BaseFilter(object):
-
-    def prepare_image(self, src_image, dpi, pad):
-        ny, nx, depth = src_image.shape
-        # tgt_image = np.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
-        padded_src = np.zeros([pad*2+ny, pad*2+nx, depth], dtype="d")
-        padded_src[pad:-pad, pad:-pad, :] = src_image[:, :, :]
-
-        return padded_src  # , tgt_image
-
-    def get_pad(self, dpi):
-        return 0
-
-    def __call__(self, im, dpi):
-        pad = self.get_pad(dpi)
-        padded_src = self.prepare_image(im, dpi, pad)
-        tgt_image = self.process_image(padded_src, dpi)
-        return tgt_image, -pad, -pad
-
-
-class GrowFilter(BaseFilter):
-    "enlarge the area"
-    def __init__(self, pixels, color=None):
-        self.pixels = pixels
-        if color is None:
-            self.color = (1, 1, 1)
-        else:
-            self.color = color
-
-    def __call__(self, im, dpi):
-        pad = self.pixels
-        ny, nx, depth = im.shape
-        new_im = np.empty([pad*2+ny, pad*2+nx, depth], dtype="d")
-        alpha = new_im[:, :, 3]
-        alpha.fill(0)
-        alpha[pad:-pad, pad:-pad] = im[:, :, -1]
-        alpha2 = np.clip(smooth2d(alpha, self.pixels/72.*dpi) * 5, 0, 1)
-        new_im[:, :, -1] = alpha2
-        new_im[:, :, :-1] = self.color
-        offsetx, offsety = -pad, -pad
-
-        return new_im, offsetx, offsety
-
-
-class FilteredArtistList(Artist):
-    """
-    A simple container to draw filtered artist.
-    """
-    def __init__(self, artist_list, _filter):
-        self._artist_list = artist_list
-        self._filter = _filter
-        Artist.__init__(self)
-
-    def draw(self, renderer):
-        renderer.start_rasterizing()
-        renderer.start_filter()
-        for a in self._artist_list:
-            a.draw(renderer)
-        renderer.stop_filter(self._filter)
-        renderer.stop_rasterizing()
 
 
 def load_bounds(filebase):
@@ -684,7 +621,6 @@ class MapPlot(object):
                                       spacing='uniform',
                                       orientation='vertical')
         clevstride = int(kwargs.get('clevstride', 1))
-        t = []
         for i, (_, lbl) in enumerate(zip(clevs, clevlabels)):
             if i % clevstride != 0:
                 continue
@@ -692,11 +628,10 @@ class MapPlot(object):
             # y2 = float(i+1) / (len(clevs) - 1)
             # dy = (y2 - y) / 2
             fmt = '%s' if isinstance(lbl, str) else '%g'
-            t.append(cb2.ax.text(0.5, y, fmt % (lbl,), va='center',
-                                 ha='center'))
-        white_glows = FilteredArtistList(t, GrowFilter(3))
-        self.cax.add_artist(white_glows)
-        white_glows.set_zorder(t[0].get_zorder()-0.1)
+            t = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
+            t.set_path_effects([PathEffects.Stroke(linewidth=3,
+                                                   foreground='white'),
+                                PathEffects.Normal()])
         # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
 
@@ -812,7 +747,6 @@ class MapPlot(object):
             labels = [''] * len(lons)
         if isinstance(color, str):
             color = [color] * len(lons)
-        t = []
         bbox = self.fig.get_window_extent().transformed(
             self.fig.dpi_scale_trans.inverted())
         axbbox = self.ax.get_window_extent().transformed(
@@ -896,7 +830,9 @@ class MapPlot(object):
             if showmarker:
                 thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
             t0.set_clip_on(True)
-            t.append(t0)
+            t0.set_path_effects([PathEffects.Stroke(linewidth=3,
+                                                    foreground='white'),
+                                 PathEffects.Normal()])
 
             if l and l != '':
                 thisax.annotate("%s" % (l, ), xy=(x, y), ha='center',
@@ -906,11 +842,6 @@ class MapPlot(object):
                                 textcoords="offset points",
                                 zorder=Z_OVERLAY+1,
                                 clip_on=True, fontsize=labeltextsize)
-
-        if len(t) > 0:
-            white_glows = FilteredArtistList(t, GrowFilter(3))
-            thisax.add_artist(white_glows)
-            white_glows.set_zorder(t[0].get_zorder()-0.1)
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
         """Draw points on the map
