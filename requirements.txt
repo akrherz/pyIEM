@@ -5,6 +5,7 @@ scipy
 gdata
 oauth2client
 apiclient
+urllib3
 Pillow
 psycopg2
 Shapely>1.3

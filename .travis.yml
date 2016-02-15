@@ -18,6 +18,7 @@ install:
   - "pip install gdata"
   - "pip install oauth2client"
   - "pip install apiclient"
+  - "pip install urllib3"
   - "pip install 'Pillow<3.0'"
   - "pip install python-metar"
   - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"
