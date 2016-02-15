@@ -4,6 +4,7 @@ numpy
 scipy
 gdata
 oauth2client
+apiclient
 Pillow
 psycopg2
 Shapely>1.3
