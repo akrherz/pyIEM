@@ -1,4 +1,4 @@
-from pyiem.cscap_utils import Worksheet, translate_years
+from pyiem.cscap_utils import translate_years
 import unittest
 
 
@@ -16,8 +16,3 @@ class Test(unittest.TestCase):
         self.assertEquals(x[-1], 2017)
         x = translate_years("X ('06)")
         self.assertEquals(x[0], 2006)
-
-    def test_worksheet(self):
-        """Worksheet"""
-        w = Worksheet(None, None)
-        self.assertTrue(w is not None)
