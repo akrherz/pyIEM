@@ -7,6 +7,7 @@ gdata
 oauth2client
 apiclient
 urllib3
+google-api-python-client
 psycopg2
 # Shapely>1.3
 pyproj
