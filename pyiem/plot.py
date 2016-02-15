@@ -463,6 +463,7 @@ class MapPlot(object):
         self.maps = []
         self.state = None
         self.cwa = None
+        self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
 
         if self.sector == 'iowa':
@@ -757,7 +758,8 @@ class MapPlot(object):
         # axy1 = (axbbox.y0 + axbbox.height) * self.fig.dpi
         figwidth = bbox.width * self.fig.dpi
         figheight = bbox.height * self.fig.dpi
-        mask = np.zeros((figwidth, figheight), bool)
+        if self.textmask is None:
+            self.textmask = np.zeros((figwidth, figheight), bool)
         thismap = self.map
         thisax = self.ax
         # Create a fake label, to test out our scaling
@@ -796,7 +798,8 @@ class MapPlot(object):
             imgy1 = min([figheight, (imgy0 +
                                      mystr_lines * ypixels +
                                      2 * labelbuffer * 0.75)])
-            _cnt = np.sum(np.where(mask[imgx0:imgx1, imgy0:imgy1], 1, 0))
+            _cnt = np.sum(np.where(self.textmask[imgx0:imgx1, imgy0:imgy1],
+                                   1, 0))
             # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
                 if self.debug:
@@ -816,7 +819,7 @@ class MapPlot(object):
                        "x:%s-%s y:%s-%s _cnt:%s"
                        ) % (repr(mystr), imgx, figwidth, imgy, figheight,
                             imgx0, imgx1, imgy0, imgy1, _cnt))
-            mask[imgx0:imgx1, imgy0:imgy1] = True
+            self.textmask[imgx0:imgx1, imgy0:imgy1] = True
             t0 = thisax.text(x, y, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center' if not showmarker else 'bottom',
