@@ -16,6 +16,7 @@ install:
   - "pip install coveralls"
   - "pip install pandas"
   - "pip install gdata"
+  - "pip install oauth2client"
   - "pip install 'Pillow<3.0'"
   - "pip install python-metar"
   - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"

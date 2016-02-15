@@ -3,6 +3,7 @@ matplotlib>1.4
 numpy
 scipy
 gdata
+oauth2client
 Pillow
 psycopg2
 Shapely>1.3
