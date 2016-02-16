@@ -46,6 +46,8 @@ from matplotlib.patches import Wedge  # nopep8
 import matplotlib.colorbar as mpcolorbar  # nopep8
 import matplotlib.patheffects as PathEffects  # nopep8
 from matplotlib.collections import PatchCollection  # nopep8
+import matplotlib.patches as mpatches
+import matplotlib.path as mpath
 # Basemap
 from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
 
@@ -212,6 +214,35 @@ def load_pickle_geo(filename):
     return cPickle.load(open(fn, 'rb'))
 
 
+def mask_outside_geom(themap, ax, geom):
+    """Create a white patch over the plot for what we want to ask out
+
+    Args:
+      themap ():
+      ax (axes):
+      geom (geometry):
+    """
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    # Verticies of the plot boundaries in clockwise order
+    verts = np.array([(xlim[0], ylim[0]), (xlim[0], ylim[1]),
+                      (xlim[1], ylim[1]), (xlim[1], ylim[0]),
+                      (xlim[0], ylim[0])])
+    codes = [mpath.Path.MOVETO] + (len(verts) -
+                                   1) * [mpath.Path.LINETO]
+    for geo in geom:
+        ccw = np.asarray(geo.exterior)[::-1]
+        x, y = themap(ccw[:, 0], ccw[:, 1])
+        verts = np.concatenate([verts, zip(x, y)])
+        codes = np.concatenate([codes, [mpath.Path.MOVETO] +
+                                (len(x) - 1) * [mpath.Path.LINETO]])
+
+    path = mpath.Path(verts, codes)
+    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
+                               zorder=Z_CLIP)
+    ax.add_patch(patch)
+
+
 def mask_outside_polygon(poly_verts, ax=None):
     """
     We produce a polygon that lies between the plot border and some interior
@@ -219,9 +250,6 @@ def mask_outside_polygon(poly_verts, ax=None):
 
     POLY_VERTS is in CCW order, as this is the interior of the polygon
     """
-    import matplotlib.patches as mpatches
-    import matplotlib.path as mpath
-
     if ax is None:
         ax = plt.gca()
 
@@ -905,8 +933,8 @@ class MapPlot(object):
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
-            geo = s[self.state]['geom'][0]
-            ccw = np.asarray(geo.exterior)[::-1]
+            mask_outside_geom(self.map, self.ax, s[self.state]['geom'])
+            return
         elif self.sector == 'iowawfo':
             s = load_pickle_geo('iowawfo.pickle')
             geo = s['iowawfo']['geom']
