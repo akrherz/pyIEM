@@ -174,6 +174,16 @@ class Worksheet(object):
         self.entry.col_count.text = "%s" % (self.cols,)
         self.entry = exponential_backoff(self.spr_client.update, self.entry)
 
+    def expand_rows(self, amount=1):
+        """ Expand this sheet by the number of rows desired
+
+        Args:
+          amount (int, optional): The number of rows to expand worksheet by
+        """
+        self.rows = self.rows + amount
+        self.entry.row_count.text = "%s" % (self.rows,)
+        self.entry = exponential_backoff(self.spr_client.update, self.entry)
+
     def add_column(self, label, row2=None, row3=None):
         """ Add a column, if it does not exist """
         self.get_cell_feed()
