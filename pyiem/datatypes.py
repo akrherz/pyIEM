@@ -118,7 +118,7 @@ class precipitation(basetype):
 
 class speed(basetype):
     """ Speed """
-    known_units = ['KT', 'MPH', 'MPS', 'KMH']
+    known_units = ['KT', 'MPH', 'MPS', 'KMH', 'KTS']
 
     def value(self, units=None):
         """ Convert to a value in the given units """
@@ -132,7 +132,7 @@ class speed(basetype):
         # MKS
         if self._units == "KMH":
             mps_value = self._value / 3.6
-        elif self._units == "KT":
+        elif self._units in ["KT", 'KTS']:
             mps_value = self._value * 0.514444
         elif self._units == "MPH":
             mps_value = self._value * 0.447000
@@ -141,7 +141,7 @@ class speed(basetype):
         # return
         if units == "KMH":
             return mps_value * 3.6
-        elif units == "KT":
+        elif units in ["KT", 'KTS']:
             return mps_value / 0.514444
         elif units == "MPH":
             return mps_value / 0.447000
