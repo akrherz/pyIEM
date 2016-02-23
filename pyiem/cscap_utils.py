@@ -4,7 +4,7 @@ Utility Functions that are common to our scripts, I hope
 import gdata.gauth
 import gdata.spreadsheets.client
 import gdata.spreadsheets.data as spdata
-from oauth2client.client import SignedJwtAssertionCredentials
+from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 from apiclient.discovery import build
 import smartsheet
@@ -415,13 +415,9 @@ def get_site_metadata(config, spr_client=None):
 
 def get_driveclient(config):
     """ Return an authorized apiclient """
-    client_email = config['service_account']
-    with open("CSCAP-6886c10d6ffb.p12") as f:
-        private_key = f.read()
-
-    credentials = SignedJwtAssertionCredentials(
-        client_email, private_key,
-        'https://www.googleapis.com/auth/drive')
+    credentials = ServiceAccountCredentials.from_p12_keyfile(
+        config['service_account'], "CSCAP-6886c10d6ffb.p12",
+        scopes=['https://www.googleapis.com/auth/drive'])
 
     http_auth = credentials.authorize(Http())
 
