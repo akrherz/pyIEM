@@ -415,14 +415,12 @@ def get_site_metadata(config, spr_client=None):
     return meta
 
 
-def get_driveclient(config):
+def get_driveclient(config, project="cscap"):
     """ Return an authorized apiclient """
-    credentials = ServiceAccountCredentials.from_p12_keyfile(
-        config['service_account'], "CSCAP-6886c10d6ffb.p12",
-        scopes=['https://www.googleapis.com/auth/drive'])
-
-    http_auth = credentials.authorize(Http())
-
+    cred = ServiceAccountCredentials.from_json_keyfile_dict(
+            config[project]['service_account'],
+            scopes=['https://www.googleapis.com/auth/drive'])
+    http_auth = cred.authorize(Http())
     return build('drive', 'v2', http=http_auth)
 
 
