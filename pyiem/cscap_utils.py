@@ -258,6 +258,8 @@ class Spreadsheet(object):
     def get_worksheets(self):
         """ Get the worksheets associated with this spreadsheet """
         feed = exponential_backoff(self.spr_client.GetWorksheets, self.id)
+        if feed is None:
+            return
         for entry in feed.entry:
             self.worksheets[entry.title.text] = Worksheet(self.spr_client,
                                                           entry)
