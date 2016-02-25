@@ -115,7 +115,8 @@ def check_file(fn):
     data = cPickle.load(open("../pyiem/data/%s" % (fn, ), 'rb'))
     ets = datetime.datetime.now()
 
-    print (ets - sts).total_seconds(), len(data.keys()), fn
+    print("runtime: %.5fs, entries: %s, fn: %s" % (
+                (ets - sts).total_seconds(), len(data.keys()), fn))
 
 dump_iowawfo('iowawfo.pickle')
 dump_ugc('C', 'ugcs_county.pickle')
