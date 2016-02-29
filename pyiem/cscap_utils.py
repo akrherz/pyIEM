@@ -16,23 +16,26 @@ import sys
 import random
 import re
 
+CONFIG_FN = "/mesonet/www/apps/datateam/config/mytokens.json"
+
 
 def save_config(config):
     """ Save the configuration to disk """
-    json.dump(config, open('mytokens.json', 'w'), sort_keys=True,
+    global CONFIG_FN
+    json.dump(config, open(CONFIG_FN, 'w'), sort_keys=True,
               indent=4, separators=(',', ': '))
 
 
 def get_config(fn=None):
     """ Load a JSON Configuration"""
-    if fn is None:
-        # Yucky hard coded default
-        fn = "/mesonet/www/apps/datateam/config/mytokens.json"
-    if not os.path.isfile(fn):
-        sys.stderr.write("cscap_utils.get_config(%s) File Not Found.\n" % (fn,)
-                         )
+    global CONFIG_FN
+    if fn is not None:
+        CONFIG_FN = fn
+    if not os.path.isfile(CONFIG_FN):
+        sys.stderr.write(("cscap_utils.get_config(%s) File Not Found.\n"
+                          ) % (CONFIG_FN, ))
         return None
-    return json.load(open(fn))
+    return json.load(open(CONFIG_FN))
 
 
 def translate_years(val):
