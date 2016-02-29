@@ -23,8 +23,11 @@ def save_config(config):
               indent=4, separators=(',', ': '))
 
 
-def get_config(fn="mytokens.json"):
+def get_config(fn=None):
     """ Load a JSON Configuration"""
+    if fn is None:
+        # Yucky hard coded default
+        fn = "/mesonet/www/apps/datateam/config/mytokens.json"
     if not os.path.isfile(fn):
         sys.stderr.write("cscap_utils.get_config(%s) File Not Found.\n" % (fn,)
                          )
