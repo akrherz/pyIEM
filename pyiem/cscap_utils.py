@@ -125,6 +125,8 @@ class Worksheet(object):
         return (numval if numval is not None else txtval)
 
     def get_cell_entry(self, row, col):
+        if self.cell_feed is None:
+            self.get_cell_feed()
         for entry in self.cell_feed.entry:
             if entry.cell.row == str(row) and entry.cell.col == str(col):
                 return entry
@@ -173,6 +175,7 @@ class Worksheet(object):
         self.cols = self.cols + amount
         self.entry.col_count.text = "%s" % (self.cols,)
         self.entry = exponential_backoff(self.spr_client.update, self.entry)
+        self.cell_feed = None
 
     def expand_rows(self, amount=1):
         """ Expand this sheet by the number of rows desired
