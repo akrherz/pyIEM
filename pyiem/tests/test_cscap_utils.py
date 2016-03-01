@@ -1,8 +1,23 @@
-from pyiem.cscap_utils import translate_years
+from pyiem.cscap_utils import translate_years, get_config, save_config
 import unittest
+import tempfile
+import os
 
 
 class Test(unittest.TestCase):
+
+    def test_config(self):
+        """Make sure we exercise the config logic as things get hairy"""
+        (_, tmpfn) = tempfile.mkstemp()
+        # Can we load default
+        cfg = get_config()
+        self.assertTrue(cfg is not None)
+        # Write config to bogus file
+        save_config(cfg, tmpfn)
+        # Attempt to load it back now
+        cfg = get_config(tmpfn)
+        self.assertTrue(cfg is not None)
+        os.unlink(tmpfn)
 
     def test_translateyears(self):
         """See that we can translate years properly"""
