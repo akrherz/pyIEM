@@ -17,6 +17,8 @@ import random
 import re
 
 CONFIG_FN = "/mesonet/www/apps/datateam/config/mytokens.json"
+NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
+CLEANVALUE_COMPLAINED = []
 
 
 def save_config(config, fn=None):
@@ -36,6 +38,37 @@ def get_config(fn=None):
                           ) % (fn, ))
         return None
     return json.load(open(fn))
+
+
+def cleanvalue(val):
+    """cleanup the mess that is found in the Google Sheets for values
+
+    Args:
+      val (str): The value to clean up
+
+    Returns:
+      the cleaned value!
+    """
+    if val is None or val.strip() == '':
+        return None
+    if NUMBER_RE.match(val):
+        return float(val)
+    if val.lower() in ['did not collect', '.', 'n/a', 'clay', 'silty clay',
+                       'silty clay loam', 'clay loam', 'sandy clay loam',
+                       'silt loam', 'silty loam', 'sandy loam', 'sandy clay',
+                       'sand', 'loam', 'silt', 'loamy sand']:
+        return val.lower()
+    if val.find("%") > -1:
+        val = val.replace("%", "")
+        if NUMBER_RE.match(val):
+            return float(val)
+    if val.find("<") > -1:
+        return "< %s" % (val.replace("<", "").strip(), )
+    if val not in CLEANVALUE_COMPLAINED:
+        print(("cscap_utils.cleanvalue(%s) is unaccounted for, return None"
+               ) % (repr(val), ))
+        CLEANVALUE_COMPLAINED.append(val)
+    return None
 
 
 def translate_years(val):

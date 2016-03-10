@@ -1,10 +1,18 @@
-from pyiem.cscap_utils import translate_years, get_config, save_config
+from pyiem.cscap_utils import (translate_years, get_config, save_config,
+                               cleanvalue)
 import unittest
 import tempfile
 import os
 
 
 class Test(unittest.TestCase):
+
+    def test_cleanvalue(self):
+        """ see what we can do with cleaning strings"""
+        self.assertAlmostEquals(10.54, cleanvalue("10.54%"), 2)
+        self.assertEquals(cleanvalue('Did NOt Collect'), 'did not collect')
+        self.assertEquals(cleanvalue('<0.2'), '< 0.2')
+        self.assertTrue(cleanvalue(' ') is None)
 
     def test_config(self):
         """Make sure we exercise the config logic as things get hairy"""
