@@ -17,9 +17,8 @@ class Test(unittest.TestCase):
     def test_config(self):
         """Make sure we exercise the config logic as things get hairy"""
         (_, tmpfn) = tempfile.mkstemp()
-        # Can we load default
-        cfg = get_config()
-        self.assertTrue(cfg is not None)
+        # create bogus config file
+        cfg = dict(a='a', b='b')
         # Write config to bogus file
         save_config(cfg, tmpfn)
         # Attempt to load it back now
