@@ -309,14 +309,14 @@ def windrose(station, database='asos', months=np.arange(1, 13),
                                                      sts, ets, monthinfo,
                                                      hourinfo, level)
     sknt = speed(sknt, 'KT').value(units.upper())
+    if justdata:
+        return _make_textresult(station, sknt, drct, units, nsector, sname,
+                                minvalid, maxvalid, monthinfo, hourinfo, level)
     if len(sknt) < 5 or np.max(sknt) < 1:
         fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
         fig.text(0.17, 0.89, 'Not enough data available to generate plot')
         return fig
 
-    if justdata:
-        return _make_textresult(station, sknt, drct, units, nsector, sname,
-                                minvalid, maxvalid, monthinfo, hourinfo, level)
 
     return _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
                       sname, minvalid, maxvalid, level)
