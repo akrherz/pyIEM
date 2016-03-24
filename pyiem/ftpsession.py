@@ -29,7 +29,7 @@ def exponential_backoff(func, *args, **kwargs):
 class FTPSession(object):
     """ Attempt to create some robustness and performance to FTPing """
 
-    def __init__(self, server, username, password, tmpdir='/tmp', timeout=60):
+    def __init__(self, server, username, password, tmpdir='/tmp', timeout=10):
         """Build a FTP session """
         self.conn = None
         self.server = server
@@ -49,6 +49,7 @@ class FTPSession(object):
 
     def _reconnect(self):
         """ First attempt to shut down connection and then reconnect """
+        logging.debug('_reconnect() was called...')
         try:
             self.conn.quit()
             self.conn.close()
@@ -76,9 +77,10 @@ class FTPSession(object):
                                      open(filename))
                 os.unlink(filename)
         else:
-            logging.debug("Putting localfn: '%s' to remotefn: '%s'",
+            logging.debug("_put '%s' to '%s'",
                           localfn, remotefn)
             self.conn.storbinary('STOR %s' % (remotefn, ), open(localfn))
+        return True
 
     def close(self):
         """ Good bye """
@@ -117,7 +119,13 @@ class FTPSession(object):
 
     def put_file(self, path, localfn, remotefn):
         """ Put the File """
-        exponential_backoff(self._put, path, localfn, remotefn)
+        res = exponential_backoff(self._put, path, localfn, remotefn)
+        if not res:
+            self._reconnect()
+            res = exponential_backoff(self._put, path, localfn, remotefn)
+            if not res:
+                logging.error("Double Failure to upload filename: '%s'",
+                              localfn)
 
     def put_files(self, path, localfns, remotefns):
         """ Put the File """

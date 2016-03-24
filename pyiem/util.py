@@ -64,7 +64,7 @@ def mirror2box(local_path, remote_path, ftpserver='ftp.box.com',
 
 
 def send2box(filenames, remote_path, remotenames=None,
-             ftpserver='ftp.box.com', tmpdir='/tmp'):
+             ftpserver='ftp.box.com', tmpdir='/tmp', fs=None):
     """Send one or more files to CyBox
 
     Box has a filesize limit of 15 GB, so if we find any files larger than
@@ -80,7 +80,9 @@ def send2box(filenames, remote_path, remotenames=None,
         15 GB in size
     """
     credentials = netrc.netrc().hosts[ftpserver]
-    fs = FTPSession(ftpserver, credentials[0], credentials[2], tmpdir=tmpdir)
+    if fs is None:
+        fs = FTPSession(ftpserver, credentials[0], credentials[2],
+                        tmpdir=tmpdir)
     if isinstance(filenames, str):
         filenames = [filenames, ]
     if remotenames is None:
@@ -88,7 +90,7 @@ def send2box(filenames, remote_path, remotenames=None,
     if isinstance(remotenames, str):
         remotenames = [remotenames, ]
     fs.put_files(remote_path, filenames, remotenames)
-    fs.close()
+    return fs
 
 
 def get_properties():
