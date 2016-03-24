@@ -10,9 +10,9 @@ from ftplib import FTP_TLS  # requires python 2.7
 import time
 import random
 import os
-import subprocess
-import glob
+import logging
 from socket import error as socket_error
+from pyiem.ftpsession import FTPSession
 
 
 def exponential_backoff(func, *args, **kwargs):
@@ -80,45 +80,15 @@ def send2box(filenames, remote_path, remotenames=None,
         15 GB in size
     """
     credentials = netrc.netrc().hosts[ftpserver]
-    paths = remote_path.split("/")
-
-    def _send2box_sender(filename, remotename):
-        ftps = FTP_TLS(ftpserver)
-        ftps.login(credentials[0], credentials[2])
-        ftps.prot_p()
-        for dirname in paths:
-            if dirname == '':
-                continue
-            bah = []
-            ftps.retrlines('NLST', bah.append)
-            if dirname not in bah:
-                ftps.mkd(dirname)
-            ftps.cwd(dirname)
-        ftps.storbinary('STOR %s' % (remotename, ), open(filename))
-        ftps.quit()
+    fs = FTPSession(ftpserver, credentials[0], credentials[2], tmpdir=tmpdir)
     if isinstance(filenames, str):
         filenames = [filenames, ]
     if remotenames is None:
         remotenames = filenames
     if isinstance(remotenames, str):
         remotenames = [remotenames, ]
-    for filename, remotename in zip(filenames, remotenames):
-        sz = os.path.getsize(filename)
-        if sz > 14000000000:
-            # Step 1 Split this big file into 14GB chunks, each file will have
-            # suffix .aa then .ab then .ac etc
-            basefn = os.path.basename(filename)
-            cmd = "split --bytes=14000M %s %s/%s." % (filename, tmpdir,
-                                                      basefn)
-            subprocess.call(cmd, shell=True, stderr=subprocess.PIPE)
-            files = glob.glob("%s/%s.??" % (tmpdir, basefn))
-            for filename in files:
-                suffix = filename.split(".")[-1]
-                exponential_backoff(_send2box_sender, filename,
-                                    "%s.%s" % (remotename, suffix))
-                os.unlink(filename)
-        else:
-            exponential_backoff(_send2box_sender, filename, remotename)
+    fs.put_files(remote_path, filenames, remotenames)
+    fs.close()
 
 
 def get_properties():
@@ -187,6 +157,10 @@ def drct2text(drct):
         text = "NNW"
     return text
 
+
 if __name__ == '__main__':
-    # send2box('util.py', '/bah1/bah2', remotenames='util2.py')
-    mirror2box("/tmp/mytest", "mytest")
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    send2box(['util.py', 'plot.py'], '/bah1/bah2/', remotenames=['util2.py',
+                                                                 'plot.py'])
+    # mirror2box("/tmp/mytest", "mytest")
