@@ -5,6 +5,29 @@ from pyiem import datatypes, meteorology
 
 class TestDatatypes(unittest.TestCase):
 
+    def test_gdd(self):
+        """Growing Degree Days"""
+        r = meteorology.gdd(datatypes.temperature(86, 'F'),
+                            datatypes.temperature(50, 'F'),
+                            50, 86)
+        self.assertEquals(r, 18)
+
+        r = meteorology.gdd(datatypes.temperature(51, 'F'),
+                            datatypes.temperature(49, 'F'),
+                            50, 86)
+        self.assertAlmostEquals(r, 0.5, 1)
+
+        r = meteorology.gdd(datatypes.temperature(49, 'F'),
+                            datatypes.temperature(40, 'F'),
+                            50, 86)
+        self.assertEquals(r, 0)
+
+        r = meteorology.gdd(datatypes.temperature([86, 86], 'F'),
+                            datatypes.temperature([50, 50], 'F'),
+                            50, 86)
+        self.assertEquals(r[0], 18)
+        self.assertEquals(r[1], 18)
+
     def test_mixingratio(self):
         """Test the mixing ratio calculation"""
         r = meteorology.mixing_ratio(datatypes.temperature(70, 'F'))

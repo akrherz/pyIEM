@@ -4,6 +4,7 @@
 import math
 import numpy as np
 import pyiem.datatypes as dt
+from cookielib import DAYS
 
 
 class InvalidArguments(Exception):
@@ -209,3 +210,27 @@ def mixing_ratio(dewpoint):
     dwpc = dewpoint.value('C')
     e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
     return dt.mixingratio(0.62197 * e / (1000.0 - e), 'KG/KG')
+
+
+def gdd(high, low, base=50, ceiling=86):
+    """Compute Growing Degree Days
+
+    Args:
+      high (temperature): High Temperature
+      low (temperature): Low Temperature
+      base (int): Base to use in GDD Computation (F)
+      ceiling (int): Ceiling to use in GDD Computation (F)
+
+    Returns:
+      float value for GDDs
+    """
+    highf = high.value('F')
+    lowf = low.value('F')
+    highf = np.where(highf < base, base, highf)
+    lowf = np.where(lowf < base, base, lowf)
+    highf = np.where(highf > ceiling, ceiling, highf)
+    lowf = np.where(lowf > ceiling, ceiling, lowf)
+    res = (highf + lowf) / 2. - 50.
+    if res.shape == [1]:
+        return res[0]
+    return res
