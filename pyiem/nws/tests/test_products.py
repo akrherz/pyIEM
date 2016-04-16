@@ -37,6 +37,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_160415_mixedcase(self):
+        """See how bad we break with mixed case"""
+        prod = vtecparser(get_file('mIxEd_CaSe/FFSGLD.txt'))
+        self.assertTrue(prod.tz is not None)
+        self.assertEquals(prod.segments[0].vtec[0].action, 'CON')
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0],
+                          ('GLD continues Flash Flood Warning for ((COC017)) '
+                           '[CO] till Apr 15, 7:00 PM MDT '
+                           'http://localhost#2016-O-CON-KGLD-FF-W-0001'))
+
     def test_151229_badgeo_lsr(self):
         """Make sure we reject a bad Geometry LSR"""
         utcnow = utc(2015, 12, 29, 18, 23)

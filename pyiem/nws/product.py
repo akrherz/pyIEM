@@ -16,8 +16,10 @@ from pyiem.nws import ugc, vtec, hvtec
 # We do require that the first character be a A-Z one as otherwise this will
 # match the LDM sequence number at the top!
 AFOSRE = re.compile(r"^([A-Z][A-Z0-9\s]{3,5})$", re.M)
-TIME_RE = ("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
-           "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$")
+TIME_RE = re.compile(("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
+                      "([A-Z][A-Z][A-Z]) "
+                     "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"),
+                     re.M | re.IGNORECASE)
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
                      "(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
                      "(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
@@ -35,6 +37,9 @@ TORNADODAMAGETAG = re.compile((
     ".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
+
+# http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
+# DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
 
 
 class TextProductException(Exception):
@@ -381,7 +386,7 @@ class TextProduct(object):
     def parse_valid(self):
         """ Figre out the valid time of this product """
         # Now lets look for a local timestamp in the product MND or elsewhere
-        tokens = re.findall(TIME_RE, self.unixtext, re.M)
+        tokens = TIME_RE.findall(self.unixtext)
         # If we don't find anything, lets default to now, its the best
         if len(tokens) > 0:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
