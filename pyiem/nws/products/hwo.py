@@ -28,11 +28,11 @@ class HWOProduct(TextProduct):
             if len(segment.ugcs) == 0:
                 continue
             day1 = segment.unixtext.find(".DAY ONE...")
-            if day1 == -1:
+            if day1 == -1 and self.afos != 'HWOSPN':
                 raise HWOException("segment %s is missing DAY ONE section" % (
                                                                     segnum,))
             day27 = segment.unixtext.find(".DAYS TWO THROUGH SEVEN...")
-            if day27 == -1:
+            if day27 == -1 and self.afos != 'HWOSPN':
                 raise HWOException(("segment %s is missing DAYS TWO "
                                     "THROUGH SEVEN section") % (segnum, ))
 

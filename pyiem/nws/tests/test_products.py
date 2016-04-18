@@ -179,6 +179,15 @@ class TestProducts(unittest.TestCase):
         self.assertRaises(Exception, prod.get_jabbers,
                           'http://localhost', 'http://localhost')
 
+    def test_160418_hwospn(self):
+        """Make sure a spanish HWO does not trip us up..."""
+        prod = parser(get_file('HWOSPN.txt'))
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0],
+                          ("JSJ issues Hazardous Weather Outlook (HWO) "
+                           "http://localhost?"
+                           "pid=201604181018-TJSJ-FLCA42-HWOSPN"))
+
     def test_150115_correction_sbw(self):
         """ FLWMHX make sure a correction does not result in two polygons """
         prod = vtecparser(get_file('FLWMHX/0.txt'))
