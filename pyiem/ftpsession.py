@@ -43,9 +43,21 @@ class FTPSession(object):
         if self.conn is not None:
             return
         logging.debug('Creating new connection to server %s', self.server)
-        self.conn = FTP_TLS(self.server, timeout=self.timeout)
-        self.conn.login(self.username, self.password)
-        self.conn.prot_p()
+        not_connected = True
+        attempt = 1
+        while not_connected and attempt < 6:
+            try:
+                self.conn = FTP_TLS(self.server, timeout=self.timeout)
+                self.conn.login(self.username, self.password)
+                self.conn.prot_p()
+                not_connected = False
+            except Exception as exp:
+                logging.debug(exp)
+                time.sleep(5)
+                self.close()
+            attempt += 1
+        if not_connected is True:
+            raise Exception("Failed to make FTP connection after 5 tries!")
 
     def _reconnect(self):
         """ First attempt to shut down connection and then reconnect """
