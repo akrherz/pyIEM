@@ -30,7 +30,8 @@ def exponential_backoff(func, *args, **kwargs):
         except:
             msgs.append("%s/5 uncaught exception, exiting!" % (i+1, ))
             break
-    sys.stderr.write("\n".join(msgs) + "\n")
+    logging.error("%s failure" % (func.__name__,))
+    logging.error("\n".join(msgs))
     return None
 
 
