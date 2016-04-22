@@ -263,7 +263,8 @@ class Worksheet(object):
             print 'Column Delete Candidate %s' % (col,)
             found_data = False
             for row in range(1, int(self.rows)+1):
-                if self.data.get(str(row), {}).get(str(col)) is not None:
+                _v = self.data.get(str(row), {}).get(str(col))
+                if _v not in [None, 'n/a', 'did not collect']:
                     found_data = True
                     print(('ERROR row: %s has data: %s'
                            ) % (row, self.data[str(row)][str(col)]))
