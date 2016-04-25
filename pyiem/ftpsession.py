@@ -29,7 +29,7 @@ def exponential_backoff(func, *args, **kwargs):
 class FTPSession(object):
     """ Attempt to create some robustness and performance to FTPing """
 
-    def __init__(self, server, username, password, tmpdir='/tmp', timeout=10):
+    def __init__(self, server, username, password, tmpdir='/tmp', timeout=60):
         """Build a FTP session """
         self.conn = None
         self.server = server
