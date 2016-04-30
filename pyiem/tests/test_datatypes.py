@@ -43,6 +43,8 @@ class TestDatatypes(unittest.TestCase):
         hpa = datatypes.pressure(850.0, 'HPA')
         self.assertEquals(850.0, hpa.value('MB'))
         self.assertAlmostEquals(25.10, hpa.value('IN'), 2)
+        hpa = datatypes.pressure(85000.0, 'PA')
+        self.assertAlmostEquals(25.10, hpa.value('IN'), 2)
 
     def test_speed_conv(self):
         """ Speed convert from KT to MPS to KMH to MPH """

@@ -194,6 +194,8 @@ class pressure(basetype):
         # MKS
         if self._units == "IN":
             mb_value = self._value * 33.86398
+        elif self._units == "PA":
+            mb_value = self._value / 100.
         else:
             mb_value = self._value
         # Now convert
