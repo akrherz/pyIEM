@@ -28,9 +28,12 @@ TIME_MOT_LOC = re.compile((".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z "
                            "(?P<loc>[0-9 ]+)"))
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
-                       "MPH (?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
+                       "(?P<windunits>MPH|KTS) "
+                       "(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
 HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
-WINDTAG = re.compile(".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?MPH")
+WINDTAG = re.compile((".*WIND\.\.\."
+                      "(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
+                      "(?P<windunits>MPH|KTS)"))
 TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
                          "OBSERVED|POSSIBLE)"))
 TORNADODAMAGETAG = re.compile((
@@ -73,6 +76,7 @@ class TextProductSegment(object):
 
         # tags
         self.windtag = None
+        self.windtagunits = None
         self.hailtag = None
         self.haildirtag = None
         self.winddirtag = None
@@ -115,6 +119,7 @@ class TextProductSegment(object):
         if m:
             d = m.groupdict()
             self.windtag = d['wind']
+            self.windtagunits = d['windunits']
             self.haildirtag = d['haildir']
             self.winddirtag = d['winddir']
             self.hailtag = d['hail']
@@ -124,6 +129,7 @@ class TextProductSegment(object):
             d = m.groupdict()
             self.winddirtag = d['winddir']
             self.windtag = d['wind']
+            self.windtagunits = d['windunits']
 
         m = HAILTAG.match(nolf)
         if m:
@@ -157,9 +163,9 @@ class TextProductSegment(object):
             parts.append("tornado damage threat: %s" % (
                 self.tornadodamagetag))
         if self.windtag is not None:
-            parts.append("wind: %s%s MPH" % (
+            parts.append("wind: %s%s %s" % (
                 self.winddirtag.replace(">", "&gt;").replace("<", "&lt;"),
-                self.windtag))
+                self.windtag, self.windtagunits))
         if self.hailtag is not None:
             parts.append("hail: %s%s IN" % (
                 self.haildirtag.replace(">", "&gt;").replace("<", "&lt;"),

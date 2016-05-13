@@ -37,6 +37,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_160513_windtag(self):
+        """Wind tags can be in knots too!"""
+        prod = vtecparser(get_file('SMWLWX.txt'))
+        self.assertEquals(prod.segments[0].windtag, '34')
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][0],
+                          ("LWX issues Marine Warning [wind: &gt;34 KTS, "
+                           "hail: 0.00 IN] for ((ANZ537)) [AN] till "
+                           "May 13, 5:15 PM EDT "
+                           "http://localhost#2016-O-NEW-KLWX-MA-W-0035"))
+
     def test_160415_mixedcase(self):
         """See how bad we break with mixed case"""
         prod = vtecparser(get_file('mIxEd_CaSe/FFSGLD.txt'))
