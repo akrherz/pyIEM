@@ -5,3 +5,4 @@
 /MANIFEST
 /.settings/
 /.coverage
+/pyIEM.egg-info/
