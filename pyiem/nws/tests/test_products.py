@@ -192,7 +192,8 @@ class TestProducts(unittest.TestCase):
 
     def test_160418_hwospn(self):
         """Make sure a spanish HWO does not trip us up..."""
-        prod = parser(get_file('HWOSPN.txt'))
+        utcnow = utc(2016, 4, 18, 10, 10)
+        prod = parser(get_file('HWOSPN.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][0],
                           ("JSJ issues Hazardous Weather Outlook (HWO) "
