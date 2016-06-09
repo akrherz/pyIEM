@@ -460,11 +460,27 @@ def get_site_metadata(config, spr_client=None):
 
 def get_driveclient(config, project="cscap"):
     """ Return an authorized apiclient """
+    return get_googleapiclient(config, project, 'drive', 'v2')
+
+def get_sheetsclient(config, project="cscap"):
+    """ Return an authorized apiclient """
+    return get_googleapiclient(config, project, 'sheets', 'v4')
+
+
+def get_googleapiclient(config, project, ns, v):
+    """Helper to get an authorized googleapiclient
+
+    Args:
+      config (dict): provider of configuration
+      project (str): the project used within config
+      ns (str): google endpoint to use
+      v (str): google endpoint version to use
+    """
     cred = ServiceAccountCredentials.from_json_keyfile_dict(
             config[project]['service_account'],
             scopes=['https://www.googleapis.com/auth/drive'])
     http_auth = cred.authorize(Http())
-    return build('drive', 'v2', http=http_auth)
+    return build(ns, v, http=http_auth)
 
 
 def get_folders(drive):
