@@ -92,10 +92,15 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         acursor = db.cursor()
     else:
         acursor = cursor
+    rlimiter = ""
+    if database == 'asos':
+        rlimiter = " and report_type = 2 "
     sql = """SELECT sknt, drct, valid from alldata WHERE station = '%s'
         and valid > '%s' and valid < '%s'
         %s
-        %s """ % (station, sts, ets, monthinfo['sqltext'], hourinfo['sqltext'])
+        %s %s
+        """ % (station, sts, ets, monthinfo['sqltext'], hourinfo['sqltext'],
+               rlimiter)
     if level is not None:  # HACK!
         acursor.execute("""SET TIME ZONE 'UTC'""")
         sql = """SELECT p.smps * 1.94384, p.drct, f.valid from
