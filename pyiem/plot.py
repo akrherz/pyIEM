@@ -283,6 +283,20 @@ def mask_outside_polygon(poly_verts, ax=None):
     return patch
 
 
+def nwsprecip():
+    """A color ramp used by NWS on NTP plots"""
+    cpool = ["#00ebe7", "#00a0f5", "#000df5", "#00ff00", "#00c600",
+             "#008e00", "#fef700", "#e5bc00", "#edb900", "#ff8500",
+             "#ff0000", "#e80000", "#cd0000", "#ff00fe", "#a152bc",
+             "#fdfdfd"]
+    cmap = mpcolors.ListedColormap(cpool, 'nwsprecip')
+    cmap.set_over('#FFFFFF')
+    cmap.set_under('#FFFFFF')
+    cmap.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap)
+    return cmap
+
+
 def nwssnow():
     """A Color Ramp Suggested by the NWS for Snowfall"""
     cpool = [[0.74117647, 0.84313725, 0.90588235],
