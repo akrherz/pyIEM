@@ -396,7 +396,7 @@ class TextProduct(object):
         # If we don't find anything, lets default to now, its the best
         if len(tokens) > 0:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
-            self.z = tokens[0][2]
+            self.z = tokens[0][2].upper()
             self.tz = pytz.timezone(reference.name2pytz.get(self.z, 'UTC'))
             if len(tokens[0][0]) < 3:
                 h = tokens[0][0]
