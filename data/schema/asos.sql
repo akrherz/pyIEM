@@ -122,7 +122,8 @@ CREATE TABLE alldata(
  min_tmpf_24hr  real                      ,
  mslp           real                      ,
  p01i           real                      ,
- presentwx     character varying(24)     
+ presentwx     character varying(24),
+ report_type char(1)   
 );
 GRANT SELECT on alldata to nobody,apache;
 
