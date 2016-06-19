@@ -123,7 +123,7 @@ CREATE TABLE alldata(
  mslp           real                      ,
  p01i           real                      ,
  presentwx     character varying(24),
- report_type char(1)   
+ report_type smallint
 );
 GRANT SELECT on alldata to nobody,apache;
 
