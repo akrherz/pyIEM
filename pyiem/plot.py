@@ -24,6 +24,7 @@ import subprocess
 import shutil
 import cPickle
 import datetime
+import math
 #
 import numpy as np
 import pandas as pd
@@ -53,6 +54,24 @@ from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
 
 [Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY, Z_OVERLAY2] = range(1, 7)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
+
+
+def centered_bins(absmax, on=0, bins=9):
+    """Return a smooth binning
+
+    Args:
+      absmax (real): positive absolute value we want or bins to enclose
+      on (real): where to center the bins at (TODO)
+      bins (int): number of bins to generate
+    Returns:
+      list of bins"""
+    mx = (bins-1)/2.
+    width = absmax / float(mx)
+    if width > 1:
+        width = math.ceil(width)
+    else:
+        return np.linspace(0 - absmax, absmax, bins)
+    return np.arange(0 - mx, mx + 1) * width
 
 
 def true_filter(bm, key, val):

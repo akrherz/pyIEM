@@ -7,6 +7,17 @@ import matplotlib.colors as mpcolors
 
 class TestPlot(unittest.TestCase):
 
+    def test_centered_bins(self):
+        """See that we can compute some nice centered bins"""
+        a = plot.centered_bins(10, bins=9)
+        self.assertEquals(a[0], -12)
+        a = plot.centered_bins(55, bins=9)
+        self.assertEquals(a[0], -56)
+        a = plot.centered_bins(99, bins=9)
+        self.assertEquals(a[0], -100)
+        a = plot.centered_bins(0.9, bins=9)
+        self.assertEquals(a[0], -0.9)
+
     def test_michigan(self):
         """See what we do with Michigan"""
         m = plot.MapPlot(sector='state', state='MI')
