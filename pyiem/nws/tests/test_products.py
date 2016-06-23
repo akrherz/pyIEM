@@ -37,6 +37,12 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_160623_invalid_tml(self):
+        """See that we emit an error for an invalid TML"""
+        prod = vtecparser(get_file('MWSKEY.txt'))
+        self.assertEquals(len(prod.warnings), 1,
+                          '\n'.join(prod.warnings))
+
     def test_160618_chst_tz(self):
         """Product has timezone of ChST, do we support it?"""
         prod = parser(get_file('AFDPQ.txt'))

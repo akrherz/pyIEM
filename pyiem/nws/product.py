@@ -23,8 +23,8 @@ TIME_RE = re.compile(("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
                      "(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
                      "(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
-TIME_MOT_LOC = re.compile((".*TIME\.\.\.MOT\.\.\.LOC (?P<ztime>[0-9]{4})Z "
-                           "(?P<dir>[0-9]{1,3})DEG (?P<sknt>[0-9]{1,3})KT "
+TIME_MOT_LOC = re.compile((r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
+                           "(?P<dir>[0-9]{1,3})DEG\s+(?P<sknt>[0-9]{1,3})KT\s+"
                            "(?P<loc>[0-9 ]+)"))
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
@@ -234,8 +234,16 @@ class TextProductSegment(object):
     def process_time_mot_loc(self):
         """ Try to parse the TIME...MOT...LOC """
         # TODO: The checking of time against self.ugcexpire is not perfect
-        m = TIME_MOT_LOC.match(self.unixtext.replace("\n", " "))
+        pos = self.unixtext.find("TIME...MOT...LOC")
+        if pos == -1:
+            return
+        if self.unixtext[pos-1] != '\n':
+            self.tp.warnings.append(("process_time_mot_loc segment likely has "
+                                     "poorly formatted TIME...MOT...LOC"))
+        m = TIME_MOT_LOC.search(self.unixtext)
         if not m:
+            self.tp.warnings.append(("process_time_mot_loc segment find OK, "
+                                     "but regex failed..."))
             return
 
         d = m.groupdict()
