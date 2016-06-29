@@ -11,6 +11,15 @@ from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.products.lsr import LSRProductException
 
 
+def filter_warnings(ar):
+    """Remove non-deterministic warnings
+
+    Some of our tests produce get_gid() warnings, which are safe to ignore
+    for the purposes of this testing
+    """
+    return [a for a in ar if not a.startswith("get_gid")]
+
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
@@ -40,8 +49,9 @@ class TestProducts(unittest.TestCase):
     def test_160623_invalid_tml(self):
         """See that we emit an error for an invalid TML"""
         prod = vtecparser(get_file('MWSKEY.txt'))
-        self.assertEquals(len(prod.warnings), 1,
-                          '\n'.join(prod.warnings))
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 1,
+                          '\n'.join(warnings))
 
     def test_160618_chst_tz(self):
         """Product has timezone of ChST, do we support it?"""
@@ -91,7 +101,8 @@ class TestProducts(unittest.TestCase):
         # /O.EXT.KPAH.FL.W.0093.151227T0358Z-151229T0442Z/
         prod = vtecparser(get_file('FLWPAH/FLWPAH_2.txt'))
         prod.sql(self.txn)
-        self.assertEquals(len(prod.warnings), 1, '\n'.join(prod.warnings))
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 1, '\n'.join(warnings))
 
     def test_150915_noexpire(self):
         """Check that we set an expiration for initial infinity SBW geo"""
@@ -181,7 +192,8 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('MWWCAR/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0)
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0)
 
     def test_150203_null_issue(self):
         """WSWOKX had null issue times, bad! """
@@ -216,10 +228,12 @@ class TestProducts(unittest.TestCase):
         """ FLWMHX make sure a correction does not result in two polygons """
         prod = vtecparser(get_file('FLWMHX/0.txt'))
         prod.sql(self.txn)
-        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 0, "\n".join(warnings))
         prod = vtecparser(get_file('FLWMHX/1.txt'))
         prod.sql(self.txn)
-        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_150105_considerable_tag(self):
         """ TORFSD has considerable tag """
@@ -240,7 +254,8 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('FLSLBF/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_150105_manycors(self):
         """ WSWGRR We had some issues with this series, lets test it """
@@ -248,8 +263,9 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('WSWGRR/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0,
-                              "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0,
+                              "\n".join(warnings))
 
     def test_150102_mutiyear2(self):
         """ WSWSTO See how well we span multiple years """
@@ -257,7 +273,8 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('NPWSTO/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_150102_mutiyear(self):
         """ WSWOUN See how well we span multiple years """
@@ -277,7 +294,8 @@ class TestProducts(unittest.TestCase):
                 and phenomena = 'WW' and significance = 'Y' """)
                 row = self.txn.fetchone()
                 self.assertEquals(row[0], utc(2015, 1, 1, 6, 0))
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141226_correction(self):
         """ Add another test for product corrections """
@@ -290,8 +308,9 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('NPWMAF/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0,
-                              "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0,
+                              "\n".join(warnings))
 
     def test_141212_mqt(self):
         """ Updated four rows instead of three, better check on it """
@@ -299,7 +318,8 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('MWWMQT/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141211_null_expire(self):
         """ Figure out why the database has a null expiration for this FL.W"""
@@ -307,21 +327,24 @@ class TestProducts(unittest.TestCase):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141210_continues(self):
         """ See that we handle CON with infinite time A-OK """
         for i in range(0, 2):
             prod = vtecparser(get_file('FFAEKA/%i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141208_upgrade(self):
         """ See that we can handle the EXB case """
         for i in range(0, 18):
             prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
         # Check the issuance time for UGC ANZ532
         self.txn.execute("""SELECT issue at time zone 'UTC' from warnings_2014
         where wfo = 'LWX' and eventid = 221
@@ -469,7 +492,8 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2014, 6, 19, 2, 56)
         prod = vtecparser(get_file('FLWMKX_ROU.txt'), utcnow=utcnow)
         prod.sql(self.txn)
-        self.assertEquals(len(prod.warnings), 0)
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 0)
 
     def test_correction(self):
         ''' Can we properly parse a product correction '''
@@ -670,8 +694,8 @@ class TestProducts(unittest.TestCase):
         wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
         significance = 'W' """)
         self.assertEqual(self.txn.rowcount, 3)
-
-        self.assertEqual(len(prod.warnings), 0, "\n".join(prod.warnings))
+        warnings = filter_warnings(prod.warnings)
+        self.assertEqual(len(warnings), 0, "\n".join(warnings))
 
     def test_140321_invalidgeom(self):
         ''' See what we do with an invalid geometry from IWX '''
@@ -730,7 +754,8 @@ class TestProducts(unittest.TestCase):
         for i in range(1, 8):
             prod = vtecparser(get_file('NPWBOX/NPW_%02i.txt' % (i,)))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141205_vtec_series(self):
         """ Make sure we don't get any warnings processing this series """
@@ -739,7 +764,8 @@ class TestProducts(unittest.TestCase):
             fn = "WSWOTX/WSW_%02i.txt" % (i,)
             prod = vtecparser(get_file(fn))
             prod.sql(self.txn)
-            self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_vtec_series(self):
         ''' Test a lifecycle of WSW products '''

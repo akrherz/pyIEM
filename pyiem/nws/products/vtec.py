@@ -222,16 +222,16 @@ class VTECProduct(TextProduct):
                 significance, gid, init_expire, product_issue, hvtec_nwsli)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                 get_gid(%s, %s), %s, %s, %s)
-                RETURNING issue
+                RETURNING gid
                 """, (bts, ets, self.valid, vtec.office,
                       vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc),
                       vtec.phenomena, vtec.significance, str(ugc),
                       self.valid, ets, self.valid,
                       segment.get_hvtec_nwsli()))
-                if txn.rowcount != 1:
-                    self.warnings.append(('Failed to add entry for UGC: %s, '
-                                          'rowcount was: %s'
-                                          ) % (str(ugc), txn.rowcount))
+                # For unit tests, these mostly get filtered out
+                if txn.rowcount != 1 or txn.fetchone()[0] is None:
+                    self.warnings.append(('get_gid(%s,%s) was null'
+                                          ) % (str(ugc), self.valid))
 
         elif vtec.action in ['COR', ]:
             # A previous issued product is being corrected
