@@ -11,8 +11,72 @@ import time
 import random
 import os
 import logging
+import datetime
 from socket import error as socket_error
 from pyiem.ftpsession import FTPSession
+
+
+def get_autoplot_context(fdict, cfg):
+    """Get the variables out of a dict of strings
+
+    This helper for IEM autoplot gets values out of a dictionary of strings,
+    as provided by CGI.  It does some magic to get types right, defaults right
+    and so on.  The typical way this is called
+
+        ctx = iemutils.get_context(fdict, get_description())
+
+    Args:
+      fdict (dictionary): what was likely provided by `cgi.FieldStorage()`
+      cfg (dictionary): autoplot value of get_description
+    Returns:
+      dictionary of variable names and values, with proper types!
+    """
+    ctx = {}
+    for opt in cfg.get('arguments', []):
+        name = opt.get('name')
+        default = opt.get('default')
+        typ = opt.get('type')
+        minval = opt.get('min')
+        maxval = opt.get('max')
+        value = fdict.get(name)
+        if typ in ['station', 'zstation', 'sid', 'networkselect']:
+            # A bit of hackery here if we have a name ending in a number
+            netname = "network%s" % (name[-1] if name[-1] != 'n' else '',)
+            ctx[netname] = fdict.get(netname)
+        elif typ in ['int', 'month', 'zhour', 'hour', 'day', 'year']:
+            if value is not None:
+                value = int(value)
+            if default is not None:
+                default = int(default)
+        elif typ == 'float':
+            if value is not None:
+                value = float(value)
+            if default is not None:
+                default = float(default)
+        elif typ == 'select':
+            options = cfg.get('options', dict())
+            if value not in options:
+                value = default
+        elif typ == 'date':
+            # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
+            if default is not None:
+                default = datetime.datetime.strptime(default,
+                                                     '%Y/%m/%d').date()
+            if minval is not None:
+                minval = datetime.datetime.strptime(minval,
+                                                    '%Y/%m/%d').date()
+            if maxval is not None:
+                maxval = datetime.datetime.strptime(maxval,
+                                                    '%Y/%m/%d').date()
+            if value is not None:
+                value = datetime.datetime.strptime(value, '%Y-%m-%d').date()
+        # validation
+        if minval is not None and value is not None and value < minval:
+            value = default
+        if maxval is not None and value is not None and value > maxval:
+            value = default
+        ctx[name] = value if value is not None else default
+    return ctx
 
 
 def exponential_backoff(func, *args, **kwargs):
