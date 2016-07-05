@@ -3,13 +3,10 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
-import sys
 import psycopg2
 import netrc
-from ftplib import FTP_TLS  # requires python 2.7
 import time
 import random
-import os
 import logging
 import datetime
 from socket import error as socket_error
@@ -97,35 +94,6 @@ def exponential_backoff(func, *args, **kwargs):
     logging.error("%s failure" % (func.__name__,))
     logging.error("\n".join(msgs))
     return None
-
-
-def mirror2box(local_path, remote_path, ftpserver='ftp.box.com',
-               tmpdir='/tmp'):
-    """Mirror logic to sync a directory to CyBox
-
-    Up until this, I was using `lftp mirror` to make this happen, but it has
-    some issues and can not automatically deal with 15+ GB files.
-
-    Args:
-      local_path (str): local directory to sync
-      remote_path (str): remote directory to sync to
-      ftpserver (str,optional): FTPS server to connect to
-      tmpdir (str,optional): Where to write temporary files necessary to
-        transfer 15+ GB files.
-    """
-    credentials = netrc.netrc().hosts[ftpserver]
-
-    def _mirrordir(localdir, remotedir):
-        """Do the mirror work for a given directory"""
-        ftps = FTP_TLS(ftpserver)
-        ftps.login(credentials[0], credentials[2])
-        ftps.prot_p()
-
-    basedir = None
-    for root, dirs, files in os.walk(local_path, topdown=True):
-        # Change Local Directory
-        os.chdir(root)
-        # Change Remote Directory
 
 
 def send2box(filenames, remote_path, remotenames=None,
