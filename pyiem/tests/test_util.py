@@ -10,6 +10,7 @@ class TestUtil(unittest.TestCase):
         """See that we can do things"""
         form = dict(station='AMW', network='IA_ASOS', type2='bogus',
                     t=15)
+        form['type'] = 'max-low'
         PDICT = OrderedDict([
                              ('max-high', 'Maximum High'),
                              ('avg-high', 'Average High'),
@@ -29,7 +30,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(ctx['station'], 'AMW')
         self.assertEqual(ctx['network'], 'IA_ASOS')
         self.assertTrue(isinstance(ctx['threshold'], int))
-        self.assertEqual(ctx['type'], 'max-high')
+        self.assertEqual(ctx['type'], 'max-low')
         self.assertEqual(ctx['type2'], 'max-high')
         self.assertTrue(isinstance(ctx['f'], float))
         self.assertEqual(ctx['t'], 9)

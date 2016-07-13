@@ -51,7 +51,7 @@ def get_autoplot_context(fdict, cfg):
             if default is not None:
                 default = float(default)
         elif typ == 'select':
-            options = cfg.get('options', dict())
+            options = opt.get('options', dict())
             if value not in options:
                 value = default
         elif typ == 'date':
