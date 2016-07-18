@@ -303,10 +303,13 @@ def mask_outside_polygon(poly_verts, ax=None):
 
 
 def nwsprecip():
-    """A color ramp used by NWS on NTP plots"""
+    """A color ramp used by NWS on NTP plots
+
+    daryl modified the reds a bit to provide a larger gradient
+    """
     cpool = ["#00ebe7", "#00a0f5", "#000df5", "#00ff00", "#00c600",
              "#008e00", "#fef700", "#e5bc00", "#edb900", "#ff8500",
-             "#ff0000", "#e80000", "#cd0000", "#ff00fe", "#a152bc",
+             "#ff0000", "#af0000", "#640000", "#ff00fe", "#a152bc",
              "#fdfdfd"]
     cmap = mpcolors.ListedColormap(cpool, 'nwsprecip')
     cmap.set_over('#FFFFFF')
@@ -1146,7 +1149,7 @@ class MapPlot(object):
         cwas = load_pickle_geo('cwa.pickle')
         polygon_fill(self, cwas, data, **kwargs)
 
-    def drawcities(self, minarea=None):
+    def drawcities(self, minarea=None, labelbuffer=25):
         """Overlay some cities
 
         Args:
@@ -1164,7 +1167,7 @@ class MapPlot(object):
                   (df['area_km2'] > minarea))]
         # df2 = df[(df['name'] == 'DES MOINES') & (df['st'] == 'IA')]
         self.plot_values(df2.lon.values, df2.lat.values, df2.name.values,
-                         showmarker=True, labelbuffer=25)
+                         showmarker=True, labelbuffer=labelbuffer)
 
     def drawcounties(self, color='k'):
         """ Draw counties onto the map
