@@ -38,13 +38,23 @@ class TestProducts(unittest.TestCase):
     def setUp(self):
         ''' This is called for each test, beware '''
         self.dbconn = psycopg2.connect(database='postgis')
-        self.txn = self.dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor
-                                      )
+        # Note the usage of RealDictCursor here, as this is what
+        # pyiem.twistedpg uses
+        self.txn = self.dbconn.cursor(
+            cursor_factory=psycopg2.extras.DictCursor)
 
     def tearDown(self):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_160720_unknown_ugc(self):
+        """Unknown UGC logic failed for some reason"""
+        # Note that this example has faked UGCs to test things out
+        prod = vtecparser(get_file('RFWBOI_fakeugc.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 2,
+                          '\n'.join(prod.warnings))
 
     def test_160623_invalid_tml(self):
         """See that we emit an error for an invalid TML"""

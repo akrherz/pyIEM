@@ -229,7 +229,7 @@ class VTECProduct(TextProduct):
                       self.valid, ets, self.valid,
                       segment.get_hvtec_nwsli()))
                 # For unit tests, these mostly get filtered out
-                if txn.rowcount != 1 or txn.fetchone()[0] is None:
+                if txn.fetchone().get('gid') is None:
                     self.warnings.append(('get_gid(%s,%s) was null'
                                           ) % (str(ugc), self.valid))
 
