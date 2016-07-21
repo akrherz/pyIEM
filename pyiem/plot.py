@@ -305,12 +305,15 @@ def mask_outside_polygon(poly_verts, ax=None):
 def nwsprecip():
     """A color ramp used by NWS on NTP plots
 
-    daryl modified the reds a bit to provide a larger gradient
+    Changes
+     - modified the reds a bit to provide a larger gradient
+     - added two light brown colors at the low end to allow for more levels
+     - removed perhaps a bad orange color and remove top white color
     """
-    cpool = ["#00ebe7", "#00a0f5", "#000df5", "#00ff00", "#00c600",
-             "#008e00", "#fef700", "#e5bc00", "#edb900", "#ff8500",
-             "#ff0000", "#af0000", "#640000", "#ff00fe", "#a152bc",
-             "#fdfdfd"]
+    cpool = ["#cbcb97", "#989865",
+             "#00ebe7", "#00a0f5", "#000df5", "#00ff00", "#00c600",
+             "#008e00", "#fef700", "#e5bc00", "#ff8500", "#ff0000",
+             "#af0000", "#640000", "#ff00fe", "#a152bc"]
     cmap = mpcolors.ListedColormap(cpool, 'nwsprecip')
     cmap.set_over('#FFFFFF')
     cmap.set_under('#FFFFFF')
