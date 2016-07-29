@@ -60,13 +60,15 @@ class Observation(object):
                 self.data[key] = row[key]
         return True
 
-    def save(self, txn, force_current_log=False):
+    def save(self, txn, force_current_log=False, skip_current=False):
         """
         Save this observation to the database via a psycopg2 transaction
         @param txn is a psycopg2 transaction
         @param force_current_log boolean - make sure this observation goes to
         the current_log table in the case that it is old, this allows
         reprocessing by the METAR ingestor et al
+        @param skip_current boolean - optionally skip updating the current
+        table.  This is useful for partial obs
         @return: boolean if this updated one row each
         """
         if self.data['valid'].tzinfo:
@@ -97,8 +99,9 @@ class Observation(object):
         battery = %(battery)s, water_tmpf = %(water_tmpf)s, valid = %(valid)s
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s
         and t.network = %(network)s and %(valid)s >= c.valid """
-        txn.execute(sql, self.data)
-        if force_current_log and txn.rowcount == 0:
+        if not skip_current:
+            txn.execute(sql, self.data)
+        if skip_current or (force_current_log and txn.rowcount == 0):
             sql = """INSERT into current_log
             (iemid, tmpf, dwpf, drct, sknt, indoor_tmpf,
             tsf0, tsf1, tsf2, tsf3, rwis_subf, scond0, scond1, scond2, scond3,
