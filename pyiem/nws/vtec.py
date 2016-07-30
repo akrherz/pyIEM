@@ -207,7 +207,7 @@ def contime(s):
         return None
 
 
-class VTEC:
+class VTEC(object):
 
     def __init__(self, tokens):
         self.line = tokens[0]

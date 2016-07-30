@@ -35,7 +35,7 @@ DRCT2DIR = {'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90,
             'NORTH': 0, 'EAST': 90, 'SOUTH': 180, 'WEST': 270}
 
 
-class PilotReport:
+class PilotReport(object):
     """ A Pilot Report Object """
 
     def __init__(self):
