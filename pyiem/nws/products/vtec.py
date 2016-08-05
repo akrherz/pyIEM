@@ -564,8 +564,8 @@ class VTECProduct(TextProduct):
                              'phenomena': vtec.phenomena,
                              'eventid': vtec.ETN,
                              'significance': vtec.significance,
-                             'url': "%s#%s" % (uri,
-                                               vtec.url(self.valid.year))}
+                             'url': "%s%s" % (uri,
+                                              vtec.url(self.valid.year))}
                 if (len(segment.hvtec) > 0 and
                         segment.hvtec[0].nwsli.id != '00000'):
                     jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
@@ -650,7 +650,7 @@ class VTECProduct(TextProduct):
                 'sts': '',
                 'action': self.get_action(),
                 'product': vtec.get_ps_string(),
-                'url': "%s#%s" % (uri, vtec.url(self.valid.year)),
+                'url': "%s%s" % (uri, vtec.url(self.valid.year)),
             }
             # Include the special bulletin for Tornado Warnings
             if vtec.phenomena in ['TO', ] and vtec.significance == 'W':

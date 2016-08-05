@@ -78,7 +78,7 @@ class TestProducts(unittest.TestCase):
                           ("LWX issues Marine Warning [wind: &gt;34 KTS, "
                            "hail: 0.00 IN] for ((ANZ537)) [AN] till "
                            "May 13, 5:15 PM EDT "
-                           "http://localhost#2016-O-NEW-KLWX-MA-W-0035"))
+                           "http://localhost2016-O-NEW-KLWX-MA-W-0035"))
 
     def test_160415_mixedcase(self):
         """See how bad we break with mixed case"""
@@ -89,7 +89,7 @@ class TestProducts(unittest.TestCase):
         self.assertEquals(j[0][0],
                           ('GLD continues Flash Flood Warning for ((COC017)) '
                            '[CO] till Apr 15, 7:00 PM MDT '
-                           'http://localhost#2016-O-CON-KGLD-FF-W-0001'))
+                           'http://localhost2016-O-CON-KGLD-FF-W-0001'))
 
     def test_151229_badgeo_lsr(self):
         """Make sure we reject a bad Geometry LSR"""
@@ -256,7 +256,7 @@ class TestProducts(unittest.TestCase):
             'PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE '
             'AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND '
             'MOVING NORTHEAST AT 30 MPH. '
-            'http://localhost#2013-O-NEW-KFSD-TO-W-0020'))
+            'http://localhost2013-O-NEW-KFSD-TO-W-0020'))
 
     def test_150105_sbw(self):
         """ FLSLBF SBW that spans two years! """
@@ -408,7 +408,7 @@ class TestProducts(unittest.TestCase):
         self.assertEquals(j[0][0], (
             'LWX issues Small Craft Advisory '
             'valid at Jul 31, 6:00 PM EDT for 7 forecast zones in [AN] till '
-            'Aug 1, 6:00 AM EDT http://localhost#2014-O-NEW-KLWX-SC-Y-0151'))
+            'Aug 1, 6:00 AM EDT http://localhost2014-O-NEW-KLWX-SC-Y-0151'))
 
     def test_tornado_emergency(self):
         """ See what we do with Tornado Emergencies """
@@ -417,7 +417,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][1], (
             "<p>ICT <a href=\"http://localhost"
-            "#2012-O-NEW-KICT-TO-W-0035\">issues Tornado Warning</a> "
+            "2012-O-NEW-KICT-TO-W-0035\">issues Tornado Warning</a> "
             "[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
             "hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
             "* AT 1019 PM CDT...<span style=\"color: #FF0000;\">TORNADO "
@@ -453,7 +453,7 @@ class TestProducts(unittest.TestCase):
          'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
          '22 counties in [MS]) till Jun 6, 7:00 PM CDT. '
-         'http://localhost#2014-O-EXA-KMEG-SV-A-0240'))
+         'http://localhost2014-O-EXA-KMEG-SV-A-0240'))
 
     def test_140715_condensed(self):
         """ Make sure our Tags and svs_special works for combined message """
@@ -466,7 +466,7 @@ class TestProducts(unittest.TestCase):
             'continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A '
             'CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING '
             'SOUTHEAST AT 30 MPH. '
-            'http://localhost#2014-O-CON-KDMX-TO-W-0051'))
+            'http://localhost2014-O-CON-KDMX-TO-W-0051'))
 
     def test_140714_segmented_watch(self):
         """ Two segmented watch text formatting stinks """
@@ -485,7 +485,7 @@ class TestProducts(unittest.TestCase):
             "((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
             "((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
             "((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT. "
-            "http://localhost#2014-O-NEW-KPHI-SV-A-0418"))
+            "http://localhost2014-O-NEW-KPHI-SV-A-0418"))
 
     def test_140610_tweet_spacing(self):
         ''' Saw spacing issue in tweet message '''
@@ -495,7 +495,7 @@ class TestProducts(unittest.TestCase):
         self.assertEquals(j[0][2]['twitter'], (
             'LCH issues Flood Warning '
             'valid at Jun 10, 9:48 AM CDT for ((VLSL1)) till Jun 12, 1:00 '
-            'PM CDT http://localhost#2014-O-NEW-KLCH-FL-W-0015'))
+            'PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015'))
 
     def test_routine(self):
         ''' what can we do with a ROU VTEC product '''
@@ -619,7 +619,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][1], (
-            "<p>DMX <a href=\"http://localhost/#2011-"
+            "<p>DMX <a href=\"http://localhost/2011-"
             "O-NEW-KDMX-TO-W-0057\">issues Tornado Warning</a> [tornado: "
             "OBSERVED, tornado damage threat: SIGNIFICANT, hail: 2.75 IN] "
             "for ((IAC117)), ((IAC125)), ((IAC135)) [IA] till 12:15 AM CDT "
@@ -648,7 +648,7 @@ class TestProducts(unittest.TestCase):
             'DMX updates Severe '
             'Thunderstorm Warning (cancels 1 area, continues 1 area) '
             'till 10:45 PM CDT '
-            'http://localhost/#2014-O-CON-KDMX-SV-W-0143'))
+            'http://localhost/2014-O-CON-KDMX-SV-W-0143'))
 
         prod = vtecparser(get_file('WCN.txt'), utcnow=utcnow,
                           ugc_provider=ugc_provider)
@@ -657,14 +657,14 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(j[0][2]['twitter'], (
             'DMX updates Tornado Watch '
             '(cancels 5 areas, continues 12 areas) till Jun 4, 1:00 AM CDT '
-            'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
+            'http://localhost/2014-O-CON-KDMX-TO-A-0210'))
         self.assertEqual(j[0][0], (
             'DMX updates Tornado Watch (cancels a, '
             'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             'aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa'
             'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties '
             'in [IA]) till Jun 4, 1:00 AM CDT. '
-            'http://localhost/#2014-O-CON-KDMX-TO-A-0210'))
+            'http://localhost/2014-O-CON-KDMX-TO-A-0210'))
 
     def test_spacewx(self):
         ''' See if we can parse a space weather product '''
@@ -734,7 +734,7 @@ class TestProducts(unittest.TestCase):
             'SEW continues Small Craft Advisory '
             'valid at May 27, 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till'
             ' May 28, 5:00 AM PDT '
-            'http://localhost/#2014-O-CON-KSEW-SC-Y-0113'))
+            'http://localhost/2014-O-CON-KSEW-SC-Y-0113'))
 
     def test_140527_00000_hvtec_nwsli(self):
         ''' Test the processing of a HVTEC NWSLI of 00000 '''
@@ -746,11 +746,11 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(j[0][0], (
             'BOU extends time of Areal Flood Advisory '
             'for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT '
-            'http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
+            'http://localhost/2014-O-EXT-KBOU-FA-Y-0018'))
         self.assertEqual(j[0][2]['twitter'], (
             'BOU extends time of Areal Flood '
             'Advisory for ((COC049)), ((COC057)) [CO] till '
-            'May 29, 9:30 PM MDT http://localhost/#2014-O-EXT-KBOU-FA-Y-0018'))
+            'May 29, 9:30 PM MDT http://localhost/2014-O-EXT-KBOU-FA-Y-0018'))
 
     def test_affected_wfos(self):
         ''' see what affected WFOs we have '''
@@ -874,7 +874,7 @@ class TestProducts(unittest.TestCase):
             'TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE '
             'WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS '
             'WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING '
-            'THE WARNING PERIOD. http://localhost#2005-O-NEW-KJAN-TO-W-0130'))
+            'THE WARNING PERIOD. http://localhost2005-O-NEW-KJAN-TO-W-0130'))
 
     def test_01(self):
         """LSR.txt process a valid LSR without blemish """
