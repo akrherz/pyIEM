@@ -18,7 +18,7 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'snow', 'snowd', 'max_tmpf_qc', 'min_tmpf_qc', 'pday_qc',
                 'snow_qc', 'snoww', 'max_drct', 'max_srad', 'coop_tmpf',
                 'coop_valid', 'et_inch', 'srad_mj', 'max_water_tmpf',
-                'min_water_tmpf']
+                'min_water_tmpf', 'max_rh', 'min_rh']
 
 
 class Observation(object):
@@ -159,8 +159,8 @@ min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_srad = coalesce(%(max_srad)s, max_srad),
         coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
         coop_valid = %(coop_valid)s, et_inch = %(et_inch)s,
-        max_rh = greatest(%(relh)s, max_rh),
-        min_rh = least(%(relh)s, min_rh),
+        max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
+        min_rh = least(%(min_rh)s, %(relh)s, min_rh),
         srad_mj = %(srad_mj)s
         FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
         and t.id = %(station)s and t.network = %(network)s"""
