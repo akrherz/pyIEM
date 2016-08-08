@@ -159,6 +159,8 @@ min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_srad = coalesce(%(max_srad)s, max_srad),
         coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
         coop_valid = %(coop_valid)s, et_inch = %(et_inch)s,
+        max_rh = greatest(%(relh)s, max_rh),
+        min_rh = least(%(relh)s, min_rh),
         srad_mj = %(srad_mj)s
         FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
         and t.id = %(station)s and t.network = %(network)s"""
