@@ -35,7 +35,10 @@ def get_autoplot_context(fdict, cfg):
         typ = opt.get('type')
         minval = opt.get('min')
         maxval = opt.get('max')
+        optional = opt.get('optional', False)
         value = fdict.get(name)
+        if optional and value is None:
+            continue
         if typ in ['station', 'zstation', 'sid', 'networkselect']:
             # A bit of hackery here if we have a name ending in a number
             netname = "network%s" % (name[-1] if name[-1] != 'n' else '',)

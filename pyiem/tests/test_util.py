@@ -25,6 +25,7 @@ class TestUtil(unittest.TestCase):
             dict(type='int', name='threshold', default=-99),
             dict(type='int', name='t', default=9, min=0, max=10),
             dict(type='date', name='d', default='2011/11/12'),
+            dict(type='year', name='year', default='2011', optional=True),
             dict(type='float', name='f', default=1.10)])
         ctx = util.get_autoplot_context(form, cfg)
         self.assertEqual(ctx['station'], 'AMW')
@@ -35,6 +36,7 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(isinstance(ctx['f'], float))
         self.assertEqual(ctx['t'], 9)
         self.assertEqual(ctx['d'], datetime.date(2011, 11, 12))
+        self.assertTrue('year' not in ctx)
 
     def test_properties(self):
         """ Try the properties function"""
