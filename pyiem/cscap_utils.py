@@ -324,14 +324,22 @@ def get_xref_siteids_plotids(spr_client, config):
     return data
 
 
-def get_xref_plotids(spr_client, config):
-    ''' Build the xreference of siteID to plotid spreadsheet keys '''
-    feed = exponential_backoff(spr_client.get_list_feed,
-                               config['cscap']['metamaster'], 'od6')
+def get_xref_plotids(drive):
+    """Dictionary of Sites to PlotID keys
+
+    Args:
+      drive: authorized Google Drive API client
+
+    Returns:
+      dict
+    """
+    res = drive.files().list(q="title contains 'Plot Identifiers'").execute()
     data = {}
-    for entry in feed.entry:
-        d = entry.to_dict()
-        data[d['uniqueid']] = d['keyspread']
+    for item in res['items']:
+        if item['mimeType'] != 'application/vnd.google-apps.spreadsheet':
+            continue
+        siteid = item['title'].split()[0]
+        data[siteid] = item['id']
     return data
 
 
