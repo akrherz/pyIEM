@@ -7,6 +7,13 @@ import matplotlib.colors as mpcolors
 
 class TestPlot(unittest.TestCase):
 
+    def test_albers(self):
+        """See if we can plot albers"""
+        m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
+                         south=38, projection='aea', axisbg='white')
+        m.postprocess(filename='/tmp/test_plot_albers.png')
+        m.close()
+
     def test_centered_bins(self):
         """See that we can compute some nice centered bins"""
         a = plot.centered_bins(10, bins=9)

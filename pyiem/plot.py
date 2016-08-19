@@ -25,6 +25,7 @@ import shutil
 import cPickle
 import datetime
 import math
+import pyproj
 #
 import numpy as np
 import pandas as pd
@@ -488,6 +489,51 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     mymap.draw_colorbar(bins, cmap, norm, **kwargs)
 
 
+def gen_basemap(ax, **kwargs):
+    """factory generating basemap objects
+
+    Args:
+      ax: matplotlib axes object
+      kwargs: things necessary to make the basemap projection work
+
+    Returns:
+      basemap object
+    """
+    projection = kwargs.get('projection')
+    north = kwargs.get('north')
+    east = kwargs.get('east')
+    west = kwargs.get('west')
+    resolution = kwargs.get('resolution', 'i')
+    south = kwargs.get('south')
+    bm = None
+    if projection is None or projection == 'merc':  # default
+        bm = Basemap(projection='merc', fix_aspect=False,
+                     urcrnrlat=north,
+                     llcrnrlat=south,
+                     urcrnrlon=east,
+                     llcrnrlon=west,
+                     lat_0=45., lon_0=-92., lat_ts=42.,
+                     resolution=resolution,
+                     ax=ax)
+    elif projection == 'aea':
+        # save me from myself by computing the width and height dynamically
+        crs = {'lon_0': (east + west) / 2.,
+               'R': 6370997.0,
+               'proj': 'aea',
+               'units': 'm',
+               'lat_2': north - (north - south) * 0.25,
+               'lat_1': north - (north - south) * 0.75,
+               'lat_0': (north + south) / 2.}
+        aea = pyproj.Proj(crs)
+        ul = aea(west, north)
+        lr = aea(east, south)
+        bm = Basemap(width=(lr[0] - ul[0]), height=(ul[1] - lr[1]),
+                     resolution=resolution, projection=crs['proj'],
+                     lat_1=crs['lat_1'], lat_2=crs['lat_2'],
+                     lon_0=crs['lon_0'], lat_0=crs['lat_0'], ax=ax)
+    return bm
+
+
 class MapPlot(object):
     """An object representing a basemap plot.
 
@@ -580,14 +626,7 @@ class MapPlot(object):
                          resolution='i', ax=self.ax)
             self.maps.append(bm)
         elif self.sector == 'custom':
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=kwargs.get('north'),
-                         llcrnrlat=kwargs.get('south'),
-                         urcrnrlon=kwargs.get('east'),
-                         llcrnrlon=kwargs.get('west'),
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.maps.append(gen_basemap(self.ax, **kwargs))
         elif self.sector == 'north_america':
             bm = Basemap(llcrnrlon=-145.5, llcrnrlat=1.,
                          urcrnrlon=-2.566, urcrnrlat=46.352,
