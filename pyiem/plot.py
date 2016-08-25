@@ -827,7 +827,7 @@ class MapPlot(object):
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None,
                     labeltextsize=10, labelcolor='#000000',
-                    showmarker=False, labelbuffer=25):
+                    showmarker=False, labelbuffer=25, outlinecolor='#FFFFFF'):
         """Plot values onto the map
 
         Args:
@@ -847,6 +847,7 @@ class MapPlot(object):
           labelcolor (str, optional): Color to use for drawing labels
           showmarker (bool, optional): Place a marker on the map for the label
           labelbuffer (int): pixel buffer around labels
+          outlinecolor (color): color to use for text outlines
         """
         if valmask is None:
             valmask = [True] * len(lons)
@@ -940,7 +941,7 @@ class MapPlot(object):
                 thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
             t0.set_clip_on(True)
             t0.set_path_effects([PathEffects.Stroke(linewidth=3,
-                                                    foreground='white'),
+                                                    foreground=outlinecolor),
                                  PathEffects.Normal()])
 
             if l and l != '':
@@ -1191,11 +1192,16 @@ class MapPlot(object):
         cwas = load_pickle_geo('cwa.pickle')
         polygon_fill(self, cwas, data, **kwargs)
 
-    def drawcities(self, minarea=None, labelbuffer=25):
+    def drawcities(self, minarea=None, labelbuffer=25, textsize=16,
+                   color='#000000', outlinecolor='#FFFFFF'):
         """Overlay some cities
 
         Args:
           minarea (int,optional): Minimum Urban Area size (km2) to plot
+          labelbuffer (int): approximate number of pixels to compute overlap
+          textsize (int): size of the text
+          color (str): color to plot the text with
+          outlinecolor (str): color to outline the text with
         """
         df = load_pickle_pd("pd_cities.pickle")
         south = self.map.llcrnrlat
@@ -1209,7 +1215,9 @@ class MapPlot(object):
                   (df['area_km2'] > minarea))]
         # df2 = df[(df['name'] == 'DES MOINES') & (df['st'] == 'IA')]
         self.plot_values(df2.lon.values, df2.lat.values, df2.name.values,
-                         showmarker=True, labelbuffer=labelbuffer)
+                         showmarker=True, labelbuffer=labelbuffer,
+                         textsize=textsize, color=color,
+                         outlinecolor=outlinecolor)
 
     def drawcounties(self, color='k'):
         """ Draw counties onto the map
