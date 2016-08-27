@@ -34,11 +34,13 @@ before_script:
   - psql -c 'create database iem;' -U postgres
   - psql -c 'create database mesosite;' -U postgres
   - psql -c 'create database asos;' -U postgres
+  - psql -c 'create database hads;' -U postgres
   - psql -U postgres -f data/schema/iem.sql iem
   - psql -U postgres -f data/schema/postgis.sql postgis
   - psql -U postgres -f data/schema/portfolio.sql portfolio
   - psql -U postgres -f data/schema/mesosite.sql mesosite
   - psql -U postgres -f data/schema/asos.sql asos
+  - psql -U postgres -f data/schema/hads.sql hads
 script:
   "coverage run --source=pyiem setup.py test"
 after_success:

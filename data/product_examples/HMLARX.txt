@@ -1,0 +1,1549 @@
+
+119 
+SRUS56 KARX 260754
+HMLARX
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:07+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="CEDAR RIVER 2 S St. Ansgar"
+      id="AGRI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>8.59</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:08+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Cedar River  AT Charles City"
+      id="CCYI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>9.66</primary>
+      <secondary>7.01</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>9.63</primary>
+      <secondary>6.97</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>9.6</primary>
+      <secondary>6.93</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>9.57</primary>
+      <secondary>6.9</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:09+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="TURKEY RIVER  AT Clermont"
+      id="CMTI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>19.47</primary>
+      <secondary>17.7</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:09+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Trempealeau River  AT Dodge"
+      id="DDGW3"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>7.07</primary>
+      <secondary>1.05</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>7.06</primary>
+      <secondary>1.04</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>7.06</primary>
+      <secondary>1.04</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>7.05</primary>
+      <secondary>1.04</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:10+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Dobbins Creek 2 ENE Austin 2NE"
+      id="DOBM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>7.38</primary>
+      <secondary>0.0778</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>7.38</primary>
+      <secondary>0.0778</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>7.38</primary>
+      <secondary>0.0778</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>7.37</primary>
+      <secondary>0.0762</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:10+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="North Fork Whitewater River  AT Elba"
+      id="EBWM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>36.56</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>36.56</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>36.56</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>36.56</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:11+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River 1 E Eldorado 1E"
+      id="EDRI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:00:00-00:00</valid>
+      <primary>17.55</primary>
+      <secondary>20.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T06:15:00-00:00</valid>
+      <primary>17.59</primary>
+      <secondary>21.1</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>17.36</primary>
+      <secondary>19.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>17.66</primary>
+      <secondary>21.4</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>17.22</primary>
+      <secondary>19.2</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>17.51</primary>
+      <secondary>20.7</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:11+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River 1 SE Elkader"
+      id="EKDI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <standing trace="forecast" />
+  </disclaimers>
+  <forecast primaryUnits="ft"
+            pedts="HGIFE"
+            primaryName="Stage"
+            timezone="UTC"
+            issued="2016-08-26T07:46:00-00:00"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T12:00:00-00:00</valid>
+      <primary>24.3</primary>
+      <secondary>29.8</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T18:00:00-00:00</valid>
+      <primary>26.5</primary>
+      <secondary>36.3</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T00:00:00-00:00</valid>
+      <primary>25.4</primary>
+      <secondary>32.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T06:00:00-00:00</valid>
+      <primary>23.1</primary>
+      <secondary>26.6</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T12:00:00-00:00</valid>
+      <primary>20.7</primary>
+      <secondary>21.1</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T18:00:00-00:00</valid>
+      <primary>18.3</primary>
+      <secondary>16.3</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T00:00:00-00:00</valid>
+      <primary>15.9</primary>
+      <secondary>12.1</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T06:00:00-00:00</valid>
+      <primary>13.6</primary>
+      <secondary>8.53</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T12:00:00-00:00</valid>
+      <primary>12.1</primary>
+      <secondary>6.49</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T18:00:00-00:00</valid>
+      <primary>10.9</primary>
+      <secondary>5.02</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T00:00:00-00:00</valid>
+      <primary>9.9</primary>
+      <secondary>4.09</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T06:00:00-00:00</valid>
+      <primary>9.1</primary>
+      <secondary>3.25</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T12:00:00-00:00</valid>
+      <primary>8.5</primary>
+      <secondary>2.59</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T18:00:00-00:00</valid>
+      <primary>8.2</primary>
+      <secondary>2.28</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T00:00:00-00:00</valid>
+      <primary>7.9</primary>
+      <secondary>1.98</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T06:00:00-00:00</valid>
+      <primary>7.6</primary>
+      <secondary>1.71</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T12:00:00-00:00</valid>
+      <primary>7.5</primary>
+      <secondary>1.62</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T18:00:00-00:00</valid>
+      <primary>7.4</primary>
+      <secondary>1.54</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T00:00:00-00:00</valid>
+      <primary>7.3</primary>
+      <secondary>1.45</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T06:00:00-00:00</valid>
+      <primary>7.2</primary>
+      <secondary>1.37</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T12:00:00-00:00</valid>
+      <primary>7.1</primary>
+      <secondary>1.29</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T18:00:00-00:00</valid>
+      <primary>7.1</primary>
+      <secondary>1.29</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T00:00:00-00:00</valid>
+      <primary>7</primary>
+      <secondary>1.21</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T06:00:00-00:00</valid>
+      <primary>6.9</primary>
+      <secondary>1.13</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T12:00:00-00:00</valid>
+      <primary>6.9</primary>
+      <secondary>1.13</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T18:00:00-00:00</valid>
+      <primary>6.8</primary>
+      <secondary>1.05</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-02T00:00:00-00:00</valid>
+      <primary>6.8</primary>
+      <secondary>1.05</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-02T06:00:00-00:00</valid>
+      <primary>6.8</primary>
+      <secondary>1.05</secondary>
+    </datum>
+  </forecast>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:11+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Roberts Creek 2 NE Elkader 2NE"
+      id="ERCI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>4.13</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:11+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Volga River 1 W Fayette"
+      id="FAYI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>3.61</primary>
+      <secondary>0.0695</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>3.61</primary>
+      <secondary>0.0695</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>3.6</primary>
+      <secondary>0.068</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>3.6</primary>
+      <secondary>0.068</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:12+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Brockcamp Creek  AT Festina"
+      id="FSTI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>0.87</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:12+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Rogers Creek  AT Fort Atkinson"
+      id="FTAI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>1.77</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:13+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River  AT Garber"
+      id="GRBI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <standing trace="forecast" />
+  </disclaimers>
+  <forecast primaryUnits="ft"
+            pedts="HGIFE"
+            primaryName="Stage"
+            timezone="UTC"
+            issued="2016-08-26T07:46:00-00:00"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T12:00:00-00:00</valid>
+      <primary>21.8</primary>
+      <secondary>20</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T18:00:00-00:00</valid>
+      <primary>25.9</primary>
+      <secondary>31</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T00:00:00-00:00</valid>
+      <primary>27.5</primary>
+      <secondary>37.8</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T06:00:00-00:00</valid>
+      <primary>26.6</primary>
+      <secondary>33.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T12:00:00-00:00</valid>
+      <primary>25</primary>
+      <secondary>27.6</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-27T18:00:00-00:00</valid>
+      <primary>22.6</primary>
+      <secondary>21.6</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T00:00:00-00:00</valid>
+      <primary>20.2</primary>
+      <secondary>17.2</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T06:00:00-00:00</valid>
+      <primary>17.7</primary>
+      <secondary>13.1</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T12:00:00-00:00</valid>
+      <primary>15.8</primary>
+      <secondary>10.3</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-28T18:00:00-00:00</valid>
+      <primary>14.3</primary>
+      <secondary>8.25</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T00:00:00-00:00</valid>
+      <primary>13.1</primary>
+      <secondary>6.73</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T06:00:00-00:00</valid>
+      <primary>12.3</primary>
+      <secondary>5.79</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T12:00:00-00:00</valid>
+      <primary>11.5</primary>
+      <secondary>4.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-29T18:00:00-00:00</valid>
+      <primary>10.7</primary>
+      <secondary>4.07</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T00:00:00-00:00</valid>
+      <primary>10</primary>
+      <secondary>3.38</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T06:00:00-00:00</valid>
+      <primary>9.5</primary>
+      <secondary>2.92</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T12:00:00-00:00</valid>
+      <primary>9.1</primary>
+      <secondary>2.57</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-30T18:00:00-00:00</valid>
+      <primary>8.8</primary>
+      <secondary>2.32</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T00:00:00-00:00</valid>
+      <primary>8.6</primary>
+      <secondary>2.16</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T06:00:00-00:00</valid>
+      <primary>8.3</primary>
+      <secondary>1.92</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T12:00:00-00:00</valid>
+      <primary>8.1</primary>
+      <secondary>1.77</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-31T18:00:00-00:00</valid>
+      <primary>7.9</primary>
+      <secondary>1.63</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T00:00:00-00:00</valid>
+      <primary>7.8</primary>
+      <secondary>1.56</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T06:00:00-00:00</valid>
+      <primary>7.7</primary>
+      <secondary>1.49</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T12:00:00-00:00</valid>
+      <primary>7.7</primary>
+      <secondary>1.49</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-01T18:00:00-00:00</valid>
+      <primary>7.6</primary>
+      <secondary>1.42</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-02T00:00:00-00:00</valid>
+      <primary>7.6</primary>
+      <secondary>1.42</secondary>
+    </datum>
+    <datum>
+      <valid>2016-09-02T06:00:00-00:00</valid>
+      <primary>7.5</primary>
+      <secondary>1.35</secondary>
+    </datum>
+  </forecast>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:14+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Root River 1 N Houston"
+      id="HOUM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>7.24</primary>
+      <secondary>3.04</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>7.23</primary>
+      <secondary>3.03</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>7.21</primary>
+      <secondary>3.01</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>7.19</primary>
+      <secondary>2.99</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:15+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Cedar River  AT Lansing"
+      id="LANM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>13.53</primary>
+      <secondary>0.635</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>13.52</primary>
+      <secondary>0.633</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>13.52</primary>
+      <secondary>0.633</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>13.5</primary>
+      <secondary>0.628</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:15+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Little Cedar River 5 E Orchard 5E"
+      id="LCOI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>11.62</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:18+00:00"
+      timezone="GMT0GMT"
+      originator="ARX"
+      name="Little Cedar River  AT Nashua"
+      id="NUAI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>14.53</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:19+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Slough Creek 3 SE Orchard 3SE"
+      id="OSCI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>4.65</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:19+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Rock Creek 6 W Osage 6W"
+      id="OSRI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>5.42</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:19+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Cedar River 3 N Otranto"
+      id="OTRI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>7.71</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:20+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Bear Creek  AT Rochester Bear Cr"
+      id="RBCM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>5.07</primary>
+      <secondary>0.0741</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>5.07</primary>
+      <secondary>0.0741</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>5.06</primary>
+      <secondary>0.0723</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>5.07</primary>
+      <secondary>0.0741</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:20+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Cascade Creek  AT Rochester Cascade Cr"
+      id="RCCM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>6.52</primary>
+      <secondary>0.0373</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>6.51</primary>
+      <secondary>0.0364</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>6.51</primary>
+      <secondary>0.0364</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>6.51</primary>
+      <secondary>0.0364</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:20+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Rock Creek 2 WSW Orchard 2WSW"
+      id="RCOI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>5.39</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:21+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Cascade Creek 3 W Rochester 3W"
+      id="RCRM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>43.62</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>43.63</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>43.61</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>43.62</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:21+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="South Fork Zumbro River  AT Rochester Beltline"
+      id="RCSM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>11.55</primary>
+      <secondary>0.253</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>11.55</primary>
+      <secondary>0.253</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>11.55</primary>
+      <secondary>0.253</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>11.55</primary>
+      <secondary>0.253</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:21+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Silver Creek  AT Rochester Silver Cr"
+      id="ROCM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>13.65</primary>
+      <secondary>0.0114</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>13.65</primary>
+      <secondary>0.0114</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>13.65</primary>
+      <secondary>0.0114</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>13.65</primary>
+      <secondary>0.0114</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:22+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River  AT Spillville"
+      id="SPLI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>8.4</primary>
+      <secondary>1.99</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>8.31</primary>
+      <secondary>1.95</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>8.25</primary>
+      <secondary>1.92</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>8.21</primary>
+      <secondary>1.9</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:23+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River 3 SE Cresco"
+      id="TCGI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>4.02</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:23+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turkey River 8 NW 10 Mile Bridge 8NW Elkader"
+      id="TENI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>20.23</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:23+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Turtle Creek 3 WNW Austin 3NW"
+      id="TRCM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>4.48</primary>
+      <secondary>0.318</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>4.46</primary>
+      <secondary>0.315</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>4.45</primary>
+      <secondary>0.314</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>4.44</primary>
+      <secondary>0.313</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:24+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Upper Iowa River 3 NW Decorah 3NW"
+      id="UIDI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>11.14</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:24+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Volga River  AT Volga"
+      id="VGAI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRP"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>0.72</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:24+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Volga River  AT Littleport"
+      id="VLPI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>4.67</primary>
+      <secondary>0.275</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>4.66</primary>
+      <secondary>0.273</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>4.66</primary>
+      <secondary>0.273</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>4.65</primary>
+      <secondary>0.27</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:25+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Mississippi River  AT Winona"
+      id="WNAM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>9.09</primary>
+      <secondary>70.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>9.09</primary>
+      <secondary>70.9</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>9.08</primary>
+      <secondary>70.8</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:45:00-00:00</valid>
+      <primary>9.09</primary>
+      <secondary>70.9</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:25+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Middle Fork Whitewater River 3 SW Whitewater Park"
+      id="WSPM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>10.66</primary>
+      <secondary>0.0356</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>10.66</primary>
+      <secondary>0.0356</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>10.66</primary>
+      <secondary>0.0356</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>10.66</primary>
+      <secondary>0.0356</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:26+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Middle Fork Whitewater River  AT Whitewater Park Group Camp"
+      id="WWPM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>35.96</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>35.96</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>35.96</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>35.96</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>    
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2016-08-26T07:54:26+00:00"
+      timezone="CST6CDT"
+      originator="ARX"
+      name="Zumbro River  AT Zumbro Falls"
+      id="ZUMM5"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2016-08-26T06:45:00-00:00</valid>
+      <primary>8.99</primary>
+      <secondary>2.86</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:00:00-00:00</valid>
+      <primary>9</primary>
+      <secondary>2.87</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:15:00-00:00</valid>
+      <primary>8.99</primary>
+      <secondary>2.86</secondary>
+    </datum>
+    <datum>
+      <valid>2016-08-26T07:30:00-00:00</valid>
+      <primary>8.99</primary>
+      <secondary>2.86</secondary>
+    </datum>
+  </observed>
+</site>    
+
