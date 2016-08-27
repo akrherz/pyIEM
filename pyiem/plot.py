@@ -566,12 +566,17 @@ class MapPlot(object):
             debug (bool): enable debugging
         """
         self.debug = kwargs.get('debug', False)
-        self.fig = plt.figure(num=None, figsize=figsize,
-                              dpi=kwargs.get('dpi', 100))
-        self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
-                           axisbg=(0.4471, 0.6235, 0.8117))
-        self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
-                            yticks=[], xticks=[])
+        if 'ax' in kwargs:
+            self.ax = kwargs.pop('ax')
+            self.fig = plt.gcf()
+            self.cax = kwargs.pop('cax', None)
+        else:
+            self.fig = plt.figure(num=None, figsize=figsize,
+                                  dpi=kwargs.get('dpi', 100))
+            self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
+                               axisbg=(0.4471, 0.6235, 0.8117))
+            self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
+                                yticks=[], xticks=[])
         # Storage of basemaps within this plot
         self.maps = []
         self.state = None
@@ -714,6 +719,8 @@ class MapPlot(object):
           cmap (matplotlib.colormap): The colormap
           norm (normalize): The value normalizer
         """
+        if self.cax is None:
+            return
 
         clevlabels = kwargs.get('clevlabels', clevs)
 
