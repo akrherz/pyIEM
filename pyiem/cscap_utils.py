@@ -308,9 +308,9 @@ class Spreadsheet(object):
                                                           entry)
 
 
-def get_xref_siteids_plotids(spr_client, config):
+def get_xref_siteids_plotids(drive, spr_client, config):
     ''' Get a dict of site IDs with a list of plot IDs for each '''
-    spreadkeys = get_xref_plotids(spr_client, config)
+    spreadkeys = get_xref_plotids(drive)
     data = {}
     for uniqueid in spreadkeys.keys():
         data[uniqueid.lower()] = []
