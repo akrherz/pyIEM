@@ -40,3 +40,6 @@ class TestProducts(unittest.TestCase):
         prod.sql(self.txn)
         self.assertEquals(len(prod.warnings), 0,
                           '\n'.join(prod.warnings))
+
+        self.assertEquals(prod.data[0].stationname,
+                          "CEDAR RIVER 2 S St. Ansgar")

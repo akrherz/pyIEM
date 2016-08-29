@@ -32,6 +32,7 @@ def parse_xml(token):
     root = ET.fromstring(token)
     hml = HMLData()
     hml.station = root.attrib['id']
+    hml.stationname = root.attrib.get('name')
     hml.originator = root.attrib.get('originator')
     hml.generationtime = parseUTC(root.attrib['generationtime'])
     for child in root:
@@ -62,6 +63,7 @@ class HMLData(object):
 
     def __init__(self):
         self.station = None
+        self.stationname = None
         self.originator = None
         self.generationtime = None
         self.data = {'observed': dict(dataframe=None,
