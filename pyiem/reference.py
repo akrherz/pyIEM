@@ -75,7 +75,7 @@ nwsli2country = {"A2": "US", "A1": "US", "A4": "US", "A3": "US", "C1": "US",
                  "R3": "MX", "O4": "MX", "P9": "MX", "S3": "MX", "S5": "MX",
                  "S6": "MX", "T3": "TB", "T5": "MX", "T4": "MX", "V4": "MX",
                  "Y1": "MX", "Z1": "ZC", "E2": "SV", "G4": "GT", "H3": "HN",
-                 "R5": "JA", "R6": "NI", "P4": "US", "R4": "RK",
+                 "R5": "JA", "R6": "NI", "P4": "US", "R4": "RK", "A9": "AG",
                  "V3": "US", "QR": "CA", "X4": "MX", "B7": "MX", "Q4": "MX",
                  }
 txt2drct = {
