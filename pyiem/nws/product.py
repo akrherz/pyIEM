@@ -40,7 +40,7 @@ TORNADODAMAGETAG = re.compile((
     ".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
-RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED)")
+RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
 
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
