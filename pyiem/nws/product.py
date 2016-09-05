@@ -40,6 +40,7 @@ TORNADODAMAGETAG = re.compile((
     ".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
+RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED)")
 
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
@@ -348,7 +349,20 @@ class TextProduct(object):
         return (self.unixtext.find("...RESENT") > 0)
 
     def is_correction(self):
-        """Returns boolean on if this product is some form of correction """
+        """Is this product a correction?
+
+        Sadly, this is not as easy as it should be.  It turns out that some
+        products do not have a proper correction mechanism, so offices will
+        just brute force in a note into the MND header.  So we have to do
+        some further checking...
+
+        Returns:
+          bool: Is this product a correction?
+        """
+        # OK, go looking for RESENT style tags, assume it happens within first
+        # 300 chars
+        if RESENT.search(self.text[:300]):
+            return True
         if self.bbb is None or len(self.bbb) == 0:
             return False
         if self.bbb[0] in ['A', 'C']:

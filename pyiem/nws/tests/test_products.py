@@ -48,6 +48,11 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_160904_resent(self):
+        """Is this product a correction?"""
+        prod = vtecparser(get_file("TCVAKQ.txt"))
+        self.assertTrue(prod.is_correction())
+
     def test_160720_unknown_ugc(self):
         """Unknown UGC logic failed for some reason"""
         # Note that this example has faked UGCs to test things out
