@@ -28,9 +28,9 @@ class NHCProduct(TextProduct):
             ("(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"
              "TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "
              "(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "
-             "NUMBER\s+([0-9A-Z]+)"), self.unixtext)
+             "NUMBER\s+([0-9A-Z]+)"), self.unixtext.replace("\n", " "))
         if len(tokens) == 0:
-            raise NHCException("Could not parse header from NHC Prodct!")
+            raise NHCException("Could not parse header from NHC Product!")
 
         classification = tokens[0][0]
         name = tokens[0][1]
