@@ -126,15 +126,18 @@ class VTECProduct(TextProduct):
         txn.execute("""SELECT
         min(product_issue at time zone 'UTC') from warnings
         WHERE wfo = %s and eventid = %s and significance = %s and
-        phenomena = %s and (expire + '1 hour'::interval) > %s""", (
+        phenomena = %s and (expire + '6 hours'::interval) > %s""", (
             vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
             self.valid))
         row = txn.fetchone()
         if row['min'] is None:
+            table = "warnings_%s" % (self.valid.year,)
             self.warnings.append(("Failed to find active year:\n"
-                                  "  VTEC:%s\n  PRODUCT: %s"
-                                  ) % (str(vtec), self.get_product_id()))
-            return "warnings_%s" % (self.valid.year,)
+                                  "  VTEC:%s\n  PRODUCT: %s\n"
+                                  "  using table: %s"
+                                  ) % (str(vtec), self.get_product_id(),
+                                       table))
+            return table
         year = row['min'].year
         if abs(year - self.valid.year) > 1:
             self.warnings.append("Thought this warning was %s" % (year,))

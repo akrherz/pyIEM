@@ -48,6 +48,15 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_160912_missing(self):
+        """see why this series failed in production"""
+        for i in range(4):
+            prod = vtecparser(get_file("RFWVEF/RFW_%02i.txt" % (i,)))
+            prod.sql(self.txn)
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0,
+                              '\n'.join(warnings))
+
     def test_160904_resent(self):
         """Is this product a correction?"""
         prod = vtecparser(get_file("TCVAKQ.txt"))
