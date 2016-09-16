@@ -57,6 +57,19 @@ def get_autoplot_context(fdict, cfg):
             options = opt.get('options', dict())
             if value not in options:
                 value = default
+        elif typ == 'datetime':
+            # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
+            if default is not None:
+                default = datetime.datetime.strptime(default,
+                                                     '%Y/%m/%d %H%M')
+            if minval is not None:
+                minval = datetime.datetime.strptime(minval,
+                                                    '%Y/%m/%d %H%M')
+            if maxval is not None:
+                maxval = datetime.datetime.strptime(maxval,
+                                                    '%Y/%m/%d %H%M')
+            if value is not None:
+                value = datetime.datetime.strptime(value, '%Y-%m-%d %H%M')
         elif typ == 'date':
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
