@@ -13,7 +13,7 @@ DELIMITER = """\<\?xml version="1.0" standalone="yes"\?\>"""
 
 
 def no999(val):
-    if val is None or val == -999:
+    if val is None or val == -999 or val == -9999:
         return None
     return val
 
