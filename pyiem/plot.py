@@ -126,7 +126,7 @@ def calendar_plot(sts, ets, data, **kwargs):
     offx3 = 3 / float(pixelwidth)
     offy3 = 3 / float(pixelheight)
 
-    ax.text(0.5, 0.98, kwargs.get('title', ''), va='center',
+    ax.text(0.5, 0.99, kwargs.get('title', ''), va='top',
             ha='center')
 
     for i, dow in enumerate(['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']):
