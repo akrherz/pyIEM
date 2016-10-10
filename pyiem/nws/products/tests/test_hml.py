@@ -19,7 +19,7 @@ def utc(year, month, day, hour=0, minute=0):
                         tzinfo=pytz.timezone("UTC"))
 
 
-class TestProducts(unittest.TestCase):
+class TestHML(unittest.TestCase):
     """ Tests """
     def setUp(self):
         ''' This is called for each test, beware '''
@@ -43,3 +43,13 @@ class TestProducts(unittest.TestCase):
 
         self.assertEquals(prod.data[0].stationname,
                           "CEDAR RIVER 2 S St. Ansgar")
+
+    def test_161010_timing(self):
+        """test how fast we can parse the file, over and over again"""
+        sts = datetime.datetime.now()
+        for _ in range(100):
+            _ = hmlparser(get_file("HMLARX.txt"))
+        ets = datetime.datetime.now()
+        rate = (ets - sts).total_seconds() / 100.
+        print("sec per parse %.4f" % (rate,))
+        self.assertTrue(rate < 1.)

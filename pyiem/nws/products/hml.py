@@ -8,7 +8,7 @@ import re
 import datetime
 import pytz
 import pandas as pd
-import xml.etree.ElementTree as ET
+import xml.etree.cElementTree as ET
 DELIMITER = """\<\?xml version="1.0" standalone="yes"\?\>"""
 
 
