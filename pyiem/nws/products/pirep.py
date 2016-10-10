@@ -262,7 +262,7 @@ class Pirep(product.TextProduct):
         """ get jabber messages """
         res = []
         for report in self.reports:
-            if report.is_duplicate:
+            if report.is_duplicate or report.valid is None:
                 continue
             jmsg = {'priority':
                     'Urgent' if report.priority == 'UUA' else 'Routine',

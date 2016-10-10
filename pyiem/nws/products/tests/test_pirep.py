@@ -20,6 +20,15 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_161010_missingtime(self):
+        """prevent geom parse error"""
+        nwsli_provider = {'GTF': {'lat': 44.26, 'lon': -88.52},
+                          'ALB': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file("PIREPS/PRCUS.txt"),
+                           nwsli_provider=nwsli_provider)
+        j = prod.get_jabbers()
+        self.assertEquals(j[0][2]['channels'], 'UA.None,UA.PIREP')
+
     def test_151210_badgeom(self):
         """prevent geom parse error"""
         nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}
