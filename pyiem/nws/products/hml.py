@@ -142,10 +142,11 @@ class HML(product.TextProduct):
               fx['primaryUnits'], fx['secondaryUnits'],
               fx['issued'], df['valid'].min(), df['valid'].max()))
         fid = cursor.fetchone()[0]
+        # Table partitioning is done by issued time
+        table = "hml_forecast_data_%s" % (fx['issued'].year,)
         for _, row in fx['dataframe'].iterrows():
-            y = "%s" % (_hml.generationtime.year,)
             cursor.execute("""
-                INSERT into hml_forecast_data_""" + y + """
+                INSERT into """ + table + """
                 (hml_forecast_id, valid, primary_value,
                 secondary_value) VALUES
                 (%s, %s, %s, %s)
