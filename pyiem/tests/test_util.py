@@ -38,6 +38,12 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(ctx['d'], datetime.date(2011, 11, 12))
         self.assertTrue('year' not in ctx)
 
+        form = dict(zstation='DSM')
+        cfg = dict(arguments=[
+            dict(type='zstation', name='station', default='DSM')])
+        ctx = util.get_autoplot_context(form, cfg)
+        self.assertEquals(ctx['network'], 'IA_ASOS')
+
     def test_properties(self):
         """ Try the properties function"""
         prop = util.get_properties()

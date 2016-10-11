@@ -43,6 +43,10 @@ def get_autoplot_context(fdict, cfg):
             # A bit of hackery here if we have a name ending in a number
             netname = "network%s" % (name[-1] if name[-1] != 'n' else '',)
             ctx[netname] = fdict.get(netname)
+            # The network variable tags along and within a non-PHP context,
+            # this variable is unset, so we do some more hackery here
+            if ctx[netname] is None and name[-1] == 'n':
+                ctx[netname] = 'IA_ASOS' if typ == 'zstation' else 'IACLIMATE'
         elif typ in ['int', 'month', 'zhour', 'hour', 'day', 'year']:
             if value is not None:
                 value = int(value)
