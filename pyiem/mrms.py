@@ -1,11 +1,14 @@
-"""
- Util functions for MRMS data
+"""Multi-RADAR Multi-Sensor (MRMS) Helper Functions
+
+Hopefully useful functions to help with the processing of MRMS data
 """
 import numpy as np
 import struct
 import datetime
 import pytz
+import requests
 import gzip
+import os
 
 WEST = -130.
 EAST = -60.
@@ -13,6 +16,58 @@ NORTH = 55.
 SOUTH = 20.
 XAXIS = np.arange(WEST, EAST, 0.01)
 YAXIS = np.arange(SOUTH, NORTH, 0.01)
+
+
+def fetch(product, valid, tmpdir="/mesonet/tmp"):
+    """Get a desired MRMS product
+
+    Applies the following logic:
+        - does the file exist in `tmpdir`?
+        - can I fetch it from mtarchive?
+        - if recent, can I fetch it from NOAA MRMS website
+
+    Args:
+      product(str): MRMS product type
+      valid(datetime): Datetime object for desired timestamp
+      tmpdir(str,optional): location to check/place the downloaded file
+    """
+    fn = "%s_00.00_%s00.grib2.gz" % (product,
+                                     valid.strftime("%Y%m%d-%H%M"))
+    tmpfn = "%s/%s" % (tmpdir, fn)
+    # Option 1, we have this file already in cache!
+    if os.path.isfile(tmpfn):
+        return tmpfn
+    # Option 2, go fetch it from mtarchive
+    uri = ("http://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s"
+           ) % (valid.strftime("%Y/%m/%d"), product, fn)
+    try:
+        req = requests.get(uri, timeout=30)
+    except:
+        req = None
+    if req and req.status_code == 200:
+        o = open(tmpfn, 'wb')
+        o.write(req.content)
+        o.close()
+        return tmpfn
+    # Option 3, we go look at MRMS website, if timestamp is recent
+    utcnow = datetime.datetime.utcnow()
+    if valid.tzinfo is not None:
+        utcnow = utcnow.replace(tzinfo=pytz.utc)
+    if (utcnow - valid).total_seconds() > 86400:
+        # Can't do option 3!
+        return None
+    uri = ("http://mrms.ncep.noaa.gov/data/2D/%s/MRMS_%s"
+           ) % (product, fn)
+    try:
+        req = requests.get(uri, timeout=30)
+    except:
+        req = None
+    if req and req.status_code == 200:
+        o = open(tmpfn, 'wb')
+        o.write(req.content)
+        o.close()
+        return tmpfn
+    return None
 
 
 def make_colorramp():

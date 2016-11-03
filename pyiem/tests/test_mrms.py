@@ -1,11 +1,26 @@
 import unittest
 import datetime
 import os
+import pytz
 
 from pyiem import mrms
 
 
 class TestDatatypes(unittest.TestCase):
+
+    def test_fetch(self):
+        """Can we fetch MRMS files?  Yes we can!"""
+        product = 'PrecipRate'
+        valid = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
+        valid -= datetime.timedelta(minutes=(valid.minute % 2))
+        fn = mrms.fetch(product, valid, tmpdir="/tmp")
+        if os.path.isfile(fn):
+            os.unlink(fn)
+        valid = valid.replace(tzinfo=pytz.utc) - datetime.timedelta(minutes=2)
+        fn = mrms.fetch(product, valid, tmpdir="/tmp")
+        if os.path.isfile(fn):
+            os.unlink(fn)
+        # we don't actually test anything as the above may not be deterministic
 
     def test_colorramp(self):
         """See what we can do with a colorramp"""
