@@ -40,7 +40,8 @@ class TestUtil(unittest.TestCase):
 
         form = dict(zstation='DSM')
         cfg = dict(arguments=[
-            dict(type='zstation', name='station', default='DSM')])
+            dict(type='zstation', name='station', default='DSM',
+                 network='IA_ASOS')])
         ctx = util.get_autoplot_context(form, cfg)
         self.assertEquals(ctx['network'], 'IA_ASOS')
 

@@ -45,8 +45,8 @@ def get_autoplot_context(fdict, cfg):
             ctx[netname] = fdict.get(netname)
             # The network variable tags along and within a non-PHP context,
             # this variable is unset, so we do some more hackery here
-            if ctx[netname] is None and name[-1] == 'n':
-                ctx[netname] = 'IA_ASOS' if typ == 'zstation' else 'IACLIMATE'
+            if ctx[netname] is None:
+                ctx[netname] = opt.get('network')
         elif typ in ['int', 'month', 'zhour', 'hour', 'day', 'year']:
             if value is not None:
                 value = int(value)
