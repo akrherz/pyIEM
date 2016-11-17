@@ -2,6 +2,12 @@
 import pandas as pd
 import datetime
 
+# The bounds of the climate files we store on disk and processing
+SOUTH = 36.0
+WEST = -104.0
+NORTH = 49.0
+EAST = -80.5
+
 
 def read_env(fn, year0=2006):
     """Read a WEPP .env file into Pandas Data Table"""
