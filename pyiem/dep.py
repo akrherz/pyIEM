@@ -1,6 +1,5 @@
 """Utilities for the Daily Erosion Project"""
 import pandas as pd
-import datetime
 
 # The bounds of the climate files we store on disk and processing
 SOUTH = 36.0
@@ -21,8 +20,9 @@ def read_env(fn, year0=2006):
     if len(df.index) == 0:
         df['date'] = None
     else:
-        df['year'] += year0
-        # This fails on an emoty dataframe
-        df['date'] = df[['year', 'month', 'day']].apply(
-            lambda sx: datetime.date(*[int(s) for s in sx]), axis=1)
+        # Faster than +=
+        df['year'] = df['year'] + year0
+        # Considerably faster than df.apply
+        df['date'] = pd.to_datetime(dict(year=df.year, month=df.month,
+                                         day=df.day))
     return df

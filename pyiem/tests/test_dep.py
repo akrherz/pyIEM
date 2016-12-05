@@ -21,3 +21,10 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(df2.index), 1)
         row = df2.iloc[0]
         self.assertEquals(row['runoff'], 86.3)
+
+    def do_timing(self):
+        sts = datetime.datetime.now()
+        _ = dep.read_env(get_path('good_env.txt'))
+        ets = datetime.datetime.now()
+        print("%.5f reads per second" % (1. / (ets - sts).total_seconds(),))
+        self.assertEquals(1, 2)
