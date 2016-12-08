@@ -19,6 +19,7 @@ import re
 CONFIG_FN = "/mesonet/www/apps/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
 CLEANVALUE_COMPLAINED = []
+CLEANVALUE_XREF = {'NA': 'n/a', 'dnc': 'did not collect'}
 
 
 def save_config(config, fn=None):
@@ -53,6 +54,8 @@ def cleanvalue(val):
         return None
     if NUMBER_RE.match(val):
         return float(val)
+    if CLEANVALUE_XREF.get(val):
+        return CLEANVALUE_XREF[val]
     if val.lower() in ['did not collect', '.', 'n/a', 'clay', 'silty clay',
                        'silty clay loam', 'clay loam', 'sandy clay loam',
                        'silt loam', 'silty loam', 'sandy loam', 'sandy clay',
@@ -469,6 +472,7 @@ def get_site_metadata(config, spr_client=None):
 def get_driveclient(config, project="cscap"):
     """ Return an authorized apiclient """
     return get_googleapiclient(config, project, 'drive', 'v2')
+
 
 def get_sheetsclient(config, project="cscap"):
     """ Return an authorized apiclient """
