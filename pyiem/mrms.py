@@ -56,17 +56,19 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
     if (utcnow - valid).total_seconds() > 86400:
         # Can't do option 3!
         return None
-    uri = ("http://mrms.ncep.noaa.gov/data/2D/%s/MRMS_%s"
-           ) % (product, fn)
-    try:
-        req = requests.get(uri, timeout=30)
-    except:
-        req = None
-    if req and req.status_code == 200:
-        o = open(tmpfn, 'wb')
-        o.write(req.content)
-        o.close()
-        return tmpfn
+    # Loop over all IDP data centers
+    for center in ['', 'bldr.', 'cprk.']:
+        uri = ("http://mrms.%sncep.noaa.gov/data/2D/%s/MRMS_%s"
+               ) % (center, product, fn)
+        try:
+            req = requests.get(uri, timeout=30)
+        except:
+            req = None
+        if req and req.status_code == 200:
+            o = open(tmpfn, 'wb')
+            o.write(req.content)
+            o.close()
+            return tmpfn
     return None
 
 
