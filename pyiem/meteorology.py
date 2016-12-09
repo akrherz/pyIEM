@@ -117,6 +117,8 @@ def feelslike(temperature, dewpoint, speed):
 def windchill(temperature, speed):
     """Compute the wind chill temperature
 
+    http://www.ofcm.gov/publications/reports2.htm
+
     Args:
       temperature (temperature): The Air Temperature
       speed (speed): The Wind Speed
@@ -142,6 +144,8 @@ def heatindex(temperature, polyarg):
 
     Another opinion on appropriate equation:
     http://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml
+
+    http://www.weather.gov/media/ffc/ta_htindx.PDF
     """
     if not isinstance(temperature, dt.temperature):
         raise InvalidArguments("heatindex() needs temperature obj as arg")
