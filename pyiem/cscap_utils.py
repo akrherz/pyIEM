@@ -16,7 +16,7 @@ import sys
 import random
 import re
 
-CONFIG_FN = "/mesonet/www/apps/datateam/config/mytokens.json"
+CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
 CLEANVALUE_COMPLAINED = []
 CLEANVALUE_XREF = {'NA': 'n/a', 'dnc': 'did not collect'}
