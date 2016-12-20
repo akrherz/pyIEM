@@ -78,7 +78,7 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
       ets (datetime): the ceiling to query data for
       monthinfo (dict): information on how to query for months
       hourinfo (dict): information on how to query for hours
-      level (int, optional): in case of RAOB, which pressure level (hPa)
+      level (int): in case of RAOB, which pressure level (hPa)
 
     Returns:
       numpy.array wind speed in knots
@@ -143,7 +143,7 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
 
 
 def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
-                     maxvalid, monthinfo, hourinfo, level):
+                     maxvalid, monthinfo, hourinfo, level, bins):
     """Generate a text table of windrose information
 
     Args:
@@ -158,10 +158,13 @@ def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
       monthinfo (dict): information on month limiting
       hourinfo (dict): information on hour limiting
       level (int): in case of RAOB, which level do we care for
+      bins (list): values to bin the wind speeds
 
     Returns:
       str of information"""
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
+    if len(bins) > 0:
+        wu['bins'] = bins
     dir_edges, var_bins, table = histogram(drct, sknt,
                                            np.asarray(
                                             wu['bins']),
@@ -199,7 +202,7 @@ def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
 
 
 def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
-               sname, minvalid, maxvalid, level):
+               sname, minvalid, maxvalid, level, bins):
     """Generate a matplotlib windrose plot
 
     Args:
@@ -215,6 +218,7 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
       minvalid (datetime): minimum observation time
       maxvalid (datetime): maximum observation time
       level (int): RAOB level in hPa of interest
+      bins (list): values for binning the wind speeds
 
     Returns:
       matplotlib.Figure
@@ -225,6 +229,12 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
     ax = WindroseAxes(fig, rect, axisbg='w')
     fig.add_axes(ax)
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
+    if len(bins) > 0:
+        wu['bins'] = bins
+        wu['binlbl'] = []
+        for i, mybin in enumerate(bins[1:-1]):
+            wu['binlbl'].append("%g-%g" % (mybin, bins[i+2]))
+        wu['binlbl'].append("%g+" % (bins[-1],))
     ax.bar(drct, sknt, normed=True, bins=wu['bins'], opening=0.8,
            edgecolor='white', nsector=nsector, rmax=rmax)
     handles = []
@@ -282,7 +292,7 @@ def windrose(station, database='asos', months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
              justdata=False, rmax=None, cursor=None, sname=None,
-             sknt=None, drct=None, level=None):
+             sknt=None, drct=None, level=None, bins=[]):
     """Utility function that generates a windrose plot
 
     Args:
@@ -302,6 +312,7 @@ def windrose(station, database='asos', months=np.arange(1, 13),
       sknt (list,optional): A list of wind speeds in knots already generated
       drct (list,optional): A list of wind directions (deg N) already generated
       level (int,optional): In case of RAOB, which level interests us (hPa)
+      bins (list,optional): bins to use for the wind speed
 
     Returns:
       matplotlib.Figure instance or textdata
@@ -316,12 +327,12 @@ def windrose(station, database='asos', months=np.arange(1, 13),
     sknt = speed(sknt, 'KT').value(units.upper())
     if justdata:
         return _make_textresult(station, sknt, drct, units, nsector, sname,
-                                minvalid, maxvalid, monthinfo, hourinfo, level)
+                                minvalid, maxvalid, monthinfo, hourinfo, level,
+                                bins)
     if len(sknt) < 5 or np.max(sknt) < 1:
         fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
         fig.text(0.17, 0.89, 'Not enough data available to generate plot')
         return fig
 
-
     return _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
-                      sname, minvalid, maxvalid, level)
+                      sname, minvalid, maxvalid, level, bins)
