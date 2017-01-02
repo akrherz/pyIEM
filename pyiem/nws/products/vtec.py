@@ -82,10 +82,11 @@ class VTECProduct(TextProduct):
                                               myfmt(row['utc_issue']),
                                               myfmt(row['utc_expire']),
                                               myfmt(row['utc_updated']))
-        return ('Warning: %s.%s.%s do_sql_vtec %s '
+        return ('Warning: %s.%s.%s do_sql_vtec %s %s '
                 'updated %s row, should %s rows\nUGCS: %s\n'
                 'valid: %s expire: %s\n%s'
-                ) % (vtec.phenomena, vtec.significance, vtec.ETN, vtec.action,
+                ) % (vtec.phenomena, vtec.significance, vtec.ETN,
+                     warning_table, vtec.action,
                      cnt, len(segment.ugcs), segment.ugcs, self.valid,
                      ets, debugmsg)
 
@@ -122,13 +123,17 @@ class VTECProduct(TextProduct):
         """ Figure out which table we should work against """
         if vtec.action in ["NEW", ]:
             return "warnings_%s" % (self.valid.year,)
-        # Look this year
-        txn.execute("""SELECT
-        min(product_issue at time zone 'UTC') from warnings
-        WHERE wfo = %s and eventid = %s and significance = %s and
-        phenomena = %s and (expire + '6 hours'::interval) > %s""", (
-            vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
-            self.valid))
+        # Lets query the database to look for any matchinging entries within
+        # the past 10 days, to find with the product_issue was, which guides
+        # the table that the data is stored within
+        # TODO: edge case whereby an initial warning issued in one year is
+        # later expanded to other zones in the next year
+        txn.execute("""
+            SELECT min(product_issue at time zone 'UTC') from warnings
+            WHERE wfo = %s and eventid = %s and significance = %s and
+            phenomena = %s and updated > %s and updated <= %s
+        """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
+              self.valid - datetime.timedelta(days=30), self.valid))
         row = txn.fetchone()
         if row['min'] is None:
             table = "warnings_%s" % (self.valid.year,)
@@ -139,9 +144,6 @@ class VTECProduct(TextProduct):
                                        table))
             return table
         year = row['min'].year
-        if abs(year - self.valid.year) > 1:
-            self.warnings.append("Thought this warning was %s" % (year,))
-            return "warnings_%s" % (self.valid.year,)
         return "warnings_%s" % (year,)
 
     def do_sql_vtec(self, txn, segment, vtec):
