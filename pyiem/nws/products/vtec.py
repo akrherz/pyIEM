@@ -124,7 +124,7 @@ class VTECProduct(TextProduct):
         if vtec.action in ["NEW", ]:
             return "warnings_%s" % (self.valid.year,)
         # Lets query the database to look for any matchinging entries within
-        # the past 10 days, to find with the product_issue was, which guides
+        # the past 2 days, to find with the product_issue was, which guides
         # the table that the data is stored within
         # TODO: edge case whereby an initial warning issued in one year is
         # later expanded to other zones in the next year
@@ -133,7 +133,7 @@ class VTECProduct(TextProduct):
             WHERE wfo = %s and eventid = %s and significance = %s and
             phenomena = %s and updated > %s and updated <= %s
         """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
-              self.valid - datetime.timedelta(days=30), self.valid))
+              self.valid - datetime.timedelta(days=2), self.valid))
         row = txn.fetchone()
         if row['min'] is None:
             table = "warnings_%s" % (self.valid.year,)
