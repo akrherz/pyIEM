@@ -131,9 +131,11 @@ class VTECProduct(TextProduct):
         txn.execute("""
             SELECT min(product_issue at time zone 'UTC') from warnings
             WHERE wfo = %s and eventid = %s and significance = %s and
-            phenomena = %s and updated > %s and updated <= %s
+            phenomena = %s and ((updated > %s and updated <= %s)
+            or expire > %s)
         """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
-              self.valid - datetime.timedelta(days=2), self.valid))
+              self.valid - datetime.timedelta(days=2), self.valid,
+              self.valid))
         row = txn.fetchone()
         if row['min'] is None:
             table = "warnings_%s" % (self.valid.year,)
