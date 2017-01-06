@@ -11,6 +11,10 @@ def get_path(name):
 
 class Tests(unittest.TestCase):
 
+    def test_cli(self):
+        df = dep.read_cli(get_path('cli.txt'))
+        self.assertEquals(len(df.index), 4018)
+
     def test_empty(self):
         df = dep.read_env(get_path('empty_env.txt'))
         self.assertEquals(len(df.index), 0)
