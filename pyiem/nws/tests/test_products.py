@@ -48,6 +48,15 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170115_table_failure(self):
+        """Test WSW series for issues"""
+        for i in range(12):
+            print('Parsing Product: %s.txt' % (i,))
+            prod = vtecparser(get_file('WSWAMA/WSWAMA_%02i.txt' % (i,)))
+            prod.sql(self.txn)
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0)
+
     def test_160912_missing(self):
         """see why this series failed in production"""
         for i in range(4):
