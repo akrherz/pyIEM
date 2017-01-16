@@ -140,7 +140,7 @@ def parse_lsr(text):
     dstr = "%s:%s %s %s" % (h12, mm, ampm, lines[1][:10])
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
 
-    lsr.typetext = lines[0][12:29].strip().upper()
+    lsr.typetext = lines[0][12:29].strip()
 
     lsr.city = lines[0][29:53].strip()
 

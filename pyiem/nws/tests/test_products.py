@@ -48,6 +48,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170116_mixedlsr(self):
+        """LSRBOU has mixed case, see what we can do"""
+        utcnow = utc(2016, 11, 29, 22, 00)
+        prod = parser(get_file('mIxEd_CaSe/LSRBOU.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEqual(j[0][2]['twitter'], (
+            "At 11:00 AM, Akron [Washington Co, CO] ASOS reports "
+            "High Wind of M63 MPH #BOU "
+            "http://iem.local/#BOU/201611291800/201611291800"))
+
     def test_170115_table_failure(self):
         """Test WSW series for issues"""
         for i in range(12):

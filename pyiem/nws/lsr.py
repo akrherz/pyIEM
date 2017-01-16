@@ -65,7 +65,7 @@ class LSR(object):
 
     def get_dbtype(self):
         ''' Return the typecode used in the database for this event type '''
-        return reference.lsr_events.get(self.typetext, None)
+        return reference.lsr_events.get(self.typetext.upper(), None)
 
     def sql(self, txn):
         ''' Provided a database transaction object, persist this LSR '''
