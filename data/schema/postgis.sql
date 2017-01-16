@@ -2359,3 +2359,28 @@ CREATE INDEX sbw_2013_gix ON sbw_2013 USING GIST (geom);
 CREATE INDEX sbw_2014_gix ON sbw_2014 USING GIST (geom);
 CREATE INDEX sbw_2015_gix ON sbw_2015 USING GIST (geom);
 
+create table lsrs_2017( 
+  CONSTRAINT __lsrs_2017_check 
+  CHECK(valid >= '2017-01-01 00:00+00'::timestamptz 
+        and valid < '2018-01-01 00:00+00')) 
+  INHERITS (lsrs);
+CREATE INDEX lsrs_2017_valid_idx on lsrs_2017(valid);
+CREATE INDEX lsrs_2017_wfo_idx on lsrs_2017(wfo);
+GRANT SELECT on lsrs_2017 to nobody,apache;
+
+CREATE TABLE warnings_2017() inherits (warnings);
+CREATE INDEX warnings_2017_combo_idx on 
+	warnings_2017(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2017_expire_idx on warnings_2017(expire);
+CREATE INDEX warnings_2017_gtype_idx on warnings_2017(gtype);
+CREATE INDEX warnings_2017_issue_idx on warnings_2017(issue);
+CREATE INDEX warnings_2017_ugc_idx on warnings_2017(ugc);
+CREATE INDEX warnings_2017_wfo_idx on warnings_2017(wfo);
+grant select on warnings_2017 to nobody,apache;
+
+CREATE table sbw_2017() inherits (sbw);
+create index sbw_2017_idx on sbw_2017(wfo,eventid,significance,phenomena);
+create index sbw_2017_expire_idx on sbw_2017(expire);
+create index sbw_2017_issue_idx on sbw_2017(issue);
+create index sbw_2017_wfo_idx on sbw_2017(wfo);
+grant select on sbw_2017 to apache,nobody;
