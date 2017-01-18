@@ -876,7 +876,7 @@ class MapPlot(object):
         figwidth = bbox.width * self.fig.dpi
         figheight = bbox.height * self.fig.dpi
         if self.textmask is None:
-            self.textmask = np.zeros((figwidth, figheight), bool)
+            self.textmask = np.zeros((int(figwidth), int(figheight)), bool)
         thismap = self.map
         thisax = self.ax
         # Create a fake label, to test out our scaling
