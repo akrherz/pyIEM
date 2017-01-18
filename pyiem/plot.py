@@ -915,7 +915,8 @@ class MapPlot(object):
             imgy1 = min([figheight, (imgy0 +
                                      mystr_lines * ypixels +
                                      2 * labelbuffer * 0.75)])
-            _cnt = np.sum(np.where(self.textmask[imgx0:imgx1, imgy0:imgy1],
+            _cnt = np.sum(np.where(self.textmask[int(imgx0):int(imgx1),
+                                                 int(imgy0):int(imgy1)],
                                    1, 0))
             # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
@@ -936,7 +937,7 @@ class MapPlot(object):
                        "x:%s-%s y:%s-%s _cnt:%s"
                        ) % (repr(mystr), imgx, figwidth, imgy, figheight,
                             imgx0, imgx1, imgy0, imgy1, _cnt))
-            self.textmask[imgx0:imgx1, imgy0:imgy1] = True
+            self.textmask[int(imgx0):int(imgx1), int(imgy0):int(imgy1)] = True
             t0 = thisax.text(x, y, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center' if not showmarker else 'bottom',
