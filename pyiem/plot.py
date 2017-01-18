@@ -562,7 +562,7 @@ class MapPlot(object):
           kwargs:
             titlefontsize (int): fontsize to use for the plot title
             subtitlefontsize (int): fontsize to use for the plot subtitle
-            axisbg (str): color to fill the background (defaults to blue)
+            continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
         """
         self.debug = kwargs.get('debug', False)
@@ -574,7 +574,7 @@ class MapPlot(object):
             self.fig = plt.figure(num=None, figsize=figsize,
                                   dpi=kwargs.get('dpi', 100))
             self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
-                               axisbg=(0.4471, 0.6235, 0.8117))
+                               facecolor=(0.4471, 0.6235, 0.8117))
             self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                                 yticks=[], xticks=[])
         # Storage of basemaps within this plot
@@ -654,11 +654,11 @@ class MapPlot(object):
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
                 pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
-                                 axisbg=(0.4471, 0.6235, 0.8117))
+                                 facecolor=(0.4471, 0.6235, 0.8117))
                 hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
-                                 axisbg=(0.4471, 0.6235, 0.8117))
+                                 facecolor=(0.4471, 0.6235, 0.8117))
                 ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
-                                 axisbg=(0.4471, 0.6235, 0.8117))
+                                 facecolor=(0.4471, 0.6235, 0.8117))
                 self.maps.append(Basemap(projection='cyl',
                                          urcrnrlat=18.6, llcrnrlat=17.5,
                                          urcrnrlon=-65.0, llcrnrlon=-68.0,
@@ -678,8 +678,11 @@ class MapPlot(object):
         for _a in self.maps:
             if _a is None:
                 continue
-            _a.fillcontinents(color=kwargs.get('axisbg',
-                                               (0.4471, 0.6235, 0.8117)),
+            # legacy usage of axisbg here
+            _c = kwargs.get('axisbg',
+                            kwargs.get('continentalcolor',
+                                       (0.4471, 0.6235, 0.8117)))
+            _a.fillcontinents(color=_c,
                               zorder=0)
             _a.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
             _a.drawcoastlines(zorder=Z_POLITICAL)
@@ -1249,7 +1252,8 @@ class MapPlot(object):
             return
         logo = Image.open(fn)
         ax3 = plt.axes([0.02, 0.89, 0.1, 0.1], frameon=False,
-                       axisbg=(0.4471, 0.6235, 0.8117), yticks=[], xticks=[])
+                       facecolor=(0.4471, 0.6235, 0.8117),
+                       yticks=[], xticks=[])
         ax3.imshow(logo, origin='upper')
 
     def postprocess(self, view=False, filename=None, web=False,

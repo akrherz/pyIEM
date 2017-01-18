@@ -10,7 +10,7 @@ class TestPlot(unittest.TestCase):
     def test_albers(self):
         """See if we can plot albers"""
         m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-                         south=38, projection='aea', axisbg='white')
+                         south=38, projection='aea', continentalcolor='white')
         m.postprocess(filename='/tmp/test_plot_albers.png')
         m.close()
 
@@ -36,7 +36,7 @@ class TestPlot(unittest.TestCase):
 
     def test_drawcities(self):
         """Fill the Iowa WFOs"""
-        m = plot.MapPlot(title='Fill and Draw Cities', axisbg='blue',
+        m = plot.MapPlot(title='Fill and Draw Cities', continentalcolor='blue',
                          sector='iowa')
         m.drawcities()
         m.postprocess(filename='/tmp/test_plot_drawcities.png')
@@ -46,7 +46,7 @@ class TestPlot(unittest.TestCase):
     def test_drawrandomtext(self):
         """See if we can handle the fun that is drawing random text"""
         m = plot.MapPlot(sector='iowa', title='Fun Text, here and there',
-                         axisbg='white', debug=True)
+                         continentalcolor='white', debug=True)
         m.plot_values([-94, -92, -91, -92],
                       [42, 41, 43, 42.4],
                       ['One', 'Two\nTwo', 'Three\nThree\nThree',
@@ -160,7 +160,7 @@ class TestPlot(unittest.TestCase):
 
     def test_overlap(self):
         """ Do some checking of our overlaps logic """
-        m = plot.MapPlot(sector='midwest', axisbg='white')
+        m = plot.MapPlot(sector='midwest', continentalcolor='white')
         lons = np.linspace(-99, -90, 100)
         lats = np.linspace(38, 44, 100)
         vals = lats
@@ -171,7 +171,7 @@ class TestPlot(unittest.TestCase):
 
     def test_barbs(self):
         """Testing the plotting of wind barbs"""
-        m = plot.MapPlot(axisbg='white')
+        m = plot.MapPlot(continentalcolor='white')
         data = [dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
                 dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
                 ]
@@ -217,13 +217,13 @@ class TestPlot(unittest.TestCase):
 
     def test_plot2(self):
         """ Exercise NWS plot API """
-        m = plot.MapPlot(sector='nws', axisbg='white')
+        m = plot.MapPlot(sector='nws', continentalcolor='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another', ilabel=True)
         m.postprocess(filename='/tmp/us_plot_example.png')
         m.close()
 
-        m = plot.MapPlot(sector='iowa', axisbg='white')
+        m = plot.MapPlot(sector='iowa', continentalcolor='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another')
         m.postprocess(filename='/tmp/iowa_plot_example.png')
