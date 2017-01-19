@@ -229,10 +229,10 @@ def gdd(high, low, base=50, ceiling=86):
     """
     highf = high.value('F')
     lowf = low.value('F')
-    highf = np.where(highf < base, base, highf)
-    lowf = np.where(lowf < base, base, lowf)
-    highf = np.where(highf > ceiling, ceiling, highf)
-    lowf = np.where(lowf > ceiling, ceiling, lowf)
+    highf = np.where(np.ma.less(highf, base), base, highf)
+    lowf = np.where(np.ma.less(lowf, base), base, lowf)
+    highf = np.where(np.ma.greater(highf, ceiling), ceiling, highf)
+    lowf = np.where(np.ma.greater(lowf, ceiling), ceiling, lowf)
     res = (highf + lowf) / 2. - 50.
     if res.shape == [1]:
         return res[0]

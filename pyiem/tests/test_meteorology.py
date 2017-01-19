@@ -3,7 +3,17 @@ import numpy as np
 from pyiem import datatypes, meteorology
 
 
-class TestDatatypes(unittest.TestCase):
+class TestCase(unittest.TestCase):
+
+    def test_gdd_with_nans(self):
+        """Can we properly deal with nan's and not emit warnings?"""
+        highs = np.ma.array([70, 80, np.nan, 90],
+                            mask=[False, False, True, False])
+        lows = highs - 10
+        r = meteorology.gdd(datatypes.temperature(highs, 'F'),
+                            datatypes.temperature(lows, 'F'),
+                            50, 86)
+        self.assertTrue(np.isnan(r[2]))
 
     def test_gdd(self):
         """Growing Degree Days"""
