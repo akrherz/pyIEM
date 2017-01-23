@@ -226,7 +226,7 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
     # Generate figure
     fig = plt.figure(figsize=(7, 7), dpi=80, facecolor='w', edgecolor='w')
     rect = [0.15, 0.15, 0.7, 0.7]
-    ax = WindroseAxes(fig, rect, axisbg='w')
+    ax = WindroseAxes(fig, rect, facecolor='w', rmax=rmax)
     fig.add_axes(ax)
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
     if len(bins) > 0:
@@ -236,7 +236,7 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
             wu['binlbl'].append("%g-%g" % (mybin, bins[i+2]))
         wu['binlbl'].append("%g+" % (bins[-1],))
     ax.bar(drct, sknt, normed=True, bins=wu['bins'], opening=0.8,
-           edgecolor='white', nsector=nsector, rmax=rmax)
+           edgecolor='white', nsector=nsector)
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
