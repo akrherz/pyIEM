@@ -135,8 +135,12 @@ class FTPSession(object):
             if not res:
                 logging.error("Double Failure to upload filename: '%s'",
                               localfn)
+                return False
+        return True
 
     def put_files(self, path, localfns, remotefns):
         """ Put the File """
+        res = []
         for localfn, remotefn in zip(localfns, remotefns):
-            self.put_file(path, localfn, remotefn)
+            res.append(self.put_file(path, localfn, remotefn))
+        return res

@@ -128,6 +128,10 @@ def send2box(filenames, remote_path, remotenames=None,
       ftpserver (str): FTP server to connect to...
       tmpdir (str, optional): Temperary folder to if an individual file is over
         15 GB in size
+
+    Returns:
+      FTPSession
+      list of success `True` or failures `False` matching filenames
     """
     credentials = netrc.netrc().hosts[ftpserver]
     if fs is None:
@@ -139,8 +143,8 @@ def send2box(filenames, remote_path, remotenames=None,
         remotenames = filenames
     if isinstance(remotenames, str):
         remotenames = [remotenames, ]
-    fs.put_files(remote_path, filenames, remotenames)
-    return fs
+    res = fs.put_files(remote_path, filenames, remotenames)
+    return fs, res
 
 
 def get_properties():
