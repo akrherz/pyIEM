@@ -40,7 +40,7 @@ class TestPlot(unittest.TestCase):
     def test_michigan(self):
         """See what we do with Michigan"""
         m = plot.MapPlot(sector='state', state='MI')
-        m.contourf(range(-94, -85), range(36, 45), range(9), range(9),
+        m.contourf(range(-84, -75), range(36, 45), range(9), range(9),
                    clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
         m.postprocess(filename='/tmp/test_plot_michigan.png')
         m.close()

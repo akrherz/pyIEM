@@ -258,8 +258,8 @@ def mask_outside_geom(themap, ax, geom):
                                 (len(x) - 1) * [mpath.Path.LINETO]])
 
     path = mpath.Path(verts, codes)
-    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
-                               zorder=Z_CLIP)
+    patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
+                               zorder=Z_CLIP, alpha=0.5)
     ax.add_patch(patch)
 
 
@@ -292,8 +292,8 @@ def mask_outside_polygon(poly_verts, ax=None):
     # Plot the masking patch
     path = mpath.Path(np.concatenate([bound_verts, poly_verts]),
                       bound_codes + poly_codes)
-    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
-                               zorder=Z_CLIP)
+    patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
+                               zorder=Z_CLIP, alpha=0.5)
     patch = ax.add_patch(patch)
 
     # Reset the plot limits to their original extents
