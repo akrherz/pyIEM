@@ -123,30 +123,33 @@ class VTECProduct(TextProduct):
         """ Figure out which table we should work against """
         if vtec.action in ["NEW", ]:
             return "warnings_%s" % (self.valid.year,)
-        # Lets query the database to look for any matchinging entries within
-        # the past 3 days, to find with the product_issue was, which guides
-        # the table that the data is stored within
+        # Lets query the database to look for any matching entries within
+        # the past 3, 10, 31 days, to find with the product_issue was,
+        # which guides the table that the data is stored within
         # TODO: edge case whereby an initial warning issued in one year is
         # later expanded to other zones in the next year
-        txn.execute("""
-            SELECT min(product_issue at time zone 'UTC') from warnings
-            WHERE wfo = %s and eventid = %s and significance = %s and
-            phenomena = %s and ((updated > %s and updated <= %s)
-            or expire > %s)
-        """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
-              self.valid - datetime.timedelta(days=3), self.valid,
-              self.valid))
-        row = txn.fetchone()
-        if row['min'] is None:
-            table = "warnings_%s" % (self.valid.year,)
-            self.warnings.append(("Failed to find active year:\n"
-                                  "  VTEC:%s\n  PRODUCT: %s\n"
-                                  "  using table: %s"
-                                  ) % (str(vtec), self.get_product_id(),
-                                       table))
-            return table
-        year = row['min'].year
-        return "warnings_%s" % (year,)
+        for offset in [3, 10, 31]:
+            txn.execute("""
+                SELECT min(product_issue at time zone 'UTC') from warnings
+                WHERE wfo = %s and eventid = %s and significance = %s and
+                phenomena = %s and ((updated > %s and updated <= %s)
+                or expire > %s)
+            """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
+                  self.valid - datetime.timedelta(days=offset), self.valid,
+                  self.valid))
+            row = txn.fetchone()
+            if row['min'] is not None:
+                year = row['min'].year
+                return "warnings_%s" % (year,)
+
+        # Give up
+        table = "warnings_%s" % (self.valid.year,)
+        self.warnings.append(("Failed to find year of product issuance:\n"
+                              "  VTEC:%s\n  PRODUCT: %s\n"
+                              "  defaulting to use table: %s"
+                              ) % (str(vtec), self.get_product_id(),
+                                   table))
+        return table
 
     def do_sql_vtec(self, txn, segment, vtec):
         """ Persist the non-SBW stuff to the database
