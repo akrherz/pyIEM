@@ -48,6 +48,13 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170207_mixedhwo(self):
+        """Check our parsing of mixed case HWO"""
+        prod = parser(get_file('mIxEd_CaSe/HWOLOT.txt'))
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEquals(len(prod.warnings), 0)
+        self.assertEquals(len(j[0]), 3)
+
     def test_170116_mixedlsr(self):
         """LSRBOU has mixed case, see what we can do"""
         utcnow = utc(2016, 11, 29, 22, 00)

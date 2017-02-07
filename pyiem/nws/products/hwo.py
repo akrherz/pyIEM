@@ -1,17 +1,16 @@
 import re
-
 from pyiem.nws.product import TextProduct
 
 
 class HWOException(Exception):
-    ''' Exception '''
+    """ Exception """
     pass
 
 
 class HWOProduct(TextProduct):
-    '''
-    Represents a XXX
-    '''
+    """
+    Represents a HWO
+    """
 
     def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None):
@@ -27,11 +26,11 @@ class HWOProduct(TextProduct):
         for segnum, segment in enumerate(self.segments):
             if len(segment.ugcs) == 0:
                 continue
-            day1 = segment.unixtext.find(".DAY ONE...")
+            day1 = segment.unixtext.upper().find(".DAY ONE...")
             if day1 == -1 and self.afos != 'HWOSPN':
                 raise HWOException("segment %s is missing DAY ONE section" % (
                                                                     segnum,))
-            day27 = segment.unixtext.find(".DAYS TWO THROUGH SEVEN...")
+            day27 = segment.unixtext.upper().find(".DAYS TWO THROUGH SEVEN...")
             if day27 == -1 and self.afos != 'HWOSPN':
                 raise HWOException(("segment %s is missing DAYS TWO "
                                     "THROUGH SEVEN section") % (segnum, ))
@@ -39,11 +38,11 @@ class HWOProduct(TextProduct):
             day1text = re.search((r'(NO HAZARDOUS WEATHER IS EXPECTED AT '
                                   'THIS TIME|THE PROBABILITY FOR WIDESPREAD '
                                   'HAZARDOUS WEATHER IS LOW)'),
-                                 segment.unixtext[day1:day27])
+                                 segment.unixtext[day1:day27], re.IGNORECASE)
             day27text = re.search((r'(NO HAZARDOUS WEATHER IS EXPECTED AT '
                                    'THIS TIME|THE PROBABILITY FOR WIDESPREAD '
                                    'HAZARDOUS WEATHER IS LOW)'),
-                                  segment.unixtext[day27:])
+                                  segment.unixtext[day27:], re.IGNORECASE)
             if day1text is None:
                 no_storms_day1 = False
             if day27text is None:
