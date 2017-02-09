@@ -3,6 +3,8 @@ import datetime
 import numpy as np
 import psycopg2
 import os
+import pandas as pd
+from pandas.io.sql import read_sql
 from pyiem.datatypes import speed
 import matplotlib
 matplotlib.use('agg')
@@ -81,17 +83,10 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
       level (int): in case of RAOB, which pressure level (hPa)
 
     Returns:
-      numpy.array wind speed in knots
-      numpy.array wind direction
-      datetime of earliest ob
-      datetime of latest ob
+      pandas.DataFrame of the data
     """
     # Query observations
-    if cursor is None:
-        db = psycopg2.connect(database=database, host='iemdb', user='nobody')
-        acursor = db.cursor()
-    else:
-        acursor = cursor
+    db = psycopg2.connect(database=database, host='iemdb', user='nobody')
     rlimiter = ""
     if database == 'asos':
         rlimiter = " and report_type = 2 "
@@ -102,8 +97,7 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         """ % (station, sts, ets, monthinfo['sqltext'], hourinfo['sqltext'],
                rlimiter)
     if level is not None:  # HACK!
-        acursor.execute("""SET TIME ZONE 'UTC'""")
-        sql = """SELECT p.smps * 1.94384, p.drct, f.valid from
+        sql = """SELECT p.smps * 1.94384 as sknt, p.drct, f.valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
         f.station = '%s' and p.pressure = %s and p.smps is not null
         and p.drct is not null and valid >= '%s' and valid < '%s'
@@ -111,50 +105,27 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         %s
         """ % (station, level, sts, ets, monthinfo['sqltext'],
                hourinfo['sqltext'])
-        # sys.stderr.write(sql.replace("\n", " "))
-    acursor.execute(sql)
-    sped = np.zeros((acursor.rowcount,), 'f')
-    drct = np.zeros((acursor.rowcount,), 'f')
-    minvalid = sts
-    maxvalid = ets
-    i = 0
-    for row in acursor:
-        # if row[2].month not in months or row[2].hour not in hours:
-        #    continue
-        if i == 0:
-            minvalid = row[2]
-            maxvalid = row[2]
-        if row[2] < minvalid:
-            minvalid = row[2]
-        if row[2] > maxvalid:
-            maxvalid = row[2]
-        if row[0] is None or row[0] < 3 or row[1] is None or row[1] < 0:
-            sped[i] = 0
-            drct[i] = 0
-        elif row[0] == 0 or row[1] == 0:
-            sped[i] = 0
-            drct[i] = 0
-        else:
-            sped[i] = row[0]
-            drct[i] = row[1]
-        i += 1
+    df = read_sql(sql, db, index_col=None)
+    # Any wind speed below 3 knots is considered calm, which means
+    # 0 sknt and 0 drct
+    df.loc[df['sknt'] < 3, ['sknt', 'drct']] = [0, 0]
+    # If sknt or drct are null, we want to set the other to null as well
+    df.loc[pd.isnull(df['drct']), 'sknt'] = None
+    df.loc[pd.isnull(df['sknt']), 'drct'] = None
 
-    return sped, drct, minvalid, maxvalid
+    return df
 
 
-def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
-                     maxvalid, monthinfo, hourinfo, level, bins):
+def _make_textresult(station, df, units, nsector, sname, monthinfo, hourinfo,
+                     level, bins):
     """Generate a text table of windrose information
 
     Args:
       station (str): the station identifier
-      sknt (list): The wind speed values
-      drct (list): the wind direction values
+      df (pd.DataFrame): The dataframe with data
       units (str): the units of the `sknt` values
       nsector (int): number of sectors to divide rose into
       sname (str): the station name
-      minvalid (datetime): the minimum observation time
-      maxvalid (datetime): the maximum observation time
       monthinfo (dict): information on month limiting
       hourinfo (dict): information on hour limiting
       level (int): in case of RAOB, which level do we care for
@@ -165,18 +136,21 @@ def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
     if len(bins) > 0:
         wu['bins'] = bins
-    dir_edges, var_bins, table = histogram(drct, sknt,
-                                           np.asarray(
-                                            wu['bins']),
+    # Effectively filters out the nulls
+    df2 = df[df['drct'] >= 0]
+    dir_edges, var_bins, table = histogram(df2['drct'].values,
+                                           df2['speed'].values,
+                                           np.asarray(wu['bins']),
                                            nsector, normed=True)
     res = ("# Windrose Data Table (Percent Frequency) "
            "for %s (%s)\n"
            ) % (
         sname if sname is not None else "((%s))" % (station, ), station)
-    res += "# Observation Count: %s\n" % (len(sknt),)
+    res += ("# Observations Used/Missing/Total: %s/%s/%s\n"
+            ) % (len(df2.index), len(df.index)-len(df2.index), len(df.index))
     res += ("# Period: %s - %s\n"
-            ) % (minvalid.strftime("%-d %b %Y"),
-                 maxvalid.strftime("%-d %b %Y"))
+            ) % (df['valid'].min().strftime("%-d %b %Y"),
+                 df['valid'].max().strftime("%-d %b %Y"))
     res += "# Hour Limiter: %s\n" % (hourinfo['labeltext'],)
     res += "# Month Limiter: %s\n" % (monthinfo['labeltext'],)
     res += "# Wind Speed Units: %s\n" % (wu['label'],)
@@ -201,13 +175,13 @@ def _make_textresult(station, sknt, drct, units, nsector, sname, minvalid,
     return res
 
 
-def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
-               sname, minvalid, maxvalid, level, bins):
+def _make_plot(station, df, units, nsector, rmax, hours, months,
+               sname, level, bins):
     """Generate a matplotlib windrose plot
 
     Args:
       station (str): station identifier
-      sknt (list): list of wind obs
+      df (pd.DataFrame): observations
       drct (list): list of wind directions
       units (str): units of wind speed
       nsector (int): number of bins to use for windrose
@@ -215,8 +189,6 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
       hours (list): hour limit for plot
       month (list): month limit for plot
       sname (str): station name
-      minvalid (datetime): minimum observation time
-      maxvalid (datetime): maximum observation time
       level (int): RAOB level in hPa of interest
       bins (list): values for binning the wind speeds
 
@@ -224,7 +196,7 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
       matplotlib.Figure
     """
     # Generate figure
-    fig = plt.figure(figsize=(7, 7), dpi=80, facecolor='w', edgecolor='w')
+    fig = plt.figure(figsize=(8, 8), dpi=100, facecolor='w', edgecolor='w')
     rect = [0.15, 0.15, 0.7, 0.7]
     ax = WindroseAxes(fig, rect, facecolor='w', rmax=rmax)
     fig.add_axes(ax)
@@ -235,17 +207,21 @@ def _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
         for i, mybin in enumerate(bins[1:-1]):
             wu['binlbl'].append("%g-%g" % (mybin, bins[i+2]))
         wu['binlbl'].append("%g+" % (bins[-1],))
-    ax.bar(drct, sknt, normed=True, bins=wu['bins'], opening=0.8,
-           edgecolor='white', nsector=nsector)
+    # Filters the missing values
+    df2 = df[df['drct'] >= 0]
+    ax.bar(df2['drct'].values, df2['speed'].values, normed=True,
+           bins=wu['bins'], opening=0.8, edgecolor='white', nsector=nsector)
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
         handles.append(plt.Rectangle((0, 0), 0.1, 0.3,
                                      facecolor=color, edgecolor='black'))
-    l = fig.legend(handles, wu['binlbl'], loc=(0.01, 0.01),
+    l = fig.legend(handles, wu['binlbl'],
+                   bbox_to_anchor=(0.01, 0.01, 0.98, 0.09), loc='center',
                    ncol=6,
                    title='Wind Speed [%s]' % (wu['abbr'],),
-                   mode=None, columnspacing=0.9, handletextpad=0.45)
+                   mode=None, columnspacing=0.9, handletextpad=0.45,
+                   fontsize=14)
     plt.setp(l.get_texts(), fontsize=10)
     # Now we put some fancy debugging info on the plot
     tlimit = "Time Domain: "
@@ -270,20 +246,20 @@ Period of Record: %s - %s""" % (
         station, sname if sname is not None else "((%s))" % (station, ),
         "" if level is None else " @%s hPa" % (level, ),
         tlimit,
-        minvalid.strftime("%d %b %Y"), maxvalid.strftime("%d %b %Y"))
-    plt.gcf().text(0.14, 0.99, label, va='top')
+        df['valid'].min().strftime("%d %b %Y"),
+        df['valid'].max().strftime("%d %b %Y"))
+    plt.gcf().text(0.14, 0.99, label, va='top', fontsize=14)
     plt.gcf().text(0.96, 0.11, (
-        "Stats\nn: %s\nCalm: %.1f%%\nAvg Speed: %.1f %s"
-        ) % (np.shape(sknt)[0],
-             np.sum(np.where(sknt < 2., 1., 0.)) / np.shape(sknt)[0] * 100.,
-             np.average(sknt), wu['abbr']), ha='right')
+        "Summary\nn: %s\nMissing: %s\nCalm: %.1f%%\nAvg Speed: %.1f %s"
+        ) % (len(df.index), len(df.index) - len(df2.index),
+             len(df[df['sknt'] == 0].index) / float(len(df2.index)) * 100.,
+             df['speed'].mean(), wu['abbr']), ha='right', fontsize=14)
     plt.gcf().text(0.01, 0.11, "Generated: %s" % (
                    datetime.datetime.now().strftime("%d %b %Y"),),
-                   verticalalignment="bottom")
+                   verticalalignment="bottom", fontsize=14)
     # Make a logo
     im = mpimage.imread('%s/%s' % (DATADIR, 'logo.png'))
-
-    plt.figimage(im, 10, 625)
+    plt.figimage(im, 10, 735)
 
     return fig
 
@@ -292,7 +268,7 @@ def windrose(station, database='asos', months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
              justdata=False, rmax=None, cursor=None, sname=None,
-             sknt=None, drct=None, level=None, bins=[]):
+             sknt=None, drct=None, valid=None, level=None, bins=[]):
     """Utility function that generates a windrose plot
 
     Args:
@@ -311,6 +287,7 @@ def windrose(station, database='asos', months=np.arange(1, 13),
         default to the ((`station`)) identifier
       sknt (list,optional): A list of wind speeds in knots already generated
       drct (list,optional): A list of wind directions (deg N) already generated
+      valid (list,optional): A list of valid datetimes (with tzinfo set)
       level (int,optional): In case of RAOB, which level interests us (hPa)
       bins (list,optional): bins to use for the wind speed
 
@@ -321,18 +298,20 @@ def windrose(station, database='asos', months=np.arange(1, 13),
     hourinfo = _get_timeinfo(hours, 'hour', 24)
 
     if sknt is None or drct is None:
-        (sknt, drct, minvalid, maxvalid) = _get_data(station, cursor, database,
-                                                     sts, ets, monthinfo,
-                                                     hourinfo, level)
-    sknt = speed(sknt, 'KT').value(units.upper())
+        df = _get_data(station, cursor, database, sts, ets, monthinfo,
+                       hourinfo, level)
+    else:
+        df = pd.DataFrame({'sknt': sknt, 'drct': drct, 'valid': valid})
+    # Convert wind speed into the units we want here
+    df['speed'] = speed(df['sknt'].values, 'KT').value(units.upper())
     if justdata:
-        return _make_textresult(station, sknt, drct, units, nsector, sname,
-                                minvalid, maxvalid, monthinfo, hourinfo, level,
+        return _make_textresult(station, df, units, nsector, sname,
+                                monthinfo, hourinfo, level,
                                 bins)
-    if len(sknt) < 5 or np.max(sknt) < 1:
+    if len(df.index) < 5 or df['sknt'].max() < 1:
         fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
         fig.text(0.17, 0.89, 'Not enough data available to generate plot')
         return fig
 
-    return _make_plot(station, sknt, drct, units, nsector, rmax, hours, months,
-                      sname, minvalid, maxvalid, level, bins)
+    return _make_plot(station, df, units, nsector, rmax, hours, months,
+                      sname, level, bins)

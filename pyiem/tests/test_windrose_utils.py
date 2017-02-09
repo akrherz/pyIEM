@@ -1,6 +1,6 @@
 import unittest
 import datetime
-import psycopg2
+import pytz
 from pyiem.windrose_utils import windrose, _get_timeinfo
 
 
@@ -16,22 +16,27 @@ class Test(unittest.TestCase):
 
     def test_windrose(self):
         """Exercise the windrose code"""
-        pgconn = psycopg2.connect(database='asos', host="iemdb")
-        cursor = pgconn.cursor()
         v = datetime.datetime(2015, 1, 1, 6)
+        v = v.replace(tzinfo=pytz.utc)
+        valid = []
+        sknt = []
+        drct = []
         for s in range(100):
             v += datetime.timedelta(hours=1)
-            cursor.execute("""INSERT into t2015(station, valid, sknt, drct)
-            VALUES (%s, %s, %s, %s)""", ('AMW2', v, s, s))
-        fig = windrose('AMW2', cursor=cursor, sname='Ames')
+            valid.append(v)
+            sknt.append(s)
+            drct.append(s)
+        fig = windrose('AMW2', sknt=sknt, drct=drct, valid=valid, sname='Ames')
         self.assertTrue(fig is not None)
         fig = windrose('AMW2',
-                       cursor=cursor, sts=datetime.datetime(2001, 1, 1),
+                       sknt=sknt, drct=drct, valid=valid,
+                       sts=datetime.datetime(2001, 1, 1),
                        ets=datetime.datetime(2016, 1, 1))
         # fig.savefig('/tmp/test_plot_windrose.png')
         self.assertTrue(fig is not None)
 
         res = windrose('AMW2',
-                       cursor=cursor, sts=datetime.datetime(2015, 1, 1),
+                       sknt=sknt, drct=drct, valid=valid,
+                       sts=datetime.datetime(2015, 1, 1),
                        ets=datetime.datetime(2015, 10, 2), justdata=True)
         assert isinstance(res, str)
