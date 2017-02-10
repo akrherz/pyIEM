@@ -106,18 +106,6 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         %s
         """ % (station, level, sts, ets, monthinfo['sqltext'],
                hourinfo['sqltext'])
-    if database == 'hads':
-        sql = """
-        WITH obs as (
-            SELECT valid, key, value from alldata where station = '%s' and
-            valid >= '%s' and valid < '%s' %s %s),
-        winddrct as (
-            SELECT valid, value from obs where substr(key, 1, 3) = 'UDI'),
-        windspeed as (
-            SELECT valid, value from obs where substr(key, 1, 3) = 'USI')
-        SELECT s.value * 0.868976 as sknt, d.value as drct, d.valid from
-        winddrct d JOIN windspeed s on (d.valid = s.valid)
-        """ % (station, sts, ets, monthinfo['sqltext'], hourinfo['sqltext'])
     df = read_sql(sql, db, index_col=None)
     # Any wind speed below 3 knots is considered calm, which means
     # 0 sknt and 0 drct
