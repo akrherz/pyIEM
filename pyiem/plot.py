@@ -53,7 +53,8 @@ import matplotlib.path as mpath
 # Basemap
 from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
 
-[Z_CF, Z_FILL, Z_CLIP, Z_POLITICAL, Z_OVERLAY, Z_OVERLAY2] = range(1, 7)
+[Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
+ Z_OVERLAY2] = range(1, 9)
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
 
@@ -258,8 +259,13 @@ def mask_outside_geom(themap, ax, geom):
                                 (len(x) - 1) * [mpath.Path.LINETO]])
 
     path = mpath.Path(verts, codes)
+    # Removes any external data
+    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
+                               zorder=Z_CLIP)
+    ax.add_patch(patch)
+    # Then gives a nice semitransparent look
     patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
-                               zorder=Z_CLIP, alpha=0.5)
+                               zorder=Z_CLIP2, alpha=0.65)
     ax.add_patch(patch)
 
 
@@ -292,8 +298,13 @@ def mask_outside_polygon(poly_verts, ax=None):
     # Plot the masking patch
     path = mpath.Path(np.concatenate([bound_verts, poly_verts]),
                       bound_codes + poly_codes)
+    # remove data
+    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
+                               zorder=Z_CLIP)
+    patch = ax.add_patch(patch)
+    # Then give semi-transparent look
     patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
-                               zorder=Z_CLIP, alpha=0.5)
+                               zorder=Z_CLIP2, alpha=0.65)
     patch = ax.add_patch(patch)
 
     # Reset the plot limits to their original extents
@@ -1044,7 +1055,11 @@ class MapPlot(object):
         mask_outside_polygon(zip(x, y), ax=self.ax)
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
-        """ Contourf """
+        """ Contourf
+
+        Args:
+          ilabel (boolean,optional): Should we label contours
+        """
         if isinstance(lons, list):
             lons = np.array(lons)
             lats = np.array(lats)
@@ -1084,8 +1099,14 @@ class MapPlot(object):
         vals = convolve2d(vals, window / window.sum(), mode='same',
                           boundary='symm')
         # vals = maskoceans(lons, lats, vals, resolution='h')
-        self.map.contourf(x, y, vals, clevs,
-                          cmap=cmap, norm=norm, zorder=Z_FILL, extend='both')
+        cs = self.map.contourf(x, y, vals, clevs,
+                               cmap=cmap, norm=norm, zorder=Z_FILL,
+                               extend='both')
+        csl = self.map.contour(x, y, vals, clevs, colors='w',
+                               zorder=Z_FILL_LABEL)
+        if kwargs.get('ilabel', 'False'):
+            self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'), colors='k',
+                           fontsize=14, zorder=Z_FILL_LABEL)
         self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
