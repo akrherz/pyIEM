@@ -107,9 +107,6 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         """ % (station, level, sts, ets, monthinfo['sqltext'],
                hourinfo['sqltext'])
     df = read_sql(sql, db, index_col=None)
-    # Any wind speed below 3 knots is considered calm, which means
-    # 0 sknt and 0 drct
-    df.loc[df['sknt'] < 3, ['sknt', 'drct']] = [0, 0]
     # If sknt or drct are null, we want to set the other to null as well
     df.loc[pd.isnull(df['drct']), 'sknt'] = None
     df.loc[pd.isnull(df['sknt']), 'drct'] = None
