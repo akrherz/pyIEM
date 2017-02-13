@@ -304,12 +304,13 @@ def windrose(station, database='asos', months=np.arange(1, 13),
     else:
         df = pd.DataFrame({'sknt': sknt, 'drct': drct, 'valid': valid})
     # Convert wind speed into the units we want here
-    df['speed'] = speed(df['sknt'].values, 'KT').value(units.upper())
+    if df['sknt'].max() > 0:
+        df['speed'] = speed(df['sknt'].values, 'KT').value(units.upper())
     if justdata:
         return _make_textresult(station, df, units, nsector, sname,
                                 monthinfo, hourinfo, level,
                                 bins)
-    if len(df.index) < 5 or df['sknt'].max() < 1:
+    if len(df.index) < 5 or not df['sknt'].max() > 0:
         fig = plt.figure(figsize=(6, 7), dpi=80, facecolor='w', edgecolor='w')
         fig.text(0.17, 0.89, 'Not enough data available to generate plot')
         return fig
