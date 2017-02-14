@@ -1099,12 +1099,12 @@ class MapPlot(object):
         vals = convolve2d(vals, window / window.sum(), mode='same',
                           boundary='symm')
         # vals = maskoceans(lons, lats, vals, resolution='h')
-        cs = self.map.contourf(x, y, vals, clevs,
-                               cmap=cmap, norm=norm, zorder=Z_FILL,
-                               extend='both')
+        self.map.contourf(x, y, vals, clevs,
+                          cmap=cmap, norm=norm, zorder=Z_FILL,
+                          extend='both')
         csl = self.map.contour(x, y, vals, clevs, colors='w',
                                zorder=Z_FILL_LABEL)
-        if kwargs.get('ilabel', 'False'):
+        if kwargs.get('ilabel', False):
             self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'), colors='k',
                            fontsize=14, zorder=Z_FILL_LABEL)
         self.draw_mask()
