@@ -13,7 +13,7 @@ before_install:
   - sudo apt-get install -qq python-pyproj python-mpltoolkits.basemap python-numpy python-scipy python-psycopg2
 install:
   - "pip install --upgrade pip"
-  - "pip install matplotlib>=2"
+  - "pip install matplotlib"
   - "pip install Shapely"
   - "pip install coveralls"
   - "pip install pandas"
