@@ -131,7 +131,7 @@ def windchill(temperature, speed):
     wci = (35.74 + .6215 * tmpf - 35.75 * np.power(sknt, 0.16) +
            .4275 * tmpf * np.power(sknt, 0.16))
     wci = np.where(np.logical_or(np.ma.less(sknt, 3),
-                                 np.ma.greater(tmpf, 50)), temperature, wci)
+                                 np.ma.greater(tmpf, 50)), tmpf, wci)
     return dt.temperature(wci, 'F')
 
 
