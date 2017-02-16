@@ -128,10 +128,10 @@ def windchill(temperature, speed):
     """
     tmpf = temperature.value("F")
     sknt = speed.value('KT')
-    if sknt < 3 or tmpf > 50:
-        return temperature
-    wci = (35.74 + .6215 * tmpf - 35.75 * math.pow(sknt, 0.16) +
-           .4275 * tmpf * math.pow(sknt, 0.16))
+    wci = (35.74 + .6215 * tmpf - 35.75 * np.power(sknt, 0.16) +
+           .4275 * tmpf * np.power(sknt, 0.16))
+    wci = np.where(np.logical_or(np.ma.less(sknt, 3),
+                                 np.ma.greater(tmpf, 50)), temperature, wci)
     return dt.temperature(wci, 'F')
 
 
@@ -153,15 +153,20 @@ def heatindex(temperature, polyarg):
         polyarg = relh(temperature, polyarg)
     rh = polyarg.value("%")
     t = temperature.value("F")
-    if t < 60 or t > 120:
-        return temperature
-    hdx = (16.923 + ((1.85212e-1)*t) + (5.37941*rh) -
-           ((1.00254e-1)*t*rh) + ((9.41695e-3)*t**2) + ((7.28898e-3)*rh**2) +
-           ((3.45372e-4)*t**2*rh) - ((8.14971e-4)*t*rh**2) +
-           ((1.02102e-5)*t**2*rh**2) - ((3.8646e-5)*t**3) +
-           ((2.91583e-5)*rh**3) + ((1.42721e-6)*t**3*rh) +
-           ((1.97483e-7)*t*rh**3) - ((2.18429e-8)*t**3*rh**2) +
-           ((8.43296e-10)*t**2*rh**3) - ((4.81975e-11)*t**3*rh**3))
+    t2 = np.power(t, 2)
+    t3 = np.power(t, 3)
+    rh2 = np.power(rh, 2)
+    rh3 = np.power(rh, 3)
+    hdx = (16.923 + ((1.85212e-1) * t) + (5.37941 * rh) -
+           ((1.00254e-1) * t * rh) + ((9.41695e-3) * t2) +
+           ((7.28898e-3) * rh2) +
+           ((3.45372e-4) * t2 * rh) - ((8.14971e-4) * t * rh2) +
+           ((1.02102e-5) * t2 * rh2) - ((3.8646e-5) * t3) +
+           ((2.91583e-5) * rh3) + ((1.42721e-6) * t3 * rh) +
+           ((1.97483e-7) * t * rh3) - ((2.18429e-8) * t3 * rh2) +
+           ((8.43296e-10) * t2 * rh3) - ((4.81975e-11) * t3 * rh3))
+    hdx = np.where(np.logical_or(np.ma.less(t, 60),
+                                 np.ma.greater(t, 120)), t, hdx)
     return dt.temperature(hdx, 'F')
 
 
