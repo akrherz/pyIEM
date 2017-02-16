@@ -73,7 +73,7 @@ def str2multipolygon(s):
     polys = [copy.deepcopy(CONUSPOLY), ]
 
     for i, segment in enumerate(segments):
-        print(('Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)'
+        print(('  Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)'
                ) % (i+1, len(segments), len(segment), segment[0][0],
                     segment[0][1], segment[-1][0], segment[-1][1]))
         if segment[0] == segment[-1] and len(segment) > 2:
@@ -128,8 +128,13 @@ def str2multipolygon(s):
 
         # Figure out which polygon this line intersects
         found = False
-        for j, poly in enumerate(polys):
+        for j in range(-1, -1 - len(polys), -1):
+            if found:
+                break
+            poly = polys[j]
+            print("     polys iter j=%s len(polys) = %s" % (j, len(polys)))
             if not poly.intersection(ls):
+                print("    - linestring does not intersect poly, continue")
                 continue
             found = True
             for q in range(5):
@@ -140,9 +145,11 @@ def str2multipolygon(s):
                 distance = ((pie[:, 0] - line[q, 0])**2 +
                             (pie[:, 1] - line[q, 1])**2)**.5
                 idx1 = np.argmin(distance) - 1
+                idx1 = idx1 if idx1 > -1 else 0
                 distance = ((pie[:, 0] - line[0 - (q+1), 0])**2 +
                             (pie[:, 1] - line[0 - (q+1), 1])**2)**.5
                 idx2 = np.argmin(distance) + 1
+                idx2 = idx2 if idx2 > -1 else 0
 
                 sz = np.shape(pie)[0]
                 print(('     Q:%s computed intersections '
@@ -165,17 +172,19 @@ def str2multipolygon(s):
                     print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
                     tmpline = np.concatenate([line, pie[idx2:idx1]])
                     polys.append(Polygon(tmpline))
-                    print '     + adding polygon'
+                    print(('     + adding polygon index: %s area: %.2f'
+                           ) % (len(polys) - 1, polys[-1].area))
                 else:
                     raise Exception('this should not happen, idx1 == idx2!')
-
+                print("     breaking out of q loop")
                 break
 
         if not found:
             print '     segment did not intersect'
 
     res = []
-    print 'Resulted in len(polys): %s, now quality controlling' % (len(polys),)
+    print(('  Resulted in len(polys): %s, now quality controlling'
+           ) % (len(polys),))
     for i, p in enumerate(polys):
         if not p.is_valid:
             print '     ERROR: polygon %s is invalid!' % (i,)
@@ -222,7 +231,7 @@ class SPCPTS(object):
         import matplotlib.pyplot as plt
         load_conus_data()
         for outlook in self.outlooks:
-            fig = plt.figure()
+            fig = plt.figure(figsize=(12, 8))
             ax = fig.add_subplot(111)
             ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
             for poly in outlook.geometry:
@@ -233,7 +242,7 @@ class SPCPTS(object):
             ax.legend(loc=3)
             fn = '/tmp/%s_%s_%s.png' % (self.issue.strftime("%Y%m%d%H%M"),
                                         outlook.category, outlook.threshold)
-            print ':: creating plot %s' % (fn,)
+            print(':: creating plot %s' % (fn,))
             fig.savefig(fn)
             del fig
             del ax
@@ -245,22 +254,22 @@ class SPCPTS(object):
         if tp.afos == 'PTSDY1':
             self.day = '1'
             self.outlook_type = 'C'
-        if tp.afos == "PTSDY2":
+        elif tp.afos == "PTSDY2":
             self.day = '2'
             self.outlook_type = 'C'
-        if tp.afos == "PTSDY3":
+        elif tp.afos == "PTSDY3":
             self.day = '3'
             self.outlook_type = 'C'
-        if tp.afos == "PTSD48":
+        elif tp.afos == "PTSD48":
             self.day = '4'
             self.outlook_type = 'C'
-        if tp.afos == "PFWFD1":
+        elif tp.afos == "PFWFD1":
             self.day = '1'
             self.outlook_type = 'F'
-        if tp.afos == "PFWFD2":
+        elif tp.afos == "PFWFD2":
             self.day = '2'
             self.outlook_type = 'F'
-        if tp.afos == "PFWF38":
+        elif tp.afos == "PFWF38":
             self.day = '3'
             self.outlook_type = 'F'
 
