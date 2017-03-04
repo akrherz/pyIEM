@@ -11,13 +11,13 @@ from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.products.lsr import LSRProductException
 
 
-def filter_warnings(ar):
+def filter_warnings(ar, startswith='get_gid'):
     """Remove non-deterministic warnings
 
     Some of our tests produce get_gid() warnings, which are safe to ignore
     for the purposes of this testing
     """
-    return [a for a in ar if not a.startswith("get_gid")]
+    return [a for a in ar if not a.startswith(startswith)]
 
 
 def get_file(name):
@@ -47,6 +47,11 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_170303_ccwpoly(self):
+        """Check that we produce a warning on a CCW polygon"""
+        prod = vtecparser(get_file('FLWHGX_ccw.txt'))
+        self.assertEquals(len(prod.warnings), 1)
 
     def test_170207_mixedhwo(self):
         """Check our parsing of mixed case HWO"""
@@ -152,7 +157,7 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser(get_file('FLWPAH/FLWPAH_2.txt'))
         prod.sql(self.txn)
         warnings = filter_warnings(prod.warnings)
-        self.assertEquals(len(warnings), 1, '\n'.join(warnings))
+        self.assertEquals(len(warnings), 2, '\n'.join(warnings))
 
     def test_150915_noexpire(self):
         """Check that we set an expiration for initial infinity SBW geo"""
@@ -378,7 +383,8 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
             prod.sql(self.txn)
             warnings = filter_warnings(prod.warnings)
-            self.assertEquals(len(warnings), 0, "\n".join(warnings))
+            self.assertEquals(len(filter_warnings(warnings, 'LAT...LON')),
+                              0, "\n".join(warnings))
 
     def test_141210_continues(self):
         """ See that we handle CON with infinite time A-OK """

@@ -174,7 +174,7 @@ class TextProductSegment(object):
         return " [" + ", ".join(parts) + "] "
 
     def process_latlon(self):
-        """ FIND the LAT...LON data """
+        """Parse the segment looking for the 'standard' LAT...LON encoding"""
         data = self.unixtext.replace("\n", " ")
         pos = data.find("LAT...LON")
         if pos == -1:
@@ -191,7 +191,7 @@ class TextProductSegment(object):
         partial = None
 
         def checker(lon, lat):
-            ''' make sure our values are legit! '''
+            # make sure our values are within physical bounds
             if lat >= 90 or lat <= -90:
                 raise TextProductException("invalid latitude %s from %s" % (
                                                         lat, newdata))
@@ -228,7 +228,19 @@ class TextProductSegment(object):
         if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
             pts.append(pts[0])
 
-        self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([Polygon(pts)]),
+        # OK, time to do some quality control diagnostics
+        poly = Polygon(pts)
+        # check 1, is the polygon valid?
+        if not poly.is_valid:
+            self.tp.warnings.append(
+                ("LAT...LON polygon is invalid!\n%s") % (pts,))
+            return
+        # check 2, is the exterior ring of the polygon clockwise?
+        if poly.exterior.is_ccw:
+            self.tp.warnings.append(
+                ("LAT...LON polygon exterior is CCW, reversing\n%s") % (pts,))
+            poly = Polygon(pts[::-1])
+        self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([poly]),
                                               rounding_precision=6),)
         return Polygon(pts)
 

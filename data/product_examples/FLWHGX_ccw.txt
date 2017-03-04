@@ -1,0 +1,51 @@
+817
+WGUS44 KHGX 182013
+FLWHGX
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD WARNING
+NATIONAL WEATHER SERVICE HOUSTON/GALVESTON, TX
+213 PM CST WED JAN 18 2017
+
+...The National Weather Service in Houston/Galveston has issued a flood warning
+for the following rivers...
+
+  Little Cypress Creek NEAR Becker Road affecting the following counties in
+  Texas...Harris
+
+
+For the Little Cypress Creek at Becker Road, Minor flooding is occuring, with
+river levels forecasted to decrease.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Persons are urged to stay away from the river until water levels recede.
+
+Motorists should avoid any water covered roads and find an alternate route.
+
+Livestock and equipment should remain out of the flood plain for the next few
+days.
+
+
+
+Stay tuned to NOAA Weather radio or other news sources for further updates.
+
+&&
+
+TXC201-190813-
+/O.NEW.KHGX.FL.W.0016.170118T2013Z-000000T0000Z/
+/LCHT2.1.ER.170118T1809Z.170118T1929Z.000000T0000Z.UU/
+213 PM CST WED JAN 18 2017
+
+The National Weather Service in Houston/Galveston has issued a
+
+* Flood Warning for
+  The Little Cypress Creek NEAR Becker Road.
+* UNTIL FURTHER NOTICE...or until the warning is canceled.
+* At 0129 PM Wednesday the stage was 194.8 feet.
+* Flood stage is 194.6 feet.
+
+&&
+
+LAT...LON 3003 9581 3003 9581 3002 9579 3003 9579
+
+$$
