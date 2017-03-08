@@ -153,10 +153,10 @@ def heatindex(temperature, polyarg):
         polyarg = relh(temperature, polyarg)
     rh = polyarg.value("%")
     t = temperature.value("F")
-    t2 = np.power(t, 2)
-    t3 = np.power(t, 3)
-    rh2 = np.power(rh, 2)
-    rh3 = np.power(rh, 3)
+    t2 = t ** 2
+    t3 = t ** 3
+    rh2 = rh ** 2
+    rh3 = rh ** 3
     hdx = (16.923 + ((1.85212e-1) * t) + (5.37941 * rh) -
            ((1.00254e-1) * t * rh) + ((9.41695e-3) * t2) +
            ((7.28898e-3) * rh2) +
@@ -165,7 +165,7 @@ def heatindex(temperature, polyarg):
            ((2.91583e-5) * rh3) + ((1.42721e-6) * t3 * rh) +
            ((1.97483e-7) * t * rh3) - ((2.18429e-8) * t3 * rh2) +
            ((8.43296e-10) * t2 * rh3) - ((4.81975e-11) * t3 * rh3))
-    hdx = np.where(np.logical_or(np.ma.less(t, 60),
+    hdx = np.where(np.logical_or(np.ma.less(t, 80),
                                  np.ma.greater(t, 120)), t, hdx)
     return dt.temperature(hdx, 'F')
 
