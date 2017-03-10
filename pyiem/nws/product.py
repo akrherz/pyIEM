@@ -51,6 +51,51 @@ class TextProductException(Exception):
     pass
 
 
+def checker(lon, lat, strdata):
+    # make sure our values are within physical bounds
+    if lat >= 90 or lat <= -90:
+        raise TextProductException("invalid latitude %s from %s" % (
+                                                lat, strdata))
+    if lon > 180 or lon < -180:
+        raise TextProductException("invalid longitude %s from %s" % (
+                                                lon, strdata))
+    return (lon, lat)
+
+
+def str2polygon(strdata):
+    pts = []
+    partial = None
+
+    # We have two potential formats, one with 4 or 5 places and one
+    # with eight!
+    vals = re.findall(LAT_LON, strdata)
+    for val in vals:
+        if len(val) == 8:
+            lat = float(val[:4]) / 100.00
+            lon = float(val[4:]) / 100.00
+            if lon < 40:
+                lon += 100.
+            lon = 0 - lon
+            pts.append(checker(lon, lat, strdata))
+        else:
+            s = float(val) / 100.00
+            if partial is None:  # we have lat
+                partial = s
+                continue
+            # we have a lon
+            if s < 40:
+                s += 100.
+            s = 0 - s
+            pts.append(checker(s, partial, strdata))
+            partial = None
+
+    if len(pts) == 0:
+        return None
+    if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
+        pts.append(pts[0])
+    return Polygon(pts)
+
+
 class TextProductSegment(object):
     """ A segment of a Text Product """
 
@@ -187,62 +232,25 @@ class TextProductSegment(object):
             pos2 = m.start()
             newdata = newdata[:pos2]
 
-        pts = []
-        partial = None
-
-        def checker(lon, lat):
-            # make sure our values are within physical bounds
-            if lat >= 90 or lat <= -90:
-                raise TextProductException("invalid latitude %s from %s" % (
-                                                        lat, newdata))
-            if lon > 180 or lon < -180:
-                raise TextProductException("invalid longitude %s from %s" % (
-                                                        lon, newdata))
-            return (lon, lat)
-
-        # We have two potential formats, one with 4 or 5 places and one
-        # with eight!
-        vals = re.findall(LAT_LON, newdata)
-        for val in vals:
-            if len(val) == 8:
-                lat = float(val[:4]) / 100.00
-                lon = float(val[4:]) / 100.00
-                if lon < 40:
-                    lon += 100.
-                lon = 0 - lon
-                pts.append(checker(lon, lat))
-            else:
-                s = float(val) / 100.00
-                if partial is None:  # we have lat
-                    partial = s
-                    continue
-                # we have a lon
-                if s < 40:
-                    s += 100.
-                s = 0 - s
-                pts.append(checker(s, partial))
-                partial = None
-
-        if len(pts) == 0:
+        poly = str2polygon(newdata)
+        if poly is None:
             return None
-        if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
-            pts.append(pts[0])
 
-        # OK, time to do some quality control diagnostics
-        poly = Polygon(pts)
         # check 1, is the polygon valid?
         if not poly.is_valid:
             self.tp.warnings.append(
-                ("LAT...LON polygon is invalid!\n%s") % (pts,))
+                ("LAT...LON polygon is invalid!\n%s") % (poly.exterior.xy,))
             return
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             self.tp.warnings.append(
-                ("LAT...LON polygon exterior is CCW, reversing\n%s") % (pts,))
-            poly = Polygon(pts[::-1])
+                ("LAT...LON polygon exterior is CCW, reversing\n%s"
+                 ) % (poly.exterior.xy,))
+            poly = Polygon(zip(poly.exterior.xy[0][::-1],
+                               poly.exterior.xy[1][::-1]))
         self.giswkt = 'SRID=4326;%s' % (dumps(MultiPolygon([poly]),
                                               rounding_precision=6),)
-        return Polygon(pts)
+        return poly
 
     def process_time_mot_loc(self):
         """ Try to parse the TIME...MOT...LOC """
