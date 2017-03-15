@@ -1,0 +1,503 @@
+194 
+CDAK48 PAFC 151235
+CLIANC
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE ANCHORAGE, AK                               
+435 AM AKDT WED MAR 15 2017
+
+
+................................... 
+
+...THE ANCHORAGE AK CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1952 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         23    330 PM  44    2014  33    -10       39       
+                                      1984                          
+  MINIMUM         12   1159 PM -15    1966  19     -7       21       
+  AVERAGE         18                        26     -8       30      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          0.41 2014   0.02  -0.02             
+  MONTH TO DATE    0.00                      0.29  -0.29             
+  SINCE MAR 1      0.00                      0.29  -0.29             
+  SINCE JAN 1      2.70                      1.74   0.96             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0           3.3  1988   0.3   -0.3      0.0     
+  MONTH TO DATE    0.0                       4.9   -4.9      1.7     
+  SINCE MAR 1      0.0                       4.9   -4.9      1.7     
+  SINCE JUL 1     72.1                      65.2    6.9     29.3     
+  SNOW DEPTH      21                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       47                                8                
+  MONTH TO DATE  686                              117                
+  SINCE MAR 1    686                              117                
+  SINCE JUL 1   7724                             -174                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    26   HIGHEST WIND DIRECTION     N (350)      
+  HIGHEST GUST SPEED    36   HIGHEST GUST DIRECTION     N (350)      
+  AVERAGE WIND SPEED    19.0                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    49                                                       
+ LOWEST     34                                                       
+ AVERAGE    42                                                       
+
+..........................................................
+
+                                                                     
+THE ANCHORAGE AK CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   34        45      1981                    
+                                             1970                    
+ MINIMUM TEMPERATURE (F)   19       -13      1964                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   816 AM AKDT  SUNSET   803 PM AKDT  
+MARCH 16 2017.........SUNRISE   812 AM AKDT  SUNSET   806 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+................................... 
+
+...THE KING SALMON CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1917 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         22    357 PM  52    2005  32    -10       44       
+  MINIMUM          9   1159 PM -28    1961  15     -6       19       
+  AVERAGE         16                        24     -8       32      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          1.03 1953   0.03  -0.03             
+  MONTH TO DATE    0.00                      0.33  -0.33             
+  SINCE MAR 1      0.00                      0.33  -0.33             
+  SINCE JAN 1      1.20                      2.11  -0.91             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0          MM      MM   0.2   -0.2      0.0     
+  MONTH TO DATE    0.0                       3.1   -3.1      0.0     
+  SINCE MAR 1      0.0                       3.1   -3.1      0.0     
+  SINCE JUL 1     22.7                      38.6  -15.9     13.1     
+  SNOW DEPTH       T                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       49                                8                
+  MONTH TO DATE  753                              156                
+  SINCE MAR 1    753                              156                
+  SINCE JUL 1   7886                             -331                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    30   HIGHEST WIND DIRECTION     N (350)      
+  HIGHEST GUST SPEED    39   HIGHEST GUST DIRECTION     N (350)      
+  AVERAGE WIND SPEED    16.2                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    70                                                       
+ LOWEST     36                                                       
+ AVERAGE    53                                                       
+
+..........................................................
+
+                                                                     
+THE KING SALMON CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   32        48      1934                    
+ MINIMUM TEMPERATURE (F)   15       -25      1971                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   841 AM AKDT  SUNSET   831 PM AKDT  
+MARCH 16 2017.........SUNRISE   838 AM AKDT  SUNSET   833 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+................................... 
+
+...THE KODIAK CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1913 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         31    225 AM  49    1968  38     -7       44       
+                                      1967                          
+  MINIMUM         22   1159 PM  -1    1966  27     -5       36       
+  AVERAGE         27                        32     -5       40      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        T             1.33 2003   0.18  -0.18             
+  MONTH TO DATE    T                         2.51  -2.51             
+  SINCE MAR 1      T                         2.51  -2.51             
+  SINCE JAN 1      5.54                     16.94 -11.40             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.1          13.3  2003   0.4   -0.3      0.0     
+  MONTH TO DATE    0.1                       5.3   -5.2      0.3     
+  SINCE MAR 1      0.1                       5.3   -5.2      0.3     
+  SINCE JUL 1     25.9                      54.7  -28.8     17.3     
+  SNOW DEPTH       T                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       38                                6                
+  MONTH TO DATE  517                               56                
+  SINCE MAR 1    517                               56                
+  SINCE JUL 1   5858                             -475                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    26   HIGHEST WIND DIRECTION    NW (310)      
+  HIGHEST GUST SPEED    44   HIGHEST GUST DIRECTION     W (290)      
+  AVERAGE WIND SPEED    16.4                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    68                                                       
+ LOWEST     36                                                       
+ AVERAGE    52                                                       
+
+..........................................................
+
+                                                                     
+THE KODIAK CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   38        53      1967                    
+ MINIMUM TEMPERATURE (F)   28         0      1971                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   825 AM AKDT  SUNSET   814 PM AKDT  
+MARCH 16 2017.........SUNRISE   822 AM AKDT  SUNSET   817 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+................................... 
+
+...THE BETHEL CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1948 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         10    543 PM  47    1935  22    -12       22       
+  MINIMUM         -3    829 AM -39    1964   7    -10       11       
+  AVERAGE          4                        14    -10       17      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        T             0.30 1957   0.02  -0.02             
+  MONTH TO DATE    0.01                      0.32  -0.31             
+  SINCE MAR 1      0.01                      0.32  -0.31             
+  SINCE JAN 1      1.90                      1.82   0.08             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        T             3.3  1957   0.3   -0.3      0.0     
+  MONTH TO DATE    T                         3.8   -3.8       T      
+  SINCE MAR 1      T                         3.8   -3.8       T      
+  SINCE JUL 1     27.4                      49.6  -22.2     27.0     
+  SNOW DEPTH       5                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       61                               10                
+  MONTH TO DATE  840                              123                
+  SINCE MAR 1    840                              123                
+  SINCE JUL 1   9100                             -355                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    21   HIGHEST WIND DIRECTION    NW (320)      
+  HIGHEST GUST SPEED    25   HIGHEST GUST DIRECTION    NW (320)      
+  AVERAGE WIND SPEED    12.6                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    95                                                       
+ LOWEST     72                                                       
+ AVERAGE    84                                                       
+
+..........................................................
+
+                                                                     
+THE BETHEL CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   22        45      1986                    
+ MINIMUM TEMPERATURE (F)    7       -32      1966                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   903 AM AKDT  SUNSET   851 PM AKDT  
+MARCH 16 2017.........SUNRISE   859 AM AKDT  SUNSET   853 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+................................... 
+
+...THE SAINT PAUL ISLAND CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1892 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         29    629 PM  41    1996  29      0       34       
+  MINIMUM         21   1159 PM -19    1971  20      1       28       
+  AVERAGE         25                        25      0       31      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          0.50 2005   0.03  -0.03             
+  MONTH TO DATE    0.09                      0.48  -0.39             
+  SINCE MAR 1      0.09                      0.48  -0.39             
+  SINCE JAN 1      3.18                      3.36  -0.18             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0          MM      MM   0.2   -0.2     MM       
+  MONTH TO DATE    0.4                       3.6   -3.2      0.0     
+  SINCE MAR 1      0.4                       3.6   -3.2      0.0     
+  SINCE JUL 1     48.6                      48.6    0.0     23.7     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       40                                0                
+  MONTH TO DATE  509                              -51                
+  SINCE MAR 1    509                              -51                
+  SINCE JUL 1   6384                            -1093                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    23   HIGHEST WIND DIRECTION     N (350)      
+  HIGHEST GUST SPEED    28   HIGHEST GUST DIRECTION     N (340)      
+  AVERAGE WIND SPEED    13.5                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    88                                                       
+ LOWEST     75                                                       
+ AVERAGE    82                                                       
+
+..........................................................
+
+                                                                     
+THE SAINT PAUL ISLAND CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   29        38      2005                    
+                                             1987                    
+ MINIMUM TEMPERATURE (F)   20        -8      1972                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   935 AM AKDT  SUNSET   925 PM AKDT  
+MARCH 16 2017.........SUNRISE   932 AM AKDT  SUNSET   928 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+................................... 
+
+...THE COLD BAY CLIMATE SUMMARY FOR MARCH 14 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1942 TO 2017
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         33    228 PM  47    1963  35     -2       38       
+  MINIMUM         23   1159 PM  -3    1972  25     -2       29       
+  AVERAGE         28                        30     -2       34      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          1.72 1977   0.09  -0.09             
+  MONTH TO DATE    T                         1.34  -1.34             
+  SINCE MAR 1      T                         1.34  -1.34             
+  SINCE JAN 1      6.98                      7.48  -0.50             
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0           3.0  2015   0.4   -0.4     MM       
+  MONTH TO DATE    T                         6.1   -6.1      0.0     
+  SINCE MAR 1      T                         6.1   -6.1      0.0     
+  SINCE JUL 1     36.6                      58.3  -21.7     38.3     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       37                                2                
+  MONTH TO DATE  529                               39                
+  SINCE MAR 1    529                               39                
+  SINCE JUL 1   6089                             -619                
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                                0                
+  MONTH TO DATE    0                                0                
+  SINCE MAR 1      0                                0                
+  SINCE JAN 1      0                                0                
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    26   HIGHEST WIND DIRECTION     N (350)      
+  HIGHEST GUST SPEED    32   HIGHEST GUST DIRECTION     N (350)      
+  AVERAGE WIND SPEED    18.8                                         
+
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    75                                                       
+ LOWEST     49                                                       
+ AVERAGE    62                                                       
+
+..........................................................
+
+                                                                     
+THE COLD BAY CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   35        47      1996                    
+ MINIMUM TEMPERATURE (F)   25        -4      1972                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MARCH 15 2017.........SUNRISE   905 AM AKDT  SUNSET   856 PM AKDT  
+MARCH 16 2017.........SUNRISE   902 AM AKDT  SUNSET   858 PM AKDT  
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
+

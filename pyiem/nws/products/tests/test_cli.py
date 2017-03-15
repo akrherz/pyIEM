@@ -14,6 +14,15 @@ def get_file(name):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+    def test_170315_invalid_dup(self):
+        """CLIANC incorrectly has two CLIs"""
+        prod = cliparser(get_file('CLIANC.txt'))
+        answers = [23, 22, 31, 10, 29, 33]
+        for i, answer in enumerate(answers):
+            print i
+            self.assertEqual(prod.data[i]['data']['temperature_maximum'],
+                             answer)
+
     def test_151019_clibna(self):
         """CLIBNA is a new diction"""
         prod = cliparser(get_file('CLIBNA.txt'))

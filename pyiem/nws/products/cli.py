@@ -234,7 +234,7 @@ class CLIProduct(TextProduct):
             print 'Product %s skipped due to wrong header' % (
                                                     self.get_product_id(),)
             return
-        for section in self.unixtext.split("&&"):
+        for section in self.find_sections():
             if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
                 continue
             # We have meat!
@@ -244,6 +244,33 @@ class CLIProduct(TextProduct):
             self.data.append(dict(cli_valid=valid,
                                   cli_station=station,
                                   data=data))
+
+    def find_sections(self):
+        """Some trickery to figure out if we have multiple reports
+
+        Returns:
+          list of text sections
+        """
+        sections = []
+        for section in self.unixtext.split("&&"):
+            if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
+                continue
+            tokens = re.findall("^WEATHER ITEM.*$", section, re.M)
+            if len(tokens) == 0:
+                raise CLIException("Could not find 'WEATHER ITEM' within text")
+            elif len(tokens) == 1:
+                sections.append(section)
+                continue
+            # Uh oh, we need to do some manual splitting
+            pos = []
+            for match in re.finditer(HEADLINE_RE, section.replace("\n", " ")):
+                pos.append(match.start())
+            if len(pos) < 2:
+                raise CLIException("find_sections logic failure!")
+            pos.append(len(section))
+            for i, p in enumerate(pos[:-1]):
+                sections.append(section[max([0, p-10]):pos[i+1]])
+        return sections
 
     def compute_diction(self, text):
         """ Try to determine what we have for a format """
