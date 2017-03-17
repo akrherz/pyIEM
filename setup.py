@@ -23,8 +23,12 @@ setup(
     packages=['pyiem', 'pyiem.nws', 'pyiem.nws.products'],
     package_data={'pyiem': ['data/*', ]},
     url='https://github.com/akrherz/pyIEM/',
+    download_url='',
+    keywords=['weather'],
+    classifiers=[],
     license='Apache',
     cmdclass={'test': PyTest},
     description=('Collection of things that may help with processing '
                  'weather data.'),
+    include_package_data=True,
 )
