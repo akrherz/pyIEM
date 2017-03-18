@@ -1,5 +1,5 @@
 sphinxcontrib-napoleon
-matplotlib>1.4
+matplotlib>=2.0.0
 numpy
 scipy
 gdata
