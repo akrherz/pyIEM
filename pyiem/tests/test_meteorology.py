@@ -25,7 +25,7 @@ class TestCase(unittest.TestCase):
         r = meteorology.gdd(datatypes.temperature(highs, 'F'),
                             datatypes.temperature(lows, 'F'),
                             50, 86)
-        self.assertTrue(np.isnan(r[2]))
+        self.assertTrue(np.ma.is_masked(r[2]))
 
     def test_gdd(self):
         """Growing Degree Days"""
