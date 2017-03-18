@@ -7,17 +7,17 @@ import matplotlib.colors as mpcolors
 
 class TestPlot(unittest.TestCase):
 
-    def test_pcolormesh(self):
-        """See if we can do pcolormesh OKish"""
-        m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-                         south=38, projection='aea', continentalcolor='white')
-        lons = np.arange(-100, -80, 0.25)
-        lats = np.arange(40, 50, 0.25)
-        vals = np.random.rand(lats.shape[0], lons.shape[0])
-        lons, lats = np.meshgrid(lons, lats)
-        m.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
-        m.postprocess(filename='/tmp/test_plot_pcolormesh.png')
-        m.close()
+    # def test_pcolormesh(self):
+    #    """See if we can do pcolormesh OKish"""
+    #    m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
+    #                     south=38, projection='aea', continentalcolor='white')
+    #    lons = np.arange(-100, -80, 0.25)
+    #    lats = np.arange(40, 50, 0.25)
+    #    vals = np.random.rand(lats.shape[0], lons.shape[0])
+    #    lons, lats = np.meshgrid(lons, lats)
+    #    m.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
+    #    m.postprocess(filename='/tmp/test_plot_pcolormesh.png')
+    #    m.close()
 
     def test_albers(self):
         """See if we can plot albers"""
