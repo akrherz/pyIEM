@@ -10,6 +10,7 @@ import cgi
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
+from pyiem import reference
 
 SPLITTER = re.compile(r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)",
                       re.MULTILINE)
@@ -53,6 +54,8 @@ class LSRProduct(TextProduct):
     def get_jabbers(self, uri, uri2=None):
         ''' return a text and html variant for Jabber stuff '''
         res = []
+        if len(self.lsrs) == 0:
+            return res
         wfo = self.source[1:]
         url = self.get_url(uri)
 
@@ -123,15 +126,16 @@ def _mylowercase(text):
     return " ".join(tokens)
 
 
-def parse_lsr(text):
+def parse_lsr(prod, text):
     ''' Emit a LSR object based on this text!
     0914 PM     HAIL             SHAW                    33.60N 90.77W
     04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR
     '''
     lines = text.split("\n")
     if len(lines) < 2:
-        raise LSRProductException("LSR text is too short |%s|" % (
-                                                text.replace("\n", "<NL>"),))
+        prod.warnings.append(("LSR text is too short |%s|\n%s"
+                              ) % (text.replace("\n", "<NL>"), text))
+        return None
     lsr = LSR()
     lsr.text = text
     tokens = lines[0].split()
@@ -142,6 +146,10 @@ def parse_lsr(text):
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
 
     lsr.typetext = lines[0][12:29].strip()
+    if lsr.typetext.upper() not in reference.lsr_events:
+        prod.warnings.append(("Unknown lsr.typetext |%s|\n%s"
+                              ) % (lsr.typetext, text))
+        return None
 
     lsr.city = lines[0][29:53].strip()
 
@@ -149,8 +157,9 @@ def parse_lsr(text):
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
     if lon <= -180 or lon >= 180 or lat >= 90 or lat <= -90:
-        raise LSRProductException(("Invalid Geometry Lat: %s Lon: %s"
-                                   ) % (lat, lon))
+        prod.warnings.append(("Invalid Geometry Lat: %s Lon: %s\n%s"
+                              ) % (lat, lon, text))
+        return None
     lsr.geometry = ShapelyPoint((lon, lat))
 
     lsr.consume_magnitude(lines[1][12:29].strip())
@@ -169,7 +178,9 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     prod = LSRProduct(text, utcnow)
 
     for match in SPLITTER.finditer(prod.unixtext):
-        lsr = parse_lsr("".join(match.groups()))
+        lsr = parse_lsr(prod, "".join(match.groups()))
+        if lsr is None:
+            continue
         lsr.wfo = prod.source[1:]
         lsr.assign_timezone(prod.tz, prod.z)
         prod.lsrs.append(lsr)

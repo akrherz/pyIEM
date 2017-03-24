@@ -48,6 +48,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170324_badformat(self):
+        """Look into exceptions"""
+        utcnow = utc(2017, 3, 22, 2, 35)
+        prod = parser(get_file('LSRPIH.txt'), utcnow=utcnow)
+        _ = prod.get_jabbers('http://iem.local/')
+        self.assertEquals(len(prod.warnings), 2)
+        self.assertEquals(len(prod.lsrs), 0)
+
     def test_170324_ampersand(self):
         """LSRs with ampersands may cause trouble"""
         utcnow = utc(2015, 12, 29, 18, 23)
@@ -149,8 +157,9 @@ class TestProducts(unittest.TestCase):
     def test_151229_badgeo_lsr(self):
         """Make sure we reject a bad Geometry LSR"""
         utcnow = utc(2015, 12, 29, 18, 23)
-        self.assertRaises(LSRProductException,
-                          parser, get_file('LSRBOX.txt'), utcnow=utcnow)
+        prod = parser(get_file('LSRBOX.txt'), utcnow=utcnow)
+        self.assertEquals(len(prod.warnings), 1)
+        self.assertEquals(len(prod.lsrs), 0)
 
     def test_151225_extfuture(self):
         """Warning failure jumps states!"""
@@ -776,8 +785,7 @@ class TestProducts(unittest.TestCase):
     def test_140522_blowingdust(self):
         ''' Make sure we can deal with invalid LSR type '''
         prod = parser(get_file('LSRTWC.txt'))
-        self.assertEqual(len(prod.lsrs), 1)
-        self.assertEqual(prod.lsrs[0].get_dbtype(), None)
+        self.assertEqual(len(prod.lsrs), 0)
 
     def test_140527_astimezone(self):
         ''' Test the processing of a begin timestamp '''
