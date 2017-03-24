@@ -20,6 +20,18 @@ def utc(year, month, day, hour=0, minute=0):
 
 class TestProducts(unittest.TestCase):
     """ Tests """
+
+    def test_170324_ampersand(self):
+        """Do we properly escape the ampersand"""
+        nwsli_provider = {'DUG': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file("PIREPS/ampersand.txt"),
+                           nwsli_provider=nwsli_provider)
+        j = prod.get_jabbers()
+        self.assertEquals(j[0][0],
+                          ("Routine pilot report at 1259Z: DUG UA /OV SSO/"
+                           "TM 1259/FL340/TP CRJ9/TB LT TURB &amp; CHOP/"
+                           "RM ZAB FDCS"))
+
     def test_161010_missingtime(self):
         """prevent geom parse error"""
         nwsli_provider = {'GTF': {'lat': 44.26, 'lon': -88.52},

@@ -48,6 +48,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170324_ampersand(self):
+        """LSRs with ampersands may cause trouble"""
+        utcnow = utc(2015, 12, 29, 18, 23)
+        prod = parser(get_file('LSRBOXamp.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEqual(j[0][0], (
+            "Lunenberg [Worcester Co, MA] HAM RADIO reports SNOW of 2.00 INCH "
+            "at 11:36 AM EST -- HAM RADIO AND THIS DARYL ADDED &amp; and &lt; "
+            "and &gt; http://iem.local/#BOX/201512291636/201512291636"))
+
     def test_170303_ccwpoly(self):
         """Check that we produce a warning on a CCW polygon"""
         prod = vtecparser(get_file('FLWHGX_ccw.txt'))

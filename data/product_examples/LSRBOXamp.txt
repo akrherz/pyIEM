@@ -1,0 +1,22 @@
+478 
+NWUS51 KBOX 291823
+LSRBOX
+
+PRELIMINARY LOCAL STORM REPORT
+NATIONAL WEATHER SERVICE TAUNTON MA
+123 PM EST TUE DEC 29 2015
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+1136 AM     SNOW             LUNENBERG               44.44N 111.11W
+12/29/2015  M2.0 INCH        WORCESTER          MA   HAM RADIO       
+
+            HAM RADIO AND THIS DARYL ADDED & and < and >
+
+&&
+
+$$
+
+WS

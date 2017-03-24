@@ -4,6 +4,7 @@ Local Storm Report
 # Stand Library Imports
 import datetime
 import re
+import cgi
 
 # Third party
 from shapely.geometry import Point as ShapelyPoint
@@ -79,13 +80,13 @@ class LSRProduct(TextProduct):
                     "%s -- %s</p>") % (
                 _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state,
                 mylsr.source, url, mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), mylsr.remark)
+                mylsr.valid.strftime(time_fmt), cgi.escape(mylsr.remark))
 
             plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
                 _mylowercase(mylsr.city), mylsr.county.title(),
                 mylsr.state, mylsr.source,
                 mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), mylsr.remark, url)
+                mylsr.valid.strftime(time_fmt), cgi.escape(mylsr.remark), url)
             res.append([plain, html, xtra])
 
         if self.is_summary():

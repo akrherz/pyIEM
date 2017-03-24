@@ -16,6 +16,7 @@ import pyiem.nws.product as product
 import datetime
 import re
 import math
+import cgi
 from pyiem.datatypes import distance
 
 OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
@@ -267,7 +268,7 @@ class Pirep(product.TextProduct):
             jmsg = {'priority':
                     'Urgent' if report.priority == 'UUA' else 'Routine',
                     'ts': report.valid.strftime("%H%M"),
-                    'report': report.text,
+                    'report': cgi.escape(report.text),
                     'color':
                     '#ff0000' if report.priority == 'UUA' else '#00ff00'}
             plain = "%(priority)s pilot report at %(ts)sZ: %(report)s" % jmsg
