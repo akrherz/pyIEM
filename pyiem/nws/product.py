@@ -36,6 +36,8 @@ WINDTAG = re.compile((".*WIND\.\.\."
                       "(?P<windunits>MPH|KTS)"))
 TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
                          "OBSERVED|POSSIBLE)"))
+WATERSPOUTTAG = re.compile((".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|"
+                            "OBSERVED|POSSIBLE)"))
 TORNADODAMAGETAG = re.compile((
     ".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
@@ -127,6 +129,7 @@ class TextProductSegment(object):
         self.haildirtag = None
         self.winddirtag = None
         self.tornadotag = None
+        self.waterspouttag = None
         self.tornadodamagetag = None
         self.process_tags()
 
@@ -193,18 +196,27 @@ class TextProductSegment(object):
             d = m.groupdict()
             self.tornadodamagetag = d['damage']
 
+        m = WATERSPOUTTAG.match(nolf)
+        if m:
+            d = m.groupdict()
+            self.waterspouttag = d['waterspout']
+
     def special_tags_to_text(self):
         """
         Convert the special tags into a nice text
         """
         if (self.windtag is None and self.tornadotag is None and
-                self.hailtag is None and self.tornadodamagetag is None):
+                self.hailtag is None and self.tornadodamagetag is None and
+                self.waterspouttag is None):
             return ""
 
         parts = []
         if self.tornadotag is not None:
             parts.append("tornado: %s" % (
                 self.tornadotag))
+        if self.waterspouttag is not None:
+            parts.append("waterspout: %s" % (
+                self.waterspouttag))
         if self.tornadodamagetag is not None:
             parts.append("tornado damage threat: %s" % (
                 self.tornadodamagetag))

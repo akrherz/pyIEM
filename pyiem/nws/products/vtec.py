@@ -429,9 +429,10 @@ class VTECProduct(TextProduct):
             significance, phenomena, issue, expire, init_expire,
             polygon_begin, polygon_end, geom, status, report, windtag,
             hailtag, tornadotag, tornadodamagetag, tml_valid,
-            tml_direction, tml_sknt, """ + tml_column + """, updated)
+            tml_direction, tml_sknt, """ + tml_column + """, updated,
+            waterspouttag)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         myargs = (
             vtec.office,
             vtec.ETN,
@@ -445,7 +446,7 @@ class VTECProduct(TextProduct):
             segment.giswkt, vtec.action, self.unixtext, segment.windtag,
             segment.hailtag, segment.tornadotag, segment.tornadodamagetag,
             tml_valid, segment.tml_dir, segment.tml_sknt, segment.tml_giswkt,
-            self.valid)
+            self.valid, segment.waterspouttag)
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(("%s.%s.%s sbw table insert "

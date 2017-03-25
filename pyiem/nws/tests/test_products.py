@@ -8,7 +8,6 @@ from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
-from pyiem.nws.products.lsr import LSRProductException
 
 
 def filter_warnings(ar, startswith='get_gid'):
@@ -47,6 +46,23 @@ class TestProducts(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_170324_waterspout(self):
+        """Do we parse Waterspout tags!"""
+        utcnow = utc(2017, 3, 24, 1, 37)
+        prod = vtecparser(get_file('SMWMFL.txt'), utcnow=utcnow)
+        j = prod.get_jabbers("http://localhost")
+        self.assertEquals(j[0][0],
+                          ("MFL issues Marine Warning [waterspout: POSSIBLE, "
+                           "wind: &gt;34 KTS, hail: 0.00 IN] for "
+                           "((AMZ630)), ((AMZ651)) [AM] till 10:15 PM EDT "
+                           "http://localhost2017-O-NEW-KMFL-MA-W-0059"))
+        prod.sql(self.txn)
+        self.txn.execute("""SELECT * from sbw_2017 where wfo = 'MFL' and
+        phenomena = 'MA' and significance = 'W' and eventid = 59
+        and status = 'NEW' and waterspouttag = 'POSSIBLE'
+        """)
+        self.assertEquals(self.txn.rowcount, 1)
 
     def test_170324_badformat(self):
         """Look into exceptions"""
