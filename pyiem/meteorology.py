@@ -220,7 +220,7 @@ def mixing_ratio(dewpoint):
     return dt.mixingratio(0.62197 * e / (1000.0 - e), 'KG/KG')
 
 
-def gdd(high, low, base=50, ceiling=86):
+def gdd(high, low, base=50., ceiling=86.):
     """Compute Growing Degree Days
 
     Args:
