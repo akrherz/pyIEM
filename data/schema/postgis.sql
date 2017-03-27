@@ -1205,6 +1205,7 @@ create table sbw(
   windtag real,
   hailtag real,
   tornadotag varchar(64),
+  waterspouttag varchar(64),
   tornadodamagetag varchar(64),
   tml_valid timestamp with time zone,
   tml_direction smallint,
