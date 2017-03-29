@@ -108,7 +108,8 @@ def str2multipolygon(s):
         if ls.is_valid:
             newls = ls.intersection(CONUSPOLY)
             if newls.is_valid:
-                if newls.geom_type == 'MultiLineString':
+                if newls.geom_type in ['MultiLineString',
+                                       'GeometryCollection']:
                     print(('     intersection with conuspoly found %s segments'
                            ) % (len(newls.geoms),))
                     maxlength = 0

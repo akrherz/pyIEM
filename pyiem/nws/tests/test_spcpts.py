@@ -16,6 +16,14 @@ def get_file(name):
 
 class TestPTS(unittest.TestCase):
 
+    def test_170329_notimp(self):
+        """Exception was raised parsing this guy"""
+        tp = product.TextProduct(get_file('PTSDY2_notimp.txt'))
+        spc = spcpts.SPCPTS(tp)
+        # spc.draw_outlooks()
+        outlook = spc.get_outlook('CATEGORICAL', 'MRGL')
+        self.assertAlmostEqual(outlook.geometry.area, 110.24, 2)
+
     def test_170215_gh23(self):
         """A marginal for the entire country :/"""
         tp = product.TextProduct(get_file('PTSDY1_gh23.txt'))
