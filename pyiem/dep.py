@@ -69,3 +69,21 @@ def read_env(fn, year0=2006):
         df['date'] = pd.to_datetime(dict(year=df.year, month=df.month,
                                          day=df.day))
     return df
+
+
+def read_wb(fn):
+    """Read a WEPP .wb file into Pandas Data Table"""
+    df = pd.read_table(fn,
+                       skiprows=23, index_col=False, delim_whitespace=True,
+                       header=None, na_values=['*******', '******'],
+                       names=['ofe', 'jday', 'year', 'precip', 'rm', 'q',
+                              'ep', 'es', 'er', 'dp', 'upstrmq',
+                              'subrin', 'latqcc', 'soilwater', 'frozwt',
+                              'swe', 'qofe', 'tile', 'irr', 'area'])
+    if len(df.index) == 0:
+        df['date'] = None
+    else:
+        # Considerably faster than df.apply
+        df['date'] = pd.to_datetime(df['year'].astype(str) + ' ' +
+                                    df['jday'].astype(str), format='%Y %j')
+    return df

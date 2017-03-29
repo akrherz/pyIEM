@@ -11,6 +11,10 @@ def get_path(name):
 
 class Tests(unittest.TestCase):
 
+    def test_wb(self):
+        df = dep.read_wb(get_path('wb.txt'))
+        self.assertAlmostEquals(df['precip'].max(), 100.14, 2)
+
     def test_cli(self):
         df = dep.read_cli(get_path('cli.txt'))
         self.assertEquals(len(df.index), 4018)
