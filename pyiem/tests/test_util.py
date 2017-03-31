@@ -6,6 +6,24 @@ from pyiem import util
 
 class TestUtil(unittest.TestCase):
 
+    def test_vtecps(self):
+        """Can we properly handle the vtecps form type"""
+        cfg = dict(arguments=[
+            dict(type='vtec_ps', name='v1', default='UNUSED',
+                 label='VTEC Phenomena and Significance 1'),
+            dict(type='vtec_ps', name='v2', default='UNUSED', optional=True,
+                 label='VTEC Phenomena and Significance 2'),
+            dict(type='vtec_ps', name='v3', default='UNUSED', optional=True,
+                 label='VTEC Phenomena and Significance 3'),
+            dict(type='vtec_ps', name='v4', default='UNUSED', optional=True,
+                 label='VTEC Phenomena and Significance 4')])
+        form = dict(phenomenav1='SV', significancev1='A',
+                    phenomenav4='TO', significancev4='W')
+        ctx = util.get_autoplot_context(form, cfg)
+        self.assertEqual(ctx['phenomenav1'], 'SV')
+        self.assertTrue(ctx['phenomenav2'] is None)
+        self.assertEqual(ctx['significancev4'], 'W')
+
     def test_get_autoplot_context(self):
         """See that we can do things"""
         form = dict(station='AMW', network='IA_ASOS', type2='bogus',
