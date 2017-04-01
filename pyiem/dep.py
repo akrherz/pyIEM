@@ -73,11 +73,8 @@ def read_env(fn, year0=2006):
 
 def read_wb(fn):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
-    df = pd.read_table(fn, index_col=False, delim_whitespace=True,
-                       header=None, na_values=['*******', '******'],
-                       names=['ofe', 'jday', 'year', 'precip', 'runoff',
-                              'soilwater',
-                              'soilwater1', 'soilwater2', 'ep', 'es', 'er'])
+    df = pd.read_table(fn, delim_whitespace=True,
+                       na_values=['*******', '******'])
     if len(df.index) == 0:
         df['date'] = None
     else:
