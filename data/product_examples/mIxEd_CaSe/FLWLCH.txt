@@ -1,0 +1,42 @@
+969 
+WGUS44 KLCH 300720
+FLWLCH
+
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flood Warning
+National Weather Service Lake Charles La
+220 AM CDT Thu Mar 30 2017
+
+...The National Weather Service in Lake Charles has issued a flood 
+warning for the following rivers in Louisiana...
+
+  Calcasieu River At Old Town Bay
+
+LAC019-302120-
+/O.NEW.KLCH.FL.W.0025.170330T0720Z-170401T0032Z/
+/OTBL1.1.ER.170330T0506Z.170330T1800Z.170331T0032Z.NO/
+220 AM CDT Thu Mar 30 2017
+
+The National Weather Service in Lake Charles has issued a 
+
+* Flood Warning for 
+  the Calcasieu River At Old Town Bay.
+* until Friday evening...or until the warning is cancelled.
+* At  8:00 AM Wednesday the stage was 3.3 feet.
+* Minor flooding is forecast.
+* Flood stage is 4.0 feet.
+* Forecast...The river will rise to near 4.5 feet this morning and 
+  remain above flood stage today. A revised forecast will be issued
+  later this morning.
+* Impact...At stages near 5.0 feet...Water over lowest portions of 
+  Goos Ferry Road. Cars should be moved to higher ground.
+* Impact...At stages near 4.0 feet...Minor flooding of Goos Ferry 
+  Road will occur.
+
+&&
+ 
+Lat...Lon 3030 9329 3019 9321 3025 9308 3031 9303 3038 9314
+
+$$
+

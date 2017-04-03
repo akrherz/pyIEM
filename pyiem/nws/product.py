@@ -26,6 +26,7 @@ WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{6}) (?P<cccc>[A-Z]{4}) "
 TIME_MOT_LOC = re.compile((r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
                            "(?P<dir>[0-9]{1,3})DEG\s+(?P<sknt>[0-9]{1,3})KT\s+"
                            "(?P<loc>[0-9 ]+)"))
+LAT_LON_PREFIX = re.compile("LAT\.\.\.LON", re.IGNORECASE)
 LAT_LON = re.compile("([0-9]{4,8})\s+")
 WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
                        "(?P<windunits>MPH|KTS) "
@@ -233,9 +234,10 @@ class TextProductSegment(object):
     def process_latlon(self):
         """Parse the segment looking for the 'standard' LAT...LON encoding"""
         data = self.unixtext.replace("\n", " ")
-        pos = data.find("LAT...LON")
-        if pos == -1:
+        m = LAT_LON_PREFIX.search(data)
+        if m is None:
             return None
+        pos = m.start()
         newdata = data[pos+9:]
         # Go find our next non-digit, non-space character, if we find it, we
         # should truncate our string, this could be improved, I suspect
