@@ -111,8 +111,11 @@ class MCDProduct(TextProduct):
                      prob_extra, uri, self.get_product_id())
         channels = [self.afos, ]
         channels.extend(self.attn_wfo)
+        channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_wfo])
         channels.extend(self.attn_rfc)
+        channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_rfc])
         channels.extend(self.cwsus)
+        channels.extend(["%s.%s" % (self.afos, w) for w in self.cwsus])
         xtra = dict(channels=",".join(channels),
                     product_id=self.get_product_id(),
                     twitter=self.tweet())
