@@ -1,0 +1,49 @@
+272
+WGUS45 KBOI 020237
+FLWBOI
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+FLOOD WARNING
+NATIONAL WEATHER SERVICE BOISE ID
+8:30 PM MDT SAT APR 1 2017
+
+...The National Weather Service in Boise has issued a Flood Warning
+for the following rivers in Idaho...Oregon...
+
+  Snake River near Weiser affecting Washington and Malheur
+Counties.
+
+The Snake River near Weiser continues to rise in response to
+increasing inflow upstream.The river is currently just below flood
+stage and is forecast to reach monor flood stage at 9:00 pm mdt.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Persons with interests near these rivers should take action to
+protect property.
+
+&&
+
+IDC087-ORC045-021437-
+/O.NEW.KBOI.FL.W.0021.170402T0338Z-000000T0000Z/
+/WEII1.1.ER.170402T0338Z.170410T0600Z.000000T0000Z.NO/
+8:30 PM MDT SAT APR 1 2017
+
+The National Weather Service in Boise has issued a
+
+* Flood Warning for
+  The Snake River Near Weiser.
+* until further notice...or until the warning is cancelled.
+* At  8:00 PM Saturday the stage was 11.97 feet.
+* Minor flooding is forecast.
+* Flood stage is 12.0 feet.
+* Impact...At 12.0 feet...Flooding of agricultural land near the river
+  is likely in Malheur County, Oregon and in Washington County,
+  Idaho. Mortimer Road in Weiser will be flooded.
+
+&&
+
+LAT...LON 4431 11703 4417 11686 4405 11688 4406 11705
+      4427 11714
+
+$$
+

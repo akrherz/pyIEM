@@ -47,6 +47,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170403_badtime(self):
+        """Handle when a colon is added to a timestamp"""
+        prod = parser(get_file('FLWBOI.txt'))
+        j = prod.get_jabbers("http://localhost", "http://localhost")
+        self.assertEquals(prod.valid,
+                          datetime.datetime(2017, 4, 2, 2, 30,
+                                            tzinfo=pytz.utc))
+
     def test_170403_mixedlatlon(self):
         """Check our parsing of mixed case Lat...Lon"""
         prod = parser(get_file('mIxEd_CaSe/FLWLCH.txt'))

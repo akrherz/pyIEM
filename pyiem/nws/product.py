@@ -16,7 +16,7 @@ from pyiem.nws import ugc, vtec, hvtec
 # We do require that the first character be a A-Z one as otherwise this will
 # match the LDM sequence number at the top!
 AFOSRE = re.compile(r"^([A-Z][A-Z0-9\s]{3,5})$", re.M)
-TIME_RE = re.compile(("^([0-9]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
+TIME_RE = re.compile(("^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
                       "([A-Z][A-Z][A-Z]) "
                      "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"),
                      re.M | re.IGNORECASE)
@@ -454,7 +454,9 @@ class TextProduct(object):
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
             self.z = tokens[0][2].upper()
             self.tz = pytz.timezone(reference.name2pytz.get(self.z, 'UTC'))
-            if len(tokens[0][0]) < 3:
+            if tokens[0][0].find(":") > -1:
+                (h, m) = tokens[0][0].split(":")
+            elif len(tokens[0][0]) < 3:
                 h = tokens[0][0]
                 m = 0
             else:
