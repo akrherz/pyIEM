@@ -1,10 +1,24 @@
 import datetime
 import unittest
+import os
 from collections import OrderedDict
 from pyiem import util
 
 
+def get_file(name):
+    ''' Helper function to get the text file contents '''
+    basedir = os.path.dirname(__file__)
+    fn = "%s/../../data/product_examples/%s" % (basedir, name)
+    return open(fn).read()
+
+
 class TestUtil(unittest.TestCase):
+
+    def test_noaaport_text(self):
+        """See that we do what we expect with noaaport text processing"""
+        data = get_file('WCN.txt')
+        res = util.noaaport_text(data)
+        self.assertEquals(res[:11], "\001\r\r\n098 \r\r\n")
 
     def test_vtecps(self):
         """Can we properly handle the vtecps form type"""

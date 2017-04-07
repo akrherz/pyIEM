@@ -9,8 +9,36 @@ import time
 import random
 import logging
 import datetime
+import re
 from socket import error as socket_error
 from pyiem.ftpsession import FTPSession
+
+SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def noaaport_text(text):
+    """Make whatever text look like it is NOAAPort Pristine
+
+    Args:
+      text (string): the inbound text
+    Returns:
+      text that looks noaaportish
+    """
+    # Convert to LFLFCR
+    text = text.replace("\n", "\r\r\n").replace("\r\r\r\r", "\r\r")
+    lines = text.split("\r\r\n")
+    # lime 0 should be start of product sequence
+    if lines[0] != "\001":
+        lines.insert(0, "\001")
+    # line 1 should be the LDM sequence number 4 chars
+    if not SEQNUM.match(lines[1]):
+        if len(lines[1]) > 5:
+            lines.insert(1, "000 ")
+    # last line should be the control-c, by itself
+    if lines[-1] != "\003":
+        lines.append("\003")
+
+    return "\r\r\n".join(lines)
 
 
 def get_autoplot_context(fdict, cfg):
