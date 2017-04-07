@@ -29,6 +29,26 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170406_day48_pre2015(self):
+        """Can we parse a pre2015 days 4-8"""
+        spc = parser(get_file('PTSD48_pre2015.txt'))
+        # spc.draw_outlooks()
+        outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
+        self.assertAlmostEqual(outlook.geometry.area, 73.20, 2)
+        outlook = spc.get_outlook('ANY SEVERE', '0.15', 5)
+        self.assertAlmostEqual(outlook.geometry.area, 76.46, 2)
+
+        spc.sql(self.txn)
+
+    def test_170406_day48(self):
+        """Can we parse a present day days 4-8"""
+        spc = parser(get_file('PTSD48.txt'))
+        # spc.draw_outlooks()
+        outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
+        self.assertAlmostEqual(outlook.geometry.area, 40.05, 2)
+
+        spc.sql(self.txn)
+
     def test_170404_nogeom(self):
         """nogeom error from a 2002 product"""
         with self.assertRaises(Exception):
@@ -37,7 +57,7 @@ class TestPTS(unittest.TestCase):
     def test_170404_2002(self):
         """Can we parse something from 2002?"""
         spc = parser(get_file('PTSDY1_2002.txt'))
-        # spc.draw_outlooks()
+        spc.draw_outlooks()
         outlook = spc.get_outlook('CATEGORICAL', 'SLGT')
         self.assertAlmostEqual(outlook.geometry.area, 38.92, 2)
 
@@ -120,36 +140,42 @@ class TestPTS(unittest.TestCase):
         ''' Encounted issue with Fire Outlook Day 3-8 '''
         spc = parser(get_file('PFWF38.txt'))
         # spc.draw_outlooks()
-        self.assertEquals(len(spc.outlooks), 3)
+        collect = spc.get_outlookcollection(3)
+        self.assertEquals(len(collect.outlooks), 1)
 
     def test_bug_140507_day1(self):
         ''' Bug found in production with GEOS Topology Exception '''
         spc = parser(get_file('PTSDY1_topoexp.txt'))
         # spc.draw_outlooks()
-        self.assertEquals(len(spc.outlooks), 14)
+        collect = spc.get_outlookcollection(1)
+        self.assertEquals(len(collect.outlooks), 14)
 
     def test_bug_140506_day2(self):
         ''' Bug found in production '''
         spc = parser(get_file('PTSDY2.txt'))
         # spc.draw_outlooks()
-        self.assertEquals(len(spc.outlooks), 6)
+        collect = spc.get_outlookcollection(2)
+        self.assertEquals(len(collect.outlooks), 6)
 
     def test_bug_140518_day2(self):
         ''' 18 May 2014 tripped error with no exterior polygon found '''
         spc = parser(get_file('PTSDY2_interior.txt'))
         # spc.draw_outlooks()
-        self.assertEquals(len(spc.outlooks), 1)
+        collect = spc.get_outlookcollection(2)
+        self.assertEquals(len(collect.outlooks), 1)
 
     def test_bug_140519_day1(self):
         ''' 19 May 2014 tripped error with no exterior polygon found '''
         spc = parser(get_file('PTSDY1_interior.txt'))
         # spc.draw_outlooks()
-        self.assertEquals(len(spc.outlooks), 7)
+        collect = spc.get_outlookcollection(1)
+        self.assertEquals(len(collect.outlooks), 7)
 
     def test_bug(self):
         ''' Test bug list index outof range '''
         spc = parser(get_file('PTSDY1_2.txt'))
-        self.assertEquals(len(spc.outlooks), 1)
+        collect = spc.get_outlookcollection(1)
+        self.assertEquals(len(collect.outlooks), 1)
 
     def test_complex_2(self):
         ''' Test our processing '''
@@ -174,5 +200,7 @@ class TestPTS(unittest.TestCase):
 
         spc.sql(self.txn)
         spc.compute_wfos(self.txn)
+        # It is difficult to get a deterministic result here as in Travis, we
+        # don't have UGCS, so the WFO lookup yields no results
         j = spc.get_jabbers("")
         self.assertTrue(len(j) >= 1)

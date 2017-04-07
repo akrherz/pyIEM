@@ -13,6 +13,21 @@ import os
 
 CONUS = None
 CONUSPOLY = None
+DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",
+                   re.IGNORECASE)
+DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
+
+THRESHOLD2TEXT = {'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
+                  'MDT': "Moderate", 'HIGH': 'High',
+                  'CRIT': 'Critical', 'EXTM': 'Extreme'}
+
+
+def get_day(text):
+    """Figure out which day this is for"""
+    m = DAYRE.search(text)
+    if m is None:
+        return None
+    return int(m.groupdict()['day'])
 
 
 def load_conus_data():
@@ -202,6 +217,17 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
+class SPCOutlookCollection(object):
+    """ A collection of outlooks for a single 'day'"""
+
+    def __init__(self, issue, expire, day):
+        """Constructor"""
+        self.issue = issue
+        self.expire = expire
+        self.day = day
+        self.outlooks = []
+
+
 class SPCOutlook(object):
 
     def __init__(self, category, threshold, multipoly):
@@ -216,16 +242,28 @@ class SPCPTS(TextProduct):
     def __init__(self, text, utcnow=None, ugc_provider=dict(),
                  nwsli_provider=dict()):
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        self.outlooks = []
         self.issue = None
         self.expire = None
+        self.day = None
+        self.outlook_type = None
+        self.outlook_collections = dict()
         self.set_metadata()
         self.find_issue_expire()
         self.find_outlooks()
 
-    def get_outlook(self, category, threshold):
+    def get_outlookcollection(self, day):
+        """Returns the SPCOutlookCollection for a given day"""
+        return self.outlook_collections.get(day)
+
+    def get_outlook(self, category, threshold, day=None):
         ''' Get an outlook by category and threshold '''
-        for outlook in self.outlooks:
+        if len(self.outlook_collections) == 0:
+            return None
+        if day is None:
+            day = self.day
+        if day not in self.outlook_collections:
+            return None
+        for outlook in self.outlook_collections[day].outlooks:
             if outlook.category == category and outlook.threshold == threshold:
                 return outlook
         return None
@@ -235,48 +273,51 @@ class SPCPTS(TextProduct):
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
         load_conus_data()
-        for outlook in self.outlooks:
-            fig = plt.figure(figsize=(12, 8))
-            ax = fig.add_subplot(111)
-            ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
-            for poly in outlook.geometry:
-                patch = PolygonPatch(poly, fc='r', label='Outlook')
-                ax.add_patch(patch)
-            ax.set_title('Category %s Threshold %s' % (outlook.category,
-                                                       outlook.threshold))
-            ax.legend(loc=3)
-            fn = '/tmp/%s_%s_%s.png' % (self.issue.strftime("%Y%m%d%H%M"),
-                                        outlook.category, outlook.threshold)
-            print(':: creating plot %s' % (fn,))
-            fig.savefig(fn)
-            del fig
-            del ax
+        for day, collect in self.outlook_collections.iteritems():
+            for outlook in collect.outlooks:
+                fig = plt.figure(figsize=(12, 8))
+                ax = fig.add_subplot(111)
+                ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
+                for poly in outlook.geometry:
+                    patch = PolygonPatch(poly, fc='r', label='Outlook')
+                    ax.add_patch(patch)
+                ax.set_title(('Day %s Category %s Threshold %s'
+                              ) % (day, outlook.category, outlook.threshold))
+                ax.legend(loc=3)
+                fn = ('/tmp/%s_%s_%s_%s.png'
+                      ) % (day, self.issue.strftime("%Y%m%d%H%M"),
+                           outlook.category, outlook.threshold)
+                print(':: creating plot %s' % (fn,))
+                fig.savefig(fn)
+                del fig
+                del ax
 
     def set_metadata(self):
         """
         Set some metadata about this product
         """
         if self.afos == 'PTSDY1':
-            self.day = '1'
+            self.day = 1
             self.outlook_type = 'C'
         elif self.afos == "PTSDY2":
-            self.day = '2'
+            self.day = 2
             self.outlook_type = 'C'
         elif self.afos == "PTSDY3":
-            self.day = '3'
+            self.day = 3
             self.outlook_type = 'C'
         elif self.afos == "PTSD48":
-            self.day = '4'
             self.outlook_type = 'C'
         elif self.afos == "PFWFD1":
-            self.day = '1'
+            self.day = 1
             self.outlook_type = 'F'
         elif self.afos == "PFWFD2":
-            self.day = '2'
+            self.day = 2
             self.outlook_type = 'F'
         elif self.afos == "PFWF38":
-            self.day = '3'
             self.outlook_type = 'F'
+        else:
+            self.warnings.append(("Unknown awipsid '%s' for metadata"
+                                  ) % (self.afos, ))
 
     def find_issue_expire(self):
         """
@@ -307,8 +348,11 @@ class SPCPTS(TextProduct):
             self.text = self.text.replace("\n... ", "\n&&\n... ")
             self.text += "\n&& "
         for segment in self.text.split("&&")[:-1]:
+            day = self.day
+            if day is None:
+                day = get_day(segment)
             # We need to figure out the probabilistic or category
-            tokens = re.findall("\.\.\. (.*) \.\.\.", segment)
+            tokens = re.findall("\.\.\.\s+(.*)\s+\.\.\.", segment)
             if len(tokens) == 0:
                 continue
             category = tokens[0].strip()
@@ -329,28 +373,57 @@ class SPCPTS(TextProduct):
                     point_data[threshold] = ""
                 point_data[threshold] += line.replace(threshold, " ")
 
+            if day is not None:
+                collect = self.outlook_collections.setdefault(
+                    day, SPCOutlookCollection(self.issue, self.expire, day))
+            # We need to duplicate, in the case of day-day spans
+            for threshold in point_data.keys():
+                if threshold == 'TSTM' and self.afos == 'PFWF38':
+                    print(("Failing to parse TSTM in PFWF38"))
+                    del point_data[threshold]
+                    continue
+                m = DMATCH.match(threshold)
+                if m:
+                    data = m.groupdict()
+                    if data.get('day2') is not None:
+                        day1 = int(data['day1'])
+                        day2 = int(data['day2'])
+                        print("Duplicating threshold %s-%s" % (day1, day2))
+                        for i in range(day1, day2 + 1):
+                            key = "D%s" % (i,)
+                            point_data[key] = point_data[threshold]
+                        del point_data[threshold]
             for threshold in point_data:
-                print(("==== Category: '%s' Threshold; '%s' ====="
-                       ) % (category, threshold))
+                m = DMATCH.match(threshold)
+                if m:
+                    day = int(m.groupdict()['day1'])
+                    collect = self.outlook_collections.setdefault(
+                        day, SPCOutlookCollection(self.issue, self.expire,
+                                                  day))
                 mp = str2multipolygon(point_data[threshold])
-                self.outlooks.append(SPCOutlook(category, threshold, mp))
+                if DMATCH.match(threshold):
+                    threshold = '0.15'
+                print(("==== Day: %s Category: '%s' Threshold: '%s' ====="
+                       ) % (day, category, threshold))
+                collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, txn):
         """Figure out which WFOs are impacted by this polygon"""
-        for outlook in self.outlooks:
-            sql = """
-                select distinct wfo from ugcs WHERE
-                st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
-                substr(ugc,3,1) = 'C' and wfo is not null
-                and end_ts is null ORDER by wfo ASC
-            """ % (outlook.geometry.wkt,)
+        for day, collect in self.outlook_collections.iteritems():
+            for outlook in collect.outlooks:
+                sql = """
+                    select distinct wfo from ugcs WHERE
+                    st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
+                    substr(ugc,3,1) = 'C' and wfo is not null
+                    and end_ts is null ORDER by wfo ASC
+                """ % (outlook.geometry.wkt,)
 
-            txn.execute(sql)
-            for row in txn.fetchall():
-                outlook.wfos.append(row['wfo'])
-            print(("Category: %s Threshold: %s  #WFOS: %s %s"
-                   ) % (outlook.category, outlook.threshold,
-                        len(outlook.wfos), ",".join(outlook.wfos)))
+                txn.execute(sql)
+                for row in txn.fetchall():
+                    outlook.wfos.append(row['wfo'])
+                print(("Day: %s Category: %s Threshold: %s #WFOS: %s %s"
+                       ) % (day, outlook.category, outlook.threshold,
+                            len(outlook.wfos), ",".join(outlook.wfos)))
 
     def sql(self, txn):
         """Do database work
@@ -358,25 +431,26 @@ class SPCPTS(TextProduct):
         Args:
           txn (psycopg2.cursor): database cursor
         """
-        txn.execute("""
-            DELETE from spc_outlooks where valid = %s
-            and expire = %s and outlook_type = %s and day = %s
-        """, (self.valid, self.expire, self.outlook_type, self.day))
-        if txn.rowcount > 0:
-            print(("Removed %s previous spc_outlook entries"
-                   ) % (txn.rowcount, ))
+        for day, collect in self.outlook_collections.iteritems():
+            txn.execute("""
+                DELETE from spc_outlooks where valid = %s
+                and expire = %s and outlook_type = %s and day = %s
+            """, (self.valid, self.expire, self.outlook_type, day))
+            if txn.rowcount > 0:
+                print(("Removed %s previous spc_outlook entries"
+                       ) % (txn.rowcount, ))
 
-        for outlook in self.outlooks:
-            sql = """
-                INSERT into spc_outlooks(issue, valid, expire,
-                threshold, category, day, outlook_type, geom)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            args = (self.issue, self.valid, self.expire,
-                    outlook.threshold, outlook.category, self.day,
-                    self.outlook_type,
-                    "SRID=4326;%s" % (outlook.geometry.wkt,))
-            txn.execute(sql, args)
+            for outlook in collect.outlooks:
+                sql = """
+                    INSERT into spc_outlooks(valid, issue, expire,
+                    threshold, category, day, outlook_type, geom)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                args = (self.valid, collect.issue, collect.expire,
+                        outlook.threshold, outlook.category, collect.day,
+                        self.outlook_type,
+                        "SRID=4326;%s" % (outlook.geometry.wkt,))
+                txn.execute(sql, args)
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""
@@ -384,85 +458,121 @@ class SPCPTS(TextProduct):
         url = "http://www.spc.noaa.gov"
 
         if self.afos == "PTSDY1":
-            product_descript = "Day 1 Convective"
+            day = 'Day 1'
+            product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/outlook/archive/"
                    "%s/day1otlk_%s.html"
                    ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
         elif self.afos == "PTSDY2":
-            product_descript = "Day 2 Convective"
+            day = 'Day 2'
+            product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/outlook/archive/"
                    "%s/day2otlk_%s.html"
                    ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
         elif self.afos == "PTSDY3":
-            product_descript = "Day 3 Convective"
+            day = 'Day 3'
+            product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/outlook/archive/%s/"
                    "day3otlk_%s.html") % (self.valid.year,
                                           self.issue.strftime("%Y%m%d_%H%M"))
         elif self.afos == "PTSD48":
-            product_descript = "Day 4-8 Convective"
+            day = 'Days 4-8'
+            product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
                    "day4-8_%s.html") % (self.valid.year,
-                                        self.issue.strftime("%Y%m%d_%H%M"))
+                                        self.issue.strftime("%Y%m%d"))
         elif self.afos == "PFWFD1":
-            product_descript = "Day 1 Fire"
+            day = 'Day 1'
+            product_descript = "Fire Weather"
             url = ("http://www.spc.noaa.gov/products/fire_wx/%s/"
                    "%s.html") % (self.valid.year,
                                  self.issue.strftime("%Y%m%d"))
         elif self.afos == "PFWFD2":
-            product_descript = "Day 2 Fire"
+            day = 'Day 2'
+            product_descript = "Fire Weather"
             url = ("http://www.spc.noaa.gov/products/fire_wx/%s/%s.html"
                    ) % (self.valid.year, self.issue.strftime("%Y%m%d"))
         elif self.afos == "PFWF38":
-            product_descript = "Day 3-8 Fire"
+            day = 'Day 3-8'
+            product_descript = "Fire Weather"
             url = ("http://www.spc.noaa.gov/products/fire_wx/%s/%s.html"
                    ) % (self.valid.year, self.issue.strftime("%Y%m%d"))
 
-        return product_descript, url
+        return product_descript, url, day
 
     def get_jabbers(self, uri, uri2=None):
-        """Figure out the jabber messaging"""
-        wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
-                'CRIT': [], 'MDT': [], 'HIGH': []}
+        """Wordsmith the Jabber/Twitter Messaging
 
-        for outlook in self.outlooks:
-            _d = wfos.setdefault(outlook.threshold, [])
-            _d.extend(outlook.wfos)
-
-        product_descript, url = self.get_descript_and_url()
-        codes = {'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
-                 'MDT': "Moderate", 'HIGH': 'High',
-                 'CRIT': 'Critical', 'EXTM': 'Extreme'}
-
-        wfomsgs = {}
-        for cat in ['MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH', 'CRIT', 'EXTM']:
-            for wfo in wfos[cat]:
-                wfomsgs[wfo] = [
-                    ("The Storm Prediction Center issues Day %s %s "
-                     "risk for portions of %s %s") % (self.day, cat, wfo, url),
-                    ("<p>The Storm Prediction Center issues "
-                     "<a href=\"%s\">%s %s Risk</a> for portions "
-                     "of %s's area</p>"
-                     ) % (url, product_descript, codes[cat], wfo),
-                    {'channels': wfo,
-                     'product_id': self.get_product_id(),
-                     'twitter': "SPC issues Day 1 %s risk for %s" % (cat, wfo)
-                     }
-                ]
-        keys = wfomsgs.keys()
-        keys.sort()
+        Examples
+        --------
+          The Storm Prediction Center issues Day 1 Convective Outlook
+            at 16z 6 April
+          The Storm Prediction Center issues Day 1 Moderate Risk at 16z 6 Apr
+            for portions of DMX
+          SPC issues Day 1 Moderate Risk at 16z 6 April for #DMX
+        """
         res = []
-        for wfo in keys:
-            res.append(wfomsgs[wfo])
+        for _, collect in self.outlook_collections.iteritems():
+
+            wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
+                    'CRIT': [], 'MDT': [], 'HIGH': []}
+
+            for outlook in collect.outlooks:
+                _d = wfos.setdefault(outlook.threshold, [])
+                _d.extend(outlook.wfos)
+
+            product_descript, url, title = self.get_descript_and_url()
+            jdict = {
+                'title': title,
+                'name': 'The Storm Prediction Center',
+                'tstamp': self.valid.strftime("%b %-d, %-H:%Mz"),
+                'day': collect.day,
+                'outlooktype': product_descript,
+                'url': url
+                }
+
+            wfomsgs = {}
+            # We order in least to greatest, so that the highest threshold
+            # overwrites lower ones
+            for cat in ['MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH', 'CRIT', 'EXTM']:
+                jdict['ttext'] = "%s %s Risk" % (THRESHOLD2TEXT[cat],
+                                                 product_descript)
+                for wfo in wfos[cat]:
+                    jdict['wfo'] = wfo
+                    wfomsgs[wfo] = [
+                        ("%(name)s issues Day %(day)s %(ttext)s "
+                         "at %(tstamp)s for portions of %(wfo)s %(url)s"
+                         ) % jdict,
+                        ("<p>%(name)s issues "
+                         "<a href=\"%(url)s\">Day %(day)s %(ttext)s</a> "
+                         "at %(tstamp)s for portions of %(wfo)s's area</p>"
+                         ) % jdict,
+                        {'channels': wfo,
+                         'product_id': self.get_product_id(),
+                         'twitter': ("SPC issues Day %(day)s %(ttext)s "
+                                     "at %(tstamp)s for %(wfo)s %(url)s"
+                                     ) % jdict
+                         }
+                    ]
+            keys = wfomsgs.keys()
+            keys.sort()
+            res = []
+            for wfo in keys:
+                res.append(wfomsgs[wfo])
 
         # Generic for SPC
         res.append([
-            ("The Storm Prediction Center issues %s Outlook"
-             ) % (product_descript, ),
-            ("<p>The Storm Prediction Center issues <a href=\"%s\">%s Outlook"
-             "</a></p>"
-             ) % (url, product_descript),
+            ("%(name)s issues %(title)s %(outlooktype)s Outlook at %(tstamp)s"
+             " %(url)s"
+             ) % jdict,
+            ("<p>%(name)s issues <a href=\"%(url)s\">%(title)s "
+             "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
+             ) % jdict,
             {'channels': 'SPC',
-             'product_id': self.get_product_id()
+             'product_id': self.get_product_id(),
+             'twitter': ("%(name)s issues %(title)s "
+                         "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
+                         ) % jdict
              }])
         return res
 
