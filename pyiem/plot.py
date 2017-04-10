@@ -1022,8 +1022,8 @@ class MapPlot(object):
             lat1d = np.append(lat1d, lat1d[-1] + (lat1d[-1] - lat1d[-2]))
             lons, lats = np.meshgrid(lon1d, lat1d)
 
-        self.map.pcolormesh(lons, lats, vals, norm=norm,
-                            cmap=cmap, zorder=Z_FILL, latlon=True)
+        res = self.map.pcolormesh(lons, lats, vals, norm=norm,
+                                  cmap=cmap, zorder=Z_FILL, latlon=True)
 
         if kwargs.get("clip_on", True):
             self.draw_mask()
@@ -1033,6 +1033,8 @@ class MapPlot(object):
         if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
                           ha='right')
+
+        return res
 
     def draw_mask(self):
         ''' Draw the mask, when appropriate '''
