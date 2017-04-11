@@ -17,7 +17,19 @@ def get_file(name):
     return open(fn).read()
 
 
+def utc(year, month, day, hour=0, minute=0):
+    """UTC Timestamp generator"""
+    return datetime.datetime(year, month, day, hour,
+                             minute).replace(tzinfo=pytz.timezone("UTC"))
+
+
 class TestProduct(unittest.TestCase):
+
+    def test_170411_fakemnd(self):
+        """This RTP has a quasi-faked timestamp in the header causing error"""
+        tp = productparser(get_file('RTPSGX.txt'))
+        res = utc(2017, 4, 10, 23, 30)
+        self.assertEqual(tp.valid, res)
 
     def test_151024_cae(self):
         """Make sure this CAE product works and does not throw an UGC error"""
@@ -266,6 +278,7 @@ class TestProduct(unittest.TestCase):
                           '-88.050000 32.370000, -87.970000 32.350000, '
                           '-87.940000 32.310000, -88.410000 32.310000, '
                           '-88.390000 32.590000)))'))
+
 
 if __name__ == '__main__':
     unittest.main()

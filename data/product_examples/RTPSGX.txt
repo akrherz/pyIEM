@@ -1,0 +1,119 @@
+386 
+ASUS66 KSGX 102324
+RTPSGX
+
+:SOUTHWESTERN CALIFORNIA TEMPERATURE AND PRECIPITATION SUMMARY
+:NATIONAL WEATHER SERVICE SAN DIEGO CA
+:430 PM PDT MON APR 10 2017
+:
+:***** PRELIMINARY *****
+:
+:17 HOUR HIGH AND LOW TEMPERATURES AS OF 4 PM TODAY.
+:   * DENOTES 24 HOUR HIGH TEMPERATURES BETWEEN 4 PM YESTERDAY
+:     AND 4 PM TODAY. OCCASIONALLY THE HIGH TEMPERATURE MAY HAVE
+:     OCCURRED AFTER 4 PM YESTERDAY.
+:
+:PRECIPITATION FOR THE PAST 24 HOURS.   M DENOTES MISSING.
+:   T DENOTES TRACE OF PRECIPITATION
+:
+.BR SGX 0410 P DH15/TAIRZS/TAIRZI/PPDRZZ/SDIRZZ
+:
+: ID :      STATION           ELEV : HIGH / LOW /  PCPN / SNODEP
+:                             FEET                        INCHES
+:
+:        ...COASTAL AREAS...
+:
+SDYBL:      YORBA LINDA        370 :   81 /  47 /  0.00 /
+FUL  :      FULLERTON AIRPORT   96 :   79 /  49 /  0.00 /
+ANAC1:    * ANAHEIM            335 :   80 /  50 /  0.00 /
+STAC1:      SANTA ANA          135 :   79 /  51 /  0.00 /
+SDHTB:      HUNTINGTON BEACH     5 :   70 /  46 /  0.00 /
+SNA  :      JOHN WAYNE AIRPORT  55 :   74 /  51 /  0.00 /
+3L3  :    * NEWPORT BEACH       10 :   65 /  53 /  0.00 /
+LAGC1:      LAGUNA BEACH        35 :   71 /  46 /  0.00 /
+SDDPC:      DANA POINT         305 :   66 /  45 /  0.00 /
+SDFRH:      LAKE FOREST        970 :   78 /  49 /  0.00 /
+L34  :      OCEANSIDE HARBOR    10 :   64 /  48 /  0.00 /
+OKB  :      OCEANSIDE AIRPORT   28 :   72 /  42 /  0.00 /
+SDVIS:      VISTA              330 :   72 /  45 /  0.00 /
+CRQ  :      CARLSBAD AIRPORT   328 :   69 /  50 /  0.00 /
+SDETS:      ENCINITAS          270 :   68 /  49 /  0.00 /
+SOL  :      SOLANA BEACH        75 :   69 /  50 /  0.00 /
+SDDMB:      DEL MAR BEACH       10 :   63 /  52 /  0.00 /
+NKX  :      MIRAMAR            477 :   76 /  48 /  0.00 /
+MYF  :      MONTGOMERY FIELD   420 :   74 /  48 /  0.00 /
+SAN  :      SAN DIEGO INT'L AP  15 :   71 /  54 /  0.00 /
+L13  :      CABRILLO NATL MNMT 364 :    M /   M /  0.00 /
+SDNAC:      NATIONAL CITY       25 :   71 /  51 /  0.00 /
+CVAC1:      CHULA VISTA         65 :   70 /  49 /  0.00 /
+NRS  :      IMPERIAL BEACH      23 :   66 /  49 /  0.00 /
+SDM  :      BROWN FIELD        525 :   73 /  45 /  0.00 /
+:
+:        ...INLAND AREAS...
+:
+ONT  :      ONTARIO            943 :   81 /  48 /  0.00 /
+CNO  :      CHINO              652 :   80 /  41 /  0.00 /
+SDALO:      RANCHO CUCAMONGA  1940 :   78 /  48 /  0.00 /
+SDSBO:      SAN BERNARDINO    1050 :   79 /  48 /  0.00 /
+AJO  :      CORONA             531 :   78 /  35 /  0.00 /
+RAL  :      RIVERSIDE AIRPORT  818 :   81 /  45 /  0.00 /
+UCRC1:      RIVERSIDE          986 :   82 /  43 /  0.00 /
+RIV  :      RIVERSIDE MARCH   1542 :   78 /  34 /  0.00 /
+BUO  :      BEAUMONT          2680 :   76 /  41 /  0.00 /
+SDLEL:      LAKE ELSINORE     1275 :    M /   M /  0.00 /
+SDHET:      HEMET             2050 :   77 /  47 /  0.00 /
+SDTEC:      TEMECULA          1020 :   80 /  45 /  0.00 /
+SDFBK:      FALLBROOK          698 :   77 /  48 /  0.00 /
+VCFC1:      VALLEY CENTER     1312 :   80 /  38 /  0.00 /
+SDSMP:      SAN MARCOS         630 :   74 /  50 /  0.00 /
+ESCC1:      ESCONDIDO          645 :   80 /  48 /  0.00 /
+PSQC1:      SAN PASQUAL VALLEY 255 :   81 /  38 /  0.00 /
+RNM  :      RAMONA AIRPORT    1393 :   77 /  37 /  0.00 /
+SGX  :      RANCHO BERNARDO    690 :   74 /  46 /  0.00 /
+SDPOY:      POWAY              648 :   79 /  43 /  0.00 /
+ALPC1:      ALPINE            1695 :   77 /  44 /  0.00 /
+SDLAM:      LA MESA            500 :   74 /  50 /  0.00 /
+SDSNL:      SANTEE             435 :   78 /  44 /  0.00 /
+ELJC1:      EL CAJON           405 :   79 /  48 /  0.00 /
+SDRSC:      RANCHO SAN DIEGO   400 :   77 /  44 /  0.00 /
+LMGC1:      LEMON GROVE        427 :   75 /  50 /  0.00 /
+:
+:        ...MOUNTAIN AREAS...
+:
+ECSC1:      EL CARISO         2730 :   75 /  49 /  0.00 / 
+SDWRT:      WRIGHTWOOD        5980 :   58 /  33 /  0.00 / 
+SDARN:      LAKE ARROWHEAD    5180 :   69 /  31 /  0.00 / 
+BBLC1:      BIG BEAR LAKE     6768 :   59 /  24 /  0.00 / 
+SDBDN:      BALDWIN LAKE      6770 :   57 /  17 /  0.00 /
+SDAOK:      ANGELUS OAKS      5800 :   61 /  35 /  0.00 /
+SDPCV:      PINE COVE         6299 :   60 /  38 /  0.00 /
+IDYC1:      IDYLLWILD         5380 :   65 /  29 /  0.00 / 
+NZAC1:      ANZA              3939 :   71 /  31 /  0.00 / 
+PYNC1:      PINYON PINES      4060 :   73 /  33 /  0.00 / 
+PLRC1:    * PALOMAR MOUNTAIN  5550 :   63 /  41 /  0.00 / 
+JULC1:      JULIAN            4240 :   67 /  36 /  0.00 / 
+MLNC1:    * MOUNT LAGUNA      5920 :    M /   M /     M / 
+CPMC1:    * CAMPO COOP        2615 :   79 /  29 /  0.00 / 
+:
+:        ...DESERT AREAS...
+:
+HESC1:      HESPERIA          3055 :   72 /  36 /  0.00 / 
+APLC1:      APPLE VALLEY      2780 :   74 /  37 /  0.00 / 
+PSP  :      PALM SPRINGS       425 :   87 /  59 /  0.00 / 
+IDOC1:      INDIO              -21 :   86 /  58 /  0.00 / 
+TRM  :      THERMAL           -117 :   87 /  43 /  0.00 / 
+BROC1:      BORREGO SPRINGS    805 :   84 /  52 /  0.00 / 
+OCWC1:      OCOTILLO WELLS     390 :   82 /  59 /  0.00 / 
+TYEC1:      JOSHUA TREE N.P.  1975 :   77 /  44 /  0.00 / 
+BLH  :      BLYTHE             397 :   83 /  47 /  0.00 /
+IPLPSG      IMPERIAL           -56 :   83 /  51 /  0.00 /
+.END
+
+
+THESE DATA ARE PRELIMINARY AND HAVE NOT UNDERGONE FINAL QUALITY CONTROL BY THE
+NATIONAL CLIMATIC DATA CENTER (NCDC). THEREFORE, THESE DATA ARE SUBJECT TO 
+REVISION. FINAL AND CERTIFIED CLIMATE DATA CAN BE ACCESSED AT WWW.NCDC.NOAA.GOV.
+ 
+$$
+
+

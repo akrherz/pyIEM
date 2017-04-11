@@ -454,14 +454,18 @@ class TextProduct(object):
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
             self.z = tokens[0][2].upper()
             self.tz = pytz.timezone(reference.name2pytz.get(self.z, 'UTC'))
-            if tokens[0][0].find(":") > -1:
-                (h, m) = tokens[0][0].split(":")
-            elif len(tokens[0][0]) < 3:
-                h = tokens[0][0]
+            hhmi = tokens[0][0]
+            # False positive from regex
+            if hhmi[0] == ':':
+                hhmi = hhmi.replace(":", "")
+            if hhmi.find(":") > -1:
+                (h, m) = hhmi.split(":")
+            elif len(hhmi) < 3:
+                h = hhmi
                 m = 0
             else:
-                h = tokens[0][0][:-2]
-                m = tokens[0][0][-2:]
+                h = hhmi[:-2]
+                m = hhmi[-2:]
             dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][4],
                                           tokens[0][5], tokens[0][6])
             # Careful here, need to go to UTC time first then come back!
