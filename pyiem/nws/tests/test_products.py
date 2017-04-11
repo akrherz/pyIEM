@@ -47,10 +47,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170411_baddelim(self):
+        """FLSGRB contains an incorrect sequence of $$ and &&"""
+        prod = vtecparser(get_file('FLSGRB.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 1)
+
     def test_170403_badtime(self):
         """Handle when a colon is added to a timestamp"""
         prod = parser(get_file('FLWBOI.txt'))
-        j = prod.get_jabbers("http://localhost", "http://localhost")
+        _ = prod.get_jabbers("http://localhost", "http://localhost")
         self.assertEquals(prod.valid,
                           datetime.datetime(2017, 4, 2, 2, 30,
                                             tzinfo=pytz.utc))

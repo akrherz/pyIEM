@@ -1,0 +1,27 @@
+743 
+WGUS83 KGRB 101517
+FLSGRB
+
+FLOOD STATEMENT
+NATIONAL WEATHER SERVICE GREEN BAY WI 
+1017 AM CDT MON APR 10 2017
+
+MIC043-109-WIC037-075-110317-
+/O.NEW.KGRB.FL.Y.0001.170410T1517Z-170412T0316Z/
+/BGQW3.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+1017 AM CDT MON APR 10 2017
+
+The National Weather Service in Green Bay has issued a
+* Flood Advisory for
+  The Memoninee River near Big Quinnesec Falls Dam
+* At  9:30 AM Monday The flow was 4829 cfs and increasing. 
+* At 5000 feet...While flooding is not expected...rivers flows are 
+  high or expected to increase. Recreational interests should monitor
+  the river.  Property owners adjacent to the river should consider 
+  protecting shoreline equipment including docks piers and boats.  
+
+$$
+
+&&
+
+LAT...LON 4588 8811 4579 8790 4572 8790 4579 8819

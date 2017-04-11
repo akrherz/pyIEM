@@ -99,6 +99,10 @@ class VTECProduct(TextProduct):
 
         """
         for segment in self.segments:
+            print segment.giswkt, segment.vtec
+            if segment.giswkt and len(segment.vtec) == 0:
+                self.warnings.append(("Product segment has LAT...LON, but "
+                                      "does not have VTEC?"))
             if len(segment.ugcs) == 0 and len(segment.vtec) > 0:
                 self.warnings.append(("UGC is missing for segment "
                                       "that has VTEC!"))
