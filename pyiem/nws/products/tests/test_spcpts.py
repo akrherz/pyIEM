@@ -67,7 +67,7 @@ class TestPTS(unittest.TestCase):
     def test_170404_2002(self):
         """Can we parse something from 2002?"""
         spc = parser(get_file('PTSDY1_2002.txt'))
-        spc.draw_outlooks()
+        # spc.draw_outlooks()
         outlook = spc.get_outlook('CATEGORICAL', 'SLGT')
         self.assertAlmostEqual(outlook.geometry.area, 38.92, 2)
 

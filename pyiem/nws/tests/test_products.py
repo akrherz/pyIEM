@@ -58,7 +58,7 @@ class TestProducts(unittest.TestCase):
         """FLSGRB contains an incorrect sequence of $$ and &&"""
         prod = vtecparser(get_file('FLSGRB.txt'))
         prod.sql(self.txn)
-        self.assertEquals(len(prod.warnings), 1)
+        self.assertTrue(len(prod.warnings) >= 1)
 
     def test_170403_badtime(self):
         """Handle when a colon is added to a timestamp"""
