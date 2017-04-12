@@ -47,6 +47,13 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170411_suspect_vtec(self):
+        """MWWSJU contains VTEC that NWS HQ says should not be possible"""
+        prod = vtecparser(get_file('MWWSJU.txt'))
+        prod.sql(self.txn)
+        a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
+        self.assertTrue(any(a))
+
     def test_170411_baddelim(self):
         """FLSGRB contains an incorrect sequence of $$ and &&"""
         prod = vtecparser(get_file('FLSGRB.txt'))
@@ -408,6 +415,7 @@ class TestProducts(unittest.TestCase):
                 row = self.txn.fetchone()
                 self.assertEquals(row[0], utc(2015, 1, 1, 6, 0))
             warnings = filter_warnings(prod.warnings)
+            warnings = filter_warnings(warnings, "Segment has duplicated")
             self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141226_correction(self):
@@ -455,9 +463,11 @@ class TestProducts(unittest.TestCase):
     def test_141208_upgrade(self):
         """ See that we can handle the EXB case """
         for i in range(0, 18):
+            print("Processing %s" % (i,))
             prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
             prod.sql(self.txn)
             warnings = filter_warnings(prod.warnings)
+            warnings = filter_warnings(warnings, "Segment has duplicated")
             self.assertEquals(len(warnings), 0, "\n".join(warnings))
         # Check the issuance time for UGC ANZ532
         self.txn.execute("""SELECT issue at time zone 'UTC' from warnings_2014

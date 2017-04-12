@@ -8,6 +8,25 @@ from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 
 
+def check_dup_ps(segment):
+    """Does this TextProductSegment have duplicated VTEC
+
+    NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
+    phenomena and significance that are reused.  This combination should not
+    happen.
+
+    Returns:
+      bool
+    """
+    combos = []
+    for v in segment.vtec:
+        key = "%s.%s" % (v.phenomena, v.significance)
+        if key in combos:
+            return True
+        combos.append(key)
+    return False
+
+
 def do_sql_hvtec(txn, segment):
     ''' Process the HVTEC in this product '''
     nwsli = segment.hvtec[0].nwsli.id
@@ -99,6 +118,9 @@ class VTECProduct(TextProduct):
 
         """
         for segment in self.segments:
+            if len(segment.vtec) > 1 and check_dup_ps(segment):
+                self.warnings.append(("Segment has duplicated VTEC for a "
+                                      "single phenomena / significance"))
             if segment.giswkt and len(segment.vtec) == 0:
                 self.warnings.append(("Product segment has LAT...LON, but "
                                       "does not have VTEC?"))
