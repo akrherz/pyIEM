@@ -387,16 +387,25 @@ class TestProducts(unittest.TestCase):
             self.assertEquals(len(warnings), 0,
                               "\n".join(warnings))
 
-    def test_150102_mutiyear2(self):
+    def test_150102_multiyear2(self):
         """ WSWSTO See how well we span multiple years """
         for i in range(17):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('NPWSTO/%i.txt' % (i,)))
             prod.sql(self.txn)
+            # side test for expiration message
+            if i == 3:
+                j = prod.get_jabbers('')
+                self.assertEquals(j[0][0],
+                                  ("STO expires Frost Advisory for "
+                                   "((CAZ015)), ((CAZ016)), ((CAZ017)), "
+                                   "((CAZ018)), ((CAZ019)), ((CAZ064)), "
+                                   "((CAZ066)), ((CAZ067)) [CA] "
+                                   "2014-O-EXP-KSTO-FR-Y-0001"))
             warnings = filter_warnings(prod.warnings)
             self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
-    def test_150102_mutiyear(self):
+    def test_150102_multiyear(self):
         """ WSWOUN See how well we span multiple years """
         for i in range(13):
             print('Parsing Product: %s.txt' % (i,))

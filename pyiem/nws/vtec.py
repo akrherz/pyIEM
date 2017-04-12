@@ -223,7 +223,7 @@ class VTEC(object):
 
     def get_end_string(self, prod):
         """ Return an appropriate end string for this VTEC """
-        if self.action == 'CAN':
+        if self.action in ['CAN', 'EXP']:
             return ''
         if self.endts is None:
             return 'until further notice'
