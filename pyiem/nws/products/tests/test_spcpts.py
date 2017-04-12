@@ -29,6 +29,16 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170411_jabber_error(self):
+        """This empty Fire Weather Day 3-8 raised a jabber error"""
+        spc = parser(get_file('PFWF38_empty.txt'))
+        j = spc.get_jabbers('')
+        self.assertEquals(j[0][0],
+                          ("The Storm Prediction Center issues Day 3-8 Fire "
+                           "Weather Outlook at Apr 11, 19:54z "
+                           "http://www.spc.noaa.gov/products/fire_wx/"
+                           "2017/20170413.html"))
+
     def test_170406_day48_pre2015(self):
         """Can we parse a pre2015 days 4-8"""
         spc = parser(get_file('PTSD48_pre2015.txt'))

@@ -512,6 +512,14 @@ class SPCPTS(TextProduct):
           SPC issues Day 1 Moderate Risk at 16z 6 April for #DMX
         """
         res = []
+        product_descript, url, title = self.get_descript_and_url()
+        jdict = {
+            'title': title,
+            'name': 'The Storm Prediction Center',
+            'tstamp': self.valid.strftime("%b %-d, %-H:%Mz"),
+            'outlooktype': product_descript,
+            'url': url
+            }
         for _, collect in self.outlook_collections.iteritems():
 
             wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
@@ -521,16 +529,7 @@ class SPCPTS(TextProduct):
                 _d = wfos.setdefault(outlook.threshold, [])
                 _d.extend(outlook.wfos)
 
-            product_descript, url, title = self.get_descript_and_url()
-            jdict = {
-                'title': title,
-                'name': 'The Storm Prediction Center',
-                'tstamp': self.valid.strftime("%b %-d, %-H:%Mz"),
-                'day': collect.day,
-                'outlooktype': product_descript,
-                'url': url
-                }
-
+            jdict['day'] = collect.day
             wfomsgs = {}
             # We order in least to greatest, so that the highest threshold
             # overwrites lower ones
