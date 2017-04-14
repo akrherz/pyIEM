@@ -1,6 +1,7 @@
 """Utilities for the Daily Erosion Project"""
-import pandas as pd
 import datetime
+
+import pandas as pd
 
 # The bounds of the climate files we store on disk and processing
 SOUTH = 36.0
@@ -9,34 +10,34 @@ NORTH = 49.0
 EAST = -80.5
 
 
-def read_cli(fn):
+def read_cli(filename):
     """Read WEPP CLI File, Return DataFrame
 
     Args:
-      fn (str): Filename to read
+      filename (str): Filename to read
 
     Returns:
       pandas.DataFrame
     """
     rows = []
     dates = []
-    lines = open(fn).readlines()
+    lines = open(filename).readlines()
     linenum = 15
     while linenum < len(lines):
         (da, mo, year, breakpoints, tmax, tmin, rad, wvl, wdir,
          tdew) = lines[linenum].split()
         breakpoints = int(breakpoints)
         accum = 0
-        t = []
-        r = []
+        times = []
+        points = []
         for i in range(1, breakpoints + 1):
             (ts, accum) = lines[linenum + i].split()
-            t.append(float(ts))
-            r.append(float(accum))
+            times.append(float(ts))
+            points.append(float(accum))
         maxr = 0
-        for i in range(1, len(t)):
-            dt = t[i] - t[i-1]
-            dr = r[i] - r[i-1]
+        for i in range(1, len(times)):
+            dt = times[i] - times[i-1]
+            dr = points[i] - points[i-1]
             rate = (dr / dt)
             if rate > maxr:
                 maxr = rate
@@ -51,9 +52,17 @@ def read_cli(fn):
     return pd.DataFrame(rows, index=pd.DatetimeIndex(dates))
 
 
-def read_env(fn, year0=2006):
-    """Read a WEPP .env file into Pandas Data Table"""
-    df = pd.read_table(fn,
+def read_env(filename, year0=2006):
+    """Read WEPP .env file, return a dataframe
+
+    Args:
+      filename (str): Filename to read
+      year0 (int,optional): The simulation start year minus 1
+
+    Returns:
+      pd.DataFrame
+    """
+    df = pd.read_table(filename,
                        skiprows=3, index_col=False, delim_whitespace=True,
                        header=None, na_values=['*******', '******'],
                        names=['day', 'month', 'year', 'precip', 'runoff',
@@ -66,14 +75,14 @@ def read_env(fn, year0=2006):
         # Faster than +=
         df['year'] = df['year'] + year0
         # Considerably faster than df.apply
-        df['date'] = pd.to_datetime(dict(year=df.year, month=df.month,
-                                         day=df.day))
+        df['date'] = pd.to_datetime(dict(year=df['year'], month=df['month'],
+                                         day=df['day']))
     return df
 
 
-def read_wb(fn):
+def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
-    df = pd.read_table(fn, delim_whitespace=True,
+    df = pd.read_table(filename, delim_whitespace=True,
                        na_values=['*******', '******'])
     if len(df.index) == 0:
         df['date'] = None
