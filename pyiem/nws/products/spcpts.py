@@ -542,14 +542,14 @@ class SPCPTS(TextProduct):
             day = 'Day 3'
             product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/outlook/archive/%s/"
-                   "day3otlk_%s.html") % (self.valid.year,
-                                          self.issue.strftime("%Y%m%d_%H%M"))
+                   "day3otlk_%s_0730.html") % (self.valid.year,
+                                               self.issue.strftime("%Y%m%d"))
         elif self.afos == "PTSD48":
             day = 'Days 4-8'
             product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
                    "day4-8_%s.html") % (self.valid.year,
-                                        self.issue.strftime("%Y%m%d"))
+                                        self.valid.strftime("%Y%m%d"))
         elif self.afos == "PFWFD1":
             day = 'Day 1'
             product_descript = "Fire Weather"

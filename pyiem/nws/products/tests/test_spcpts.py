@@ -42,7 +42,7 @@ class TestPTS(unittest.TestCase):
                           ("The Storm Prediction Center issues Days 4-8 "
                            "Convective Outlook at Dec 25, 9:41z "
                            "http://www.spc.noaa.gov/products/exper/day4-8/"
-                           "archive/2008/day4-8_20081228.html"))
+                           "archive/2008/day4-8_20081225.html"))
 
     def test_051128_invalid(self):
         """Make sure that the SIG wind threshold does not eat the US"""
