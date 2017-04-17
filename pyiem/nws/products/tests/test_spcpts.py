@@ -1,7 +1,9 @@
+"""Unit Tests"""
 import unittest
+import os
+
 import datetime
 import pytz
-import os
 import psycopg2.extras
 
 from pyiem.nws.products.spcpts import parser, str2multipolygon
@@ -15,6 +17,7 @@ def get_file(name):
 
 
 class TestPTS(unittest.TestCase):
+    """Run Tests"""
 
     def setUp(self):
         ''' This is called for each test, beware '''
@@ -28,6 +31,23 @@ class TestPTS(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_051128_invalid(self):
+        """Make sure that the SIG wind threshold does not eat the US"""
+        spc = parser(get_file('PTSDY1_biggeom2.txt'))
+        spc.draw_outlooks()
+        spc.sql(self.txn)
+        outlook = spc.get_outlook('WIND', 'SIGN', 1)
+        self.assertTrue(outlook.geometry.is_empty)
+        self.assertEquals(len(spc.warnings), 2, "\n".join(spc.warnings))
+
+    def test_080731_invalid(self):
+        """Make sure that the SIG wind threshold does not eat the US"""
+        spc = parser(get_file('PTSDY1_biggeom.txt'))
+        # spc.draw_outlooks()
+        outlook = spc.get_outlook('WIND', 'SIGN', 1)
+        self.assertAlmostEquals(outlook.geometry.area, 15.82, 2)
+        self.assertEquals(len(spc.warnings), 1)
 
     def test_170411_jabber_error(self):
         """This empty Fire Weather Day 3-8 raised a jabber error"""

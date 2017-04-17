@@ -2,14 +2,17 @@
  Something to deal with SPC PTS Product
  My life was not supposed to end like this, what a brutal format
 """
+from __future__ import print_function
 import re
+import datetime
+import copy
+import os
+import itertools
+
 import numpy as np
 from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon, LineString, MultiPolygon
 from shapely.geometry.polygon import LinearRing
-import datetime
-import copy
-import os
 
 CONUS = None
 CONUSPOLY = None
@@ -20,14 +23,18 @@ DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 THRESHOLD2TEXT = {'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
                   'MDT': "Moderate", 'HIGH': 'High',
                   'CRIT': 'Critical', 'EXTM': 'Extreme'}
+THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
+                   '0.30', '0.35', '0.40', '0.45', '0.60',
+                   'TSTM', 'MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH',
+                   'CRIT', 'EXTM']
 
 
 def get_day(text):
     """Figure out which day this is for"""
-    m = DAYRE.search(text)
-    if m is None:
+    search = DAYRE.search(text)
+    if search is None:
         return None
-    return int(m.groupdict()['day'])
+    return int(search.groupdict()['day'])
 
 
 def load_conus_data():
@@ -77,7 +84,7 @@ def str2multipolygon(s):
     if (len(segments) == 1 and
             segments[0][0][0] == segments[0][-1][0] and
             segments[0][0][1] == segments[0][-1][1]):
-        print 'Single closed polygon found, done and done'
+        print('Single closed polygon found, done and done')
         return MultiPolygon([Polygon(segments[0])])
 
     # We have some work to do
@@ -92,13 +99,13 @@ def str2multipolygon(s):
                ) % (i+1, len(segments), len(segment), segment[0][0],
                     segment[0][1], segment[-1][0], segment[-1][1]))
         if segment[0] == segment[-1] and len(segment) > 2:
-            print '     segment %s is closed polygon!' % (i,)
+            print('     segment %s is closed polygon!' % (i,))
             lr = LinearRing(LineString(segment))
             if not lr.is_ccw:
-                print '     polygon is counter-clockwise (exterior)'
+                print('     polygon is counter-clockwise (exterior)')
                 polys.insert(0, Polygon(segment))
                 continue
-            print '     polygon is clockwise (interior), compute to which poly'
+            print("     polygon is clockwise (interior), computing which")
             found = False
             for j, poly in enumerate(polys):
                 if poly.intersection(lr):
@@ -107,15 +114,15 @@ def str2multipolygon(s):
                     newp = Polygon(polys[j].exterior, interiors)
                     if newp.is_valid:
                         polys[j] = newp
-                        print ('     polygon is interior to polys #%s, '
-                               'area now %.2f') % (j, polys[j].area)
+                        print(("     polygon is interior to polys #%s, "
+                               "area now %.2f") % (j, polys[j].area))
                     else:
                         raise Exception(('Adding interior polygon resulted '
                                          'in an invalid geometry, aborting'))
                     found = True
                     break
             if not found:
-                print '      ERROR: did not find intersection!'
+                print('      ERROR: did not find intersection!')
             continue
 
         # Attempt to 'clean' this string against the CONUS Polygon
@@ -136,9 +143,9 @@ def str2multipolygon(s):
                 (x, y) = newls.xy
                 segment = zip(x, y)
             else:
-                print '     Intersection landed here? %s' % (newls.is_valid,)
+                print('     Intersection landed here? %s' % (newls.is_valid,))
         else:
-            print '---------> INVALID LINESTRING? |%s|' % (str(segments),)
+            print('---------> INVALID LINESTRING? |%s|' % (str(segments),))
 
         line = np.array(segment)
 
@@ -185,7 +192,7 @@ def str2multipolygon(s):
                     else:
                         continue
                 elif idx1 > idx2:
-                    print '     CASE 2 idx1:%s idx2:%s' % (idx1, idx2)
+                    print('     CASE 2 idx1:%s idx2:%s' % (idx1, idx2))
                     tmpline = np.concatenate([line, pie[idx2:idx1]])
                     polys.append(Polygon(tmpline))
                     print(('     + adding polygon index: %s area: %.2f'
@@ -196,19 +203,19 @@ def str2multipolygon(s):
                 break
 
         if not found:
-            print '     segment did not intersect'
+            print('     segment did not intersect')
 
     res = []
     print(('  Resulted in len(polys): %s, now quality controlling'
            ) % (len(polys),))
     for i, p in enumerate(polys):
         if not p.is_valid:
-            print '     ERROR: polygon %s is invalid!' % (i,)
+            print('     ERROR: polygon %s is invalid!' % (i,))
             continue
         if p.area == CONUSPOLY.area:
-            print '     polygon %s is just CONUS, skipping' % (i,)
+            print('     polygon %s is just CONUS, skipping' % (i,))
             continue
-        print '     polygon: %s has area: %s' % (i, p.area)
+        print('     polygon: %s has area: %s' % (i, p.area))
         res.append(p)
     if len(res) == 0:
         raise Exception(("Processed no geometries, this is a bug!\n"
@@ -238,9 +245,18 @@ class SPCOutlook(object):
 
 
 class SPCPTS(TextProduct):
+    """A class representing the polygons and metadata in SPC PTS Product"""
 
     def __init__(self, text, utcnow=None, ugc_provider=dict(),
                  nwsli_provider=dict()):
+        """Constructor
+
+        Args:
+          text (string): the raw PTS product that is to be parsed
+          utcnow (datetime, optional): in case of ambuigity with time
+          ugc_provider (dict, optional): unused in this class
+          nwsli_provider (dict, optional): unused in this class
+        """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.issue = None
         self.expire = None
@@ -250,6 +266,51 @@ class SPCPTS(TextProduct):
         self.set_metadata()
         self.find_issue_expire()
         self.find_outlooks()
+        self.quality_control()
+
+    def quality_control(self):
+        """Run some checks against what was parsed"""
+        # 1. Do polygons overlap for the same outlook
+        print("==== Running Quality Control Checks")
+        for day, collect in self.outlook_collections.iteritems():
+            # Everything should be smaller than General Thunder, for conv
+            tstm = self.get_outlook('CATEGORICAL', 'TSTM', day)
+            for outlook in collect.outlooks:
+                print(outlook.geometry.area)
+                good_polys = []
+                rewrite = False
+                # case of single polygon
+                if tstm and len(outlook.geometry) == 1:
+                    if outlook.geometry.area > tstm.geometry.area:
+                        rewrite = True
+                        msg = ("Discarding polygon as it is larger than TSTM: "
+                               "Day: %s %s %s Area: %.2f"
+                               ) % (day, outlook.category, outlook.threshold,
+                                    outlook.geometry.area)
+                        print(msg)
+                        self.warnings.append(msg)
+                for poly1, poly2 in itertools.permutations(outlook.geometry,
+                                                           2):
+                    if poly1.contains(poly2):
+                        rewrite = True
+                        msg = ("Discarding exterior polygon: "
+                               "Day: %s %s %s Area: %.2f"
+                               ) % (day, outlook.category, outlook.threshold,
+                                    poly1.area)
+                        print(msg)
+                        self.warnings.append(msg)
+                    elif tstm is not None and poly1.area > tstm.geometry.area:
+                        rewrite = True
+                        msg = ("Discarding polygon as it is larger than TSTM: "
+                               "Day: %s %s %s Area: %.2f"
+                               ) % (day, outlook.category, outlook.threshold,
+                                    poly1.area)
+                        print(msg)
+                        self.warnings.append(msg)
+                    else:
+                        good_polys.append(poly1)
+                if rewrite:
+                    outlook.geometry = MultiPolygon(good_polys)
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""
@@ -279,8 +340,11 @@ class SPCPTS(TextProduct):
                 ax = fig.add_subplot(111)
                 ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
                 for poly in outlook.geometry:
-                    patch = PolygonPatch(poly, fc='r', label='Outlook')
+                    patch = PolygonPatch(poly, fc='tan', label='Outlook',
+                                         zorder=2)
                     ax.add_patch(patch)
+                    ax.plot(poly.exterior.xy[0],
+                            poly.exterior.xy[1], lw=2, color='r')
                 ax.set_title(('Day %s Category %s Threshold %s'
                               ) % (day, outlook.category, outlook.threshold))
                 ax.legend(loc=3)
@@ -352,7 +416,7 @@ class SPCPTS(TextProduct):
             if day is None:
                 day = get_day(segment)
             # We need to figure out the probabilistic or category
-            tokens = re.findall("\.\.\.\s+(.*)\s+\.\.\.", segment)
+            tokens = re.findall(r"\.\.\.\s+(.*)\s+\.\.\.", segment)
             if len(tokens) == 0:
                 continue
             category = tokens[0].strip()
@@ -360,8 +424,8 @@ class SPCPTS(TextProduct):
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
-                if re.match(("^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|"
-                             "HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) "),
+                if re.match((r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|"
+                             r"HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) "),
                             line) is not None:
                     newthreshold = line.split()[0]
                     if threshold is not None and threshold == newthreshold:
@@ -382,9 +446,9 @@ class SPCPTS(TextProduct):
                     print(("Failing to parse TSTM in PFWF38"))
                     del point_data[threshold]
                     continue
-                m = DMATCH.match(threshold)
-                if m:
-                    data = m.groupdict()
+                match = DMATCH.match(threshold)
+                if match:
+                    data = match.groupdict()
                     if data.get('day2') is not None:
                         day1 = int(data['day1'])
                         day2 = int(data['day2'])
@@ -394,9 +458,9 @@ class SPCPTS(TextProduct):
                             point_data[key] = point_data[threshold]
                         del point_data[threshold]
             for threshold in point_data:
-                m = DMATCH.match(threshold)
-                if m:
-                    day = int(m.groupdict()['day1'])
+                match = DMATCH.match(threshold)
+                if match:
+                    day = int(match.groupdict()['day1'])
                     collect = self.outlook_collections.setdefault(
                         day, SPCOutlookCollection(self.issue, self.expire,
                                                   day))
@@ -411,6 +475,8 @@ class SPCPTS(TextProduct):
         """Figure out which WFOs are impacted by this polygon"""
         for day, collect in self.outlook_collections.iteritems():
             for outlook in collect.outlooks:
+                if outlook.geometry.is_empty:
+                    continue
                 sql = """
                     select distinct wfo from ugcs WHERE
                     st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
@@ -441,6 +507,8 @@ class SPCPTS(TextProduct):
                        ) % (txn.rowcount, ))
 
             for outlook in collect.outlooks:
+                if outlook.geometry.is_empty:
+                    continue
                 sql = """
                     INSERT into spc_outlooks(valid, issue, expire,
                     threshold, category, day, outlook_type, geom)
