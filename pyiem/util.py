@@ -37,6 +37,9 @@ def noaaport_text(text):
     # last line should be the control-c, by itself
     if lines[-1] != "\003":
         lines.append("\003")
+    # Second line should not be blank
+    if lines[1].strip() == 0:
+        lines = [lines[0], ] + lines[2:]
 
     return "\r\r\n".join(lines)
 
