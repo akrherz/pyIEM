@@ -524,6 +524,7 @@ class SPCPTS(TextProduct):
         """Helper to convert awips id into strings"""
         product_descript = "((%s))" % (self.afos, )
         url = "http://www.spc.noaa.gov"
+        day = "((%s))" % (self.afos,)
 
         if self.afos == "PTSDY1":
             day = 'Day 1'

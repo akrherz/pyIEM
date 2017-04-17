@@ -32,10 +32,22 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170417_empty(self):
+        """An empty PTSD48 was causing an exception in get_jabbers"""
+        spc = parser(get_file('PTSD48_empty.txt'))
+        # spc.draw_outlooks()
+        spc.sql(self.txn)
+        jabber = spc.get_jabbers('')
+        self.assertEquals(jabber[0][0],
+                          ("The Storm Prediction Center issues Days 4-8 "
+                           "Convective Outlook at Dec 25, 9:41z "
+                           "http://www.spc.noaa.gov/products/exper/day4-8/"
+                           "archive/2008/day4-8_20081228.html"))
+
     def test_051128_invalid(self):
         """Make sure that the SIG wind threshold does not eat the US"""
         spc = parser(get_file('PTSDY1_biggeom2.txt'))
-        spc.draw_outlooks()
+        # spc.draw_outlooks()
         spc.sql(self.txn)
         outlook = spc.get_outlook('WIND', 'SIGN', 1)
         self.assertTrue(outlook.geometry.is_empty)
