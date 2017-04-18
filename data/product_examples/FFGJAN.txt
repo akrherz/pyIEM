@@ -1,0 +1,86 @@
+008 
+FOUS64 KORN 171616
+FFGJAN
+                                                                        
+NATIONAL WEATHER SERVICE                                                
+LOWER MISSISSIPPI RIVER FORECAST CENTER, SLIDELL LA                     
+1106 AM CDT MON APR 17 2017
+                                                                        
+FLASH FLOOD GUIDANCE FOR CWA.....JACKSON MS                             
+                                                                        
+INCHES OF RAINFALL FOR SPECIFIED DURATIONS REQUIRED TO PRODUCE          
+FLASH FLOODING IN ANY SMALL STREAM WITHIN FORECAST ZONES. LOWER         
+AMOUNTS MAY CAUSE FLASH FLOODING IN URBAN OR MOUNTAINOUS AREAS.         
+                                                                        
+.B SIL 170417 Z DH12/DC1704171606 /DUE/PPHCF/PPTCF/PPQCF
+:IDENTIFIERS ARE STATE ID, Z FOR ZONE, NWS-MAR ZONE NUMBER.             
+:                                                                       
+:...STATE     DURATION                                                  
+:IDENT    1HR   3HR   6HR  ZONE NAME
+:======= ====  ====  ====  ====================
+:                                                                       
+:.....ARKANSAS                                                          
+:                                                                       
+ARZ074    2.7/  3.2/  3.8 :ASHLEY
+ARZ075    2.6/  3.1/  3.8 :CHICOT
+:                                                                       
+:.....LOUISIANA                                                         
+:                                                                       
+LAZ024    2.6/  3.2/  4.0 :CATAHOULA
+LAZ026    2.9/  3.5/  4.2 :CONCORDIA
+LAZ009    2.8/  3.4/  4.1 :E_CARROLL
+LAZ023    2.7/  3.2/  3.9 :FRANKLIN
+LAZ016    3.0/  3.5/  4.3 :MADISON
+LAZ007    2.8/  3.3/  4.0 :MOREHOUSE
+LAZ015    2.7/  3.2/  3.8 :RICHLAND
+LAZ025    2.9/  3.5/  4.3 :TENSAS
+LAZ008    2.5/  3.0/  3.7 :W_CARROLL
+:                                                                       
+:.....MISSISSIPPI                                                       
+:                                                                       
+MSZ060    3.0/  3.7/  4.7 :ADAMS
+MSZ037    3.0/  3.7/  4.7 :ATTALA
+MSZ018    2.9/  3.4/  4.1 :BOLIVAR
+MSZ027    2.5/  3.2/  4.1 :CARROLL
+MSZ032    2.9/  3.6/  4.6 :CHOCTAW
+MSZ053    3.0/  3.8/  4.7 :CLAIBORNE
+MSZ058    3.1/  4.0/  5.0 :CLARKE
+MSZ054    3.0/  3.8/  4.8 :COPIAH
+MSZ065    3.2/  4.0/  5.1 :COVINGTON
+MSZ074    3.5/  4.4/  5.5 :FORREST
+MSZ061    3.2/  4.0/  5.1 :FRANKLIN
+MSZ026    2.6/  3.3/  4.2 :GRENADA
+MSZ048    2.7/  3.4/  4.4 :HINDS
+MSZ036    2.8/  3.5/  4.3 :HOLMES
+MSZ035    2.8/  3.3/  4.0 :HUMPHREYS
+MSZ040    3.1/  3.7/  4.5 :ISSAQUENA
+MSZ057    3.1/  3.9/  4.9 :JASPER
+MSZ059    2.8/  3.5/  4.5 :JEFFERSON
+MSZ064    3.2/  4.1/  5.1 :JEFFERSON_DAVIS
+MSZ066    3.1/  3.9/  4.9 :JONES
+MSZ073    3.4/  4.3/  5.5 :LAMAR
+MSZ052    2.9/  3.7/  4.8 :LAUDERDALE
+MSZ063    3.2/  4.1/  5.2 :LAWRENCE
+MSZ044    3.0/  3.8/  4.8 :LEAKE
+MSZ025    2.6/  3.0/  3.7 :LEFLORE
+MSZ062    3.0/  3.8/  4.8 :LINCOLN
+MSZ043    2.8/  3.4/  4.3 :MADISON
+MSZ072    3.5/  4.4/  5.6 :MARION
+MSZ028    2.8/  3.5/  4.5 :MONTGOMERY
+MSZ045    3.0/  3.7/  4.7 :NESHOBA
+MSZ051    3.0/  3.7/  4.8 :NEWTON
+MSZ049    3.1/  3.9/  4.8 :RANKIN
+MSZ050    3.1/  3.8/  4.8 :SCOTT
+MSZ041    3.0/  3.5/  4.3 :SHARKEY
+MSZ055    3.3/  4.1/  5.2 :SIMPSON
+MSZ056    3.2/  4.0/  5.1 :SMITH
+MSZ019    2.4/  2.9/  3.6 :SUNFLOWER
+MSZ047    3.3/  4.1/  5.1 :WARREN
+MSZ034    2.7/  3.2/  3.9 :WASHINGTON
+MSZ029    2.7/  3.4/  4.3 :WEBSTER
+MSZ038    2.9/  3.6/  4.6 :WINSTON
+MSZ042    2.7/  3.3/  4.2 :YAZOO
+.END
+$$
+
+DUTY FORECASTER:  Call LMRFC Operations

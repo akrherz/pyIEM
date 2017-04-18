@@ -2385,3 +2385,24 @@ create index sbw_2017_expire_idx on sbw_2017(expire);
 create index sbw_2017_issue_idx on sbw_2017(issue);
 create index sbw_2017_wfo_idx on sbw_2017(wfo);
 grant select on sbw_2017 to apache,nobody;
+
+CREATE TABLE ffg(
+  ugc char(6),
+  valid timestamptz,
+  hour01 real,
+  hour03 real,
+  hour06 real,
+  hour12 real,
+  hour24 real);
+GRANT SELECT on ffg to nobody,apache;
+GRANT ALL on ffg to ldm,mesonet;
+
+CREATE TABLE ffg_2017(
+  CONSTRAINT __ffg_2017_check 
+  CHECK(valid >= '2017-01-01 00:00+00'::timestamptz
+        and valid < '2018-01-01 00:00+00'::timestamptz))
+  INHERITS (ffg);
+CREATE INDEX ffg_2017_ugc_idx on ffg_2017(ugc);
+CREATE INDEX ffg_2017_valid_idx on ffg_2017(valid);
+GRANT ALL on ffg_2017 to ldm,mesonet;
+GRANT SELECT on ffg_2017 to nobody,apache;

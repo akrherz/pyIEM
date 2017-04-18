@@ -1,0 +1,47 @@
+621 
+FOUS64 KTUA 020125
+FFGAMA
+FOUS64 KTUA 020124
+                                                                        
+National Weather Service                                                
+Arkansas-Red Basin River Forecast Center...Tulsa OK                     
+                                                                        
+Average inches of rainfall for given durations required to produce      
+flash flooding in the indicated state county forecast areas.            
+Less rainfall required in urban areas.                                  
+                                                                        
+824 PM CDT SAT APR 1 2017
+                                                                        
+.B TUR 170402 Z DH12/DC1704020124 /DUE/PPHCF/PPTCF/PPQCF 
+:                                                                       
+:IDENT    1HR   3HR   6HR  COUNTY NAME                                  
+:======= ====  ====  ====  ====================                         
+TXZ018    1.7/  2.0/  2.5 :ARMSTRONG
+TXZ013    1.7/  2.0/  2.5 :CARSON
+TXZ020    2.1/  2.6/  3.2 :COLLINGSWORTH
+TXZ001    2.0/  2.4/  2.8 :DALLAM
+TXZ016    1.8/  2.2/  2.7 :DEAF SMITH
+TXZ019    2.1/  2.6/  3.2 :DONLEY
+TXZ014    2.1/  2.6/  3.2 :GRAY
+TXZ003    1.6/  1.9/  2.3 :HANSFORD
+TXZ006    2.0/  2.4/  2.8 :HARTLEY
+TXZ010    2.5/  3.1/  3.8 :HEMPHILL
+TXZ008    2.1/  2.5/  3.1 :HUTCHINSON
+TXZ005    2.1/  2.5/  3.1 :LIPSCOMB
+TXZ007    1.7/  2.0/  2.5 :MOORE
+TXZ004    1.6/  1.9/  2.3 :OCHILTREE
+TXZ011    1.8/  2.2/  2.7 :OLDHAM
+TXZ012    1.9/  2.3/  2.9 :POTTER
+TXZ017    1.9/  2.3/  2.9 :RANDALL
+TXZ009    2.1/  2.5/  3.1 :ROBERTS
+TXZ002    1.6/  1.9/  2.2 :SHERMAN
+TXZ015    2.6/  3.1/  3.9 :WHEELER
+:
+OKZ003    1.8/  2.2/  2.6 :BEAVER
+OKZ001    1.8/  2.2/  2.7 :CIMARRON
+OKZ002    1.7/  2.0/  2.4 :TEXAS
+.END
+$$
+
+DUTY FORECASTER:  LOWE  (see duty call list for phone number.)            
+

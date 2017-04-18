@@ -1,0 +1,140 @@
+741 
+FOUS61 KTIR 170730
+FFGKY 
+ZONE FLASH FLOOD GUIDANCE                                               
+NATIONAL WEATHER SERVICE                                                
+OHIO RIVER FORECAST CENTER...WILMINGTON OH                              
+318 AM EDT MON APR 17 2017
+                                                                        
+.B CIN 20170417 Z DH06/DC201704170718 /DUE/PPHCF/PPTCF/PPQCF/PPKCF/PPDCF
+:                                                                       
+: AVERAGE RAINFALL IN INCHES NEEDED TO BEGIN FLOODING                   
+: STEEP TERRAIN CAN GREATLY REDUCE APPARENT INDEX                       
+:IDENT    1HR   3HR   6HR  12HR  24HR  ZONE NAME
+:======= ====  ====  ====  ====  ====  ====================
+KYZ077    1.9/  2.1/  2.5/  3.2/  3.8 :ADAIR CO           
+KYZ073    2.3/  2.7/  3.1/  3.8/  4.4 :ALLEN CO           
+KYZ039    1.4/  1.7/  2.0/  2.4/  2.6 :ANDERSON CO        
+KYZ074    2.2/  2.5/  2.8/  3.6/  4.2 :BARREN CO          
+KYZ087    1.7/  1.9/  2.1/  2.4/  2.9 :BELL CO            
+KYZ042    1.5/  1.7/  2.1/  2.2/  2.5 :BOURBON CO         
+KYZ103    1.9/  2.1/  2.3/  2.5/  2.9 :BOYD CO            
+KYZ055    1.8/  2.2/  2.4/  3.0/  3.2 :BOYLE CO           
+KYZ024    1.3/  1.6/  1.8/  2.5/  2.8 :BRECKINRIDGE CO    
+KYZ029    1.5/  1.7/  1.8/  2.7/  3.2 :BULLITT CO         
+KYZ061    1.8/  2.1/  2.5/  2.9/  3.1 :BUTLER CO          
+KYZ013    2.2/  2.7/  3.1/  3.8/  4.3 :CALDWELL CO        
+KYZ102    1.9/  2.1/  2.4/  2.5/  2.9 :CARTER CO          
+KYZ066    1.7/  2.0/  2.2/  2.9/  3.5 :CASEY CO           
+KYZ049    1.7/  2.0/  2.2/  2.7/  2.8 :CLARK CO           
+KYZ082    1.5/  1.9/  2.2/  2.8/  3.3 :CLINTON CO         
+KYZ081    1.6/  1.9/  2.1/  2.7/  3.2 :CUMBERLAND CO      
+KYZ062    2.1/  2.3/  2.6/  3.4/  4.0 :EDMONSON CO        
+KYZ041    1.6/  1.9/  2.1/  2.5/  2.8 :FAYETTE CO         
+KYZ035    0.9/  1.3/  1.5/  1.6/  2.2 :FRANKLIN CO        
+KYZ056    2.1/  2.5/  2.6/  3.3/  3.6 :GARRARD CO         
+KYZ027    1.5/  1.8/  2.2/  2.7/  3.1 :GRAYSON CO         
+KYZ064    2.1/  2.3/  2.7/  3.4/  4.1 :GREEN CO           
+KYZ101    2.0/  2.2/  2.5/  2.7/  3.0 :GREENUP CO         
+KYZ023    2.1/  2.4/  2.7/  3.3/  3.6 :HANCOCK CO         
+KYZ028    1.3/  1.6/  1.9/  2.7/  3.2 :HARDIN CO          
+KYZ037    1.4/  1.5/  1.9/  2.1/  2.5 :HARRISON CO        
+KYZ063    1.8/  2.1/  2.5/  3.2/  3.9 :HART CO            
+KYZ033    1.3/  1.7/  1.9/  2.1/  2.9 :HENRY CO           
+KYZ048    1.9/  2.2/  2.3/  3.0/  3.1 :JESSAMINE CO       
+KYZ030    1.1/  1.3/  1.6/  2.0/  2.4 :JEFFERSON CO       
+KYZ053    1.5/  1.8/  2.1/  2.9/  3.6 :LARUE CO           
+KYZ105    1.7/  2.0/  2.2/  2.6/  3.0 :LAWRENCE CO        
+KYZ067    2.0/  2.6/  2.7/  3.4/  3.8 :LINCOLN CO         
+KYZ070    2.1/  2.6/  2.9/  3.4/  3.7 :LOGAN CO           
+KYZ057    1.9/  2.3/  2.4/  3.1/  3.4 :MADISON CO         
+KYZ054    1.4/  1.8/  2.1/  2.6/  2.8 :MARION CO          
+KYZ076    2.1/  2.4/  2.7/  3.4/  4.1 :METCALFE CO        
+KYZ025    1.3/  1.6/  1.7/  2.5/  3.1 :MEADE CO           
+KYZ047    1.7/  2.0/  2.2/  2.8/  3.0 :MERCER CO          
+KYZ075    2.1/  2.5/  2.8/  3.4/  4.0 :MONROE CO          
+KYZ045    1.4/  1.8/  2.1/  2.6/  3.0 :NELSON CO          
+KYZ043    1.4/  1.6/  1.9/  2.1/  2.4 :NICHOLAS CO        
+KYZ026    1.7/  2.0/  2.4/  2.7/  3.0 :OHIO CO            
+KYZ031    1.4/  1.8/  1.9/  2.1/  2.9 :OLDHAM CO          
+KYZ078    1.6/  1.9/  2.2/  2.8/  3.3 :RUSSELL CO         
+KYZ036    1.3/  1.4/  1.7/  2.0/  2.6 :SCOTT CO           
+KYZ034    1.2/  1.5/  1.6/  1.9/  2.6 :SHELBY CO          
+KYZ072    2.3/  2.8/  3.1/  3.8/  4.2 :SIMPSON CO         
+KYZ038    1.5/  1.8/  2.0/  2.7/  3.1 :SPENCER CO         
+KYZ065    1.9/  2.1/  2.5/  3.2/  3.8 :TAYLOR CO          
+KYZ032    1.4/  1.6/  2.0/  2.3/  3.1 :TRIMBLE CO         
+KYZ071    2.2/  2.5/  2.9/  3.4/  3.9 :WARREN CO          
+KYZ046    1.3/  1.6/  2.0/  2.5/  2.8 :WASHINGTON CO      
+KYZ040    1.4/  1.7/  1.9/  2.2/  2.5 :WOODFORD CO        
+:                                                                       
+: NWSO WILMINGTON                                                       
+:                                                                       
+KYZ091    1.5/  1.6/  2.1/  2.2/  2.8 :BOONE CO           
+KYZ097    1.2/  1.3/  1.8/  1.9/  2.3 :BRACKEN CO         
+KYZ093    1.0/  1.0/  1.5/  1.6/  2.0 :CAMPBELL CO        
+KYZ089    1.5/  1.6/  2.1/  2.4/  2.9 :CARROLL CO         
+KYZ090    1.4/  1.5/  2.0/  2.3/  2.8 :GALLATIN CO        
+KYZ095    1.0/  1.1/  1.6/  1.8/  2.2 :GRANT CO           
+KYZ092    1.2/  1.3/  1.8/  1.9/  2.4 :KENTON CO          
+KYZ100    1.9/  2.0/  2.4/  2.5/  2.9 :LEWIS CO           
+KYZ099    1.3/  1.4/  1.9/  2.0/  2.4 :MASON CO           
+KYZ094    1.1/  1.3/  1.7/  1.9/  2.5 :OWEN CO            
+KYZ096    1.3/  1.4/  1.8/  2.0/  2.4 :PENDLETON CO       
+KYZ098    1.2/  1.3/  1.8/  1.9/  2.3 :ROBERTSON CO       
+:                                                                       
+: NWSO JACKSON KY                                                       
+:                                                                       
+KYZ051    1.5/  1.7/  2.1/  2.3/  2.6 :BATH CO            
+KYZ087    1.7/  1.9/  2.1/  2.4/  2.9 :BELL CO            
+KYZ112    2.0/  2.3/  2.5/  2.8/  3.3 :BREATHITT CO       
+KYZ116    2.1/  2.4/  2.6/  2.8/  3.4 :CLAY CO            
+KYZ104    2.0/  2.2/  2.5/  2.7/  3.0 :ELLIOTT CO         
+KYZ058    2.1/  2.5/  2.7/  3.1/  3.5 :ESTILL CO          
+KYZ044    1.3/  1.6/  1.9/  2.1/  2.4 :FLEMING CO         
+KYZ110    1.8/  2.1/  2.3/  2.7/  3.2 :FLOYD CO           
+KYZ088    1.7/  2.0/  2.2/  2.5/  3.4 :HARLAN CO          
+KYZ069    1.9/  2.3/  2.4/  2.8/  3.4 :JACKSON CO         
+KYZ107    1.7/  2.0/  2.3/  2.6/  3.1 :JOHNSON CO         
+KYZ113    1.8/  2.1/  2.3/  2.6/  3.0 :KNOTT CO           
+KYZ086    1.8/  2.1/  2.4/  2.6/  3.0 :KNOX CO            
+KYZ080    1.7/  2.0/  2.3/  2.7/  3.0 :LAUREL CO          
+KYZ111    2.3/  2.8/  2.9/  3.1/  4.0 :LEE CO             
+KYZ117    2.0/  2.5/  2.5/  2.7/  3.7 :LESLIE CO          
+KYZ118    2.1/  2.4/  2.7/  2.9/  3.3 :LETCHER CO         
+KYZ109    1.7/  2.0/  2.3/  2.6/  3.0 :MAGOFFIN CO        
+KYZ119    1.8/  2.1/  2.4/  2.8/  3.4 :MARTIN CO          
+KYZ084    1.7/  2.1/  2.4/  3.0/  3.3 :MCCREARY CO        
+KYZ060    1.8/  2.1/  2.4/  2.7/  3.0 :MENIFEE CO         
+KYZ050    1.6/  1.8/  2.1/  2.3/  2.6 :MONTGOMERY CO      
+KYZ106    1.7/  2.0/  2.3/  2.6/  2.9 :MORGAN CO          
+KYZ114    2.3/  2.9/  2.9/  3.1/  4.0 :OWSLEY CO          
+KYZ115    2.0/  2.4/  2.5/  2.8/  3.4 :PERRY CO           
+KYZ120    1.8/  2.1/  2.4/  2.8/  3.4 :PIKE CO            
+KYZ059    2.1/  2.4/  2.7/  2.9/  3.2 :POWELL CO          
+KYZ079    1.6/  1.9/  2.1/  2.8/  3.1 :PULASKI CO         
+KYZ068    1.8/  2.2/  2.4/  3.0/  3.3 :ROCKCASTLE CO      
+KYZ052    1.4/  1.7/  1.9/  2.1/  2.5 :ROWAN CO           
+KYZ083    1.7/  2.0/  2.2/  2.9/  3.4 :WAYNE CO           
+KYZ085    1.8/  2.1/  2.4/  2.9/  3.2 :WHITLEY CO         
+KYZ108    2.3/  2.6/  2.8/  3.1/  3.5 :WOLFE CO           
+:                                                                       
+: NWSO PADUCAH                                                          
+:                                                                       
+KYZ013    2.2/  2.7/  3.1/  3.8/  4.3 :CALDWELL CO        
+KYZ017    2.2/  2.7/  3.1/  3.8/  4.3 :CHRISTIAN CO       
+KYZ010    2.2/  2.9/  3.2/  3.9/  4.3 :CRITTENDEN CO      
+KYZ019    1.8/  2.1/  2.5/  2.7/  3.0 :DAVIESS CO         
+KYZ018    2.1/  2.5/  2.9/  3.2/  3.7 :HENDERSON CO       
+KYZ016    1.9/  2.4/  2.8/  3.4/  3.9 :HOPKINS CO         
+KYZ011    2.2/  2.7/  3.1/  3.8/  4.4 :LYON CO            
+KYZ020    1.7/  2.0/  2.4/  2.7/  2.9 :MCLEAN CO          
+KYZ021    1.7/  2.1/  2.5/  2.9/  3.1 :MUHLENBERG CO      
+KYZ022    2.2/  2.7/  3.1/  3.7/  4.0 :TODD CO            
+KYZ012    2.1/  2.7/  3.1/  3.8/  4.2 :TRIGG CO           
+KYZ014    2.2/  2.8/  3.2/  3.6/  4.1 :UNION CO           
+KYZ015    2.1/  2.5/  2.9/  3.5/  3.9 :WEBSTER CO         
+.END
+$$
+
+
