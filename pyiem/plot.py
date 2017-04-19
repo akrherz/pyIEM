@@ -1140,6 +1140,7 @@ class MapPlot(object):
         Args:
           data(dict): A dictionary of 6 char UGC code keys and values
           bins(list, optional): Bins to use for cloropleth
+          plotmissing(bool, optional): Should missing UGC data be plotted?
         """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
@@ -1159,11 +1160,14 @@ class MapPlot(object):
         patches = []
         patches2 = []
         ilabel = kwargs.get('ilabel', False)
+        plotmissing = kwargs.get('plotmissing', True)
         for ugc in ugcs:
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
                 continue
             if data.get(ugc) is None:
+                if not plotmissing:
+                    continue
                 # Holy cow, it appears values above 300 are always firewx,
                 # so lets ignore these when we have no data!
                 if int(ugc[3:]) >= 300:
