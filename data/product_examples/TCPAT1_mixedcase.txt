@@ -1,0 +1,54 @@
+724 
+WTNT31 KNHC 191431
+TCPAT1
+
+BULLETIN
+Subtropical Depression One Advisory Number   1
+NWS National Hurricane Center Miami FL       AL012017
+1100 AM AST Wed Apr 19 2017
+
+...SUBTROPICAL DEPRESSION FORMS IN THE CENTRAL ATLANTIC...
+...EXPECTED TO BE SHORT LIVED...
+
+
+SUMMARY OF 1100 AM AST...1500 UTC...INFORMATION
+-----------------------------------------------
+LOCATION...31.9N 40.9W
+ABOUT 890 MI...1435 KM WSW OF THE AZORES
+MAXIMUM SUSTAINED WINDS...35 MPH...55 KM/H
+PRESENT MOVEMENT...NNE OR 30 DEGREES AT 8 MPH...13 KM/H
+MINIMUM CENTRAL PRESSURE...995 MB...29.39 INCHES
+
+
+WATCHES AND WARNINGS
+--------------------
+There are no coastal watches or warnings in effect.
+
+
+DISCUSSION AND 48-HOUR OUTLOOK
+------------------------------
+At 1100 AM AST (1500 UTC), the center of Subtropical Depression One
+was located near latitude 31.9 North, longitude 40.9 West. The
+subtropical depression is moving toward the north-northeast near 8
+mph (13 km/h). A gradual turn to the north is expected tonight.
+
+Maximum sustained winds are near 35 mph (55 km/h) with higher gusts.
+Little change in strength is forecast today, and the subtropical
+depression is forecast to become absorbed by a large extratropical
+low on Thursday.
+
+The estimated minimum central pressure is 995 mb (29.39 inches).
+
+
+HAZARDS AFFECTING LAND
+----------------------
+None
+
+
+NEXT ADVISORY
+-------------
+Next complete advisory at 500 PM AST.
+
+$$
+Forecaster Avila
+

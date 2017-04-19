@@ -47,6 +47,11 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170419_tcp_mixedcase(self):
+        """Mixed case TCP1"""
+        prod = parser(get_file('TCPAT1_mixedcase.txt'))
+        j = prod.get_jabbers("")
+        
     def test_170411_suspect_vtec(self):
         """MWWSJU contains VTEC that NWS HQ says should not be possible"""
         prod = vtecparser(get_file('MWWSJU.txt'))
