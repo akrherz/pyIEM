@@ -44,4 +44,4 @@ class TestFFG(unittest.TestCase):
         """FFGAMA"""
         prod = ffgparser(get_file('FFGAMA.txt'))
         prod.sql(self.txn)
-        self.assertEquals(len(prod.data.index), 113)
+        self.assertEquals(len(prod.data.index), 23)
