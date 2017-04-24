@@ -1,4 +1,7 @@
 """A class representing an observation stored in the IEM database"""
+import warnings
+
+import pytz
 
 # Not including iemid, valid
 CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
@@ -31,6 +34,9 @@ class Observation(object):
         @param network is a string of the network for this station
         @param valid is a datetime object with tzinfo set
         """
+        if valid.tzinfo is None:
+            warnings.warn("tzinfo is not set on valid, defaulting to UTC")
+            valid = valid.replace(tzinfo=pytz.utc)
         self.data = {'station': station,
                      'network': network,
                      'valid': valid,
@@ -44,12 +50,10 @@ class Observation(object):
         """
         Load the current observation for this site and time
         """
-        if self.data['valid'].tzinfo:
-            txn.execute("set local timezone to %s",
-                        (self.data['valid'].tzinfo.zone, ))
         sql = """SELECT * from current c, summary s, stations t WHERE
         t.iemid = s.iemid and s.iemid = c.iemid and t.id = %(station)s and
-        t.network = %(network)s and s.day = date(%(valid)s) and
+        t.network = %(network)s and
+        s.day = date(%(valid)s at time zone t.tzname) and
         c.valid = %(valid)s"""
         txn.execute(sql, self.data)
         if txn.rowcount < 1:
@@ -71,9 +75,6 @@ class Observation(object):
         table.  This is useful for partial obs
         @return: boolean if this updated one row each
         """
-        if self.data['valid'].tzinfo:
-            txn.execute("set local timezone to %s",
-                        (self.data['valid'].tzinfo.zone, ))
 
         # Update current table
         sql = """UPDATE current c SET
@@ -162,7 +163,8 @@ min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
         min_rh = least(%(min_rh)s, %(relh)s, min_rh),
         srad_mj = %(srad_mj)s
-        FROM stations t WHERE t.iemid = s.iemid and s.day = date(%(valid)s)
+        FROM stations t WHERE t.iemid = s.iemid and
+        s.day = date(%(valid)s at time zone t.tzname)
         and t.id = %(station)s and t.network = %(network)s"""
         txn.execute(sql, self.data)
         if txn.rowcount != 1:

@@ -1,9 +1,11 @@
+"""Test Observation"""
 import unittest
 import datetime
-import pytz
-import psycopg2.extras
 import string
 import random
+
+import pytz
+import psycopg2.extras
 
 from pyiem import observation
 
