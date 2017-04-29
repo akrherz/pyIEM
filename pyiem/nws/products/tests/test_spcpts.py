@@ -32,6 +32,14 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170428_large(self):
+        """PTSDY1 has a large 10 tor"""
+        spc = parser(get_file('PTSDY1_largetor10.txt'))
+        # spc.draw_outlooks()
+        spc.sql(self.txn)
+        outlook = spc.get_outlook('TORNADO', '0.10', 1)
+        self.assertAlmostEqual(outlook.geometry.area, 31.11, 2)
+
     def test_170417_empty(self):
         """An empty PTSD48 was causing an exception in get_jabbers"""
         spc = parser(get_file('PTSD48_empty.txt'))
