@@ -14,8 +14,7 @@ from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon, LineString, MultiPolygon
 from shapely.geometry.polygon import LinearRing
 
-CONUS = None
-CONUSPOLY = None
+CONUS = {'line': None, 'poly': None}
 DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",
                    re.IGNORECASE)
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
@@ -39,8 +38,7 @@ def get_day(text):
 
 def load_conus_data():
     """ Load up the conus datafile for our perusal """
-    global CONUS, CONUSPOLY
-    if CONUS is not None:
+    if CONUS['line'] is not None:
         return
     fn = "%s/../../data/conus_marine_bnds.txt" % (os.path.dirname(__file__),)
     lons = []
@@ -49,8 +47,8 @@ def load_conus_data():
         tokens = line.split(",")
         lons.append(float(tokens[0]))
         lats.append(float(tokens[1]))
-    CONUS = np.column_stack([lons, lats])
-    CONUSPOLY = Polygon(CONUS)
+    CONUS['line'] = np.column_stack([lons, lats])
+    CONUS['poly'] = Polygon(CONUS['line'])
 
 
 def get_segments_from_text(text):
@@ -92,7 +90,7 @@ def str2multipolygon(s):
 
     # We start with just a conus polygon and we go from here, down the rabbit
     # hole
-    polys = [copy.deepcopy(CONUSPOLY), ]
+    polys = [copy.deepcopy(CONUS['poly']), ]
 
     for i, segment in enumerate(segments):
         print(('  Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)'
@@ -128,7 +126,7 @@ def str2multipolygon(s):
         # Attempt to 'clean' this string against the CONUS Polygon
         ls = LineString(segment)
         if ls.is_valid:
-            newls = ls.intersection(CONUSPOLY)
+            newls = ls.intersection(CONUS['poly'])
             if newls.is_valid:
                 if newls.geom_type in ['MultiLineString',
                                        'GeometryCollection']:
@@ -212,7 +210,7 @@ def str2multipolygon(s):
         if not p.is_valid:
             print('     ERROR: polygon %s is invalid!' % (i,))
             continue
-        if p.area == CONUSPOLY.area:
+        if p.area == CONUS['poly'].area:
             print('     polygon %s is just CONUS, skipping' % (i,))
             continue
         print('     polygon: %s has area: %s' % (i, p.area))
@@ -258,6 +256,7 @@ class SPCPTS(TextProduct):
           nwsli_provider (dict, optional): unused in this class
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        print("==== SPCPTS Processing: %s" % (self.get_product_id(), ))
         self.issue = None
         self.expire = None
         self.day = None
@@ -276,7 +275,6 @@ class SPCPTS(TextProduct):
             # Everything should be smaller than General Thunder, for conv
             tstm = self.get_outlook('CATEGORICAL', 'TSTM', day)
             for outlook in collect.outlooks:
-                print(outlook.geometry.area)
                 good_polys = []
                 rewrite = False
                 # case of single polygon
@@ -338,7 +336,8 @@ class SPCPTS(TextProduct):
             for outlook in collect.outlooks:
                 fig = plt.figure(figsize=(12, 8))
                 ax = fig.add_subplot(111)
-                ax.plot(CONUS[:, 0], CONUS[:, 1], color='b', label='Conus')
+                ax.plot(CONUS['line'][:, 0], CONUS['line'][:, 1],
+                        color='b', label='Conus')
                 for poly in outlook.geometry:
                     patch = PolygonPatch(poly, fc='tan', label='Outlook',
                                          zorder=2)
