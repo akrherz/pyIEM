@@ -122,8 +122,9 @@ class VTECProduct(TextProduct):
                 self.warnings.append(("Segment has duplicated VTEC for a "
                                       "single phenomena / significance"))
             if segment.giswkt and len(segment.vtec) == 0:
-                self.warnings.append(("Product segment has LAT...LON, but "
-                                      "does not have VTEC?"))
+                if self.afos[:3] not in ['MWS']:
+                    self.warnings.append(("Product segment has LAT...LON, but "
+                                          "does not have VTEC?"))
             if len(segment.ugcs) == 0 and len(segment.vtec) > 0:
                 self.warnings.append(("UGC is missing for segment "
                                       "that has VTEC!"))

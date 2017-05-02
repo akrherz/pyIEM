@@ -47,11 +47,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170502_novtec(self):
+        """MWS is a product that does not require VTEC, so no warnings"""
+        prod = vtecparser(get_file('MWSMFL.txt'))
+        prod.sql(self.txn)
+        self.assertEquals(len(prod.warnings), 0, "\n".join(prod.warnings))
+
     def test_170419_tcp_mixedcase(self):
         """Mixed case TCP1"""
         prod = parser(get_file('TCPAT1_mixedcase.txt'))
-        j = prod.get_jabbers("")
-        
+        prod.get_jabbers("")
+
     def test_170411_suspect_vtec(self):
         """MWWSJU contains VTEC that NWS HQ says should not be possible"""
         prod = vtecparser(get_file('MWWSJU.txt'))
