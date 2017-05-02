@@ -3,6 +3,7 @@
 
 # Stand Library Imports
 import datetime
+import itertools
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
@@ -12,18 +13,27 @@ def check_dup_ps(segment):
     """Does this TextProductSegment have duplicated VTEC
 
     NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
-    phenomena and significance that are reused.  This combination should not
-    happen.
+    phenomena and significance that are reused. In practice, this error is
+    in the case of having the same phenomena.significance overlap in time. The
+    combination of the same pheom.sig for events happening now and in the
+    future is OK and common
 
     Returns:
       bool
     """
-    combos = []
-    for v in segment.vtec:
-        key = "%s.%s" % (v.phenomena, v.significance)
-        if key in combos:
-            return True
-        combos.append(key)
+    combos = {}
+    for thisvtec in segment.vtec:
+        key = "%s.%s" % (thisvtec.phenomena, thisvtec.significance)
+        val = combos.setdefault(key, [])
+        val.append([thisvtec.begints, thisvtec.endts])
+
+    for key in combos:
+        if len(combos[key]) == 1:
+            continue
+        for one, two in itertools.permutations(combos[key]):
+            if (one[1] is not None and two[0] is not None
+                    and one[1] >= two[0]):
+                return True
     return False
 
 

@@ -56,7 +56,8 @@ class TestProducts(unittest.TestCase):
     def test_170419_tcp_mixedcase(self):
         """Mixed case TCP1"""
         prod = parser(get_file('TCPAT1_mixedcase.txt'))
-        prod.get_jabbers("")
+        j = prod.get_jabbers("")
+        self.assertTrue(j)
 
     def test_170411_suspect_vtec(self):
         """MWWSJU contains VTEC that NWS HQ says should not be possible"""
@@ -64,6 +65,11 @@ class TestProducts(unittest.TestCase):
         prod.sql(self.txn)
         a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
         self.assertTrue(any(a))
+
+        prod = vtecparser(get_file('MWWLWX_twovtec.txt'))
+        prod.sql(self.txn)
+        a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
+        self.assertFalse(any(a))
 
     def test_170411_baddelim(self):
         """FLSGRB contains an incorrect sequence of $$ and &&"""
