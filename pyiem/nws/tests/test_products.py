@@ -47,6 +47,14 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170504_falsepositive(self):
+        """This alert for overlapping VTEC is a false positive"""
+        prod = vtecparser(get_file('NPWFFC.txt'))
+        prod.sql(self.txn)
+        res = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
+        print prod.warnings
+        self.assertFalse(any(res))
+
     def test_170502_novtec(self):
         """MWS is a product that does not require VTEC, so no warnings"""
         prod = vtecparser(get_file('MWSMFL.txt'))

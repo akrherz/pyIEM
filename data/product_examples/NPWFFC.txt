@@ -1,0 +1,99 @@
+424
+WWUS72 KFFC 041331
+NPWFFC
+
+URGENT - WEATHER MESSAGE
+National Weather Service Peachtree City GA
+931 AM EDT Thu May 4 2017
+
+GAZ004>009-012>015-020-042145-
+/O.UPG.KFFC.WI.Y.0008.000000T0000Z-170505T0000Z/
+/O.NEW.KFFC.HW.W.0001.170504T1331Z-170504T1600Z/
+/O.NEW.KFFC.WI.Y.0009.170504T1600Z-170505T0000Z/
+Whitfield-Murray-Fannin-Gilmer-Union-Towns-Gordon-Pickens-Dawson-
+Lumpkin-Bartow-
+Including the cities of Calhoun, Dahlonega, and Cartersville
+931 AM EDT Thu May 4 2017
+
+...HIGH WIND WARNING IN EFFECT UNTIL NOON EDT TODAY...
+...WIND ADVISORY IN EFFECT FROM NOON UNTIL 8 PM EDT THIS
+EVENING...
+
+The National Weather Service in Peachtree City has issued a High
+Wind Warning, which is in effect until noon EDT today. A Wind
+Advisory remains in effect from noon until 8 PM EDT this evening.
+
+* Locations...Portions of north Georgia, general along and north
+  of a line from Cartersville to Jasper to Dahlonega to Young
+  Harris.
+
+* Winds...southeast 25 to 35 MPH with gusts of 40 to 50
+  MPH...except 50 to 55 MPH in the higher elevations of the
+  mountains. Winds will diminish to southeast 15 to 25 mph with
+  gusts of 35 to 40 mph by early afternoon.
+
+* Timing...rest of this morning and afternoon.
+
+* Impacts...Strong winds will bring down trees and large tree
+  limbs, especially with the saturated soils. Unsecured outdoor
+  items may be blown around and driving may be difficult,
+  especially for high-profile vehicles.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+A Wind Advisory means that sustained winds of 20 mph or higher
+and wind gusts of 35 MPH or greater are expected. Winds this
+strong can bring down large limbs and even whole weak or dead
+trees as well as make driving difficult, especially for high-
+profile vehicles. Use extra caution.
+
+A High Wind Warning means a hazardous high wind event is expected
+or occurring.  Sustained wind speeds of at least 35 MPH or gusts
+of 45 MPH or more could topple trees and power lines as well as
+cause property damage.
+
+A Wind Advisory means that winds of 35 mph are expected. Winds
+this strong can make driving difficult...especially for high
+profile vehicles. Use extra caution.
+
+&&
+
+$$
+
+GAZ001>003-011-016-019-021>025-030>035-041>045-042145-
+/O.CON.KFFC.WI.Y.0008.000000T0000Z-170505T0000Z/
+Dade-Walker-Catoosa-Chattooga-White-Floyd-Cherokee-Forsyth-Hall-
+Banks-Jackson-Polk-Paulding-Cobb-North Fulton-Gwinnett-Barrow-
+Haralson-Carroll-Douglas-South Fulton-DeKalb-
+Including the cities of Cleveland, Rome, Gainesville, Marietta,
+Atlanta, Lawrenceville, Carrollton, Douglasville, East Point,
+and Decatur
+931 AM EDT Thu May 4 2017
+
+...WIND ADVISORY REMAINS IN EFFECT UNTIL 8 PM EDT THIS EVENING...
+
+* Locations...Portions of north Georgia, general along and north
+  of a line from Carrollton to Homer.
+
+* Winds...east to southeast 15 to 25 MPH with gusts of 30 to 40
+  MPH...except 40 to 45 MPH in the higher elevations of the
+  mountains.
+
+* Timing...From 8 AM this morning until 8 PM EDT this evening.
+
+* Impacts...Strong winds will bring down large tree limbs and
+  some weaker trees, especially with the saturated soils.
+  Unsecured outdoor items may be blown around and driving may be
+  difficult, especially for high-profile vehicles.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+A Wind Advisory means that sustained winds of 20 mph or higher
+and wind gusts of 35 MPH or greater are expected. Winds this
+strong can bring down large limbs and even whole weak or dead
+trees as well as make driving difficult, especially for high-
+profile vehicles. Use extra caution.
+
+&&
+
+$$

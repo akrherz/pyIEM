@@ -23,6 +23,9 @@ def check_dup_ps(segment):
     """
     combos = {}
     for thisvtec in segment.vtec:
+        if thisvtec.action == 'UPG':
+            # The logic here is too difficult for now, so we ignore
+            continue
         key = "%s.%s" % (thisvtec.phenomena, thisvtec.significance)
         val = combos.setdefault(key, [])
         val.append([thisvtec.begints, thisvtec.endts])
