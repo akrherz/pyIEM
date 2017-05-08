@@ -51,7 +51,7 @@ class FFGProduct(TextProduct):
                                         '%y%m%d%H%M').replace(
                                                               tzinfo=pytz.utc)
         # Emailed KTUA about this on 17 Apr 2017
-        if (abs((self.issue - dc).total_seconds()) > (6 * 3600.) and
+        if (abs((self.issue - dc).total_seconds()) > (12 * 3600.) and
                 self.source != 'KTUA'):
             self.warnings.append(("Product has large delta between DC: %s "
                                   "and SHEF Date: %s"
