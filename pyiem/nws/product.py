@@ -315,12 +315,12 @@ class TextProductSegment(object):
 
     def parse_headlines(self):
         """ Find headlines in this segment """
-        ar = re.findall("^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext,
-                        re.M | re.S)
-        for h in range(len(ar)):
-            ar[h] = " ".join(ar[h].replace("...", ", ").replace("\n",
-                                                                " ").split())
-        return ar
+        headlines = re.findall(r"^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext,
+                               re.M | re.S)
+        headlines = [" ".join(h.replace("...",
+                                        ", ").replace("\n", " ").split())
+                     for h in headlines]
+        return headlines
 
     def get_affected_wfos(self):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by
@@ -340,12 +340,13 @@ class TextProduct(object):
     '''
 
     def __init__(self, text, utcnow=None, ugc_provider=None,
-                 nwsli_provider=None):
+                 nwsli_provider=None, parse_segments=True):
         '''
         Constructor
         @param text string single text product
         @param utcnow used to compute offsets for when this product my be valid
         @param ugc_provider a dictionary of UGC objects already setup
+        @param parse_segments should the segments be parsed as well? True
         '''
         self.warnings = []
 
@@ -376,11 +377,12 @@ class TextProduct(object):
         self.parse_wmo()
         self.parse_afos()
         self.parse_valid()
-        self.parse_segments()
+        if parse_segments:
+            self.parse_segments()
 
     def is_resent(self):
         """ Check to see if this product is a ...RESENT product """
-        return (self.unixtext.find("...RESENT") > 0)
+        return self.unixtext.find("...RESENT") > 0
 
     def is_correction(self):
         """Is this product a correction?
@@ -434,16 +436,16 @@ class TextProduct(object):
             "\n", " ").strip().split())
 
     def parse_segments(self):
-        """ Split the product by its && """
+        """ Split the product by its $$ """
         segs = self.unixtext.split("$$")
-        for s in segs:
-            self.segments.append(TextProductSegment(s, self))
+        for seg in segs:
+            self.segments.append(TextProductSegment(seg, self))
 
     def get_product_id(self):
         """ Get an identifier of this product used by the IEM """
-        s = "%s-%s-%s-%s" % (self.valid.strftime("%Y%m%d%H%M"),
-                             self.source, self.wmo, self.afos)
-        return s.strip()
+        pid = "%s-%s-%s-%s" % (self.valid.strftime("%Y%m%d%H%M"),
+                               self.source, self.wmo, self.afos)
+        return pid.strip()
 
     def parse_valid(self):
         """ Figre out the valid time of this product """
@@ -505,23 +507,23 @@ class TextProduct(object):
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
-        m = WMO_RE.search(self.unixtext[:100])
-        if m is None:
+        search = WMO_RE.search(self.unixtext[:100])
+        if search is None:
             raise TextProductException(("FATAL: Could not parse WMO header! "
                                         "%s") % (self.text[:100]))
-        d = m.groupdict()
-        self.wmo = d['ttaaii']
-        self.source = d['cccc']
-        self.ddhhmm = d['ddhhmm']
-        self.bbb = d['bbb']
+        gdict = search.groupdict()
+        self.wmo = gdict['ttaaii']
+        self.source = gdict['cccc']
+        self.ddhhmm = gdict['ddhhmm']
+        self.bbb = gdict['bbb']
 
     def get_affected_wfos(self):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by
         this product '''
         affected_wfos = []
         for segment in self.segments:
-            for u in segment.ugcs:
-                for wfo in u.wfos:
+            for ugcs in segment.ugcs:
+                for wfo in ugcs.wfos:
                     if wfo not in affected_wfos:
                         affected_wfos.append(wfo)
 
