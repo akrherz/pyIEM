@@ -50,8 +50,9 @@ import matplotlib.patheffects as PathEffects  # nopep8
 from matplotlib.collections import PatchCollection  # nopep8
 import matplotlib.patches as mpatches
 import matplotlib.path as mpath
-# Basemap
-from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
+# cartopy
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 [Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
@@ -577,19 +578,20 @@ class MapPlot(object):
             debug (bool): enable debugging
         """
         self.debug = kwargs.get('debug', False)
+        self.fig = plt.figure(num=None, figsize=figsize,
+                              dpi=kwargs.get('dpi', 100))
+        """
         if 'ax' in kwargs:
             self.ax = kwargs.pop('ax')
             self.fig = plt.gcf()
             self.cax = kwargs.pop('cax', None)
         else:
-            self.fig = plt.figure(num=None, figsize=figsize,
-                                  dpi=kwargs.get('dpi', 100))
             self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
                                facecolor=(0.4471, 0.6235, 0.8117))
             self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                                 yticks=[], xticks=[])
+        """
         # Storage of basemaps within this plot
-        self.maps = []
         self.state = None
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
@@ -597,95 +599,107 @@ class MapPlot(object):
 
         if self.sector == 'iowa':
             self.state = 'IA'
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=reference.IA_NORTH,
-                         llcrnrlat=reference.IA_SOUTH,
-                         urcrnrlon=reference.IA_EAST,
-                         llcrnrlon=reference.IA_WEST,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.PlateCarree(central_longitude=270.0),
+                aspect='auto')
+            self.ax.set_extent([reference.IA_WEST + 360,
+                                reference.IA_EAST + 360,
+                                reference.IA_SOUTH,
+                                reference.IA_NORTH])
+            states_provinces = cfeature.NaturalEarthFeature(
+                category='cultural',
+                name='admin_1_states_provinces_lines',
+                scale='10m',
+                facecolor='none')
+            self.ax.add_feature(states_provinces, edgecolor='gray')
+            self.ax.coastlines()
+
         elif self.sector == 'cwa':
             self.cwa = kwargs.get('cwa', 'DMX')
-            bm = Basemap(projection='merc', fix_aspect=True,
-                         urcrnrlat=reference.wfo_bounds[self.cwa][3],
-                         llcrnrlat=reference.wfo_bounds[self.cwa][1],
-                         urcrnrlon=reference.wfo_bounds[self.cwa][2],
-                         llcrnrlon=reference.wfo_bounds[self.cwa][0],
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.Mercator())
+            self.ax.set_xlim(reference.wfo_bounds[self.cwa][0],
+                             reference.wfo_bounds[self.cwa][2])
+            self.ax.set_ylim(reference.wfo_bounds[self.cwa][1],
+                             reference.wfo_bounds[self.cwa][3])
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
-            bm = Basemap(projection='merc', fix_aspect=True,
-                         urcrnrlat=reference.state_bounds[self.state][3],
-                         llcrnrlat=reference.state_bounds[self.state][1],
-                         urcrnrlon=reference.state_bounds[self.state][2],
-                         llcrnrlon=reference.state_bounds[self.state][0],
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.Mercator())
+            self.ax.set_xlim(reference.state_bounds[self.state][0],
+                             reference.state_bounds[self.state][2])
+            self.ax.set_ylim(reference.state_bounds[self.state][1],
+                             reference.state_bounds[self.state][3])
         elif self.sector == 'midwest':
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=reference.MW_NORTH,
-                         llcrnrlat=reference.MW_SOUTH,
-                         urcrnrlon=reference.MW_EAST,
-                         llcrnrlon=reference.MW_WEST,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.Mercator(central_longitude=-92.0,
+                                         min_latitude=42.0,
+                                         max_latitude=45.0))
+            self.ax.set_xlim(reference.MW_WEST,
+                             reference.MW_EAST)
+            self.ax.set_ylim(reference.MW_SOUTH,
+                             reference.MW_NORTH)
         elif self.sector == 'iowawfo':
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=45.5,
-                         llcrnrlat=39.8,
-                         urcrnrlon=-89.0,
-                         llcrnrlon=-99.6,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.Mercator(central_longitude=-92.0,
+                                         min_latitude=42.0,
+                                         max_latitude=45.0))
+            self.ax.set_xlim(-99.6, -89.0)
+            self.ax.set_ylim(39.8, 45.5)
         elif self.sector == 'custom':
-            self.maps.append(gen_basemap(self.ax, **kwargs))
+            raise Exception("custom is not implemented yet")
         elif self.sector == 'north_america':
-            bm = Basemap(llcrnrlon=-145.5, llcrnrlat=1.,
-                         urcrnrlon=-2.566, urcrnrlat=46.352,
-                         rsphere=(6378137.00, 6356752.3142),
-                         resolution='l', area_thresh=1000.,
-                         projection='lcc',
-                         lat_1=50., lon_0=-107.,
-                         ax=self.ax, fix_aspect=False)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.LambertConformal(central_longitude=-107.0,
+                                                 central_latitude=50.0))
+            self.ax.set_xlim(-145.5, -2.566)
+            self.ax.set_ylim(1, 46.352)
 
         elif self.sector in ['conus', 'nws']:
-            bm = Basemap(projection='stere', lon_0=-105.0, lat_0=90.,
-                         lat_ts=60.0,
-                         llcrnrlat=23.47, urcrnrlat=45.44,
-                         llcrnrlon=-118.67, urcrnrlon=-64.52,
-                         rsphere=6371200., resolution='l',
-                         area_thresh=10000, ax=self.ax,
-                         fix_aspect=False)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=ccrs.Stereographic(central_latitude=60.0,
+                                              central_longitude=-105.0))
+            self.ax.set_xlim(-118.67, -64.52)
+            self.ax.set_ylim(23.47, 45.44)
+
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
-                pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=18.6, llcrnrlat=17.5,
-                                         urcrnrlon=-65.0, llcrnrlon=-68.0,
-                                         resolution='l', ax=pr_ax,
-                                         fix_aspect=False))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=72.1, llcrnrlat=51.08,
-                                         urcrnrlon=-129.0, llcrnrlon=-179.5,
-                                         resolution='l', ax=ak_ax,
-                                         fix_aspect=False))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=22.5, llcrnrlat=18.5,
-                                         urcrnrlon=-154.0, llcrnrlon=-161.0,
-                                         resolution='l', ax=hi_ax,
-                                         fix_aspect=False))
+                self.pr_ax = plt.axes(
+                    [0.78, 0.055, 0.125, 0.1],
+                    facecolor=(0.4471, 0.6235, 0.8117),
+                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                self.pr_ax.set_xlim(-68.0, -65.0)
+                self.pr_ax.set_ylim(17.5, 18.6)
+                # Create AK
+                self.ak_ax = plt.axes(
+                    [0.015, 0.055, 0.2, 0.15],
+                    facecolor=(0.4471, 0.6235, 0.8117),
+                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                self.ak_ax.set_xlim(-179.5, -129.0)
+                self.ak_ax.set_ylim(51.08, 72.1)
+                # Create HI
+                self.hi_ax = plt.axes(
+                    [0.56, 0.055, 0.2, 0.1],
+                    facecolor=(0.4471, 0.6235, 0.8117),
+                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                self.hi_ax.set_xlim(-161.0, -154.0)
+                self.hi_ax.set_ylim(18.5, 22.5)
 
+        """
         for _a in self.maps:
             if _a is None:
                 continue
@@ -701,7 +715,7 @@ class MapPlot(object):
             if 'nostates' not in kwargs:
                 _a.drawstates(linewidth=1.5, zorder=Z_OVERLAY,
                               color=kwargs.get('statecolor', 'k'))
-
+        """
         if not kwargs.get('nologo'):
             self.iemlogo()
         if "title" in kwargs:
@@ -718,8 +732,6 @@ class MapPlot(object):
                                        ) % (
                     kwargs.get('caption', 'Iowa Environmental Mesonet'),
                     datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
-
-        self.map = self.maps[0]
 
     def close(self):
         ''' Close the figure in the case of batch processing '''
