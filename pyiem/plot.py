@@ -559,7 +559,6 @@ class MapPlot(object):
             self.state = 'IA'
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.IA_WEST,
@@ -572,8 +571,8 @@ class MapPlot(object):
             self.cwa = kwargs.get('cwa', 'DMX')
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
-                projection=ccrs.Mercator())
+                projection=ccrs.Mercator(),
+                aspect='auto')
             self.ax.set_extent([reference.wfo_bounds[self.cwa][0],
                                 reference.wfo_bounds[self.cwa][2],
                                 reference.wfo_bounds[self.cwa][1],
@@ -583,8 +582,8 @@ class MapPlot(object):
             self.state = kwargs.get('state', 'IA')
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
-                projection=ccrs.Mercator())
+                projection=ccrs.Mercator(),
+                aspect='auto')
             self.ax.set_extent([reference.state_bounds[self.state][0],
                                 reference.state_bounds[self.state][2],
                                 reference.state_bounds[self.state][1],
@@ -593,10 +592,10 @@ class MapPlot(object):
         elif self.sector == 'midwest':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
                 projection=ccrs.Mercator(central_longitude=-92.0,
                                          min_latitude=42.0,
-                                         max_latitude=45.0))
+                                         max_latitude=45.0),
+                aspect='auto')
             self.ax.set_extent([reference.MW_WEST,
                                 reference.MW_EAST,
                                 reference.MW_SOUTH,
@@ -605,17 +604,18 @@ class MapPlot(object):
         elif self.sector == 'iowawfo':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
                 projection=ccrs.Mercator(central_longitude=-92.0,
                                          min_latitude=42.0,
-                                         max_latitude=45.0))
+                                         max_latitude=45.0),
+                aspect='auto')
             self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
             self.axes.append(self.ax)
         elif self.sector == 'custom':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
                 facecolor=(0.4471, 0.6235, 0.8117),
-                projection=kwargs['projection'])
+                projection=kwargs['projection'],
+                aspect='auto')
             self.ax.set_extent([kwargs['west'], kwargs['east'],
                                 kwargs['south'], kwargs['north']])
             self.axes.append(self.ax)
@@ -623,41 +623,44 @@ class MapPlot(object):
         elif self.sector == 'north_america':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
                 projection=ccrs.LambertConformal(central_longitude=-107.0,
-                                                 central_latitude=50.0))
+                                                 central_latitude=50.0),
+                aspect='auto')
             self.ax.set_extent([-145.5, -2.566, 1, 46.352])
             self.axes.append(self.ax)
 
         elif self.sector in ['conus', 'nws']:
-            self.ax = plt.axes(
+            self.ax = self.fig.add_axes(
                 [0.01, 0.05, 0.928, 0.85],
-                facecolor=(0.4471, 0.6235, 0.8117),
-                projection=ccrs.LambertConformal(central_latitude=60.0,
-                                                 central_longitude=-105.0))
-            self.ax.set_extent([-118.67, -64.52, 23.47, 45.44])
+                projection=ccrs.PlateCarree(),
+                aspect='auto')
+            # -124.848974, 24.396308) - (-66.885444, 49.384358
+            self.ax.set_extent([-125,
+                                -66.5,
+                                22.,
+                                47.])
             self.axes.append(self.ax)
 
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
                 self.pr_ax = plt.axes(
                     [0.78, 0.055, 0.125, 0.1],
-                    facecolor=(0.4471, 0.6235, 0.8117),
-                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
                 self.pr_ax.set_extent([-68.0, -65.0, 17.5, 18.6])
                 self.axes.append(self.pr_ax)
                 # Create AK
                 self.ak_ax = plt.axes(
-                    [0.015, 0.055, 0.2, 0.15],
-                    facecolor=(0.4471, 0.6235, 0.8117),
-                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                    [0.015, 0.055, 0.25, 0.2],
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
                 self.ak_ax.set_extent([-179.5, -129.0, 51.08, 72.1])
                 self.axes.append(self.ak_ax)
                 # Create HI
                 self.hi_ax = plt.axes(
-                    [0.56, 0.055, 0.2, 0.1],
-                    facecolor=(0.4471, 0.6235, 0.8117),
-                    projection=ccrs.PlateCarree(central_longitude=-105.0))
+                    [0.47, 0.055, 0.2, 0.1],
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
                 self.hi_ax.set_extent([-161.0, -154.0, 18.5, 22.5])
                 self.axes.append(self.hi_ax)
 
@@ -667,19 +670,28 @@ class MapPlot(object):
             # legacy usage of axisbg here
             _c = kwargs.get('axisbg',
                             kwargs.get('continentalcolor',
-                                       (0.4471, 0.6235, 0.8117)))
-            _a.add_feature(cfeature.BORDERS, facecolor=_c, zorder=0)
-            _a.add_feature(cfeature.COASTLINE, lw=1, zorder=Z_POLITICAL)
+                                       '#EEEEEE'))
+            _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
+            coasts = cfeature.NaturalEarthFeature('physical', 'coastline',
+                                                  '10m',
+                                                  edgecolor='black',
+                                                  facecolor='none')
+            _a.add_feature(coasts, lw=1.0, zorder=Z_POLITICAL)
             _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
+            _a.add_feature(cfeature.OCEAN, facecolor=(0.4471, 0.6235, 0.8117),
+                           zorder=Z_CF)
+            _a.add_feature(cfeature.LAKES, facecolor=(0.4471, 0.6235, 0.8117),
+                           zorder=Z_CF)
 
             if 'nostates' not in kwargs:
                 states_provinces = cfeature.NaturalEarthFeature(
                     category='cultural',
                     name='admin_1_states_provinces_lines',
-                    scale='10m',
+                    scale='110m',
+                    edgecolor=kwargs.get('statecolor', 'k'),
+                    linewidth=1.,
                     facecolor='none')
-                _a.add_feature(states_provinces, lw=1.5,
-                               edgecolor=kwargs.get('statecolor', 'k'))
+                _a.add_feature(states_provinces)
         if not kwargs.get('nologo'):
             self.iemlogo()
         if "title" in kwargs:
