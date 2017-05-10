@@ -1,28 +1,33 @@
+"""Do tests please!"""
 import unittest
+import datetime
+
 import numpy as np
 from pyiem import plot
-import datetime
 import matplotlib.colors as mpcolors
+import cartopy.crs as ccrs
 
 
 class TestPlot(unittest.TestCase):
 
-    # def test_pcolormesh(self):
-    #    """See if we can do pcolormesh OKish"""
-    #    m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-    #                     south=38, projection='aea', continentalcolor='white')
-    #    lons = np.arange(-100, -80, 0.25)
-    #    lats = np.arange(40, 50, 0.25)
-    #    vals = np.random.rand(lats.shape[0], lons.shape[0])
-    #    lons, lats = np.meshgrid(lons, lats)
-    #    m.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
-    #    m.postprocess(filename='/tmp/test_plot_pcolormesh.png')
-    #    m.close()
+    def test_pcolormesh(self):
+        """See if we can do pcolormesh OKish"""
+        m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
+                         south=38, projection=ccrs.AlbersEqualArea(),
+                         continentalcolor='white')
+        lons = np.arange(-100, -80, 0.25)
+        lats = np.arange(40, 50, 0.25)
+        vals = np.random.rand(lats.shape[0], lons.shape[0])
+        lons, lats = np.meshgrid(lons, lats)
+        m.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
+        m.postprocess(filename='/tmp/test_plot_pcolormesh.png')
+        m.close()
 
     def test_albers(self):
         """See if we can plot albers"""
         m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-                         south=38, projection='aea', continentalcolor='white')
+                         south=38, projection=ccrs.AlbersEqualArea(),
+                         continentalcolor='white')
         m.postprocess(filename='/tmp/test_plot_albers.png')
         m.close()
 
@@ -126,7 +131,6 @@ class TestPlot(unittest.TestCase):
         m.fill_ugcs({"IAZ001": 10, "IAZ003": 20, "IAZ005": 30}, ilabel=True)
         m.postprocess(filename='/tmp/test_plot_ugcs_zones.png')
         m.close()
-        self.assertTrue(True)
 
     def test_filter_functions(self):
         """Make sure our filter functions are doing what we want!"""
