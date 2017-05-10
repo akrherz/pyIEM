@@ -236,11 +236,10 @@ def load_pickle_geo(filename):
     return cPickle.load(open(fn, 'rb'))
 
 
-def mask_outside_geom(themap, ax, geom):
+def mask_outside_geom(ax, geom):
     """Create a white patch over the plot for what we want to ask out
 
     Args:
-      themap ():
       ax (axes):
       geom (geometry):
     """
@@ -254,10 +253,11 @@ def mask_outside_geom(themap, ax, geom):
                                    1) * [mpath.Path.LINETO]
     for geo in geom:
         ccw = np.asarray(geo.exterior)[::-1]
-        x, y = themap(ccw[:, 0], ccw[:, 1])
-        verts = np.concatenate([verts, zip(x, y)])
+        points = ax.projection.transform_points(ccrs.Geodetic(),
+                                                ccw[:, 0], ccw[:, 1])
+        verts = np.concatenate([verts, points[:, :2]])
         codes = np.concatenate([codes, [mpath.Path.MOVETO] +
-                                (len(x) - 1) * [mpath.Path.LINETO]])
+                                (points.shape[0] - 1) * [mpath.Path.LINETO]])
 
     path = mpath.Path(verts, codes)
     # Removes any external data
@@ -596,16 +596,17 @@ class MapPlot(object):
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
+        self.cax = None
 
         if self.sector == 'iowa':
             self.state = 'IA'
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
                 facecolor=(0.4471, 0.6235, 0.8117),
-                projection=ccrs.PlateCarree(central_longitude=270.0),
+                projection=ccrs.Mercator(),
                 aspect='auto')
-            self.ax.set_extent([reference.IA_WEST + 360,
-                                reference.IA_EAST + 360,
+            self.ax.set_extent([reference.IA_WEST,
+                                reference.IA_EAST,
                                 reference.IA_SOUTH,
                                 reference.IA_NORTH])
             states_provinces = cfeature.NaturalEarthFeature(
@@ -900,7 +901,6 @@ class MapPlot(object):
         figheight = bbox.height * self.fig.dpi
         if self.textmask is None:
             self.textmask = np.zeros((int(figwidth), int(figheight)), bool)
-        thismap = self.map
         thisax = self.ax
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(0.5, 0.5, "ABCDEFGHIJ", transform=thisax.transAxes,
@@ -908,7 +908,8 @@ class MapPlot(object):
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.
         ypixels = bbox.height
-        for o, a, v, m, c, l in zip(lons, lats, vals, valmask, color, labels):
+        for o, a, v, m, c, label in zip(lons, lats, vals, valmask,
+                                        color, labels):
             if not m:
                 continue
 
@@ -917,7 +918,7 @@ class MapPlot(object):
             max_mystr_len = max([len(s) for s in mystr.split("\n")])
             mystr_lines = len(mystr.split("\n"))
             # compute the pixel coordinate of this data point
-            (x, y) = thismap(o, a)
+            (x, y) = thisax.projection.transform_point(o, a, ccrs.Geodetic())
             (imgx, imgy) = thisax.transData.transform([x, y])
             imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
             if imgx0 < axx0:
@@ -961,10 +962,10 @@ class MapPlot(object):
                        ) % (repr(mystr), imgx, figwidth, imgy, figheight,
                             imgx0, imgx1, imgy0, imgy1, _cnt))
             self.textmask[int(imgx0):int(imgx1), int(imgy0):int(imgy1)] = True
-            t0 = thisax.text(x, y, mystr, color=c,
+            t0 = thisax.text(o, a, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center' if not showmarker else 'bottom',
-                             ha=ha)
+                             ha=ha, transform=ccrs.PlateCarree())
             bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
             if self.debug:
                 rec = plt.Rectangle([bbox.x0, bbox.y0],
@@ -972,14 +973,15 @@ class MapPlot(object):
                                     facecolor='None', edgecolor='k')
                 self.fig.patches.append(rec)
             if showmarker:
-                thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
+                thisax.scatter(o, a, marker='+', zorder=Z_OVERLAY+2,
+                               transform=ccrs.PlateCarree())
             t0.set_clip_on(True)
             t0.set_path_effects([PathEffects.Stroke(linewidth=3,
                                                     foreground=outlinecolor),
                                  PathEffects.Normal()])
 
-            if l and l != '':
-                thisax.annotate("%s" % (l, ), xy=(x, y), ha='center',
+            if label and label != '':
+                thisax.annotate("%s" % (label, ), xy=(x, y), ha='center',
                                 va='top',
                                 xytext=(0, 0 - textsize/2),
                                 color=labelcolor,
@@ -1056,7 +1058,7 @@ class MapPlot(object):
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
-            mask_outside_geom(self.map, self.ax, s[self.state]['geom'])
+            mask_outside_geom(self.ax, s[self.state]['geom'])
             return
         elif self.sector == 'iowawfo':
             s = load_pickle_geo('iowawfo.pickle')
@@ -1065,8 +1067,9 @@ class MapPlot(object):
         else:
             ccw = load_bounds('%s_ccw' % (self.sector,))
         # in map coords
-        (x, y) = self.map(ccw[:, 0], ccw[:, 1])
-        mask_outside_polygon(zip(x, y), ax=self.ax)
+        points = self.ax.projection.transform_points(ccrs.Geodetic(),
+                                                     ccw[:, 0], ccw[:, 1])
+        mask_outside_polygon(points[:, :2], ax=self.ax)
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf
@@ -1083,10 +1086,14 @@ class MapPlot(object):
             # Careful here as a rotated projection may have maxes not in ul
             xbnds = self.ax.get_xlim()
             ybnds = self.ax.get_ylim()
-            ll = self.map(xbnds[0], ybnds[0], inverse=True)
-            ul = self.map(xbnds[0], ybnds[1], inverse=True)
-            ur = self.map(xbnds[1], ybnds[1], inverse=True)
-            lr = self.map(xbnds[1], ybnds[0], inverse=True)
+            ll = ccrs.Geodetic().transform_point(xbnds[0], ybnds[0],
+                                                 self.ax.projection)
+            ul = ccrs.Geodetic().transform_point(xbnds[0], ybnds[1],
+                                                 self.ax.projection)
+            ur = ccrs.Geodetic().transform_point(xbnds[1], ybnds[1],
+                                                 self.ax.projection)
+            lr = ccrs.Geodetic().transform_point(xbnds[1], ybnds[0],
+                                                 self.ax.projection)
             maxy = max(ul[1], ur[1])
             miny = min(ll[1], ul[1])
             maxx = max(lr[0], ur[0])
@@ -1107,17 +1114,17 @@ class MapPlot(object):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        x, y = self.map(lons, lats)
         from scipy.signal import convolve2d
         window = np.ones((6, 6))
         vals = convolve2d(vals, window / window.sum(), mode='same',
                           boundary='symm')
         # vals = maskoceans(lons, lats, vals, resolution='h')
-        self.map.contourf(x, y, vals, clevs,
-                          cmap=cmap, norm=norm, zorder=Z_FILL,
-                          extend='both')
-        csl = self.map.contour(x, y, vals, clevs, colors='w',
-                               zorder=Z_FILL_LABEL)
+        self.ax.contourf(lons, lats, vals, clevs,
+                         cmap=cmap, norm=norm, zorder=Z_FILL,
+                         extend='both', transform=ccrs.PlateCarree())
+        csl = self.ax.contour(lons, lats, vals, clevs, colors='w',
+                              zorder=Z_FILL_LABEL,
+                              transform=ccrs.PlateCarree())
         if kwargs.get('ilabel', False):
             self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'), colors='k',
                            fontsize=14, zorder=Z_FILL_LABEL)
@@ -1262,10 +1269,7 @@ class MapPlot(object):
           outlinecolor (str): color to outline the text with
         """
         df = load_pickle_pd("pd_cities.pickle")
-        south = self.map.llcrnrlat
-        north = self.map.urcrnrlat
-        west = self.map.llcrnrlon
-        east = self.map.urcrnrlon
+        (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
         if minarea is None:
             minarea = 500. if self.sector in ['nws', 'conus'] else 10.
         df2 = df[((df['lat'] > south) & (df['lat'] < north) &
@@ -1284,14 +1288,13 @@ class MapPlot(object):
           color (color,optional): line color to use
         """
         ugcdict = load_pickle_geo("ugcs_county.pickle")
+        polys = []
         for ugc in ugcdict:
             for polygon in ugcdict[ugc].get('geom', []):
-                a = np.asarray(polygon.exterior)
-                (x, y) = self.map(a[:, 0], a[:, 1])
-                a = zip(x, y)
-                poly = Polygon(a, fill=False, ec=color, lw=.4,
+                polys.append(polygon)
+        self.ax.add_geometries(polys, crs=ccrs.PlateCarree(),
+                               facecolor='None', edgecolor=color, lw=.4,
                                zorder=Z_POLITICAL)
-                self.ax.add_patch(poly)
 
     def iemlogo(self):
         """ Draw a logo """
