@@ -48,10 +48,11 @@ from matplotlib.patches import Wedge  # nopep8
 import matplotlib.patches as mpatches
 import matplotlib.colorbar as mpcolorbar  # nopep8
 import matplotlib.patheffects as PathEffects  # nopep8
-from matplotlib.collections import PatchCollection  # nopep8
 # cartopy
+import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+cartopy.config['data_dir'] = '/tmp/'
 
 [Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
@@ -593,9 +594,7 @@ class MapPlot(object):
         elif self.sector == 'midwest':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                projection=ccrs.Mercator(central_longitude=-92.0,
-                                         min_latitude=42.0,
-                                         max_latitude=45.0),
+                projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.MW_WEST,
                                 reference.MW_EAST,
@@ -605,9 +604,7 @@ class MapPlot(object):
         elif self.sector == 'iowawfo':
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
-                projection=ccrs.Mercator(central_longitude=-92.0,
-                                         min_latitude=42.0,
-                                         max_latitude=45.0),
+                projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
             self.axes.append(self.ax)
@@ -1156,8 +1153,6 @@ class MapPlot(object):
             filter_func = state_filter
         elif self.sector == 'cwa':
             filter_func = cwa_filter
-        patches = []
-        patches2 = []
         ilabel = kwargs.get('ilabel', False)
         plotmissing = kwargs.get('plotmissing', True)
         for ugc in ugcs:
@@ -1187,9 +1182,9 @@ class MapPlot(object):
                                                              arr[:, 1])
                 p = Polygon(points[:, :2], fc=c, ec='k', zorder=z, lw=.1)
                 if z == Z_OVERLAY:
-                    patches.append(p)
+                    self.ax.add_patch(p)
                 if z == Z_OVERLAY2:
-                    patches2.append(p)
+                    self.ax.add_patch(p)
                 if polyi == 0 and ilabel:
                     mx = polygon.centroid.x
                     my = polygon.centroid.y
@@ -1200,12 +1195,6 @@ class MapPlot(object):
                             PathEffects.withStroke(linewidth=2,
                                                    foreground="w")])
 
-        if len(patches) > 0:
-            self.ax.add_collection(
-                        PatchCollection(patches, match_original=True))
-        if len(patches2) > 0:
-            self.ax.add_collection(
-                        PatchCollection(patches2, match_original=True))
         if 'cmap' in kwargs:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
