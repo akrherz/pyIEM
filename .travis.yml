@@ -1,5 +1,15 @@
 sudo: required
+dist: trusty
+cache:
+  timeout: 1000
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/miniconda
 addons:
+  postgresql: "9.5"
+  apt:
+    packages:
+      - postgresql-9.5-postgis-2.3
   hosts:
     - iemdb
 virtualenv:
