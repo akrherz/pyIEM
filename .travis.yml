@@ -23,10 +23,12 @@ before_install:
   - sudo apt-get install -qq python-pyproj python-numpy python-scipy python-psycopg2
 install:
   # copied^Hborrowed from cartopy
-  - wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh -O miniconda.sh
-  - bash miniconda.sh -b -p $HOME/miniconda
+  - if [[ ! -f $HOME/miniconda/bin/python ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+      bash miniconda.sh -f -b -p $HOME/miniconda;
+      $HOME/miniconda/bin/conda config --set always_yes yes --set changeps1 no;
+    fi
   - export PATH="$HOME/miniconda/bin:$PATH"
-  - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
   - conda update conda
   - conda create -n test-environment python=2.7
   - source activate test-environment
