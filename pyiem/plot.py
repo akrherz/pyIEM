@@ -552,7 +552,8 @@ class MapPlot(object):
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
-        self.cax = None
+        self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
+                            yticks=[], xticks=[])
         self.axes = []
 
         if self.sector == 'iowa':
@@ -687,9 +688,10 @@ class MapPlot(object):
                 states_provinces = cfeature.NaturalEarthFeature(
                     category='cultural',
                     name='admin_1_states_provinces_lines',
-                    scale='110m',
+                    scale='10m',
                     edgecolor=kwargs.get('statecolor', 'k'),
                     linewidth=1.,
+                    zorder=Z_POLITICAL,
                     facecolor='none')
                 _a.add_feature(states_provinces)
         if not kwargs.get('nologo'):
@@ -951,7 +953,7 @@ class MapPlot(object):
                 self.fig.patches.append(rec)
             if showmarker:
                 thisax.scatter(o, a, marker='+', zorder=Z_OVERLAY+2,
-                               transform=ccrs.PlateCarree())
+                               color='k', transform=ccrs.PlateCarree())
             t0.set_clip_on(True)
             t0.set_path_effects([PathEffects.Stroke(linewidth=3,
                                                     foreground=outlinecolor),
