@@ -21,7 +21,7 @@ install:
   - conda create -n test-environment python=2.7
   - source activate test-environment
   - conda config --add channels conda-forge
-  - PACKAGES="$PACKAGES cython nose Shapely coveralls pandas gdata cartopy"
+  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas gdata cartopy"
   - conda install --quiet $PACKAGES
   - "pip install --upgrade pip"
   - "pip install --upgrade matplotlib"
