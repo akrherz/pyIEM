@@ -12,22 +12,27 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-pyproj python-numpy python-scipy python-psycopg2
 install:
+  # copied^Hborrowed from cartopy
+  - wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
+  - conda update conda
+  - conda create -n test-environment python=2.7
+  - source activate test-environment
+  - conda config --add channels conda-forge
+  - PACKAGES="$PACKAGES cython nose Shapely coveralls pandas gdata cartopy"
+  - conda install --quiet $PACKAGES
   - "pip install --upgrade pip"
   - "pip install --upgrade matplotlib"
-  - "pip install Shapely"
-  - "pip install coveralls"
-  - "pip install pandas"
-  - "pip install gdata"
   - "pip install oauth2client"
   - "pip install apiclient"
   - "pip install urllib3"
   - "pip install google-api-python-client"
   - "pip install 'Pillow<3.0'"
   - "pip install python-metar"
-  - "pip install cartopy"
   - "pip install git+https://github.com/smartsheet-platform/smartsheet-python-sdk"
   - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"
-#  - "pip install --allow-external basemap -r requirements.txt"
 before_script:
   - psql -c 'create database postgis;' -U postgres
   - psql -c 'create user nobody;' -U postgres
