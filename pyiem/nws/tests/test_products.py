@@ -36,7 +36,7 @@ class TestProducts(unittest.TestCase):
 
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='postgis')
+        self.dbconn = psycopg2.connect(database='postgis', host='iemdb')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

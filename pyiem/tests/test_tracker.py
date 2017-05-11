@@ -10,9 +10,9 @@ class TrackerTests(unittest.TestCase):
 
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.POSTGIS = psycopg2.connect(database='portfolio')
+        self.POSTGIS = psycopg2.connect(database='portfolio', host='iemdb')
         self.pcursor = self.POSTGIS.cursor()
-        self.IEM = psycopg2.connect(database='iem')
+        self.IEM = psycopg2.connect(database='iem', host='iemdb')
         self.icursor = self.IEM.cursor()
 
     def tearDown(self):
