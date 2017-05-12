@@ -225,10 +225,10 @@ class VTECProduct(TextProduct):
             # New Event Types!
             bts = self.valid if vtec.begints is None else vtec.begints
             # If this product has no expiration time, just set it ahead
-            # 6 days in time...
+            # 21 days in time...
             ets = vtec.endts
             if vtec.endts is None:
-                ets = bts + datetime.timedelta(hours=144)
+                ets = bts + datetime.timedelta(hours=(21 * 24))
 
             # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
