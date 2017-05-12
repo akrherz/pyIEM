@@ -228,7 +228,7 @@ class TestPlot(unittest.TestCase):
         m = plot.MapPlot(sector='midwest')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40},
                     units='no units')
-        m.postprocess(filename='/tmp/midwest_plot_example.png')
+        m.postprocess(filename='/tmp/test_plot_midwest.png')
         m.close()
 
     def test_plot2(self):
@@ -236,13 +236,13 @@ class TestPlot(unittest.TestCase):
         m = plot.MapPlot(sector='nws', continentalcolor='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another', ilabel=True)
-        m.postprocess(filename='/tmp/us_plot_example.png')
+        m.postprocess(filename='/tmp/test_plot_us.png')
         m.close()
 
         m = plot.MapPlot(sector='iowa', continentalcolor='white')
         m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
                     units='NWS Something or Another')
-        m.postprocess(filename='/tmp/iowa_plot_example.png')
+        m.postprocess(filename='/tmp/test_plot_iowa.png')
         m.close()
 
     def test_plot3(self):
@@ -250,5 +250,5 @@ class TestPlot(unittest.TestCase):
         m = plot.MapPlot(sector='iowa')
         m.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30,
                         'AJK': 40, 'HFO': 50})
-        m.postprocess(filename='/tmp/iowa_climdiv_example.png')
+        m.postprocess(filename='/tmp/test_plot_iowa_climdiv.png')
         m.close()
