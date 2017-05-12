@@ -87,12 +87,12 @@ def true_filter(bm, key, val):
 
 
 def cwa_filter(bm, key, val):
-    """A filter for checking a key against current basemap"""
+    """A filter for checking a key against current plot"""
     return (val.get('cwa') == bm.cwa)
 
 
 def state_filter(bm, key, val):
-    """A filter for checking a key against current basemap"""
+    """A filter for checking a key against current plot"""
     return (key[:2] == bm.state)
 
 
@@ -276,7 +276,7 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
 
 
 class MapPlot(object):
-    """An object representing a basemap plot.
+    """An object representing a cartopy plot.
 
     An object that allows one to quickly and easily generate map plots of data
     with some customization possible.  This is what drives most of the plots
@@ -321,7 +321,7 @@ class MapPlot(object):
             self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                                 yticks=[], xticks=[])
         """
-        # Storage of basemaps within this plot
+        # Storage of axes within this plot
         self.state = None
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
