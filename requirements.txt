@@ -16,4 +16,4 @@ windrose
 pandas
 tqdm
 git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git
-git+https://github.com/matplotlib/basemap.git#egg=basemap >= 1.0.8
+cartopy

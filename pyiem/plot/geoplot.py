@@ -9,13 +9,14 @@ hard coded values.  Bad daryl!
 Example:
     Here is a basic example of usage.
 
-    >>> from pyiem.plot import MapPlot
+    >>> from pyiem.plot.geoplot import MapPlot
     >>> m = MapPlot(sector='conus', title='My Fancy Title')
     >>> m.postprocess(filename='myplot.png')
     >>> m.close()
 
 """
 # stdlib
+from __future__ import print_function
 import cStringIO
 import tempfile
 import os
@@ -25,7 +26,6 @@ import shutil
 import cPickle
 import datetime
 import math
-import pyproj
 #
 import numpy as np
 import pandas as pd
@@ -36,7 +36,9 @@ from PIL import Image
 #
 from pyiem import reference
 from pyiem.datatypes import speed, direction
+from pyiem.plot.colormaps import *
 import pyiem.meteorology as meteorology
+from scipy.signal import convolve2d
 # Matplotlib
 import matplotlib
 matplotlib.use('agg')
@@ -44,18 +46,21 @@ import matplotlib.pyplot as plt  # nopep8
 from matplotlib.patches import Polygon, Rectangle  # nopep8
 import matplotlib.cm as cm  # nopep8
 import matplotlib.colors as mpcolors  # nopep8
+import matplotlib.path as mpath
 from matplotlib.patches import Wedge  # nopep8
+import matplotlib.patches as mpatches
 import matplotlib.colorbar as mpcolorbar  # nopep8
 import matplotlib.patheffects as PathEffects  # nopep8
-from matplotlib.collections import PatchCollection  # nopep8
-import matplotlib.patches as mpatches
-import matplotlib.path as mpath
-# Basemap
-from mpl_toolkits.basemap import Basemap  # nopep8 @UnresolvedImport
+# cartopy
+import cartopy
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import cartopy.io.shapereader as shpreader
+cartopy.config['data_dir'] = '/tmp/'
 
 [Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
-DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
+DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
 
 
 def centered_bins(absmax, on=0, bins=9):
@@ -82,109 +87,13 @@ def true_filter(bm, key, val):
 
 
 def cwa_filter(bm, key, val):
-    """A filter for checking a key against current basemap"""
+    """A filter for checking a key against current plot"""
     return (val.get('cwa') == bm.cwa)
 
 
 def state_filter(bm, key, val):
-    """A filter for checking a key against current basemap"""
+    """A filter for checking a key against current plot"""
     return (key[:2] == bm.state)
-
-
-def calendar_plot(sts, ets, data, **kwargs):
-    """Create a plot that looks like a calendar
-
-    Args:
-      sts (datetime.date): start date of this plot
-      ets (datetime.date): end date of this plot
-      data (dict[dict]): dictionary with keys of dates and dicts for
-        `val` value and optionally `color` for color
-    """
-    weeks = 1
-    now = sts
-    while now <= ets:
-        if now.isoweekday() == 7 and now != sts:
-            weeks += 1
-        now += datetime.timedelta(days=1)
-
-    # we need 50 pixels per week, 100 dpi
-    boxpixelx = 100
-    boxpixely = 50
-    headerheight = 125
-    height = (headerheight + (weeks * boxpixely)) / 100.
-    pixelwidth = 20 + boxpixelx * 7
-    pixelheight = int(height * 100)
-
-    fig = plt.figure(figsize=(7.2, height))
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.get_xaxis().set_visible(False)
-    ax.get_yaxis().set_visible(False)
-
-    dx = boxpixelx / float(pixelwidth)
-    dy = boxpixely / float(pixelheight)
-    offx = 10 / float(pixelwidth)
-    offy = 35 / float(pixelheight)
-    offx3 = 3 / float(pixelwidth)
-    offy3 = 3 / float(pixelheight)
-
-    ax.text(0.5, 0.99, kwargs.get('title', ''), va='top',
-            ha='center')
-
-    for i, dow in enumerate(['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']):
-        ax.text(offx + dx * i + (dx / 2.), offy + (weeks * dy) + (dy/2.), dow,
-                ha='center')
-
-    now = sts
-    week = 1
-    while now <= ets:
-        weekday = now.isoweekday()
-        # Sunday
-        if weekday == 7:
-            weekday = 0
-        if weekday == 0 and now != sts:
-            week += 1
-        # Compute the lower left corner of where we are in the world
-        x = offx + weekday * dx
-        y = offy + ((weeks - week) * boxpixely) / float(pixelheight)
-        color = 'k'
-        fmt = '%-d'
-        if now.day == 1:
-            fmt = '%b %-d'
-            color = 'g'
-        ax.text(x + offx3, y + dy - offy3, "%s" % (now.strftime(fmt), ),
-                transform=ax.transAxes, va='top', color=color)
-        val = data.get(now, dict()).get('val')
-        if val is not None:
-            color = data[now].get('color', 'k')
-            ax.text(x + offx3 + (dx/2.), y + (dy/2.5) - offy3,
-                    val, transform=ax.transAxes, va='center',
-                    ha='center', color=color, fontsize=16)
-
-        rect = Rectangle((x, y), dx, dy, zorder=2,
-                         facecolor='None', edgecolor='tan')
-        ax.add_patch(rect)
-        now += datetime.timedelta(days=1)
-
-    return fig
-
-
-def smooth1d(x, window_len):
-    # copied from http://www.scipy.org/Cookbook/SignalSmooth
-    s = np.r_[2*x[0] - x[window_len:1:-1], x, 2*x[-1]-x[-1:-window_len:-1]]
-    w = np.hanning(window_len)
-    y = np.convolve(w/w.sum(), s, mode='same')
-    return y[window_len-1:-window_len+1]
-
-
-def smooth2d(A, sigma=3):
-
-    window_len = max(int(sigma), 3)*2+1
-    A1 = np.array([smooth1d(x, window_len) for x in np.asarray(A)])
-    A2 = np.transpose(A1)
-    A3 = np.array([smooth1d(x, window_len) for x in A2])
-    A4 = np.transpose(A3)
-
-    return A4
 
 
 def load_bounds(filebase):
@@ -235,11 +144,10 @@ def load_pickle_geo(filename):
     return cPickle.load(open(fn, 'rb'))
 
 
-def mask_outside_geom(themap, ax, geom):
+def mask_outside_geom(ax, geom):
     """Create a white patch over the plot for what we want to ask out
 
     Args:
-      themap ():
       ax (axes):
       geom (geometry):
     """
@@ -253,10 +161,11 @@ def mask_outside_geom(themap, ax, geom):
                                    1) * [mpath.Path.LINETO]
     for geo in geom:
         ccw = np.asarray(geo.exterior)[::-1]
-        x, y = themap(ccw[:, 0], ccw[:, 1])
-        verts = np.concatenate([verts, zip(x, y)])
+        points = ax.projection.transform_points(ccrs.Geodetic(),
+                                                ccw[:, 0], ccw[:, 1])
+        verts = np.concatenate([verts, points[:, :2]])
         codes = np.concatenate([codes, [mpath.Path.MOVETO] +
-                                (len(x) - 1) * [mpath.Path.LINETO]])
+                                (points.shape[0] - 1) * [mpath.Path.LINETO]])
 
     path = mpath.Path(verts, codes)
     # Removes any external data
@@ -314,141 +223,6 @@ def mask_outside_polygon(poly_verts, ax=None):
     return patch
 
 
-def nwsprecip():
-    """A color ramp used by NWS on NTP plots
-
-    Changes
-     - modified the reds a bit to provide a larger gradient
-     - added two light brown colors at the low end to allow for more levels
-     - removed perhaps a bad orange color and remove top white color
-    """
-    cpool = ["#cbcb97", "#989865",
-             "#00ebe7", "#00a0f5", "#000df5", "#00ff00", "#00c600",
-             "#008e00", "#fef700", "#e5bc00", "#ff8500", "#ff0000",
-             "#af0000", "#640000", "#ff00fe", "#a152bc"]
-    cmap = mpcolors.ListedColormap(cpool, 'nwsprecip')
-    cmap.set_over('#FFFFFF')
-    cmap.set_under('#FFFFFF')
-    cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
-    return cmap
-
-
-def nwssnow():
-    """A Color Ramp Suggested by the NWS for Snowfall"""
-    cpool = [[0.74117647, 0.84313725, 0.90588235],
-             [0.41960784, 0.68235294, 0.83921569],
-             [0.19215686, 0.50980392, 0.74117647],
-             [0.03137255, 0.31764706, 0.61176471],
-             [0.03137255, 0.14901961, 0.58039216],
-             [1.,  1.,  0.58823529],
-             [1.,  0.76862745, 0.],
-             [1.,  0.52941176, 0.],
-             [0.85882353,  0.07843137, 0.],
-             [0.61960784,  0., 0.],
-             [0.41176471,  0., 0.]]
-    cmap = mpcolors.ListedColormap(cpool, 'nwssnow')
-    cmap.set_over([0.16862745,  0., 0.18039216])
-    cmap.set_under('#FFFFFF')
-    cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
-    return cmap
-
-
-def james2():
-    """David James suggested color ramp Yellow to Brown"""
-    cpool = ['#FFFF80', '#FFEE70', '#FCDD60', '#FACD52', '#F7BE43', '#F5AF36',
-             '#E69729', '#CC781F', '#B35915', '#9C400E', '#822507', '#6B0000']
-    cmap3 = mpcolors.ListedColormap(cpool, 'james2')
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
-
-
-def james():
-    """David James suggested color ramp Yellow to Blue """
-    cpool = ['#FFFF80', '#CDFA64', '#98F046', '#61E827', '#3BD923', '#3FC453',
-             '#37AD7A', '#26989E', '#217AA3', '#215394', '#1B3187', '#0C1078']
-    cmap3 = mpcolors.ListedColormap(cpool, 'james')
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
-
-
-def whitebluegreenyellowred():
-    ''' Rip off NCL's WhiteBlueGreenYellowRed '''
-    cpool = ['#cfedfb', '#cdecfb', '#caebfb', '#c7eafa', '#c5e9fa', '#c2e8fa',
-             '#bfe7fa', '#bde6fa', '#bae5f9', '#b7e4f9', '#b5e3f9', '#b2e2f9',
-             '#b0e1f9', '#ade0f8', '#aadff8', '#a8def8', '#a5ddf8', '#a2dcf7',
-             '#9ddaf7', '#9bd8f6', '#98d6f5', '#96d4f3', '#94d2f2', '#92d0f1',
-             '#8fcef0', '#8dccee', '#8bcaed', '#88c8ec', '#86c5eb', '#84c3ea',
-             '#81c1e8', '#7fbfe7', '#7dbde6', '#7bbbe5', '#78b9e4', '#76b7e2',
-             '#74b5e1', '#71b3e0', '#6fb1df', '#6dafdd', '#6aaddc', '#68abdb',
-             '#66a9da', '#64a7d9', '#61a5d7', '#5fa3d6', '#5da0d5', '#5a9ed4',
-             '#589cd3', '#569ad1', '#5398d0', '#5196cf', '#4f94ce', '#4d92cc',
-             '#488eca', '#488fc6', '#4890c3', '#4891bf', '#4892bc', '#4893b8',
-             '#4894b5', '#4895b1', '#4896ad', '#4897aa', '#4899a6', '#489aa3',
-             '#489b9f', '#489c9c', '#489d98', '#489e94', '#489f91', '#48a08d',
-             '#48a18a', '#49a286', '#49a383', '#49a47f', '#49a57c', '#49a678',
-             '#49a774', '#49a871', '#49a96d', '#49aa6a', '#49ac66', '#49ad63',
-             '#49ae5f', '#49af5b', '#49b058', '#49b154', '#49b251', '#49b34d',
-             '#49b546', '#4eb647', '#53b847', '#57b948', '#5cbb48', '#61bc49',
-             '#66bd4a', '#6abf4a', '#6fc04b', '#74c14b', '#79c34c', '#7ec44d',
-             '#82c64d', '#87c74e', '#8cc84e', '#91ca4f', '#96cb50', '#9acc50',
-             '#9fce51', '#a4cf51', '#a9d152', '#add252', '#b2d353', '#b7d554',
-             '#bcd654', '#c1d755', '#c5d955', '#cada56', '#cfdc57', '#d4dd57',
-             '#d9de58', '#dde058', '#e2e159', '#e7e25a', '#ece45a', '#f0e55b',
-             '#f5e75b', '#fae85c', '#fae55b', '#fae159', '#fade58', '#f9da56',
-             '#f9d755', '#f9d454', '#f9d052', '#f9cd51', '#f9c950', '#f9c64e',
-             '#f9c34d', '#f8bf4b', '#f8bc4a', '#f8b849', '#f8b547', '#f8b246',
-             '#f8ae45', '#f8ab43', '#f7a742', '#f7a440', '#f7a03f', '#f79d3e',
-             '#f79a3c', '#f7963b', '#f7933a', '#f68f38', '#f68c37', '#f68935',
-             '#f68534', '#f68233', '#f67e31', '#f67b30', '#f6782f', '#f5742d',
-             '#f5712c', '#f56a29', '#f46829', '#f36629', '#f26429', '#f16229',
-             '#f06029', '#ef5e29', '#ef5c29', '#ee5a29', '#ed5829', '#ec5629',
-             '#eb5429', '#ea5229', '#e95029', '#e84e29', '#e74c29', '#e64a29',
-             '#e54829', '#e44629', '#e44328', '#e34128', '#e23f28', '#e13d28',
-             '#e03b28', '#df3928', '#de3728', '#dd3528', '#dc3328', '#db3128',
-             '#da2f28', '#d92d28', '#d92b28', '#d82928', '#d72728', '#d62528',
-             '#d52328', '#d31f28', '#d11f28', '#cf1e27', '#ce1e27', '#cc1e26',
-             '#ca1e26', '#c81d26', '#c71d25', '#c51d25', '#c31d24', '#c11c24',
-             '#c01c24', '#be1c23', '#bc1b23', '#ba1b22', '#b91b22', '#b71b22',
-             '#b51a21', '#b31a21', '#b21a20', '#b01a20', '#ae191f', '#ac191f',
-             '#ab191f', '#a9191e', '#a7181e', '#a5181d', '#a4181d', '#a2171d',
-             '#a0171c', '#9e171c', '#9d171b', '#9b161b', '#99161b', '#97161a',
-             '#96161a', '#921519']
-    cmap3 = mpcolors.ListedColormap(cpool, 'whitebluegreenyellowred')
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
-
-
-def maue():
-    """ Pretty color ramp Dr Ryan Maue uses """
-    cpool = ["#e6e6e6", "#d2d2d2", "#bcbcbc", "#969696", "#646464",
-             "#1464d2", "#1e6eeb", "#2882f0", "#3c96f5", "#50a5f5", "#78b9fa",
-             "#96d2fa", "#b4f0fa", "#e1ffff",
-             "#0fa00f", "#1eb41e", "#37d23c", "#50f050", "#78f573", "#96f58c",
-             "#b4faaa", "#c8ffbe",
-             "#ffe878", "#ffc03c", "#ffa000", "#ff6000", "#ff3200", "#e11400",
-             "#c00000", "#a50000", "#643c32",
-             "#785046", "#8c645a", "#b48c82", "#e1beb4", "#f0dcd2", "#ffc8c8",
-             "#f5a0a0", "#e16464", "#c83c3c"]
-
-    cmap3 = mpcolors.ListedColormap(cpool, 'maue')
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
-
-
 def polygon_fill(mymap, geo_provider, data, **kwargs):
     """Generalized function for overlaying filled polygons on the map
 
@@ -482,16 +256,17 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
             if polygon.exterior is None:
                 continue
             a = np.asarray(polygon.exterior)
-            for themap in mymap.maps:
-                (x, y) = themap(a[:, 0], a[:, 1])
-                a2 = zip(x, y)
-                p = Polygon(a2, fc=c, ec='k', zorder=Z_FILL, lw=.1)
-                themap.ax.add_patch(p)
+            for ax in mymap.axes:
+                points = ax.projection.transform_points(ccrs.Geodetic(),
+                                                        a[:, 0], a[:, 1])
+                p = Polygon(points[:, :2], fc=c, ec='k', zorder=Z_FILL, lw=.1)
+                ax.add_patch(p)
                 if ilabel and polyi == 0:
-                    (x, y) = themap(polydict.get('lon', polygon.centroid.x),
-                                    polydict.get('lat', polygon.centroid.y))
-                    txt = themap.ax.text(x, y, lbl, zorder=100, clip_on=True,
-                                         ha='center', va='center')
+                    txt = ax.text(polydict.get('lon', polygon.centroid.x),
+                                  polydict.get('lat', polygon.centroid.y),
+                                  lbl, zorder=100, clip_on=True,
+                                  ha='center', va='center',
+                                  transform=ccrs.PlateCarree())
                     txt.set_path_effects([
                         PathEffects.withStroke(linewidth=2, foreground="w")])
 
@@ -500,53 +275,8 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     mymap.draw_colorbar(bins, cmap, norm, **kwargs)
 
 
-def gen_basemap(ax, **kwargs):
-    """factory generating basemap objects
-
-    Args:
-      ax: matplotlib axes object
-      kwargs: things necessary to make the basemap projection work
-
-    Returns:
-      basemap object
-    """
-    projection = kwargs.get('projection')
-    north = kwargs.get('north')
-    east = kwargs.get('east')
-    west = kwargs.get('west')
-    resolution = kwargs.get('resolution', 'i')
-    south = kwargs.get('south')
-    bm = None
-    if projection is None or projection == 'merc':  # default
-        bm = Basemap(projection='merc', fix_aspect=False,
-                     urcrnrlat=north,
-                     llcrnrlat=south,
-                     urcrnrlon=east,
-                     llcrnrlon=west,
-                     lat_0=45., lon_0=-92., lat_ts=42.,
-                     resolution=resolution,
-                     ax=ax)
-    elif projection == 'aea':
-        # save me from myself by computing the width and height dynamically
-        crs = {'lon_0': (east + west) / 2.,
-               'R': 6370997.0,
-               'proj': 'aea',
-               'units': 'm',
-               'lat_2': north - (north - south) * 0.25,
-               'lat_1': north - (north - south) * 0.75,
-               'lat_0': (north + south) / 2.}
-        aea = pyproj.Proj(crs)
-        ul = aea(west, north)
-        lr = aea(east, south)
-        bm = Basemap(width=(lr[0] - ul[0]), height=(ul[1] - lr[1]),
-                     resolution=resolution, projection=crs['proj'],
-                     lat_1=crs['lat_1'], lat_2=crs['lat_2'],
-                     lon_0=crs['lon_0'], lat_0=crs['lat_0'], ax=ax)
-    return bm
-
-
 class MapPlot(object):
-    """An object representing a basemap plot.
+    """An object representing a cartopy plot.
 
     An object that allows one to quickly and easily generate map plots of data
     with some customization possible.  This is what drives most of the plots
@@ -565,6 +295,7 @@ class MapPlot(object):
         ax (matplotlib.Axes): main figure plot axes
 
     """
+
     def __init__(self, sector='iowa', figsize=(10.24, 7.68), **kwargs):
         """Construct a MapPlot
 
@@ -577,130 +308,157 @@ class MapPlot(object):
             debug (bool): enable debugging
         """
         self.debug = kwargs.get('debug', False)
+        self.fig = plt.figure(num=None, figsize=figsize,
+                              dpi=kwargs.get('dpi', 100))
+        """
         if 'ax' in kwargs:
             self.ax = kwargs.pop('ax')
             self.fig = plt.gcf()
             self.cax = kwargs.pop('cax', None)
         else:
-            self.fig = plt.figure(num=None, figsize=figsize,
-                                  dpi=kwargs.get('dpi', 100))
             self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
                                facecolor=(0.4471, 0.6235, 0.8117))
             self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
                                 yticks=[], xticks=[])
-        # Storage of basemaps within this plot
-        self.maps = []
+        """
+        # Storage of axes within this plot
         self.state = None
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
+        self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
+                            yticks=[], xticks=[])
+        self.axes = []
 
         if self.sector == 'iowa':
             self.state = 'IA'
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=reference.IA_NORTH,
-                         llcrnrlat=reference.IA_SOUTH,
-                         urcrnrlon=reference.IA_EAST,
-                         llcrnrlon=reference.IA_WEST,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.Mercator(),
+                aspect='auto')
+            self.ax.set_extent([reference.IA_WEST,
+                                reference.IA_EAST,
+                                reference.IA_SOUTH,
+                                reference.IA_NORTH])
+            self.axes.append(self.ax)
+
         elif self.sector == 'cwa':
             self.cwa = kwargs.get('cwa', 'DMX')
-            bm = Basemap(projection='merc', fix_aspect=True,
-                         urcrnrlat=reference.wfo_bounds[self.cwa][3],
-                         llcrnrlat=reference.wfo_bounds[self.cwa][1],
-                         urcrnrlon=reference.wfo_bounds[self.cwa][2],
-                         llcrnrlon=reference.wfo_bounds[self.cwa][0],
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.Mercator(),
+                aspect='auto')
+            self.ax.set_extent([reference.wfo_bounds[self.cwa][0],
+                                reference.wfo_bounds[self.cwa][2],
+                                reference.wfo_bounds[self.cwa][1],
+                                reference.wfo_bounds[self.cwa][3]])
+            self.axes.append(self.ax)
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
-            bm = Basemap(projection='merc', fix_aspect=True,
-                         urcrnrlat=reference.state_bounds[self.state][3],
-                         llcrnrlat=reference.state_bounds[self.state][1],
-                         urcrnrlon=reference.state_bounds[self.state][2],
-                         llcrnrlon=reference.state_bounds[self.state][0],
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.Mercator(),
+                aspect='auto')
+            self.ax.set_extent([reference.state_bounds[self.state][0],
+                                reference.state_bounds[self.state][2],
+                                reference.state_bounds[self.state][1],
+                                reference.state_bounds[self.state][3]])
+            self.axes.append(self.ax)
         elif self.sector == 'midwest':
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=reference.MW_NORTH,
-                         llcrnrlat=reference.MW_SOUTH,
-                         urcrnrlon=reference.MW_EAST,
-                         llcrnrlon=reference.MW_WEST,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.Mercator(),
+                aspect='auto')
+            self.ax.set_extent([reference.MW_WEST,
+                                reference.MW_EAST,
+                                reference.MW_SOUTH,
+                                reference.MW_NORTH])
+            self.axes.append(self.ax)
         elif self.sector == 'iowawfo':
-            bm = Basemap(projection='merc', fix_aspect=False,
-                         urcrnrlat=45.5,
-                         llcrnrlat=39.8,
-                         urcrnrlon=-89.0,
-                         llcrnrlon=-99.6,
-                         lat_0=45., lon_0=-92., lat_ts=42.,
-                         resolution='i', ax=self.ax)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.Mercator(),
+                aspect='auto')
+            self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
+            self.axes.append(self.ax)
         elif self.sector == 'custom':
-            self.maps.append(gen_basemap(self.ax, **kwargs))
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                facecolor=(0.4471, 0.6235, 0.8117),
+                projection=kwargs['projection'],
+                aspect='auto')
+            self.ax.set_extent([kwargs['west'], kwargs['east'],
+                                kwargs['south'], kwargs['north']])
+            self.axes.append(self.ax)
+
         elif self.sector == 'north_america':
-            bm = Basemap(llcrnrlon=-145.5, llcrnrlat=1.,
-                         urcrnrlon=-2.566, urcrnrlat=46.352,
-                         rsphere=(6378137.00, 6356752.3142),
-                         resolution='l', area_thresh=1000.,
-                         projection='lcc',
-                         lat_1=50., lon_0=-107.,
-                         ax=self.ax, fix_aspect=False)
-            self.maps.append(bm)
+            self.ax = plt.axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.LambertConformal(central_longitude=-107.0,
+                                                 central_latitude=50.0),
+                aspect='auto')
+            self.ax.set_extent([-145.5, -2.566, 1, 46.352])
+            self.axes.append(self.ax)
 
         elif self.sector in ['conus', 'nws']:
-            bm = Basemap(projection='stere', lon_0=-105.0, lat_0=90.,
-                         lat_ts=60.0,
-                         llcrnrlat=23.47, urcrnrlat=45.44,
-                         llcrnrlon=-118.67, urcrnrlon=-64.52,
-                         rsphere=6371200., resolution='l',
-                         area_thresh=10000, ax=self.ax,
-                         fix_aspect=False)
-            self.maps.append(bm)
+            self.ax = self.fig.add_axes(
+                [0.01, 0.05, 0.928, 0.85],
+                projection=ccrs.PlateCarree(),
+                aspect='auto')
+            # -124.848974, 24.396308) - (-66.885444, 49.384358
+            self.ax.set_extent([-125,
+                                -66.5,
+                                22.,
+                                47.])
+            self.axes.append(self.ax)
+
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
-                pr_ax = plt.axes([0.78, 0.055, 0.125, 0.1],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                hi_ax = plt.axes([0.56, 0.055, 0.2, 0.1],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                ak_ax = plt.axes([0.015, 0.055, 0.2, 0.15],
-                                 facecolor=(0.4471, 0.6235, 0.8117))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=18.6, llcrnrlat=17.5,
-                                         urcrnrlon=-65.0, llcrnrlon=-68.0,
-                                         resolution='l', ax=pr_ax,
-                                         fix_aspect=False))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=72.1, llcrnrlat=51.08,
-                                         urcrnrlon=-129.0, llcrnrlon=-179.5,
-                                         resolution='l', ax=ak_ax,
-                                         fix_aspect=False))
-                self.maps.append(Basemap(projection='cyl',
-                                         urcrnrlat=22.5, llcrnrlat=18.5,
-                                         urcrnrlon=-154.0, llcrnrlon=-161.0,
-                                         resolution='l', ax=hi_ax,
-                                         fix_aspect=False))
+                self.pr_ax = plt.axes(
+                    [0.78, 0.055, 0.125, 0.1],
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
+                self.pr_ax.set_extent([-68.0, -65.0, 17.5, 18.6])
+                self.axes.append(self.pr_ax)
+                # Create AK
+                self.ak_ax = plt.axes(
+                    [0.015, 0.055, 0.25, 0.2],
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
+                self.ak_ax.set_extent([-179.5, -129.0, 51.08, 72.1])
+                self.axes.append(self.ak_ax)
+                # Create HI
+                self.hi_ax = plt.axes(
+                    [0.47, 0.055, 0.2, 0.1],
+                    projection=ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect='auto')
+                self.hi_ax.set_extent([-161.0, -154.0, 18.5, 22.5])
+                self.axes.append(self.hi_ax)
 
-        for _a in self.maps:
+        for _a in self.axes:
             if _a is None:
                 continue
             # legacy usage of axisbg here
             _c = kwargs.get('axisbg',
                             kwargs.get('continentalcolor',
-                                       (0.4471, 0.6235, 0.8117)))
-            _a.fillcontinents(color=_c,
-                              zorder=0)
-            _a.drawcountries(linewidth=1.0, zorder=Z_POLITICAL)
-            _a.drawcoastlines(zorder=Z_POLITICAL)
-
+                                       '#EEEEEE'))
+            _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
+            coasts = cfeature.NaturalEarthFeature('physical', 'coastline',
+                                                  '10m',
+                                                  edgecolor='black',
+                                                  facecolor='none')
+            _a.add_feature(coasts, lw=1.0, zorder=Z_POLITICAL)
+            _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
+            _a.add_feature(cfeature.OCEAN, facecolor=(0.4471, 0.6235, 0.8117),
+                           zorder=Z_CF)
+            _a.add_feature(cfeature.LAKES, facecolor=(0.4471, 0.6235, 0.8117),
+                           zorder=Z_CF)
             if 'nostates' not in kwargs:
-                _a.drawstates(linewidth=1.5, zorder=Z_OVERLAY,
-                              color=kwargs.get('statecolor', 'k'))
+                states = load_pickle_geo('us_states.pickle')
+                _a.add_geometries([val['geom'] for val in states.itervalues()],
+                                  crs=ccrs.PlateCarree(), lw=1.0,
+                                  edgecolor='k', facecolor='None',
+                                  zorder=Z_POLITICAL)
 
         if not kwargs.get('nologo'):
             self.iemlogo()
@@ -718,8 +476,6 @@ class MapPlot(object):
                                        ) % (
                     kwargs.get('caption', 'Iowa Environmental Mesonet'),
                     datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
-
-        self.map = self.maps[0]
 
     def close(self):
         ''' Close the figure in the case of batch processing '''
@@ -792,7 +548,9 @@ class MapPlot(object):
 
         mask = np.zeros(self.fig.canvas.get_width_height(), bool)
         for stdata in data:
-            (x, y) = self.map(stdata['lon'], stdata['lat'])
+            (x, y) = self.ax.projection.transform_point(stdata['lon'],
+                                                        stdata['lat'],
+                                                        ccrs.Geodetic())
             (imgx, imgy) = self.ax.transData.transform([x, y])
             imgx = int(imgx)
             imgy = int(imgy)
@@ -888,7 +646,6 @@ class MapPlot(object):
         figheight = bbox.height * self.fig.dpi
         if self.textmask is None:
             self.textmask = np.zeros((int(figwidth), int(figheight)), bool)
-        thismap = self.map
         thisax = self.ax
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(0.5, 0.5, "ABCDEFGHIJ", transform=thisax.transAxes,
@@ -896,7 +653,8 @@ class MapPlot(object):
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.
         ypixels = bbox.height
-        for o, a, v, m, c, l in zip(lons, lats, vals, valmask, color, labels):
+        for o, a, v, m, c, label in zip(lons, lats, vals, valmask,
+                                        color, labels):
             if not m:
                 continue
 
@@ -905,7 +663,7 @@ class MapPlot(object):
             max_mystr_len = max([len(s) for s in mystr.split("\n")])
             mystr_lines = len(mystr.split("\n"))
             # compute the pixel coordinate of this data point
-            (x, y) = thismap(o, a)
+            (x, y) = thisax.projection.transform_point(o, a, ccrs.Geodetic())
             (imgx, imgy) = thisax.transData.transform([x, y])
             imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
             if imgx0 < axx0:
@@ -949,10 +707,10 @@ class MapPlot(object):
                        ) % (repr(mystr), imgx, figwidth, imgy, figheight,
                             imgx0, imgx1, imgy0, imgy1, _cnt))
             self.textmask[int(imgx0):int(imgx1), int(imgy0):int(imgy1)] = True
-            t0 = thisax.text(x, y, mystr, color=c,
+            t0 = thisax.text(o, a, mystr, color=c,
                              size=textsize, zorder=Z_OVERLAY+2,
                              va='center' if not showmarker else 'bottom',
-                             ha=ha)
+                             ha=ha, transform=ccrs.PlateCarree())
             bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
             if self.debug:
                 rec = plt.Rectangle([bbox.x0, bbox.y0],
@@ -960,14 +718,15 @@ class MapPlot(object):
                                     facecolor='None', edgecolor='k')
                 self.fig.patches.append(rec)
             if showmarker:
-                thisax.scatter(x, y, marker='+', zorder=Z_OVERLAY+2)
+                thisax.scatter(o, a, marker='+', zorder=Z_OVERLAY+2,
+                               color='k', transform=ccrs.PlateCarree())
             t0.set_clip_on(True)
             t0.set_path_effects([PathEffects.Stroke(linewidth=3,
                                                     foreground=outlinecolor),
                                  PathEffects.Normal()])
 
-            if l and l != '':
-                thisax.annotate("%s" % (l, ), xy=(x, y), ha='center',
+            if label and label != '':
+                thisax.annotate("%s" % (label, ), xy=(x, y), ha='center',
                                 va='top',
                                 xytext=(0, 0 - textsize/2),
                                 color=labelcolor,
@@ -989,8 +748,8 @@ class MapPlot(object):
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         colors = cmap(norm(vals))
-        (x, y) = self.map(lons, lats)
-        self.ax.scatter(x, y, c=colors, edgecolors=colors)
+        self.ax.scatter(lons, lats, c=colors, edgecolors=colors,
+                        transform=ccrs.PlateCarree())
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
@@ -999,9 +758,9 @@ class MapPlot(object):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        x, y = self.map(lons, lats)
-        self.map.hexbin(x, y, C=vals, norm=norm,
-                        cmap=cmap, zorder=Z_FILL)
+        self.ax.hexbin(lons, lats, C=vals, norm=norm,
+                       cmap=cmap, zorder=Z_FILL,
+                       transform=ccrs.PlateCarree())
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
@@ -1022,8 +781,9 @@ class MapPlot(object):
             lat1d = np.append(lat1d, lat1d[-1] + (lat1d[-1] - lat1d[-2]))
             lons, lats = np.meshgrid(lon1d, lat1d)
 
-        res = self.map.pcolormesh(lons, lats, vals, norm=norm,
-                                  cmap=cmap, zorder=Z_FILL, latlon=True)
+        res = self.ax.pcolormesh(lons, lats, vals, norm=norm,
+                                 cmap=cmap, zorder=Z_FILL,
+                                 transform=ccrs.PlateCarree())
 
         if kwargs.get("clip_on", True):
             self.draw_mask()
@@ -1037,14 +797,14 @@ class MapPlot(object):
         return res
 
     def draw_mask(self):
-        ''' Draw the mask, when appropriate '''
+        """Draw the mask, when appropriate"""
         # can't mask what we don't know
         if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo'):
             return
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
-            mask_outside_geom(self.map, self.ax, s[self.state]['geom'])
+            mask_outside_geom(self.ax, s[self.state]['geom'])
             return
         elif self.sector == 'iowawfo':
             s = load_pickle_geo('iowawfo.pickle')
@@ -1053,8 +813,9 @@ class MapPlot(object):
         else:
             ccw = load_bounds('%s_ccw' % (self.sector,))
         # in map coords
-        (x, y) = self.map(ccw[:, 0], ccw[:, 1])
-        mask_outside_polygon(zip(x, y), ax=self.ax)
+        points = self.ax.projection.transform_points(ccrs.Geodetic(),
+                                                     ccw[:, 0], ccw[:, 1])
+        mask_outside_polygon(points[:, :2], ax=self.ax)
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """ Contourf
@@ -1071,41 +832,36 @@ class MapPlot(object):
             # Careful here as a rotated projection may have maxes not in ul
             xbnds = self.ax.get_xlim()
             ybnds = self.ax.get_ylim()
-            ll = self.map(xbnds[0], ybnds[0], inverse=True)
-            ul = self.map(xbnds[0], ybnds[1], inverse=True)
-            ur = self.map(xbnds[1], ybnds[1], inverse=True)
-            lr = self.map(xbnds[1], ybnds[0], inverse=True)
-            maxy = max(ul[1], ur[1])
-            miny = min(ll[1], ul[1])
-            maxx = max(lr[0], ur[0])
-            minx = min(ll[0], ul[0])
-            xi = np.linspace(minx, maxx, 100)
-            yi = np.linspace(miny, maxy, 100)
+            ll = ccrs.Geodetic().transform_point(xbnds[0], ybnds[0],
+                                                 self.ax.projection)
+            ul = ccrs.Geodetic().transform_point(xbnds[0], ybnds[1],
+                                                 self.ax.projection)
+            ur = ccrs.Geodetic().transform_point(xbnds[1], ybnds[1],
+                                                 self.ax.projection)
+            lr = ccrs.Geodetic().transform_point(xbnds[1], ybnds[0],
+                                                 self.ax.projection)
+            xi = np.linspace(min(ll[0], ul[0]), max(lr[0], ur[0]), 100)
+            yi = np.linspace(min(ll[1], ul[1]), max(ul[1], ur[1]), 100)
             xi, yi = np.meshgrid(xi, yi)
-            # vals = griddata( zip(lons, lats), vals, (xi, yi) , 'cubic')
-            # rbfi = Rbf(lons, lats, vals, function='cubic')
             nn = NearestNDInterpolator((lons, lats), vals)
             vals = nn(xi, yi)
-            # vals = rbfi(xi, yi)
             lons = xi
             lats = yi
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
 
-        cmap = kwargs.get('cmap', maue())
-        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-
-        x, y = self.map(lons, lats)
-        from scipy.signal import convolve2d
         window = np.ones((6, 6))
         vals = convolve2d(vals, window / window.sum(), mode='same',
                           boundary='symm')
+        cmap = kwargs.get('cmap', maue())
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         # vals = maskoceans(lons, lats, vals, resolution='h')
-        self.map.contourf(x, y, vals, clevs,
-                          cmap=cmap, norm=norm, zorder=Z_FILL,
-                          extend='both')
-        csl = self.map.contour(x, y, vals, clevs, colors='w',
-                               zorder=Z_FILL_LABEL)
+        self.ax.contourf(lons, lats, vals, clevs,
+                         cmap=cmap, norm=norm, zorder=Z_FILL,
+                         extend='both', transform=ccrs.PlateCarree())
+        csl = self.ax.contour(lons, lats, vals, clevs, colors='w',
+                              zorder=Z_FILL_LABEL,
+                              transform=ccrs.PlateCarree())
         if kwargs.get('ilabel', False):
             self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'), colors='k',
                            fontsize=14, zorder=Z_FILL_LABEL)
@@ -1157,8 +913,6 @@ class MapPlot(object):
             filter_func = state_filter
         elif self.sector == 'cwa':
             filter_func = cwa_filter
-        patches = []
-        patches2 = []
         ilabel = kwargs.get('ilabel', False)
         plotmissing = kwargs.get('plotmissing', True)
         for ugc in ugcs:
@@ -1182,30 +936,25 @@ class MapPlot(object):
             for polyi, polygon in enumerate(ugcdict.get('geom', [])):
                 if polygon.exterior is None:
                     continue
-                a = np.asarray(polygon.exterior)
-                (x, y) = self.map(a[:, 0], a[:, 1])
-                a = zip(x, y)
-                p = Polygon(a, fc=c, ec='k', zorder=z, lw=.1)
+                arr = np.asarray(polygon.exterior)
+                points = self.ax.projection.transform_points(ccrs.Geodetic(),
+                                                             arr[:, 0],
+                                                             arr[:, 1])
+                p = Polygon(points[:, :2], fc=c, ec='k', zorder=z, lw=.1)
                 if z == Z_OVERLAY:
-                    patches.append(p)
+                    self.ax.add_patch(p)
                 if z == Z_OVERLAY2:
-                    patches2.append(p)
+                    self.ax.add_patch(p)
                 if polyi == 0 and ilabel:
                     mx = polygon.centroid.x
                     my = polygon.centroid.y
-                    (x, y) = self.map(mx, my)
-                    txt = self.ax.text(x, y, '%s' % (val,), zorder=100,
-                                       ha='center', va='center')
+                    txt = self.ax.text(mx, my, '%s' % (val,), zorder=100,
+                                       ha='center', va='center',
+                                       transform=ccrs.PlateCarree())
                     txt.set_path_effects([
                             PathEffects.withStroke(linewidth=2,
                                                    foreground="w")])
 
-        if len(patches) > 0:
-            self.ax.add_collection(
-                        PatchCollection(patches, match_original=True))
-        if len(patches2) > 0:
-            self.ax.add_collection(
-                        PatchCollection(patches2, match_original=True))
         if 'cmap' in kwargs:
             del kwargs['cmap']
         self.draw_colorbar(bins, cmap, norm, **kwargs)
@@ -1250,10 +999,7 @@ class MapPlot(object):
           outlinecolor (str): color to outline the text with
         """
         df = load_pickle_pd("pd_cities.pickle")
-        south = self.map.llcrnrlat
-        north = self.map.urcrnrlat
-        west = self.map.llcrnrlon
-        east = self.map.urcrnrlon
+        (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
         if minarea is None:
             minarea = 500. if self.sector in ['nws', 'conus'] else 10.
         df2 = df[((df['lat'] > south) & (df['lat'] < north) &
@@ -1272,14 +1018,13 @@ class MapPlot(object):
           color (color,optional): line color to use
         """
         ugcdict = load_pickle_geo("ugcs_county.pickle")
+        polys = []
         for ugc in ugcdict:
             for polygon in ugcdict[ugc].get('geom', []):
-                a = np.asarray(polygon.exterior)
-                (x, y) = self.map(a[:, 0], a[:, 1])
-                a = zip(x, y)
-                poly = Polygon(a, fill=False, ec=color, lw=.4,
+                polys.append(polygon)
+        self.ax.add_geometries(polys, crs=ccrs.PlateCarree(),
+                               facecolor='None', edgecolor=color, lw=.4,
                                zorder=Z_POLITICAL)
-                self.ax.add_patch(poly)
 
     def iemlogo(self):
         """ Draw a logo """

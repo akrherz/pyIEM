@@ -1,5 +1,15 @@
 sudo: required
+dist: trusty
+cache:
+  timeout: 1000
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/miniconda
 addons:
+  postgresql: "9.5"
+  apt:
+    packages:
+      - postgresql-9.5-postgis-2.3
   hosts:
     - iemdb
 virtualenv:
@@ -10,14 +20,24 @@ python:
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa -y
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python-pyproj python-mpltoolkits.basemap python-numpy python-scipy python-psycopg2
+  - sudo apt-get install -qq python-pyproj python-numpy python-scipy python-psycopg2
 install:
+  # copied^Hborrowed from cartopy
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - if [[ ! -f $HOME/miniconda/bin/python ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+      bash miniconda.sh -f -b -p $HOME/miniconda;
+      conda config --set always_yes yes --set changeps1 no;
+      conda create -n test-environment python=2.7;
+    fi
+  - conda update conda
+  - source activate test-environment
+  - conda config --add channels conda-forge
+  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas gdata cartopy"
+  - PACKAGES="$PACKAGES psycopg2"
+  - conda install --quiet $PACKAGES
   - "pip install --upgrade pip"
   - "pip install --upgrade matplotlib"
-  - "pip install Shapely"
-  - "pip install coveralls"
-  - "pip install pandas"
-  - "pip install gdata"
   - "pip install oauth2client"
   - "pip install apiclient"
   - "pip install urllib3"
@@ -26,7 +46,6 @@ install:
   - "pip install python-metar"
   - "pip install git+https://github.com/smartsheet-platform/smartsheet-python-sdk"
   - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"
-#  - "pip install --allow-external basemap -r requirements.txt"
 before_script:
   - psql -c 'create database postgis;' -U postgres
   - psql -c 'create user nobody;' -U postgres
