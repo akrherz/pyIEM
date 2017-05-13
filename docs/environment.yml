@@ -11,12 +11,13 @@ dependencies:
   - urllib3
   - psycopg2
   - pyproj
-  - python-metar
-  - windrose
   - cartopy
   - pip:
     - matplotlib
     - apiclient
     - oauth2client
     - google-api-python-client
-    - Pillow    
+    - Pillow
+    - python-metar 
+    - git+https://github.com/smartsheet-platform/smartsheet-python-sdk
+    - git+https://github.com/akrherz/windrose.git@darylchanges
