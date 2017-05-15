@@ -21,3 +21,4 @@ dependencies:
     - python-metar 
     - git+https://github.com/smartsheet-platform/smartsheet-python-sdk
     - git+https://github.com/akrherz/windrose.git@darylchanges
+    - pyiem
