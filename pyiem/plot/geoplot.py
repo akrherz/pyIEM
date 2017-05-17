@@ -640,8 +640,8 @@ class MapPlot(object):
             self.fig.dpi_scale_trans.inverted())
         axx0 = axbbox.x0 * self.fig.dpi
         axx1 = (axbbox.x0 + axbbox.width) * self.fig.dpi
-        # axy0 = axbbox.y0 * self.fig.dpi
-        # axy1 = (axbbox.y0 + axbbox.height) * self.fig.dpi
+        axy0 = axbbox.y0 * self.fig.dpi
+        axy1 = (axbbox.y0 + axbbox.height) * self.fig.dpi
         figwidth = bbox.width * self.fig.dpi
         figheight = bbox.height * self.fig.dpi
         if self.textmask is None:
@@ -649,7 +649,7 @@ class MapPlot(object):
         thisax = self.ax
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(0.5, 0.5, "ABCDEFGHIJ", transform=thisax.transAxes,
-                           color='None')
+                           color='None', size=textsize)
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.
         ypixels = bbox.height
@@ -702,9 +702,9 @@ class MapPlot(object):
                 self.fig.patches.append(rec)
             # Useful for debugging this algo
             if self.debug:
-                print(("label: %s imgx: %s/%s imgy: %s/%s "
+                print(("label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
                        "x:%s-%s y:%s-%s _cnt:%s"
-                       ) % (repr(mystr), imgx, figwidth, imgy, figheight,
+                       ) % (repr(mystr), imgx, axx0, axx1, imgy, axy0, axy1,
                             imgx0, imgx1, imgy0, imgy1, _cnt))
             self.textmask[int(imgx0):int(imgx1), int(imgy0):int(imgy1)] = True
             t0 = thisax.text(o, a, mystr, color=c,
@@ -1005,7 +1005,8 @@ class MapPlot(object):
         df2 = df[((df['lat'] > south) & (df['lat'] < north) &
                   (df['lon'] > west) & (df['lon'] < east) &
                   (df['area_km2'] > minarea))]
-        # df2 = df[(df['name'] == 'DES MOINES') & (df['st'] == 'IA')]
+        # debug option to test an individual point on the plot
+        # df2 = df[(df['name'] == 'Sioux City')]
         self.plot_values(df2.lon.values, df2.lat.values, df2.name.values,
                          showmarker=True, labelbuffer=labelbuffer,
                          textsize=textsize, color=color,
