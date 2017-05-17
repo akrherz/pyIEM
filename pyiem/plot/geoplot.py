@@ -385,7 +385,7 @@ class MapPlot(object):
             self.ax = plt.axes(
                 [0.01, 0.05, 0.928, 0.85],
                 facecolor=(0.4471, 0.6235, 0.8117),
-                projection=kwargs['projection'],
+                projection=kwargs.get('projection', ccrs.Mercator()),
                 aspect='auto')
             self.ax.set_extent([kwargs['west'], kwargs['east'],
                                 kwargs['south'], kwargs['north']])
