@@ -105,21 +105,33 @@ class TestPlot(unittest.TestCase):
 
     def test_colorbar(self):
         """Run tests against the colorbar algorithm"""
-        m = plot.MapPlot(sector='iowa')
+        mp = plot.MapPlot(sector='iowa', debug=True)
         cmap = plot.maue()
         clevs = range(0, 101, 10)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        m.draw_colorbar(clevs, cmap, norm)
-        m.postprocess(filename='/tmp/test_plot_colorbar1.png')
-        m.close()
+        mp.drawcities()
+        mp.draw_colorbar(clevs, cmap, norm)
+        mp.postprocess(filename='/tmp/test_plot_colorbar1.png')
+        mp.close()
 
-        m = plot.MapPlot(sector='iowa')
+        mp = plot.MapPlot(sector='iowa')
+        cmap = plot.maue()
+        clevs = range(0, 101, 10)
+        clevlabels = ["One", "Three", "Blahh", "Longest", "Five",
+                      "Six", "Ten", "Fourty", 100000, "Hi\nHo", 100]
+        norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        mp.draw_colorbar(clevs, cmap, norm, clevlabels=clevlabels)
+        mp.postprocess(filename='/tmp/test_plot_colorbar2.png')
+        mp.close()
+
+        mp = plot.MapPlot(sector='iowa')
         cmap = plot.maue()
         clevs = range(0, 101, 1)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        m.draw_colorbar(clevs, cmap, norm, clevstride=10)
-        m.postprocess(filename='/tmp/test_plot_colorbar2.png')
-        m.close()
+        mp.draw_colorbar(clevs, cmap, norm, clevstride=10,
+                         title="Erosion $kg/m^2$")
+        mp.postprocess(filename='/tmp/test_plot_colorbar3.png')
+        mp.close()
 
     def test_drawugcs(self):
         """test drawing of UGCS"""

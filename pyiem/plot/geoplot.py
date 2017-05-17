@@ -61,6 +61,8 @@ cartopy.config['data_dir'] = '/tmp/'
 [Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
 DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
+MAIN_AX_BOUNDS = [0.01, 0.05, 0.898, 0.85]
+CAX_BOUNDS = [0.917, 0.1, 0.02, 0.8]
 
 
 def centered_bins(absmax, on=0, bins=9):
@@ -326,14 +328,14 @@ class MapPlot(object):
         self.cwa = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
-        self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
+        self.cax = plt.axes(CAX_BOUNDS, frameon=False,
                             yticks=[], xticks=[])
         self.axes = []
 
         if self.sector == 'iowa':
             self.state = 'IA'
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.IA_WEST,
@@ -345,7 +347,7 @@ class MapPlot(object):
         elif self.sector == 'cwa':
             self.cwa = kwargs.get('cwa', 'DMX')
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.wfo_bounds[self.cwa][0],
@@ -356,7 +358,7 @@ class MapPlot(object):
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.state_bounds[self.state][0],
@@ -366,7 +368,7 @@ class MapPlot(object):
             self.axes.append(self.ax)
         elif self.sector == 'midwest':
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([reference.MW_WEST,
@@ -376,14 +378,14 @@ class MapPlot(object):
             self.axes.append(self.ax)
         elif self.sector == 'iowawfo':
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
                 aspect='auto')
             self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
             self.axes.append(self.ax)
         elif self.sector == 'custom':
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 facecolor=(0.4471, 0.6235, 0.8117),
                 projection=kwargs.get('projection', ccrs.Mercator()),
                 aspect='auto')
@@ -393,7 +395,7 @@ class MapPlot(object):
 
         elif self.sector == 'north_america':
             self.ax = plt.axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.LambertConformal(central_longitude=-107.0,
                                                  central_latitude=50.0),
                 aspect='auto')
@@ -402,7 +404,7 @@ class MapPlot(object):
 
         elif self.sector in ['conus', 'nws']:
             self.ax = self.fig.add_axes(
-                [0.01, 0.05, 0.928, 0.85],
+                MAIN_AX_BOUNDS,
                 projection=ccrs.PlateCarree(),
                 aspect='auto')
             # -124.848974, 24.396308) - (-66.885444, 49.384358
@@ -488,6 +490,8 @@ class MapPlot(object):
           clevs (list): The levels used in the classification
           cmap (matplotlib.colormap): The colormap
           norm (normalize): The value normalizer
+          title (str,optional): Place a label on the side, adjusts the plot
+            accordingly to allow this text to fit, no multiline please!
         """
         if self.cax is None:
             return
@@ -501,7 +505,7 @@ class MapPlot(object):
                                       norm=norm,
                                       boundaries=blevels,
                                       extend='both',
-                                      ticks=None,
+                                      ticks=[],
                                       spacing='uniform',
                                       orientation='vertical')
         clevstride = int(kwargs.get('clevstride', 1))
@@ -509,19 +513,26 @@ class MapPlot(object):
             if i % clevstride != 0:
                 continue
             y = float(i) / (len(clevs) - 1)
-            # y2 = float(i+1) / (len(clevs) - 1)
-            # dy = (y2 - y) / 2
-            fmt = '%s' if isinstance(lbl, str) else '%g'
-            t = cb2.ax.text(0.5, y, fmt % (lbl,), va='center', ha='center')
-            t.set_path_effects([PathEffects.Stroke(linewidth=3,
-                                                   foreground='white'),
-                                PathEffects.Normal()])
+            text = ('%s' if isinstance(lbl, str) else '%g') % (lbl, )
+            fontsize = 16 if len(text) < 5 else 12
+            rotation = 0 if len(text) < 6 else 45
+            cb2.ax.text(2.4, y, text, va='center', ha='center',
+                        fontsize=fontsize, rotation=rotation)
         # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
 
         if 'units' in kwargs:
-            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
+            self.fig.text(0.99, 0.03, "data units :: %s" % (kwargs['units'],),
                           ha='right')
+
+        title = kwargs.get('title')
+        if title:
+            self.ax.set_position([MAIN_AX_BOUNDS[0],
+                                  MAIN_AX_BOUNDS[1],
+                                  MAIN_AX_BOUNDS[2] - 0.03,
+                                  MAIN_AX_BOUNDS[3]])
+            cb2.ax.text(-0.05, 0.5, title, rotation=90, fontsize=16,
+                        transform=cb2.ax.transAxes, ha='right', va='center')
 
     def plot_station(self, data):
         """Plot values on a map in a station plot like manner
