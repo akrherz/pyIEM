@@ -104,6 +104,8 @@ def get_autoplot_context(fdict, cfg):
                 maxval = datetime.datetime.strptime(maxval,
                                                     '%Y/%m/%d %H%M')
             if value is not None:
+                if value.find(" ") == -1:
+                    value += " 0000"
                 value = datetime.datetime.strptime(value, '%Y-%m-%d %H%M')
         elif typ == 'date':
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
