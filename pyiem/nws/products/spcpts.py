@@ -400,7 +400,7 @@ class SPCPTS(TextProduct):
             issue = issue.replace(day=day1, hour=hour1, minute=min1)
         if day2 < self.valid.day and day2 == 1:
             expire = self.valid + datetime.timedelta(days=25)
-            expire = expire.replace(day=day2, hour=hour1, minute=min1)
+            expire = expire.replace(day=day2, hour=hour2, minute=min2)
         self.issue = issue
         self.expire = expire
 

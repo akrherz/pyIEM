@@ -9,6 +9,12 @@ import psycopg2.extras
 from pyiem.nws.products.spcpts import parser, str2multipolygon
 
 
+def utc(year, month, day, hour, minute):
+    """Helper"""
+    dt = datetime.datetime(year, month, day, hour, minute)
+    return dt.replace(tzinfo=pytz.utc)
+
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
@@ -31,6 +37,13 @@ class TestPTS(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_170518_bad_dbtime(self):
+        """This went into the database with an incorrect expiration time"""
+        spc = parser(get_file('PTSDY1_baddbtime.txt'))
+        answer = utc(2017, 5, 1, 12, 0)
+        for _, outlook in spc.outlook_collections.iteritems():
+            self.assertEqual(outlook.expire, answer)
 
     def test_170428_large(self):
         """PTSDY1 has a large 10 tor"""
@@ -238,15 +251,9 @@ class TestPTS(unittest.TestCase):
         """ check spcpts parsing """
         spc = parser(get_file('SPCPTS.txt'))
         # spc.draw_outlooks()
-        self.assertEqual(spc.valid,
-                         datetime.datetime(2013, 7, 19, 19, 52,
-                                           tzinfo=pytz.timezone("UTC")))
-        self.assertEqual(spc.issue,
-                         datetime.datetime(2013, 7, 19, 20, 0,
-                                           tzinfo=pytz.timezone("UTC")))
-        self.assertEqual(spc.expire,
-                         datetime.datetime(2013, 7, 20, 12, 0,
-                                           tzinfo=pytz.timezone("UTC")))
+        self.assertEqual(spc.valid, utc(2013, 7, 19, 19, 52))
+        self.assertEqual(spc.issue, utc(2013, 7, 19, 20, 0))
+        self.assertEqual(spc.expire, utc(2013, 7, 20, 12, 0))
 
         spc.sql(self.txn)
         spc.compute_wfos(self.txn)
