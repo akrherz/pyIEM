@@ -775,10 +775,6 @@ class MapPlot(object):
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
-        if 'units' in kwargs:
-            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
-                          ha='right')
-
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
         cmap = kwargs.get('cmap', maue())
@@ -800,11 +796,6 @@ class MapPlot(object):
             self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
-
-        if 'units' in kwargs:
-            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
-                          ha='right')
-
         return res
 
     def draw_mask(self):
@@ -879,10 +870,6 @@ class MapPlot(object):
         self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
-
-        if 'units' in kwargs:
-            self.fig.text(0.99, 0.03, "map units :: %s" % (kwargs['units'],),
-                          ha='right')
 
     def fill_climdiv(self, data, **kwargs):
         """Fill climate divisions using provided data dictionary
