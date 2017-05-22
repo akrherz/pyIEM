@@ -28,6 +28,27 @@ THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
                    'CRIT', 'EXTM']
 
 
+# def draw_polys(polys, segments):
+#    """Debug the polys"""
+#    import matplotlib.pyplot as plt
+#    for i, poly in enumerate(polys):
+#        if poly.area == CONUS['poly'].area:
+#            continue
+#        (fig, ax) = plt.subplots(1, 1)
+#        points = np.asarray(poly.exterior.xy)
+#        ax.set_xlim(np.min(points[0]) - 0.5, np.max(points[0]) + 0.5)
+#        ax.set_ylim(np.min(points[1]) - 0.5, np.max(points[1]) + 0.5)
+#        ax.plot(points[0], points[1], lw=2., c='r', zorder=2)
+#        ax.scatter(CONUS['line'][:, 0], CONUS['line'][:, 1], zorder=3,
+#                   color='k', s=20)
+#        for segment in segments:
+#            segment = np.array(segment)
+#            ax.scatter(segment[:, 0], segment[:, 1], zorder=4, s=20,
+#                       color='b')
+#        fig.savefig("/tmp/spcpts_drawpolys_%s.png" % (i, ))
+#        plt.close()
+
+
 def get_day(text):
     """Figure out which day this is for"""
     search = DAYRE.search(text)
@@ -126,8 +147,11 @@ def str2multipolygon(s):
         # Attempt to 'clean' this string against the CONUS Polygon
         ls = LineString(segment)
         if ls.is_valid:
+            print('     linestring is valid!')
             newls = ls.intersection(CONUS['poly'])
             if newls.is_valid:
+                print(("     newls is valid and has geom_type: %s"
+                       ) % (newls.geom_type))
                 if newls.geom_type in ['MultiLineString',
                                        'GeometryCollection']:
                     print(('     intersection with conuspoly found %s segments'
@@ -138,8 +162,7 @@ def str2multipolygon(s):
                             newls2 = geom
                             maxlength = geom.length
                     newls = newls2
-                (x, y) = newls.xy
-                segment = zip(x, y)
+                segment = zip(*newls.xy)
             else:
                 print('     Intersection landed here? %s' % (newls.is_valid,))
         else:
@@ -192,9 +215,15 @@ def str2multipolygon(s):
                 elif idx1 > idx2:
                     print('     CASE 2 idx1:%s idx2:%s' % (idx1, idx2))
                     tmpline = np.concatenate([line, pie[idx2:idx1]])
-                    polys.append(Polygon(tmpline))
-                    print(('     + adding polygon index: %s area: %.2f'
-                           ) % (len(polys) - 1, polys[-1].area))
+                    newpoly = Polygon(tmpline)
+                    if not newpoly.is_valid:
+                        print("    newpolygon is not valid, buffer(0) called ")
+                        newpoly = newpoly.buffer(0)
+                    polys.append(newpoly)
+                    print(("     + adding polygon index: %s area: %.2f "
+                           "isvalid: %s"
+                           ) % (len(polys) - 1, polys[-1].area,
+                                polys[-1].is_valid))
                 else:
                     raise Exception('this should not happen, idx1 == idx2!')
                 print("     breaking out of q loop")
@@ -206,15 +235,15 @@ def str2multipolygon(s):
     res = []
     print(('  Resulted in len(polys): %s, now quality controlling'
            ) % (len(polys),))
-    for i, p in enumerate(polys):
-        if not p.is_valid:
+    for i, poly in enumerate(polys):
+        if not poly.is_valid:
             print('     ERROR: polygon %s is invalid!' % (i,))
             continue
-        if p.area == CONUS['poly'].area:
+        if poly.area == CONUS['poly'].area:
             print('     polygon %s is just CONUS, skipping' % (i,))
             continue
-        print('     polygon: %s has area: %s' % (i, p.area))
-        res.append(p)
+        print('     polygon: %s has area: %s' % (i, poly.area))
+        res.append(poly)
     if len(res) == 0:
         raise Exception(("Processed no geometries, this is a bug!\n"
                          "  s is %s\n"

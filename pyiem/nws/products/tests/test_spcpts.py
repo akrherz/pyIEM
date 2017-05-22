@@ -38,6 +38,13 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170522_nogeom(self):
+        """See why this has an error with no-geom reported"""
+        spc = parser(get_file('PTSDY1_nogeom2.txt'))
+        # spc.draw_outlooks()
+        outlook = spc.get_outlook('TORNADO', '0.02', 1)
+        self.assertAlmostEqual(outlook.geometry.area, 2.90, 2)
+
     def test_170518_bad_dbtime(self):
         """This went into the database with an incorrect expiration time"""
         spc = parser(get_file('PTSDY1_baddbtime.txt'))
