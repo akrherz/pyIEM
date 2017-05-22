@@ -769,11 +769,13 @@ class MapPlot(object):
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        self.ax.hexbin(lons, lats, C=vals, norm=norm,
-                       cmap=cmap, zorder=Z_FILL,
-                       transform=ccrs.PlateCarree())
+        points = self.ax.projection.transform_points(ccrs.PlateCarree(),
+                                                     lons, lats)
+        _hex = self.ax.hexbin(points[:, 0], points[:, 1], C=vals, norm=norm,
+                              cmap=cmap, zorder=Z_FILL)
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        return _hex
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
