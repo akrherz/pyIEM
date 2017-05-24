@@ -33,7 +33,7 @@ def check_dup_ps(segment):
     for key in combos:
         if len(combos[key]) == 1:
             continue
-        for one, two in itertools.permutations(combos[key]):
+        for one, two in itertools.permutations(combos[key], 2):
             if (one[1] is not None and two[0] is not None
                     and one[1] >= two[0]):
                 return True
