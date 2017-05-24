@@ -73,11 +73,6 @@ class TestProducts(unittest.TestCase):
 
     def test_170411_suspect_vtec(self):
         """MWWSJU contains VTEC that NWS HQ says should not be possible"""
-        prod = vtecparser(get_file('MWWSJU.txt'))
-        prod.sql(self.txn)
-        a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
-        self.assertTrue(any(a))
-
         prod = vtecparser(get_file('MWWLWX_twovtec.txt'))
         prod.sql(self.txn)
         a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]

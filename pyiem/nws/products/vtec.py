@@ -23,19 +23,22 @@ def check_dup_ps(segment):
     """
     combos = {}
     for thisvtec in segment.vtec:
-        if thisvtec.action == 'UPG':
+        if thisvtec.begints is None or thisvtec.endts is None:
             # The logic here is too difficult for now, so we ignore
             continue
         key = "%s.%s" % (thisvtec.phenomena, thisvtec.significance)
         val = combos.setdefault(key, [])
-        val.append([thisvtec.begints, thisvtec.endts])
+        # we can't use vtec.endts in this situation
+        endts = (segment.tp.valid
+                 if thisvtec.status in ['UPG', 'CAN'] else thisvtec.endts)
+        val.append([thisvtec.begints, endts])
 
     for key in combos:
         if len(combos[key]) == 1:
             continue
         for one, two in itertools.permutations(combos[key], 2):
-            if (one[1] is not None and two[0] is not None
-                    and one[1] >= two[0]):
+            # We check for overlap
+            if one[0] >= two[0] and one[0] < two[1]:
                 return True
     return False
 
