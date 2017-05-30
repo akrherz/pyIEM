@@ -42,7 +42,7 @@ class TestDatatypes(unittest.TestCase):
         """ Pressure convert from MB to IN to HPA"""
         hpa = datatypes.pressure(850.0, 'HPA')
         self.assertEquals(850.0, hpa.value('MB'))
-        self.assertAlmostEquals(25.10, hpa.value('IN'), 2)
+        self.assertAlmostEquals(25.10, hpa.value('in'), 2)
         hpa = datatypes.pressure(85000.0, 'PA')
         self.assertAlmostEquals(25.10, hpa.value('IN'), 2)
 
@@ -50,7 +50,7 @@ class TestDatatypes(unittest.TestCase):
         """ Speed convert from KT to MPS to KMH to MPH """
         mph = datatypes.speed(58.0, 'MPH')
         self.assertAlmostEquals(50.4, mph.value('KT'), 1)
-        self.assertAlmostEquals(25.93, mph.value('MPS'), 2)
+        self.assertAlmostEquals(25.93, mph.value('mps'), 2)
         self.assertAlmostEquals(93.33, mph.value('KMH'), 2)
 
     def test_precipitation_conv(self):
@@ -61,18 +61,18 @@ class TestDatatypes(unittest.TestCase):
 
     def test_distance_conv(self):
         """ Speed distance from M to MI to FT to SM to KM """
-        mi = datatypes.distance(1.0, 'MI')
+        mi = datatypes.distance(1.0, 'mi')
         self.assertAlmostEquals(1609.344, mi.value('M'), 1)
         self.assertAlmostEquals(5280.0, mi.value('FT'), 1)
         self.assertAlmostEquals(1.0, mi.value('SM'), 1)
         self.assertAlmostEquals(1.61, mi.value('KM'), 2)
         self.assertAlmostEquals(63360.00, mi.value('IN'), 2)
-        self.assertAlmostEquals(1609344.00, mi.value('MM'), 2)
+        self.assertAlmostEquals(1609344.00, mi.value('mm'), 2)
         self.assertAlmostEquals(160934.40, mi.value('CM'), 2)
 
     def test_direction_conv(self):
         """ Direction, which is DEG to RAD """
         mi = datatypes.direction(360, 'DEG')
-        self.assertAlmostEquals(6.2831853, mi.value('RAD'), 4)
+        self.assertAlmostEquals(6.2831853, mi.value('rad'), 4)
         mi = datatypes.direction(3.14159, 'RAD')
         self.assertAlmostEquals(180.0, mi.value('DEG'), 1)

@@ -50,10 +50,11 @@ class distance(basetype):
 
     def value(self, units):
         """ Convert to a value in the given units """
-        if units.upper() not in distance.known_units:
+        units = units.upper()
+        if units not in distance.known_units:
             raise UnitsError("unrecognized distance unit: %s known: %s" % (
                                 units, distance.known_units))
-        if units.upper() == self._units:
+        if units == self._units:
             return self._value
 
         # MKS
@@ -93,10 +94,11 @@ class precipitation(basetype):
 
     def value(self, units):
         """ Convert to a value in the given units """
-        if units.upper() not in precipitation.known_units:
+        units = units.upper()
+        if units not in precipitation.known_units:
             raise UnitsError(("unrecognized precipitation unit: %s known: %s"
                               ) % (units, precipitation.known_units))
-        if units.upper() == self._units:
+        if units == self._units:
             return self._value
 
         # MKS
@@ -124,10 +126,11 @@ class speed(basetype):
         """ Convert to a value in the given units """
         if units is None:
             units = self._units
-        if units.upper() not in speed.known_units:
+        units = units.upper()
+        if units not in speed.known_units:
             raise UnitsError("unrecognized speed unit: %s known: %s" % (
                                 units, speed.known_units))
-        if units.upper() == self._units:
+        if units == self._units:
             return self._value
         # MKS
         if self._units == "KMH":
@@ -213,10 +216,11 @@ class temperature(basetype):
 
     def value(self, units):
         """ Convert to a value in the given units """
-        if units.upper() not in temperature.known_units:
+        units = units.upper()
+        if units not in temperature.known_units:
             raise UnitsError("unrecognized temperature unit: %s known: %s" % (
                                 units, temperature.known_units))
-        if units.upper() == self._units:
+        if units == self._units:
             return self._value
 
         # Convert to Celsius first
