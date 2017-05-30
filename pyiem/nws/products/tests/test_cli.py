@@ -12,8 +12,15 @@ def get_file(name):
     return open(fn).read()
 
 
-class TestProducts(unittest.TestCase):
+class TestCLI(unittest.TestCase):
     """ Tests """
+
+    def test_170530_none(self):
+        """CLILWD errored in production, so we add a test!"""
+        prod = cliparser(get_file('CLILWD.txt'))
+        self.assertEquals(prod.data[0]['data']['temperature_maximum'],
+                          76)
+
     def test_170315_invalid_dup(self):
         """CLIANC incorrectly has two CLIs"""
         prod = cliparser(get_file('CLIANC.txt'))

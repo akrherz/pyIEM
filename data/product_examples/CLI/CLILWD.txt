@@ -1,0 +1,89 @@
+156 
+CDUS43 KDMX 300649 RRA
+CLILWD
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE DES MOINES IA                               
+149 AM CDT TUE MAY 30 2017
+
+................................... 
+
+...THE LAMONI IA CLIMATE SUMMARY FOR MAY 29 2017...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 9999 TO 9999
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         76    356 PM  MM      MM  76      0       82       
+  MINIMUM         55   1159 PM  MM      MM  56     -1       56       
+  AVERAGE         66                        66      0       69      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00                      0.18  -0.18             
+  MONTH TO DATE    3.68                      4.95  -1.27             
+                              DSMCLILWY 000 TTAA00 KDMX 300642
+                                       
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         2     -2        0       
+  MONTH TO DATE  146                       161    -15      170       
+  SINCE MAR 1   1144                      1339   -195     1087       
+  SINCE JUL 1   4861                      6056  -1195     4985       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        1                         3     -2        4       
+  MONTH TO DATE   52                        41     11       30       
+  SINCE MAR 1     65                        48     17       36       
+  SINCE JAN 1     65                        48     17       36       
+..................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    28   HIGHEST WIND DIRECTION     W (290)      
+  HIGHEST GUST SPEED    34   HIGHEST GUST DIRECTION     W (290)      
+  AVERAGE WIND SPEED    12.1                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.1                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    67           600 AM                                     
+ LOWEST     27           200 PM                                     
+ AVERAGE    47                                                       
+
+..........................................................
+
+                                                                     
+THE LAMONI IA CLIMATE NORMALS FOR TODAY
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   76                                        
+ MINIMUM TEMPERATURE (F)   56                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MAY 30 2017...........SUNRISE   548 AM CDT   SUNSET   839 PM CDT   
+MAY 31 2017...........SUNRISE   547 AM CDT   SUNSET   840 PM CDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+$$
+
+SMALL

@@ -1,13 +1,14 @@
 """Parser and object storage of information within NWS CLI Product.
 """
+from __future__ import print_function
 import re
 import datetime
 
 from pyiem.nws.product import TextProduct
 
 HEADLINE_RE = re.compile((r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) "
-                          "CLIMATE SUMMARY FOR\s+"
-                          "([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\."))
+                          r"CLIMATE SUMMARY FOR\s+"
+                          r"([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\."))
 
 REGIMES = [
     "WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST",
@@ -88,21 +89,23 @@ def get_number(s):
             return float(number[0])
         else:
             return int(number[0])
-    print 'get_number() failed for |%s|' % (s,)
+    print('get_number() failed for |%s|' % (s,))
     return None
 
 
-def convert_key(s):
+def convert_key(text):
     """ Convert a key value to something we store """
-    if s == 'YESTERDAY':
+    if text is None:
+        return None
+    if text == 'YESTERDAY':
         return 'today'
-    if s == 'TODAY':
+    if text == 'TODAY':
         return 'today'
-    if s == 'MONTH TO DATE':
+    if text == 'MONTH TO DATE':
         return 'month'
-    if s.startswith('SINCE '):
-        return s.replace('SINCE ', '').replace(' ', "").lower()
-    print 'convert_key() failed for |%s|' % (s,)
+    if text.startswith('SINCE '):
+        return text.replace('SINCE ', '').replace(' ', "").lower()
+    print('convert_key() failed for |%s|' % (text,))
     return 'fail'
 
 
@@ -160,6 +163,8 @@ def parse_precipitation(regime, lines, data):
             continue
         tokens = make_tokens(regime, line)
         key = convert_key(tokens[0])
+        if key is None:
+            continue
 
         data['precip_%s' % (key,)] = get_number(tokens[1])
         data['precip_%s_record' % (key,)] = get_number(tokens[3])
@@ -231,8 +236,8 @@ class CLIProduct(TextProduct):
         # Sometimes, we get products that are not really in CLI format but
         # are RER (record event reports) with a CLI AWIPS ID
         if self.wmo[:2] != 'CD':
-            print 'Product %s skipped due to wrong header' % (
-                                                    self.get_product_id(),)
+            print(('Product %s skipped due to wrong header'
+                   ) % (self.get_product_id(),))
             return
         for section in self.find_sections():
             if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
