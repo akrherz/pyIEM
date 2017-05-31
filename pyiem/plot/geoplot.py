@@ -781,15 +781,14 @@ class MapPlot(object):
         """ pcolormesh wrapper """
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        if lons.shape == vals.shape:
-            # Likely missing an extract row and column to make lons, lats 1
-            # bigger than vals
-            lon1d = lons[0, :]
-            lat1d = lats[:, 0]
-            lon1d = np.append(lon1d, lon1d[-1] + (lon1d[-1] - lon1d[-2]))
-            lat1d = np.append(lat1d, lat1d[-1] + (lat1d[-1] - lat1d[-2]))
-            lons, lats = np.meshgrid(lon1d, lat1d)
-
+        # No No No, this fails horribly for curvilinear
+        # if lons.shape == vals.shape:
+        #    lon1d = lons[0, :]
+        #    lat1d = lats[:, 0]
+        #    lon1d = np.append(lon1d, lon1d[-1] + (lon1d[-1] - lon1d[-2]))
+        #    lat1d = np.append(lat1d, lat1d[-1] + (lat1d[-1] - lat1d[-2]))
+        #    lons, lats = np.meshgrid(lon1d, lat1d)
+        #
         res = self.ax.pcolormesh(lons, lats, vals, norm=norm,
                                  cmap=cmap, zorder=Z_FILL,
                                  transform=ccrs.PlateCarree())
