@@ -376,9 +376,10 @@ class SPCPTS(TextProduct):
                 ax.set_title(('Day %s Category %s Threshold %s'
                               ) % (day, outlook.category, outlook.threshold))
                 ax.legend(loc=3)
-                fn = ('/tmp/%s_%s_%s_%s.png'
-                      ) % (day, self.issue.strftime("%Y%m%d%H%M"),
-                           outlook.category, outlook.threshold)
+                fn = (('/tmp/%s_%s_%s_%s.png'
+                       ) % (day, self.issue.strftime("%Y%m%d%H%M"),
+                            outlook.category, outlook.threshold)).replace(" ",
+                                                                          "_")
                 print(':: creating plot %s' % (fn,))
                 fig.savefig(fn)
                 del fig

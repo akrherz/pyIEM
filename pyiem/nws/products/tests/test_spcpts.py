@@ -38,6 +38,14 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170612_nullgeom(self):
+        """See why this has an error with null geom reported"""
+        spc = parser(get_file('PTSD48_nullgeom.txt'))
+        # spc.draw_outlooks()
+        spc.sql(self.txn)
+        outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
+        self.assertAlmostEqual(outlook.geometry.area, 56.84, 2)
+
     def test_170522_nogeom(self):
         """See why this has an error with no-geom reported"""
         spc = parser(get_file('PTSDY1_nogeom2.txt'))
