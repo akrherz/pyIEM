@@ -80,6 +80,36 @@ def read_env(filename, year0=2006):
     return df
 
 
+def read_ofe(filename, year0=2006):
+    """Read OFE .ofe file, return a dataframe
+
+    Args:
+      filename (str): Filename to read
+      year0 (int,optional): The simulation start year minus 1
+
+    Returns:
+      pd.DataFrame
+    """
+    df = pd.read_table(filename,
+                       skiprows=2, index_col=False, delim_whitespace=True,
+                       header=None, na_values=['*******', '******'],
+                       names=['ofe', 'day', 'month', 'year', 'precip',
+                              'runoff', 'effint', 'peakro', 'effdur',
+                              'enrich_ratio', 'keff', 'sm', 'leafarea',
+                              'canhght', 'cancov', 'intcov', 'rilcov',
+                              'livbio', 'deadbio', 'ki', 'kr', 'tcrit',
+                              'rilwid', 'sedleave'])
+    if len(df.index) == 0:
+        df['date'] = None
+    else:
+        # Faster than +=
+        df['year'] = df['year'] + year0
+        # Considerably faster than df.apply
+        df['date'] = pd.to_datetime(dict(year=df['year'], month=df['month'],
+                                         day=df['day']))
+    return df
+
+
 def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
     df = pd.read_table(filename, delim_whitespace=True,
