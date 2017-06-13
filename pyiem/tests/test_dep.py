@@ -16,6 +16,16 @@ def get_path(name):
 class Tests(unittest.TestCase):
     """We need tests!"""
 
+    def test_man(self):
+        """Read a management file please"""
+        manfile = dep.read_man(get_path('man.txt'))
+        self.assertEquals(manfile['nop'], 5)
+        self.assertEquals(manfile['nini'], 2)
+        self.assertEquals(manfile['nsurf'], 2)
+        self.assertEquals(manfile['nwsofe'], 3)
+        self.assertEquals(manfile['nrots'], 1)
+        self.assertEquals(manfile['nyears'], 11)
+
     def test_ofe(self):
         """Read an OFE please"""
         df = dep.read_ofe(get_path('ofe.txt'))
