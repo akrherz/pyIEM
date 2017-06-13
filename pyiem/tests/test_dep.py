@@ -16,6 +16,12 @@ def get_path(name):
 class Tests(unittest.TestCase):
     """We need tests!"""
 
+    def test_slp(self):
+        """Read a slope file"""
+        slp = dep.read_slp(get_path('slp.txt'))
+        self.assertEquals(len(slp), 5)
+        self.assertAlmostEquals(slp[4]['y'][-1], -8.3, 1)
+
     def test_man(self):
         """Read a management file please"""
         manfile = dep.read_man(get_path('man.txt'))

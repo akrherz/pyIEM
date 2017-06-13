@@ -3,12 +3,43 @@ from __future__ import print_function
 import datetime
 
 import pandas as pd
+import numpy as np
 
 # The bounds of the climate files we store on disk and processing
 SOUTH = 36.0
 WEST = -104.0
 NORTH = 49.0
 EAST = -80.5
+
+
+def read_slp(filename):
+    """read WEPP slp file
+
+    Args:
+      filename (str): Filename to read
+
+    Returns:
+      list of slope profiles
+    """
+    lines = [a[:a.find("#")].strip() for a in open(filename)]
+    segments = int(lines[5])
+    res = [None]*segments
+    xpos = 0
+    elev = 0
+    for seg in range(segments):
+        line1 = lines[7 + seg * 2]
+        (_pts, length) = [float(x) for x in line1.split()]
+        line2 = lines[8 + seg * 2].replace(",", "")
+        tokens = np.array([float(x) for x in line2.split()])
+        xs = xpos + tokens[::2] * length
+        slopes = tokens[1::2]
+        ys = [elev]
+        for i in range(1, len(slopes)):
+            elev -= (xs[i] - xs[0]) * slopes[i-1]
+            ys.append(elev)
+        res[seg] = {'x': xs, 'slopes': slopes, 'y': ys}
+        xpos += length
+    return res
 
 
 def read_man(filename):
