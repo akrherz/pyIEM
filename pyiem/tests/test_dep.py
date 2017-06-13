@@ -32,10 +32,17 @@ class Tests(unittest.TestCase):
         self.assertEquals(manfile['nrots'], 1)
         self.assertEquals(manfile['nyears'], 11)
 
+        manfile = dep.read_man(get_path('man2.txt'))
+        self.assertEquals(manfile['nop'], 0)
+
     def test_ofe(self):
         """Read an OFE please"""
         df = dep.read_ofe(get_path('ofe.txt'))
         self.assertAlmostEquals(df['precip'].max(), 107.56, 2)
+
+        df = dep.read_ofe(get_path('ofe2.txt'))
+        print(df['sedleave'].sum())
+        self.assertAlmostEquals(df['sedleave'].sum(), 400257.48, 2)
 
     def test_wb(self):
         """read a WB file please"""

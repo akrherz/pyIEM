@@ -199,6 +199,8 @@ def read_man(filename):
                             'gend': int(lines[linenum+2])
                         }
                         linenum += 1
+                elif res['scens'][scen]['mgtopt'] == 3:
+                    linenum += 15
         elif res['scens'][scen]['iplant'] == 2:
             pass
         linenum += 3
@@ -311,7 +313,8 @@ def read_ofe(filename, year0=2006):
     """
     df = pd.read_table(filename,
                        skiprows=2, index_col=False, delim_whitespace=True,
-                       header=None, na_values=['*******', '******'],
+                       header=None, na_values=['*******', '******',
+                                               '********'],
                        names=['ofe', 'day', 'month', 'year', 'precip',
                               'runoff', 'effint', 'peakro', 'effdur',
                               'enrich_ratio', 'keff', 'sm', 'leafarea',

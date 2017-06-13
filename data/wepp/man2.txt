@@ -1,0 +1,218 @@
+98.4
+#
+#
+#
+#
+
+2 # number of OFE's
+7 # (total) years in simulation
+
+#######################
+# Plant Section       #
+#######################
+
+2  # Number of plant scenarios
+
+
+Tre_2932
+Twenty-year old forest
+for disturbed WEPP
+W. Elliot 02/99
+1  #landuse
+WeppWillSet
+14.00000 3.00000 150.00000 2.00000 5.00000 5.00000 0.00000 20.00000 0.50000 0.25000
+0.25000 0.70000 0.90000 0.99000 17.00000 0.00000 0.42000 5.00000
+2  # mfo - <non fragile>
+0.00600 0.00600 20.00000 0.10000 2.00000 2.00000 0.33000 0.50000 300 40.00000
+0.00000 6.00000 0.00000
+
+ALFALFA
+Alfalfa
+J. M. Laflen
+Set minimum temperature to 0.5 degrees C  -  dcf
+1  #landuse
+WeppWillSet
+14.00000 23.00000 13.00159 4.00000 4.99968 30.00000 0.10000 0.14999 0.90000 0.00450
+0.85000 0.90000 0.65000 0.99000 12.00000 0.00000 0.90000 0.80011
+1  # mfo - <fragile>
+0.01500 0.01500 20.00000 0.25000 0.00600 2.40008 0.33000 0.60002 14 32.00000
+0.50000 6.00000 0.00000
+
+#######################
+# Operation Section   #
+#######################
+
+0  # Number of operation scenarios
+
+
+
+
+###############################
+# Initial Conditions Section  #
+###############################
+
+1  # Number of initial scenarios
+
+
+Tre_2239
+Initial conditions for 20-year old forest
+(null)
+J. Laflen, 10/2002
+1  #landuse
+1.10000 0.90000 1000 100 0.00000 1.00000
+1 # iresd  <Tre_2932>
+2 # mang perennial
+999.99799 0.10000 1.00000 0.10000 0.00000
+1  # rtyp - temporary
+0.00000 0.00000 0.10000 0.20000 0.00000
+0.50003 0.50003
+
+
+
+
+############################
+# Surface Effects Section  #
+############################
+
+0  # Number of Surface Effects Scenarios
+
+
+
+#######################
+# Contouring Section  #
+#######################
+
+0  # Number of contour scenarios
+
+
+#######################
+# Drainage Section    #
+#######################
+
+0  # Number of drainage scenarios
+
+
+#######################
+# Yearly Section      #
+#######################
+
+2  # looper; number of Yearly Scenarios
+#
+# Yearly scenario 1 of 2
+#
+Year 1 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+2 # management <perennial>
+   0 # senescence date 
+   0 # perennial plant date --- 0 /0
+   0 # perennial stop growth date --- 0/0
+   0.0000  # row width
+   3  # neither cut or grazed
+#
+# Yearly scenario 2 of 2
+#
+Year 2 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+2 # management <perennial>
+   0 # senescence date 
+   0 # perennial plant date --- 0 /0
+   0 # perennial stop growth date --- 0/0
+   0.0000  # row width
+   1 # crop management - <cutting>
+      3 # number of cuttings 
+         152 # cutting date --- 6/1
+         196 # cutting date --- 7/15
+         244 # cutting date --- 9/1
+
+
+#######################
+# Management Section  #
+#######################
+
+Manage
+description 1
+description 2
+description 3
+2   # number of OFE's
+    1   # initial condition index
+    1   # initial condition index
+1  # rotation repeats
+10  # years in rotation
+
+#
+# Rotation 1: year 1 to 10
+#
+
+   1	#  <plants/yr 1> - OFE: 1>
+      1	# year index
+
+   1	#  <plants/yr 1> - OFE: 2>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 2> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 2> - OFE: 2>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 3> - OFE: 1>
+      1	# year index
+
+   1	#  <plants/yr 3> - OFE: 2>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 4> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 4> - OFE: 2>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 5> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 5> - OFE: 2>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 6> - OFE: 1>
+      1	# year index
+
+   1	#  <plants/yr 6> - OFE: 2>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 7> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 7> - OFE: 2>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 8> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 8> - OFE: 2>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 9> - OFE: 1>
+      1	# year index
+
+   1	#  <plants/yr 9> - OFE: 2>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 10> - OFE: 1>
+      2	# year index
+
+   1	#  <plants/yr 10> - OFE: 2>
+      2	# year index
