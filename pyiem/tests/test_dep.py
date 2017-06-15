@@ -16,6 +16,12 @@ def get_path(name):
 class Tests(unittest.TestCase):
     """We need tests!"""
 
+    def test_yld(self):
+        """Read a slope file"""
+        df = dep.read_yld(get_path('yld.txt'))
+        self.assertEquals(len(df.index), 10)
+        self.assertAlmostEquals(df['yield_kgm2'].max(), 0.93, 2)
+
     def test_slp(self):
         """Read a slope file"""
         slp = dep.read_slp(get_path('slp.txt'))

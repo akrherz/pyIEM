@@ -1,0 +1,31 @@
+ WEPP CROP YIELD OUTPUT FILE -  YIELDS BY CROP TYPE AND OFE AT EACH HARVEST
+        ************
+ SILAGE VALUES NOT SUMMARIZED
+        ************
+
+OUTPUT FILE NAME:/i/0/yld/10270202/0403/102702020403_141.yld        
+ Crop Type #  1 is Corn                                              
+ Crop Type #  2 is soybean2                                          
+
+ Yields Through the Simulation Period: 
+
+ Crop Type #  2 Date = 283 OFE #  1  yield=    0.193 (kg/m**2) year= 2007
+   
+ Crop Type #  1 Date = 288 OFE #  1  yield=    0.758 (kg/m**2) year= 2008
+   
+ Crop Type #  2 Date = 283 OFE #  1  yield=    0.283 (kg/m**2) year= 2009
+   
+ Crop Type #  1 Date = 288 OFE #  1  yield=    0.929 (kg/m**2) year= 2010
+   
+ Crop Type #  2 Date = 283 OFE #  1  yield=    0.211 (kg/m**2) year= 2011
+   
+ Crop Type #  1 Date = 288 OFE #  1  yield=    0.539 (kg/m**2) year= 2012
+   
+ Crop Type #  2 Date = 283 OFE #  1  yield=    0.264 (kg/m**2) year= 2013
+   
+ Crop Type #  1 Date = 288 OFE #  1  yield=    0.773 (kg/m**2) year= 2014
+   
+ Crop Type #  2 Date = 283 OFE #  1  yield=    0.331 (kg/m**2) year= 2015
+   
+ Crop Type #  1 Date = 288 OFE #  1  yield=    0.842 (kg/m**2) year= 2016
+   
