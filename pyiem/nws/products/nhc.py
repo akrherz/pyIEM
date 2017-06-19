@@ -26,9 +26,11 @@ class NHCProduct(TextProduct):
 
         tokens = re.findall(
             ("(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"
+             "POTENTIAL TROPICAL CYCLONE|TROPICAL CYCLONE|"
              "TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "
              "(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "
-             "NUMBER\s+([0-9A-Z]+)"), self.unixtext.upper().replace("\n", " "))
+             "NUMBER\s+([0-9A-Z]+)"
+             ), self.unixtext.upper().replace("\n", " "))
         if len(tokens) == 0:
             raise NHCException("Could not parse header from NHC Product!")
 

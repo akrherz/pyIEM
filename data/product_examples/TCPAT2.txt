@@ -1,0 +1,90 @@
+534 
+WTNT32 KNHC 190240
+TCPAT2
+
+BULLETIN
+Potential Tropical Cyclone Two Advisory Number   2
+NWS National Hurricane Center Miami FL       AL022017
+1100 PM AST Sun Jun 18 2017
+
+...TROPICAL STORM CONDITIONS EXPECTED TO REACH THE SOUTHERN WINDWARD
+ISLANDS BY MONDAY NIGHT...
+
+
+SUMMARY OF 1100 PM AST...0300 UTC...INFORMATION
+-----------------------------------------------
+LOCATION...7.9N 52.4W
+ABOUT 630 MI...1015 KM ESE OF TRINIDAD
+ABOUT 695 MI...1120 KM ESE OF GRENADA
+MAXIMUM SUSTAINED WINDS...40 MPH...65 KM/H
+PRESENT MOVEMENT...W OR 280 DEGREES AT 23 MPH...37 KM/H
+MINIMUM CENTRAL PRESSURE...1005 MB...29.68 INCHES
+
+
+WATCHES AND WARNINGS
+--------------------
+CHANGES WITH THIS ADVISORY:
+
+None.
+
+SUMMARY OF WATCHES AND WARNINGS IN EFFECT:
+
+A Tropical Storm Warning is in effect for...
+* Barbados
+* St. Vincent and the Grenadines
+* Trinidad
+* Tobago
+* Grenada
+
+A Tropical Storm Warning means that tropical storm conditions are
+expected somewhere within the warning area within 36 hours.
+
+For storm information specific to your area, please monitor
+products issued by your national meteorological service.
+
+
+DISCUSSION AND 48-HOUR OUTLOOK
+------------------------------
+At 1100 PM AST (0300 UTC), the disturbance was centered near
+latitude 7.9 North, longitude 52.4 West. A fast motion toward the
+west-northwest is expected for the next 48 hours.  On the forecast
+track, the disturbance is expected to move through the Windward
+Islands Monday night and Tuesday.
+
+Maximum sustained winds have increased to near 40 mph (65 km/h) with
+higher gusts. Some additional strengthening is expected during the
+next 48 hours, and the disturbance is forecast to be a tropical
+storm when it moves through the Windward Islands Monday night and
+Tuesday.
+
+Thunderstorm activity associated with the disturbance continues to
+become better organized, and additional development is likely during
+the next day or two.
+* Formation chance through 48 hours...high...90 percent
+* Formation chance through 5 days...high...90 percent
+
+Tropical-storm-force winds extend outward up to 60 miles (95 km),
+mainly northwest through northeast of the center.
+
+The estimated minimum central pressure is 1005 mb (29.68 inches).
+
+
+HAZARDS AFFECTING LAND
+----------------------
+WIND:  Tropical storm conditions are expected to first reach the
+warning area overnight Monday and Tuesday morning, making outside
+preparations difficult or dangerous.
+
+RAINFALL:  The disturbance is expected to produce total rain
+accumulations of 2 to 4 inches over the Windward Islands Monday
+night and Tuesday.
+
+
+NEXT ADVISORY
+-------------
+Next intermediate advisory at 200 AM AST.
+Next complete advisory at 500 AM AST.
+
+$$
+Forecaster Stewart
+
