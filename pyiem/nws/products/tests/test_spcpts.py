@@ -229,11 +229,17 @@ class TestPTS(unittest.TestCase):
         self.assertEquals(len(collect.outlooks), 14)
 
     def test_bug_140506_day2(self):
-        ''' Bug found in production '''
+        """Bug found in production"""
         spc = parser(get_file('PTSDY2.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(2)
         self.assertEquals(len(collect.outlooks), 6)
+        j = spc.get_jabbers('localhost', 'localhost')
+        self.assertEquals(j[0][0],
+                          ('The Storm Prediction Center issues Day 2 '
+                           'Convective Outlook at May 6, 17:31z '
+                           'http://www.spc.noaa.gov/products/outlook/'
+                           'archive/2014/day2otlk_20140507_1730.html'))
 
     def test_bug_140518_day2(self):
         ''' 18 May 2014 tripped error with no exterior polygon found '''
