@@ -24,6 +24,12 @@ class TestIEMRE(unittest.TestCase):
         offset = iemre.hourly_offset(ts)
         self.assertEqual(offset, 0)
 
+        ts = datetime.datetime(2013, 1, 1, 6, 0)
+        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = ts.astimezone(pytz.timezone("America/Chicago"))
+        offset = iemre.hourly_offset(ts)
+        self.assertEqual(offset, 6)
+
         ts = datetime.datetime(2013, 1, 5, 12, 0)
         ts = ts.replace(tzinfo=pytz.timezone("UTC"))
         offset = iemre.hourly_offset(ts)

@@ -6,8 +6,11 @@
 
 
 """
-import numpy as np
+from __future__ import print_function
 import datetime
+
+import numpy as np
+import pytz
 
 # 1/4 degree grid, grid cell is the lower left corner
 SOUTH = 36.0
@@ -33,13 +36,21 @@ def daily_offset(ts):
     return int(days)
 
 
-def hourly_offset(ts):
-    """ Compute the timestamp index in the netcdf file """
-    base = ts.replace(month=1, day=1, hour=0, minute=0,
-                      second=0, microsecond=0)
-    days = (ts - base).days
-    seconds = (ts - base).seconds
-    return int(int(days) * 24.0 + seconds / 3600.)
+def hourly_offset(dtobj):
+    """Return time index for given timestamp
+
+    Args:
+      dtobj (datetime): datetime, if no tzinfo, we assume it is UTC
+
+    Returns:
+      int time index in the netcdf file
+    """
+    if dtobj.tzinfo and dtobj.tzinfo != pytz.utc:
+        dtobj = dtobj.astimezone(pytz.utc)
+    base = dtobj.replace(month=1, day=1, hour=0, minute=0,
+                         second=0, microsecond=0)
+    seconds = (dtobj - base).total_seconds()
+    return int(seconds / 3600.)
 
 
 def find_ij(lon, lat):
