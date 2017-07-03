@@ -567,13 +567,16 @@ class SPCPTS(TextProduct):
             hhmm = "1730" if self.valid.hour > 11 else '0600'
             url = ("http://www.spc.noaa.gov/products/outlook/archive/"
                    "%s/day2otlk_%s_%s.html"
-                   ) % (self.valid.year, self.issue.strftime("%Y%m%d"), hhmm)
+                   ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
         elif self.afos == "PTSDY3":
+            # 0730 when in CDT, 0830 when in CST
+            hhmm = '0730' if self.z == 'CDT' else '0830'
             day = 'Day 3'
             product_descript = "Convective"
             url = ("http://www.spc.noaa.gov/products/outlook/archive/%s/"
-                   "day3otlk_%s_0730.html") % (self.valid.year,
-                                               self.issue.strftime("%Y%m%d"))
+                   "day3otlk_%s_%s.html") % (self.valid.year,
+                                             self.valid.strftime("%Y%m%d"),
+                                             hhmm)
         elif self.afos == "PTSD48":
             day = 'Days 4-8'
             product_descript = "Convective"

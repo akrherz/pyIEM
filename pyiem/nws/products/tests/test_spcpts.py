@@ -38,6 +38,16 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170703_badday3link(self):
+        """Day3 URL is wrong"""
+        spc = parser(get_file('PTSDY3.txt'))
+        jdict = spc.get_jabbers('', '')
+        self.assertEquals(jdict[0][0],
+                          ('The Storm Prediction Center issues Day 3 '
+                           'Convective Outlook at Nov 19, 8:31z '
+                           'http://www.spc.noaa.gov/products/outlook/'
+                           'archive/2013/day3otlk_20131119_0830.html'))
+
     def test_170612_nullgeom(self):
         """See why this has an error with null geom reported"""
         spc = parser(get_file('PTSD48_nullgeom.txt'))
@@ -239,7 +249,7 @@ class TestPTS(unittest.TestCase):
                           ('The Storm Prediction Center issues Day 2 '
                            'Convective Outlook at May 6, 17:31z '
                            'http://www.spc.noaa.gov/products/outlook/'
-                           'archive/2014/day2otlk_20140507_1730.html'))
+                           'archive/2014/day2otlk_20140506_1730.html'))
 
     def test_bug_140518_day2(self):
         ''' 18 May 2014 tripped error with no exterior polygon found '''
