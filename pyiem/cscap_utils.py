@@ -1,6 +1,14 @@
 """
 Utility Functions that are common to our scripts, I hope
 """
+from __future__ import print_function
+import time
+import json
+import os
+import sys
+import random
+import re
+
 import gdata.gauth
 import gdata.spreadsheets.client
 import gdata.spreadsheets.data as spdata
@@ -9,36 +17,29 @@ from httplib2 import Http
 from apiclient.discovery import build
 import smartsheet
 
-import time
-import json
-import os
-import sys
-import random
-import re
-
 CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
 CLEANVALUE_COMPLAINED = []
 CLEANVALUE_XREF = {'NA': 'n/a', 'dnc': 'did not collect'}
 
 
-def save_config(config, fn=None):
+def save_config(config, filename=None):
     """ Save the configuration to disk """
-    if fn is None:
-        fn = CONFIG_FN
-    json.dump(config, open(fn, 'w'), sort_keys=True,
+    if filename is None:
+        filename = CONFIG_FN
+    json.dump(config, open(filename, 'w'), sort_keys=True,
               indent=4, separators=(',', ': '))
 
 
-def get_config(fn=None):
+def get_config(filename=None):
     """ Load a JSON Configuration"""
-    if fn is None:
-        fn = CONFIG_FN
-    if not os.path.isfile(fn):
+    if filename is None:
+        filename = CONFIG_FN
+    if not os.path.isfile(filename):
         sys.stderr.write(("cscap_utils.get_config(%s) File Not Found.\n"
-                          ) % (fn, ))
+                          ) % (filename, ))
         return None
-    return json.load(open(fn))
+    return json.load(open(filename))
 
 
 def cleanvalue(val):
@@ -92,15 +93,17 @@ def exponential_backoff(func, *args, **kwargs):
     for i in range(5):
         try:
             return func(*args, **kwargs)
-        except Exception, exp:
+        except Exception as exp:
             print("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
             time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
     return None
 
 
 class Worksheet(object):
+    """Our wrapper for a worksheet"""
 
     def __init__(self, spr_client, entry):
+        """Constructor"""
         self.spr_client = spr_client
         self.entry = entry
         self.set_metadata()
@@ -190,7 +193,7 @@ class Worksheet(object):
             if sloppy and not self.get_cell_value(1, col).startswith(label):
                 continue
             worked = True
-            print 'Found %s in column %s, deleting column' % (label, col)
+            print('Found %s in column %s, deleting column' % (label, col))
             entry = self.get_cell_entry(1, col)
             entry.cell.input_value = ""
             exponential_backoff(self.spr_client.update, entry)
@@ -210,7 +213,7 @@ class Worksheet(object):
             return
         self.refetch_feed()
         while self.trim_columns():
-            print 'Trimming Columns!'
+            print('Trimming Columns!')
 
     def expand_cols(self, amount=1):
         """ Expand this sheet by the number of columns desired"""
@@ -234,7 +237,7 @@ class Worksheet(object):
         self.get_cell_feed()
         for col in range(1, int(self.cols)+1):
             if self.get_cell_value("1", col) == label:
-                print 'Column %s with label already found: %s' % (col, label)
+                print('Column %s with label already found: %s' % (col, label))
                 return
         self.expand_cols(1)
 
@@ -263,7 +266,7 @@ class Worksheet(object):
         for col in range(1, int(self.cols)+1):
             if self.data["1"].get(str(col)) is not None:
                 continue
-            print 'Column Delete Candidate %s' % (col,)
+            print('Column Delete Candidate %s' % (col,))
             found_data = False
             for row in range(1, int(self.rows)+1):
                 _v = self.data.get(str(row), {}).get(str(col))
@@ -272,7 +275,7 @@ class Worksheet(object):
                     print(('ERROR row: %s has data: %s'
                            ) % (row, self.data[str(row)][str(col)]))
             if not found_data:
-                print 'Deleting column %s' % (col,)
+                print('Deleting column %s' % (col,))
                 if col == int(self.cols):
                     self.drop_last_column()
                     return True
@@ -320,10 +323,10 @@ def get_xref_siteids_plotids(drive, spr_client, config):
         feed = exponential_backoff(spr_client.get_list_feed,
                                    spreadkeys[uniqueid], 'od6')
         for entry in feed.entry:
-            d = entry.to_dict()
-            if d['plotid'] is None:
+            row = entry.to_dict()
+            if row['plotid'] is None:
                 continue
-            data[uniqueid.lower()].append(d['plotid'].lower())
+            data[uniqueid.lower()].append(row['plotid'].lower())
     return data
 
 
@@ -390,13 +393,13 @@ def build_treatments(feed):
             for key in row.keys():
                 if key in ['uniqueid', 'name', 'key'] or key[0] == '_':
                     continue
-                print 'Found Key: %s' % (key,)
+                print('Found Key: %s' % (key,))
                 data[key] = {'TIL': [None, ], 'ROT': [None, ], 'DWM': [None, ],
                              'NIT': [None, ],
                              'LND': [None, ], 'REPS': 1}
-        if 'key' not in row or row['key'] is None or row['key'] == '':
+        if 'code' not in row or row['code'] is None or row['code'] == '':
             continue
-        treatment_key = row['key']
+        treatment_key = row['code']
         treatment_names[treatment_key] = row['name'].strip()
         for colkey in row.keys():
             cell = row[colkey]
@@ -405,9 +408,10 @@ def build_treatments(feed):
                 if cell is not None and cell != '':
                     if treatment_key[:3] in data[sitekey].keys():
                         data[sitekey][treatment_key[:3]].append(treatment_key)
-                if treatment_key == 'REPS' and cell not in ('?', 'TBD', None):
-                    print 'Found REPS for site: %s as: %s' % (sitekey,
-                                                              int(cell))
+                if treatment_key == 'REPS' and cell not in ('?', 'TBD',
+                                                            'REPS', None):
+                    print(('Found REPS for site: %s as: %s'
+                           ) % (sitekey, int(cell)))
                     data[sitekey]['REPS'] = int(cell)
 
     return data, treatment_names
