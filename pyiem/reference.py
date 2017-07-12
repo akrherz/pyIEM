@@ -104,7 +104,7 @@ txt2drct = {
 
 hailsize = {
  '0.25': "pea",
- '0.50': "marble",
+ '0.50': "mothball",
  '0.75': "penny",
  '0.88': "nickel",
  '1.00': "quarter",
@@ -781,3 +781,24 @@ state_fips = {
  55: "WI",
  56: "WY",
 }
+
+IEMVARS = {
+    'tmpf': {"name": "Air Temperature[F]",
+             "type": "number",
+             "description": "Air Temperature at 2m AGL"},
+    'sknt': {"name": "Wind Speed[kt]",
+             "type": "number",
+             "description": "Wind Speed"},
+    'gust': {"name": "Wind Gust[kt]",
+             "type": "number",
+             "description": "Wind Gust"},
+    'drct': {"name": "Wind Direction[deg]",
+             "type": "number",
+             "description": "Wind Direction"},
+    'local_valid': {"name": "Observation Valid",
+                    "type": "datetime",
+                    "description": "Observation Valid Time"},
+    'utc_valid': {"name": "Observation Valid UTC",
+                  "type": "datetime",
+                  "description": "Observation Valid Time UTC"},
+    }
