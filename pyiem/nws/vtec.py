@@ -227,21 +227,27 @@ class VTEC(object):
             return ''
         if self.endts is None:
             return 'until further notice'
-        fmt = "%b %-d, %-I:%M %p %Z"
+        fmt = "%b %-d, %-I:%M %p"
         if self.endts < (prod.valid + datetime.timedelta(hours=1)):
-            fmt = '%-I:%M %p %Z'
+            fmt = '%-I:%M %p'
         localts = self.endts.astimezone(prod.tz)
-        return "till %s" % (localts.strftime(fmt),)
+        # A bit of complexity as offices may not implement daylight saving
+        if prod.z.endswith("ST") and localts.dst():
+            localts -= datetime.timedelta(hours=1)
+        return "till %s %s" % (localts.strftime(fmt), prod.z)
 
     def get_begin_string(self, prod):
         ''' Return an appropriate beginning string for this VTEC '''
         if self.begints is None:
             return ''
-        fmt = "%b %-d, %-I:%M %p %Z"
+        fmt = "%b %-d, %-I:%M %p"
         if self.begints < (prod.valid + datetime.timedelta(hours=1)):
-            fmt = '%-I:%M %p %Z'
+            fmt = '%-I:%M %p'
         localts = self.begints.astimezone(prod.tz)
-        return "valid at %s" % (localts.strftime(fmt),)
+        # A bit of complexity as offices may not implement daylight saving
+        if prod.z.endswith("ST") and localts.dst():
+            localts -= datetime.timedelta(hours=1)
+        return "valid at %s %s" % (localts.strftime(fmt), prod.z)
 
     def url(self, year):
         """ Generate a VTEC url string needed """

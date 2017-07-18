@@ -1,0 +1,46 @@
+737
+WGUS85 KTWC 181938
+FLSTWC
+
+Flood Advisory
+National Weather Service Tucson AZ
+1238 PM MST TUE JUL 18 2017
+
+AZC009-182230-
+/O.NEW.KTWC.FA.Y.0034.170718T1938Z-170718T2230Z/
+/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+Graham-
+1238 PM MST TUE JUL 18 2017
+
+The National Weather Service in Tucson has issued a
+
+* Small Stream Flood Advisory for...
+  Southern Graham County in southeastern Arizona...
+
+* Until 330 PM MST
+
+* At 1237 PM MST, Doppler radar indicated heavy rain due to
+  thunderstorms. This will cause small stream flooding in the
+  advisory area. One to locally two inches of rain has already
+  fallen.
+
+* Some locations that will experience flooding include...
+  Fort Grant and Bonita.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+In hilly terrain there are hundreds of low water crossings which are
+potentially dangerous in heavy rain. Do not attempt to cross flooded
+roads. Find an alternate route.
+
+&&
+
+LAT...LON 3267 10995 3257 10981 3243 10979 3243 11002
+      3254 11015
+
+$$
+
+Leins
