@@ -10,6 +10,13 @@ import cartopy.crs as ccrs
 
 class TestPlot(unittest.TestCase):
 
+    def test_usdm(self):
+        """Can we plot the current USDM"""
+        mp = plot.MapPlot(sector='conus')
+        mp.draw_usdm()
+        mp.postprocess(filename='/tmp/test_plot_usdm.png')
+        mp.close()
+
     def test_pcolormesh(self):
         """See if we can do pcolormesh OKish"""
         m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,

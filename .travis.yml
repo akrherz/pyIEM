@@ -34,7 +34,7 @@ install:
   - source activate test-environment
   - conda config --add channels conda-forge
   - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas gdata cartopy"
-  - PACKAGES="$PACKAGES psycopg2"
+  - PACKAGES="$PACKAGES psycopg2 geojson"
   - conda install --quiet $PACKAGES
   - "pip install --upgrade pip"
   - "pip install --upgrade matplotlib"

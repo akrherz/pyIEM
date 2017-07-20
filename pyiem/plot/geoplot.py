@@ -27,8 +27,11 @@ import cPickle
 import datetime
 import math
 #
+import requests
 import numpy as np
 import pandas as pd
+import geojson
+from shapely.geometry import shape
 #
 from scipy.interpolate import NearestNDInterpolator
 #
@@ -482,6 +485,47 @@ class MapPlot(object):
     def close(self):
         ''' Close the figure in the case of batch processing '''
         plt.close()
+
+    def draw_usdm(self, valid=None):
+        """Overlay the US Drought Monitor
+
+        Args:
+          valid (str or datetime.date): The valid time to plot this USDM
+        """
+        colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
+        if valid is None:
+            valid = ''
+        elif isinstance(datetime.date, valid):
+            valid = valid.strftime("%Y-%m-%d")
+        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?valid=%s"
+               ) % (valid,)
+        req = requests.get(url, timeout=30)
+        feats = geojson.loads(req.content)
+        for record in feats.features:
+            color = colors[record.properties['dm']]
+            geom = shape(record['geometry'])
+            self.ax.add_geometries([geom], ccrs.PlateCarree(),
+                                   facecolor='None',
+                                   edgecolor='k', lw=1, zorder=Z_OVERLAY2)
+            self.ax.add_geometries([geom], ccrs.PlateCarree(),
+                                   facecolor=color, alpha=0.5,
+                                   edgecolor='None', zorder=Z_OVERLAY)
+
+        self.ax.text(0.99, 0.99, "D4", color='k',
+                     transform=self.ax.transAxes, va='top', ha='right',
+                     bbox=dict(color=colors[4]))
+        self.ax.text(0.955, 0.99, "D3", color='k',
+                     transform=self.ax.transAxes, va='top', ha='right',
+                     bbox=dict(color=colors[3]))
+        self.ax.text(0.92, 0.99, "D2", color='k',
+                     transform=self.ax.transAxes, va='top', ha='right',
+                     bbox=dict(color=colors[2]))
+        self.ax.text(0.885, 0.99, "D1", color='k',
+                     transform=self.ax.transAxes, va='top', ha='right',
+                     bbox=dict(color=colors[1]))
+        self.ax.text(0.85, 0.99, "D0", color='k',
+                     transform=self.ax.transAxes, va='top', ha='right',
+                     bbox=dict(color=colors[0]))
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """Draw the colorbar on the structed plot using `self.cax`
