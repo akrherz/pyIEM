@@ -498,7 +498,9 @@ class MapPlot(object):
             valid = ''
         elif isinstance(valid, datetime.date):
             valid = valid.strftime("%Y-%m-%d")
-        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?valid=%s"
+        elif isinstance(valid, datetime.datetime):
+            valid = valid.strftime("%Y-%m-%d")
+        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?date=%s"
                ) % (valid,)
         req = requests.get(url, timeout=30)
         feats = geojson.loads(req.content)
