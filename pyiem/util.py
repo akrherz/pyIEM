@@ -12,6 +12,7 @@ import datetime
 import re
 from socket import error as socket_error
 from pyiem.ftpsession import FTPSession
+import numpy as np
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
 
@@ -251,6 +252,47 @@ def drct2text(drct):
     elif drct >= 324 and drct < 350:
         text = "NNW"
     return text
+
+
+def grid_bounds(lons, lats, bounds):
+    """Figure out indices that we can truncate big grid
+
+    Args:
+      lons (np.array): grid lons
+      lats (np.array): grid lats
+      bounds (list): [x0, y0, x1, y1]
+
+    Returns:
+      [x0, y0, x1, y1]
+    """
+    x0 = 0
+    x1 = -1
+    y0 = 0
+    y1 = -1
+    if len(lons.shape) == 1:
+        # Do 1-d work
+        (x0, x1) = np.digitize([bounds[0], bounds[2]], lons)
+        (y0, y1) = np.digitize([bounds[1], bounds[3]], lats)
+        szx = len(lons)
+        szy = len(lats)
+    else:
+        # Do 2-d work
+        diff = ((lons - bounds[0])**2 + (lats - bounds[1])**2)**0.5
+        (lly, llx) = np.unravel_index(np.argmin(diff), lons.shape)
+        diff = ((lons - bounds[2])**2 + (lats - bounds[3])**2)**0.5
+        (ury, urx) = np.unravel_index(np.argmin(diff), lons.shape)
+        diff = ((lons - bounds[0])**2 + (lats - bounds[3])**2)**0.5
+        (uly, ulx) = np.unravel_index(np.argmin(diff), lons.shape)
+        diff = ((lons - bounds[2])**2 + (lats - bounds[1])**2)**0.5
+        (lry, lrx) = np.unravel_index(np.argmin(diff), lons.shape)
+        x0 = min([llx, ulx])
+        x1 = max([lrx, urx])
+        y0 = min([lry, lly])
+        y1 = max([uly, ury])
+        (szy, szx) = lons.shape
+
+    return [int(i) for i in [max([0, x0]), max([0, y0]), min([szx, x1]),
+                             min([szy, y1])]]
 
 
 if __name__ == '__main__':

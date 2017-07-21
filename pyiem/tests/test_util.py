@@ -1,8 +1,11 @@
+"""Testing of util"""
 import datetime
 import unittest
 import os
 from collections import OrderedDict
+
 from pyiem import util
+import numpy as np
 
 
 def get_file(name):
@@ -13,6 +16,22 @@ def get_file(name):
 
 
 class TestUtil(unittest.TestCase):
+
+    def test_grid_bounds(self):
+        """Can we compute grid bounds correctly"""
+        lons = np.arange(-100, -80, 0.1)
+        lats = np.arange(29, 51, 0.2)
+        (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
+        self.assertEquals(x0, 41)
+        self.assertEquals(x1, 111)
+        self.assertEquals(y0, 16)
+        self.assertEquals(y1, 56)
+        (lons, lats) = np.meshgrid(lons, lats)
+        (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
+        self.assertEquals(x0, 40)
+        self.assertEquals(x1, 110)
+        self.assertEquals(y0, 15)
+        self.assertEquals(y1, 55)
 
     def test_noaaport_text(self):
         """See that we do what we expect with noaaport text processing"""
