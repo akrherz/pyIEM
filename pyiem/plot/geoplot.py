@@ -486,46 +486,58 @@ class MapPlot(object):
         ''' Close the figure in the case of batch processing '''
         plt.close()
 
-    def draw_usdm(self, valid=None):
+    def draw_usdm(self, valid=None, filled=True):
         """Overlay the US Drought Monitor
 
         Args:
           valid (str or datetime.date): The valid time to plot this USDM
+          filled (boolean): Should we draw lines or filled polygons
         """
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
         if valid is None:
             valid = ''
-        elif isinstance(datetime.date, valid):
+        elif isinstance(valid, datetime.date):
             valid = valid.strftime("%Y-%m-%d")
         url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?valid=%s"
                ) % (valid,)
         req = requests.get(url, timeout=30)
         feats = geojson.loads(req.content)
+        lw = 1 if filled else 4.
+        usdm_valid = None
         for record in feats.features:
             color = colors[record.properties['dm']]
             geom = shape(record['geometry'])
+            usdm_valid = record.properties['date']
+            fc = color if filled else 'None'
+            ec = color if not filled else 'k'
             self.ax.add_geometries([geom], ccrs.PlateCarree(),
                                    facecolor='None',
-                                   edgecolor='k', lw=1, zorder=Z_OVERLAY2)
-            self.ax.add_geometries([geom], ccrs.PlateCarree(),
-                                   facecolor=color, alpha=0.5,
-                                   edgecolor='None', zorder=Z_OVERLAY)
+                                   edgecolor=ec, linewidth=lw,
+                                   zorder=Z_OVERLAY2)
+            if filled:
+                self.ax.add_geometries([geom], ccrs.PlateCarree(),
+                                       facecolor=fc, alpha=0.5,
+                                       edgecolor='None', zorder=Z_OVERLAY)
 
         self.ax.text(0.99, 0.99, "D4", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[4]))
+                     bbox=dict(color=colors[4]), zorder=Z_OVERLAY2)
         self.ax.text(0.955, 0.99, "D3", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[3]))
+                     bbox=dict(color=colors[3]), zorder=Z_OVERLAY2)
         self.ax.text(0.92, 0.99, "D2", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[2]))
+                     bbox=dict(color=colors[2]), zorder=Z_OVERLAY2)
         self.ax.text(0.885, 0.99, "D1", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[1]))
+                     bbox=dict(color=colors[1]), zorder=Z_OVERLAY2)
         self.ax.text(0.85, 0.99, "D0", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[0]))
+                     bbox=dict(color=colors[0]), zorder=Z_OVERLAY2)
+        if usdm_valid is not None:
+            self.ax.text(0.815, 0.99, 'USDM %s' % (usdm_valid,), color='w',
+                         transform=self.ax.transAxes, va='top', ha='right',
+                         bbox=dict(color='k'), zorder=Z_OVERLAY2)
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """Draw the colorbar on the structed plot using `self.cax`
@@ -869,6 +881,7 @@ class MapPlot(object):
 
         Args:
           ilabel (boolean,optional): Should we label contours
+          iline (boolean,optional): should we draw contour lines
         """
         if isinstance(lons, list):
             lons = np.array(lons)
@@ -906,12 +919,13 @@ class MapPlot(object):
         self.ax.contourf(lons, lats, vals, clevs,
                          cmap=cmap, norm=norm, zorder=Z_FILL,
                          extend='both', transform=ccrs.PlateCarree())
-        csl = self.ax.contour(lons, lats, vals, clevs, colors='w',
-                              zorder=Z_FILL_LABEL,
-                              transform=ccrs.PlateCarree())
-        if kwargs.get('ilabel', False):
-            self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'), colors='k',
-                           fontsize=14, zorder=Z_FILL_LABEL)
+        if kwargs.get('iline', True):
+            csl = self.ax.contour(lons, lats, vals, clevs, colors='w',
+                                  zorder=Z_FILL_LABEL,
+                                  transform=ccrs.PlateCarree())
+            if kwargs.get('ilabel', False):
+                self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'),
+                               colors='k', fontsize=14, zorder=Z_FILL_LABEL)
         self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
