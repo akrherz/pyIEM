@@ -311,6 +311,7 @@ class MapPlot(object):
             subtitlefontsize (int): fontsize to use for the plot subtitle
             continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
+            aspect (str): plot aspect, defaults to equal
         """
         self.debug = kwargs.get('debug', False)
         self.fig = plt.figure(num=None, figsize=figsize,
@@ -334,13 +335,14 @@ class MapPlot(object):
         self.cax = plt.axes(CAX_BOUNDS, frameon=False,
                             yticks=[], xticks=[])
         self.axes = []
+        aspect = kwargs.get('aspect', 'equal')
 
         if self.sector == 'iowa':
             self.state = 'IA'
             self.ax = plt.axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([reference.IA_WEST,
                                 reference.IA_EAST,
                                 reference.IA_SOUTH,
@@ -352,7 +354,7 @@ class MapPlot(object):
             self.ax = plt.axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([reference.wfo_bounds[self.cwa][0],
                                 reference.wfo_bounds[self.cwa][2],
                                 reference.wfo_bounds[self.cwa][1],
@@ -363,7 +365,7 @@ class MapPlot(object):
             self.ax = plt.axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([reference.state_bounds[self.state][0],
                                 reference.state_bounds[self.state][2],
                                 reference.state_bounds[self.state][1],
@@ -373,7 +375,7 @@ class MapPlot(object):
             self.ax = plt.axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([reference.MW_WEST,
                                 reference.MW_EAST,
                                 reference.MW_SOUTH,
@@ -383,7 +385,7 @@ class MapPlot(object):
             self.ax = plt.axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.Mercator(),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
             self.axes.append(self.ax)
         elif self.sector == 'custom':
@@ -391,7 +393,7 @@ class MapPlot(object):
                 MAIN_AX_BOUNDS,
                 facecolor=(0.4471, 0.6235, 0.8117),
                 projection=kwargs.get('projection', ccrs.Mercator()),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([kwargs['west'], kwargs['east'],
                                 kwargs['south'], kwargs['north']])
             self.axes.append(self.ax)
@@ -401,7 +403,7 @@ class MapPlot(object):
                 MAIN_AX_BOUNDS,
                 projection=ccrs.LambertConformal(central_longitude=-107.0,
                                                  central_latitude=50.0),
-                aspect='auto')
+                aspect=aspect)
             self.ax.set_extent([-145.5, -2.566, 1, 46.352])
             self.axes.append(self.ax)
 
@@ -409,7 +411,7 @@ class MapPlot(object):
             self.ax = self.fig.add_axes(
                 MAIN_AX_BOUNDS,
                 projection=ccrs.PlateCarree(),
-                aspect='auto')
+                aspect=aspect)
             # -124.848974, 24.396308) - (-66.885444, 49.384358
             self.ax.set_extent([-125,
                                 -66.5,
@@ -422,21 +424,21 @@ class MapPlot(object):
                 self.pr_ax = plt.axes(
                     [0.78, 0.055, 0.125, 0.1],
                     projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect='auto')
+                    aspect=aspect)
                 self.pr_ax.set_extent([-68.0, -65.0, 17.5, 18.6])
                 self.axes.append(self.pr_ax)
                 # Create AK
                 self.ak_ax = plt.axes(
                     [0.015, 0.055, 0.25, 0.2],
                     projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect='auto')
+                    aspect=aspect)
                 self.ak_ax.set_extent([-179.5, -129.0, 51.08, 72.1])
                 self.axes.append(self.ak_ax)
                 # Create HI
                 self.hi_ax = plt.axes(
                     [0.47, 0.055, 0.2, 0.1],
                     projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect='auto')
+                    aspect=aspect)
                 self.hi_ax.set_extent([-161.0, -154.0, 18.5, 22.5])
                 self.axes.append(self.hi_ax)
 
@@ -481,6 +483,7 @@ class MapPlot(object):
                                        ) % (
                     kwargs.get('caption', 'Iowa Environmental Mesonet'),
                     datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
+
 
     def close(self):
         ''' Close the figure in the case of batch processing '''

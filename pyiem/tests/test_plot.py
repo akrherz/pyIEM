@@ -10,6 +10,12 @@ import cartopy.crs as ccrs
 
 class TestPlot(unittest.TestCase):
 
+    def test_illinois(self):
+        """Produce a plot that doesn't suck"""
+        mp = plot.MapPlot(sector='state', state='IL')
+        mp.postprocess(filename="/tmp/test_plot_illinois.png")
+        mp.close()
+
     def test_usdm(self):
         """Can we plot the current USDM"""
         mp = plot.MapPlot(sector='conus')
