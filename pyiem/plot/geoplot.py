@@ -523,23 +523,23 @@ class MapPlot(object):
 
         self.ax.text(0.99, 0.99, "D4", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[4]), zorder=Z_OVERLAY2)
+                     bbox=dict(color=colors[4]), zorder=Z_OVERLAY2 + 3)
         self.ax.text(0.955, 0.99, "D3", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[3]), zorder=Z_OVERLAY2)
+                     bbox=dict(color=colors[3]), zorder=Z_OVERLAY2 + 3)
         self.ax.text(0.92, 0.99, "D2", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[2]), zorder=Z_OVERLAY2)
+                     bbox=dict(color=colors[2]), zorder=Z_OVERLAY2 + 3)
         self.ax.text(0.885, 0.99, "D1", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[1]), zorder=Z_OVERLAY2)
+                     bbox=dict(color=colors[1]), zorder=Z_OVERLAY2 + 3)
         self.ax.text(0.85, 0.99, "D0", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',
-                     bbox=dict(color=colors[0]), zorder=Z_OVERLAY2)
+                     bbox=dict(color=colors[0]), zorder=Z_OVERLAY2 + 3)
         if usdm_valid is not None:
             self.ax.text(0.815, 0.99, 'USDM %s' % (usdm_valid,), color='w',
                          transform=self.ax.transAxes, va='top', ha='right',
-                         bbox=dict(color='k'), zorder=Z_OVERLAY2)
+                         bbox=dict(color='k'), zorder=Z_OVERLAY2 + 3)
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """Draw the colorbar on the structed plot using `self.cax`
