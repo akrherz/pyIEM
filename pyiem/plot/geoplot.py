@@ -498,6 +498,7 @@ class MapPlot(object):
           hatched (boolean): Should we use hatch filling
         """
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
+        hatches = ['+', '/', "\\", '-', 'x']
         if valid is None:
             valid = ''
         elif isinstance(valid, datetime.date):
@@ -526,7 +527,8 @@ class MapPlot(object):
                                        edgecolor='None', zorder=Z_OVERLAY)
             elif hatched:
                 self.ax.add_geometries([geom], ccrs.PlateCarree(),
-                                       facecolor='None', hatch='+',
+                                       facecolor='None',
+                                       hatch=hatches[record.properties['dm']],
                                        edgecolor=color, zorder=Z_OVERLAY2 + 2)
 
         self.ax.text(0.99, 0.99, "D4", color='k',
