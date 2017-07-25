@@ -489,12 +489,13 @@ class MapPlot(object):
         ''' Close the figure in the case of batch processing '''
         plt.close()
 
-    def draw_usdm(self, valid=None, filled=True):
+    def draw_usdm(self, valid=None, filled=True, hatched=False):
         """Overlay the US Drought Monitor
 
         Args:
           valid (str or datetime.date): The valid time to plot this USDM
           filled (boolean): Should we draw lines or filled polygons
+          hatched (boolean): Should we use hatch filling
         """
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
         if valid is None:
@@ -523,6 +524,10 @@ class MapPlot(object):
                 self.ax.add_geometries([geom], ccrs.PlateCarree(),
                                        facecolor=fc, alpha=0.5,
                                        edgecolor='None', zorder=Z_OVERLAY)
+            elif hatched:
+                self.ax.add_geometries([geom], ccrs.PlateCarree(),
+                                       facecolor='None', hatch='+',
+                                       edgecolor=color, zorder=Z_OVERLAY2 + 2)
 
         self.ax.text(0.99, 0.99, "D4", color='k',
                      transform=self.ax.transAxes, va='top', ha='right',

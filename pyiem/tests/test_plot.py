@@ -19,7 +19,7 @@ class TestPlot(unittest.TestCase):
     def test_usdm(self):
         """Can we plot the current USDM"""
         mp = plot.MapPlot(sector='conus')
-        mp.draw_usdm()
+        mp.draw_usdm(hatched=True, filled=False)
         mp.postprocess(filename='/tmp/test_plot_usdm.png')
         mp.close()
 
