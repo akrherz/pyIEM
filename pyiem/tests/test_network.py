@@ -1,11 +1,15 @@
-import psycopg2.extras
+"""See if we can do stuff with the network"""
 import unittest
+
+import psycopg2.extras
 from pyiem import network
 
 
 class TestNetwork(unittest.TestCase):
+    """Test Cases Please"""
 
     def setUp(self):
+        """With each test"""
         self.conn = psycopg2.connect(database='mesosite', host='iemdb')
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
