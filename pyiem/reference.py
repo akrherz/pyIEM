@@ -459,6 +459,7 @@ prodDefinitions = {
     'EQR': 'Earthquake Report (EQR)',
     'OEP': 'TAF Collaboration Product (OEP)',
     'SIG': 'Convective Sigment (SIG)',
+    'TAF': 'Terminal Aerodrome Forecast (TAF)',
     'VAA': 'Volcanic Ash Advisory (VAA)',
 }
 

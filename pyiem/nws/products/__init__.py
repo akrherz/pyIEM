@@ -6,6 +6,7 @@ import hwo
 import lsr
 import mcd
 import nhc
+import taf
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
@@ -53,5 +54,7 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         return mcd.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == 'LSR':
         return lsr.parser(text, utcnow, ugc_provider, nwsli_provider)
+    elif afos[:3] == 'TAF':
+        return taf.parser(text, utcnow, ugc_provider, nwsli_provider)
 
     return TextProduct(text, utcnow, ugc_provider, nwsli_provider)
