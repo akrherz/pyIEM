@@ -22,16 +22,15 @@ class TAFProduct(TextProduct):
         """ Get the jabber variant of this message """
         res = []
         url = "%s?pid=%s" % (uri, self.get_product_id())
-        plain = ("%s issues %s for %s %s"
+        aaa = self.afos[:3]
+        plain = ("%s issues %s (%s) for %s %s"
                  ) % (self.source[1:],
-                      reference.prodDefinitions.get(self.afos[:3],
-                                                    self.afos[:3]),
-                      self.afos[3:], url)
-        html = ('<p>%s issues <a href="%s">%s</a> for %s</p>'
+                      reference.prodDefinitions.get(aaa, aaa),
+                      aaa, self.afos[3:], url)
+        html = ('<p>%s issues <a href="%s">%s (%s)</a> for %s</p>'
                 ) % (self.source[1:], url,
-                     reference.prodDefinitions.get(self.afos[:3],
-                                                   self.afos[:3]),
-                     self.afos[3:])
+                     reference.prodDefinitions.get(aaa, aaa),
+                     aaa, self.afos[3:])
         xtra = {
                 'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),

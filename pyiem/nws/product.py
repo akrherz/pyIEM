@@ -415,12 +415,13 @@ class TextProduct(object):
         specialty parsers '''
         res = []
         url = "%s?pid=%s" % (uri, self.get_product_id())
-        plain = "%s issues %s %s" % (
+        aaa = self.afos[:3]
+        plain = "%s issues %s (%s) %s" % (
             self.source[1:],
-            reference.prodDefinitions.get(self.afos[:3], self.afos[:3]), url)
-        html = '<p>%s issues <a href="%s">%s</a></p>' % (
+            reference.prodDefinitions.get(aaa, aaa), aaa, url)
+        html = '<p>%s issues <a href="%s">%s (%s)</a></p>' % (
             self.source[1:], url,
-            reference.prodDefinitions.get(self.afos[:3], self.afos[:3]))
+            reference.prodDefinitions.get(aaa, aaa), aaa)
         xtra = {
                 'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),
