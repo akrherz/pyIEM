@@ -21,6 +21,9 @@ class TAFProduct(TextProduct):
     def get_jabbers(self, uri, uri2=None):
         """ Get the jabber variant of this message """
         res = []
+        # These products can be ignored
+        if self.afos is None:
+            return res
         url = "%s?pid=%s" % (uri, self.get_product_id())
         aaa = self.afos[:3]
         plain = ("%s issues %s (%s) for %s %s"
