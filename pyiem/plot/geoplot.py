@@ -26,6 +26,7 @@ import shutil
 import cPickle
 import datetime
 import math
+import warnings
 #
 import requests
 import numpy as np
@@ -484,7 +485,6 @@ class MapPlot(object):
                     kwargs.get('caption', 'Iowa Environmental Mesonet'),
                     datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),))
 
-
     def close(self):
         ''' Close the figure in the case of batch processing '''
         plt.close()
@@ -492,10 +492,18 @@ class MapPlot(object):
     def draw_usdm(self, valid=None, filled=True, hatched=False):
         """Overlay the US Drought Monitor
 
+        This utilizes a GeoJSON web service provided by the IEM.  The provided
+        date to this method is passed to the web service which rectifies the
+        date to provide the USDM analysis valid for that date.  If no date
+        is specified, the current analysis is plotted.
+
         Args:
           valid (str or datetime.date): The valid time to plot this USDM
           filled (boolean): Should we draw lines or filled polygons
           hatched (boolean): Should we use hatch filling
+
+        Return:
+          date that the USDM is valid for
         """
         colors = ["#ffff00", "#fcd37f", "#ffaa00", "#e60000", "#730000"]
         hatches = ['+', '/', "\\", '-', 'x']
@@ -507,7 +515,11 @@ class MapPlot(object):
             valid = valid.strftime("%Y-%m-%d")
         url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?date=%s"
                ) % (valid,)
-        req = requests.get(url, timeout=30)
+        try:
+            req = requests.get(url, timeout=30)
+        except requests.ConnectionError as exp:
+            warnings.warn("draw_usdm IEM USDM Webservice failed: %s" % (exp,))
+            return None
         feats = geojson.loads(req.content)
         lw = 1 if filled else 4.
         usdm_valid = None
@@ -550,6 +562,8 @@ class MapPlot(object):
             self.ax.text(0.815, 0.99, 'USDM %s' % (usdm_valid,), color='w',
                          transform=self.ax.transAxes, va='top', ha='right',
                          bbox=dict(color='k'), zorder=Z_OVERLAY2 + 3)
+            return datetime.datetime.strptime(usdm_valid, '%Y-%m-%d')
+        return None
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """Draw the colorbar on the structed plot using `self.cax`
