@@ -1,8 +1,10 @@
 """Test TAF Parsing"""
 import os
 import unittest
+import datetime
 
-from pyiem.nws.products.taf import parser as nhcparser
+import pytz
+from pyiem.nws.products.taf import parser as tafparser
 
 
 def get_file(name):
@@ -17,7 +19,8 @@ class TestProducts(unittest.TestCase):
 
     def test_parse(self):
         """TAF type"""
-        prod = nhcparser(get_file("TAFJFK.txt"))
+        utcnow = datetime.datetime(2017, 7, 25).replace(tzinfo=pytz.utc)
+        prod = tafparser(get_file("TAFJFK.txt"), utcnow=utcnow)
         j = prod.get_jabbers("http://localhost", "http://localhost")
         self.assertEquals(j[0][0],
                           ("OKX issues Terminal Aerodrome Forecast (TAF) "
