@@ -30,9 +30,11 @@ class MCDProduct(TextProduct):
     Represents a Storm Prediction Center Mesoscale Convective Discussion
     '''
 
-    def __init__(self, text):
+    def __init__(self, text, utcnow=None, ugc_provider=None,
+                 nwsli_provider=None):
         ''' constructor '''
-        TextProduct.__init__(self, text)
+        TextProduct.__init__(self, text, utcnow, ugc_provider,
+                             nwsli_provider)
         self.geometry = self.parse_geometry()
         self.discussion_num = self.parse_discussion_num()
         self.attn_wfo = self.parse_attn_wfo()
@@ -44,7 +46,7 @@ class MCDProduct(TextProduct):
     def find_watch_probability(self):
         ''' Find the probability of watch issuance for SPC MCD'''
         tokens = WATCH_PROB.findall(self.unixtext.replace("\n", ""))
-        if len(tokens) == 0:
+        if not tokens:
             return None
         return int(tokens[0])
 
@@ -69,10 +71,9 @@ class MCDProduct(TextProduct):
         if self.afos == 'SWOMCD':
             return ("http://www.spc.noaa.gov/products/md/%s/md%04i.html"
                     ) % (self.valid.year, self.discussion_num)
-        else:
-            return ('http://www.wpc.ncep.noaa.gov/metwatch/'
-                    'metwatch_mpd_multi.php?md=%s&yr=%s'
-                    ) % (self.discussion_num, self.valid.year)
+        return ('http://www.wpc.ncep.noaa.gov/metwatch/'
+                'metwatch_mpd_multi.php?md=%s&yr=%s'
+                ) % (self.discussion_num, self.valid.year)
 
     def parse_areas_affected(self):
         ''' Return the areas affected '''
@@ -110,11 +111,8 @@ class MCDProduct(TextProduct):
                 ) % (center, spcuri, pextra, self.discussion_num,
                      prob_extra, uri, self.get_product_id())
         channels = [self.afos, ]
-        channels.extend(self.attn_wfo)
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_wfo])
-        channels.extend(self.attn_rfc)
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_rfc])
-        channels.extend(self.cwsus)
         channels.extend(["%s.%s" % (self.afos, w) for w in self.cwsus])
         xtra = dict(channels=",".join(channels),
                     product_id=self.get_product_id(),
@@ -124,28 +122,28 @@ class MCDProduct(TextProduct):
     def parse_attn_rfc(self):
         ''' FIgure out which RFCs this product is seeking attention '''
         tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
-        if len(tokens) == 0:
+        if not tokens:
             return []
         return re.findall("([A-Z]{5})", tokens[0])
 
     def parse_attn_wfo(self):
         ''' FIgure out which WFOs this product is seeking attention '''
         tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
-        if len(tokens) == 0:
+        if not tokens:
             raise MCDException('Could not parse attention WFOs')
         return re.findall("([A-Z]{3})", tokens[0])
 
     def parse_discussion_num(self):
         ''' Figure out what discussion number this is '''
         tokens = DISCUSSIONNUM.findall(self.unixtext)
-        if len(tokens) == 0:
+        if not tokens:
             raise MCDException('Could not parse discussion number')
         return int(tokens[0])
 
     def parse_geometry(self):
         ''' Find the polygon that's in this MCD product '''
         tokens = LATLON.findall(self.unixtext.replace("\n", " "))
-        if len(tokens) == 0:
+        if not tokens:
             raise MCDException('Could not parse LAT...LON geometry')
         pts = []
         for pair in tokens[0].split():
@@ -167,4 +165,4 @@ class MCDProduct(TextProduct):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     ''' Helper function '''
-    return MCDProduct(text)
+    return MCDProduct(text, utcnow, ugc_provider, nwsli_provider)
