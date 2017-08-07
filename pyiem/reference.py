@@ -448,6 +448,7 @@ prodDefinitions = {
     'LSR': 'Local Storm Report',
     'MCD': 'Mesoscale Convective Discussion',
     'MIS': 'Meteorological Impact Statement',
+    'MPD': 'Mesoscale Precipitation Discussion',
     'MWS': 'Marine Weather Statement',
     'MWW': 'Marine Weather Warning',
     'NMN': 'Network Message Notification',
