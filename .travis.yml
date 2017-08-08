@@ -43,7 +43,7 @@ install:
   - "pip install urllib3"
   - "pip install google-api-python-client"
   - "pip install 'Pillow<3.0'"
-  - "pip install python-metar"
+  - "pip install git+https://github.com/akrherz/python-metar.git@snowdepth"
   - "pip install git+https://github.com/smartsheet-platform/smartsheet-python-sdk"
   - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"
 before_script:
