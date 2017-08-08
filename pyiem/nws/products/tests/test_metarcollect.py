@@ -46,7 +46,7 @@ class TestMETAR(unittest.TestCase):
 
     def test_basic(self):
         """Simple tests"""
-        utcnow = datetime.datetime(2017, 8, 8, 14).replace(tzinfo=pytz.utc)
+        utcnow = datetime.datetime(2013, 8, 8, 14).replace(tzinfo=pytz.utc)
         prod = PARSER(get_file("collective.txt"), utcnow=utcnow,
                       nwsli_provider=NWSLI_PROVIDER)
         self.assertEquals(len(prod.warnings), 0,
