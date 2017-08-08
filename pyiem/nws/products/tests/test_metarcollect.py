@@ -35,8 +35,10 @@ class TestMETAR(unittest.TestCase):
 
     def test_metarreport(self):
         """Can we do things with the METARReport"""
+        utcnow = datetime.datetime(2013, 8, 8, 12, 53).replace(tzinfo=pytz.utc)
         mtr = metarcollect.METARReport(('SPECI CYYE 081253Z 01060G60KT 1/4SM '
                                         'FG SKC 10/10 A3006 RMK FG6 SLP188='))
+        mtr.time = utcnow
         mtr.iemid = 'CYYE'
         mtr.network = 'CA_BC_ASOS'
         iemob, _ = mtr.to_iemaccess(self.cursor)
