@@ -55,6 +55,7 @@ def to_metar(textprod, text):
                     text = newtext
                 else:
                     print("unparsed groups regex fail: %s" % (inst, ))
+        attempt += 1
 
     if mtr is not None:
         # Attempt to figure out more things
