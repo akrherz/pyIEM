@@ -417,7 +417,7 @@ prodDefinitions = {
     'DGT': 'Drought Information',
     'DSA': 'Tropical Disturbance Statement',
     'EQI': 'Earthquake Information',
-    'EQR': 'Earthquake Report',
+    'EQR': 'Earthquake Report',  # Proposed termination in SCN/TIN 17-29
     'EQW': 'Earthquake Warning',
     'ESF': 'Hydrologic Outlook',
     'EVI': 'Evacuation Immediate',
