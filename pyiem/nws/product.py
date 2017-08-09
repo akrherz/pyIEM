@@ -20,9 +20,10 @@ TIME_RE = re.compile(("^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
                       "([A-Z][A-Z][A-Z]) "
                      "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"),
                      re.M | re.IGNORECASE)
+# Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
                      "(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
-                     "(?P<bbb>[ACR][ACOR][A-Z])?\s*$"), re.M)
+                     "(?P<bbb>[ACR][ACORT][A-Z])?\s*$"), re.M)
 TIME_MOT_LOC = re.compile((r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
                            "(?P<dir>[0-9]{1,3})DEG\s+(?P<sknt>[0-9]{1,3})KT\s+"
                            "(?P<loc>[0-9 ]+)"))

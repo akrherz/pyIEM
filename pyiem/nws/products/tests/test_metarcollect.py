@@ -33,6 +33,13 @@ class TestMETAR(unittest.TestCase):
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 
+    def test_170809_nocrcrlf(self):
+        """Product fails WMO parsing due to usage of RTD as bbb field"""
+        utcnow = datetime.datetime(2017, 8, 9, 9).replace(tzinfo=pytz.utc)
+        prod = PARSER(get_file("rtd_bbb.txt"), utcnow=utcnow,
+                      nwsli_provider=NWSLI_PROVIDER)
+        self.assertEquals(len(prod.metars), 1)
+
     def test_metarreport(self):
         """Can we do things with the METARReport"""
         utcnow = datetime.datetime(2013, 8, 8, 12, 53).replace(tzinfo=pytz.utc)
