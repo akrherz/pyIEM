@@ -44,12 +44,14 @@ class TestMETAR(unittest.TestCase):
         """Can we do things with the METARReport"""
         utcnow = datetime.datetime(2013, 8, 8, 12, 53).replace(tzinfo=pytz.utc)
         mtr = metarcollect.METARReport(('SPECI CYYE 081253Z 01060G60KT 1/4SM '
-                                        'FG SKC 10/10 A3006 RMK FG6 SLP188='))
+                                        'FG SKC 10/10 A3006 RMK P0000 '
+                                        'FG6 SLP188='))
         mtr.time = utcnow
         mtr.iemid = 'CYYE'
         mtr.network = 'CA_BC_ASOS'
         iemob, _ = mtr.to_iemaccess(self.cursor)
         self.assertEqual(iemob.data['station'], 'CYYE')
+        self.assertEqual(iemob.data['phour'], 0.0001)
         self.assertEquals(mtr.wind_message(),
                           "gust of 60 knots (69.1 mph) from N @ 1253Z")
 
@@ -63,3 +65,6 @@ class TestMETAR(unittest.TestCase):
         self.assertEquals(len(prod.metars), 10)
         jmsgs = prod.get_jabbers()
         self.assertEquals(len(jmsgs), 4)
+
+        iemob, _ = prod.metars[1].to_iemaccess(self.cursor)
+        self.assertEqual(iemob.data['phour'], 0.46)

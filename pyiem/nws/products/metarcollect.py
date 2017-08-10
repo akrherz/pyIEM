@@ -27,6 +27,17 @@ WIND_ALERTS = {}
 WIND_ALERT_THRESHOLD_KTS = 50.
 
 
+def trace(pobj):
+    """Convert this precip object to a numeric value"""
+    if pobj is None:
+        return None
+    val = pobj.value('IN')
+    if val == 0:
+        # IEM denotation of trace
+        return 0.0001
+    return val
+
+
 def to_metar(textprod, text):
     """Create a METAR object, if possible"""
     # Do some cleaning and whitespace trimming
@@ -206,11 +217,15 @@ class METARReport(Metar):
         if self.min_temp_24hr:
             iem.data['min_tmpf_24hr'] = round(self.min_temp_24hr.value("F"), 1)
         if self.precip_3hr:
-            iem.data['p03i'] = self.precip_3hr.value("IN")
+            iem.data['p03i'] = trace(self.precip_3hr)
         if self.precip_6hr:
-            iem.data['p06i'] = self.precip_6hr.value("IN")
+            iem.data['p06i'] = trace(self.precip_6hr)
         if self.precip_24hr:
-            iem.data['p24i'] = self.precip_24hr.value("IN")
+            iem.data['p24i'] = trace(self.precip_24hr)
+        # We assume the value is zero, sad!
+        iem.data['phour'] = 0
+        if self.precip_1hr:
+            iem.data['phour'] = trace(self.precip_1hr)
 
         if self.snowdepth:
             iem.data['snowd'] = self.snowdepth.value("IN")
@@ -231,9 +246,6 @@ class METARReport(Metar):
                     iem.data['mslp'] += 100.
                 else:
                     iem.data['mslp'] -= 100.
-        iem.data['phour'] = 0
-        if self.precip_1hr:
-            iem.data['phour'] = self.precip_1hr.value("IN")
         # Do something with sky coverage
         for i in range(len(self.sky)):
             (cov, hgh, _) = self.sky[i]
