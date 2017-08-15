@@ -20,14 +20,34 @@ def utc(year, month, day, hour=0, minute=0):
 
 
 class TestSIGMET(unittest.TestCase):
+    """Can we parse SIGMETS?"""
 
-    def test_150930_SIGAK2(self):
+    def test_170815_pywwa_issue3(self):
+        """This example was in pyWWA issues list, so lets test here"""
+        utcnow = utc(2015, 9, 30, 16, 56)
+        nwsli_provider = {
+            "EWC": dict(lon=-83.39, lat=44.45),
+            "HNN": dict(lon=-85.50, lat=42.79),
+            "VXV": dict(lon=-85.50, lat=42.79),
+            "RDU": dict(lon=-85.50, lat=42.79),
+            "FLO": dict(lon=-85.50, lat=42.79),
+            "VRB": dict(lon=-85.50, lat=42.79),
+            "MIA": dict(lon=-85.50, lat=42.79),
+            "EYW": dict(lon=-85.50, lat=42.79),
+            "ROD": dict(lon=-85.50, lat=42.79),
+            "CVG": dict(lon=-85.50, lat=42.79),
+        }
+        tp = parser(get_file('SIGE.txt'), utcnow,
+                    nwsli_provider=nwsli_provider)
+        self.assertEquals(len(tp.sigmets), 4)
+
+    def test_150930_sigak2(self):
         """Got an error with this product"""
         utcnow = utc(2015, 9, 30, 16, 56)
         tp = parser(get_file('SIGAK2.txt'), utcnow)
         self.assertEquals(len(tp.sigmets), 0)
 
-    def test_150921_SIGPAS(self):
+    def test_150921_sigpas(self):
         """Got an error with this product"""
         utcnow = utc(2015, 9, 21, 10, 57)
         tp = parser(get_file('SIGPAS.txt'), utcnow)
