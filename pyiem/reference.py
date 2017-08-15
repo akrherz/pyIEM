@@ -412,6 +412,7 @@ prodDefinitions = {
     'CGR': 'Coastal Weather Observations',
     'CLI': 'Daily Climate Report',
     'CLM': 'Monthly Climate Report',
+    'CRF': 'Contingency River Forecast',
     'CWA': 'Center Weather Advisory',
     'CWF': 'Coastal Waters Forecast',
     'DGT': 'Drought Information',

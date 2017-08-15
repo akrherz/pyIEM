@@ -1,0 +1,39 @@
+055 
+FGUS53 KMSR 141747
+CRFMIS
+
+RIVER FORECAST
+NWS NORTH CENTRAL RIVER FORECAST CENTER TWIN CITIES/CHANHASSEN MN
+1245 PM CDT MON AUG 14 2017
+ 
+: THIS PRODUCT HAS PRELIMINARY DATA THAT MAY BE SUBJECT TO REVISION.
+: REFER TO YOUR LOCAL WFO FOR THE LATEST OFFICIAL RIVER FORECAST.
+: 
+: NOTE...  This product includes observed precipitation, plus
+:          it does NOT include any future precipitation.
+
+:
+:
+: Mississippi R  St Louis MO - EADM7 
+: HSA:LSX   Flood Stage:30.0 FT   Fcst Issuance Stage:28.0 FT
+.E EADM7 0813 Z DH18/DC08141745/HGIP/DIH06 :6-Hr Obs Stage (ft) 
+.E1  9.4/ 9.4/ 9.2/ 8.9
+.E EADM7 0814 Z DH18/DC08141745/HGIC9/DIH06 :6-Hr Fcst Stage (ft) 
+.E1  8.9/ 8.8/ 8.8/ 8.8/ 8.8/ 8.7/ 8.6/ 8.5 
+.E1  8.3/ 8.2/ 8.0/ 7.7/ 7.5/ 7.3/ 7.0/ 6.8 
+.E1  6.6/ 6.4/ 6.2/ 6.1/ 6.0/ 5.8/ 5.7/ 5.5 
+.E1  5.4/ 5.2/ 5.1/ 4.9/ 4.8/ 4.7/ 4.5/ 4.4 
+.E1  4.4/ 4.3/ 4.3/ 4.2/ 4.2/ 4.2/ 4.2/ 4.2 
+.E1  4.1/ 4.1/ 4.1/ 4.1/ 4.1/ 4.0/ 4.0/ 4.0 
+.E1  3.9/ 3.9/ 3.9/ 3.8/ 3.8/ 3.7/ 3.7/ 3.6 
+:
+:
+:
+:END
+ 
+ NOTE...  This product includes observed precipitation, plus
+          it does NOT include any future precipitation.
+
+$$ 
+
+ FCSTR EXT: 2537 
