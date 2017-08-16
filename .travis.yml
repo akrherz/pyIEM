@@ -1,10 +1,7 @@
 sudo: required
+
 dist: trusty
-cache:
-  timeout: 1000
-  directories:
-    - $HOME/.cache/pip
-    - $HOME/miniconda
+
 addons:
   postgresql: "9.5"
   apt:
@@ -12,40 +9,51 @@ addons:
       - postgresql-9.5-postgis-2.3
   hosts:
     - iemdb
-virtualenv:
-  system_site_packages: true
+env:
+  matrix:
+    - PYTHON_VERSION=2.7
+    - PYTHON_VERSION=3.6
 language: python
-python:
-  - "2.7"
+
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa -y
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python-pyproj python-numpy python-scipy python-psycopg2
+
 install:
-  # copied^Hborrowed from cartopy
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - if [[ ! -f $HOME/miniconda/bin/python ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-      bash miniconda.sh -f -b -p $HOME/miniconda;
-      conda create -n test-environment python=2.7;
+  # Install miniconda
+  # -----------------
+  - if [[ "$PYTHON_VERSION" == 2* ]]; then
+      wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget http://repo.continuum.io/miniconda/Miniconda3-3.7.0-Linux-x86_64.sh -O miniconda.sh;
     fi
-  - conda config --set always_yes yes --set changeps1 no;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+
+  # Create the basic testing environment
+  # ------------------------------------
+  - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
   - conda update conda
+  - conda create -n test-environment python=$PYTHON_VERSION
   - source activate test-environment
+  
+  
+  # Customise the testing environment
+  # ---------------------------------
   - conda config --add channels conda-forge
-  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas gdata cartopy"
+  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy"
   - PACKAGES="$PACKAGES psycopg2 geojson"
   - conda install --quiet $PACKAGES
-  - "pip install --upgrade pip"
-  - "pip install --upgrade matplotlib"
-  - "pip install oauth2client"
-  - "pip install apiclient"
-  - "pip install urllib3"
-  - "pip install google-api-python-client"
-  - "pip install 'Pillow<3.0'"
-  - "pip install git+https://github.com/akrherz/python-metar.git@snowdepth"
-  - "pip install git+https://github.com/smartsheet-platform/smartsheet-python-sdk"
-  - "pip install git+https://github.com/akrherz/windrose.git@darylchanges"
+  
+  # Install pyIEM
+  # ---------------
+  - pip install -r requirements.txt
+  - if [[ "$PYTHON_VERSION" == 2* ]]; then
+      pip install gdata;
+    else  
+      pip install git+https://github.com/dvska/gdata-python3.git;
+    fi
+
 before_script:
   - psql -c 'create database postgis;' -U postgres
   - psql -c 'create user nobody;' -U postgres
@@ -63,7 +71,11 @@ before_script:
   - psql -U postgres -f data/schema/asos.sql asos
   - psql -U postgres -f data/schema/hads.sql hads
   - psql -U postgres -f data/schema/mos.sql mos
+
 script:
-  "coverage run --source=pyiem setup.py test"
+  - coverage run --source=pyiem setup.py test;
+
 after_success:
-  coveralls
+  - if [[ "$PYTHON_VERSION" == 2* ]]; then
+      coveralls;
+    fi
