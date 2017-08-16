@@ -22,26 +22,26 @@ TIME_RE = re.compile(("^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
                      re.M | re.IGNORECASE)
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(("^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
-                     "(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
-                     "(?P<bbb>[ACR][ACORT][A-Z])?\s*$"), re.M)
+                     r"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
+                     r"(?P<bbb>[ACR][ACORT][A-Z])?\s*$"), re.M)
 TIME_MOT_LOC = re.compile((r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
-                           "(?P<dir>[0-9]{1,3})DEG\s+(?P<sknt>[0-9]{1,3})KT\s+"
-                           "(?P<loc>[0-9 ]+)"))
-LAT_LON_PREFIX = re.compile("LAT\.\.\.LON", re.IGNORECASE)
-LAT_LON = re.compile("([0-9]{4,8})\s+")
-WINDHAIL = re.compile((".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
+                           r"(?P<dir>[0-9]{1,3})DEG\s+"
+                           r"(?P<sknt>[0-9]{1,3})KT\s+(?P<loc>[0-9 ]+)"))
+LAT_LON_PREFIX = re.compile(r"LAT\.\.\.LON", re.IGNORECASE)
+LAT_LON = re.compile(r"([0-9]{4,8})\s+")
+WINDHAIL = re.compile((r".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
                        "(?P<windunits>MPH|KTS) "
-                       "(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
-HAILTAG = re.compile(".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
-WINDTAG = re.compile((".*WIND\.\.\."
-                      "(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
+                       r"(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"))
+HAILTAG = re.compile(r".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
+WINDTAG = re.compile((r".*WIND\.\.\."
+                      r"(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
                       "(?P<windunits>MPH|KTS)"))
-TORNADOTAG = re.compile((".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
+TORNADOTAG = re.compile((r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|"
                          "OBSERVED|POSSIBLE)"))
-WATERSPOUTTAG = re.compile((".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|"
-                            "OBSERVED|POSSIBLE)"))
+WATERSPOUTTAG = re.compile((
+    r".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|OBSERVED|POSSIBLE)"))
 TORNADODAMAGETAG = re.compile((
-    ".*TORNADO DAMAGE THREAT\.\.\."
+    r".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
@@ -57,7 +57,7 @@ class TextProductException(Exception):
 
 
 def checker(lon, lat, strdata):
-    # make sure our values are within physical bounds
+    """make sure our values are within physical bounds"""
     if lat >= 90 or lat <= -90:
         raise TextProductException("invalid latitude %s from %s" % (
                                                 lat, strdata))
@@ -68,6 +68,7 @@ def checker(lon, lat, strdata):
 
 
 def str2polygon(strdata):
+    """Convert some string data into a polygon"""
     pts = []
     partial = None
 
@@ -83,18 +84,18 @@ def str2polygon(strdata):
             lon = 0 - lon
             pts.append(checker(lon, lat, strdata))
         else:
-            s = float(val) / 100.00
+            fval = float(val) / 100.00
             if partial is None:  # we have lat
-                partial = s
+                partial = fval
                 continue
             # we have a lon
-            if s < 40:
-                s += 100.
-            s = 0 - s
-            pts.append(checker(s, partial, strdata))
+            if fval < 40:
+                fval += 100.
+            fval = 0 - fval
+            pts.append(checker(fval, partial, strdata))
             partial = None
 
-    if len(pts) == 0:
+    if not pts:
         return None
     if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
         pts.append(pts[0])
@@ -140,21 +141,21 @@ class TextProductSegment(object):
 
     def get_hvtec_nwsli(self):
         """ Return the first hvtec NWSLI entry, if it exists """
-        if len(self.hvtec) == 0:
+        if not self.hvtec:
             return None
         return self.hvtec[0].nwsli.id
 
     def svs_search(self):
         """ Special search the product for special text """
         sections = self.unixtext.split("\n\n")
-        for s in sections:
-            if len(TORNADO.findall(s)) > 0:
-                return " ".join(s.replace("\n", " ").split())
+        for section in sections:
+            if TORNADO.findall(section):
+                return " ".join(section.replace("\n", " ").split())
         return ""
 
     def process_bullets(self):
         """ Figure out the bulleted segments """
-        parts = re.findall('^\*([^\*]*)', self.unixtext, re.M | re.DOTALL)
+        parts = re.findall(r'^\*([^\*]*)', self.unixtext, re.M | re.DOTALL)
         bullets = []
         for part in parts:
             pos = part.find("\n\n")
@@ -167,42 +168,42 @@ class TextProductSegment(object):
     def process_tags(self):
         """ Find various tags in this segment """
         nolf = self.unixtext.replace("\n", " ")
-        m = WINDHAIL.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.windtag = d['wind']
-            self.windtagunits = d['windunits']
-            self.haildirtag = d['haildir']
-            self.winddirtag = d['winddir']
-            self.hailtag = d['hail']
+        match = WINDHAIL.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.windtag = gdict['wind']
+            self.windtagunits = gdict['windunits']
+            self.haildirtag = gdict['haildir']
+            self.winddirtag = gdict['winddir']
+            self.hailtag = gdict['hail']
 
-        m = WINDTAG.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.winddirtag = d['winddir']
-            self.windtag = d['wind']
-            self.windtagunits = d['windunits']
+        match = WINDTAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.winddirtag = gdict['winddir']
+            self.windtag = gdict['wind']
+            self.windtagunits = gdict['windunits']
 
-        m = HAILTAG.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.haildirtag = d['haildir']
-            self.hailtag = d['hail']
+        match = HAILTAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.haildirtag = gdict['haildir']
+            self.hailtag = gdict['hail']
 
-        m = TORNADOTAG.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.tornadotag = d['tornado']
+        match = TORNADOTAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.tornadotag = gdict['tornado']
 
-        m = TORNADODAMAGETAG.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.tornadodamagetag = d['damage']
+        match = TORNADODAMAGETAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.tornadodamagetag = gdict['damage']
 
-        m = WATERSPOUTTAG.match(nolf)
-        if m:
-            d = m.groupdict()
-            self.waterspouttag = d['waterspout']
+        match = WATERSPOUTTAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.waterspouttag = gdict['waterspout']
 
     def special_tags_to_text(self):
         """
@@ -236,16 +237,16 @@ class TextProductSegment(object):
     def process_latlon(self):
         """Parse the segment looking for the 'standard' LAT...LON encoding"""
         data = self.unixtext.replace("\n", " ")
-        m = LAT_LON_PREFIX.search(data)
-        if m is None:
+        search = LAT_LON_PREFIX.search(data)
+        if search is None:
             return None
-        pos = m.start()
+        pos = search.start()
         newdata = data[pos+9:]
         # Go find our next non-digit, non-space character, if we find it, we
         # should truncate our string, this could be improved, I suspect
-        m = re.search(r"[^\s0-9]", newdata)
-        if m is not None:
-            pos2 = m.start()
+        search = re.search(r"[^\s0-9]", newdata)
+        if search is not None:
+            pos2 = search.start()
             newdata = newdata[:pos2]
 
         poly = str2polygon(newdata)
@@ -270,36 +271,35 @@ class TextProductSegment(object):
 
     def process_time_mot_loc(self):
         """ Try to parse the TIME...MOT...LOC """
-        # TODO: The checking of time against self.ugcexpire is not perfect
         pos = self.unixtext.find("TIME...MOT...LOC")
         if pos == -1:
             return
         if self.unixtext[pos-1] != '\n':
             self.tp.warnings.append(("process_time_mot_loc segment likely has "
                                      "poorly formatted TIME...MOT...LOC"))
-        m = TIME_MOT_LOC.search(self.unixtext)
-        if not m:
+        search = TIME_MOT_LOC.search(self.unixtext)
+        if not search:
             self.tp.warnings.append(("process_time_mot_loc segment find OK, "
                                      "but regex failed..."))
             return
 
-        d = m.groupdict()
-        if len(d['ztime']) != 4 or self.ugcexpire is None:
+        gdict = search.groupdict()
+        if len(gdict['ztime']) != 4 or self.ugcexpire is None:
             return
-        hh = int(d['ztime'][:2])
-        mi = int(d['ztime'][2:])
+        hh = int(gdict['ztime'][:2])
+        mi = int(gdict['ztime'][2:])
         self.tml_valid = self.ugcexpire.replace(hour=hh, minute=mi)
         if hh > self.ugcexpire.hour:
             self.tml_valid = self.tml_valid - datetime.timedelta(days=1)
 
-        self.tml_valid = self.tml_valid.replace(tzinfo=pytz.timezone('UTC'))
+        self.tml_valid = self.tml_valid.replace(tzinfo=pytz.utc)
 
-        tokens = d['loc'].split()
+        tokens = gdict['loc'].split()
         lats = []
         lons = []
         if len(tokens) % 2 != 0:
             tokens = tokens[:-1]
-        if len(tokens) == 0:
+        if not tokens:
             return
         for i in range(0, len(tokens), 2):
             lats.append(float(tokens[i]) / 100.0)
@@ -312,8 +312,8 @@ class TextProductSegment(object):
             for lat, lon in zip(lats, lons):
                 pairs.append('%s %s' % (lon, lat))
             self.tml_giswkt = 'SRID=4326;LINESTRING(%s)' % (','.join(pairs),)
-        self.tml_sknt = int(d['sknt'])
-        self.tml_dir = int(d['dir'])
+        self.tml_sknt = int(gdict['sknt'])
+        self.tml_dir = int(gdict['dir'])
 
     def parse_headlines(self):
         """ Find headlines in this segment """
@@ -328,8 +328,8 @@ class TextProductSegment(object):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by
         this product segment '''
         affected_wfos = []
-        for u in self.ugcs:
-            for wfo in u.wfos:
+        for _ugc in self.ugcs:
+            for wfo in _ugc.wfos:
                 if wfo not in affected_wfos:
                     affected_wfos.append(wfo)
 
@@ -401,7 +401,7 @@ class TextProduct(object):
         # 300 chars
         if RESENT.search(self.text[:300]):
             return True
-        if self.bbb is None or len(self.bbb) == 0:
+        if self.bbb is None or not self.bbb:
             return False
         if self.bbb[0] in ['A', 'C']:
             return True
@@ -412,9 +412,8 @@ class TextProduct(object):
         return [self.afos, ]
 
     def get_jabbers(self, uri, uri2=None):
-        ''' Return a list of triples representing what we should send to
-        our precious jabber routing bot, this should be overridden by the
-        specialty parsers '''
+        """Return a tuple of jabber messages
+        """
         res = []
         url = "%s?pid=%s" % (uri, self.get_product_id())
         aaa = self.afos[:3]
@@ -455,7 +454,7 @@ class TextProduct(object):
         # Now lets look for a local timestamp in the product MND or elsewhere
         tokens = TIME_RE.findall(self.unixtext)
         # If we don't find anything, lets default to now, its the best
-        if len(tokens) > 0:
+        if tokens:
             # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
             self.z = tokens[0][2].upper()
             self.tz = pytz.timezone(reference.name2pytz.get(self.z, 'UTC'))
@@ -464,14 +463,14 @@ class TextProduct(object):
             if hhmi[0] == ':':
                 hhmi = hhmi.replace(":", "")
             if hhmi.find(":") > -1:
-                (h, m) = hhmi.split(":")
+                (hh, mi) = hhmi.split(":")
             elif len(hhmi) < 3:
-                h = hhmi
-                m = 0
+                hh = hhmi
+                mi = 0
             else:
-                h = hhmi[:-2]
-                m = hhmi[-2:]
-            dstr = "%s:%s %s %s %s %s" % (h, m, tokens[0][1], tokens[0][4],
+                hh = hhmi[:-2]
+                mi = hhmi[-2:]
+            dstr = "%s:%s %s %s %s %s" % (hh, mi, tokens[0][1], tokens[0][4],
                                           tokens[0][5], tokens[0][6])
             # Careful here, need to go to UTC time first then come back!
             try:
@@ -543,5 +542,5 @@ class TextProduct(object):
         data = "\n".join([line.strip()
                          for line in self.sections[0].split("\n")])
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
-        if len(tokens) > 0:
+        if tokens:
             self.afos = tokens[0]
