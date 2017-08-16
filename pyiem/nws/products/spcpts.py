@@ -162,7 +162,7 @@ def str2multipolygon(s):
                             newls2 = geom
                             maxlength = geom.length
                     newls = newls2
-                segment = zip(*newls.xy)
+                segment = list(zip(*newls.xy))
             else:
                 print('     Intersection landed here? %s' % (newls.is_valid,))
         else:
@@ -181,11 +181,11 @@ def str2multipolygon(s):
                 print("    - linestring does not intersect poly, continue")
                 continue
             found = True
-            for q in range(5):
+            for q in list(range(5)):
                 # Compute the intersection points of this segment and what
                 # is left of the pie
                 (x, y) = poly.exterior.xy
-                pie = np.array(zip(x, y))
+                pie = np.array(list(zip(x, y)))
                 distance = ((pie[:, 0] - line[q, 0])**2 +
                             (pie[:, 1] - line[q, 1])**2)**.5
                 idx1 = np.argmin(distance) - 1
@@ -300,7 +300,7 @@ class SPCPTS(TextProduct):
         """Run some checks against what was parsed"""
         # 1. Do polygons overlap for the same outlook
         print("==== Running Quality Control Checks")
-        for day, collect in self.outlook_collections.iteritems():
+        for day, collect in self.outlook_collections.items():
             # Everything should be smaller than General Thunder, for conv
             tstm = self.get_outlook('CATEGORICAL', 'TSTM', day)
             for outlook in collect.outlooks:
@@ -361,7 +361,7 @@ class SPCPTS(TextProduct):
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
         load_conus_data()
-        for day, collect in self.outlook_collections.iteritems():
+        for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 fig = plt.figure(figsize=(12, 8))
                 ax = fig.add_subplot(111)
@@ -446,7 +446,7 @@ class SPCPTS(TextProduct):
                 day = get_day(segment)
             # We need to figure out the probabilistic or category
             tokens = re.findall(r"\.\.\.\s+(.*)\s+\.\.\.", segment)
-            if len(tokens) == 0:
+            if not tokens:
                 continue
             category = tokens[0].strip()
             point_data = {}
@@ -470,7 +470,7 @@ class SPCPTS(TextProduct):
                 collect = self.outlook_collections.setdefault(
                     day, SPCOutlookCollection(self.issue, self.expire, day))
             # We need to duplicate, in the case of day-day spans
-            for threshold in point_data.keys():
+            for threshold in list(point_data.keys()):
                 if threshold == 'TSTM' and self.afos == 'PFWF38':
                     print(("Failing to parse TSTM in PFWF38"))
                     del point_data[threshold]
@@ -502,7 +502,7 @@ class SPCPTS(TextProduct):
 
     def compute_wfos(self, txn):
         """Figure out which WFOs are impacted by this polygon"""
-        for day, collect in self.outlook_collections.iteritems():
+        for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
@@ -526,7 +526,7 @@ class SPCPTS(TextProduct):
         Args:
           txn (psycopg2.cursor): database cursor
         """
-        for day, collect in self.outlook_collections.iteritems():
+        for day, collect in self.outlook_collections.items():
             txn.execute("""
                 DELETE from spc_outlooks where valid = %s
                 and expire = %s and outlook_type = %s and day = %s
@@ -622,7 +622,7 @@ class SPCPTS(TextProduct):
             'outlooktype': product_descript,
             'url': url
             }
-        for _, collect in self.outlook_collections.iteritems():
+        for _, collect in self.outlook_collections.items():
 
             wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
                     'CRIT': [], 'MDT': [], 'HIGH': []}
@@ -655,7 +655,7 @@ class SPCPTS(TextProduct):
                                      ) % jdict
                          }
                     ]
-            keys = wfomsgs.keys()
+            keys = list(wfomsgs.keys())
             keys.sort()
             res = []
             for wfo in keys:

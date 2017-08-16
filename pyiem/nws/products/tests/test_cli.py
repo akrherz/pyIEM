@@ -1,7 +1,9 @@
+from __future__ import print_function
 import os
 import datetime
-import pytz
 import unittest
+
+import pytz
 from pyiem.nws.products.cli import parser as cliparser
 
 
@@ -9,7 +11,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/CLI/%s" % (basedir, name)
-    return open(fn).read()
+    return open(fn, 'rb').read().decode('utf-8')
 
 
 class TestCLI(unittest.TestCase):
@@ -26,7 +28,7 @@ class TestCLI(unittest.TestCase):
         prod = cliparser(get_file('CLIANC.txt'))
         answers = [23, 22, 31, 10, 29, 33]
         for i, answer in enumerate(answers):
-            print i
+            print(i)
             self.assertEqual(prod.data[i]['data']['temperature_maximum'],
                              answer)
 

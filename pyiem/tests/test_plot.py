@@ -272,8 +272,8 @@ class TestPlot(unittest.TestCase):
 
     def test_plot3(self):
         """ Exercise climdiv plot API """
-        m = plot.MapPlot(sector='iowa')
-        m.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30,
-                        'AJK': 40, 'HFO': 50})
-        m.postprocess(filename='/tmp/test_plot_iowa_climdiv.png')
-        m.close()
+        mp = plot.MapPlot(sector='iowa')
+        mp.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30,
+                         'AJK': 40, 'HFO': 50})
+        mp.postprocess(filename='/tmp/test_plot_iowa_climdiv.png')
+        mp.close()

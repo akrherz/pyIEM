@@ -1,3 +1,4 @@
+from __future__ import print_function
 import re
 import datetime
 import pytz
@@ -51,8 +52,8 @@ def contime(s):
     try:
         ts = datetime.datetime.strptime(s, '%y%m%dT%H%MZ')
         return ts.replace(tzinfo=pytz.timezone('UTC'))
-    except Exception, err:
-        print err
+    except Exception as err:
+        print(err)
         return None
 
 

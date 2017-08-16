@@ -1,12 +1,12 @@
-
+from __future__ import absolute_import
 from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
-import spacewx
-import cli
-import hwo
-import lsr
-import mcd
-import nhc
-import taf
+from . import spacewx
+from . import cli
+from . import hwo
+from . import lsr
+from . import mcd
+from . import nhc
+from . import taf
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):

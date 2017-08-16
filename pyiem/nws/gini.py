@@ -1,16 +1,16 @@
 """
 Processing of GINI formatted data found on NOAAPORT
 """
-
 import struct
 import math
 import pyproj
-import numpy as np
 import zlib
 import datetime
 import pytz
 import logging
 import os
+
+import numpy as np
 
 DATADIR = os.sep.join([os.path.dirname(__file__), '../data'])
 
@@ -83,7 +83,46 @@ def get_ir_ramp():
     return data
 
 
-class GINIFile(object):
+class GINIZFile(object):
+    """
+    Deal with compressed GINI files, which are the standard on NOAAPORT
+    """
+
+    def __init__(self, fobj):
+        """Create a GNIFile instance with a compressed file object
+
+        Args:
+          fobj (file): A fileobject
+        """
+        fobj.seek(0)
+        # WMO HEADER
+        self.wmo = (fobj.read(21)).strip()
+        d = zlib.decompressobj()
+        hdata = d.decompress(fobj.read())
+        self.metadata = self.read_header(hdata[21:])
+        self.init_projection()
+        totsz = len(d.unused_data)
+        # 5120 value chunks, so we need to be careful!
+        sdata = ""
+        chunk = 'x\xda'
+        i = 0
+        for part in d.unused_data.split('x\xda'):
+            if part == "" and i == 0:
+                continue
+            chunk += part
+            try:
+                sdata += zlib.decompress(chunk)
+                i += 1
+                totsz -= len(chunk)
+                chunk = 'x\xda'
+            except:
+                chunk += 'x\xda'
+        if totsz != 0:
+            logging.info("Totalsize left: %s", totsz)
+
+        self.data = np.reshape(np.fromstring(sdata, np.int8),
+                               (self.metadata['numlines'] + 1,
+                                self.metadata['linesize']))
 
     def __str__(self):
         s = "%s Line Size: %s Num Lines: %s" % (self.wmo,
@@ -252,6 +291,7 @@ class GINIFile(object):
                          self.metadata['map_projection'])
 
     def read_header(self, hdata):
+        """read the header!"""
         meta = {}
         meta['source'] = struct.unpack("> B", hdata[0])[0]
         meta['creating_entity'] = struct.unpack("> B", hdata[1])[0]
@@ -318,45 +358,3 @@ class GINIFile(object):
         meta['lon_ur'] = meta['lon_ur'] / 10000.0
 
         return meta
-
-
-class GINIZFile(GINIFile):
-    """
-    Deal with compressed GINI files, which are the standard on NOAAPORT
-    """
-
-    def __init__(self, fobj):
-        """Create a GNIFile instance with a compressed file object
-
-        Args:
-          fobj (file): A fileobject
-        """
-        fobj.seek(0)
-        # WMO HEADER
-        self.wmo = (fobj.read(21)).strip()
-        d = zlib.decompressobj()
-        hdata = d.decompress(fobj.read())
-        self.metadata = self.read_header(hdata[21:])
-        self.init_projection()
-        totsz = len(d.unused_data)
-        # 5120 value chunks, so we need to be careful!
-        sdata = ""
-        chunk = 'x\xda'
-        i = 0
-        for part in d.unused_data.split('x\xda'):
-            if part == "" and i == 0:
-                continue
-            chunk += part
-            try:
-                sdata += zlib.decompress(chunk)
-                i += 1
-                totsz -= len(chunk)
-                chunk = 'x\xda'
-            except:
-                chunk += 'x\xda'
-        if totsz != 0:
-            logging.info("Totalsize left: %s", totsz)
-
-        self.data = np.reshape(np.fromstring(sdata, np.int8),
-                               (self.metadata['numlines'] + 1,
-                                self.metadata['linesize']))

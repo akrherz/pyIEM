@@ -1,5 +1,6 @@
 import unittest
 import datetime
+
 import pytz
 from pyiem.nws import ugc
 
@@ -14,7 +15,7 @@ class TestObservation(unittest.TestCase):
         ugcs = [ugc.UGC("DC", "Z", "001"), ugc.UGC("IA", "C", "001"),
                 ugc.UGC("IA", "C", "002")]
         self.assertEquals(ugc.ugcs_to_text(ugcs),
-                          "((IAC001)), ((IAC002)) [IA] and ((DCZ001)) [DC]")
+                          "((DCZ001)) [DC] and ((IAC001)), ((IAC002)) [IA]")
 
     def test_str1(self):
         """ check ugc.parse of STR1 parsing """

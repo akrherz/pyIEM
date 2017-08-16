@@ -1,5 +1,6 @@
 """ Parse SIGMETs """
 # Stdlib imports
+from __future__ import print_function
 import re
 import datetime
 import math
@@ -337,7 +338,7 @@ class SIGMETProduct(TextProduct):
         """ Process this type of SIGMET """
         pass
 
-    def get_jabbers(self, uri, uri2):
+    def get_jabbers(self, uri, uri2=None):
         """ Return the Jabber for this sigmet """
         j = []
         for sig in self.sigmets:
@@ -368,7 +369,7 @@ class SIGMETProduct(TextProduct):
             patch = PolygonPatch(Polygon(zip(x, y)), fc='r', label='Outlook')
             m.ax.add_patch(patch)
             fn = '/tmp/%s.png' % (sig.label,)
-            print ':: creating plot %s' % (fn,)
+            print(':: creating plot %s' % (fn,))
             m.postprocess(filename=fn)
             m.close()
 

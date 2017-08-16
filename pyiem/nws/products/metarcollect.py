@@ -97,11 +97,9 @@ def sanitize(text):
     """
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
-    text = text.encode('latin-1'
-                       ).replace('\xa0', " "
-                                 ).replace("\001", ""
-                                           ).replace("\003", ""
-                                                     ).replace("COR ", "")
+    # daryl does not understand all of what follows as far as encode/decode
+    text = text.encode().replace(b'\xa0', b" ").replace(b"\001", b"")
+    text = text.replace(b"\003", b"").replace(b"COR ", b"").decode('utf-8')
     text = " ".join(text.strip().split())
     # Look to see that our METAR starts with A-Z
     if re.match("^[0-9]", text):
@@ -188,8 +186,8 @@ class METARReport(Metar):
                 iem.data['drct'] = float(self.wind_dir.value())
 
         if not self.wind_speed_peak:
-            old_max_wind = max([iem.data.get('max_sknt', 0),
-                                iem.data.get('max_gust', 0)])
+            old_max_wind = max([iem.data.get('max_sknt', 0) or 0,
+                                iem.data.get('max_gust', 0) or 0])
             new_max_wind = max([iem.data.get('sknt', 0),
                                 iem.data.get('gust', 0)])
             if new_max_wind > old_max_wind:

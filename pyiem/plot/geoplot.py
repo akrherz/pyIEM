@@ -17,13 +17,13 @@ Example:
 """
 # stdlib
 from __future__ import print_function
-import cStringIO
+from io import BytesIO
 import tempfile
 import os
 import sys
 import subprocess
 import shutil
-import cPickle
+import pickle
 import datetime
 import math
 import warnings
@@ -147,7 +147,7 @@ def load_pickle_geo(filename):
     if not os.path.isfile(fn):
         print("load_pickle_geo(%s) failed, file is missing!" % (fn,))
         return dict()
-    return cPickle.load(open(fn, 'rb'))
+    return pickle.load(open(fn, 'rb'))
 
 
 def mask_outside_geom(ax, geom):
@@ -248,7 +248,7 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     lblformat = kwargs.get('lblformat', '%s')
     labels = kwargs.get('labels', dict())
     plotmissing = kwargs.get('plotmissing', True)
-    for polykey, polydict in geo_provider.iteritems():
+    for polykey, polydict in geo_provider.items():
         val = data.get(polykey, None)
         if val is None:
             if not plotmissing:
@@ -1126,13 +1126,13 @@ class MapPlot(object):
                     pqstr=None):
         """ postprocess into a slim and trim PNG """
         tmpfn = tempfile.mktemp()
-        ram = cStringIO.StringIO()
+        ram = BytesIO()
         plt.savefig(ram, format='png')
         ram.seek(0)
         im = Image.open(ram)
         im2 = im.convert('RGB').convert('P', palette=Image.ADAPTIVE)
         if memcache and memcachekey:
-            ram = cStringIO.StringIO()
+            ram = BytesIO()
             im2.save(ram, format='png')
             ram.seek(0)
             r = ram.read()
@@ -1157,7 +1157,6 @@ class MapPlot(object):
 
 
 def windrose(*args, **kwargs):
-    import warnings
     warnings.warn("windrose() is depreciated, use pyiem.windrose_utils!")
     import pyiem.windrose_utils as wru
     return wru.windrose(*args, **kwargs)

@@ -225,7 +225,7 @@ IEM Tracker Action:  This trouble ticket has been marked
             the minimum time a site is considered to be 'online' within
 
         """
-        network = nt.sts[nt.sts.keys()[0]]['network']
+        network = nt.sts[list(nt.sts.keys())[0]]['network']
         self.icursor.execute("""SELECT station, trackerid, valid from offline
             WHERE network = %s""", (network,))
         offline = {}

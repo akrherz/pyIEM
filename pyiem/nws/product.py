@@ -150,7 +150,7 @@ class TextProductSegment(object):
         sections = self.unixtext.split("\n\n")
         for section in sections:
             if TORNADO.findall(section):
-                return " ".join(section.replace("\n", " ").split())
+                return " ".join(section.replace(u"\n", " ").split())
         return ""
 
     def process_bullets(self):
@@ -160,9 +160,9 @@ class TextProductSegment(object):
         for part in parts:
             pos = part.find("\n\n")
             if pos > 0:
-                bullets.append(" ".join(part[:pos].replace("\n", "").split()))
+                bullets.append(" ".join(part[:pos].replace(u"\n", "").split()))
             else:
-                bullets.append(" ".join(part.replace("\n", "").split()))
+                bullets.append(" ".join(part.replace(u"\n", "").split()))
         return bullets
 
     def process_tags(self):
@@ -337,9 +337,7 @@ class TextProductSegment(object):
 
 
 class TextProduct(object):
-    '''
-    class representing a NWS Text Product
-    '''
+    """class representing a NWS Text Product"""
 
     def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None, parse_segments=True):
@@ -359,8 +357,8 @@ class TextProduct(object):
             nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
-        self.unixtext = text.replace("\r\r\n", "\n")
-        self.sections = self.unixtext.split("\n\n")
+        self.unixtext = text.replace(u"\r\r\n", u"\n")
+        self.sections = self.unixtext.split(u"\n\n")
         self.afos = None
         self.valid = None
         self.source = None
@@ -435,7 +433,7 @@ class TextProduct(object):
         """ Find the signature at the bottom of the page
         """
         return " ".join(self.segments[-1].unixtext.replace(
-            "\n", " ").strip().split())
+            u"\n", " ").strip().split())
 
     def parse_segments(self):
         """ Split the product by its $$ """
@@ -461,7 +459,7 @@ class TextProduct(object):
             hhmi = tokens[0][0]
             # False positive from regex
             if hhmi[0] == ':':
-                hhmi = hhmi.replace(":", "")
+                hhmi = hhmi.replace(u":", "")
             if hhmi.find(":") > -1:
                 (hh, mi) = hhmi.split(":")
             elif len(hhmi) < 3:
@@ -479,7 +477,6 @@ class TextProduct(object):
                 msg = ("Invalid timestamp [%s] found in product "
                        "[%s %s %s] header") % (" ".join(tokens[0]), self.wmo,
                                                self.source, self.afos)
-                sys.exc_clear()
                 raise TextProductException(self.source[1:], msg)
             now += datetime.timedelta(hours=reference.offsets[self.z])
             self.valid = now.replace(tzinfo=pytz.timezone('UTC'))

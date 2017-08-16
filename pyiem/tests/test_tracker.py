@@ -1,7 +1,8 @@
 import unittest
-import psycopg2
 import datetime
+
 import pytz
+import psycopg2
 from pyiem.tracker import TrackerEngine, loadqc
 from pyiem.network import Table as NetworkTable
 

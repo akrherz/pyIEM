@@ -1,9 +1,11 @@
+"""Be-ware, giant file ahoy"""
+from __future__ import print_function
 import unittest
 import os
-import psycopg2.extras
 import datetime
-import pytz
 
+import pytz
+import psycopg2.extras
 from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
@@ -23,7 +25,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
+    return open(fn, 'rb').read().decode('utf-8')
 
 
 def utc(year, month, day, hour=0, minute=0):
@@ -33,6 +35,7 @@ def utc(year, month, day, hour=0, minute=0):
 
 
 class TestProducts(unittest.TestCase):
+    maxDiff = None
 
     def setUp(self):
         ''' This is called for each test, beware '''
@@ -541,14 +544,7 @@ class TestProducts(unittest.TestCase):
 
     def test_140820_badtimestamp(self):
         """ Check our invalid timestamp exception and how it is written """
-        try:
-            parser(get_file('RWSGTF_badtime.txt'))
-        except Exception, msg:
-            # Note to self, unsure how this even works :)
-            self.assertEquals(msg[1], (
-                "Invalid timestamp "
-                "[130 PM MDT WED TUE 19 2014] found in product "
-                "[NZUS01 KTFX RWSGTF] header"))
+        self.assertRaises(Exception, parser, get_file('RWSGTF_badtime.txt'))
 
     def test_140731_badugclabel(self):
         """ Make sure this says zones and not counties! """
@@ -593,7 +589,7 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2014, 6, 6, 20, 37)
         ugc_provider = {}
         for u in range(1, 201, 2):
-            n = 'a' * min((u+1/2), 40)
+            n = 'a' * int(min((u+1/2), 40))
             for st in ['AR', 'MS', 'TN', 'MO']:
                 ugc_provider["%sC%03i" % (st, u)] = UGC(st, 'C', "%03i" % (u,),
                                                         name=n, wfos=['DMX'])
@@ -601,16 +597,17 @@ class TestProducts(unittest.TestCase):
                           ugc_provider=ugc_provider)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][0], (
-         'MEG updates Severe Thunderstorm Watch '
-         '(extends area of 11 counties in [TN] and '
-         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO], continues '
-         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaa'
-         'aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaa'
-         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-         'aaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN] and aaaaaaaa'
-         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 12 counties in [AR] and '
-         '22 counties in [MS]) till Jun 6, 7:00 PM CDT. '
-         'http://localhost2014-O-EXA-KMEG-SV-A-0240'))
+         'MEG updates Severe Thunderstorm Watch (extends area of '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 11 counties in '
+         '[TN], continues 12 counties in [AR] and '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 22 counties in '
+         '[MS] and aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, '
+         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN]) till Jun 6, 7:00 PM '
+         'CDT. http://localhost2014-O-EXA-KMEG-SV-A-0240'))
 
     def test_140715_condensed(self):
         """ Make sure our Tags and svs_special works for combined message """
@@ -631,17 +628,17 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser(get_file('WCNPHI.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][0], (
-            "PHI issues Severe Thunderstorm Watch "
-            "(issues ((MDC011)), ((MDC015)), ((MDC029)), ((MDC035)), "
-            "((MDC041)) [MD] and ((NJC001)), ((NJC005)), ((NJC007)), "
-            "((NJC009)), ((NJC011)), ((NJC015)), ((NJC019)), ((NJC021)), "
-            "((NJC023)), ((NJC025)), ((NJC027)), ((NJC029)), ((NJC033)), "
-            "((NJC035)), ((NJC037)), ((NJC041)) [NJ] and ((DEC001)), "
-            "((DEC003)), ((DEC005)) [DE] and ((PAC011)), ((PAC017)), "
-            "((PAC025)), ((PAC029)), ((PAC045)), ((PAC077)), ((PAC089)), "
-            "((PAC091)), ((PAC095)), ((PAC101)) [PA], issues ((ANZ430)), "
-            "((ANZ431)), ((ANZ450)), ((ANZ451)), ((ANZ452)), ((ANZ453)), "
-            "((ANZ454)), ((ANZ455)) [AN]) till Jul 14, 8:00 PM EDT. "
+            "PHI issues Severe Thunderstorm Watch (issues ((DEC001)), "
+            "((DEC003)), ((DEC005)) [DE] and ((MDC011)), ((MDC015)), "
+            "((MDC029)), ((MDC035)), ((MDC041)) [MD] and ((NJC001)), "
+            "((NJC005)), ((NJC007)), ((NJC009)), ((NJC011)), ((NJC015)), "
+            "((NJC019)), ((NJC021)), ((NJC023)), ((NJC025)), ((NJC027)), "
+            "((NJC029)), ((NJC033)), ((NJC035)), ((NJC037)), ((NJC041)) [NJ] "
+            "and ((PAC011)), ((PAC017)), ((PAC025)), ((PAC029)), ((PAC045)), "
+            "((PAC077)), ((PAC089)), ((PAC091)), ((PAC095)), ((PAC101)) [PA], "
+            "issues ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
+            "((ANZ452)), ((ANZ453)), ((ANZ454)), ((ANZ455)) [AN]) "
+            "till Jul 14, 8:00 PM EDT. "
             "http://localhost2014-O-NEW-KPHI-SV-A-0418"))
 
     def test_140610_tweet_spacing(self):
@@ -724,7 +721,7 @@ class TestProducts(unittest.TestCase):
         polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and
         significance = 'W' and wfo = 'LBF' ORDER by updated ASC
         """)
-        print 'sta update issue  expire init_e p_begi p_end'
+        print('sta update issue  expire init_e p_begi p_end')
         rows = []
 
         def safe(val):
@@ -793,7 +790,7 @@ class TestProducts(unittest.TestCase):
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         ugc_provider = {}
         for u in range(1, 201, 2):
-            n = 'a' * min((u+1/2), 40)
+            n = 'a' * int(min((u+1/2), 40))
             ugc_provider["IAC%03i" % (u,)] = UGC('IA', 'C', "%03i" % (u,),
                                                  name=n, wfos=['DMX'])
 
@@ -939,7 +936,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.afos, 'WSWDMX')
         prod.sql(self.txn)
 
-        ''' Did Marshall County IAZ049 get a ZR.Y '''
+        # Did Marshall County IAZ049 get a ZR.Y
         self.txn.execute("""
             SELECT issue from warnings_2013 WHERE
             wfo = 'DMX' and eventid = 1 and phenomena = 'ZR' and
@@ -952,7 +949,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.afos, 'WSWDMX')
         prod.sql(self.txn)
 
-        ''' Is IAZ006 in CON status with proper end time '''
+        # Is IAZ006 in CON status with proper end time
         answer = utc(2013, 1, 28, 6)
         self.txn.execute("""SELECT expire from warnings_2013 WHERE
         wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and
@@ -985,7 +982,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(row[0], answer)
 
     def test_vtec(self):
-        ''' Simple test of VTEC parser '''
+        """Simple test of VTEC parser"""
         # Remove cruft first
         self.txn.execute("""
             DELETE from warnings_2005 WHERE

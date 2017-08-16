@@ -79,7 +79,7 @@ class MOSProduct(TextProduct):
 
     def __init__(self, text, utcnow=None, ugc_provider=None,
                  nwsli_provider=None):
-        ''' constructor '''
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider,
                              nwsli_provider)
         self.data = []
@@ -119,7 +119,7 @@ class MOSProduct(TextProduct):
         raw = raw.replace("\n", "___").replace("\x1e", "")
         sections = re.findall(r"([A-Z0-9]{4}\s+... MOS GUIDANCE .*?)______",
                               raw)
-        self.data = map(section_parser, sections)
+        self.data = list(map(section_parser, sections))
         if not sections:
             raise Exception("Failed to split MOS Product")
 

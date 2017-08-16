@@ -1,5 +1,6 @@
 import os
 import unittest
+
 from pyiem.nws.products.nldn import parser as parser
 
 
@@ -7,7 +8,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/NLDN/%s" % (basedir, name)
-    return open(fn)
+    return open(fn, 'rb')
 
 
 class TestProducts(unittest.TestCase):

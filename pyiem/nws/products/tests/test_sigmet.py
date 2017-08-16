@@ -1,3 +1,4 @@
+from __future__ import print_function
 import unittest
 import os
 import datetime
@@ -63,7 +64,7 @@ class TestSIGMET(unittest.TestCase):
         """ Test our algo on either side of a line """
         pts = [[0, 0], [5, 0]]
         pts = compute_esol(pts, 111)
-        print pts
+        print(pts)
         self.assertAlmostEqual(pts[0][0], 0.00, 2)
         self.assertAlmostEqual(pts[0][1], 1.00, 2)
         self.assertAlmostEqual(pts[1][0], 5.00, 2)

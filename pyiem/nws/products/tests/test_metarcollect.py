@@ -22,7 +22,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/METAR/%s" % (basedir, name)
-    return open(fn).read()
+    return open(fn, 'rb').read().decode('utf-8')
 
 
 class TestMETAR(unittest.TestCase):

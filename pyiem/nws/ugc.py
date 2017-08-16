@@ -4,6 +4,7 @@
 
 import re
 import datetime
+from collections import OrderedDict
 
 # _re = "([A-Z][A-Z][C,Z][0-9][0-9][0-9][A-Z,0-9,\-,>]+)"
 _re = "^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$"
@@ -15,7 +16,7 @@ class UGCParseException(Exception):
 
 def ugcs_to_text(ugcs):
     """ Convert a list of UGC objects to a textual string """
-    states = {}
+    states = OrderedDict()
     geotype = "counties"
     for u in ugcs:
         code = str(u)

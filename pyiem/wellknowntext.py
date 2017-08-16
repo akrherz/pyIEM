@@ -37,7 +37,7 @@ def parse_coordinate_lists(wkt):
             for pair in wktcoords.split(","):
                 # a pair may be a triple actually. For now we just
                 # ignore any third value
-                x, y = map(float, pair.split())[:2]
+                x, y = list(map(float, pair.split()))[:2]
                 poly.append((x, y))
             geometry.append(poly)
             wkt = wkt[match.end(0):].strip()
@@ -101,7 +101,7 @@ def convert_well_known_text(wkt):
     actual geometry. This SRID is ignored.
     """
     parts = wkt.split(";")
-    if len(parts) == 0:
+    if not parts:
         raise ValueError("No recognized geometry in WKT string")
     for part in parts:
         part = part.strip()

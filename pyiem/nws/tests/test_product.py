@@ -1,3 +1,4 @@
+"""Testing!"""
 import unittest
 import datetime
 import os
@@ -14,7 +15,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
+    return open(fn, 'rb').read().decode('utf-8')
 
 
 def utc(year, month, day, hour=0, minute=0):
@@ -24,6 +25,8 @@ def utc(year, month, day, hour=0, minute=0):
 
 
 class TestProduct(unittest.TestCase):
+    """Test Products"""
+    maxDiff = None
 
     def test_170411_fakemnd(self):
         """This RTP has a quasi-faked timestamp in the header causing error"""
@@ -48,10 +51,10 @@ class TestProduct(unittest.TestCase):
               "FTUS43 KOAX 102320  COR  ",
               "FTUS43 KOAX 102320",
               ]
-        for a in ar:
-            self.assertTrue(WMO_RE.match(a) is not None)
+        for item in ar:
+            self.assertTrue(WMO_RE.match(item) is not None)
 
-    def test_RFD(self):
+    def test_rfd(self):
         """ Parse a RFD """
         tp = productparser(get_file('RFDOAX.txt'))
         self.assertEqual(tp.get_channels()[0], 'RFDOAX')
@@ -60,7 +63,7 @@ class TestProduct(unittest.TestCase):
              'OAX issues Grassland Fire Danger '
              '(RFD) http://localhost?pid=201501191010-KOAX-FNUS63-RFDOAX'))
 
-    def test_HWO(self):
+    def test_hwo(self):
         """ Parse a HWO """
         tp = productparser(get_file('HWO.txt'))
         self.assertEqual(tp.get_channels()[0], 'HWOLOT')

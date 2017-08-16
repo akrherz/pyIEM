@@ -19,7 +19,7 @@ def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/SPCPTS/%s" % (basedir, name)
-    return open(fn).read()
+    return open(fn, 'rb').read().decode('utf-8')
 
 
 class TestPTS(unittest.TestCase):
@@ -67,7 +67,7 @@ class TestPTS(unittest.TestCase):
         """This went into the database with an incorrect expiration time"""
         spc = parser(get_file('PTSDY1_baddbtime.txt'))
         answer = utc(2017, 5, 1, 12, 0)
-        for _, outlook in spc.outlook_collections.iteritems():
+        for _, outlook in spc.outlook_collections.items():
             self.assertEqual(outlook.expire, answer)
 
     def test_170428_large(self):
