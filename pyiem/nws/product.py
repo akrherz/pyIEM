@@ -48,6 +48,7 @@ RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
 
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
+KNOWN_BAD_TTAAII = ['KAWN', 'SAWH']
 
 
 class TextProductException(Exception):
@@ -515,13 +516,15 @@ class TextProduct(object):
                                         "%s") % (self.text[:100]))
         gdict = search.groupdict()
         self.wmo = gdict['ttaaii']
-        if len(self.wmo) == 4:
-            self.warnings.append(("WMO ttaaii found four chars: %s, adding 00"
-                                  ) % (self.wmo, ))
-            self.wmo += "00"
         self.source = gdict['cccc']
         self.ddhhmm = gdict['ddhhmm']
         self.bbb = gdict['bbb']
+        if len(self.wmo) == 4:
+            # Don't whine about known problems
+            if self.source not in KNOWN_BAD_TTAAII:
+                self.warnings.append(("WMO ttaaii found four chars: %s %s"
+                                      "adding 00") % (self.wmo, self.source))
+            self.wmo += "00"
 
     def get_affected_wfos(self):
         ''' Based on the ugc_provider, figure out which WFOs are impacted by
