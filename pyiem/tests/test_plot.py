@@ -58,7 +58,8 @@ class TestPlot(unittest.TestCase):
     def test_michigan(self):
         """See what we do with Michigan"""
         m = plot.MapPlot(sector='state', state='MI')
-        m.contourf(range(-84, -75), range(36, 45), range(9), range(9),
+        m.contourf(np.arange(-84, -75), np.arange(36, 45), np.arange(9),
+                   np.arange(9),
                    clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
         m.postprocess(filename='/tmp/test_plot_michigan.png')
         m.close()
@@ -88,7 +89,8 @@ class TestPlot(unittest.TestCase):
     def test_drawiowawfo(self):
         """Fill the Iowa WFOs"""
         m = plot.MapPlot(sector='iowawfo', title='Fill Iowa WFOs')
-        m.contourf(range(-94, -85), range(36, 45), range(9), range(9),
+        m.contourf(np.arange(-94, -85), np.arange(36, 45), np.arange(9),
+                   np.arange(9),
                    clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
         m.postprocess(filename='/tmp/test_plot_iowawfo.png')
         m.close()
@@ -120,7 +122,7 @@ class TestPlot(unittest.TestCase):
         """Run tests against the colorbar algorithm"""
         mp = plot.MapPlot(sector='iowa', debug=True)
         cmap = plot.maue()
-        clevs = range(0, 101, 10)
+        clevs = list(range(0, 101, 10))
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         mp.drawcities()
         mp.draw_colorbar(clevs, cmap, norm)
@@ -129,7 +131,7 @@ class TestPlot(unittest.TestCase):
 
         mp = plot.MapPlot(sector='iowa')
         cmap = plot.maue()
-        clevs = range(0, 101, 10)
+        clevs = list(range(0, 101, 10))
         clevlabels = ["One", "Three", "Blahh", "Longest", "Five",
                       "Six", "Ten", "Fourty", 100000, "Hi\nHo", 100]
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -139,7 +141,7 @@ class TestPlot(unittest.TestCase):
 
         mp = plot.MapPlot(sector='iowa')
         cmap = plot.maue()
-        clevs = range(0, 101, 1)
+        clevs = list(range(0, 101, 1))
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         mp.draw_colorbar(clevs, cmap, norm, clevstride=10,
                          title="Erosion $kg/m^2$")
@@ -224,14 +226,16 @@ class TestPlot(unittest.TestCase):
         """ Test scatter plots """
         m = plot.MapPlot(sector='midwest')
         m.scatter(np.linspace(-99, -94, 100),
-                  np.linspace(40, 45, 100), range(100), np.arange(0, 101, 10))
+                  np.linspace(40, 45, 100), np.arange(100),
+                  np.arange(0, 101, 10))
         m.postprocess(filename='/tmp/test_plot_scatter.png')
         m.close()
 
     def test_contourf(self):
         ''' Test the contourf plot with labels specified '''
         m = plot.MapPlot(sector='iowa')
-        m.contourf(range(-94, -89), range(40, 45), range(5), range(5),
+        m.contourf(np.arange(-94, -89), np.arange(40, 45),
+                   np.arange(5), np.arange(5),
                    clevlabels=['a', 'b', 'c', 'd', 'e'])
         m.postprocess(filename='/tmp/test_plot_contourf.png')
         m.close()
@@ -239,11 +243,11 @@ class TestPlot(unittest.TestCase):
     def test_textplot(self):
         ''' Can we plot text and place labels on them '''
         m = plot.MapPlot(sector='iowa')
-        m.plot_values(range(-99, -94), range(40, 45), range(5))
+        m.plot_values(np.arange(-99, -94), np.arange(40, 45), np.arange(5))
         m.postprocess(filename='/tmp/test_plot_1.png')
 
         m = plot.MapPlot(sector='iowa')
-        m.plot_values(range(-99, -94), range(40, 45), range(5),
+        m.plot_values(np.arange(-99, -94), np.arange(40, 45), np.arange(5),
                       labels=range(5, 11))
         m.postprocess(filename='/tmp/test_plot_2.png')
         m.close()

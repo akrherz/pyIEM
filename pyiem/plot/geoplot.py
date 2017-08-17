@@ -147,7 +147,10 @@ def load_pickle_geo(filename):
     if not os.path.isfile(fn):
         print("load_pickle_geo(%s) failed, file is missing!" % (fn,))
         return dict()
-    return pickle.load(open(fn, 'rb'))
+    pickle_opts = dict()
+    if sys.version_info.major > 2:
+        pickle_opts['encoding'] = 'bytes'
+    return pickle.load(open(fn, 'rb'), **pickle_opts)
 
 
 def mask_outside_geom(ax, geom):
@@ -463,7 +466,7 @@ class MapPlot(object):
                            zorder=Z_CF)
             if 'nostates' not in kwargs:
                 states = load_pickle_geo('us_states.pickle')
-                _a.add_geometries([val['geom'] for val in states.itervalues()],
+                _a.add_geometries([val[b'geom'] for key, val in states.items()],
                                   crs=ccrs.PlateCarree(), lw=1.0,
                                   edgecolor='k', facecolor='None',
                                   zorder=Z_POLITICAL)
@@ -663,7 +666,8 @@ class MapPlot(object):
 
             # Sky Coverage
             skycoverage = stdata.get('coverage')
-            if skycoverage >= 0 and skycoverage <= 100:
+            if (skycoverage is not None and skycoverage >= 0
+                    and skycoverage <= 100):
                 w = Wedge((x, y), circlesz, 0, 360, ec='k', fc='white',
                           zorder=2)
                 self.ax.add_artist(w)
@@ -889,11 +893,11 @@ class MapPlot(object):
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
-            mask_outside_geom(self.ax, s[self.state]['geom'])
+            mask_outside_geom(self.ax, s[self.state.encode()][b'geom'])
             return
         elif self.sector == 'iowawfo':
             s = load_pickle_geo('iowawfo.pickle')
-            geo = s['iowawfo']['geom']
+            geo = s[b'iowawfo'][b'geom']
             ccw = np.asarray(geo.exterior)[::-1]
         else:
             ccw = load_bounds('%s_ccw' % (self.sector,))
@@ -913,7 +917,7 @@ class MapPlot(object):
             lons = np.array(lons)
             lats = np.array(lats)
             vals = np.array(vals)
-        if vals.ndim == 1:
+        if np.array(vals).ndim == 1:
             # We need to grid, get current plot bounds in display proj
             # Careful here as a rotated projection may have maxes not in ul
             xbnds = self.ax.get_xlim()
