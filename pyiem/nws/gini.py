@@ -58,17 +58,17 @@ AWIPS_GRID = {'TIGB': 203,
 
 def uint24(data):
     """convert three byte data that represents an unsigned int"""
-    u = int(struct.unpack('>B', data[0])[0]) << 16
-    u += int(struct.unpack('>B', data[1])[0]) << 8
-    u += int(struct.unpack('>B', data[2])[0])
+    u = int(struct.unpack('>B', data[0:1])[0]) << 16
+    u += int(struct.unpack('>B', data[1:2])[0]) << 8
+    u += int(struct.unpack('>B', data[2:3])[0])
     return u
 
 
 def int24(data):
-    u = int(struct.unpack('>B', data[0])[0] & 127) << 16
-    u += int(struct.unpack('>B', data[1])[0]) << 8
-    u += int(struct.unpack('>B', data[2])[0])
-    if (struct.unpack('>B', data[0])[0] & 128) != 0:
+    u = int(struct.unpack('>B', data[0:1])[0] & 127) << 16
+    u += int(struct.unpack('>B', data[1:2])[0]) << 8
+    u += int(struct.unpack('>B', data[2:3])[0])
+    if (struct.unpack('>B', data[0:1])[0] & 128) != 0:
         u *= -1
     return u
 
@@ -96,27 +96,27 @@ class GINIZFile(object):
         """
         fobj.seek(0)
         # WMO HEADER
-        self.wmo = (fobj.read(21)).strip()
+        self.wmo = (fobj.read(21)).strip().decode('utf-8')
         d = zlib.decompressobj()
         hdata = d.decompress(fobj.read())
         self.metadata = self.read_header(hdata[21:])
         self.init_projection()
         totsz = len(d.unused_data)
         # 5120 value chunks, so we need to be careful!
-        sdata = ""
-        chunk = 'x\xda'
+        sdata = b""
+        chunk = b'x\xda'
         i = 0
-        for part in d.unused_data.split('x\xda'):
-            if part == "" and i == 0:
+        for part in d.unused_data.split(b'x\xda'):
+            if part == b"" and i == 0:
                 continue
             chunk += part
             try:
                 sdata += zlib.decompress(chunk)
                 i += 1
                 totsz -= len(chunk)
-                chunk = 'x\xda'
-            except:
-                chunk += 'x\xda'
+                chunk = b'x\xda'
+            except Exception as _exp:
+                chunk += b'x\xda'
         if totsz != 0:
             logging.info("Totalsize left: %s", totsz)
 
@@ -125,10 +125,11 @@ class GINIZFile(object):
                                 self.metadata['linesize']))
 
     def __str__(self):
-        s = "%s Line Size: %s Num Lines: %s" % (self.wmo,
-                                                self.metadata['linesize'],
-                                                self.metadata['numlines'])
-        return s
+        """return a string representation"""
+        text = "%s Line Size: %s Num Lines: %s" % (self.wmo,
+                                                   self.metadata['linesize'],
+                                                   self.metadata['numlines'])
+        return text
 
     def awips_grid(self):
         """
@@ -293,34 +294,34 @@ class GINIZFile(object):
     def read_header(self, hdata):
         """read the header!"""
         meta = {}
-        meta['source'] = struct.unpack("> B", hdata[0])[0]
-        meta['creating_entity'] = struct.unpack("> B", hdata[1])[0]
-        meta['sector'] = struct.unpack("> B", hdata[2])[0]
-        meta['channel'] = struct.unpack("> B", hdata[3])[0]
+        meta['source'] = struct.unpack("> B", hdata[0:1])[0]
+        meta['creating_entity'] = struct.unpack("> B", hdata[1:2])[0]
+        meta['sector'] = struct.unpack("> B", hdata[2:3])[0]
+        meta['channel'] = struct.unpack("> B", hdata[3:4])[0]
 
         meta['numlines'] = struct.unpack(">H", hdata[4:6])[0]
         meta['linesize'] = struct.unpack(">H", hdata[6:8])[0]
 
-        yr = 1900 + struct.unpack("> B", hdata[8])[0]
-        mo = struct.unpack("> B", hdata[9])[0]
-        dy = struct.unpack("> B", hdata[10])[0]
-        hh = struct.unpack("> B", hdata[11])[0]
-        mi = struct.unpack("> B", hdata[12])[0]
-        ss = struct.unpack("> B", hdata[13])[0]
-        # hs = struct.unpack("> B", hdata[14] )[0]
+        yr = 1900 + struct.unpack("> B", hdata[8:9])[0]
+        mo = struct.unpack("> B", hdata[9:10])[0]
+        dy = struct.unpack("> B", hdata[10:11])[0]
+        hh = struct.unpack("> B", hdata[11:12])[0]
+        mi = struct.unpack("> B", hdata[12:13])[0]
+        ss = struct.unpack("> B", hdata[13:14])[0]
+        # hs = struct.unpack("> B", hdata[14:15] )[0]
         meta['valid'] = datetime.datetime(yr, mo, dy, hh, mi, ss).replace(
                             tzinfo=pytz.timezone("UTC"))
-        meta['map_projection'] = struct.unpack("> B", hdata[15])[0]
-        meta['proj_center_flag'] = (struct.unpack("> B", hdata[36])[0] >> 7)
-        meta['scan_mode'] = struct.unpack("> B", hdata[37])[0]
+        meta['map_projection'] = struct.unpack("> B", hdata[15:16])[0]
+        meta['proj_center_flag'] = (struct.unpack("> B", hdata[36:37])[0] >> 7)
+        meta['scan_mode'] = struct.unpack("> B", hdata[37:38])[0]
 
         meta['nx'] = struct.unpack(">H", hdata[16:18])[0]
         meta['ny'] = struct.unpack(">H", hdata[18:20])[0]
-        meta['res'] = struct.unpack(">B", hdata[41])[0]
+        meta['res'] = struct.unpack(">B", hdata[41:42])[0]
         # Is Calibration Info included?
         # http://www.nws.noaa.gov/noaaport/document/ICD%20CH5-2005-1.pdf
         # page24
-        # print struct.unpack(">B", hdata[46] )[0]
+        # print struct.unpack(">B", hdata[46:47] )[0]
         # Mercator
         if meta['map_projection'] == 1:
             meta['lat1'] = int24(hdata[20:23])
