@@ -1,0 +1,48 @@
+000
+WWUS75 KPSR 301756
+DSWPSR
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Dust Storm Warning
+National Weather Service Phoenix AZ
+1049 AM MST Wed Nov 30 2016
+
+AZC021-301815-
+/O.NEW.KPSR.DS.W.0001.161130T1749Z-161130T1815Z/
+Pinal AZ-
+1049 AM MST Wed Nov 30 2016
+
+
+The National Weather Service in Phoenix has issued a
+  * Dust Storm Warning for...
+    Pinal County in southeastern Arizona...
+
+  * Until 1115 AM MST
+
+  * At 1049 AM MST, A dust storm was detected by trained spotters
+    one mile southwest of Robson Ranch, moving northwest at 20 mph.
+    HAZARD...Blowing Dust reducing visibility to near zero.
+    SOURCE...Trained spotters.
+    IMPACT...Dangerous life-threatening travel.
+
+  * Locations impacted include...
+    Casa Grande, Arizona City, Toltec and Arizola.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Be ready for a sudden drop in visibility to near zero. If you
+encounter blowing dust or blowing sand on the roadway or see it
+approaching, pull off the road as far as possible and put your
+vehicle in park. Turn the lights all the way off and keep your
+foot off the brake pedal.
+Remember, Pull Aside, Stay Alive.
+
+&&
+
+LAT...LON 3276 11174 3279 11180 3290 11191 3300 11171
+          3280 11156 3273 11166 3274 11168 3273 11173
+TIME...MOT...LOC 1800Z 143DEG 17KT 3282 11169
+
+$$
+
+WATERS

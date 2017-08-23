@@ -417,6 +417,7 @@ prodDefinitions = {
     'CWF': 'Coastal Waters Forecast',
     'DGT': 'Drought Information',
     'DSA': 'Tropical Disturbance Statement',
+    'DSW': 'Dust Storm Warning',
     'EQI': 'Earthquake Information',
     'EQR': 'Earthquake Report',  # Proposed termination in SCN/TIN 17-29
     'EQW': 'Earthquake Warning',

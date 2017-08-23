@@ -50,6 +50,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170822_duststormwarning(self):
+        """Can we parse the new Dust Storm Warning?"""
+        prod = vtecparser(get_file('DSW.txt'))
+        self.assertEqual(prod.z, "MST")
+        j = prod.get_jabbers("http://localhost/")
+        self.assertEquals(j[0][0],
+                          ("PSR issues Dust Storm Warning for ((AZC021)) "
+                           "[AZ] till 11:15 AM MST "
+                           "http://localhost/2016-O-NEW-KPSR-DS-W-0001"))
+
     def test_170718_wrongtz(self):
         """Product from TWC has the wrong time zone denoted in the text"""
         prod = vtecparser(get_file('FLSTWC.txt'))
