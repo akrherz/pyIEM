@@ -80,6 +80,7 @@ _phenDict = {
     'SN': 'Snow',
     'SQ': 'Snow Squall',
     'SR': 'Storm',
+    'SS': 'Storm Surge',
     'SU': 'High Surf',
     'SV': 'Severe Thunderstorm',
     'SW': 'Small Craft for Hazardous Seas',
