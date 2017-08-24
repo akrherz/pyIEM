@@ -19,6 +19,8 @@ NIL_RE = re.compile(r"[\s\n]NIL")
 ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
 TORNADO_RE = re.compile(r" \+FC |TORNADO")
 FUNNEL_RE = re.compile(r" FC |FUNNEL")
+# Match what looks like SA formatted messages
+SA_RE = re.compile(r"^[A-Z]{3}\sSA\s")
 # Sites we should route to Jabber
 JABBER_SITES = {}
 # Keep track of Wind alerts to prevent dups
@@ -55,8 +57,9 @@ def to_metar(textprod, text):
             tokens = ERROR_RE.findall(str(inst))
             if tokens:
                 if tokens[0] == text or text.startswith(tokens[0]):
-                    print(("%s Aborting due to non-replace %s"
-                           ) % (textprod.get_product_id(), str(inst)))
+                    if not SA_RE.match(text):
+                        print(("%s Aborting due to non-replace %s"
+                               ) % (textprod.get_product_id(), str(inst)))
                     return
                 # So tokens contains a series of groups that needs updated
                 newtext = text
