@@ -50,6 +50,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170823_tilde(self):
+        """Can we parse a product that has a non-ascii char in it"""
+        prod = vtecparser(get_file('FFWTWC_tilde.txt'))
+        self.assertEqual(prod.z, "MST")
+        j = prod.get_jabbers('http://localhost/')
+        prod.sql(self.txn)
+        self.assertEquals(j[0][0],
+                          ("TWC issues Flash Flood Warning for "
+                           "((AZC021)) [AZ] till Aug 23, 6:30 PM MST "
+                           "http://localhost/2017-O-NEW-KTWC-FF-W-0067"))
+
     def test_170822_duststormwarning(self):
         """Can we parse the new Dust Storm Warning?"""
         prod = vtecparser(get_file('DSW.txt'))

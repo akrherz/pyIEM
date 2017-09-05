@@ -1,0 +1,42 @@
+910 
+WGUS55 KTWC 232334
+FFWTWC
+AZC021-240130-
+/O.NEW.KTWC.FF.W.0067.170823T2334Z-170824T0130Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service Tucson AZ
+434 PM MST WED AUG 23 2017
+
+The National Weather Service in Tucson has issued a
+
+* Flash Flood Warning for...
+  Southeastern Pinal County in southeastern Arizona...
+
+* Until 630 PM MST
+
+* At 433 PM MST, Doppler radar indicated another strong to severe 
+  thunderstorm producing heavy rain near and south of Oracle. Flash 
+  flooding is expected to begin shortly.
+
+* Some locations that will experience flooding include...
+  Oracle, San Manuel, Campo Bonito and Biosphere 2. 
+
+This includes the following streams and drainages...Cañada del 
+Oro and Big Wash.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Excessive runoff from heavy rainfall will cause flooding of washes
+and streams, urban areas, highways, streets and underpasses as well
+as other drainage areas and low lying spots.
+
+&&
+
+LAT...LON 3269 11067 3253 11070 3253 11089 3267 11088
+
+$$
+
+Meyer
