@@ -1,6 +1,7 @@
 """Helper for PRISM BIL data"""
-import numpy as np
 import datetime
+
+import numpy as np
 
 NX = 1405
 NY = 621
@@ -25,15 +26,6 @@ def daily_offset(ts):
                       second=0, microsecond=0)
     days = (ts - base).days
     return int(days)
-
-
-def hourly_offset(ts):
-    """ Compute the timestamp index in the netcdf file """
-    base = ts.replace(month=1, day=1, hour=0, minute=0,
-                      second=0, microsecond=0)
-    days = (ts - base).days
-    seconds = (ts - base).seconds
-    return int(int(days) * 24.0 + seconds / 3600.)
 
 
 def find_ij(lon, lat):
