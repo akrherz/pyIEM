@@ -51,6 +51,7 @@ from matplotlib.patches import Polygon, Rectangle  # nopep8
 import matplotlib.cm as cm  # nopep8
 import matplotlib.colors as mpcolors  # nopep8
 import matplotlib.path as mpath
+import matplotlib.image as mpimage
 from matplotlib.patches import Wedge  # nopep8
 import matplotlib.patches as mpatches
 import matplotlib.colorbar as mpcolorbar  # nopep8
@@ -1115,15 +1116,13 @@ class MapPlot(object):
                                zorder=Z_POLITICAL)
 
     def iemlogo(self):
-        """ Draw a logo """
+        """Place the IEM Logo"""
         fn = '%s/%s' % (DATADIR, 'logo.png')
         if not os.path.isfile(fn):
             return
-        logo = Image.open(fn)
-        ax3 = plt.axes([0.02, 0.89, 0.1, 0.1], frameon=False,
-                       facecolor=(0.4471, 0.6235, 0.8117),
-                       yticks=[], xticks=[])
-        ax3.imshow(logo, origin='upper')
+        logo = mpimage.imread(fn)
+        y0 = self.fig.get_figheight() * 100. - logo.shape[0] - 5
+        self.fig.figimage(logo, 5, y0, zorder=3)
 
     def postprocess(self, view=False, filename=None, web=False,
                     memcache=None, memcachekey=None, memcacheexpire=300,
