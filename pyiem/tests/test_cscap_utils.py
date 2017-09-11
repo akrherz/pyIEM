@@ -1,11 +1,14 @@
-from pyiem.cscap_utils import (translate_years, get_config, save_config,
-                               cleanvalue)
+"""tests"""
 import unittest
 import tempfile
 import os
 
+from pyiem.cscap_utils import (translate_years, get_config, save_config,
+                               cleanvalue)
+
 
 class Test(unittest.TestCase):
+    """Our tests"""
 
     def test_cleanvalue(self):
         """ see what we can do with cleaning strings"""

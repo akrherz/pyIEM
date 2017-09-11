@@ -1,9 +1,12 @@
+"""tests"""
 import unittest
+
 from shapely.geometry import Point, Polygon, LineString
 from pyiem import wellknowntext
 
 
 class TestWKT(unittest.TestCase):
+    """Our tests"""
 
     def test_wkt(self):
         """ Try the properties function"""

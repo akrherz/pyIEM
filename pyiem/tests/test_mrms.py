@@ -1,3 +1,4 @@
+"""tests"""
 import unittest
 import datetime
 import os
@@ -7,6 +8,7 @@ from pyiem import mrms
 
 
 class TestDatatypes(unittest.TestCase):
+    """Our tests"""
 
     def test_fetch(self):
         """Can we fetch MRMS files?  Yes we can!"""
@@ -24,12 +26,13 @@ class TestDatatypes(unittest.TestCase):
 
     def test_colorramp(self):
         """See what we can do with a colorramp"""
-        c = mrms.make_colorramp()
-        self.assertEqual(len(c), 256*3)
+        cmap = mrms.make_colorramp()
+        self.assertEqual(len(cmap), 256*3)
 
     def test_write_worldfile(self):
         """see if we can write a world file"""
         mrms.write_worldfile('/tmp/bah.wld')
+        self.assertTrue(os.path.isfile("/tmp/bah.wld"))
 
     def test_get_fn(self):
         """ Test filename func """

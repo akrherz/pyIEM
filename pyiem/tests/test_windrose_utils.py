@@ -1,3 +1,4 @@
+"""tests"""
 import unittest
 import datetime
 import pytz
@@ -5,6 +6,7 @@ from pyiem.windrose_utils import windrose, _get_timeinfo
 
 
 class Test(unittest.TestCase):
+    """Our tests"""
 
     def test_timeinfo(self):
         """Exercise the _get_timeinfo method"""

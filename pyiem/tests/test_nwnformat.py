@@ -1,8 +1,11 @@
+"""tests"""
 import unittest
+
 from pyiem import nwnformat
 
 
 class TestNWNFORMAT(unittest.TestCase):
+    """Our tests"""
 
     def test_heatindex(self):
         """Exercise the heatindex func"""
