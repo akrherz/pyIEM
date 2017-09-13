@@ -27,6 +27,7 @@ import pickle
 import datetime
 import math
 import warnings
+import logging
 #
 import requests
 import numpy as np
@@ -62,6 +63,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import cartopy.io.shapereader as shpreader
 cartopy.config['data_dir'] = '/tmp/'
+logging.basicConfig()
 
 [Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
