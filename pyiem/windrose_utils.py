@@ -199,7 +199,7 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
     ax = WindroseAxes(fig, rect, facecolor='w', rmax=rmax)
     fig.add_axes(ax)
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
-    if len(bins) > 0:
+    if bins:
         wu['bins'] = bins
         wu['binlbl'] = []
         for i, mybin in enumerate(bins[1:-1]):
@@ -207,8 +207,13 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
         wu['binlbl'].append("%g+" % (bins[-1],))
     # Filters the missing values
     df2 = df[df['drct'] >= 0]
-    ax.bar(df2['drct'].values, df2['speed'].values, normed=True,
-           bins=wu['bins'], opening=0.8, edgecolor='white', nsector=nsector)
+    try:
+        # Unsure why this bombs out sometimes
+        ax.bar(df2['drct'].values, df2['speed'].values, normed=True,
+               bins=wu['bins'], opening=0.8, edgecolor='white',
+               nsector=nsector)
+    except Exception as exp:
+        pass
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
