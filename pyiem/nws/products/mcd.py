@@ -5,7 +5,9 @@
 from __future__ import print_function
 import re
 import cgi
+import datetime
 
+import pytz
 from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
@@ -19,6 +21,7 @@ ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT",
     re.IGNORECASE)
+VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?")
 
 
 class MCDException(Exception):
@@ -42,7 +45,30 @@ class MCDProduct(TextProduct):
         self.attn_rfc = self.parse_attn_rfc()
         self.areas_affected = self.parse_areas_affected()
         self.watch_prob = self.find_watch_probability()
+        self.sts, self.ets = self.find_valid_times()
         self.cwsus = []
+
+    def find_valid_times(self):
+        """Figure out when this product is valid for"""
+        tokens = VALID_TIME.findall(self.unixtext)
+        if not tokens:
+            return None, None
+        day1 = int(tokens[0][0][:2])
+        hour1 = int(tokens[0][0][2:4])
+        min1 = int(tokens[0][0][4:])
+        day2 = int(tokens[0][1][:2])
+        hour2 = int(tokens[0][1][2:4])
+        min2 = int(tokens[0][1][4:])
+        issue = self.valid.replace(day=day1, hour=hour1, minute=min1)
+        expire = self.valid.replace(day=day2, hour=hour2, minute=min2)
+        if day1 < self.valid.day and day1 == 1:
+            issue = self.valid + datetime.timedelta(days=25)
+            issue = issue.replace(day=day1, hour=hour1, minute=min1)
+        if day2 < self.valid.day and day2 == 1:
+            expire = self.valid + datetime.timedelta(days=25)
+            expire = expire.replace(day=day2, hour=hour2, minute=min2)
+
+        return issue.replace(tzinfo=pytz.utc), expire.replace(tzinfo=pytz.utc)
 
     def find_watch_probability(self):
         ''' Find the probability of watch issuance for SPC MCD'''
@@ -164,10 +190,12 @@ class MCDProduct(TextProduct):
             print("mcd.database_save removed %s entries" % (txn.rowcount, ))
         giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
         sql = """
-            INSERT into text_products(product, product_id, geom, pil)
-            values (%s, %s, %s, %s)
+            INSERT into text_products
+            (product, product_id, geom, pil, issue, expire)
+            values (%s, %s, %s, %s, %s, %s)
         """
-        args = (self.text, self.get_product_id(), giswkt, self.afos)
+        args = (self.text, self.get_product_id(), giswkt, self.afos,
+                self.sts, self.ets)
         txn.execute(sql, args)
 
 
