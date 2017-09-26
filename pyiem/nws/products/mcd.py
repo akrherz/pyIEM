@@ -2,6 +2,7 @@
  Supports parsing of Storm Prediction Center's MCD and
  parsing of Weather Prediction Center's MPD
 """
+from __future__ import print_function
 import re
 import cgi
 
@@ -155,11 +156,18 @@ class MCDProduct(TextProduct):
         return ShapelyPolygon(pts)
 
     def database_save(self, txn):
-        ''' Save this product to the database '''
+        """Save this product to the database"""
+        # Remove any previous entries
+        sql = """DELETE from text_products where product_id = %s"""
+        txn.execute(sql, (self.get_product_id(),))
+        if txn.rowcount > 0:
+            print("mcd.database_save removed %s entries" % (txn.rowcount, ))
         giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
-        sql = """INSERT into text_products(product, product_id, geom)
-          values (%s, %s, %s)"""
-        args = (self.text, self.get_product_id(), giswkt)
+        sql = """
+            INSERT into text_products(product, product_id, geom, pil)
+            values (%s, %s, %s, %s)
+        """
+        args = (self.text, self.get_product_id(), giswkt, self.afos)
         txn.execute(sql, args)
 
 

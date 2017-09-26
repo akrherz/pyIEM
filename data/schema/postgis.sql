@@ -790,9 +790,9 @@ GRANT select on vtec_missing_events to nobody,apache;
 --- Text Products
 ---
 CREATE TABLE text_products (
-    reads smallint DEFAULT 0,
     product text,
-    product_id character varying(32)
+    product_id character varying(32),
+    pil char(6)
 );
 select addgeometrycolumn('','text_products','geom',4326,'MULTIPOLYGON',2);
 
