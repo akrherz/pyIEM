@@ -106,6 +106,18 @@ def str2multipolygon(s):
         print('Single closed polygon found, done and done')
         return MultiPolygon([Polygon(segments[0])])
 
+    # Slightly bad line-work, whereby the start and end points are very close
+    # to each other
+    if (len(segments) == 1 and
+        ((segments[0][0][0] - segments[0][-1][0])**2 +
+         (segments[0][0][1] - segments[0][-1][1])**2)**0.5 < 0.05):
+        msg = ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)"
+               ) % (segments[0][0][0], segments[0][0][1],
+                    segments[0][-1][0], segments[0][-1][1])
+        print(msg)
+        segments[0][-1] = segments[0][0]
+        return MultiPolygon([Polygon(segments[0])])
+
     # We have some work to do
     load_conus_data()
 
@@ -114,7 +126,7 @@ def str2multipolygon(s):
     polys = [copy.deepcopy(CONUS['poly']), ]
 
     for i, segment in enumerate(segments):
-        print(('  Iterate: %s/%s, len(segment): %s (%.1f %.1f) (%.1f %.1f)'
+        print(('  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)'
                ) % (i+1, len(segments), len(segment), segment[0][0],
                     segment[0][1], segment[-1][0], segment[-1][1]))
         if segment[0] == segment[-1] and len(segment) > 2:
@@ -345,7 +357,7 @@ class SPCPTS(TextProduct):
 
     def get_outlook(self, category, threshold, day=None):
         ''' Get an outlook by category and threshold '''
-        if len(self.outlook_collections) == 0:
+        if not self.outlook_collections:
             return None
         if day is None:
             day = self.day

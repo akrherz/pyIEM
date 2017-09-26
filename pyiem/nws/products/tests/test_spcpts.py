@@ -38,6 +38,14 @@ class TestPTS(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_170926_largeenh(self):
+        """This Day1 generated a massive ENH"""
+        spc = parser(get_file('PTSDY1_bigenh.txt'))
+        # spc.draw_outlooks()
+        spc.sql(self.txn)
+        outlook = spc.get_outlook('CATEGORICAL', 'ENH', 1)
+        self.assertAlmostEqual(outlook.geometry.area, 17.50, 2)
+
     def test_170703_badday3link(self):
         """Day3 URL is wrong"""
         spc = parser(get_file('PTSDY3.txt'))
@@ -139,8 +147,10 @@ class TestPTS(unittest.TestCase):
 
     def test_170404_nogeom(self):
         """nogeom error from a 2002 product"""
-        with self.assertRaises(Exception):
-            _ = parser(get_file('PTSDY1_2002_nogeom.txt'))
+        # 26 Sep 2017, we can workaround this now
+        spc = parser(get_file('PTSDY1_2002_nogeom.txt'))
+        outlook = spc.get_outlook('TORNADO', '0.05')
+        self.assertAlmostEqual(outlook.geometry.area, 8.76, 2)
 
     def test_170404_2002(self):
         """Can we parse something from 2002?"""
