@@ -3,7 +3,6 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
-import psycopg2
 import netrc
 import time
 import random
@@ -11,6 +10,8 @@ import logging
 import datetime
 import re
 from socket import error as socket_error
+
+import psycopg2
 from pyiem.ftpsession import FTPSession
 import numpy as np
 
@@ -28,6 +29,10 @@ def noaaport_text(text):
     # Convert to LFLFCR
     text = text.replace("\n", "\r\r\n").replace("\r\r\r\r", "\r\r")
     lines = text.split("\r\r\n")
+    # remove any beginning empty lines
+    while lines and lines[0] == '':
+        lines.pop(0)
+
     # lime 0 should be start of product sequence
     if lines[0] != "\001":
         lines.insert(0, "\001")

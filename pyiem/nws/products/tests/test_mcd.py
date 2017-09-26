@@ -12,7 +12,7 @@ from pyiem.nws.products.mcd import parser
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../../../data/product_examples/MCD_MPD/%s" % (basedir, name)
     return open(fn, 'rb').read().decode('utf-8')
 
 
@@ -36,6 +36,15 @@ class TestMCD(unittest.TestCase):
         ''' This is called after each test, beware '''
         self.dbconn.rollback()
         self.dbconn.close()
+
+    def test_170926_nodbinsert(self):
+        """This product never hit the database for some reason?"""
+        prod = parser(get_file('SWOMCD_2010.txt'))
+        prod.database_save(self.txn)
+        self.txn.execute("""
+            SELECT * from text_products where product_id = %s
+        """, (prod.get_product_id(), ))
+        self.assertEquals(self.txn.rowcount, 1)
 
     def test_mpd_mcdparser(self):
         ''' The mcdparser can do WPC's MPD as well, test it '''

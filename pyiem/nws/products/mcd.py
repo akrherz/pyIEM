@@ -184,18 +184,23 @@ class MCDProduct(TextProduct):
     def database_save(self, txn):
         """Save this product to the database"""
         # Remove any previous entries
-        sql = """DELETE from text_products where product_id = %s"""
-        txn.execute(sql, (self.get_product_id(),))
+        sql = """
+        DELETE from text_products where product_id = %s
+        and product_num = %s
+        """
+        txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
-            print("mcd.database_save removed %s entries" % (txn.rowcount, ))
+            print(("mcd.database_save %s %s removed %s entries"
+                   ) % (self.get_product_id(), self.discussion_num,
+                        txn.rowcount))
         giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
         sql = """
             INSERT into text_products
-            (product, product_id, geom, pil, issue, expire)
-            values (%s, %s, %s, %s, %s, %s)
+            (product, product_id, geom, pil, issue, expire, product_num)
+            values (%s, %s, %s, %s, %s, %s, %s)
         """
         args = (self.text, self.get_product_id(), giswkt, self.afos,
-                self.sts, self.ets)
+                self.sts, self.ets, self.discussion_num)
         txn.execute(sql, args)
 
 
