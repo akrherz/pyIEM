@@ -618,7 +618,7 @@ class TestProducts(unittest.TestCase):
                           ugc_provider=ugc_provider)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][0], (
-         'MEG updates Severe Thunderstorm Watch (extends area of '
+         'MEG updates Severe Thunderstorm Watch (expands area to include '
          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 11 counties in '
          '[TN], continues 12 counties in [AR] and '
          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [MO] and 22 counties in '
