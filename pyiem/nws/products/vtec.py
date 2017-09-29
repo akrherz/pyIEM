@@ -102,7 +102,7 @@ class VTECProduct(TextProduct):
                     WHERE wfo = %s and eventid = %s
                     and ugc in """+ugcstring+""" and significance = %s
                     and phenomena = %s ORDER by ugc ASC, issue ASC""",
-                    (vtec.office, vtec.ETN, vtec.significance,
+                    (vtec.office, vtec.etn, vtec.significance,
                      vtec.phenomena))
         debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
 
@@ -120,7 +120,7 @@ class VTECProduct(TextProduct):
         return ('Warning: %s.%s.%s do_sql_vtec %s %s '
                 'updated %s row, should %s rows\nUGCS: %s\n'
                 'valid: %s expire: %s\n%s'
-                ) % (vtec.phenomena, vtec.significance, vtec.ETN,
+                ) % (vtec.phenomena, vtec.significance, vtec.etn,
                      warning_table, vtec.action,
                      cnt, len(segment.ugcs), segment.ugcs, self.valid,
                      ets, debugmsg)
@@ -176,7 +176,7 @@ class VTECProduct(TextProduct):
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
                 or expire > %s)
-            """, (vtec.office, vtec.ETN, vtec.significance, vtec.phenomena,
+            """, (vtec.office, vtec.etn, vtec.significance, vtec.phenomena,
                   self.valid - datetime.timedelta(days=offset), self.valid,
                   self.valid))
             row = txn.fetchone()
@@ -216,7 +216,7 @@ class VTECProduct(TextProduct):
             from """+warning_table+"""
             WHERE eventid = %s and significance = %s and wfo = %s and
             phenomena = %s
-            """, (vtec.ETN, vtec.significance, vtec.office, vtec.phenomena))
+            """, (vtec.etn, vtec.significance, vtec.office, vtec.phenomena))
             maxtime = txn.fetchone()['maxtime']
             if maxtime is not None:
                 if maxtime == self.valid:
@@ -243,7 +243,7 @@ class VTECProduct(TextProduct):
                 WHERE ugc = %s and eventid = %s and significance = %s and
                 wfo = %s and phenomena = %s
                 and status not in ('CAN', 'UPG') and expire > %s
-                """, (str(ugc), vtec.ETN, vtec.significance, vtec.office,
+                """, (str(ugc), vtec.etn, vtec.significance, vtec.office,
                       vtec.phenomena, self.valid))
                 if txn.rowcount > 0:
                     if self.is_correction():
@@ -253,7 +253,7 @@ class VTECProduct(TextProduct):
                         and eventid = %s and significance = %s and
                         wfo = %s and phenomena = %s and
                         status in ('NEW', 'EXB', 'EXA')
-                        """, (str(ugc), vtec.ETN, vtec.significance,
+                        """, (str(ugc), vtec.etn, vtec.significance,
                               vtec.office, vtec.phenomena))
                         if txn.rowcount != 1:
                             self.warnings.append((
@@ -261,7 +261,7 @@ class VTECProduct(TextProduct):
                                 "product correction, deleted %s old rows "
                                 "instead of 1"
                                 ) % (vtec.phenomena, vtec.significance,
-                                     vtec.ETN, str(ugc), txn.rowcount))
+                                     vtec.etn, str(ugc), txn.rowcount))
 
                     else:
                         self.warnings.append(("Duplicate(s) WWA found, "
@@ -276,7 +276,7 @@ class VTECProduct(TextProduct):
                 get_gid(%s, %s), %s, %s, %s)
                 RETURNING gid
                 """, (bts, ets, self.valid, vtec.office,
-                      vtec.ETN, vtec.action, fcster, self.unixtext, str(ugc),
+                      vtec.etn, vtec.action, fcster, self.unixtext, str(ugc),
                       vtec.phenomena, vtec.significance, str(ugc),
                       self.valid, ets, self.valid,
                       segment.get_hvtec_nwsli()))
@@ -298,7 +298,7 @@ class VTECProduct(TextProduct):
             and significance = %s and phenomena = %s and
             (expire + '1 hour'::interval) >= %s
             """, (vtec.endts, vtec.action, self.unixtext, vtec.begints,
-                  vtec.endts, vtec.office, vtec.ETN,
+                  vtec.endts, vtec.office, vtec.etn,
                   vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(
@@ -330,7 +330,7 @@ class VTECProduct(TextProduct):
                 and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
                 """, (ets, vtec.action, self.valid, self.unixtext,
-                      vtec.office, vtec.ETN,
+                      vtec.office, vtec.etn,
                       vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 if not self.is_correction():
@@ -354,7 +354,7 @@ class VTECProduct(TextProduct):
                 and significance = %s and phenomena = %s
                 and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
-                """, (vtec.action, self.unixtext, ets, vtec.office, vtec.ETN,
+                """, (vtec.action, self.unixtext, ets, vtec.office, vtec.etn,
                       vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(
@@ -405,38 +405,38 @@ class VTECProduct(TextProduct):
             txn.execute("""
             DELETE from """+sbw_table+""" WHERE status = 'NEW' and
             eventid = %s and wfo = %s and phenomena = %s and significance = %s
-            """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+            """, (vtec.etn, vtec.office, vtec.phenomena, vtec.significance))
             if txn.rowcount != 1:
                 self.warnings.append(("%s.%s.%s product is a correction"
                                       ", but SBW delete removed %s rows "
                                       "instead of 1"
                                       ) % (vtec.phenomena, vtec.significance,
-                                           vtec.ETN, txn.rowcount))
+                                           vtec.etn, txn.rowcount))
 
         # Lets go find the initial warning (status == NEW)
         txn.execute("""
         SELECT issue, expire from """+sbw_table+""" WHERE status = 'NEW' and
         eventid = %s and wfo = %s and phenomena = %s and significance = %s
-        """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+        """, (vtec.etn, vtec.office, vtec.phenomena, vtec.significance))
         if txn.rowcount > 0:
             if vtec.action == 'NEW':  # Uh-oh, we have a duplicate
                 self.warnings.append(("%s.%s.%s is a SBW duplicate! %s other "
                                       "row(s) found."
                                       ) % (vtec.phenomena, vtec.significance,
-                                           vtec.ETN, txn.rowcount))
+                                           vtec.etn, txn.rowcount))
 
         # Lets go find our current active polygon
         txn.execute("""
         SELECT polygon_end from """ + sbw_table + """ WHERE
         eventid = %s and wfo = %s and phenomena = %s and significance = %s
         and polygon_begin != polygon_end ORDER by updated DESC LIMIT 1
-        """, (vtec.ETN, vtec.office, vtec.phenomena, vtec.significance))
+        """, (vtec.etn, vtec.office, vtec.phenomena, vtec.significance))
         current = None
         if txn.rowcount == 0 and vtec.action != 'NEW':
             self.warnings.append(("%s.%s.%s Failed to find currently "
                                   "active SBW") % (vtec.phenomena,
                                                    vtec.significance,
-                                                   vtec.ETN))
+                                                   vtec.etn))
         if txn.rowcount > 0:
             current = txn.fetchone()
 
@@ -449,14 +449,14 @@ class VTECProduct(TextProduct):
             and polygon_end != polygon_begin
             and polygon_end = %s and status != 'CAN'
             """, (polygon_begin,
-                  vtec.ETN, vtec.office, vtec.phenomena, vtec.significance,
+                  vtec.etn, vtec.office, vtec.phenomena, vtec.significance,
                   current['polygon_end']))
             if txn.rowcount != 1:
                 self.warnings.append(("%s.%s.%s SBW prev polygon update "
                                       "resulted in update of %s rows, "
                                       "should be 1"
                                       ) % (vtec.phenomena, vtec.significance,
-                                           vtec.ETN, txn.rowcount))
+                                           vtec.etn, txn.rowcount))
 
         # Prepare the TIME...MOT...LOC information
         tml_valid = None
@@ -477,7 +477,7 @@ class VTECProduct(TextProduct):
             %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         myargs = (
             vtec.office,
-            vtec.ETN,
+            vtec.etn,
             vtec.significance,
             vtec.phenomena,
             vtec.begints,
@@ -494,7 +494,7 @@ class VTECProduct(TextProduct):
             self.warnings.append(("%s.%s.%s sbw table insert "
                                   "resulted in %s rows, should be 1"
                                   ) % (vtec.phenomena, vtec.significance,
-                                       vtec.ETN, txn.rowcount))
+                                       vtec.etn, txn.rowcount))
 
     def get_action(self):
         """ How to describe the action of this product """
@@ -512,7 +512,7 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                key = "%s.%s.%s" % (vtec.phenomena, vtec.ETN,
+                key = "%s.%s.%s" % (vtec.phenomena, vtec.etn,
                                     vtec.significance)
                 if key not in keys:
                     keys.append(key)
@@ -586,7 +586,7 @@ class VTECProduct(TextProduct):
                 xtra = {'product_id': self.get_product_id(),
                         'channels': ",".join(channels),
                         'status': vtec.status,
-                        'vtec': vtec.getID(self.valid.year),
+                        'vtec': vtec.get_id(self.valid.year),
                         'ptype': vtec.phenomena,
                         'twitter': ''}
 
@@ -615,11 +615,11 @@ class VTECProduct(TextProduct):
                              'svs_special_html': '',
                              'year': self.valid.year,
                              'phenomena': vtec.phenomena,
-                             'eventid': vtec.ETN,
+                             'eventid': vtec.etn,
                              'significance': vtec.significance,
                              'url': "%s%s" % (uri,
                                               vtec.url(self.valid.year))}
-                if (len(segment.hvtec) > 0 and
+                if (segment.hvtec and
                         segment.hvtec[0].nwsli.id != '00000'):
                     jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
                 if (vtec.begints is not None and

@@ -1,36 +1,41 @@
+"""Support NWS VTEC encoding"""
 from __future__ import print_function
 import re
 import datetime
+
 import pytz
 
-_re = ("(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\."
-       "([0-9]+)\.([0-9,T,Z]+)-([0-9,T,Z]+)/)")
+VTEC_RE = (r"(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\."
+           r"([0-9]+)\.([0-9,T,Z]+)-([0-9,T,Z]+)/)")
 
-_classDict = {'O': 'Operational',
-              'T': 'Test',
-              'E': 'Experimental',
-              'X': 'Experimental VTEC'}
+VTEC_CLASS = {
+    'O': 'Operational',
+    'T': 'Test',
+    'E': 'Experimental',
+    'X': 'Experimental VTEC'}
 
-_actionDict = {'NEW': 'issues',
-               'CON': 'continues',
-               'EXA': 'expands area to include',
-               'EXT': 'extends time of',
-               'EXB': 'extends time and expands area to include',
-               'UPG': 'issues upgrade to',
-               'CAN': 'cancels',
-               'EXP': 'expires',
-               'ROU': 'routine',
-               'COR': 'corrects'}
+VTEC_ACTION = {
+    'NEW': 'issues',
+    'CON': 'continues',
+    'EXA': 'expands area to include',
+    'EXT': 'extends time of',
+    'EXB': 'extends time and expands area to include',
+    'UPG': 'issues upgrade to',
+    'CAN': 'cancels',
+    'EXP': 'expires',
+    'ROU': 'routine',
+    'COR': 'corrects'}
 
-_sigDict = {'W': 'Warning',
-            'Y': 'Advisory',
-            'A': 'Watch',
-            'S': 'Statement',
-            'O': 'Outlook',
-            'N': 'Synopsis',
-            'F': 'Forecast'}
+VTEC_SIGNIFICANCE = {
+    'W': 'Warning',
+    'Y': 'Advisory',
+    'A': 'Watch',
+    'S': 'Statement',
+    'O': 'Outlook',
+    'N': 'Synopsis',
+    'F': 'Forecast'}
 
-_phenDict = {
+VTEC_PHENOMENA = {
     'AF': 'Ashfall',
     'AS': 'Air Stagnation',
     'BH': 'Beach Hazard',
@@ -95,8 +100,7 @@ _phenDict = {
     'WS': 'Winter Storm',
     'WW': 'Winter Weather',
     'ZF': 'Freezing Fog',
-    'ZR': 'Freezing Rain',
-}
+    'ZR': 'Freezing Rain'}
 
 # Taken from http://www.weather.gov/help-map
 NWS_COLORS = {
@@ -194,24 +198,41 @@ NWS_COLORS = {
 def parse(text):
     """ I look for and return vtec objects as I find them """
     vtec = []
-    tokens = re.findall(_re, text)
-    for t in tokens:
-        vtec.append(VTEC(t))
+    tokens = re.findall(VTEC_RE, text)
+    for token in tokens:
+        vtec.append(VTEC(token))
     return vtec
 
 
-def contime(s):
-    if len(re.findall("0000*T", s)) > 0:
+def contime(text):
+    """Represent the fun that is 0000 time in VTEC"""
+    if re.findall("0000*T", text):
         return None
     try:
-        ts = datetime.datetime.strptime(s, '%y%m%dT%H%MZ')
-        return ts.replace(tzinfo=pytz.timezone('UTC'))
+        ts = datetime.datetime.strptime(text, '%y%m%dT%H%MZ')
+        return ts.replace(tzinfo=pytz.utc)
     except Exception as err:
         print(err)
         return None
 
 
+def get_ps_string(phenomena, significance):
+    """Return the combination of Phenomena + Significance as string"""
+    pstr = VTEC_PHENOMENA.get(phenomena, "Unknown %s" % (phenomena,))
+    astr = VTEC_SIGNIFICANCE.get(significance, "Unknown %s" % (significance,))
+    # Hack for special FW case
+    if significance == 'A' and phenomena == 'FW':
+        pstr = "Fire Weather"
+    return "%s %s" % (pstr, astr)
+
+
+def get_action_string(action):
+    """Return the action string"""
+    return VTEC_ACTION.get(action, "unknown %s" % (action,))
+
+
 class VTEC(object):
+    """A single VTEC encoding instance"""
 
     def __init__(self, tokens):
         self.line = tokens[0]
@@ -221,7 +242,7 @@ class VTEC(object):
         self.office4 = tokens[3]
         self.phenomena = tokens[4]
         self.significance = tokens[5]
-        self.ETN = int(tokens[6])
+        self.etn = int(tokens[6])
         self.begints = contime(tokens[7])
         self.endts = contime(tokens[8])
 
@@ -241,7 +262,7 @@ class VTEC(object):
         return "till %s %s" % (localts.strftime(fmt), prod.z)
 
     def get_begin_string(self, prod):
-        ''' Return an appropriate beginning string for this VTEC '''
+        """Return an appropriate beginning string for this VTEC"""
         if self.begints is None:
             return ''
         fmt = "%b %-d, %-I:%M %p"
@@ -257,30 +278,29 @@ class VTEC(object):
         """ Generate a VTEC url string needed """
         return ("%s-%s-%s-%s-%s-%s-%04i"
                 ) % (year, self.status, self.action,
-                     self.office4, self.phenomena, self.significance, self.ETN)
+                     self.office4, self.phenomena, self.significance, self.etn)
 
-    def getID(self, year):
-        ''' Return a custom string identifier for this VTEC product
-        This is used by the Live client '''
-        return '%s-%s-%s-%s-%04i' % (year, self.office4,
+    def get_id(self, year):
+        """Return a custom string identifier for this VTEC product
+
+        This is used by the Live client
+        """
+        return "%s-%s-%s-%s-%04i" % (year, self.office4,
                                      self.phenomena, self.significance,
-                                     self.ETN)
+                                     self.etn)
 
     def __str__(self):
+        """Return string representation"""
         return self.line
 
     def get_ps_string(self):
-        ''' Return the combination of Phenomena + Significance as string '''
-        p = _phenDict.get(self.phenomena, "Unknown %s" % (self.phenomena,))
-        a = _sigDict.get(self.significance,
-                         "Unknown %s" % (self.significance,))
-        # Hack for special FW case
-        if self.significance == 'A' and self.phenomena == 'FW':
-            p = "Fire Weather"
-        return "%s %s" % (p, a)
+        """Return the combination of Phenomena + Significance as string"""
+        return get_ps_string(self.phenomena, self.significance)
 
     def get_action_string(self):
-        return _actionDict.get(self.action, "unknown %s" % (self.action,))
+        """Return the action string"""
+        return get_action_string(self.action)
 
     def product_string(self):
+        """Return the combination of action and phenomena+significance"""
         return "%s %s" % (self.get_action_string(), self.get_ps_string())
