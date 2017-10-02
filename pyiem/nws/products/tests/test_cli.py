@@ -1,9 +1,11 @@
+"""Test CLI products"""
 from __future__ import print_function
 import os
 import datetime
 import unittest
 
 import pytz
+from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products.cli import parser as cliparser
 
 
@@ -199,7 +201,8 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(prod.data[0]['data'].get('snow_today'), 0.0)
         self.assertEqual(prod.data[0]['data'].get('snow_today_record'), 13.2)
         self.assertEqual(prod.data[0]['data'].get('snow_today_last'), 0.0)
-        self.assertEqual(prod.data[0]['data'].get('snow_month_last'), 0.0001)
+        self.assertEqual(prod.data[0]['data'].get('snow_month_last'),
+                         TRACE_VALUE)
         self.assertEqual(prod.data[0]['data'].get('snow_jul1_last'), 11.3)
 
     def test_140930_mm_precip(self):
@@ -220,7 +223,7 @@ class TestCLI(unittest.TestCase):
                          "259 PM")
         self.assertEqual(prod.data[0]['data']['temperature_minimum_time'],
                          "431 AM")
-        self.assertEqual(prod.data[0]['data']['precip_today'], 0.0001)
+        self.assertEqual(prod.data[0]['data']['precip_today'], TRACE_VALUE)
 
         j = prod.get_jabbers("http://localhost")
         self.assertEqual(j[0][0], (

@@ -4,6 +4,7 @@ from __future__ import print_function
 import re
 import datetime
 
+from pyiem.reference import TRACE_VALUE
 from pyiem.nws.product import TextProduct
 
 HEADLINE_RE = re.compile((r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) "
@@ -61,36 +62,39 @@ def trace(val):
     if val == 'M' or val == 'MM':
         return None
     if val == 'T':
-        return 0.0001
+        return TRACE_VALUE
     return float(val)
 
 
 def trace_r(val):
     """ Convert our value back into meaningful string """
-    if val == 0.0001:
+    if val == TRACE_VALUE:
         return 'Trace'
     return val
 
 
-def get_number(s):
+def get_number(text):
     """ Convert a string into a number, preferable a float! """
-    if s is None:
+    if text is None:
         return None
-    s = s.strip()
-    if s == '':
-        return None
-    if s == 'MM':
-        return None
-    if s == 'T':
-        return 0.0001
-    number = re.findall("[\-\+]?\d*\.\d+|[\-\+]?\d+", s)
-    if len(number) == 1:
-        if s.find(".") > 0:
-            return float(number[0])
+    text = text.strip()
+    if text == '':
+        retval = None
+    elif text == 'MM':
+        retval = None
+    elif text == 'T':
+        retval = TRACE_VALUE
+    else:
+        number = re.findall(r"[\-\+]?\d*\.\d+|[\-\+]?\d+", text)
+        if len(number) == 1:
+            if text.find(".") > 0:
+                retval = float(number[0])
+            else:
+                retval = int(number[0])
         else:
-            return int(number[0])
-    print('get_number() failed for |%s|' % (s,))
-    return None
+            print('get_number() failed for |%s|' % (text,))
+            retval = None
+    return retval
 
 
 def convert_key(text):
@@ -240,7 +244,7 @@ class CLIProduct(TextProduct):
                    ) % (self.get_product_id(),))
             return
         for section in self.find_sections():
-            if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
+            if not HEADLINE_RE.findall(section.replace("\n", " ")):
                 continue
             # We have meat!
             self.compute_diction(section)
@@ -258,10 +262,10 @@ class CLIProduct(TextProduct):
         """
         sections = []
         for section in self.unixtext.split("&&"):
-            if len(HEADLINE_RE.findall(section.replace("\n", " "))) == 0:
+            if not HEADLINE_RE.findall(section.replace("\n", " ")):
                 continue
             tokens = re.findall("^WEATHER ITEM.*$", section, re.M)
-            if len(tokens) == 0:
+            if not tokens:
                 raise CLIException("Could not find 'WEATHER ITEM' within text")
             elif len(tokens) == 1:
                 sections.append(section)
@@ -280,7 +284,7 @@ class CLIProduct(TextProduct):
     def compute_diction(self, text):
         """ Try to determine what we have for a format """
         tokens = re.findall("^WEATHER ITEM.*$", text, re.M)
-        if len(tokens) == 0:
+        if not tokens:
             raise CLIException("Could not find 'WEATHER ITEM' within text")
         if len(tokens) > 1:
             raise CLIException("Found %s 'WEATHER ITEM' in text" % (
@@ -320,8 +324,8 @@ class CLIProduct(TextProduct):
                           data['data'].get('temperature_minimum', 'M'),
                           trace_r(data['data'].get('precip_today', 'M')),
                           trace_r(data['data'].get('snow_today', 'M')), url)
-            res.append([mess.replace("0.0001", "Trace"),
-                        htmlmess.replace("0.0001", "Trace"), {
+            res.append([mess.replace(str(TRACE_VALUE), "Trace"),
+                        htmlmess.replace(str(TRACE_VALUE), "Trace"), {
                             'channels': self.afos,
                             'twitter': tweet
                             }])
@@ -342,8 +346,8 @@ class CLIProduct(TextProduct):
         if meat.find("&&") > 0:
             meat = meat[:meat.find("&&")]
         sections = meat.split("\n\n")
-        for section in sections:
-            lines = section.split("\n")
+        for _section in sections:
+            lines = _section.split("\n")
             if lines[0] in ["TEMPERATURE (F)", 'TEMPERATURE']:
                 parse_temperature(self.regime, lines, data)
             elif lines[0] in ['PRECIPITATION (IN)', 'PRECIPITATION']:

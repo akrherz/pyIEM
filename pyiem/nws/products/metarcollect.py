@@ -10,6 +10,7 @@ import datetime
 import pytz
 from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
+from pyiem.reference import TRACE_VALUE
 from pyiem import datatypes
 from pyiem.util import drct2text
 from metar.Metar import Metar
@@ -36,7 +37,7 @@ def trace(pobj):
     val = pobj.value('IN')
     if val == 0:
         # IEM denotation of trace
-        return 0.0001
+        return TRACE_VALUE
     return val
 
 

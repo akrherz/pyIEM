@@ -14,6 +14,7 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
+TRACE_VALUE = 0.0001
 
 IA_WEST = -96.7
 IA_EAST = -90.1

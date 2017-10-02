@@ -6,6 +6,7 @@ import datetime
 
 import pytz
 import psycopg2.extras
+from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products import metarcollect
 
 PARSER = metarcollect.parser
@@ -58,7 +59,7 @@ class TestMETAR(unittest.TestCase):
         mtr.network = 'CA_BC_ASOS'
         iemob, _ = mtr.to_iemaccess(self.cursor)
         self.assertEqual(iemob.data['station'], 'CYYE')
-        self.assertEqual(iemob.data['phour'], 0.0001)
+        self.assertEqual(iemob.data['phour'], TRACE_VALUE)
         self.assertEquals(mtr.wind_message(),
                           "gust of 60 knots (69.1 mph) from N @ 1253Z")
 
