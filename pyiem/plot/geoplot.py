@@ -477,11 +477,11 @@ class MapPlot(object):
         if not kwargs.get('nologo'):
             self.iemlogo()
         if "title" in kwargs:
-            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.94,
+            self.fig.text(0.09 if not kwargs.get('nologo') else 0.02, 0.94,
                           kwargs.get("title"),
                           fontsize=kwargs.get('titlefontsize', 18))
         if "subtitle" in kwargs:
-            self.fig.text(0.13 if not kwargs.get('nologo') else 0.02, 0.91,
+            self.fig.text(0.09 if not kwargs.get('nologo') else 0.02, 0.91,
                           kwargs.get("subtitle"),
                           fontsize=kwargs.get('subtitlefontsize', 12))
 

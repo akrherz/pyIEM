@@ -67,11 +67,13 @@ class TestPlot(unittest.TestCase):
 
     def test_drawcities(self):
         """Fill the Iowa WFOs"""
-        m = plot.MapPlot(title='Fill and Draw Cities', continentalcolor='blue',
-                         sector='iowa')
-        m.drawcities()
-        m.postprocess(filename='/tmp/test_plot_drawcities.png')
-        m.close()
+        mp = plot.MapPlot(title='Fill and Draw Cities',
+                          subtitle="This is my subtitle",
+                          continentalcolor='blue',
+                          sector='iowa')
+        mp.drawcities()
+        mp.postprocess(filename='/tmp/test_plot_drawcities.png')
+        mp.close()
         # self.assertTrue(1 == 2)
 
     def test_drawrandomtext(self):
