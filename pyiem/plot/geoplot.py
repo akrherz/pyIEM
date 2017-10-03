@@ -402,7 +402,8 @@ class MapPlot(object):
                 projection=kwargs.get('projection', ccrs.Mercator()),
                 aspect=aspect)
             self.ax.set_extent([kwargs['west'], kwargs['east'],
-                                kwargs['south'], kwargs['north']])
+                                kwargs['south'], kwargs['north']],
+                               crs=ccrs.PlateCarree())
             self.axes.append(self.ax)
 
         elif self.sector == 'north_america':
@@ -417,13 +418,13 @@ class MapPlot(object):
         elif self.sector in ['conus', 'nws']:
             self.ax = self.fig.add_axes(
                 MAIN_AX_BOUNDS,
-                projection=ccrs.PlateCarree(),
+                projection=reference.EPSG[5070],
                 aspect=aspect)
-            # -124.848974, 24.396308) - (-66.885444, 49.384358
-            self.ax.set_extent([-125,
-                                -66.5,
-                                22.,
-                                47.])
+            self.ax.set_extent([reference.CONUS_WEST + 14,
+                                reference.CONUS_EAST - 12,
+                                reference.CONUS_SOUTH,
+                                reference.CONUS_NORTH + 1],
+                               crs=ccrs.PlateCarree())
             self.axes.append(self.ax)
 
             if self.sector == 'nws':

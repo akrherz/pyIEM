@@ -14,7 +14,18 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
+import cartopy.crs as ccrs
+
+
 TRACE_VALUE = 0.0001
+
+EPSG = {
+    5070: ccrs.AlbersEqualArea(central_longitude=-96,
+                               central_latitude=23,
+                               standard_parallels=[29.5, 45.5]),
+    2163: ccrs.LambertAzimuthalEqualArea(central_latitude=45,
+                                         central_longitude=-100)
+    }
 
 IA_WEST = -96.7
 IA_EAST = -90.1

@@ -4,6 +4,7 @@ import datetime
 
 import numpy as np
 from pyiem import plot
+import pyiem.reference as reference
 import matplotlib.colors as mpcolors
 import cartopy.crs as ccrs
 
@@ -25,24 +26,42 @@ class TestPlot(unittest.TestCase):
 
     def test_pcolormesh(self):
         """See if we can do pcolormesh OKish"""
-        m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-                         south=38, projection=ccrs.AlbersEqualArea(),
-                         continentalcolor='white')
+        mp = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
+                          south=38, projection=reference.EPSG[2163],
+                          continentalcolor='white')
         lons = np.arange(-100, -80, 0.25)
         lats = np.arange(40, 50, 0.25)
         vals = np.random.rand(lats.shape[0], lons.shape[0])
         lons, lats = np.meshgrid(lons, lats)
-        m.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
-        m.postprocess(filename='/tmp/test_plot_pcolormesh.png')
-        m.close()
+        mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
+        mp.postprocess(filename='/tmp/test_plot_pcolormesh.png')
+        mp.close()
 
-    def test_albers(self):
+    def test_conus(self):
         """See if we can plot albers"""
-        m = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
-                         south=38, projection=ccrs.AlbersEqualArea(),
-                         continentalcolor='white')
-        m.postprocess(filename='/tmp/test_plot_albers.png')
-        m.close()
+        mp = plot.MapPlot(sector='custom',
+                          title='EPSG: 5070 Albers',
+                          north=reference.CONUS_NORTH + 1,
+                          east=reference.CONUS_EAST - 12,
+                          west=reference.CONUS_WEST + 14,
+                          south=reference.CONUS_SOUTH,
+                          projection=reference.EPSG[5070],
+                          continentalcolor='white')
+        # mp.ax.gridlines(xlocs=[-134, -60], ylocs=[24.5, 49.5])
+        mp.postprocess(filename='/tmp/test_plot_epsg5070.png')
+        mp.close()
+
+        mp = plot.MapPlot(sector='custom',
+                          title='EPSG: 2163 Lambert Azimuthal Equal Area',
+                          north=reference.CONUS_NORTH + 1,
+                          east=reference.CONUS_EAST - 12,
+                          west=reference.CONUS_WEST + 14,
+                          south=reference.CONUS_SOUTH,
+                          projection=reference.EPSG[2163],
+                          continentalcolor='white')
+        # mp.ax.gridlines(xlocs=[-134, -60], ylocs=[24.5, 49.5])
+        mp.postprocess(filename='/tmp/test_plot_epsg2163.png')
+        mp.close()
 
     def test_centered_bins(self):
         """See that we can compute some nice centered bins"""
@@ -264,17 +283,17 @@ class TestPlot(unittest.TestCase):
 
     def test_plot2(self):
         """ Exercise NWS plot API """
-        m = plot.MapPlot(sector='nws', continentalcolor='white')
-        m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
-                    units='NWS Something or Another', ilabel=True)
-        m.postprocess(filename='/tmp/test_plot_us.png')
-        m.close()
+        mp = plot.MapPlot(sector='nws', continentalcolor='white')
+        mp.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
+                     units='NWS Something or Another', ilabel=True)
+        mp.postprocess(filename='/tmp/test_plot_us.png')
+        mp.close()
 
-        m = plot.MapPlot(sector='iowa', continentalcolor='white')
-        m.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
-                    units='NWS Something or Another')
-        m.postprocess(filename='/tmp/test_plot_iowa.png')
-        m.close()
+        mp = plot.MapPlot(sector='iowa', continentalcolor='white')
+        mp.fill_cwas({'DMX': 80, 'MKX': 5, 'SJU': 30, 'AJK': 40, 'HFO': 50},
+                     units='NWS Something or Another')
+        mp.postprocess(filename='/tmp/test_plot_iowa.png')
+        mp.close()
 
     def test_plot3(self):
         """ Exercise climdiv plot API """
