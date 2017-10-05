@@ -1,16 +1,17 @@
 """
  Something to store UGC information!
 """
-
+from __future__ import print_function
 import re
 import datetime
 from collections import OrderedDict
 
-# _re = "([A-Z][A-Z][C,Z][0-9][0-9][0-9][A-Z,0-9,\-,>]+)"
-_re = "^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$"
+UGC_RE = re.compile(
+    r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M)
 
 
 class UGCParseException(Exception):
+    """Custom Exception this parser can raise"""
     pass
 
 
@@ -18,28 +19,28 @@ def ugcs_to_text(ugcs):
     """ Convert a list of UGC objects to a textual string """
     states = OrderedDict()
     geotype = "counties"
-    for u in ugcs:
-        code = str(u)
-        stateAB = code[:2]
+    for ugc in ugcs:
+        code = str(ugc)
+        state_abbr = code[:2]
         if code[2] == 'Z':
             geotype = "forecast zones"
-        if stateAB not in states:
-            states[stateAB] = []
-        if u.name is None:
+        if state_abbr not in states:
+            states[state_abbr] = []
+        if ugc.name is None:
             name = "((%s))" % (code,)
         else:
-            name = u.name
-        states[stateAB].append(name)
+            name = ugc.name
+        states[state_abbr].append(name)
 
     txt = []
     for st in states.keys():
         states[st].sort()
-        s = " %s [%s]" % (", ".join(states[st]), st)
-        if len(s) > 350:
+        part = " %s [%s]" % (", ".join(states[st]), st)
+        if len(part) > 350:
             if st == 'LA' and geotype == 'counties':
                 geotype = 'parishes'
-            s = " %s %s in [%s]" % (len(states[st]), geotype, st)
-        txt.append(s)
+            part = " %s %s in [%s]" % (len(states[st]), geotype, st)
+        txt.append(part)
 
     return (" and".join(txt)).strip()
 
@@ -76,57 +77,66 @@ def parse(text, valid, ugc_provider=None):
         return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))
     ugcs = []
     expire = None
-    tokens = re.findall(_re, text, re.M)
-    if len(tokens) == 0:
+    tokens = UGC_RE.findall(text)
+    if not tokens:
         return ugcs, expire
+    # TODO: perhaps we should be more kind when we find products with this
+    #       formatting error, but we can recover.  Note that typically the
+    #       UGC codes are the same, but the product expiration time may be off
+    # if len(tokens) == 2 and tokens[0] == tokens[1]:
+    #    pass
     if len(tokens) > 1:
         raise UGCParseException("More than 1 UGC encoding in text:\n%s\n" % (
                                                             str(tokens),))
 
     parts = re.split('-', tokens[0][0].replace(" ", "").replace("\n", ""))
     expire = str2time(tokens[0][2], valid)
-    stateCode = ""
+    state_code = ""
     for i, part in enumerate(parts):
-        if i == 0 and len(part) >= 6:
-            ugcType = part[2]
-        if i == 0 and len(part) < 6:
-            # This is bad encoding
-            raise UGCParseException('WHOA, bad UGC encoding detected "%s"' % (
-                                                            '-'.join(parts),))
-        thisPart = parts[i].strip()
-        if len(thisPart) == 6:  # We have a new state ID
-            stateCode = thisPart[:3]
-            ugcs.append(_construct(thisPart))
-        elif len(thisPart) == 3:  # We have an individual Section
-            ugcs.append(_construct("%s%s%s" % (stateCode[:2], stateCode[2],
-                                               thisPart)))
-        elif len(thisPart) > 6:  # We must have a > in there somewhere
-            newParts = re.split('>', thisPart)
-            firstPart = newParts[0]
-            secondPart = newParts[1]
-            if len(firstPart) > 3:
-                stateCode = firstPart[:3]
-            firstVal = int(firstPart[-3:])
-            lastVal = int(secondPart)
-            if ugcType == "C":
-                for j in range(0, lastVal+2 - firstVal, 2):
-                    strCode = "%03i" % (firstVal+j,)
-                    ugcs.append(_construct("%s%s%s" % (stateCode[:2],
-                                                       stateCode[2], strCode)))
+        if i == 0:
+            if len(part) >= 6:
+                ugc_type = part[2]
             else:
-                for j in range(firstVal, lastVal+1):
-                    strCode = "%03i" % (j,)
-                    ugcs.append(_construct("%s%s%s" % (stateCode[:2],
-                                                       stateCode[2], strCode)))
+                # This is bad encoding
+                raise UGCParseException(('WHOA, bad UGC encoding detected "%s"'
+                                         ) % ('-'.join(parts),))
+        this_part = parts[i].strip()
+        if len(this_part) == 6:  # We have a new state ID
+            state_code = this_part[:3]
+            ugcs.append(_construct(this_part))
+        elif len(this_part) == 3:  # We have an individual Section
+            ugcs.append(_construct("%s%s%s" % (state_code[:2], state_code[2],
+                                               this_part)))
+        elif len(this_part) > 6:  # We must have a > in there somewhere
+            new_parts = re.split('>', this_part)
+            first_part = new_parts[0]
+            second_part = new_parts[1]
+            if len(first_part) > 3:
+                state_code = first_part[:3]
+            first_val = int(first_part[-3:])
+            last_val = int(second_part)
+            if ugc_type == "C":
+                for j in range(0, last_val+2 - first_val, 2):
+                    str_code = "%03i" % (first_val+j,)
+                    ugcs.append(_construct("%s%s%s" % (state_code[:2],
+                                                       state_code[2],
+                                                       str_code)))
+            else:
+                for j in range(first_val, last_val+1):
+                    str_code = "%03i" % (j,)
+                    ugcs.append(_construct("%s%s%s" % (state_code[:2],
+                                                       state_code[2],
+                                                       str_code)))
     return ugcs, expire
 
 
 class UGC(object):
+    """Representation of a single UGC"""
 
     def __init__(self, state, geoclass, number, name=None, wfos=None):
-        '''
+        """
         Constructor for UGC instances
-        '''
+        """
         self.state = state
         self.geoclass = geoclass
         self.number = int(number)
