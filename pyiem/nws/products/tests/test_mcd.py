@@ -80,13 +80,17 @@ class TestMCD(unittest.TestCase):
         self.assertAlmostEqual(prod.geometry.area, 2.444, 3)
         self.assertEqual(prod.watch_prob, 20)
 
-        self.assertEqual(prod.get_jabbers('http://localhost')[0][1], (
+        jmsg = prod.get_jabbers('http://localhost')
+        self.assertEqual(jmsg[0][1], (
             '<p>Storm Prediction Center issues '
             '<a href="http://www.spc.noaa.gov/'
             'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
             '[watch probability: 20%] (<a href="http://localhost'
             '?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)</p>'))
-
+        self.assertEqual(jmsg[0][0], (
+            'Storm Prediction Center issues Mesoscale Discussion #1678 '
+            '[watch probability: 20%] '
+            'http://www.spc.noaa.gov/products/md/2013/md1678.html'))
         answer = utc(2013, 8, 9, 17, 25)
         self.assertEquals(prod.sts, answer)
         answer = utc(2013, 8, 9, 19, 30)

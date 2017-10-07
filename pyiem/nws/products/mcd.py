@@ -127,13 +127,13 @@ class MCDProduct(TextProduct):
         if self.afos == 'FFGMPD':
             center = 'Weather Prediction Center'
             pextra = 'Precipitation '
-        prob_extra = ""
+        prob_extra = " "
         if self.watch_prob is not None:
-            prob_extra = "[watch probability: %.0f%%] " % (self.watch_prob,)
-        plain = ("%s issues Mesoscale %sDiscussion #%s%s %s"
+            prob_extra = " [watch probability: %.0f%%] " % (self.watch_prob,)
+        plain = ("%s issues Mesoscale %sDiscussion #%s%s%s"
                  ) % (center, pextra, self.discussion_num, prob_extra, spcuri)
         html = ('<p>%s issues <a href="%s">'
-                'Mesoscale %sDiscussion #%s</a> %s'
+                'Mesoscale %sDiscussion #%s</a>%s'
                 '(<a href="%s?pid=%s">View text</a>)</p>'
                 ) % (center, spcuri, pextra, self.discussion_num,
                      prob_extra, uri, self.get_product_id())
