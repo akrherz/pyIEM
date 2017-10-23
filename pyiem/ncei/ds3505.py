@@ -5,6 +5,76 @@
 """
 from __future__ import print_function
 import re
+import datetime
+import json
+
+import pytz
+from pyiem.datatypes import speed, distance, pressure
+
+
+MISSING_RE = re.compile(r"^\+?\-?9+$")
+EQD_RE = re.compile(r"^[QPRCD][0-9][0-9]$")
+DS3505_RE = re.compile(r"""
+^(?P<chars>[0-9]{4})
+(?P<stationid>......)
+(?P<wban>.....)
+(?P<yyyymmdd>[0-9]{8})
+(?P<hhmi>[0-9]{4})
+(?P<srcflag>.)
+(?P<lat>[\+\-][0-9]{5})
+(?P<lon>[\+\-][0-9]{6})
+(?P<report_type>.....)
+(?P<elevation>[\+\-][0-9]{4})
+(?P<call_id>.....)
+(?P<qc_process>....)
+(?P<drct>[0-9]{3})
+(?P<drct_qc>.)
+(?P<wind_code>.)
+(?P<wind_speed_mps>[0-9]{4})
+(?P<wind_speed_mps_qc>.)
+(?P<ceiling_m>[0-9]{5})
+(?P<ceiling_m_qc>.)
+(?P<ceiling_m_how>.)
+(?P<ceiling_m_cavok>.)
+(?P<vsby_m>[0-9]{6})
+(?P<vsby_m_qc>.)
+(?P<vsby_m_variable>.)
+(?P<vsby_m_variable_qc>.)
+(?P<airtemp_c>[\+\-][0-9]{4})
+(?P<airtemp_c_qc>.)
+(?P<dewpointtemp_c>[\+\-][0-9]{4})
+(?P<dewpointtemp_c_qc>.)
+(?P<pressure_hpa>[0-9]{5})
+(?P<pressure_hpa_qc>.)
+""", re.VERBOSE)
+
+
+def _tonumeric(val, scale_factor=1.):
+    """Convert to what we want"""
+    if MISSING_RE.match(val):
+        return None
+    return float(val) / scale_factor
+
+
+def _d1000(val):
+    """Divide the value by 1000"""
+    return _tonumeric(val, 1000.)
+
+
+def _d10(val):
+    """Divide the value by 1000"""
+    return _tonumeric(val, 10.)
+
+
+SKY_STATE_CODES = {
+    '0': 'CLR',
+    '1': 'FEW',
+    '2': 'SCT',
+    '3': 'BKN',
+    '4': 'OVC',
+    '5': 'OBS',
+    '6': 'POB',
+    '9': '///'}
 
 ADDITIONAL = {
     # Hourly Precip
@@ -225,37 +295,37 @@ ADDITIONAL = {
     'ED1': [['angle', 2], ['runway', 1], ['visibility', 4],
             ['visibility_qc', 1]],
     # Sky coverage
-    'GA1': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA1': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
-    'GA2': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA2': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
-    'GA3': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA3': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
-    'GA4': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA4': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
-    'GA5': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA5': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
-    'GA6': [['coverage', 2], ['coverage_qc', 1], ['height', 6],
+    'GA6': [['coverage', 2], ['coverage_qc', 1], ['height', 6, _tonumeric],
             ['height_qc', 1],
             ['type', 2], ['type_qc', 1]],
     # sky cover summation
     'GD1': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     'GD2': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     'GD3': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     'GD4': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     'GD5': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     'GD6': [['state_code', 1], ['state_code2', 2], ['state_qc', 1],
-            ['height', 6], ['height_qc', 1], ['height_char', 1]],
+            ['height', 6, _tonumeric], ['height_qc', 1], ['height_char', 1]],
     # sky coverage identifier
     'GE1': [['convective', 1], ['vertical_datum', 6], ['height', 6],
             ['lower_range', 6]],
@@ -390,7 +460,8 @@ ADDITIONAL = {
     'KG2': [['period', 3], ['code', 1], ['dewpoint', 5], ['dewpoint_code', 1],
             ['dewpoint_qc', 1]],
     # pressure
-    'MA1': [['altimer', 5], ['altimeter_code', 1], ['station_pressure', 5],
+    'MA1': [['altimeter', 5, _d10], ['altimeter_code', 1],
+            ['station_pressure', 5, _d10],
             ['station_pressure_code', 1]],
     # Pressure Tendency
     'MD1': [['code', 1], ['code_qc', 1], ['threehour', 3], ['threehour_qc', 1],
@@ -399,7 +470,7 @@ ADDITIONAL = {
     'ME1': [['level_code', 1], ['height', 4], ['height_qc', 1]],
     # SLP
     'MF1': [['pressure', 5], ['pressure_qc', 1], ['pressure_day', 5],
-            ['pressure_day_qc']],
+            ['pressure_day_qc', 1]],
     # Pressure
     'MG1': [['avg_pressure', 5], ['avg_pressure_qc', 1],
             ['min_pressure', 5], ['min_pressure_qc', 1]],
@@ -445,7 +516,7 @@ ADDITIONAL = {
             ['wind_dir_std', 5], ['wind_dir_std_qc', 1],
             ['wind_dir_std_flag', 1]],
     # Wind gust
-    'OC1': [['speed', 4], ['speed_qc', 1]],
+    'OC1': [['speed', 4, _d10], ['speed_qc', 1]],
     # Supplementary Wind
     'OD1': [['code', 1], ['hours', 2], ['speed', 4], ['speed_qc', 1],
             ['direction', 3]],
@@ -453,85 +524,156 @@ ADDITIONAL = {
             ['direction', 3]],
     'OD3': [['code', 1], ['hours', 2], ['speed', 4], ['speed_qc', 1],
             ['direction', 3]],
-    # -------------------------- page 108 ---------------------
-    # Remarks
-    'REM': [['id', 3], ['length', 3]],
+    # Wind summary
+    'OE1': [['code', 1], ['period', 2], ['speed', 5], ['direction', 3],
+            ['time', 4], ['qc', 1]],
+    'OE2': [['code', 1], ['period', 2], ['speed', 5], ['direction', 3],
+            ['time', 4], ['qc', 1]],
+    'OE3': [['code', 1], ['period', 2], ['speed', 5], ['direction', 3],
+            ['time', 4], ['qc', 1]],
+    # relative humidity
+    'RH1': [['hours', 3], ['code', 1], ['percentage', 3], ['derived', 1],
+            ['qc', 1]],
+    'RH2': [['hours', 3], ['code', 1], ['percentage', 3], ['derived', 1],
+            ['qc', 1]],
+    'RH3': [['hours', 3], ['code', 1], ['percentage', 3], ['derived', 1],
+            ['qc', 1]],
     # Sea Surface temp
     'SA1': [['tmpc', 4], ['qc', 1]],
+    # Soil temperature
+    'ST1': [['type', 1], ['tmpc', 5], ['qc', 1], ['depth', 4],
+            ['depth_qc', 1], ['cover', 2], ['cover_qc', 1],
+            ['subplot', 1], ['subplot_qc', 1]],
     # Wave
     'UA1': [['method', 1], ['period', 2], ['height', 3], ['height_qc', 1],
             ['state', 2], ['state_qc', 1]],
+    # Wave swell
+    'UG1': [['seconds', 2], ['height', 3], ['direction', 3],
+            ['swell_qc', 1]],
+    'UG2': [['seconds', 2], ['height', 3], ['direction', 3],
+            ['swell_qc', 1]],
+    # Ice Accretion
+    'WA1': [['source_code', 1], ['thickness', 3], ['tendency_code', 1],
+            ['qc', 1]],
+    # Surface Ice
+    'WD1': [['bearing_code', 2], ['concentration_rate', 3],
+            ['non_uniform', 2], ['position_code', 2],
+            ['ship_relative', 1], ['penetration_code', 1],
+            ['ice_trend', 1], ['development_code', 2],
+            ['growler', 1], ['gbb', 3], ['iceberg', 3],
+            ['qc', 1]],
+    # Water Ice
+    'WG1': [['bearing', 2], ['edge_distance', 2], ['orientation', 2],
+            ['formation_type', 2], ['navigation_effect', 2],
+            ['qc', 1], ['identifier', 3], ['thickness', 3],
+            ['discharge', 5], ['ice', 2], ['ice2', 2], ['stage', 5],
+            ['slush', 1], ['water_level_code', 1]],
+    # ________________________________________
+    # Remarks
+    'REM': [['id', 3], ['length', 3]],
 }
 
-DS3505_RE = re.compile(r"""
-^(?P<chars>[0-9]{4})
-(?P<stationid>......)
-(?P<wban>.....)
-(?P<yyyymmdd>[0-9]{8})
-(?P<hhmi>[0-9]{4})
-(?P<srcflag>.)
-(?P<lat>[\+\-][0-9]{5})
-(?P<lon>[\+\-][0-9]{6})
-(?P<report_type>.....)
-(?P<elevation>[\+\-][0-9]{4})
-(?P<call_id>.....)
-(?P<qc_process>....)
-(?P<drct>[0-9]{3})
-(?P<drct_qc>.)
-(?P<wind_code>.)
-(?P<wind_speed_mps>[0-9]{4})
-(?P<wind_speed_mps_qc>.)
-(?P<ceiling_m>[0-9]{5})
-(?P<ceiling_m_qc>.)
-(?P<ceiling_m_how>.)
-(?P<ceiling_m_cavok>.)
-(?P<vsby_m>[0-9]{6})
-(?P<vsby_m_qc>.)
-(?P<vsby_m_variable>.)
-(?P<vsby_m_variable_qc>.)
-(?P<airtemp_c>[\+\-][0-9]{4})
-(?P<airtemp_c_qc>.)
-(?P<dewpointtemp_c>[\+\-][0-9]{4})
-(?P<dewpointtemp_c_qc>.)
-(?P<pressure_hpa>[0-9]{5})
-(?P<pressure_hpa_qc>.)
-""", re.VERBOSE)
+
+def vsbyfmt(val):
+    """ Tricky formatting of vis"""
+    if val == 0:
+        return 0
+    if val <= 0.125:
+        return "1/8"
+    if val <= 0.25:
+        return "1/4"
+    if val <= 0.375:
+        return "3/8"
+    if val <= 0.5:
+        return "1/2"
+    if val <= 1.1:
+        return "1"
+    if val <= 1.6:
+        return "1 1/2"
+    if val <= 2.1:
+        return "2"
+    if val <= 2.6:
+        return "2 1/2"
+    return "%.0f" % (val,)
 
 
-def parser(msg):
-    """Parse the message into a dict"""
+def gen_metar(data):
+    """Convert our parsed dictionary into a METAR"""
+    print(json.dumps(data, indent=True, sort_keys=True, default=str))
+    mtr = "%s %sZ AUTO " % (data['call_id'], data['valid'].strftime("%d%H%M"))
+    # wind direction
+    if data.get('drct_qc') in ["1", "5"]:
+        mtr += "%03.0f" % (data['drct'], )
+        kts = speed(data['wind_speed_mps'], 'MPS').value('KT')
+        mtr += "%02.0f" % (kts, )
+        if 'OC1' in data['extra']:
+            val = data['extra']['OC1'].get('speed', 0)
+            if val > 0:
+                mtr += "G%02.0f" % (speed(val, 'MPS').value('KT'), )
+
+        mtr += 'KT '
+    # vis
+    if 'vsby_m' in data:
+        val = distance(data['vsby_m'], 'M').value('MI')
+        mtr += "%sSM " % (vsbyfmt(val), )
+    # Clouds
+    for code in ['GD1', 'GD2', 'GD3', 'GD4', 'GD5', 'GD6']:
+        if code not in data['extra']:
+            continue
+        val = data['extra'][code]
+        hft = distance(val['height'], 'M').value('FT') / 100.
+        mtr += "%s%03.0f " % (SKY_STATE_CODES[val['state_code']], hft)
+    # temperature
+    tgroup = None
+    if data.get('airtemp_c_qc') in ["1", "5"]:
+        tmpc = data['airtemp_c']
+        dwpc = data['dewpointtemp_c']
+        mtr += "%s%02.0f/%s%02.0f " % ("M" if tmpc < 0 else "", abs(tmpc),
+                                       "M" if dwpc < 0 else "", abs(dwpc))
+        tgroup = "T%s%03i%s%03i" % ("1" if tmpc < 0 else "0", abs(tmpc) * 10.,
+                                    "1" if dwpc < 0 else "0", abs(dwpc) * 10.)
+    # altimeter
+    if 'MA1' in data['extra']:
+        altimeter = pressure(data['extra']['MA1']['altimeter'], 'HPA').value(
+            "IN")
+        mtr += "A%4.0f " % (altimeter * 100, )
+    if tgroup is not None:
+        mtr += "RMK %s " % (tgroup, )
+    data['metar'] = mtr.strip()
+
+
+def parser(msg, add_metar=False):
+    """Parse the message(single line) into a dict
+
+    Args:
+      msg (str): the single line of data to parse into a dict
+      add_metar (bool,optional): should a METAR be generated? Default: False
+
+    Returns:
+      dict or None
+    """
     match = DS3505_RE.match(msg)
     if not match:
         return None
     data = match.groupdict()
-    data['lat'] = (float(data['lat']) / 1000.
-                   if data['lat'] != '+99999'
-                   else None)
-    data['lon'] = (float(data['lon']) / 1000.
-                   if data['lon'] != '+999999'
-                   else None)
-    data['elevation'] = (float(data['elevation'])
-                         if data['elevation'] != '+9999'
-                         else None)
-    data['wind_speed_mps'] = (float(data['wind_speed_mps']) / 10.
-                              if data['wind_speed_mps'] != '9999'
-                              else None)
-    data['airtemp_c'] = (float(data['airtemp_c']) / 10.
-                         if data['airtemp_c'] != '+9999'
-                         else None)
-    data['dewpointtemp_c'] = (float(data['dewpointtemp_c']) / 10.
-                              if data['dewpointtemp_c'] != '+9999'
-                              else None)
-    data['pressure_hpa'] = (float(data['pressure_hpa']) / 10.
-                            if data['pressure_hpa'] != '99999'
-                            else None)
-    for elem in ['drct', 'ceiling_m', 'vsby_m']:
-        if data[elem][0] == 9 and len(data[elem]) * "9":
-            data[elem] = None
-        else:
-            data[elem] = float(data[elem])
+    data['valid'] = datetime.datetime.strptime("%s %s" % (data['yyyymmdd'],
+                                                          data['hhmi']),
+                                               '%Y%m%d %H%M').replace(
+                                                   tzinfo=pytz.utc)
+    data['call_id'] = data['call_id'].strip()
+    data['lat'] = _d1000(data['lat'])
+    data['lon'] = _d1000(data['lon'])
+    data['wind_speed_mps'] = _d10(data['wind_speed_mps'])
+    data['airtemp_c'] = _d10(data['airtemp_c'])
+    data['dewpointtemp_c'] = _d10(data['dewpointtemp_c'])
+    data['pressure_hpa'] = _d10(data['pressure_hpa'])
+    for elem in ['drct', 'ceiling_m', 'vsby_m', 'elevation']:
+        data[elem] = _tonumeric(data[elem])
 
+    data['extra'] = {}
     parse_extra(data, msg[105:])
+    if add_metar:
+        gen_metar(data)
 
     return data
 
@@ -541,19 +683,27 @@ def parse_extra(data, extra):
     # ADD can be ignored
     extra = extra[3:]
     pos = 0
-    data['extra'] = {}
     while pos < len(extra):
         code = extra[pos:pos+3]
         pos += 3
         if code == 'EQD':
-            # TODO: unsure how we will handle this one
-            break
+            code = extra[pos:pos+3]
+            while EQD_RE.match(code):
+                pos += 3
+                data[code] = extra[pos:pos+13]
+                pos += 13
+                code = extra[pos:pos+3]
+            continue
         if code not in ADDITIONAL:
             raise Exception("Unaccounted for %s, remaining %s" % (code,
                                                                   extra[pos:]))
         data['extra'][code] = dict()
         for token in ADDITIONAL[code]:
-            data['extra'][code][token[0]] = extra[pos:pos+token[1]]
+            if len(token) == 3:
+                data['extra'][code][token[0]] = token[2](
+                    extra[pos:pos+token[1]])
+            else:
+                data['extra'][code][token[0]] = extra[pos:pos+token[1]]
             pos += token[1]
         if code == 'REM':
             sz = int(data['extra'][code]['length'])
