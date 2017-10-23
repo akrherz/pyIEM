@@ -10,6 +10,8 @@ import json
 
 import pytz
 from pyiem.datatypes import speed, distance, pressure
+from metar.Metar import Metar
+from metar.Metar import ParserError as MetarParserError
 
 
 MISSING_RE = re.compile(r"^\+?\-?9+$")
@@ -66,6 +68,22 @@ def _d10(val):
     return _tonumeric(val, 10.)
 
 
+def _i10(val):
+    """Divide the value by 1000"""
+    val = _tonumeric(val, 10.)
+    if val is None:
+        return val
+    return int(val)
+
+
+def _i(val):
+    """int"""
+    val = _tonumeric(val, 1.)
+    if val is None:
+        return val
+    return int(val)
+
+
 SKY_STATE_CODES = {
     '0': 'CLR',
     '1': 'FEW',
@@ -78,10 +96,14 @@ SKY_STATE_CODES = {
 
 ADDITIONAL = {
     # Hourly Precip
-    'AA1': [['hrs', 2], ['depth', 4], ['cond_code', 1], ['qc', 1]],
-    'AA2': [['hrs', 2], ['depth', 4], ['cond_code', 1], ['qc', 1]],
-    'AA3': [['hrs', 2], ['depth', 4], ['cond_code', 1], ['qc', 1]],
-    'AA4': [['hrs', 2], ['depth', 4], ['cond_code', 1], ['qc', 1]],
+    'AA1': [['hours', 2, _i], ['depth', 4, _d10],
+            ['cond_code', 1], ['qc', 1]],
+    'AA2': [['hours', 2, _i], ['depth', 4, _d10],
+            ['cond_code', 1], ['qc', 1]],
+    'AA3': [['hours', 2, _i], ['depth', 4, _d10],
+            ['cond_code', 1], ['qc', 1]],
+    'AA4': [['hours', 2, _i], ['depth', 4, _d10],
+            ['cond_code', 1], ['qc', 1]],
     # Monthly Precip
     'AB1': [['depth', 5], ['cond_code', 1], ['qc', 1]],
     # Precip History
@@ -431,14 +453,15 @@ ADDITIONAL = {
             ['min_pan_tmpc_code', 1],
             ['min_pan_tmpc_qc', 1]],
     # Temperature extremes
-    'KA1': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
-    'KA2': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
-    'KA3': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
-    'KA4': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
+    'KA1': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KA2': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KA3': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KA4': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
     # average air temp
-    'KB1': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
-    'KB2': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
-    'KB3': [['hours', 3], ['code', 1], ['tmpc', 5], ['qc', 1]],
+    'KB1': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KB2': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KB3': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
+    'KB4': [['hours', 3, _i10], ['code', 1], ['tmpc', 5, _d10], ['qc', 1]],
     # extreme air temp
     'KC1': [['month_code', 1], ['cond_code', 1], ['tmpc', 5], ['dates', 6],
             ['tmpc_qc', 1]],
@@ -464,8 +487,9 @@ ADDITIONAL = {
             ['station_pressure', 5, _d10],
             ['station_pressure_code', 1]],
     # Pressure Tendency
-    'MD1': [['code', 1], ['code_qc', 1], ['threehour', 3], ['threehour_qc', 1],
-            ['24hour', 4], ['24hour_qc', 1]],
+    'MD1': [['code', 1], ['code_qc', 1],
+            ['threehour', 3, _d10], ['threehour_qc', 1],
+            ['24hour', 4, _d10], ['24hour_qc', 1]],
     # geopotential
     'ME1': [['level_code', 1], ['height', 4], ['height_qc', 1]],
     # SLP
@@ -565,17 +589,19 @@ ADDITIONAL = {
     # Water Ice
     'WG1': [['bearing', 2], ['edge_distance', 2], ['orientation', 2],
             ['formation_type', 2], ['navigation_effect', 2],
-            ['qc', 1], ['identifier', 3], ['thickness', 3],
+            ['qc', 1]],
+    # water level
+    'WJ1': [['thickness', 3],
             ['discharge', 5], ['ice', 2], ['ice2', 2], ['stage', 5],
             ['slush', 1], ['water_level_code', 1]],
-    # ________________________________________
-    # Remarks
-    'REM': [['id', 3], ['length', 3]],
 }
+SLP = 'Sea Level PressureIn'
+ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
 
 
 def vsbyfmt(val):
     """ Tricky formatting of vis"""
+    val = round(val, 3)
     if val == 0:
         return 0
     if val <= 0.125:
@@ -588,6 +614,8 @@ def vsbyfmt(val):
         return "1/2"
     if val <= 1.1:
         return "1"
+    if val <= 1.25:
+        return "1 1/4"
     if val <= 1.6:
         return "1 1/2"
     if val <= 2.1:
@@ -597,12 +625,182 @@ def vsbyfmt(val):
     return "%.0f" % (val,)
 
 
+class OB(object):
+    ''' hacky representation of the database schema '''
+    station = None
+    valid = None
+    tmpf = None
+    dwpf = None
+    drct = None
+    sknt = None
+    alti = None
+    gust = None
+    vsby = None
+    skyc1 = None
+    skyc2 = None
+    skyc3 = None
+    skyc4 = None
+    skyl1 = None
+    skyl2 = None
+    skyl3 = None
+    metar = None
+    skyl4 = None
+    p03i = None
+    p06i = None
+    p24i = None
+    max_tmpf_6hr = None
+    min_tmpf_6hr = None
+    max_tmpf_24hr = None
+    min_tmpf_24hr = None
+    mslp = None
+    p01i = None
+    presentwx = None
+
+
+def process_metar(mstr, now):
+    """ Do the METAR Processing """
+    mtr = None
+    while mtr is None:
+        try:
+            mtr = Metar(mstr, now.month, now.year)
+        except MetarParserError as exp:
+            try:
+                msg = str(exp)
+            except Exception as exp:
+                return None
+            tokens = ERROR_RE.findall(str(exp))
+            orig_mstr = mstr
+            if tokens:
+                for token in tokens[0].split():
+                    mstr = mstr.replace(" %s" % (token, ), "")
+                if orig_mstr == mstr:
+                    print("Can't fix badly formatted metar: " + mstr)
+                    return None
+            else:
+                print("MetarParserError: "+msg)
+                return None
+        except Exception, exp:
+            print("Double Fail: %s %s" % (mstr, exp))
+            return None
+    if mtr is None or mtr.time is None:
+        return None
+
+    ob = OB()
+    ob.metar = mstr[:254]
+
+    gts = datetime.datetime(mtr.time.year, mtr.time.month,
+                            mtr.time.day, mtr.time.hour, mtr.time.minute)
+    gts = gts.replace(tzinfo=pytz.timezone("UTC"))
+    # When processing data on the last day of the month, we get GMT times
+    # for the first of this month
+    if gts.day == 1 and now.day > 10:
+        tm = now + datetime.timedelta(days=1)
+        gts = gts.replace(year=tm.year, month=tm.month, day=tm.day)
+
+    ob.valid = gts
+
+    if mtr.temp:
+        ob.tmpf = mtr.temp.value("F")
+    if mtr.dewpt:
+        ob.dwpf = mtr.dewpt.value("F")
+
+    if mtr.wind_speed:
+        ob.sknt = mtr.wind_speed.value("KT")
+    if mtr.wind_gust:
+        ob.gust = mtr.wind_gust.value("KT")
+
+    if mtr.wind_dir and mtr.wind_dir.value() != "VRB":
+        ob.drct = mtr.wind_dir.value()
+
+    if mtr.vis:
+        ob.vsby = mtr.vis.value("SM")
+
+    if mtr.press:
+        ob.alti = mtr.press.value("IN")
+
+    if mtr.press_sea_level:
+        ob.mslp = mtr.press_sea_level.value("MB")
+
+    if mtr.precip_1hr:
+        ob.p01i = mtr.precip_1hr.value("IN")
+
+    # Do something with sky coverage
+    for i in range(len(mtr.sky)):
+        (c, h, _) = mtr.sky[i]
+        setattr(ob, 'skyc%s' % (i+1), c)
+        if h is not None:
+            setattr(ob, 'skyl%s' % (i+1), h.value("FT"))
+
+    if mtr.max_temp_6hr:
+        ob.max_tmpf_6hr = mtr.max_temp_6hr.value("F")
+    if mtr.min_temp_6hr:
+        ob.min_tmpf_6hr = mtr.min_temp_6hr.value("F")
+    if mtr.max_temp_24hr:
+        ob.max_tmpf_24hr = mtr.max_temp_24hr.value("F")
+    if mtr.min_temp_24hr:
+        ob.min_tmpf_6hr = mtr.min_temp_24hr.value("F")
+    if mtr.precip_3hr:
+        ob.p03i = mtr.precip_3hr.value("IN")
+    if mtr.precip_6hr:
+        ob.p06i = mtr.precip_6hr.value("IN")
+    if mtr.precip_24hr:
+        ob.p24i = mtr.precip_24hr.value("IN")
+
+    # Presentwx
+    if mtr.weather:
+        pwx = []
+        for x in mtr.weather:
+            pwx.append(("").join([a for a in x if a is not None]))
+        ob.presentwx = (",".join(pwx))[:24]
+
+    return ob
+
+
+def sql(txn, stid, data):
+    """Send this data dictionary to a database cursor for archiving"""
+    metar = data['extra'].get('REM', {}).get('MET')
+    if metar is not None:
+        # Split off the cruft
+        metar = metar.replace("METAR ", "")
+    else:
+        metar = data.get('metar', '')
+    table = "t%s" % (data['valid'].year, )
+    ob = process_metar(metar, data['valid'])
+    if ob is None:
+        return
+    _sql = """
+        INSERT into """ + table + """ (station, valid,
+        tmpf, dwpf, vsby, drct, sknt, gust, p01i, alti, skyc1, skyc2,
+        skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, metar, mslp,
+        presentwx, p03i, p06i, p24i, max_tmpf_6hr, max_tmpf_24hr,
+        min_tmpf_6hr, min_tmpf_24hr, report_type)
+        values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2)
+            """
+    args = (stid, ob.valid, ob.tmpf, ob.dwpf, ob.vsby, ob.drct,
+            ob.sknt, ob.gust, ob.p01i, ob.alti, ob.skyc1, ob.skyc2,
+            ob.skyc3, ob.skyc4, ob.skyl1, ob.skyl2, ob.skyl3,
+            ob.skyl4, metar,
+            ob.mslp, ob.presentwx, ob.p03i,
+            ob.p06i, ob.p24i, ob.max_tmpf_6hr, ob.max_tmpf_24hr,
+            ob.min_tmpf_6hr, ob.min_tmpf_24hr)
+
+    try:
+        txn.execute(_sql, args)
+    except:
+        print(metar)
+        print(args)
+        raise
+
+
 def gen_metar(data):
     """Convert our parsed dictionary into a METAR"""
-    print(json.dumps(data, indent=True, sort_keys=True, default=str))
     mtr = "%s %sZ AUTO " % (data['call_id'], data['valid'].strftime("%d%H%M"))
     # wind direction
-    if data.get('drct_qc') in ["1", "5"]:
+    if data.get('wind_code') == 'C':
+        mtr += "00000KT "
+    elif (data.get('drct_qc') in ["1", "5"] and
+            data['wind_speed_mps'] is not None):
         mtr += "%03.0f" % (data['drct'], )
         kts = speed(data['wind_speed_mps'], 'MPS').value('KT')
         mtr += "%02.0f" % (kts, )
@@ -613,40 +811,120 @@ def gen_metar(data):
 
         mtr += 'KT '
     # vis
-    if 'vsby_m' in data:
+    if data['vsby_m'] is not None:
         val = distance(data['vsby_m'], 'M').value('MI')
         mtr += "%sSM " % (vsbyfmt(val), )
+    # Present Weather Time
+    combocode = ""
+    for code in ['AU1', 'AU2', 'AU3', 'AU4', 'AU5', 'AU6', 'AU7', 'AU8',
+                 'AU9']:
+        if code not in data['extra']:
+            continue
+        val = data['extra'][code]
+        if val['combo'] == "1":  # lone
+            if val['obscure'] == "1":
+                mtr += "BR "
+        elif val['combo'] == '2':  # start of dual code
+            if val['descriptor'] == '7':
+                combocode = "TS"
+        elif val['combo'] == '3':  # end of dual code
+            if val['proximity'] == '3' and val['precip'] == '02':
+                mtr += "+%sRA " % (combocode, )
+                combocode = ""
     # Clouds
     for code in ['GD1', 'GD2', 'GD3', 'GD4', 'GD5', 'GD6']:
         if code not in data['extra']:
             continue
         val = data['extra'][code]
-        hft = distance(val['height'], 'M').value('FT') / 100.
-        mtr += "%s%03.0f " % (SKY_STATE_CODES[val['state_code']], hft)
+        skycode = SKY_STATE_CODES[val['state_code']]
+        if skycode == 'CLR':
+            mtr += "CLR "
+        else:
+            hft = distance(val['height'], 'M').value('FT') / 100.
+            mtr += "%s%03.0f " % (skycode, hft)
     # temperature
     tgroup = None
     if data.get('airtemp_c_qc') in ["1", "5"]:
         tmpc = data['airtemp_c']
         dwpc = data['dewpointtemp_c']
-        mtr += "%s%02.0f/%s%02.0f " % ("M" if tmpc < 0 else "", abs(tmpc),
-                                       "M" if dwpc < 0 else "", abs(dwpc))
-        tgroup = "T%s%03i%s%03i" % ("1" if tmpc < 0 else "0", abs(tmpc) * 10.,
-                                    "1" if dwpc < 0 else "0", abs(dwpc) * 10.)
+        mtr += "%s%02.0f/" % ("M" if tmpc < 0 else "", abs(tmpc))
+        if dwpc is not None:
+            mtr += "%s%02.0f" % ("M" if dwpc < 0 else "", abs(dwpc))
+            tgroup = "T%s%03i%s%03i" % ("1" if tmpc < 0 else "0",
+                                        abs(tmpc) * 10.,
+                                        "1" if dwpc < 0 else "0",
+                                        abs(dwpc) * 10.)
+        mtr += " "
     # altimeter
-    if 'MA1' in data['extra']:
+    if ('MA1' in data['extra'] and
+            data['extra']['MA1']['altimeter'] is not None):
         altimeter = pressure(data['extra']['MA1']['altimeter'], 'HPA').value(
             "IN")
         mtr += "A%4.0f " % (altimeter * 100, )
+    rmk = []
+    for code in ['AA1', 'AA2', 'AA3', 'AA4']:
+        if code not in data['extra']:
+            continue
+        hours = data['extra'][code]['hours']
+        depth = data['extra'][code]['depth']
+        if hours is None or depth is None or hours == 12:
+            continue
+        elif hours in [3, 6]:
+            prefix = "6"
+        elif hours == 24:
+            prefix = "7"
+        elif hours == 1:
+            prefix = "P"
+        else:
+            raise Exception("Unknown precip hours %s" % (hours, ))
+        amount = distance(depth, 'MM').value('IN')
+        rmk.append("%s%04.0f" % (prefix, amount * 100))
+    if data['pressure_hpa'] is not None:
+        rmk.append("SLP%03.0f" % (data['pressure_hpa'] * 10 % 1000, ))
     if tgroup is not None:
-        mtr += "RMK %s " % (tgroup, )
+        rmk.append(tgroup)
+    # temperature groups
+    group4 = {'M': '////', 'N': '////'}
+    for code in ['KA1', 'KA2', 'KA3', 'KA4']:
+        if code not in data['extra']:
+            continue
+        val = data['extra'][code]
+        hours = val['hours']
+        typ = val['code']
+        tmpc = val['tmpc']
+        if hours is None or hours == 12:
+            continue
+        elif hours == 6 and typ == 'M':
+            prefix = "1"
+        elif hours == 6 and typ == 'N':
+            prefix = "2"
+        elif hours == 24:
+            group4[typ] = "%s%03i" % ("1" if tmpc < 0 else "0",
+                                      abs(tmpc) * 10)
+            continue
+        else:
+            raise Exception("Unknown temperature hours %s typ: %s" % (hours,
+                                                                      typ))
+        rmk.append("%s%s%03i" % (prefix, "1" if tmpc < 0 else "0",
+                                 abs(tmpc) * 10))
+    if group4['M'] != '////' or group4['N'] != '////':
+        rmk.append("4%(M)s%(N)s" % group4)
+    # 3-hour pressure tendency
+    if ('MD1' in data['extra'] and
+            data['extra']['MD1']['threehour'] is not None):
+        rmk.append("5%s%03i" % (data['extra']['MD1']['code'],
+                                data['extra']['MD1']['threehour'] * 10))
+    if rmk:
+        mtr += "RMK %s " % (" ".join(rmk), )
     data['metar'] = mtr.strip()
 
 
-def parser(msg, add_metar=False):
+def parser(msg, call_id, add_metar=False):
     """Parse the message(single line) into a dict
 
     Args:
       msg (str): the single line of data to parse into a dict
+      call_id (str): hard coded call_id as the data can't be trusted, sigh
       add_metar (bool,optional): should a METAR be generated? Default: False
 
     Returns:
@@ -660,7 +938,7 @@ def parser(msg, add_metar=False):
                                                           data['hhmi']),
                                                '%Y%m%d %H%M').replace(
                                                    tzinfo=pytz.utc)
-    data['call_id'] = data['call_id'].strip()
+    data['call_id'] = call_id
     data['lat'] = _d1000(data['lat'])
     data['lon'] = _d1000(data['lon'])
     data['wind_speed_mps'] = _d10(data['wind_speed_mps'])
@@ -673,19 +951,34 @@ def parser(msg, add_metar=False):
     data['extra'] = {}
     parse_extra(data, msg[105:])
     if add_metar:
-        gen_metar(data)
+        try:
+            gen_metar(data)
+        except Exception as _exp:
+            print(json.dumps(data, indent=True, sort_keys=True, default=str))
+            raise
 
     return data
 
 
 def parse_extra(data, extra):
     """Parse the additional data fields"""
-    # ADD can be ignored
-    extra = extra[3:]
     pos = 0
     while pos < len(extra):
         code = extra[pos:pos+3]
         pos += 3
+        if code == 'ADD':
+            continue
+        if code == 'REM':
+            data['extra']['REM'] = {}
+            code = extra[pos:pos+3]
+            while code in ['SYN', 'AWY', 'MET', 'SOD', 'SOM', 'HPD']:
+                pos += 3
+                sz = int(extra[pos:pos+3])
+                pos += 3
+                data['extra']['REM'][code] = extra[pos:pos+int(sz)]
+                pos += sz
+                code = extra[pos:pos+3]
+            continue
         if code == 'EQD':
             code = extra[pos:pos+3]
             while EQD_RE.match(code):
@@ -695,8 +988,9 @@ def parse_extra(data, extra):
                 code = extra[pos:pos+3]
             continue
         if code not in ADDITIONAL:
-            raise Exception("Unaccounted for %s, remaining %s" % (code,
-                                                                  extra[pos:]))
+            raise Exception(("Unaccounted for %s\n"
+                             "remaining '%s'\n"
+                             "extra: '%s'") % (code, extra[pos:], extra))
         data['extra'][code] = dict()
         for token in ADDITIONAL[code]:
             if len(token) == 3:
@@ -705,7 +999,3 @@ def parse_extra(data, extra):
             else:
                 data['extra'][code][token[0]] = extra[pos:pos+token[1]]
             pos += token[1]
-        if code == 'REM':
-            sz = int(data['extra'][code]['length'])
-            data['extra'][code]['remark'] = extra[pos:pos+int(sz)]
-            pos += sz
