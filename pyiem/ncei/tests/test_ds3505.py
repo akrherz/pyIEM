@@ -19,7 +19,7 @@ class DS3505(unittest.TestCase):
                "OC101185REMMET11708/12/16 17:53:02 METAR KAMW 122353Z "
                "35014G23KT 10SM CLR 25/21 A2983 RMK AO2 SLP092 60000 "
                "T02500211 10272 20250 55001")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 "
                           "RMK P0000 60000 SLP092 T02500211 10272 20250 55001"
@@ -42,7 +42,7 @@ class DS3505(unittest.TestCase):
                "OVC014 21/21 A2991 RMK AO2 WSHFT 0219 LTG DSNT "
                "ALQDS RAE00B24 TSE0155B27 SLP119 P0080 60232 "
                "T02110211 53037EQDQ01  05898PRCP03")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'KAMW', add_metar=True)
         # NOTE, this should be 0.80 instead of 0.81 !?!?!, NCDC wrong?
         self.assertEqual(data['metar'],
                          ("KAMW 120253Z AUTO 36012KT 1 1/4SM +TSRA BR "
@@ -60,7 +60,7 @@ class DS3505(unittest.TestCase):
                "GE19MSL   +99999+99999GF199999999999005181999999MA1102545"
                "099065REMMET09501/01/16 01:13:02 SPECI KAMW 010713Z "
                "29013KT 10SM BKN017 OVC033 M05/M08 A3028 RMK AO2 T10501083")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 010713Z AUTO 29013KT 10SM BKN017 OVC033 "
                           "M05/M08 A3028 RMK T10501083"))
@@ -75,7 +75,7 @@ class DS3505(unittest.TestCase):
                "99999GF199999999999005181999999MA1102545099065MD1590049+"
                "9999REMMET10101/01/16 02:53:02 METAR KAMW 010853Z 30013KT "
                "10SM OVC017 M05/M08 A3028 RMK AO2 SLP266 T10501083 55004")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
                           "A3028 RMK P0000 SLP266 T10501083 55004"))
@@ -87,13 +87,13 @@ class DS3505(unittest.TestCase):
                "9199999999AY111999GA1011+006009089GA2031+036009039GA3061+"
                "066009029GF107991021081008001031061MD1710131+9999MW1021WG"
                "199999999999REMSYN02920310 70307 81820 83362 86272")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'KAMW', add_metar=True)
         self.assertTrue(data is not None)
 
         msg = ("0067030750999991999102018004+58450-003080FM-12+0039EGPC "
                "V02099999999999999999N9999999N1+99999+99999999999REMSYN058"
                "AAXX  20184 03075 46/// ///// 1//// 2//// 4//// 5//// 333;")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'EGPC', add_metar=True)
         self.assertTrue(data is not None)
 
     def test_basic(self):
@@ -102,7 +102,7 @@ class DS3505(unittest.TestCase):
                "V0203301N01851220001CN0030001N9-02011-02211100211ADDAA10"
                "6000091AG14000AY131061AY221061GF102991021051008001001001"
                "MD1710141+9999MW1381OA149902631REMSYN011333   91151")
-        data = parser(msg, add_metar=True)
+        data = parser(msg, 'ENJA', add_metar=True)
         self.assertTrue(data is not None)
         self.assertEqual(data['metar'],
                          ('ENJA 010000Z AUTO 33036KT 2SM '
@@ -111,10 +111,10 @@ class DS3505(unittest.TestCase):
     def test_read(self):
         """Can we process an entire file?"""
         for line in open("../../../data/product_examples/NCEI/DS3505.txt"):
-            data = parser(line.strip())
+            data = parser(line.strip(), 'ENJA')
             self.assertTrue(data is not None)
 
         for line in open(("../../../data/product_examples/NCEI/"
                           "DS3505_KAMW_2016.txt")):
-            data = parser(line.strip())
+            data = parser(line.strip(), 'KAMW')
             self.assertTrue(data is not None)
