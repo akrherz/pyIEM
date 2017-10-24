@@ -1,7 +1,15 @@
 """Tests for the DS3505 format"""
 import unittest
+import os
 
 from pyiem.ncei.ds3505 import parser
+
+
+def get_file(name):
+    ''' Helper function to get the text file contents '''
+    basedir = os.path.dirname(__file__)
+    fn = "%s/../../../data/product_examples/NCEI/%s" % (basedir, name)
+    return open(fn)
 
 
 class DS3505(unittest.TestCase):
@@ -134,11 +142,10 @@ class DS3505(unittest.TestCase):
 
     def test_read(self):
         """Can we process an entire file?"""
-        for line in open("../../../data/product_examples/NCEI/DS3505.txt"):
+        for line in get_file("DS3505.txt"):
             data = parser(line.strip(), 'ENJA')
             self.assertTrue(data is not None)
 
-        for line in open(("../../../data/product_examples/NCEI/"
-                          "DS3505_KAMW_2016.txt")):
+        for line in get_file("DS3505_KAMW_2016.txt"):
             data = parser(line.strip(), 'KAMW')
             self.assertTrue(data is not None)
