@@ -679,7 +679,7 @@ def process_metar(mstr, now):
             else:
                 print("MetarParserError: "+msg)
                 return None
-        except Exception, exp:
+        except Exception as exp:
             print("Double Fail: %s %s" % (mstr, exp))
             return None
     if mtr is None or mtr.time is None:
@@ -748,18 +748,32 @@ def process_metar(mstr, now):
 
 
 def sql(txn, stid, data):
-    """Send this data dictionary to a database cursor for archiving"""
-    metar = data['extra'].get('REM', {}).get('MET')
-    if metar is not None and len(metar) > 20:  # arbitrary limit to size
+    """Persist what data we have to the IEM schema database
+
+    In general, the IEM database's atomic data is based on the parsing of the
+    METAR product.  So we wouldn't want the two to conflict, so the METAR
+    format is again used to drive the data used for the database insert.
+
+    Args:
+      txn (cursor): database transaction
+      stid (str): station identifier to use with the database
+      data (dict): what we got from previous parsing
+
+    Returns:
+      int or None: number of rows inserted
+    """
+    # First problem, which metar source to use?
+    # If this is a US site, likely best to always use it
+    metar = data['extra'].get('REM', {}).get('MET', '')
+    if len(metar) > 20 and (len(stid) == 3 or stid[0] == 'P'):
         # Split off the cruft
         metar = metar.strip().replace(";",
                                       " ").replace("METAR ",
                                                    "").replace("COR ",
                                                                "").rstrip("=")
-    mymetar = data.get('metar', '')
-    # If my generated one is longer, lets use it
-    if metar is not None and len(mymetar) > metar:
-        metar = mymetar
+    else:
+        metar = data['metar']
+
     table = "t%s" % (data['valid'].year, )
     ob = process_metar(metar, data['valid'])
     if ob is None:
@@ -914,8 +928,8 @@ def gen_metar(data):
             data['extra']['MD1']['threehour'] is not None):
         rmk.append("5%s%03i" % (data['extra']['MD1']['code'],
                                 data['extra']['MD1']['threehour'] * 10))
-    if rmk:
-        mtr += "RMK %s " % (" ".join(rmk), )
+    rmk.append("IEM_DS3505")
+    mtr += "RMK %s " % (" ".join(rmk), )
     data['metar'] = mtr.strip()
 
 

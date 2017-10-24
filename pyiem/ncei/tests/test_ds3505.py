@@ -24,7 +24,8 @@ class DS3505(unittest.TestCase):
                "EQDQ01+003503ATOT  Q02+003303ATOD  Q03+000000PRSWM2")
         data = parser(msg, 'EGPC', add_metar=True)
         self.assertEqual(data['metar'],
-                         ("EGPC 190820Z AUTO 14009KT 7SM A2980"))
+                         ("EGPC 190820Z AUTO 14009KT 7SM A2980 RMK IEM_DS3505"
+                          ))
 
     def test_altimeter(self):
         """See what we are doing with altimeter and SLP"""
@@ -36,7 +37,7 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'EGPC', add_metar=True)
         self.assertEqual(data['metar'],
                          ("EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK SLP905 "
-                          "T00670035 51020"
+                          "T00670035 51020 IEM_DS3505"
                           ))
 
     def test_6hour_temp(self):
@@ -54,8 +55,8 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 "
-                          "RMK 60000 SLP092 T02500211 10272 20250 55001"
-                          ))
+                          "RMK 60000 SLP092 T02500211 10272 20250 55001 "
+                          "IEM_DS3505"))
 
     def test_precip_6group(self):
         """3 hour precip"""
@@ -79,7 +80,7 @@ class DS3505(unittest.TestCase):
         self.assertEqual(data['metar'],
                          ("KAMW 120253Z AUTO 36012KT 1 1/4SM +TSRA BR "
                           "SCT005 SCT009 OVC014 21/21 A2991 RMK P0081 60232 "
-                          "SLP119 T02110211 53037"))
+                          "SLP119 T02110211 53037 IEM_DS3505"))
 
     def test_metar(self):
         """Can we replicate an actual METAR"""
@@ -95,7 +96,7 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 010713Z AUTO 29013KT 10SM BKN017 OVC033 "
-                          "M05/M08 A3028 RMK T10501083"))
+                          "M05/M08 A3028 RMK T10501083 IEM_DS3505"))
 
     def test_metar2(self):
         """Can we do more"""
@@ -110,7 +111,7 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
-                          "A3028 RMK SLP266 T10501083 55004"))
+                          "A3028 RMK SLP266 T10501083 55004 IEM_DS3505"))
 
     def test_171023(self):
         """This failed"""
@@ -138,7 +139,7 @@ class DS3505(unittest.TestCase):
         self.assertTrue(data is not None)
         self.assertEqual(data['metar'],
                          ('ENJA 010000Z AUTO 33036KT 2SM '
-                          'M20/M22 RMK SLP021 T12011221 57014'))
+                          'M20/M22 RMK SLP021 T12011221 57014 IEM_DS3505'))
 
     def test_read(self):
         """Can we process an entire file?"""
