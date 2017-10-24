@@ -15,6 +15,17 @@ def get_file(name):
 class DS3505(unittest.TestCase):
     """Go for it"""
 
+    def test_171024(self):
+        """Bad parse for ALO"""
+        msg = ("0088999999949101950010113005+42550-092400SAO  +026599999V02"
+               "099999000050000049N000000599+00224+00175999999EQDN01 00000"
+               "JPWTH 1QNNG11 1 00000K11 1 00035L11 1 00000N11 1 00000S11 "
+               "1 00036W11 1 00000")
+        data = parser(msg, 'ALO', add_metar=True)
+        self.assertEqual(data['metar'],
+                         ("ALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
+                          ))
+
     def test_badtemp(self):
         """Station had obviously bad temperature, see what QC said"""
         msg = ("0171030750999992005041908204+58450-003083FM-15+0036EGPC "

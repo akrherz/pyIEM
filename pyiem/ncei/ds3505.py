@@ -15,7 +15,8 @@ from metar.Metar import ParserError as MetarParserError
 
 
 MISSING_RE = re.compile(r"^\+?\-?9+$")
-EQD_RE = re.compile(r"^[QPRCD][0-9][0-9]$")
+EQD_RE = re.compile(r"^[QPRCDN][0-9][0-9]$")
+QNN_RE = re.compile(r"^[A-Z][0-9][0-9][A-Z ][0-9]$")
 DS3505_RE = re.compile(r"""
 ^(?P<chars>[0-9]{4})
 (?P<stationid>......)
@@ -778,6 +779,7 @@ def sql(txn, stid, data):
     ob = process_metar(metar, data['valid'])
     if ob is None:
         return
+    stid = stid if len(stid) == 4 and stid[0] != 'K' else stid[-3:]
     _sql = """
         INSERT into """ + table + """ (station, valid,
         tmpf, dwpf, vsby, drct, sknt, gust, p01i, alti, skyc1, skyc2,
@@ -849,14 +851,18 @@ def gen_metar(data):
             continue
         val = data['extra'][code]
         skycode = SKY_STATE_CODES[val['state_code']]
+        height = val['height']
         if skycode == 'CLR':
             mtr += "CLR "
+        elif height is None:
+            continue
         else:
-            hft = distance(val['height'], 'M').value('FT') / 100.
+            hft = distance(height, 'M').value('FT') / 100.
             mtr += "%s%03.0f " % (skycode, hft)
     # temperature
     tgroup = None
-    if data.get('airtemp_c_qc') in ["1", "5"]:
+    if (data.get('airtemp_c_qc') not in ["2", "3"] and
+            data['airtemp_c'] is not None):
         tmpc = data['airtemp_c']
         dwpc = data['dewpointtemp_c']
         mtr += "%s%02.0f/" % ("M" if tmpc < 0 else "", abs(tmpc))
@@ -982,6 +988,15 @@ def parse_extra(data, extra):
         pos += 3
         if code == 'ADD':
             continue
+        if code == 'QNN':
+            data['extra']['QNN'] = {}
+            code = extra[pos:pos+5]
+            while QNN_RE.match(code):
+                pos += 5
+                data['extra']['QNN'][code] = extra[pos:pos+6]
+                pos += 6
+                code = extra[pos:pos+5]
+            continue
         if code == 'REM':
             data['extra']['REM'] = {}
             code = extra[pos:pos+3]
@@ -994,10 +1009,11 @@ def parse_extra(data, extra):
                 code = extra[pos:pos+3]
             continue
         if code == 'EQD':
+            data['extra']['EQD'] = {}
             code = extra[pos:pos+3]
             while EQD_RE.match(code):
                 pos += 3
-                data[code] = extra[pos:pos+13]
+                data['extra']['EQD'][code] = extra[pos:pos+13]
                 pos += 13
                 code = extra[pos:pos+3]
             continue
