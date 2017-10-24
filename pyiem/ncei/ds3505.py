@@ -815,7 +815,10 @@ def gen_metar(data):
         mtr += "00000KT "
     elif (data.get('drct_qc') in ["1", "5"] and
             data['wind_speed_mps'] is not None):
-        mtr += "%03.0f" % (data['drct'], )
+        if data['drct'] is None:
+            mtr += "////"
+        else:
+            mtr += "%03.0f" % (data['drct'], )
         kts = speed(data['wind_speed_mps'], 'MPS').value('KT')
         mtr += "%02.0f" % (kts, )
         if 'OC1' in data['extra']:
