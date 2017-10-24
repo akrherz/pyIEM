@@ -46,8 +46,8 @@ DS3505_RE = re.compile(r"""
 (?P<airtemp_c_qc>.)
 (?P<dewpointtemp_c>[\+\-][0-9]{4})
 (?P<dewpointtemp_c_qc>.)
-(?P<pressure_hpa>[0-9]{5})
-(?P<pressure_hpa_qc>.)
+(?P<mslp_hpa>[0-9]{5})
+(?P<mslp_hpa_qc>.)
 """, re.VERBOSE)
 
 
@@ -687,17 +687,7 @@ def process_metar(mstr, now):
 
     ob = OB()
     ob.metar = mstr[:254]
-
-    gts = datetime.datetime(mtr.time.year, mtr.time.month,
-                            mtr.time.day, mtr.time.hour, mtr.time.minute)
-    gts = gts.replace(tzinfo=pytz.timezone("UTC"))
-    # When processing data on the last day of the month, we get GMT times
-    # for the first of this month
-    if gts.day == 1 and now.day > 10:
-        tm = now + datetime.timedelta(days=1)
-        gts = gts.replace(year=tm.year, month=tm.month, day=tm.day)
-
-    ob.valid = gts
+    ob.valid = now
 
     if mtr.temp:
         ob.tmpf = mtr.temp.value("F")
@@ -715,7 +705,8 @@ def process_metar(mstr, now):
     if mtr.vis:
         ob.vsby = mtr.vis.value("SM")
 
-    if mtr.press:
+    # see pull request #38
+    if mtr.press and mtr.press != mtr.press_sea_level:
         ob.alti = mtr.press.value("IN")
 
     if mtr.press_sea_level:
@@ -759,11 +750,16 @@ def process_metar(mstr, now):
 def sql(txn, stid, data):
     """Send this data dictionary to a database cursor for archiving"""
     metar = data['extra'].get('REM', {}).get('MET')
-    if metar is not None:
+    if metar is not None and len(metar) > 20:  # arbitrary limit to size
         # Split off the cruft
-        metar = metar.replace("METAR ", "")
-    else:
-        metar = data.get('metar', '')
+        metar = metar.strip().replace(";",
+                                      " ").replace("METAR ",
+                                                   "").replace("COR ",
+                                                               "").rstrip("=")
+    mymetar = data.get('metar', '')
+    # If my generated one is longer, lets use it
+    if metar is not None and len(mymetar) > metar:
+        metar = mymetar
     table = "t%s" % (data['valid'].year, )
     ob = process_metar(metar, data['valid'])
     if ob is None:
@@ -776,6 +772,7 @@ def sql(txn, stid, data):
         min_tmpf_6hr, min_tmpf_24hr, report_type)
         values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2)
+        RETURNING valid
             """
     args = (stid, ob.valid, ob.tmpf, ob.dwpf, ob.vsby, ob.drct,
             ob.sknt, ob.gust, ob.p01i, ob.alti, ob.skyc1, ob.skyc2,
@@ -787,10 +784,11 @@ def sql(txn, stid, data):
 
     try:
         txn.execute(_sql, args)
-    except:
+    except Exception as _exp:
         print(metar)
         print(args)
         raise
+    return txn.rowcount
 
 
 def gen_metar(data):
@@ -869,6 +867,8 @@ def gen_metar(data):
         depth = data['extra'][code]['depth']
         if hours is None or depth is None or hours == 12:
             continue
+        elif depth == 0 and data['extra'][code]['cond_code'] != '2':
+            continue
         elif hours in [3, 6]:
             prefix = "6"
         elif hours == 24:
@@ -879,8 +879,8 @@ def gen_metar(data):
             raise Exception("Unknown precip hours %s" % (hours, ))
         amount = distance(depth, 'MM').value('IN')
         rmk.append("%s%04.0f" % (prefix, amount * 100))
-    if data['pressure_hpa'] is not None:
-        rmk.append("SLP%03.0f" % (data['pressure_hpa'] * 10 % 1000, ))
+    if data['mslp_hpa'] is not None:
+        rmk.append("SLP%03.0f" % (data['mslp_hpa'] * 10 % 1000, ))
     if tgroup is not None:
         rmk.append(tgroup)
     # temperature groups
@@ -944,7 +944,7 @@ def parser(msg, call_id, add_metar=False):
     data['wind_speed_mps'] = _d10(data['wind_speed_mps'])
     data['airtemp_c'] = _d10(data['airtemp_c'])
     data['dewpointtemp_c'] = _d10(data['dewpointtemp_c'])
-    data['pressure_hpa'] = _d10(data['pressure_hpa'])
+    data['mslp_hpa'] = _d10(data['mslp_hpa'])
     for elem in ['drct', 'ceiling_m', 'vsby_m', 'elevation']:
         data[elem] = _tonumeric(data[elem])
 

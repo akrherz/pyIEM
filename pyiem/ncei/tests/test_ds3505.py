@@ -7,6 +7,30 @@ from pyiem.ncei.ds3505 import parser
 class DS3505(unittest.TestCase):
     """Go for it"""
 
+    def test_badtemp(self):
+        """Station had obviously bad temperature, see what QC said"""
+        msg = ("0171030750999992005041908204+58450-003083FM-15+0036EGPC "
+               "V0201401N004612200019N0112651N1+99999+99999999999ADDGA1021"
+               "+009609999GF102991999999999999999999MA1100911999999MW1001"
+               "REMMET045EGPC 190820Z 14009KT 9999 FEW032 35/33 Q1009;"
+               "EQDQ01+003503ATOT  Q02+003303ATOD  Q03+000000PRSWM2")
+        data = parser(msg, 'EGPC', add_metar=True)
+        self.assertEqual(data['metar'],
+                         ("EGPC 190820Z AUTO 14009KT 7SM A2980"))
+
+    def test_altimeter(self):
+        """See what we are doing with altimeter and SLP"""
+        msg = ("0125030750999992013102322004+58450-003083FM-12+003699999"
+               "V0202501N009819999999N030000199+00671+00351099051ADDMA"
+               "1999990098611MD1110201+9990OD139901441999REMSYN07003075 "
+               "45980 /2519 10067 20035 39861 49905 51020 333 8//99 90710 "
+               "91128=")
+        data = parser(msg, 'EGPC', add_metar=True)
+        self.assertEqual(data['metar'],
+                         ("EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK SLP905 "
+                          "T00670035 51020"
+                          ))
+
     def test_6hour_temp(self):
         """6 hour high/low"""
         # 2016-08-12 23:53:00
@@ -22,7 +46,7 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 "
-                          "RMK P0000 60000 SLP092 T02500211 10272 20250 55001"
+                          "RMK 60000 SLP092 T02500211 10272 20250 55001"
                           ))
 
     def test_precip_6group(self):
@@ -78,7 +102,7 @@ class DS3505(unittest.TestCase):
         data = parser(msg, 'KAMW', add_metar=True)
         self.assertEqual(data['metar'],
                          ("KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
-                          "A3028 RMK P0000 SLP266 T10501083 55004"))
+                          "A3028 RMK SLP266 T10501083 55004"))
 
     def test_171023(self):
         """This failed"""
@@ -106,7 +130,7 @@ class DS3505(unittest.TestCase):
         self.assertTrue(data is not None)
         self.assertEqual(data['metar'],
                          ('ENJA 010000Z AUTO 33036KT 2SM '
-                          'M20/M22 RMK 60000 SLP021 T12011221 57014'))
+                          'M20/M22 RMK SLP021 T12011221 57014'))
 
     def test_read(self):
         """Can we process an entire file?"""
