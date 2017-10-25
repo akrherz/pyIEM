@@ -686,6 +686,7 @@ class MapPlot(object):
                 self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
                                  xytext=(offx, offy), color='r',
                                  textcoords="offset points",
+                                 zorder=Z_OVERLAY+2,
                                  clip_on=True)
             # Dew Point
             val = stdata.get('dwpf')
@@ -694,6 +695,7 @@ class MapPlot(object):
                 self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
                                  xytext=(offx, offy), color='b',
                                  textcoords="offset points",
+                                 zorder=Z_OVERLAY+2,
                                  clip_on=True)
             # Plot identifier
             val = stdata.get('id')
@@ -701,7 +703,8 @@ class MapPlot(object):
                 (offx, offy, ha, va) = offsets[6]
                 self.ax.annotate("%s" % (val, ), xy=(x, y), ha=ha, va=va,
                                  xytext=(offx, offy), color='tan',
-                                 textcoords="offset points", zorder=1,
+                                 textcoords="offset points",
+                                 zorder=Z_OVERLAY+2,
                                  clip_on=True, fontsize=8)
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
