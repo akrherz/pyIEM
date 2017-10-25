@@ -5,6 +5,7 @@
 """
 from __future__ import print_function
 import re
+import warnings
 import datetime
 import json
 
@@ -899,7 +900,8 @@ def gen_metar(data):
         elif hours == 1:
             prefix = "P"
         else:
-            raise Exception("Unknown precip hours %s" % (hours, ))
+            warnings.warn("Unknown precip hours %s" % (hours, ))
+            continue
         amount = distance(depth, 'MM').value('IN')
         rmk.append("%s%04.0f" % (prefix, amount * 100))
     if data['mslp_hpa'] is not None:
@@ -926,8 +928,9 @@ def gen_metar(data):
                                       abs(tmpc) * 10)
             continue
         else:
-            raise Exception("Unknown temperature hours %s typ: %s" % (hours,
-                                                                      typ))
+            warnings.warn("Unknown temperature hours %s typ: %s" % (hours,
+                                                                    typ))
+            continue
         rmk.append("%s%s%03i" % (prefix, "1" if tmpc < 0 else "0",
                                  abs(tmpc) * 10))
     if group4['M'] != '////' or group4['N'] != '////':
