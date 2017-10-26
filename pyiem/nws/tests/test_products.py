@@ -50,6 +50,16 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_171026_mixedlsr(self):
+        """LSRBYZ has mixed case, see what we can do"""
+        utcnow = utc(2017, 10, 29, 19, 18)
+        prod = parser(get_file('mIxEd_CaSe/LSRBYZ.txt'), utcnow=utcnow)
+        j = prod.get_jabbers('http://iem.local/')
+        self.assertEqual(j[0][2]['twitter'], (
+            "At 1:00 AM, 3 SSW Luther [Carbon Co, MT] Mesonet reports Snow "
+            "of 1.00 inch #BYZ "
+            "http://iem.local/#BYZ/201710260700/201710260700"))
+
     def test_170823_tilde(self):
         """Can we parse a product that has a non-ascii char in it"""
         prod = vtecparser(get_file('FFWTWC_tilde.txt'))

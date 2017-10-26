@@ -4,7 +4,8 @@ import pytz
 
 from pyiem import reference
 
-MAG_UNITS = re.compile(r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)")
+MAG_UNITS = re.compile(r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)",
+                       re.IGNORECASE)
 
 
 def _mylowercase(text):

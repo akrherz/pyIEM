@@ -1,0 +1,45 @@
+404 
+NWUS55 KBYZ 261918
+LSRBYZ
+
+Preliminary Local Storm Report
+National Weather Service Billings, MT
+116 PM MDT Thu Oct 26 2017
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0100 AM     Snow             3 SSW Luther            45.24N 109.46W   
+10/26/2017  M1.0  inch       Carbon             MT   Mesonet           
+
+0700 AM     Snow             Mcleod                  45.66N 110.12W   
+10/26/2017  M4.0  inch       Sweet Grass        MT   Co-Op Observer    
+
+0700 AM     Snow             7 ESE Livingston        45.64N 110.43W   
+10/26/2017  M2.5  inch       Park               MT   CoCoRaHS          
+
+0700 AM     Snow             3 NE Red Lodge          45.22N 109.22W   
+10/26/2017  M1.6  inch       Carbon             MT   CoCoRaHS          
+
+0700 AM     Snow             4 N Red Lodge           45.26N 109.23W   
+10/26/2017  M2.0  inch       Carbon             MT   CoCoRaHS          
+
+0730 AM     Snow             3 SW Red Lodge          45.16N 109.29W   
+10/26/2017  M2.0  inch       Carbon             MT   CoCoRaHS          
+
+0800 AM     Snow             Springdale              45.74N 110.23W   
+10/26/2017  M1.5  inch       Park               MT   Co-Op Observer    
+
+0830 AM     Snow             5 E Emigrant            45.38N 110.64W   
+10/26/2017  M1.4  inch       Park               MT   CoCoRaHS          
+
+0900 AM     Snow             13 SW McLeod            45.49N 110.23W   
+10/26/2017  M1.1  inch       Park               MT   CoCoRaHS          
+
+
+&&
+
+$$
+
+AaronG
