@@ -9,6 +9,8 @@ import random
 import logging
 import datetime
 import re
+import warnings
+import getpass
 from socket import error as socket_error
 
 import psycopg2
@@ -16,6 +18,36 @@ from pyiem.ftpsession import FTPSession
 import numpy as np
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def get_dbconn(dbname, user=None):
+    """Helper function with business logic to get a database connection
+
+    Note that this helper could return a read-only database connection if the
+    connection to the primary server fails.
+
+    Args:
+      dbname (str): the database name to connect to
+      user (str,optional): hard coded user to connect as, default: current user
+
+    Returns:
+      psycopg2 database connection
+    """
+    if user is None:
+        user = getpass.getuser()
+    host = "iemdb"
+    if dbname == 'hads':
+        host = "iemdb-hads"
+
+    try:
+        pgconn = psycopg2.connect(database=dbname, host=host, user=user,
+                                  connect_timeout=15)
+    except psycopg2.OperationalError as exp:
+        warnings.warn("database connection failure: %s" % (exp, ))
+        # as a stop-gap, lets try connecting to iemdb2
+        pgconn = psycopg2.connect(database=dbname, host='iemdb2', user=user,
+                                  connect_timeout=15)
+    return pgconn
 
 
 def noaaport_text(text):
