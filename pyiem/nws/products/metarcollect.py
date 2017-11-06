@@ -21,7 +21,7 @@ ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
 TORNADO_RE = re.compile(r" \+FC |TORNADO")
 FUNNEL_RE = re.compile(r" FC |FUNNEL")
 # Match what looks like SA formatted messages
-SA_RE = re.compile(r"^[A-Z]{3}\sSA\s")
+SA_RE = re.compile(r"^[A-Z]{3}\sSA")
 # Sites we should route to Jabber
 JABBER_SITES = {}
 # Keep track of Wind alerts to prevent dups
