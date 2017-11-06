@@ -24,6 +24,6 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers("http://localhost", "http://localhost")
         self.assertEquals(j[0][0],
                           ("OKX issues Terminal Aerodrome Forecast (TAF) "
-                           "for JFK http://localhost?"
+                           "at Jul 25, 13:41 UTC for JFK http://localhost?"
                            "pid=201707251341-KOKX-FTUS41-TAFJFK"))
         assert "TAFJFK" in j[0][2]['channels'].split(",")

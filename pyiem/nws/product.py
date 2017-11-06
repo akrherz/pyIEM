@@ -409,18 +409,36 @@ class TextProduct(object):
         """ Return a list of channels """
         return [self.afos, ]
 
+    def get_nicedate(self):
+        """Nicely format the issuance time of this product"""
+        if self.valid is None:
+            return "(unknown issuance time)"
+        localts = self.valid
+        fmt = "%b %-d, %H:%M UTC"
+        if self.tz is not None:
+            localts = self.valid.astimezone(self.tz)
+            fmt = "%b %-d, %-I:%M %p " + self.z
+        return localts.strftime(fmt)
+
     def get_jabbers(self, uri, uri2=None):
-        """Return a tuple of jabber messages
+        """Return a tuple of jabber messages [(plain, html, xtra_dict)]
+
+        Args:
+          uri (str): the base URI to use to construct links
+
+        Returns:
+          [(str, str, dict)]
         """
         res = []
         url = "%s?pid=%s" % (uri, self.get_product_id())
         aaa = self.afos[:3]
-        plain = "%s issues %s (%s) %s" % (
+        nicedate = self.get_nicedate()
+        plain = "%s issues %s (%s) at %s %s" % (
             self.source[1:],
-            reference.prodDefinitions.get(aaa, aaa), aaa, url)
-        html = '<p>%s issues <a href="%s">%s (%s)</a></p>' % (
+            reference.prodDefinitions.get(aaa, aaa), aaa, nicedate, url)
+        html = '<p>%s issues <a href="%s">%s (%s)</a> at %s</p>' % (
             self.source[1:], url,
-            reference.prodDefinitions.get(aaa, aaa), aaa)
+            reference.prodDefinitions.get(aaa, aaa), aaa, nicedate)
         xtra = {
                 'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),

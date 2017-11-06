@@ -26,14 +26,15 @@ class TAFProduct(TextProduct):
             return res
         url = "%s?pid=%s" % (uri, self.get_product_id())
         aaa = self.afos[:3]
-        plain = ("%s issues %s (%s) for %s %s"
+        nicedate = self.get_nicedate()
+        plain = ("%s issues %s (%s) at %s for %s %s"
                  ) % (self.source[1:],
                       reference.prodDefinitions.get(aaa, aaa),
-                      aaa, self.afos[3:], url)
-        html = ('<p>%s issues <a href="%s">%s (%s)</a> for %s</p>'
+                      aaa, nicedate, self.afos[3:], url)
+        html = ('<p>%s issues <a href="%s">%s (%s)</a> at %s for %s</p>'
                 ) % (self.source[1:], url,
                      reference.prodDefinitions.get(aaa, aaa),
-                     aaa, self.afos[3:])
+                     aaa, nicedate, self.afos[3:])
         xtra = {
                 'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),

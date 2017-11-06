@@ -409,7 +409,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost', 'http://localhost')
         self.assertEquals(j[0][0],
                           ("JSJ issues Hazardous Weather Outlook (HWO) "
-                           "http://localhost?"
+                           "at Apr 18, 10:18 UTC http://localhost?"
                            "pid=201604181018-TJSJ-FLCA42-HWOSPN"))
 
     def test_150115_correction_sbw(self):

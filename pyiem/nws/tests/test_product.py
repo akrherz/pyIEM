@@ -61,7 +61,8 @@ class TestProduct(unittest.TestCase):
         j = tp.get_jabbers('http://localhost')
         self.assertEqual(j[0][0], (
              'OAX issues Grassland Fire Danger '
-             '(RFD) http://localhost?pid=201501191010-KOAX-FNUS63-RFDOAX'))
+             '(RFD) at Jan 19, 4:10 AM CST '
+             'http://localhost?pid=201501191010-KOAX-FNUS63-RFDOAX'))
 
     def test_hwo(self):
         """ Parse a HWO """
@@ -70,7 +71,8 @@ class TestProduct(unittest.TestCase):
         j = tp.get_jabbers('http://localhost')
         self.assertEqual(j[0][0], (
             'LOT issues Hazardous Weather Outlook '
-            '(HWO) http://localhost?pid=201301082123-KLOT-FLUS43-HWOLOT'))
+            '(HWO) at Jan 8, 3:23 PM CST '
+            'http://localhost?pid=201301082123-KLOT-FLUS43-HWOLOT'))
 
     def test_140710_wmoheader_fail(self):
         """ Make sure COR in WMO header does not trip us up"""
@@ -84,6 +86,7 @@ class TestProduct(unittest.TestCase):
         j = tp.get_jabbers("http://localhost")
         self.assertEqual(j[0][0],
                          ("DMX issues Short-term Forecast (NOW) "
+                          "at Mar 4, 8:42 AM CST "
                           "http://localhost?"
                           "pid=201003041442-KDMX-FPUS73-NOWDMX"))
 
