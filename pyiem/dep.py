@@ -17,6 +17,7 @@ YLD_DATA = re.compile((r"Crop Type #\s+(?P<num>\d+)\s+Date = (?P<doy>\d+)"
                        r" OFE #\s+(?P<ofe>\d+)\s+yield=\s+(?P<yield>[0-9\.]+)"
                        r" \(kg/m\*\*2\) year= (?P<year>\d+)"))
 
+
 def read_yld(filename):
     """read WEPP yld file with some local mods to include a year
 

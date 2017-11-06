@@ -68,7 +68,7 @@ class Tests(unittest.TestCase):
     def test_read(self):
         """Read a ENV file"""
         df = dep.read_env(get_path('good_env.txt'))
-        df2 = df[df['date'] == datetime.date(2010, 6, 5)]
+        df2 = df[df['date'] == datetime.datetime(2010, 6, 5)]
         self.assertEqual(len(df2.index), 1)
         row = df2.iloc[0]
         self.assertEquals(row['runoff'], 86.3)
