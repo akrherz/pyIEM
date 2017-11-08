@@ -815,8 +815,10 @@ class TestProducts(unittest.TestCase):
             "AT 45 MPH.</p>"))
 
     def test_wcn(self):
-        ''' See about processing a watch update that cancels some and
-        continues others, we want special tweet logic for this '''
+        """Special tweet logic for cancels and continues
+
+        NOTE: with updated twitter tweet chars, these tests are not as fun
+        """
         utcnow = datetime.datetime(2014, 6, 3)
         utcnow = utcnow.replace(tzinfo=pytz.timezone("UTC"))
         ugc_provider = {}
@@ -830,19 +832,22 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], (
-            'DMX updates Severe '
-            'Thunderstorm Warning (cancels 1 area, continues 1 area) '
-            'till 10:45 PM CDT '
-            'http://localhost/2014-O-CON-KDMX-SV-W-0143'))
+            "DMX updates Severe Thunderstorm Warning [wind: 60 MPH, hail: "
+            "&lt;.75 IN]  (cancels aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+            "[IA], continues aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA]) "
+            "till 10:45 PM CDT http://localhost/2014-O-CON-KDMX-SV-W-0143"))
 
         prod = vtecparser(get_file('WCN.txt'), utcnow=utcnow,
                           ugc_provider=ugc_provider)
         j = prod.get_jabbers('http://localhost/', 'http://localhost/')
         self.assertTrue(prod.is_homogeneous())
         self.assertEqual(j[0][2]['twitter'], (
-            'DMX updates Tornado Watch '
-            '(cancels 5 areas, continues 12 areas) till Jun 4, 1:00 AM CDT '
-            'http://localhost/2014-O-CON-KDMX-TO-A-0210'))
+            "DMX updates Tornado Watch (cancels a, "
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            "aaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaa"
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties "
+            "in [IA]) till Jun 4, 1:00 AM CDT "
+            "http://localhost/2014-O-CON-KDMX-TO-A-0210"))
         self.assertEqual(j[0][0], (
             'DMX updates Tornado Watch (cancels a, '
             'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'

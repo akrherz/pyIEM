@@ -8,6 +8,8 @@ import itertools
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 
+TWEET_CHARS = 280
+
 
 def check_dup_ps(segment):
     """Does this TextProductSegment have duplicated VTEC
@@ -719,10 +721,11 @@ class VTECProduct(TextProduct):
             xtra['twitter'] = ("%(wfo)s %(action)s %(product)s"
                                "%(svr_special)s%(sts)s (%(asl)s) "
                                "%(ets)s") % jdict
-            if len(xtra['twitter']) > (140-25):
+            # 25 is an aggressive reservation for URLs, which may not be needed
+            if len(xtra['twitter']) > (TWEET_CHARS - 25):
                 xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s "
                                    "(%(as)s) %(ets)s") % jdict
-                if len(xtra['twitter']) > (140-25):
+                if len(xtra['twitter']) > (TWEET_CHARS - 25):
                     xtra['twitter'] = ("%(wfo)s %(action)s %(product)s%(sts)s "
                                        "%(ets)s") % jdict
             xtra['twitter'] += " %(url)s" % jdict
