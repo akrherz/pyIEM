@@ -224,6 +224,13 @@ class TestProducts(unittest.TestCase):
         """Is this product a correction?"""
         prod = vtecparser(get_file("TCVAKQ.txt"))
         self.assertTrue(prod.is_correction())
+        prod = parser(get_file("TCVAKQ.txt"))
+        jmsgs = prod.get_jabbers('http://localhost')
+        self.assertEquals(jmsgs[0][2]['twitter'],
+                          ('AKQ issues TCV (TCV) at Sep 2, 11:55 AM EDT '
+                           '...TROPICAL STORM WARNING IN EFFECT... '
+                           'http://localhost?pid=201609021555-KAKQ-'
+                           'WTUS81-TCVAKQ'))
 
     def test_160720_unknown_ugc(self):
         """Unknown UGC logic failed for some reason"""

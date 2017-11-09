@@ -7,8 +7,7 @@ import itertools
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
-
-TWEET_CHARS = 280
+from pyiem.reference import TWEET_CHARS
 
 
 def check_dup_ps(segment):

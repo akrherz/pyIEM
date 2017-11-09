@@ -420,6 +420,13 @@ class TextProduct(object):
             fmt = "%b %-d, %-I:%M %p " + self.z
         return localts.strftime(fmt)
 
+    def get_main_headline(self, default=''):
+        """Return a string for the main headline, if it exists"""
+        for segment in self.segments:
+            if segment.headlines:
+                return segment.headlines[0]
+        return default
+
     def get_jabbers(self, uri, uri2=None):
         """Return a tuple of jabber messages [(plain, html, xtra_dict)]
 
@@ -429,20 +436,32 @@ class TextProduct(object):
         Returns:
           [(str, str, dict)]
         """
-        res = []
-        url = "%s?pid=%s" % (uri, self.get_product_id())
+        templates = [
+            "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s%(headline)s ",
+            "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s "
+            ]
         aaa = self.afos[:3]
-        nicedate = self.get_nicedate()
-        plain = "%s issues %s (%s) at %s %s" % (
-            self.source[1:],
-            reference.prodDefinitions.get(aaa, aaa), aaa, nicedate, url)
-        html = '<p>%s issues <a href="%s">%s (%s)</a> at %s</p>' % (
-            self.source[1:], url,
-            reference.prodDefinitions.get(aaa, aaa), aaa, nicedate)
+        hdl = self.get_main_headline()
+        data = {
+            'headline': ' ...%s...' % (hdl, ) if hdl != '' else '',
+            'source': self.source[1:],
+            'aaa': aaa,
+            'name': reference.prodDefinitions.get(aaa, aaa),
+            'stamp': self.get_nicedate(),
+            'url': "%s?pid=%s" % (uri, self.get_product_id())
+            }
+        res = []
+        plain = (templates[0] + "%(url)s") % data
+        html = ('<p>%(source)s issues <a href="%(url)s">%(name)s (%(aaa)s)</a>'
+                ' at %(stamp)s</p>') % data
+        tweet = templates[0] % data
+        if (len(tweet) - 25) > reference.TWEET_CHARS:
+            tweet = templates[1] % data
+        tweet += data['url']
         xtra = {
                 'channels': ",".join(self.get_channels()),
                 'product_id': self.get_product_id(),
-                'twitter': plain
+                'twitter': tweet
                 }
         res.append((plain, html, xtra))
         return res

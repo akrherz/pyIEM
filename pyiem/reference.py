@@ -18,6 +18,7 @@ import cartopy.crs as ccrs
 
 
 TRACE_VALUE = 0.0001
+TWEET_CHARS = 280
 
 EPSG = {
     5070: ccrs.AlbersEqualArea(central_longitude=-96,

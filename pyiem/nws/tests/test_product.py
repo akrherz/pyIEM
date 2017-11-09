@@ -61,7 +61,7 @@ class TestProduct(unittest.TestCase):
         j = tp.get_jabbers('http://localhost')
         self.assertEqual(j[0][0], (
              'OAX issues Grassland Fire Danger '
-             '(RFD) at Jan 19, 4:10 AM CST '
+             '(RFD) at Jan 19, 4:10 AM CST ...MODERATE FIRE DANGER TODAY... '
              'http://localhost?pid=201501191010-KOAX-FNUS63-RFDOAX'))
 
     def test_hwo(self):
