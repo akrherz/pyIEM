@@ -50,6 +50,17 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_171121_issue45(self):
+        """Do we alert on duplicated ETNs?"""
+        utcnow = utc(2017, 4, 20, 21, 33)
+        prod = vtecparser(get_file('vtec/NPWDMX_0.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        utcnow = utc(2017, 11, 20, 21, 33)
+        prod = vtecparser(get_file('vtec/NPWDMX_1.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 1, "\n".join(warnings))
+
     def test_171026_mixedlsr(self):
         """LSRBYZ has mixed case, see what we can do"""
         utcnow = utc(2017, 10, 29, 19, 18)

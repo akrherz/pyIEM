@@ -165,7 +165,26 @@ class VTECProduct(TextProduct):
     def which_warning_table(self, txn, vtec):
         """ Figure out which table we should work against """
         if vtec.action in ["NEW", ]:
-            return "warnings_%s" % (self.valid.year,)
+            table = "warnings_%s" % (self.valid.year,)
+            # Lets piggyback a check to see if this ETN has been reused?
+            # Can this realiably be done?
+            txn.execute("""
+                SELECT max(updated) from """ + table + """ WHERE
+                wfo = %s and eventid = %s and significance = %s and
+                phenomena = %s
+            """, (vtec.office, vtec.etn, vtec.significance, vtec.phenomena))
+            row = txn.fetchone()
+            if row['max'] is not None:
+                if (self.valid - row['max']).total_seconds() > (21 * 86400):
+                    self.warnings.append((
+                        "Possible Duplicated ETN\n"
+                        "  max(updated) is %s, prod.valid is %s\n"
+                        "  table is %s\n"
+                        "  VTEC: %s\n"
+                        "  product_id: %s"
+                        ) % (row['max'], self.valid, table,
+                             str(vtec), self.get_product_id()))
+            return table
         # Lets query the database to look for any matching entries within
         # the past 3, 10, 31 days, to find with the product_issue was,
         # which guides the table that the data is stored within

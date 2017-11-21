@@ -1,0 +1,42 @@
+607 
+WWUS73 KDMX 202133
+NPWDMX
+
+URGENT - WEATHER MESSAGE
+National Weather Service Des Moines IA
+333 PM CST Mon Nov 20 2017
+
+...Gusty winds expected Tuesday...
+
+.A cold front will move through Iowa tonight into Tuesday and will
+bring gusty northwest winds to the state. 
+
+IAZ004>007-016-017-210545-
+/O.NEW.KDMX.WI.Y.0008.171121T1200Z-171121T1900Z/
+Emmet-Kossuth-Winnebago-Worth-Hancock-Cerro Gordo-
+Including the cities of Estherville, Algona, Forest City, 
+Lake Mills, Northwood, Manly, Garner, Britt, Kanawha, Mason City,
+and Clear Lake
+333 PM CST Mon Nov 20 2017
+
+...WIND ADVISORY IN EFFECT FROM 6 AM TO 1 PM CST TUESDAY...
+
+The National Weather Service in Des Moines has issued a Wind
+Advisory, which is in effect from 6 AM to 1 PM CST Tuesday. 
+
+* TIMING...Tuesday with the strongest winds in the morning.
+
+* WINDS...Northwest winds 25 to 30 mph with gusts near 45 mph.
+
+* IMPACTS...Travel may be hazardous, especially for high profile
+  vehicles. Lightweight unsecured objects may be blown around.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+A Wind Advisory means that sustained winds of 30 mph are 
+expected. Winds this strong can make driving difficult, especially
+for high profile vehicles. Use extra caution.
+
+&&
+
+$$
