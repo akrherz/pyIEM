@@ -149,12 +149,21 @@ class TestProducts(unittest.TestCase):
 
     def test_170403_mixedlatlon(self):
         """Check our parsing of mixed case Lat...Lon"""
-        prod = parser(get_file('mIxEd_CaSe/FLWLCH.txt'))
+        prod = vtecparser(get_file('mIxEd_CaSe/FLWLCH.txt'))
+        prod.sql(self.txn)
         self.assertEquals(prod.segments[0].giswkt,
                           ("SRID=4326;MULTIPOLYGON (((-93.290000 30.300000, "
                            "-93.140000 30.380000, -93.030000 30.310000, "
                            "-93.080000 30.250000, -93.210000 30.190000, "
                            "-93.290000 30.300000)))"))
+        self.txn.execute("""
+        SELECT impact_text from riverpro where nwsli = 'OTBL1'
+        """)
+        self.assertEquals(self.txn.rowcount, 1)
+        row = self.txn.fetchone()
+        self.assertEquals(row['impact_text'],
+                          ('At stages near 4.0 feet...Minor flooding of '
+                           'Goos Ferry Road will occur.'))
 
     def test_170324_waterspout(self):
         """Do we parse Waterspout tags!"""

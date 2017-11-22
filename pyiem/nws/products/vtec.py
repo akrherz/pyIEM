@@ -52,6 +52,7 @@ def do_sql_hvtec(txn, segment):
     stage_text = ""
     flood_text = ""
     forecast_text = ""
+    impact_text = ""
     for _, bullet in enumerate(segment.bullets):
         # print("Enumerated bullet is ||%s||" % (bullet,))
         if bullet.strip().upper().find("FLOOD STAGE") == 0:
@@ -61,12 +62,14 @@ def do_sql_hvtec(txn, segment):
         if (bullet.strip().upper().find("AT ") == 0 and
                 stage_text == ""):
             stage_text = bullet
+        if bullet.strip().upper().startswith("IMPACT..."):
+            impact_text = bullet.strip()[9:]
 
     txn.execute("""
         INSERT into riverpro(nwsli, stage_text,
-          flood_text, forecast_text, severity) VALUES
-          (%s,%s,%s,%s,%s)
-        """, (nwsli, stage_text, flood_text, forecast_text,
+          flood_text, forecast_text, impact_text, severity) VALUES
+          (%s,%s,%s,%s,%s,%s)
+        """, (nwsli, stage_text, flood_text, forecast_text, impact_text,
               segment.hvtec[0].severity))
 
 
