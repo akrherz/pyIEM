@@ -3,10 +3,10 @@ import unittest
 import os
 import datetime
 
-import psycopg2
 import psycopg2.extras
 import pytz
 from pyiem.nws.products.mcd import parser
+from pyiem.util import get_dbconn
 
 
 def get_file(name):
@@ -26,7 +26,7 @@ class TestMCD(unittest.TestCase):
 
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='postgis', host='iemdb')
+        self.dbconn = get_dbconn('postgis')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

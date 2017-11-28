@@ -1,7 +1,10 @@
+"""Network"""
 import psycopg2.extras
+from pyiem.util import get_dbconn
 
 
 class Table(object):
+    """Our class"""
 
     def __init__(self, network, cursor=None):
         """A class representing a network(s) of IEM metadata
@@ -16,8 +19,7 @@ class Table(object):
             return
 
         if cursor is None:
-            dbconn = psycopg2.connect(database='mesosite', host='iemdb',
-                                      user='nobody')
+            dbconn = get_dbconn('mesosite', user='nobody')
             cursor = dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         if isinstance(network, str):
             network = [network, ]

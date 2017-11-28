@@ -2,18 +2,18 @@
 
 We use a pickled protocol=2, which is compat binary.
 """
-import psycopg2
+import datetime
+
 import cPickle
 from shapely.wkb import loads
-import datetime
+from pyiem.util import get_dbconn
 
 # Be annoying
 print("Be sure to run this against Mesonet database and not laptop!")
 
 
 def dump_states(fn):
-    pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                              user='nobody')
+    pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
     cursor.execute(""" SELECT state_abbr,
@@ -32,8 +32,7 @@ def dump_states(fn):
 
 
 def dump_climdiv(fn):
-    pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                              user='nobody')
+    pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
     cursor.execute(""" SELECT iemid, ST_asEWKB(geom),
@@ -52,8 +51,7 @@ def dump_climdiv(fn):
 
 
 def dump_cwa(fn):
-    pgconn = psycopg2.connect(database='mesosite', host='iemdb',
-                              user='nobody')
+    pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
     cursor.execute(""" SELECT wfo, ST_asEWKB(ST_Simplify(geom, 0.01)),
@@ -71,8 +69,7 @@ def dump_cwa(fn):
 
 def dump_iowawfo(fn):
     """ A region with the Iowa WFOs"""
-    pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                              user='nobody')
+    pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
     cursor.execute(""" SELECT ST_asEWKB(ST_Simplify(ST_Union(the_geom), 0.01))
@@ -90,8 +87,7 @@ def dump_iowawfo(fn):
 
 
 def dump_ugc(gtype, fn):
-    pgconn = psycopg2.connect(database='postgis', host='iemdb',
-                              user='nobody')
+    pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
     cursor.execute(""" SELECT ugc, wfo, ST_asEWKB(simple_geom),
@@ -118,14 +114,21 @@ def check_file(fn):
     print("runtime: %.5fs, entries: %s, fn: %s" % (
                 (ets - sts).total_seconds(), len(data.keys()), fn))
 
-dump_iowawfo('iowawfo.pickle')
-dump_ugc('C', 'ugcs_county.pickle')
-dump_ugc('Z', 'ugcs_zone.pickle')
-check_file('ugcs_county.pickle')
-check_file('ugcs_zone.pickle')
-dump_cwa("cwa.pickle")
-check_file('cwa.pickle')
-dump_climdiv("climdiv.pickle")
-check_file("climdiv.pickle")
-dump_states('us_states.pickle')
-check_file('us_states.pickle')
+
+def main():
+    """Go Main"""
+    dump_iowawfo('iowawfo.pickle')
+    dump_ugc('C', 'ugcs_county.pickle')
+    dump_ugc('Z', 'ugcs_zone.pickle')
+    check_file('ugcs_county.pickle')
+    check_file('ugcs_zone.pickle')
+    dump_cwa("cwa.pickle")
+    check_file('cwa.pickle')
+    dump_climdiv("climdiv.pickle")
+    check_file("climdiv.pickle")
+    dump_states('us_states.pickle')
+    check_file('us_states.pickle')
+
+
+if __name__ == '__main__':
+    main()

@@ -4,6 +4,7 @@ import unittest
 
 import psycopg2.extras
 from pyiem.nws.products.ffg import parser as ffgparser
+from pyiem.util import get_dbconn
 
 
 def get_file(name):
@@ -17,7 +18,7 @@ class TestFFG(unittest.TestCase):
     """ Tests """
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='postgis', host='iemdb')
+        self.dbconn = get_dbconn('postgis')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

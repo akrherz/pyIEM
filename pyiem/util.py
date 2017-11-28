@@ -235,7 +235,7 @@ def get_properties():
     Returns:
       dict: a dictionary of property names and values (both str)
     """
-    pgconn = psycopg2.connect(database='mesosite', host='iemdb', user='nobody')
+    pgconn = get_dbconn('mesosite', user='nobody')
     cursor = pgconn.cursor()
     cursor.execute("""SELECT propname, propvalue from properties""")
     res = {}

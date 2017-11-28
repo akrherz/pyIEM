@@ -8,6 +8,7 @@ import pytz
 import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products import metarcollect
+from pyiem.util import get_dbconn
 
 PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
@@ -30,7 +31,7 @@ class TestMETAR(unittest.TestCase):
     """ Tests """
 
     def setUp(self):
-        self.conn = psycopg2.connect(database='iem', host='iemdb')
+        self.conn = get_dbconn('iem')
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 

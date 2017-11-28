@@ -10,6 +10,7 @@ from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
+from pyiem.util import get_dbconn
 
 
 def filter_warnings(ar, startswith='get_gid'):
@@ -39,7 +40,7 @@ class TestProducts(unittest.TestCase):
 
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='postgis', host='iemdb')
+        self.dbconn = get_dbconn('postgis')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

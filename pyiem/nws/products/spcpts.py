@@ -10,9 +10,9 @@ import os
 import itertools
 
 import numpy as np
-from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon, LineString, MultiPolygon
 from shapely.geometry.polygon import LinearRing
+from pyiem.nws.product import TextProduct
 
 CONUS = {'line': None, 'poly': None}
 DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",

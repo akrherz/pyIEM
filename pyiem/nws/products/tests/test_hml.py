@@ -1,9 +1,11 @@
 import os
+import unittest
 import datetime
+
 import pytz
 import psycopg2.extras
-import unittest
 from pyiem.nws.products.hml import parser as hmlparser
+from pyiem.util import get_dbconn
 
 
 def get_file(name):
@@ -23,7 +25,7 @@ class TestHML(unittest.TestCase):
     """ Tests """
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='hads', host='iemdb')
+        self.dbconn = get_dbconn('hads')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

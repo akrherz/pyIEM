@@ -3,6 +3,7 @@ import unittest
 
 import psycopg2.extras
 from pyiem import network
+from pyiem.util import get_dbconn
 
 
 class TestNetwork(unittest.TestCase):
@@ -10,7 +11,7 @@ class TestNetwork(unittest.TestCase):
 
     def setUp(self):
         """With each test"""
-        self.conn = psycopg2.connect(database='mesosite', host='iemdb')
+        self.conn = get_dbconn('mesosite')
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
         self.cursor.execute("""INSERT into stations(id, name, network)
