@@ -917,6 +917,8 @@ def gen_metar(data):
         hours = val['hours']
         typ = val['code']
         tmpc = val['tmpc']
+        if tmpc is None:
+            continue
         if hours is None or hours == 12:
             continue
         elif hours == 6 and typ == 'M':
