@@ -6,6 +6,7 @@ import datetime
 import pytz
 import psycopg2.extras
 from pyiem.nws.products.mos import parser as tafparser
+from pyiem.util import get_dbconn
 
 
 def get_file(name):
@@ -19,7 +20,7 @@ class TestProducts(unittest.TestCase):
     """ Tests """
 
     def setUp(self):
-        self.conn = psycopg2.connect(database='mos', host='iemdb')
+        self.conn = get_dbconn('mos')
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 

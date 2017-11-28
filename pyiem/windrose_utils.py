@@ -1,11 +1,11 @@
 """util script to call `windrose` package"""
 import datetime
 import numpy as np
-import psycopg2
 import os
 import pandas as pd
 from pandas.io.sql import read_sql
 from pyiem.datatypes import speed
+from pyiem.util import get_dbconn
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt  # nopep8
@@ -86,8 +86,7 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
       pandas.DataFrame of the data
     """
     # Query observations
-    dbhost = 'iemdb' if database != 'hads' else 'iemdb-hads'
-    db = psycopg2.connect(database=database, host=dbhost, user='nobody')
+    db = get_dbconn(database, user='nobody')
     rlimiter = ""
     if database == 'asos':
         rlimiter = " and report_type = 2 "

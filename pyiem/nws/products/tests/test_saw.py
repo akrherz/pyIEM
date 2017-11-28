@@ -6,6 +6,7 @@ import unittest
 import psycopg2.extras
 import pytz
 from pyiem.nws.products.saw import parser as sawparser
+from pyiem.util import get_dbconn
 
 
 def get_file(name):
@@ -19,7 +20,7 @@ class TestProducts(unittest.TestCase):
     """ Tests """
 
     def setUp(self):
-        self.conn = psycopg2.connect(database='postgis', host='iemdb')
+        self.conn = get_dbconn('postgis')
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 

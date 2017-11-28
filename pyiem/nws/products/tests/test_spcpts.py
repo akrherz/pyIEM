@@ -7,6 +7,7 @@ import pytz
 import psycopg2.extras
 
 from pyiem.nws.products.spcpts import parser, str2multipolygon
+from pyiem.util import get_dbconn
 
 
 def utc(year, month, day, hour, minute):
@@ -27,7 +28,7 @@ class TestPTS(unittest.TestCase):
 
     def setUp(self):
         ''' This is called for each test, beware '''
-        self.dbconn = psycopg2.connect(database='postgis', host='iemdb')
+        self.dbconn = get_dbconn('postgis')
         # Note the usage of RealDictCursor here, as this is what
         # pyiem.twistedpg uses
         self.txn = self.dbconn.cursor(

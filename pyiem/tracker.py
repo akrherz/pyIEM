@@ -1,10 +1,11 @@
 """IEM Tracker Related Stuff
 
 """
-import psycopg2
-import pytz
 import smtplib
 from email.mime.text import MIMEText
+
+import pytz
+from pyiem.util import get_dbconn
 
 
 class TrackerEngine(object):
@@ -259,8 +260,7 @@ def loadqc(cursor=None):
     """
     qdict = {}
     if cursor is None:
-        portfolio = psycopg2.connect(database='portfolio', host='iemdb',
-                                     user='nobody')
+        portfolio = get_dbconn('portfolio', user='nobody')
         cursor = portfolio.cursor()
 
     cursor.execute("""

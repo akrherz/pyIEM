@@ -8,18 +8,19 @@ import pytz
 import psycopg2.extras
 
 from pyiem import observation
+from pyiem.util import get_dbconn
 
 
 class TestObservation(unittest.TestCase):
 
     def setUp(self):
         ts = datetime.datetime(2015, 9, 1, 1, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = ts.replace(tzinfo=pytz.utc)
         sid = ''.join(random.choice(
                     string.ascii_uppercase + string.digits) for _ in range(7))
         self.iemid = 0 - random.randint(0, 1000)
         self.ob = observation.Observation(sid, 'FAKE', ts)
-        self.conn = psycopg2.connect(database='iem', host='iemdb')
+        self.conn = get_dbconn('iem')
         self.cursor = self.conn.cursor(
                         cursor_factory=psycopg2.extras.DictCursor)
         # Create fake station, so we can create fake entry in summary
