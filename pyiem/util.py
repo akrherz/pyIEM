@@ -20,7 +20,7 @@ import numpy as np
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
 
 
-def get_dbconn(dbname, user=None):
+def get_dbconn(dbname, user=None, host=None):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -29,6 +29,7 @@ def get_dbconn(dbname, user=None):
     Args:
       dbname (str): the database name to connect to
       user (str,optional): hard coded user to connect as, default: current user
+      host (str,optional): hard coded hostname to connect as, default: iemdb
 
     Returns:
       psycopg2 database connection
@@ -38,9 +39,10 @@ def get_dbconn(dbname, user=None):
         # We hard code the apache user back to nobody
         if user == 'apache':
             user = 'nobody'
-    host = "iemdb"
-    if dbname == 'hads':
-        host = "iemdb-hads"
+    if host is None:
+        host = "iemdb"
+        if dbname == 'hads':
+            host = "iemdb-hads"
 
     try:
         pgconn = psycopg2.connect(database=dbname, host=host, user=user,
