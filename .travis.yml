@@ -9,6 +9,8 @@ addons:
       - postgresql-9.5-postgis-2.3
   hosts:
     - iemdb
+    - iemdb-hads
+    - iemdb2
 env:
   matrix:
     - PYTHON_VERSION=2.7
