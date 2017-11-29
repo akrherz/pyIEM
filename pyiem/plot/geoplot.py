@@ -312,8 +312,13 @@ class MapPlot(object):
         """Construct a MapPlot
 
         Args:
-          sector (str): plot domain
+          sector (str): plot domain, set 'custom' to bring your own projection
           kwargs:
+            projection (cartopy.crs,optional): bring your own projection
+            north (float,optional): Plot top bounds (degN Lat)
+            south (float,optional): Plot bottom bounds (degN Lat)
+            east (float,optional): Plot right bounds (degE Lon)
+            west (float,optional): Plot left bounds (degE Lon)
             titlefontsize (int): fontsize to use for the plot title
             subtitlefontsize (int): fontsize to use for the plot subtitle
             continentalcolor (color): color to use for continental coloring
