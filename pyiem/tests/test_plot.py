@@ -3,10 +3,9 @@ import unittest
 import datetime
 
 import numpy as np
+import matplotlib.colors as mpcolors
 from pyiem import plot
 import pyiem.reference as reference
-import matplotlib.colors as mpcolors
-import cartopy.crs as ccrs
 
 
 class TestPlot(unittest.TestCase):
@@ -24,6 +23,18 @@ class TestPlot(unittest.TestCase):
         mp.postprocess(filename='/tmp/test_plot_usdm.png')
         mp.close()
 
+    def test_hexbin(self):
+        """See if we can do hexbin OKish"""
+        mp = plot.MapPlot(sector='north_america', continentalcolor='white')
+        lons = np.arange(-100, -80, 0.25)
+        lats = np.arange(40, 50, 0.25)
+        vals = np.random.ranf([lats.shape[0], lons.shape[0]])
+        lons, lats = np.meshgrid(lons, lats)
+        mp.hexbin(lons.flatten(), lats.flatten(), vals.flatten(),
+                  np.arange(0, 1, 0.1))
+        mp.postprocess(filename='/tmp/test_plot_hexbin.png')
+        mp.close()
+
     def test_pcolormesh(self):
         """See if we can do pcolormesh OKish"""
         mp = plot.MapPlot(sector='custom', north=43, east=-80, west=-96,
@@ -31,7 +42,7 @@ class TestPlot(unittest.TestCase):
                           continentalcolor='white')
         lons = np.arange(-100, -80, 0.25)
         lats = np.arange(40, 50, 0.25)
-        vals = np.random.rand(lats.shape[0], lons.shape[0])
+        vals = np.random.ranf([lats.shape[0], lons.shape[0]])
         lons, lats = np.meshgrid(lons, lats)
         mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
         mp.postprocess(filename='/tmp/test_plot_pcolormesh.png')
