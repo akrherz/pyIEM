@@ -2,7 +2,8 @@
 import unittest
 import os
 
-from pyiem.ncei.ds3505 import parser
+from pyiem.ncei.ds3505 import parser, process_metar
+from pyiem import util
 
 
 def get_file(name):
@@ -14,6 +15,13 @@ def get_file(name):
 
 class DS3505(unittest.TestCase):
     """Go for it"""
+
+    def test_process_metar(self):
+        """Exercise some deamons from that function"""
+        metar = "KALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
+        now = util.utc(2017, 11, 1)
+        ob = process_metar(metar, now)
+        self.assertEquals(ob.vsby, 0)
 
     def test_171024(self):
         """Bad parse for ALO"""
