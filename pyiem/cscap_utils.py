@@ -2,11 +2,9 @@
 Utility Functions that are common to our scripts, I hope
 """
 from __future__ import print_function
-import time
 import json
 import os
 import sys
-import random
 import re
 
 import gdata.gauth
@@ -16,6 +14,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 from apiclient.discovery import build
 import smartsheet
+from pyiem.util import exponential_backoff
 
 CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
@@ -86,17 +85,6 @@ def translate_years(val):
         return range(one, two+1)
     tokens = re.findall('[0-9]+', val)
     return [int("%s%s" % ("19" if int(t) > 50 else "20", t)) for t in tokens]
-
-
-def exponential_backoff(func, *args, **kwargs):
-    """Call Google's API with some grace to allow for errors"""
-    for i in range(5):
-        try:
-            return func(*args, **kwargs)
-        except Exception as exp:
-            print("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
-            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
-    return None
 
 
 class Worksheet(object):

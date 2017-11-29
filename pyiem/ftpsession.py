@@ -1,26 +1,13 @@
 """FTP Session"""
 from ftplib import FTP_TLS  # requires python 2.7
+import netrc
 import logging
 import os
 import glob
 import subprocess
-from socket import error as socket_error
-import random
 import time
 
-
-def exponential_backoff(func, *args, **kwargs):
-    """ Exponentially backoff some function until it stops erroring"""
-    for i in range(5):
-        try:
-            return func(*args, **kwargs)
-        except socket_error as serr:
-            logging.debug("%s/5 %s traceback: %s", i+1, func.__name__, serr)
-            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
-        except Exception as exp:
-            logging.debug("%s/5 %s traceback: %s", i+1, func.__name__, exp)
-            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
-    return None
+from pyiem.util import exponential_backoff
 
 
 class FTPSession(object):
@@ -62,8 +49,8 @@ class FTPSession(object):
         try:
             self.conn.quit()
             self.conn.close()
-        except:
-            pass
+        except Exception as exp:
+            logging.debug(exp)
         finally:
             self.conn = None
         self._connect()
@@ -96,12 +83,17 @@ class FTPSession(object):
         try:
             self.conn.quit()
             self.conn.close()
-        except:
-            pass
+        except Exception as exp:
+            logging.debug(exp)
         finally:
             self.conn = None
 
     def chdir(self, path):
+        """Change directory
+
+        Args:
+          path (str): The path (relative or absolute to change to
+        """
         if self.pwd() == path.rstrip("/"):
             return
         self.conn.cwd("/")
@@ -144,3 +136,37 @@ class FTPSession(object):
         for localfn, remotefn in zip(localfns, remotefns):
             res.append(self.put_file(path, localfn, remotefn))
         return res
+
+
+def send2box(filenames, remote_path, remotenames=None,
+             ftpserver='ftp.box.com', tmpdir='/tmp', fs=None):
+    """Send one or more files to CyBox
+
+    Box has a filesize limit of 15 GB, so if we find any files larger than
+    that, we shall split them into chunks prior to uploading.
+
+    Args:
+      filenames (str or list): filenames to upload
+      remote_path (str): location to place the filenames
+      remotenames (str or list): filenames to use on the remote FTP server
+        should match size and type of filenames
+      ftpserver (str): FTP server to connect to...
+      tmpdir (str, optional): Temperary folder to if an individual file is over
+        15 GB in size
+
+    Returns:
+      FTPSession
+      list of success `True` or failures `False` matching filenames
+    """
+    credentials = netrc.netrc().hosts[ftpserver]
+    if fs is None:
+        fs = FTPSession(ftpserver, credentials[0], credentials[2],
+                        tmpdir=tmpdir)
+    if isinstance(filenames, str):
+        filenames = [filenames, ]
+    if remotenames is None:
+        remotenames = filenames
+    if isinstance(remotenames, str):
+        remotenames = [remotenames, ]
+    res = fs.put_files(remote_path, filenames, remotenames)
+    return fs, res

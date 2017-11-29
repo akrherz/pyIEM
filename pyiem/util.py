@@ -3,7 +3,6 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
-import netrc
 import time
 import random
 import logging
@@ -13,11 +12,23 @@ import warnings
 import getpass
 from socket import error as socket_error
 
+import pytz
 import psycopg2
-from pyiem.ftpsession import FTPSession
 import numpy as np
+# NB We shall not be importing other parts of pyIEM here as we then get
+# circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def utc(year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
+    """Create a datetime instance with tzinfo=pytz.utc
+
+    Returns:
+      datetime with tzinfo set
+    """
+    return datetime.datetime(year, month, day, hour, minute, second,
+                             microsecond).replace(tzinfo=pytz.utc)
 
 
 def get_dbconn(dbname, user=None, host=None):
@@ -195,40 +206,6 @@ def exponential_backoff(func, *args, **kwargs):
     return None
 
 
-def send2box(filenames, remote_path, remotenames=None,
-             ftpserver='ftp.box.com', tmpdir='/tmp', fs=None):
-    """Send one or more files to CyBox
-
-    Box has a filesize limit of 15 GB, so if we find any files larger than
-    that, we shall split them into chunks prior to uploading.
-
-    Args:
-      filenames (str or list): filenames to upload
-      remote_path (str): location to place the filenames
-      remotenames (str or list): filenames to use on the remote FTP server
-        should match size and type of filenames
-      ftpserver (str): FTP server to connect to...
-      tmpdir (str, optional): Temperary folder to if an individual file is over
-        15 GB in size
-
-    Returns:
-      FTPSession
-      list of success `True` or failures `False` matching filenames
-    """
-    credentials = netrc.netrc().hosts[ftpserver]
-    if fs is None:
-        fs = FTPSession(ftpserver, credentials[0], credentials[2],
-                        tmpdir=tmpdir)
-    if isinstance(filenames, str):
-        filenames = [filenames, ]
-    if remotenames is None:
-        remotenames = filenames
-    if isinstance(remotenames, str):
-        remotenames = [remotenames, ]
-    res = fs.put_files(remote_path, filenames, remotenames)
-    return fs, res
-
-
 def get_properties():
     """Fetch the properties set
 
@@ -335,11 +312,3 @@ def grid_bounds(lons, lats, bounds):
 
     return [int(i) for i in [max([0, x0]), max([0, y0]), min([szx, x1]),
                              min([szy, y1])]]
-
-
-if __name__ == '__main__':
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
-    send2box(['util.py', 'plot.py'], '/bah1/bah2/', remotenames=['util2.py',
-                                                                 'plot.py'])
-    # mirror2box("/tmp/mytest", "mytest")

@@ -4,8 +4,9 @@ import unittest
 import os
 from collections import OrderedDict
 
-from pyiem import util
+import pytz
 import numpy as np
+from pyiem import util
 
 
 def get_file(name):
@@ -16,6 +17,13 @@ def get_file(name):
 
 
 class TestUtil(unittest.TestCase):
+    """Our Lame Unit Tests"""
+
+    def test_utc(self):
+        """Does the utc() function work as expected"""
+        answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=pytz.utc)
+        res = util.utc(2017, 2, 1, 2, 20)
+        self.assertEquals(answer, res)
 
     def test_grid_bounds(self):
         """Can we compute grid bounds correctly"""
