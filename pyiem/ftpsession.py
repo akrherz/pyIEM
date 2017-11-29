@@ -49,8 +49,8 @@ class FTPSession(object):
         try:
             self.conn.quit()
             self.conn.close()
-        except Exception as _exp:
-            pass
+        except Exception as exp:
+            logging.debug(exp)
         finally:
             self.conn = None
         self._connect()
@@ -83,12 +83,17 @@ class FTPSession(object):
         try:
             self.conn.quit()
             self.conn.close()
-        except Exception as _exp:
-            pass
+        except Exception as exp:
+            logging.debug(exp)
         finally:
             self.conn = None
 
     def chdir(self, path):
+        """Change directory
+
+        Args:
+          path (str): The path (relative or absolute to change to
+        """
         if self.pwd() == path.rstrip("/"):
             return
         self.conn.cwd("/")
