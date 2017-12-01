@@ -2,13 +2,11 @@
 from __future__ import print_function
 import os
 import unittest
-import datetime
 
-import pytz
 import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products import metarcollect
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
 
 PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
@@ -17,6 +15,9 @@ NWSLI_PROVIDER = {
     'MIA': dict(wfo='MIA'),
     'ALO': dict(wfo='DSM'),
     'EST': dict(wfo='EST'),
+    }
+metarcollect.JABBER_SITES = {
+    'KALO': None
     }
 
 
@@ -35,23 +36,31 @@ class TestMETAR(unittest.TestCase):
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 
+    def test_future(self):
+        """Can we handle products that are around the first"""
+        utcnow = utc(2017, 12, 1)
+        prod = PARSER(get_file("first.txt"), utcnow=utcnow)
+        self.assertEquals(len(prod.metars), 2)
+        self.assertEquals(prod.metars[0].time.month, 11)
+        self.assertEquals(prod.metars[1].time.month, 12)
+
     def test_170824_sa_format(self):
         """Don't be so noisey when we encounter SA formatted products"""
-        utcnow = datetime.datetime(2017, 8, 24, 14).replace(tzinfo=pytz.utc)
+        utcnow = utc(2017, 8, 24, 14)
         prod = PARSER(get_file("sa.txt"), utcnow=utcnow,
                       nwsli_provider=NWSLI_PROVIDER)
         self.assertEquals(len(prod.metars), 0)
 
     def test_170809_nocrcrlf(self):
         """Product fails WMO parsing due to usage of RTD as bbb field"""
-        utcnow = datetime.datetime(2017, 8, 9, 9).replace(tzinfo=pytz.utc)
+        utcnow = utc(2017, 8, 9, 9)
         prod = PARSER(get_file("rtd_bbb.txt"), utcnow=utcnow,
                       nwsli_provider=NWSLI_PROVIDER)
         self.assertEquals(len(prod.metars), 1)
 
     def test_metarreport(self):
         """Can we do things with the METARReport"""
-        utcnow = datetime.datetime(2013, 8, 8, 12, 53).replace(tzinfo=pytz.utc)
+        utcnow = utc(2013, 8, 8, 12, 53)
         mtr = metarcollect.METARReport(('SPECI CYYE 081253Z 01060G60KT 1/4SM '
                                         'FG SKC 10/10 A3006 RMK P0000 '
                                         'FG6 SLP188='))
@@ -66,14 +75,14 @@ class TestMETAR(unittest.TestCase):
 
     def test_basic(self):
         """Simple tests"""
-        utcnow = datetime.datetime(2013, 8, 8, 14).replace(tzinfo=pytz.utc)
+        utcnow = utc(2013, 8, 8, 14)
         prod = PARSER(get_file("collective.txt"), utcnow=utcnow,
                       nwsli_provider=NWSLI_PROVIDER)
         self.assertEquals(len(prod.warnings), 0,
                           '\n'.join(prod.warnings))
-        self.assertEquals(len(prod.metars), 10)
+        self.assertEquals(len(prod.metars), 11)
         jmsgs = prod.get_jabbers()
-        self.assertEquals(len(jmsgs), 4)
+        self.assertEquals(len(jmsgs), 6)
 
         iemob, _ = prod.metars[1].to_iemaccess(self.cursor)
         self.assertEqual(iemob.data['phour'], 0.46)

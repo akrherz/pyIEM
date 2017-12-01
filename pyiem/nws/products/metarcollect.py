@@ -81,12 +81,19 @@ def to_metar(textprod, text):
             print("Aborting due to time being None |%s|" % (text, ))
             return None
         # don't allow data more than an hour into the future
-        utcnow = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-        if utcnow < mtr.time:
-            print(("Aborting due to time in the future "
-                   "utcnow: %s mtr.time: %s"
-                   ) % (utcnow, mtr.time))
-            return None
+        ceiling = (textprod.utcnow + datetime.timedelta(hours=1)
+                   ).replace(tzinfo=None)
+        if mtr.time > ceiling:
+            # careful, we may have obs from the previous month
+            if ceiling.day < 5 and mtr.time.day > 15:
+                prevmonth = ceiling - datetime.timedelta(days=10)
+                mtr.time = mtr.time.replace(year=prevmonth.year,
+                                            month=prevmonth.month)
+            else:
+                print(("Aborting due to time in the future "
+                       "ceiling: %s mtr.time: %s"
+                       ) % (ceiling, mtr.time))
+                return None
         mtr.code = original_text
         mtr.iemid = (mtr.station_id[-3:]
                      if mtr.station_id[0] == 'K'
@@ -158,7 +165,7 @@ class METARReport(Metar):
 
     def to_iemaccess(self, txn):
         """Persist this data object to IEMAccess"""
-        gts = self.time.replace(tzinfo=pytz.timezone("UTC"))
+        gts = self.time.replace(tzinfo=pytz.utc)
         iem = Observation(self.iemid, self.network, gts)
         # Load the observation from the database, if the same time exists!
         iem.load(txn)
@@ -204,7 +211,7 @@ class METARReport(Metar):
             iem.data['max_drct'] = self.wind_dir_peak.value()
         if self.peak_wind_time:
             iem.data['max_gust_ts'] = self.peak_wind_time.replace(
-                tzinfo=pytz.timezone("UTC"))
+                tzinfo=pytz.utc)
 
         if self.max_temp_6hr:
             iem.data['max_tmpf_6hr'] = round(self.max_temp_6hr.value("F"), 1)
