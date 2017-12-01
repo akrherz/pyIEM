@@ -1,7 +1,8 @@
 """util script to call `windrose` package"""
-import datetime
-import numpy as np
 import os
+import datetime
+
+import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
 from pyiem.datatypes import speed
@@ -130,8 +131,10 @@ def _make_textresult(station, df, units, nsector, sname, monthinfo, hourinfo,
 
     Returns:
       str of information"""
+    if df.empty:
+        return "No Data Found"
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
-    if len(bins) > 0:
+    if bins:
         wu['bins'] = bins
     # Effectively filters out the nulls
     df2 = df[df['drct'] >= 0]
@@ -218,13 +221,13 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
         color = p.get_facecolor()
         handles.append(plt.Rectangle((0, 0), 0.1, 0.3,
                                      facecolor=color, edgecolor='black'))
-    l = fig.legend(handles, wu['binlbl'],
-                   bbox_to_anchor=(0.01, 0.01, 0.98, 0.09), loc='center',
-                   ncol=6,
-                   title='Wind Speed [%s]' % (wu['abbr'],),
-                   mode=None, columnspacing=0.9, handletextpad=0.45,
-                   fontsize=14)
-    plt.setp(l.get_texts(), fontsize=10)
+    legend = fig.legend(handles, wu['binlbl'],
+                        bbox_to_anchor=(0.01, 0.01, 0.98, 0.09), loc='center',
+                        ncol=6,
+                        title='Wind Speed [%s]' % (wu['abbr'],),
+                        mode=None, columnspacing=0.9, handletextpad=0.45,
+                        fontsize=14)
+    plt.setp(legend.get_texts(), fontsize=10)
     # Now we put some fancy debugging info on the plot
     tlimit = "Time Domain: "
     if len(hours) == 24 and len(months) == 12:

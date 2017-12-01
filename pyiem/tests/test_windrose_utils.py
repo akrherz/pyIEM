@@ -1,8 +1,9 @@
 """tests"""
 import unittest
 import datetime
-import pytz
+
 from pyiem.windrose_utils import windrose, _get_timeinfo
+from pyiem.util import utc
 
 
 class Test(unittest.TestCase):
@@ -18,14 +19,13 @@ class Test(unittest.TestCase):
 
     def test_windrose(self):
         """Exercise the windrose code"""
-        v = datetime.datetime(2015, 1, 1, 6)
-        v = v.replace(tzinfo=pytz.utc)
+        basevalid = utc(2015, 1, 1, 6)
         valid = []
         sknt = []
         drct = []
         for s in range(100):
-            v += datetime.timedelta(hours=1)
-            valid.append(v)
+            basevalid += datetime.timedelta(hours=1)
+            valid.append(basevalid)
             sknt.append(s)
             drct.append(s)
         fig = windrose('AMW2', sknt=sknt, drct=drct, valid=valid, sname='Ames')
@@ -42,3 +42,7 @@ class Test(unittest.TestCase):
                        sts=datetime.datetime(2015, 1, 1),
                        ets=datetime.datetime(2015, 10, 2), justdata=True)
         assert isinstance(res, str)
+
+        # allow _get_data to be excercised
+        res = windrose('XXXXX')
+        self.assertTrue(res is not None)
