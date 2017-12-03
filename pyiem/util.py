@@ -190,30 +190,36 @@ def get_autoplot_context(fdict, cfg):
 
 
 def exponential_backoff(func, *args, **kwargs):
-    """ Exponentially backoff some function until it stops erroring"""
+    """ Exponentially backoff some function until it stops erroring
+
+    Args:
+      _ebfactor (int,optional): Optional scale factor, allowing for faster test
+    """
+    ebfactor = float(kwargs.pop('_ebfactor', 2))
     msgs = []
     for i in range(5):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
             msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, serr))
-            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
+            time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
         except Exception as exp:
             msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
-            time.sleep((2 ** i) + (random.randint(0, 1000) / 1000))
-    logging.error("%s failure" % (func.__name__,))
+            time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
+    logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))
     return None
 
 
-def get_properties():
+def get_properties(cursor=None):
     """Fetch the properties set
 
     Returns:
       dict: a dictionary of property names and values (both str)
     """
-    pgconn = get_dbconn('mesosite', user='nobody')
-    cursor = pgconn.cursor()
+    if cursor is None:
+        pgconn = get_dbconn('mesosite', user='nobody')
+        cursor = pgconn.cursor()
     cursor.execute("""SELECT propname, propvalue from properties""")
     res = {}
     for row in cursor:

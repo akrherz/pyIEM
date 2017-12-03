@@ -9,6 +9,7 @@ from pyiem.nws import product, ugc
 from pyiem.nws.product import WMO_RE
 from pyiem.nws.product import TextProductException
 from pyiem.nws.products import parser as productparser
+from pyiem.util import utc
 
 
 def get_file(name):
@@ -16,12 +17,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn, 'rb').read().decode('utf-8')
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour,
-                             minute).replace(tzinfo=pytz.timezone("UTC"))
 
 
 class TestProduct(unittest.TestCase):

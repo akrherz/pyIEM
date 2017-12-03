@@ -1,12 +1,10 @@
 """MCD/MPD tests"""
 import unittest
 import os
-import datetime
 
 import psycopg2.extras
-import pytz
 from pyiem.nws.products.mcd import parser
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
 
 
 def get_file(name):
@@ -14,12 +12,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/MCD_MPD/%s" % (basedir, name)
     return open(fn, 'rb').read().decode('utf-8')
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour,
-                             minute).replace(tzinfo=pytz.utc)
 
 
 class TestMCD(unittest.TestCase):

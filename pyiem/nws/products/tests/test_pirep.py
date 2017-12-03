@@ -1,8 +1,8 @@
+"""PIREP"""
 import os
-import datetime
-import pytz
 import unittest
 from pyiem.nws.products.pirep import parser as pirepparser
+from pyiem.util import utc
 
 
 def get_file(name):
@@ -10,12 +10,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour, minute).replace(
-                        tzinfo=pytz.timezone("UTC"))
 
 
 class TestProducts(unittest.TestCase):
