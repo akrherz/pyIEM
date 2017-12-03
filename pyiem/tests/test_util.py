@@ -30,7 +30,7 @@ class TestUtil(unittest.TestCase):
         """Do the backoff of a bad func"""
         def bad():
             """Always errors"""
-            _ = 1 / 0
+            raise Exception("Always Raises :)")
         res = util.exponential_backoff(bad, _ebfactor=0)
         self.assertTrue(res is None)
 
