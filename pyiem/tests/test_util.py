@@ -2,6 +2,8 @@
 import datetime
 import unittest
 import os
+import string
+import random
 from collections import OrderedDict
 
 import pytz
@@ -18,6 +20,19 @@ def get_file(name):
 
 class TestUtil(unittest.TestCase):
     """Our Lame Unit Tests"""
+
+    def setUp(self):
+        """Get me a connection"""
+        pgconn = util.get_dbconn('mesosite')
+        self.txn = pgconn.cursor()
+
+    def test_backoff(self):
+        """Do the backoff of a bad func"""
+        def bad():
+            """Always errors"""
+            raise Exception("Always Raises :)")
+        res = util.exponential_backoff(bad, _ebfactor=0)
+        self.assertTrue(res is None)
 
     def test_utc(self):
         """Does the utc() function work as expected"""
@@ -70,7 +85,7 @@ class TestUtil(unittest.TestCase):
         form = dict(station='AMW', network='IA_ASOS', type2='bogus',
                     t=15)
         form['type'] = 'max-low'
-        PDICT = OrderedDict([
+        pdict = OrderedDict([
                              ('max-high', 'Maximum High'),
                              ('avg-high', 'Average High'),
                              ('min-high', 'Minimum High'),
@@ -78,12 +93,14 @@ class TestUtil(unittest.TestCase):
         cfg = dict(arguments=[
             dict(type='station', name='station', default='IA0000'),
             dict(type='select', name='type', default='max-high',
-                 options=PDICT),
+                 options=pdict),
             dict(type='select', name='type2', default='max-high',
-                 options=PDICT),
+                 options=pdict),
             dict(type='int', name='threshold', default=-99),
             dict(type='int', name='t', default=9, min=0, max=10),
             dict(type='date', name='d', default='2011/11/12'),
+            dict(type='datetime', name='d2', default='2011/11/12 0000',
+                 max='2017/12/12 1212', min='2011/01/01 0000'),
             dict(type='year', name='year', default='2011', optional=True),
             dict(type='float', name='f', default=1.10)])
         ctx = util.get_autoplot_context(form, cfg)
@@ -95,6 +112,7 @@ class TestUtil(unittest.TestCase):
         self.assertTrue(isinstance(ctx['f'], float))
         self.assertEqual(ctx['t'], 9)
         self.assertEqual(ctx['d'], datetime.date(2011, 11, 12))
+        self.assertEqual(ctx['d2'], datetime.datetime(2011, 11, 12))
         self.assertTrue('year' not in ctx)
 
         form = dict(zstation='DSM')
@@ -106,8 +124,16 @@ class TestUtil(unittest.TestCase):
 
     def test_properties(self):
         """ Try the properties function"""
-        prop = util.get_properties()
+        tmpname = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                          for _ in range(7))
+        tmpval = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                         for _ in range(7))
+        self.txn.execute("""
+        INSERT into properties(propname, propvalue) VALUES (%s, %s)
+        """, (tmpname, tmpval))
+        prop = util.get_properties(self.txn)
         self.assertTrue(isinstance(prop, dict))
+        self.assertEquals(prop[tmpname], tmpval)
 
     def test_drct2text(self):
         """ Test conversion of drct2text """

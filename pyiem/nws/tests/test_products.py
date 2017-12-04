@@ -10,7 +10,7 @@ from pyiem.nws.products import parser
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.ugc import UGC, UGCParseException
 from pyiem.nws.nwsli import NWSLI
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
 
 
 def filter_warnings(ar, startswith='get_gid'):
@@ -27,12 +27,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../data/product_examples/%s" % (basedir, name)
     return open(fn, 'rb').read().decode('utf-8')
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour,
-                             minute).replace(tzinfo=pytz.timezone("UTC"))
 
 
 class TestProducts(unittest.TestCase):

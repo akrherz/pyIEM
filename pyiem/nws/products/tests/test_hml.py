@@ -1,8 +1,9 @@
+"""HML"""
+from __future__ import print_function
 import os
 import unittest
 import datetime
 
-import pytz
 import psycopg2.extras
 from pyiem.nws.products.hml import parser as hmlparser
 from pyiem.util import get_dbconn
@@ -13,12 +14,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
     return open(fn).read()
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour, minute).replace(
-                        tzinfo=pytz.timezone("UTC"))
 
 
 class TestHML(unittest.TestCase):

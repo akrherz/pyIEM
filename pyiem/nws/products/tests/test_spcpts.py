@@ -2,18 +2,10 @@
 import unittest
 import os
 
-import datetime
-import pytz
 import psycopg2.extras
 
 from pyiem.nws.products.spcpts import parser, str2multipolygon
-from pyiem.util import get_dbconn
-
-
-def utc(year, month, day, hour, minute):
-    """Helper"""
-    dt = datetime.datetime(year, month, day, hour, minute)
-    return dt.replace(tzinfo=pytz.utc)
+from pyiem.util import get_dbconn, utc
 
 
 def get_file(name):
@@ -60,7 +52,7 @@ class TestPTS(unittest.TestCase):
     def test_170612_nullgeom(self):
         """See why this has an error with null geom reported"""
         spc = parser(get_file('PTSD48_nullgeom.txt'))
-        # spc.draw_outlooks()
+        spc.draw_outlooks()
         spc.sql(self.txn)
         outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
         self.assertAlmostEqual(outlook.geometry.area, 56.84, 2)

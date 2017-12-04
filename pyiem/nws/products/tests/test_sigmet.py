@@ -1,10 +1,10 @@
+"""SIGMET"""
 from __future__ import print_function
 import unittest
 import os
-import datetime
-import pytz
 
 from pyiem.nws.products.sigmet import parser, compute_esol
+from pyiem.util import utc
 
 
 def get_file(name):
@@ -12,12 +12,6 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/SIGMETS/%s" % (basedir, name)
     return open(fn).read()
-
-
-def utc(year, month, day, hour=0, minute=0):
-    """UTC Timestamp generator"""
-    return datetime.datetime(year, month, day, hour, minute).replace(
-                        tzinfo=pytz.timezone("UTC"))
 
 
 class TestSIGMET(unittest.TestCase):
