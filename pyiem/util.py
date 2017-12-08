@@ -31,7 +31,7 @@ def utc(year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
                              microsecond).replace(tzinfo=pytz.utc)
 
 
-def get_dbconn(dbname, user=None, host=None):
+def get_dbconn(dbname, user=None, host=None, port=5432):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -41,6 +41,8 @@ def get_dbconn(dbname, user=None, host=None):
       dbname (str): the database name to connect to
       user (str,optional): hard coded user to connect as, default: current user
       host (str,optional): hard coded hostname to connect as, default: iemdb
+      port (int,optional): the TCP port that PostgreSQL is listening
+        defaults to 5432
 
     Returns:
       psycopg2 database connection
@@ -57,12 +59,12 @@ def get_dbconn(dbname, user=None, host=None):
 
     try:
         pgconn = psycopg2.connect(database=dbname, host=host, user=user,
-                                  connect_timeout=15)
+                                  port=port, connect_timeout=15)
     except psycopg2.OperationalError as exp:
         warnings.warn("database connection failure: %s" % (exp, ))
         # as a stop-gap, lets try connecting to iemdb2
         pgconn = psycopg2.connect(database=dbname, host='iemdb2', user=user,
-                                  connect_timeout=15)
+                                  port=port, connect_timeout=15)
     return pgconn
 
 
