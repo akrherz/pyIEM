@@ -62,6 +62,9 @@ import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import cartopy.io.shapereader as shpreader
+# we ran the cartopy/tools downloader
+cartopy.config['pre_existing_data_dir'] = '/opt/miniconda2/cartopy_data/'
+# Set a saner default for apache et al
 cartopy.config['data_dir'] = '/tmp/'
 logging.basicConfig()
 
