@@ -163,7 +163,7 @@ class METARReport(Metar):
             return True
         return False
 
-    def to_iemaccess(self, txn):
+    def to_iemaccess(self, txn, force_current_log=False, skip_current=False):
         """Persist this data object to IEMAccess"""
         gts = self.time.replace(tzinfo=pytz.utc)
         iem = Observation(self.iemid, self.network, gts)
@@ -269,7 +269,7 @@ class METARReport(Metar):
                 pwx.append(("").join([a for a in wx if a is not None]))
             iem.data['presentwx'] = (",".join(pwx))[:24]
 
-        return iem, iem.save(txn)
+        return iem, iem.save(txn, force_current_log, skip_current)
 
 
 class METARCollective(TextProduct):
