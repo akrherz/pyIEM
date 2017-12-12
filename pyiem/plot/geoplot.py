@@ -927,6 +927,9 @@ class MapPlot(object):
         Args:
           ilabel (boolean,optional): Should we label contours
           iline (boolean,optional): should we draw contour lines
+
+        Returns:
+          vals (np.array): The values used for plotting, maybe after gridding
         """
         if isinstance(lons, list):
             lons = np.array(lons)
@@ -974,6 +977,7 @@ class MapPlot(object):
         self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        return vals
 
     def fill_climdiv(self, data, **kwargs):
         """Fill climate divisions using provided data dictionary
