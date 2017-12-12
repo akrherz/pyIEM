@@ -45,6 +45,22 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_issue9(self):
+        """A product crossing year bondary"""
+        utcnow = utc(2017, 12, 31, 9, 24)
+        prod = vtecparser(get_file('vtec/crosses_0.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        utcnow = utc(2018, 1, 1, 16, 0)
+        prod = vtecparser(get_file('vtec/crosses_1.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 1, "\n".join(warnings))
+        utcnow = utc(2018, 1, 1, 21, 33)
+        prod = vtecparser(get_file('vtec/crosses_2.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        warnings = filter_warnings(prod.warnings)
+        self.assertEquals(len(warnings), 1, "\n".join(warnings))
+
     def test_171121_issue45(self):
         """Do we alert on duplicated ETNs?"""
         utcnow = utc(2017, 4, 20, 21, 33)
@@ -403,7 +419,8 @@ class TestProducts(unittest.TestCase):
             prod = vtecparser(get_file('MWWCAR/%i.txt' % (i,)))
             prod.sql(self.txn)
             warnings = filter_warnings(prod.warnings)
-            self.assertEquals(len(warnings), 0)
+            warnings = filter_warnings(warnings, "VTEC Product appears to c")
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_150203_null_issue(self):
         """WSWOKX had null issue times, bad! """
@@ -515,6 +532,7 @@ class TestProducts(unittest.TestCase):
                 self.assertEquals(row[0], utc(2015, 1, 1, 6, 0))
             warnings = filter_warnings(prod.warnings)
             warnings = filter_warnings(warnings, "Segment has duplicated")
+            warnings = filter_warnings(warnings, "VTEC Product appears to c")
             self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_141226_correction(self):

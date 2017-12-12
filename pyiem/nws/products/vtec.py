@@ -1,7 +1,8 @@
 """A NWS TextProduct that contains VTEC information
 """
+from __future__ import print_function
 
-# Stand Library Imports
+# Standard Library Imports
 import datetime
 import itertools
 
@@ -191,11 +192,10 @@ class VTECProduct(TextProduct):
         # Lets query the database to look for any matching entries within
         # the past 3, 10, 31 days, to find with the product_issue was,
         # which guides the table that the data is stored within
-        # TODO: edge case whereby an initial warning issued in one year is
-        # later expanded to other zones in the next year
         for offset in [3, 10, 31]:
             txn.execute("""
-                SELECT min(product_issue at time zone 'UTC') from warnings
+                SELECT min(product_issue at time zone 'UTC'),
+                max(product_issue at time zone 'UTC') from warnings
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
                 or expire > %s)
@@ -205,6 +205,14 @@ class VTECProduct(TextProduct):
             row = txn.fetchone()
             if row['min'] is not None:
                 year = row['min'].year
+                if row['max'].year != year:
+                    self.warnings.append(
+                        ("VTEC Product appears to cross 1 Jan UTC "
+                         "minyear: %s maxyear: %s\n"
+                         "VTEC: %s\n"
+                         "product_id: %s"
+                         ) % (year, row['max'].year, str(vtec),
+                              self.get_product_id()))
                 return "warnings_%s" % (year,)
 
         # Give up

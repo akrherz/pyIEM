@@ -2395,6 +2395,32 @@ create index sbw_2017_issue_idx on sbw_2017(issue);
 create index sbw_2017_wfo_idx on sbw_2017(wfo);
 grant select on sbw_2017 to apache,nobody;
 
+create table lsrs_2018( 
+  CONSTRAINT __lsrs_2018_check 
+  CHECK(valid >= '2018-01-01 00:00+00'::timestamptz 
+        and valid < '2019-01-01 00:00+00')) 
+  INHERITS (lsrs);
+CREATE INDEX lsrs_2018_valid_idx on lsrs_2018(valid);
+CREATE INDEX lsrs_2018_wfo_idx on lsrs_2018(wfo);
+GRANT SELECT on lsrs_2018 to nobody,apache;
+
+CREATE TABLE warnings_2018() inherits (warnings);
+CREATE INDEX warnings_2018_combo_idx on 
+    warnings_2018(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2018_expire_idx on warnings_2018(expire);
+CREATE INDEX warnings_2018_gtype_idx on warnings_2018(gtype);
+CREATE INDEX warnings_2018_issue_idx on warnings_2018(issue);
+CREATE INDEX warnings_2018_ugc_idx on warnings_2018(ugc);
+CREATE INDEX warnings_2018_wfo_idx on warnings_2018(wfo);
+grant select on warnings_2018 to nobody,apache;
+
+CREATE table sbw_2018() inherits (sbw);
+create index sbw_2018_idx on sbw_2018(wfo,eventid,significance,phenomena);
+create index sbw_2018_expire_idx on sbw_2018(expire);
+create index sbw_2018_issue_idx on sbw_2018(issue);
+create index sbw_2018_wfo_idx on sbw_2018(wfo);
+grant select on sbw_2018 to apache,nobody;
+
 CREATE TABLE ffg(
   ugc char(6),
   valid timestamptz,
