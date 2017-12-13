@@ -49,8 +49,8 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
     """
     if user is None:
         user = getpass.getuser()
-        # We hard code the apache user back to nobody
-        if user == 'apache':
+        # We hard code the apache user back to nobody, www-data is travis-ci
+        if user in ['apache', 'www-data']:
             user = 'nobody'
     if host is None:
         host = "iemdb"
