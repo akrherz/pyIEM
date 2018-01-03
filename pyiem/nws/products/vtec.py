@@ -193,6 +193,8 @@ class VTECProduct(TextProduct):
         # the past 3, 10, 31 days, to find with the product_issue was,
         # which guides the table that the data is stored within
         for offset in [3, 10, 31]:
+            # BUG: see akrherz/pyIEM#53 regarding this won't work with two
+            # etns going at once (happens around first of the year)
             txn.execute("""
                 SELECT min(product_issue at time zone 'UTC'),
                 max(product_issue at time zone 'UTC') from warnings
