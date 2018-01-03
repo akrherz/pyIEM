@@ -132,10 +132,8 @@ class Observation(object):
             """
             txn.execute(sql, self.data)
 
-        table = "summary_%s" % (self.data['valid'].year,)
-
         # Update summary table
-        sql = """UPDATE """+table+""" s SET
+        sql = """UPDATE summary s SET
 max_water_tmpf = greatest(%(max_water_tmpf)s, max_water_tmpf, %(water_tmpf)s),
 min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
