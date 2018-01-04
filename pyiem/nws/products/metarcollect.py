@@ -266,8 +266,11 @@ class METARReport(Metar):
         if self.weather:
             pwx = []
             for wx in self.weather:
-                pwx.append(("").join([a for a in wx if a is not None]))
-            iem.data['presentwx'] = (",".join(pwx))[:24]
+                val = "".join([a for a in wx if a is not None])
+                if val == "" or val == len(val) * "/":
+                    continue
+                pwx.append(val)
+            iem.data['wxcodes'] = pwx
 
         return iem, iem.save(txn, force_current_log, skip_current)
 
