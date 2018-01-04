@@ -13,7 +13,7 @@ CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
                 'pmonth', 'skyc1', 'skyc2', 'skyc3', 'skyc4', 'skyl1', 'skyl2',
                 'skyl3', 'skyl4', 'pcounter', 'discharge', 'p03i', 'p06i',
                 'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
-                'min_tmpf_24hr', 'presentwx', 'battery', 'water_tmpf',
+                'min_tmpf_24hr', 'battery', 'water_tmpf',
                 'wxcodes']
 
 # Not including iemid, day
@@ -98,8 +98,7 @@ class Observation(object):
         pcounter = %(pcounter)s,  discharge = %(discharge)s,  p03i = %(p03i)s,
         p06i = %(p06i)s,  p24i = %(p24i)s,  max_tmpf_6hr = %(max_tmpf_6hr)s,
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
-        min_tmpf_24hr = %(min_tmpf_24hr)s,  presentwx = %(presentwx)s,
-        wxcodes = %(wxcodes)s,
+        min_tmpf_24hr = %(min_tmpf_24hr)s, wxcodes = %(wxcodes)s,
         battery = %(battery)s, water_tmpf = %(water_tmpf)s, valid = %(valid)s
         FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s
         and t.network = %(network)s and %(valid)s >= c.valid """
@@ -114,7 +113,7 @@ class Observation(object):
             alti, mslp, qc_tmpf, qc_dwpf, rstage, ozone, co2, pmonth, skyc1,
             skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter,
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
-            max_tmpf_24hr, min_tmpf_24hr, presentwx, wxcodes, battery,
+            max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             water_tmpf) VALUES(
             (SELECT iemid from stations where id = %(station)s and
             network = %(network)s), %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
@@ -128,7 +127,7 @@ class Observation(object):
             %(skyc2)s, %(skyc3)s, %(skyc4)s, %(skyl1)s, %(skyl2)s, %(skyl3)s,
             %(skyl4)s, %(pcounter)s, %(discharge)s, %(p03i)s, %(p06i)s,
             %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
-            %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(presentwx)s, %(wxcodes)s,
+            %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(wxcodes)s,
             %(battery)s, %(water_tmpf)s
             )
             """
