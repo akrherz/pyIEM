@@ -11,6 +11,23 @@ from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
 
 
+def list_rows(txn, table, vtec):
+    """Return a simple listing of what exists in the database"""
+    txn.execute("""
+    SELECT ugc, issue at time zone 'UTC' as utc_issue, status,
+    updated at time zone 'UTC' as utc_updated
+    from """ + table + """ WHERE wfo = %s and phenomena = %s and
+    significance = %s and eventid = %s ORDER by ugc
+    """, (vtec.office, vtec.phenomena, vtec.significance, vtec.etn))
+    res = ("Entries for VTEC within %s\n"
+           "  UGC    STA ISSUED              UPDATED\n"
+           ) % (table, )
+    for row in txn:
+        res += "  %s %s %s %s\n" % (row['ugc'], row['status'],
+                                    row['utc_issue'], row['utc_updated'])
+    return res
+
+
 def check_dup_ps(segment):
     """Does this TextProductSegment have duplicated VTEC
 
@@ -194,13 +211,14 @@ class VTECProduct(TextProduct):
         # which guides the table that the data is stored within
         for offset in [3, 10, 31]:
             # BUG: see akrherz/pyIEM#53 regarding this won't work with two
-            # etns going at once (happens around first of the year)
+            # etns going at once (happens around first of the year), AWIPS
+            # does not handle this properly either
             txn.execute("""
                 SELECT min(product_issue at time zone 'UTC'),
                 max(product_issue at time zone 'UTC') from warnings
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
-                or expire > %s)
+                or expire > %s) and status not in ('EXP', 'UPG', 'CAN')
             """, (vtec.office, vtec.etn, vtec.significance, vtec.phenomena,
                   self.valid - datetime.timedelta(days=offset), self.valid,
                   self.valid))
@@ -219,11 +237,13 @@ class VTECProduct(TextProduct):
 
         # Give up
         table = "warnings_%s" % (self.valid.year,)
-        self.warnings.append(("Failed to find year of product issuance:\n"
-                              "  VTEC:%s\n  PRODUCT: %s\n"
-                              "  defaulting to use table: %s"
-                              ) % (str(vtec), self.get_product_id(),
-                                   table))
+        if not self.is_correction():
+            self.warnings.append(("Failed to find year of product issuance:\n"
+                                  "  VTEC:%s\n  PRODUCT: %s\n"
+                                  "  defaulting to use table: %s\n"
+                                  "  %s"
+                                  ) % (str(vtec), self.get_product_id(),
+                                       table, list_rows(txn, table, vtec)))
         return table
 
     def do_sql_vtec(self, txn, segment, vtec):

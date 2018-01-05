@@ -414,13 +414,14 @@ class TestProducts(unittest.TestCase):
 
     def test_150203_exp_does_not_end(self):
         """MWWCAR a VTEC EXP action should not terminate it """
-        for i in range(24):
+        for i in range(23):
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('MWWCAR/%i.txt' % (i,)))
             prod.sql(self.txn)
             warnings = filter_warnings(prod.warnings)
             warnings = filter_warnings(warnings, "VTEC Product appears to c")
-            self.assertEquals(len(warnings), 0, "\n".join(warnings))
+            self.assertEquals(len(warnings), 0 if i != 21 else 1,
+                              "\n".join(warnings))
 
     def test_150203_null_issue(self):
         """WSWOKX had null issue times, bad! """
