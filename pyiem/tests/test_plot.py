@@ -1,6 +1,5 @@
 """Do tests please!"""
 import unittest
-import datetime
 
 import numpy as np
 import matplotlib.colors as mpcolors
@@ -223,15 +222,6 @@ class TestPlot(unittest.TestCase):
         self.assertEquals(c.N, 236)
         c = plot.nwssnow()
         self.assertEquals(c.N, 11)
-
-    def test_calendar(self):
-        """See if we can make a calendar plot!"""
-        import matplotlib.pyplot as plt
-        sts = datetime.date(2015, 5, 1)
-        ets = datetime.date(2015, 7, 1)
-        data = dict()
-        fig = plot.calendar_plot(sts, ets, data)
-        self.assertTrue(isinstance(fig, plt.Figure))
 
     def test_overlap(self):
         """ Do some checking of our overlaps logic """
