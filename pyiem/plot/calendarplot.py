@@ -2,8 +2,11 @@
 from collections import OrderedDict
 import datetime
 
+import numpy as np
 import matplotlib
+import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
+import matplotlib.patheffects as PathEffects
 matplotlib.use('agg')
 import matplotlib.pyplot as plt  # NOPEP8
 
@@ -13,7 +16,7 @@ def _compute_bounds(sts, ets):
     now = sts
     months = []
     while now <= ets:
-        months.append(now.strftime("%Y%m"))
+        months.append(now)
         now += datetime.timedelta(days=33)
         now = now.replace(day=1)
 
@@ -24,6 +27,11 @@ def _compute_bounds(sts, ets):
         cols = 1
         width = 1 - 2. * padding
         height = 0.88 - padding
+    # 1x2
+    elif len(months) < 3:
+        cols = 2
+        width = (1. - 3 * padding) / 2.
+        height = (0.88 - 2 * padding)
     # 2x2
     elif len(months) <= 4:
         cols = 2
@@ -52,17 +60,15 @@ def _compute_bounds(sts, ets):
     return bounds
 
 
-def _do_month(month, axes, data, in_sts, in_ets, fontsize):
+def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     """Place data on this axes"""
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
 
     axes.add_patch(Rectangle((0., 0.90), 1, 0.1, zorder=2,
                              facecolor='tan', edgecolor='tan'))
-    axes.text(0.5, 1.01, "%s" % (month, ),
-              transform=axes.transAxes, zorder=3, ha='center')
 
-    sts = datetime.date(int(month[:4]), int(month[4:]), 1)
+    sts = datetime.date(month.year, month.month, 1)
     ets = (sts + datetime.timedelta(days=35)).replace(day=1)
 
     weeks = int((sts.isoweekday() + (ets - sts).days - 1.) / 7.)
@@ -75,6 +81,14 @@ def _do_month(month, axes, data, in_sts, in_ets, fontsize):
     for i, dow in enumerate(['SUN', 'MON', 'TUE', 'WED', 'THU',
                              'FRI', 'SAT']):
         axes.text(1. / 7. * (i + 0.5), 0.95, dow, ha='center', va='center')
+    norm = None
+    cmap = plt.get_cmap(kwargs.get('cmap', 'jet'))
+    if kwargs.get('heatmap', False):
+        maxval = -1000
+        for key in data:
+            if data[key]['val'] > maxval:
+                maxval = data[key]['val']
+        norm = mpcolors.BoundaryNorm(np.arange(0, maxval), cmap.N)
     while now < ets:
         val = data.get(now, dict()).get('val')
         if now.isoweekday() == 1 and now != sts:
@@ -85,20 +99,25 @@ def _do_month(month, axes, data, in_sts, in_ets, fontsize):
         bgcolor = 'tan' if val is None else 'k'
         axes.text((now.isoweekday() - 1) * dx + 0.01,
                   0.9 - row * dy - 0.01,
-                  str(now.day), fontsize=(fontsize - 4),
+                  str(now.day), fontsize=(kwargs['fontsize'] - 4),
                   color='tan',
                   va='top')
         rect = Rectangle(((now.isoweekday() - 1) * dx,
                           0.9 - (row + 1) * dy), dx, dy,
                          zorder=(2 if val is None else 3),
-                         facecolor='None', edgecolor=bgcolor)
+                         facecolor=('None' if val is None or norm is None
+                                    else cmap(norm([val, ]))[0]),
+                         edgecolor=bgcolor)
         axes.add_patch(rect)
         if val is not None:
             color = data[now].get('color', 'k')
             axes.text((now.isoweekday() - 1) * dx + (dx/2.),
                       0.9 - (row + 1) * dy + (dy * 0.25),
                       val, transform=axes.transAxes, va='center',
-                      ha='center', color=color, fontsize=fontsize)
+                      ha='center', color=color,
+                      fontsize=kwargs['fontsize']).set_path_effects(
+                          [PathEffects.withStroke(linewidth=2,
+                                                  foreground="white")])
         now += datetime.timedelta(days=1)
 
 
@@ -110,22 +129,29 @@ def calendar_plot(sts, ets, data, **kwargs):
       ets (datetime.date): end date of this plot (inclusive)
       data (dict[dict]): dictionary with keys of dates and dicts for
         `val` value and optionally `color` for color
+      kwargs (dict):
+        heatmap (bool): background color for cells based on `val`, False
+        cmap (str): color map to use for norm
     """
     bounds = _compute_bounds(sts, ets)
     # Compute the number of month calendars we need.
 
     # We want 'square' boxes for each month's calendar, 4x3
     fig = plt.figure(figsize=(10.24, 7.68))
-    fontsize = 12
-    if len(bounds) < 3:
-        fontsize = 18
-    elif len(bounds) < 5:
-        fontsize = 16
-    elif len(bounds) < 10:
-        fontsize = 14
+    if 'fontsize' not in kwargs:
+        kwargs['fontsize'] = 12
+        if len(bounds) < 3:
+            kwargs['fontsize'] = 18
+        elif len(bounds) < 5:
+            kwargs['fontsize'] = 16
+        elif len(bounds) < 10:
+            kwargs['fontsize'] = 14
     for month in bounds:
         ax = fig.add_axes(bounds[month])
-        _do_month(month, ax, data, sts, ets, fontsize)
+        ax.text(0.5, 1.01,
+                month.strftime('%B %Y' if sts.year != ets.year else '%B'),
+                transform=ax.transAxes, zorder=3, ha='center')
+        _do_month(month, ax, data, sts, ets, kwargs)
 
     fig.text(0.5, 0.99, kwargs.get('title', ''), va='top',
              ha='center')
