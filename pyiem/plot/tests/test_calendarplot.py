@@ -62,8 +62,8 @@ class CalendarPlotTests(unittest.TestCase):
         sts = datetime.date(2015, 5, 4)
         ets = datetime.date(2015, 5, 15)
         data = dict()
-        data[datetime.date(2015, 5, 16)] = {'val': "0516"}
-        data[datetime.date(2015, 5, 6)] = {'val': "0506"}
-        fig = calendar_plot(sts, ets, data)
+        data[datetime.date(2015, 5, 16)] = {'val': 300}
+        data[datetime.date(2015, 5, 6)] = {'val': 1}
+        fig = calendar_plot(sts, ets, data, heatmap=True)
         self.assertTrue(isinstance(fig, plt.Figure))
         fig.savefig('/tmp/test_calendar.png')

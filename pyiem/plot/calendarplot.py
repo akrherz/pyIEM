@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
-import matplotlib.patheffects as PathEffects
 matplotlib.use('agg')
 import matplotlib.pyplot as plt  # NOPEP8
 
@@ -60,6 +59,35 @@ def _compute_bounds(sts, ets):
     return bounds
 
 
+def _do_cell(axes, now, data, row, dx, dy, kwargs):
+    """Do what work is necessary within the cell"""
+    val = data.get(now, dict()).get('val')
+    cellcolor = ('None'
+                 if kwargs.get('norm') is None or val is None
+                 else kwargs['cmap'](kwargs['norm']([val, ]))[0])
+    rect = Rectangle(((now.isoweekday() - 1) * dx,
+                      0.9 - (row + 1) * dy), dx, dy,
+                     zorder=(2 if val is None else 3),
+                     facecolor=cellcolor,
+                     edgecolor='tan' if val is None else 'k')
+    axes.add_patch(rect)
+    if val is None:
+        return
+    color = 'k'
+    if not isinstance(cellcolor, str):  # this is a string comp here
+        color = ('k'
+                 if (cellcolor[0] * 256 * 0.299 +
+                     cellcolor[1] * 256 * 0.587 +
+                     cellcolor[2] * 256 * 0.114) > 186
+                 else 'white')
+    color = data[now].get('color', color)
+    axes.text((now.isoweekday() - 1) * dx + (dx/2.),
+              0.9 - (row + 1) * dy + (dy * 0.25),
+              val, transform=axes.transAxes, va='center',
+              ha='center', color=color,
+              fontsize=kwargs['fontsize'])
+
+
 def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     """Place data on this axes"""
     axes.get_xaxis().set_visible(False)
@@ -81,43 +109,18 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     for i, dow in enumerate(['SUN', 'MON', 'TUE', 'WED', 'THU',
                              'FRI', 'SAT']):
         axes.text(1. / 7. * (i + 0.5), 0.95, dow, ha='center', va='center')
-    norm = None
-    cmap = plt.get_cmap(kwargs.get('cmap', 'jet'))
-    if kwargs.get('heatmap', False):
-        maxval = -1000
-        for key in data:
-            if data[key]['val'] > maxval:
-                maxval = data[key]['val']
-        norm = mpcolors.BoundaryNorm(np.arange(0, maxval), cmap.N)
     while now < ets:
-        val = data.get(now, dict()).get('val')
         if now.isoweekday() == 1 and now != sts:
             row += 1
         if now < in_sts or now >= in_ets:
             now += datetime.timedelta(days=1)
             continue
-        bgcolor = 'tan' if val is None else 'k'
         axes.text((now.isoweekday() - 1) * dx + 0.01,
                   0.9 - row * dy - 0.01,
                   str(now.day), fontsize=(kwargs['fontsize'] - 4),
                   color='tan',
                   va='top')
-        rect = Rectangle(((now.isoweekday() - 1) * dx,
-                          0.9 - (row + 1) * dy), dx, dy,
-                         zorder=(2 if val is None else 3),
-                         facecolor=('None' if val is None or norm is None
-                                    else cmap(norm([val, ]))[0]),
-                         edgecolor=bgcolor)
-        axes.add_patch(rect)
-        if val is not None:
-            color = data[now].get('color', 'k')
-            axes.text((now.isoweekday() - 1) * dx + (dx/2.),
-                      0.9 - (row + 1) * dy + (dy * 0.25),
-                      val, transform=axes.transAxes, va='center',
-                      ha='center', color=color,
-                      fontsize=kwargs['fontsize']).set_path_effects(
-                          [PathEffects.withStroke(linewidth=2,
-                                                  foreground="white")])
+        _do_cell(axes, now, data, row, dx, dy, kwargs)
         now += datetime.timedelta(days=1)
 
 
@@ -146,6 +149,14 @@ def calendar_plot(sts, ets, data, **kwargs):
             kwargs['fontsize'] = 16
         elif len(bounds) < 10:
             kwargs['fontsize'] = 14
+    if kwargs.get('heatmap', False):
+        kwargs['cmap'] = plt.get_cmap(kwargs.get('cmap', 'viridis'))
+        maxval = -1000
+        for key in data:
+            if data[key]['val'] > maxval:
+                maxval = data[key]['val']
+        kwargs['norm'] = mpcolors.BoundaryNorm(np.arange(0, maxval),
+                                               kwargs['cmap'].N)
     for month in bounds:
         ax = fig.add_axes(bounds[month])
         ax.text(0.5, 1.01,
