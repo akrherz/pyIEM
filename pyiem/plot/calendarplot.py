@@ -1,6 +1,7 @@
 """Calendar Plot"""
 from collections import OrderedDict
 import datetime
+import calendar
 
 import numpy as np
 import matplotlib
@@ -65,8 +66,8 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
     cellcolor = ('None'
                  if kwargs.get('norm') is None or val is None
                  else kwargs['cmap'](kwargs['norm']([val, ]))[0])
-    rect = Rectangle(((now.isoweekday() - 1) * dx,
-                      0.9 - (row + 1) * dy), dx, dy,
+    offx = (now.weekday() + 1) if now.weekday() != 6 else 0
+    rect = Rectangle((offx * dx, 0.9 - (row + 1) * dy), dx, dy,
                      zorder=(2 if val is None else 3),
                      facecolor=cellcolor,
                      edgecolor='tan' if val is None else 'k')
@@ -81,7 +82,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
                      cellcolor[2] * 256 * 0.114) > 186
                  else 'white')
     color = data[now].get('color', color)
-    axes.text((now.isoweekday() - 1) * dx + (dx/2.),
+    axes.text(offx * dx + (dx/2.),
               0.9 - (row + 1) * dy + (dy * 0.25),
               val, transform=axes.transAxes, va='center',
               ha='center', color=color,
@@ -99,9 +100,8 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     sts = datetime.date(month.year, month.month, 1)
     ets = (sts + datetime.timedelta(days=35)).replace(day=1)
 
-    weeks = int((sts.isoweekday() + (ets - sts).days - 1.) / 7.)
-    if (sts.isoweekday() + (ets - sts).days - 1) % 7. != 0:
-        weeks += 1
+    calendar.setfirstweekday(calendar.SUNDAY)
+    weeks = len(calendar.monthcalendar(month.year, month.month))
     now = sts
     row = 0
     dy = 0.9 / float(weeks)
@@ -110,12 +110,14 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
                              'FRI', 'SAT']):
         axes.text(1. / 7. * (i + 0.5), 0.95, dow, ha='center', va='center')
     while now < ets:
-        if now.isoweekday() == 1 and now != sts:
+        # Is this Sunday?
+        if now.weekday() == 6 and now != sts:
             row += 1
-        if now < in_sts or now >= in_ets:
+        if now < in_sts or now > in_ets:
             now += datetime.timedelta(days=1)
             continue
-        axes.text((now.isoweekday() - 1) * dx + 0.01,
+        offx = (now.weekday() + 1) if now.weekday() != 6 else 0
+        axes.text(offx * dx + 0.01,
                   0.9 - row * dy - 0.01,
                   str(now.day), fontsize=(kwargs['fontsize'] - 4),
                   color='tan',
@@ -155,6 +157,8 @@ def calendar_plot(sts, ets, data, **kwargs):
         for key in data:
             if data[key]['val'] > maxval:
                 maxval = data[key]['val']
+        # Need at least 3 slots
+        maxval = 5 if maxval < 5 else maxval
         kwargs['norm'] = mpcolors.BoundaryNorm(np.arange(0, maxval),
                                                kwargs['cmap'].N)
     for month in bounds:
