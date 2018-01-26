@@ -99,6 +99,9 @@ class MOSProduct(TextProduct):
             for ts in sect['data']:
                 if ts == sect['initts']:
                     continue
+                # Account for 'empty' MOS products
+                if not sect['data'][ts]:
+                    continue
                 fst = """
                 INSERT into t%s (station, model, runtime, ftime,
                 """ % (sect['initts'].year, )

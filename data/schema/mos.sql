@@ -38,3 +38,13 @@ CREATE INDEX t2017_idx on t2017(station, model, runtime);
 CREATE INDEX t2017_runtime_idx on t2017(runtime);
 GRANT SELECT on t2017 to nobody,apache;
 GRANT ALL on t2017 to mesonet,ldm;
+
+create table t2018(
+  CONSTRAINT __t2018_check
+  CHECK(runtime >= '2018-01-01 00:00+00'::timestamptz
+        and runtime < '2019-01-01 00:00+00'::timestamptz))
+  INHERITS (alldata);
+CREATE INDEX t2018_idx on t2018(station, model, runtime);
+CREATE INDEX t2018_runtime_idx on t2018(runtime);
+GRANT SELECT on t2018 to nobody,apache;
+GRANT ALL on t2018 to mesonet,ldm;

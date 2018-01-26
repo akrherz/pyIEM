@@ -1,12 +1,10 @@
 """Test MOS Parsing"""
 import os
 import unittest
-import datetime
 
-import pytz
 import psycopg2.extras
 from pyiem.nws.products.mos import parser as tafparser
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
 
 
 def get_file(name):
@@ -24,9 +22,19 @@ class TestProducts(unittest.TestCase):
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 
+    def test_180125_empty(self):
+        """Can we parse a MOS product with empty data"""
+        utcnow = utc(2018, 1, 26, 1)
+        prod = tafparser(get_file("MET_empty.txt"), utcnow=utcnow)
+        self.assertEquals(len(prod.data), 3)
+        self.assertEquals(len(prod.data[0]['data'].keys()), 21)
+
+        inserts = prod.sql(self.cursor)
+        self.assertEquals(inserts, 42)
+
     def test_parse(self):
         """MOS type"""
-        utcnow = datetime.datetime(2017, 8, 12, 12).replace(tzinfo=pytz.utc)
+        utcnow = utc(2017, 8, 12, 12)
         prod = tafparser(get_file("METNC1.txt"), utcnow=utcnow)
         self.assertEquals(len(prod.data), 4)
         self.assertEquals(len(prod.data[0]['data'].keys()), 21)
