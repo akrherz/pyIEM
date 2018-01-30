@@ -257,7 +257,7 @@ name2pytz = {
 
 offsets = {
  'GMT': 0, 'UTC': 0,
- 'CHDT': -8, 'CHST': -9, 'LST': -10,
+ 'CHDT': -9, 'CHST': -10, 'LST': -10,
  'ADT': 3,
  'VDT': 3, 'VST': 4,
  'EDT': 4, 'AST': 4,

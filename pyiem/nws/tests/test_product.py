@@ -23,6 +23,12 @@ class TestProduct(unittest.TestCase):
     """Test Products"""
     maxDiff = None
 
+    def test_180130_chst(self):
+        """Whoa, our offset for CHST appears to be wrong"""
+        tp = productparser(get_file('CHST.txt'))
+        res = utc(2018, 1, 30, 20, 12)
+        self.assertEqual(tp.valid, res)
+
     def test_170411_fakemnd(self):
         """This RTP has a quasi-faked timestamp in the header causing error"""
         tp = productparser(get_file('RTPSGX.txt'))
