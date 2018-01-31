@@ -17,6 +17,9 @@ class TestCase(unittest.TestCase):
         hdx = meteorology.heatindex(t, td)
         self.assertAlmostEqual(hdx.value("F")[0], 83.93, 2)
 
+        feels = meteorology.feelslike(t, td, sknt)
+        self.assertAlmostEqual(feels.value("F")[0], 83.93, 2)
+
     def test_gdd_with_nans(self):
         """Can we properly deal with nan's and not emit warnings?"""
         highs = np.ma.array([70, 80, np.nan, 90],

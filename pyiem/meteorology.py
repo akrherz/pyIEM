@@ -106,12 +106,12 @@ def feelslike(temperature, dewpoint, speed):
     Returns:
       temperature (temperature): The feels like temperature
     """
-    if temperature.value("F") >= 70:
-        return heatindex(temperature, dewpoint)
-    elif temperature.value("F") < 50:
-        return windchill(temperature, speed)
-
-    return temperature
+    hidx = heatindex(temperature, dewpoint)
+    wcht = windchill(temperature, speed)
+    res = np.where(temperature.value("F") >= 70, hidx.value('F'),
+                   temperature.value('F'))
+    res = np.where(res < 50, wcht.value('F'), res)
+    return dt.temperature(res, 'F')
 
 
 def windchill(temperature, speed):
