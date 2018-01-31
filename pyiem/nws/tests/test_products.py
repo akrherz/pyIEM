@@ -281,8 +281,7 @@ class TestProducts(unittest.TestCase):
     def test_160618_chst_tz(self):
         """Product has timezone of ChST, do we support it?"""
         prod = parser(get_file('AFDPQ.txt'))
-        self.assertEquals(prod.valid,
-                          utc(2016, 6, 18, 20, 27))
+        self.assertEquals(prod.valid, utc(2016, 6, 18, 19, 27))
 
     def test_160513_windtag(self):
         """Wind tags can be in knots too!"""
