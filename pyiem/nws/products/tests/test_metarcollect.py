@@ -44,6 +44,14 @@ class TestMETAR(unittest.TestCase):
         self.assertEquals(prod.metars[0].time.month, 11)
         self.assertEquals(prod.metars[1].time.month, 12)
 
+    def test_180201_unparsed(self):
+        """For some reason, this collective was not parsed?!?!"""
+        utcnow = utc(2018, 2, 1, 0)
+        prod = PARSER(get_file("collective2.txt"), utcnow=utcnow,
+                      nwsli_provider=NWSLI_PROVIDER)
+        self.assertEquals(len(prod.metars), 35)
+        self.assertEquals(prod.metars[0].time.month, 1)
+
     def test_170824_sa_format(self):
         """Don't be so noisey when we encounter SA formatted products"""
         utcnow = utc(2017, 8, 24, 14)

@@ -50,10 +50,10 @@ def to_metar(textprod, text):
     attempt = 1
     mtr = None
     original_text = text
+    valid = textprod.valid
     while attempt < 6 and mtr is None:
         try:
-            mtr = METARReport(text, month=textprod.valid.month,
-                              year=textprod.valid.year)
+            mtr = METARReport(text, month=valid.month, year=valid.year)
         except MetarParserError as inst:
             tokens = ERROR_RE.findall(str(inst))
             if tokens:
@@ -70,6 +70,9 @@ def to_metar(textprod, text):
                     text = newtext
                 else:
                     print("unparsed groups regex fail: %s" % (inst, ))
+            if str(inst).find("day is out of range for month") > -1:
+                if valid.day < 10:
+                    valid = valid.replace(day=1) - datetime.timedelta(days=1)
         attempt += 1
 
     if mtr is not None:
