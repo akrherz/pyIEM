@@ -1,3 +1,4 @@
+"""Tests for the pyiem.meteorology library"""
 import unittest
 import numpy as np
 from pyiem import datatypes, meteorology
@@ -19,6 +20,14 @@ class TestCase(unittest.TestCase):
 
         feels = meteorology.feelslike(t, td, sknt)
         self.assertAlmostEqual(feels.value("F")[0], 83.93, 2)
+
+        t = datatypes.temperature([None, None], 'F')
+        feels = meteorology.feelslike(t, td, sknt)
+        self.assertTrue(np.isnan(feels.value("F")[0]))
+
+        t = datatypes.temperature([None, 90], 'F')
+        feels = meteorology.feelslike(t, td, sknt)
+        self.assertTrue(np.isnan(feels.value("F")[0]))
 
     def test_gdd_with_nans(self):
         """Can we properly deal with nan's and not emit warnings?"""
