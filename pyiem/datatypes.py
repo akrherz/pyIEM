@@ -19,7 +19,8 @@ class basetype(object):
                                 units, self.known_units))
         self._units = units.upper()
         if isinstance(value, list):
-            self._value = np.array([np.nan if v is None else v for v in value])
+            self._value = np.ma.array(value,
+                                      mask=[v is None for v in value])
         else:
             self._value = value
 

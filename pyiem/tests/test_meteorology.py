@@ -1,11 +1,17 @@
 """Tests for the pyiem.meteorology library"""
 import unittest
+import warnings
+
 import numpy as np
+from metpy.units import units, masked_array
 from pyiem import datatypes, meteorology
+warnings.simplefilter('ignore', RuntimeWarning)
 
 
 class TestCase(unittest.TestCase):
 
+    def test_mcalc_feelslike(self):
+        """See that we can do mcalc_feelslike"""
     def test_vectorized(self):
         """See that heatindex and windchill can do lists"""
         temp = datatypes.temperature([0, 10], 'F')
@@ -18,16 +24,16 @@ class TestCase(unittest.TestCase):
         hdx = meteorology.heatindex(t, td)
         self.assertAlmostEqual(hdx.value("F")[0], 83.93, 2)
 
-        feels = meteorology.feelslike(t, td, sknt)
-        self.assertAlmostEqual(feels.value("F")[0], 83.93, 2)
+        tmpf = np.array([80., 90.]) * units('degF')
+        dwpf = np.array([70., 60.]) * units('degF')
+        smps = np.array([10., 20.]) * units('meter per second')
+        feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
+        self.assertAlmostEqual(feels.to(units("degF")).magnitude[0], 83.15, 2)
 
-        t = datatypes.temperature([None, None], 'F')
-        feels = meteorology.feelslike(t, td, sknt)
-        self.assertTrue(np.isnan(feels.value("F")[0]))
-
-        t = datatypes.temperature([None, 90], 'F')
-        feels = meteorology.feelslike(t, td, sknt)
-        self.assertTrue(np.isnan(feels.value("F")[0]))
+        tmpf = masked_array([80., np.nan], units('degF'), mask=[False, True])
+        feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
+        self.assertAlmostEqual(feels.to(units("degF")).magnitude[0], 83.15, 2)
+        self.assertTrue(feels.mask[1])
 
     def test_gdd_with_nans(self):
         """Can we properly deal with nan's and not emit warnings?"""

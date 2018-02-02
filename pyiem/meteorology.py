@@ -2,7 +2,10 @@
  We do meteorological things, when necessary
 """
 import math
+
 import numpy as np
+import metpy.calc as mcalc
+from metpy.units import units, masked_array
 import pyiem.datatypes as dt
 
 
@@ -95,7 +98,7 @@ def uv(speed, direction):
     return (dt.speed(u, speed.get_units()), dt.speed(v, speed.get_units()))
 
 
-def feelslike(temperature, dewpoint, speed):
+def mcalc_feelslike(tmpf, dwpf, smps):
     """Compute a feels like temperature
 
     Args:
@@ -106,12 +109,14 @@ def feelslike(temperature, dewpoint, speed):
     Returns:
       temperature (temperature): The feels like temperature
     """
-    hidx = heatindex(temperature, dewpoint)
-    wcht = windchill(temperature, speed)
-    res = np.where(temperature.value("F") >= 70, hidx.value('F'),
-                   temperature.value('F'))
-    res = np.where(res < 50, wcht.value('F'), res)
-    return dt.temperature(res, 'F')
+    rh = mcalc.relative_humidity_from_dewpoint(tmpf, dwpf)
+    hidx = mcalc.heat_index(tmpf, rh, mask_undefined=True)
+    wcht = mcalc.windchill(tmpf, smps, mask_undefined=True)
+    # Where heat index is masked, replace with temperature
+    hidx[hidx.mask] = tmpf[hidx.mask]
+    # where ever wcht is not masked, replace with wind chill
+    hidx[~ wcht.mask] = wcht[~ wcht.mask]
+    return hidx
 
 
 def windchill(temperature, speed):
@@ -130,8 +135,8 @@ def windchill(temperature, speed):
     sknt = speed.value('KT')
     wci = (35.74 + .6215 * tmpf - 35.75 * np.power(sknt, 0.16) +
            .4275 * tmpf * np.power(sknt, 0.16))
-    wci = np.where(np.logical_or(np.ma.less(sknt, 3),
-                                 np.ma.greater(tmpf, 50)), tmpf, wci)
+    wci = np.where(np.logical_or(np.less(sknt, 3),
+                                 np.greater(tmpf, 50)), tmpf, wci)
     return dt.temperature(wci, 'F')
 
 
@@ -165,8 +170,8 @@ def heatindex(temperature, polyarg):
            ((2.91583e-5) * rh3) + ((1.42721e-6) * t3 * rh) +
            ((1.97483e-7) * t * rh3) - ((2.18429e-8) * t3 * rh2) +
            ((8.43296e-10) * t2 * rh3) - ((4.81975e-11) * t3 * rh3))
-    hdx = np.where(np.logical_or(np.ma.less(t, 80),
-                                 np.ma.greater(t, 120)), t, hdx)
+    hdx = np.where(np.logical_or(np.less(t, 80),
+                                 np.greater(t, 120)), t, hdx)
     return dt.temperature(hdx, 'F')
 
 
