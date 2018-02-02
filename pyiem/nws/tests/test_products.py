@@ -61,6 +61,26 @@ class TestProducts(unittest.TestCase):
         warnings = filter_warnings(prod.warnings)
         self.assertEquals(len(warnings), 1, "\n".join(warnings))
 
+    def test_180202_issue54(self):
+        """Are we doing the right thing with VTEC EXP actions?"""
+        def get_expire(cursor, colname):
+            cursor.execute("""
+            SELECT distinct """ + colname + """ from warnings_2018
+            WHERE wfo = 'LWX' and eventid = 6 and phenomena = 'WW'
+            and significance = 'Y'
+            """)
+            assert cursor.rowcount == 1
+            return cursor.fetchone()[0]
+
+        expirets = utc(2018, 2, 2, 9)
+        for i in range(3):
+            prod = vtecparser(get_file('vtec/WSWLWX_%s.txt' % (i, )))
+            prod.sql(self.txn)
+            warnings = filter_warnings(prod.warnings)
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
+            self.assertEquals(get_expire(self.txn, "expire"), expirets)
+            self.assertEquals(get_expire(self.txn, "updated"), prod.valid)
+
     def test_171121_issue45(self):
         """Do we alert on duplicated ETNs?"""
         utcnow = utc(2017, 4, 20, 21, 33)
@@ -419,8 +439,7 @@ class TestProducts(unittest.TestCase):
             prod.sql(self.txn)
             warnings = filter_warnings(prod.warnings)
             warnings = filter_warnings(warnings, "VTEC Product appears to c")
-            self.assertEquals(len(warnings), 0 if i != 21 else 1,
-                              "\n".join(warnings))
+            self.assertEquals(len(warnings), 0, "\n".join(warnings))
 
     def test_150203_null_issue(self):
         """WSWOKX had null issue times, bad! """

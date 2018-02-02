@@ -218,7 +218,7 @@ class VTECProduct(TextProduct):
                 max(product_issue at time zone 'UTC') from warnings
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
-                or expire > %s) and status not in ('EXP', 'UPG', 'CAN')
+                or expire > %s) and status not in ('UPG', 'CAN')
             """, (vtec.office, vtec.etn, vtec.significance, vtec.phenomena,
                   self.valid - datetime.timedelta(days=offset), self.valid,
                   self.valid))
@@ -400,15 +400,15 @@ class VTECProduct(TextProduct):
 
             # Offices have 1 hour to expire something :), actually 30 minutes
             txn.execute("""
-                UPDATE """ + warning_table + """ SET status = %s,
+                UPDATE """ + warning_table + """ SET status = %s, updated = %s,
                 svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
                    || %s || '__' , expire = %s WHERE
                 wfo = %s and eventid = %s and ugc in """ + ugcstring + """
                 and significance = %s and phenomena = %s
                 and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
-                """, (vtec.action, self.unixtext, ets, vtec.office, vtec.etn,
-                      vtec.significance, vtec.phenomena, self.valid))
+                """, (vtec.action, self.valid, self.unixtext, ets, vtec.office,
+                      vtec.etn, vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(
                     self.debug_warning(txn, warning_table, ugcstring,
