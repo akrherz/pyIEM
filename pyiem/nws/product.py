@@ -532,10 +532,10 @@ class TextProduct(object):
             return
         elif wmo_day - self.utcnow.day == 1:  # Tomorrow
             self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day > 25 and self.utcnow.day < 5:  # Previous month!
+        elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
             self.valid = self.valid + datetime.timedelta(days=-10)
             self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day < 5 and self.utcnow.day > 25:  # next month
+        elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
             self.valid = self.valid + datetime.timedelta(days=10)
             self.valid = self.valid.replace(day=wmo_day)
         else:
