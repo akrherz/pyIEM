@@ -2,7 +2,7 @@ pyIEM
 =====
 
 A collection of python code that support various other python projects I have
-and the (Iowa Environmental Mesonet)[https://mesonet.agron.iastate.edu].
+and the [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu).
 
 [![Docs](https://readthedocs.org/projects/pyiem/badge/?version=latest)](https://readthedocs.org/projects/pyiem/)
 [![Build Status](https://travis-ci.org/akrherz/pyIEM.svg)](https://travis-ci.org/akrherz/pyIEM)
