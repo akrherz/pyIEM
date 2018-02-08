@@ -19,3 +19,4 @@ git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git
 cartopy
 git+https://github.com/akrherz/python-metar.git@snowdepth
 git+https://github.com/akrherz/windrose.git@darylchanges
+metpy
