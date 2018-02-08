@@ -19,6 +19,15 @@ def get_file(name):
 class TestCLI(unittest.TestCase):
     """ Tests """
 
+    def test_180208_issue56_tweetmissing(self):
+        """Report None values as missing, not None"""
+        prod = cliparser(get_file('CLIFFC.txt'))
+        j = prod.get_jabbers('http://localhost', 'http://localhost')
+        self.assertEquals(j[0][2]['twitter'], (
+             'PEACHTREE CITY Oct 3 Climate: Hi: 79 Lo: 67 Precip: 0.87 '
+             'Snow: Missing '
+             'http://localhost?pid=201410032032-KFFC-CDUS42-CLIFFC'))
+
     def test_170530_none(self):
         """CLILWD errored in production, so we add a test!"""
         prod = cliparser(get_file('CLILWD.txt'))

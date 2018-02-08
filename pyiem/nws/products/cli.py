@@ -68,6 +68,8 @@ def trace(val):
 
 def trace_r(val):
     """ Convert our value back into meaningful string """
+    if val is None:
+        return 'Missing'
     if val == TRACE_VALUE:
         return 'Trace'
     return val
