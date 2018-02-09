@@ -955,12 +955,12 @@ class MapPlot(object):
             vals = nn(xi, yi)
             lons = xi
             lats = yi
+            window = np.ones((6, 6))
+            vals = convolve2d(vals, window / window.sum(), mode='same',
+                              boundary='symm')
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
 
-        window = np.ones((6, 6))
-        vals = convolve2d(vals, window / window.sum(), mode='same',
-                          boundary='symm')
         cmap = kwargs.get('cmap', maue())
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         # vals = maskoceans(lons, lats, vals, resolution='h')
