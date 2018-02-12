@@ -52,10 +52,11 @@ class Observation(object):
         """
         Load the current observation for this site and time
         """
-        sql = """SELECT * from current c, summary s, stations t WHERE
-        t.iemid = s.iemid and s.iemid = c.iemid and t.id = %(station)s and
-        t.network = %(network)s and
-        s.day = date(%(valid)s at time zone t.tzname) and
+        if not self.compute_iemid(txn):
+            return False
+        sql = """SELECT * from current c, summary s WHERE
+        s.iemid = c.iemid and s.iemid = %(iemid)s and
+        s.day = date(%(valid)s at time zone %(tzname)s) and
         c.valid = %(valid)s"""
         txn.execute(sql, self.data)
         if txn.rowcount < 1:
@@ -64,6 +65,21 @@ class Observation(object):
         for key in row.keys():
             if key not in ['valid', ]:
                 self.data[key] = row[key]
+        return True
+
+    def compute_iemid(self, txn):
+        """Load in what our metadata is to save future queries"""
+        if 'iemid' in self.data:
+            return True
+        txn.execute("""
+        SELECT iemid, tzname from stations where id = %(station)s and
+        network = %(network)s
+        """, self.data)
+        if txn.rowcount == 0:
+            return False
+        row = txn.fetchone()
+        self.data['iemid'] = row[0]
+        self.data['tzname'] = row[1]
         return True
 
     def save(self, txn, force_current_log=False, skip_current=False):
@@ -77,6 +93,8 @@ class Observation(object):
         table.  This is useful for partial obs
         @return: boolean if this updated one row each
         """
+        if not self.compute_iemid(txn):
+            return False
 
         # Update current table
         sql = """UPDATE current c SET
@@ -100,8 +118,7 @@ class Observation(object):
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
         min_tmpf_24hr = %(min_tmpf_24hr)s, wxcodes = %(wxcodes)s,
         battery = %(battery)s, water_tmpf = %(water_tmpf)s, valid = %(valid)s
-        FROM stations t WHERE t.iemid = c.iemid and t.id = %(station)s
-        and t.network = %(network)s and %(valid)s >= c.valid """
+        WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not skip_current:
             txn.execute(sql, self.data)
         if skip_current or (force_current_log and txn.rowcount == 0):
@@ -115,8 +132,7 @@ class Observation(object):
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             water_tmpf) VALUES(
-            (SELECT iemid from stations where id = %(station)s and
-            network = %(network)s), %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
+            (%(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
             %(valid)s, %(pday)s, %(c1smv)s, %(c2smv)s, %(c3smv)s, %(c4smv)s,
@@ -165,9 +181,9 @@ min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         srad_mj = %(srad_mj)s,
         avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),
         vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)
-        FROM stations t WHERE t.iemid = s.iemid and
-        s.day = date(%(valid)s at time zone t.tzname)
-        and t.id = %(station)s and t.network = %(network)s"""
+        WHERE s.iemid = %(iemid)s and
+        s.day = date(%(valid)s at time zone %(tzname)s)
+        """
         txn.execute(sql, self.data)
         if txn.rowcount != 1:
             return False
