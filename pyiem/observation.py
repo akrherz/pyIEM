@@ -132,7 +132,7 @@ class Observation(object):
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             water_tmpf) VALUES(
-            (%(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
+            %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
             %(valid)s, %(pday)s, %(c1smv)s, %(c2smv)s, %(c3smv)s, %(c4smv)s,
