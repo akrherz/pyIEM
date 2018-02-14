@@ -43,8 +43,8 @@ install:
   # Customise the testing environment
   # ---------------------------------
   - conda config --add channels conda-forge
-  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy"
-  - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy"
+  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy affine"
+  - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
   - conda install --quiet $PACKAGES
   
   # Install pyIEM
