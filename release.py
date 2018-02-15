@@ -1,10 +1,11 @@
-'''
+"""
  Automate the release process of this code base
  1) Increment build release
  2) Clean dist area
  3) Build RPM
  4) Publish RPM to local RHN satellite
-'''
+"""
+from __future__ import print_function
 import ConfigParser
 import subprocess
 import os
@@ -12,7 +13,7 @@ import sys
 
 rhel = sys.argv[1]
 if rhel not in ['rhel6', 'rhel7']:
-    print 'argv[1] must be either rhel6 or rhel7'
+    print('argv[1] must be either rhel6 or rhel7')
     sys.exit()
 
 # Step 0, remove MANIFEST
