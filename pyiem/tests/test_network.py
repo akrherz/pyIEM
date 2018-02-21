@@ -16,6 +16,11 @@ class TestNetwork(unittest.TestCase):
             cursor_factory=psycopg2.extras.DictCursor)
         self.cursor.execute("""INSERT into stations(id, name, network)
         VALUES ('BOGUS', 'BOGUS NAME', 'BOGUS') RETURNING iemid""")
+        iemid = self.cursor.fetchone()[0]
+        self.cursor.execute("""
+            INSERT into station_attributes(iemid, attr, value)
+            VALUES (%s, 'A', 'AA'), (%s, 'B', 'BB')
+        """, (iemid, iemid))
         self.cursor.execute("""INSERT into stations(id, name, network)
         VALUES ('BOGUS2', 'BOGUS2 NAME', 'BOGUS')""")
         self.cursor.execute("""INSERT into stations(id, name, network)
@@ -30,6 +35,8 @@ class TestNetwork(unittest.TestCase):
         self.assertEqual(len(nt.sts.keys()), 3)
 
         self.assertEqual(nt.sts['BOGUS']['name'], 'BOGUS NAME')
+        self.assertEqual(len(nt.sts['BOGUS']['attributes']), 2)
+        self.assertEqual(len(nt.sts['BOGUS2']['attributes']), 0)
 
         nt = network.Table(["BOGUS", "BOGUS2"])
         self.assertEqual(len(nt.sts.keys()), 0)

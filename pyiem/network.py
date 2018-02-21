@@ -1,4 +1,5 @@
 """Network"""
+from collections import OrderedDict
 import psycopg2.extras
 from pyiem.util import get_dbconn
 
@@ -14,7 +15,7 @@ class Table(object):
             be either a string or a list of strings.
           cursor (dbcursor,optional): A database cursor to use for the query
         """
-        self.sts = {}
+        self.sts = OrderedDict()
         if network is None:
             return
 
@@ -23,10 +24,20 @@ class Table(object):
             cursor = dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         if isinstance(network, str):
             network = [network, ]
-        for n in network:
-            cursor.execute("""
-                SELECT *, ST_x(geom) as lon, ST_y(geom) as lat
-                from stations WHERE network = %s ORDER by name ASC
-                """, (n,))
-            for row in cursor:
-                self.sts[row['id']] = dict(row)
+        cursor.execute("""
+            WITH myattrs as (
+                SELECT a.iemid, array_agg(attr) as attrs,
+                array_agg(value) as attr_values from stations s JOIN
+                station_attributes a on (s.iemid = a.iemid) WHERE
+                s.network in %s GROUP by a.iemid
+            )
+            SELECT s.*, ST_x(geom) as lon, ST_y(geom) as lat,
+            a.attrs, a.attr_values
+            from stations s LEFT JOIN myattrs a
+            on (s.iemid = a.iemid)
+            WHERE network in %s ORDER by name ASC
+            """, (tuple(network), tuple(network)))
+        for row in cursor:
+            self.sts[row['id']] = dict(row)
+            self.sts[row['id']]['attributes'] = dict(
+                zip(row['attrs'] or [], row['attr_values'] or []))
