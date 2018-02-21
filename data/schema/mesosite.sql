@@ -290,7 +290,7 @@ CREATE TABLE stations(
 	archive_end timestamp with time zone,
 	modified timestamp with time zone,
 	tzname varchar(32),
-	iemid SERIAL,
+	iemid SERIAL UNIQUE,
 	metasite boolean,
 	sigstage_low real,
 	sigstage_action real,
