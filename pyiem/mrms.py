@@ -18,6 +18,11 @@ XAXIS = np.arange(WEST, EAST, 0.01)
 YAXIS = np.arange(SOUTH, NORTH, 0.01)
 
 
+def is_gzipped(text):
+    """Check that we have gzipped content"""
+    return text[:2] == '\x1f\x8b'
+
+
 def fetch(product, valid, tmpdir="/mesonet/tmp"):
     """Get a desired MRMS product
 
@@ -44,7 +49,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         req = requests.get(uri, timeout=30)
     except:
         req = None
-    if req and req.status_code == 200:
+    if req and req.status_code == 200 and is_gzipped(req.content):
         o = open(tmpfn, 'wb')
         o.write(req.content)
         o.close()
@@ -64,7 +69,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
             req = requests.get(uri, timeout=30)
         except:
             req = None
-        if req and req.status_code == 200:
+        if req and req.status_code == 200 and is_gzipped(req.content):
             o = open(tmpfn, 'wb')
             o.write(req.content)
             o.close()
