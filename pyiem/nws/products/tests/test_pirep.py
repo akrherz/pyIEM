@@ -15,6 +15,13 @@ def get_file(name):
 class TestProducts(unittest.TestCase):
     """ Tests """
 
+    def test_180307_aviation_controlchar(self):
+        """Darn Aviation control character showing up in WMO products"""
+        nwsli_provider = {'BWI': {'lat': 44.26, 'lon': -88.52}}
+        prod = pirepparser(get_file("PIREPS/ubmd90.txt"),
+                           nwsli_provider=nwsli_provider)
+        self.assertEquals(len(prod.reports), 1, "\n".join(prod.warnings))
+
     def test_170324_ampersand(self):
         """Do we properly escape the ampersand"""
         nwsli_provider = {'DUG': {'lat': 44.26, 'lon': -88.52}}

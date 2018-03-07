@@ -12,11 +12,13 @@ Unfortunately, there is not much documentation of this format and the feed of
 this data contains a bunch of formatting errors.
 
 """
-import pyiem.nws.product as product
+from __future__ import print_function
 import datetime
 import re
 import math
 import cgi
+
+import pyiem.nws.product as product
 from pyiem.datatypes import distance
 
 OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
@@ -71,8 +73,8 @@ class Pirep(product.TextProduct):
                if self.unixtext[:2] != '\001\n' else self.unixtext[2:])
 
         lines = txt.split("\n")
-        # There may be an AWIPSID in line 3
-        pos = 3 if len(lines[2]) < 10 else 2
+        # There may be an AWIPSID in line 3 or silly aviation control char
+        pos = 3 if len(lines[2]) < 10 or lines[2].startswith('\x1e') else 2
         meat = "".join(lines[pos:])
         for report in meat.split("="):
             if report.strip() == "":
