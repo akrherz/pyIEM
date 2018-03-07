@@ -95,7 +95,7 @@ class TestPlot(unittest.TestCase):
         # self.assertTrue(1 == 2)
 
     def test_drawcities(self):
-        """Fill the Iowa WFOs"""
+        """Draw Cities"""
         mp = plot.MapPlot(title='Fill and Draw Cities',
                           subtitle="This is my subtitle",
                           continentalcolor='blue',

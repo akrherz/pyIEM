@@ -41,7 +41,8 @@ from PIL import Image
 #
 from pyiem import reference
 from pyiem.datatypes import speed, direction
-from pyiem.plot.colormaps import *
+from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
+                                  whitebluegreenyellowred, maue)
 import pyiem.meteorology as meteorology
 from scipy.signal import convolve2d
 # Matplotlib
