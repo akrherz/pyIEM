@@ -45,7 +45,7 @@ install:
   - conda config --add channels conda-forge
   - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy affine"
   - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
-  - PACKAGES="$PACKAGES fiona=1.7.11"
+  - PACKAGES="$PACKAGES fiona"
   - conda install --quiet $PACKAGES
   
   # Install pyIEM
