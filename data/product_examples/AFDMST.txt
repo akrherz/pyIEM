@@ -1,0 +1,127 @@
+523 
+FXUS65 KPSR 211216 AAA
+AFDPSR
+
+Area Forecast Discussion...Updated
+National Weather Service Phoenix AZ
+515 AM MST Wed Mar 21 2018
+
+.UPDATE...Updated aviation and fire weather discussions.
+
+&&
+
+.SYNOPSIS...
+High pressure aloft will continue to bring warmer temperatures 
+with readings peaking Thursday in the mid 80s to around 90 
+degrees. Thereafter, a weather system will pass through the region
+bringing a chance of showers late Thursday into Friday. Cooler 
+conditions can be anticipated in the wake of this system Friday 
+afternoon through early next week. 
+
+&&
+
+.DISCUSSION...
+A weakening upper level low off the California coast will open up
+later today as a second low dives southward out of the northern
+Pacific. As this occurs, a weak sub-tropical jet and modest
+atmospheric river will combine with the merging Pacific lows
+tonight into Thursday. Over the Desert Southwest, heights aloft
+will continue to rise through tonight as ridging amplifies over 
+the region northward through the Rockies. This will lead to
+further warming, but with increasing cloudiness as upper level 
+moisture peels off from the atmospheric river to our west. Highs 
+today will easily reach into the middle 80s areawide while 
+increased cloudiness and lowering heights to our west on Thursday
+will lower highs over southeast California. Elsewhere on 
+Thursday, highs will again reach at least into the middle 80s, 
+possibly even topping 90 in the Phoenix area.
+
+The bulk of the atmospheric river moisture will get fed through
+central California into southern Nevada through Thursday with less
+and less moisture available as it progresses eastward Thursday
+night. There will still be sufficient moisture for at least
+scattered showers developing across southeast California by late
+Thursday afternoon and then into south-central Arizona Thursday 
+night as a weak cold front pushes through the area. Upper level 
+dynamics will overall be weak and continue to weaken as the 
+shortwave trough progresses through northern Arizona Friday 
+morning. Rainfall amounts over the deserts will again be light 
+with some places seeing a few hundredths while some high terrain 
+spots could top a tenth of an inch.
+
+Some shower activity may linger across the high terrain east of
+Phoenix through mid morning Friday, but the shortwave quickly 
+exits the region by around noon. Temperatures Friday will drop 
+behind the weak cold front, but highs should still end up a couple
+degrees above seasonal normals as skies become mostly sunny 
+during the afternoon.
+
+This weekend still looks to be dry, but another weakening low 
+pressure trough will approach from the northwest keeping
+temperatures near normal. Winds should also be on the breezy side
+as the system slowly approaches, but skies should still remain 
+mostly clear. Though model spread increases into early next week, 
+model consensus shows the approaching trough digging southward 
+into the Desert Southwest and potentially becoming closed off 
+through the middle of next week. Even if this trough would sit 
+over our region for a couple days, rain chances will still be 
+fairly low due to the likely low amount of system moisture. 
+Forecast temperatures do lower starting Sunday and stay slightly 
+below normal through early next week, but this is highly 
+dependent on the closed low affecting the region.
+
+&&
+ 
+.AVIATION... 
+South-Central Arizona including KPHX, KIWA, and KSDL and Southeast 
+California/Southwest Arizona including KIPL and KBLH:
+
+High pressure aloft will gradually shift east over the next 24 hours 
+allowing variable amounts of mid and high cloud to spread across the 
+deserts and affect the TAF sites. Expect SCT to BKN decks today 
+mostly AOA 20k feet with FEW-SCT decks 15-18k feet at times. Clouds 
+to thicken and bases to lower later today and tonight, especially 
+over the western deserts. Winds will be rather light especially in 
+the greater Phoenix area, where we can expect winds to favor typical 
+diurnal tendencies. No real aviation concerns at the terminals for 
+the next 24 hours.
+
+Aviation Discussion not updated for amended TAFs.
+
+&&
+
+.FIRE WEATHER...
+Friday through Tuesday...A fast moving weather disturbance will 
+bring cooler high temperatures Friday along with isolated to 
+scattered showers east of the lower Colorado River Valley. Best rain 
+chances will be over higher terrain areas north and east of Phoenix. 
+Expect high temperatures to drop to near seasonal normals. Humidity 
+will be a bit elevated with minimum RH values over the deserts 
+mostly 20 percent and higher. Dry southwest flow aloft on Saturday 
+will keep skies partly sunny and temperatures will remain near 
+seasonal normals. A large area of low pressure will gradually 
+develop over the southwestern states Sunday into early next week; 
+little if any rain is expected but temperatures will cool with highs 
+falling into the low to mid 70s each day over the deserts. Humidity 
+levels stay mostly in the teens each day across the deserts. 
+Relatively light west wind are expected Friday afternoon; after that 
+winds will increase and become rather breezy during afternoon and 
+early evening hours each day, favoring the west to northwest.
+
+&&
+
+.SPOTTER INFORMATION STATEMENT... 
+Spotters should follow standard reporting procedures.
+
+&&
+
+.PSR WATCHES/WARNINGS/ADVISORIES...
+AZ...None.
+CA...None.
+&&
+
+$$
+
+DISCUSSION...Kuhlman
+AVIATION...CB
+FIRE WEATHER...CB

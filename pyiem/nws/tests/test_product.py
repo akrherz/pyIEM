@@ -23,6 +23,15 @@ class TestProduct(unittest.TestCase):
     """Test Products"""
     maxDiff = None
 
+    def test_180321_mst(self):
+        """Do we do the right thing with MST products whilst in DST"""
+        tp = productparser(get_file('AFDMST.txt'))
+        res = tp.get_jabbers("http://localhost")
+        self.assertEquals(
+            res[0][0],
+            ("PSR issues Area Forecast Discussion (AFD) at Mar 21, 5:15 AM "
+             "MST http://localhost?pid=201803211215-KPSR-FXUS65-AFDPSR"))
+
     def test_180130_chst(self):
         """Whoa, our offset for CHST appears to be wrong"""
         tp = productparser(get_file('CHST.txt'))

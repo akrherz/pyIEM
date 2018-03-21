@@ -416,6 +416,9 @@ class TextProduct(object):
         fmt = "%b %-d, %H:%M UTC"
         if self.tz is not None:
             localts = self.valid.astimezone(self.tz)
+            # A bit of complexity as offices may not implement daylight saving
+            if self.z.endswith("ST") and localts.dst():
+                localts -= datetime.timedelta(hours=1)
             fmt = "%b %-d, %-I:%M %p " + self.z
         return localts.strftime(fmt)
 
