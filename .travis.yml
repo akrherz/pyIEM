@@ -35,7 +35,7 @@ install:
   # Create the basic testing environment
   # ------------------------------------
   - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
-  - conda update conda
+  - conda update -q conda
   - conda create -n test-environment python=$PYTHON_VERSION
   - source activate test-environment
   
@@ -45,9 +45,9 @@ install:
   - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy affine"
   - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
   - PACKAGES="$PACKAGES fiona"
-  - conda install --quiet $PACKAGES
+  - conda install -q $PACKAGES
   # update all packages in the hope of resolving GDAL issue
-  - conda update --all
+  - conda update -q --all
 
   # Install pyIEM
   # ---------------
