@@ -39,7 +39,6 @@ install:
   - conda create -n test-environment python=$PYTHON_VERSION
   - source activate test-environment
   
-  
   # Customise the testing environment
   # ---------------------------------
   - conda config --add channels conda-forge
@@ -47,7 +46,9 @@ install:
   - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
   - PACKAGES="$PACKAGES fiona"
   - conda install --quiet $PACKAGES
-  
+  # update all packages in the hope of resolving GDAL issue
+  - conda update --all
+
   # Install pyIEM
   # ---------------
   - pip install -r requirements.txt
