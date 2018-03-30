@@ -1071,6 +1071,24 @@ class MapPlot(object):
         states = load_pickle_geo('us_states.pickle')
         polygon_fill(self, states, data, **kwargs)
 
+    def draw_cwas(self, color='k', **kwargs):
+        """Overlay CWA Borders
+
+        Draw the CWA border lines on the map.
+
+        Args:
+          color(str): The color to draw the CWA borders with
+          kwargs(dict, optional): Parameters passed to matplotlib for plotting
+        """
+        kwargs['edgecolor'] = color
+        cwas = load_pickle_geo('cwa.pickle')
+        for _a in self.axes:
+            _a.add_geometries([val[b'geom']
+                               for key, val in cwas.items()],
+                              crs=ccrs.PlateCarree(),
+                              zorder=Z_OVERLAY,
+                              facecolor='None', **kwargs)
+
     def fill_cwas(self, data, **kwargs):
         """Add overlay of filled polygons for NWS Forecast Offices.
 

@@ -12,6 +12,7 @@ class TestPlot(unittest.TestCase):
     def test_illinois(self):
         """Produce a plot that doesn't suck"""
         mp = plot.MapPlot(sector='state', state='IL')
+        mp.draw_cwas()
         mp.postprocess(filename="/tmp/test_plot_illinois.png")
         mp.close()
 
