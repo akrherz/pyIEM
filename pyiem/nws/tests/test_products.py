@@ -99,7 +99,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://iem.local/')
         self.assertEqual(j[0][2]['twitter'], (
             "At 1:00 AM, 3 SSW Luther [Carbon Co, MT] Mesonet reports Snow "
-            "of 1.00 inch #BYZ "
+            "of 1.00 inch "
             "http://iem.local/#BYZ/201710260700/201710260700"))
 
     def test_170823_tilde(self):
@@ -250,7 +250,7 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://iem.local/')
         self.assertEqual(j[0][2]['twitter'], (
             "At 11:00 AM, Akron [Washington Co, CO] ASOS reports "
-            "High Wind of M63 MPH #BOU "
+            "High Wind of M63 MPH "
             "http://iem.local/#BOU/201611291800/201611291800"))
 
     def test_170115_table_failure(self):
@@ -417,7 +417,10 @@ class TestProducts(unittest.TestCase):
             'APPROXIMATELY 1 MILE.</p>'))
         self.assertEqual(j[0][2]['twitter'], (
             'At 9:22 AM, 4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports '
-            'TORNADO of EF0 #TAE '
+            'TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL '
+            'POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. '
+            'DAMAGE LIKELY CONFINED TO TREES. ESTIMATED DURATION 3 MINUTES. '
+            'PATH LENGTH... '
             'http://iem.local/#TAE/201504191322/201504191322'))
 
     def test_150331_notcorrection(self):
@@ -1150,6 +1153,7 @@ class TestProducts(unittest.TestCase):
             "http://iem.local/#DMX/201307230355/201307230355"))
 
         self.assertEqual(prod.lsrs[5].tweet(),
-                         ("At 4:45 PM, Dows "
-                          "[Wright Co, IA] LAW ENFORCEMENT "
-                          "reports TSTM WND DMG #DMX"))
+                         ("At 4:45 PM, Dows [Wright Co, IA] LAW ENFORCEMENT "
+                          "reports TSTM WND DMG. DELAYED REPORT. LARGE TREE "
+                          "BRANCH DOWN IN TOWN THAT TOOK OUT A POWER LINE "
+                          "AND BLOCKING PART OF A ROAD."))

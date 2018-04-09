@@ -1,3 +1,4 @@
+"""The Atomic Local Storm Report ... Report"""
 import re
 import datetime
 import pytz
@@ -84,13 +85,16 @@ class LSR(object):
         txn.execute(sql, args)
 
     def tweet(self):
-        ''' return a tweet text '''
-        msg = 'At %s, %s [%s Co, %s] %s reports %s #%s' % (
-                                        self.valid.strftime('%-I:%M %p'),
-                                        _mylowercase(self.city),
-                                        self.county.title(), self.state,
-                                        self.source, self.mag_string(),
-                                        self.wfo)
+        """return a tweet text"""
+        msg = ("At %s, %s [%s Co, %s] %s reports %s"
+               ) % (self.valid.strftime('%-I:%M %p'),
+                    _mylowercase(self.city), self.county.title(), self.state,
+                    self.source, self.mag_string())
+        remainsize = reference.TWEET_CHARS - 24 - len(msg)
+        if self.remark:
+            extra = "..." if len(self.remark) > (remainsize - 5) else ''
+            msg = "%s. %s%s" % (msg, self.remark[:(remainsize - 5)].strip(),
+                                extra)
         return msg
 
     def assign_timezone(self, tz, z):
