@@ -159,17 +159,17 @@ class VTECProduct(TextProduct):
             if len(segment.vtec) > 1 and check_dup_ps(segment):
                 self.warnings.append(("Segment has duplicated VTEC for a "
                                       "single phenomena / significance"))
-            if segment.giswkt and len(segment.vtec) == 0:
+            if segment.giswkt and not segment.vtec:
                 if self.afos[:3] not in ['MWS']:
                     self.warnings.append(("Product segment has LAT...LON, but "
                                           "does not have VTEC?"))
-            if len(segment.ugcs) == 0 and len(segment.vtec) > 0:
+            if not segment.ugcs and segment.vtec:
                 self.warnings.append(("UGC is missing for segment "
                                       "that has VTEC!"))
                 continue
-            if len(segment.ugcs) == 0:
+            if not segment.ugcs:
                 continue
-            if len(segment.vtec) == 0:
+            if not segment.vtec:
                 continue
             for vtec in segment.vtec:
                 if vtec.status == 'T' or vtec.action == 'ROU':
@@ -177,8 +177,7 @@ class VTECProduct(TextProduct):
                 if segment.sbw:
                     self.do_sbw_geometry(txn, segment, vtec)
                 # Check for Hydro-VTEC stuff
-                if (len(segment.hvtec) > 0 and
-                        segment.hvtec[0].nwsli != "00000"):
+                if segment.hvtec and segment.hvtec[0].nwsli != "00000":
                     do_sql_hvtec(txn, segment)
 
                 self.do_sql_vtec(txn, segment, vtec)
@@ -548,6 +547,28 @@ class VTECProduct(TextProduct):
                                   "resulted in %s rows, should be 1"
                                   ) % (vtec.phenomena, vtec.significance,
                                        vtec.etn, txn.rowcount))
+
+        # If this is a CAN, UPG action and single purpose, update expiration
+        if vtec.action in ['CAN', 'UPG'] and self.is_single_action():
+            txn.execute("""
+            UPDATE """ + sbw_table + """ SET expire = %s WHERE
+            wfo = %s and phenomena = %s and significance = %s and eventid = %s
+            and %s <= expire
+            """, (self.valid, vtec.office, vtec.phenomena, vtec.significance,
+                  vtec.etn, self.valid))
+            if txn.rowcount == 0:
+                self.warnings.append(("%s.%s.%s sbw CAN,UPG update "
+                                      "resulted in 0 rows updated, valid: %s"
+                                      ) % (vtec.phenomena, vtec.significance,
+                                           vtec.etn, self.valid))
+
+    def is_single_action(self):
+        """Is this product just 1 VTEC action?"""
+        keys = []
+        for segment in self.segments:
+            for vtec in segment.vtec:
+                keys.append(vtec.action)
+        return len(keys) == 1
 
     def get_action(self):
         """ How to describe the action of this product """

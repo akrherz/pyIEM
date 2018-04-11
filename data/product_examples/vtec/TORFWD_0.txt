@@ -1,0 +1,54 @@
+759
+WFUS54 KFWD 220206
+TORFWD
+TXC223-220245-
+/O.NEW.KFWD.TO.W.0006.180122T0206Z-180122T0245Z/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Tornado Warning
+National Weather Service Fort Worth TX
+806 PM CST SUN JAN 21 2018
+
+The National Weather Service in Fort Worth has issued a
+
+* Tornado Warning for...
+  Southeastern Hopkins County in north central Texas...
+
+* Until 845 PM CST.
+
+* At 806 PM CST, a severe thunderstorm capable of producing a tornado
+  was located near Pleasant Grove, or 12 miles west of Winnsboro,
+  moving northeast at 45 mph.
+
+  HAZARD...Tornado and quarter size hail.
+
+  SOURCE...Radar indicated rotation.
+
+  IMPACT...Flying debris will be dangerous to those caught without
+           shelter. Mobile homes will be damaged or destroyed.
+           Damage to roofs, windows, and vehicles will occur.  Tree
+           damage is likely.
+
+* This dangerous storm will be near...
+  Como around 820 PM CST.
+
+This includes Interstate 30 between mile markers 140 and 142.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+TAKE COVER NOW! Move to an interior room on the lowest floor of a
+sturdy building. Avoid windows. If you are outdoors, in a mobile
+home, or in a vehicle, move to the closest substantial shelter and
+protect yourself from flying debris.
+
+&&
+
+LAT...LON 3296 9557 3321 9531 3296 9531
+TIME...MOT...LOC 0206Z 225DEG 37KT 3289 9550
+
+TORNADO...RADAR INDICATED
+HAIL...1.00IN
+
+$$
+
+30

@@ -1,0 +1,28 @@
+523
+WWUS54 KFWD 220230
+SVSFWD
+
+Severe Weather Statement
+National Weather Service Fort Worth TX
+830 PM CST SUN JAN 21 2018
+
+TXC223-220240-
+/O.CAN.KFWD.TO.W.0006.000000T0000Z-180122T0245Z/
+Hopkins TX-
+830 PM CST SUN JAN 21 2018
+
+...THE TORNADO WARNING FOR SOUTHEASTERN HOPKINS COUNTY IS
+CANCELLED...
+
+The storm which prompted the warning has moved out of the area.
+Therefore the warning has been cancelled.
+
+A tornado watch remains in effect until 1100 PM CST for north central
+Texas.
+
+LAT...LON 3296 9557 3321 9531 3296 9531
+TIME...MOT...LOC 0229Z 225DEG 37KT 3306 9529
+
+$$
+
+30

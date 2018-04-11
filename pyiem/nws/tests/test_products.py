@@ -45,6 +45,24 @@ class TestProducts(unittest.TestCase):
         self.dbconn.rollback()
         self.dbconn.close()
 
+    def test_180411_can_expiration(self):
+        """Do we properly update the expiration time of a CAN event"""
+        utcnow = utc(2018, 1, 22, 2, 6)
+        prod = vtecparser(get_file('vtec/TORFWD_0.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        # This should be the expiration time as well
+        utcnow = utc(2018, 1, 22, 2, 30)
+        prod = vtecparser(get_file('vtec/TORFWD_1.txt'), utcnow=utcnow)
+        prod.sql(self.txn)
+        for status in ['NEW', 'CAN']:
+            self.txn.execute("""
+                SELECT expire from sbw_2018 where wfo = 'FWD' and
+                phenomena = 'TO' and significance = 'W' and eventid = 6
+                and status = %s
+            """, (status, ))
+            row = self.txn.fetchone()
+            self.assertEquals(row[0], utcnow)
+
     def test_issue9(self):
         """A product crossing year bondary"""
         utcnow = utc(2017, 12, 31, 9, 24)
