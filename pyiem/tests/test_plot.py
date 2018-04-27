@@ -119,8 +119,8 @@ class TestPlot(unittest.TestCase):
         # self.assertTrue(1 == 2)
 
     def test_drawiowawfo(self):
-        """Fill the Iowa WFOs"""
-        m = plot.MapPlot(sector='iowawfo', title='Fill Iowa WFOs')
+        """Iowa Contour Plot"""
+        m = plot.MapPlot(sector='iowawfo', title='Iowa Contour plot')
         m.contourf(np.arange(-94, -85), np.arange(36, 45), np.arange(9),
                    np.arange(9),
                    clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])

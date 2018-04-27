@@ -2,13 +2,14 @@
 
 Hopefully useful functions to help with the processing of MRMS data
 """
-import numpy as np
 import struct
 import datetime
-import pytz
-import requests
 import gzip
 import os
+
+import pytz
+import requests
+import numpy as np
 
 WEST = -130.
 EAST = -60.
@@ -20,7 +21,7 @@ YAXIS = np.arange(SOUTH, NORTH, 0.01)
 
 def is_gzipped(text):
     """Check that we have gzipped content"""
-    return text[:2] == '\x1f\x8b'
+    return text[:2] == b'\x1f\x8b'
 
 
 def fetch(product, valid, tmpdir="/mesonet/tmp"):

@@ -259,7 +259,8 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     labels = kwargs.get('labels', dict())
     plotmissing = kwargs.get('plotmissing', True)
     for polykey, polydict in geo_provider.items():
-        val = data.get(polykey, None)
+        # our dictionary is bytes so we need str
+        val = data.get(polykey.decode('utf-8'), None)
         if val is None:
             if not plotmissing:
                 continue
@@ -268,7 +269,8 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
         else:
             lbl = labels.get(polykey, lblformat % (val, ))
             c = cmap(norm([val, ]))[0]
-        for polyi, polygon in enumerate(polydict.get('geom', [])):
+        # in python3, our dict types are byte arrays
+        for polyi, polygon in enumerate(polydict.get(b'geom', [])):
             if polygon.exterior is None:
                 continue
             a = np.asarray(polygon.exterior)
