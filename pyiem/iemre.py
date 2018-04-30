@@ -9,21 +9,43 @@
 from __future__ import print_function
 import datetime
 
+from affine import Affine
 import numpy as np
 import pytz
 
-# 1/4 degree grid, grid cell is the lower left corner
-SOUTH = 36.0
-WEST = -104.0
-NORTH = 49.0
-EAST = -80.5
+# 1/8 degree grid, grid cell is the lower left corner
+SOUTH = 23.0
+WEST = -126.0
+NORTH = 50.0
+EAST = -65.0
 
-DX = 0.25
-DY = 0.25
+DX = 0.125
+DY = 0.125
 NX = int((EAST - WEST) / DX)
 NY = int((NORTH - SOUTH) / DY)
 XAXIS = np.arange(WEST, EAST, DX)
 YAXIS = np.arange(SOUTH, NORTH, DY)
+AFFINE = Affine(DX,
+                0.,
+                WEST,
+                0.,
+                0 - DY,
+                NORTH)
+
+
+def get_dailyc_ncname():
+    """Return the filename of the daily climatology netcdf file"""
+    return "/mesonet/data/iemre/iemre_dailyc.nc"
+
+
+def get_daily_ncname(year):
+    """Get the daily netcdf filename for the given year"""
+    return "/mesonet/data/iemre/%s_iemre_daily.nc" % (year, )
+
+
+def get_hourly_ncname(year):
+    """Get the daily netcdf filename for the given year"""
+    return "/mesonet/data/iemre/%s_iemre_hourly.nc" % (year, )
 
 
 def daily_offset(ts):

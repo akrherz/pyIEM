@@ -1,7 +1,9 @@
+"""test IEMRE stuff"""
 import unittest
 import datetime
 import pytz
 
+from pyiem.util import utc
 from pyiem import iemre
 
 
@@ -19,26 +21,22 @@ class TestIEMRE(unittest.TestCase):
 
     def test_hourly_offset(self):
         """ Compute the offsets """
-        ts = datetime.datetime(2013, 1, 1, 0, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = utc(2013, 1, 1, 0, 0)
         offset = iemre.hourly_offset(ts)
         self.assertEqual(offset, 0)
 
-        ts = datetime.datetime(2013, 1, 1, 6, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = utc(2013, 1, 1, 6, 0)
         ts = ts.astimezone(pytz.timezone("America/Chicago"))
         offset = iemre.hourly_offset(ts)
         self.assertEqual(offset, 6)
 
-        ts = datetime.datetime(2013, 1, 5, 12, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = utc(2013, 1, 5, 12, 0)
         offset = iemre.hourly_offset(ts)
         self.assertEqual(offset, 4*24 + 12)
 
     def test_daily_offset(self):
         """ Compute the offsets """
-        ts = datetime.datetime(2013, 1, 1, 0, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = utc(2013, 1, 1, 0, 0)
         offset = iemre.daily_offset(ts)
         self.assertEqual(offset, 0)
 
@@ -46,7 +44,6 @@ class TestIEMRE(unittest.TestCase):
         offset = iemre.daily_offset(ts)
         self.assertEqual(offset, 31)
 
-        ts = datetime.datetime(2013, 1, 5, 12, 0)
-        ts = ts.replace(tzinfo=pytz.timezone("UTC"))
+        ts = utc(2013, 1, 5, 12, 0)
         offset = iemre.daily_offset(ts)
         self.assertEqual(offset, 4)
