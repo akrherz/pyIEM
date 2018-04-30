@@ -16,6 +16,11 @@ def get_path(name):
 class Tests(unittest.TestCase):
     """We need tests!"""
 
+    def test_cli_fname(self):
+        """Do we get the right climate file names?"""
+        res = dep.get_cli_fname(-95.5, 42.5, 0)
+        self.assertEquals(res, "/i/0/cli/095x042/095.50x042.50.cli")
+
     def test_yld(self):
         """Read a slope file"""
         df = dep.read_yld(get_path('yld.txt'))

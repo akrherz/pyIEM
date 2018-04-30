@@ -18,6 +18,16 @@ YLD_DATA = re.compile((r"Crop Type #\s+(?P<num>\d+)\s+Date = (?P<doy>\d+)"
                        r" \(kg/m\*\*2\) year= (?P<year>\d+)"))
 
 
+def get_cli_fname(lon, lat, scenario=0):
+    """Get the climate file name for the given lon, lat, and scenario"""
+    # The trouble here is relying on rounding is problematic, so we just
+    # truncate
+    return "/i/%s/cli/%03ix%03i/%06.2fx%06.2f.cli" % (scenario,
+                                                      0 - lon,
+                                                      lat,
+                                                      0 - lon,
+                                                      lat)
+
 def read_yld(filename):
     """read WEPP yld file with some local mods to include a year
 
