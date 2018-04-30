@@ -43,6 +43,11 @@ def get_daily_ncname(year):
     return "/mesonet/data/iemre/%s_iemre_daily.nc" % (year, )
 
 
+def get_daily_mrms_ncname(year):
+    """Get the daily netcdf MRMS filename for the given year"""
+    return "/mesonet/data/iemre/%s_iemre_mrms_daily.nc" % (year, )
+
+
 def get_hourly_ncname(year):
     """Get the daily netcdf filename for the given year"""
     return "/mesonet/data/iemre/%s_iemre_hourly.nc" % (year, )
