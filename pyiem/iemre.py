@@ -31,6 +31,12 @@ AFFINE = Affine(DX,
                 0.,
                 0 - DY,
                 NORTH)
+MRMS_AFFINE = Affine(0.01,
+                     0.,
+                     WEST,
+                     0.,
+                     -0.01,
+                     NORTH)
 
 
 def get_dailyc_ncname():
@@ -41,6 +47,11 @@ def get_dailyc_ncname():
 def get_daily_ncname(year):
     """Get the daily netcdf filename for the given year"""
     return "/mesonet/data/iemre/%s_iemre_daily.nc" % (year, )
+
+
+def get_dailyc_mrms_ncname():
+    """Get the MRMS daily climatology filename"""
+    return "/mesonet/data/iemre/iemre_mrms_dailyc.nc"
 
 
 def get_daily_mrms_ncname(year):
