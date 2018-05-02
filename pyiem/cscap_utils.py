@@ -491,10 +491,25 @@ def get_folders(drive):
     """Return a dict of Google Drive Folders"""
     f = {}
 
+    # Whoa, just because maxResults=999 and the returned items is less
+    # than 999, it does not mean the list was complete
     folders = drive.files().list(
         q="mimeType = 'application/vnd.google-apps.folder'",
         maxResults=999).execute()
-    for _, item in enumerate(folders['items']):
+    folder_list = folders['items']
+    i = 0
+    while 'nextPageToken' in folders:
+        folders = drive.files().list(
+            pageToken=folders['nextPageToken'],
+            q="mimeType = 'application/vnd.google-apps.folder'",
+            maxResults=999).execute()
+        folder_list = folder_list + folders['items']
+        i += 1
+        if i > 10:
+            print("get_folders iterator reached 10, aborting")
+            break
+
+    for _, item in enumerate(folder_list):
         f[item['id']] = dict(title=item['title'], parents=[],
                              basefolder=None)
         for parent in item['parents']:
@@ -502,7 +517,7 @@ def get_folders(drive):
 
     for thisfolder in f:
         # title = f[thisfolder]['title']
-        if len(f[thisfolder]['parents']) == 0:
+        if not f[thisfolder]['parents']:
             continue
         parentfolder = f[thisfolder]['parents'][0]
         if parentfolder not in f:
