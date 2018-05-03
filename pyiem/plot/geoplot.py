@@ -1042,7 +1042,7 @@ class MapPlot(object):
                 c = cmap(norm([data[ugc], ]))[0]
                 val = data[ugc]
                 z = Z_OVERLAY2
-            for polyi, polygon in enumerate(ugcdict.get('geom', [])):
+            for polyi, polygon in enumerate(ugcdict.get(b'geom', [])):
                 if polygon.exterior is None:
                     continue
                 arr = np.asarray(polygon.exterior)
@@ -1148,7 +1148,7 @@ class MapPlot(object):
         ugcdict = load_pickle_geo("ugcs_county.pickle")
         polys = []
         for ugc in ugcdict:
-            for polygon in ugcdict[ugc].get('geom', []):
+            for polygon in ugcdict[ugc].get(b'geom', []):
                 polys.append(polygon)
         self.ax.add_geometries(polys, crs=ccrs.PlateCarree(),
                                facecolor='None', edgecolor=color, lw=.4,
