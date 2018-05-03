@@ -52,11 +52,10 @@ def _compute_bounds(sts, ets):
     gy = 0.9  # upper left corners here
     for i, month in enumerate(months):
         col = (i % cols)
-        row = (i / cols) + 1
+        row = int(i / cols) + 1
         bounds[month] = [gx + (col * width) + (col * padding),
                          gy - (row * height) - ((row - 1) * padding),
                          width, height]
-
     return bounds
 
 

@@ -37,12 +37,12 @@ install:
   - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
   - conda update -q conda
   - conda create -n test-environment python=$PYTHON_VERSION
-  - source activate test-environment
+  - conda activate test-environment
   
   # Customise the testing environment
   # ---------------------------------
   - conda config --add channels conda-forge
-  - PACKAGES="$PACKAGES cython nose pytest Shapely coveralls pandas cartopy affine"
+  - PACKAGES="$PACKAGES cython pytest pytest-mpl pytest-runner Shapely coveralls pandas cartopy affine"
   - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
   - PACKAGES="$PACKAGES fiona"
   - conda install -q $PACKAGES
@@ -77,7 +77,7 @@ before_script:
   - psql -U postgres -f data/schema/mos.sql mos
 
 script:
-  - coverage run --source=pyiem setup.py test;
+  - coverage run --source=pyiem setup.py test --addopts "--mpl";
 
 after_success:
   - if [[ "$PYTHON_VERSION" == 2* ]]; then
