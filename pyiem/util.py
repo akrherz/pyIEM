@@ -3,6 +3,7 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
+import os
 import time
 import random
 import logging
@@ -14,11 +15,46 @@ from socket import error as socket_error
 
 import pytz
 import psycopg2
+import netCDF4
 import numpy as np
 # NB We shall not be importing other parts of pyIEM here as we then get
 # circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def ncopen(ncfn, mode='r', timeout=60):
+    """Safely open netcdf files
+
+    The issue here is that we can only have the following situation for a
+    given NetCDF file.
+    1.  Only 1 or more readers
+    2.  Only 1 appender
+
+    The netcdf is being accessed over NFS and perhaps local disk, so writing
+    lock files is problematic.
+
+    Args:
+      ncfn (str): The netCDF filename
+      mode (str,optional): The netCDF4.Dataset open mode, default 'r'
+      timeout (int): The total time in seconds to attempt a read, default 60
+
+    Returns:
+      `netCDF4.Dataset` or `None`
+    """
+    if mode != 'w' and not os.path.isfile(ncfn):
+        raise FileNotFoundError("No such file %s" % (ncfn, ))
+    sts = datetime.datetime.utcnow()
+    nc = None
+    while (datetime.datetime.utcnow() - sts).total_seconds() < timeout:
+        try:
+            nc = netCDF4.Dataset(ncfn, mode)
+            nc.set_auto_scale(True)
+            break
+        except OSError:
+            pass
+        time.sleep(5)
+    return nc
 
 
 def utc(year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
