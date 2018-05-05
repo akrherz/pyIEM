@@ -51,7 +51,7 @@ def ncopen(ncfn, mode='r', timeout=60):
             nc = netCDF4.Dataset(ncfn, mode)
             nc.set_auto_scale(True)
             break
-        except OSError:
+        except (OSError, IOError):
             pass
         time.sleep(5)
     return nc
