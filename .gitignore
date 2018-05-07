@@ -6,3 +6,5 @@
 /.settings/
 /.coverage
 /pyIEM.egg-info/
+/.pytest_cache/
+/.vscode/
