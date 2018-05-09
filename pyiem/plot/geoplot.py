@@ -76,6 +76,50 @@ MAIN_AX_BOUNDS = [0.01, 0.05, 0.898, 0.85]
 CAX_BOUNDS = [0.917, 0.1, 0.02, 0.8]
 
 
+def make_axes(ndc_axbounds, geoextent, projection, aspect):
+    """Factory for making an axis
+
+    Args:
+      ndc_axbounds (list): the NDC coordinates of axes to create
+      geoextent (list): x0,x1,y0,y1 the lon/lon extent of the axes to create
+      projection (ccrs.Projection): the projection of the axes
+      aspect (str): matplotlib's aspect of axes
+
+    Returns:
+      ax
+    """
+    ax = plt.axes(ndc_axbounds, projection=projection, aspect=aspect)
+    ax.set_extent(geoextent)
+    if aspect != 'equal':
+        return ax
+    # Render the canvas so we know what happened with our axis
+    ax.figure.canvas.draw()
+    # Compute the current NDC extent of the axes
+    ndc_bbox = ax.get_position()
+    # pixel_bbox = ax.get_window_extent()
+    (projx0, projx1, projy0, projy1) = ax.get_extent()
+    print(ax.get_extent())
+    # Figure out which axis got shrunk
+    xscaled = ndc_bbox.width / float(ndc_axbounds[2])
+    yscaled = ndc_bbox.height / float(ndc_axbounds[3])
+    # compute the dx/dy of this image
+    # dx = (projx1 - projx0) / pixel_bbox.width
+    # dx = (projy1 - projy0) / pixel_bbox.height
+    # expand one way or another to fit, via set_extent
+    xneeded = (projx1 - projx0) / xscaled - (projx1 - projx0)
+    yneeded = (projy1 - projy0) / yscaled - (projy1 - projy0)
+    # print(("xscaled: %s xneeded: %.1f yscaled: %s yneeded: %.1f"
+    #       ) % (xscaled, xneeded, yscaled, yneeded))
+    newbounds = [projx0 - xneeded/2.,
+                 projx1 + xneeded/2.,
+                 projy0 - yneeded/2.,
+                 projy1 + yneeded/2.]
+    ax.set_extent(newbounds, crs=projection)
+    # Render the canvas so we know what happened with our axis
+    ax.figure.canvas.draw()
+    return ax
+
+
 def centered_bins(absmax, on=0, bins=9):
     """Return a smooth binning
 
@@ -357,108 +401,95 @@ class MapPlot(object):
 
         if self.sector == 'iowa':
             self.state = 'IA'
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.Mercator(),
-                aspect=aspect)
-            self.ax.set_extent([reference.IA_WEST,
-                                reference.IA_EAST,
-                                reference.IA_SOUTH,
-                                reference.IA_NORTH])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [reference.IA_WEST, reference.IA_EAST,
+                                 reference.IA_SOUTH, reference.IA_NORTH],
+                                ccrs.Mercator(),
+                                aspect)
             self.axes.append(self.ax)
 
         elif self.sector == 'cwa':
             self.cwa = kwargs.get('cwa', 'DMX')
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.Mercator(),
-                aspect=aspect)
-            self.ax.set_extent([reference.wfo_bounds[self.cwa][0],
-                                reference.wfo_bounds[self.cwa][2],
-                                reference.wfo_bounds[self.cwa][1],
-                                reference.wfo_bounds[self.cwa][3]])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [reference.wfo_bounds[self.cwa][0],
+                                 reference.wfo_bounds[self.cwa][2],
+                                 reference.wfo_bounds[self.cwa][1],
+                                 reference.wfo_bounds[self.cwa][3]],
+                                ccrs.Mercator(),
+                                aspect)
             self.axes.append(self.ax)
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.Mercator(),
-                aspect=aspect)
-            self.ax.set_extent([reference.state_bounds[self.state][0],
-                                reference.state_bounds[self.state][2],
-                                reference.state_bounds[self.state][1],
-                                reference.state_bounds[self.state][3]])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [reference.state_bounds[self.state][0],
+                                 reference.state_bounds[self.state][2],
+                                 reference.state_bounds[self.state][1],
+                                 reference.state_bounds[self.state][3]],
+                                ccrs.Mercator(),
+                                aspect)
             self.axes.append(self.ax)
         elif self.sector == 'midwest':
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.Mercator(),
-                aspect=aspect)
-            self.ax.set_extent([reference.MW_WEST,
-                                reference.MW_EAST,
-                                reference.MW_SOUTH,
-                                reference.MW_NORTH])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [reference.MW_WEST,
+                                 reference.MW_EAST,
+                                 reference.MW_SOUTH,
+                                 reference.MW_NORTH],
+                                ccrs.Mercator(),
+                                aspect)
             self.axes.append(self.ax)
         elif self.sector == 'iowawfo':
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.Mercator(),
-                aspect=aspect)
-            self.ax.set_extent([-99.6, -89.0, 39.8, 45.5])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [-99.6, -89.0, 39.8, 45.5],
+                                ccrs.Mercator(),
+                                aspect)
             self.axes.append(self.ax)
         elif self.sector == 'custom':
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                facecolor=(0.4471, 0.6235, 0.8117),
-                projection=kwargs.get('projection', ccrs.Mercator()),
-                aspect=aspect)
-            self.ax.set_extent([kwargs['west'], kwargs['east'],
-                                kwargs['south'], kwargs['north']],
-                               crs=ccrs.PlateCarree())
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [kwargs['west'], kwargs['east'],
+                                 kwargs['south'], kwargs['north']],
+                                kwargs.get('projection', ccrs.Mercator()),
+                                aspect)
             self.axes.append(self.ax)
 
         elif self.sector == 'north_america':
-            self.ax = plt.axes(
-                MAIN_AX_BOUNDS,
-                projection=ccrs.LambertConformal(central_longitude=-107.0,
-                                                 central_latitude=50.0),
-                aspect=aspect)
-            self.ax.set_extent([-145.5, -2.566, 1, 46.352])
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [-145.5, -2.566, 1, 46.352],
+                                ccrs.LambertConformal(central_longitude=-107.0,
+                                                      central_latitude=50.0),
+                                aspect)
             self.axes.append(self.ax)
 
         elif self.sector in ['conus', 'nws']:
-            self.ax = self.fig.add_axes(
-                MAIN_AX_BOUNDS,
-                projection=reference.EPSG[5070],
-                aspect=aspect)
-            self.ax.set_extent([reference.CONUS_WEST + 14,
-                                reference.CONUS_EAST - 12,
-                                reference.CONUS_SOUTH,
-                                reference.CONUS_NORTH + 1],
-                               crs=ccrs.PlateCarree())
+            self.ax = make_axes(MAIN_AX_BOUNDS,
+                                [reference.CONUS_WEST + 14,
+                                 reference.CONUS_EAST - 12,
+                                 reference.CONUS_SOUTH,
+                                 reference.CONUS_NORTH + 1],
+                                reference.EPSG[5070],
+                                aspect)
             self.axes.append(self.ax)
 
             if self.sector == 'nws':
                 # Create PR, AK, and HI sectors
-                self.pr_ax = plt.axes(
+                self.pr_ax = make_axes(
                     [0.78, 0.055, 0.125, 0.1],
-                    projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect=aspect)
-                self.pr_ax.set_extent([-68.0, -65.0, 17.5, 18.6])
+                    [-68.0, -65.0, 17.5, 18.6],
+                    ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect)
                 self.axes.append(self.pr_ax)
                 # Create AK
-                self.ak_ax = plt.axes(
+                self.ak_ax = make_axes(
                     [0.015, 0.055, 0.25, 0.2],
-                    projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect=aspect)
-                self.ak_ax.set_extent([-179.5, -129.0, 51.08, 72.1])
+                    [-179.5, -129.0, 51.08, 72.1],
+                    ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect)
                 self.axes.append(self.ak_ax)
                 # Create HI
-                self.hi_ax = plt.axes(
+                self.hi_ax = make_axes(
                     [0.47, 0.055, 0.2, 0.1],
-                    projection=ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect=aspect)
-                self.hi_ax.set_extent([-161.0, -154.0, 18.5, 22.5])
+                    [-161.0, -154.0, 18.5, 22.5],
+                    ccrs.PlateCarree(central_longitude=-105.0),
+                    aspect)
                 self.axes.append(self.hi_ax)
 
         for _a in self.axes:
