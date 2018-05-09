@@ -142,7 +142,8 @@ def test_drawiowawfo():
 def test_fillstates():
     """Can we fill states"""
     data = {'AK': 10, 'HI': 30, 'IA': 40, 'NY': 80}
-    mp = MapPlot(sector='nws', title='Fill States', nocaption=True)
+    mp = MapPlot(sector='nws', title='Fill AK, HI, IA, NY States',
+                 subtitle='test_fillstates', nocaption=True)
     mp.fill_states(data, ilabel=True)
     return mp.fig
 
@@ -214,6 +215,7 @@ def test_drawugcs():
 def test_drawugcs2():
     """3 filled zones"""
     mp = MapPlot(sector='iowa', title='Zones, 3 filled in Iowa, label',
+                 subtitle='test_drawugcs2',
                  nocaption=True)
     mp.fill_ugcs({"IAZ001": 10, "IAZ003": 20, "IAZ005": 30}, ilabel=True)
     return mp.fig
@@ -222,10 +224,10 @@ def test_drawugcs2():
 def test_filter_functions():
     """Make sure our filter functions are doing what we want!"""
     mp = MapPlot(sector='iowa')
-    assert plot.state_filter(mp, 'IAC001', dict())
-    assert not plot.state_filter(mp, 'MNC001', dict())
+    assert plot.state_filter(mp, b'IAC001', dict())
+    assert not plot.state_filter(mp, b'MNC001', dict())
     mp = MapPlot(cwa='DMX')
-    assert plot.state_filter(mp, 'IAC001', dict())
+    assert plot.state_filter(mp, b'IAC001', dict())
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -282,7 +284,8 @@ def test_barbs():
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_scatter():
     """ Test scatter plots """
-    mp = MapPlot(sector='midwest', nocaption=True)
+    mp = MapPlot(sector='midwest', title='Should see 100 dots',
+                 subtitle='test_scatter', nocaption=True)
     mp.scatter(np.linspace(-99, -94, 100),
                np.linspace(40, 45, 100), np.arange(100),
                np.arange(0, 101, 10))

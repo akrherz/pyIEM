@@ -98,7 +98,7 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     ndc_bbox = ax.get_position()
     # pixel_bbox = ax.get_window_extent()
     (projx0, projx1, projy0, projy1) = ax.get_extent()
-    print(ax.get_extent())
+    # print(ax.get_extent())
     # Figure out which axis got shrunk
     xscaled = ndc_bbox.width / float(ndc_axbounds[2])
     yscaled = ndc_bbox.height / float(ndc_axbounds[3])
@@ -150,7 +150,7 @@ def cwa_filter(bm, key, val):
 
 def state_filter(bm, key, val):
     """A filter for checking a key against current plot"""
-    return (key[:2] == bm.state)
+    return (key[:2].decode('utf-8') == bm.state)
 
 
 def load_bounds(filebase):
@@ -324,8 +324,8 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
                 p = Polygon(points[:, :2], fc=c, ec='k', zorder=Z_FILL, lw=.1)
                 ax.add_patch(p)
                 if ilabel and polyi == 0:
-                    txt = ax.text(polydict.get('lon', polygon.centroid.x),
-                                  polydict.get('lat', polygon.centroid.y),
+                    txt = ax.text(polydict.get(b'lon', polygon.centroid.x),
+                                  polydict.get(b'lat', polygon.centroid.y),
                                   lbl, zorder=100, clip_on=True,
                                   ha='center', va='center',
                                   transform=ccrs.PlateCarree())
@@ -895,7 +895,7 @@ class MapPlot(object):
 
         colors = cmap(norm(vals))
         self.ax.scatter(lons, lats, c=colors, edgecolors=colors,
-                        transform=ccrs.PlateCarree())
+                        transform=ccrs.PlateCarree(), zorder=Z_OVERLAY)
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
@@ -1059,7 +1059,7 @@ class MapPlot(object):
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
                 continue
-            if data.get(ugc) is None:
+            if data.get(ugc.decode('utf-8')) is None:
                 if not plotmissing:
                     continue
                 # Holy cow, it appears values above 300 are always firewx,
@@ -1070,8 +1070,8 @@ class MapPlot(object):
                 val = '-'
                 z = Z_OVERLAY
             else:
-                c = cmap(norm([data[ugc], ]))[0]
-                val = data[ugc]
+                val = data[ugc.decode('utf-8')]
+                c = cmap(norm([val, ]))[0]
                 z = Z_OVERLAY2
             for polyi, polygon in enumerate(ugcdict.get(b'geom', [])):
                 if polygon.exterior is None:
