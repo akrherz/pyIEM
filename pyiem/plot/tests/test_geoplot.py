@@ -95,6 +95,7 @@ def test_centered_bins():
     assert a[0] == -0.9
 
 
+@pytest.mark.skip(reason="segfaults due to SciTools/cartopy#1047")
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_michigan():
     """See what we do with Michigan"""
@@ -293,6 +294,7 @@ def test_scatter():
     return mp.fig
 
 
+@pytest.mark.skip(reason="segfaults due to SciTools/cartopy#1047")
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_contourf():
     ''' Test the contourf plot with labels specified '''
