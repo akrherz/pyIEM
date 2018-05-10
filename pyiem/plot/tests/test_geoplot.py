@@ -128,6 +128,7 @@ def test_drawrandomtext():
     return mp.fig
 
 
+@pytest.mark.skip(reason="segfaults due to SciTools/cartopy#1047")
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_drawiowawfo():
     """Iowa Contour Plot"""
