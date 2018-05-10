@@ -9,7 +9,7 @@ from pyiem import plot
 from pyiem.plot import MapPlot, centered_bins
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_illinois():
     """Produce a plot that doesn't suck"""
     mp = MapPlot(sector='state', state='IL', nocaption=True)
@@ -17,7 +17,7 @@ def test_illinois():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_usdm():
     """Can we plot the current USDM"""
     mp = MapPlot(sector='conus', nocaption=True)
@@ -25,7 +25,7 @@ def test_usdm():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_hexbin():
     """See if we can do hexbin OKish"""
     mp = MapPlot(sector='north_america', continentalcolor='white',
@@ -55,7 +55,7 @@ def test_pcolormesh():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_conus():
     """See if we can plot albers"""
     mp = MapPlot(sector='custom',
@@ -69,7 +69,7 @@ def test_conus():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_conus2():
     """Map the conus in LEA"""
     mp = MapPlot(sector='custom',
@@ -140,7 +140,7 @@ def test_drawiowawfo():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_fillstates():
     """Can we fill states"""
     data = {'AK': 10, 'HI': 30, 'IA': 40, 'NY': 80}
@@ -150,7 +150,7 @@ def test_fillstates():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_drawcounties():
     """draw counties on the map"""
     mp = MapPlot(sector='midwest', title='Counties', nocaption=True)
@@ -158,7 +158,7 @@ def test_drawcounties():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=1.)
 def test_climdiv():
     """Run tests agains the fill_climdiv"""
     mp = MapPlot(sector='conus', title="Climate Divisions", nocaption=True)
@@ -204,7 +204,7 @@ def test_colorbar3():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=1.4)
 def test_drawugcs():
     """test drawing of UGCS"""
     mp = MapPlot(sector='conus', title='Counties, 3 filled in Iowa',
@@ -213,7 +213,7 @@ def test_drawugcs():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=1.0)
 def test_drawugcs2():
     """3 filled zones"""
     mp = MapPlot(sector='iowa', title='Zones, 3 filled in Iowa, label',
@@ -322,7 +322,7 @@ def test_textplot2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=1.0)
 def test_plot():
     """ Exercise the API """
     mp = MapPlot(sector='midwest', nocaption=True)
@@ -331,7 +331,7 @@ def test_plot():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=1.0)
 def test_plot2():
     """ Exercise NWS plot API """
     mp = MapPlot(sector='nws', continentalcolor='white', nocaption=True)
@@ -340,7 +340,7 @@ def test_plot2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.6)
 def test_plot22():
     """plot cwas that are filled"""
     mp = MapPlot(sector='iowa', continentalcolor='white', nocaption=True)
@@ -349,7 +349,7 @@ def test_plot22():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_plot3():
     """ Exercise climdiv plot API """
     mp = MapPlot(sector='iowa', nocaption=True)
