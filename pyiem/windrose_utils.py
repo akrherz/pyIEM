@@ -5,14 +5,15 @@ import datetime
 import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
-from pyiem.datatypes import speed
-from pyiem.util import get_dbconn
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt  # nopep8
 import matplotlib.image as mpimage  # nopep8
 from windrose import WindroseAxes  # nopep8
 from windrose.windrose import histogram  # nopep8
+from pyiem.datatypes import speed
+from pyiem.util import get_dbconn
+from pyiem.network import Table as NetworkTable
 DATADIR = os.sep.join([os.path.dirname(__file__), 'data'])
 
 WINDUNITS = {
@@ -98,13 +99,19 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo,
         """ % (station, sts, ets, monthinfo['sqltext'], hourinfo['sqltext'],
                rlimiter)
     if level is not None:  # HACK!
+        # here comes another hack, stations with starting with _ are virtual
+        stations = [station, 'ZZZZ']
+        if station.startswith("_"):
+            nt = NetworkTable("RAOB")
+            stations = nt.sts[station]['name'].split(
+                "--")[1].strip().split(" ")
         sql = """SELECT p.smps * 1.94384 as sknt, p.drct, f.valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
-        f.station = '%s' and p.pressure = %s and p.smps is not null
+        f.station in %s and p.pressure = %s and p.smps is not null
         and p.drct is not null and valid >= '%s' and valid < '%s'
         %s
         %s
-        """ % (station, level, sts, ets, monthinfo['sqltext'],
+        """ % (str(tuple(stations)), level, sts, ets, monthinfo['sqltext'],
                hourinfo['sqltext'])
     df = read_sql(sql, db, index_col=None)
     # If sknt or drct are null, we want to set the other to null as well
