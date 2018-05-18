@@ -1064,7 +1064,7 @@ class MapPlot(object):
                     continue
                 # Holy cow, it appears values above 300 are always firewx,
                 # so lets ignore these when we have no data!
-                if int(ugc[3:]) >= 300:
+                if not counties and int(ugc[3:]) >= 300:
                     continue
                 c = 'white'
                 val = '-'
