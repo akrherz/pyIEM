@@ -4,11 +4,27 @@ import unittest
 import os
 import string
 import random
+from io import BytesIO
 from collections import OrderedDict
+import mock
 
 import pytz
 import numpy as np
 from pyiem import util
+
+
+def test_ssw():
+    """Does pyiem.util.ssw work?"""
+    with mock.patch('sys.stdout', new=BytesIO()) as fake_out:
+        util.ssw("Hello Daryl!")
+        assert fake_out.getvalue() == b'Hello Daryl!'
+        fake_out.seek(0)
+        util.ssw(b"Hello Daryl!")
+        assert fake_out.getvalue() == b'Hello Daryl!'
+        fake_out.seek(0)
+        util.ssw(u"Hello Daryl!")
+        assert fake_out.getvalue() == b'Hello Daryl!'
+        fake_out.seek(0)
 
 
 def get_file(name):

@@ -4,6 +4,7 @@
 This module contains utility functions used by various parts of the codebase.
 """
 import os
+import sys
 import time
 import random
 import logging
@@ -13,6 +14,7 @@ import warnings
 import getpass
 from socket import error as socket_error
 
+from six import string_types
 import pytz
 import psycopg2
 import netCDF4
@@ -21,6 +23,19 @@ import numpy as np
 # circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def ssw(mixedobj):
+    """python23 wrapper for sys.stdout.write
+
+    Args:
+      mixedobj (str or bytes): what content we want to send
+    """
+    stdout = getattr(sys.stdout, 'buffer', sys.stdout)
+    if isinstance(mixedobj, string_types):
+        stdout.write(mixedobj.encode('utf-8'))
+    else:
+        stdout.write(mixedobj)
 
 
 def ncopen(ncfn, mode='r', timeout=60):
