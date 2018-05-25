@@ -8,13 +8,13 @@ import re
 import datetime
 
 import pytz
+from metar.Metar import Metar
+from metar.Metar import ParserError as MetarParserError
 from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
 from pyiem.reference import TRACE_VALUE
 from pyiem import datatypes
 from pyiem.util import drct2text
-from metar.Metar import Metar
-from metar.Metar import ParserError as MetarParserError
 
 NIL_RE = re.compile(r"[\s\n]NIL")
 ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
@@ -202,8 +202,8 @@ class METARReport(Metar):
         if not self.wind_speed_peak:
             old_max_wind = max([iem.data.get('max_sknt', 0) or 0,
                                 iem.data.get('max_gust', 0) or 0])
-            new_max_wind = max([iem.data.get('sknt', 0),
-                                iem.data.get('gust', 0)])
+            new_max_wind = max([iem.data.get('sknt', 0) or 0,
+                                iem.data.get('gust', 0) or 0])
             if new_max_wind > old_max_wind:
                 # print 'Setting max_drct manually: %s' % (clean_metar,)
                 iem.data['max_drct'] = iem.data.get('drct', 0)

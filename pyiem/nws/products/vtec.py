@@ -22,7 +22,7 @@ def list_rows(txn, table, vtec):
     res = ("Entries for VTEC within %s\n"
            "  UGC    STA ISSUED              UPDATED\n"
            ) % (table, )
-    for row in txn:
+    for row in txn.fetchall():
         res += "  %s %s %s %s\n" % (row['ugc'], row['status'],
                                     row['utc_issue'], row['utc_updated'])
     return res
@@ -134,7 +134,7 @@ class VTECProduct(TextProduct):
                 return '%-16s' % ('((NULL))',)
             return val.strftime("%Y-%m-%d %H:%M")
 
-        for row in txn:
+        for row in txn.fetchall():
             debugmsg += "%s %s %s %s %s\n" % (row['ugc'], row['status'],
                                               myfmt(row['utc_issue']),
                                               myfmt(row['utc_expire']),

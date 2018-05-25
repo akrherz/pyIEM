@@ -86,7 +86,7 @@ def go2lonlat(lon0, lat0, direction, displacement):
     # Radius of the Earth
     R = 6378.1
     # Bearing is 90 degrees converted to radians.
-    brng = math.radians(dirs[direction])
+    brng = math.radians(dirs.get(direction, 0))
     # Distance in km
     d = displacement / KM_SM
 
@@ -245,7 +245,7 @@ class SIGMETProduct(TextProduct):
             st_overlaps(geomFromEWKT('SRID=4326;%s'), geom) or
             st_contains(geomFromEWKT('SRID=4326;%s'), geom)
             """ % (sigmet.geom, sigmet.geom))
-            for row in txn:
+            for row in txn.fetchall():
                 sigmet.centers.append(row['id'])
 
     def compute_time(self, ddhhmi):

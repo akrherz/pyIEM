@@ -61,7 +61,7 @@ class SAWProduct(TextProduct):
              ST_Contains('SRID=4326;""" + self.geometry.wkt + """', geom)
              and end_ts is null
         """)
-        for row in txn:
+        for row in txn.fetchall():
             self.affected_wfos.append(row[0])
 
     def sql(self, txn):
