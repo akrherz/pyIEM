@@ -38,7 +38,8 @@ install:
   
   # Customise the testing environment
   # ---------------------------------
-  - conda config --add channels conda-forge
+  # Prioritize conda-forge channel over defaults for best compat
+  - conda config --prepend channels conda-forge
   - PACKAGES="$PACKAGES cython pytest pytest-mpl pytest-runner Shapely coveralls pandas cartopy affine"
   - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
   - PACKAGES="$PACKAGES fiona netCDF4"
