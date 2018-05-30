@@ -70,12 +70,12 @@ class FTPSession(object):
             for filename in files:
                 suffix = filename.split(".")[-1]
                 self.conn.storbinary('STOR %s.%s' % (remotefn, suffix),
-                                     open(filename))
+                                     open(filename, 'rb'))
                 os.unlink(filename)
         else:
             logging.debug("_put '%s' to '%s'",
                           localfn, remotefn)
-            self.conn.storbinary('STOR %s' % (remotefn, ), open(localfn))
+            self.conn.storbinary('STOR %s' % (remotefn, ), open(localfn, 'rb'))
         return True
 
     def close(self):
