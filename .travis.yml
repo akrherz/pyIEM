@@ -3,6 +3,10 @@ sudo: required
 dist: trusty
 
 addons:
+  artifacts:
+    target_paths: /$PYTHON_VERSION
+    working_dir: mplresults
+    s3_region: us-east-2
   postgresql: "9.5"
   apt:
     packages:
@@ -75,7 +79,7 @@ before_script:
   - psql -U postgres -f data/schema/mos.sql mos
 
 script:
-  - coverage run --source=pyiem setup.py test --addopts "--mpl";
+  - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
 
 after_success:
   - if [[ "$PYTHON_VERSION" == 2* ]]; then
