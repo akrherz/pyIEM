@@ -5,8 +5,9 @@ dist: trusty
 addons:
   artifacts:
     target_paths: /$PYTHON_VERSION
-    working_dir: mplresults
-    s3_region: us-east-2
+    paths: mplresults
+    s3_region: "us-east-2"
+    debug: true
   postgresql: "9.5"
   apt:
     packages:
