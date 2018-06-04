@@ -36,6 +36,12 @@ class TestMETAR(unittest.TestCase):
         self.cursor = self.conn.cursor(
             cursor_factory=psycopg2.extras.DictCursor)
 
+    def test_180604_nonascii(self):
+        """See that we don't error on non-ASCII METARs"""
+        utcnow = utc(2018, 6, 4)
+        prod = PARSER(get_file("badchars.txt"), utcnow=utcnow)
+        assert len(prod.metars) == 3
+
     def test_future(self):
         """Can we handle products that are around the first"""
         utcnow = utc(2017, 12, 1)
