@@ -40,6 +40,7 @@ from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
 #
 from pyiem import reference
+from pyiem.util import ssw
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
                                   whitebluegreenyellowred, maue)
@@ -1213,8 +1214,8 @@ class MapPlot(object):
             sys.stderr.write("memcached key %s set time %s" % (memcachekey,
                                                                memcacheexpire))
         if web:
-            sys.stdout.write("Content-Type: image/png\n\n")
-            im2.save(sys.stdout, format='png')
+            ssw("Content-Type: image/png\n\n")
+            im2.save(getattr(sys.stdout, 'buffer', sys.stdout), format='png')
             return
         im2.save(tmpfn, format='PNG')
 
