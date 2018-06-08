@@ -18,11 +18,33 @@ from six import string_types
 import pytz
 import psycopg2
 import netCDF4
+import twython
 import numpy as np
 # NB We shall not be importing other parts of pyIEM here as we then get
 # circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+
+
+def get_twitter(screen_name):
+    """Provide an authorized Twitter API Client
+
+    Args:
+      screen_name (str): The twitter user we are fetching creds for
+    """
+    dbconn = get_dbconn('mesosite')
+    cursor = dbconn.cursor()
+    props = get_properties(cursor)
+    # fetch the oauth saved creds
+    cursor.execute("""
+    select access_token, access_token_secret from iembot_twitter_oauth
+    WHERE screen_name = %s
+    """, (screen_name, ))
+    row = cursor.fetchone()
+    dbconn.close()
+    return twython.Twython(props['bot.twitter.consumerkey'],
+                           props['bot.twitter.consumersecret'],
+                           row[0], row[1])
 
 
 def ssw(mixedobj):
