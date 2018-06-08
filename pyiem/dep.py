@@ -28,6 +28,7 @@ def get_cli_fname(lon, lat, scenario=0):
                                                       0 - lon,
                                                       lat)
 
+
 def read_yld(filename):
     """read WEPP yld file with some local mods to include a year
 
@@ -333,7 +334,7 @@ def read_env(filename, year0=2006):
                               'ir_det', 'av_det', 'mx_det', 'point',
                               'av_dep', 'max_dep', 'point2', 'sed_del',
                               'er'])
-    if len(df.index) == 0:
+    if df.empty:
         df['date'] = None
     else:
         # Faster than +=
@@ -364,7 +365,7 @@ def read_ofe(filename, year0=2006):
                               'canhght', 'cancov', 'intcov', 'rilcov',
                               'livbio', 'deadbio', 'ki', 'kr', 'tcrit',
                               'rilwid', 'sedleave'])
-    if len(df.index) == 0:
+    if df.empty:
         df['date'] = None
     else:
         # Faster than +=
@@ -379,7 +380,7 @@ def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
     df = pd.read_table(filename, delim_whitespace=True,
                        na_values=['*******', '******'])
-    if len(df.index) == 0:
+    if df.empty:
         df['date'] = None
     else:
         # Considerably faster than df.apply
