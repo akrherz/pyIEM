@@ -14,13 +14,9 @@ import warnings
 import getpass
 from socket import error as socket_error
 
-from six import string_types
-import pytz
-import psycopg2
-import netCDF4
-import twython
-import numpy as np
-# NB We shall not be importing other parts of pyIEM here as we then get
+# NB: some third party stuff is expensive to import, so let us be lazy
+
+# NB: We shall not be importing other parts of pyIEM here as we then get
 # circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
@@ -32,6 +28,7 @@ def get_twitter(screen_name):
     Args:
       screen_name (str): The twitter user we are fetching creds for
     """
+    import twython
     dbconn = get_dbconn('mesosite')
     cursor = dbconn.cursor()
     props = get_properties(cursor)
@@ -53,6 +50,7 @@ def ssw(mixedobj):
     Args:
       mixedobj (str or bytes): what content we want to send
     """
+    from six import string_types
     stdout = getattr(sys.stdout, 'buffer', sys.stdout)
     if isinstance(mixedobj, string_types):
         stdout.write(mixedobj.encode('utf-8'))
@@ -79,6 +77,7 @@ def ncopen(ncfn, mode='r', timeout=60):
     Returns:
       `netCDF4.Dataset` or `None`
     """
+    import netCDF4
     if mode != 'w' and not os.path.isfile(ncfn):
         raise FileNotFoundError("No such file %s" % (ncfn, ))
     sts = datetime.datetime.utcnow()
@@ -100,6 +99,7 @@ def utc(year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     Returns:
       datetime with tzinfo set
     """
+    import pytz
     return datetime.datetime(year, month, day, hour, minute, second,
                              microsecond).replace(tzinfo=pytz.utc)
 
@@ -120,6 +120,7 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
     Returns:
       psycopg2 database connection
     """
+    import psycopg2
     if user is None:
         user = getpass.getuser()
         # We hard code the apache user back to nobody, www-data is travis-ci
@@ -365,6 +366,7 @@ def grid_bounds(lons, lats, bounds):
     Returns:
       [x0, y0, x1, y1]
     """
+    import numpy as np
     x0 = 0
     x1 = -1
     y0 = 0
