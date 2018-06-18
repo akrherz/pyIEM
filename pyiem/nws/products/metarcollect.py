@@ -112,7 +112,8 @@ def sanitize(text):
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
     # daryl does not understand all of what follows as far as encode/decode
-    text = text.encode().replace(b'\xa0', b" ").replace(b"\001", b"")
+    text = text.encode('utf-8', 'ignore'
+        ).replace(b'\xa0', b" ").replace(b"\001", b"")
     text = text.replace(b"\003", b""
         ).replace(b"COR ", b"").decode('utf-8', errors='ignore')
     text = " ".join(text.strip().split())
