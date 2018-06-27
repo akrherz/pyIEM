@@ -4,11 +4,9 @@ import datetime
 import calendar
 
 import numpy as np
-import matplotlib
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
-matplotlib.use('agg')
-import matplotlib.pyplot as plt  # NOPEP8
+from pyiem.plot.use_agg import plt
 
 
 def _compute_bounds(sts, ets):

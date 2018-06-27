@@ -40,6 +40,7 @@ from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
 #
 from pyiem import reference
+from pyiem.plot.use_agg import plt
 from pyiem.util import ssw
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
@@ -47,18 +48,15 @@ from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
 import pyiem.meteorology as meteorology
 from scipy.signal import convolve2d
 # Matplotlib
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt  # nopep8
-from matplotlib.patches import Polygon, Rectangle  # nopep8
-import matplotlib.cm as cm  # nopep8
-import matplotlib.colors as mpcolors  # nopep8
+from matplotlib.patches import Polygon, Rectangle
+import matplotlib.cm as cm
+import matplotlib.colors as mpcolors
 import matplotlib.path as mpath
 import matplotlib.image as mpimage
-from matplotlib.patches import Wedge  # nopep8
+from matplotlib.patches import Wedge
 import matplotlib.patches as mpatches
-import matplotlib.colorbar as mpcolorbar  # nopep8
-import matplotlib.patheffects as PathEffects  # nopep8
+import matplotlib.colorbar as mpcolorbar
+import matplotlib.patheffects as PathEffects
 # cartopy
 import cartopy
 import cartopy.crs as ccrs
@@ -704,7 +702,7 @@ class MapPlot(object):
                 continue
             mask[imgx-15:imgx+15, imgy-15:imgy+15] = True
             # Plot bars
-            if stdata.get('sknt', 0) > 1:
+            if stdata.get('sknt') is not None and stdata['sknt'] > 1:
                 (u, v) = meteorology.uv(speed(stdata.get('sknt', 0), 'KT'),
                                         direction(stdata.get('drct', 0),
                                                   'DEG'))

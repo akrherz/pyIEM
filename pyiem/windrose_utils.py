@@ -5,12 +5,10 @@ import datetime
 import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt  # nopep8
-import matplotlib.image as mpimage  # nopep8
-from windrose import WindroseAxes  # nopep8
-from windrose.windrose import histogram  # nopep8
+import matplotlib.image as mpimage
+from pyiem.plot.use_agg import plt
+from windrose import WindroseAxes
+from windrose.windrose import histogram
 from pyiem.datatypes import speed
 from pyiem.util import get_dbconn
 from pyiem.network import Table as NetworkTable
