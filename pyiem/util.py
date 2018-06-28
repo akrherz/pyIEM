@@ -303,6 +303,20 @@ def get_properties(cursor=None):
     return res
 
 
+def set_property(propname, propvalue, pgconn=None):
+    """Set a property"""
+    if pgconn is None:
+        pgconn = get_dbconn('mesosite', user='mesonet')
+    cursor = pgconn.cursor()
+    cursor.execute("""DELETE from properties where propname = %s
+    """, (propname, ))
+    cursor.execute("""
+        INSERT into properties(propname, propvalue) VALUES (%s, %s)
+    """, (propname, propvalue))
+    cursor.close()
+    pgconn.commit()
+
+
 def drct2text(drct):
     """Convert an degree value to text representation of direction.
 
