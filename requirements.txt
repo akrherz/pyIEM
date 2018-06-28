@@ -1,3 +1,4 @@
+boxsdk
 netCDF4
 geopandas
 rasterstats
