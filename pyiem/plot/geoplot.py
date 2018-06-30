@@ -144,7 +144,7 @@ def true_filter(bm, key, val):
 
 def cwa_filter(bm, key, val):
     """A filter for checking a key against current plot"""
-    return (val.get('cwa') == bm.cwa)
+    return (val.get(b'cwa', b'').decode('utf-8') == bm.cwa)
 
 
 def state_filter(bm, key, val):
