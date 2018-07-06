@@ -1,6 +1,7 @@
+"""our setup file"""
 from distutils.core import setup
-from setuptools.command.test import test as TestCommand
 import sys
+from setuptools.command.test import test as TestCommand
 import pyiem
 
 
@@ -15,6 +16,7 @@ class PyTest(TestCommand):
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 
+
 setup(
     name='pyIEM',
     version=pyiem.__version__,
@@ -26,6 +28,7 @@ setup(
     download_url='',
     keywords=['weather'],
     classifiers=[],
+    install_requires=['cartopy', ],
     license='Apache',
     cmdclass={'test': PyTest},
     description=('Collection of things that may help with processing '
