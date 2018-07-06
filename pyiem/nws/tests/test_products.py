@@ -29,6 +29,19 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_180705_iembot_issue9():
+    """LSRBOU has mixed case, see what we can do"""
+    utcnow = utc(2018, 7, 4, 22, 11)
+    prod = parser(get_file('LSRDMX.txt'), utcnow=utcnow)
+    j = prod.get_jabbers('http://iem.local/')
+    assert j[0][2]['twitter'] == (
+        'At 1:30 PM, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER '
+        'reports TSTM WND GST of E61 MPH. SPOTTER MEASURED 61 MPH WIND GUST. '
+        'HIS CAR DOOR WAS ALSO CAUGHT BY THE WIND WHEN HE WAS OPENING '
+        'THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS CONTACT '
+        'BROKE... http://iem.local/#DMX/201807041830/201807041830')
+
+
 class TestProducts(unittest.TestCase):
     maxDiff = None
 
