@@ -406,7 +406,7 @@ class TextProduct(object):
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos, ]
+        return [self.afos, "%s..." % (self.afos[:3], )]
 
     def get_nicedate(self):
         """Nicely format the issuance time of this product"""

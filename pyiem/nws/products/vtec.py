@@ -651,6 +651,7 @@ class VTECProduct(TextProduct):
                     channels = self.get_affected_wfos()
                 channels.append('%s.%s' % (vtec.phenomena, vtec.significance))
                 channels.append(self.afos)
+                channels.append("%s..." % (self.afos[:3], ))
                 channels.append('%s.%s.%s' % (vtec.phenomena,
                                               vtec.significance, vtec.office))
                 for ugc in segment.ugcs:
