@@ -43,21 +43,9 @@ install:
   # ---------------------------------
   # Prioritize conda-forge channel over defaults for best compat
   - conda config --prepend channels conda-forge
-  - PACKAGES="$PACKAGES cython pytest pytest-mpl pytest-runner Shapely coveralls pandas cartopy affine"
-  - PACKAGES="$PACKAGES psycopg2 geojson mock descartes metpy geopandas rasterstats"
-  - PACKAGES="$PACKAGES fiona netCDF4"
-  - conda install -q $PACKAGES
-  # update all packages in the hope of resolving GDAL issue
-  - conda update -q --all
+  - conda install -q --file conda_requirements.txt
+  - pip install -r pip_requirements.txt
 
-  # Install pyIEM
-  # ---------------
-  - pip install -r requirements.txt
-  - if [[ "$PYTHON_VERSION" == 2* ]]; then
-      pip install gdata;
-    else  
-      pip install git+https://github.com/dvska/gdata-python3.git;
-    fi
 
 before_script:
   - psql -c 'create database postgis;' -U postgres
