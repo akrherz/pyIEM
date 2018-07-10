@@ -48,7 +48,7 @@ class HWOProduct(TextProduct):
             if day27text is None:
                 no_storms_day27 = False
 
-        channels = [self.afos, ]
+        channels = [self.afos, "%s..." % (self.afos[:3], )]
         if no_storms_day1 and no_storms_day27:
             channels[0] = "%s.NONE" % (self.afos,)
 

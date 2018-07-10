@@ -328,7 +328,8 @@ class CLIProduct(TextProduct):
                           trace_r(data['data'].get('snow_today', 'M')), url)
             res.append([mess.replace(str(TRACE_VALUE), "Trace"),
                         htmlmess.replace(str(TRACE_VALUE), "Trace"), {
-                            'channels': self.afos,
+                            'channels': self.get_channels(),
+                            'product_id': self.get_product_id(),
                             'twitter': tweet
                             }])
         return res

@@ -137,7 +137,7 @@ class MCDProduct(TextProduct):
                 '(<a href="%s?pid=%s">View text</a>)</p>'
                 ) % (center, spcuri, pextra, self.discussion_num,
                      prob_extra, uri, self.get_product_id())
-        channels = [self.afos, ]
+        channels = self.get_channels()
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_wfo])
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_rfc])
         channels.extend(["%s.%s" % (self.afos, w) for w in self.cwsus])

@@ -82,7 +82,7 @@ class SPSProduct(TextProduct):
                      ).strftime("%-I:%M %p"), self.z)
             counties, expire = dedup_headline(headline, seg.ugcs, counties,
                                               expire)
-            xtra['channels'] = self.afos
+            xtra['channels'] = self.get_channels()
             mess = ("%s issues %s%s%s %s?pid=%s"
                     ) % (self.source[1:], headline, counties,
                          expire, uri, xtra['product_id'])

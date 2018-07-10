@@ -32,7 +32,8 @@ def test_sps():
                 "KBMX-WWUS84-SPSBMX'>SIGNIFICANT WEATHER ADVISORY FOR "
                 "SOUTHWESTERN MARENGO COUNTY UNTIL 515 PM CDT</a></p>")
     assert jmsgs[0][1] == expected
-    assert jmsgs[0][2]['channels'] == 'SPSBMX'
+    assert 'SPSBMX' in jmsgs[0][2]['channels']
+    assert 'SPS...' in jmsgs[0][2]['channels']
 
     prod.sql(txn)
     txn.execute("""
