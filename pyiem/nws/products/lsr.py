@@ -62,12 +62,12 @@ class LSRProduct(TextProduct):
         for mylsr in self.lsrs:
             if mylsr.duplicate:
                 continue
-            time_fmt = "%-I:%M %p %Z"
+            time_fmt = "%-I:%M %p"
             url = "%s#%s/%s/%s" % (uri, mylsr.wfo,
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M"),
                                    mylsr.utcvalid.strftime("%Y%m%d%H%M"))
             if mylsr.valid.day != self.utcnow.day:
-                time_fmt = "%-d %b, %-I:%M %p %Z"
+                time_fmt = "%-d %b, %-I:%M %p"
             xtra = dict(
                 product_id=self.get_product_id(),
                 channels="LSR%s,LSR.ALL,LSR.%s" % (
@@ -80,16 +80,18 @@ class LSRProduct(TextProduct):
                 lat=str(mylsr.get_lat()),
                 long=str(mylsr.get_lon()))
             html = ("<p>%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at "
-                    "%s -- %s</p>") % (
+                    "%s %s -- %s</p>") % (
                 _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state,
                 mylsr.source, url, mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), cgi.escape(mylsr.remark))
+                mylsr.valid.strftime(time_fmt), self.z,
+                cgi.escape(mylsr.remark))
 
-            plain = "%s [%s Co, %s] %s reports %s at %s -- %s %s" % (
+            plain = "%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
                 _mylowercase(mylsr.city), mylsr.county.title(),
                 mylsr.state, mylsr.source,
                 mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), cgi.escape(mylsr.remark), url)
+                mylsr.valid.strftime(time_fmt), self.z,
+                cgi.escape(mylsr.remark), url)
             res.append([plain, html, xtra])
 
         if self.is_summary():

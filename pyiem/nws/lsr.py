@@ -45,6 +45,7 @@ class LSR(object):
         self.text = None
         self.wfo = None
         self.duplicate = False
+        self.z = None
 
     def get_lat(self):
         return self.geometry.xy[1][0]
@@ -86,8 +87,8 @@ class LSR(object):
 
     def tweet(self):
         """return a tweet text"""
-        msg = ("At %s, %s [%s Co, %s] %s reports %s"
-               ) % (self.valid.strftime('%-I:%M %p'),
+        msg = ("At %s %s, %s [%s Co, %s] %s reports %s"
+               ) % (self.valid.strftime('%-I:%M %p'), self.z,
                     _mylowercase(self.city), self.county.title(), self.state,
                     self.source, self.mag_string())
         remainsize = reference.TWEET_CHARS - 24 - len(msg)
@@ -104,8 +105,12 @@ class LSR(object):
         # We can't just assign the timezone as this does not work in pytz
         self.utcvalid = self.valid + datetime.timedelta(
                                                 hours=reference.offsets[z])
-        self.utcvalid = self.utcvalid.replace(tzinfo=pytz.timezone("UTC"))
+        self.utcvalid = self.utcvalid.replace(tzinfo=pytz.UTC)
         self.valid = self.utcvalid.astimezone(tz)
+        # complexity with non-DST sites
+        if z.endswith('ST') and self.valid.dst():
+            self.valid -= datetime.timedelta(hours=1)
+        self.z = z
 
     def mag_string(self):
         ''' Return a string representing the magnitude and units '''

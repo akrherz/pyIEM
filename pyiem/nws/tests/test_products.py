@@ -29,17 +29,45 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_170116_mixedlsr():
+    """LSRBOU has mixed case, see what we can do"""
+    utcnow = utc(2016, 11, 29, 22, 00)
+    prod = parser(get_file('mIxEd_CaSe/LSRBOU.txt'), utcnow=utcnow)
+    j = prod.get_jabbers('http://iem.local/')
+    assert j[0][2]['twitter'] == (
+        "At 11:00 AM MST, Akron [Washington Co, CO] ASOS reports "
+        "High Wind of M63 MPH "
+        "http://iem.local/#BOU/201611291800/201611291800")
+
+
+def test_180710_issue58():
+    """Crazy MST during MDT"""
+    utcnow = utc(2018, 7, 9, 22, 59)
+    prod = parser(get_file('LSRPSR.txt'), utcnow=utcnow)
+    j = prod.get_jabbers('http://iem.local/')
+    ans = ('At 3:57 PM MST, 5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER '
+           'reports FLASH FLOOD. STREET FLOODING WITH WATER OVER THE CURBS '
+           'IN THE MERRILL RANCH DEVELOPMENT OF FLORENCE. '
+           'http://iem.local/#PSR/201807092257/201807092257')
+    assert j[0][2]['twitter'] == ans
+    ans = ('5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER reports FLASH FLOOD '
+           'at 3:57 PM MST -- STREET FLOODING WITH WATER OVER THE CURBS IN '
+           'THE MERRILL RANCH DEVELOPMENT OF FLORENCE. '
+           'http://iem.local/#PSR/201807092257/201807092257')
+    assert j[0][0] == ans
+
+
 def test_180705_iembot_issue9():
     """LSRBOU has mixed case, see what we can do"""
     utcnow = utc(2018, 7, 4, 22, 11)
     prod = parser(get_file('LSRDMX.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][2]['twitter'] == (
-        'At 1:30 PM, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER '
+        'At 1:30 PM CDT, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER '
         'reports TSTM WND GST of E61 MPH. SPOTTER MEASURED 61 MPH WIND GUST. '
         'HIS CAR DOOR WAS ALSO CAUGHT BY THE WIND WHEN HE WAS OPENING '
         'THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS CONTACT '
-        'BROKE... http://iem.local/#DMX/201807041830/201807041830')
+        'B... http://iem.local/#DMX/201807041830/201807041830')
 
 
 class TestProducts(unittest.TestCase):
@@ -95,6 +123,7 @@ class TestProducts(unittest.TestCase):
     def test_180202_issue54(self):
         """Are we doing the right thing with VTEC EXP actions?"""
         def get_expire(cursor, colname):
+            """get expiration"""
             cursor.execute("""
             SELECT distinct """ + colname + """ from warnings_2018
             WHERE wfo = 'LWX' and eventid = 6 and phenomena = 'WW'
@@ -128,10 +157,10 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2017, 10, 29, 19, 18)
         prod = parser(get_file('mIxEd_CaSe/LSRBYZ.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://iem.local/')
-        self.assertEqual(j[0][2]['twitter'], (
-            "At 1:00 AM, 3 SSW Luther [Carbon Co, MT] Mesonet reports Snow "
-            "of 1.00 inch "
-            "http://iem.local/#BYZ/201710260700/201710260700"))
+        assert j[0][2]['twitter'] == (
+            "At 1:00 AM MDT, 3 SSW Luther [Carbon Co, MT] Mesonet "
+            "reports Snow of 1.00 inch "
+            "http://iem.local/#BYZ/201710260700/201710260700")
 
     def test_170823_tilde(self):
         """Can we parse a product that has a non-ascii char in it"""
@@ -204,7 +233,7 @@ class TestProducts(unittest.TestCase):
     def test_170403_badtime(self):
         """Handle when a colon is added to a timestamp"""
         prod = parser(get_file('FLWBOI.txt'))
-        _ = prod.get_jabbers("http://localhost", "http://localhost")
+        prod.get_jabbers("http://localhost", "http://localhost")
         self.assertEquals(prod.valid,
                           datetime.datetime(2017, 4, 2, 2, 30,
                                             tzinfo=pytz.utc))
@@ -248,9 +277,9 @@ class TestProducts(unittest.TestCase):
         """Look into exceptions"""
         utcnow = utc(2017, 3, 22, 2, 35)
         prod = parser(get_file('LSRPIH.txt'), utcnow=utcnow)
-        _ = prod.get_jabbers('http://iem.local/')
-        self.assertEquals(len(prod.warnings), 2)
-        self.assertEquals(len(prod.lsrs), 0)
+        prod.get_jabbers('http://iem.local/')
+        assert len(prod.warnings) == 2
+        assert not prod.lsrs
 
     def test_170324_ampersand(self):
         """LSRs with ampersands may cause trouble"""
@@ -273,16 +302,6 @@ class TestProducts(unittest.TestCase):
         j = prod.get_jabbers('http://iem.local/')
         self.assertEquals(len(prod.warnings), 0)
         self.assertEquals(len(j[0]), 3)
-
-    def test_170116_mixedlsr(self):
-        """LSRBOU has mixed case, see what we can do"""
-        utcnow = utc(2016, 11, 29, 22, 00)
-        prod = parser(get_file('mIxEd_CaSe/LSRBOU.txt'), utcnow=utcnow)
-        j = prod.get_jabbers('http://iem.local/')
-        self.assertEqual(j[0][2]['twitter'], (
-            "At 11:00 AM, Akron [Washington Co, CO] ASOS reports "
-            "High Wind of M63 MPH "
-            "http://iem.local/#BOU/201611291800/201611291800"))
 
     def test_170115_table_failure(self):
         """Test WSW series for issues"""
@@ -438,21 +457,21 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2015, 4, 22, 15, 20)
         prod = parser(get_file('LSRTAE.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://iem.local/')
-        self.assertEqual(j[0][1], (
+        assert j[0][1] == (
             '<p>4 W Bruce [Walton Co, FL] NWS EMPLOYEE '
             '<a href="http://iem.local/#TAE/201504191322/201504191322">'
             'reports TORNADO of EF0</a> at 19 Apr, 9:22 AM EDT -- '
             'SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL POL RADAR DEBRIS '
             'SIGNATURE IN A RURAL AREA WEST OF BRUCE. DAMAGE LIKELY CONFINED '
             'TO TREES. ESTIMATED DURATION 3 MINUTES. PATH LENGTH '
-            'APPROXIMATELY 1 MILE.</p>'))
-        self.assertEqual(j[0][2]['twitter'], (
-            'At 9:22 AM, 4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports '
+            'APPROXIMATELY 1 MILE.</p>')
+        assert j[0][2]['twitter'] == (
+            'At 9:22 AM EDT, 4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports '
             'TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL '
             'POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. '
             'DAMAGE LIKELY CONFINED TO TREES. ESTIMATED DURATION 3 MINUTES. '
-            'PATH LENGTH... '
-            'http://iem.local/#TAE/201504191322/201504191322'))
+            'PATH LEN... '
+            'http://iem.local/#TAE/201504191322/201504191322')
 
     def test_150331_notcorrection(self):
         """SVRMEG is not a product correction"""
@@ -556,37 +575,40 @@ class TestProducts(unittest.TestCase):
             # side test for expiration message
             if i == 3:
                 j = prod.get_jabbers('')
-                self.assertEquals(j[0][0],
-                                  ("STO expires Frost Advisory for "
-                                   "((CAZ015)), ((CAZ016)), ((CAZ017)), "
-                                   "((CAZ018)), ((CAZ019)), ((CAZ064)), "
-                                   "((CAZ066)), ((CAZ067)) [CA] "
-                                   "2014-O-EXP-KSTO-FR-Y-0001"))
+                assert j[0][0] == (
+                    "STO expires Frost Advisory for ((CAZ015)), ((CAZ016)), "
+                    "((CAZ017)), ((CAZ018)), ((CAZ019)), ((CAZ064)), "
+                    "((CAZ066)), ((CAZ067)) [CA] 2014-O-EXP-KSTO-FR-Y-0001")
             warnings = filter_warnings(prod.warnings)
-            self.assertEquals(len(warnings), 0, "\n".join(warnings))
+            assert not warnings
 
     def test_150102_multiyear(self):
         """ WSWOUN See how well we span multiple years """
         for i in range(13):
+            print(datetime.datetime.utcnow())
             print('Parsing Product: %s.txt' % (i,))
             prod = vtecparser(get_file('WSWOUN/%i.txt' % (i,)))
             prod.sql(self.txn)
             # Make sure there are no null issue times
-            self.txn.execute("""SELECT count(*) from warnings_2014
-            where wfo = 'OUN' and eventid = 16
-            and phenomena = 'WW' and significance = 'Y'
-            and issue is null""")
-            self.assertEquals(self.txn.fetchone()[0], 0)
+            self.txn.execute("""
+                SELECT count(*) from warnings_2014
+                where wfo = 'OUN' and eventid = 16
+                and phenomena = 'WW' and significance = 'Y'
+                and issue is null
+            """)
+            assert self.txn.fetchone()[0] == 0
             if i == 5:
-                self.txn.execute("""SELECT issue from warnings_2014
-                WHERE ugc = 'OKZ036' and wfo = 'OUN' and eventid = 16
-                and phenomena = 'WW' and significance = 'Y' """)
+                self.txn.execute("""
+                    SELECT issue from warnings_2014
+                    WHERE ugc = 'OKZ036' and wfo = 'OUN' and eventid = 16
+                    and phenomena = 'WW' and significance = 'Y'
+                """)
                 row = self.txn.fetchone()
-                self.assertEquals(row[0], utc(2015, 1, 1, 6, 0))
+                assert row[0] == utc(2015, 1, 1, 6, 0)
             warnings = filter_warnings(prod.warnings)
             warnings = filter_warnings(warnings, "Segment has duplicated")
             warnings = filter_warnings(warnings, "VTEC Product appears to c")
-            self.assertEquals(len(warnings), 0, "\n".join(warnings))
+            assert not warnings
 
     def test_141226_correction(self):
         """ Add another test for product corrections """
@@ -738,20 +760,20 @@ class TestProducts(unittest.TestCase):
         utcnow = utc(2014, 7, 6, 2, 1)
         prod = vtecparser(get_file('TORSVS.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], (
+        assert j[0][0] == (
             'DMX updates Tornado Warning '
             '[tornado: OBSERVED, hail: &lt;.75 IN] (cancels ((IAC049)) [IA], '
             'continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A '
             'CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING '
             'SOUTHEAST AT 30 MPH. '
-            'http://localhost2014-O-CON-KDMX-TO-W-0051'))
+            'http://localhost2014-O-CON-KDMX-TO-W-0051')
 
     def test_140714_segmented_watch(self):
         """ Two segmented watch text formatting stinks """
         utcnow = utc(2014, 7, 14, 17, 25)
         prod = vtecparser(get_file('WCNPHI.txt'), utcnow=utcnow)
         j = prod.get_jabbers('http://localhost', 'http://localhost')
-        self.assertEquals(j[0][0], (
+        assert j[0][0] == (
             "PHI issues Severe Thunderstorm Watch (issues ((DEC001)), "
             "((DEC003)), ((DEC005)) [DE] and ((MDC011)), ((MDC015)), "
             "((MDC029)), ((MDC035)), ((MDC041)) [MD] and ((NJC001)), "
@@ -763,7 +785,7 @@ class TestProducts(unittest.TestCase):
             "issues ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
             "((ANZ452)), ((ANZ453)), ((ANZ454)), ((ANZ455)) [AN]) "
             "till Jul 14, 8:00 PM EDT. "
-            "http://localhost2014-O-NEW-KPHI-SV-A-0418"))
+            "http://localhost2014-O-NEW-KPHI-SV-A-0418")
 
     def test_140610_tweet_spacing(self):
         ''' Saw spacing issue in tweet message '''
@@ -849,6 +871,7 @@ class TestProducts(unittest.TestCase):
         rows = []
 
         def safe(val):
+            """safe"""
             if val is None:
                 return '(null)'
             return val.strftime("%d%H%M")
@@ -1183,8 +1206,8 @@ class TestProducts(unittest.TestCase):
             "DROPPED FROM 63 TO 48 IN 10 MINUTES. "
             "http://iem.local/#DMX/201307230355/201307230355"))
 
-        self.assertEqual(prod.lsrs[5].tweet(),
-                         ("At 4:45 PM, Dows [Wright Co, IA] LAW ENFORCEMENT "
-                          "reports TSTM WND DMG. DELAYED REPORT. LARGE TREE "
-                          "BRANCH DOWN IN TOWN THAT TOOK OUT A POWER LINE "
-                          "AND BLOCKING PART OF A ROAD."))
+        ans = ("At 4:45 PM CDT, Dows [Wright Co, IA] LAW ENFORCEMENT "
+               "reports TSTM WND DMG. DELAYED REPORT. LARGE TREE "
+               "BRANCH DOWN IN TOWN THAT TOOK OUT A POWER LINE "
+               "AND BLOCKING PART OF A ROAD.")
+        assert prod.lsrs[5].tweet() == ans
