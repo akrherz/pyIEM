@@ -444,7 +444,10 @@ CREATE TABLE summary (
     et_inch real,
     srad_mj real,
     max_water_tmpf real,
-    min_water_tmpf real
+    min_water_tmpf real,
+    min_feel real,
+    avg_feel real,
+    max_feel real
 );
 GRANT SELECT on summary to nobody,apache;
 

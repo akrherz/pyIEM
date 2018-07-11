@@ -14,7 +14,7 @@ CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
                 'skyl3', 'skyl4', 'pcounter', 'discharge', 'p03i', 'p06i',
                 'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
                 'min_tmpf_24hr', 'battery', 'water_tmpf',
-                'wxcodes']
+                'wxcodes', 'feel']
 
 # Not including iemid, day
 SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
@@ -23,7 +23,7 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'snow_qc', 'snoww', 'max_drct', 'max_srad', 'coop_tmpf',
                 'coop_valid', 'et_inch', 'srad_mj', 'max_water_tmpf',
                 'min_water_tmpf', 'max_rh', 'min_rh', 'avg_sknt',
-                'vector_avg_drct']
+                'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
 
 
 class Observation(object):
@@ -117,7 +117,8 @@ class Observation(object):
         p06i = %(p06i)s,  p24i = %(p24i)s,  max_tmpf_6hr = %(max_tmpf_6hr)s,
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
         min_tmpf_24hr = %(min_tmpf_24hr)s, wxcodes = %(wxcodes)s,
-        battery = %(battery)s, water_tmpf = %(water_tmpf)s, valid = %(valid)s
+        battery = %(battery)s, water_tmpf = %(water_tmpf)s,
+        feel = %(feel)s, valid = %(valid)s
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not skip_current:
             txn.execute(sql, self.data)
@@ -131,7 +132,7 @@ class Observation(object):
             skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter,
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
-            water_tmpf) VALUES(
+            water_tmpf, feel) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
@@ -144,7 +145,7 @@ class Observation(object):
             %(skyl4)s, %(pcounter)s, %(discharge)s, %(p03i)s, %(p06i)s,
             %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
             %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(wxcodes)s,
-            %(battery)s, %(water_tmpf)s
+            %(battery)s, %(water_tmpf)s, %(feel)s
             )
             """
             txn.execute(sql, self.data)
@@ -157,6 +158,8 @@ min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
         max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
         min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
         min_dwpf = least(%(min_dwpf)s, min_dwpf, %(dwpf)s),
+        min_feel = least(%(min_feel)s, min_feel, %(feel)s),
+        max_feel = greatest(%(max_feel)s, max_feel, %(feel)s),
         max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
         max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
         max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
