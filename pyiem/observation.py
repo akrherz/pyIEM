@@ -1,6 +1,8 @@
 """A class representing an observation stored in the IEM database"""
 import warnings
 
+import metpy.calc as mcalc
+from metpy.units import units as munits
 import pytz
 
 # Not including iemid, valid
@@ -67,6 +69,23 @@ class Observation(object):
                 self.data[key] = row[key]
         return True
 
+    def calc(self):
+        """Compute things not usually computed"""
+        if (self.data['relh'] is None and
+                None not in [self.data['tmpf'], self.data['dwpf']]):
+            self.data['relh'] = float(mcalc.relative_humidity_from_dewpoint(
+                self.data['tmpf'] * munits.degF,
+                self.data['dwpf'] * munits.degF
+            ).to(munits.percent).magnitude)
+        if (self.data['feel'] is None and
+                None not in [self.data['tmpf'], self.data['relh'],
+                             self.data['sknt']]):
+            self.data['feel'] = float(mcalc.apparent_temperature(
+                 self.data['tmpf'] * munits.degF,
+                 self.data['relh'] * munits.percent,
+                 self.data['sknt'] * munits.knots
+            ).to(munits.degF).magnitude)
+
     def compute_iemid(self, txn):
         """Load in what our metadata is to save future queries"""
         if 'iemid' in self.data:
@@ -95,7 +114,7 @@ class Observation(object):
         """
         if not self.compute_iemid(txn):
             return False
-
+        self.calc()
         # Update current table
         sql = """UPDATE current c SET
         tmpf = %(tmpf)s,  dwpf = %(dwpf)s,  drct = %(drct)s,  sknt = %(sknt)s,

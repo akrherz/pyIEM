@@ -1,21 +1,31 @@
 """Test Observation"""
 import unittest
-import datetime
 import string
 import random
 
-import pytz
 import psycopg2.extras
 
 from pyiem import observation
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
+
+
+def test_calc():
+    """Can we compute feels like and RH?"""
+    ts = utc(2018)
+    ob = observation.Observation('FAKE', 'FAKE', ts)
+    ob.data['tmpf'] = 89.
+    ob.data['dwpf'] = 70.
+    ob.data['sknt'] = 10.
+    ob.calc()
+    assert (ob.data['feel'] - 94.3) < 0.1
+    assert (ob.data['relh'] - 53.6) < 0.1
 
 
 class TestObservation(unittest.TestCase):
+    """Some tests"""
 
     def setUp(self):
-        ts = datetime.datetime(2015, 9, 1, 1, 0)
-        ts = ts.replace(tzinfo=pytz.utc)
+        ts = utc(2015, 9, 1, 1, 0)
         sid = ''.join(random.choice(
                     string.ascii_uppercase + string.digits) for _ in range(7))
         self.iemid = 0 - random.randint(0, 1000)
