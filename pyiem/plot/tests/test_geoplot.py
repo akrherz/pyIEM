@@ -36,7 +36,7 @@ def test_hexbin():
                        ).reshape([lats.shape[0], lons.shape[0]])
     lons, lats = np.meshgrid(lons, lats)
     mp.hexbin(lons.flatten(), lats.flatten(), vals.flatten(),
-              np.arange(0, 1, 0.1))
+              np.arange(0, 1, 0.1), cmap='jet')
     return mp.fig
 
 

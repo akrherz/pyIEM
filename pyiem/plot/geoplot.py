@@ -44,7 +44,7 @@ from pyiem.plot.use_agg import plt
 from pyiem.util import ssw
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
-                                  whitebluegreenyellowred, maue)
+                                  whitebluegreenyellowred, maue, stretch_cmap)
 import pyiem.meteorology as meteorology
 from scipy.signal import convolve2d
 # Matplotlib
@@ -294,9 +294,9 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
         plotmissing (bool): should geometries not included in the `data`
         be mapped? Defaults to `True`
     """
-    cmap = kwargs.get('cmap', maue())
-    ilabel = kwargs.get('ilabel', False)
     bins = kwargs.get('bins', np.arange(0, 101, 10))
+    cmap = stretch_cmap(kwargs.get('cmap'), bins)
+    ilabel = kwargs.get('ilabel', False)
     norm = mpcolors.BoundaryNorm(bins, cmap.N)
     lblformat = kwargs.get('lblformat', '%s')
     labels = kwargs.get('labels', dict())
@@ -307,10 +307,10 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
         if val is None:
             if not plotmissing:
                 continue
-            lbl = labels.get(polykey, '-')
+            lbl = labels.get(polykey.decode('utf-8'), '-')
             c = 'white'
         else:
-            lbl = labels.get(polykey, lblformat % (val, ))
+            lbl = labels.get(polykey.decode('utf-8'), lblformat % (val, ))
             c = cmap(norm([val, ]))[0]
         # in python3, our dict types are byte arrays
         for polyi, polygon in enumerate(polydict.get(b'geom', [])):
@@ -889,7 +889,7 @@ class MapPlot(object):
           clevs (list): Levels to use for ramp
           **kwargs: additional options
         """
-        cmap = kwargs.get('cmap', maue())
+        cmap = stretch_cmap(kwargs.get('cmap'), clevs)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         colors = cmap(norm(vals))
@@ -900,7 +900,7 @@ class MapPlot(object):
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
         """ hexbin wrapper """
-        cmap = kwargs.get('cmap', maue())
+        cmap = stretch_cmap(kwargs.get('cmap'), clevs)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         points = self.ax.projection.transform_points(ccrs.PlateCarree(),
@@ -913,16 +913,8 @@ class MapPlot(object):
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
-        cmap = kwargs.get('cmap', maue())
+        cmap = stretch_cmap(kwargs.get('cmap'), clevs)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        # No No No, this fails horribly for curvilinear
-        # if lons.shape == vals.shape:
-        #    lon1d = lons[0, :]
-        #    lat1d = lats[:, 0]
-        #    lon1d = np.append(lon1d, lon1d[-1] + (lon1d[-1] - lon1d[-2]))
-        #    lat1d = np.append(lat1d, lat1d[-1] + (lat1d[-1] - lat1d[-2]))
-        #    lons, lats = np.meshgrid(lon1d, lat1d)
-        #
         res = self.ax.pcolormesh(lons, lats, vals, norm=norm,
                                  cmap=cmap, zorder=Z_FILL,
                                  transform=ccrs.PlateCarree())
@@ -994,7 +986,7 @@ class MapPlot(object):
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
 
-        cmap = kwargs.get('cmap', maue())
+        cmap = stretch_cmap(kwargs.get('cmap'), clevs)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         # vals = maskoceans(lons, lats, vals, resolution='h')
         self.ax.contourf(lons, lats, vals, clevs,
@@ -1024,7 +1016,7 @@ class MapPlot(object):
         clidict = load_pickle_geo('climdiv.pickle')
         polygon_fill(self, clidict, data, **kwargs)
 
-    def fill_ugcs(self, data, bins=np.arange(0, 101, 10), **kwargs):
+    def fill_ugcs(self, data, bins=None, **kwargs):
         """Overlay filled UGC geometries
 
         The logic for plotting is a bit tricky due to fire zones overlapping
@@ -1034,10 +1026,12 @@ class MapPlot(object):
 
         Args:
           data(dict): A dictionary of 6 char UGC code keys and values
-          bins(list, optional): Bins to use for cloropleth
+          bins(list, optional): Bins to use for cloropleth, default 0:101:10
           plotmissing(bool, optional): Should missing UGC data be plotted?
         """
-        cmap = kwargs.get('cmap', maue())
+        if bins is None:
+            bins = np.arange(0, 101, 10)
+        cmap = stretch_cmap(kwargs.get('cmap'), bins)
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         # Figure out if we have zones or counties/parishes
         counties = True

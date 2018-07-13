@@ -1,6 +1,42 @@
 """Definition of colormaps"""
+
+from six import string_types
+import numpy as np
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
+
+
+def stretch_cmap(cmap, bins):
+    """Return an adjusted cmap
+
+    The overall goal here is to make the cmap stretch so that the over and
+    under colors are in the selected cmap.  If `set_over` or `set_under` are
+    set, this is a NOOP.
+
+    Args:
+      cmap (cm.ColorMap): inbound colormap
+      bins (list): values for binning
+
+    Retuns:
+      cm.ColorMap
+    """
+    if cmap is None:
+        cmap = maue()
+    if isinstance(cmap, string_types):
+        cmap = cm.get_cmap(cmap)
+    # if we have either specified, don't override
+    # pylint: disable=W0212
+    if cmap._rgba_over is not None or cmap._rgba_under is not None:
+        return cmap
+
+    # get effectively two more colors than necessary
+    colors = cmap(np.arange(len(bins) + 1) / len(bins))
+    # create a new cmap, skipping first and last
+    cmap = mpcolors.ListedColormap(colors[1:-1], "")
+    cmap.set_under(colors[0])
+    cmap.set_over(colors[-1])
+    # we can now return
+    return cmap
 
 
 def nwsprecip():
@@ -37,7 +73,7 @@ def nwssnow():
              [0.61960784, 0., 0.],
              [0.41176471, 0., 0.]]
     cmap = mpcolors.ListedColormap(cpool, 'nwssnow')
-    cmap.set_over([0.16862745,  0., 0.18039216])
+    cmap.set_over([0.16862745, 0., 0.18039216])
     cmap.set_under('#FFFFFF')
     cmap.set_bad("#FFFFFF")
     cm.register_cmap(cmap=cmap)
@@ -131,8 +167,5 @@ def maue():
              "#f5a0a0", "#e16464", "#c83c3c"]
 
     cmap3 = mpcolors.ListedColormap(cpool, 'maue')
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
     cm.register_cmap(cmap=cmap3)
     return cmap3
