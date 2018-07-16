@@ -827,7 +827,7 @@ def gen_metar(data):
         mtr += "%02.0f" % (kts, )
         if 'OC1' in data['extra']:
             val = data['extra']['OC1'].get('speed', 0)
-            if val > 0:
+            if val is not None and val > 0:
                 mtr += "G%02.0f" % (speed(val, 'MPS').value('KT'), )
 
         mtr += 'KT '
