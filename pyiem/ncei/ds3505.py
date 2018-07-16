@@ -10,9 +10,9 @@ import datetime
 import json
 
 import pytz
-from pyiem.datatypes import speed, distance, pressure
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
+from pyiem.datatypes import speed, distance, pressure
 
 
 MISSING_RE = re.compile(r"^\+?\-?9+$")
@@ -401,7 +401,7 @@ ADDITIONAL = {
             ['direct_irradiance_qc', 1],
             ['diffuse_irradiance', 4], ['diffuse_irradiance_flag', 2],
             ['diffuse_irradiance_qc', 1],
-            ['uvb_irradiance', 4], ['uvb_irradiance_flag', 2],
+            ['uvb_irradiance', 4],
             ['uvb_irradiance_qc', 1]],
     # solar radiation
     'GN1': [['period', 4], ['upwelling_global', 4], ['upwelling_global_qc', 1],
@@ -742,7 +742,7 @@ def process_metar(mstr, now):
     # Presentwx
     if mtr.weather:
         pwx = []
-        for x in mtr.weather:
+        for wx in mtr.weather:
             val = "".join([a for a in wx if a is not None])
             if val == "" or val == len(val) * "/":
                 continue
