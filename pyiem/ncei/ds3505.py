@@ -55,7 +55,7 @@ DS3505_RE = re.compile(r"""
 
 def _tonumeric(val, scale_factor=1.):
     """Convert to what we want"""
-    if MISSING_RE.match(val):
+    if MISSING_RE.match(val) or val == 'D0':
         return None
     return float(val) / scale_factor
 
@@ -218,6 +218,9 @@ ADDITIONAL = {
     # Past weather automated
     'AZ1': [['cond_code', 1], ['qc', 1], ['period', 2], ['period_qc', 1]],
     'AZ2': [['cond_code', 1], ['qc', 1], ['period', 2], ['period_qc', 1]],
+    # unsure
+    'BA1': [['hours', 2, _i], ['depth', 4, _d10],
+            ['cond_code', 1], ['qc', 1]],
     # CRN Secondary Precip
     'CB1': [['minutes', 2], ['depth', 6], ['qc', 1], ['precip_flag', 1]],
     'CB2': [['minutes', 2], ['depth', 6], ['qc', 1], ['precip_flag', 1]],
@@ -890,8 +893,8 @@ def gen_metar(data):
     for code in ['AA1', 'AA2', 'AA3', 'AA4']:
         if code not in data['extra']:
             continue
-        hours = data['extra'][code]['hours']
-        depth = data['extra'][code]['depth']
+        hours = data['extra'][code].get('hours')
+        depth = data['extra'][code].get('depth')
         if hours is None or depth is None or hours == 12:
             continue
         elif depth == 0 and data['extra'][code]['cond_code'] != '2':
@@ -917,7 +920,9 @@ def gen_metar(data):
         if code not in data['extra']:
             continue
         val = data['extra'][code]
-        hours = val['hours']
+        hours = val.get('hours')
+        if hours is None:
+            continue
         typ = val['code']
         tmpc = val['tmpc']
         if tmpc is None:
@@ -983,7 +988,12 @@ def parser(msg, call_id, add_metar=False):
         data[elem] = _tonumeric(data[elem])
 
     data['extra'] = {}
-    parse_extra(data, msg[105:])
+    try:
+        parse_extra(data, msg[105:])
+    except Exception as exp:
+        # print('parse_extra failed |%s|' % (msg, ))
+        # print(exp)
+        pass
     if add_metar:
         try:
             gen_metar(data)
