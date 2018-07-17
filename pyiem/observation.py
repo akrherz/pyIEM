@@ -1,5 +1,6 @@
 """A class representing an observation stored in the IEM database"""
 import warnings
+import datetime
 
 import metpy.calc as mcalc
 from metpy.units import units as munits
@@ -28,6 +29,56 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
 
 
+def summary_update(txn, data):
+    """Updates the summary table and returns affected rows.
+
+    Args:
+      txn (psycopg2.transaction)
+      data (dict)
+
+    Returns:
+      int: affected rows count
+    """
+    sql = """UPDATE summary s SET
+max_water_tmpf = greatest(%(max_water_tmpf)s, max_water_tmpf, %(water_tmpf)s),
+min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
+    max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
+    max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
+    min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
+    min_dwpf = least(%(min_dwpf)s, min_dwpf, %(dwpf)s),
+    min_feel = least(%(min_feel)s, min_feel, %(feel)s),
+    max_feel = greatest(%(max_feel)s, max_feel, %(feel)s),
+    max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
+    max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
+    max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
+        or (max_sknt is null and %(sknt)s > 0)
+        THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz
+        ELSE max_sknt_ts END),
+    max_gust_ts = (CASE WHEN %(gust)s > max_gust or %(max_gust)s > max_gust
+        or (max_gust is null and %(gust)s > 0)
+        THEN coalesce(%(max_gust_ts)s, %(valid)s)::timestamptz
+        ELSE max_gust_ts END),
+    pday = coalesce(%(pday)s, pday),
+    pmonth = coalesce(%(pmonth)s, pmonth),
+    snow = coalesce(%(snow)s, snow),
+    snowd = coalesce(%(snowd)s, snowd),
+    snoww = coalesce(%(snoww)s, snoww),
+    max_drct = coalesce(%(max_drct)s, max_drct),
+    max_srad = coalesce(%(max_srad)s, max_srad),
+    coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
+    coop_valid = %(coop_valid)s, et_inch = %(et_inch)s,
+    max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
+    min_rh = least(%(min_rh)s, %(relh)s, min_rh),
+    srad_mj = %(srad_mj)s,
+    avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),
+    vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)
+    WHERE s.iemid = %(iemid)s and
+    s.day = date(%(valid)s at time zone %(tzname)s)
+    """
+    txn.execute(sql, data)
+    return txn.rowcount
+
+
 class Observation(object):
     """ my observation object """
 
@@ -40,7 +91,7 @@ class Observation(object):
         """
         if valid.tzinfo is None:
             warnings.warn("tzinfo is not set on valid, defaulting to UTC")
-            valid = valid.replace(tzinfo=pytz.utc)
+            valid = valid.replace(tzinfo=pytz.UTC)
         self.data = {'station': station,
                      'network': network,
                      'valid': valid,
@@ -169,45 +220,21 @@ class Observation(object):
             """
             txn.execute(sql, self.data)
 
-        # Update summary table
-        sql = """UPDATE summary s SET
-max_water_tmpf = greatest(%(max_water_tmpf)s, max_water_tmpf, %(water_tmpf)s),
-min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
-        max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
-        max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
-        min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
-        min_dwpf = least(%(min_dwpf)s, min_dwpf, %(dwpf)s),
-        min_feel = least(%(min_feel)s, min_feel, %(feel)s),
-        max_feel = greatest(%(max_feel)s, max_feel, %(feel)s),
-        max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
-        max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
-        max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
-            or (max_sknt is null and %(sknt)s > 0)
-            THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz
-            ELSE max_sknt_ts END),
-        max_gust_ts = (CASE WHEN %(gust)s > max_gust or %(max_gust)s > max_gust
-            or (max_gust is null and %(gust)s > 0)
-            THEN coalesce(%(max_gust_ts)s, %(valid)s)::timestamptz
-            ELSE max_gust_ts END),
-        pday = coalesce(%(pday)s, pday),
-        pmonth = coalesce(%(pmonth)s, pmonth),
-        snow = coalesce(%(snow)s, snow),
-        snowd = coalesce(%(snowd)s, snowd),
-        snoww = coalesce(%(snoww)s, snoww),
-        max_drct = coalesce(%(max_drct)s, max_drct),
-        max_srad = coalesce(%(max_srad)s, max_srad),
-        coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
-        coop_valid = %(coop_valid)s, et_inch = %(et_inch)s,
-        max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
-        min_rh = least(%(min_rh)s, %(relh)s, min_rh),
-        srad_mj = %(srad_mj)s,
-        avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),
-        vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)
-        WHERE s.iemid = %(iemid)s and
-        s.day = date(%(valid)s at time zone %(tzname)s)
-        """
-        txn.execute(sql, self.data)
-        if txn.rowcount != 1:
-            return False
+        rowcount = summary_update(txn, self.data)
+        if rowcount != 1:
+            # Create a new entry
+            localvalid = self.data['valid'].astimezone(
+                pytz.timezone(self.data['tzname']))
+            # we don't want dates into the future as this will foul up others
+            if localvalid.date() > datetime.date.today():
+                return False
+            txn.execute("""
+                INSERT into summary_""" + str(localvalid.year) + """
+                (iemid, day) VALUES (%s, %s)
+            """, (self.data['iemid'], localvalid.date()))
+            # try once more
+            rowcount = summary_update(txn, self.data)
+            if rowcount != 1:
+                return False
 
         return True
