@@ -30,7 +30,7 @@ def stretch_cmap(cmap, bins):
         return cmap
 
     # get effectively two more colors than necessary
-    colors = cmap(np.arange(len(bins) + 1) / len(bins))
+    colors = cmap(np.arange(len(bins) + 1) / float(len(bins)))
     # create a new cmap, skipping first and last
     cmap = mpcolors.ListedColormap(colors[1:-1], "")
     cmap.set_under(colors[0])

@@ -341,7 +341,7 @@ def test_plot2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.6)
+@pytest.mark.mpl_image_compare(tolerance=0.63)
 def test_plot22():
     """plot cwas that are filled"""
     mp = MapPlot(sector='iowa', continentalcolor='white', nocaption=True)
