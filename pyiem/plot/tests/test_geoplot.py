@@ -245,6 +245,10 @@ def test_states():
 def test_cwa():
     """Exercise the cwa plotting routines"""
     mp = MapPlot(sector='cwa', cwa='MKX', nocaption=True)
+    mp.contourf(np.arange(-94, -89), np.arange(40, 45),
+                np.arange(5), np.arange(5),
+                clevlabels=['a', 'b', 'c', 'd', 'e'])
+    mp.draw_cwas()
     assert mp.cwa == 'MKX'
     return mp.fig
 

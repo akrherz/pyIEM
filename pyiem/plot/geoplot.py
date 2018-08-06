@@ -928,12 +928,17 @@ class MapPlot(object):
     def draw_mask(self):
         """Draw the mask, when appropriate"""
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo'):
+        if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo',
+                               'cwa'):
             return
         # in lon,lat
         if self.sector == 'state':
             s = load_pickle_geo('us_states.pickle')
             mask_outside_geom(self.ax, s[self.state.encode()][b'geom'])
+            return
+        elif self.sector == 'cwa':
+            s = load_pickle_geo('cwa.pickle')
+            mask_outside_geom(self.ax, s[self.cwa.encode()][b'geom'])
             return
         elif self.sector == 'iowawfo':
             s = load_pickle_geo('iowawfo.pickle')
