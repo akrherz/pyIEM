@@ -15,6 +15,13 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_180807_idx1_idx2():
+    """This Day1 generated an error."""
+    spc = parser(get_file('PTSDY1_idx1_idx2.txt'))
+    outlook = spc.get_outlook('WIND', '0.05', 1)
+    assert abs(outlook.geometry.area - 37.83) < 0.02
+
+
 class TestPTS(unittest.TestCase):
     """Run Tests"""
 

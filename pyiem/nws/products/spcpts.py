@@ -88,14 +88,17 @@ def get_segments_from_text(text):
             pts = []
         else:
             pts.append([lon, lat])
-    if len(pts) > 0:
+    if pts:
         segments.append(pts)
 
     return segments
 
 
 def str2multipolygon(s):
-    """ Convert string PTS data into a polygon
+    """Convert string PTS data into a polygon.
+
+    Args:
+      s (str): the cryptic string that we attempt to make valid polygons from
     """
     segments = get_segments_from_text(s)
 
@@ -236,8 +239,20 @@ def str2multipolygon(s):
                            "isvalid: %s"
                            ) % (len(polys) - 1, polys[-1].area,
                                 polys[-1].is_valid))
+                # It is possible that our line start and end points are closest
+                # to the same point on the pie.
                 else:
-                    raise Exception('this should not happen, idx1 == idx2!')
+                    # just inject the point into the line
+                    tmpline = np.concatenate([line, [pie[idx2], ]])
+                    newpoly = Polygon(tmpline)
+                    if not newpoly.is_valid:
+                        print("    newpolygon is not valid, buffer(0) called ")
+                        newpoly = newpoly.buffer(0)
+                    polys.append(newpoly)
+                    print(("     + adding polygon index: %s area: %.2f "
+                           "isvalid: %s"
+                           ) % (len(polys) - 1, polys[-1].area,
+                                polys[-1].is_valid))
                 print("     breaking out of q loop")
                 break
 
@@ -256,7 +271,7 @@ def str2multipolygon(s):
             continue
         print('     polygon: %s has area: %s' % (i, poly.area))
         res.append(poly)
-    if len(res) == 0:
+    if not res:
         raise Exception(("Processed no geometries, this is a bug!\n"
                          "  s is %s\n"
                          "  segments is %s" % (repr(s), repr(segments))))
@@ -275,8 +290,16 @@ class SPCOutlookCollection(object):
 
 
 class SPCOutlook(object):
+    """A class holding what we store for a single outlook."""
 
     def __init__(self, category, threshold, multipoly):
+        """Constructor.
+
+        Args:
+          category (str): the label of this category
+          threshold (str): the threshold associated with the category
+          multipoly (MultiPolygon): the geometry
+        """
         self.category = category
         self.threshold = threshold
         self.geometry = multipoly
