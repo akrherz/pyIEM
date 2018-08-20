@@ -60,6 +60,14 @@ class SPSProduct(TextProduct):
                       self.valid, ets, self.afos)
             txn.execute(sql, myargs)
 
+    def _get_channels(self, segment):
+        """Returns a list of channels for this SPS."""
+        channels = self.get_channels()
+        for ugc in segment.ugcs:
+            channels.append("%s.%s" % (self.afos, ugc))
+            channels.append(str(ugc))
+        return channels
+
     def get_jabbers(self, uri, uri2=None):
         """return the standard [[text, html, xtra], ] for jabber"""
         res = []
@@ -82,7 +90,7 @@ class SPSProduct(TextProduct):
                      ).strftime("%-I:%M %p"), self.z)
             counties, expire = dedup_headline(headline, seg.ugcs, counties,
                                               expire)
-            xtra['channels'] = self.get_channels()
+            xtra['channels'] = self._get_channels(seg)
             mess = ("%s issues %s%s%s %s?pid=%s"
                     ) % (self.source[1:], headline, counties,
                          expire, uri, xtra['product_id'])

@@ -34,6 +34,8 @@ def test_sps():
     assert jmsgs[0][1] == expected
     assert 'SPSBMX' in jmsgs[0][2]['channels']
     assert 'SPS...' in jmsgs[0][2]['channels']
+    assert 'SPSBMX.ALZ039' in jmsgs[0][2]['channels']
+    assert 'ALZ039' in jmsgs[0][2]['channels']
 
     prod.sql(txn)
     txn.execute("""
