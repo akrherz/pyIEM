@@ -128,6 +128,12 @@ class Observation(object):
                 self.data['tmpf'] * munits.degF,
                 self.data['dwpf'] * munits.degF
             ).to(munits.percent).magnitude)
+        if (self.data['dwpf'] is None and
+                None not in [self.data['tmpf'], self.data['relh']]):
+            self.data['dwpf'] = float(mcalc.dewpoint_rh(
+                self.data['tmpf'] * munits.degF,
+                self.data['relh'] * munits.percent
+            ).to(munits.degF).magnitude)
         if (self.data['feel'] is None and
                 None not in [self.data['tmpf'], self.data['relh'],
                              self.data['sknt']]):

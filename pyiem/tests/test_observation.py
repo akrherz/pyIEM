@@ -62,6 +62,10 @@ class TestObservation(unittest.TestCase):
         self.ob.data['tmpf'] = 55
         response = self.ob.save(self.cursor)
         self.assertTrue(response)
+        assert self.ob.data['dwpf'] is None
+        self.ob.data['relh'] = 50
+        response = self.ob.save(self.cursor)
+        assert abs(self.ob.data['dwpf'] - 36.71) < 0.2
         self.cursor.execute("""SELECT max_tmpf from summary_2015
         WHERE day = '2015-09-01' and iemid = %s""", (self.iemid,))
         self.assertEquals(self.cursor.rowcount, 1)
