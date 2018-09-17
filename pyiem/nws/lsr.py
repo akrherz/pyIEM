@@ -93,8 +93,8 @@ class LSR(object):
                     self.source, self.mag_string())
         remainsize = reference.TWEET_CHARS - 24 - len(msg)
         if self.remark:
-            extra = "..." if len(self.remark) > (remainsize - 5) else ''
-            msg = "%s. %s%s" % (msg, self.remark[:(remainsize - 5)].strip(),
+            extra = "..." if len(self.remark) > (remainsize - 6) else ''
+            msg = "%s. %s%s" % (msg, self.remark[:(remainsize - 6)].strip(),
                                 extra)
         return msg
 

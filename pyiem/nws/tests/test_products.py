@@ -29,6 +29,19 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_180917_issue63_tweet_length():
+    """Make sure this tweet text is not too long!"""
+    utcnow = utc(2018, 9, 15, 11, 56)
+    prod = parser(get_file('LSRCRP.txt'), utcnow=utcnow)
+    j = prod.get_jabbers('http://iem.local/')
+    assert j[0][2]['twitter'] == (
+        "At 6:45 AM CDT, 2 NNE Odem [San Patricio Co, TX] DEPT OF HIGHWAYS "
+        "reports FLOOD. ROAD CLOSURE FM 1944 BETWEEN U.S. HIGHWAY 77 AND "
+        "SODVILLE ROAD (TEXAS DEPARTMENT OF TRANSPORATION. DRIVETEXAS.ORG.) "
+        "LATITUDE/LONGITUDE MARKS APPROXIMATE POSITION OF FM 194... "
+        "http://iem.local/#CRP/201809151145/201809151145")
+
+
 def test_170116_mixedlsr():
     """LSRBOU has mixed case, see what we can do"""
     utcnow = utc(2016, 11, 29, 22, 00)
@@ -66,8 +79,8 @@ def test_180705_iembot_issue9():
         'At 1:30 PM CDT, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER '
         'reports TSTM WND GST of E61 MPH. SPOTTER MEASURED 61 MPH WIND GUST. '
         'HIS CAR DOOR WAS ALSO CAUGHT BY THE WIND WHEN HE WAS OPENING '
-        'THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS CONTACT '
-        'B... http://iem.local/#DMX/201807041830/201807041830')
+        'THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS CONTACT'
+        '... http://iem.local/#DMX/201807041830/201807041830')
 
 
 class TestProducts(unittest.TestCase):
@@ -470,7 +483,7 @@ class TestProducts(unittest.TestCase):
             'TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL '
             'POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. '
             'DAMAGE LIKELY CONFINED TO TREES. ESTIMATED DURATION 3 MINUTES. '
-            'PATH LEN... '
+            'PATH LE... '
             'http://iem.local/#TAE/201504191322/201504191322')
 
     def test_150331_notcorrection(self):
