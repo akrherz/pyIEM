@@ -1,6 +1,7 @@
 """A class representing an observation stored in the IEM database"""
 import warnings
 import datetime
+import math
 
 import metpy.calc as mcalc
 from metpy.units import units as munits
@@ -27,6 +28,12 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'coop_valid', 'et_inch', 'srad_mj', 'max_water_tmpf',
                 'min_water_tmpf', 'max_rh', 'min_rh', 'avg_sknt',
                 'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
+
+
+def not_nan(val):
+    """Make sure this is not NaN."""
+    val = float(val)
+    return val if not math.isnan(val) else None
 
 
 def summary_update(txn, data):
@@ -124,20 +131,21 @@ class Observation(object):
         """Compute things not usually computed"""
         if (self.data['relh'] is None and
                 None not in [self.data['tmpf'], self.data['dwpf']]):
-            self.data['relh'] = float(mcalc.relative_humidity_from_dewpoint(
+            self.data['relh'] = not_nan(mcalc.relative_humidity_from_dewpoint(
                 self.data['tmpf'] * munits.degF,
                 self.data['dwpf'] * munits.degF
             ).to(munits.percent).magnitude)
         if (self.data['dwpf'] is None and
-                None not in [self.data['tmpf'], self.data['relh']]):
-            self.data['dwpf'] = float(mcalc.dewpoint_rh(
+                None not in [self.data['tmpf'], self.data['relh']] and
+                self.data['relh'] >= 1 and self.data['relh'] <= 100):
+            self.data['dwpf'] = not_nan(mcalc.dewpoint_rh(
                 self.data['tmpf'] * munits.degF,
                 self.data['relh'] * munits.percent
             ).to(munits.degF).magnitude)
         if (self.data['feel'] is None and
                 None not in [self.data['tmpf'], self.data['relh'],
                              self.data['sknt']]):
-            self.data['feel'] = float(mcalc.apparent_temperature(
+            self.data['feel'] = not_nan(mcalc.apparent_temperature(
                  self.data['tmpf'] * munits.degF,
                  self.data['relh'] * munits.percent,
                  self.data['sknt'] * munits.knots

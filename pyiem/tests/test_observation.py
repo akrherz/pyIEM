@@ -63,13 +63,16 @@ class TestObservation(unittest.TestCase):
         response = self.ob.save(self.cursor)
         self.assertTrue(response)
         assert self.ob.data['dwpf'] is None
+        self.ob.data['relh'] = 0
+        response = self.ob.save(self.cursor)
+        assert self.ob.data['dwpf'] is None
         self.ob.data['relh'] = 50
         response = self.ob.save(self.cursor)
         assert abs(self.ob.data['dwpf'] - 36.71) < 0.2
         self.cursor.execute("""SELECT max_tmpf from summary_2015
         WHERE day = '2015-09-01' and iemid = %s""", (self.iemid,))
-        self.assertEquals(self.cursor.rowcount, 1)
-        self.assertEquals(self.cursor.fetchone()[0], 55)
+        self.assertEqual(self.cursor.rowcount, 1)
+        self.assertEqual(self.cursor.fetchone()[0], 55)
 
     def test_update(self):
         """ Make sure we can update the database """
