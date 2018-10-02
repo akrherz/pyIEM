@@ -93,15 +93,19 @@ def ncopen(ncfn, mode='r', timeout=60):
     return nc
 
 
-def utc(year, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
-    """Create a datetime instance with tzinfo=pytz.utc
+def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
+    """Create a datetime instance with tzinfo=pytz.UTC
+
+    When no arguments are provided, returns `datetime.utcnow()`.
 
     Returns:
       datetime with tzinfo set
     """
     import pytz
+    if year is None:
+        return datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
     return datetime.datetime(year, month, day, hour, minute, second,
-                             microsecond).replace(tzinfo=pytz.utc)
+                             microsecond).replace(tzinfo=pytz.UTC)
 
 
 def get_dbconn(dbname, user=None, host=None, port=5432):
