@@ -27,6 +27,15 @@ def test_ssw():
         fake_out.seek(0)
 
 
+def test_utc():
+    """Does the utc() function work as expected."""
+    answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=pytz.UTC)
+    res = util.utc(2017, 2, 1, 2, 20)
+    assert answer == res
+    answer = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+    assert answer.year == util.utc().year
+
+
 def get_file(name):
     ''' Helper function to get the text file contents '''
     basedir = os.path.dirname(__file__)
@@ -49,12 +58,6 @@ class TestUtil(unittest.TestCase):
             raise Exception("Always Raises :)")
         res = util.exponential_backoff(bad, _ebfactor=0)
         self.assertTrue(res is None)
-
-    def test_utc(self):
-        """Does the utc() function work as expected"""
-        answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=pytz.utc)
-        res = util.utc(2017, 2, 1, 2, 20)
-        self.assertEquals(answer, res)
 
     def test_grid_bounds(self):
         """Can we compute grid bounds correctly"""

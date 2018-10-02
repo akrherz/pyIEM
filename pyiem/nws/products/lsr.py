@@ -1,17 +1,17 @@
-'''
-Local Storm Report
-'''
-# Stand Library Imports
+"""NWS Local Storm Report (LSR) Parsing."""
 import datetime
 import re
 import cgi
 
-# Third party
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
+from pyiem.util import utc
 from pyiem import reference
 
+# Don't permit LSRs that are more than 1 hour newer than product time
+# or future of the current time
+FUTURE_THRESHOLD = datetime.timedelta(hours=1)
 SPLITTER = re.compile(r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)",
                       re.MULTILINE)
 
@@ -146,6 +146,17 @@ def parse_lsr(prod, text):
     ampm = tokens[1]
     dstr = "%s:%s %s %s" % (h12, mm, ampm, lines[1][:10])
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
+    lsr.assign_timezone(prod.tz, prod.z)
+    # Check that we are within bounds
+    if (lsr.utcvalid > (prod.valid + FUTURE_THRESHOLD) or
+            lsr.utcvalid > (utc() + FUTURE_THRESHOLD)):
+        prod.warnings.append(
+            ("LSR is from the future!\n"
+             "prod.valid: %s lsr.valid: %s\n"
+             "%s\n") % (prod.valid, lsr.valid, text))
+        return None
+
+    lsr.wfo = prod.source[1:]
 
     lsr.typetext = lines[0][12:29].strip()
     if lsr.typetext.upper() not in reference.lsr_events:
@@ -183,8 +194,6 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         lsr = parse_lsr(prod, "".join(match.groups()))
         if lsr is None:
             continue
-        lsr.wfo = prod.source[1:]
-        lsr.assign_timezone(prod.tz, prod.z)
         prod.lsrs.append(lsr)
 
     return prod
