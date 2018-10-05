@@ -112,10 +112,10 @@ def sanitize(text):
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
     # daryl does not understand all of what follows as far as encode/decode
-    text = text.encode('utf-8', 'ignore'
-        ).replace(b'\xa0', b" ").replace(b"\001", b"")
-    text = text.replace(b"\003", b""
-        ).replace(b"COR ", b"").decode('utf-8', errors='ignore')
+    text = text.encode(
+        'utf-8', 'ignore').replace(b'\xa0', b" ").replace(b"\001", b"")
+    text = text.replace(
+        b"\003", b"").replace(b"COR ", b"").decode('utf-8', errors='ignore')
     text = " ".join(text.strip().split())
     # Look to see that our METAR starts with A-Z
     if re.match("^[0-9]", text):
@@ -187,7 +187,10 @@ class METARReport(Metar):
                 if val > -90 and val < 150:
                     iem.data['tmpf'] = round(val, 1)
             if self.dewpt:
-                iem.data['dwpf'] = round(self.dewpt.value("F"), 1)
+                val = self.dewpt.value("F")
+                # Place reasonable bounds on the temperature before saving it!
+                if val > -150 and val < 100:
+                    iem.data['dwpf'] = round(val, 1)
             # Daabase only allows len 254
             iem.data['raw'] = self.code[:254]
 
