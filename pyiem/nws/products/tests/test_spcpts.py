@@ -50,11 +50,13 @@ class TestPTS(unittest.TestCase):
         """Day3 URL is wrong"""
         spc = parser(get_file('PTSDY3.txt'))
         jdict = spc.get_jabbers('', '')
-        self.assertEquals(jdict[0][0],
-                          ('The Storm Prediction Center issues Day 3 '
-                           'Convective Outlook at Nov 19, 8:31z '
-                           'http://www.spc.noaa.gov/products/outlook/'
-                           'archive/2013/day3otlk_20131119_0830.html'))
+        self.assertEqual(
+            jdict[0][0],
+            ('The Storm Prediction Center issues Day 3 '
+             'Convective Outlook at Nov 19, 8:31z '
+             'https://www.spc.noaa.gov/products/outlook/archive/2013/'
+             'day3otlk_20131119_0830.html')
+        )
 
     def test_170612_nullgeom(self):
         """See why this has an error with null geom reported"""
@@ -92,11 +94,13 @@ class TestPTS(unittest.TestCase):
         # spc.draw_outlooks()
         spc.sql(self.txn)
         jabber = spc.get_jabbers('')
-        self.assertEquals(jabber[0][0],
-                          ("The Storm Prediction Center issues Days 4-8 "
-                           "Convective Outlook at Dec 25, 9:41z "
-                           "http://www.spc.noaa.gov/products/exper/day4-8/"
-                           "archive/2008/day4-8_20081225.html"))
+        self.assertEqual(
+            jabber[0][0],
+            ("The Storm Prediction Center issues Days 4-8 "
+             "Convective Outlook at Dec 25, 9:41z "
+             "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
+             "2008/day4-8_20081225.html")
+        )
 
     def test_051128_invalid(self):
         """Make sure that the SIG wind threshold does not eat the US"""
@@ -105,25 +109,27 @@ class TestPTS(unittest.TestCase):
         spc.sql(self.txn)
         outlook = spc.get_outlook('WIND', 'SIGN', 1)
         self.assertTrue(outlook.geometry.is_empty)
-        self.assertEquals(len(spc.warnings), 2, "\n".join(spc.warnings))
+        self.assertEqual(len(spc.warnings), 2, "\n".join(spc.warnings))
 
     def test_080731_invalid(self):
         """Make sure that the SIG wind threshold does not eat the US"""
         spc = parser(get_file('PTSDY1_biggeom.txt'))
         # spc.draw_outlooks()
         outlook = spc.get_outlook('WIND', 'SIGN', 1)
-        self.assertAlmostEquals(outlook.geometry.area, 15.82, 2)
-        self.assertEquals(len(spc.warnings), 1)
+        assert abs(outlook.geometry.area - 15.82) < 0.01
+        self.assertEqual(len(spc.warnings), 1)
 
     def test_170411_jabber_error(self):
         """This empty Fire Weather Day 3-8 raised a jabber error"""
         spc = parser(get_file('PFWF38_empty.txt'))
         j = spc.get_jabbers('')
-        self.assertEquals(j[0][0],
-                          ("The Storm Prediction Center issues Day 3-8 Fire "
-                           "Weather Outlook at Apr 11, 19:54z "
-                           "http://www.spc.noaa.gov/products/fire_wx/"
-                           "2017/20170413.html"))
+        self.assertEqual(
+            j[0][0],
+            ("The Storm Prediction Center issues Day 3-8 Fire "
+             "Weather Outlook at Apr 11, 19:54z "
+             "https://www.spc.noaa.gov/products/exper/fire_wx/2017/170413.html"
+             )
+        )
 
     def test_170406_day48_pre2015(self):
         """Can we parse a pre2015 days 4-8"""
@@ -239,47 +245,49 @@ class TestPTS(unittest.TestCase):
         spc = parser(get_file('PFWF38.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(3)
-        self.assertEquals(len(collect.outlooks), 1)
+        self.assertEqual(len(collect.outlooks), 1)
 
     def test_bug_140507_day1(self):
         ''' Bug found in production with GEOS Topology Exception '''
         spc = parser(get_file('PTSDY1_topoexp.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(1)
-        self.assertEquals(len(collect.outlooks), 14)
+        self.assertEqual(len(collect.outlooks), 14)
 
     def test_bug_140506_day2(self):
         """Bug found in production"""
         spc = parser(get_file('PTSDY2.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(2)
-        self.assertEquals(len(collect.outlooks), 6)
+        self.assertEqual(len(collect.outlooks), 6)
         j = spc.get_jabbers('localhost', 'localhost')
-        self.assertEquals(j[0][0],
-                          ('The Storm Prediction Center issues Day 2 '
-                           'Convective Outlook at May 6, 17:31z '
-                           'http://www.spc.noaa.gov/products/outlook/'
-                           'archive/2014/day2otlk_20140506_1730.html'))
+        self.assertEqual(
+            j[0][0],
+            ('The Storm Prediction Center issues Day 2 '
+             'Convective Outlook at May 6, 17:31z '
+             'https://www.spc.noaa.gov/products/outlook/archive/2014/'
+             'day2otlk_20140506_1730.html')
+        )
 
     def test_bug_140518_day2(self):
         ''' 18 May 2014 tripped error with no exterior polygon found '''
         spc = parser(get_file('PTSDY2_interior.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(2)
-        self.assertEquals(len(collect.outlooks), 1)
+        self.assertEqual(len(collect.outlooks), 1)
 
     def test_bug_140519_day1(self):
         ''' 19 May 2014 tripped error with no exterior polygon found '''
         spc = parser(get_file('PTSDY1_interior.txt'))
         # spc.draw_outlooks()
         collect = spc.get_outlookcollection(1)
-        self.assertEquals(len(collect.outlooks), 7)
+        self.assertEqual(len(collect.outlooks), 7)
 
     def test_bug(self):
         ''' Test bug list index outof range '''
         spc = parser(get_file('PTSDY1_2.txt'))
         collect = spc.get_outlookcollection(1)
-        self.assertEquals(len(collect.outlooks), 1)
+        self.assertEqual(len(collect.outlooks), 1)
 
     def test_complex_2(self):
         ''' Test our processing '''

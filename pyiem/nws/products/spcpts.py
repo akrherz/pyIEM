@@ -593,14 +593,14 @@ class SPCPTS(TextProduct):
         if self.afos == "PTSDY1":
             day = 'Day 1'
             product_descript = "Convective"
-            url = ("http://www.spc.noaa.gov/products/outlook/archive/"
+            url = ("https://www.spc.noaa.gov/products/outlook/archive/"
                    "%s/day1otlk_%s.html"
                    ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
         elif self.afos == "PTSDY2":
             day = 'Day 2'
             product_descript = "Convective"
             hhmm = "1730" if self.valid.hour > 11 else '0600'
-            url = ("http://www.spc.noaa.gov/products/outlook/archive/"
+            url = ("https://www.spc.noaa.gov/products/outlook/archive/"
                    "%s/day2otlk_%s_%s.html"
                    ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
         elif self.afos == "PTSDY3":
@@ -608,32 +608,37 @@ class SPCPTS(TextProduct):
             hhmm = '0730' if self.z == 'CDT' else '0830'
             day = 'Day 3'
             product_descript = "Convective"
-            url = ("http://www.spc.noaa.gov/products/outlook/archive/%s/"
+            url = ("https://www.spc.noaa.gov/products/outlook/archive/%s/"
                    "day3otlk_%s_%s.html") % (self.valid.year,
                                              self.valid.strftime("%Y%m%d"),
                                              hhmm)
         elif self.afos == "PTSD48":
             day = 'Days 4-8'
             product_descript = "Convective"
-            url = ("http://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
+            url = ("https://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
                    "day4-8_%s.html") % (self.valid.year,
                                         self.valid.strftime("%Y%m%d"))
         elif self.afos == "PFWFD1":
             day = 'Day 1'
             product_descript = "Fire Weather"
-            url = ("http://www.spc.noaa.gov/products/fire_wx/%s/"
-                   "%s.html") % (self.valid.year,
-                                 self.issue.strftime("%Y%m%d"))
+            url = self.issue.strftime(
+                ("https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
+                 "_fwdy1_print.html")
+            )
         elif self.afos == "PFWFD2":
             day = 'Day 2'
             product_descript = "Fire Weather"
-            url = ("http://www.spc.noaa.gov/products/fire_wx/%s/%s.html"
-                   ) % (self.valid.year, self.issue.strftime("%Y%m%d"))
+            url = self.issue.strftime(
+                ("https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
+                 "_fwdy2_print.html")
+            )
         elif self.afos == "PFWF38":
             day = 'Day 3-8'
             product_descript = "Fire Weather"
-            url = ("http://www.spc.noaa.gov/products/fire_wx/%s/%s.html"
-                   ) % (self.valid.year, self.issue.strftime("%Y%m%d"))
+            url = self.issue.strftime(
+                ("https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m%d"
+                 ".html")
+            )
 
         return product_descript, url, day
 
