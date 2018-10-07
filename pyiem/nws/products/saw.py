@@ -5,9 +5,9 @@ This does not process the legacy SAW products that did not have LAT...LON
 import re
 import datetime
 
-from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
+from pyiem.nws.product import TextProduct
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile((r"WW ([0-9]*) (TEST)?\s?"
@@ -220,7 +220,7 @@ class SAWProduct(TextProduct):
             html = ("<p>Storm Prediction Center cancels <a href=\"%s\">"
                     "Weather Watch Number %s</a></p>"
                     ) % (url, self.ww_num)
-            res.append([plain, html, dict(channels='SPC')])
+            res.append([plain, html, dict(channels='SPC', twitter=plain)])
             # Now create templates
             plain = ("Storm Prediction Center cancels Weather Watch Number %s "
                      "for portions of %%s %s") % (self.ww_num, url)
@@ -248,7 +248,7 @@ class SAWProduct(TextProduct):
             html2 = html + (" (<a href=\"%s?year=%s&amp;num=%s\">Watch "
                             "Quickview</a>)</p>"
                             ) % (uri, self.sts.year, self.ww_num)
-            res.append([plain2, html2, dict(channels='SPC')])
+            res.append([plain2, html2, dict(channels='SPC', twitter=plain2)])
             # Now create templates
             plain += " for portions of %%s %s" % (url,)
             html += (" for portions of %%s "
@@ -260,7 +260,7 @@ class SAWProduct(TextProduct):
             res.append([
                 plain % (wfo, ),
                 html % (wfo, ),
-                dict(channels=wfo)
+                dict(channels=wfo, twitter=(plain % (wfo, )))
                 ])
         return res
 
