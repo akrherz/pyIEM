@@ -7,6 +7,8 @@ fiona
 geojson
 metpy
 mock
+# needed for fiona?
+ncurses
 netCDF4
 geopandas
 pandas
