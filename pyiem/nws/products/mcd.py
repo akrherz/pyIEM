@@ -4,13 +4,18 @@
 """
 from __future__ import print_function
 import re
-import cgi
 import datetime
 
+
+import six
 import pytz
-from pyiem.nws.product import TextProduct
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
+from pyiem.nws.product import TextProduct
+if not six.PY2:
+    from html import escape as html_escape
+else:
+    from cgi import escape as html_escape
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
@@ -121,7 +126,7 @@ class MCDProduct(TextProduct):
           (list): List of lists, plain text, html text, xtra dict
         """
         # convert htmlentities
-        spcuri = cgi.escape(self.get_url())
+        spcuri = html_escape(self.get_url())
         center = 'Storm Prediction Center'
         pextra = ''
         if self.afos == 'FFGMPD':

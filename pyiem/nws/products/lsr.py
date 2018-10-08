@@ -1,13 +1,18 @@
 """NWS Local Storm Report (LSR) Parsing."""
 import datetime
 import re
-import cgi
 
+
+import six
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
 from pyiem.util import utc
 from pyiem import reference
+if not six.PY2:
+    from html import escape as html_escape
+else:
+    from cgi import escape as html_escape
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
@@ -84,14 +89,14 @@ class LSRProduct(TextProduct):
                 _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state,
                 mylsr.source, url, mylsr.mag_string(),
                 mylsr.valid.strftime(time_fmt), self.z,
-                cgi.escape(mylsr.remark))
+                html_escape(mylsr.remark))
 
             plain = "%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
                 _mylowercase(mylsr.city), mylsr.county.title(),
                 mylsr.state, mylsr.source,
                 mylsr.mag_string(),
                 mylsr.valid.strftime(time_fmt), self.z,
-                cgi.escape(mylsr.remark), url)
+                html_escape(mylsr.remark), url)
             res.append([plain, html, xtra])
 
         if self.is_summary():
