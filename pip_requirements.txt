@@ -1,6 +1,5 @@
 boxsdk
 sphinxcontrib-napoleon
-matplotlib>=2.0.0
 scipy
 oauth2client
 apiclient
