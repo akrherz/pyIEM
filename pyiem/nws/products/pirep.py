@@ -16,10 +16,15 @@ from __future__ import print_function
 import datetime
 import re
 import math
-import cgi
 
+
+import six
 import pyiem.nws.product as product
 from pyiem.datatypes import distance
+if not six.PY2:
+    from html import escape as html_escape
+else:
+    from cgi import escape as html_escape
 
 OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
 OV_LOCDIR = re.compile(
@@ -270,7 +275,7 @@ class Pirep(product.TextProduct):
             jmsg = {'priority':
                     'Urgent' if report.priority == 'UUA' else 'Routine',
                     'ts': report.valid.strftime("%H%M"),
-                    'report': cgi.escape(report.text),
+                    'report': html_escape(report.text),
                     'color':
                     '#ff0000' if report.priority == 'UUA' else '#00ff00'}
             plain = "%(priority)s pilot report at %(ts)sZ: %(report)s" % jmsg
