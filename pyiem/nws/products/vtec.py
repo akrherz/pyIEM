@@ -655,6 +655,12 @@ class VTECProduct(TextProduct):
                 channels.append('%s.%s.%s' % (vtec.phenomena,
                                               vtec.significance, vtec.office))
                 for ugc in segment.ugcs:
+                    # per state channels
+                    candidate = "%s.%s.%s" % (
+                        vtec.phenomena, vtec.significance, ugc.state
+                    )
+                    if candidate not in channels:
+                        channels.append(candidate)
                     channels.append('%s.%s.%s' % (vtec.phenomena,
                                                   vtec.significance, str(ugc)))
                     channels.append(str(ugc))
