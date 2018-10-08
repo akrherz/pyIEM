@@ -201,10 +201,13 @@ class TestProducts(unittest.TestCase):
         prod = vtecparser(get_file('FLSTWC.txt'))
         self.assertEqual(prod.z, "MST")
         j = prod.get_jabbers("http://localhost/")
-        self.assertEquals(j[0][0],
-                          ("TWC issues Areal Flood Advisory for ((AZC009)) "
-                           "[AZ] till Jul 18, 3:30 PM MST "
-                           "http://localhost/2017-O-NEW-KTWC-FA-Y-0034"))
+        assert 'FA.Y.AZ' in j[0][2]['channels'].split(",")
+        self.assertEqual(
+            j[0][0],
+            ("TWC issues Areal Flood Advisory for ((AZC009)) "
+             "[AZ] till Jul 18, 3:30 PM MST "
+             "http://localhost/2017-O-NEW-KTWC-FA-Y-0034")
+        )
 
     def test_170523_dupfail(self):
         """The dup check failed with an exception"""
