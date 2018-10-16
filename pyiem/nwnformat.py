@@ -3,11 +3,12 @@
 Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 """
 import datetime
-import pytz
+import traceback
 import re
 import math
+
+import pytz
 import pyiem.reference as reference
-import traceback
 import pyiem.util as util
 
 
@@ -138,7 +139,7 @@ class nwnformat(object):
     def setTS(self, newval):
         try:
             self.ts = datetime.datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
-        except:
+        except Exception as _exp:
             traceback.print_exc()
             self.error = 100
             return
@@ -147,7 +148,7 @@ class nwnformat(object):
             self.error = 101
 
     def avgWinds(self):
-        if (len(self.aSknt) == 0):
+        if not self.aSknt:
             self.sped = None
             self.drct = None
             return
