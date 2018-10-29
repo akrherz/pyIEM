@@ -137,15 +137,15 @@ class METARReport(Metar):
         """Convert this into a Jabber style message"""
         drct = 0
         sknt = 0
+        time = self.time.replace(tzinfo=pytz.UTC)
         if self.wind_gust:
             sknt = self.wind_gust.value("KT")
             if self.wind_dir:
                 drct = self.wind_dir.value()
-            time = self.time.replace(tzinfo=pytz.utc)
         if self.wind_speed_peak:
             v1 = self.wind_speed_peak.value("KT")
             d1 = self.wind_dir_peak.value()
-            t1 = self.peak_wind_time.replace(tzinfo=pytz.utc)
+            t1 = self.peak_wind_time.replace(tzinfo=pytz.UTC)
             if v1 > sknt:
                 sknt = v1
                 drct = d1
@@ -169,7 +169,13 @@ class METARReport(Metar):
         return False
 
     def to_iemaccess(self, txn, force_current_log=False, skip_current=False):
-        """Persist this data object to IEMAccess"""
+        """Persist parsed data to IEMAccess Database.
+
+        Args:
+          txn (psycopg2.cursor): database cursor / transaction
+          force_current_log (boolean): should this ob always go to current_log
+          skip_current (boolean): should this ob always skip current table
+        """
         gts = self.time.replace(tzinfo=pytz.utc)
         iem = Observation(self.iemid, self.network, gts)
         # Load the observation from the database, if the same time exists!
