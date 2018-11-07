@@ -54,7 +54,7 @@ install:
 
 
 before_script:
-  - psql -h localhost -c 'create database postgis;' -U postgres
+  - /usr/bin/psql -h localhost -c 'create database postgis;' -U postgres
   - psql -h localhost -c 'create user nobody;' -U postgres
   - psql -h localhost -c 'create user apache;' -U postgres
   - psql -h localhost -c 'create database portfolio;' -U postgres
