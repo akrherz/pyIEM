@@ -20,10 +20,12 @@ WATCH_PROB = re.compile(
 
 def section_parser(sect):
     """Parse this section of text"""
-    metadata = re.findall((r"([A-Z0-9]{4})\s+(...) MOS GUIDANCE\s+"
+    metadata = re.findall((r"([A-Z0-9]{4})\s+(...) (...) GUIDANCE\s+"
                            r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
                            r"([0-2][0-9]00) UTC"), sect)
-    (station, model, month, day, year, hhmm) = metadata[0]
+    (station, model, mos, month, day, year, hhmm) = metadata[0]
+    if model == 'NBM':
+        model = mos
     initts = datetime.datetime(int(year), int(month), int(day), int(hhmm[:2]))
     initts = initts.replace(tzinfo=pytz.utc)
 
@@ -108,9 +110,15 @@ class MOSProduct(TextProduct):
                 sst = "VALUES(%s,%s,%s,%s,"
                 args = [sect['station'], sect['model'], sect['initts'], ts]
                 for vname in sect['data'][ts].keys():
+                    # variables we don't wish to database
+                    if vname in ['FHR', ]:
+                        continue
                     fst += " %s," % (vname, )
                     sst += "%s,"
                     args.append(make_null(sect['data'][ts][vname]))
+                if len(args) == 4:
+                    # No data was found
+                    continue
                 sql = fst[:-1] + ") " + sst[:-1] + ")"
                 txn.execute(sql, args)
                 inserts += 1
@@ -120,7 +128,7 @@ class MOSProduct(TextProduct):
         """Parse out our data!"""
         raw = self.unixtext + "\n"
         raw = raw.replace("\n", "___").replace("\x1e", "")
-        sections = re.findall(r"([A-Z0-9]{4}\s+... MOS GUIDANCE .*?)______",
+        sections = re.findall(r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______",
                               raw)
         self.data = list(map(section_parser, sections))
         if not sections:

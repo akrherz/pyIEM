@@ -24,7 +24,19 @@ CREATE TABLE alldata(
  obv  character(2)  ,
  poz    smallint           ,
  pos    smallint        ,
- typ    character(2)
+ typ    character(2),
+  sky smallint,
+  gst smallint,
+  t03 smallint,
+  pzr smallint,
+  psn smallint,
+  ppl smallint,
+  pra smallint,
+  s06 smallint,
+  slv smallint,
+  i06 smallint,
+  lcb smallint,
+  swh smallint
 );
 GRANT ALL on alldata to mesonet,ldm;
 GRANT SELECT on alldata to nobody,apache;
