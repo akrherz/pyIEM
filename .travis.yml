@@ -29,7 +29,6 @@ before_install:
   - sudo chown postgres postgresql.conf
   - sudo mv postgresql.conf /etc/postgresql/10/main
   - sudo service postgresql start 10
-  - sudo service postgresql status
 
 install:
   # Install miniconda
@@ -55,22 +54,22 @@ install:
 
 
 before_script:
-  - psql -c 'create database postgis;' -U postgres
-  - psql -c 'create user nobody;' -U postgres
-  - psql -c 'create user apache;' -U postgres
-  - psql -c 'create database portfolio;' -U postgres
-  - psql -c 'create database iem;' -U postgres
-  - psql -c 'create database mesosite;' -U postgres
-  - psql -c 'create database asos;' -U postgres
-  - psql -c 'create database hads;' -U postgres
-  - psql -c 'create database mos;' -U postgres
-  - psql -U postgres -f data/schema/iem.sql iem
-  - psql -U postgres -f data/schema/postgis.sql postgis
-  - psql -U postgres -f data/schema/portfolio.sql portfolio
-  - psql -U postgres -f data/schema/mesosite.sql mesosite
-  - psql -U postgres -f data/schema/asos.sql asos
-  - psql -U postgres -f data/schema/hads.sql hads
-  - psql -U postgres -f data/schema/mos.sql mos
+  - psql -h localhost -c 'create database postgis;' -U postgres
+  - psql -h localhost -c 'create user nobody;' -U postgres
+  - psql -h localhost -c 'create user apache;' -U postgres
+  - psql -h localhost -c 'create database portfolio;' -U postgres
+  - psql -h localhost -c 'create database iem;' -U postgres
+  - psql -h localhost -c 'create database mesosite;' -U postgres
+  - psql -h localhost -c 'create database asos;' -U postgres
+  - psql -h localhost -c 'create database hads;' -U postgres
+  - psql -h localhost -c 'create database mos;' -U postgres
+  - psql -h localhost -U postgres -f data/schema/iem.sql iem
+  - psql -h localhost -U postgres -f data/schema/postgis.sql postgis
+  - psql -h localhost -U postgres -f data/schema/portfolio.sql portfolio
+  - psql -h localhost -U postgres -f data/schema/mesosite.sql mesosite
+  - psql -h localhost -U postgres -f data/schema/asos.sql asos
+  - psql -h localhost -U postgres -f data/schema/hads.sql hads
+  - psql -h localhost -U postgres -f data/schema/mos.sql mos
 
 script:
   - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
