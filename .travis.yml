@@ -29,8 +29,7 @@ before_install:
   - sudo chown postgres postgresql.conf
   - sudo mv postgresql.conf /etc/postgresql/10/main
   - sudo service postgresql start 10
-  - sudo add-apt-repository ppa:ubuntugis/ppa -y
-  - sudo apt-get update -qq
+  - sudo service postgresql status
 
 install:
   # Install miniconda
