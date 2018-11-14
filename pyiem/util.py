@@ -22,6 +22,22 @@ from socket import error as socket_error
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
 
 
+def logger():
+    """Create a standarized logger."""
+    logging.basicConfig(format='%(asctime)-15s %(message)s')
+    log = logging.getLogger()
+    log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
+    return log
+
+
+def find_ij(lons, lats, lon, lat):
+    """Compute the i,j closest cell."""
+    import numpy as np
+    dist = ((lons - lon)**2 + (lats - lat)**2)**0.5
+    (xidx, yidx) = np.unravel_index(dist.argmin(), dist.shape)
+    return xidx, yidx
+
+
 def get_twitter(screen_name):
     """Provide an authorized Twitter API Client
 

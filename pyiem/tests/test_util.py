@@ -13,6 +13,20 @@ import numpy as np
 from pyiem import util
 
 
+def test_logger():
+    """Can we emit logs."""
+    log = util.logger()
+    assert log is not None
+
+
+def test_find_ij():
+    """Can we find_ij()."""
+    xgrid, ygrid = np.meshgrid(np.arange(10), np.arange(10))
+    i, j = util.find_ij(xgrid, ygrid, 4, 4)
+    assert i == 4
+    assert j == 4
+
+
 def test_ssw():
     """Does pyiem.util.ssw work?"""
     with mock.patch('sys.stdout', new=BytesIO()) as fake_out:
