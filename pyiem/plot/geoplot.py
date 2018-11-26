@@ -419,13 +419,14 @@ class MapPlot(object):
             self.axes.append(self.ax)
         elif self.sector == 'state':
             self.state = kwargs.get('state', 'IA')
+            # We hard code aspect as Alaska does funny things with 'equal' set
             self.ax = make_axes(MAIN_AX_BOUNDS,
                                 [reference.state_bounds[self.state][0],
                                  reference.state_bounds[self.state][2],
                                  reference.state_bounds[self.state][1],
                                  reference.state_bounds[self.state][3]],
                                 ccrs.Mercator(),
-                                aspect)
+                                aspect if self.state != 'AK' else 'auto')
             self.axes.append(self.ax)
         elif self.sector == 'midwest':
             self.ax = make_axes(MAIN_AX_BOUNDS,

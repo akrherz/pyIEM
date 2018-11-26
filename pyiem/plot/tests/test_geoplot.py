@@ -361,3 +361,10 @@ def test_plot3():
     mp.fill_climdiv({'IAC001': 80, 'AKC003': 5, 'HIC003': 30,
                      'AJK': 40, 'HFO': 50})
     return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_alaska():
+    """See that Alaska plots nicely."""
+    mp = MapPlot(sector='state', state='AK', nocaption=True)
+    return mp.fig
