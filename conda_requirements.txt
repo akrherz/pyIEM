@@ -5,7 +5,7 @@ cython
 descartes
 fiona
 geojson
-matplotlib < 3
+matplotlib
 metpy
 mock
 # needed for fiona?

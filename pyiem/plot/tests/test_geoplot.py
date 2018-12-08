@@ -17,7 +17,7 @@ def test_illinois():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.7)
 def test_usdm():
     """Can we plot the current USDM"""
     mp = MapPlot(sector='conus', nocaption=True)
@@ -40,7 +40,7 @@ def test_hexbin():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_pcolormesh():
     """See if we can do pcolormesh OKish"""
     mp = MapPlot(sector='custom', north=43, east=-80, west=-96,
@@ -55,7 +55,7 @@ def test_pcolormesh():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.3)
 def test_conus():
     """See if we can plot albers"""
     mp = MapPlot(sector='custom',
@@ -69,7 +69,7 @@ def test_conus():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.3)
 def test_conus2():
     """Map the conus in LEA"""
     mp = MapPlot(sector='custom',
@@ -106,7 +106,7 @@ def test_michigan():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_drawcities():
     """Draw Cities"""
     mp = MapPlot(title='Fill and Draw Cities',
@@ -117,7 +117,7 @@ def test_drawcities():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_drawrandomtext():
     """See if we can handle the fun that is drawing random text"""
     mp = MapPlot(sector='iowa', title='Fun Text, here and there',
@@ -167,7 +167,7 @@ def test_climdiv():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector='iowa', nocaption=True)
