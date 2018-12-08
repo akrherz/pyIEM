@@ -252,6 +252,11 @@ class TextProductSegment(object):
         if poly is None:
             return None
 
+        # check 0, PGUM polygons are east longitude akrherz/pyIEM#74
+        if self.tp.source == 'PGUM':
+            newpts = [[0 - pt[0], pt[1]] for pt in poly.exterior.coords]
+            poly = Polygon(newpts)
+
         # check 1, is the polygon valid?
         if not poly.is_valid:
             self.tp.warnings.append(
