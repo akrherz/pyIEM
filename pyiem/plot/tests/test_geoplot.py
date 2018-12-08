@@ -140,7 +140,7 @@ def test_drawiowawfo():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.3)
 def test_fillstates():
     """Can we fill states"""
     data = {'AK': 10, 'HI': 30, 'IA': 40, 'NY': 80}
@@ -150,7 +150,7 @@ def test_fillstates():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.25)
 def test_drawcounties():
     """draw counties on the map"""
     mp = MapPlot(sector='midwest', title='Counties', nocaption=True)
@@ -179,7 +179,7 @@ def test_colorbar():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_colorbar2():
     """draw a colorbar"""
     mp = MapPlot(sector='iowa', nocaption=True)
@@ -192,7 +192,7 @@ def test_colorbar2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector='iowa', nocaption=True)
@@ -233,7 +233,7 @@ def test_filter_functions():
     assert plot.state_filter(mp, b'IAC001', dict())
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.15)
 def test_states():
     """Exercise the state plotting routines"""
     mp = MapPlot(sector='state', state='CA', nocaption=True)
@@ -241,7 +241,7 @@ def test_states():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_cwa():
     """Exercise the cwa plotting routines"""
     mp = MapPlot(sector='cwa', cwa='MKX', nocaption=True)
@@ -265,7 +265,7 @@ def test_colorramps():
     assert c.N == 11
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_overlap():
     """ Do some checking of our overlaps logic """
     mp = MapPlot(sector='midwest', continentalcolor='white', nocaption=True)
@@ -277,7 +277,7 @@ def test_overlap():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_barbs():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor='white', nocaption=True)
@@ -288,7 +288,7 @@ def test_barbs():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_scatter():
     """ Test scatter plots """
     mp = MapPlot(sector='midwest', title='Should see 100 dots',
@@ -310,7 +310,7 @@ def test_contourf():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_textplot():
     ''' Can we plot text and place labels on them '''
     mp = MapPlot(sector='iowa', nocaption=True)
@@ -318,7 +318,7 @@ def test_textplot():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_textplot2():
     """plot values on a map"""
     mp = MapPlot(sector='iowa', nocaption=True)
