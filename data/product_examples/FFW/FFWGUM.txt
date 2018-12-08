@@ -1,0 +1,51 @@
+071 
+WGMY50 PGUM 242023
+FFWGUM
+GUC100-110-120-250015-
+/O.NEW.PGUM.FF.W.0014.181024T2023Z-181025T0015Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service Tiyan GU
+612 AM ChST Thu Oct 25 2018
+
+The National Weather Service in Tiyan Guam has issued a
+
+* Flash Flood Warning for...
+  Rota Saipan Tinian 
+  * Until 1015 AM ChST.
+
+* At 612 AM ChST, satellite estimates indicated heavy rain across the
+  warned area. Up to three inches of rain have already fallen. Flash
+  flooding is expected to begin shortly.
+
+Additional rainfall amounts of 3 to 6 inches are possible in the 
+warned area.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+Keep children away from storm drains, culverts, creeks and streams.
+Water levels can rise rapidly and sweep children away.
+
+Please report flooding to your local law enforcement agency when you
+can do so safely.
+
+A Flash Flood Warning means that flooding is imminent or occurring.
+If you are in the warned area move to higher ground immediately.
+Residents living along streams and creeks should take immediate
+precautions to protect life and property.
+
+&&
+
+LAT...LON 1516 14580 1516 14574 1511 14576 1510 14571
+      1416 14528 1411 14512 1412 14511 1421 14526
+      1484 14558 1484 14554 1496 14562 1501 14558
+      1509 14563 1510 14570 1521 14572 1529 14581
+
+$$
+
+Kleeschulte

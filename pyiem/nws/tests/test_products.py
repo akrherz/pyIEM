@@ -37,6 +37,13 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_181207_issue74_guam():
+    """Guam's longitudes are east, not west like code assumes."""
+    prod = parser(get_file('FFW/FFWGUM.txt'))
+    ans = "SRID=4326;MULTIPOLYGON (((145.800000 15.160000, 145.740000"
+    assert prod.segments[0].giswkt.startswith(ans)
+
+
 def test_180917_issue63_tweet_length():
     """Make sure this tweet text is not too long!"""
     utcnow = utc(2018, 9, 15, 11, 56)
