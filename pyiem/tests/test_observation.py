@@ -57,6 +57,25 @@ class TestObservation(unittest.TestCase):
         response = self.ob.load(self.cursor)
         self.assertFalse(response)
 
+    def test_hardcoded_maxtmpf(self):
+        """Do we do the right thing when max_tmpf is set."""
+        self.ob.data['tmpf'] = 55
+        assert self.ob.save(self.cursor)
+        # in the database max_tmpf should be 55 now
+        self.cursor.execute("""
+            SELECT max_tmpf from summary_2015
+            WHERE day = '2015-09-01' and iemid = %s
+        """, (self.iemid,))
+        assert self.cursor.fetchone()[0] == 55
+        # setting max_tmpf to 54 should update it too
+        self.ob.data['max_tmpf'] = 54
+        assert self.ob.save(self.cursor)
+        self.cursor.execute("""
+            SELECT max_tmpf from summary_2015
+            WHERE day = '2015-09-01' and iemid = %s
+        """, (self.iemid,))
+        assert self.cursor.fetchone()[0] == 54
+
     def test_null(self):
         """ Make sure our null logic is working """
         self.ob.data['tmpf'] = 55

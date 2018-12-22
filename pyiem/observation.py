@@ -46,17 +46,28 @@ def summary_update(txn, data):
     Returns:
       int: affected rows count
     """
+    # NB with the coalesce func, we prioritize if we have explicit max/min vals
     sql = """UPDATE summary s SET
-max_water_tmpf = greatest(%(max_water_tmpf)s, max_water_tmpf, %(water_tmpf)s),
-min_water_tmpf = least(%(min_water_tmpf)s, min_water_tmpf, %(water_tmpf)s),
-    max_tmpf = greatest(%(max_tmpf)s, max_tmpf, %(tmpf)s),
-    max_dwpf = greatest(%(max_dwpf)s, max_dwpf, %(dwpf)s),
-    min_tmpf = least(%(min_tmpf)s, min_tmpf, %(tmpf)s),
-    min_dwpf = least(%(min_dwpf)s, min_dwpf, %(dwpf)s),
-    min_feel = least(%(min_feel)s, min_feel, %(feel)s),
-    max_feel = greatest(%(max_feel)s, max_feel, %(feel)s),
-    max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
-    max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
+    max_water_tmpf = coalesce(%(max_water_tmpf)s,
+        greatest(max_water_tmpf, %(water_tmpf)s)),
+    min_water_tmpf = coalesce(%(min_water_tmpf)s,
+        least( min_water_tmpf, %(water_tmpf)s)),
+    max_tmpf = coalesce(%(max_tmpf)s,
+        greatest(max_tmpf, %(tmpf)s)),
+    max_dwpf = coalesce(%(max_dwpf)s,
+        greatest(max_dwpf, %(dwpf)s)),
+    min_tmpf = coalesce(%(min_tmpf)s,
+        least(min_tmpf, %(tmpf)s)),
+    min_dwpf = coalesce(%(min_dwpf)s,
+        least(min_dwpf, %(dwpf)s)),
+    min_feel = coalesce(%(min_feel)s,
+        least(min_feel, %(feel)s)),
+    max_feel = coalesce(%(max_feel)s,
+        greatest(max_feel, %(feel)s)),
+    max_sknt = coalesce(%(max_sknt)s,
+        greatest(max_sknt, %(sknt)s)),
+    max_gust = coalesce(%(max_gust)s,
+        greatest(max_gust, %(gust)s)),
     max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
         or (max_sknt is null and %(sknt)s > 0)
         THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz
