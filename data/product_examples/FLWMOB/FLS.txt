@@ -1,0 +1,43 @@
+979 
+WGUS84 KMOB 281219
+FLSMOB
+Flood Statement
+National Weather Service Mobile, AL
+619 AM CST Fri Dec 28 2018
+ 
+
+...The flood warning continues for the following rivers in Mississippi...
+ 
+  Pascagoula At Merrill affecting George...Greene and Jackson Counties. 
+
+.Recent heavy rains have caused significant rises along the river. 
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+SAFETY MESSAGE... 
+Stay tuned to developments by listening to NOAA Weather radio.
+
+&&
+
+MSC039-041-059-291218-
+/O.EXT.KMOB.FL.W.0057.181229T0513Z-000000T0000Z/
+/MRRM6.2.ER.181229T0513Z.190102T1200Z.000000T0000Z.NO/
+619 AM CST Fri Dec 28 2018
+
+...Flood Warning extended until further notice...The Flood Warning continues for
+  the Pascagoula At Merrill
+* From tonight until further notice.
+* At 5 AM Friday the stage was 9.3 feet. 
+* No flooding is occurring and Moderate flooding is forecast. 
+* Flood stage is 22 feet.
+* Forecast to rise above flood stage by tonight and continue to rise near 27 
+  feet by Wednesday morning. Additional rises are possible thereafter.
+* At 25 feet...Flooding of some residences will occur as the level rises above
+  25 feet.
+
+&&
+
+LAT...LON 3098 8877 3098 8872 3082 8871 3074 8864
+ 3074 8868 3082 8879                  
+
+$$
