@@ -37,6 +37,15 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_181228_issue76_sbwtable(dbcursor):
+    """Can we locate the current SBW table with polys in the future."""
+    prod = vtecparser(get_file('FLWMOB/FLW.txt'))
+    prod.sql(dbcursor)
+    prod = vtecparser(get_file('FLWMOB/FLS.txt'))
+    prod.sql(dbcursor)
+    assert not filter_warnings(prod.warnings)
+
+
 def test_181207_issue74_guam():
     """Guam's longitudes are east, not west like code assumes."""
     prod = parser(get_file('FFW/FFWGUM.txt'))

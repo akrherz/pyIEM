@@ -1,0 +1,52 @@
+226 
+WGUS44 KMOB 280341
+FLWMOB
+BULLETIN - EAS ACTIVATION REQUESTED
+Flood Warning
+National Weather Service Mobile, AL
+941 PM CST Thu Dec 27 2018
+
+
+
+...The National Weather Service in Mobile has issued a flood warning for the 
+following river in Mississippi... 
+
+  Pascagoula At Merrill affecting George...Greene and Jackson Counties.
+
+.Recent heavy rains have caused significant rises along the river. 
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+SAFETY MESSAGE... 
+Stay tuned to developments by listening to NOAA Weather radio.
+
+&&
+
+MSC039-041-059-290341-
+/O.NEW.KMOB.FL.W.0057.181229T0341Z-000000T0000Z/
+/MRRM6.1.ER.181229T0341Z.181231T1200Z.000000T0000Z.NO/
+941 PM CST Thu Dec 27 2018
+
+The National Weather Service in Mobile has issued a 
+
+* Flood Warning for 
+  The Pascagoula At Merrill
+* From Friday evening until further notice
+* At 9 PM Thursday the stage was...7.6 feet. 
+* Minor flooding is forecast 
+* Flood stage is 22 feet. 
+* Forecast to rise above flood stage by tomorrow late evening and continue to 
+  rise near 24.5 feet by Monday morning. Additional rises are possible 
+  thereafter.
+* At 15 feet...Water is under homes in Cedar Creek Estates.
+* At 20 feet...Water covers the main road at Plum Bluff in southern George County.
+* At 24 feet...Streets of Merrill will become flooded and the bridge becomes inacessible 
+  by vehicles.
+* At 25 feet...Flooding of some residences.
+
+&&
+
+LAT...LON 3098 8877 3098 8872 3082 8871 3074 8864
+ 3074 8868 3082 8879                  
+
+$$

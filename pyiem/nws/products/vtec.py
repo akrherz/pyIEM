@@ -10,6 +10,11 @@ from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
 
+# When a VTEC product has an infinity time 000000T0000Z, we need some value
+# for the database to make things logically work.  We arb pick 21 days, which
+# seems to be enough time to ensure a WFO issues some followup statement
+DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
+
 
 def list_rows(txn, table, vtec):
     """Return a simple listing of what exists in the database"""
@@ -279,11 +284,10 @@ class VTECProduct(TextProduct):
         if vtec.action in ['NEW', 'EXB', 'EXA']:
             # New Event Types!
             bts = self.valid if vtec.begints is None else vtec.begints
-            # If this product has no expiration time, just set it ahead
-            # 21 days in time...
+            # If this product has no expiration time, but db needs a value
             ets = vtec.endts
             if vtec.endts is None:
-                ets = bts + datetime.timedelta(hours=(21 * 24))
+                ets = bts + DEFAULT_EXPIRE_DELTA
 
             # For each UGC code in this segment, we create a database entry
             for ugc in segment.ugcs:
@@ -362,9 +366,9 @@ class VTECProduct(TextProduct):
             # These are terminate actions, so we act accordingly
             if vtec.action in ['CAN', 'UPG']:
                 ets = self.valid
-            # If we are extending into infinity, lets call this +144 HRS
+            # If we are extending into infinity, but need a value
             if vtec.action == 'EXT' and vtec.endts is None:
-                ets = self.valid + datetime.timedelta(hours=144)
+                ets = self.valid + DEFAULT_EXPIRE_DELTA
 
             # An EXT action could change the issuance time, gasp
             issuesql = ""
@@ -450,7 +454,7 @@ class VTECProduct(TextProduct):
             if vtec.endts is not None:
                 polygon_end = vtec.endts
             else:
-                polygon_end = self.valid + datetime.timedelta(hours=24)
+                polygon_end = self.valid + DEFAULT_EXPIRE_DELTA
 
         if self.is_correction() and vtec.action == 'NEW':
             # Go delete the previous NEW polygon
@@ -485,10 +489,9 @@ class VTECProduct(TextProduct):
         """, (vtec.etn, vtec.office, vtec.phenomena, vtec.significance))
         current = None
         if txn.rowcount == 0 and vtec.action != 'NEW':
-            self.warnings.append(("%s.%s.%s Failed to find currently "
-                                  "active SBW") % (vtec.phenomena,
-                                                   vtec.significance,
-                                                   vtec.etn))
+            self.warnings.append(
+                ("%s was searched for %s.%s.%s and no results found"
+                 ) % (sbw_table, vtec.phenomena, vtec.significance, vtec.etn))
         if txn.rowcount > 0:
             current = txn.fetchone()
 
