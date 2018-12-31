@@ -6,7 +6,7 @@ import unittest
 import psycopg2.extras
 import pytz
 from pyiem.nws.products.saw import parser as sawparser
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, utc
 
 
 def get_file(name):
@@ -14,6 +14,18 @@ def get_file(name):
     basedir = os.path.dirname(__file__)
     fn = "%s/../../../../data/product_examples/SAW/%s" % (basedir, name)
     return open(fn).read()
+
+
+def test_181231_linkisok():
+    """The plain text tweet should have a space."""
+    utcnow = utc(2014, 3, 10, 3, 29)
+    prod = sawparser(get_file('SAW3.txt'), utcnow=utcnow)
+    jmsgs = prod.get_jabbers('')
+    ans = (
+        "SPC issues Severe Thunderstorm Watch 503 till 9:00Z "
+        "https://www.spc.noaa.gov/products/watch/2014/ww0503.html"
+    )
+    assert jmsgs[0][0] == ans
 
 
 class TestProducts(unittest.TestCase):
@@ -35,7 +47,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(jmsgs[0][0],
                          ("SPC issues Severe Thunderstorm Watch"
                           " 153 till 17:00Z, new watch replaces WW 1 "
-                          "http://www.spc.noaa.gov/products/watch/"
+                          "https://www.spc.noaa.gov/products/watch/"
                           "2017/ww0153.html"))
         assert 'twitter' in jmsgs[0][2]
 
@@ -62,7 +74,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(prod.action, prod.CANCELS)
         j = prod.get_jabbers(None)
         answer = ("Storm Prediction Center cancels Weather Watch Number 575 "
-                  "http://www.spc.noaa.gov/products/watch/2014/ww0575.html")
+                  "https://www.spc.noaa.gov/products/watch/2014/ww0575.html")
         self.assertEqual(j[0][0], answer)
         prod.sql(self.cursor)
         prod.compute_wfos(self.cursor)

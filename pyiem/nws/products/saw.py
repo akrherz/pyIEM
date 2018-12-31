@@ -212,7 +212,7 @@ class SAWProduct(TextProduct):
           uri (str): un-used in this context
         """
         res = []
-        url = ("http://www.spc.noaa.gov/products/watch/%s/ww%04i.html"
+        url = ("https://www.spc.noaa.gov/products/watch/%s/ww%04i.html"
                ) % (self.valid.year, self.ww_num)
         if self.action == self.CANCELS:
             plain = ("Storm Prediction Center cancels Weather Watch Number %s "
@@ -232,7 +232,7 @@ class SAWProduct(TextProduct):
                      ) % (TYPE2STRING[self.ww_type], self.ww_num,
                           self.ets.strftime("%-H:%M"))
             html = ("<p>Storm Prediction Center issues "
-                    "<a href=\"http://www.spc.noaa.gov/products/watch/"
+                    "<a href=\"https://www.spc.noaa.gov/products/watch/"
                     "ww%04i.html\">%s Watch %s</a> "
                     "till %s UTC") % (int(self.ww_num),
                                       TYPE2STRING[self.ww_type], self.ww_num,
@@ -244,7 +244,8 @@ class SAWProduct(TextProduct):
                 plain += ", new watch replaces " + rtext
                 html += ", new watch replaces " + rtext
 
-            plain2 = plain + url
+            plain2 = "%s %s" % (plain, url)
+            plain2 = " ".join(plain2.split())
             html2 = html + (" (<a href=\"%s?year=%s&amp;num=%s\">Watch "
                             "Quickview</a>)</p>"
                             ) % (uri, self.sts.year, self.ww_num)
@@ -256,6 +257,7 @@ class SAWProduct(TextProduct):
                      "Quickview</a>)</p>"
                      ) % (uri, self.sts.year, self.ww_num)
 
+        plain = " ".join(plain.split())
         for wfo in self.affected_wfos:
             res.append([
                 plain % (wfo, ),
