@@ -135,12 +135,13 @@ def test_issue9(dbcursor):
     prod = vtecparser(get_file('vtec/crosses_1.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
-    assert len(warnings) == 1
+    # We used to emit a warning for this, but not any more
+    assert not warnings
     utcnow = utc(2018, 1, 1, 21, 33)
     prod = vtecparser(get_file('vtec/crosses_2.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
-    assert len(warnings) == 1
+    assert not warnings
 
 
 def test_180202_issue54(dbcursor):

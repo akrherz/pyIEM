@@ -1,11 +1,10 @@
 """A NWS TextProduct that contains VTEC information
 """
-from __future__ import print_function
-
 # Standard Library Imports
 import datetime
 import itertools
 
+from twisted.python import log
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
@@ -77,7 +76,6 @@ def do_sql_hvtec(txn, segment):
     forecast_text = ""
     impact_text = ""
     for _, bullet in enumerate(segment.bullets):
-        # print("Enumerated bullet is ||%s||" % (bullet,))
         if bullet.strip().upper().find("FLOOD STAGE") == 0:
             flood_text = bullet
         if bullet.strip().upper().find("FORECAST") == 0:
@@ -233,11 +231,9 @@ class VTECProduct(TextProduct):
             if row['min'] is not None:
                 year = row['min'].year
                 if row['max'].year != year:
-                    self.warnings.append(
+                    log.msg(
                         ("VTEC Product appears to cross 1 Jan UTC "
-                         "minyear: %s maxyear: %s\n"
-                         "VTEC: %s\n"
-                         "product_id: %s"
+                         "minyear: %s maxyear: %s VTEC: %s product_id: %s"
                          ) % (year, row['max'].year, str(vtec),
                               self.get_product_id()))
                 self.db_year = year
@@ -281,8 +277,8 @@ class VTECProduct(TextProduct):
             maxtime = txn.fetchone()['maxtime']
             if maxtime is not None:
                 if maxtime == self.valid:
-                    print("RESENT Match, skipping SQL for %s!" % (
-                                                    self.get_product_id(),))
+                    log.msg("RESENT Match, skipping SQL for %s!" % (
+                        self.get_product_id(),))
                     return
 
         if vtec.action in ['NEW', 'EXB', 'EXA']:
