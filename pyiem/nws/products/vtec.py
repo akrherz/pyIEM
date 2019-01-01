@@ -1,10 +1,10 @@
 """A NWS TextProduct that contains VTEC information
 """
+from __future__ import print_function
 # Standard Library Imports
 import datetime
 import itertools
 
-from twisted.python import log
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
@@ -231,7 +231,7 @@ class VTECProduct(TextProduct):
             if row['min'] is not None:
                 year = row['min'].year
                 if row['max'].year != year:
-                    log.msg(
+                    print(
                         ("VTEC Product appears to cross 1 Jan UTC "
                          "minyear: %s maxyear: %s VTEC: %s product_id: %s"
                          ) % (year, row['max'].year, str(vtec),
@@ -277,7 +277,7 @@ class VTECProduct(TextProduct):
             maxtime = txn.fetchone()['maxtime']
             if maxtime is not None:
                 if maxtime == self.valid:
-                    log.msg("RESENT Match, skipping SQL for %s!" % (
+                    print("RESENT Match, skipping SQL for %s!" % (
                         self.get_product_id(),))
                     return
 
