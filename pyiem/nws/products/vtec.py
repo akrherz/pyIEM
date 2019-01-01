@@ -114,6 +114,9 @@ class VTECProduct(TextProduct):
         text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
 
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        # Which time partitioned table does this product belong to
+        # defaults to current UTC valid
+        self.db_year = self.valid.year
         self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
 
@@ -237,6 +240,7 @@ class VTECProduct(TextProduct):
                          "product_id: %s"
                          ) % (year, row['max'].year, str(vtec),
                               self.get_product_id()))
+                self.db_year = year
                 return "warnings_%s" % (year,)
 
         # Give up
@@ -670,7 +674,7 @@ class VTECProduct(TextProduct):
                 xtra = {'product_id': self.get_product_id(),
                         'channels': ",".join(channels),
                         'status': vtec.status,
-                        'vtec': vtec.get_id(self.valid.year),
+                        'vtec': vtec.get_id(self.db_year),
                         'ptype': vtec.phenomena,
                         'twitter': ''}
 
@@ -697,12 +701,12 @@ class VTECProduct(TextProduct):
                              'svr_special': segment.special_tags_to_text(),
                              'svs_special': '',
                              'svs_special_html': '',
-                             'year': self.valid.year,
+                             'year': self.db_year,
                              'phenomena': vtec.phenomena,
                              'eventid': vtec.etn,
                              'significance': vtec.significance,
                              'url': "%s%s" % (uri,
-                                              vtec.url(self.valid.year))}
+                                              vtec.url(self.db_year))}
                 if (segment.hvtec and
                         segment.hvtec[0].nwsli.id != '00000'):
                     jmsg_dict['county'] = segment.hvtec[0].nwsli.get_name()
@@ -787,7 +791,7 @@ class VTECProduct(TextProduct):
                 'sts': '',
                 'action': self.get_action(),
                 'product': vtec.get_ps_string(),
-                'url': "%s%s" % (uri, vtec.url(self.valid.year)),
+                'url': "%s%s" % (uri, vtec.url(self.db_year)),
             }
             # Include the special bulletin for Tornado Warnings
             if vtec.phenomena in ['TO', ] and vtec.significance == 'W':
