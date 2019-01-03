@@ -1004,7 +1004,7 @@ class MapPlot(object):
                                   transform=ccrs.PlateCarree())
             if kwargs.get('ilabel', False):
                 self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'),
-                               colors='k', fontsize=14, zorder=Z_FILL_LABEL)
+                               colors='k', fontsize=14)
         self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
