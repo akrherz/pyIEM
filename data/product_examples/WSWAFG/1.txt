@@ -1,0 +1,47 @@
+757
+WWAK42 PAFG 010439
+WSWWCZ
+
+URGENT - WINTER WEATHER MESSAGE
+National Weather Service Fairbanks AK
+739 PM AKST Mon Dec 31 2018
+
+
+AKZ214-011300-
+/O.EXB.PAFG.WW.Y.0127.000000T0000Z-190102T0700Z/
+Yukon Delta-
+Including Mountain Village, Emmonak, Alakanuk, Kotlik, 
+Pilot Station, St Marys, Scammon Bay, Marshall, Nunam Iqua, 
+and Pitkas Point
+739 PM AKST Mon Dec 31 2018
+
+...WINTER WEATHER ADVISORY IN EFFECT UNTIL 10 PM AKST TUESDAY...
+
+* WHAT...Blowing snow occurring. 
+
+* WHERE...Yukon Delta.
+
+* WHEN...Until 10 PM Tuesday.
+
+* ADDITIONAL DETAILS...Wind gusts as high as 25 mph will reduce
+  the visibility to one half mile or less at times.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+A Winter Weather Advisory for snow means periods of snow will
+cause travel difficulties.
+
+$$
+
+AKZ209-010545-
+/O.CAN.PAFG.WW.Y.0127.000000T0000Z-190101T0600Z/
+Baldwin Peninsula and Selawik Valley-
+Including Kotzebue, Selawik, and Noorvik
+739 PM AKST Mon Dec 31 2018
+
+...WINTER WEATHER ADVISORY IS CANCELLED...
+
+Conditions have improved across the area.
+
+$$
+

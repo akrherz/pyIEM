@@ -219,14 +219,24 @@ class VTECProduct(TextProduct):
             # etns going at once (happens around first of the year), AWIPS
             # does not handle this properly either
             txn.execute("""
-                SELECT min(product_issue at time zone 'UTC'),
+                SELECT tableoid::regclass as tablename,
+                min(product_issue at time zone 'UTC'),
                 max(product_issue at time zone 'UTC') from warnings
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
                 or expire > %s) and status not in ('UPG', 'CAN')
+                GROUP by tablename ORDER by tablename DESC
             """, (vtec.office, vtec.etn, vtec.significance, vtec.phenomena,
                   self.valid - datetime.timedelta(days=offset), self.valid,
                   self.valid))
+            if txn.rowcount == 0:
+                continue
+            if txn.rowcount > 1:
+                self.warnings.append(
+                    ("VTEC %s product: %s returned %s rows when "
+                     "searching for current table"
+                     ) % (str(vtec), self.get_product_id(), txn.rowcount)
+                )
             row = txn.fetchone()
             if row['min'] is not None:
                 year = row['min'].year
@@ -236,8 +246,8 @@ class VTECProduct(TextProduct):
                          "minyear: %s maxyear: %s VTEC: %s product_id: %s"
                          ) % (year, row['max'].year, str(vtec),
                               self.get_product_id()))
-                self.db_year = year
-                return "warnings_%s" % (year,)
+                self.db_year = int(row['tablename'].replace("warnings_", ""))
+                return row['tablename']
 
         # Give up
         table = "warnings_%s" % (self.valid.year,)

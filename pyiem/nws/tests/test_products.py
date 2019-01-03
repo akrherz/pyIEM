@@ -37,6 +37,19 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_190102_exb_newyear(dbcursor):
+    """See that we properly can find a complex EXB added in new year."""
+    for i in range(4):
+        prod = vtecparser(get_file('WSWAFG/%s.txt' % (i, )))
+        prod.sql(dbcursor)
+        assert not filter_warnings(prod.warnings)
+    dbcursor.execute("""
+        SELECT count(*) from warnings_2018 where wfo = 'AFG' and eventid = 127
+        and phenomena = 'WW' and significance = 'Y' and ugc = 'AKZ209'
+    """)
+    assert dbcursor.fetchone()['count'] == 2
+
+
 def test_181228_issue76_sbwtable(dbcursor):
     """Can we locate the current SBW table with polys in the future."""
     prod = vtecparser(get_file('FLWMOB/FLW.txt'))
