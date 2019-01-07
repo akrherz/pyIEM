@@ -14,6 +14,8 @@ import warnings
 import getpass
 from socket import error as socket_error
 
+from six import string_types
+
 # NB: some third party stuff is expensive to import, so let us be lazy
 
 # NB: We shall not be importing other parts of pyIEM here as we then get
@@ -66,7 +68,6 @@ def ssw(mixedobj):
     Args:
       mixedobj (str or bytes): what content we want to send
     """
-    from six import string_types
     stdout = getattr(sys.stdout, 'buffer', sys.stdout)
     if isinstance(mixedobj, string_types):
         stdout.write(mixedobj.encode('utf-8'))
@@ -240,8 +241,18 @@ def get_autoplot_context(fdict, cfg):
                 default = float(default)
         elif typ == 'select':
             options = opt.get('options', dict())
-            if value not in options:
-                value = default
+            # in case of multi, value could be a list
+            if isinstance(value, string_types):
+                if value not in options:
+                    value = default
+                if opt.get('multiple'):
+                    value = [value, ]
+            else:
+                res = []
+                for subval in value:
+                    if subval in options:
+                        res.append(subval)
+                value = res
         elif typ == 'datetime':
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:

@@ -57,6 +57,55 @@ def get_file(name):
     return open(fn).read()
 
 
+def test_get_autoplot_context():
+    """See that we can do things."""
+    form = dict(station='AMW', network='IA_ASOS', type2='bogus',
+                t=15, type3=['max-high', 'bogus', 'min-high'])
+    form['type'] = 'max-low'
+    pdict = OrderedDict([
+                            ('max-high', 'Maximum High'),
+                            ('avg-high', 'Average High'),
+                            ('min-high', 'Minimum High'),
+                            ('max-low', 'Maximum Low')])
+    cfg = dict(arguments=[
+        dict(type='station', name='station', default='IA0000'),
+        dict(type='select', name='type', default='max-high',
+             options=pdict),
+        dict(type='select', name='type2', default='max-high',
+             options=pdict),
+        dict(type='select', name='type3', default='max-high',
+             options=pdict, multiple=True),
+        dict(type='select', name='type4', default='max-high',
+             options=pdict, multiple=True, optional=True),
+        dict(type='int', name='threshold', default=-99),
+        dict(type='int', name='t', default=9, min=0, max=10),
+        dict(type='date', name='d', default='2011/11/12'),
+        dict(type='datetime', name='d2', default='2011/11/12 0000',
+             max='2017/12/12 1212', min='2011/01/01 0000'),
+        dict(type='year', name='year', default='2011', optional=True),
+        dict(type='float', name='f', default=1.10)])
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx['station'] == 'AMW'
+    assert ctx['network'] == 'IA_ASOS'
+    assert isinstance(ctx['threshold'], int)
+    assert ctx['type'] == 'max-low'
+    assert ctx['type2'] == 'max-high'
+    assert isinstance(ctx['f'], float)
+    assert ctx['t'] == 9
+    assert ctx['d'] == datetime.date(2011, 11, 12)
+    assert ctx['d2'] == datetime.datetime(2011, 11, 12)
+    assert 'year' not in ctx
+    assert 'bogus' not in ctx['type3']
+    assert 'type4' not in ctx
+
+    form = dict(zstation='DSM')
+    cfg = dict(arguments=[
+        dict(type='zstation', name='station', default='DSM',
+             network='IA_ASOS')])
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx['network'] == 'IA_ASOS'
+
+
 class TestUtil(unittest.TestCase):
     """Our Lame Unit Tests"""
 
@@ -112,48 +161,6 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(ctx['phenomenav1'], 'SV')
         self.assertTrue(ctx['phenomenav2'] is None)
         self.assertEqual(ctx['significancev4'], 'W')
-
-    def test_get_autoplot_context(self):
-        """See that we can do things"""
-        form = dict(station='AMW', network='IA_ASOS', type2='bogus',
-                    t=15)
-        form['type'] = 'max-low'
-        pdict = OrderedDict([
-                             ('max-high', 'Maximum High'),
-                             ('avg-high', 'Average High'),
-                             ('min-high', 'Minimum High'),
-                             ('max-low', 'Maximum Low')])
-        cfg = dict(arguments=[
-            dict(type='station', name='station', default='IA0000'),
-            dict(type='select', name='type', default='max-high',
-                 options=pdict),
-            dict(type='select', name='type2', default='max-high',
-                 options=pdict),
-            dict(type='int', name='threshold', default=-99),
-            dict(type='int', name='t', default=9, min=0, max=10),
-            dict(type='date', name='d', default='2011/11/12'),
-            dict(type='datetime', name='d2', default='2011/11/12 0000',
-                 max='2017/12/12 1212', min='2011/01/01 0000'),
-            dict(type='year', name='year', default='2011', optional=True),
-            dict(type='float', name='f', default=1.10)])
-        ctx = util.get_autoplot_context(form, cfg)
-        self.assertEqual(ctx['station'], 'AMW')
-        self.assertEqual(ctx['network'], 'IA_ASOS')
-        self.assertTrue(isinstance(ctx['threshold'], int))
-        self.assertEqual(ctx['type'], 'max-low')
-        self.assertEqual(ctx['type2'], 'max-high')
-        self.assertTrue(isinstance(ctx['f'], float))
-        self.assertEqual(ctx['t'], 9)
-        self.assertEqual(ctx['d'], datetime.date(2011, 11, 12))
-        self.assertEqual(ctx['d2'], datetime.datetime(2011, 11, 12))
-        self.assertTrue('year' not in ctx)
-
-        form = dict(zstation='DSM')
-        cfg = dict(arguments=[
-            dict(type='zstation', name='station', default='DSM',
-                 network='IA_ASOS')])
-        ctx = util.get_autoplot_context(form, cfg)
-        self.assertEquals(ctx['network'], 'IA_ASOS')
 
     def test_properties(self):
         """ Try the properties function"""
