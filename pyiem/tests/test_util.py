@@ -77,6 +77,8 @@ def test_get_autoplot_context():
              options=pdict, multiple=True),
         dict(type='select', name='type4', default='max-high',
              options=pdict, multiple=True, optional=True),
+        dict(type='select', name='type5', default='max-high',
+             options=pdict),
         dict(type='int', name='threshold', default=-99),
         dict(type='int', name='t', default=9, min=0, max=10),
         dict(type='date', name='d', default='2011/11/12'),

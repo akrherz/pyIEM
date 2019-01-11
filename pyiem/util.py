@@ -242,7 +242,9 @@ def get_autoplot_context(fdict, cfg):
         elif typ == 'select':
             options = opt.get('options', dict())
             # in case of multi, value could be a list
-            if isinstance(value, string_types):
+            if value is None:
+                value = default
+            elif isinstance(value, string_types):
                 if value not in options:
                     value = default
                 if opt.get('multiple'):
