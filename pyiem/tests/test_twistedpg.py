@@ -1,15 +1,11 @@
-"""tests"""
-import unittest
+"""tests of twistedpg."""
 
-from pyiem import twistedpg
 from psycopg2.extras import DictCursor
+from pyiem import twistedpg
 
 
-class TestTWPG(unittest.TestCase):
-    """Our tests"""
-
-    def test_connect(self):
-        """Does our logic work?"""
-        conn = twistedpg.connect(database='postgis', host='iemdb')
-        cursor = conn.cursor()
-        self.assertTrue(isinstance(cursor, DictCursor))
+def test_connect():
+    """Does our logic work?"""
+    conn = twistedpg.connect(database='postgis', host='iemdb')
+    cursor = conn.cursor()
+    assert isinstance(cursor, DictCursor)
