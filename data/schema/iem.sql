@@ -267,7 +267,10 @@ CREATE TABLE current_tmp(
     min_tmpf_24hr real,
     wxcodes varchar(12)[],
     battery real,
-    water_tmpf real
+    water_tmpf real,
+    ice_accretion_1hr real,
+    ice_accretion_3hr real,
+   ice_accretion_6hr real
 );
 
 CREATE TABLE current (
@@ -333,7 +336,10 @@ CREATE TABLE current (
     wxcodes varchar(12)[],
     battery real,
     water_tmpf real,
-    feel real
+    feel real,
+    ice_accretion_1hr real,
+    ice_accretion_3hr real,
+    ice_accretion_6hr real
 );
 CREATE UNIQUE index current_iemid_idx on current(iemid);
 GRANT SELECT on current to apache,nobody;
@@ -401,7 +407,10 @@ CREATE TABLE current_log (
     wxcodes varchar(12)[],
     battery real,
     water_tmpf real,
-    feel real
+    feel real,
+    ice_accretion_1hr real,
+    ice_accretion_3hr real,
+    ice_accretion_6hr real
 );
 
 CREATE OR REPLACE FUNCTION current_update_log() RETURNS trigger

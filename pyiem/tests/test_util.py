@@ -1,6 +1,5 @@
-"""Testing of util"""
+"""Testing of util."""
 import datetime
-import unittest
 import os
 import string
 import random
@@ -8,9 +7,16 @@ from io import BytesIO
 from collections import OrderedDict
 import mock
 
+import pytest
 import pytz
 import numpy as np
 from pyiem import util
+
+
+@pytest.fixture
+def cursor():
+    """Return a database cursor."""
+    return util.get_dbconn('mesosite').cursor()
 
 
 def test_logger():
@@ -108,79 +114,80 @@ def test_get_autoplot_context():
     assert ctx['network'] == 'IA_ASOS'
 
 
-class TestUtil(unittest.TestCase):
-    """Our Lame Unit Tests"""
+def test_backoff():
+    """Do the backoff of a bad func"""
+    def bad():
+        """Always errors"""
+        raise Exception("Always Raises :)")
+    res = util.exponential_backoff(bad, _ebfactor=0)
+    assert res is None
 
-    def setUp(self):
-        """Get me a connection"""
-        pgconn = util.get_dbconn('mesosite')
-        self.txn = pgconn.cursor()
 
-    def test_backoff(self):
-        """Do the backoff of a bad func"""
-        def bad():
-            """Always errors"""
-            raise Exception("Always Raises :)")
-        res = util.exponential_backoff(bad, _ebfactor=0)
-        self.assertTrue(res is None)
+def test_grid_bounds():
+    """Can we compute grid bounds correctly"""
+    lons = np.arange(-100, -80, 0.1)
+    lats = np.arange(29, 51, 0.2)
+    (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
+    assert x0 == 41
+    assert x1 == 111
+    assert y0 == 16
+    assert y1 == 56
+    (lons, lats) = np.meshgrid(lons, lats)
+    (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
+    assert x0 == 40
+    assert x1 == 110
+    assert y0 == 15
+    assert y1 == 55
 
-    def test_grid_bounds(self):
-        """Can we compute grid bounds correctly"""
-        lons = np.arange(-100, -80, 0.1)
-        lats = np.arange(29, 51, 0.2)
-        (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
-        self.assertEquals(x0, 41)
-        self.assertEquals(x1, 111)
-        self.assertEquals(y0, 16)
-        self.assertEquals(y1, 56)
-        (lons, lats) = np.meshgrid(lons, lats)
-        (x0, y0, x1, y1) = util.grid_bounds(lons, lats, [-96, 32, -89, 40])
-        self.assertEquals(x0, 40)
-        self.assertEquals(x1, 110)
-        self.assertEquals(y0, 15)
-        self.assertEquals(y1, 55)
 
-    def test_noaaport_text(self):
-        """See that we do what we expect with noaaport text processing"""
-        data = get_file('WCN.txt')
-        res = util.noaaport_text(data)
-        self.assertEquals(res[:11], "\001\r\r\n098 \r\r\n")
+def test_noaaport_text():
+    """See that we do what we expect with noaaport text processing"""
+    data = get_file('WCN.txt')
+    res = util.noaaport_text(data)
+    assert res[:11] == "\001\r\r\n098 \r\r\n"
 
-    def test_vtecps(self):
-        """Can we properly handle the vtecps form type"""
-        cfg = dict(arguments=[
-            dict(type='vtec_ps', name='v1', default='UNUSED',
-                 label='VTEC Phenomena and Significance 1'),
-            dict(type='vtec_ps', name='v2', default='UNUSED', optional=True,
-                 label='VTEC Phenomena and Significance 2'),
-            dict(type='vtec_ps', name='v3', default='UNUSED', optional=True,
-                 label='VTEC Phenomena and Significance 3'),
-            dict(type='vtec_ps', name='v4', default='UNUSED', optional=True,
-                 label='VTEC Phenomena and Significance 4')])
-        form = dict(phenomenav1='SV', significancev1='A',
-                    phenomenav4='TO', significancev4='W')
-        ctx = util.get_autoplot_context(form, cfg)
-        self.assertEqual(ctx['phenomenav1'], 'SV')
-        self.assertTrue(ctx['phenomenav2'] is None)
-        self.assertEqual(ctx['significancev4'], 'W')
 
-    def test_properties(self):
-        """ Try the properties function"""
-        tmpname = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                          for _ in range(7))
-        tmpval = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                         for _ in range(7))
-        self.txn.execute("""
-        INSERT into properties(propname, propvalue) VALUES (%s, %s)
-        """, (tmpname, tmpval))
-        prop = util.get_properties(self.txn)
-        self.assertTrue(isinstance(prop, dict))
-        self.assertEquals(prop[tmpname], tmpval)
+def test_vtecps():
+    """Can we properly handle the vtecps form type"""
+    cfg = dict(arguments=[
+        dict(type='vtec_ps', name='v1', default='UNUSED',
+             label='VTEC Phenomena and Significance 1'),
+        dict(type='vtec_ps', name='v2', default='UNUSED', optional=True,
+             label='VTEC Phenomena and Significance 2'),
+        dict(type='vtec_ps', name='v3', default='UNUSED', optional=True,
+             label='VTEC Phenomena and Significance 3'),
+        dict(type='vtec_ps', name='v4', default='UNUSED', optional=True,
+             label='VTEC Phenomena and Significance 4')])
+    form = dict(phenomenav1='SV', significancev1='A',
+                phenomenav4='TO', significancev4='W')
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx['phenomenav1'] == 'SV'
+    assert ctx['phenomenav2'] is None
+    assert ctx['significancev4'] == 'W'
 
-    def test_drct2text(self):
-        """ Test conversion of drct2text """
-        self.assertEquals(util.drct2text(360), "N")
-        self.assertEquals(util.drct2text(90), "E")
-        # A hack to get move coverage
-        for i in range(360):
-            util.drct2text(i)
+
+def test_properties(cursor):
+    """ Try the properties function"""
+    tmpname = ''.join(
+        random.choice(string.ascii_uppercase + string.digits)
+        for _ in range(7)
+    )
+    tmpval = ''.join(
+        random.choice(string.ascii_uppercase + string.digits)
+        for _ in range(7)
+    )
+    cursor.execute("""
+    INSERT into properties(propname, propvalue) VALUES (%s, %s)
+    """, (tmpname, tmpval))
+    prop = util.get_properties(cursor)
+    assert isinstance(prop, dict)
+    assert prop[tmpname] == tmpval
+
+
+def test_drct2text():
+    """ Test conversion of drct2text """
+    assert util.drct2text(360) == "N"
+    assert util.drct2text(90) == "E"
+    # A hack to get move coverage
+    for i in range(360):
+        util.drct2text(i)

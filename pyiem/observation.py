@@ -18,6 +18,7 @@ CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
                 'skyl3', 'skyl4', 'pcounter', 'discharge', 'p03i', 'p06i',
                 'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
                 'min_tmpf_24hr', 'battery', 'water_tmpf',
+                'ice_accretion_1hr', 'ice_accretion_3hr', 'ice_accretion_6hr',
                 'wxcodes', 'feel']
 
 # Not including iemid, day
@@ -213,6 +214,9 @@ class Observation(object):
         min_tmpf_6hr = %(min_tmpf_6hr)s,  max_tmpf_24hr = %(max_tmpf_24hr)s,
         min_tmpf_24hr = %(min_tmpf_24hr)s, wxcodes = %(wxcodes)s,
         battery = %(battery)s, water_tmpf = %(water_tmpf)s,
+        ice_accretion_1hr = %(ice_accretion_1hr)s,
+        ice_accretion_3hr = %(ice_accretion_3hr)s,
+        ice_accretion_6hr = %(ice_accretion_6hr)s,
         feel = %(feel)s, valid = %(valid)s
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not skip_current:
@@ -227,6 +231,7 @@ class Observation(object):
             skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter,
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
+            ice_accretion_1hr, ice_accretion_3hr, ice_accretion_6hr,
             water_tmpf, feel) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
@@ -240,7 +245,9 @@ class Observation(object):
             %(skyl4)s, %(pcounter)s, %(discharge)s, %(p03i)s, %(p06i)s,
             %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
             %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(wxcodes)s,
-            %(battery)s, %(water_tmpf)s, %(feel)s
+            %(battery)s,
+            %(ice_accretion_1hr)s, %(ice_accretion_3hr)s, %(ice_accretion_6hr)s
+            %(water_tmpf)s, %(feel)s
             )
             """
             txn.execute(sql, self.data)
