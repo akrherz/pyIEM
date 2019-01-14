@@ -123,7 +123,10 @@ CREATE TABLE alldata(
  mslp           real                      ,
  p01i           real                      ,
  wxcodes     varchar(8)[],
- report_type smallint
+ report_type smallint,
+ ice_accretion_1hr real,
+ ice_accretion_3hr real,
+ ice_accretion_6hr real
 );
 GRANT SELECT on alldata to nobody,apache;
 
