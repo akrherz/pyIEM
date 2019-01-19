@@ -246,7 +246,8 @@ class Observation(object):
             %(p24i)s, %(max_tmpf_6hr)s, %(min_tmpf_6hr)s,
             %(max_tmpf_24hr)s, %(min_tmpf_24hr)s, %(wxcodes)s,
             %(battery)s,
-            %(ice_accretion_1hr)s, %(ice_accretion_3hr)s, %(ice_accretion_6hr)s
+            %(ice_accretion_1hr)s, %(ice_accretion_3hr)s,
+            %(ice_accretion_6hr)s,
             %(water_tmpf)s, %(feel)s
             )
             """
