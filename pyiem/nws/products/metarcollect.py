@@ -286,6 +286,10 @@ class METARReport(Metar):
                 pwx.append(val)
             iem.data['wxcodes'] = pwx
 
+        # Ice Accretion
+        for hr in [1, 3, 6]:
+            key = 'ice_accretion_%shr' % (hr, )
+            iem.data[key] = trace(getattr(self, key))
         return iem, iem.save(txn, force_current_log, skip_current)
 
 
