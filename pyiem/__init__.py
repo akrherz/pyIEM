@@ -4,4 +4,4 @@ Python is an important part of the Iowa Environmental Mesonet (IEM).  This
 package is used by many parts of the IEM codebase and hopefully somewhat
 useful to others!?!?
 """
-__version__ = '0.9.1'
+__version__ = '0.10.0'
