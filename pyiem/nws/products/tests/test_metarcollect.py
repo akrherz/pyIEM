@@ -37,6 +37,17 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_190118_ice(dbcursor):
+    """Process a ICE Report."""
+    mtr = metarcollect.METARReport(
+        ("KABI 031752Z 30010KT 6SM BR FEW009 OVC036 02/01 A3003 RMK AO2 "
+         "SLP176 60001 I1000 T00170006 10017 21006 56017")
+    )
+    assert mtr.ice_accretion_1hr is not None
+    iemob, _ = mtr.to_iemaccess(dbcursor)
+    assert iemob.data['ice_accretion_1hr'] == TRACE_VALUE
+
+
 def test_180604_nonascii():
     """See that we don't error on non-ASCII METARs"""
     utcnow = utc(2018, 6, 4)
