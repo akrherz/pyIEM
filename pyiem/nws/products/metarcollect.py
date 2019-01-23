@@ -12,7 +12,7 @@ from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, TWEET_CHARS
 from pyiem import datatypes
 from pyiem.util import drct2text
 
@@ -360,8 +360,9 @@ class METARCollective(TextProduct):
                 xtra = {'channels': ",".join(channels),
                         'lat':  str(row.get('lat')),
                         'long': str(row.get('lon'))}
-                xtra['twitter'] = ("%s,%s (%s) ASOS reports %s"
-                                   ) % (nm, st, mtr.iemid, msg)
+                xtra['twitter'] = ((
+                    "%s,%s (%s) ASOS reports %s -- %s"
+                    ) % (nm, st, mtr.iemid, msg, mtr.code))[:TWEET_CHARS]
                 jmsgs.append([jtxt, jtxt, xtra])
 
         return jmsgs
