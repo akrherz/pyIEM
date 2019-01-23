@@ -623,6 +623,8 @@ class MapPlot(object):
           norm (normalize): The value normalizer
           title (str,optional): Place a label on the side, adjusts the plot
             accordingly to allow this text to fit, no multiline please!
+          spacing (str,optional): should the colorbar be `uniform` or
+            `proportional`, defaults to `uniform`
         """
         if self.cax is None:
             return
@@ -631,26 +633,32 @@ class MapPlot(object):
 
         under = clevs[0] - (clevs[1] - clevs[0])
         over = clevs[-1] + (clevs[-1] - clevs[-2])
-        blevels = np.concatenate([[under, ], clevs, [over, ]])
-        cb2 = mpcolorbar.ColorbarBase(self.cax, cmap=cmap,
-                                      norm=norm,
-                                      boundaries=blevels,
-                                      extend='both',
-                                      ticks=[],
-                                      spacing='uniform',
-                                      orientation='vertical')
-        clevstride = int(kwargs.get('clevstride', 1))
-        for i, (_, lbl) in enumerate(zip(clevs, clevlabels)):
-            if i % clevstride != 0:
-                continue
-            y = float(i) / (len(clevs) - 1)
-            text = ('%s' if isinstance(lbl, str) else '%g') % (lbl, )
-            fontsize = 16 if len(text) < 5 else 12
-            rotation = 0 if len(text) < 6 else 45
-            cb2.ax.text(2.4, y, text, va='center', ha='center',
-                        fontsize=fontsize, rotation=rotation)
+        extend = kwargs.get('extend', 'both')
+        # inspect the cmap to see if we need to do any extensions
+        if cmap._rgba_under is not None and cmap._rgba_over is None:
+            blevels = np.concatenate([[under, ], clevs])
+        elif cmap._rgba_under is None and cmap._rgba_over is not None:
+            blevels = np.concatenate([clevs, [over, ]])
+        elif cmap._rgba_under is not None and cmap._rgba_over is not None:
+            blevels = np.concatenate([[under, ], clevs, [over, ]])
+        else:
+            blevels = clevs
+        stride = slice(None, None, int(kwargs.get('clevstride', 1)))
+        cb2 = mpcolorbar.ColorbarBase(
+            self.cax, cmap=cmap, norm=norm, boundaries=blevels,
+            extend=extend, ticks=clevs[stride], format='%g',
+            spacing=kwargs.get('spacing', 'uniform'), orientation='vertical')
+        cb2.ax.set_yticklabels(clevlabels[stride])
         # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
+        for label in cb2.ax.get_yticklabels():
+            sz = len(label.get_text())
+            if sz > 4:
+                label.set_fontsize(12)
+            else:
+                label.set_fontsize(16)
+            if sz > 6:
+                label.set_rotation(45)
 
         if 'units' in kwargs:
             self.fig.text(0.99, 0.03, "data units :: %s" % (kwargs['units'],),

@@ -172,6 +172,7 @@ def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector='iowa', nocaption=True)
     cmap = plot.maue()
+    cmap.set_under('white')
     clevs = list(range(0, 101, 10))
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
     mp.drawcities()
@@ -188,7 +189,9 @@ def test_colorbar2():
     clevlabels = ["One", "Three", "Blahh", "Longest", "Five",
                   "Six", "Ten", "Fourty", 100000, "Hi\nHo", 100]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-    mp.draw_colorbar(clevs, cmap, norm, clevlabels=clevlabels)
+    mp.draw_colorbar(
+        clevs, cmap, norm, clevlabels=clevlabels
+    )
     return mp.fig
 
 
@@ -197,10 +200,12 @@ def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector='iowa', nocaption=True)
     cmap = plot.maue()
-    clevs = list(range(0, 101, 1))
+    cmap.set_over('black')
+    clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-    mp.draw_colorbar(clevs, cmap, norm, clevstride=10,
-                     title="Erosion $kg/m^2$")
+    mp.draw_colorbar(
+        clevs, cmap, norm, title="Erosion $kg/m^2$", spacing='uniform'
+    )
     return mp.fig
 
 
