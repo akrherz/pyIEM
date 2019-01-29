@@ -12,6 +12,8 @@ import json
 import pytz
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
+from metpy.units import units
+from metpy.calc import apparent_temperature, relative_humidity_from_dewpoint
 from pyiem.datatypes import speed, distance, pressure
 
 
@@ -660,6 +662,8 @@ class OB(object):
     mslp = None
     p01i = None
     wxcodes = None
+    relh = None
+    feel = None
 
 
 def process_metar(mstr, now):
@@ -703,6 +707,19 @@ def process_metar(mstr, now):
         ob.sknt = mtr.wind_speed.value("KT")
     if mtr.wind_gust:
         ob.gust = mtr.wind_gust.value("KT")
+
+    # Calc some stuff
+    if ob.tmpf is not None and ob.dwpf is not None:
+        ob.relh = relative_humidity_from_dewpoint(
+            ob.tmpf * units('degF'),
+            ob.dwpf * units('degF')
+        ).to(units('percent')).magnitude
+        if ob.sknt is not None:
+            ob.feel = apparent_temperature(
+                ob.tmpf * units('degF'),
+                ob.relh * units('percent'),
+                ob.sknt * units('knots')
+            ).to(units('degF')).magnitude
 
     if mtr.wind_dir and mtr.wind_dir.value() != "VRB":
         ob.drct = mtr.wind_dir.value()
@@ -772,15 +789,13 @@ def sql(txn, stid, data):
     """
     # First problem, which metar source to use?
     # If this is a US site, likely best to always use it
-    metar = data['extra'].get('REM', {}).get('MET', '')
-    if len(metar) > 20 and (len(stid) == 3 or stid[0] == 'P'):
-        # Split off the cruft
-        metar = metar.strip().replace(";",
-                                      " ").replace("METAR ",
-                                                   "").replace("COR ",
-                                                               "").rstrip("=")
-    else:
-        metar = data['metar']
+    metar = data.get('metar')
+    if metar is None:
+        metar = data['extra'].get('REM', {}).get('MET', '')
+        if len(metar) > 20 and (len(stid) == 3 or stid[0] == 'P'):
+            # Split off the cruft
+            metar = metar.strip().replace(";", " ").replace("METAR ", "")
+            metar = metar.replace("COR ", "").rstrip("=")
 
     table = "t%s" % (data['valid'].year, )
     ob = process_metar(metar, data['valid'])
@@ -792,9 +807,9 @@ def sql(txn, stid, data):
         tmpf, dwpf, vsby, drct, sknt, gust, p01i, alti, skyc1, skyc2,
         skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, metar, mslp,
         wxcodes, p03i, p06i, p24i, max_tmpf_6hr, max_tmpf_24hr,
-        min_tmpf_6hr, min_tmpf_24hr, report_type)
+        min_tmpf_6hr, min_tmpf_24hr, report_type, relh, feel)
         values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2)
+        %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2, %s, %s)
         RETURNING valid
             """
     args = (stid, ob.valid, ob.tmpf, ob.dwpf, ob.vsby, ob.drct,
@@ -803,7 +818,7 @@ def sql(txn, stid, data):
             ob.skyl4, metar,
             ob.mslp, ob.wxcodes, ob.p03i,
             ob.p06i, ob.p24i, ob.max_tmpf_6hr, ob.max_tmpf_24hr,
-            ob.min_tmpf_6hr, ob.min_tmpf_24hr)
+            ob.min_tmpf_6hr, ob.min_tmpf_24hr, ob.relh, ob.feel)
 
     try:
         txn.execute(_sql, args)
