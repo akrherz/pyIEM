@@ -83,7 +83,8 @@ def test_6hour_temp(dbcursor):
         "T02500211 10272 20250 55001"
     )
     data = parser(msg, 'KAMW', add_metar=True)
-    data['valid'] = utc(2018, 1, 12, 23, 53)
+    # db schema for testing only goes to 2015
+    data['valid'] = utc(2011, 1, 12, 23, 53)
     ans = (
         "KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 "
         "RMK 60000 SLP092 T02500211 10272 20250 55001 IEM_DS3505")
