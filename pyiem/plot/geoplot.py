@@ -514,7 +514,7 @@ class MapPlot(object):
                 states = load_pickle_geo('us_states.pickle')
                 _a.add_geometries([val[b'geom'] for key, val in states.items()],
                                   crs=ccrs.PlateCarree(), lw=1.0,
-                                  edgecolor='k', facecolor='None',
+                                  edgecolor=kwargs.get('statebordercolor', 'k'), facecolor='None',
                                   zorder=Z_POLITICAL)
 
         if not kwargs.get('nologo'):
