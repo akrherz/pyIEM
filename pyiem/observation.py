@@ -31,10 +31,12 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
 
 
-def not_nan(val):
-    """Make sure this is not NaN."""
+def bounded(val, floor, ceiling):
+    """Make sure this is not NaN and between some value."""
     val = float(val)
-    return val if not math.isnan(val) else None
+    if math.isnan(val) or val < floor or val > ceiling:
+        return None
+    return val
 
 
 def summary_update(txn, data):
@@ -143,25 +145,25 @@ class Observation(object):
         """Compute things not usually computed"""
         if (self.data['relh'] is None and
                 None not in [self.data['tmpf'], self.data['dwpf']]):
-            self.data['relh'] = not_nan(mcalc.relative_humidity_from_dewpoint(
+            self.data['relh'] = bounded(mcalc.relative_humidity_from_dewpoint(
                 self.data['tmpf'] * munits.degF,
                 self.data['dwpf'] * munits.degF
-            ).to(munits.percent).magnitude)
+            ).to(munits.percent).magnitude, 0.5, 100.5)
         if (self.data['dwpf'] is None and
                 None not in [self.data['tmpf'], self.data['relh']] and
                 self.data['relh'] >= 1 and self.data['relh'] <= 100):
-            self.data['dwpf'] = not_nan(mcalc.dewpoint_rh(
+            self.data['dwpf'] = bounded(mcalc.dewpoint_rh(
                 self.data['tmpf'] * munits.degF,
                 self.data['relh'] * munits.percent
-            ).to(munits.degF).magnitude)
+            ).to(munits.degF).magnitude, -100., 100.)
         if (self.data['feel'] is None and
                 None not in [self.data['tmpf'], self.data['relh'],
                              self.data['sknt']]):
-            self.data['feel'] = not_nan(mcalc.apparent_temperature(
+            self.data['feel'] = bounded(mcalc.apparent_temperature(
                  self.data['tmpf'] * munits.degF,
                  self.data['relh'] * munits.percent,
                  self.data['sknt'] * munits.knots
-            ).to(munits.degF).magnitude)
+            ).to(munits.degF).magnitude, -150., 200.)
 
     def compute_iemid(self, txn):
         """Load in what our metadata is to save future queries"""
