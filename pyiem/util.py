@@ -149,8 +149,8 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
             user = 'nobody'
     if host is None:
         host = "iemdb"
-        if dbname == 'hads':
-            host = "iemdb-hads"
+        if dbname in ['hads', 'mos']:
+            host = "iemdb-%s" % (dbname, )
 
     try:
         pgconn = psycopg2.connect(database=dbname, host=host, user=user,

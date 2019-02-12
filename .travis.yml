@@ -15,6 +15,7 @@ addons:
   hosts:
     - iemdb
     - iemdb-hads
+    - iemdb-mos
     - iemdb2
 env:
   global:
