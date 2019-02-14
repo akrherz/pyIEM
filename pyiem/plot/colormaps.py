@@ -80,6 +80,20 @@ def nwssnow():
     return cmap
 
 
+def dep_erosion():
+    """DEP Erosion ramp yelllow to brown (jump at 5T) `cool`"""
+    cpool = [
+        '#FFFF80', '#FCDD60', '#F7BE43', '#E69729', '#B35915', '#822507',
+        '#00ffff', '#2ad5ff', '#55aaff', '#807fff', '#aa55ff', '#d52aff',
+     ]
+    cmap = mpcolors.ListedColormap(cpool, 'dep_erosion')
+    cmap.set_over("#000000")
+    cmap.set_under("#FFFFFF")
+    cmap.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap)
+    return cmap
+
+
 def james2():
     """David James suggested color ramp Yellow to Brown"""
     cpool = ['#FFFF80', '#FFEE70', '#FCDD60', '#FACD52', '#F7BE43', '#F5AF36',
