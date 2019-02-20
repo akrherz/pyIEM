@@ -63,8 +63,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         # Can't do option 3!
         return None
     # Loop over all IDP data centers
-    for center in ['', 'bldr.', 'cprk.']:
-        uri = ("http://mrms.%sncep.noaa.gov/data/2D/%s/MRMS_%s"
+    for center in ['', '-bldr', '-cprk']:
+        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s"
                ) % (center, product, fn)
         try:
             req = requests.get(uri, timeout=30)
