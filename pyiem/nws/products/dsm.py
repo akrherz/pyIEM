@@ -154,7 +154,6 @@ class DSMProduct(object):
         cs = ", ".join(["%s = %%s" % (c, ) for c in cols])
         slicer = slice(0, 4) if self.station[0] != 'K' else slice(1, 4)
         args.extend([self.station[slicer], self.date])
-        print(args)
         txn.execute("""
             UPDATE """ + table + """ s SET """ + cs + """
             FROM stations t WHERE s.iemid = t.iemid
