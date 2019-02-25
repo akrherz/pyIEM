@@ -50,6 +50,7 @@ def summary_update(txn, data):
       int: affected rows count
     """
     # NB with the coalesce func, we prioritize if we have explicit max/min vals
+    # But, some of these max values are not tru max daily values
     sql = """UPDATE summary s SET
     max_water_tmpf = coalesce(%(max_water_tmpf)s,
         greatest(max_water_tmpf, %(water_tmpf)s)),
@@ -67,10 +68,8 @@ def summary_update(txn, data):
         least(min_feel, %(feel)s)),
     max_feel = coalesce(%(max_feel)s,
         greatest(max_feel, %(feel)s)),
-    max_sknt = coalesce(%(max_sknt)s,
-        greatest(max_sknt, %(sknt)s)),
-    max_gust = coalesce(%(max_gust)s,
-        greatest(max_gust, %(gust)s)),
+    max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
+    max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
     max_sknt_ts = (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
         or (max_sknt is null and %(sknt)s > 0)
         THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz
