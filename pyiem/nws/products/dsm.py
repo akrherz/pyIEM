@@ -2,6 +2,7 @@
 import re
 import datetime
 
+from metpy.units import units
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
 from pyiem.reference import TRACE_VALUE
@@ -26,17 +27,17 @@ PARSER_RE = re.compile(r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+
  (?P<p16>T|M|\-|[0-9]{,4})/(?P<p17>T|M|\-|[0-9]{,4})/(?P<p18>T|M|\-|[0-9]{,4})/
  (?P<p19>T|M|\-|[0-9]{,4})/(?P<p20>T|M|\-|[0-9]{,4})/(?P<p21>T|M|\-|[0-9]{,4})/
  (?P<p22>T|M|\-|[0-9]{,4})/(?P<p23>T|M|\-|[0-9]{,4})/(?P<p24>T|M|\-|[0-9]{,4})/
-   (?P<avg_sped>[0-9]{2,3})/
+   (?P<avg_sped>M|\-|[0-9]{2,3})/
    ((?P<drct_sped_max>[0-9]{2})
-    (?P<sped_max>[0-9]{2})(?P<time_sped_max>[0-9]{4})/
+    (?P<sped_max>[0-9]{2,3})(?P<time_sped_max>[0-9]{4})/
     (?P<drct_gust_max>[0-9]{2})
-    (?P<sped_gust_max>[0-9]{2})(?P<time_sped_gust_max>[0-9]{4}))?
+    (?P<sped_gust_max>[0-9]{2,3})(?P<time_sped_gust_max>[0-9]{4}))?
 """, re.VERBOSE)
 
 
 def process(text):
     """Emit DSMProduct object for what we can parse."""
-    m = PARSER_RE.match(text)
+    m = PARSER_RE.match(text.replace("\r\r\n", "").replace("\n", ""))
     if m is None:
         return None
     dsm = DSMProduct(m.groupdict())
@@ -61,8 +62,8 @@ class DSMProduct(object):
         self.date = None
         self.high_time = None
         self.low_time = None
-        self.max_sped_time = None
-        self.max_sped_gust_time = None
+        self.time_sped_max = None
+        self.time_sped_gust_max = None
         self.station = groupdict['station']
         self.groupdict = groupdict
 
@@ -72,8 +73,8 @@ class DSMProduct(object):
             datetime.datetime(2000, 1, 1),
             is_dst=False
         ).total_seconds()
-        for name in ['high_time', 'low_time', 'max_sped_time',
-                     'max_sped_gust_time']:
+        for name in ['high_time', 'low_time', 'time_sped_max',
+                     'time_sped_gust_max']:
             val = getattr(self, name)
             if val is None:
                 continue
@@ -98,9 +99,9 @@ class DSMProduct(object):
             self.date, self.groupdict.get('hightime'))
         self.low_time = compute_time(
             self.date, self.groupdict.get('lowtime'))
-        self.max_sped_time = compute_time(
+        self.time_sped_max = compute_time(
             self.date, self.groupdict.get('time_sped_max'))
-        self.max_sped_gust_time = compute_time(
+        self.time_sped_gust_max = compute_time(
             self.date, self.groupdict.get('time_sped_gust_max'))
 
     def sql(self, txn):
@@ -123,12 +124,37 @@ class DSMProduct(object):
             cols.append('pday')
             args.append(TRACE_VALUE if val == 'T' else float(val) / 100.)
 
+        val = self.groupdict.get('sped_max')
+        if val is not None:
+            cols.append('max_sknt')
+            args.append(
+                (int(val) * units('miles / hour')).to(units('knots')).magnitude
+            )
+
+        val = self.time_sped_max
+        if val is not None:
+            cols.append('max_sknt_ts')
+            args.append(val)
+
+        val = self.groupdict.get('sped_gust_max')
+        if val is not None:
+            cols.append('max_gust')
+            args.append(
+                (int(val) * units('miles / hour')).to(units('knots')).magnitude
+            )
+
+        val = self.time_sped_gust_max
+        if val is not None:
+            cols.append('max_gust_ts')
+            args.append(val)
+
         if not cols:
             return
         table = "summary_%s" % (self.date.year, )
         cs = ", ".join(["%s = %%s" % (c, ) for c in cols])
         slicer = slice(0, 4) if self.station[0] != 'K' else slice(1, 4)
         args.extend([self.station[slicer], self.date])
+        print(args)
         txn.execute("""
             UPDATE """ + table + """ s SET """ + cs + """
             FROM stations t WHERE s.iemid = t.iemid

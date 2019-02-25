@@ -44,11 +44,11 @@ def test_simple(month):
     ) % (month, )
     tzprovider = {'KCVG': pytz.timezone("America/New_York")}
     dsm = process(text)
-    dsm.compute_times(utc(2019, month, 25), )
+    dsm.compute_times(utc(2019, month, 25))
     dsm.tzlocalize(tzprovider['KCVG'])
     assert dsm.date == datetime.date(2019, month, 24)
     assert dsm.station == 'KCVG'
-    assert dsm.max_sped_time == utc(2019, month, 24, 22, 59)
+    assert dsm.time_sped_max == utc(2019, month, 24, 22, 59)
 
 
 def test_collective(dbcursor):
@@ -60,3 +60,29 @@ def test_collective(dbcursor):
     res = prod.sql(dbcursor)
     # first database insert should work from above
     assert res[0]
+
+
+def test_190225_regress():
+    """Parse something that failed RE."""
+    text = (
+        "KCUT DS 1100 25/02 061059/-040848//06/-03//0110442/"
+        "T/00/00/00/00/00/00/00/00/00/00/T/-/-/-/-/-/-/-/-/-/-/-/-/-/-/"
+        "08070124/10090103/18"
+    )
+    dsm = process(text)
+    assert dsm is not None
+    dsm.compute_times(utc(2019, 2, 25))
+    assert dsm.station == 'KCUT'
+
+
+def test_190225_badtime():
+    """This should not trip us up."""
+    text = (
+        "KMMV DS 1500 05/02 361459/ 250741// 36/ 25//9740006/01/T/T/01/T/00/"
+        "00/00/00/00/00/00/00/00/00/00/-/-/-/-/-/-/-/-/-/-/04090030/211750614/"
+        "1="
+    )
+    dsm = process(text)
+    assert dsm is not None
+    dsm.compute_times(utc(2019, 2, 5))
+    assert dsm.station == 'KMMV'
