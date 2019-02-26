@@ -74,6 +74,11 @@ class CachingZonalStats(object):
                 mask = mask[:(0 - clipy), :]
                 ysz -= clipy
 
+            # TODO: likely need some more thought above to prevent this
+            if ysz < 0 or xsz < 0:
+                self.gridnav.append(None)
+                continue
+
             # print("OUT: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
             self.gridnav.append(
                 GRIDINFO(x0=x0, y0=y0,
