@@ -221,11 +221,15 @@ class METARReport(Metar):
 
         if self.wind_speed_peak:
             iem.data['max_gust'] = self.wind_speed_peak.value("KT")
+            iem.data['peak_wind_gust'] = self.wind_speed_peak.value("KT")
         if self.wind_dir_peak:
             iem.data['max_drct'] = self.wind_dir_peak.value()
+            iem.data['peak_wind_drct'] = self.wind_dir_peak.value()
         if self.peak_wind_time:
             iem.data['max_gust_ts'] = self.peak_wind_time.replace(
                 tzinfo=pytz.utc)
+            iem.data['peak_wind_time'] = self.peak_wind_time.replace(
+                tzinfo=pytz.UTC)
 
         if self.max_temp_6hr:
             iem.data['max_tmpf_6hr'] = round(self.max_temp_6hr.value("F"), 1)
