@@ -270,7 +270,10 @@ CREATE TABLE current_tmp(
     water_tmpf real,
     ice_accretion_1hr real,
     ice_accretion_3hr real,
-   ice_accretion_6hr real
+   ice_accretion_6hr real,
+  peak_wind_gust real,
+  peak_wind_drct real,
+  peak_wind_time timestamptz
 );
 
 CREATE TABLE current (
@@ -339,7 +342,10 @@ CREATE TABLE current (
     feel real,
     ice_accretion_1hr real,
     ice_accretion_3hr real,
-    ice_accretion_6hr real
+    ice_accretion_6hr real,
+  peak_wind_gust real,
+  peak_wind_drct real,
+  peak_wind_time timestamptz
 );
 CREATE UNIQUE index current_iemid_idx on current(iemid);
 GRANT SELECT on current to apache,nobody;
@@ -410,7 +416,10 @@ CREATE TABLE current_log (
     feel real,
     ice_accretion_1hr real,
     ice_accretion_3hr real,
-    ice_accretion_6hr real
+    ice_accretion_6hr real,
+  peak_wind_gust real,
+  peak_wind_drct real,
+  peak_wind_time timestamptz
 );
 
 CREATE OR REPLACE FUNCTION current_update_log() RETURNS trigger

@@ -37,6 +37,17 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_issue89_peakwind(dbcursor):
+    """Are we roundtripping peak wind."""
+    code = (
+        'KALO 010001Z AUTO 17027G37KT 10SM FEW030 SCT110 19/16 A2979 RMK AO2 '
+        'PK WND 18049/2025 RAE48 SLP088 P0005 60014 T01890156 58046'
+    )
+    mtr = metarcollect.METARReport(code, year=2017, month=1)
+    iemob, _ = mtr.to_iemaccess(dbcursor)
+    assert iemob.data['peak_wind_time'] == utc(2016, 12, 31, 20, 25)
+
+
 def test_190118_ice(dbcursor):
     """Process a ICE Report."""
     mtr = metarcollect.METARReport(

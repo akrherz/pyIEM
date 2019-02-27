@@ -19,7 +19,8 @@ CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
                 'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
                 'min_tmpf_24hr', 'battery', 'water_tmpf',
                 'ice_accretion_1hr', 'ice_accretion_3hr', 'ice_accretion_6hr',
-                'wxcodes', 'feel']
+                'wxcodes', 'feel', 'peak_wind_gust', 'peak_wind_drct',
+                'peak_wind_time']
 
 # Not including iemid, day
 SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
@@ -218,7 +219,10 @@ class Observation(object):
         ice_accretion_1hr = %(ice_accretion_1hr)s,
         ice_accretion_3hr = %(ice_accretion_3hr)s,
         ice_accretion_6hr = %(ice_accretion_6hr)s,
-        feel = %(feel)s, valid = %(valid)s
+        feel = %(feel)s, valid = %(valid)s,
+        peak_wind_gust = %(peak_wind_gust)s,
+        peak_wind_drct = %(peak_wind_drct)s,
+        peak_wind_time = %(peak_wind_time)s
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not skip_current:
             txn.execute(sql, self.data)
@@ -233,7 +237,8 @@ class Observation(object):
             discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             ice_accretion_1hr, ice_accretion_3hr, ice_accretion_6hr,
-            water_tmpf, feel) VALUES(
+            water_tmpf, feel, peak_wind_gust, peak_wind_drct,
+            peak_wind_time) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
@@ -249,7 +254,8 @@ class Observation(object):
             %(battery)s,
             %(ice_accretion_1hr)s, %(ice_accretion_3hr)s,
             %(ice_accretion_6hr)s,
-            %(water_tmpf)s, %(feel)s
+            %(water_tmpf)s, %(feel)s, %(peak_wind_gust)s, %(peak_wind_drct)s,
+            %(peak_wind_time)s
             )
             """
             txn.execute(sql, self.data)
