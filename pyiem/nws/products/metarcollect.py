@@ -30,6 +30,45 @@ WIND_ALERTS = {}
 WIND_ALERT_THRESHOLD_KTS = 50.
 
 
+def wind_logic(iem, this):
+    """Hairy logic for now we handle winds."""
+    # Explicit storages
+    if this.wind_speed:
+        iem.data['sknt'] = this.wind_speed.value("KT")
+    if this.wind_gust:
+        iem.data['gust'] = this.wind_gust.value("KT")
+    if this.wind_dir:
+        if this.wind_dir.value() == 'VRB':
+            iem.data['drct'] = 0
+        else:
+            iem.data['drct'] = float(this.wind_dir.value())
+    if this.wind_speed_peak:
+        iem.data['peak_wind_gust'] = this.wind_speed_peak.value("KT")
+    if this.wind_dir_peak:
+        iem.data['peak_wind_drct'] = this.wind_dir_peak.value()
+    if this.peak_wind_time:
+        iem.data['peak_wind_time'] = this.peak_wind_time.replace(
+            tzinfo=pytz.UTC)
+
+    # Figure out if we have a new max_drct
+    old_max_wind = max([iem.data.get('max_sknt', 0) or 0,
+                        iem.data.get('max_gust', 0) or 0])
+    new_max_wind = max([iem.data.get('sknt', 0) or 0,
+                        iem.data.get('gust', 0) or 0])
+    # if our sknt or gust is a new max, use drct
+    if new_max_wind > old_max_wind:
+        iem.data['max_drct'] = iem.data.get('drct', 0)
+    # if our PK WND is greater than all yall, use PK WND
+    # TODO: PK WND potentially could be from last hour / thus yesterday?
+    if (this.wind_speed_peak and this.wind_dir_peak and
+            this.wind_speed_peak.value("KT") > old_max_wind and
+            this.wind_speed_peak.value("KT") > new_max_wind):
+        iem.data['max_drct'] = this.wind_dir_peak.value()
+        iem.data['max_gust_ts'] = this.peak_wind_time.replace(
+            tzinfo=pytz.UTC)
+        iem.data['max_gust'] = this.wind_speed_peak.value("KT")
+
+
 def trace(pobj):
     """Convert this precip object to a numeric value"""
     if pobj is None:
@@ -200,36 +239,7 @@ class METARReport(Metar):
             # Daabase only allows len 254
             iem.data['raw'] = self.code[:254]
 
-        if self.wind_speed:
-            iem.data['sknt'] = self.wind_speed.value("KT")
-        if self.wind_gust:
-            iem.data['gust'] = self.wind_gust.value("KT")
-        if self.wind_dir:
-            if self.wind_dir.value() == 'VRB':
-                iem.data['drct'] = 0
-            else:
-                iem.data['drct'] = float(self.wind_dir.value())
-
-        if not self.wind_speed_peak:
-            old_max_wind = max([iem.data.get('max_sknt', 0) or 0,
-                                iem.data.get('max_gust', 0) or 0])
-            new_max_wind = max([iem.data.get('sknt', 0) or 0,
-                                iem.data.get('gust', 0) or 0])
-            if new_max_wind > old_max_wind:
-                # print 'Setting max_drct manually: %s' % (clean_metar,)
-                iem.data['max_drct'] = iem.data.get('drct', 0)
-
-        if self.wind_speed_peak:
-            iem.data['max_gust'] = self.wind_speed_peak.value("KT")
-            iem.data['peak_wind_gust'] = self.wind_speed_peak.value("KT")
-        if self.wind_dir_peak:
-            iem.data['max_drct'] = self.wind_dir_peak.value()
-            iem.data['peak_wind_drct'] = self.wind_dir_peak.value()
-        if self.peak_wind_time:
-            iem.data['max_gust_ts'] = self.peak_wind_time.replace(
-                tzinfo=pytz.utc)
-            iem.data['peak_wind_time'] = self.peak_wind_time.replace(
-                tzinfo=pytz.UTC)
+        wind_logic(iem, self)
 
         if self.max_temp_6hr:
             iem.data['max_tmpf_6hr'] = round(self.max_temp_6hr.value("F"), 1)
