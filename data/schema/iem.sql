@@ -273,7 +273,7 @@ CREATE TABLE current_tmp(
    ice_accretion_6hr real,
   peak_wind_gust real,
   peak_wind_drct real,
-  peak_wind_valid timestamptz
+  peak_wind_time timestamptz
 );
 
 CREATE TABLE current (
@@ -345,7 +345,7 @@ CREATE TABLE current (
     ice_accretion_6hr real,
   peak_wind_gust real,
   peak_wind_drct real,
-  peak_wind_valid timestamptz
+  peak_wind_time timestamptz
 );
 CREATE UNIQUE index current_iemid_idx on current(iemid);
 GRANT SELECT on current to apache,nobody;
@@ -419,7 +419,7 @@ CREATE TABLE current_log (
     ice_accretion_6hr real,
   peak_wind_gust real,
   peak_wind_drct real,
-  peak_wind_valid timestamptz
+  peak_wind_time timestamptz
 );
 
 CREATE OR REPLACE FUNCTION current_update_log() RETURNS trigger
