@@ -7,11 +7,11 @@ import pandas as pd
 import numpy as np
 
 # The bounds of the climate files we store on disk and processing
-# SOUTH and EAST match IEMRE
-SOUTH = 23.0
+# SOUTH is approx OKC and EAST is approx NYC
+SOUTH = 35.0
 WEST = -104.0
 NORTH = 49.0
-EAST = -65.0
+EAST = -74.0
 
 YLD_CROPTYPE = re.compile(r"Crop Type #\s+(?P<num>\d+)\s+is (?P<name>[^\s]+)")
 YLD_DATA = re.compile((r"Crop Type #\s+(?P<num>\d+)\s+Date = (?P<doy>\d+)"
