@@ -1,0 +1,5 @@
+SPC Storm Prediction Center
+WNS Storm Prediction Center
+NHC National Hurricane Center
+WNH Hydrometeorological Prediction Center
+WNO NCEP Central Operations

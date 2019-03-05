@@ -14,6 +14,9 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
+import os
+import sys
+
 import cartopy.crs as ccrs
 
 
@@ -43,54 +46,6 @@ CONUS_EAST = -60.1
 CONUS_NORTH = 49.51
 CONUS_SOUTH = 24.47
 
-# National Weather Service Location Identifier (NWSLI) uses two letter codes
-# in identifiers to equate to a state, this is a cross reference of that
-nwsli2state = {"A2": "AK", "A1": "AL", "A4": "AR", "A3": "AZ", "C1": "CA",
-               "C2": "CO", "C3": "CT", "D2": "DC", "D1": "DE", "F1": "FL",
-               "G1": "GA", "H1": "HI", "I4": "IA", "I1": "ID",
-               "I2": "IL", "I3": "IN", "K1": "KS", "K2": "KY", "L1": "LA",
-               "M3": "MA", "M2": "MD", "M1": "ME", "M4": "MI", "M5": "MN",
-               "M7": "MO", "M6": "MS", "M8": "MT", "N7": "NC", "N8": "ND",
-               "N1": "NE", "N3": "NH", "N4": "NJ", "N5": "NM", "N2": "NV",
-               "N6": "NY", "O1": "OH", "O2": "OK", "O3": "OR", "P5": "P1",
-               "P6": "P2", "P7": "P3", "P8": "P4", "P1": "PA", "R1": "RI",
-               "S1": "SC", "S2": "SD", "T1": "TN", "T2": "TX", "U1": "UT",
-               "V2": "VA", "V1": "VT", "W1": "WA", "W3": "WI", "W2": "WV",
-               "W4": "WY", "Q1": "AB", "Q2": "BC", "Q3": "MB", "B3": "NB",
-               "N9": "NF", "S4": "NS", "Q5": "NW", "Q6": "ON",
-               "Q7": "PQ", "Q8": "SK", "Q9": "YK", "B1": "BJ",
-               "C6": "CH", "C7": "CL", "C4": "CM", "C5": "CP",
-               "D3": "DF", "D4": "DR", "G2": "GJ", "G3": "GR", "H2": "HD",
-               "J1": "JL", "C9": "MC", "R2": "MR", "X1": "MX", "L2": "NL",
-               "R3": "NR", "O4": "OX", "P9": "PB", "S3": "SL", "S5": "SN",
-               "S6": "SO", "T5": "TL", "T4": "TP", "V4": "VC", "C8": "CI",
-               "Y1": "YC",
-               "P4": "PR",
-               "V3": "VI", "QR": "AB", "X4": "QO", "B7": "BR", "Q4": "QR",
-               }
-nwsli2country = {"A2": "US", "A1": "US", "A4": "US", "A3": "US", "C1": "US",
-                 "C2": "US", "C3": "US", "D2": "US", "D1": "US", "F1": "US",
-                 "G1": "US", "G5": "GM", "H1": "US", "I4": "US", "I1": "US",
-                 "I2": "US", "I3": "US", "K1": "US", "K2": "US", "L1": "US",
-                 "M3": "US", "M2": "US", "M1": "US", "M4": "US", "M5": "US",
-                 "M7": "US", "M6": "US", "M8": "US", "N7": "US", "N8": "US",
-                 "N1": "US", "N3": "US", "N4": "US", "N5": "US", "N2": "US",
-                 "N6": "US", "O1": "US", "O2": "US", "O3": "US", "P5": "US",
-                 "P6": "US", "P7": "US", "P8": "US", "P1": "US", "R1": "US",
-                 "S1": "US", "S2": "US", "T1": "US", "T2": "US", "U1": "US",
-                 "V2": "US", "V1": "US", "W1": "US", "W3": "US", "W2": "US",
-                 "W4": "US", "Q1": "CA", "Q2": "CA", "Q3": "CA", "B3": "CA",
-                 "N9": "CA", "S4": "CA", "Q5": "CA", "Q6": "CA", "E1": "PE",
-                 "Q7": "CA", "Q8": "CA", "Q9": "CA", "A5": "AG", "B1": "MX",
-                 "C6": "MX", "C8": "MX", "C7": "MX", "C4": "MX", "C5": "MX",
-                 "D3": "MX", "D4": "MX", "G2": "MX", "G3": "MX", "H2": "MX",
-                 "J1": "MX", "C9": "MX", "R2": "MX", "X1": "MX", "L2": "MX",
-                 "R3": "MX", "O4": "MX", "P9": "MX", "S3": "MX", "S5": "MX",
-                 "S6": "MX", "T3": "TB", "T5": "MX", "T4": "MX", "V4": "MX",
-                 "Y1": "MX", "Z1": "ZC", "E2": "SV", "G4": "GT", "H3": "HN",
-                 "R5": "JA", "R6": "NI", "P4": "US", "R4": "RK", "A9": "AG",
-                 "V3": "US", "QR": "CA", "X4": "MX", "B7": "MX", "Q4": "MX",
-                 }
 txt2drct = {
  'N': 360,
  'North': 360,
@@ -238,22 +193,6 @@ lsr_events = {
  'SEICHE': '9',
 }
 
-name2pytz = {
-    'GMT': 'UTC',
-    'CHDT': 'Etc/GMT-8', 'CHST': 'Etc/GMT-9', 'LST': 'Etc/GMT-10',
-    'ADT': 'Etc/GMT-3',
-    'VDT': 'Etc/GMT-3', 'VST': 'Etc/GMT-4',
-    'EDT': 'US/Eastern', 'AST': 'Etc/GMT-4',
-    'CDT': 'US/Central', 'EST': 'US/Eastern',
-    'MDT': 'US/Mountain', 'CST': 'US/Central',
-    'PDT': 'US/Pacific', 'MST': 'US/Mountain',
-    'AKDT': 'US/Alaska', 'PST': 'US/Pacific',
-    'HDT': 'US/Hawaii', 'AKST': 'US/Alaska',
-           'HST': 'US/Hawaii',
-    'SST': 'Etc/GMT+11',
-    'PLT': 'Etc/GMT-5',
-    'GSST': 'Etc/GMT-4'
-}
 
 offsets = {
  'GMT': 0, 'UTC': 0,
@@ -396,128 +335,6 @@ wfo_dict = {
  "TWC": {"name": "TUCSON", "region": "WR"},
  "UNR": {"name": "RAPID_CITY", "region": "CR"},
  "VEF": {"name": "LAS_VEGAS", "region": "WR"},
-}
-
-centertext = {
-    "SPC": "Storm Prediction Center",
-    "WNS": "Storm Prediction Center",
-    "NHC": "National Hurricane Center",
-    "WNH": "Hydrometeorological Prediction Center",
-    "WNO": "NCEP Central Operations",
-}
-
-# http://forecast.weather.gov/product_types.php?site=NWS
-prodDefinitions = {
-    'ADA': 'Administrative Message',
-    'ADM': 'Administrative Message',
-    'ADR': 'Administrative Message',
-    'AFD': 'Area Forecast Discussion',
-    'AQA': 'Air Quality Alert',
-    'AQI': 'Ground Level Ozone Forecast',
-    'AVA': 'Avalanche Watch',
-    'AVW': 'Avalanche Warning',
-    'AWU': 'Area Weather Update',
-    'AWW': 'Airport Weather Warning',
-    'CAE': 'Child Abduction Emergency',
-    'CDW': 'Civil Danger Warning',
-    'CEM': 'Civil Emergency Message',
-    'CFW': 'Coastal Hazzard Message',
-    'CGR': 'Coastal Weather Observations',
-    'CLI': 'Daily Climate Report',
-    'CLM': 'Monthly Climate Report',
-    'CRF': 'Contingency River Forecast',
-    'CWA': 'Center Weather Advisory',
-    'CWF': 'Coastal Waters Forecast',
-    'DGT': 'Drought Information',
-    'DSA': 'Tropical Disturbance Statement',
-    'DSW': 'Dust Storm Warning',
-    'EQI': 'Earthquake Information',
-    'EQR': 'Earthquake Report',  # Proposed termination in SCN/TIN 17-29
-    'EQW': 'Earthquake Warning',
-    'ESF': 'Hydrologic Outlook',
-    'EVI': 'Evacuation Immediate',
-    'EWW': 'Extreme Wind Warning',
-    'FFA': 'Areal Flood Watch',
-    'FFS': 'Flash Flood Statement',
-    'FFW': 'Flash Flood Warning',
-    'FLS': 'Flood Advisory',
-    'FLW': 'Flood Warning',
-    'FRW': 'Fire Warning',
-    'FTM': 'Free Text Message',
-    'FWA': 'Fire Weather Administrative Message',
-    'FWF': 'Fire Weather Planning Forecast',
-    'FWS': 'Fire Weather Spot Forecast',
-    'GLF': 'Open Lake Forecast',
-    'HCM': 'Hydromet Coordination Message',
-    'HLS': 'Hurricane Local Statement',
-    'HMD': 'Rainfall and Flood Outlook Product',
-    'HMW': 'Hazardous Materials Warning',
-    'HPA': 'High Pollution Advisory',
-    'HSF': 'High Seas Forecast',
-    'HWO': 'Hazardous Weather Outlook',
-    'HYD': 'Supplementary Temp and Precip',
-    'ICE': 'Ice Outlook',
-    'LAE': 'Local Area Emergency',
-    'LCO': 'Local Cooperative Observation',
-    'LEW': 'Law Enforcement Warning',
-    'LSR': 'Local Storm Report',
-    'MCD': 'Mesoscale Convective Discussion',
-    'MIS': 'Meteorological Impact Statement',
-    'MPD': 'Mesoscale Precipitation Discussion',
-    'MWS': 'Marine Weather Statement',
-    'MWW': 'Marine Weather Warning',
-    'NMN': 'Network Message Notification',
-    'NOW': 'Short-term Forecast',
-    'NPW': 'Non Convective Advisory',
-    'NSH': 'Nearshore Marine Forecast',
-    'NUW': 'Nuclear Power Plant Warning',
-    'OAV': 'Other Aviation Report',
-    'OEP': 'TAF Collaboration Product',
-    'OFF': 'Offshore Waters Forecast',
-    'OMR': 'Other Marine Reports',
-    'PFM': 'Point Forecast Matrices',
-    'PNS': 'Public Information Statement',
-    'PSH': 'Post Tropical Event Report',
-    'PWO': 'Public Severe Weather Outlook',
-    'QPS': 'Quantitative Precipitation Forecast',
-    'REC': 'Recreational Forecast',
-    'RER': 'Record Event Report',
-    'RFD': 'Grassland Fire Danger',
-    'RFW': 'Red Flag Warning',
-    'RHW': 'Radiological Hazard Warning',
-    'RRM': 'Rainfall Storm Total',
-    'RTP': 'Regional Temperature and Precipitation',
-    'RVA': 'Hydrologic Summary',
-    'RVD': 'River and Lake Summary',
-    'RVF': 'River Forecast',
-    'RVS': 'Hydrologic Statement',
-    'RWS': 'Regional Weather Summary',
-    'SFT': 'State Forecast Tabular Product',
-    'SIG': 'Convective Sigment',
-    'SMF': 'Smoke Management Weather Forecast',
-    'SMW': 'Special Marine Warning',
-    'SPS': 'Special Weather Statement',
-    'SPW': 'Shelter In Place Warning',
-    'SRF': 'Surf Zone Forecast',
-    'STF': 'Tabular State Forecast',
-    'SVR': 'Severe Thunderstorm Warning',
-    'SVS': 'Severe Weather Statement',
-    'TAF': 'Terminal Aerodrome Forecast',
-    'TCE': 'Tropical Cyclone Position Estimate',
-    'TCM': 'Tropical Storm Forecast',
-    'TCU': 'Tropical Cyclone Update',
-    'TIB': 'Tsunami Information Statement',
-    'TID': 'Tide Data',
-    'TOE': 'Telephone Outage Emergency',
-    'TOR': 'Tornado Warning',
-    'TWO': 'Tropical Weather Outlook',
-    'VAA': 'Volcanic Ash Advisory',
-    'VOW': 'Volcano Warning',
-    'WCN': 'Watch County Notification',
-    'WRK': 'Work Product',
-    'WSV': 'Volcanic Ash Sigmet',
-    'WSW': 'Winter Weather Message',
-    'ZFP': 'Zone Forecast Package',
 }
 
 # State bounds (buffered by 0.2 degrees)
@@ -728,78 +545,6 @@ wfo_bounds = {
  "VEF": [-118.99, 33.83, -112.33, 38.88],
 }
 
-# state names
-# select '"'||state_abbr||'": "'||state_name||'",' from states
-# ORDER by state_abbr ASC
-state_names = {
- "AK": "Alaska",
- "AL": "Alabama",
- "AR": "Arkansas",
- "AZ": "Arizona",
- "CA": "California",
- "CO": "Colorado",
- "CT": "Connecticut",
- "DC": "District of Columbia",
- "DE": "Delaware",
- "FL": "Florida",
- "GA": "Georgia",
- "HI": "Hawaii",
- "IA": "Iowa",
- "ID": "Idaho",
- "IL": "Illinois",
- "IN": "Indiana",
- "KS": "Kansas",
- "KY": "Kentucky",
- "LA": "Louisiana",
- "MA": "Massachusetts",
- "MD": "Maryland",
- "ME": "Maine",
- "MI": "Michigan",
- "MN": "Minnesota",
- "MO": "Missouri",
- "MS": "Mississippi",
- "MT": "Montana",
- "NC": "North Carolina",
- "ND": "North Dakota",
- "NE": "Nebraska",
- "NH": "New Hampshire",
- "NJ": "New Jersey",
- "NM": "New Mexico",
- "NV": "Nevada",
- "NY": "New York",
- "OH": "Ohio",
- "OK": "Oklahoma",
- "OR": "Oregon",
- "PA": "Pennsylvania",
- "RI": "Rhode Island",
- "SC": "South Carolina",
- "SD": "South Dakota",
- "TN": "Tennessee",
- "TX": "Texas",
- "UT": "Utah",
- "VA": "Virginia",
- "VT": "Vermont",
- "WA": "Washington",
- "WI": "Wisconsin",
- "WV": "West Virginia",
- "WY": "Wyoming",
-}
-
-# NCEI state codes, unsure of origin :/
-ncei_state_codes = {
-    'WA': '45', 'DE': '07', 'DC': '18', 'WI': '47', 'WV': '46',
-    'HI': '51', 'FL': '08', 'WY': '48', 'NH': '27', 'NJ': '28',
-    'NM': '29', 'TX': '41', 'LA': '16', 'AK': '50', 'NC': '31',
-    'ND': '32', 'NE': '25', 'TN': '40', 'NY': '30', 'PA': '36',
-    'PI': '91', 'RI': '37', 'NV': '26', 'VA': '44', 'CO': '05',
-    'CA': '04', 'AL': '01', 'AR': '03', 'VT': '43', 'IL': '11',
-    'GA': '09', 'IN': '12', 'IA': '13', 'OK': '34', 'AZ': '02',
-    'ID': '10', 'CT': '06', 'ME': '17', 'MD': '18', 'MA': '19',
-    'OH': '33', 'UT': '42', 'MO': '23', 'MN': '21', 'MI': '20',
-    'KS': '14', 'MT': '24', 'MS': '22', 'SC': '38', 'KY': '15',
-    'OR': '35', 'SD': '39'
-}
-
 
 # State FIPS
 state_fips = {
@@ -876,3 +621,41 @@ IEMVARS = {
                   "type": "datetime",
                   "description": "Observation Valid Time UTC"},
     }
+DATADIR = os.sep.join([os.path.dirname(__file__), 'data', 'reference'])
+
+
+class Wrapper:
+    """Some Magic Here."""
+    _onthefly_dict = [
+        "shef_physical_codes", "state_names", "prodDefinitions",
+        "ncei_state_codes", "nwsli2state", "nwsli2country", "name2pytz",
+        "centertext"
+    ]
+
+    def __init__(self, wrapped):
+        """Keep a reference."""
+        self.__all__ = dir(wrapped)
+        self.__all__.extend(self._onthefly_dict)
+        self.wrapped = wrapped
+
+    def _reader(self, name):
+        """read dictionary."""
+        res = {}
+        for line in open("%s/%s.txt" % (DATADIR, name)):
+            if line.strip() == "" or line.startswith("#"):
+                continue
+            tokens = line.strip().split(" ", 1)
+            res[tokens[0]] = tokens[1]
+        return res
+
+    def __getattr__(self, name):
+        """Magic method to build dicts on-demand."""
+        res = getattr(self.wrapped, name, None)
+        if res is not None or name not in self._onthefly_dict:
+            return res
+        val = self._reader(name)
+        setattr(self.wrapped, name, val)
+        return val
+
+
+sys.modules[__name__] = Wrapper(sys.modules[__name__])

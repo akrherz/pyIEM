@@ -1,0 +1,112 @@
+# http://forecast.weather.gov/product_types.php?site=NWS
+ADA Administrative Message
+ADM Administrative Message
+ADR Administrative Message
+AFD Area Forecast Discussion
+AQA Air Quality Alert
+AQI Ground Level Ozone Forecast
+AVA Avalanche Watch
+AVW Avalanche Warning
+AWU Area Weather Update
+AWW Airport Weather Warning
+CAE Child Abduction Emergency
+CDW Civil Danger Warning
+CEM Civil Emergency Message
+CFW Coastal Hazzard Message
+CGR Coastal Weather Observations
+CLI Daily Climate Report
+CLM Monthly Climate Report
+CRF Contingency River Forecast
+CWA Center Weather Advisory
+CWF Coastal Waters Forecast
+DGT Drought Information
+DSA Tropical Disturbance Statement
+DSW Dust Storm Warning
+EQI Earthquake Information
+# Proposed termination in SCN/TIN 17-29
+EQR Earthquake Report
+EQW Earthquake Warning
+ESF Hydrologic Outlook
+EVI Evacuation Immediate
+EWW Extreme Wind Warning
+FFA Areal Flood Watch
+FFS Flash Flood Statement
+FFW Flash Flood Warning
+FLS Flood Advisory
+FLW Flood Warning
+FRW Fire Warning
+FTM Free Text Message
+FWA Fire Weather Administrative Message
+FWF Fire Weather Planning Forecast
+FWS Fire Weather Spot Forecast
+GLF Open Lake Forecast
+HCM Hydromet Coordination Message
+HLS Hurricane Local Statement
+HMD Rainfall and Flood Outlook Product
+HMW Hazardous Materials Warning
+HPA High Pollution Advisory
+HSF High Seas Forecast
+HWO Hazardous Weather Outlook
+HYD Supplementary Temp and Precip
+ICE Ice Outlook
+LAE Local Area Emergency
+LCO Local Cooperative Observation
+LEW Law Enforcement Warning
+LSR Local Storm Report
+MCD Mesoscale Convective Discussion
+MIS Meteorological Impact Statement
+MPD Mesoscale Precipitation Discussion
+MWS Marine Weather Statement
+MWW Marine Weather Warning
+NMN Network Message Notification
+NOW Short-term Forecast
+NPW Non Convective Advisory
+NSH Nearshore Marine Forecast
+NUW Nuclear Power Plant Warning
+OAV Other Aviation Report
+OEP TAF Collaboration Product
+OFF Offshore Waters Forecast
+OMR Other Marine Reports
+PFM Point Forecast Matrices
+PNS Public Information Statement
+PSH Post Tropical Event Report
+PWO Public Severe Weather Outlook
+QPS Quantitative Precipitation Forecast
+REC Recreational Forecast
+RER Record Event Report
+RFD Grassland Fire Danger
+RFW Red Flag Warning
+RHW Radiological Hazard Warning
+RRM Rainfall Storm Total
+RTP Regional Temperature and Precipitation
+RVA Hydrologic Summary
+RVD River and Lake Summary
+RVF River Forecast
+RVS Hydrologic Statement
+RWS Regional Weather Summary
+SFT State Forecast Tabular Product
+SIG Convective Sigment
+SMF Smoke Management Weather Forecast
+SMW Special Marine Warning
+SPS Special Weather Statement
+SPW Shelter In Place Warning
+SRF Surf Zone Forecast
+STF Tabular State Forecast
+SVR Severe Thunderstorm Warning
+SVS Severe Weather Statement
+TAF Terminal Aerodrome Forecast
+TCE Tropical Cyclone Position Estimate
+TCM Tropical Storm Forecast
+TCU Tropical Cyclone Update
+TIB Tsunami Information Statement
+TID Tide Data
+TOE Telephone Outage Emergency
+TOR Tornado Warning
+TWO Tropical Weather Outlook
+VAA Volcanic Ash Advisory
+VOW Volcano Warning
+WCN Watch County Notification
+WRK Work Product
+WSV Volcanic Ash Sigmet
+WSW Winter Weather Message
+ZFP Zone Forecast Package
