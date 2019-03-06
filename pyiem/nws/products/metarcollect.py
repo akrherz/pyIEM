@@ -243,12 +243,8 @@ class METARReport(Metar):
 
         if self.max_temp_6hr:
             iem.data['max_tmpf_6hr'] = round(self.max_temp_6hr.value("F"), 1)
-            if iem.data['valid'].hour >= 6:
-                iem.data['max_tmpf'] = round(self.max_temp_6hr.value("F"), 1)
         if self.min_temp_6hr:
             iem.data['min_tmpf_6hr'] = round(self.min_temp_6hr.value("F"), 1)
-            if iem.data['valid'].hour >= 6:
-                iem.data['min_tmpf'] = round(self.min_temp_6hr.value("F"), 1)
         if self.max_temp_24hr:
             iem.data['max_tmpf_24hr'] = round(self.max_temp_24hr.value("F"), 1)
         if self.min_temp_24hr:
