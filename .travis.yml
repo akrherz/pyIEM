@@ -37,13 +37,14 @@ install:
   - conda config --set always_yes yes --set changeps1 no --set show_channel_urls yes
   - conda update -q conda
   - . $HOME/miniconda/etc/profile.d/conda.sh
+  # Prioritize conda-forge channel and remove defaults
+  - conda config --prepend channels conda-forge
+  - conda config --remove channels defaults
   - conda create -n test-environment python=$PYTHON_VERSION
   - conda activate test-environment
   
   # Customise the testing environment
   # ---------------------------------
-  # Prioritize conda-forge channel over defaults for best compat
-  - conda config --prepend channels conda-forge
   - conda install -q --file conda_requirements.txt
   - pip install -r pip_requirements.txt
 
