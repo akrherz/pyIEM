@@ -1,0 +1,105 @@
+286 
+SRUS53 KDMX 131710
+HMLDMX
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2019-03-13T17:10:07+00:00"
+      timezone="CST6CDT"
+      originator="DMX"
+      name="Cedar River 0 NW Janesville"
+      id="JANI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HGIRG"
+            primaryName="Stage"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2019-03-13T16:00:00-00:00</valid>
+      <primary>1.74</primary>
+      <secondary>0.896</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:15:00-00:00</valid>
+      <primary>1.74</primary>
+      <secondary>0.896</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:30:00-00:00</valid>
+      <primary>1.74</primary>
+      <secondary>0.896</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:45:00-00:00</valid>
+      <primary>1.75</primary>
+      <secondary>0.905</secondary>
+    </datum>
+  </observed>
+</site>
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2019-03-13T17:10:07+00:00"
+      timezone="CST6CDT"
+      originator="DMX"
+      name="Cedar River 0 NW Janesville"
+      id="JANI4"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="kcfs"
+            pedts="QRIRV"
+            primaryName="River Discharge"
+            timezone="UTC"
+            secondaryUnits="ft"
+            secondaryName="Stage">
+    <datum>
+      <valid>2019-03-13T15:00:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T15:15:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T15:30:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T15:45:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:00:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:15:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:30:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2019-03-13T16:45:00-00:00</valid>
+      <primary>-9999</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site>
