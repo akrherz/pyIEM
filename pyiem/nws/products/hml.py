@@ -3,17 +3,19 @@
 Attempt to break up the HML product into atomic data
 
 """
-import pyiem.nws.product as product
 import re
 import datetime
+import xml.etree.cElementTree as ET
+
 import pytz
 import pandas as pd
-import xml.etree.cElementTree as ET
-DELIMITER = """\<\?xml version="1.0" standalone="yes"\?\>"""
+import pyiem.nws.product as product
+DELIMITER = r"""\<\?xml version="1.0" standalone="yes"\?\>"""
 
 
 def no999(val):
-    if val is None or val == -999 or val == -9999:
+    """No negative -999 or -9999 please."""
+    if val is None or val == "-999" or val == "-9999":
         return None
     return val
 
@@ -24,7 +26,7 @@ def parseUTC(s):
         return None
     return datetime.datetime.strptime(s[:19],
                                       "%Y-%m-%dT%H:%M:%S").replace(
-                                          tzinfo=pytz.timezone("UTC"))
+                                          tzinfo=pytz.UTC)
 
 
 def parse_xml(token):
@@ -43,8 +45,8 @@ def parse_xml(token):
             secondary = datum.find('secondary')
             rows.append(dict(name=child.tag,
                              valid=parseUTC(datum.find('valid').text),
-                             primary=datum.find('primary').text,
-                             secondary=(secondary.text
+                             primary=no999(datum.find('primary').text),
+                             secondary=(no999(secondary.text)
                                         if secondary is not None
                                         else None)))
         mydict = hml.data[child.tag]
@@ -60,8 +62,10 @@ def parse_xml(token):
 
 
 class HMLData(object):
+    """Our data object."""
 
     def __init__(self):
+        """Constructor."""
         self.station = None
         self.stationname = None
         self.originator = None
@@ -94,24 +98,29 @@ class HML(product.TextProduct):
 
     def do_sql_observed(self, cursor, _hml):
         """Process the observed portion of the dataset"""
-        fx = _hml.data['observed']
-        if fx['dataframe'] is None:
+        ob = _hml.data['observed']
+        if ob['dataframe'] is None:
             return
-        df = fx['dataframe']
-        if len(df.index) == 0:
+        df = ob['dataframe']
+        if df.empty:
             return
-        minvalid = df['valid'].min()
-        maxvalid = df['valid'].max()
         for col in ['primary', 'secondary']:
-            if fx[col+'Name'] is None:
+            if ob[col+'Name'] is None:
                 continue
-            key = "%s[%s]" % (fx[col+'Name'], fx[col+'Units'])
-            cursor.execute("""DELETE from hml_observed_data WHERE
-            station = %s and valid >= %s and valid <= %s and
-            key = get_hml_observed_key(%s)
+            key = "%s[%s]" % (ob[col+'Name'], ob[col+'Units'])
+            # Check that we have some non-null data
+            df2 = df[pd.notnull(df[col])]
+            if df2.empty:
+                continue
+            minvalid = df2['valid'].min()
+            maxvalid = df2['valid'].max()
+            cursor.execute("""
+                DELETE from hml_observed_data WHERE
+                station = %s and valid >= %s and valid <= %s and
+                key = get_hml_observed_key(%s)
             """, (_hml.station, minvalid, maxvalid, key))
-            for _, row in df.iterrows():
-                val = no999(row[col])
+            for _, row in df2.iterrows():
+                val = row[col]
                 if val is None:
                     continue
                 y = "%s" % (row['valid'].year,)
@@ -127,7 +136,7 @@ class HML(product.TextProduct):
         df = fx['dataframe']
         if df is None:
             return
-        if len(df.index) == 0:
+        if df.empty:
             return
         # Get an id
         cursor.execute("""
@@ -150,8 +159,7 @@ class HML(product.TextProduct):
                 (hml_forecast_id, valid, primary_value,
                 secondary_value) VALUES
                 (%s, %s, %s, %s)
-                """, (fid, row['valid'], no999(row['primary']),
-                      no999(row['secondary'])))
+                """, (fid, row['valid'], row['primary'], row['secondary']))
 
     def sql(self, cursor):
         """Persist this information to the database"""

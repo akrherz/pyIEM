@@ -78,3 +78,14 @@ create table hml_observed_data_2016(
 CREATE INDEX hml_observed_data_2016_idx on
 	hml_observed_data_2016(station, valid);
 GRANT SELECT on hml_observed_data_2016 to nobody,apache;
+
+create table hml_observed_data_2019(
+  key smallint REFERENCES hml_observed_keys(id),
+  CONSTRAINT __hml_observed_data_2019_check
+  CHECK(valid >= '2019-01-01 00:00+00'::timestamptz
+        and valid < '2020-01-01 00:00+00'::timestamptz))
+  INHERITS (hml_observed_data);
+CREATE INDEX hml_observed_data_2019_idx on
+	hml_observed_data_2019(station, valid);
+GRANT SELECT on hml_observed_data_2019 to nobody,apache;
+
