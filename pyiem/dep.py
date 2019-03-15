@@ -342,13 +342,13 @@ def read_env(filename, year0=2006):
     Returns:
       pd.DataFrame
     """
-    df = pd.read_table(filename,
-                       skiprows=3, index_col=False, delim_whitespace=True,
-                       header=None, na_values=['*******', '******'],
-                       names=['day', 'month', 'year', 'precip', 'runoff',
-                              'ir_det', 'av_det', 'mx_det', 'point',
-                              'av_dep', 'max_dep', 'point2', 'sed_del',
-                              'er'])
+    df = pd.read_csv(
+        filename, skiprows=3, index_col=False, sep=r'\s+',
+        header=None, na_values=['*******', '******'],
+        names=[
+            'day', 'month', 'year', 'precip', 'runoff', 'ir_det', 'av_det',
+            'mx_det', 'point', 'av_dep', 'max_dep', 'point2', 'sed_del',
+            'er'])
     if df.empty:
         df['date'] = None
     else:
@@ -370,16 +370,15 @@ def read_ofe(filename, year0=2006):
     Returns:
       pd.DataFrame
     """
-    df = pd.read_table(filename,
-                       skiprows=2, index_col=False, delim_whitespace=True,
-                       header=None, na_values=['*******', '******',
-                                               '********'],
-                       names=['ofe', 'day', 'month', 'year', 'precip',
-                              'runoff', 'effint', 'peakro', 'effdur',
-                              'enrich_ratio', 'keff', 'sm', 'leafarea',
-                              'canhght', 'cancov', 'intcov', 'rilcov',
-                              'livbio', 'deadbio', 'ki', 'kr', 'tcrit',
-                              'rilwid', 'sedleave'])
+    df = pd.read_csv(
+        filename, skiprows=2, index_col=False, sep=r'\s+',
+        header=None, na_values=['*******', '******', '********'],
+        names=[
+            'ofe', 'day', 'month', 'year', 'precip', 'runoff', 'effint',
+            'peakro', 'effdur', 'enrich_ratio', 'keff', 'sm', 'leafarea',
+            'canhght', 'cancov', 'intcov', 'rilcov', 'livbio', 'deadbio', 'ki',
+            'kr', 'tcrit', 'rilwid', 'sedleave']
+    )
     if df.empty:
         df['date'] = None
     else:
@@ -393,8 +392,9 @@ def read_ofe(filename, year0=2006):
 
 def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
-    df = pd.read_table(filename, delim_whitespace=True,
-                       na_values=['*******', '******'])
+    df = pd.read_csv(
+        filename, sep=r'\s+', na_values=['*******', '******']
+    )
     if df.empty:
         df['date'] = None
     else:
