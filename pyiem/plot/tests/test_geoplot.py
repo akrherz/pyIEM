@@ -286,10 +286,23 @@ def test_overlap():
 def test_barbs():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor='white', nocaption=True)
-    data = [dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
-            dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
-            ]
-    mp.plot_station(data)
+    data = [
+        dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
+        dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
+    ]
+    mp.plot_station(data, fontsize=12)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_stationplot():
+    """Testing the plotting of wind barbs"""
+    mp = MapPlot(continentalcolor='white', nocaption=True)
+    data = [
+        dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, id='BOOI4'),
+        dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, id='CSAI4'),
+    ]
+    mp.plot_station(data, fontsize=12)
     return mp.fig
 
 

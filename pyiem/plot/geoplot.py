@@ -673,14 +673,12 @@ class MapPlot(object):
             cb2.ax.text(-0.05, 0.5, title, rotation=90, fontsize=16,
                         transform=cb2.ax.transAxes, ha='right', va='center')
 
-    def plot_station(self, data):
-        """Plot values on a map in a station plot like manner
-
-        the positions are a list of 1-9 values, where top row is 1,2,3 and
-        then the middle row is 4,5,6 and bottom row is 7,8,9
+    def plot_station(self, data, **kwargs):
+        """Plot values on a map in a station plot like manner.
 
         Args:
           data (list): list of dicts with station data to plot
+          fontsize (int): font size to use for plotted text
         """
         (x0, x1) = self.ax.set_xlim()
         # size to use for circles
@@ -733,29 +731,36 @@ class MapPlot(object):
             val = stdata.get('tmpf')
             if val is not None:
                 (offx, offy, ha, va) = offsets[1]
-                self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
-                                 xytext=(offx, offy), color='r',
-                                 textcoords="offset points",
-                                 zorder=Z_OVERLAY+2,
-                                 clip_on=True)
+                self.ax.annotate(
+                    "%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                    xytext=(offx, offy), color=stdata.get('tmpf_color', 'r'),
+                    textcoords="offset points",
+                    zorder=Z_OVERLAY+2,
+                    clip_on=True, fontsize=kwargs.get('fontsize', 8))
             # Dew Point
             val = stdata.get('dwpf')
             if val is not None:
                 (offx, offy, ha, va) = offsets[7]
-                self.ax.annotate("%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
-                                 xytext=(offx, offy), color='b',
-                                 textcoords="offset points",
-                                 zorder=Z_OVERLAY+2,
-                                 clip_on=True)
+                self.ax.annotate(
+                    "%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                    xytext=(offx, offy), color=stdata.get('dwpf_color', 'b'),
+                    textcoords="offset points",
+                    zorder=Z_OVERLAY+2,
+                    clip_on=True, fontsize=kwargs.get('fontsize', 8))
             # Plot identifier
             val = stdata.get('id')
             if val is not None:
-                (offx, offy, ha, va) = offsets[6]
-                self.ax.annotate("%s" % (val, ), xy=(x, y), ha=ha, va=va,
-                                 xytext=(offx, offy), color='tan',
-                                 textcoords="offset points",
-                                 zorder=Z_OVERLAY+2,
-                                 clip_on=True, fontsize=8)
+                (offx, offy, ha, va) = (
+                    offsets[6] if skycoverage is not None else offsets[5]
+                )
+                self.ax.annotate(
+                    "%s" % (val, ), xy=(x, y), ha=ha, va=va,
+                    xytext=(offx, offy),
+                    color=stdata.get('id_color', 'tan'),
+                    textcoords="offset points",
+                    zorder=Z_OVERLAY+2,
+                    clip_on=True,
+                    fontsize=kwargs.get('fontsize', 8))
 
     def plot_values(self, lons, lats, vals, fmt='%s', valmask=None,
                     color='#000000', textsize=14, labels=None,
