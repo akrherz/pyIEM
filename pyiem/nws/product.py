@@ -44,6 +44,7 @@ TORNADODAMAGETAG = re.compile((
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 TORNADO = re.compile(r"^AT |^\* AT")
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
+EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
 
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
@@ -134,6 +135,7 @@ class TextProductSegment(object):
         self.tornadotag = None
         self.waterspouttag = None
         self.tornadodamagetag = None
+        self.is_emergency = False
         self.process_tags()
 
         self.bullets = self.process_bullets()
@@ -167,6 +169,9 @@ class TextProductSegment(object):
     def process_tags(self):
         """ Find various tags in this segment """
         nolf = self.unixtext.replace("\n", " ")
+        res = EMERGENCY_RE.findall(nolf)
+        if res:
+            self.is_emergency = True
         match = WINDHAIL.match(nolf)
         if match:
             gdict = match.groupdict()

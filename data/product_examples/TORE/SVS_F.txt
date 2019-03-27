@@ -1,0 +1,54 @@
+444
+WWUS53 KDMX 192131
+SVSDMX
+
+Severe Weather Statement
+National Weather Service Des Moines IA
+431 PM CDT THU JUL 19 2018
+
+IAC127-192145-
+/O.CON.KDMX.TO.W.0043.000000T0000Z-180719T2145Z/
+Marshall IA-
+431 PM CDT THU JUL 19 2018
+
+...A TORNADO WARNING REMAINS IN EFFECT UNTIL 445 PM CDT FOR
+NORTHEASTERN MARSHALL COUNTY...
+
+At 431 PM CDT, a confirmed tornado was located near Marshalltown,
+moving east at 30 mph.
+
+HAZARD...Damaging tornado and half dollar size hail.
+
+SOURCE...Law enforcement confirmed tornado.
+
+IMPACT...Flying debris will be dangerous to those caught without
+         shelter. Mobile homes will be damaged or destroyed. Damage
+         to roofs, windows, and vehicles will occur.  Tree damage is
+         likely.
+
+This tornado will be near...
+  Marshalltown around 435 PM CDT.
+
+Other locations impacted by this tornadic thunderstorm include Green
+Mountain, Albion, Marshalltown Municipal Airport, Liscomb and Le
+Grand.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+To repeat, a tornado is on the ground. TAKE COVER NOW! Move to a
+basement or an interior room on the lowest floor of a sturdy
+building. Avoid windows. If you are outdoors, in a mobile home, or in
+a vehicle, move to the closest substantial shelter and protect
+yourself from flying debris.
+
+&&
+
+LAT...LON 4202 9312 4220 9304 4220 9279 4195 9278
+TIME...MOT...LOC 2131Z 288DEG 28KT 4207 9295
+
+TORNADO...OBSERVED
+HAIL...1.25IN
+
+$$
+
+Johnson

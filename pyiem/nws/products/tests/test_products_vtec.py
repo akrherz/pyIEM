@@ -59,6 +59,41 @@ def test_dups():
     assert not res
 
 
+def test_TORE_series(dbcursor):
+    """Can we process a Tornado Emergency that came with SVS update."""
+    def getval():
+        dbcursor.execute("""
+            SELECT is_emergency from warnings_2018 WHERE
+            wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
+            significance = 'W' and ugc = 'IAC127'
+        """)
+        return dbcursor.fetchone()[0]
+
+    def getval2():
+        dbcursor.execute("""
+            SELECT is_emergency from sbw_2018 WHERE
+            wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
+            significance = 'W' ORDER by updated DESC LIMIT 1
+        """)
+        return dbcursor.fetchone()[0]
+
+    prod = vtecparser(get_file('TORE/TOR.txt'))
+    prod.sql(dbcursor)
+    assert getval() is False
+    assert getval2() is False
+
+    prod = vtecparser(get_file('TORE/SVS_E.txt'))
+    prod.sql(dbcursor)
+    assert getval()
+    assert getval2()
+
+    # no longer an emergency, but we don't want database to update
+    prod = vtecparser(get_file('TORE/SVS_F.txt'))
+    prod.sql(dbcursor)
+    assert getval()
+    assert getval2() is False
+
+
 def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
@@ -623,6 +658,7 @@ def test_140731_badugclabel():
     utcnow = utc(2014, 7, 31, 17, 35)
     prod = vtecparser(get_file('MWWLWX.txt'), utcnow=utcnow,
                       ugc_provider=ugc_provider)
+    assert not prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         'LWX issues Small Craft Advisory '
@@ -636,6 +672,7 @@ def test_tornado_emergency():
     """ See what we do with Tornado Emergencies """
     utcnow = utc(2012, 4, 15, 3, 27)
     prod = vtecparser(get_file('TOR_emergency.txt'), utcnow=utcnow)
+    assert prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         "<p>ICT <a href=\"http://localhost"
@@ -689,6 +726,7 @@ def test_140715_condensed():
     """ Make sure our Tags and svs_special works for combined message """
     utcnow = utc(2014, 7, 6, 2, 1)
     prod = vtecparser(get_file('TORSVS.txt'), utcnow=utcnow)
+    assert not prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         'DMX updates Tornado Warning '

@@ -337,15 +337,16 @@ class VTECProduct(TextProduct):
                 txn.execute("""
                 INSERT into """ + warning_table + """ (issue, expire, updated,
                 wfo, eventid, status, fcster, report, ugc, phenomena,
-                significance, gid, init_expire, product_issue, hvtec_nwsli)
+                significance, gid, init_expire, product_issue, hvtec_nwsli,
+                is_emergency)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                get_gid(%s, %s), %s, %s, %s)
+                get_gid(%s, %s), %s, %s, %s, %s)
                 RETURNING gid
                 """, (bts, ets, self.valid, vtec.office,
                       vtec.etn, vtec.action, fcster, self.unixtext, str(ugc),
                       vtec.phenomena, vtec.significance, str(ugc),
                       self.valid, ets, self.valid,
-                      segment.get_hvtec_nwsli()))
+                      segment.get_hvtec_nwsli(), segment.is_emergency))
                 # For unit tests, these mostly get filtered out
                 if txn.fetchone().get('gid') is None:
                     self.warnings.append(('get_gid(%s,%s) was null'
@@ -415,12 +416,15 @@ class VTECProduct(TextProduct):
             txn.execute("""
                 UPDATE """ + warning_table + """ SET status = %s, updated = %s,
                 svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-                   || %s || '__' , expire = %s WHERE
+                   || %s || '__' , expire = %s,
+                is_emergency = (case when %s then true else is_emergency end)
+                WHERE
                 wfo = %s and eventid = %s and ugc in """ + ugcstring + """
                 and significance = %s and phenomena = %s
                 and status not in ('CAN', 'UPG') and
                 (expire + '1 hour'::interval) >= %s
-                """, (vtec.action, self.valid, self.unixtext, ets, vtec.office,
+                """, (vtec.action, self.valid, self.unixtext, ets,
+                      segment.is_emergency, vtec.office,
                       vtec.etn, vtec.significance, vtec.phenomena, self.valid))
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(
@@ -537,9 +541,9 @@ class VTECProduct(TextProduct):
             polygon_begin, polygon_end, geom, status, report, windtag,
             hailtag, tornadotag, tornadodamagetag, tml_valid,
             tml_direction, tml_sknt, """ + tml_column + """, updated,
-            waterspouttag)
+            waterspouttag, is_emergency)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         myargs = (
             vtec.office,
             vtec.etn,
@@ -553,7 +557,7 @@ class VTECProduct(TextProduct):
             segment.giswkt, vtec.action, self.unixtext, segment.windtag,
             segment.hailtag, segment.tornadotag, segment.tornadodamagetag,
             tml_valid, segment.tml_dir, segment.tml_sknt, segment.tml_giswkt,
-            self.valid, segment.waterspouttag)
+            self.valid, segment.waterspouttag, segment.is_emergency)
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(("%s.%s.%s sbw table insert "
@@ -728,25 +732,23 @@ class VTECProduct(TextProduct):
                     jmsg_dict['svs_special_html'] = segment.svs_search()
 
                 # Emergencies
-                if vtec.phenomena in ['TO', 'FF'] and vtec.significance == 'W':
+                if segment.is_emergency:
                     _btext = segment.svs_search()
-                    if (_btext == "" and vtec.phenomena == 'TO' and
-                            vtec.action not in ['CAN', 'EXP']):
-                        self.warnings.append(("Could not find bullet text in "
-                                              "segment! %s"
-                                              ) % (segment.unixtext,))
-                    elif (_btext != "" and vtec.phenomena == 'FF' and
-                          _btext.find("FLASH FLOOD EMERGENCY") > 0):
+                    if vtec.phenomena == 'FF':
                         jmsg_dict['svs_special'] = _btext
                         jmsg_dict['svs_special_html'] = _btext.replace(
                             "FLASH FLOOD EMERGENCY",
                             ('<span style="color: #FF0000;">'
                              'FLASH FLOOD EMERGENCY</span>'))
-                    elif _btext != "" and vtec.phenomena == 'TO':
+                    elif vtec.phenomena == 'TO':
                         jmsg_dict['svs_special_html'] = _btext.replace(
                             "TORNADO EMERGENCY",
                             ('<span style="color: #FF0000;">'
                              'TORNADO EMERGENCY</span>'))
+                    else:
+                        self.warnings.append(
+                            "Segment is_emergency, but not TO,FF phenomena?"
+                        )
 
                 plain = ("%(wfo)s %(product)s %(svr_special)s%(sts)s for "
                          "%(county)s %(ets)s %(svs_special)s "
