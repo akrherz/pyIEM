@@ -1,0 +1,59 @@
+615
+WFUS53 KDMX 192054
+TORDMX
+IAC127-169-192145-
+/O.NEW.KDMX.TO.W.0043.180719T2054Z-180719T2145Z/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Tornado Warning
+National Weather Service Des Moines IA
+354 PM CDT THU JUL 19 2018
+
+The National Weather Service in Des Moines  has issued a
+
+* Tornado Warning for...
+  Northeastern Story County in central Iowa...
+  Southeastern Hardin County in central Iowa...
+  Northern Marshall County in central Iowa...
+  Southwestern Grundy County in central Iowa...
+
+* Until 445 PM CDT.
+
+* At 354 PM CDT, a severe thunderstorm capable of producing a tornado
+  was located 10 miles northwest of State Center, or 13 miles
+  northeast of Nevada, moving east at 25 mph.
+
+  HAZARD...Tornado.
+
+  SOURCE...Radar indicated rotation.
+
+  IMPACT...Flying debris will be dangerous to those caught without
+           shelter. Mobile homes will be damaged or destroyed.
+           Damage to roofs, windows, and vehicles will occur.  Tree
+           damage is likely.
+
+* This dangerous storm will be near...
+  Marshalltown and Conrad around 440 PM CDT.
+
+Other locations impacted by this tornadic thunderstorm include
+Zearing, Beaman, Whitten, Green Mountain, St. Anthony, Albion,
+Marshalltown Municipal Airport, Clemons, Union and Liscomb.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+TAKE COVER NOW! Move to a basement or an interior room on the lowest
+floor of a sturdy building. Avoid windows. If you are outdoors, in a
+mobile home, or in a vehicle, move to the closest substantial shelter
+and protect yourself from flying debris.
+
+&&
+
+LAT...LON 4206 9336 4224 9336 4229 9279 4195 9278
+TIME...MOT...LOC 2054Z 269DEG 22KT 4215 9326
+
+TORNADO...RADAR INDICATED
+HAIL...<.75IN
+
+$$
+
+Johnson

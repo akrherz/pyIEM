@@ -1,0 +1,72 @@
+665
+WWUS53 KDMX 192105
+SVSDMX
+
+Severe Weather Statement
+National Weather Service Des Moines IA
+405 PM CDT THU JUL 19 2018
+
+IAC169-192114-
+/O.CAN.KDMX.TO.W.0043.000000T0000Z-180719T2145Z/
+Story IA-
+405 PM CDT THU JUL 19 2018
+
+...THE TORNADO WARNING FOR NORTHEASTERN STORY COUNTY IS CANCELLED...
+
+The tornadic thunderstorm which prompted the warning has moved out
+of the warned area. Therefore, the warning has been cancelled.
+
+A Tornado Watch remains in effect until 1000 PM CDT for central Iowa.
+
+LAT...LON 4204 9323 4225 9323 4229 9279 4195 9278
+TIME...MOT...LOC 2104Z 269DEG 22KT 4215 9318
+
+$$
+
+IAC127-192145-
+/O.CON.KDMX.TO.W.0043.000000T0000Z-180719T2145Z/
+Hardin IA-Marshall IA-Grundy IA-
+405 PM CDT THU JUL 19 2018
+
+...A TORNADO EMERGENCY IS IN EFFECT UNTIL 445 PM CDT FOR
+SOUTHEASTERN HARDIN...NORTHERN MARSHALL AND SOUTHWESTERN GRUNDY
+COUNTIES...
+
+At 404 PM CDT, a severe thunderstorm capable of producing a tornado
+was located 9 miles north of State Center, or 15 miles south of
+Eldora, moving east at 25 mph.
+
+HAZARD...Tornado.
+
+SOURCE...Radar indicated rotation.
+
+IMPACT...Flying debris will be dangerous to those caught without
+         shelter. Mobile homes will be damaged or destroyed. Damage
+         to roofs, windows, and vehicles will occur.  Tree damage is
+         likely.
+
+This dangerous storm will be near...
+  Marshalltown and Conrad around 440 PM CDT.
+
+Other locations impacted by this tornadic thunderstorm include
+Beaman, Whitten, Green Mountain, St. Anthony, Albion, Marshalltown
+Municipal Airport, Clemons, Union, Liscomb and Le Grand.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+TAKE COVER NOW! Move to a basement or an interior room on the lowest
+floor of a sturdy building. Avoid windows. If you are outdoors, in a
+mobile home, or in a vehicle, move to the closest substantial shelter
+and protect yourself from flying debris.
+
+&&
+
+LAT...LON 4204 9323 4225 9323 4229 9279 4195 9278
+TIME...MOT...LOC 2104Z 269DEG 22KT 4215 9318
+
+TORNADO...RADAR INDICATED
+HAIL...<.75IN
+
+$$
+
+Johnson

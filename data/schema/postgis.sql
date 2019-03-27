@@ -852,7 +852,8 @@ CREATE TABLE warnings (
     hvtec_nwsli character(5),
     gid int references ugcs(gid),
     init_expire timestamptz,
-    product_issue timestamptz
+    product_issue timestamptz,
+    is_emergency boolean
 ) WITH OIDS;
 select addgeometrycolumn('','warnings','geom',4326,'MULTIPOLYGON',2);
 
@@ -1219,7 +1220,8 @@ create table sbw(
   tml_valid timestamp with time zone,
   tml_direction smallint,
   tml_sknt smallint,
-  updated timestamptz
+  updated timestamptz,
+  is_emergency boolean
 ) WITH OIDS;
 select addgeometrycolumn('','sbw','geom',4326,'MULTIPOLYGON',2);
 select addGeometryColumn('sbw', 'tml_geom', 4326, 'POINT', 2);
