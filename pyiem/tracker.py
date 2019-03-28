@@ -1,6 +1,5 @@
-"""IEM Tracker Related Stuff
-
-"""
+"""IEM Tracker Related Stuff."""
+import datetime
 import smtplib
 from email.mime.text import MIMEText
 
@@ -252,21 +251,27 @@ IEM Tracker Action:  This trouble ticket has been marked
             self.offline_logic(sid, ob, pnetwork, nt)
 
 
-def loadqc(cursor=None):
+def loadqc(cursor=None, date=None):
     """ Load the current IEM Tracker QC'd variables
 
     Args:
       cursor (cursor,optional): Optionally provided database cursor
+      date (date,optional): Defaults to today, which tickets are valid for now
     """
+    if date is None:
+        date = datetime.date.today()
     qdict = {}
     if cursor is None:
         portfolio = get_dbconn('portfolio', user='nobody')
         cursor = portfolio.cursor()
 
     cursor.execute("""
-    select s_mid, sensor, status from tt_base WHERE sensor is not null
-    and status != 'CLOSED' and s_mid is not null
-    """)
+        select s_mid, sensor, status from tt_base
+        WHERE sensor is not null
+        and date(entered) <= %s and
+        (status != 'CLOSED' or closed > %s)
+        and s_mid is not null
+    """, (date, date))
     for row in cursor:
         sid = row[0]
         if row[0] not in qdict:
