@@ -5,7 +5,7 @@ cython
 descartes
 fiona
 geojson
-matplotlib
+matplotlib>=3
 metpy
 metar>=1.7.0
 mock
