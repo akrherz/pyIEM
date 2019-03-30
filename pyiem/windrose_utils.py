@@ -1,6 +1,7 @@
 """util script to call `windrose` package"""
 import os
 import datetime
+import sys
 
 import numpy as np
 import pandas as pd
@@ -181,7 +182,7 @@ def _make_textresult(station, df, units, nsector, sname, monthinfo, hourinfo,
 
 
 def _make_plot(station, df, units, nsector, rmax, hours, months,
-               sname, level, bins):
+               sname, level, bins, **kwargs):
     """Generate a matplotlib windrose plot
 
     Args:
@@ -220,7 +221,11 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
                bins=wu['bins'], opening=0.8, edgecolor='white',
                nsector=nsector)
     except Exception as exp:
-        pass
+        sys.stderr.write(str(exp))
+    # Adjust the limits so to get a empty center
+    rmin, rmax = ax.get_ylim()
+    ax.set_rorigin(0 - (rmax - rmin) * 0.2)
+
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
@@ -259,14 +264,18 @@ Period of Record: %s - %s""" % (
         df['valid'].min().strftime("%d %b %Y"),
         df['valid'].max().strftime("%d %b %Y"))
     plt.gcf().text(0.14, 0.99, label, va='top', fontsize=14)
+    plt.gcf().text(
+        0.5, 0.5, "Calm\n%.1f%%" % (
+            len(df[df['sknt'] == 0].index) / float(len(df2.index)) * 100.,),
+        ha='center', va='center', fontsize=14)
     plt.gcf().text(0.96, 0.11, (
-        "Summary\nn: %s\nMissing: %s\nCalm: %.1f%%\nAvg Speed: %.1f %s"
+        "Summary\nn: %s\nMissing: %s\nAvg Speed: %.1f %s"
         ) % (len(df.index), len(df.index) - len(df2.index),
-             len(df[df['sknt'] == 0].index) / float(len(df2.index)) * 100.,
              df['speed'].mean(), wu['abbr']), ha='right', fontsize=14)
-    plt.gcf().text(0.01, 0.11, "Generated: %s" % (
-                   datetime.datetime.now().strftime("%d %b %Y"),),
-                   verticalalignment="bottom", fontsize=14)
+    if not kwargs.get('nogenerated', False):
+        plt.gcf().text(0.01, 0.11, "Generated: %s" % (
+                      datetime.datetime.now().strftime("%d %b %Y"),),
+                       verticalalignment="bottom", fontsize=14)
     # Make a logo
     im = mpimage.imread('%s/%s' % (DATADIR, 'logo.png'))
     plt.figimage(im, 10, 735)
@@ -278,7 +287,8 @@ def windrose(station, database='asos', months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
              justdata=False, rmax=None, cursor=None, sname=None,
-             sknt=None, drct=None, valid=None, level=None, bins=[]):
+             sknt=None, drct=None, valid=None, level=None, bins=[],
+             **kwargs):
     """Utility function that generates a windrose plot
 
     Args:
@@ -325,4 +335,4 @@ def windrose(station, database='asos', months=np.arange(1, 13),
         return fig
 
     return _make_plot(station, df, units, nsector, rmax, hours, months,
-                      sname, level, bins)
+                      sname, level, bins, **kwargs)
