@@ -5,7 +5,7 @@ cython
 descartes
 fiona
 # for more consisten plots
-freetype=2.9
+freetype<2.10
 geojson
 matplotlib
 metpy
