@@ -4,8 +4,10 @@ coveralls
 cython
 descartes
 fiona
+# for more consisten plots
+freetype=2.9
 geojson
-matplotlib>=3
+matplotlib
 metpy
 metar>=1.7.0
 mock
