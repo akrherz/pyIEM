@@ -1,11 +1,13 @@
 """util script to call `windrose` package"""
 import os
 import datetime
+import sys
 
 import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
 import matplotlib.image as mpimage
+from matplotlib.ticker import FormatStrFormatter
 from pyiem.plot.use_agg import plt
 from windrose import WindroseAxes
 from windrose.windrose import histogram
@@ -181,7 +183,7 @@ def _make_textresult(station, df, units, nsector, sname, monthinfo, hourinfo,
 
 
 def _make_plot(station, df, units, nsector, rmax, hours, months,
-               sname, level, bins):
+               sname, level, bins, **kwargs):
     """Generate a matplotlib windrose plot
 
     Args:
@@ -202,7 +204,7 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
     """
     # Generate figure
     fig = plt.figure(figsize=(8, 8), dpi=100, facecolor='w', edgecolor='w')
-    rect = [0.15, 0.15, 0.7, 0.7]
+    rect = [0.12, 0.12, 0.76, 0.76]
     ax = WindroseAxes(fig, rect, facecolor='w', rmax=rmax)
     fig.add_axes(ax)
     wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
@@ -216,11 +218,21 @@ def _make_plot(station, df, units, nsector, rmax, hours, months,
     df2 = df[df['drct'] >= 0]
     try:
         # Unsure why this bombs out sometimes
-        ax.bar(df2['drct'].values, df2['speed'].values, normed=True,
-               bins=wu['bins'], opening=0.8, edgecolor='white',
-               nsector=nsector)
+        ax.bar(
+            df2['drct'].values, df2['speed'].values, normed=True,
+            bins=wu['bins'], opening=0.8, edgecolor='white', nsector=nsector)
     except Exception as exp:
-        pass
+        sys.stderr.write(str(exp))
+    # Figure out the shortest bar
+    mindir = ax._info['dir'][
+        np.argmin(np.sum(ax._info['table'], axis=0))]
+    ax.set_rlabel_position((450 - mindir) % 360 - 15)
+    # Adjust the limits so to get a empty center
+    rmin, rmax = ax.get_ylim()
+    ax.set_rorigin(0 - (rmax - rmin) * 0.2)
+    # Make labels have % formatters
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f%%'))
+
     handles = []
     for p in ax.patches_list:
         color = p.get_facecolor()
@@ -259,14 +271,23 @@ Period of Record: %s - %s""" % (
         df['valid'].min().strftime("%d %b %Y"),
         df['valid'].max().strftime("%d %b %Y"))
     plt.gcf().text(0.14, 0.99, label, va='top', fontsize=14)
+    plt.gcf().text(
+        0.5, 0.5, "Calm\n%.1f%%" % (
+            len(df[df['sknt'] == 0].index) / float(len(df2.index)) * 100.,),
+        ha='center', va='center', fontsize=14)
     plt.gcf().text(0.96, 0.11, (
-        "Summary\nn: %s\nMissing: %s\nCalm: %.1f%%\nAvg Speed: %.1f %s"
+        "Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s"
         ) % (len(df.index), len(df.index) - len(df2.index),
-             len(df[df['sknt'] == 0].index) / float(len(df2.index)) * 100.,
              df['speed'].mean(), wu['abbr']), ha='right', fontsize=14)
-    plt.gcf().text(0.01, 0.11, "Generated: %s" % (
-                   datetime.datetime.now().strftime("%d %b %Y"),),
-                   verticalalignment="bottom", fontsize=14)
+    if not kwargs.get('nogenerated', False):
+        plt.gcf().text(0.01, 0.11, "Generated: %s" % (
+                      datetime.datetime.now().strftime("%d %b %Y"),),
+                       verticalalignment="bottom", fontsize=14)
+    # Denote the direction blowing from
+    plt.gcf().text(
+        0.02, 0.1, "Direction is where the wind is\nblowing from, not toward.",
+        va='bottom'
+    )
     # Make a logo
     im = mpimage.imread('%s/%s' % (DATADIR, 'logo.png'))
     plt.figimage(im, 10, 735)
@@ -278,7 +299,8 @@ def windrose(station, database='asos', months=np.arange(1, 13),
              hours=np.arange(0, 24), sts=datetime.datetime(1970, 1, 1),
              ets=datetime.datetime(2050, 1, 1), units="mph", nsector=36,
              justdata=False, rmax=None, cursor=None, sname=None,
-             sknt=None, drct=None, valid=None, level=None, bins=[]):
+             sknt=None, drct=None, valid=None, level=None, bins=[],
+             **kwargs):
     """Utility function that generates a windrose plot
 
     Args:
@@ -325,4 +347,4 @@ def windrose(station, database='asos', months=np.arange(1, 13),
         return fig
 
     return _make_plot(station, df, units, nsector, rmax, hours, months,
-                      sname, level, bins)
+                      sname, level, bins, **kwargs)
