@@ -280,12 +280,13 @@ Period of Record: %s - %s""" % (
         ) % (len(df.index), len(df.index) - len(df2.index),
              df['speed'].mean(), wu['abbr']), ha='right', fontsize=14)
     if not kwargs.get('nogenerated', False):
-        plt.gcf().text(0.01, 0.11, "Generated: %s" % (
+        plt.gcf().text(0.02, 0.1, "Generated: %s" % (
                       datetime.datetime.now().strftime("%d %b %Y"),),
                        verticalalignment="bottom", fontsize=14)
     # Denote the direction blowing from
     plt.gcf().text(
-        0.02, 0.1, "Direction is where the wind is\nblowing from, not toward.",
+        0.02, 0.125,
+        "Direction is where the wind is\nblowing from, not toward.",
         va='bottom'
     )
     # Make a logo
