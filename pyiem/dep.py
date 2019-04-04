@@ -37,6 +37,8 @@ def get_cli_fname(lon, lat, scenario=0):
     """Get the climate file name for the given lon, lat, and scenario"""
     # The trouble here is relying on rounding is problematic, so we just
     # truncate
+    lon = round(lon, 2)
+    lat = round(lat, 2)
     return "/i/%s/cli/%03ix%03i/%06.2fx%06.2f.cli" % (scenario,
                                                       0 - lon,
                                                       lat,
