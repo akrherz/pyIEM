@@ -83,12 +83,3 @@ def test_read():
     assert len(df2.index) == 1
     row = df2.iloc[0]
     assert row['runoff'] == 86.3
-
-
-def do_timing():
-    """Hack to do timing"""
-    sts = datetime.datetime.now()
-    dep.read_env(get_path('good_env.txt'))
-    ets = datetime.datetime.now()
-    print("%.5f reads per second" % (1. / (ets - sts).total_seconds(),))
-    # assert 1 == 2

@@ -346,7 +346,7 @@ def read_env(filename, year0=2006):
     """
     df = pd.read_csv(
         filename, skiprows=3, index_col=False, sep=r'\s+',
-        header=None, na_values=['*******', '******'],
+        header=None, na_values=['*******', '******', '*****'],
         names=[
             'day', 'month', 'year', 'precip', 'runoff', 'ir_det', 'av_det',
             'mx_det', 'point', 'av_dep', 'max_dep', 'point2', 'sed_del',
