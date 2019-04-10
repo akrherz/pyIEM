@@ -615,7 +615,7 @@ class MapPlot(object):
         return None
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
-        """Draw the colorbar on the structed plot using `self.cax`
+        """Draw the colorbar on the structed plot using `self.cax`.
 
         Args:
           clevs (list): The levels used in the classification
@@ -646,9 +646,17 @@ class MapPlot(object):
         stride = slice(None, None, int(kwargs.get('clevstride', 1)))
         cb2 = mpcolorbar.ColorbarBase(
             self.cax, cmap=cmap, norm=norm, boundaries=blevels,
-            extend=extend, ticks=clevs[stride], format='%g',
-            spacing=kwargs.get('spacing', 'uniform'), orientation='vertical')
-        cb2.ax.set_yticklabels(clevlabels[stride])
+            extend=extend, ticks=clevs[stride],
+            spacing=kwargs.get('spacing', 'uniform'), orientation='vertical'
+        )
+
+        def _myrepr(val):
+            """avoid list conversion in matplotlib that fowls numpy floats."""
+            try:
+                return "%g" % (val, )
+            except TypeError:
+                return "%s" % (val, )
+        cb2.ax.set_yticklabels(list(map(_myrepr, clevlabels[stride])))
         # Attempt to quell offset that sometimes appears with large numbers
         cb2.ax.get_yaxis().get_major_formatter().set_offset_string("")
         for label in cb2.ax.get_yticklabels():
@@ -661,17 +669,23 @@ class MapPlot(object):
                 label.set_rotation(45)
 
         if 'units' in kwargs:
-            self.fig.text(0.99, 0.03, "data units :: %s" % (kwargs['units'],),
-                          ha='right')
+            self.fig.text(
+                0.99, 0.03, "data units :: %s" % (kwargs['units'],),
+                ha='right'
+            )
 
         title = kwargs.get('title')
         if title:
-            self.ax.set_position([MAIN_AX_BOUNDS[0],
-                                  MAIN_AX_BOUNDS[1],
-                                  MAIN_AX_BOUNDS[2] - 0.03,
-                                  MAIN_AX_BOUNDS[3]])
-            cb2.ax.text(-0.05, 0.5, title, rotation=90, fontsize=16,
-                        transform=cb2.ax.transAxes, ha='right', va='center')
+            self.ax.set_position(
+                [MAIN_AX_BOUNDS[0],
+                 MAIN_AX_BOUNDS[1],
+                 MAIN_AX_BOUNDS[2] - 0.03,
+                 MAIN_AX_BOUNDS[3]]
+            )
+            cb2.ax.text(
+                -0.05, 0.5, title, rotation=90, fontsize=16,
+                transform=cb2.ax.transAxes, ha='right', va='center'
+            )
 
     def plot_station(self, data, **kwargs):
         """Plot values on a map in a station plot like manner.
