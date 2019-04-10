@@ -10,6 +10,27 @@ from pyiem.plot import MapPlot, centered_bins
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_issue98_labelbar():
+    """Sometimes our label bar sucks."""
+    mp = MapPlot(
+        title='Proportional Colorbar with some rotation',
+        sector='iowa', nocaption=True)
+    cmap = plot.maue()
+    cmap.set_under('white')
+    cmap.set_over('black')
+    clevs = np.arange(0, 1., 0.1)
+    clevs[-1] = 3.987654
+    norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+    mp.plot_values(
+        [-94, -92, -91, -92], [42, 41, 43, 42.4],
+        ['0.5', '0.25', '1.0', '5.0'], color=cmap(norm([0.5, 0.25, 1.0, 5.0])),
+        showmarker=True
+    )
+    mp.draw_colorbar(clevs, cmap, norm, spacing='proportional')
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_illinois():
     """Produce a plot that doesn't suck"""
     mp = MapPlot(sector='state', state='IL', nocaption=True)
