@@ -4,8 +4,8 @@ coveralls
 cython
 descartes
 fiona
-# for more consisten plots
-freetype<2.10
+# need to pin for comparables
+freetype>=2.10
 geojson
 matplotlib
 metpy
