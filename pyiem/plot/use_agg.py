@@ -5,9 +5,13 @@ Example:
 """
 import os
 
+from pandas.plotting import register_matplotlib_converters
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
+
+# Workaround a pandas dataframe to matplotlib issue
+register_matplotlib_converters()
 
 # work around warning coming from pooch
 if 'TEST_DATA_DIR' not in os.environ:
