@@ -150,20 +150,30 @@ def test_noaaport_text():
 def test_vtecps():
     """Can we properly handle the vtecps form type"""
     cfg = dict(arguments=[
-        dict(type='vtec_ps', name='v1', default='UNUSED',
+        dict(type='vtec_ps', name='v1', default='TO.W',
              label='VTEC Phenomena and Significance 1'),
-        dict(type='vtec_ps', name='v2', default='UNUSED', optional=True,
+        dict(type='vtec_ps', name='v2', default='TO.A', optional=True,
              label='VTEC Phenomena and Significance 2'),
-        dict(type='vtec_ps', name='v3', default='UNUSED', optional=True,
+        dict(type='vtec_ps', name='v3', default=None, optional=True,
              label='VTEC Phenomena and Significance 3'),
-        dict(type='vtec_ps', name='v4', default='UNUSED', optional=True,
-             label='VTEC Phenomena and Significance 4')])
+        dict(type='vtec_ps', name='v4', default='FL.Y', optional=True,
+             label='VTEC Phenomena and Significance 4'),
+        dict(type='vtec_ps', name='v5', default='UNUSED', optional=True,
+             label='VTEC Phenomena and Significance 5')])
     form = dict(phenomenav1='SV', significancev1='A',
                 phenomenav4='TO', significancev4='W')
     ctx = util.get_autoplot_context(form, cfg)
+    # For v1, we were explicitly provided by from the form
     assert ctx['phenomenav1'] == 'SV'
-    assert ctx['phenomenav2'] is None
+    assert ctx['significancev1'] == 'A'
+    # For v2, optional is on, so our values should be None
+    assert ctx.get('phenomenav2') is None
+    # For v3, should be None as well
+    assert ctx.get('phenomenav3') is None
+    # For v4, we provided a value via form
     assert ctx['significancev4'] == 'W'
+    # For v5, we have a bad default set
+    assert ctx.get('phenomenav5') is None
 
 
 def test_properties(cursor):

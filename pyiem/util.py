@@ -219,7 +219,7 @@ def get_autoplot_context(fdict, cfg):
         maxval = opt.get('max')
         optional = opt.get('optional', False)
         value = fdict.get(name)
-        if optional and value is None and typ not in ['vtec_ps']:
+        if optional and value is None and typ not in ['vtec_ps', ]:
             continue
         if typ in ['station', 'zstation', 'sid', 'networkselect']:
             # A bit of hackery here if we have a name ending in a number
@@ -285,9 +285,17 @@ def get_autoplot_context(fdict, cfg):
                 value = datetime.datetime.strptime(value, '%Y-%m-%d').date()
         elif typ == 'vtec_ps':
             # VTEC phenomena and significance
+            defaults = {}
+            # Only set a default value when the field is not optional
+            if default is not None and not optional:
+                tokens = default.split(".")
+                if (len(tokens) == 2 and len(tokens[0]) == 2 and
+                        len(tokens[1]) == 1):
+                    defaults['phenomena'] = tokens[0]
+                    defaults['significance'] = tokens[1]
             for label in ['phenomena', 'significance']:
-                label = label + name
-                ctx[label] = fdict.get(label)
+                label2 = label + name
+                ctx[label2] = fdict.get(label2, defaults.get(label))
             continue
         # validation
         if minval is not None and value is not None and value < minval:
