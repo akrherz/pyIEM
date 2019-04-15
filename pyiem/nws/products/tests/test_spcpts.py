@@ -15,6 +15,12 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_190415_badtime():
+    """This product has a bad time period, we should emit a warning."""
+    spc = parser(get_file('PTSDY1_invalidtime.txt'))
+    assert any([w.startswith("time_bounds_check") for w in spc.warnings])
+
+
 def test_180807_idx1_idx2():
     """This Day1 generated an error."""
     spc = parser(get_file('PTSDY1_idx1_idx2.txt'))

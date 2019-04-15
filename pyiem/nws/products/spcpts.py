@@ -373,6 +373,13 @@ class SPCPTS(TextProduct):
                         good_polys.append(poly1)
                 if rewrite:
                     outlook.geometry = MultiPolygon(good_polys)
+        # 2. Do the time bounds make sense, limited scope here
+        if (self.day == 1 and
+                (self.issue - self.valid).total_seconds() > 8 * 3600):
+            self.warnings.append((
+                "time_bounds_check: day: %s issue: %s valid: %s expire: %s"
+                ) % (self.day, self.issue, self.valid, self.expire)
+            )
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""
