@@ -64,6 +64,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
                  if kwargs.get('norm') is None or val is None
                  else kwargs['cmap'](kwargs['norm']([val, ]))[0])
     offx = (now.weekday() + 1) if now.weekday() != 6 else 0
+    cellcolor = data.get(now, dict()).get('cellcolor', cellcolor)
     rect = Rectangle((offx * dx, 0.9 - (row + 1) * dy), dx, dy,
                      zorder=(2 if val is None else 3),
                      facecolor=cellcolor,

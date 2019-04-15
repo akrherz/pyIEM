@@ -55,6 +55,6 @@ def test_calendar():
     sts = datetime.date(2015, 5, 4)
     ets = datetime.date(2015, 5, 15)
     data = dict()
-    data[datetime.date(2015, 5, 16)] = {'val': 300}
-    data[datetime.date(2015, 5, 6)] = {'val': 1}
+    data[datetime.date(2015, 5, 16)] = {'val': 300, 'color': '#ff0000'}
+    data[datetime.date(2015, 5, 6)] = {'val': 1, 'cellcolor': '#0000ff'}
     return calendar_plot(sts, ets, data, heatmap=True)
