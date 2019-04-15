@@ -8,6 +8,7 @@ import datetime
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
 from pyiem.nws.product import TextProduct
+from pyiem.util import utc
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile((r"WW ([0-9]*) (TEST)?\s?"
@@ -135,8 +136,8 @@ class SAWProduct(TextProduct):
         hour2 = int(tokens[0][4])
         minute2 = int(tokens[0][5])
 
-        sts = sts.replace(day=day1, hour=hour1, minute=minute1)
-        ets = ets.replace(day=day2, hour=hour2, minute=minute2)
+        sts = utc(self.utcnow.year, self.utcnow.month, day1, hour1, minute1)
+        ets = utc(self.utcnow.year, self.utcnow.month, day2, hour2, minute2)
 
         # If we are near the end of the month and the day1 is 1, add 1 month
         if self.utcnow.day > 27 and day1 == 1:

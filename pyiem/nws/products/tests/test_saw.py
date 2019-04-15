@@ -19,7 +19,9 @@ def get_file(name):
 def test_181231_linkisok():
     """The plain text tweet should have a space."""
     utcnow = utc(2014, 3, 10, 3, 29)
+    utcnow = utcnow.replace(microsecond=100)
     prod = sawparser(get_file('SAW3.txt'), utcnow=utcnow)
+    assert prod.ets.microsecond == 0
     jmsgs = prod.get_jabbers('')
     ans = (
         "SPC issues Severe Thunderstorm Watch 503 till 9:00Z "
