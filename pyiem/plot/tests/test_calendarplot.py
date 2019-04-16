@@ -11,9 +11,11 @@ def test_issue101():
     sts = datetime.date(2017, 5, 29)
     ets = datetime.date(2017, 9, 30)
     data = dict()
-    data[datetime.date(2015, 6, 6)] = {'val': "0606"}
-    data[datetime.date(2015, 7, 6)] = {'val': "0506"}
-    return calendar_plot(sts, ets, data)
+    data[datetime.date(2017, 6, 6)] = {'val': "0606"}
+    data[datetime.date(2017, 7, 6)] = {'val': "0506"}
+    return calendar_plot(
+        sts, ets, data, title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -24,7 +26,9 @@ def test_calendar12():
     data = dict()
     data[datetime.date(2015, 6, 6)] = {'val': "0606"}
     data[datetime.date(2015, 5, 6)] = {'val': "0506"}
-    return calendar_plot(sts, ets, data)
+    return calendar_plot(
+        sts, ets, data, title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -35,7 +39,10 @@ def test_calendar8():
     data = dict()
     data[datetime.date(2015, 6, 6)] = {'val': "0606"}
     data[datetime.date(2015, 5, 6)] = {'val': "0506"}
-    return calendar_plot(sts, ets, data)
+    return calendar_plot(
+        sts, ets, data,
+        title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -46,7 +53,9 @@ def test_calendar4():
     data = dict()
     data[datetime.date(2015, 6, 6)] = {'val': "0606"}
     data[datetime.date(2015, 5, 6)] = {'val': "0506"}
-    return calendar_plot(sts, ets, data)
+    return calendar_plot(
+        sts, ets, data, title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -57,7 +66,9 @@ def test_calendar2():
     data = dict()
     data[datetime.date(2015, 6, 6)] = {'val': "0606"}
     data[datetime.date(2015, 5, 6)] = {'val': "0506"}
-    return calendar_plot(sts, ets, data)
+    return calendar_plot(
+        sts, ets, data, title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0)
@@ -68,4 +79,6 @@ def test_calendar():
     data = dict()
     data[datetime.date(2015, 5, 16)] = {'val': 300, 'color': '#ff0000'}
     data[datetime.date(2015, 5, 6)] = {'val': 1, 'cellcolor': '#0000ff'}
-    return calendar_plot(sts, ets, data, heatmap=True)
+    return calendar_plot(
+        sts, ets, data, title='Whiz Bang, Wizzardry',
+        subtitle='This is officially unofficial and hacky.', heatmap=True)
