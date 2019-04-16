@@ -19,13 +19,16 @@ DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",
                    re.IGNORECASE)
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 
-THRESHOLD2TEXT = {'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
-                  'MDT': "Moderate", 'HIGH': 'High',
-                  'CRIT': 'Critical', 'EXTM': 'Extreme'}
+THRESHOLD2TEXT = {
+    'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
+    'MDT': "Moderate", 'HIGH': 'High',
+    'IDRT': 'Isolated Dry Thunderstorm',
+    'SDRT': 'Scattered Dry Thunderstorm',
+    'ELEV': "Elevated", 'CRIT': 'Critical', 'EXTM': 'Extreme'}
 THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
                    '0.30', '0.35', '0.40', '0.45', '0.60',
                    'TSTM', 'MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH',
-                   'CRIT', 'EXTM']
+                   'IDRT', 'SDRT', 'ELEV', 'CRIT', 'EXTM']
 
 
 # def draw_polys(polys, segments):
@@ -495,8 +498,8 @@ class SPCPTS(TextProduct):
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
-                if re.match((r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|"
-                             r"HIGH|CRIT|TSTM|SIGN|0\.[0-9][0-9]) "),
+                if re.match((r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|"
+                             r"HIGH|CRIT|TSTM|SIGN|IDRT|SDRT|0\.[0-9][0-9]) "),
                             line) is not None:
                     newthreshold = line.split()[0]
                     if threshold is not None and threshold == newthreshold:
@@ -672,7 +675,8 @@ class SPCPTS(TextProduct):
         for _, collect in self.outlook_collections.items():
 
             wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
-                    'CRIT': [], 'MDT': [], 'HIGH': []}
+                    'CRIT': [], 'MDT': [], 'HIGH': [], 'ELEV': [],
+                    'IDRT': [], 'SDRT': []}
 
             for outlook in collect.outlooks:
                 _d = wfos.setdefault(outlook.threshold, [])
@@ -682,7 +686,8 @@ class SPCPTS(TextProduct):
             wfomsgs = {}
             # We order in least to greatest, so that the highest threshold
             # overwrites lower ones
-            for cat in ['MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH', 'CRIT', 'EXTM']:
+            for cat in ['MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH',
+                        'ELEV', 'CRIT', 'EXTM', 'IDRT', 'SDRT']:
                 jdict['ttext'] = "%s %s Risk" % (THRESHOLD2TEXT[cat],
                                                  product_descript)
                 for wfo in wfos[cat]:

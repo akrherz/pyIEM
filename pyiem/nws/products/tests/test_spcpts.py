@@ -15,6 +15,16 @@ def get_file(name):
     return open(fn, 'rb').read().decode('utf-8')
 
 
+def test_190415_elevated():
+    """Can we parse elevated threshold firewx?"""
+    spc = parser(get_file('PFWFD1_example.txt'))
+    outlook = spc.get_outlook('FIRE WEATHER CATEGORICAL', 'ELEV', 1)
+    assert abs(outlook.geometry.area - 145.64) < 0.01
+    for level in ['IDRT', 'SDRT', 'ELEV', 'CRIT', 'EXTM']:
+        outlook = spc.get_outlook('FIRE WEATHER CATEGORICAL', level, 1)
+        assert outlook is not None
+
+
 def test_190415_badtime():
     """This product has a bad time period, we should emit a warning."""
     spc = parser(get_file('PTSDY1_invalidtime.txt'))
