@@ -13,10 +13,12 @@ def _compute_bounds(sts, ets):
     """figure out our monthly calendar bounding boxes"""
     now = sts
     months = []
+    lastmonth = -1
     while now <= ets:
-        months.append(now)
-        now += datetime.timedelta(days=33)
-        now = now.replace(day=1)
+        if now.month != lastmonth:
+            months.append(now)
+            lastmonth = now.month
+        now += datetime.timedelta(days=1)
 
     bounds = OrderedDict()
     # 1x1
