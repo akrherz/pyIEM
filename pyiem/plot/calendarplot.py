@@ -1,4 +1,5 @@
 """Calendar Plot"""
+import os
 from collections import OrderedDict
 import datetime
 import calendar
@@ -6,7 +7,20 @@ import calendar
 import numpy as np
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
-from pyiem.plot.use_agg import plt
+import matplotlib.image as mpimage
+from pyiem.plot.use_agg import plt, fontscale
+
+DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
+
+
+def iemlogo(fig):
+    """Place the IEM Logo"""
+    fn = '%s/%s' % (DATADIR, 'logo.png')
+    if not os.path.isfile(fn):
+        return
+    logo = mpimage.imread(fn)
+    y0 = fig.get_figheight() * 100. - logo.shape[0] - 5
+    fig.figimage(logo, 5, y0, zorder=3)
 
 
 def _compute_bounds(sts, ets):
@@ -22,40 +36,45 @@ def _compute_bounds(sts, ets):
 
     bounds = OrderedDict()
     # 1x1
-    padding = 0.025
+    vpadding = 0.015
+    hpadding = 0.01
     if len(months) == 1:
         cols = 1
-        width = 1 - 2. * padding
-        height = 0.88 - padding
+        rows = 1
     # 1x2
     elif len(months) < 3:
         cols = 2
-        width = (1. - 3 * padding) / 2.
-        height = (0.88 - 2 * padding)
+        rows = 1
     # 2x2
     elif len(months) <= 4:
         cols = 2
-        width = (1. - 3 * padding) / 2.
-        height = (0.88 - 2 * padding) / 2.
+        rows = 2
     # 3x3
     elif len(months) <= 9:
         cols = 3
-        width = (1. - 4 * padding) / 3.
-        height = (0.88 - 3 * padding) / 3.
+        rows = 3
     # 3x4
     else:
         cols = 3
-        width = (1. - 4 * padding) / 3.
-        height = (0.88 - 4 * padding) / 4.
+        rows = 4
 
-    gx = padding
+    monthtotalwidth = 1. / float(cols)
+    monthtotalheight = 0.86 / float(rows)
+    monthwidth = monthtotalwidth - 2 * hpadding
+    monthheight = monthtotalheight - 2 * vpadding
+
+    gx = 0
     gy = 0.9  # upper left corners here
     for i, month in enumerate(months):
         col = (i % cols)
-        row = int(i / cols) + 1
-        bounds[month] = [gx + (col * width) + (col * padding),
-                         gy - (row * height) - ((row - 1) * padding),
-                         width, height]
+        row = int(i / cols)
+        llx = gx + col * monthtotalwidth
+        lly = gy - (row + 1) * monthtotalheight
+        bounds[month] = [
+            llx + hpadding,
+            lly + vpadding,
+            monthwidth,
+            monthheight]
     return bounds
 
 
@@ -93,6 +112,17 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     """Place data on this axes"""
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
+    pos = axes.get_position()
+    ndcheight = (pos.y1 - pos.y0)
+    ndcwidth = (pos.x1 - pos.x0)
+
+    plt.gcf().text(
+        pos.x0 + (pos.x1 - pos.x0) / 2., pos.y1 + 0.015,
+        month.strftime('%B %Y'),
+        zorder=3,
+        fontsize=fontscale(0.025),
+        ha='center', va='center'
+    )
 
     axes.add_patch(Rectangle((0., 0.90), 1, 0.1, zorder=2,
                              facecolor='tan', edgecolor='tan'))
@@ -108,7 +138,10 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     dx = 1. / 7.
     for i, dow in enumerate(['SUN', 'MON', 'TUE', 'WED', 'THU',
                              'FRI', 'SAT']):
-        axes.text(1. / 7. * (i + 0.5), 0.95, dow, ha='center', va='center')
+        axes.text(
+            1. / 7. * (i + 0.5), 0.94, dow,
+            fontsize=fontscale(ndcwidth / 7. * 0.4),
+            ha='center', va='center')
     while now < ets:
         # Is this Sunday?
         if now.weekday() == 6 and now != sts:
@@ -117,11 +150,13 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
             now += datetime.timedelta(days=1)
             continue
         offx = (now.weekday() + 1) if now.weekday() != 6 else 0
-        axes.text(offx * dx + 0.01,
-                  0.9 - row * dy - 0.01,
-                  str(now.day), fontsize=(kwargs['fontsize'] - 4),
-                  color='tan',
-                  va='top')
+        axes.text(
+            offx * dx + 0.01,
+            0.9 - row * dy - 0.01,
+            str(now.day), fontsize=fontscale(ndcheight / 5. * 0.25),
+            color='tan',
+            va='top'
+        )
         _do_cell(axes, now, data, row, dx, dy, kwargs)
         now += datetime.timedelta(days=1)
 
@@ -163,11 +198,18 @@ def calendar_plot(sts, ets, data, **kwargs):
                                                kwargs['cmap'].N)
     for month in bounds:
         ax = fig.add_axes(bounds[month])
-        ax.text(0.5, 1.01,
-                month.strftime('%B %Y' if sts.year != ets.year else '%B'),
-                transform=ax.transAxes, zorder=3, ha='center')
         _do_month(month, ax, data, sts, ets, kwargs)
 
-    fig.text(0.5, 0.99, kwargs.get('title', ''), va='top',
-             ha='center')
+    iemlogo(fig)
+    title = kwargs.get('title', '')
+    titlefontsize = kwargs.get('titlefontsize', fontscale(0.04))
+    fig.text(
+        0.1, 0.99, title, va='top',
+        ha='left', fontsize=titlefontsize)
+
+    subtitle = kwargs.get('subtitle', '')
+    subtitlefontsize = kwargs.get('subtitlefontsize', fontscale(0.02))
+    fig.text(
+        0.1, 0.945, subtitle, va='top',
+        ha='left', fontsize=subtitlefontsize)
     return fig
