@@ -12,6 +12,13 @@ def get_path(name):
     return "%s/../../data/wepp/%s" % (basedir, name)
 
 
+def test_scenarios():
+    """Can we load scenarios?"""
+    df = dep.load_scenarios()
+    assert not df.empty
+    assert 0 in df.index
+
+
 def test_cli_fname():
     """Do we get the right climate file names?"""
     res = dep.get_cli_fname(-95.5, 42.5, 0)

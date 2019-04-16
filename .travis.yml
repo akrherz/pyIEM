@@ -60,6 +60,7 @@ before_script:
   - psql -c 'create database asos;' -U postgres
   - psql -c 'create database hads;' -U postgres
   - psql -c 'create database mos;' -U postgres
+  - psql -c 'create database idep;' -U postgres
   - psql -U postgres -f data/schema/iem.sql iem
   - psql -U postgres -f data/schema/postgis.sql postgis
   - psql -U postgres -f data/schema/portfolio.sql portfolio
@@ -67,6 +68,7 @@ before_script:
   - psql -U postgres -f data/schema/asos.sql asos
   - psql -U postgres -f data/schema/hads.sql hads
   - psql -U postgres -f data/schema/mos.sql mos
+  - psql -U postgres -f data/schema/idep.sql idep
 
 script:
   - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
