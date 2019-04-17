@@ -9,6 +9,7 @@ import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
 import matplotlib.image as mpimage
 from pyiem.plot.use_agg import plt, fontscale
+from pyiem.plot.util import fitbox
 
 DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
 
@@ -116,12 +117,9 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     ndcheight = (pos.y1 - pos.y0)
     ndcwidth = (pos.x1 - pos.x0)
 
-    plt.gcf().text(
-        pos.x0 + (pos.x1 - pos.x0) / 2., pos.y1 + 0.015,
-        month.strftime('%B %Y'),
-        zorder=3,
-        fontsize=fontscale(0.025),
-        ha='center', va='center'
+    fitbox(
+        plt.gcf(), month.strftime("%B %Y"),
+        pos.x0, pos.x1, pos.y1, pos.y1 + 0.028, ha='center'
     )
 
     axes.add_patch(Rectangle((0., 0.90), 1, 0.1, zorder=2,
@@ -201,15 +199,12 @@ def calendar_plot(sts, ets, data, **kwargs):
         _do_month(month, ax, data, sts, ets, kwargs)
 
     iemlogo(fig)
-    title = kwargs.get('title', '')
-    titlefontsize = kwargs.get('titlefontsize', fontscale(0.04))
-    fig.text(
-        0.1, 0.99, title, va='top',
-        ha='left', fontsize=titlefontsize)
+    title = kwargs.get('title')
+    if title is not None:
+        fitbox(fig, title, 0.1, 0.99, 0.95, 0.99)
 
-    subtitle = kwargs.get('subtitle', '')
-    subtitlefontsize = kwargs.get('subtitlefontsize', fontscale(0.02))
-    fig.text(
-        0.1, 0.945, subtitle, va='top',
-        ha='left', fontsize=subtitlefontsize)
+    subtitle = kwargs.get('subtitle')
+    if subtitle is not None:
+        fitbox(fig, subtitle, 0.1, 0.99, 0.925, 0.945)
+
     return fig

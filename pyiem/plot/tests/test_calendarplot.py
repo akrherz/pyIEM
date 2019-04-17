@@ -67,7 +67,9 @@ def test_calendar2():
     data[datetime.date(2015, 6, 6)] = {'val': "0606"}
     data[datetime.date(2015, 5, 6)] = {'val': "0506"}
     return calendar_plot(
-        sts, ets, data, title='Whiz Bang, Wizzardry',
+        sts, ets, data,
+        title=('Whiz Bang, Wizzardry. This is even more text and we '
+               'have even more.'),
         subtitle='This is officially unofficial and hacky.')
 
 
