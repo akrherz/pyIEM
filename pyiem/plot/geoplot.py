@@ -746,7 +746,8 @@ class MapPlot(object):
             if val is not None:
                 (offx, offy, ha, va) = offsets[1]
                 self.ax.annotate(
-                    "%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                    stdata.get("tmpf_format", "%.0f") % (val, ),
+                    xy=(x, y), ha=ha, va=va,
                     xytext=(offx, offy), color=stdata.get('tmpf_color', 'r'),
                     textcoords="offset points",
                     zorder=Z_OVERLAY+2,
@@ -756,7 +757,8 @@ class MapPlot(object):
             if val is not None:
                 (offx, offy, ha, va) = offsets[7]
                 self.ax.annotate(
-                    "%.0f" % (val, ), xy=(x, y), ha=ha, va=va,
+                    stdata.get("dwpf_format", "%.0f") % (val, ),
+                    xy=(x, y), ha=ha, va=va,
                     xytext=(offx, offy), color=stdata.get('dwpf_color', 'b'),
                     textcoords="offset points",
                     zorder=Z_OVERLAY+2,
