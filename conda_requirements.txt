@@ -1,5 +1,5 @@
 affine
-cartopy
+cartopy>=0.17
 coveralls
 cython
 descartes
