@@ -209,7 +209,7 @@ def test_150622_ptsdy1_topo():
 def test_150622_ptsdy2():
     """PTSDY2_invalid.txt """
     with pytest.raises(Exception):
-        _ = parser(get_file('PTSDY2_invalid.txt'))
+        parser(get_file('PTSDY2_invalid.txt'))
 
 
 def test_150622_ptsdy1():
@@ -238,13 +238,13 @@ def test_141022_newcats():
 def test_140709_nogeoms():
     """ Make sure we don't have another failure with geom parsing """
     with pytest.raises(Exception):
-        _ = parser(get_file('PTSDY3_nogeoms.txt'))
+        parser(get_file('PTSDY3_nogeoms.txt'))
 
 
 def test_140710_nogeom():
     """ Had a failure with no geometries parsed """
     with pytest.raises(Exception):
-        _ = parser(get_file('PTSDY2_nogeom.txt'))
+        parser(get_file('PTSDY2_nogeom.txt'))
 
 
 def test_23jul_failure():
