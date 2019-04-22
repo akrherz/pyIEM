@@ -35,8 +35,10 @@ class CachingZonalStats(object):
             should not change over the lifetime of this object
         """
         if geometries is None:
-            _LOG.warn(("Cowardly refusing to compute gridnav "
-                       "with None geometries"))
+            _LOG.warning(
+                ("Cowardly refusing to compute gridnav "
+                 "with None geometries")
+            )
             return
         # TODO: check nodata usage here
         zs = zonal_stats(geometries, grid, affine=self.affine, nodata=-1,
