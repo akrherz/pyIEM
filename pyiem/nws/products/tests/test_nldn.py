@@ -1,7 +1,7 @@
+"""Test NLDN."""
 import os
-import unittest
 
-from pyiem.nws.products.nldn import parser as parser
+from pyiem.nws.products.nldn import parser
 
 
 def get_file(name):
@@ -11,9 +11,7 @@ def get_file(name):
     return open(fn, 'rb')
 
 
-class TestProducts(unittest.TestCase):
-    """ Tests """
-    def test_1_basic(self):
-        """CLIBNA is a new diction"""
-        np = parser(get_file('example.bin'))
-        self.assertEquals(len(np.df.index), 50)
+def test_1_basic():
+    """CLIBNA is a new diction"""
+    np = parser(get_file('example.bin'))
+    assert len(np.df.index) == 50

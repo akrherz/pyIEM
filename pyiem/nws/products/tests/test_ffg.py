@@ -1,8 +1,8 @@
-"""Testing FFG parsing"""
+"""Testing FFG parsing."""
 import os
-import unittest
 
 import psycopg2.extras
+import pytest
 from pyiem.nws.products.ffg import parser as ffgparser
 from pyiem.util import get_dbconn
 
@@ -14,35 +14,29 @@ def get_file(name):
     return open(fn).read()
 
 
-class TestFFG(unittest.TestCase):
-    """ Tests """
-    def setUp(self):
-        ''' This is called for each test, beware '''
-        self.dbconn = get_dbconn('postgis')
-        # Note the usage of RealDictCursor here, as this is what
-        # pyiem.twistedpg uses
-        self.txn = self.dbconn.cursor(
-            cursor_factory=psycopg2.extras.DictCursor)
+@pytest.fixture
+def dbcursor():
+    """Return a database cursor."""
+    return get_dbconn('postgis').cursor(
+        cursor_factory=psycopg2.extras.DictCursor)
 
-    def tearDown(self):
-        ''' This is called after each test, beware '''
-        self.dbconn.rollback()
-        self.dbconn.close()
 
-    def test_ffg(self):
-        """FFG"""
-        prod = ffgparser(get_file('FFGJAN.txt'))
-        prod.sql(self.txn)
-        self.assertEquals(len(prod.data.index), 53)
+def test_ffg(dbcursor):
+    """FFG"""
+    prod = ffgparser(get_file('FFGJAN.txt'))
+    prod.sql(dbcursor)
+    assert len(prod.data.index) == 53
 
-    def test_ffg2(self):
-        """FFGKY"""
-        prod = ffgparser(get_file('FFGKY.txt'))
-        prod.sql(self.txn)
-        self.assertEquals(len(prod.data.index), 113)
 
-    def test_ffgama(self):
-        """FFGAMA"""
-        prod = ffgparser(get_file('FFGAMA.txt'))
-        prod.sql(self.txn)
-        self.assertEquals(len(prod.data.index), 23)
+def test_ffg2(dbcursor):
+    """FFGKY"""
+    prod = ffgparser(get_file('FFGKY.txt'))
+    prod.sql(dbcursor)
+    assert len(prod.data.index) == 113
+
+
+def test_ffgama(dbcursor):
+    """FFGAMA"""
+    prod = ffgparser(get_file('FFGAMA.txt'))
+    prod.sql(dbcursor)
+    assert len(prod.data.index) == 23
