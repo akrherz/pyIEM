@@ -1,13 +1,11 @@
-import unittest
+"""test NWSLI."""
 
 from pyiem.nws.nwsli import NWSLI
 
 
-class TestNWSLI(unittest.TestCase):
+def test_simple():
+    """ See if we can generate a proper string from a UGCS """
+    nwsli = NWSLI('AMWI4', 'Iowa All', ['DMX'], -99, 44)
+    assert nwsli.id == "AMWI4"
 
-    def test_simple(self):
-        """ See if we can generate a proper string from a UGCS """
-        nwsli = NWSLI('AMWI4', 'Iowa All', ['DMX'], -99, 44)
-        self.assertEqual(nwsli.id, "AMWI4")
-
-        self.assertEqual(nwsli.get_name(), "Iowa All")
+    assert nwsli.get_name() == "Iowa All"
