@@ -1,23 +1,15 @@
 """Tests for the DS3505 format."""
-import os
 
 import pytest
 from pyiem.ncei.ds3505 import parser, process_metar, sql
 from pyiem import util
-from pyiem.util import get_dbconn, utc
+from pyiem.util import get_dbconn, utc, get_test_file
 
 
 @pytest.fixture()
 def dbcursor():
     """Get a database cursor."""
     return get_dbconn('asos').cursor()
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../data/product_examples/NCEI/%s" % (basedir, name)
-    return open(fn)
 
 
 def test_process_metar():
@@ -191,10 +183,10 @@ def test_basic():
 
 def test_read():
     """Can we process an entire file?"""
-    for line in get_file("DS3505.txt"):
-        data = parser(line.strip(), 'ENJA')
+    for line in get_test_file("NCEI/DS3505.txt", fponly=True):
+        data = parser(line.decode('ascii').strip(), 'ENJA')
         assert data is not None
 
-    for line in get_file("DS3505_KAMW_2016.txt"):
-        data = parser(line.strip(), 'KAMW')
+    for line in get_test_file("NCEI/DS3505_KAMW_2016.txt", fponly=True):
+        data = parser(line.decode('ascii').strip(), 'KAMW')
         assert data is not None

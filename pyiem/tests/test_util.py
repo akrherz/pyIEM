@@ -1,6 +1,5 @@
 """Testing of util."""
 import datetime
-import os
 import string
 import random
 from io import BytesIO
@@ -54,13 +53,6 @@ def test_utc():
     assert answer == res
     answer = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
     assert answer.year == util.utc().year
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
 
 
 def test_get_autoplot_context():
@@ -142,7 +134,7 @@ def test_grid_bounds():
 
 def test_noaaport_text():
     """See that we do what we expect with noaaport text processing"""
-    data = get_file('WCN.txt')
+    data = util.get_test_file('WCN.txt')
     res = util.noaaport_text(data)
     assert res[:11] == "\001\r\r\n098 \r\r\n"
 
