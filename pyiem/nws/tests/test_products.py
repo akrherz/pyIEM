@@ -1,12 +1,11 @@
 """Massive omnibus of testing for pyiem.nws.products."""
 # pylint: disable=redefined-outer-name
 from __future__ import print_function
-import os
 
 import pytest
 import psycopg2.extras
 from pyiem.nws.products import parser
-from pyiem.util import get_dbconn, utc
+from pyiem.util import get_dbconn, utc, get_test_file
 
 
 @pytest.fixture
@@ -27,16 +26,9 @@ def filter_warnings(ar, startswith='get_gid'):
     return [a for a in ar if not a.startswith(startswith)]
 
 
-def get_file(name):
-    """Helper function to get the text file contents """
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../data/product_examples/%s" % (basedir, name)
-    return open(fn, 'rb').read().decode('utf-8')
-
-
 def test_181207_issue74_guam():
     """Guam's longitudes are east, not west like code assumes."""
-    prod = parser(get_file('FFW/FFWGUM.txt'))
+    prod = parser(get_test_file('FFW/FFWGUM.txt'))
     ans = "SRID=4326;MULTIPOLYGON (((145.800000 15.160000, 145.740000"
     assert prod.segments[0].giswkt.startswith(ans)
 
@@ -44,7 +36,7 @@ def test_181207_issue74_guam():
 def test_180917_issue63_tweet_length():
     """Make sure this tweet text is not too long!"""
     utcnow = utc(2018, 9, 15, 11, 56)
-    prod = parser(get_file('LSRCRP.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRCRP.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][2]['twitter'] == (
         "At 6:45 AM CDT, 2 NNE Odem [San Patricio Co, TX] DEPT OF HIGHWAYS "
@@ -57,7 +49,7 @@ def test_180917_issue63_tweet_length():
 def test_170116_mixedlsr():
     """LSRBOU has mixed case, see what we can do"""
     utcnow = utc(2016, 11, 29, 22, 00)
-    prod = parser(get_file('mIxEd_CaSe/LSRBOU.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('mIxEd_CaSe/LSRBOU.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][2]['twitter'] == (
         "At 11:00 AM MST, Akron [Washington Co, CO] ASOS reports "
@@ -68,7 +60,7 @@ def test_170116_mixedlsr():
 def test_180710_issue58():
     """Crazy MST during MDT"""
     utcnow = utc(2018, 7, 9, 22, 59)
-    prod = parser(get_file('LSRPSR.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRPSR.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     ans = ('At 3:57 PM MST, 5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER '
            'reports FLASH FLOOD. STREET FLOODING WITH WATER OVER THE CURBS '
@@ -85,7 +77,7 @@ def test_180710_issue58():
 def test_180705_iembot_issue9():
     """LSRBOU has mixed case, see what we can do"""
     utcnow = utc(2018, 7, 4, 22, 11)
-    prod = parser(get_file('LSRDMX.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRDMX.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][2]['twitter'] == (
         'At 1:30 PM CDT, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER '
@@ -98,7 +90,7 @@ def test_180705_iembot_issue9():
 def test_171026_mixedlsr():
     """LSRBYZ has mixed case, see what we can do"""
     utcnow = utc(2017, 10, 29, 19, 18)
-    prod = parser(get_file('mIxEd_CaSe/LSRBYZ.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('mIxEd_CaSe/LSRBYZ.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][2]['twitter'] == (
         "At 1:00 AM MDT, 3 SSW Luther [Carbon Co, MT] Mesonet "
@@ -108,14 +100,14 @@ def test_171026_mixedlsr():
 
 def test_170419_tcp_mixedcase():
     """Mixed case TCP1"""
-    prod = parser(get_file('TCPAT1_mixedcase.txt'))
+    prod = parser(get_test_file('TCPAT1_mixedcase.txt'))
     j = prod.get_jabbers("")
     assert j
 
 
 def test_170403_badtime():
     """Handle when a colon is added to a timestamp"""
-    prod = parser(get_file('FLWBOI.txt'))
+    prod = parser(get_test_file('FLWBOI.txt'))
     prod.get_jabbers("http://localhost", "http://localhost")
     ans = utc(2017, 4, 2, 2, 30)
     assert prod.valid == ans
@@ -124,7 +116,7 @@ def test_170403_badtime():
 def test_170324_badformat():
     """Look into exceptions"""
     utcnow = utc(2017, 3, 22, 2, 35)
-    prod = parser(get_file('LSRPIH.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRPIH.txt'), utcnow=utcnow)
     prod.get_jabbers('http://iem.local/')
     assert len(prod.warnings) == 2
     assert not prod.lsrs
@@ -133,7 +125,7 @@ def test_170324_badformat():
 def test_170324_ampersand():
     """LSRs with ampersands may cause trouble"""
     utcnow = utc(2015, 12, 29, 18, 23)
-    prod = parser(get_file('LSRBOXamp.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRBOXamp.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     ans = (
         "Lunenberg [Worcester Co, MA] HAM RADIO reports SNOW of 2.00 INCH "
@@ -145,7 +137,7 @@ def test_170324_ampersand():
 
 def test_170207_mixedhwo():
     """Check our parsing of mixed case HWO"""
-    prod = parser(get_file('mIxEd_CaSe/HWOLOT.txt'))
+    prod = parser(get_test_file('mIxEd_CaSe/HWOLOT.txt'))
     j = prod.get_jabbers('http://iem.local/')
     assert not prod.warnings
     assert len(j[0]) == 3
@@ -153,14 +145,14 @@ def test_170207_mixedhwo():
 
 def test_160618_chst_tz():
     """Product has timezone of ChST, do we support it?"""
-    prod = parser(get_file('AFDPQ.txt'))
+    prod = parser(get_test_file('AFDPQ.txt'))
     assert prod.valid == utc(2016, 6, 18, 19, 27)
 
 
 def test_151229_badgeo_lsr():
     """Make sure we reject a bad Geometry LSR"""
     utcnow = utc(2015, 12, 29, 18, 23)
-    prod = parser(get_file('LSRBOX.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRBOX.txt'), utcnow=utcnow)
     assert len(prod.warnings) == 1
     assert not prod.lsrs
 
@@ -168,7 +160,7 @@ def test_151229_badgeo_lsr():
 def test_150422_tornadomag():
     """LSRTAE see what we do with tornado magitnudes"""
     utcnow = utc(2015, 4, 22, 15, 20)
-    prod = parser(get_file('LSRTAE.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRTAE.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local/')
     assert j[0][1] == (
         '<p>4 W Bruce [Walton Co, FL] NWS EMPLOYEE '
@@ -189,7 +181,7 @@ def test_150422_tornadomag():
 
 def test_150202_hwo():
     """HWORNK emitted a poorly worded error message"""
-    prod = parser(get_file('HWORNK.txt'))
+    prod = parser(get_test_file('HWORNK.txt'))
     with pytest.raises(Exception):
         prod.get_jabbers('http://localhost', 'http://localhost')
 
@@ -197,7 +189,7 @@ def test_150202_hwo():
 def test_160418_hwospn():
     """Make sure a spanish HWO does not trip us up..."""
     utcnow = utc(2016, 4, 18, 10, 10)
-    prod = parser(get_file('HWOSPN.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('HWOSPN.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         "JSJ issues Hazardous Weather Outlook (HWO) "
@@ -209,7 +201,7 @@ def test_160418_hwospn():
 
 def test_tcp():
     """ See what we can do with TCP """
-    prod = parser(get_file('TCPAT1.txt'))
+    prod = parser(get_test_file('TCPAT1.txt'))
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         'National Hurricance Center issues '
@@ -227,12 +219,12 @@ def test_tcp():
 def test_140820_badtimestamp():
     """ Check our invalid timestamp exception and how it is written """
     with pytest.raises(Exception):
-        parser(get_file('RWSGTF_badtime.txt'))
+        parser(get_test_file('RWSGTF_badtime.txt'))
 
 
 def test_160904_resent():
     """Is this product a correction?"""
-    prod = parser(get_file("TCVAKQ.txt"))
+    prod = parser(get_test_file("TCVAKQ.txt"))
     jmsgs = prod.get_jabbers('http://localhost')
     ans = (
         'AKQ issues TCV (TCV) at Sep 2, 11:55 AM EDT '
@@ -245,7 +237,7 @@ def test_160904_resent():
 def test_jabber_lsrtime():
     """Make sure delayed LSRs have proper dates associated with them"""
     utcnow = utc(2014, 6, 6, 16)
-    prod = parser(get_file('LSRFSD.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('LSRFSD.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://iem.local')
     ans = (
         '<p>2 SSE Harrisburg [Lincoln Co, SD] '
@@ -259,7 +251,7 @@ def test_jabber_lsrtime():
 def test_spacewx():
     """See if we can parse a space weather product """
     utcnow = utc(2014, 5, 10)
-    prod = parser(get_file('SPACEWX.txt'), utcnow=utcnow)
+    prod = parser(get_test_file('SPACEWX.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost/')
     ans = (
         'Space Weather Prediction Center issues '
@@ -271,14 +263,14 @@ def test_spacewx():
 
 def test_140522_blowingdust():
     """Make sure we can deal with invalid LSR type """
-    prod = parser(get_file('LSRTWC.txt'))
+    prod = parser(get_test_file('LSRTWC.txt'))
     assert not prod.lsrs
 
 
 def test_01():
     """LSR.txt process a valid LSR without blemish """
     utcnow = utc(2013, 7, 23, 23, 54)
-    prod = parser(get_file("LSR.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR.txt"), utcnow=utcnow)
     assert len(prod.lsrs) == 58
 
     assert abs(prod.lsrs[57].magnitude_f - 73) < 0.01

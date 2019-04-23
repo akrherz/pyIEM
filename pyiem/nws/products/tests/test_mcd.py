@@ -1,17 +1,9 @@
 """MCD/MPD tests."""
-import os
 
 import psycopg2.extras
 import pytest
 from pyiem.nws.products.mcd import parser
-from pyiem.util import get_dbconn, utc
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/MCD_MPD/%s" % (basedir, name)
-    return open(fn, 'rb').read().decode('utf-8')
+from pyiem.util import get_dbconn, utc, get_test_file
 
 
 @pytest.fixture
@@ -23,7 +15,7 @@ def dbcursor():
 
 def test_170926_nodbinsert(dbcursor):
     """This product never hit the database for some reason?"""
-    prod = parser(get_file('SWOMCD_2010.txt'))
+    prod = parser(get_test_file('MCD_MPD/SWOMCD_2010.txt'))
     prod.database_save(dbcursor)
     dbcursor.execute("""
         SELECT * from text_products where product_id = %s
@@ -33,7 +25,7 @@ def test_170926_nodbinsert(dbcursor):
 
 def test_mpd_mcdparser(dbcursor):
     ''' The mcdparser can do WPC's MPD as well, test it '''
-    prod = parser(get_file('MPD.txt'))
+    prod = parser(get_test_file('MCD_MPD/MPD.txt'))
     assert abs(prod.geometry.area - 4.657) < 0.001
     assert prod.attn_wfo == ['PHI', 'AKQ', 'CTP', 'LWX']
     assert prod.attn_rfc == ['MARFC']
@@ -54,7 +46,7 @@ def test_mpd_mcdparser(dbcursor):
 
 def test_mcdparser(dbcursor):
     ''' Test Parsing of MCD Product '''
-    prod = parser(get_file('SWOMCD.txt'))
+    prod = parser(get_test_file('MCD_MPD/SWOMCD.txt'))
     assert abs(prod.geometry.area - 4.302) < 0.001
     assert prod.discussion_num == 1525
     assert prod.attn_wfo[2] == 'DLH'
@@ -62,7 +54,7 @@ def test_mcdparser(dbcursor):
     assert prod.areas_affected == ans
 
     # With probability this time
-    prod = parser(get_file('SWOMCDprob.txt'))
+    prod = parser(get_test_file('MCD_MPD/SWOMCDprob.txt'))
     assert abs(prod.geometry.area - 2.444) < 0.001
     assert prod.watch_prob == 20
 

@@ -1,12 +1,11 @@
 """Make sure our METAR parsing works!"""
 from __future__ import print_function
-import os
 
 import pytest
 import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products import metarcollect
-from pyiem.util import get_dbconn, utc
+from pyiem.util import get_dbconn, utc, get_test_file
 
 PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
@@ -28,13 +27,6 @@ def dbcursor():
     return pgconn.cursor(
         cursor_factory=psycopg2.extras.DictCursor
     )
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/METAR/%s" % (basedir, name)
-    return open(fn, 'rb').read().decode('utf-8')
 
 
 def test_issue89_peakwind(dbcursor):
@@ -62,14 +54,14 @@ def test_190118_ice(dbcursor):
 def test_180604_nonascii():
     """See that we don't error on non-ASCII METARs"""
     utcnow = utc(2018, 6, 4)
-    prod = PARSER(get_file("badchars.txt"), utcnow=utcnow)
+    prod = PARSER(get_test_file("METAR/badchars.txt"), utcnow=utcnow)
     assert len(prod.metars) == 3
 
 
 def test_future():
     """Can we handle products that are around the first"""
     utcnow = utc(2017, 12, 1)
-    prod = PARSER(get_file("first.txt"), utcnow=utcnow)
+    prod = PARSER(get_test_file("METAR/first.txt"), utcnow=utcnow)
     assert len(prod.metars) == 2
     assert prod.metars[0].time.month == 11
     assert prod.metars[1].time.month == 12
@@ -79,7 +71,7 @@ def test_180201_unparsed():
     """For some reason, this collective was not parsed?!?!"""
     utcnow = utc(2018, 2, 1, 0)
     prod = PARSER(
-        get_file("collective2.txt"), utcnow=utcnow,
+        get_test_file("METAR/collective2.txt"), utcnow=utcnow,
         nwsli_provider=NWSLI_PROVIDER)
     assert len(prod.metars) == 35
     assert prod.metars[0].time.month == 1
@@ -89,7 +81,8 @@ def test_170824_sa_format():
     """Don't be so noisey when we encounter SA formatted products"""
     utcnow = utc(2017, 8, 24, 14)
     prod = PARSER(
-        get_file("sa.txt"), utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+        get_test_file("METAR/sa.txt"), utcnow=utcnow,
+        nwsli_provider=NWSLI_PROVIDER)
     assert not prod.metars
 
 
@@ -97,7 +90,8 @@ def test_170809_nocrcrlf():
     """Product fails WMO parsing due to usage of RTD as bbb field"""
     utcnow = utc(2017, 8, 9, 9)
     prod = PARSER(
-        get_file("rtd_bbb.txt"), utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+        get_test_file("METAR/rtd_bbb.txt"), utcnow=utcnow,
+        nwsli_provider=NWSLI_PROVIDER)
     assert len(prod.metars) == 1
 
 
@@ -125,7 +119,7 @@ def test_basic(dbcursor):
     """Simple tests"""
     utcnow = utc(2013, 8, 8, 14)
     prod = PARSER(
-        get_file("collective.txt"), utcnow=utcnow,
+        get_test_file("METAR/collective.txt"), utcnow=utcnow,
         nwsli_provider=NWSLI_PROVIDER
     )
     assert not prod.warnings

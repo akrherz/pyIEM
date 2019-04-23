@@ -1,22 +1,14 @@
 """PIREP."""
-import os
 
 from pyiem.nws.products.pirep import parser as pirepparser
-from pyiem.util import utc
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
+from pyiem.util import utc, get_test_file
 
 
 def test_180307_aviation_controlchar():
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {'BWI': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider)
+        get_test_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider)
     assert len(prod.reports) == 1
 
 
@@ -24,7 +16,7 @@ def test_170324_ampersand():
     """Do we properly escape the ampersand"""
     nwsli_provider = {'DUG': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file("PIREPS/ampersand.txt"), nwsli_provider=nwsli_provider)
+        get_test_file("PIREPS/ampersand.txt"), nwsli_provider=nwsli_provider)
     j = prod.get_jabbers()
     ans = (
         "Routine pilot report at 1259Z: DUG UA /OV SSO/"
@@ -39,7 +31,7 @@ def test_161010_missingtime():
         'GTF': {'lat': 44.26, 'lon': -88.52},
         'ALB': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider)
+        get_test_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider)
     j = prod.get_jabbers()
     assert j[0][2]['channels'] == 'UA.None,UA.PIREP'
 
@@ -48,7 +40,7 @@ def test_151210_badgeom():
     """prevent geom parse error"""
     nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file("PIREPS/badgeom.txt"), nwsli_provider=nwsli_provider)
+        get_test_file("PIREPS/badgeom.txt"), nwsli_provider=nwsli_provider)
     assert not prod.reports
 
 
@@ -56,13 +48,13 @@ def test_150202_groupdict():
     """groupdict.txt threw an error"""
     nwsli_provider = {'GCC': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file("PIREPS/groupdict.txt"), nwsli_provider=nwsli_provider)
+        get_test_file("PIREPS/groupdict.txt"), nwsli_provider=nwsli_provider)
     assert len(prod.reports) == 1
 
 
 def test_150202_airmet():
     """airmet.txt has no valid data, so don't error out """
-    prod = pirepparser(get_file('PIREPS/airmet.txt'))
+    prod = pirepparser(get_test_file('PIREPS/airmet.txt'))
     assert not prod.reports
 
 
@@ -70,7 +62,7 @@ def test_150126_space():
     """ space.txt has a space where it should not """
     nwsli_provider = {'CZBA': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file('PIREPS/space.txt'), nwsli_provider=nwsli_provider)
+        get_test_file('PIREPS/space.txt'), nwsli_provider=nwsli_provider)
     assert not prod.warnings
     assert abs(prod.reports[0].latitude - 44.15) < 0.01
 
@@ -82,7 +74,7 @@ def test_150121_offset():
         'PDT': {'lat': 44.26, 'lon': -88.52},
         'HQZ': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file('PIREPS/offset.txt'), nwsli_provider=nwsli_provider)
+        get_test_file('PIREPS/offset.txt'), nwsli_provider=nwsli_provider)
     assert not prod.warnings
     assert abs(prod.reports[0].latitude - 44.48) < 0.01
     assert abs(prod.reports[1].latitude - 44.26) < 0.01
@@ -95,7 +87,7 @@ def test_150121_runway():
         'ATW': {'lat': 44.26, 'lon': -88.52},
         'IPT': {'lat': 44.26, 'lon': -88.52}}
     prod = pirepparser(
-        get_file('PIREPS/runway.txt'), nwsli_provider=nwsli_provider)
+        get_test_file('PIREPS/runway.txt'), nwsli_provider=nwsli_provider)
     assert not prod.warnings
     assert abs(prod.reports[0].latitude - 44.26) < 0.01
     assert abs(prod.reports[1].longitude - -88.52) < 0.01
@@ -107,7 +99,7 @@ def test_150121_fourchar():
         'FAR': {'lat': 44, 'lon': -99},
         'SMF': {'lat': 42, 'lon': -99},
         'RDD': {'lat': 43, 'lon': -100}}
-    prod = pirepparser(get_file('PIREPS/fourchar.txt'),
+    prod = pirepparser(get_test_file('PIREPS/fourchar.txt'),
                        nwsli_provider=nwsli_provider)
     assert not prod.warnings
     assert abs(prod.reports[0].latitude - 44.10) < 0.01
@@ -116,19 +108,19 @@ def test_150121_fourchar():
 
 def test_150120_latlonloc():
     """ latlonloc.txt Turns out there is a LAT/LON option for OV """
-    prod = pirepparser(get_file('PIREPS/latlonloc.txt'))
+    prod = pirepparser(get_test_file('PIREPS/latlonloc.txt'))
     assert not prod.warnings
     assert prod.reports[0].latitude == 25.00
     assert prod.reports[0].longitude == -70.00
     assert prod.reports[1].latitude == 39.00
     assert prod.reports[1].longitude == -45.00
 
-    prod = pirepparser(get_file('PIREPS/latlonloc2.txt'))
+    prod = pirepparser(get_test_file('PIREPS/latlonloc2.txt'))
     assert not prod.warnings
 
     nwsli_provider = {'PKTN': {'lat': 44, 'lon': -99}}
     prod = pirepparser(
-        get_file('PIREPS/PKTN.txt'), nwsli_provider=nwsli_provider)
+        get_test_file('PIREPS/PKTN.txt'), nwsli_provider=nwsli_provider)
     assert not prod.warnings
 
 
@@ -136,7 +128,7 @@ def test_150120_OVO():
     """ PIREPS/OVO.txt has a location of OV 0 """
     nwsli_provider = {'AVK': {'lat': 44, 'lon': 99}}
     prod = pirepparser(
-        get_file('PIREPS/OVO.txt'), nwsli_provider=nwsli_provider)
+        get_test_file('PIREPS/OVO.txt'), nwsli_provider=nwsli_provider)
     assert not prod.warnings
 
 
@@ -169,7 +161,7 @@ def test_1():
         'PUB': {'lat': 46, 'lon': 101},
         'HPW': {'lat': 47, 'lon': 102}}
     prod = pirepparser(
-        get_file('PIREP.txt'), utcnow=utcnow,
+        get_test_file('PIREP.txt'), utcnow=utcnow,
         nwsli_provider=nwsli_provider)
     assert not prod.warnings
 

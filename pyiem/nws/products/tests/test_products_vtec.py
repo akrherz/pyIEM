@@ -1,11 +1,10 @@
 """Test some of the atomic stuff in the VTEC module"""
 # pylint: disable=redefined-outer-name
 import datetime
-import os
 
 import pytest
 import psycopg2.extras
-from pyiem.util import get_dbconn, utc
+from pyiem.util import get_dbconn, utc, get_test_file
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.nwsli import NWSLI
@@ -36,13 +35,6 @@ def filter_warnings(ar, startswith='get_gid'):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
-
-
-def get_file(name):
-    """Helper function to get the text file contents """
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
-    return open(fn, 'rb').read().decode('utf-8')
 
 
 def test_dups():
@@ -77,18 +69,18 @@ def test_TORE_series(dbcursor):
         """)
         return dbcursor.fetchone()[0]
 
-    prod = vtecparser(get_file('TORE/TOR.txt'))
+    prod = vtecparser(get_test_file('TORE/TOR.txt'))
     prod.sql(dbcursor)
     assert getval() is False
     assert getval2() is False
 
-    prod = vtecparser(get_file('TORE/SVS_E.txt'))
+    prod = vtecparser(get_test_file('TORE/SVS_E.txt'))
     prod.sql(dbcursor)
     assert getval()
     assert getval2()
 
     # no longer an emergency, but we don't want database to update
-    prod = vtecparser(get_file('TORE/SVS_F.txt'))
+    prod = vtecparser(get_test_file('TORE/SVS_F.txt'))
     prod.sql(dbcursor)
     assert getval()
     assert getval2() is False
@@ -97,7 +89,7 @@ def test_TORE_series(dbcursor):
 def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
-        prod = vtecparser(get_file('WSWAFG/%s.txt' % (i, )))
+        prod = vtecparser(get_test_file('WSWAFG/%s.txt' % (i, )))
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
     dbcursor.execute("""
@@ -109,9 +101,9 @@ def test_190102_exb_newyear(dbcursor):
 
 def test_181228_issue76_sbwtable(dbcursor):
     """Can we locate the current SBW table with polys in the future."""
-    prod = vtecparser(get_file('FLWMOB/FLW.txt'))
+    prod = vtecparser(get_test_file('FLWMOB/FLW.txt'))
     prod.sql(dbcursor)
-    prod = vtecparser(get_file('FLWMOB/FLS.txt'))
+    prod = vtecparser(get_test_file('FLWMOB/FLS.txt'))
     prod.sql(dbcursor)
     assert not filter_warnings(prod.warnings)
 
@@ -119,11 +111,11 @@ def test_181228_issue76_sbwtable(dbcursor):
 def test_180411_can_expiration(dbcursor):
     """Do we properly update the expiration time of a CAN event"""
     utcnow = utc(2018, 1, 22, 2, 6)
-    prod = vtecparser(get_file('vtec/TORFWD_0.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/TORFWD_0.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     # This should be the expiration time as well
     utcnow = utc(2018, 1, 22, 2, 30)
-    prod = vtecparser(get_file('vtec/TORFWD_1.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/TORFWD_1.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     for status in ['NEW', 'CAN']:
         dbcursor.execute("""
@@ -138,16 +130,16 @@ def test_180411_can_expiration(dbcursor):
 def test_issue9(dbcursor):
     """A product crossing year bondary"""
     utcnow = utc(2017, 12, 31, 9, 24)
-    prod = vtecparser(get_file('vtec/crosses_0.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/crosses_0.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     utcnow = utc(2018, 1, 1, 16, 0)
-    prod = vtecparser(get_file('vtec/crosses_1.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/crosses_1.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     # We used to emit a warning for this, but not any more
     assert not warnings
     utcnow = utc(2018, 1, 1, 21, 33)
-    prod = vtecparser(get_file('vtec/crosses_2.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/crosses_2.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert not warnings
@@ -167,7 +159,7 @@ def test_180202_issue54(dbcursor):
 
     expirets = utc(2018, 2, 2, 9)
     for i in range(3):
-        prod = vtecparser(get_file('vtec/WSWLWX_%s.txt' % (i, )))
+        prod = vtecparser(get_test_file('vtec/WSWLWX_%s.txt' % (i, )))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -178,10 +170,10 @@ def test_180202_issue54(dbcursor):
 def test_171121_issue45(dbcursor):
     """Do we alert on duplicated ETNs?"""
     utcnow = utc(2017, 4, 20, 21, 33)
-    prod = vtecparser(get_file('vtec/NPWDMX_0.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/NPWDMX_0.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     utcnow = utc(2017, 11, 20, 21, 33)
-    prod = vtecparser(get_file('vtec/NPWDMX_1.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('vtec/NPWDMX_1.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert len(warnings) == 1
@@ -189,7 +181,7 @@ def test_171121_issue45(dbcursor):
 
 def test_170823_tilde(dbcursor):
     """Can we parse a product that has a non-ascii char in it"""
-    prod = vtecparser(get_file('FFWTWC_tilde.txt'))
+    prod = vtecparser(get_test_file('FFWTWC_tilde.txt'))
     assert prod.z == "MST"
     j = prod.get_jabbers('http://localhost/')
     prod.sql(dbcursor)
@@ -201,7 +193,7 @@ def test_170823_tilde(dbcursor):
 
 def test_170822_duststormwarning():
     """Can we parse the new Dust Storm Warning?"""
-    prod = vtecparser(get_file('DSW.txt'))
+    prod = vtecparser(get_test_file('DSW.txt'))
     assert prod.z == "MST"
     j = prod.get_jabbers("http://localhost/")
     ans = ("PSR issues Dust Storm Warning for ((AZC021)) "
@@ -212,7 +204,7 @@ def test_170822_duststormwarning():
 
 def test_170718_wrongtz():
     """Product from TWC has the wrong time zone denoted in the text"""
-    prod = vtecparser(get_file('FLSTWC.txt'))
+    prod = vtecparser(get_test_file('FLSTWC.txt'))
     assert prod.z == "MST"
     j = prod.get_jabbers("http://localhost/")
     assert 'FA.Y.AZ' in j[0][2]['channels'].split(",")
@@ -224,13 +216,13 @@ def test_170718_wrongtz():
 
 def test_170523_dupfail(dbcursor):
     """The dup check failed with an exception"""
-    prod = vtecparser(get_file('MWWLWX_dups.txt'))
+    prod = vtecparser(get_test_file('MWWLWX_dups.txt'))
     prod.sql(dbcursor)
 
 
 def test_170504_falsepositive(dbcursor):
     """This alert for overlapping VTEC is a false positive"""
-    prod = vtecparser(get_file('NPWFFC.txt'))
+    prod = vtecparser(get_test_file('NPWFFC.txt'))
     prod.sql(dbcursor)
     res = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
     assert not any(res)
@@ -238,14 +230,14 @@ def test_170504_falsepositive(dbcursor):
 
 def test_170502_novtec(dbcursor):
     """MWS is a product that does not require VTEC, so no warnings"""
-    prod = vtecparser(get_file('MWSMFL.txt'))
+    prod = vtecparser(get_test_file('MWSMFL.txt'))
     prod.sql(dbcursor)
     assert not prod.warnings
 
 
 def test_170411_suspect_vtec(dbcursor):
     """MWWSJU contains VTEC that NWS HQ says should not be possible"""
-    prod = vtecparser(get_file('MWWLWX_twovtec.txt'))
+    prod = vtecparser(get_test_file('MWWLWX_twovtec.txt'))
     prod.sql(dbcursor)
     a = [x.find('duplicated VTEC') > 0 for x in prod.warnings]
     assert not any(a)
@@ -253,14 +245,14 @@ def test_170411_suspect_vtec(dbcursor):
 
 def test_170411_baddelim(dbcursor):
     """FLSGRB contains an incorrect sequence of $$ and &&"""
-    prod = vtecparser(get_file('FLSGRB.txt'))
+    prod = vtecparser(get_test_file('FLSGRB.txt'))
     prod.sql(dbcursor)
     assert len(prod.warnings) >= 1
 
 
 def test_170403_mixedlatlon(dbcursor):
     """Check our parsing of mixed case Lat...Lon"""
-    prod = vtecparser(get_file('mIxEd_CaSe/FLWLCH.txt'))
+    prod = vtecparser(get_test_file('mIxEd_CaSe/FLWLCH.txt'))
     prod.sql(dbcursor)
     ans = ("SRID=4326;MULTIPOLYGON (((-93.290000 30.300000, "
            "-93.140000 30.380000, -93.030000 30.310000, "
@@ -282,7 +274,7 @@ def test_170403_mixedlatlon(dbcursor):
 def test_170324_waterspout(dbcursor):
     """Do we parse Waterspout tags!"""
     utcnow = utc(2017, 3, 24, 1, 37)
-    prod = vtecparser(get_file('SMWMFL.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('SMWMFL.txt'), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost")
     ans = ("MFL issues Marine Warning [waterspout: POSSIBLE, "
            "wind: &gt;34 KTS, hail: 0.00 IN] for "
@@ -299,7 +291,7 @@ def test_170324_waterspout(dbcursor):
 
 def test_170303_ccwpoly():
     """Check that we produce a warning on a CCW polygon"""
-    prod = vtecparser(get_file('FLWHGX_ccw.txt'))
+    prod = vtecparser(get_test_file('FLWHGX_ccw.txt'))
     assert len(prod.warnings) == 1
 
 
@@ -307,7 +299,7 @@ def test_170115_table_failure(dbcursor):
     """Test WSW series for issues"""
     for i in range(12):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('WSWAMA/WSWAMA_%02i.txt' % (i,)))
+        prod = vtecparser(get_test_file('WSWAMA/WSWAMA_%02i.txt' % (i,)))
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
 
@@ -315,7 +307,7 @@ def test_170115_table_failure(dbcursor):
 def test_160912_missing(dbcursor):
     """see why this series failed in production"""
     for i in range(4):
-        prod = vtecparser(get_file("RFWVEF/RFW_%02i.txt" % (i,)))
+        prod = vtecparser(get_test_file("RFWVEF/RFW_%02i.txt" % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -323,28 +315,28 @@ def test_160912_missing(dbcursor):
 
 def test_160904_resent():
     """Is this product a correction?"""
-    prod = vtecparser(get_file("TCVAKQ.txt"))
+    prod = vtecparser(get_test_file("TCVAKQ.txt"))
     assert prod.is_correction()
 
 
 def test_160720_unknown_ugc(dbcursor):
     """Unknown UGC logic failed for some reason"""
     # Note that this example has faked UGCs to test things out
-    prod = vtecparser(get_file('RFWBOI_fakeugc.txt'))
+    prod = vtecparser(get_test_file('RFWBOI_fakeugc.txt'))
     prod.sql(dbcursor)
     assert len(prod.warnings) == 2
 
 
 def test_160623_invalid_tml():
     """See that we emit an error for an invalid TML"""
-    prod = vtecparser(get_file('MWSKEY.txt'))
+    prod = vtecparser(get_test_file('MWSKEY.txt'))
     warnings = filter_warnings(prod.warnings)
     assert len(warnings) == 1
 
 
 def test_160513_windtag():
     """Wind tags can be in knots too!"""
-    prod = vtecparser(get_file('SMWLWX.txt'))
+    prod = vtecparser(get_test_file('SMWLWX.txt'))
     assert prod.segments[0].windtag == '34'
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
@@ -358,7 +350,7 @@ def test_160513_windtag():
 
 def test_160415_mixedcase():
     """See how bad we break with mixed case"""
-    prod = vtecparser(get_file('mIxEd_CaSe/FFSGLD.txt'))
+    prod = vtecparser(get_test_file('mIxEd_CaSe/FFSGLD.txt'))
     assert prod.tz is not None
     assert prod.segments[0].vtec[0].action == 'CON'
     j = prod.get_jabbers('http://localhost', 'http://localhost')
@@ -373,7 +365,7 @@ def test_160415_mixedcase():
 def test_151225_extfuture(dbcursor):
     """Warning failure jumps states!"""
     # /O.NEW.KPAH.FL.W.0093.151227T0517Z-151228T1727Z/
-    prod = vtecparser(get_file('FLWPAH/FLWPAH_1.txt'))
+    prod = vtecparser(get_test_file('FLWPAH/FLWPAH_1.txt'))
     prod.sql(dbcursor)
     dbcursor.execute("""
         SELECT ugc, issue, expire from warnings_2015 where wfo = 'PAH'
@@ -382,7 +374,7 @@ def test_151225_extfuture(dbcursor):
     """)
     assert dbcursor.rowcount == 2
     # /O.EXT.KPAH.FL.W.0093.151227T0358Z-151229T0442Z/
-    prod = vtecparser(get_file('FLWPAH/FLWPAH_2.txt'))
+    prod = vtecparser(get_test_file('FLWPAH/FLWPAH_2.txt'))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert len(warnings) == 2
@@ -390,7 +382,7 @@ def test_151225_extfuture(dbcursor):
 
 def test_150915_noexpire(dbcursor):
     """Check that we set an expiration for initial infinity SBW geo"""
-    prod = vtecparser(get_file('FLWGRB.txt'))
+    prod = vtecparser(get_test_file('FLWGRB.txt'))
     assert prod.segments[0].vtec[0].endts is None
     prod.sql(dbcursor)
     dbcursor.execute("""
@@ -407,7 +399,7 @@ def test_150820_exb(dbcursor):
     """Found a bug with setting of issuance for EXB case!"""
     for i in range(3):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('CFWLWX/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('CFWLWX/%i.txt' % (i,)))
         prod.sql(dbcursor)
     # Make sure the issuance time is correct for MDZ014
     dbcursor.execute("""SELECT issue at time zone 'UTC' from warnings_2015
@@ -419,7 +411,7 @@ def test_150820_exb(dbcursor):
 
 def test_150814_init_expire(dbcursor):
     """ Make sure init_expire is not null"""
-    prod = vtecparser(get_file('FLWLZK.txt'))
+    prod = vtecparser(get_test_file('FLWLZK.txt'))
     prod.sql(dbcursor)
     dbcursor.execute("""SELECT count(*) from warnings_2015
         where wfo = 'LZK' and eventid = 18
@@ -430,13 +422,13 @@ def test_150814_init_expire(dbcursor):
 
 def test_150507_notcor():
     """SVROUN is not a product correction!"""
-    prod = vtecparser(get_file('SVROUN.txt'))
+    prod = vtecparser(get_test_file('SVROUN.txt'))
     assert not prod.is_correction()
 
 
 def test_150429_flswithsign():
     """FLSMKX see that we are okay with the signature"""
-    prod = vtecparser(get_file('FLSMKX.txt'))
+    prod = vtecparser(get_test_file('FLSMKX.txt'))
     ans = (
         'SRID=4326;MULTIPOLYGON '
         '(((-88.320000 42.620000, -88.130000 42.620000, '
@@ -449,13 +441,13 @@ def test_150429_flswithsign():
 
 def test_150331_notcorrection():
     """SVRMEG is not a product correction"""
-    prod = vtecparser(get_file('SVRMEG.txt'))
+    prod = vtecparser(get_test_file('SVRMEG.txt'))
     assert not prod.is_correction()
 
 
 def test_150304_testtor():
     """TORILX is a test, we had better handle it!"""
-    prod = vtecparser(get_file('TORILX.txt'))
+    prod = vtecparser(get_test_file('TORILX.txt'))
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     assert not j
 
@@ -464,7 +456,7 @@ def test_150203_exp_does_not_end(dbcursor):
     """MWWCAR a VTEC EXP action should not terminate it """
     for i in range(23):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('MWWCAR/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('MWWCAR/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "VTEC Product appears to c")
@@ -475,7 +467,7 @@ def test_150203_null_issue(dbcursor):
     """WSWOKX had null issue times, bad! """
     for i in range(18):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('WSWOKX/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('WSWOKX/%i.txt' % (i,)))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute("""SELECT count(*) from warnings_2015
@@ -487,11 +479,11 @@ def test_150203_null_issue(dbcursor):
 
 def test_150115_correction_sbw(dbcursor):
     """ FLWMHX make sure a correction does not result in two polygons """
-    prod = vtecparser(get_file('FLWMHX/0.txt'))
+    prod = vtecparser(get_test_file('FLWMHX/0.txt'))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert not warnings
-    prod = vtecparser(get_file('FLWMHX/1.txt'))
+    prod = vtecparser(get_test_file('FLWMHX/1.txt'))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert not warnings
@@ -499,7 +491,7 @@ def test_150115_correction_sbw(dbcursor):
 
 def test_150105_considerable_tag():
     """ TORFSD has considerable tag """
-    prod = vtecparser(get_file('TORFSD.txt'))
+    prod = vtecparser(get_test_file('TORFSD.txt'))
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     assert j[0][0], (
         'FSD issues Tornado Warning '
@@ -515,7 +507,7 @@ def test_150105_sbw(dbcursor):
     """ FLSLBF SBW that spans two years! """
     for i in range(7):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('FLSLBF/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('FLSLBF/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -525,7 +517,7 @@ def test_150105_manycors(dbcursor):
     """ WSWGRR We had some issues with this series, lets test it """
     for i in range(15):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('WSWGRR/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('WSWGRR/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -535,7 +527,7 @@ def test_150102_multiyear2(dbcursor):
     """ WSWSTO See how well we span multiple years """
     for i in range(17):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('NPWSTO/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('NPWSTO/%i.txt' % (i,)))
         prod.sql(dbcursor)
         # side test for expiration message
         if i == 3:
@@ -553,7 +545,7 @@ def test_150102_multiyear(dbcursor):
     for i in range(13):
         print(datetime.datetime.utcnow())
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('WSWOUN/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('WSWOUN/%i.txt' % (i,)))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute("""
@@ -580,14 +572,14 @@ def test_150102_multiyear(dbcursor):
 def test_141226_correction():
     """ Add another test for product corrections """
     with pytest.raises(UGCParseException):
-        vtecparser(get_file('FLSRAH.txt'))
+        vtecparser(get_test_file('FLSRAH.txt'))
 
 
 def test_141215_correction(dbcursor):
     """ I have a feeling we are not doing the right thing for COR """
     for i in range(6):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('NPWMAF/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('NPWMAF/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -597,7 +589,7 @@ def test_141212_mqt(dbcursor):
     """ Updated four rows instead of three, better check on it """
     for i in range(4):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('MWWMQT/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('MWWMQT/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -607,7 +599,7 @@ def test_141211_null_expire(dbcursor):
     """ Figure out why the database has a null expiration for this FL.W"""
     for i in range(0, 13):
         print('Parsing Product: %s.txt' % (i,))
-        prod = vtecparser(get_file('FLSIND/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('FLSIND/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not filter_warnings(warnings, 'LAT...LON')
@@ -616,7 +608,7 @@ def test_141211_null_expire(dbcursor):
 def test_141210_continues(dbcursor):
     """ See that we handle CON with infinite time A-OK """
     for i in range(0, 2):
-        prod = vtecparser(get_file('FFAEKA/%i.txt' % (i,)))
+        prod = vtecparser(get_test_file('FFAEKA/%i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -626,7 +618,7 @@ def test_141208_upgrade(dbcursor):
     """ See that we can handle the EXB case """
     for i in range(0, 18):
         print("Processing %s" % (i,))
-        prod = vtecparser(get_file('MWWLWX/%02i.txt' % (i,)))
+        prod = vtecparser(get_test_file('MWWLWX/%02i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "Segment has duplicated")
@@ -642,7 +634,7 @@ def test_141208_upgrade(dbcursor):
 def test_141016_tsuwca():
     """TSUWCA Got a null vtec timestamp with this product """
     utcnow = utc(2014, 10, 16, 17, 10)
-    prod = vtecparser(get_file('TSUWCA.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('TSUWCA.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     assert not j
 
@@ -656,7 +648,7 @@ def test_140731_badugclabel():
                                              name=n, wfos=['DMX'])
 
     utcnow = utc(2014, 7, 31, 17, 35)
-    prod = vtecparser(get_file('MWWLWX.txt'), utcnow=utcnow,
+    prod = vtecparser(get_test_file('MWWLWX.txt'), utcnow=utcnow,
                       ugc_provider=ugc_provider)
     assert not prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
@@ -671,7 +663,7 @@ def test_140731_badugclabel():
 def test_tornado_emergency():
     """ See what we do with Tornado Emergencies """
     utcnow = utc(2012, 4, 15, 3, 27)
-    prod = vtecparser(get_file('TOR_emergency.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('TOR_emergency.txt'), utcnow=utcnow)
     assert prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
@@ -691,7 +683,7 @@ def test_badtimestamp():
     """ See what happens when the MND provides a bad timestamp """
     utcnow = utc(2005, 8, 29, 16, 56)
     with pytest.raises(Exception):
-        vtecparser(get_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow)
+        vtecparser(get_test_file('TOR_badmnd_timestamp.txt'), utcnow=utcnow)
 
 
 def test_wcn_updates():
@@ -703,7 +695,7 @@ def test_wcn_updates():
         for st in ['AR', 'MS', 'TN', 'MO']:
             ugc_provider["%sC%03i" % (st, u)] = UGC(st, 'C', "%03i" % (u,),
                                                     name=n, wfos=['DMX'])
-    prod = vtecparser(get_file('WCNMEG.txt'), utcnow=utcnow,
+    prod = vtecparser(get_test_file('WCNMEG.txt'), utcnow=utcnow,
                       ugc_provider=ugc_provider)
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
@@ -725,7 +717,7 @@ def test_wcn_updates():
 def test_140715_condensed():
     """ Make sure our Tags and svs_special works for combined message """
     utcnow = utc(2014, 7, 6, 2, 1)
-    prod = vtecparser(get_file('TORSVS.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('TORSVS.txt'), utcnow=utcnow)
     assert not prod.segments[0].is_emergency
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
@@ -742,7 +734,7 @@ def test_140715_condensed():
 def test_140714_segmented_watch():
     """ Two segmented watch text formatting stinks """
     utcnow = utc(2014, 7, 14, 17, 25)
-    prod = vtecparser(get_file('WCNPHI.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('WCNPHI.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         "PHI issues Severe Thunderstorm Watch (issues ((DEC001)), "
@@ -764,7 +756,7 @@ def test_140714_segmented_watch():
 def test_140610_tweet_spacing():
     """Saw spacing issue in tweet message """
     utcnow = utc(2014, 6, 10, 13, 23)
-    prod = vtecparser(get_file('FLWLCH.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('FLWLCH.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost', 'http://localhost')
     ans = (
         'LCH issues Flood Warning '
@@ -777,7 +769,7 @@ def test_140610_tweet_spacing():
 def test_routine(dbcursor):
     """what can we do with a ROU VTEC product """
     utcnow = utc(2014, 6, 19, 2, 56)
-    prod = vtecparser(get_file('FLWMKX_ROU.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('FLWMKX_ROU.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
     assert not warnings
@@ -786,14 +778,14 @@ def test_routine(dbcursor):
 def test_correction():
     """Can we properly parse a product correction """
     utcnow = utc(2014, 6, 6, 21, 30)
-    prod = vtecparser(get_file('CCA.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('CCA.txt'), utcnow=utcnow)
     assert prod.is_correction()
 
 
 def test_140610_no_vtec_time(dbcursor):
     """ A VTEC Product with both 0000 for start and end time, sigh """
     utcnow = utc(2014, 6, 10, 0, 56)
-    prod = vtecparser(get_file('FLSLZK_notime.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('FLSLZK_notime.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     assert prod.segments[0].vtec[0].begints is None
     assert prod.segments[0].vtec[0].endts is None
@@ -808,7 +800,7 @@ def test_140609_ext_backwards(dbcursor):
     dbcursor.execute("""DELETE from sbw_2014 where wfo = 'LBF'
     and eventid = 2 and phenomena = 'FL' and significance = 'W' """)
     for i in range(1, 6):
-        prod = vtecparser(get_file('FLWLBF/FLWLBF_%s.txt' % (i,)),
+        prod = vtecparser(get_test_file('FLWLBF/FLWLBF_%s.txt' % (i,)),
                           utcnow=utcnow)
         prod.sql(dbcursor)
 
@@ -847,7 +839,7 @@ def test_svs_search():
     """See that we get the SVS search done right """
     utcnow = utc(2014, 6, 6, 20)
 
-    prod = vtecparser(get_file('TORBOU_ibw.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('TORBOU_ibw.txt'), utcnow=utcnow)
     j = prod.segments[0].svs_search()
     ans = (
         '* AT 250 PM MDT...A SEVERE THUNDERSTORM '
@@ -862,7 +854,7 @@ def test_tortag():
     """See what we can do with warnings with tags in them """
     utcnow = utc(2011, 8, 7, 4, 36)
 
-    prod = vtecparser(get_file('TORtag.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('TORtag.txt'), utcnow=utcnow)
     j = prod.get_jabbers('http://localhost/', 'http://localhost/')
     assert prod.is_homogeneous()
     ans = (
@@ -893,7 +885,7 @@ def test_wcn():
         )
 
     prod = vtecparser(
-        get_file('SVS.txt'), utcnow=utcnow, ugc_provider=ugc_provider
+        get_test_file('SVS.txt'), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers('http://localhost/', 'http://localhost/')
     assert prod.is_homogeneous()
@@ -906,7 +898,7 @@ def test_wcn():
     assert j[0][2]['twitter'] == ans
 
     prod = vtecparser(
-        get_file('WCN.txt'), utcnow=utcnow, ugc_provider=ugc_provider
+        get_test_file('WCN.txt'), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers('http://localhost/', 'http://localhost/')
     assert prod.is_homogeneous()
@@ -937,7 +929,7 @@ def test_140604_sbwupdate(dbcursor):
     wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
     significance = 'W' """)
 
-    prod = vtecparser(get_file('SVRLMK_1.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('SVRLMK_1.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
 
     dbcursor.execute("""SELECT expire from sbw_2014 WHERE
@@ -945,7 +937,7 @@ def test_140604_sbwupdate(dbcursor):
     significance = 'W' """)
     assert dbcursor.rowcount == 1
 
-    prod = vtecparser(get_file('SVRLMK_2.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('SVRLMK_2.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
 
     dbcursor.execute("""SELECT expire from sbw_2014 WHERE
@@ -958,7 +950,7 @@ def test_140604_sbwupdate(dbcursor):
 
 def test_140321_invalidgeom():
     """See what we do with an invalid geometry from IWX """
-    prod = vtecparser(get_file('FLW_badgeom.txt'))
+    prod = vtecparser(get_test_file('FLW_badgeom.txt'))
     ans = (
         'SRID=4326;MULTIPOLYGON ((('
         '-85.680000 41.860000, -85.640000 41.970000, '
@@ -972,7 +964,7 @@ def test_140321_invalidgeom():
 def test_140527_astimezone(dbcursor):
     """Test the processing of a begin timestamp """
     utcnow = utc(2014, 5, 27, 16, 3)
-    prod = vtecparser(get_file('MWWSEW.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('MWWSEW.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     j = prod.get_jabbers('http://localhost/', 'http://localhost/')
     ans = (
@@ -987,7 +979,7 @@ def test_140527_astimezone(dbcursor):
 def test_140527_00000_hvtec_nwsli(dbcursor):
     """Test the processing of a HVTEC NWSLI of 00000 """
     utcnow = utc(2014, 5, 27)
-    prod = vtecparser(get_file('FLSBOU.txt'), utcnow=utcnow)
+    prod = vtecparser(get_test_file('FLSBOU.txt'), utcnow=utcnow)
     prod.sql(dbcursor)
     j = prod.get_jabbers('http://localhost/', 'http://localhost/')
     assert j[0][0], (
@@ -1003,7 +995,7 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
 def test_affected_wfos():
     """see what affected WFOs we have """
     ugc_provider = {'IAZ006': UGC('IA', 'Z', '006', wfos=['DMX'])}
-    prod = vtecparser(get_file('WSWDMX/WSW_00.txt'),
+    prod = vtecparser(get_test_file('WSWDMX/WSW_00.txt'),
                       ugc_provider=ugc_provider)
     assert prod.segments[0].get_affected_wfos()[0] == 'DMX'
 
@@ -1011,7 +1003,7 @@ def test_affected_wfos():
 def test_141023_upgrade(dbcursor):
     """ See that we can handle the upgrade and downgrade dance """
     for i in range(1, 8):
-        prod = vtecparser(get_file('NPWBOX/NPW_%02i.txt' % (i,)))
+        prod = vtecparser(get_test_file('NPWBOX/NPW_%02i.txt' % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -1022,7 +1014,7 @@ def test_141205_vtec_series(dbcursor):
     for i in range(9):
         print("Processing product: %s" % (i,))
         fn = "WSWOTX/WSW_%02i.txt" % (i,)
-        prod = vtecparser(get_file(fn))
+        prod = vtecparser(get_test_file(fn))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -1030,7 +1022,7 @@ def test_141205_vtec_series(dbcursor):
 
 def test_vtec_series(dbcursor):
     """Test a lifecycle of WSW products """
-    prod = vtecparser(get_file('WSWDMX/WSW_00.txt'))
+    prod = vtecparser(get_test_file('WSWDMX/WSW_00.txt'))
     assert prod.afos == 'WSWDMX'
     prod.sql(dbcursor)
 
@@ -1043,7 +1035,7 @@ def test_vtec_series(dbcursor):
     """)
     assert dbcursor.rowcount == 1
 
-    prod = vtecparser(get_file('WSWDMX/WSW_01.txt'))
+    prod = vtecparser(get_test_file('WSWDMX/WSW_01.txt'))
     assert prod.afos == 'WSWDMX'
     prod.sql(dbcursor)
 
@@ -1060,11 +1052,11 @@ def test_vtec_series(dbcursor):
 
     # No change
     for i in range(2, 9):
-        prod = vtecparser(get_file('WSWDMX/WSW_%02i.txt' % (i,)))
+        prod = vtecparser(get_test_file('WSWDMX/WSW_%02i.txt' % (i,)))
         assert prod.afos == 'WSWDMX'
         prod.sql(dbcursor)
 
-    prod = vtecparser(get_file('WSWDMX/WSW_09.txt'))
+    prod = vtecparser(get_test_file('WSWDMX/WSW_09.txt'))
     assert prod.afos == 'WSWDMX'
     prod.sql(dbcursor)
 
@@ -1096,7 +1088,7 @@ def test_vtec(dbcursor):
 
     ugc_provider = {'MSC091': UGC('MS', 'C', '091', 'DARYL', ['XXX'])}
     nwsli_provider = {'AMWI4': NWSLI('AMWI4', 'Ames', ['XXX'], -99, 44)}
-    prod = vtecparser(get_file('TOR.txt'), ugc_provider=ugc_provider,
+    prod = vtecparser(get_test_file('TOR.txt'), ugc_provider=ugc_provider,
                       nwsli_provider=nwsli_provider)
     assert not prod.skip_con
     assert abs(prod.segments[0].sbw.area - 0.3053) < 0.0001

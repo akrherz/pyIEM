@@ -24,6 +24,16 @@ from six import string_types
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
 
 
+def get_test_file(name, fponly=False):
+    """Helper to get data for test usage."""
+    basedir = os.path.dirname(__file__)
+    fn = "%s/../data/product_examples/%s" % (basedir, name)
+    fp = open(fn, 'rb')
+    if fponly:
+        return fp
+    return fp.read().decode('utf-8')
+
+
 def logger():
     """Create a standarized logger."""
     logging.basicConfig(format='%(asctime)-15s %(message)s')

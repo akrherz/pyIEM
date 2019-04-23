@@ -1,19 +1,12 @@
 """Test NHC."""
-import os
 
 from pyiem.nws.products.nhc import parser as nhcparser
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
+from pyiem.util import get_test_file
 
 
 def test_170618_potential():
     """New TCP type"""
-    prod = nhcparser(get_file("TCPAT2.txt"))
+    prod = nhcparser(get_test_file("TCPAT2.txt"))
     assert not prod.warnings
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -26,7 +19,7 @@ def test_170618_potential():
 
 def test_160905_correction():
     """See that a product correction does not trip us"""
-    prod = nhcparser(get_file("TCPAT4.txt"))
+    prod = nhcparser(get_test_file("TCPAT4.txt"))
     assert not prod.warnings
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (

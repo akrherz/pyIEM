@@ -1,19 +1,11 @@
 """Test our DSM Parsing."""
 import datetime
-import os
 
 import pytest
 import pytz
-from pyiem.util import utc
+from pyiem.util import utc, get_test_file
 from pyiem.nws.products.dsm import process, parser
 from pyiem.util import get_dbconn
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/DSM/%s" % (basedir, name)
-    return open(fn, 'rb').read().decode('utf-8')
 
 
 @pytest.fixture
@@ -53,7 +45,7 @@ def test_simple(month):
 
 def test_collective(dbcursor):
     """Can we parse a collective."""
-    prod = parser(get_file("DSM.txt"), utc(2015, 11, 26))
+    prod = parser(get_test_file("DSM/DSM.txt"), utc(2015, 11, 26))
     assert not prod.warnings
     assert len(prod.data) == 23
 

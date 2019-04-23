@@ -1,17 +1,10 @@
 """Test NLDN."""
-import os
 
 from pyiem.nws.products.nldn import parser
-
-
-def get_file(name):
-    ''' Helper function to get the text file contents '''
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/NLDN/%s" % (basedir, name)
-    return open(fn, 'rb')
+from pyiem.util import get_test_file
 
 
 def test_1_basic():
     """CLIBNA is a new diction"""
-    np = parser(get_file('example.bin'))
+    np = parser(get_test_file('NLDN/example.bin', fponly=True))
     assert len(np.df.index) == 50

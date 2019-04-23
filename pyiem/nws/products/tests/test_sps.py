@@ -1,30 +1,23 @@
 """SPS Parsing"""
-import os
 
+import pytest
 from psycopg2.extras import RealDictCursor
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconn, get_test_file
 from pyiem.nws.ugc import UGC
 from pyiem.nws.products.sps import parser as spsparser
 
 
-def get_transaction():
+@pytest.fixture
+def dbcursor():
     """Get a cursor we can use"""
     pgconn = get_dbconn('postgis')
     return pgconn.cursor(cursor_factory=RealDictCursor)
 
 
-def get_file(name):
-    """Helper function to get the text file contents"""
-    basedir = os.path.dirname(__file__)
-    fn = "%s/../../../../data/product_examples/%s" % (basedir, name)
-    return open(fn).read()
-
-
-def test_sps():
+def test_sps(dbcursor):
     """Can we parse a SPS properly, yes we can!"""
-    txn = get_transaction()
     ugc_provider = {'ALZ039': UGC("AL", "Z", "039", name='Marengo')}
-    prod = spsparser(get_file('SPSBMX.txt'), ugc_provider=ugc_provider)
+    prod = spsparser(get_test_file('SPSBMX.txt'), ugc_provider=ugc_provider)
     jmsgs = prod.get_jabbers('http://localhost')
     assert len(prod.segments) == 2
     assert len(jmsgs) == 1
@@ -37,8 +30,8 @@ def test_sps():
     assert 'SPSBMX.ALZ039' in jmsgs[0][2]['channels']
     assert 'ALZ039' in jmsgs[0][2]['channels']
 
-    prod.sql(txn)
-    txn.execute("""
+    prod.sql(dbcursor)
+    dbcursor.execute("""
         SELECT count(*) from text_products where product_id = %s
     """, (prod.get_product_id(),))
-    assert txn.fetchall()[0]['count'] == 1
+    assert dbcursor.fetchall()[0]['count'] == 1
