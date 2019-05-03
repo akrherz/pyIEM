@@ -117,6 +117,8 @@ def test_150120_latlonloc():
 
     prod = pirepparser(get_test_file('PIREPS/latlonloc2.txt'))
     assert not prod.warnings
+    assert abs(prod.reports[0].latitude - 38.51) < 0.01
+    assert abs(prod.reports[0].longitude - -144.3) < 0.01
 
     nwsli_provider = {'PKTN': {'lat': 44, 'lon': -99}}
     prod = pirepparser(
@@ -161,7 +163,7 @@ def test_1():
         'PUB': {'lat': 46, 'lon': 101},
         'HPW': {'lat': 47, 'lon': 102}}
     prod = pirepparser(
-        get_test_file('PIREP.txt'), utcnow=utcnow,
+        get_test_file('PIREPS/PIREP.txt'), utcnow=utcnow,
         nwsli_provider=nwsli_provider)
     assert not prod.warnings
 
