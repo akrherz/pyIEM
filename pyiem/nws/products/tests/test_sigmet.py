@@ -1,27 +1,34 @@
 """SIGMET"""
 from __future__ import print_function
+from collections import defaultdict
 
 from pyiem.nws.products.sigmet import parser, compute_esol
 from pyiem.util import utc, get_test_file
 
 
+def mydict():
+    """return dict."""
+    return dict(lon=-85.50, lat=42.79)
+
+
+NWSLI_PROVIDER = defaultdict(mydict)
+
+
+def test_190503_badgeom():
+    """This SIGMET produced a traceback in prod."""
+    utcnow = utc(2019, 5, 3, 18, 25)
+    tp = parser(
+        get_test_file('SIGMETS/SIGC_badgeom.txt'), utcnow,
+        nwsli_provider=NWSLI_PROVIDER)
+    assert len(tp.sigmets) == 4
+
+
 def test_170815_pywwa_issue3():
     """This example was in pyWWA issues list, so lets test here"""
     utcnow = utc(2015, 9, 30, 16, 56)
-    nwsli_provider = {
-        "EWC": dict(lon=-83.39, lat=44.45),
-        "HNN": dict(lon=-85.50, lat=42.79),
-        "VXV": dict(lon=-85.50, lat=42.79),
-        "RDU": dict(lon=-85.50, lat=42.79),
-        "FLO": dict(lon=-85.50, lat=42.79),
-        "VRB": dict(lon=-85.50, lat=42.79),
-        "MIA": dict(lon=-85.50, lat=42.79),
-        "EYW": dict(lon=-85.50, lat=42.79),
-        "ROD": dict(lon=-85.50, lat=42.79),
-        "CVG": dict(lon=-85.50, lat=42.79),
-    }
+
     tp = parser(get_test_file('SIGMETS/SIGE.txt'), utcnow,
-                nwsli_provider=nwsli_provider)
+                nwsli_provider=NWSLI_PROVIDER)
     assert len(tp.sigmets) == 4
 
 
@@ -144,7 +151,6 @@ def test_50e():
 
     tp = parser(get_test_file('SIGMETS/SIGE3.txt'), utcnow, ugc_provider,
                 nwsli_provider)
-    # tp.draw()
     assert abs(tp.sigmets[0].geom.area - 2.15) < 0.01
 
 
@@ -161,7 +167,6 @@ def test_sigc():
         get_test_file('SIGMETS/SIGC.txt'), utcnow, ugc_provider,
         nwsli_provider
     )
-    # tp.draw()
     j = tp.get_jabbers('http://localhost', 'http://localhost')
     assert tp.sigmets[0].ets == utc(2014, 8, 11, 18, 55)
     ans = 'KKCI issues SIGMET 62C for AL MS LA AR till 1855 UTC'

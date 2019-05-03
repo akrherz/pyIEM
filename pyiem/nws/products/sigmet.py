@@ -14,7 +14,9 @@ from pyiem.nws.product import TextProduct
 O_LINE1 = re.compile(("SIGMET (?P<name>[A-Z]*) (?P<num>[0-9]*) "
                       "VALID (?P<sts>[0-9]{6})/(?P<ets>[0-9]{6})"))
 
-O_PAIRS = re.compile("(?P<lat>[NS][0-9]{2,4})\s?(?P<lon>[EW][0-9]{3,5})")
+O_PAIRS = re.compile(
+    r"(?P<lat>[NS][0-9]{2,4})\s?(?P<lon>[EW][0-9]{3,5})"
+)
 
 CS_RE = re.compile(r"""CONVECTIVE\sSIGMET\s(?P<label>[0-9A-Z]+)\s
 VALID\sUNTIL\s(?P<hour>[0-2][0-9])(?P<minute>[0-5][0-9])Z\s
@@ -54,6 +56,7 @@ KM_SM = 1.609347
 
 
 class SIGMET(object):
+    """Data Structure."""
 
     def __init__(self):
         """ Constructor """
@@ -66,9 +69,7 @@ class SIGMET(object):
         self.raw = None
 
 
-class SIGMETException(Exception):
-    ''' Exception '''
-    pass
+SIGMETException = Exception
 
 
 def figure_expire(ptime, hour, minute):
@@ -82,7 +83,7 @@ def figure_expire(ptime, hour, minute):
 
 
 def go2lonlat(lon0, lat0, direction, displacement):
-    # http://stackoverflow.com/questions/7222382
+    """http://stackoverflow.com/questions/7222382"""
     # Radius of the Earth
     R = 6378.1
     # Bearing is 90 degrees converted to radians.
@@ -271,7 +272,7 @@ class SIGMETProduct(TextProduct):
         s.sts = self.compute_time(d['sts'])
         s.ets = self.compute_time(d['ets'])
         m = re.findall(O_PAIRS, meat)
-        if len(m) == 0:
+        if not m:
             # TODO: resolve what SIGMET cancels are
             if meat.find("CNL SIGMET") > 0 or meat.find("CANCEL SIGMET") > 0:
                 return
@@ -322,7 +323,7 @@ class SIGMETProduct(TextProduct):
                                        data['locs'], data['geotype'],
                                        data['width'], data['diameter'])
 
-            if len(lons) == 2:
+            if len(lons) <= 2:
                 continue
             pts = []
             for lon, lat in zip(lons, lats):
@@ -336,7 +337,6 @@ class SIGMETProduct(TextProduct):
 
     def process_WS(self):
         """ Process this type of SIGMET """
-        pass
 
     def get_jabbers(self, uri, uri2=None):
         """ Return the Jabber for this sigmet """
@@ -358,20 +358,6 @@ class SIGMETProduct(TextProduct):
 
             j.append([txt, html, xtra])
         return j
-
-    def draw(self):
-        ''' For debugging, draw the polygons!'''
-        from descartes.patch import PolygonPatch
-        from pyiem.plot import MapPlot
-        for sig in self.sigmets:
-            m = MapPlot(sector='conus')
-            x, y = m.map(sig.geom.exterior.xy[0], sig.geom.exterior.xy[1])
-            patch = PolygonPatch(Polygon(zip(x, y)), fc='r', label='Outlook')
-            m.ax.add_patch(patch)
-            fn = '/tmp/%s.png' % (sig.label,)
-            print(':: creating plot %s' % (fn,))
-            m.postprocess(filename=fn)
-            m.close()
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
