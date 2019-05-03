@@ -26,15 +26,18 @@ if not six.PY2:
 else:
     from cgi import escape as html_escape
 
-OV_LATLON = re.compile("\s?(?P<lat>[0-9]{3,4}[NS])\s?(?P<lon>[0-9]{3,5}[EW])")
+OV_LATLON = re.compile((
+    r"\s?(?P<lat>[0-9]{3,4})(?P<latsign>[NS])"
+    r"\s?(?P<lon>[0-9]{3,5})(?P<lonsign>[EW])"
+))
 OV_LOCDIR = re.compile(
-    ".*?(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
+    r".*?(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})")
 OV_TWOLOC = re.compile(
-    "(?P<loc1>[A-Z0-9]{3,4})\s?-\s?(?P<loc2>[A-Z0-9]{3,4})")
+    r"(?P<loc1>[A-Z0-9]{3,4})\s?-\s?(?P<loc2>[A-Z0-9]{3,4})")
 OV_OFFSET = re.compile(
-    ("(?P<dist>[0-9]{1,3})\s?"
+    (r"(?P<dist>[0-9]{1,3})\s?"
      "(?P<dir>NORTH|EAST|SOUTH|WEST|N|NNE|NE|ENE|E|ESE|"
-     "SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(OF )?(?P<loc>[A-Z0-9]{3,4})"))
+     r"SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)\s+(OF )?(?P<loc>[A-Z0-9]{3,4})"))
 
 DRCT2DIR = {'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5, 'E': 90,
             'ESE': 112.5, 'SE': 135, 'SSE': 157.5, 'S': 180,
@@ -148,12 +151,17 @@ class Pirep(product.TextProduct):
                     dist = int(d['dist'])
                 elif re.match(OV_LATLON, therest):
                     # 2500N07000W
+                    # FMH-12 says this is in degrees and minutes!
                     d = re.match(OV_LATLON, therest).groupdict()
-                    _pr.latitude = float(d['lat'][:-1]) / 100.
-                    if d['lat'][-1] == 'S':
+                    _pr.latitude = float("%s.%i" % (
+                        d['lat'][:-2],
+                        int(float(d['lat'][-2:]) / 60. * 10000.)))
+                    if d['latsign'] == 'S':
                         _pr.latitude = 0 - _pr.latitude
-                    _pr.longitude = float(d['lon'][:-1]) / 100.
-                    if d['lon'][-1] == 'W':
+                    _pr.longitude = float("%s.%i" % (
+                        d['lon'][:-2],
+                        int(float(d['lon'][-2:]) / 60. * 10000.)))
+                    if d['lonsign'] == 'W':
                         _pr.longitude = 0 - _pr.longitude
                     continue
                 elif therest == 'O':
@@ -162,7 +170,7 @@ class Pirep(product.TextProduct):
                 elif therest.find("-") > 0 and re.match(OV_TWOLOC, therest):
                     d = re.match(OV_TWOLOC, therest).groupdict()
                     numbers = re.findall("[0-9]{6}", therest)
-                    if len(numbers) > 0:
+                    if numbers:
                         bearing = int(numbers[0][:3])
                         dist = int(numbers[0][3:])
                         loc = d['loc2']
