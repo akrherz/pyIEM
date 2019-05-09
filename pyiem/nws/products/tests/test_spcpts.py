@@ -12,6 +12,14 @@ def dbcursor():
     return get_dbconn('postgis').cursor(cursor_factory=RealDictCursor)
 
 
+def test_190509_marinebounds():
+    """SPC Updated marine bounds."""
+    spc = parser(get_test_file('SPCPTS/PTSDY1_marine.txt'))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook('HAIL', '0.15', 1)
+    assert abs(outlook.geometry.area - 17.82) < 0.01
+
+
 def test_190415_elevated():
     """Can we parse elevated threshold firewx?"""
     spc = parser(get_test_file('SPCPTS/PFWFD1_example.txt'))
@@ -220,7 +228,9 @@ def test_150612_ptsdy1_3():
 
 def test_141022_newcats():
     """ Make sure we can parse the new categories """
-    spc = parser(get_test_file('SPCPTS/PTSDY1_new.txt'))
+    spc = parser(
+        get_test_file('SPCPTS/PTSDY1_new.txt'),
+        utcnow=utc(2014, 10, 13, 16, 21))
     outlook = spc.get_outlook('CATEGORICAL', 'ENH')
     assert abs(outlook.geometry.area - 13.02) < 0.01
     outlook = spc.get_outlook('CATEGORICAL', 'MRGL')

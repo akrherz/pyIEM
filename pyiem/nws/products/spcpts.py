@@ -13,7 +13,9 @@ import numpy as np
 from shapely.geometry import Polygon, LineString, MultiPolygon
 from shapely.geometry.polygon import LinearRing
 from pyiem.nws.product import TextProduct
+from pyiem.util import utc
 
+CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {'line': None, 'poly': None}
 DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",
                    re.IGNORECASE)
@@ -31,27 +33,6 @@ THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
                    'IDRT', 'SDRT', 'ELEV', 'CRIT', 'EXTM']
 
 
-# def draw_polys(polys, segments):
-#    """Debug the polys"""
-#    import matplotlib.pyplot as plt
-#    for i, poly in enumerate(polys):
-#        if poly.area == CONUS['poly'].area:
-#            continue
-#        (fig, ax) = plt.subplots(1, 1)
-#        points = np.asarray(poly.exterior.xy)
-#        ax.set_xlim(np.min(points[0]) - 0.5, np.max(points[0]) + 0.5)
-#        ax.set_ylim(np.min(points[1]) - 0.5, np.max(points[1]) + 0.5)
-#        ax.plot(points[0], points[1], lw=2., c='r', zorder=2)
-#        ax.scatter(CONUS['line'][:, 0], CONUS['line'][:, 1], zorder=3,
-#                   color='k', s=20)
-#        for segment in segments:
-#            segment = np.array(segment)
-#            ax.scatter(segment[:, 0], segment[:, 1], zorder=4, s=20,
-#                       color='b')
-#        fig.savefig("/tmp/spcpts_drawpolys_%s.png" % (i, ))
-#        plt.close()
-
-
 def get_day(text):
     """Figure out which day this is for"""
     search = DAYRE.search(text)
@@ -60,11 +41,11 @@ def get_day(text):
     return int(search.groupdict()['day'])
 
 
-def load_conus_data():
+def load_conus_data(valid):
     """ Load up the conus datafile for our perusal """
-    if CONUS['line'] is not None:
-        return
-    fn = "%s/../../data/conus_marine_bnds.txt" % (os.path.dirname(__file__),)
+    fn = "%s/../../data/conus_marine_bnds%s.txt" % (
+        os.path.dirname(__file__),
+        "_pre190509" if valid < CONUS_BASETIME else '')
     lons = []
     lats = []
     for line in open(fn):
@@ -123,9 +104,6 @@ def str2multipolygon(s):
         print(msg)
         segments[0][-1] = segments[0][0]
         return MultiPolygon([Polygon(segments[0])])
-
-    # We have some work to do
-    load_conus_data()
 
     # We start with just a conus polygon and we go from here, down the rabbit
     # hole
@@ -324,6 +302,7 @@ class SPCPTS(TextProduct):
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         print("==== SPCPTS Processing: %s" % (self.get_product_id(), ))
+        load_conus_data(self.valid)
         self.issue = None
         self.expire = None
         self.day = None
@@ -405,7 +384,6 @@ class SPCPTS(TextProduct):
         ''' For debugging, draw the outlooks on a simple map for inspection!'''
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
-        load_conus_data()
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 fig = plt.figure(figsize=(12, 8))
@@ -730,6 +708,6 @@ class SPCPTS(TextProduct):
         return res
 
 
-def parser(text):
+def parser(text, utcnow=None):
     """Parse this text!"""
-    return SPCPTS(text)
+    return SPCPTS(text, utcnow)
