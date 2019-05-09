@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
 import matplotlib.image as mpimage
-from pyiem.plot.use_agg import plt, fontscale
-from pyiem.plot.util import fitbox
+from pyiem.plot.use_agg import plt
+from pyiem.plot.util import fitbox, fontscale
 
 DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
 
