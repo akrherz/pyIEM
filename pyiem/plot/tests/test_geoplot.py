@@ -177,6 +177,14 @@ def test_drawcounties():
     return mp.fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0.25)
+def test_drawcounties_cornbelt():
+    """draw counties on the map"""
+    mp = MapPlot(sector='cornbelt', title='Counties', nocaption=True)
+    mp.drawcounties()
+    return mp.fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=1.)
 def test_climdiv():
     """Run tests agains the fill_climdiv"""
