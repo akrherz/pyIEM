@@ -35,91 +35,46 @@ import pandas as pd
 import geojson
 from shapely.geometry import shape
 #
+from scipy.signal import convolve2d
 from scipy.interpolate import NearestNDInterpolator
 #
 from PIL import Image
-#
-from pyiem import reference
-from pyiem.plot.use_agg import plt
-from pyiem.util import ssw
-from pyiem.datatypes import speed, direction
-from pyiem.plot.colormaps import (nwsprecip, nwssnow, james2, james,
-                                  whitebluegreenyellowred, maue, stretch_cmap)
-import pyiem.meteorology as meteorology
-from scipy.signal import convolve2d
 # Matplotlib
-from matplotlib.patches import Polygon, Rectangle
-import matplotlib.cm as cm
+from matplotlib.patches import Polygon
 import matplotlib.colors as mpcolors
-import matplotlib.path as mpath
 import matplotlib.image as mpimage
 from matplotlib.patches import Wedge
-import matplotlib.patches as mpatches
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 # cartopy
 import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import cartopy.io.shapereader as shpreader
+
+from pyiem.plot.use_agg import plt
+from pyiem.plot.util import (
+    sector_setter, mask_outside_polygon, polygon_fill, mask_outside_geom)
+from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
+    Z_CLIP, Z_CLIP2, Z_CF, Z_POLITICAL, Z_FILL, Z_FILL_LABEL,
+    Z_OVERLAY, Z_OVERLAY2)
+from pyiem.util import ssw
+from pyiem.datatypes import speed, direction
+from pyiem.plot.colormaps import stretch_cmap
+import pyiem.meteorology as meteorology
+
 # we ran the cartopy/tools downloader
 cartopy.config['pre_existing_data_dir'] = '/opt/miniconda3/cartopy_data/'
 # Set a saner default for apache et al
 cartopy.config['data_dir'] = '/tmp/'
 logging.basicConfig()
 
-[Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
- Z_OVERLAY2] = range(1, 9)
+
 DATADIR = os.sep.join([os.path.dirname(__file__), '..', 'data'])
 MAIN_AX_BOUNDS = [0.01, 0.05, 0.898, 0.85]
 CAX_BOUNDS = [0.917, 0.1, 0.02, 0.8]
 
 
-def make_axes(ndc_axbounds, geoextent, projection, aspect):
-    """Factory for making an axis
-
-    Args:
-      ndc_axbounds (list): the NDC coordinates of axes to create
-      geoextent (list): x0,x1,y0,y1 the lon/lon extent of the axes to create
-      projection (ccrs.Projection): the projection of the axes
-      aspect (str): matplotlib's aspect of axes
-
-    Returns:
-      ax
-    """
-    ax = plt.axes(ndc_axbounds, projection=projection, aspect=aspect)
-    ax.set_extent(geoextent)
-    if aspect != 'equal':
-        return ax
-    # Render the canvas so we know what happened with our axis
-    ax.figure.canvas.draw()
-    # Compute the current NDC extent of the axes
-    ndc_bbox = ax.get_position()
-    # pixel_bbox = ax.get_window_extent()
-    (projx0, projx1, projy0, projy1) = ax.get_extent()
-    # print(ax.get_extent())
-    # Figure out which axis got shrunk
-    xscaled = ndc_bbox.width / float(ndc_axbounds[2])
-    yscaled = ndc_bbox.height / float(ndc_axbounds[3])
-    # compute the dx/dy of this image
-    # dx = (projx1 - projx0) / pixel_bbox.width
-    # dx = (projy1 - projy0) / pixel_bbox.height
-    # expand one way or another to fit, via set_extent
-    xneeded = (projx1 - projx0) / xscaled - (projx1 - projx0)
-    yneeded = (projy1 - projy0) / yscaled - (projy1 - projy0)
-    # print(("xscaled: %s xneeded: %.1f yscaled: %s yneeded: %.1f"
-    #       ) % (xscaled, xneeded, yscaled, yneeded))
-    newbounds = [projx0 - xneeded/2.,
-                 projx1 + xneeded/2.,
-                 projy0 - yneeded/2.,
-                 projy1 + yneeded/2.]
-    ax.set_extent(newbounds, crs=projection)
-    # Render the canvas so we know what happened with our axis
-    ax.figure.canvas.draw()
-    return ax
-
-
-def centered_bins(absmax, on=0, bins=9):
+def centered_bins(absmax, _on=0, bins=9):
     """Return a smooth binning
 
     Args:
@@ -137,19 +92,19 @@ def centered_bins(absmax, on=0, bins=9):
     return np.arange(0 - mx, mx + 1) * width
 
 
-def true_filter(bm, key, val):
+def true_filter(_bm, _key, _val):
     """Always return true"""
     return True
 
 
-def cwa_filter(bm, key, val):
+def cwa_filter(bm, _key, val):
     """A filter for checking a key against current plot"""
-    return (val.get(b'cwa', b'').decode('utf-8') == bm.cwa)
+    return val.get(b'cwa', b'').decode('utf-8') == bm.cwa
 
 
-def state_filter(bm, key, val):
+def state_filter(bm, key, _val):
     """A filter for checking a key against current plot"""
-    return (key[:2].decode('utf-8') == bm.state)
+    return key[:2].decode('utf-8') == bm.state
 
 
 def load_bounds(filebase):
@@ -203,139 +158,6 @@ def load_pickle_geo(filename):
     return pickle.load(open(fn, 'rb'), **pickle_opts)
 
 
-def mask_outside_geom(ax, geom):
-    """Create a white patch over the plot for what we want to ask out
-
-    Args:
-      ax (axes):
-      geom (geometry):
-    """
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
-    # Verticies of the plot boundaries in clockwise order
-    verts = np.array([(xlim[0], ylim[0]), (xlim[0], ylim[1]),
-                      (xlim[1], ylim[1]), (xlim[1], ylim[0]),
-                      (xlim[0], ylim[0])])
-    codes = [mpath.Path.MOVETO] + (len(verts) -
-                                   1) * [mpath.Path.LINETO]
-    for geo in geom:
-        ccw = np.asarray(geo.exterior)[::-1]
-        points = ax.projection.transform_points(ccrs.Geodetic(),
-                                                ccw[:, 0], ccw[:, 1])
-        verts = np.concatenate([verts, points[:, :2]])
-        codes = np.concatenate([codes, [mpath.Path.MOVETO] +
-                                (points.shape[0] - 1) * [mpath.Path.LINETO]])
-
-    path = mpath.Path(verts, codes)
-    # Removes any external data
-    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
-                               zorder=Z_CLIP)
-    ax.add_patch(patch)
-    # Then gives a nice semitransparent look
-    patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
-                               zorder=Z_CLIP2, alpha=0.65)
-    ax.add_patch(patch)
-
-
-def mask_outside_polygon(poly_verts, ax=None):
-    """
-    We produce a polygon that lies between the plot border and some interior
-    polygon.
-
-    POLY_VERTS is in CCW order, as this is the interior of the polygon
-    """
-    if ax is None:
-        ax = plt.gca()
-
-    # Get current plot limits
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
-
-    # Verticies of the plot boundaries in clockwise order
-    bound_verts = np.array([(xlim[0], ylim[0]), (xlim[0], ylim[1]),
-                            (xlim[1], ylim[1]), (xlim[1], ylim[0]),
-                            (xlim[0], ylim[0])])
-
-    # A series of codes (1 and 2) to tell matplotlib whether to draw a lineor
-    # move the "pen" (So that there's no connecting line)
-    bound_codes = [mpath.Path.MOVETO] + (len(bound_verts) -
-                                         1) * [mpath.Path.LINETO]
-    poly_codes = [mpath.Path.MOVETO] + (len(poly_verts) -
-                                        1) * [mpath.Path.LINETO]
-
-    # Plot the masking patch
-    path = mpath.Path(np.concatenate([bound_verts, poly_verts]),
-                      bound_codes + poly_codes)
-    # remove data
-    patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
-                               zorder=Z_CLIP)
-    patch = ax.add_patch(patch)
-    # Then give semi-transparent look
-    patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
-                               zorder=Z_CLIP2, alpha=0.65)
-    patch = ax.add_patch(patch)
-
-    # Reset the plot limits to their original extents
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
-
-    return patch
-
-
-def polygon_fill(mymap, geo_provider, data, **kwargs):
-    """Generalized function for overlaying filled polygons on the map
-
-    Args:
-      mymap (MapPlot): The MapPlot instance
-      geo_provider (dict): The dictionary of keys and geometries
-      data (dict): The dictionary of keys and values used for picking colors
-      **kwargs (Optional): Other things needed for mapping
-        ilabel (Optional[bool]): should values be labelled? Defaults to `False`
-        plotmissing (bool): should geometries not included in the `data`
-        be mapped? Defaults to `True`
-    """
-    bins = kwargs.get('bins', np.arange(0, 101, 10))
-    cmap = stretch_cmap(kwargs.get('cmap'), bins)
-    ilabel = kwargs.get('ilabel', False)
-    norm = mpcolors.BoundaryNorm(bins, cmap.N)
-    lblformat = kwargs.get('lblformat', '%s')
-    labels = kwargs.get('labels', dict())
-    plotmissing = kwargs.get('plotmissing', True)
-    for polykey, polydict in geo_provider.items():
-        # our dictionary is bytes so we need str
-        val = data.get(polykey.decode('utf-8'), None)
-        if val is None:
-            if not plotmissing:
-                continue
-            lbl = labels.get(polykey.decode('utf-8'), '-')
-            c = 'white'
-        else:
-            lbl = labels.get(polykey.decode('utf-8'), lblformat % (val, ))
-            c = cmap(norm([val, ]))[0]
-        # in python3, our dict types are byte arrays
-        for polyi, polygon in enumerate(polydict.get(b'geom', [])):
-            if polygon.exterior is None:
-                continue
-            a = np.asarray(polygon.exterior)
-            for ax in mymap.axes:
-                points = ax.projection.transform_points(ccrs.Geodetic(),
-                                                        a[:, 0], a[:, 1])
-                p = Polygon(points[:, :2], fc=c, ec='k', zorder=Z_FILL, lw=.1)
-                ax.add_patch(p)
-                if ilabel and polyi == 0:
-                    txt = ax.text(polydict.get(b'lon', polygon.centroid.x),
-                                  polydict.get(b'lat', polygon.centroid.y),
-                                  lbl, zorder=100, clip_on=True,
-                                  ha='center', va='center',
-                                  transform=ccrs.PlateCarree())
-                    txt.set_path_effects([
-                        PathEffects.withStroke(linewidth=2, foreground="w")])
-
-    kwargs.pop('cmap', None)
-    kwargs.pop('bins', None)
-    mymap.draw_colorbar(bins, cmap, norm, **kwargs)
-
-
 class MapPlot(object):
     """An object representing a cartopy plot.
 
@@ -377,17 +199,6 @@ class MapPlot(object):
         self.debug = kwargs.get('debug', False)
         self.fig = plt.figure(num=None, figsize=figsize,
                               dpi=kwargs.get('dpi', 100))
-        """
-        if 'ax' in kwargs:
-            self.ax = kwargs.pop('ax')
-            self.fig = plt.gcf()
-            self.cax = kwargs.pop('cax', None)
-        else:
-            self.ax = plt.axes([0.01, 0.05, 0.928, 0.85],
-                               facecolor=(0.4471, 0.6235, 0.8117))
-            self.cax = plt.axes([0.941, 0.1, 0.058, 0.8], frameon=False,
-                                yticks=[], xticks=[])
-        """
         # Storage of axes within this plot
         self.state = None
         self.cwa = None
@@ -396,101 +207,12 @@ class MapPlot(object):
         self.cax = plt.axes(CAX_BOUNDS, frameon=False,
                             yticks=[], xticks=[])
         self.axes = []
-        aspect = kwargs.get('aspect', 'equal')
-
+        self.ax = None
+        # hack around sector=iowa
         if self.sector == 'iowa':
+            self.sector = 'state'
             self.state = 'IA'
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [reference.IA_WEST, reference.IA_EAST,
-                                 reference.IA_SOUTH, reference.IA_NORTH],
-                                ccrs.Mercator(),
-                                aspect)
-            self.axes.append(self.ax)
-
-        elif self.sector == 'cwa':
-            self.cwa = kwargs.get('cwa', 'DMX')
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [reference.wfo_bounds[self.cwa][0],
-                                 reference.wfo_bounds[self.cwa][2],
-                                 reference.wfo_bounds[self.cwa][1],
-                                 reference.wfo_bounds[self.cwa][3]],
-                                ccrs.Mercator(),
-                                aspect)
-            self.axes.append(self.ax)
-        elif self.sector == 'state':
-            self.state = kwargs.get('state', 'IA')
-            # We hard code aspect as Alaska does funny things with 'equal' set
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [reference.state_bounds[self.state][0],
-                                 reference.state_bounds[self.state][2],
-                                 reference.state_bounds[self.state][1],
-                                 reference.state_bounds[self.state][3]],
-                                ccrs.Mercator(),
-                                aspect if self.state != 'AK' else 'auto')
-            self.axes.append(self.ax)
-        elif self.sector == 'midwest':
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [reference.MW_WEST,
-                                 reference.MW_EAST,
-                                 reference.MW_SOUTH,
-                                 reference.MW_NORTH],
-                                ccrs.Mercator(),
-                                aspect)
-            self.axes.append(self.ax)
-        elif self.sector == 'iowawfo':
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [-99.6, -89.0, 39.8, 45.5],
-                                ccrs.Mercator(),
-                                aspect)
-            self.axes.append(self.ax)
-        elif self.sector == 'custom':
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [kwargs['west'], kwargs['east'],
-                                 kwargs['south'], kwargs['north']],
-                                kwargs.get('projection', ccrs.Mercator()),
-                                aspect)
-            self.axes.append(self.ax)
-
-        elif self.sector == 'north_america':
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [-145.5, -2.566, 1, 46.352],
-                                ccrs.LambertConformal(central_longitude=-107.0,
-                                                      central_latitude=50.0),
-                                aspect)
-            self.axes.append(self.ax)
-
-        elif self.sector in ['conus', 'nws']:
-            self.ax = make_axes(MAIN_AX_BOUNDS,
-                                [reference.CONUS_WEST + 14,
-                                 reference.CONUS_EAST - 12,
-                                 reference.CONUS_SOUTH,
-                                 reference.CONUS_NORTH + 1],
-                                reference.EPSG[5070],
-                                aspect)
-            self.axes.append(self.ax)
-
-            if self.sector == 'nws':
-                # Create PR, AK, and HI sectors
-                self.pr_ax = make_axes(
-                    [0.78, 0.055, 0.125, 0.1],
-                    [-68.0, -65.0, 17.5, 18.6],
-                    ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect)
-                self.axes.append(self.pr_ax)
-                # Create AK
-                self.ak_ax = make_axes(
-                    [0.015, 0.055, 0.25, 0.2],
-                    [-179.5, -129.0, 51.08, 72.1],
-                    ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect)
-                self.axes.append(self.ak_ax)
-                # Create HI
-                self.hi_ax = make_axes(
-                    [0.47, 0.055, 0.2, 0.1],
-                    [-161.0, -154.0, 18.5, 22.5],
-                    ccrs.PlateCarree(central_longitude=-105.0),
-                    aspect)
-                self.axes.append(self.hi_ax)
+        sector_setter(self, MAIN_AX_BOUNDS, **kwargs)
 
         for _a in self.axes:
             if _a is None:
@@ -512,10 +234,12 @@ class MapPlot(object):
                            zorder=Z_CF)
             if 'nostates' not in kwargs:
                 states = load_pickle_geo('us_states.pickle')
-                _a.add_geometries([val[b'geom'] for key, val in states.items()],
-                                  crs=ccrs.PlateCarree(), lw=1.0,
-                                  edgecolor=kwargs.get('statebordercolor', 'k'), facecolor='None',
-                                  zorder=Z_POLITICAL)
+                _a.add_geometries(
+                    [val[b'geom'] for key, val in states.items()],
+                    crs=ccrs.PlateCarree(), lw=1.0,
+                    edgecolor=kwargs.get('statebordercolor', 'k'),
+                    facecolor='None', zorder=Z_POLITICAL
+                )
 
         if not kwargs.get('nologo'):
             self.iemlogo()
@@ -635,6 +359,7 @@ class MapPlot(object):
         over = clevs[-1] + (clevs[-1] - clevs[-2])
         extend = kwargs.get('extend', 'both')
         # inspect the cmap to see if we need to do any extensions
+        # pylint: disable=protected-access
         if cmap._rgba_under is not None and cmap._rgba_over is None:
             blevels = np.concatenate([[under, ], clevs])
         elif cmap._rgba_under is None and cmap._rgba_over is not None:
@@ -732,8 +457,8 @@ class MapPlot(object):
 
             # Sky Coverage
             skycoverage = stdata.get('coverage')
-            if (skycoverage is not None and skycoverage >= 0
-                    and skycoverage <= 100):
+            if (skycoverage is not None and skycoverage >= 0 and
+                    skycoverage <= 100):
                 w = Wedge((x, y), circlesz, 0, 360, ec='k', fc='white',
                           zorder=2)
                 self.ax.add_artist(w)
@@ -958,8 +683,7 @@ class MapPlot(object):
     def draw_mask(self):
         """Draw the mask, when appropriate"""
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo',
-                               'cwa'):
+        if self.sector not in ('midwest', 'conus', 'state', 'iowawfo', 'cwa'):
             return
         # in lon,lat
         if self.sector == 'state':
@@ -1077,7 +801,7 @@ class MapPlot(object):
         ugcs = load_pickle_geo(
             "ugcs_county.pickle" if counties else "ugcs_zone.pickle")
         filter_func = true_filter
-        if self.sector in ('state', 'iowa'):
+        if self.sector == 'state':
             filter_func = state_filter
         elif self.sector == 'cwa':
             filter_func = cwa_filter
@@ -1258,6 +982,7 @@ class MapPlot(object):
 
 
 def windrose(*args, **kwargs):
+    """Depreciated."""
     warnings.warn("windrose() is depreciated, use pyiem.windrose_utils!")
     import pyiem.windrose_utils as wru
     return wru.windrose(*args, **kwargs)

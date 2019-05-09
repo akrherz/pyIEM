@@ -19,6 +19,9 @@ import sys
 
 import cartopy.crs as ccrs
 
+# Some z-order stuff for plotting
+[Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
+ Z_OVERLAY2] = range(1, 9)
 
 TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
@@ -45,6 +48,11 @@ CONUS_WEST = -134.2
 CONUS_EAST = -60.1
 CONUS_NORTH = 49.51
 CONUS_SOUTH = 24.47
+
+SECTORS = {
+    'midwest': [MW_WEST, MW_EAST, MW_SOUTH, MW_NORTH],
+    'cornbelt': [-99., -84., 38.5, 44.],
+}
 
 txt2drct = {
  'N': 360,
@@ -339,7 +347,7 @@ wfo_dict = {
 
 # State bounds (buffered by 0.2 degrees)
 #
-# ! BE CAREFUL WITH ALASKA
+# ! BE CAREFUL WITH ALASKA and Iowa
 #
 # with data as (
 #    select state_abbr, st_extent(the_geom) as ext from states
@@ -365,7 +373,7 @@ state_bounds = {
  "FL": [-87.83, 24.34, -79.83, 31.20],
  "GA": [-85.81, 30.16, -80.64, 35.20],
  "HI": [-160.45, 18.71, -154.61, 22.44],
- "IA": [-96.84, 40.18, -89.94, 43.70],
+ "IA": [IA_WEST, IA_SOUTH, IA_EAST, IA_NORTH],
  "ID": [-117.44, 41.79, -110.84, 49.20],
  "IL": [-91.71, 36.77, -87.30, 42.71],
  "IN": [-88.30, 37.57, -84.58, 41.96],
