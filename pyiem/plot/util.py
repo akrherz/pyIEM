@@ -112,15 +112,7 @@ def sector_setter(mp, axbounds, **kwargs):
     """use kwargs to set the MapPlot sector."""
     aspect = kwargs.get('aspect', 'equal')
 
-    if mp.sector == 'iowa':
-        mp.state = 'IA'
-        mp.ax = make_axes(
-            axbounds,
-            [reference.IA_WEST, reference.IA_EAST,
-             reference.IA_SOUTH, reference.IA_NORTH], ccrs.Mercator(), aspect)
-        mp.axes.append(mp.ax)
-
-    elif mp.sector == 'cwa':
+    if mp.sector == 'cwa':
         mp.cwa = kwargs.get('cwa', 'DMX')
         mp.ax = make_axes(
             axbounds,
@@ -140,13 +132,9 @@ def sector_setter(mp, axbounds, **kwargs):
              reference.state_bounds[mp.state][3]], ccrs.Mercator(),
             aspect if mp.state != 'AK' else 'auto')
         mp.axes.append(mp.ax)
-    elif mp.sector == 'midwest':
+    elif mp.sector in reference.SECTORS:
         mp.ax = make_axes(
-            axbounds,
-            [reference.MW_WEST,
-             reference.MW_EAST,
-             reference.MW_SOUTH,
-             reference.MW_NORTH], ccrs.Mercator(), aspect)
+            axbounds, reference.SECTORS[mp.sector], ccrs.Mercator(), aspect)
         mp.axes.append(mp.ax)
     elif mp.sector == 'iowawfo':
         mp.ax = make_axes(

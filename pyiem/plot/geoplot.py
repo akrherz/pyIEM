@@ -208,6 +208,10 @@ class MapPlot(object):
                             yticks=[], xticks=[])
         self.axes = []
         self.ax = None
+        # hack around sector=iowa
+        if self.sector == 'iowa':
+            self.sector = 'state'
+            self.state = 'IA'
         sector_setter(self, MAIN_AX_BOUNDS, **kwargs)
 
         for _a in self.axes:
@@ -679,8 +683,7 @@ class MapPlot(object):
     def draw_mask(self):
         """Draw the mask, when appropriate"""
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'iowa', 'state', 'iowawfo',
-                               'cwa'):
+        if self.sector not in ('midwest', 'conus', 'state', 'iowawfo', 'cwa'):
             return
         # in lon,lat
         if self.sector == 'state':
@@ -798,7 +801,7 @@ class MapPlot(object):
         ugcs = load_pickle_geo(
             "ugcs_county.pickle" if counties else "ugcs_zone.pickle")
         filter_func = true_filter
-        if self.sector in ('state', 'iowa'):
+        if self.sector == 'state':
             filter_func = state_filter
         elif self.sector == 'cwa':
             filter_func = cwa_filter
