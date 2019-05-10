@@ -7,6 +7,12 @@ from pyiem.util import utc, get_test_file
 from pyiem.nws.products.cli import parser as cliparser
 
 
+def test_190510_parsefail():
+    """This CLIDMH is not happy."""
+    prod = cliparser(get_test_file('CLI/CLIDMH.txt'))
+    assert prod.data[0]['data']['temperature_maximum'] == 74
+
+
 def test_180208_issue56_tweetmissing():
     """Report None values as missing, not None"""
     prod = cliparser(get_test_file('CLI/CLIFFC.txt'))

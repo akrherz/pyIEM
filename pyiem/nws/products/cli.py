@@ -29,7 +29,9 @@ REGIMES = [
     "WEATHER ITEM   OBSERVED TIME",
     "WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE",
     "WEATHER ITEM   OBSERVED NORMAL DEPARTURE",
+    "WEATHER ITEM   OBSERVED TIME   RECORD NORMAL DEPARTURE LAST",
 ]
+# pylint: disable=bad-whitespace
 #   label, value, time, record, year, normal, departure, last
 COLS = [
     [16,     23,   30,   37,     42,   49,     56,        65],
@@ -49,12 +51,11 @@ COLS = [
     [16,     23,   30,   None,   None, None,   None,      None],
     [16,     23,   30,   None,   None, 37,     44,        None],
     [16,     23,   None, None,   None, 30,     37,        None],
+    [16,     23,   30,     37,   None,   44,     51,      60],
     ]
 
 
-class CLIException(Exception):
-    """ Exception """
-    pass
+CLIException = Exception
 
 
 def trace(val):
