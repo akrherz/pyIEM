@@ -1,0 +1,89 @@
+767 
+CDUS41 KLWX 100531
+CLIDMH
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE BALTIMORE MD/WASHINGTON DC                  
+130 AM EDT FRI MAY 10 2019
+
+
+................................... 
+
+...THE BALTIMORE INNER HARBOR MD CLIMATE SUMMARY FOR MAY 9 2019...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1999 TO 2019
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD NORMAL DEPARTURE LAST          
+                VALUE   (LST)  VALUE  VALUE  FROM      YEAR          
+                                             NORMAL                  
+.............................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         74    326 PM  MM     73      1       79            
+  MINIMUM         61    540 AM  MM     55      6       60            
+  AVERAGE         68                   64      4       70           
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00                 0.10  -0.10     0.00         
+  MONTH TO DATE    1.04                 0.93   0.11     0.00         
+  SINCE MAR 1      8.19                 8.01   0.18     7.38         
+  SINCE JAN 1     14.99                13.53   1.46    13.12         
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                    3     -3        0            
+  MONTH TO DATE    7                   37    -30        0            
+  SINCE MAR 1    773                  894   -121      986            
+  SINCE JUL 1   3677                 3982   -305     3778            
+                                                                     
+ COOLING                                                             
+  YESTERDAY        3                    2      1        5            
+  MONTH TO DATE   18                   17      1       66            
+  SINCE MAR 1     48                   42      6       90            
+  SINCE JAN 1     48                   42      6       92            
+.............................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED    MM   HIGHEST WIND DIRECTION    MM            
+  HIGHEST GUST SPEED    MM   HIGHEST GUST DIRECTION    MM            
+  AVERAGE WIND SPEED    MM                                           
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    87          1100 AM                                     
+ LOWEST     64           600 PM                                     
+ AVERAGE    76                                                       
+
+..........................................................
+
+                                                                     
+THE BALTIMORE INNER HARBOR MD CLIMATE NORMALS FOR TODAY
+                         NORMAL                                      
+ MAXIMUM TEMPERATURE (F)   73                                        
+ MINIMUM TEMPERATURE (F)   55                                        
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MAY 10 2019...........SUNRISE   558 AM EDT   SUNSET   808 PM EDT   
+MAY 11 2019...........SUNRISE   557 AM EDT   SUNSET   809 PM EDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
+
