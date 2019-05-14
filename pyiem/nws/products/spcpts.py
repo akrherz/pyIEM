@@ -571,7 +571,7 @@ class SPCPTS(TextProduct):
         """
         for day, collect in self.outlook_collections.items():
             txn.execute("""
-                DELETE from spc_outlooks where valid = %s
+                DELETE from spc_outlooks where product_issue = %s
                 and expire = %s and outlook_type = %s and day = %s
             """, (self.valid, self.expire, self.outlook_type, day))
             if txn.rowcount > 0:
@@ -582,7 +582,7 @@ class SPCPTS(TextProduct):
                 if outlook.geometry.is_empty:
                     continue
                 sql = """
-                    INSERT into spc_outlooks(valid, issue, expire,
+                    INSERT into spc_outlooks(product_issue, issue, expire,
                     threshold, category, day, outlook_type, geom)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
