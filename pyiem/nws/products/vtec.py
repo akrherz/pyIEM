@@ -733,6 +733,8 @@ class VTECProduct(TextProduct):
 
                 # Emergencies
                 if segment.is_emergency:
+                    channels.append("%s.EMERGENCY" % (vtec.phenomena, ))
+                    xtra['channels'] += ",%s" % (channels[-1], )
                     _btext = segment.svs_search()
                     if vtec.phenomena == 'FF':
                         jmsg_dict['svs_special'] = _btext
@@ -787,6 +789,9 @@ class VTECProduct(TextProduct):
                     channels.append('%s.%s.%s' % (vtec.phenomena,
                                                   vtec.significance, str(ugc)))
                     channels.append(str(ugc))
+                    channels.append("%s.EMERGENCY" % (vtec.phenomena, ))
+            if any([seg.is_emergency for seg in self.segments]):
+                channels.append("%s.EMERGENCY" % (vtec.phenomena, ))
             xtra['channels'] = ",".join(channels)
             jdict = {
                 'as': ", ".join(actions),

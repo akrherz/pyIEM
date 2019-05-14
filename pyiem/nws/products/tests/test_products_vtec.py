@@ -71,11 +71,15 @@ def test_TORE_series(dbcursor):
 
     prod = vtecparser(get_test_file('TORE/TOR.txt'))
     prod.sql(dbcursor)
+    jmsg = prod.get_jabbers('http://localhost')
+    assert "TO.EMERGENCY" not in jmsg[0][2]['channels'].split(",")
     assert getval() is False
     assert getval2() is False
 
     prod = vtecparser(get_test_file('TORE/SVS_E.txt'))
     prod.sql(dbcursor)
+    jmsg = prod.get_jabbers('http://localhost')
+    assert "TO.EMERGENCY" in jmsg[0][2]['channels'].split(",")
     assert getval()
     assert getval2()
 
