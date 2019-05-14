@@ -1,4 +1,5 @@
 """Unit Tests"""
+# pylint: disable=redefined-outer-name
 
 import pytest
 from psycopg2.extras import RealDictCursor
@@ -68,7 +69,7 @@ def test_170703_badday3link():
 def test_170612_nullgeom(dbcursor):
     """See why this has an error with null geom reported"""
     spc = parser(get_test_file('SPCPTS/PTSD48_nullgeom.txt'))
-    spc.draw_outlooks()
+    # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
     assert abs(outlook.geometry.area - 56.84) < 0.01
@@ -164,6 +165,9 @@ def test_170406_day48(dbcursor):
     outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
     assert abs(outlook.geometry.area - 40.05) < 0.01
     spc.sql(dbcursor)
+    collect = spc.get_outlookcollection(4)
+    assert collect.issue == utc(2017, 4, 9, 12)
+    assert collect.expire == utc(2017, 4, 10, 12)
 
 
 def test_170404_nogeom():

@@ -33,6 +33,23 @@ THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
                    'IDRT', 'SDRT', 'ELEV', 'CRIT', 'EXTM']
 
 
+def compute_times(afos, issue, expire, day):
+    """compute actual issue, expire time.
+
+    For the multi-day products, the text product contains a range of dates
+    that need translated to an actual issue and expire time.
+
+    Returns:
+      issue (datetime)
+      expire (datetime)
+    """
+    if afos not in ['PTSD48', 'PFWF38']:
+        return issue, expire
+    baseday = 3 if afos == 'PFWF38' else 4
+    issue = issue + datetime.timedelta(days=(day - baseday))
+    return issue, issue + datetime.timedelta(hours=24)
+
+
 def get_day(text):
     """Figure out which day this is for"""
     search = DAYRE.search(text)
@@ -290,8 +307,8 @@ class SPCOutlook(object):
 class SPCPTS(TextProduct):
     """A class representing the polygons and metadata in SPC PTS Product"""
 
-    def __init__(self, text, utcnow=None, ugc_provider=dict(),
-                 nwsli_provider=dict()):
+    def __init__(self, text, utcnow=None, ugc_provider=None,
+                 nwsli_provider=None):
         """Constructor
 
         Args:
@@ -490,8 +507,10 @@ class SPCPTS(TextProduct):
                 point_data[threshold] += line.replace(threshold, " ")
 
             if day is not None:
+                issue, expire = compute_times(
+                    self.afos, self.issue, self.expire, day)
                 collect = self.outlook_collections.setdefault(
-                    day, SPCOutlookCollection(self.issue, self.expire, day))
+                    day, SPCOutlookCollection(issue, expire, day))
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
                 if threshold == 'TSTM' and self.afos == 'PFWF38':
@@ -513,9 +532,10 @@ class SPCPTS(TextProduct):
                 match = DMATCH.match(threshold)
                 if match:
                     day = int(match.groupdict()['day1'])
+                    issue, expire = compute_times(
+                        self.afos, self.issue, self.expire, day)
                     collect = self.outlook_collections.setdefault(
-                        day, SPCOutlookCollection(self.issue, self.expire,
-                                                  day))
+                        day, SPCOutlookCollection(issue, expire, day))
                 mp = str2multipolygon(point_data[threshold])
                 if DMATCH.match(threshold):
                     threshold = '0.15'
@@ -551,7 +571,7 @@ class SPCPTS(TextProduct):
         """
         for day, collect in self.outlook_collections.items():
             txn.execute("""
-                DELETE from spc_outlooks where valid = %s
+                DELETE from spc_outlooks where product_issue = %s
                 and expire = %s and outlook_type = %s and day = %s
             """, (self.valid, self.expire, self.outlook_type, day))
             if txn.rowcount > 0:
@@ -562,7 +582,7 @@ class SPCPTS(TextProduct):
                 if outlook.geometry.is_empty:
                     continue
                 sql = """
-                    INSERT into spc_outlooks(valid, issue, expire,
+                    INSERT into spc_outlooks(product_issue, issue, expire,
                     threshold, category, day, outlook_type, geom)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """

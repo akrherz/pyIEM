@@ -1887,7 +1887,7 @@ GRANT SELECT on roads_2013_log to nobody,apache;
 ---
 CREATE TABLE spc_outlooks (
   issue timestamp with time zone,
-  valid timestamp with time zone,
+  product_issue timestamp with time zone,
   expire timestamp with time zone,
   threshold varchar(4),
   category varchar(64),
@@ -1896,7 +1896,7 @@ CREATE TABLE spc_outlooks (
 );
 SELECT addGeometryColumn('', 'spc_outlooks', 'geom', 4326, 'MULTIPOLYGON', 2);
 GRANT SELECT on spc_outlooks to apache,nobody;
-CREATE index spc_outlooks_valid_idx on spc_outlooks(valid);
+CREATE index spc_outlooks_valid_idx on spc_outlooks(product_issue);
 
 ---
 --- NEXRAD Attributes
