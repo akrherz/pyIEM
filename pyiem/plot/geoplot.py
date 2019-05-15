@@ -758,7 +758,8 @@ class MapPlot(object):
             if kwargs.get('ilabel', False):
                 self.ax.clabel(csl, fmt=kwargs.get('labelfmt', '%.0f'),
                                colors='k', fontsize=14)
-        self.draw_mask()
+        if kwargs.get("clip_on", True):
+            self.draw_mask()
         kwargs.pop('cmap', None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return vals
