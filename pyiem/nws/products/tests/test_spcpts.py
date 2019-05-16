@@ -13,6 +13,13 @@ def dbcursor():
     return get_dbconn('postgis').cursor(cursor_factory=RealDictCursor)
 
 
+def test_190515_issue117_month():
+    """Product crossing year causes grief."""
+    spc = parser(get_test_file('SPCPTS/PTSDY2_month.txt'))
+    collect = spc.get_outlookcollection(2)
+    assert collect.expire == utc(2019, 5, 2, 12)
+
+
 def test_190509_marinebounds():
     """SPC Updated marine bounds."""
     spc = parser(get_test_file('SPCPTS/PTSDY1_marine.txt'))
