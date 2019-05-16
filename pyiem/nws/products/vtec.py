@@ -789,7 +789,6 @@ class VTECProduct(TextProduct):
                     channels.append('%s.%s.%s' % (vtec.phenomena,
                                                   vtec.significance, str(ugc)))
                     channels.append(str(ugc))
-                    channels.append("%s.EMERGENCY" % (vtec.phenomena, ))
             if any([seg.is_emergency for seg in self.segments]):
                 channels.append("%s.EMERGENCY" % (vtec.phenomena, ))
             xtra['channels'] = ",".join(channels)
