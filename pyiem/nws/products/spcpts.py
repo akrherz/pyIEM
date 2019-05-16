@@ -465,10 +465,11 @@ class SPCPTS(TextProduct):
         min2 = int(tokens[0][1][4:])
         issue = self.valid.replace(day=day1, hour=hour1, minute=min1)
         expire = self.valid.replace(day=day2, hour=hour2, minute=min2)
-        if day1 < self.valid.day and day1 == 1:
+        # NB: outlooks can go out more than just one day
+        if day1 < self.valid.day:
             issue = self.valid + datetime.timedelta(days=25)
             issue = issue.replace(day=day1, hour=hour1, minute=min1)
-        if day2 < self.valid.day and day2 == 1:
+        if day2 < self.valid.day:
             expire = self.valid + datetime.timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
         self.issue = issue
