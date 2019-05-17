@@ -683,7 +683,8 @@ class MapPlot(object):
     def draw_mask(self):
         """Draw the mask, when appropriate"""
         # can't mask what we don't know
-        if self.sector not in ('midwest', 'conus', 'state', 'iowawfo', 'cwa'):
+        if self.sector not in (
+                'iailin', 'midwest', 'conus', 'state', 'iowawfo', 'cwa'):
             return
         # in lon,lat
         if self.sector == 'state':

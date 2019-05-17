@@ -52,6 +52,7 @@ CONUS_SOUTH = 24.47
 SECTORS = {
     'midwest': [MW_WEST, MW_EAST, MW_SOUTH, MW_NORTH],
     'cornbelt': [-99., -84., 37.17, 45.2],
+    'iailin': [-97.5, -84., 37.0, 44.],
 }
 
 txt2drct = {
