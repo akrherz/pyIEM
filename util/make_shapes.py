@@ -4,7 +4,7 @@ We use a pickled protocol=2, which is compat binary.
 """
 import datetime
 
-import cPickle
+import pickle
 from shapely.wkb import loads
 from pyiem.util import get_dbconn
 
@@ -13,6 +13,7 @@ print("Be sure to run this against Mesonet database and not laptop!")
 
 
 def dump_states(fn):
+    """states."""
     pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
@@ -27,11 +28,12 @@ def dump_states(fn):
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
     f = open('../pyiem/data/%s' % (fn, ), 'wb')
-    cPickle.dump(data, f, 2)
+    pickle.dump(data, f, 2)
     f.close()
 
 
 def dump_climdiv(fn):
+    """climate divisions."""
     pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
@@ -46,11 +48,12 @@ def dump_climdiv(fn):
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
     f = open('../pyiem/data/%s' % (fn, ), 'wb')
-    cPickle.dump(data, f, 2)
+    pickle.dump(data, f, 2)
     f.close()
 
 
 def dump_cwa(fn):
+    """WFOs."""
     pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
@@ -63,7 +66,7 @@ def dump_cwa(fn):
         data[row[0]] = dict(geom=loads(str(row[1])), lon=row[2], lat=row[3],
                             region=row[4])
     f = open('../pyiem/data/%s' % (fn, ), 'wb')
-    cPickle.dump(data, f, 2)
+    pickle.dump(data, f, 2)
     f.close()
 
 
@@ -82,11 +85,12 @@ def dump_iowawfo(fn):
     data['iowawfo'] = dict(geom=geo,
                            lon=geo.centroid.x, lat=geo.centroid.y)
     f = open('../pyiem/data/%s' % (fn, ), 'wb')
-    cPickle.dump(data, f, 2)
+    pickle.dump(data, f, 2)
     f.close()
 
 
 def dump_ugc(gtype, fn):
+    """UGCS."""
     pgconn = get_dbconn('postgis', user='nobody')
     cursor = pgconn.cursor()
 
@@ -102,13 +106,14 @@ def dump_ugc(gtype, fn):
         #    data[row[0]].append(np.asarray(polygon.exterior))
 
     f = open('../pyiem/data/%s' % (fn, ), 'wb')
-    cPickle.dump(data, f, 2)
+    pickle.dump(data, f, 2)
     f.close()
 
 
 def check_file(fn):
+    """regression check."""
     sts = datetime.datetime.now()
-    data = cPickle.load(open("../pyiem/data/%s" % (fn, ), 'rb'))
+    data = pickle.load(open("../pyiem/data/%s" % (fn, ), 'rb'))
     ets = datetime.datetime.now()
 
     print("runtime: %.5fs, entries: %s, fn: %s" % (

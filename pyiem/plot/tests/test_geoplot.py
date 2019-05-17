@@ -185,6 +185,19 @@ def test_drawcounties_cornbelt():
     return mp.fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0.25)
+def test_drawcounties_iailin():
+    """draw IA IL IN masked"""
+    mp = MapPlot(sector='iailin', title='Counties', nocaption=True)
+    mp.contourf(
+        np.arange(-94, -85), np.arange(36, 45), np.arange(9),
+        np.arange(9),
+        clevlabels=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    )
+    mp.drawcounties()
+    return mp.fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=1.)
 def test_climdiv():
     """Run tests agains the fill_climdiv"""
