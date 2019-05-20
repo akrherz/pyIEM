@@ -5,7 +5,7 @@ import pytest
 from pyiem.plot import calendar_plot
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_issue101():
     """We like June, it is a good month, don't drop it."""
     sts = datetime.date(2017, 5, 29)
@@ -18,7 +18,7 @@ def test_issue101():
         subtitle='This is officially unofficial and hacky.')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_calendar12():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)
@@ -31,7 +31,7 @@ def test_calendar12():
         subtitle='This is officially unofficial and hacky.')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_calendar8():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)
@@ -45,7 +45,7 @@ def test_calendar8():
         subtitle='This is officially unofficial and hacky.')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_calendar4():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)
@@ -58,7 +58,7 @@ def test_calendar4():
         subtitle='This is officially unofficial and hacky.')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_calendar2():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)
@@ -73,7 +73,7 @@ def test_calendar2():
         subtitle='This is officially unofficial and hacky.')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0.01)
 def test_calendar():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)
