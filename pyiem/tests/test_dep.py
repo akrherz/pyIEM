@@ -12,6 +12,13 @@ def get_path(name):
     return "%s/../../data/wepp/%s" % (basedir, name)
 
 
+def test_ramps():
+    """Ramps should be of length 11"""
+    for q in dep.RAMPS:
+        for val in dep.RAMPS[q]:
+            assert len(val) == 11
+
+
 def test_scenarios():
     """Can we load scenarios?"""
     df = dep.load_scenarios()
