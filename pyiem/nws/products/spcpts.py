@@ -95,6 +95,47 @@ def get_segments_from_text(text):
     return segments
 
 
+def clean_segment(segment):
+    """Attempt to get this segment cleaned up.
+
+    Args:
+      segment (list): inbound data
+
+    Returns:
+      segment (list)
+    """
+    # Intersect this segment with the CONUS, if we get one segment back, done
+    ls = LineString(segment)
+    newls = ls.intersection(CONUS['poly'])
+    if newls.is_empty:
+        print("     intersection yielded empty geom, uh oh")
+        return segment
+    if newls.geom_type == 'LineString':
+        print("     segment intersection with CONUS yielded one segment")
+        return list(zip(*newls.xy))
+
+    # We have work to do, first trim back the original segment
+    segment[0] = [newls.geoms[0].xy[0][0], newls.geoms[0].xy[1][0]]
+    segment[-1] = [newls.geoms[-1].xy[0][-1], newls.geoms[-1].xy[1][-1]]
+    # run the intersection again!
+    ls = LineString(segment)
+    newls = ls.intersection(CONUS['poly'])
+    if newls.geom_type == 'LineString':
+        print("     trimmed segment intersection with CONUS yielded one seg")
+        return list(zip(*newls.xy))
+
+    # compute the lengths
+    lengths = [g.length for g in newls.geoms]
+    # if all lengths over 2, abort
+    if min(lengths) > 2:
+        print("     throwing up hands as segments length over 2 each")
+        return segment
+    maxi = lengths.index(max(lengths))
+
+    print("     taking the longest segment as the truth")
+    return list(zip(*newls.geoms[maxi].xy))
+
+
 def str2multipolygon(s):
     """Convert string PTS data into a polygon.
 
@@ -115,10 +156,9 @@ def str2multipolygon(s):
     if (len(segments) == 1 and
         ((segments[0][0][0] - segments[0][-1][0])**2 +
          (segments[0][0][1] - segments[0][-1][1])**2)**0.5 < 0.05):
-        msg = ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)"
+        print(("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)"
                ) % (segments[0][0][0], segments[0][0][1],
-                    segments[0][-1][0], segments[0][-1][1])
-        print(msg)
+                    segments[0][-1][0], segments[0][-1][1]))
         segments[0][-1] = segments[0][0]
         return MultiPolygon([Polygon(segments[0])])
 
@@ -158,29 +198,8 @@ def str2multipolygon(s):
             continue
 
         # Attempt to 'clean' this string against the CONUS Polygon
+        segment = clean_segment(segment)
         ls = LineString(segment)
-        if ls.is_valid:
-            print('     linestring is valid!')
-            newls = ls.intersection(CONUS['poly'])
-            if newls.is_valid:
-                print(("     newls is valid and has geom_type: %s"
-                       ) % (newls.geom_type))
-                if newls.geom_type in ['MultiLineString',
-                                       'GeometryCollection']:
-                    print(('     intersection with conuspoly found %s segments'
-                           ) % (len(newls.geoms),))
-                    maxlength = 0
-                    for geom in newls.geoms:
-                        if geom.length > maxlength:
-                            newls2 = geom
-                            maxlength = geom.length
-                    newls = newls2
-                segment = list(zip(*newls.xy))
-            else:
-                print('     Intersection landed here? %s' % (newls.is_valid,))
-        else:
-            print('---------> INVALID LINESTRING? |%s|' % (str(segments),))
-
         line = np.array(segment)
 
         # Figure out which polygon this line intersects
@@ -537,11 +556,12 @@ class SPCPTS(TextProduct):
                         self.afos, self.issue, self.expire, day)
                     collect = self.outlook_collections.setdefault(
                         day, SPCOutlookCollection(issue, expire, day))
+                print(("--> Start Day: %s Category: '%s' Threshold: '%s' ====="
+                       ) % (day, category, threshold))
                 mp = str2multipolygon(point_data[threshold])
                 if DMATCH.match(threshold):
                     threshold = '0.15'
-                print(("==== Day: %s Category: '%s' Threshold: '%s' ====="
-                       ) % (day, category, threshold))
+                print(("----> End threshold is: %s" % (threshold, )))
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, txn):
