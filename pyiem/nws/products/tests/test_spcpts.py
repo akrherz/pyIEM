@@ -13,6 +13,14 @@ def dbcursor():
     return get_dbconn('postgis').cursor(cursor_factory=RealDictCursor)
 
 
+def test_190527_canada():
+    """SPC Updated marine bounds."""
+    spc = parser(get_test_file('SPCPTS/PTSDY1_canada.txt'))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook('CATEGORICAL', 'MRGL', 1)
+    assert abs(outlook.geometry.area - 118.38) < 0.01
+
+
 def test_190515_issue117_month():
     """Product crossing year causes grief."""
     spc = parser(get_test_file('SPCPTS/PTSDY2_month.txt'))
