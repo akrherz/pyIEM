@@ -181,7 +181,7 @@ def str2multipolygon(s):
             found = False
             for j, poly in enumerate(polys):
                 if poly.intersection(lr):
-                    interiors = [l for l in polys[j]._interiors]
+                    interiors = [l for l in polys[j].interiors]
                     interiors.append(lr)
                     newp = Polygon(polys[j].exterior, interiors)
                     if newp.is_valid:
@@ -357,7 +357,6 @@ class SPCPTS(TextProduct):
             # Everything should be smaller than General Thunder, for conv
             tstm = self.get_outlook('CATEGORICAL', 'TSTM', day)
             for outlook in collect.outlooks:
-                good_polys = []
                 rewrite = False
                 # case of single polygon
                 if tstm and len(outlook.geometry) == 1:
@@ -369,6 +368,13 @@ class SPCPTS(TextProduct):
                                     outlook.geometry.area)
                         print(msg)
                         self.warnings.append(msg)
+                # clip polygons to the CONUS
+                good_polys = []
+                for poly in outlook.geometry:
+                    good_polys.append(CONUS['poly'].intersection(poly))
+                outlook.geometry = MultiPolygon(good_polys)
+
+                good_polys = []
                 for poly1, poly2 in itertools.permutations(outlook.geometry,
                                                            2):
                     if poly1.contains(poly2):
@@ -424,6 +430,7 @@ class SPCPTS(TextProduct):
             for outlook in collect.outlooks:
                 fig = plt.figure(figsize=(12, 8))
                 ax = fig.add_subplot(111)
+                # pylint: disable=unsubscriptable-object
                 ax.plot(CONUS['line'][:, 0], CONUS['line'][:, 1],
                         color='b', label='Conus')
                 for poly in outlook.geometry:

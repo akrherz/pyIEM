@@ -18,7 +18,7 @@ def test_190527_canada():
     spc = parser(get_test_file('SPCPTS/PTSDY1_canada.txt'))
     # spc.draw_outlooks()
     outlook = spc.get_outlook('CATEGORICAL', 'MRGL', 1)
-    assert abs(outlook.geometry.area - 118.38) < 0.01
+    assert abs(outlook.geometry.area - 118.22) < 0.01
 
 
 def test_190515_issue117_month():
@@ -167,9 +167,9 @@ def test_170406_day48_pre2015(dbcursor):
     spc = parser(get_test_file('SPCPTS/PTSD48_pre2015.txt'))
     # spc.draw_outlooks()
     outlook = spc.get_outlook('ANY SEVERE', '0.15', 4)
-    assert abs(outlook.geometry.area - 73.20) < 0.01
+    assert abs(outlook.geometry.area - 73.116) < 0.01
     outlook = spc.get_outlook('ANY SEVERE', '0.15', 5)
-    assert abs(outlook.geometry.area - 76.46) < 0.01
+    assert abs(outlook.geometry.area - 72.533) < 0.01
     spc.sql(dbcursor)
 
 
