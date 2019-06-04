@@ -182,11 +182,15 @@ def noaaport_text(text):
       text that looks noaaportish
     """
     # Convert to LFLFCR
-    text = text.replace("\n", "\r\r\n").replace("\r\r\r\r", "\r\r")
+    text = text.replace("\003", "").replace("\001", "").replace(
+        "\n", "\r\r\n").replace("\r\r\r\r", "\r\r")
     lines = text.split("\r\r\n")
     # remove any beginning empty lines
     while lines and lines[0] == '':
         lines.pop(0)
+    # remove any empty ending lines
+    while lines and lines[-1] == '':
+        lines.pop(-1)
 
     # lime 0 should be start of product sequence
     if lines[0] != "\001":

@@ -137,6 +137,7 @@ def test_noaaport_text():
     data = util.get_test_file('WCN.txt')
     res = util.noaaport_text(data)
     assert res[:11] == "\001\r\r\n098 \r\r\n"
+    assert res[-9:] == "SMALL\r\r\n\003"
 
 
 def test_vtecps():
