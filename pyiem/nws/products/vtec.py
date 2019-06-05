@@ -541,9 +541,11 @@ class VTECProduct(TextProduct):
             polygon_begin, polygon_end, geom, status, report, windtag,
             hailtag, tornadotag, tornadodamagetag, tml_valid,
             tml_direction, tml_sknt, """ + tml_column + """, updated,
-            waterspouttag, is_emergency)
+            waterspouttag, is_emergency, floodtag_heavyrain,
+            floodtag_flashflood, floodtag_damage, floodtag_leeve,
+            floodtag_dam)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         myargs = (
             vtec.office,
             vtec.etn,
@@ -557,7 +559,13 @@ class VTECProduct(TextProduct):
             segment.giswkt, vtec.action, self.unixtext, segment.windtag,
             segment.hailtag, segment.tornadotag, segment.tornadodamagetag,
             tml_valid, segment.tml_dir, segment.tml_sknt, segment.tml_giswkt,
-            self.valid, segment.waterspouttag, segment.is_emergency)
+            self.valid, segment.waterspouttag, segment.is_emergency,
+            segment.flood_tags.get('HEAVY RAIN'),
+            segment.flood_tags.get('FLASH FLOOD'),
+            segment.flood_tags.get('FLASH FLOOD DAMAGE THREAT'),
+            segment.flood_tags.get('LEVEE FAILURE'),
+            segment.flood_tags.get('DAM FAILURE')
+        )
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(("%s.%s.%s sbw table insert "
@@ -621,7 +629,7 @@ class VTECProduct(TextProduct):
     def get_first_non_cancel_segment(self):
         """ Return the first segment that is a non-CAN """
         for segment in self.segments:
-            if len(segment.vtec) > 0 and segment.vtec[0].action != 'CAN':
+            if segment.vtec and segment.vtec[0].action != 'CAN':
                 return segment
         return None
 
