@@ -1221,7 +1221,12 @@ create table sbw(
   tml_direction smallint,
   tml_sknt smallint,
   updated timestamptz,
-  is_emergency boolean
+  is_emergency boolean,
+  floodtag_heavyrain varchar(64),
+  floodtag_flashflood varchar(64),
+  floodtag_damage varchar(64),
+  floodtag_leeve varchar(64),
+  floodtag_dam varchar(64)
 ) WITH OIDS;
 select addgeometrycolumn('','sbw','geom',4326,'MULTIPOLYGON',2);
 select addGeometryColumn('sbw', 'tml_geom', 4326, 'POINT', 2);

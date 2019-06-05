@@ -51,6 +51,32 @@ def test_dups():
     assert not res
 
 
+def test_issue120_ffwtags(dbcursor):
+    """Can we support Flood Warning tags."""
+    prod = vtecparser(get_test_file('FFW/FFW_tags.txt'))
+    assert 'DAM FAILURE' in prod.segments[0].flood_tags
+    j = prod.get_jabbers('http://localhost')
+    ans = (
+        "GUM issues Flash Flood Warning [flash flood: observed, "
+        "flash flood damage threat: catastrophic, dam failure: imminent] "
+        "for ((GUC100)), ((GUC110)), ((GUC120)) [GU] till Oct 25, 9:15 AM "
+        "CHST http://localhost2018-O-NEW-PGUM-FF-W-0014"
+    )
+    assert j[0][0] == ans
+    prod.sql(dbcursor)
+    dbcursor.execute("""
+        SELECT * from sbw_2018 WHERE
+        wfo = 'GUM' and eventid = 14 and phenomena = 'FF' and
+        significance = 'W'
+    """)
+    row = dbcursor.fetchone()
+    assert row['floodtag_damage'] == 'CATASTROPHIC'
+    assert row['floodtag_flashflood'] == 'OBSERVED'
+    assert row['floodtag_dam'] == 'IMMINENT'
+    assert row['floodtag_heavyrain'] is None
+    assert row['floodtag_leeve'] is None
+
+
 def test_TORE_series(dbcursor):
     """Can we process a Tornado Emergency that came with SVS update."""
     def getval():

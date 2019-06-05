@@ -42,7 +42,7 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
             return spacewx.parser(text, utcnow, ugc_provider, nwsli_provider)
 
     tokens = AFOSRE.findall(tmp)
-    if len(tokens) == 0:
+    if not tokens:
         raise TextProductException("Could not locate AFOS Identifier")
     afos = tokens[0]
     if afos[:3] == 'CLI':

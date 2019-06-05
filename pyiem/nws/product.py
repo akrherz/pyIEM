@@ -1,5 +1,6 @@
 """Base Class encapsulating a NWS Text Product"""
 import datetime
+from collections import OrderedDict
 import re
 
 import pytz
@@ -42,6 +43,10 @@ WATERSPOUTTAG = re.compile((
 TORNADODAMAGETAG = re.compile((
     r".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
+FLOOD_TAGS = re.compile((
+    r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|HEAVY RAIN|"
+    r"DAM FAILURE|LEVEE FAILURE)\.\.\."
+    r"(?P<value>.*?)\n"))
 TORNADO = re.compile(r"^AT |^\* AT")
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
 EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
@@ -135,6 +140,8 @@ class TextProductSegment(object):
         self.tornadotag = None
         self.waterspouttag = None
         self.tornadodamagetag = None
+        # allows for deterministic testing of results
+        self.flood_tags = OrderedDict()
         self.is_emergency = False
         self.process_tags()
 
@@ -171,6 +178,7 @@ class TextProductSegment(object):
         nolf = self.unixtext.replace("\n", " ")
         res = EMERGENCY_RE.findall(nolf)
         if res:
+            # TODO: this can be based off the IBW Tags too
             self.is_emergency = True
         match = WINDHAIL.match(nolf)
         if match:
@@ -209,13 +217,16 @@ class TextProductSegment(object):
             gdict = match.groupdict()
             self.waterspouttag = gdict['waterspout']
 
+        for token in FLOOD_TAGS.findall(self.unixtext):
+            self.flood_tags[token[0]] = token[1]
+
     def special_tags_to_text(self):
         """
         Convert the special tags into a nice text
         """
         if (self.windtag is None and self.tornadotag is None and
                 self.hailtag is None and self.tornadodamagetag is None and
-                self.waterspouttag is None):
+                self.waterspouttag is None and not self.flood_tags):
             return ""
 
         parts = []
@@ -236,6 +247,8 @@ class TextProductSegment(object):
             parts.append("hail: %s%s IN" % (
                 self.haildirtag.replace(">", "&gt;").replace("<", "&lt;"),
                 self.hailtag))
+        for k, v in self.flood_tags.items():
+            parts.append("%s: %s" % (k.lower(), v.lower()))
         return " [" + ", ".join(parts) + "] "
 
     def process_latlon(self):
