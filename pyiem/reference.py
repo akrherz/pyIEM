@@ -20,7 +20,7 @@ import sys
 import cartopy.crs as ccrs
 
 # Some z-order stuff for plotting
-[Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
+[Z_CF, Z_FILL, Z_FILL_LABEL, Z_POLITICAL, Z_CLIP, Z_CLIP2, Z_OVERLAY,
  Z_OVERLAY2] = range(1, 9)
 
 TRACE_VALUE = 0.0001

@@ -226,10 +226,6 @@ def mask_outside_polygon(poly_verts, ax=None):
     patch = mpatches.PathPatch(path, facecolor='white', edgecolor='none',
                                zorder=reference.Z_CLIP)
     patch = ax.add_patch(patch)
-    # Then give semi-transparent look
-    patch = mpatches.PathPatch(path, facecolor='black', edgecolor='none',
-                               zorder=reference.Z_CLIP2, alpha=0.65)
-    patch = ax.add_patch(patch)
 
     # Reset the plot limits to their original extents
     ax.set_xlim(xlim)

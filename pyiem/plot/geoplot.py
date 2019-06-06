@@ -55,8 +55,8 @@ from pyiem.plot.use_agg import plt
 from pyiem.plot.util import (
     sector_setter, mask_outside_polygon, polygon_fill, mask_outside_geom)
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
-    Z_CLIP, Z_CLIP2, Z_CF, Z_POLITICAL, Z_FILL, Z_FILL_LABEL,
-    Z_OVERLAY, Z_OVERLAY2)
+    Z_CF, Z_FILL, Z_FILL_LABEL, Z_CLIP, Z_CLIP2, Z_POLITICAL, Z_OVERLAY,
+    Z_OVERLAY2)
 from pyiem.util import ssw
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
@@ -873,7 +873,7 @@ class MapPlot(object):
             _a.add_geometries([val[b'geom']
                                for key, val in cwas.items()],
                               crs=ccrs.PlateCarree(),
-                              zorder=Z_OVERLAY,
+                              zorder=Z_POLITICAL,
                               facecolor='None', **kwargs)
 
     def fill_cwas(self, data, **kwargs):
