@@ -149,7 +149,7 @@ def test_drawrandomtext():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_drawiowawfo():
     """Iowa Contour Plot"""
     mp = MapPlot(sector='iowawfo', title='Iowa Contour plot', nocaption=True)
