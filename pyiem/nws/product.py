@@ -599,8 +599,9 @@ class TextProduct(object):
 
     def parse_afos(self):
         """ Figure out what the AFOS PIL is """
+        # at most, only look at the top four lines
         data = "\n".join([line.strip()
-                         for line in self.sections[0].split("\n")])
+                         for line in self.sections[0].split("\n")[:4]])
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
         if tokens:
             self.afos = tokens[0]
