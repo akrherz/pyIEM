@@ -410,7 +410,7 @@ class VTECProduct(TextProduct):
             # These are no-ops, just updates
             ets = vtec.endts
             if vtec.endts is None:
-                ets = self.valid + datetime.timedelta(hours=144)
+                ets = self.valid + DEFAULT_EXPIRE_DELTA
 
             # Offices have 1 hour to expire something :), actually 30 minutes
             txn.execute("""
