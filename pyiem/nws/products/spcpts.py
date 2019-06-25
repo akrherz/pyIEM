@@ -208,7 +208,7 @@ def str2multipolygon(s):
             if found:
                 break
             poly = polys[j]
-            print("     polys iter j=%s len(polys) = %s" % (j, len(polys)))
+            print("     polys iter j=%s len(polys)=%s" % (j, len(polys)))
             if not poly.intersection(ls):
                 print("    - linestring does not intersect poly, continue")
                 continue
@@ -225,6 +225,12 @@ def str2multipolygon(s):
                 distance = ((pie[:, 0] - line[0 - (q+1), 0])**2 +
                             (pie[:, 1] - line[0 - (q+1), 1])**2)**.5
                 idx2 = np.argmin(distance) + 1
+                # if idx1 is one less than idx2, we likely crosssed streams
+                # unintentionally, so we hack around it
+                if (idx2 - idx1) == 1:
+                    print('    hack idx2 crossed idx1, reverting hack')
+                    idx2 -= 1
+                    idx1 += 1
                 idx2 = idx2 if idx2 > -1 else 0
 
                 sz = np.shape(pie)[0]

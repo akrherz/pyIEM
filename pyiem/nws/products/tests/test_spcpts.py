@@ -3,7 +3,7 @@
 
 import pytest
 from psycopg2.extras import RealDictCursor
-from pyiem.nws.products.spcpts import parser, str2multipolygon
+from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import get_dbconn, utc, get_test_file
 
 
@@ -11,6 +11,14 @@ from pyiem.util import get_dbconn, utc, get_test_file
 def dbcursor():
     """Get database."""
     return get_dbconn('postgis').cursor(cursor_factory=RealDictCursor)
+
+
+def test_190625_nogeom2():
+    """This hit some error that we need to debug."""
+    spc = parser(get_test_file('SPCPTS/PTSDY2_nogeom2.txt'))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook('CATEGORICAL', 'SLGT', 2)
+    assert abs(outlook.geometry.area - 11.59) < 0.01
 
 
 def test_190527_canada():
@@ -270,6 +278,8 @@ def test_140710_nogeom():
 
 def test_23jul_failure():
     ''' CCW line near Boston '''
+    # need to load data for this to work as a one
+    load_conus_data(utc(2017, 7, 23))
     data = """40067377 40567433 41317429 42097381 42357259 42566991"""
     res = str2multipolygon(data)
     assert abs(res[0].area - 7.98403) < 0.0001
