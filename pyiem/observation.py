@@ -32,6 +32,23 @@ SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
                 'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
 
 
+def get_summary_table(valid):
+    """Optimize the summary table we potentially use.
+
+    Args:
+      valid (datetime with time zone): Datetime
+
+    Returns:
+      str table to query
+    """
+    if valid is None:
+        return 'summary'
+    if ((valid.month == 12 and valid.day >= 30) or
+            (valid.month == 1 and valid.day < 3)):
+        return 'summary'
+    return 'summary_%s' % (valid.year, )
+
+
 def bounded(val, floor, ceiling):
     """Make sure this is not NaN and between some value."""
     val = float(val)
@@ -52,7 +69,8 @@ def summary_update(txn, data):
     """
     # NB with the coalesce func, we prioritize if we have explicit max/min vals
     # But, some of these max values are not tru max daily values
-    sql = """UPDATE summary s SET
+    table = get_summary_table(data['valid'])
+    sql = """UPDATE """ + table + """ s SET
     max_water_tmpf = coalesce(%(max_water_tmpf)s,
         greatest(max_water_tmpf, %(water_tmpf)s)),
     min_water_tmpf = coalesce(%(min_water_tmpf)s,
@@ -128,7 +146,8 @@ class Observation(object):
         """
         if not self.compute_iemid(txn):
             return False
-        sql = """SELECT * from current c, summary s WHERE
+        table = get_summary_table(self.data['valid'])
+        sql = """SELECT * from current c, """ + table + """ s WHERE
         s.iemid = c.iemid and s.iemid = %(iemid)s and
         s.day = date(%(valid)s at time zone %(tzname)s) and
         c.valid = %(valid)s"""

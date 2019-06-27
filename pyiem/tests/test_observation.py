@@ -1,5 +1,6 @@
 """Test Observation"""
 import string
+import datetime
 import random
 
 import psycopg2.extras
@@ -118,3 +119,13 @@ def test_update(iemob):
 
     response = iemob.ob.save(iemob.cursor, force_current_log=True)
     assert response
+
+
+def test_which_table():
+    """See that we get back the right summary table."""
+    f = observation.get_summary_table
+    assert f(None) == 'summary'
+    assert f(datetime.date(2019, 1, 1)) == 'summary'
+    assert f(datetime.datetime(2019, 1, 1)) == 'summary'
+    assert f(datetime.date(2019, 4, 1)) == 'summary_2019'
+ 
