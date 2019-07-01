@@ -63,6 +63,7 @@ before_script:
   - psql -c 'create database hads;' -U postgres
   - psql -c 'create database mos;' -U postgres
   - psql -c 'create database idep;' -U postgres
+  - psql -c 'create database iemre;' -U postgres
   - psql -U postgres -f data/schema/iem.sql iem
   - psql -U postgres -f data/schema/postgis.sql postgis
   - psql -U postgres -f data/schema/portfolio.sql portfolio
