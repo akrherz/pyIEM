@@ -14,7 +14,7 @@ Dependencies
 ------------
 
 The codebase currently makes direct database calls with hardcoded assumptions
-of the hostname `iemdb` and database names.  Someday, I'll use a proper ORM
+of the hostname `iemdb.local` and database names.  Someday, I'll use a proper ORM
 and software design techniques to make this more extensible for others!
 
 How to use NWS product ingestors

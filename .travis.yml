@@ -13,10 +13,11 @@ addons:
     packages:
       - postgresql-10-postgis-2.4
   hosts:
-    - iemdb
-    - iemdb-hads
-    - iemdb-mos
-    - iemdb2
+    - iemdb.local
+    - iemdb-hads.local
+    - iemdb-mos.local
+    - iemdb-iemre.local
+    - iemdb2.local
 env:
   global:
     - MPLLOCALFREETYPE=1

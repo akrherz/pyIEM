@@ -144,7 +144,8 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
     Args:
       dbname (str): the database name to connect to
       user (str,optional): hard coded user to connect as, default: current user
-      host (str,optional): hard coded hostname to connect as, default: iemdb
+      host (str,optional): hard coded hostname to connect as,
+        default: iemdb.local
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
 
@@ -158,18 +159,22 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
         if user in ['apache', 'www-data']:
             user = 'nobody'
     if host is None:
-        host = "iemdb"
-        if dbname in ['hads', 'mos']:
-            host = "iemdb-%s" % (dbname, )
+        host = "iemdb.local"
+        if dbname in ['hads', 'mos', 'iemre']:
+            host = "iemdb-%s.local" % (dbname, )
 
     try:
-        pgconn = psycopg2.connect(database=dbname, host=host, user=user,
-                                  port=port, connect_timeout=15)
+        pgconn = psycopg2.connect(
+            database=dbname, host=host, user=user,
+            port=port, connect_timeout=15
+        )
     except psycopg2.OperationalError as exp:
         warnings.warn("database connection failure: %s" % (exp, ))
         # as a stop-gap, lets try connecting to iemdb2
-        pgconn = psycopg2.connect(database=dbname, host='iemdb2', user=user,
-                                  port=port, connect_timeout=15)
+        pgconn = psycopg2.connect(
+            database=dbname, host='iemdb2.local', user=user,
+            port=port, connect_timeout=15
+        )
     return pgconn
 
 

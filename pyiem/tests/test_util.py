@@ -1,4 +1,5 @@
 """Testing of util."""
+# pylint: disable=redefined-outer-name
 import datetime
 import string
 import random
@@ -16,6 +17,13 @@ from pyiem import util
 def cursor():
     """Return a database cursor."""
     return util.get_dbconn('mesosite').cursor()
+
+
+@pytest.mark.parametrize('dbname', ['mos', 'hads', 'iemre', 'postgis'])
+def test_get_dbconn(dbname):  # noqa
+    """Does our code work for various database names."""
+    pgconn = util.get_dbconn(dbname)
+    assert pgconn is not None
 
 
 def test_logger():
