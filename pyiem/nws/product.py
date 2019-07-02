@@ -44,7 +44,7 @@ TORNADODAMAGETAG = re.compile((
     r".*TORNADO DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"))
 FLOOD_TAGS = re.compile((
-    r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|HEAVY RAIN|"
+    r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|"
     r"DAM FAILURE|LEVEE FAILURE)\.\.\."
     r"(?P<value>.*?)\n"))
 TORNADO = re.compile(r"^AT |^\* AT")

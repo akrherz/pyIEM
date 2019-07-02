@@ -58,7 +58,8 @@ def test_issue120_ffwtags(dbcursor):
     j = prod.get_jabbers('http://localhost')
     ans = (
         "GUM issues Flash Flood Warning [flash flood: observed, "
-        "flash flood damage threat: catastrophic, dam failure: imminent] "
+        "flash flood damage threat: catastrophic, dam failure: imminent, "
+        "expected rainfall: 2-3 inches in 60 minutes] "
         "for ((GUC100)), ((GUC110)), ((GUC120)) [GU] till Oct 25, 9:15 AM "
         "CHST http://localhost2018-O-NEW-PGUM-FF-W-0014"
     )
@@ -73,7 +74,7 @@ def test_issue120_ffwtags(dbcursor):
     assert row['floodtag_damage'] == 'CATASTROPHIC'
     assert row['floodtag_flashflood'] == 'OBSERVED'
     assert row['floodtag_dam'] == 'IMMINENT'
-    assert row['floodtag_heavyrain'] is None
+    assert row['floodtag_heavyrain'] == '2-3 INCHES IN 60 MINUTES'
     assert row['floodtag_leeve'] is None
 
 

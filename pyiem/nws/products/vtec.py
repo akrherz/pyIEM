@@ -560,7 +560,7 @@ class VTECProduct(TextProduct):
             segment.hailtag, segment.tornadotag, segment.tornadodamagetag,
             tml_valid, segment.tml_dir, segment.tml_sknt, segment.tml_giswkt,
             self.valid, segment.waterspouttag, segment.is_emergency,
-            segment.flood_tags.get('HEAVY RAIN'),
+            segment.flood_tags.get('EXPECTED RAINFALL'),
             segment.flood_tags.get('FLASH FLOOD'),
             segment.flood_tags.get('FLASH FLOOD DAMAGE THREAT'),
             segment.flood_tags.get('LEVEE FAILURE'),
