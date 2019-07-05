@@ -2380,7 +2380,6 @@ CREATE TABLE warnings_2017() inherits (warnings);
 CREATE INDEX warnings_2017_combo_idx on 
 	warnings_2017(wfo, phenomena, eventid, significance);
 CREATE INDEX warnings_2017_expire_idx on warnings_2017(expire);
-CREATE INDEX warnings_2017_gtype_idx on warnings_2017(gtype);
 CREATE INDEX warnings_2017_issue_idx on warnings_2017(issue);
 CREATE INDEX warnings_2017_ugc_idx on warnings_2017(ugc);
 CREATE INDEX warnings_2017_wfo_idx on warnings_2017(wfo);
@@ -2406,7 +2405,6 @@ CREATE TABLE warnings_2018() inherits (warnings);
 CREATE INDEX warnings_2018_combo_idx on 
     warnings_2018(wfo, phenomena, eventid, significance);
 CREATE INDEX warnings_2018_expire_idx on warnings_2018(expire);
-CREATE INDEX warnings_2018_gtype_idx on warnings_2018(gtype);
 CREATE INDEX warnings_2018_issue_idx on warnings_2018(issue);
 CREATE INDEX warnings_2018_ugc_idx on warnings_2018(ugc);
 CREATE INDEX warnings_2018_wfo_idx on warnings_2018(wfo);
