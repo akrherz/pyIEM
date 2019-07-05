@@ -1,17 +1,11 @@
 sudo: required
 
 dist: xenial
-services:
-  - postgresql
 
 addons:
-  postgresql: 10
   artifacts:
     target_paths: /$PYTHON_VERSION
     paths: "mplresults"
-  apt:
-    packages:
-      - postgresql-10-postgis-2.4
   hosts:
     - iemdb.local
     - iemdb-hads.local
@@ -25,6 +19,19 @@ env:
     - PYTHON_VERSION=2.7
     - PYTHON_VERSION=3.6
 language: python
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntugis/ppa -y
+  - sudo apt-get update -qq
+  # https://travis-ci.community/t/install-postgresql-11/3894/5
+  - sudo service postgresql stop
+  - sudo apt-get --yes remove postgresql-10-postgis-2.4
+  - sudo apt install -yq --no-install-suggests --no-install-recommends postgresql-11-postgis-2.5-scripts postgresql-11 postgresql-client-11 postgresql-11-postgis-2.5
+  - sed -e 's/^port.*/port = 5432/' /etc/postgresql/11/main/postgresql.conf > postgresql.conf
+  - sudo chown postgres postgresql.conf
+  - sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+  - sudo mv postgresql.conf /etc/postgresql/11/main
+  - sudo service postgresql restart 11
 
 install:
   # Install miniconda
@@ -52,26 +59,10 @@ install:
 
 
 before_script:
-  - export PATH="/usr/lib/postgresql/10/bin:$PATH"
-  - psql -c 'create database postgis;' -U postgres
-  - psql -c 'create user nobody;' -U postgres
-  - psql -c 'create user apache;' -U postgres
-  - psql -c 'create database portfolio;' -U postgres
-  - psql -c 'create database iem;' -U postgres
-  - psql -c 'create database mesosite;' -U postgres
-  - psql -c 'create database asos;' -U postgres
-  - psql -c 'create database hads;' -U postgres
-  - psql -c 'create database mos;' -U postgres
-  - psql -c 'create database idep;' -U postgres
-  - psql -c 'create database iemre;' -U postgres
-  - psql -U postgres -f data/schema/iem.sql iem
-  - psql -U postgres -f data/schema/postgis.sql postgis
-  - psql -U postgres -f data/schema/portfolio.sql portfolio
-  - psql -U postgres -f data/schema/mesosite.sql mesosite
-  - psql -U postgres -f data/schema/asos.sql asos
-  - psql -U postgres -f data/schema/hads.sql hads
-  - psql -U postgres -f data/schema/mos.sql mos
-  - psql -U postgres -f data/schema/idep.sql idep
+  - export PATH="/usr/lib/postgresql/11/bin:$PATH"
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres || true
+  - cd data; sh bootstrap.sh
+  - cd ..
 
 script:
   - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
