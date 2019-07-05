@@ -2,8 +2,37 @@
 import datetime
 import pytz
 
-from pyiem.util import utc
+import numpy as np
+from pyiem.util import utc, get_dbconn
 from pyiem import iemre
+
+
+def test_get_gid():
+    """Can we get a gid?"""
+    assert iemre.get_gid(-96, 44) is not None
+
+
+def test_get_grids():
+    """Can we get grids?"""
+    pgconn = get_dbconn('iemre')
+    cursor = pgconn.cursor()
+    valid = utc(2019, 12, 1, 1)
+    cursor.execute("""
+        DELETE from iemre_hourly_201912 WHERE valid = %s
+    """, (valid, ))
+    cursor.execute("""
+        INSERT into iemre_hourly_201912
+        (gid, valid, tmpk, dwpk, uwnd, vwnd, p01m)
+        select gid, %s, random(), null, random(),
+        random(), random() from iemre_grid
+    """, (valid, ))
+    ds = iemre.get_grids(valid, varnames='tmpk', cursor=cursor)
+    assert 'tmpk' in ds
+    assert 'bogus' not in ds
+    ds = iemre.get_grids(valid, cursor=cursor)
+    assert np.isnan(ds['dwpk'].values.max())
+
+    iemre.set_grids(valid, ds, cursor=cursor)
 
 
 def test_simple():

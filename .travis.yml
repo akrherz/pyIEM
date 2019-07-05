@@ -72,6 +72,7 @@ before_script:
   - psql -U postgres -f data/schema/hads.sql hads
   - psql -U postgres -f data/schema/mos.sql mos
   - psql -U postgres -f data/schema/idep.sql idep
+  - psql -U postgres -f data/schema/iemre.sql iemre
 
 script:
   - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
