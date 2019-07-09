@@ -72,12 +72,29 @@ def set_grids(valid, ds, cursor=None):
     cursor.execute("""
         SELECT valid from """ + table + """ WHERE valid = %s LIMIT 1
     """, (valid, ))
-    if cursor.rowcount != 1:
+    insertmode = True
+    if cursor.rowcount == 1:
+        # Update mode
+        insertmode = False
+        update_cols = ", ".join(
+            ["%s = $%i" % (v, i + 1) for i, v in enumerate(ds)])
+        arg = "$%i" % (len(ds) + 1, )
         cursor.execute("""
-            INSERT into """ + table + """ (gid, valid)
-            SELECT gid, %s from iemre_grid
-        """, (valid, ))
-    update_cols = ", ".join(["%s = %%s" % (v, ) for v in ds])
+            PREPARE pyiem_iemre_plan as
+            UPDATE """ + table + """ SET """ + update_cols + """
+            WHERE gid = """ + arg + """ and valid = '""" + str(valid) + """'
+        """)
+    else:
+        # Insert mode
+        insert_cols = ", ".join(["%s" % (v, ) for v in ds])
+        percents = ", ".join(["$%i" % (i+2, ) for i in range(len(ds))])
+        cursor.execute("""
+            PREPARE pyiem_iemre_plan as
+            INSERT into """ + table + """(gid, valid, """ + insert_cols + """)
+            VALUES($1, '""" + str(valid) + """', """ + percents + """)
+        """)
+    sql = "execute pyiem_iemre_plan (%s)" % (
+        ",".join(["%s"] * (len(ds) + 1)), )
 
     def _n(val):
         """Prevent nan"""
@@ -88,15 +105,17 @@ def set_grids(valid, ds, cursor=None):
         for x in range(ds.dims['x']):
             # needed for python2.7 support as (*[list], arg, arg) no worky
             arr = [_n(ds[v].values[y, x]) for v in ds]
-            arr.extend([y * NX + x, valid])
-            cursor.execute("""
-                UPDATE """ + table + """ SET """ + update_cols + """
-                WHERE gid = %s and valid = %s
-            """, arr)
+            if insertmode:
+                arr.insert(0, y * NX + x)
+            else:
+                arr.append(y * NX + x)
+            cursor.execute(sql, arr)
     # If we generate a cursor, we should save it
     if commit:
         cursor.close()
         pgconn.commit()
+    else:
+        cursor.execute("""DEALLOCATE pyiem_iemre_plan""")
 
 
 def get_grids(valid, varnames=None, cursor=None):

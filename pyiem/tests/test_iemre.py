@@ -21,6 +21,9 @@ def test_get_grids():
         DELETE from iemre_hourly_201912 WHERE valid = %s
     """, (valid, ))
     cursor.execute("""
+        DELETE from iemre_hourly_201912 WHERE valid = %s
+    """, (valid + datetime.timedelta(days=1), ))
+    cursor.execute("""
         INSERT into iemre_hourly_201912
         (gid, valid, tmpk, dwpk, uwnd, vwnd, p01m)
         select gid, %s, random(), null, random(),
@@ -33,6 +36,7 @@ def test_get_grids():
     assert np.isnan(ds['dwpk'].values.max())
 
     iemre.set_grids(valid, ds, cursor=cursor)
+    iemre.set_grids(valid + datetime.timedelta(days=1), ds, cursor=cursor)
 
 
 def test_simple():
