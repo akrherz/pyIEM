@@ -150,19 +150,22 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
                              microsecond).replace(tzinfo=pytz.UTC)
 
 
-def get_dbconn(dbname, user=None, host=None, port=5432):
+def get_dbconn(
+        database='mesosite', user=None, host=None, port=5432, password=None):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
     connection to the primary server fails.
 
     Args:
-      dbname (str): the database name to connect to
+      database (str,optional): the database name to connect to.
+        default: mesosite
       user (str,optional): hard coded user to connect as, default: current user
       host (str,optional): hard coded hostname to connect as,
         default: iemdb.local
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
+      password (str,optional): the password to use.
 
     Returns:
       psycopg2 database connection
@@ -173,22 +176,24 @@ def get_dbconn(dbname, user=None, host=None, port=5432):
         # We hard code the apache user back to nobody, www-data is travis-ci
         if user in ['apache', 'www-data']:
             user = 'nobody'
+        elif user == 'akrherz':  # HACK for daryl's development, sigh
+            user = 'mesonet'
     if host is None:
         host = "iemdb.local"
-        if dbname in ['hads', 'mos', 'iemre']:
-            host = "iemdb-%s.local" % (dbname, )
+        if database in ['hads', 'mos', 'iemre']:
+            host = "iemdb-%s.local" % (database, )
 
     try:
         pgconn = psycopg2.connect(
-            database=dbname, host=host, user=user,
-            port=port, connect_timeout=15
+            database=database, host=host, user=user,
+            port=port, connect_timeout=15, password=password
         )
     except psycopg2.OperationalError as exp:
         warnings.warn("database connection failure: %s" % (exp, ))
         # as a stop-gap, lets try connecting to iemdb2
         pgconn = psycopg2.connect(
-            database=dbname, host='iemdb2.local', user=user,
-            port=port, connect_timeout=15
+            database=database, host='iemdb2.local', user=user,
+            port=port, connect_timeout=15, password=password
         )
     return pgconn
 
