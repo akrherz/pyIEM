@@ -48,12 +48,13 @@ def get_test_file(name, fponly=False):
 
 def logger():
     """Create a standarized logger."""
-    logging.basicConfig()
-    log = logging.getLogger()
-    log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
-    log.addHandler(ch)
+    logging.basicConfig(
+        handlers=[ch]
+    )
+    log = logging.getLogger()
+    log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
     return log
 
 
