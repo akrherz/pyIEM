@@ -26,10 +26,16 @@ def test_get_dbconn(dbname):  # noqa
     assert pgconn is not None
 
 
-def test_logger():
+@pytest.fixture()
+def logger():
+    """Get a logger"""
+    return util.logger()
+
+
+def test_logger(logger, caplog):
     """Can we emit logs."""
-    log = util.logger()
-    assert log is not None
+    logger.info('hi daryl')
+    assert 'hi daryl' in caplog.text
 
 
 def test_find_ij():

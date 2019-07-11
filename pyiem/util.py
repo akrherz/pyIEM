@@ -24,6 +24,18 @@ from six import string_types
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
 
 
+class CustomFormatter(logging.Formatter):
+    """A custom log formatter class."""
+
+    def format(self, record):
+        """Return a string!"""
+        return "[%s %6.3f %s:%s %s] %s" % (
+            time.strftime('%H:%M:%S', time.localtime(record.created)),
+            record.relativeCreated / 1000., record.filename, record.lineno,
+            record.funcName, record.getMessage()
+        )
+
+
 def get_test_file(name, fponly=False):
     """Helper to get data for test usage."""
     basedir = os.path.dirname(__file__)
@@ -36,9 +48,12 @@ def get_test_file(name, fponly=False):
 
 def logger():
     """Create a standarized logger."""
-    logging.basicConfig(format='%(asctime)-15s %(message)s')
+    logging.basicConfig()
     log = logging.getLogger()
     log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
+    ch = logging.StreamHandler()
+    ch.setFormatter(CustomFormatter())
+    log.addHandler(ch)
     return log
 
 
