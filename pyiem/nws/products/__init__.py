@@ -34,30 +34,30 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
 
     """
 
-    tmp = text[:100].replace('\r\r\n', '\n')
+    tmp = text[:100].replace("\r\r\n", "\n")
     m = WMO_RE.search(tmp)
     if m is not None:
         d = m.groupdict()
-        if d['cccc'] == 'KWNP':
+        if d["cccc"] == "KWNP":
             return spacewx.parser(text, utcnow, ugc_provider, nwsli_provider)
 
     tokens = AFOSRE.findall(tmp)
     if not tokens:
         raise TextProductException("Could not locate AFOS Identifier")
     afos = tokens[0]
-    if afos[:3] == 'CLI':
+    if afos[:3] == "CLI":
         return cli.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == 'TCP':
+    elif afos[:3] == "TCP":
         return nhc.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == 'HWO':
+    elif afos[:3] == "HWO":
         return hwo.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos in ['SWOMCD', 'FFGMPD']:
+    elif afos in ["SWOMCD", "FFGMPD"]:
         return mcd.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == 'LSR':
+    elif afos[:3] == "LSR":
         return lsr.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == 'TAF':
+    elif afos[:3] == "TAF":
         return taf.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == 'SPS':
+    elif afos[:3] == "SPS":
         return sps.parser(text, utcnow, ugc_provider, nwsli_provider)
 
     return TextProduct(text, utcnow, ugc_provider, nwsli_provider)

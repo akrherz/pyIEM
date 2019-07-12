@@ -11,17 +11,21 @@ from pyiem.util import get_dbconn
 @pytest.fixture
 def dbcursor():
     """Get a database cursor for testing."""
-    cursor = get_dbconn('iem').cursor()
+    cursor = get_dbconn("iem").cursor()
     # Create fake station, so we can create fake entry in summary
     # and current tables
-    cursor.execute("""
+    cursor.execute(
+        """
         INSERT into stations(id, network, iemid, tzname)
         VALUES ('HKS', 'ZZ_ASOS', -100, 'UTC')
-    """)
-    cursor.execute("""
+    """
+    )
+    cursor.execute(
+        """
         INSERT into summary_2015(iemid, day) VALUES
         (-100, '2015-11-26')
-    """)
+    """
+    )
     return cursor
 
 
@@ -33,13 +37,13 @@ def test_simple(month):
         "/9470621/T/T/00/00/00/00/00/00/"
         "00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/225/26381759/"
         "26500949="
-    ) % (month, )
-    tzprovider = {'KCVG': pytz.timezone("America/New_York")}
+    ) % (month,)
+    tzprovider = {"KCVG": pytz.timezone("America/New_York")}
     dsm = process(text)
     dsm.compute_times(utc(2019, month, 25))
-    dsm.tzlocalize(tzprovider['KCVG'])
+    dsm.tzlocalize(tzprovider["KCVG"])
     assert dsm.date == datetime.date(2019, month, 24)
-    assert dsm.station == 'KCVG'
+    assert dsm.station == "KCVG"
     assert dsm.time_sped_max == utc(2019, month, 24, 22, 59)
 
 
@@ -64,7 +68,7 @@ def test_190225_regress():
     dsm = process(text)
     assert dsm is not None
     dsm.compute_times(utc(2019, 2, 25))
-    assert dsm.station == 'KCUT'
+    assert dsm.station == "KCUT"
 
 
 def test_190225_badtime():
@@ -77,4 +81,4 @@ def test_190225_badtime():
     dsm = process(text)
     assert dsm is not None
     dsm.compute_times(utc(2019, 2, 5))
-    assert dsm.station == 'KMMV'
+    assert dsm.station == "KMMV"

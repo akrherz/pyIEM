@@ -14,26 +14,35 @@ def test_get_gid():
 
 def test_get_grids():
     """Can we get grids?"""
-    pgconn = get_dbconn('iemre')
+    pgconn = get_dbconn("iemre")
     cursor = pgconn.cursor()
     valid = utc(2019, 12, 1, 1)
-    cursor.execute("""
+    cursor.execute(
+        """
         DELETE from iemre_hourly_201912 WHERE valid = %s
-    """, (valid, ))
-    cursor.execute("""
+    """,
+        (valid,),
+    )
+    cursor.execute(
+        """
         DELETE from iemre_hourly_201912 WHERE valid = %s
-    """, (valid + datetime.timedelta(days=1), ))
-    cursor.execute("""
+    """,
+        (valid + datetime.timedelta(days=1),),
+    )
+    cursor.execute(
+        """
         INSERT into iemre_hourly_201912
         (gid, valid, tmpk, dwpk, uwnd, vwnd, p01m)
         select gid, %s, random(), null, random(),
         random(), random() from iemre_grid
-    """, (valid, ))
-    ds = iemre.get_grids(valid, varnames='tmpk', cursor=cursor)
-    assert 'tmpk' in ds
-    assert 'bogus' not in ds
+    """,
+        (valid,),
+    )
+    ds = iemre.get_grids(valid, varnames="tmpk", cursor=cursor)
+    assert "tmpk" in ds
+    assert "bogus" not in ds
     ds = iemre.get_grids(valid, cursor=cursor)
-    assert np.isnan(ds['dwpk'].values.max())
+    assert np.isnan(ds["dwpk"].values.max())
 
     iemre.set_grids(valid, ds, cursor=cursor)
     iemre.set_grids(valid + datetime.timedelta(days=1), ds, cursor=cursor)
@@ -63,7 +72,7 @@ def test_hourly_offset():
 
     ts = utc(2013, 1, 5, 12, 0)
     offset = iemre.hourly_offset(ts)
-    assert offset == 4*24 + 12
+    assert offset == 4 * 24 + 12
 
 
 def test_daily_offset():

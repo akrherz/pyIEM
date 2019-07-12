@@ -8,7 +8,8 @@ from pyiem.util import utc
 from pyiem.reference import TRACE_VALUE
 
 
-PARSER_RE = re.compile(r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+
+PARSER_RE = re.compile(
+    r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+
    DS\s+
    (COR\s)?
    ([0-9]{4}\s)?
@@ -32,7 +33,9 @@ PARSER_RE = re.compile(r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+
     (?P<sped_max>[0-9]{2,3})(?P<time_sped_max>[0-9]{4})/
     (?P<drct_gust_max>[0-9]{2})
     (?P<sped_gust_max>[0-9]{2,3})(?P<time_sped_gust_max>[0-9]{4}))?
-""", re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 
 
 def process(text):
@@ -49,8 +52,7 @@ def compute_time(date, timestamp):
     if timestamp is None:
         return None
     return datetime.datetime(
-        date.year, date.month, date.day, int(timestamp[:2]),
-        int(timestamp[2:4])
+        date.year, date.month, date.day, int(timestamp[:2]), int(timestamp[2:4])
     )
 
 
@@ -64,110 +66,112 @@ class DSMProduct(object):
         self.low_time = None
         self.time_sped_max = None
         self.time_sped_gust_max = None
-        self.station = groupdict['station']
+        self.station = groupdict["station"]
         self.groupdict = groupdict
 
     def tzlocalize(self, tzinfo):
         """Localize the timestamps, tricky."""
         offset = tzinfo.utcoffset(
-            datetime.datetime(2000, 1, 1),
-            is_dst=False
+            datetime.datetime(2000, 1, 1), is_dst=False
         ).total_seconds()
-        for name in ['high_time', 'low_time', 'time_sped_max',
-                     'time_sped_gust_max']:
+        for name in ["high_time", "low_time", "time_sped_max", "time_sped_gust_max"]:
             val = getattr(self, name)
             if val is None:
                 continue
             # Need to convert timestamp into standard time time, tricky
             ts = val - datetime.timedelta(seconds=offset)
-            setattr(self, name, utc(
-                ts.year, ts.month, ts.day, ts.hour, ts.minute
-                ).astimezone(tzinfo))
+            setattr(
+                self,
+                name,
+                utc(ts.year, ts.month, ts.day, ts.hour, ts.minute).astimezone(tzinfo),
+            )
 
     def compute_times(self, utcnow):
         """Figure out when this DSM is valid for."""
         if utcnow is None:
             utcnow = utc()
         ts = utcnow.replace(
-            day=int(self.groupdict['day']),
-            month=int(self.groupdict['month']))
+            day=int(self.groupdict["day"]), month=int(self.groupdict["month"])
+        )
         # Is this ob from 'last year'
         if ts.month == 12 and utcnow.month == 1:
             ts = ts.replace(year=(ts.year - 1))
         self.date = datetime.date(ts.year, ts.month, ts.day)
-        self.high_time = compute_time(
-            self.date, self.groupdict.get('hightime'))
-        self.low_time = compute_time(
-            self.date, self.groupdict.get('lowtime'))
+        self.high_time = compute_time(self.date, self.groupdict.get("hightime"))
+        self.low_time = compute_time(self.date, self.groupdict.get("lowtime"))
         self.time_sped_max = compute_time(
-            self.date, self.groupdict.get('time_sped_max'))
+            self.date, self.groupdict.get("time_sped_max")
+        )
         self.time_sped_gust_max = compute_time(
-            self.date, self.groupdict.get('time_sped_gust_max'))
+            self.date, self.groupdict.get("time_sped_gust_max")
+        )
 
     def sql(self, txn):
         """Persist to database given the transaction object."""
         cols = []
         args = []
 
-        val = self.groupdict.get('high')
+        val = self.groupdict.get("high")
         if val is not None and val != "M":
-            cols.append('max_tmpf')
+            cols.append("max_tmpf")
             args.append(val)
 
-        val = self.groupdict.get('low')
+        val = self.groupdict.get("low")
         if val is not None and val != "M":
-            cols.append('min_tmpf')
+            cols.append("min_tmpf")
             args.append(val)
 
-        val = self.groupdict.get('pday')
+        val = self.groupdict.get("pday")
         if val is not None and val != "M":
-            cols.append('pday')
-            args.append(TRACE_VALUE if val == 'T' else float(val) / 100.)
+            cols.append("pday")
+            args.append(TRACE_VALUE if val == "T" else float(val) / 100.0)
 
-        val = self.groupdict.get('sped_max')
+        val = self.groupdict.get("sped_max")
         if val is not None:
-            cols.append('max_sknt')
-            args.append(
-                (int(val) * units('miles / hour')).to(units('knots')).magnitude
-            )
+            cols.append("max_sknt")
+            args.append((int(val) * units("miles / hour")).to(units("knots")).magnitude)
 
         val = self.time_sped_max
         if val is not None:
-            cols.append('max_sknt_ts')
+            cols.append("max_sknt_ts")
             args.append(val)
 
-        val = self.groupdict.get('sped_gust_max')
+        val = self.groupdict.get("sped_gust_max")
         if val is not None:
-            cols.append('max_gust')
-            args.append(
-                (int(val) * units('miles / hour')).to(units('knots')).magnitude
-            )
+            cols.append("max_gust")
+            args.append((int(val) * units("miles / hour")).to(units("knots")).magnitude)
 
         val = self.time_sped_gust_max
         if val is not None:
-            cols.append('max_gust_ts')
+            cols.append("max_gust_ts")
             args.append(val)
 
         if not cols:
             return
-        table = "summary_%s" % (self.date.year, )
-        cs = ", ".join(["%s = %%s" % (c, ) for c in cols])
-        slicer = slice(0, 4) if self.station[0] != 'K' else slice(1, 4)
+        table = "summary_%s" % (self.date.year,)
+        cs = ", ".join(["%s = %%s" % (c,) for c in cols])
+        slicer = slice(0, 4) if self.station[0] != "K" else slice(1, 4)
         args.extend([self.station[slicer], self.date])
-        txn.execute("""
-            UPDATE """ + table + """ s SET """ + cs + """
+        txn.execute(
+            """
+            UPDATE """
+            + table
+            + """ s SET """
+            + cs
+            + """
             FROM stations t WHERE s.iemid = t.iemid
             and t.network ~* 'ASOS' and t.id = %s and
             s.day = %s
-        """, args)
+        """,
+            args,
+        )
         return txn.rowcount == 1
 
 
 class DSMCollective(TextProduct):
     """A collective representing a NOAAPort Text Product with many DSMs."""
 
-    def __init__(self, text, utcnow=None, ugc_provider=None,
-                 nwsli_provider=None):
+    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # hold our parsing results
@@ -182,7 +186,7 @@ class DSMCollective(TextProduct):
                 continue
             res = process(piece)
             if res is None:
-                self.warnings.append("DSM RE Match Failure: '%s'" % (piece, ))
+                self.warnings.append("DSM RE Match Failure: '%s'" % (piece,))
                 continue
             res.compute_times(utcnow)
             self.data.append(res)
@@ -192,8 +196,7 @@ class DSMCollective(TextProduct):
         for dsm in self.data:
             tzinfo = tzprovider.get(dsm.station)
             if tzinfo is None:
-                self.warnings.append(
-                    "station %s has no tzinfo" % (dsm.station, ))
+                self.warnings.append("station %s has no tzinfo" % (dsm.station,))
                 continue
             dsm.tzlocalize(tzinfo)
 

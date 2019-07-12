@@ -9,27 +9,32 @@ from pyiem.nws.product import TextProduct
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
-    r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE)
-ATTN_WFO = re.compile(
-    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
+    r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE
+)
+ATTN_WFO = re.compile(r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
 ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
-    r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT",
-    re.IGNORECASE)
+    r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
+)
 
 
 def section_parser(sect):
     """Parse this section of text"""
-    metadata = re.findall((r"([A-Z0-9]{4})\s+(...) (...) GUIDANCE\s+"
-                           r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
-                           r"([0-2][0-9]00) UTC"), sect)
+    metadata = re.findall(
+        (
+            r"([A-Z0-9]{4})\s+(...) (...) GUIDANCE\s+"
+            r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
+            r"([0-2][0-9]00) UTC"
+        ),
+        sect,
+    )
     (station, model, mos, month, day, year, hhmm) = metadata[0]
-    if model == 'NBM':
+    if model == "NBM":
         model = mos
     initts = datetime.datetime(int(year), int(month), int(day), int(hhmm[:2]))
     initts = initts.replace(tzinfo=pytz.utc)
 
-    times = [initts, ]
+    times = [initts]
     data = {}
     lines = sect.split("___")
     hrs = lines[2].split()
@@ -50,20 +55,20 @@ def section_parser(sect):
             vname = "N_X"
         vals = re.findall("(...)", line[4:])
         for i, val in enumerate(vals):
-            if vname == "T06" and times[i+1].hour in [0, 6, 12, 18]:
-                data[times[i+1]]["T06_1"] = vals[i-1].replace("/", "").strip()
-                data[times[i+1]]["T06_2"] = val.replace("/", "").strip()
+            if vname == "T06" and times[i + 1].hour in [0, 6, 12, 18]:
+                data[times[i + 1]]["T06_1"] = vals[i - 1].replace("/", "").strip()
+                data[times[i + 1]]["T06_2"] = val.replace("/", "").strip()
             elif vname == "T06":
                 pass
-            elif vname == "T12" and times[i+1].hour in [0, 12]:
-                data[times[i+1]]["T12_1"] = vals[i-1].replace("/", "").strip()
-                data[times[i+1]]["T12_2"] = val.replace("/", "").strip()
+            elif vname == "T12" and times[i + 1].hour in [0, 12]:
+                data[times[i + 1]]["T12_1"] = vals[i - 1].replace("/", "").strip()
+                data[times[i + 1]]["T12_2"] = val.replace("/", "").strip()
             elif vname == "T12":
                 pass
             elif vname == "WDR":
-                data[times[i+1]][vname] = int(vals[i].strip()) * 10
+                data[times[i + 1]][vname] = int(vals[i].strip()) * 10
             else:
-                data[times[i+1]][vname] = val.strip()
+                data[times[i + 1]][vname] = val.strip()
     return dict(station=station, model=model, data=data, initts=initts)
 
 
@@ -79,11 +84,9 @@ class MOSProduct(TextProduct):
     Represents a Model Output Statistics file
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None,
-                 nwsli_provider=None):
+    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider,
-                             nwsli_provider)
+        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.data = []
         self.parse_data()
 
@@ -98,24 +101,26 @@ class MOSProduct(TextProduct):
         """
         inserts = 0
         for sect in self.data:
-            for ts in sect['data']:
-                if ts == sect['initts']:
+            for ts in sect["data"]:
+                if ts == sect["initts"]:
                     continue
                 # Account for 'empty' MOS products
-                if not sect['data'][ts]:
+                if not sect["data"][ts]:
                     continue
                 fst = """
                 INSERT into t%s (station, model, runtime, ftime,
-                """ % (sect['initts'].year, )
+                """ % (
+                    sect["initts"].year,
+                )
                 sst = "VALUES(%s,%s,%s,%s,"
-                args = [sect['station'], sect['model'], sect['initts'], ts]
-                for vname in sect['data'][ts].keys():
+                args = [sect["station"], sect["model"], sect["initts"], ts]
+                for vname in sect["data"][ts].keys():
                     # variables we don't wish to database
-                    if vname in ['FHR', ]:
+                    if vname in ["FHR"]:
                         continue
-                    fst += " %s," % (vname, )
+                    fst += " %s," % (vname,)
                     sst += "%s,"
-                    args.append(make_null(sect['data'][ts][vname]))
+                    args.append(make_null(sect["data"][ts][vname]))
                 if len(args) == 4:
                     # No data was found
                     continue
@@ -128,13 +133,12 @@ class MOSProduct(TextProduct):
         """Parse out our data!"""
         raw = self.unixtext + "\n"
         raw = raw.replace("\n", "___").replace("\x1e", "")
-        sections = re.findall(r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______",
-                              raw)
+        sections = re.findall(r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______", raw)
         self.data = list(map(section_parser, sections))
         if not sections:
             raise Exception("Failed to split MOS Product")
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    ''' Helper function '''
+    """ Helper function """
     return MOSProduct(text, utcnow, ugc_provider, nwsli_provider)

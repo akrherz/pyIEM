@@ -12,6 +12,7 @@ import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
 from pyiem.nws.product import TextProduct
+
 if not six.PY2:
     from html import escape as html_escape
 else:
@@ -19,31 +20,30 @@ else:
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
-    r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE)
-ATTN_WFO = re.compile(
-    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
+    r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE
+)
+ATTN_WFO = re.compile(r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
 ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
-    r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT",
-    re.IGNORECASE)
+    r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
+)
 VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?")
 
 
 class MCDException(Exception):
-    ''' Exception '''
+    """ Exception """
+
     pass
 
 
 class MCDProduct(TextProduct):
-    '''
+    """
     Represents a Storm Prediction Center Mesoscale Convective Discussion
-    '''
+    """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None,
-                 nwsli_provider=None):
-        ''' constructor '''
-        TextProduct.__init__(self, text, utcnow, ugc_provider,
-                             nwsli_provider)
+    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+        """ constructor """
+        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.geometry = self.parse_geometry()
         self.discussion_num = self.parse_discussion_num()
         self.attn_wfo = self.parse_attn_wfo()
@@ -76,39 +76,45 @@ class MCDProduct(TextProduct):
         return issue.replace(tzinfo=pytz.utc), expire.replace(tzinfo=pytz.utc)
 
     def find_watch_probability(self):
-        ''' Find the probability of watch issuance for SPC MCD'''
+        """ Find the probability of watch issuance for SPC MCD"""
         tokens = WATCH_PROB.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             return None
         return int(tokens[0])
 
     def tweet(self):
-        ''' Return twitter message '''
+        """ Return twitter message """
         charsleft = 140 - 22  # default safe 22 for t.co shortening
-        if self.afos == 'SWOMCD':
-            center = 'SPC'
+        if self.afos == "SWOMCD":
+            center = "SPC"
         else:
-            center = 'WPC'
+            center = "WPC"
         prob_extra = ""
         if self.watch_prob is not None:
             prob_extra = " [watch prob: %.0f%%]" % (self.watch_prob,)
-        attempt = ("#%s issues %s %s%s: %s "
-                   ) % (center, self.afos[3:],
-                        self.discussion_num, prob_extra,
-                        self.areas_affected)
+        attempt = ("#%s issues %s %s%s: %s ") % (
+            center,
+            self.afos[3:],
+            self.discussion_num,
+            prob_extra,
+            self.areas_affected,
+        )
         return "%s%s" % (attempt[:charsleft], self.get_url())
 
     def get_url(self):
-        ''' Return the URL for SPC's website '''
-        if self.afos == 'SWOMCD':
-            return ("http://www.spc.noaa.gov/products/md/%s/md%04i.html"
-                    ) % (self.valid.year, self.discussion_num)
-        return ('http://www.wpc.ncep.noaa.gov/metwatch/'
-                'metwatch_mpd_multi.php?md=%s&yr=%s'
-                ) % (self.discussion_num, self.valid.year)
+        """ Return the URL for SPC's website """
+        if self.afos == "SWOMCD":
+            return ("http://www.spc.noaa.gov/products/md/%s/md%04i.html") % (
+                self.valid.year,
+                self.discussion_num,
+            )
+        return (
+            "http://www.wpc.ncep.noaa.gov/metwatch/"
+            "metwatch_mpd_multi.php?md=%s&yr=%s"
+        ) % (self.discussion_num, self.valid.year)
 
     def parse_areas_affected(self):
-        ''' Return the areas affected '''
+        """ Return the areas affected """
         sections = self.unixtext.split("\n\n")
         for section in sections:
             if section.strip().find("AREAS AFFECTED...") == 0:
@@ -127,56 +133,71 @@ class MCDProduct(TextProduct):
         """
         # convert htmlentities
         spcuri = html_escape(self.get_url())
-        center = 'Storm Prediction Center'
-        pextra = ''
-        if self.afos == 'FFGMPD':
-            center = 'Weather Prediction Center'
-            pextra = 'Precipitation '
+        center = "Storm Prediction Center"
+        pextra = ""
+        if self.afos == "FFGMPD":
+            center = "Weather Prediction Center"
+            pextra = "Precipitation "
         prob_extra = " "
         if self.watch_prob is not None:
             prob_extra = " [watch probability: %.0f%%] " % (self.watch_prob,)
-        plain = ("%s issues Mesoscale %sDiscussion #%s%s%s"
-                 ) % (center, pextra, self.discussion_num, prob_extra, spcuri)
-        html = ('<p>%s issues <a href="%s">'
-                'Mesoscale %sDiscussion #%s</a>%s'
-                '(<a href="%s?pid=%s">View text</a>)</p>'
-                ) % (center, spcuri, pextra, self.discussion_num,
-                     prob_extra, uri, self.get_product_id())
+        plain = ("%s issues Mesoscale %sDiscussion #%s%s%s") % (
+            center,
+            pextra,
+            self.discussion_num,
+            prob_extra,
+            spcuri,
+        )
+        html = (
+            '<p>%s issues <a href="%s">'
+            "Mesoscale %sDiscussion #%s</a>%s"
+            '(<a href="%s?pid=%s">View text</a>)</p>'
+        ) % (
+            center,
+            spcuri,
+            pextra,
+            self.discussion_num,
+            prob_extra,
+            uri,
+            self.get_product_id(),
+        )
         channels = self.get_channels()
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_wfo])
         channels.extend(["%s.%s" % (self.afos, w) for w in self.attn_rfc])
         channels.extend(["%s.%s" % (self.afos, w) for w in self.cwsus])
-        xtra = dict(channels=",".join(channels),
-                    product_id=self.get_product_id(),
-                    twitter=self.tweet())
-        return [[plain, html, xtra], ]
+        xtra = dict(
+            channels=",".join(channels),
+            product_id=self.get_product_id(),
+            twitter=self.tweet(),
+        )
+        return [[plain, html, xtra]]
 
     def parse_attn_rfc(self):
-        ''' FIgure out which RFCs this product is seeking attention '''
+        """ FIgure out which RFCs this product is seeking attention """
         tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             return []
         return re.findall("([A-Z]{5})", tokens[0])
 
     def parse_attn_wfo(self):
-        ''' FIgure out which WFOs this product is seeking attention '''
+        """ FIgure out which WFOs this product is seeking attention """
         tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
         if not tokens:
-            raise MCDException('Could not parse attention WFOs')
+            raise MCDException("Could not parse attention WFOs")
         return re.findall("([A-Z]{3})", tokens[0])
 
     def parse_discussion_num(self):
-        ''' Figure out what discussion number this is '''
+        """ Figure out what discussion number this is """
         tokens = DISCUSSIONNUM.findall(self.unixtext)
         if not tokens:
-            raise MCDException('Could not parse discussion number')
+            raise MCDException("Could not parse discussion number")
         return int(tokens[0])
 
     def parse_geometry(self):
-        ''' Find the polygon that's in this MCD product '''
+        """ Find the polygon that's in this MCD product """
         tokens = LATLON.findall(self.unixtext.replace("\n", " "))
         if not tokens:
-            raise MCDException('Could not parse LAT...LON geometry')
+            raise MCDException("Could not parse LAT...LON geometry")
         pts = []
         for pair in tokens[0].split():
             lat = float(pair[:4]) / 100.0
@@ -195,20 +216,28 @@ class MCDProduct(TextProduct):
         """
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
-            print(("mcd.database_save %s %s removed %s entries"
-                   ) % (self.get_product_id(), self.discussion_num,
-                        txn.rowcount))
+            print(
+                ("mcd.database_save %s %s removed %s entries")
+                % (self.get_product_id(), self.discussion_num, txn.rowcount)
+            )
         giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
         sql = """
             INSERT into text_products
             (product, product_id, geom, pil, issue, expire, product_num)
             values (%s, %s, %s, %s, %s, %s, %s)
         """
-        args = (self.text, self.get_product_id(), giswkt, self.afos,
-                self.sts, self.ets, self.discussion_num)
+        args = (
+            self.text,
+            self.get_product_id(),
+            giswkt,
+            self.afos,
+            self.sts,
+            self.ets,
+            self.discussion_num,
+        )
         txn.execute(sql, args)
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    ''' Helper function '''
+    """ Helper function """
     return MCDProduct(text, utcnow, ugc_provider, nwsli_provider)

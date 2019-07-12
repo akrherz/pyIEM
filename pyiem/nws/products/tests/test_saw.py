@@ -9,18 +9,16 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture
 def dbcursor():
     """Get database cursor."""
-    return get_dbconn('postgis').cursor(
-        cursor_factory=psycopg2.extras.RealDictCursor
-    )
+    return get_dbconn("postgis").cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 def test_181231_linkisok():
     """The plain text tweet should have a space."""
     utcnow = utc(2014, 3, 10, 3, 29)
     utcnow = utcnow.replace(microsecond=100)
-    prod = sawparser(get_test_file('SAW/SAW3.txt'), utcnow=utcnow)
+    prod = sawparser(get_test_file("SAW/SAW3.txt"), utcnow=utcnow)
     assert prod.ets.microsecond == 0
-    jmsgs = prod.get_jabbers('')
+    jmsgs = prod.get_jabbers("")
     ans = (
         "SPC issues Severe Thunderstorm Watch 503 till 9:00Z "
         "https://www.spc.noaa.gov/products/watch/2014/ww0503.html"
@@ -31,16 +29,17 @@ def test_181231_linkisok():
 def test_replacement(dbcursor):
     """Can we do replacements?"""
     utcnow = utc(2017, 8, 21, 9, 17)
-    prod = sawparser(get_test_file('SAW/SAW-replaces.txt'), utcnow=utcnow)
+    prod = sawparser(get_test_file("SAW/SAW-replaces.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
-    jmsgs = prod.get_jabbers('')
+    jmsgs = prod.get_jabbers("")
     assert len(jmsgs) == 1
     ans = (
         "SPC issues Severe Thunderstorm Watch"
         " 153 till 17:00Z, new watch replaces WW 1 "
-        "https://www.spc.noaa.gov/products/watch/2017/ww0153.html")
+        "https://www.spc.noaa.gov/products/watch/2017/ww0153.html"
+    )
     assert jmsgs[0][0] == ans
-    assert 'twitter' in jmsgs[0][2]
+    assert "twitter" in jmsgs[0][2]
 
 
 def test_saw3():
@@ -48,7 +47,7 @@ def test_saw3():
     utcnow = utc(2014, 3, 10, 3, 29)
     sts = utcnow.replace(hour=3, minute=35)
     ets = utcnow.replace(hour=9, minute=0)
-    prod = sawparser(get_test_file('SAW/SAW3.txt'), utcnow=utcnow)
+    prod = sawparser(get_test_file("SAW/SAW3.txt"), utcnow=utcnow)
     assert prod.saw == 3
     assert abs(prod.geometry.area - 7.73) < 0.01
     assert prod.ww_num == 503
@@ -61,12 +60,13 @@ def test_saw3():
 def test_cancelled(dbcursor):
     """SAW-cancelled make sure we can cancel a watch"""
     utcnow = utc(2014, 3, 10, 3, 29)
-    prod = sawparser(get_test_file('SAW/SAW-cancelled.txt'), utcnow=utcnow)
+    prod = sawparser(get_test_file("SAW/SAW-cancelled.txt"), utcnow=utcnow)
     assert prod.action == prod.CANCELS
     j = prod.get_jabbers(None)
     ans = (
         "Storm Prediction Center cancels Weather Watch Number 575 "
-        "https://www.spc.noaa.gov/products/watch/2014/ww0575.html")
+        "https://www.spc.noaa.gov/products/watch/2014/ww0575.html"
+    )
     assert j[0][0] == ans
     prod.sql(dbcursor)
     prod.compute_wfos(dbcursor)

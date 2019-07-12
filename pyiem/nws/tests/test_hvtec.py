@@ -10,8 +10,7 @@ def test_badtime():
 
 def test_empty():
     """ check empty HVTEC Parsing """
-    v = hvtec.parse(
-        "/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/")
+    v = hvtec.parse("/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/")
     assert v[0].nwsli.id == "00000"
 
 

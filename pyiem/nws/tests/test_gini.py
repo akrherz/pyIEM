@@ -15,7 +15,7 @@ def test_conus():
     sat = gini.GINIZFile(get_test_file("TIGN02", fponly=True))
     assert sat.archive_filename() == "GOES_SUPER_IR_201509281745.png"
     assert sat.awips_grid() == 0
-    assert sat.metadata['map_projection'] == 5
+    assert sat.metadata["map_projection"] == 5
 
 
 def test_gini():

@@ -40,24 +40,27 @@ def clearsky_shortwave_irradiance_year(lat, elevation):
     data = []
     for jday in j:
         running = 0
-        for t in np.arange(0, 12.001, 5./60.):
+        for t in np.arange(0, 12.001, 5.0 / 60.0):
             # acosd((sind(gamma(l))*sind(delta(j))+cosd(gamma(l))*
             # cosd(delta(j))*cosd(15*(t-12))))
             _a = math.cos(np.radians(15 * (t - 12)))
             _b = math.sin(np.radians(lat))
-            _c = math.sin(np.radians(delta[jday-1]))
-            theta = np.degrees(math.acos(_b *
-                                         _c +
-                                         math.cos(np.radians(lat)) *
-                                         math.cos(np.radians(delta[jday-1])) *
-                               _a))
+            _c = math.sin(np.radians(delta[jday - 1]))
+            theta = np.degrees(
+                math.acos(
+                    _b * _c
+                    + math.cos(np.radians(lat))
+                    * math.cos(np.radians(delta[jday - 1]))
+                    * _a
+                )
+            )
             if theta >= 90:
                 continue
             m = pa / (101.3 * math.cos(np.radians(theta)))
-            direct = spo * tau**m * math.cos(np.radians(theta))
-            diffuse = 0.3 * (1 - tau**m) * spo * math.cos(np.radians(theta))
+            direct = spo * tau ** m * math.cos(np.radians(theta))
+            diffuse = 0.3 * (1 - tau ** m) * spo * math.cos(np.radians(theta))
             running += (5.0 * 60) * (direct + diffuse)
-        data.append((running * 2.) / 1000000.0)
+        data.append((running * 2.0) / 1000000.0)
     return data
 
 
@@ -72,10 +75,10 @@ def drct(u, v):
     Returns:
       dt.direction value
     """
-    umps = u.value('MPS')
-    vmps = v.value('MPS')
-    val = (np.arctan2(umps, vmps) * 180. / np.pi) + 180
-    return dt.direction(val, 'DEG')
+    umps = u.value("MPS")
+    vmps = v.value("MPS")
+    val = (np.arctan2(umps, vmps) * 180.0 / np.pi) + 180
+    return dt.direction(val, "DEG")
 
 
 def uv(speed, direction):
@@ -85,10 +88,8 @@ def uv(speed, direction):
     @param dir wind direction with zero as north
     @return u and v components
     """
-    if (not isinstance(speed, dt.speed) or
-            not isinstance(direction, dt.direction)):
-        raise InvalidArguments(("uv() needs speed and direction "
-                                "objects as args"))
+    if not isinstance(speed, dt.speed) or not isinstance(direction, dt.direction):
+        raise InvalidArguments(("uv() needs speed and direction " "objects as args"))
     # Get radian units
     rad = direction.value("RAD")
     if rad is None or speed.value() is None:
@@ -115,7 +116,7 @@ def mcalc_feelslike(tmpf, dwpf, smps):
     # Where heat index is masked, replace with temperature
     hidx[hidx.mask] = tmpf[hidx.mask]
     # where ever wcht is not masked, replace with wind chill
-    hidx[~ wcht.mask] = wcht[~ wcht.mask]
+    hidx[~wcht.mask] = wcht[~wcht.mask]
     return hidx
 
 
@@ -132,12 +133,15 @@ def windchill(temperature, speed):
       temperature (temperature): The Wind Chill Temperature
     """
     tmpf = temperature.value("F")
-    sknt = speed.value('KT')
-    wci = (35.74 + .6215 * tmpf - 35.75 * np.power(sknt, 0.16) +
-           .4275 * tmpf * np.power(sknt, 0.16))
-    wci = np.where(np.logical_or(np.less(sknt, 3),
-                                 np.greater(tmpf, 50)), tmpf, wci)
-    return dt.temperature(wci, 'F')
+    sknt = speed.value("KT")
+    wci = (
+        35.74
+        + 0.6215 * tmpf
+        - 35.75 * np.power(sknt, 0.16)
+        + 0.4275 * tmpf * np.power(sknt, 0.16)
+    )
+    wci = np.where(np.logical_or(np.less(sknt, 3), np.greater(tmpf, 50)), tmpf, wci)
+    return dt.temperature(wci, "F")
 
 
 def heatindex(temperature, polyarg):
@@ -162,17 +166,26 @@ def heatindex(temperature, polyarg):
     t3 = t ** 3
     rh2 = rh ** 2
     rh3 = rh ** 3
-    hdx = (16.923 + ((1.85212e-1) * t) + (5.37941 * rh) -
-           ((1.00254e-1) * t * rh) + ((9.41695e-3) * t2) +
-           ((7.28898e-3) * rh2) +
-           ((3.45372e-4) * t2 * rh) - ((8.14971e-4) * t * rh2) +
-           ((1.02102e-5) * t2 * rh2) - ((3.8646e-5) * t3) +
-           ((2.91583e-5) * rh3) + ((1.42721e-6) * t3 * rh) +
-           ((1.97483e-7) * t * rh3) - ((2.18429e-8) * t3 * rh2) +
-           ((8.43296e-10) * t2 * rh3) - ((4.81975e-11) * t3 * rh3))
-    hdx = np.where(np.logical_or(np.less(t, 80),
-                                 np.greater(t, 120)), t, hdx)
-    return dt.temperature(hdx, 'F')
+    hdx = (
+        16.923
+        + ((1.85212e-1) * t)
+        + (5.37941 * rh)
+        - ((1.00254e-1) * t * rh)
+        + ((9.41695e-3) * t2)
+        + ((7.28898e-3) * rh2)
+        + ((3.45372e-4) * t2 * rh)
+        - ((8.14971e-4) * t * rh2)
+        + ((1.02102e-5) * t2 * rh2)
+        - ((3.8646e-5) * t3)
+        + ((2.91583e-5) * rh3)
+        + ((1.42721e-6) * t3 * rh)
+        + ((1.97483e-7) * t * rh3)
+        - ((2.18429e-8) * t3 * rh2)
+        + ((8.43296e-10) * t2 * rh3)
+        - ((4.81975e-11) * t3 * rh3)
+    )
+    hdx = np.where(np.logical_or(np.less(t, 80), np.greater(t, 120)), t, hdx)
+    return dt.temperature(hdx, "F")
 
 
 def dewpoint_from_pq(pressure, mixingratio):
@@ -181,10 +194,10 @@ def dewpoint_from_pq(pressure, mixingratio):
     """
     p = pressure.value("hPa")
     mr = mixingratio.value("kg/kg")
-    e = (p * mr)/(0.622 + mr)
+    e = (p * mr) / (0.622 + mr)
     b = 26.66082 - np.log(e)
-    t = (b - (b*b - 223.1986)**.5)/0.0182758048
-    return dt.temperature(t, 'K')
+    t = (b - (b * b - 223.1986) ** 0.5) / 0.0182758048
+    return dt.temperature(t, "K")
 
 
 def dewpoint(temperature, relhumid):
@@ -193,8 +206,8 @@ def dewpoint(temperature, relhumid):
     """
     tmpk = temperature.value("K")
     relh = relhumid.value("%")
-    dwpk = tmpk / (1 + 0.000425 * tmpk * -(np.log10(relh/100.0)))
-    return dt.temperature(dwpk, 'K')
+    dwpk = tmpk / (1 + 0.000425 * tmpk * -(np.log10(relh / 100.0)))
+    return dt.temperature(dwpk, "K")
 
 
 def relh(temperature, dewpoint):
@@ -208,7 +221,7 @@ def relh(temperature, dewpoint):
     e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
     es = 6.112 * np.exp((17.67 * tmpc) / (tmpc + 243.5))
     relh = (e / es) * 100.00
-    return dt.humidity(relh, '%')
+    return dt.humidity(relh, "%")
 
 
 def mixing_ratio(dewpoint):
@@ -220,12 +233,12 @@ def mixing_ratio(dewpoint):
     Returns:
       mixing ratio
     """
-    dwpc = dewpoint.value('C')
+    dwpc = dewpoint.value("C")
     e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
-    return dt.mixingratio(0.62197 * e / (1000.0 - e), 'KG/KG')
+    return dt.mixingratio(0.62197 * e / (1000.0 - e), "KG/KG")
 
 
-def gdd(high, low, base=50., ceiling=86.):
+def gdd(high, low, base=50.0, ceiling=86.0):
     """Compute Growing Degree Days
 
     Args:
@@ -237,13 +250,13 @@ def gdd(high, low, base=50., ceiling=86.):
     Returns:
       float value for GDDs
     """
-    highf = high.value('F')
-    lowf = low.value('F')
+    highf = high.value("F")
+    lowf = low.value("F")
     highf = np.ma.where(np.ma.less(highf, base), base, highf)
     lowf = np.ma.where(np.ma.less(lowf, base), base, lowf)
     highf = np.ma.where(np.ma.greater(highf, ceiling), ceiling, highf)
     lowf = np.ma.where(np.ma.greater(lowf, ceiling), ceiling, lowf)
-    res = (highf + lowf) / 2. - 50.
+    res = (highf + lowf) / 2.0 - 50.0
     if res.shape == [1]:
         return res[0]
     return res

@@ -30,9 +30,12 @@ class CustomFormatter(logging.Formatter):
     def format(self, record):
         """Return a string!"""
         return "[%s %6.3f %s:%s %s] %s" % (
-            time.strftime('%H:%M:%S', time.localtime(record.created)),
-            record.relativeCreated / 1000., record.filename, record.lineno,
-            record.funcName, record.getMessage()
+            time.strftime("%H:%M:%S", time.localtime(record.created)),
+            record.relativeCreated / 1000.0,
+            record.filename,
+            record.lineno,
+            record.funcName,
+            record.getMessage(),
         )
 
 
@@ -40,19 +43,17 @@ def get_test_file(name, fponly=False):
     """Helper to get data for test usage."""
     basedir = os.path.dirname(__file__)
     fn = "%s/../data/product_examples/%s" % (basedir, name)
-    fp = open(fn, 'rb')
+    fp = open(fn, "rb")
     if fponly:
         return fp
-    return fp.read().decode('utf-8')
+    return fp.read().decode("utf-8")
 
 
 def logger():
     """Create a standarized logger."""
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
-    logging.basicConfig(
-        handlers=[ch]
-    )
+    logging.basicConfig(handlers=[ch])
     log = logging.getLogger()
     log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
     return log
@@ -61,7 +62,8 @@ def logger():
 def find_ij(lons, lats, lon, lat):
     """Compute the i,j closest cell."""
     import numpy as np
-    dist = ((lons - lon)**2 + (lats - lat)**2)**0.5
+
+    dist = ((lons - lon) ** 2 + (lats - lat) ** 2) ** 0.5
     (xidx, yidx) = np.unravel_index(dist.argmin(), dist.shape)
     return xidx, yidx
 
@@ -73,19 +75,26 @@ def get_twitter(screen_name):
       screen_name (str): The twitter user we are fetching creds for
     """
     import twython
-    dbconn = get_dbconn('mesosite')
+
+    dbconn = get_dbconn("mesosite")
     cursor = dbconn.cursor()
     props = get_properties(cursor)
     # fetch the oauth saved creds
-    cursor.execute("""
+    cursor.execute(
+        """
     select access_token, access_token_secret from iembot_twitter_oauth
     WHERE screen_name = %s
-    """, (screen_name, ))
+    """,
+        (screen_name,),
+    )
     row = cursor.fetchone()
     dbconn.close()
-    return twython.Twython(props['bot.twitter.consumerkey'],
-                           props['bot.twitter.consumersecret'],
-                           row[0], row[1])
+    return twython.Twython(
+        props["bot.twitter.consumerkey"],
+        props["bot.twitter.consumersecret"],
+        row[0],
+        row[1],
+    )
 
 
 def ssw(mixedobj):
@@ -94,14 +103,14 @@ def ssw(mixedobj):
     Args:
       mixedobj (str or bytes): what content we want to send
     """
-    stdout = getattr(sys.stdout, 'buffer', sys.stdout)
+    stdout = getattr(sys.stdout, "buffer", sys.stdout)
     if isinstance(mixedobj, string_types):
-        stdout.write(mixedobj.encode('utf-8'))
+        stdout.write(mixedobj.encode("utf-8"))
     else:
         stdout.write(mixedobj)
 
 
-def ncopen(ncfn, mode='r', timeout=60):
+def ncopen(ncfn, mode="r", timeout=60):
     """Safely open netcdf files
 
     The issue here is that we can only have the following situation for a
@@ -121,8 +130,9 @@ def ncopen(ncfn, mode='r', timeout=60):
       `netCDF4.Dataset` or `None`
     """
     import netCDF4
-    if mode != 'w' and not os.path.isfile(ncfn):
-        raise FileNotFoundError("No such file %s" % (ncfn, ))
+
+    if mode != "w" and not os.path.isfile(ncfn):
+        raise FileNotFoundError("No such file %s" % (ncfn,))
     sts = datetime.datetime.utcnow()
     nc = None
     while (datetime.datetime.utcnow() - sts).total_seconds() < timeout:
@@ -145,14 +155,15 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
       datetime with tzinfo set
     """
     import pytz
+
     if year is None:
         return datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
-    return datetime.datetime(year, month, day, hour, minute, second,
-                             microsecond).replace(tzinfo=pytz.UTC)
+    return datetime.datetime(
+        year, month, day, hour, minute, second, microsecond
+    ).replace(tzinfo=pytz.UTC)
 
 
-def get_dbconn(
-        database='mesosite', user=None, host=None, port=5432, password=None):
+def get_dbconn(database="mesosite", user=None, host=None, port=5432, password=None):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -172,29 +183,38 @@ def get_dbconn(
       psycopg2 database connection
     """
     import psycopg2
+
     if user is None:
         user = getpass.getuser()
         # We hard code the apache user back to nobody, www-data is travis-ci
-        if user in ['apache', 'www-data']:
-            user = 'nobody'
-        elif user == 'akrherz':  # HACK for daryl's development, sigh
-            user = 'mesonet'
+        if user in ["apache", "www-data"]:
+            user = "nobody"
+        elif user == "akrherz":  # HACK for daryl's development, sigh
+            user = "mesonet"
     if host is None:
         host = "iemdb.local"
-        if database in ['hads', 'mos', 'iemre']:
-            host = "iemdb-%s.local" % (database, )
+        if database in ["hads", "mos", "iemre"]:
+            host = "iemdb-%s.local" % (database,)
 
     try:
         pgconn = psycopg2.connect(
-            database=database, host=host, user=user,
-            port=port, connect_timeout=15, password=password
+            database=database,
+            host=host,
+            user=user,
+            port=port,
+            connect_timeout=15,
+            password=password,
         )
     except psycopg2.OperationalError as exp:
-        warnings.warn("database connection failure: %s" % (exp, ))
+        warnings.warn("database connection failure: %s" % (exp,))
         # as a stop-gap, lets try connecting to iemdb2
         pgconn = psycopg2.connect(
-            database=database, host='iemdb2.local', user=user,
-            port=port, connect_timeout=15, password=password
+            database=database,
+            host="iemdb2.local",
+            user=user,
+            port=port,
+            connect_timeout=15,
+            password=password,
         )
     return pgconn
 
@@ -208,14 +228,18 @@ def noaaport_text(text):
       text that looks noaaportish
     """
     # Convert to LFLFCR
-    text = text.replace("\003", "").replace("\001", "").replace(
-        "\n", "\r\r\n").replace("\r\r\r\r", "\r\r")
+    text = (
+        text.replace("\003", "")
+        .replace("\001", "")
+        .replace("\n", "\r\r\n")
+        .replace("\r\r\r\r", "\r\r")
+    )
     lines = text.split("\r\r\n")
     # remove any beginning empty lines
-    while lines and lines[0] == '':
+    while lines and lines[0] == "":
         lines.pop(0)
     # remove any empty ending lines
-    while lines and lines[-1] == '':
+    while lines and lines[-1] == "":
         lines.pop(-1)
 
     # lime 0 should be start of product sequence
@@ -230,7 +254,7 @@ def noaaport_text(text):
         lines.append("\003")
     # Second line should not be blank
     if lines[1].strip() == 0:
-        lines = [lines[0], ] + lines[2:]
+        lines = [lines[0]] + lines[2:]
 
     return "\r\r\n".join(lines)
 
@@ -251,89 +275,82 @@ def get_autoplot_context(fdict, cfg):
       dictionary of variable names and values, with proper types!
     """
     ctx = {}
-    for opt in cfg.get('arguments', []):
-        name = opt.get('name')
-        default = opt.get('default')
-        typ = opt.get('type')
-        minval = opt.get('min')
-        maxval = opt.get('max')
-        optional = opt.get('optional', False)
+    for opt in cfg.get("arguments", []):
+        name = opt.get("name")
+        default = opt.get("default")
+        typ = opt.get("type")
+        minval = opt.get("min")
+        maxval = opt.get("max")
+        optional = opt.get("optional", False)
         value = fdict.get(name)
-        if optional and value is None and typ not in ['vtec_ps', ]:
+        if optional and value is None and typ not in ["vtec_ps"]:
             continue
-        if typ in ['station', 'zstation', 'sid', 'networkselect']:
+        if typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
-            netname = "network%s" % (name[-1] if name[-1] != 'n' else '',)
+            netname = "network%s" % (name[-1] if name[-1] != "n" else "",)
             ctx[netname] = fdict.get(netname)
             # The network variable tags along and within a non-PHP context,
             # this variable is unset, so we do some more hackery here
             if ctx[netname] is None:
-                ctx[netname] = opt.get('network')
-        elif typ in ['int', 'month', 'zhour', 'hour', 'day', 'year']:
+                ctx[netname] = opt.get("network")
+        elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
                 value = int(value)
             if default is not None:
                 default = int(default)
-        elif typ == 'float':
+        elif typ == "float":
             if value is not None:
                 value = float(value)
             if default is not None:
                 default = float(default)
-        elif typ == 'select':
-            options = opt.get('options', dict())
+        elif typ == "select":
+            options = opt.get("options", dict())
             # in case of multi, value could be a list
             if value is None:
                 value = default
             elif isinstance(value, string_types):
                 if value not in options:
                     value = default
-                if opt.get('multiple'):
-                    value = [value, ]
+                if opt.get("multiple"):
+                    value = [value]
             else:
                 res = []
                 for subval in value:
                     if subval in options:
                         res.append(subval)
                 value = res
-        elif typ == 'datetime':
+        elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.datetime.strptime(default,
-                                                     '%Y/%m/%d %H%M')
+                default = datetime.datetime.strptime(default, "%Y/%m/%d %H%M")
             if minval is not None:
-                minval = datetime.datetime.strptime(minval,
-                                                    '%Y/%m/%d %H%M')
+                minval = datetime.datetime.strptime(minval, "%Y/%m/%d %H%M")
             if maxval is not None:
-                maxval = datetime.datetime.strptime(maxval,
-                                                    '%Y/%m/%d %H%M')
+                maxval = datetime.datetime.strptime(maxval, "%Y/%m/%d %H%M")
             if value is not None:
                 if value.find(" ") == -1:
                     value += " 0000"
-                value = datetime.datetime.strptime(value, '%Y-%m-%d %H%M')
-        elif typ == 'date':
+                value = datetime.datetime.strptime(value, "%Y-%m-%d %H%M")
+        elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.datetime.strptime(default,
-                                                     '%Y/%m/%d').date()
+                default = datetime.datetime.strptime(default, "%Y/%m/%d").date()
             if minval is not None:
-                minval = datetime.datetime.strptime(minval,
-                                                    '%Y/%m/%d').date()
+                minval = datetime.datetime.strptime(minval, "%Y/%m/%d").date()
             if maxval is not None:
-                maxval = datetime.datetime.strptime(maxval,
-                                                    '%Y/%m/%d').date()
+                maxval = datetime.datetime.strptime(maxval, "%Y/%m/%d").date()
             if value is not None:
-                value = datetime.datetime.strptime(value, '%Y-%m-%d').date()
-        elif typ == 'vtec_ps':
+                value = datetime.datetime.strptime(value, "%Y-%m-%d").date()
+        elif typ == "vtec_ps":
             # VTEC phenomena and significance
             defaults = {}
             # Only set a default value when the field is not optional
             if default is not None and not optional:
                 tokens = default.split(".")
-                if (len(tokens) == 2 and len(tokens[0]) == 2 and
-                        len(tokens[1]) == 1):
-                    defaults['phenomena'] = tokens[0]
-                    defaults['significance'] = tokens[1]
-            for label in ['phenomena', 'significance']:
+                if len(tokens) == 2 and len(tokens[0]) == 2 and len(tokens[1]) == 1:
+                    defaults["phenomena"] = tokens[0]
+                    defaults["significance"] = tokens[1]
+            for label in ["phenomena", "significance"]:
                 label2 = label + name
                 ctx[label2] = fdict.get(label2, defaults.get(label))
             continue
@@ -352,16 +369,16 @@ def exponential_backoff(func, *args, **kwargs):
     Args:
       _ebfactor (int,optional): Optional scale factor, allowing for faster test
     """
-    ebfactor = float(kwargs.pop('_ebfactor', 2))
+    ebfactor = float(kwargs.pop("_ebfactor", 2))
     msgs = []
     for i in range(5):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
-            msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, serr))
+            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, serr))
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
         except Exception as exp:
-            msgs.append("%s/5 %s traceback: %s" % (i+1, func.__name__, exp))
+            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, exp))
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))
@@ -375,7 +392,7 @@ def get_properties(cursor=None):
       dict: a dictionary of property names and values (both str)
     """
     if cursor is None:
-        pgconn = get_dbconn('mesosite', user='nobody')
+        pgconn = get_dbconn("mesosite", user="nobody")
         cursor = pgconn.cursor()
     cursor.execute("""SELECT propname, propvalue from properties""")
     res = {}
@@ -387,13 +404,19 @@ def get_properties(cursor=None):
 def set_property(propname, propvalue, pgconn=None):
     """Set a property"""
     if pgconn is None:
-        pgconn = get_dbconn('mesosite', user='mesonet')
+        pgconn = get_dbconn("mesosite", user="mesonet")
     cursor = pgconn.cursor()
-    cursor.execute("""DELETE from properties where propname = %s
-    """, (propname, ))
-    cursor.execute("""
+    cursor.execute(
+        """DELETE from properties where propname = %s
+    """,
+        (propname,),
+    )
+    cursor.execute(
+        """
         INSERT into properties(propname, propvalue) VALUES (%s, %s)
-    """, (propname, propvalue))
+    """,
+        (propname, propvalue),
+    )
     cursor.close()
     pgconn.commit()
 
@@ -462,6 +485,7 @@ def grid_bounds(lons, lats, bounds):
       [x0, y0, x1, y1]
     """
     import numpy as np
+
     x0 = 0
     x1 = -1
     y0 = 0
@@ -474,13 +498,13 @@ def grid_bounds(lons, lats, bounds):
         szy = len(lats)
     else:
         # Do 2-d work
-        diff = ((lons - bounds[0])**2 + (lats - bounds[1])**2)**0.5
+        diff = ((lons - bounds[0]) ** 2 + (lats - bounds[1]) ** 2) ** 0.5
         (lly, llx) = np.unravel_index(np.argmin(diff), lons.shape)
-        diff = ((lons - bounds[2])**2 + (lats - bounds[3])**2)**0.5
+        diff = ((lons - bounds[2]) ** 2 + (lats - bounds[3]) ** 2) ** 0.5
         (ury, urx) = np.unravel_index(np.argmin(diff), lons.shape)
-        diff = ((lons - bounds[0])**2 + (lats - bounds[3])**2)**0.5
+        diff = ((lons - bounds[0]) ** 2 + (lats - bounds[3]) ** 2) ** 0.5
         (uly, ulx) = np.unravel_index(np.argmin(diff), lons.shape)
-        diff = ((lons - bounds[2])**2 + (lats - bounds[1])**2)**0.5
+        diff = ((lons - bounds[2]) ** 2 + (lats - bounds[1]) ** 2) ** 0.5
         (lry, lrx) = np.unravel_index(np.argmin(diff), lons.shape)
         x0 = min([llx, ulx])
         x1 = max([lrx, urx])
@@ -488,5 +512,6 @@ def grid_bounds(lons, lats, bounds):
         y1 = max([uly, ury])
         (szy, szx) = lons.shape
 
-    return [int(i) for i in [max([0, x0]), max([0, y0]), min([szx, x1]),
-                             min([szy, y1])]]
+    return [
+        int(i) for i in [max([0, x0]), max([0, y0]), min([szx, x1]), min([szy, y1])]
+    ]

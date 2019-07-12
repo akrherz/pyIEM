@@ -4,28 +4,29 @@ import warnings
 import numpy as np
 from metpy.units import units, masked_array
 from pyiem import datatypes, meteorology
-warnings.simplefilter('ignore', RuntimeWarning)
+
+warnings.simplefilter("ignore", RuntimeWarning)
 
 
 def test_vectorized():
     """See that heatindex and windchill can do lists"""
-    temp = datatypes.temperature([0, 10], 'F')
-    sknt = datatypes.speed([30, 40], 'MPH')
-    val = meteorology.windchill(temp, sknt).value('F')
+    temp = datatypes.temperature([0, 10], "F")
+    sknt = datatypes.speed([30, 40], "MPH")
+    val = meteorology.windchill(temp, sknt).value("F")
     assert abs(val[0] - -24.50) < 0.01
 
-    t = datatypes.temperature([80.0, 90.0], 'F')
-    td = datatypes.temperature([70.0, 60.0], 'F')
+    t = datatypes.temperature([80.0, 90.0], "F")
+    td = datatypes.temperature([70.0, 60.0], "F")
     hdx = meteorology.heatindex(t, td)
     assert abs(hdx.value("F")[0] - 83.93) < 0.01
 
-    tmpf = np.array([80., 90.]) * units('degF')
-    dwpf = np.array([70., 60.]) * units('degF')
-    smps = np.array([10., 20.]) * units('meter per second')
+    tmpf = np.array([80.0, 90.0]) * units("degF")
+    dwpf = np.array([70.0, 60.0]) * units("degF")
+    smps = np.array([10.0, 20.0]) * units("meter per second")
     feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
     assert abs(feels.to(units("degF")).magnitude[0] - 83.15) < 0.01
 
-    tmpf = masked_array([80., np.nan], units('degF'), mask=[False, True])
+    tmpf = masked_array([80.0, np.nan], units("degF"), mask=[False, True])
     feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
     assert abs(feels.to(units("degF")).magnitude[0] - 83.15) < 0.01
     assert feels.mask[1]
@@ -33,43 +34,45 @@ def test_vectorized():
 
 def test_gdd_with_nans():
     """Can we properly deal with nan's and not emit warnings?"""
-    highs = np.ma.array([70, 80, np.nan, 90],
-                        mask=[False, False, True, False])
+    highs = np.ma.array([70, 80, np.nan, 90], mask=[False, False, True, False])
     lows = highs - 10
-    r = meteorology.gdd(datatypes.temperature(highs, 'F'),
-                        datatypes.temperature(lows, 'F'),
-                        50, 86)
+    r = meteorology.gdd(
+        datatypes.temperature(highs, "F"), datatypes.temperature(lows, "F"), 50, 86
+    )
     assert np.ma.is_masked(r[2])
 
 
 def test_gdd():
     """Growing Degree Days"""
-    r = meteorology.gdd(datatypes.temperature(86, 'F'),
-                        datatypes.temperature(50, 'F'),
-                        50, 86)
+    r = meteorology.gdd(
+        datatypes.temperature(86, "F"), datatypes.temperature(50, "F"), 50, 86
+    )
     assert r == 18
 
-    r = meteorology.gdd(datatypes.temperature(51, 'F'),
-                        datatypes.temperature(49, 'F'),
-                        50, 86)
+    r = meteorology.gdd(
+        datatypes.temperature(51, "F"), datatypes.temperature(49, "F"), 50, 86
+    )
     assert abs(r - 0.5) < 0.1
 
-    r = meteorology.gdd(datatypes.temperature(49, 'F'),
-                        datatypes.temperature(40, 'F'),
-                        50, 86)
+    r = meteorology.gdd(
+        datatypes.temperature(49, "F"), datatypes.temperature(40, "F"), 50, 86
+    )
     assert r == 0
 
-    r = meteorology.gdd(datatypes.temperature([86, 86], 'F'),
-                        datatypes.temperature([50, 50], 'F'),
-                        50, 86)
+    r = meteorology.gdd(
+        datatypes.temperature([86, 86], "F"),
+        datatypes.temperature([50, 50], "F"),
+        50,
+        86,
+    )
     assert r[0] == 18
     assert r[1] == 18
 
 
 def test_mixingratio():
     """Test the mixing ratio calculation"""
-    r = meteorology.mixing_ratio(datatypes.temperature(70, 'F'))
-    assert abs(r.value('KG/KG') - 0.016) < 0.001
+    r = meteorology.mixing_ratio(datatypes.temperature(70, "F"))
+    assert abs(r.value("KG/KG") - 0.016) < 0.001
 
 
 def test_sw():
@@ -85,32 +88,29 @@ def test_sw():
 def test_drct():
     """Conversion of u and v to direction"""
     r = meteorology.drct(
-        datatypes.speed(np.array([10, 20]), 'KT'),
-        datatypes.speed(np.array([10, 20]), 'KT')
+        datatypes.speed(np.array([10, 20]), "KT"),
+        datatypes.speed(np.array([10, 20]), "KT"),
     ).value("DEG")
     assert r[0] == 225
-    r = meteorology.drct(
-        datatypes.speed(-10, 'KT'),
-        datatypes.speed(10, 'KT')
-    ).value("DEG")
+    r = meteorology.drct(datatypes.speed(-10, "KT"), datatypes.speed(10, "KT")).value(
+        "DEG"
+    )
     assert r == 135
-    r = meteorology.drct(
-        datatypes.speed(-10, 'KT'),
-        datatypes.speed(-10, 'KT')
-    ).value("DEG")
+    r = meteorology.drct(datatypes.speed(-10, "KT"), datatypes.speed(-10, "KT")).value(
+        "DEG"
+    )
     assert r == 45
-    r = meteorology.drct(
-        datatypes.speed(10, 'KT'),
-        datatypes.speed(-10, 'KT')
-    ).value("DEG")
+    r = meteorology.drct(datatypes.speed(10, "KT"), datatypes.speed(-10, "KT")).value(
+        "DEG"
+    )
     assert r == 315
 
 
 def test_windchill():
     """Wind Chill Conversion"""
-    temp = datatypes.temperature(0, 'F')
-    sknt = datatypes.speed(30, 'MPH')
-    val = meteorology.windchill(temp, sknt).value('F')
+    temp = datatypes.temperature(0, "F")
+    sknt = datatypes.speed(30, "MPH")
+    val = meteorology.windchill(temp, sknt).value("F")
     assert abs(val - -24.50) < 0.01
 
 
@@ -125,58 +125,58 @@ def test_dewpoint_from_pq():
 def test_dewpoint():
     """ test out computation of dew point """
     for t0, r0, a0 in [[80, 80, 73.42], [80, 20, 35.87]]:
-        t = datatypes.temperature(t0, 'F')
-        rh = datatypes.humidity(r0, '%')
+        t = datatypes.temperature(t0, "F")
+        rh = datatypes.humidity(r0, "%")
         dwpk = meteorology.dewpoint(t, rh)
         assert abs(dwpk.value("F") - a0) < 0.01
 
 
 def test_heatindex():
-    ''' Test our heat index calculations '''
-    t = datatypes.temperature(80.0, 'F')
-    td = datatypes.temperature(70.0, 'F')
+    """ Test our heat index calculations """
+    t = datatypes.temperature(80.0, "F")
+    td = datatypes.temperature(70.0, "F")
     hdx = meteorology.heatindex(t, td)
     assert abs(hdx.value("F") - 83.93) < 0.01
 
-    t = datatypes.temperature(30.0, 'F')
+    t = datatypes.temperature(30.0, "F")
     hdx = meteorology.heatindex(t, td)
     assert abs(hdx.value("F") - 30.00) < 0.01
 
 
 def test_uv():
     """ Test calculation of uv wind components """
-    speed = datatypes.speed([10, ], 'KT')
-    mydir = datatypes.direction([0, ], 'DEG')
+    speed = datatypes.speed([10], "KT")
+    mydir = datatypes.direction([0], "DEG")
     u, v = meteorology.uv(speed, mydir)
-    assert u.value("KT") == 0.
-    assert v.value("KT") == -10.
+    assert u.value("KT") == 0.0
+    assert v.value("KT") == -10.0
 
-    speed = datatypes.speed([10, 20, 15], 'KT')
-    mydir = datatypes.direction([90, 180, 135], 'DEG')
+    speed = datatypes.speed([10, 20, 15], "KT")
+    mydir = datatypes.direction([90, 180, 135], "DEG")
     u, v = meteorology.uv(speed, mydir)
     assert u.value("KT")[0] == -10
-    assert v.value("KT")[1] == 20.
+    assert v.value("KT")[1] == 20.0
     assert abs(v.value("KT")[2] - 10.6) < 0.1
 
 
 def test_relh():
     """ Simple check of bad units in temperature """
-    tmp = datatypes.temperature(24, 'C')
-    dwp = datatypes.temperature(24, 'C')
+    tmp = datatypes.temperature(24, "C")
+    dwp = datatypes.temperature(24, "C")
     relh = meteorology.relh(tmp, dwp)
-    assert relh.value("%") == 100.
+    assert relh.value("%") == 100.0
 
-    tmp = datatypes.temperature(32, 'C')
-    dwp = datatypes.temperature(10, 'C')
+    tmp = datatypes.temperature(32, "C")
+    dwp = datatypes.temperature(10, "C")
     relh = meteorology.relh(tmp, dwp)
     assert abs(25.79 - relh.value("%")) < 0.01
 
-    tmp = datatypes.temperature(32, 'C')
-    dwp = datatypes.temperature(15, 'C')
+    tmp = datatypes.temperature(32, "C")
+    dwp = datatypes.temperature(15, "C")
     relh = meteorology.relh(tmp, dwp)
     assert abs(35.81 - relh.value("%")) < 0.01
 
-    tmp = datatypes.temperature(5, 'C')
-    dwp = datatypes.temperature(4, 'C')
+    tmp = datatypes.temperature(5, "C")
+    dwp = datatypes.temperature(4, "C")
     relh = meteorology.relh(tmp, dwp)
     assert abs(93.24 - relh.value("%")) < 0.01

@@ -13,7 +13,7 @@ from pyiem.util import exponential_backoff
 class FTPSession(object):
     """ Attempt to create some robustness and performance to FTPing """
 
-    def __init__(self, server, username, password, tmpdir='/tmp', timeout=60):
+    def __init__(self, server, username, password, tmpdir="/tmp", timeout=60):
         """Build a FTP session """
         self.conn = None
         self.server = server
@@ -26,7 +26,7 @@ class FTPSession(object):
         """Connect to FTP server """
         if self.conn is not None:
             return
-        logging.debug('Creating new connection to server %s', self.server)
+        logging.debug("Creating new connection to server %s", self.server)
         not_connected = True
         attempt = 1
         while not_connected and attempt < 6:
@@ -45,7 +45,7 @@ class FTPSession(object):
 
     def _reconnect(self):
         """ First attempt to shut down connection and then reconnect """
-        logging.debug('_reconnect() was called...')
+        logging.debug("_reconnect() was called...")
         try:
             self.conn.quit()
             self.conn.close()
@@ -63,19 +63,18 @@ class FTPSession(object):
             # Step 1 Split this big file into 14GB chunks, each file will have
             # suffix .aa then .ab then .ac etc
             basefn = os.path.basename(localfn)
-            cmd = "split --bytes=14000M %s %s/%s." % (localfn, self.tmpdir,
-                                                      basefn)
+            cmd = "split --bytes=14000M %s %s/%s." % (localfn, self.tmpdir, basefn)
             subprocess.call(cmd, shell=True, stderr=subprocess.PIPE)
             files = glob.glob("%s/%s.??" % (self.tmpdir, basefn))
             for filename in files:
                 suffix = filename.split(".")[-1]
-                self.conn.storbinary('STOR %s.%s' % (remotefn, suffix),
-                                     open(filename, 'rb'))
+                self.conn.storbinary(
+                    "STOR %s.%s" % (remotefn, suffix), open(filename, "rb")
+                )
                 os.unlink(filename)
         else:
-            logging.debug("_put '%s' to '%s'",
-                          localfn, remotefn)
-            self.conn.storbinary('STOR %s' % (remotefn, ), open(localfn, 'rb'))
+            logging.debug("_put '%s' to '%s'", localfn, remotefn)
+            self.conn.storbinary("STOR %s" % (remotefn,), open(localfn, "rb"))
         return True
 
     def close(self):
@@ -98,10 +97,10 @@ class FTPSession(object):
             return
         self.conn.cwd("/")
         for dirname in path.split("/"):
-            if dirname == '':
+            if dirname == "":
                 continue
             bah = []
-            self.conn.retrlines('NLST', bah.append)
+            self.conn.retrlines("NLST", bah.append)
             if dirname not in bah:
                 logging.debug("Creating directory '%s'", dirname)
                 self.conn.mkd(dirname)
@@ -125,8 +124,7 @@ class FTPSession(object):
             self._reconnect()
             res = exponential_backoff(self._put, path, localfn, remotefn)
             if not res:
-                logging.error("Double Failure to upload filename: '%s'",
-                              localfn)
+                logging.error("Double Failure to upload filename: '%s'", localfn)
                 return False
         return True
 
@@ -138,8 +136,14 @@ class FTPSession(object):
         return res
 
 
-def send2box(filenames, remote_path, remotenames=None,
-             ftpserver='ftp.box.com', tmpdir='/tmp', fs=None):
+def send2box(
+    filenames,
+    remote_path,
+    remotenames=None,
+    ftpserver="ftp.box.com",
+    tmpdir="/tmp",
+    fs=None,
+):
     """Send one or more files to CyBox
 
     Box has a filesize limit of 15 GB, so if we find any files larger than
@@ -160,13 +164,12 @@ def send2box(filenames, remote_path, remotenames=None,
     """
     credentials = netrc.netrc().hosts[ftpserver]
     if fs is None:
-        fs = FTPSession(ftpserver, credentials[0], credentials[2],
-                        tmpdir=tmpdir)
+        fs = FTPSession(ftpserver, credentials[0], credentials[2], tmpdir=tmpdir)
     if isinstance(filenames, str):
-        filenames = [filenames, ]
+        filenames = [filenames]
     if remotenames is None:
         remotenames = filenames
     if isinstance(remotenames, str):
-        remotenames = [remotenames, ]
+        remotenames = [remotenames]
     res = fs.put_files(remote_path, filenames, remotenames)
     return fs, res

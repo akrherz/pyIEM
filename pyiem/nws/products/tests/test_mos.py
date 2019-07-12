@@ -8,7 +8,7 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture
 def cursor():
     """Return a database cursor."""
-    return get_dbconn('mos').cursor()
+    return get_dbconn("mos").cursor()
 
 
 def test_180125_empty(cursor):
@@ -16,7 +16,7 @@ def test_180125_empty(cursor):
     utcnow = utc(2018, 1, 26, 1)
     prod = mosparser(get_test_file("MOS/MET_empty.txt"), utcnow=utcnow)
     assert len(prod.data) == 3
-    assert len(prod.data[0]['data'].keys()) == 21
+    assert len(prod.data[0]["data"].keys()) == 21
 
     inserts = prod.sql(cursor)
     assert inserts == 42
@@ -27,7 +27,7 @@ def test_parse(cursor):
     utcnow = utc(2017, 8, 12, 12)
     prod = mosparser(get_test_file("MOS/METNC1.txt"), utcnow=utcnow)
     assert len(prod.data) == 4
-    assert len(prod.data[0]['data'].keys()) == 21
+    assert len(prod.data[0]["data"].keys()) == 21
 
     inserts = prod.sql(cursor)
     assert inserts == (4 * 21)
@@ -52,10 +52,13 @@ def test_nbm(cursor):
     inserts = prod.sql(cursor)
     assert inserts == (2 * 21)
 
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT count(*), max(ftime) from t2018
         where model = 'NBS' and station = 'KALM' and runtime = %s
-    """, (utcnow, ))
+    """,
+        (utcnow,),
+    )
     row = cursor.fetchone()
     assert row[0] == 21
     assert row[1] == utc(2018, 11, 10, 9)

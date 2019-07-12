@@ -9,7 +9,7 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture()
 def dbcursor():
     """Get a database cursor."""
-    return get_dbconn('asos').cursor()
+    return get_dbconn("asos").cursor()
 
 
 def test_process_metar():
@@ -22,13 +22,15 @@ def test_process_metar():
 
 def test_171024():
     """Bad parse for ALO"""
-    msg = ("0088999999949101950010113005+42550-092400SAO  +026599999V02"
-           "099999000050000049N000000599+00224+00175999999EQDN01 00000"
-           "JPWTH 1QNNG11 1 00000K11 1 00035L11 1 00000N11 1 00000S11 "
-           "1 00036W11 1 00000")
-    data = parser(msg, 'ALO', add_metar=True)
+    msg = (
+        "0088999999949101950010113005+42550-092400SAO  +026599999V02"
+        "099999000050000049N000000599+00224+00175999999EQDN01 00000"
+        "JPWTH 1QNNG11 1 00000K11 1 00035L11 1 00000N11 1 00000S11 "
+        "1 00036W11 1 00000"
+    )
+    data = parser(msg, "ALO", add_metar=True)
     ans = "ALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
-    assert data['metar'] == ans
+    assert data["metar"] == ans
 
 
 def test_badtemp():
@@ -38,10 +40,11 @@ def test_badtemp():
         "V0201401N004612200019N0112651N1+99999+99999999999ADDGA1021"
         "+009609999GF102991999999999999999999MA1100911999999MW1001"
         "REMMET045EGPC 190820Z 14009KT 9999 FEW032 35/33 Q1009;"
-        "EQDQ01+003503ATOT  Q02+003303ATOD  Q03+000000PRSWM2")
-    data = parser(msg, 'EGPC', add_metar=True)
+        "EQDQ01+003503ATOT  Q02+003303ATOD  Q03+000000PRSWM2"
+    )
+    data = parser(msg, "EGPC", add_metar=True)
     ans = "EGPC 190820Z AUTO 14009KT 7SM A2980 RMK IEM_DS3505"
-    assert data['metar'] == ans
+    assert data["metar"] == ans
 
 
 def test_altimeter():
@@ -53,11 +56,11 @@ def test_altimeter():
         "45980 /2519 10067 20035 39861 49905 51020 333 8//99 90710 "
         "91128="
     )
-    data = parser(msg, 'EGPC', add_metar=True)
+    data = parser(msg, "EGPC", add_metar=True)
     ans = (
-        "EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK "
-        "SLP905 T00670035 51020 IEM_DS3505")
-    assert data['metar'] == ans
+        "EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK " "SLP905 T00670035 51020 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_6hour_temp(dbcursor):
@@ -74,15 +77,16 @@ def test_6hour_temp(dbcursor):
         "35014G23KT 10SM CLR 25/21 A2983 RMK AO2 SLP092 60000 "
         "T02500211 10272 20250 55001"
     )
-    data = parser(msg, 'KAMW', add_metar=True)
+    data = parser(msg, "KAMW", add_metar=True)
     # db schema for testing only goes to 2015
-    data['valid'] = utc(2011, 1, 12, 23, 53)
+    data["valid"] = utc(2011, 1, 12, 23, 53)
     ans = (
         "KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 "
-        "RMK 60000 SLP092 T02500211 10272 20250 55001 IEM_DS3505")
-    assert data['metar'] == ans
+        "RMK 60000 SLP092 T02500211 10272 20250 55001 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
-    assert sql(dbcursor, 'AMW', data) == 1
+    assert sql(dbcursor, "AMW", data) == 1
 
 
 def test_precip_6group():
@@ -104,12 +108,14 @@ def test_precip_6group():
         "ALQDS RAE00B24 TSE0155B27 SLP119 P0080 60232 "
         "T02110211 53037EQDQ01  05898PRCP03"
     )
-    data = parser(msg, 'KAMW', add_metar=True)
+    data = parser(msg, "KAMW", add_metar=True)
     # NOTE, this should be 0.80 instead of 0.81 !?!?!, NCDC wrong?
-    ans = ("KAMW 120253Z AUTO 36012KT 1 1/4SM +TSRA BR "
-           "SCT005 SCT009 OVC014 21/21 A2991 RMK P0081 60232 "
-           "SLP119 T02110211 53037 IEM_DS3505")
-    assert data['metar'] == ans
+    ans = (
+        "KAMW 120253Z AUTO 36012KT 1 1/4SM +TSRA BR "
+        "SCT005 SCT009 OVC014 21/21 A2991 RMK P0081 60232 "
+        "SLP119 T02110211 53037 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_metar():
@@ -125,10 +131,12 @@ def test_metar():
         "099065REMMET09501/01/16 01:13:02 SPECI KAMW 010713Z "
         "29013KT 10SM BKN017 OVC033 M05/M08 A3028 RMK AO2 T10501083"
     )
-    data = parser(msg, 'KAMW', add_metar=True)
-    ans = ("KAMW 010713Z AUTO 29013KT 10SM BKN017 OVC033 "
-           "M05/M08 A3028 RMK T10501083 IEM_DS3505")
-    assert data['metar'] == ans
+    data = parser(msg, "KAMW", add_metar=True)
+    ans = (
+        "KAMW 010713Z AUTO 29013KT 10SM BKN017 OVC033 "
+        "M05/M08 A3028 RMK T10501083 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_metar2():
@@ -141,11 +149,14 @@ def test_metar2():
         "01000095GA1085+005185999GD14991+0051859GE19MSL   +99999+"
         "99999GF199999999999005181999999MA1102545099065MD1590049+"
         "9999REMMET10101/01/16 02:53:02 METAR KAMW 010853Z 30013KT "
-        "10SM OVC017 M05/M08 A3028 RMK AO2 SLP266 T10501083 55004")
-    data = parser(msg, 'KAMW', add_metar=True)
-    ans = ("KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
-           "A3028 RMK SLP266 T10501083 55004 IEM_DS3505")
-    assert data['metar'] == ans
+        "10SM OVC017 M05/M08 A3028 RMK AO2 SLP266 T10501083 55004"
+    )
+    data = parser(msg, "KAMW", add_metar=True)
+    ans = (
+        "KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
+        "A3028 RMK SLP266 T10501083 55004 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_171023():
@@ -155,15 +166,17 @@ def test_171023():
         "V0209991C00001066001CN0750001N9+00901+00801101131ADDAJ10000"
         "9199999999AY111999GA1011+006009089GA2031+036009039GA3061+"
         "066009029GF107991021081008001031061MD1710131+9999MW1021WG"
-        "199999999999REMSYN02920310 70307 81820 83362 86272")
-    data = parser(msg, 'KAMW', add_metar=True)
+        "199999999999REMSYN02920310 70307 81820 83362 86272"
+    )
+    data = parser(msg, "KAMW", add_metar=True)
     assert data is not None
 
     msg = (
         "0067030750999991999102018004+58450-003080FM-12+0039EGPC "
         "V02099999999999999999N9999999N1+99999+99999999999REMSYN058"
-        "AAXX  20184 03075 46/// ///// 1//// 2//// 4//// 5//// 333;")
-    data = parser(msg, 'EGPC', add_metar=True)
+        "AAXX  20184 03075 46/// ///// 1//// 2//// 4//// 5//// 333;"
+    )
+    data = parser(msg, "EGPC", add_metar=True)
     assert data is not None
 
 
@@ -173,20 +186,22 @@ def test_basic():
         "0114010010999991988010100004+70933-008667FM-12+0009ENJA "
         "V0203301N01851220001CN0030001N9-02011-02211100211ADDAA10"
         "6000091AG14000AY131061AY221061GF102991021051008001001001"
-        "MD1710141+9999MW1381OA149902631REMSYN011333   91151")
-    data = parser(msg, 'ENJA', add_metar=True)
+        "MD1710141+9999MW1381OA149902631REMSYN011333   91151"
+    )
+    data = parser(msg, "ENJA", add_metar=True)
     assert data is not None
-    ans = ('ENJA 010000Z AUTO 33036KT 2SM '
-           'M20/M22 RMK SLP021 T12011221 57014 IEM_DS3505')
-    assert data['metar'] == ans
+    ans = (
+        "ENJA 010000Z AUTO 33036KT 2SM " "M20/M22 RMK SLP021 T12011221 57014 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_read():
     """Can we process an entire file?"""
     for line in get_test_file("NCEI/DS3505.txt", fponly=True):
-        data = parser(line.decode('ascii').strip(), 'ENJA')
+        data = parser(line.decode("ascii").strip(), "ENJA")
         assert data is not None
 
     for line in get_test_file("NCEI/DS3505_KAMW_2016.txt", fponly=True):
-        data = parser(line.decode('ascii').strip(), 'KAMW')
+        data = parser(line.decode("ascii").strip(), "KAMW")
         assert data is not None

@@ -18,8 +18,7 @@ __version__ = "$Revision: 1.1 $"
 
 _open_parens = r"[ \t]*(\([ \t]*)*"
 _close_parens = r"[ \t]*(\)[ \t]*)+"
-rx_point_list = re.compile(_open_parens + r"(?P<coords>[^\)]+)" +
-                           _close_parens + ",?")
+rx_point_list = re.compile(_open_parens + r"(?P<coords>[^\)]+)" + _close_parens + ",?")
 
 
 def parse_coordinate_lists(wkt):
@@ -40,7 +39,7 @@ def parse_coordinate_lists(wkt):
                 x, y = list(map(float, pair.split()))[:2]
                 poly.append((x, y))
             geometry.append(poly)
-            wkt = wkt[match.end(0):].strip()
+            wkt = wkt[match.end(0) :].strip()
         else:
             raise ValueError("Invalid well-known-text (WKT) syntax")
     return geometry
@@ -82,7 +81,7 @@ _function_map = [
     ("MULTILINESTRING", parse_multilinestring),
     ("LINESTRING", parse_linestring),
     ("POINT", parse_point),
-    ]
+]
 
 
 def convert_well_known_text(wkt):
@@ -111,5 +110,5 @@ def convert_well_known_text(wkt):
         else:
             for geotype, function in _function_map:
                 if part.startswith(geotype):
-                    return function(part[len(geotype):])
+                    return function(part[len(geotype) :])
             raise ValueError("Unsupported WKT-part %s" % repr(part[:20]))

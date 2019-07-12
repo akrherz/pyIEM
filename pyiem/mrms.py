@@ -11,17 +11,17 @@ import pytz
 import requests
 import numpy as np
 
-WEST = -130.
-EAST = -60.
-NORTH = 55.
-SOUTH = 20.
+WEST = -130.0
+EAST = -60.0
+NORTH = 55.0
+SOUTH = 20.0
 XAXIS = np.arange(WEST, EAST, 0.01)
 YAXIS = np.arange(SOUTH, NORTH, 0.01)
 
 
 def is_gzipped(text):
     """Check that we have gzipped content"""
-    return text[:2] == b'\x1f\x8b'
+    return text[:2] == b"\x1f\x8b"
 
 
 def fetch(product, valid, tmpdir="/mesonet/tmp"):
@@ -37,21 +37,23 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
       valid(datetime): Datetime object for desired timestamp
       tmpdir(str,optional): location to check/place the downloaded file
     """
-    fn = "%s_00.00_%s00.grib2.gz" % (product,
-                                     valid.strftime("%Y%m%d-%H%M"))
+    fn = "%s_00.00_%s00.grib2.gz" % (product, valid.strftime("%Y%m%d-%H%M"))
     tmpfn = "%s/%s" % (tmpdir, fn)
     # Option 1, we have this file already in cache!
     if os.path.isfile(tmpfn):
         return tmpfn
     # Option 2, go fetch it from mtarchive
-    uri = ("http://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s"
-           ) % (valid.strftime("%Y/%m/%d"), product, fn)
+    uri = ("http://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
+        valid.strftime("%Y/%m/%d"),
+        product,
+        fn,
+    )
     try:
         req = requests.get(uri, timeout=30)
     except:
         req = None
     if req and req.status_code == 200 and is_gzipped(req.content):
-        o = open(tmpfn, 'wb')
+        o = open(tmpfn, "wb")
         o.write(req.content)
         o.close()
         return tmpfn
@@ -63,15 +65,18 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         # Can't do option 3!
         return None
     # Loop over all IDP data centers
-    for center in ['', '-bldr', '-cprk']:
-        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s"
-               ) % (center, product, fn)
+    for center in ["", "-bldr", "-cprk"]:
+        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s") % (
+            center,
+            product,
+            fn,
+        )
         try:
             req = requests.get(uri, timeout=30)
         except:
             req = None
         if req and req.status_code == 200 and is_gzipped(req.content):
-            o = open(tmpfn, 'wb')
+            o = open(tmpfn, "wb")
             o.write(req.content)
             o.close()
             return tmpfn
@@ -88,23 +93,23 @@ def make_colorramp():
     for b in range(0, 37):
         c[b, 2] = 255
     for b in range(37, 77):
-        c[b, 2] = (77-b)*6
+        c[b, 2] = (77 - b) * 6
     for b in range(160, 196):
-        c[b, 2] = (b-160)*6
+        c[b, 2] = (b - 160) * 6
     for b in range(196, 256):
         c[b, 2] = 254
     # Ramp Green up
     for g in range(0, 37):
-        c[g, 1] = g*6
+        c[g, 1] = g * 6
     for g in range(37, 116):
         c[g, 1] = 254
     for g in range(116, 156):
-        c[g, 1] = (156-g)*6
+        c[g, 1] = (156 - g) * 6
     for g in range(196, 256):
-        c[g, 1] = (g-196)*4
+        c[g, 1] = (g - 196) * 4
     # and Red
     for r in range(77, 117):
-        c[r, 0] = (r-77)*6.
+        c[r, 0] = (r - 77) * 6.0
     for r in range(117, 256):
         c[r, 0] = 254
 
@@ -116,43 +121,61 @@ def make_colorramp():
 
 
 def reader(fn):
-    ''' Return metadata and the data '''
-    fp = gzip.open(fn, 'rb')
+    """ Return metadata and the data """
+    fp = gzip.open(fn, "rb")
     metadata = {}
-    (year, month, day, hour, minute, second, nx, ny, nz, _, _, _, _,
-     _, _, _, _, ul_lon_cc, ul_lat_cc, _, scale_lon, scale_lat,
-     grid_scale) = struct.unpack('9i4c10i', fp.read(80))
+    (
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        nx,
+        ny,
+        nz,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        _,
+        ul_lon_cc,
+        ul_lat_cc,
+        _,
+        scale_lon,
+        scale_lat,
+        grid_scale,
+    ) = struct.unpack("9i4c10i", fp.read(80))
 
-    metadata['ul_lon_cc'] = ul_lon_cc / float(scale_lon)
-    metadata['ul_lat_cc'] = ul_lat_cc / float(scale_lat)
+    metadata["ul_lon_cc"] = ul_lon_cc / float(scale_lon)
+    metadata["ul_lat_cc"] = ul_lat_cc / float(scale_lat)
     # Calculate
-    metadata['ll_lon_cc'] = metadata['ul_lon_cc']
-    metadata['ll_lat_cc'] = metadata['ul_lat_cc'] - ((scale_lat /
-                                                      float(grid_scale)) *
-                                                     (ny - 1))
-    metadata['ll_lat'] = metadata['ll_lat_cc'] - (scale_lat /
-                                                  float(grid_scale)) / 2.0
-    metadata['ul_lat'] = metadata['ul_lat_cc'] - (scale_lat /
-                                                  float(grid_scale)) / 2.0
-    metadata['ll_lon'] = metadata['ll_lon_cc'] - (scale_lon /
-                                                  float(grid_scale)) / 2.0
-    metadata['ul_lon'] = metadata['ul_lon_cc'] - (scale_lon /
-                                                  float(grid_scale)) / 2.0
+    metadata["ll_lon_cc"] = metadata["ul_lon_cc"]
+    metadata["ll_lat_cc"] = metadata["ul_lat_cc"] - (
+        (scale_lat / float(grid_scale)) * (ny - 1)
+    )
+    metadata["ll_lat"] = metadata["ll_lat_cc"] - (scale_lat / float(grid_scale)) / 2.0
+    metadata["ul_lat"] = metadata["ul_lat_cc"] - (scale_lat / float(grid_scale)) / 2.0
+    metadata["ll_lon"] = metadata["ll_lon_cc"] - (scale_lon / float(grid_scale)) / 2.0
+    metadata["ul_lon"] = metadata["ul_lon_cc"] - (scale_lon / float(grid_scale)) / 2.0
 
-    metadata['valid'] = datetime.datetime(year, month, day, hour, minute,
-                                          second).replace(
-                                                tzinfo=pytz.timezone("UTC"))
+    metadata["valid"] = datetime.datetime(
+        year, month, day, hour, minute, second
+    ).replace(tzinfo=pytz.timezone("UTC"))
 
-    struct.unpack('%si' % (nz,), fp.read(nz*4))  # levels
-    struct.unpack('i', fp.read(4))  # z_scale
-    struct.unpack('10i', fp.read(40))  # bogus
-    struct.unpack('20c', fp.read(20))  # varname
-    metadata['unit'] = struct.unpack('6c', fp.read(6))
-    var_scale, _, num_radars = struct.unpack('3i', fp.read(12))
-    struct.unpack('%sc' % (num_radars*4,), fp.read(num_radars*4))  # rad_list
+    struct.unpack("%si" % (nz,), fp.read(nz * 4))  # levels
+    struct.unpack("i", fp.read(4))  # z_scale
+    struct.unpack("10i", fp.read(40))  # bogus
+    struct.unpack("20c", fp.read(20))  # varname
+    metadata["unit"] = struct.unpack("6c", fp.read(6))
+    var_scale, _, num_radars = struct.unpack("3i", fp.read(12))
+    struct.unpack("%sc" % (num_radars * 4,), fp.read(num_radars * 4))  # rad_list
     # print unit, var_scale, miss_val
     sz = nx * ny * nz
-    data = struct.unpack('%sh' % (sz,), fp.read(sz*2))
+    data = struct.unpack("%sh" % (sz,), fp.read(sz * 2))
     data = np.reshape(np.array(data), (ny, nx)) / float(var_scale)
     # ma.masked_equal(data, miss_val)
     # print nx, ny, nz, levels, rad_list, len(data), data[1000], var_scale
@@ -163,9 +186,18 @@ def reader(fn):
 
 
 def get_fn(prefix, now, tile):
-    ''' Get the filename for this timestamp and tile '''
-    return now.strftime(('/mnt/a4/data/%Y/%m/%d/mrms/tile' + str(tile) +
-                         '/'+prefix+'/'+prefix+'.%Y%m%d.%H%M00.gz'))
+    """ Get the filename for this timestamp and tile """
+    return now.strftime(
+        (
+            "/mnt/a4/data/%Y/%m/%d/mrms/tile"
+            + str(tile)
+            + "/"
+            + prefix
+            + "/"
+            + prefix
+            + ".%Y%m%d.%H%M00.gz"
+        )
+    )
 
 
 def write_worldfile(filename):
@@ -174,11 +206,14 @@ def write_worldfile(filename):
     Args:
       filename (str): filename to write the world file information to
     """
-    output = open(filename, 'w')
-    output.write("""0.01
+    output = open(filename, "w")
+    output.write(
+        """0.01
 0.00
 0.00
 -0.01
 %s
-%s""" % (WEST, NORTH))
+%s"""
+        % (WEST, NORTH)
+    )
     output.close()

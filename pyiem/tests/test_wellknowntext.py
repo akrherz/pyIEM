@@ -28,7 +28,7 @@ def test_wkt():
 
     wkt = """POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))"""
     geom = wellknowntext.convert_well_known_text(wkt)
-    assert abs(Polygon(geom[0]).area - 550.) < 0.1
+    assert abs(Polygon(geom[0]).area - 550.0) < 0.1
 
     wkt = """POLYGON q((30 10, 40 40, 20 40, 10 20, 30 10))q"""
     with pytest.raises(ValueError):
@@ -39,4 +39,4 @@ def test_wkt():
         wellknowntext.convert_well_known_text(wkt)
 
     with pytest.raises(ValueError):
-        wellknowntext.convert_well_known_text('')
+        wellknowntext.convert_well_known_text("")

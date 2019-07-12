@@ -16,21 +16,45 @@ from pyiem.nws.product import TextProduct
 from pyiem.util import utc
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
-CONUS = {'line': None, 'poly': None}
-DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])",
-                   re.IGNORECASE)
+CONUS = {"line": None, "poly": None}
+DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])", re.IGNORECASE)
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 
 THRESHOLD2TEXT = {
-    'MRGL': 'Marginal', 'SLGT': "Slight", 'ENH': 'Enhanced',
-    'MDT': "Moderate", 'HIGH': 'High',
-    'IDRT': 'Isolated Dry Thunderstorm',
-    'SDRT': 'Scattered Dry Thunderstorm',
-    'ELEV': "Elevated", 'CRIT': 'Critical', 'EXTM': 'Extreme'}
-THRESHOLD_ORDER = ['0.02', '0.05', '0.10', '0.15', '0.25',
-                   '0.30', '0.35', '0.40', '0.45', '0.60',
-                   'TSTM', 'MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH',
-                   'IDRT', 'SDRT', 'ELEV', 'CRIT', 'EXTM']
+    "MRGL": "Marginal",
+    "SLGT": "Slight",
+    "ENH": "Enhanced",
+    "MDT": "Moderate",
+    "HIGH": "High",
+    "IDRT": "Isolated Dry Thunderstorm",
+    "SDRT": "Scattered Dry Thunderstorm",
+    "ELEV": "Elevated",
+    "CRIT": "Critical",
+    "EXTM": "Extreme",
+}
+THRESHOLD_ORDER = [
+    "0.02",
+    "0.05",
+    "0.10",
+    "0.15",
+    "0.25",
+    "0.30",
+    "0.35",
+    "0.40",
+    "0.45",
+    "0.60",
+    "TSTM",
+    "MRGL",
+    "SLGT",
+    "ENH",
+    "MDT",
+    "HIGH",
+    "IDRT",
+    "SDRT",
+    "ELEV",
+    "CRIT",
+    "EXTM",
+]
 
 
 def compute_times(afos, issue, expire, day):
@@ -43,9 +67,9 @@ def compute_times(afos, issue, expire, day):
       issue (datetime)
       expire (datetime)
     """
-    if afos not in ['PTSD48', 'PFWF38']:
+    if afos not in ["PTSD48", "PFWF38"]:
         return issue, expire
-    baseday = 3 if afos == 'PFWF38' else 4
+    baseday = 3 if afos == "PFWF38" else 4
     issue = issue + datetime.timedelta(days=(day - baseday))
     return issue, issue + datetime.timedelta(hours=24)
 
@@ -55,22 +79,23 @@ def get_day(text):
     search = DAYRE.search(text)
     if search is None:
         return None
-    return int(search.groupdict()['day'])
+    return int(search.groupdict()["day"])
 
 
 def load_conus_data(valid):
     """ Load up the conus datafile for our perusal """
     fn = "%s/../../data/conus_marine_bnds%s.txt" % (
         os.path.dirname(__file__),
-        "_pre190509" if valid < CONUS_BASETIME else '')
+        "_pre190509" if valid < CONUS_BASETIME else "",
+    )
     lons = []
     lats = []
     for line in open(fn):
         tokens = line.split(",")
         lons.append(float(tokens[0]))
         lats.append(float(tokens[1]))
-    CONUS['line'] = np.column_stack([lons, lats])
-    CONUS['poly'] = Polygon(CONUS['line'])
+    CONUS["line"] = np.column_stack([lons, lats])
+    CONUS["poly"] = Polygon(CONUS["line"])
 
 
 def get_segments_from_text(text):
@@ -83,8 +108,8 @@ def get_segments_from_text(text):
         lat = float(token[:4]) / 100.0
         lon = 0 - (float(token[-4:]) / 100.0)
         if lon > -30:
-            lon -= 100.
-        if token == '99999999':
+            lon -= 100.0
+        if token == "99999999":
             segments.append(pts)
             pts = []
         else:
@@ -106,11 +131,11 @@ def clean_segment(segment):
     """
     # Intersect this segment with the CONUS, if we get one segment back, done
     ls = LineString(segment)
-    newls = ls.intersection(CONUS['poly'])
+    newls = ls.intersection(CONUS["poly"])
     if newls.is_empty:
         print("     intersection yielded empty geom, uh oh")
         return segment
-    if newls.geom_type == 'LineString':
+    if newls.geom_type == "LineString":
         print("     segment intersection with CONUS yielded one segment")
         return list(zip(*newls.xy))
 
@@ -119,8 +144,8 @@ def clean_segment(segment):
     segment[-1] = [newls.geoms[-1].xy[0][-1], newls.geoms[-1].xy[1][-1]]
     # run the intersection again!
     ls = LineString(segment)
-    newls = ls.intersection(CONUS['poly'])
-    if newls.geom_type == 'LineString':
+    newls = ls.intersection(CONUS["poly"])
+    if newls.geom_type == "LineString":
         print("     trimmed segment intersection with CONUS yielded one seg")
         return list(zip(*newls.xy))
 
@@ -145,36 +170,59 @@ def str2multipolygon(s):
     segments = get_segments_from_text(s)
 
     # Simple case whereby the segment is its own circle, thank goodness
-    if (len(segments) == 1 and
-            segments[0][0][0] == segments[0][-1][0] and
-            segments[0][0][1] == segments[0][-1][1]):
-        print('Single closed polygon found, done and done')
+    if (
+        len(segments) == 1
+        and segments[0][0][0] == segments[0][-1][0]
+        and segments[0][0][1] == segments[0][-1][1]
+    ):
+        print("Single closed polygon found, done and done")
         return MultiPolygon([Polygon(segments[0])])
 
     # Slightly bad line-work, whereby the start and end points are very close
     # to each other
-    if (len(segments) == 1 and
-        ((segments[0][0][0] - segments[0][-1][0])**2 +
-         (segments[0][0][1] - segments[0][-1][1])**2)**0.5 < 0.05):
-        print(("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)"
-               ) % (segments[0][0][0], segments[0][0][1],
-                    segments[0][-1][0], segments[0][-1][1]))
+    if (
+        len(segments) == 1
+        and (
+            (segments[0][0][0] - segments[0][-1][0]) ** 2
+            + (segments[0][0][1] - segments[0][-1][1]) ** 2
+        )
+        ** 0.5
+        < 0.05
+    ):
+        print(
+            ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)")
+            % (
+                segments[0][0][0],
+                segments[0][0][1],
+                segments[0][-1][0],
+                segments[0][-1][1],
+            )
+        )
         segments[0][-1] = segments[0][0]
         return MultiPolygon([Polygon(segments[0])])
 
     # We start with just a conus polygon and we go from here, down the rabbit
     # hole
-    polys = [copy.deepcopy(CONUS['poly']), ]
+    polys = [copy.deepcopy(CONUS["poly"])]
 
     for i, segment in enumerate(segments):
-        print(('  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)'
-               ) % (i+1, len(segments), len(segment), segment[0][0],
-                    segment[0][1], segment[-1][0], segment[-1][1]))
+        print(
+            ("  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)")
+            % (
+                i + 1,
+                len(segments),
+                len(segment),
+                segment[0][0],
+                segment[0][1],
+                segment[-1][0],
+                segment[-1][1],
+            )
+        )
         if segment[0] == segment[-1] and len(segment) > 2:
-            print('     segment %s is closed polygon!' % (i,))
+            print("     segment %s is closed polygon!" % (i,))
             lr = LinearRing(LineString(segment))
             if not lr.is_ccw:
-                print('     polygon is counter-clockwise (exterior)')
+                print("     polygon is counter-clockwise (exterior)")
                 polys.insert(0, Polygon(segment))
                 continue
             print("     polygon is clockwise (interior), computing which")
@@ -186,15 +234,21 @@ def str2multipolygon(s):
                     newp = Polygon(polys[j].exterior, interiors)
                     if newp.is_valid:
                         polys[j] = newp
-                        print(("     polygon is interior to polys #%s, "
-                               "area now %.2f") % (j, polys[j].area))
+                        print(
+                            ("     polygon is interior to polys #%s, " "area now %.2f")
+                            % (j, polys[j].area)
+                        )
                     else:
-                        raise Exception(('Adding interior polygon resulted '
-                                         'in an invalid geometry, aborting'))
+                        raise Exception(
+                            (
+                                "Adding interior polygon resulted "
+                                "in an invalid geometry, aborting"
+                            )
+                        )
                     found = True
                     break
             if not found:
-                print('      ERROR: did not find intersection!')
+                print("      ERROR: did not find intersection!")
             continue
 
         # Attempt to 'clean' this string against the CONUS Polygon
@@ -218,86 +272,97 @@ def str2multipolygon(s):
                 # is left of the pie
                 (x, y) = poly.exterior.xy
                 pie = np.array(list(zip(x, y)))
-                distance = ((pie[:, 0] - line[q, 0])**2 +
-                            (pie[:, 1] - line[q, 1])**2)**.5
+                distance = (
+                    (pie[:, 0] - line[q, 0]) ** 2 + (pie[:, 1] - line[q, 1]) ** 2
+                ) ** 0.5
                 idx1 = np.argmin(distance) - 1
                 idx1 = idx1 if idx1 > -1 else 0
-                distance = ((pie[:, 0] - line[0 - (q+1), 0])**2 +
-                            (pie[:, 1] - line[0 - (q+1), 1])**2)**.5
+                distance = (
+                    (pie[:, 0] - line[0 - (q + 1), 0]) ** 2
+                    + (pie[:, 1] - line[0 - (q + 1), 1]) ** 2
+                ) ** 0.5
                 idx2 = np.argmin(distance) + 1
                 # if idx1 is one less than idx2, we likely crosssed streams
                 # unintentionally, so we hack around it
                 if (idx2 - idx1) == 1:
-                    print('    hack idx2 crossed idx1, reverting hack')
+                    print("    hack idx2 crossed idx1, reverting hack")
                     idx2 -= 1
                     idx1 += 1
                 idx2 = idx2 if idx2 > -1 else 0
 
                 sz = np.shape(pie)[0]
-                print(('     Q:%s computed intersections '
-                       'idx1: %s/%s idx2: %s/%s'
-                       ) % (q, idx1, sz, idx2, sz))
+                print(
+                    ("     Q:%s computed intersections " "idx1: %s/%s idx2: %s/%s")
+                    % (q, idx1, sz, idx2, sz)
+                )
                 if idx1 < idx2:
-                    print(('     CASE 1: idx1:%s idx2:%s Crosses start finish'
-                           ) % (idx1, idx2))
+                    print(
+                        ("     CASE 1: idx1:%s idx2:%s Crosses start finish")
+                        % (idx1, idx2)
+                    )
                     # We we piece the puzzle together!
                     tmpline = np.concatenate([line, pie[idx2:]])
                     tmpline = np.concatenate([tmpline, pie[:idx1]])
                     if Polygon(tmpline, polys[j].interiors).is_valid:
                         pie = tmpline
                         polys[j] = Polygon(pie, polys[j].interiors)
-                        print(('     replacing polygon index: %s area: %.2f'
-                               ) % (j, polys[j].area))
+                        print(
+                            ("     replacing polygon index: %s area: %.2f")
+                            % (j, polys[j].area)
+                        )
                     else:
                         continue
                 elif idx1 > idx2:
-                    print('     CASE 2 idx1:%s idx2:%s' % (idx1, idx2))
+                    print("     CASE 2 idx1:%s idx2:%s" % (idx1, idx2))
                     tmpline = np.concatenate([line, pie[idx2:idx1]])
                     newpoly = Polygon(tmpline)
                     if not newpoly.is_valid:
                         print("    newpolygon is not valid, buffer(0) called ")
                         newpoly = newpoly.buffer(0)
                     polys.append(newpoly)
-                    print(("     + adding polygon index: %s area: %.2f "
-                           "isvalid: %s"
-                           ) % (len(polys) - 1, polys[-1].area,
-                                polys[-1].is_valid))
+                    print(
+                        ("     + adding polygon index: %s area: %.2f " "isvalid: %s")
+                        % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
+                    )
                 # It is possible that our line start and end points are closest
                 # to the same point on the pie.
                 else:
                     # just inject the point into the line
-                    tmpline = np.concatenate([line, [pie[idx2], ]])
+                    tmpline = np.concatenate([line, [pie[idx2]]])
                     newpoly = Polygon(tmpline)
                     if not newpoly.is_valid:
                         print("    newpolygon is not valid, buffer(0) called ")
                         newpoly = newpoly.buffer(0)
                     polys.append(newpoly)
-                    print(("     + adding polygon index: %s area: %.2f "
-                           "isvalid: %s"
-                           ) % (len(polys) - 1, polys[-1].area,
-                                polys[-1].is_valid))
+                    print(
+                        ("     + adding polygon index: %s area: %.2f " "isvalid: %s")
+                        % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
+                    )
                 print("     breaking out of q loop")
                 break
 
         if not found:
-            print('     segment did not intersect')
+            print("     segment did not intersect")
 
     res = []
-    print(('  Resulted in len(polys): %s, now quality controlling'
-           ) % (len(polys),))
+    print(("  Resulted in len(polys): %s, now quality controlling") % (len(polys),))
     for i, poly in enumerate(polys):
         if not poly.is_valid:
-            print('     ERROR: polygon %s is invalid!' % (i,))
+            print("     ERROR: polygon %s is invalid!" % (i,))
             continue
-        if poly.area == CONUS['poly'].area:
-            print('     polygon %s is just CONUS, skipping' % (i,))
+        if poly.area == CONUS["poly"].area:
+            print("     polygon %s is just CONUS, skipping" % (i,))
             continue
-        print('     polygon: %s has area: %s' % (i, poly.area))
+        print("     polygon: %s has area: %s" % (i, poly.area))
         res.append(poly)
     if not res:
-        raise Exception(("Processed no geometries, this is a bug!\n"
-                         "  s is %s\n"
-                         "  segments is %s" % (repr(s), repr(segments))))
+        raise Exception(
+            (
+                "Processed no geometries, this is a bug!\n"
+                "  s is %s\n"
+                "  segments is %s" % (repr(s), repr(segments))
+            )
+        )
     return MultiPolygon(res)
 
 
@@ -332,8 +397,7 @@ class SPCOutlook(object):
 class SPCPTS(TextProduct):
     """A class representing the polygons and metadata in SPC PTS Product"""
 
-    def __init__(self, text, utcnow=None, ugc_provider=None,
-                 nwsli_provider=None):
+    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         """Constructor
 
         Args:
@@ -343,7 +407,7 @@ class SPCPTS(TextProduct):
           nwsli_provider (dict, optional): unused in this class
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        print("==== SPCPTS Processing: %s" % (self.get_product_id(), ))
+        print("==== SPCPTS Processing: %s" % (self.get_product_id(),))
         load_conus_data(self.valid)
         self.issue = None
         self.expire = None
@@ -361,42 +425,45 @@ class SPCPTS(TextProduct):
         print("==== Running Quality Control Checks")
         for day, collect in self.outlook_collections.items():
             # Everything should be smaller than General Thunder, for conv
-            tstm = self.get_outlook('CATEGORICAL', 'TSTM', day)
+            tstm = self.get_outlook("CATEGORICAL", "TSTM", day)
             for outlook in collect.outlooks:
                 rewrite = False
                 # case of single polygon
                 if tstm and len(outlook.geometry) == 1:
                     if outlook.geometry.area > tstm.geometry.area:
                         rewrite = True
-                        msg = ("Discarding polygon as it is larger than TSTM: "
-                               "Day: %s %s %s Area: %.2f"
-                               ) % (day, outlook.category, outlook.threshold,
-                                    outlook.geometry.area)
+                        msg = (
+                            "Discarding polygon as it is larger than TSTM: "
+                            "Day: %s %s %s Area: %.2f"
+                        ) % (
+                            day,
+                            outlook.category,
+                            outlook.threshold,
+                            outlook.geometry.area,
+                        )
                         print(msg)
                         self.warnings.append(msg)
                 # clip polygons to the CONUS
                 good_polys = []
                 for poly in outlook.geometry:
-                    good_polys.append(CONUS['poly'].intersection(poly))
+                    good_polys.append(CONUS["poly"].intersection(poly))
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []
-                for poly1, poly2 in itertools.permutations(outlook.geometry,
-                                                           2):
+                for poly1, poly2 in itertools.permutations(outlook.geometry, 2):
                     if poly1.contains(poly2):
                         rewrite = True
-                        msg = ("Discarding exterior polygon: "
-                               "Day: %s %s %s Area: %.2f"
-                               ) % (day, outlook.category, outlook.threshold,
-                                    poly1.area)
+                        msg = (
+                            "Discarding exterior polygon: " "Day: %s %s %s Area: %.2f"
+                        ) % (day, outlook.category, outlook.threshold, poly1.area)
                         print(msg)
                         self.warnings.append(msg)
                     elif tstm is not None and poly1.area > tstm.geometry.area:
                         rewrite = True
-                        msg = ("Discarding polygon as it is larger than TSTM: "
-                               "Day: %s %s %s Area: %.2f"
-                               ) % (day, outlook.category, outlook.threshold,
-                                    poly1.area)
+                        msg = (
+                            "Discarding polygon as it is larger than TSTM: "
+                            "Day: %s %s %s Area: %.2f"
+                        ) % (day, outlook.category, outlook.threshold, poly1.area)
                         print(msg)
                         self.warnings.append(msg)
                     else:
@@ -404,11 +471,10 @@ class SPCPTS(TextProduct):
                 if rewrite:
                     outlook.geometry = MultiPolygon(good_polys)
         # 2. Do the time bounds make sense, limited scope here
-        if (self.day == 1 and
-                (self.issue - self.valid).total_seconds() > 8 * 3600):
-            self.warnings.append((
-                "time_bounds_check: day: %s issue: %s valid: %s expire: %s"
-                ) % (self.day, self.issue, self.valid, self.expire)
+        if self.day == 1 and (self.issue - self.valid).total_seconds() > 8 * 3600:
+            self.warnings.append(
+                ("time_bounds_check: day: %s issue: %s valid: %s expire: %s")
+                % (self.day, self.issue, self.valid, self.expire)
             )
 
     def get_outlookcollection(self, day):
@@ -416,7 +482,7 @@ class SPCPTS(TextProduct):
         return self.outlook_collections.get(day)
 
     def get_outlook(self, category, threshold, day=None):
-        ''' Get an outlook by category and threshold '''
+        """ Get an outlook by category and threshold """
         if not self.outlook_collections:
             return None
         if day is None:
@@ -429,30 +495,37 @@ class SPCPTS(TextProduct):
         return None
 
     def draw_outlooks(self):
-        ''' For debugging, draw the outlooks on a simple map for inspection!'''
+        """ For debugging, draw the outlooks on a simple map for inspection!"""
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
+
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 fig = plt.figure(figsize=(12, 8))
                 ax = fig.add_subplot(111)
                 # pylint: disable=unsubscriptable-object
-                ax.plot(CONUS['line'][:, 0], CONUS['line'][:, 1],
-                        color='b', label='Conus')
+                ax.plot(
+                    CONUS["line"][:, 0], CONUS["line"][:, 1], color="b", label="Conus"
+                )
                 for poly in outlook.geometry:
-                    patch = PolygonPatch(poly, fc='tan', label='Outlook',
-                                         zorder=2)
+                    patch = PolygonPatch(poly, fc="tan", label="Outlook", zorder=2)
                     ax.add_patch(patch)
-                    ax.plot(poly.exterior.xy[0],
-                            poly.exterior.xy[1], lw=2, color='r')
-                ax.set_title(('Day %s Category %s Threshold %s'
-                              ) % (day, outlook.category, outlook.threshold))
+                    ax.plot(poly.exterior.xy[0], poly.exterior.xy[1], lw=2, color="r")
+                ax.set_title(
+                    ("Day %s Category %s Threshold %s")
+                    % (day, outlook.category, outlook.threshold)
+                )
                 ax.legend(loc=3)
-                fn = (('/tmp/%s_%s_%s_%s.png'
-                       ) % (day, self.issue.strftime("%Y%m%d%H%M"),
-                            outlook.category, outlook.threshold)).replace(" ",
-                                                                          "_")
-                print(':: creating plot %s' % (fn,))
+                fn = (
+                    ("/tmp/%s_%s_%s_%s.png")
+                    % (
+                        day,
+                        self.issue.strftime("%Y%m%d%H%M"),
+                        outlook.category,
+                        outlook.threshold,
+                    )
+                ).replace(" ", "_")
+                print(":: creating plot %s" % (fn,))
                 fig.savefig(fn)
                 del fig
                 del ax
@@ -461,28 +534,27 @@ class SPCPTS(TextProduct):
         """
         Set some metadata about this product
         """
-        if self.afos == 'PTSDY1':
+        if self.afos == "PTSDY1":
             self.day = 1
-            self.outlook_type = 'C'
+            self.outlook_type = "C"
         elif self.afos == "PTSDY2":
             self.day = 2
-            self.outlook_type = 'C'
+            self.outlook_type = "C"
         elif self.afos == "PTSDY3":
             self.day = 3
-            self.outlook_type = 'C'
+            self.outlook_type = "C"
         elif self.afos == "PTSD48":
-            self.outlook_type = 'C'
+            self.outlook_type = "C"
         elif self.afos == "PFWFD1":
             self.day = 1
-            self.outlook_type = 'F'
+            self.outlook_type = "F"
         elif self.afos == "PFWFD2":
             self.day = 2
-            self.outlook_type = 'F'
+            self.outlook_type = "F"
         elif self.afos == "PFWF38":
-            self.outlook_type = 'F'
+            self.outlook_type = "F"
         else:
-            self.warnings.append(("Unknown awipsid '%s' for metadata"
-                                  ) % (self.afos, ))
+            self.warnings.append(("Unknown awipsid '%s' for metadata") % (self.afos,))
 
     def find_issue_expire(self):
         """
@@ -526,9 +598,16 @@ class SPCPTS(TextProduct):
             # Now we loop over the lines looking for data
             threshold = None
             for line in segment.split("\n"):
-                if re.match((r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|"
-                             r"HIGH|CRIT|TSTM|SIGN|IDRT|SDRT|0\.[0-9][0-9]) "),
-                            line) is not None:
+                if (
+                    re.match(
+                        (
+                            r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|"
+                            r"HIGH|CRIT|TSTM|SIGN|IDRT|SDRT|0\.[0-9][0-9]) "
+                        ),
+                        line,
+                    )
+                    is not None
+                ):
                     newthreshold = line.split()[0]
                     if threshold is not None and threshold == newthreshold:
                         point_data[threshold] += " 99999999 "
@@ -540,22 +619,22 @@ class SPCPTS(TextProduct):
                 point_data[threshold] += line.replace(threshold, " ")
 
             if day is not None:
-                issue, expire = compute_times(
-                    self.afos, self.issue, self.expire, day)
+                issue, expire = compute_times(self.afos, self.issue, self.expire, day)
                 collect = self.outlook_collections.setdefault(
-                    day, SPCOutlookCollection(issue, expire, day))
+                    day, SPCOutlookCollection(issue, expire, day)
+                )
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
-                if threshold == 'TSTM' and self.afos == 'PFWF38':
+                if threshold == "TSTM" and self.afos == "PFWF38":
                     print(("Failing to parse TSTM in PFWF38"))
                     del point_data[threshold]
                     continue
                 match = DMATCH.match(threshold)
                 if match:
                     data = match.groupdict()
-                    if data.get('day2') is not None:
-                        day1 = int(data['day1'])
-                        day2 = int(data['day2'])
+                    if data.get("day2") is not None:
+                        day1 = int(data["day1"])
+                        day2 = int(data["day2"])
                         print("Duplicating threshold %s-%s" % (day1, day2))
                         for i in range(day1, day2 + 1):
                             key = "D%s" % (i,)
@@ -564,17 +643,21 @@ class SPCPTS(TextProduct):
             for threshold in point_data:
                 match = DMATCH.match(threshold)
                 if match:
-                    day = int(match.groupdict()['day1'])
+                    day = int(match.groupdict()["day1"])
                     issue, expire = compute_times(
-                        self.afos, self.issue, self.expire, day)
+                        self.afos, self.issue, self.expire, day
+                    )
                     collect = self.outlook_collections.setdefault(
-                        day, SPCOutlookCollection(issue, expire, day))
-                print(("--> Start Day: %s Category: '%s' Threshold: '%s' ====="
-                       ) % (day, category, threshold))
+                        day, SPCOutlookCollection(issue, expire, day)
+                    )
+                print(
+                    ("--> Start Day: %s Category: '%s' Threshold: '%s' =====")
+                    % (day, category, threshold)
+                )
                 mp = str2multipolygon(point_data[threshold])
                 if DMATCH.match(threshold):
-                    threshold = '0.15'
-                print(("----> End threshold is: %s" % (threshold, )))
+                    threshold = "0.15"
+                print(("----> End threshold is: %s" % (threshold,)))
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, txn):
@@ -588,14 +671,23 @@ class SPCPTS(TextProduct):
                     st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
                     substr(ugc,3,1) = 'C' and wfo is not null
                     and end_ts is null ORDER by wfo ASC
-                """ % (outlook.geometry.wkt,)
+                """ % (
+                    outlook.geometry.wkt,
+                )
 
                 txn.execute(sql)
                 for row in txn.fetchall():
-                    outlook.wfos.append(row['wfo'])
-                print(("Day: %s Category: %s Threshold: %s #WFOS: %s %s"
-                       ) % (day, outlook.category, outlook.threshold,
-                            len(outlook.wfos), ",".join(outlook.wfos)))
+                    outlook.wfos.append(row["wfo"])
+                print(
+                    ("Day: %s Category: %s Threshold: %s #WFOS: %s %s")
+                    % (
+                        day,
+                        outlook.category,
+                        outlook.threshold,
+                        len(outlook.wfos),
+                        ",".join(outlook.wfos),
+                    )
+                )
 
     def sql(self, txn):
         """Do database work
@@ -604,13 +696,15 @@ class SPCPTS(TextProduct):
           txn (psycopg2.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
-            txn.execute("""
+            txn.execute(
+                """
                 DELETE from spc_outlooks where product_issue = %s
                 and expire = %s and outlook_type = %s and day = %s
-            """, (self.valid, self.expire, self.outlook_type, day))
+            """,
+                (self.valid, self.expire, self.outlook_type, day),
+            )
             if txn.rowcount > 0:
-                print(("Removed %s previous spc_outlook entries"
-                       ) % (txn.rowcount, ))
+                print(("Removed %s previous spc_outlook entries") % (txn.rowcount,))
 
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
@@ -620,66 +714,78 @@ class SPCPTS(TextProduct):
                     threshold, category, day, outlook_type, geom)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
-                args = (self.valid, collect.issue, collect.expire,
-                        outlook.threshold, outlook.category, collect.day,
-                        self.outlook_type,
-                        "SRID=4326;%s" % (outlook.geometry.wkt,))
+                args = (
+                    self.valid,
+                    collect.issue,
+                    collect.expire,
+                    outlook.threshold,
+                    outlook.category,
+                    collect.day,
+                    self.outlook_type,
+                    "SRID=4326;%s" % (outlook.geometry.wkt,),
+                )
                 txn.execute(sql, args)
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""
-        product_descript = "((%s))" % (self.afos, )
+        product_descript = "((%s))" % (self.afos,)
         url = "http://www.spc.noaa.gov"
         day = "((%s))" % (self.afos,)
 
         if self.afos == "PTSDY1":
-            day = 'Day 1'
+            day = "Day 1"
             product_descript = "Convective"
-            url = ("https://www.spc.noaa.gov/products/outlook/archive/"
-                   "%s/day1otlk_%s.html"
-                   ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
+            url = (
+                "https://www.spc.noaa.gov/products/outlook/archive/"
+                "%s/day1otlk_%s.html"
+            ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
         elif self.afos == "PTSDY2":
-            day = 'Day 2'
+            day = "Day 2"
             product_descript = "Convective"
-            hhmm = "1730" if self.valid.hour > 11 else '0600'
-            url = ("https://www.spc.noaa.gov/products/outlook/archive/"
-                   "%s/day2otlk_%s_%s.html"
-                   ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
+            hhmm = "1730" if self.valid.hour > 11 else "0600"
+            url = (
+                "https://www.spc.noaa.gov/products/outlook/archive/"
+                "%s/day2otlk_%s_%s.html"
+            ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
         elif self.afos == "PTSDY3":
             # 0730 when in CDT, 0830 when in CST
-            hhmm = '0730' if self.z == 'CDT' else '0830'
-            day = 'Day 3'
+            hhmm = "0730" if self.z == "CDT" else "0830"
+            day = "Day 3"
             product_descript = "Convective"
-            url = ("https://www.spc.noaa.gov/products/outlook/archive/%s/"
-                   "day3otlk_%s_%s.html") % (self.valid.year,
-                                             self.valid.strftime("%Y%m%d"),
-                                             hhmm)
+            url = (
+                "https://www.spc.noaa.gov/products/outlook/archive/%s/"
+                "day3otlk_%s_%s.html"
+            ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
         elif self.afos == "PTSD48":
-            day = 'Days 4-8'
+            day = "Days 4-8"
             product_descript = "Convective"
-            url = ("https://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
-                   "day4-8_%s.html") % (self.valid.year,
-                                        self.valid.strftime("%Y%m%d"))
+            url = (
+                "https://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
+                "day4-8_%s.html"
+            ) % (self.valid.year, self.valid.strftime("%Y%m%d"))
         elif self.afos == "PFWFD1":
-            day = 'Day 1'
+            day = "Day 1"
             product_descript = "Fire Weather"
             url = self.issue.strftime(
-                ("https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
-                 "_fwdy1_print.html")
+                (
+                    "https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
+                    "_fwdy1_print.html"
+                )
             )
         elif self.afos == "PFWFD2":
-            day = 'Day 2'
+            day = "Day 2"
             product_descript = "Fire Weather"
             url = self.issue.strftime(
-                ("https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
-                 "_fwdy2_print.html")
+                (
+                    "https://www.spc.noaa.gov/products/fire_wx/%Y/%y%m%d_%H%M"
+                    "_fwdy2_print.html"
+                )
             )
         elif self.afos == "PFWF38":
-            day = 'Day 3-8'
+            day = "Day 3-8"
             product_descript = "Fire Weather"
             url = self.issue.strftime(
-                ("https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m%d"
-                 ".html")
+                ("https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m%d" ".html")
             )
 
         return product_descript, url, day
@@ -698,46 +804,72 @@ class SPCPTS(TextProduct):
         res = []
         product_descript, url, title = self.get_descript_and_url()
         jdict = {
-            'title': title,
-            'name': 'The Storm Prediction Center',
-            'tstamp': self.valid.strftime("%b %-d, %-H:%Mz"),
-            'outlooktype': product_descript,
-            'url': url
-            }
+            "title": title,
+            "name": "The Storm Prediction Center",
+            "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
+            "outlooktype": product_descript,
+            "url": url,
+        }
         for _, collect in self.outlook_collections.items():
 
-            wfos = {'TSTM': [], 'EXTM': [], 'MRGL': [], 'SLGT': [], 'ENH': [],
-                    'CRIT': [], 'MDT': [], 'HIGH': [], 'ELEV': [],
-                    'IDRT': [], 'SDRT': []}
+            wfos = {
+                "TSTM": [],
+                "EXTM": [],
+                "MRGL": [],
+                "SLGT": [],
+                "ENH": [],
+                "CRIT": [],
+                "MDT": [],
+                "HIGH": [],
+                "ELEV": [],
+                "IDRT": [],
+                "SDRT": [],
+            }
 
             for outlook in collect.outlooks:
                 _d = wfos.setdefault(outlook.threshold, [])
                 _d.extend(outlook.wfos)
 
-            jdict['day'] = collect.day
+            jdict["day"] = collect.day
             wfomsgs = {}
             # We order in least to greatest, so that the highest threshold
             # overwrites lower ones
-            for cat in ['MRGL', 'SLGT', 'ENH', 'MDT', 'HIGH',
-                        'ELEV', 'CRIT', 'EXTM', 'IDRT', 'SDRT']:
-                jdict['ttext'] = "%s %s Risk" % (THRESHOLD2TEXT[cat],
-                                                 product_descript)
+            for cat in [
+                "MRGL",
+                "SLGT",
+                "ENH",
+                "MDT",
+                "HIGH",
+                "ELEV",
+                "CRIT",
+                "EXTM",
+                "IDRT",
+                "SDRT",
+            ]:
+                jdict["ttext"] = "%s %s Risk" % (THRESHOLD2TEXT[cat], product_descript)
                 for wfo in wfos[cat]:
-                    jdict['wfo'] = wfo
+                    jdict["wfo"] = wfo
                     wfomsgs[wfo] = [
-                        ("%(name)s issues Day %(day)s %(ttext)s "
-                         "at %(tstamp)s for portions of %(wfo)s %(url)s"
-                         ) % jdict,
-                        ("<p>%(name)s issues "
-                         "<a href=\"%(url)s\">Day %(day)s %(ttext)s</a> "
-                         "at %(tstamp)s for portions of %(wfo)s's area</p>"
-                         ) % jdict,
-                        {'channels': wfo,
-                         'product_id': self.get_product_id(),
-                         'twitter': ("SPC issues Day %(day)s %(ttext)s "
-                                     "at %(tstamp)s for %(wfo)s %(url)s"
-                                     ) % jdict
-                         }
+                        (
+                            "%(name)s issues Day %(day)s %(ttext)s "
+                            "at %(tstamp)s for portions of %(wfo)s %(url)s"
+                        )
+                        % jdict,
+                        (
+                            "<p>%(name)s issues "
+                            '<a href="%(url)s">Day %(day)s %(ttext)s</a> '
+                            "at %(tstamp)s for portions of %(wfo)s's area</p>"
+                        )
+                        % jdict,
+                        {
+                            "channels": wfo,
+                            "product_id": self.get_product_id(),
+                            "twitter": (
+                                "SPC issues Day %(day)s %(ttext)s "
+                                "at %(tstamp)s for %(wfo)s %(url)s"
+                            )
+                            % jdict,
+                        },
                     ]
             keys = list(wfomsgs.keys())
             keys.sort()
@@ -746,19 +878,29 @@ class SPCPTS(TextProduct):
                 res.append(wfomsgs[wfo])
 
         # Generic for SPC
-        res.append([
-            ("%(name)s issues %(title)s %(outlooktype)s Outlook at %(tstamp)s"
-             " %(url)s"
-             ) % jdict,
-            ("<p>%(name)s issues <a href=\"%(url)s\">%(title)s "
-             "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
-             ) % jdict,
-            {'channels': 'SPC',
-             'product_id': self.get_product_id(),
-             'twitter': ("%(name)s issues %(title)s "
-                         "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
-                         ) % jdict
-             }])
+        res.append(
+            [
+                (
+                    "%(name)s issues %(title)s %(outlooktype)s Outlook at %(tstamp)s"
+                    " %(url)s"
+                )
+                % jdict,
+                (
+                    '<p>%(name)s issues <a href="%(url)s">%(title)s '
+                    "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
+                )
+                % jdict,
+                {
+                    "channels": "SPC",
+                    "product_id": self.get_product_id(),
+                    "twitter": (
+                        "%(name)s issues %(title)s "
+                        "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
+                    )
+                    % jdict,
+                },
+            ]
+        )
         return res
 
 

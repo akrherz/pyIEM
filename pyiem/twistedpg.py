@@ -14,7 +14,7 @@ del connect
 
 def connect(*args, **kwargs):
     """Proxy connect with an additional kwarg set"""
-    kwargs['connection_factory'] = connection
+    kwargs["connection_factory"] = connection
     return _2connect(*args, **kwargs)
 
 

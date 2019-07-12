@@ -15,13 +15,13 @@ def test_fireweather():
 def test_get_id():
     """check that getID() works as we expect"""
     vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
-    assert vc[0].get_id(2005) == '2005-KJAN-TO-W-0130'
+    assert vc[0].get_id(2005) == "2005-KJAN-TO-W-0130"
 
 
 def test_endstring():
     """Make sure that the end time string is empty for cancel action"""
     vc = vtec.parse("/O.CAN.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
-    assert vc[0].get_end_string(None) == ''
+    assert vc[0].get_end_string(None) == ""
 
 
 def test_begints():

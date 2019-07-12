@@ -9,6 +9,7 @@ from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
 from pyiem.util import utc
 from pyiem import reference
+
 if not six.PY2:
     from html import escape as html_escape
 else:
@@ -17,26 +18,28 @@ else:
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
 FUTURE_THRESHOLD = datetime.timedelta(hours=1)
-SPLITTER = re.compile(r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)",
-                      re.MULTILINE)
+SPLITTER = re.compile(
+    r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)", re.MULTILINE
+)
 
 
 class LSRProductException(TextProductException):
-    ''' Something we can raise when bad things happen! '''
+    """ Something we can raise when bad things happen! """
+
     pass
 
 
 class LSRProduct(TextProduct):
-    ''' Represents a text product of the LSR variety '''
+    """ Represents a text product of the LSR variety """
 
     def __init__(self, text, utcnow=None):
-        ''' constructor '''
+        """ constructor """
         self.lsrs = []
         self.duplicates = 0
         TextProduct.__init__(self, text, utcnow=utcnow)
 
     def get_temporal_domain(self):
-        ''' Return the min and max timestamps of lsrs '''
+        """ Return the min and max timestamps of lsrs """
         valids = []
         for lsr in self.lsrs:
             valids.append(lsr.valid)
@@ -45,19 +48,22 @@ class LSRProduct(TextProduct):
         return min(valids), max(valids)
 
     def is_summary(self):
-        ''' Returns is this LSR is a summary or not '''
+        """ Returns is this LSR is a summary or not """
         return self.unixtext.find("...SUMMARY") > 0
 
     def get_url(self, baseuri):
-        ''' Get the URL of this product '''
+        """ Get the URL of this product """
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
-        return "%s#%s/%s/%s" % (baseuri, wfo,
-                                min_time.strftime("%Y%m%d%H%M"),
-                                max_time.strftime("%Y%m%d%H%M"))
+        return "%s#%s/%s/%s" % (
+            baseuri,
+            wfo,
+            min_time.strftime("%Y%m%d%H%M"),
+            max_time.strftime("%Y%m%d%H%M"),
+        )
 
     def get_jabbers(self, uri, uri2=None):
-        ''' return a text and html variant for Jabber stuff '''
+        """ return a text and html variant for Jabber stuff """
         res = []
         if len(self.lsrs) == 0:
             return res
@@ -68,80 +74,113 @@ class LSRProduct(TextProduct):
             if mylsr.duplicate:
                 continue
             time_fmt = "%-I:%M %p"
-            url = "%s#%s/%s/%s" % (uri, mylsr.wfo,
-                                   mylsr.utcvalid.strftime("%Y%m%d%H%M"),
-                                   mylsr.utcvalid.strftime("%Y%m%d%H%M"))
+            url = "%s#%s/%s/%s" % (
+                uri,
+                mylsr.wfo,
+                mylsr.utcvalid.strftime("%Y%m%d%H%M"),
+                mylsr.utcvalid.strftime("%Y%m%d%H%M"),
+            )
             if mylsr.valid.day != self.utcnow.day:
                 time_fmt = "%-d %b, %-I:%M %p"
             xtra = dict(
                 product_id=self.get_product_id(),
-                channels="LSR%s,LSR.ALL,LSR.%s" % (
-                    mylsr.wfo, mylsr.typetext.replace(" ", "_")),
-                geometry='POINT(%s %s)' % (mylsr.get_lon(), mylsr.get_lat()),
+                channels="LSR%s,LSR.ALL,LSR.%s"
+                % (mylsr.wfo, mylsr.typetext.replace(" ", "_")),
+                geometry="POINT(%s %s)" % (mylsr.get_lon(), mylsr.get_lat()),
                 ptype=mylsr.get_dbtype(),
                 valid=mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
-                category='LSR',
+                category="LSR",
                 twitter="%s %s" % (mylsr.tweet(), url),
                 lat=str(mylsr.get_lat()),
-                long=str(mylsr.get_lon()))
-            html = ("<p>%s [%s Co, %s] %s <a href=\"%s\">reports %s</a> at "
-                    "%s %s -- %s</p>") % (
-                _mylowercase(mylsr.city), mylsr.county.title(), mylsr.state,
-                mylsr.source, url, mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), self.z,
-                html_escape(mylsr.remark))
+                long=str(mylsr.get_lon()),
+            )
+            html = (
+                '<p>%s [%s Co, %s] %s <a href="%s">reports %s</a> at ' "%s %s -- %s</p>"
+            ) % (
+                _mylowercase(mylsr.city),
+                mylsr.county.title(),
+                mylsr.state,
+                mylsr.source,
+                url,
+                mylsr.mag_string(),
+                mylsr.valid.strftime(time_fmt),
+                self.z,
+                html_escape(mylsr.remark),
+            )
 
             plain = "%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
-                _mylowercase(mylsr.city), mylsr.county.title(),
-                mylsr.state, mylsr.source,
+                _mylowercase(mylsr.city),
+                mylsr.county.title(),
+                mylsr.state,
+                mylsr.source,
                 mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt), self.z,
-                html_escape(mylsr.remark), url)
+                mylsr.valid.strftime(time_fmt),
+                self.z,
+                html_escape(mylsr.remark),
+                url,
+            )
             res.append([plain, html, xtra])
 
         if self.is_summary():
             extra_text = ""
             if self.duplicates > 0:
-                extra_text = (", %s out of %s reports were previously "
-                              "sent and not repeated here.") % (
-                    self.duplicates, len(self.lsrs))
+                extra_text = (
+                    ", %s out of %s reports were previously "
+                    "sent and not repeated here."
+                ) % (self.duplicates, len(self.lsrs))
             text = "%s: %s issues Summary Local Storm Report %s %s" % (
-                wfo, wfo, extra_text, url)
+                wfo,
+                wfo,
+                extra_text,
+                url,
+            )
 
-            html = ("<p>%s issues "
-                    "<a href='%s'>Summary Local Storm Report</a>%s</p>") % (
-                wfo, url, extra_text)
-            xtra = {
-                'product_id': self.get_product_id(),
-                'channels': 'LSR%s' % (wfo,),
-                }
+            html = (
+                "<p>%s issues " "<a href='%s'>Summary Local Storm Report</a>%s</p>"
+            ) % (wfo, url, extra_text)
+            xtra = {"product_id": self.get_product_id(), "channels": "LSR%s" % (wfo,)}
             res.append([text, html, xtra])
         return res
 
 
 def _mylowercase(text):
-    ''' Specialized lowercase function '''
+    """ Specialized lowercase function """
     tokens = text.split()
     for i, t in enumerate(tokens):
         if len(t) > 3:
             tokens[i] = t.title()
-        elif t in ['N', 'NNE', 'NNW', 'NE',
-                   'E', 'ENE', 'ESE', 'SE',
-                   'S', 'SSE', 'SSW', 'SW',
-                   'W', 'WSW', 'WNW', 'NW']:
+        elif t in [
+            "N",
+            "NNE",
+            "NNW",
+            "NE",
+            "E",
+            "ENE",
+            "ESE",
+            "SE",
+            "S",
+            "SSE",
+            "SSW",
+            "SW",
+            "W",
+            "WSW",
+            "WNW",
+            "NW",
+        ]:
             continue
     return " ".join(tokens)
 
 
 def parse_lsr(prod, text):
-    ''' Emit a LSR object based on this text!
+    """ Emit a LSR object based on this text!
     0914 PM     HAIL             SHAW                    33.60N 90.77W
     04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR
-    '''
+    """
     lines = text.split("\n")
     if len(lines) < 2:
-        prod.warnings.append(("LSR text is too short |%s|\n%s"
-                              ) % (text.replace("\n", "<NL>"), text))
+        prod.warnings.append(
+            ("LSR text is too short |%s|\n%s") % (text.replace("\n", "<NL>"), text)
+        )
         return None
     lsr = LSR()
     lsr.text = text
@@ -153,20 +192,20 @@ def parse_lsr(prod, text):
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
     lsr.assign_timezone(prod.tz, prod.z)
     # Check that we are within bounds
-    if (lsr.utcvalid > (prod.valid + FUTURE_THRESHOLD) or
-            lsr.utcvalid > (utc() + FUTURE_THRESHOLD)):
+    if lsr.utcvalid > (prod.valid + FUTURE_THRESHOLD) or lsr.utcvalid > (
+        utc() + FUTURE_THRESHOLD
+    ):
         prod.warnings.append(
-            ("LSR is from the future!\n"
-             "prod.valid: %s lsr.valid: %s\n"
-             "%s\n") % (prod.valid, lsr.valid, text))
+            ("LSR is from the future!\n" "prod.valid: %s lsr.valid: %s\n" "%s\n")
+            % (prod.valid, lsr.valid, text)
+        )
         return None
 
     lsr.wfo = prod.source[1:]
 
     lsr.typetext = lines[0][12:29].strip()
     if lsr.typetext.upper() not in reference.lsr_events:
-        prod.warnings.append(("Unknown lsr.typetext |%s|\n%s"
-                              ) % (lsr.typetext, text))
+        prod.warnings.append(("Unknown lsr.typetext |%s|\n%s") % (lsr.typetext, text))
         return None
 
     lsr.city = lines[0][29:53].strip()
@@ -175,8 +214,9 @@ def parse_lsr(prod, text):
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
     if lon <= -180 or lon >= 180 or lat >= 90 or lat <= -90:
-        prod.warnings.append(("Invalid Geometry Lat: %s Lon: %s\n%s"
-                              ) % (lat, lon, text))
+        prod.warnings.append(
+            ("Invalid Geometry Lat: %s Lon: %s\n%s") % (lat, lon, text)
+        )
         return None
     lsr.geometry = ShapelyPoint((lon, lat))
 
@@ -191,8 +231,8 @@ def parse_lsr(prod, text):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    ''' Helper function that actually converts the raw text and emits an
-    LSRProduct instance or returns an exception'''
+    """ Helper function that actually converts the raw text and emits an
+    LSRProduct instance or returns an exception"""
     prod = LSRProduct(text, utcnow)
 
     for match in SPLITTER.finditer(prod.unixtext):

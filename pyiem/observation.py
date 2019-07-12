@@ -8,28 +8,111 @@ from metpy.units import units as munits
 import pytz
 
 # Not including iemid, valid
-CURRENT_COLS = ['tmpf', 'dwpf', 'drct', 'sknt', 'indoor_tmpf', 'tsf0', 'tsf1',
-                'tsf2', 'tsf3', 'rwis_subf', 'scond0', 'scond1', 'scond2',
-                'scond3', 'pday', 'c1smv', 'c2smv', 'c3smv', 'c4smv', 'c5smv',
-                'c1tmpf', 'c2tmpf', 'c3tmpf', 'c4tmpf', 'c5tmpf', 'pres',
-                'relh', 'srad', 'vsby', 'phour', 'gust', 'raw', 'alti',
-                'mslp', 'qc_tmpf', 'qc_dwpf', 'rstage', 'ozone', 'co2',
-                'pmonth', 'skyc1', 'skyc2', 'skyc3', 'skyc4', 'skyl1', 'skyl2',
-                'skyl3', 'skyl4', 'pcounter', 'discharge', 'p03i', 'p06i',
-                'p24i', 'max_tmpf_6hr', 'min_tmpf_6hr', 'max_tmpf_24hr',
-                'min_tmpf_24hr', 'battery', 'water_tmpf',
-                'ice_accretion_1hr', 'ice_accretion_3hr', 'ice_accretion_6hr',
-                'wxcodes', 'feel', 'peak_wind_gust', 'peak_wind_drct',
-                'peak_wind_time']
+CURRENT_COLS = [
+    "tmpf",
+    "dwpf",
+    "drct",
+    "sknt",
+    "indoor_tmpf",
+    "tsf0",
+    "tsf1",
+    "tsf2",
+    "tsf3",
+    "rwis_subf",
+    "scond0",
+    "scond1",
+    "scond2",
+    "scond3",
+    "pday",
+    "c1smv",
+    "c2smv",
+    "c3smv",
+    "c4smv",
+    "c5smv",
+    "c1tmpf",
+    "c2tmpf",
+    "c3tmpf",
+    "c4tmpf",
+    "c5tmpf",
+    "pres",
+    "relh",
+    "srad",
+    "vsby",
+    "phour",
+    "gust",
+    "raw",
+    "alti",
+    "mslp",
+    "qc_tmpf",
+    "qc_dwpf",
+    "rstage",
+    "ozone",
+    "co2",
+    "pmonth",
+    "skyc1",
+    "skyc2",
+    "skyc3",
+    "skyc4",
+    "skyl1",
+    "skyl2",
+    "skyl3",
+    "skyl4",
+    "pcounter",
+    "discharge",
+    "p03i",
+    "p06i",
+    "p24i",
+    "max_tmpf_6hr",
+    "min_tmpf_6hr",
+    "max_tmpf_24hr",
+    "min_tmpf_24hr",
+    "battery",
+    "water_tmpf",
+    "ice_accretion_1hr",
+    "ice_accretion_3hr",
+    "ice_accretion_6hr",
+    "wxcodes",
+    "feel",
+    "peak_wind_gust",
+    "peak_wind_drct",
+    "peak_wind_time",
+]
 
 # Not including iemid, day
-SUMMARY_COLS = ['max_tmpf', 'min_tmpf', 'max_sknt', 'max_gust', 'max_sknt_ts',
-                'max_gust_ts', 'max_dwpf', 'min_dwpf', 'pday', 'pmonth',
-                'snow', 'snowd', 'max_tmpf_qc', 'min_tmpf_qc', 'pday_qc',
-                'snow_qc', 'snoww', 'max_drct', 'max_srad', 'coop_tmpf',
-                'coop_valid', 'et_inch', 'srad_mj', 'max_water_tmpf',
-                'min_water_tmpf', 'max_rh', 'min_rh', 'avg_sknt',
-                'vector_avg_drct', 'min_feel', 'avg_feel', 'max_feel']
+SUMMARY_COLS = [
+    "max_tmpf",
+    "min_tmpf",
+    "max_sknt",
+    "max_gust",
+    "max_sknt_ts",
+    "max_gust_ts",
+    "max_dwpf",
+    "min_dwpf",
+    "pday",
+    "pmonth",
+    "snow",
+    "snowd",
+    "max_tmpf_qc",
+    "min_tmpf_qc",
+    "pday_qc",
+    "snow_qc",
+    "snoww",
+    "max_drct",
+    "max_srad",
+    "coop_tmpf",
+    "coop_valid",
+    "et_inch",
+    "srad_mj",
+    "max_water_tmpf",
+    "min_water_tmpf",
+    "max_rh",
+    "min_rh",
+    "avg_sknt",
+    "vector_avg_drct",
+    "min_feel",
+    "avg_feel",
+    "max_feel",
+]
 
 
 def get_summary_table(valid):
@@ -42,11 +125,10 @@ def get_summary_table(valid):
       str table to query
     """
     if valid is None:
-        return 'summary'
-    if ((valid.month == 12 and valid.day >= 30) or
-            (valid.month == 1 and valid.day < 3)):
-        return 'summary'
-    return 'summary_%s' % (valid.year, )
+        return "summary"
+    if (valid.month == 12 and valid.day >= 30) or (valid.month == 1 and valid.day < 3):
+        return "summary"
+    return "summary_%s" % (valid.year,)
 
 
 def bounded(val, floor, ceiling):
@@ -69,8 +151,11 @@ def summary_update(txn, data):
     """
     # NB with the coalesce func, we prioritize if we have explicit max/min vals
     # But, some of these max values are not tru max daily values
-    table = get_summary_table(data['valid'])
-    sql = """UPDATE """ + table + """ s SET
+    table = get_summary_table(data["valid"])
+    sql = (
+        """UPDATE """
+        + table
+        + """ s SET
     max_water_tmpf = coalesce(%(max_water_tmpf)s,
         greatest(max_water_tmpf, %(water_tmpf)s)),
     min_water_tmpf = coalesce(%(min_water_tmpf)s,
@@ -114,6 +199,7 @@ def summary_update(txn, data):
     WHERE s.iemid = %(iemid)s and
     s.day = date(%(valid)s at time zone %(tzname)s)
     """
+    )
     txn.execute(sql, data)
     return txn.rowcount
 
@@ -131,10 +217,7 @@ class Observation(object):
         if valid.tzinfo is None:
             warnings.warn("tzinfo is not set on valid, defaulting to UTC")
             valid = valid.replace(tzinfo=pytz.UTC)
-        self.data = {'station': station,
-                     'network': network,
-                     'valid': valid,
-                     }
+        self.data = {"station": station, "network": network, "valid": valid}
         for col in CURRENT_COLS:
             self.data[col] = None
         for col in SUMMARY_COLS:
@@ -146,57 +229,87 @@ class Observation(object):
         """
         if not self.compute_iemid(txn):
             return False
-        table = get_summary_table(self.data['valid'])
-        sql = """SELECT * from current c, """ + table + """ s WHERE
+        table = get_summary_table(self.data["valid"])
+        sql = (
+            """SELECT * from current c, """
+            + table
+            + """ s WHERE
         s.iemid = c.iemid and s.iemid = %(iemid)s and
         s.day = date(%(valid)s at time zone %(tzname)s) and
         c.valid = %(valid)s"""
+        )
         txn.execute(sql, self.data)
         if txn.rowcount < 1:
             return False
         row = txn.fetchone()
         for key in row.keys():
-            if key not in ['valid', ]:
+            if key not in ["valid"]:
                 self.data[key] = row[key]
         return True
 
     def calc(self):
         """Compute things not usually computed"""
-        if (self.data['relh'] is None and
-                None not in [self.data['tmpf'], self.data['dwpf']]):
-            self.data['relh'] = bounded(mcalc.relative_humidity_from_dewpoint(
-                self.data['tmpf'] * munits.degF,
-                self.data['dwpf'] * munits.degF
-            ).to(munits.percent).magnitude, 0.5, 100.5)
-        if (self.data['dwpf'] is None and
-                None not in [self.data['tmpf'], self.data['relh']] and
-                self.data['relh'] >= 1 and self.data['relh'] <= 100):
-            self.data['dwpf'] = bounded(mcalc.dewpoint_rh(
-                self.data['tmpf'] * munits.degF,
-                self.data['relh'] * munits.percent
-            ).to(munits.degF).magnitude, -100., 100.)
-        if (self.data['feel'] is None and
-                None not in [self.data['tmpf'], self.data['relh'],
-                             self.data['sknt']]):
-            self.data['feel'] = bounded(mcalc.apparent_temperature(
-                 self.data['tmpf'] * munits.degF,
-                 self.data['relh'] * munits.percent,
-                 self.data['sknt'] * munits.knots
-            ).to(munits.degF).magnitude, -150., 200.)
+        if self.data["relh"] is None and None not in [
+            self.data["tmpf"],
+            self.data["dwpf"],
+        ]:
+            self.data["relh"] = bounded(
+                mcalc.relative_humidity_from_dewpoint(
+                    self.data["tmpf"] * munits.degF, self.data["dwpf"] * munits.degF
+                )
+                .to(munits.percent)
+                .magnitude,
+                0.5,
+                100.5,
+            )
+        if (
+            self.data["dwpf"] is None
+            and None not in [self.data["tmpf"], self.data["relh"]]
+            and self.data["relh"] >= 1
+            and self.data["relh"] <= 100
+        ):
+            self.data["dwpf"] = bounded(
+                mcalc.dewpoint_rh(
+                    self.data["tmpf"] * munits.degF, self.data["relh"] * munits.percent
+                )
+                .to(munits.degF)
+                .magnitude,
+                -100.0,
+                100.0,
+            )
+        if self.data["feel"] is None and None not in [
+            self.data["tmpf"],
+            self.data["relh"],
+            self.data["sknt"],
+        ]:
+            self.data["feel"] = bounded(
+                mcalc.apparent_temperature(
+                    self.data["tmpf"] * munits.degF,
+                    self.data["relh"] * munits.percent,
+                    self.data["sknt"] * munits.knots,
+                )
+                .to(munits.degF)
+                .magnitude,
+                -150.0,
+                200.0,
+            )
 
     def compute_iemid(self, txn):
         """Load in what our metadata is to save future queries"""
-        if 'iemid' in self.data:
+        if "iemid" in self.data:
             return True
-        txn.execute("""
+        txn.execute(
+            """
         SELECT iemid, tzname from stations where id = %(station)s and
         network = %(network)s
-        """, self.data)
+        """,
+            self.data,
+        )
         if txn.rowcount == 0:
             return False
         row = txn.fetchone()
-        self.data['iemid'] = row[0]
-        self.data['tzname'] = row[1]
+        self.data["iemid"] = row[0]
+        self.data["tzname"] = row[1]
         return True
 
     def save(self, txn, force_current_log=False, skip_current=False):
@@ -282,15 +395,21 @@ class Observation(object):
         rowcount = summary_update(txn, self.data)
         if rowcount != 1:
             # Create a new entry
-            localvalid = self.data['valid'].astimezone(
-                pytz.timezone(self.data['tzname']))
+            localvalid = self.data["valid"].astimezone(
+                pytz.timezone(self.data["tzname"])
+            )
             # we don't want dates into the future as this will foul up others
             if localvalid.date() > datetime.date.today():
                 return False
-            txn.execute("""
-                INSERT into summary_""" + str(localvalid.year) + """
+            txn.execute(
+                """
+                INSERT into summary_"""
+                + str(localvalid.year)
+                + """
                 (iemid, day) VALUES (%s, %s)
-            """, (self.data['iemid'], localvalid.date()))
+            """,
+                (self.data["iemid"], localvalid.date()),
+            )
             # try once more
             rowcount = summary_update(txn, self.data)
             if rowcount != 1:

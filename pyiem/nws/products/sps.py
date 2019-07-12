@@ -51,13 +51,19 @@ class SPSProduct(TextProduct):
             ets = self.valid + datetime.timedelta(hours=1)
             if seg.ugcexpire is not None:
                 ets = seg.ugcexpire
-            giswkt = 'SRID=4326;%s' % (MultiPolygon([seg.sbw]).wkt,)
+            giswkt = "SRID=4326;%s" % (MultiPolygon([seg.sbw]).wkt,)
             sql = """
                 INSERT into text_products(product, product_id, geom,
                 issue, expire, pil) values (%s, %s, %s, %s, %s, %s)
             """
-            myargs = (self.unixtext, self.get_product_id(), giswkt,
-                      self.valid, ets, self.afos)
+            myargs = (
+                self.unixtext,
+                self.get_product_id(),
+                giswkt,
+                self.valid,
+                ets,
+                self.afos,
+            )
             txn.execute(sql, myargs)
 
     def _get_channels(self, segment):
@@ -71,7 +77,7 @@ class SPSProduct(TextProduct):
     def get_jabbers(self, uri, uri2=None):
         """return the standard [[text, html, xtra], ] for jabber"""
         res = []
-        xtra = {'product_id': self.get_product_id()}
+        xtra = {"product_id": self.get_product_id()}
         for seg in self.segments:
             # Skip any segments that don't have UGC information
             if not seg.ugcs:
@@ -81,25 +87,41 @@ class SPSProduct(TextProduct):
                 headline = (seg.headlines[0]).replace("\n", " ")
             elif SPECIAL_WX_STATEMENT.search(seg.unixtext):
                 headline = "Special Weather Statement"
-            counties = " for %s" % (ugcs_to_text(seg.ugcs), )
+            counties = " for %s" % (ugcs_to_text(seg.ugcs),)
             expire = ""
             if seg.ugcexpire is not None:
                 expire = " till %s %s" % (
-                    (seg.ugcexpire -
-                     datetime.timedelta(hours=reference.offsets.get(self.z, 0))
-                     ).strftime("%-I:%M %p"), self.z)
-            counties, expire = dedup_headline(headline, seg.ugcs, counties,
-                                              expire)
-            xtra['channels'] = self._get_channels(seg)
-            mess = ("%s issues %s%s%s %s?pid=%s"
-                    ) % (self.source[1:], headline, counties,
-                         expire, uri, xtra['product_id'])
-            htmlmess = ("<p>%s issues <a href='%s?pid=%s'>%s</a>%s%s</p>"
-                        ) % (self.source[1:], uri, xtra['product_id'],
-                             headline, counties, expire)
-            xtra['twitter'] = "%s%s%s %s?pid=%s" % (headline, counties,
-                                                    expire, uri,
-                                                    xtra['product_id'])
+                    (
+                        seg.ugcexpire
+                        - datetime.timedelta(hours=reference.offsets.get(self.z, 0))
+                    ).strftime("%-I:%M %p"),
+                    self.z,
+                )
+            counties, expire = dedup_headline(headline, seg.ugcs, counties, expire)
+            xtra["channels"] = self._get_channels(seg)
+            mess = ("%s issues %s%s%s %s?pid=%s") % (
+                self.source[1:],
+                headline,
+                counties,
+                expire,
+                uri,
+                xtra["product_id"],
+            )
+            htmlmess = ("<p>%s issues <a href='%s?pid=%s'>%s</a>%s%s</p>") % (
+                self.source[1:],
+                uri,
+                xtra["product_id"],
+                headline,
+                counties,
+                expire,
+            )
+            xtra["twitter"] = "%s%s%s %s?pid=%s" % (
+                headline,
+                counties,
+                expire,
+                uri,
+                xtra["product_id"],
+            )
             res.append([mess, htmlmess, xtra])
 
         return res
@@ -107,5 +129,6 @@ class SPSProduct(TextProduct):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """The SPS Parser"""
-    return SPSProduct(text, utcnow, ugc_provider=ugc_provider,
-                      nwsli_provider=nwsli_provider)
+    return SPSProduct(
+        text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
+    )

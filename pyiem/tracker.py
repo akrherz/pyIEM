@@ -39,10 +39,10 @@ class TrackerEngine(object):
         s = smtplib.SMTP()
         s.connect()
         for email in self.emails:
-            msg = MIMEText(self.emails[email]['body'])
-            msg['From'] = "akrherz@iastate.edu"
-            msg['Subject'] = self.emails[email]['subject']
-            s.sendmail(msg['From'], email, msg.as_string())
+            msg = MIMEText(self.emails[email]["body"])
+            msg["From"] = "akrherz@iastate.edu"
+            msg["Subject"] = self.emails[email]["subject"]
+            s.sendmail(msg["From"], email, msg.as_string())
         s.close()
 
     def offline_logic(self, sid, ob, pnetwork, nt):
@@ -57,44 +57,60 @@ class TrackerEngine(object):
         """
         # Get a listing of OPEN tickets
         open_tickets = ""
-        self.pcursor.execute("""SELECT id, entered, subject from
+        self.pcursor.execute(
+            """SELECT id, entered, subject from
         tt_base WHERE portfolio = %s and s_mid = %s and status != 'CLOSED'
-        ORDER by id DESC""", (pnetwork, sid))
+        ORDER by id DESC""",
+            (pnetwork, sid),
+        )
         for row in self.pcursor:
-            open_tickets += (" %-6s %16s     %s\n"
-                             "") % (row[0], row[1].strftime("%Y-%m-%d %I %p"),
-                                    row[2])
+            open_tickets += (" %-6s %16s     %s\n" "") % (
+                row[0],
+                row[1].strftime("%Y-%m-%d %I %p"),
+                row[2],
+            )
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
-        self.pcursor.execute("""SELECT id, entered, subject from
+        self.pcursor.execute(
+            """SELECT id, entered, subject from
         tt_base WHERE portfolio = %s and s_mid = %s and status = 'CLOSED'
-        ORDER by id DESC LIMIT 5""", (pnetwork, sid))
+        ORDER by id DESC LIMIT 5""",
+            (pnetwork, sid),
+        )
         for row in self.pcursor:
-            closed_tickets += (" %-6s %16s     %s\n"
-                               "") % (row[0],
-                                      row[1].strftime("%Y-%m-%d %I %p"),
-                                      row[2])
+            closed_tickets += (" %-6s %16s     %s\n" "") % (
+                row[0],
+                row[1].strftime("%Y-%m-%d %I %p"),
+                row[2],
+            )
         if closed_tickets == "":
             closed_tickets = " --None-- "
         if open_tickets == "":
             open_tickets = " --None-- "
         # Create an entry in tt_base
-        self.pcursor.execute("""INSERT into tt_base (portfolio, s_mid, subject,
+        self.pcursor.execute(
+            """INSERT into tt_base (portfolio, s_mid, subject,
         status, author) VALUES (%s, %s, %s, %s, %s) RETURNING id""",
-                             (pnetwork, sid, 'Site Offline', 'OPEN',
-                              'mesonet'))
+            (pnetwork, sid, "Site Offline", "OPEN", "mesonet"),
+        )
         trackerid = self.pcursor.fetchone()[0]
         # Create a tt_log entry
-        lts = ob['valid'].astimezone(pytz.timezone(nt.sts[sid]['tzname']))
-        msg = "Site Offline since %s" % (lts.strftime("%d %b %Y %H:%M %Z"), )
-        self.pcursor.execute("""INSERT into tt_log (portfolio, s_mid, author,
+        lts = ob["valid"].astimezone(pytz.timezone(nt.sts[sid]["tzname"]))
+        msg = "Site Offline since %s" % (lts.strftime("%d %b %Y %H:%M %Z"),)
+        self.pcursor.execute(
+            """INSERT into tt_log (portfolio, s_mid, author,
         status_c, comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)
-        """, (pnetwork, sid, 'mesonet', 'OKAY', msg, trackerid))
+        """,
+            (pnetwork, sid, "mesonet", "OKAY", msg, trackerid),
+        )
 
         # Update iemaccess
-        self.icursor.execute("""INSERT into offline(station, network,
+        self.icursor.execute(
+            """INSERT into offline(station, network,
         valid, trackerid) VALUES (%s, %s, %s, %s)
-        """, (sid, nt.sts[sid]['network'], ob['valid'], trackerid))
+        """,
+            (sid, nt.sts[sid]["network"], ob["valid"], trackerid),
+        )
 
         mformat = """
 ----------------------
@@ -114,26 +130,32 @@ class TrackerEngine(object):
 %s
 ================================================================
 """
-        mailstr = mformat % (trackerid, sid, nt.sts[sid]['network'],
-                             nt.sts[sid]['name'],
-                             lts.strftime("%d %b %Y %I:%M %p %Z"),
-                             open_tickets, closed_tickets)
+        mailstr = mformat % (
+            trackerid,
+            sid,
+            nt.sts[sid]["network"],
+            nt.sts[sid]["name"],
+            lts.strftime("%d %b %Y %I:%M %p %Z"),
+            open_tickets,
+            closed_tickets,
+        )
         # Get contacts for site
-        self.pcursor.execute("""SELECT distinct email from
+        self.pcursor.execute(
+            """SELECT distinct email from
         iem_site_contacts WHERE s_mid = %s and email is not NULL
-        """, (sid, ))
+        """,
+            (sid,),
+        )
         for row in self.pcursor:
             email = row[0].lower()
             if email not in self.emails:
-                subject = ('[IEM] %s Offline'
-                           '') % (nt.sts[sid]['name'], )
-                self.emails[email] = {'subject': subject,
-                                      'body': mailstr}
+                subject = ("[IEM] %s Offline" "") % (nt.sts[sid]["name"],)
+                self.emails[email] = {"subject": subject, "body": mailstr}
             else:
-                subject = '[IEM] Multiple Sites'
-                self.emails[email]['subject'] = subject
-                self.emails[email]['body'] += "\n=========\n"
-                self.emails[email]['body'] += mailstr
+                subject = "[IEM] Multiple Sites"
+                self.emails[email]["subject"] = subject
+                self.emails[email]["body"] += "\n=========\n"
+                self.emails[email]["body"] += mailstr
 
     def online_logic(self, sid, offline, ob, pnetwork, nt):
         """online logic
@@ -146,23 +168,31 @@ class TrackerEngine(object):
           nt (dict): provider of station metadata
 
         """
-        trackerid = offline[sid]['trackerid']
+        trackerid = offline[sid]["trackerid"]
         # Create Log Entry
-        cmt = ("Site Back Online at: %s"
-               "") % (ob['valid'].strftime("%Y-%m-%d %H:%M:%S"), )
-        self.pcursor.execute("""INSERT into tt_log
+        cmt = ("Site Back Online at: %s" "") % (
+            ob["valid"].strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        self.pcursor.execute(
+            """INSERT into tt_log
             (portfolio, s_mid, author, status_c, comments, tt_id)
             VALUES (%s, %s, %s, %s, %s, %s)
-        """, (pnetwork, sid, 'mesonet', 'CLOSED', cmt,
-              trackerid))
+        """,
+            (pnetwork, sid, "mesonet", "CLOSED", cmt, trackerid),
+        )
         # Update tt_base
-        self.pcursor.execute("""UPDATE tt_base SET
+        self.pcursor.execute(
+            """UPDATE tt_base SET
         last = now(), status = 'CLOSED' WHERE id = %s
-        """, (trackerid, ))
+        """,
+            (trackerid,),
+        )
         # Update iemaccess
-        self.icursor.execute("""DELETE from offline where
-        station = %s and network = %s""", (sid,
-                                           nt.sts[sid]['network']))
+        self.icursor.execute(
+            """DELETE from offline where
+        station = %s and network = %s""",
+            (sid, nt.sts[sid]["network"]),
+        )
         mformat = """
    ---------------------------------
    |  *** IEM TRACKER REPORT ***   |
@@ -184,35 +214,38 @@ IEM Tracker Action:  This trouble ticket has been marked
   * Questions about this alert?  Email:  akrherz@iastate.edu
   * Thanks!!!
 """
-        ltz = pytz.timezone(nt.sts[sid]['tzname'])
-        lts = ob['valid'].astimezone(ltz)
-        delta = (ob['valid'] - offline[sid]['valid'])
+        ltz = pytz.timezone(nt.sts[sid]["tzname"])
+        lts = ob["valid"].astimezone(ltz)
+        delta = ob["valid"] - offline[sid]["valid"]
         days = delta.days
-        hours = delta.seconds / 3600.
-        minutes = (delta.seconds % 3600) / 60.
-        duration = "%.0f days %.0f hours %.0f minutes" % (days,
-                                                          hours,
-                                                          minutes)
-        mailstr = mformat % (sid, nt.sts[sid]['network'],
-                             nt.sts[sid]['name'], trackerid,
-                             lts.strftime("%d %b %Y %I:%M %p %Z"),
-                             duration)
+        hours = delta.seconds / 3600.0
+        minutes = (delta.seconds % 3600) / 60.0
+        duration = "%.0f days %.0f hours %.0f minutes" % (days, hours, minutes)
+        mailstr = mformat % (
+            sid,
+            nt.sts[sid]["network"],
+            nt.sts[sid]["name"],
+            trackerid,
+            lts.strftime("%d %b %Y %I:%M %p %Z"),
+            duration,
+        )
         # Get contacts for site
-        self.pcursor.execute("""SELECT distinct email from
+        self.pcursor.execute(
+            """SELECT distinct email from
         iem_site_contacts WHERE s_mid = %s and email is not NULL
-        """, (sid, ))
+        """,
+            (sid,),
+        )
         for row in self.pcursor:
             email = row[0].lower()
             if email not in self.emails:
-                subject = ('[IEM] %s Online'
-                           '') % (nt.sts[sid]['name'], )
-                self.emails[email] = {'subject': subject,
-                                      'body': mailstr}
+                subject = ("[IEM] %s Online" "") % (nt.sts[sid]["name"],)
+                self.emails[email] = {"subject": subject, "body": mailstr}
             else:
-                subject = '[IEM] Multiple Sites'
-                self.emails[email]['subject'] = subject
-                self.emails[email]['body'] += "\n=========\n"
-                self.emails[email]['body'] += mailstr
+                subject = "[IEM] Multiple Sites"
+                self.emails[email]["subject"] = subject
+                self.emails[email]["body"] += "\n=========\n"
+                self.emails[email]["body"] += mailstr
 
     def process_network(self, obs, pnetwork, nt, threshold):
         """Process a list of dicts representing the network's observations
@@ -225,16 +258,19 @@ IEM Tracker Action:  This trouble ticket has been marked
             the minimum time a site is considered to be 'online' within
 
         """
-        network = nt.sts[list(nt.sts.keys())[0]]['network']
-        self.icursor.execute("""SELECT station, trackerid, valid from offline
-            WHERE network = %s""", (network,))
+        network = nt.sts[list(nt.sts.keys())[0]]["network"]
+        self.icursor.execute(
+            """SELECT station, trackerid, valid from offline
+            WHERE network = %s""",
+            (network,),
+        )
         offline = {}
         for row in self.icursor:
-            offline[row[0]] = {'trackerid': row[1], 'valid': row[2]}
+            offline[row[0]] = {"trackerid": row[1], "valid": row[2]}
 
         for sid in obs:
             ob = obs[sid]
-            if ob['valid'] > threshold:
+            if ob["valid"] > threshold:
                 # print '%s is online, offlinekeys: %s' % (sid,
                 #                                         str(offline.keys()))
                 if sid in offline:
@@ -262,16 +298,19 @@ def loadqc(cursor=None, date=None):
         date = datetime.date.today()
     qdict = {}
     if cursor is None:
-        portfolio = get_dbconn('portfolio', user='nobody')
+        portfolio = get_dbconn("portfolio", user="nobody")
         cursor = portfolio.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
         select s_mid, sensor, status from tt_base
         WHERE sensor is not null
         and date(entered) <= %s and
         (status != 'CLOSED' or closed > %s)
         and s_mid is not null
-    """, (date, date))
+    """,
+        (date, date),
+    )
     for row in cursor:
         sid = row[0]
         if row[0] not in qdict:

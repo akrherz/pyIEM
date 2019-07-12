@@ -11,7 +11,7 @@ from pyiem.util import get_dbconn, get_test_file
 @pytest.fixture
 def dbcursor():
     """Get database conn."""
-    dbconn = get_dbconn('hads')
+    dbconn = get_dbconn("hads")
     # Note the usage of RealDictCursor here, as this is what
     # pyiem.twistedpg uses
     return dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -22,10 +22,12 @@ def test_190313_missingstage(dbcursor):
     prod = hmlparser(get_test_file("HML/HMLDMX.txt"))
     assert not prod.warnings
     prod.sql(dbcursor)
-    dbcursor.execute("""
+    dbcursor.execute(
+        """
         SELECT * from hml_observed_data_2019 WHERE station = 'JANI4'
         and valid > '2019-03-13' and valid < '2019-03-14'
-    """)
+    """
+    )
     assert dbcursor.rowcount == 8
 
 
@@ -43,6 +45,6 @@ def test_161010_timing():
     for _ in range(100):
         hmlparser(get_test_file("HML/HMLARX.txt"))
     ets = datetime.datetime.now()
-    rate = (ets - sts).total_seconds() / 100.
+    rate = (ets - sts).total_seconds() / 100.0
     print("sec per parse %.4f" % (rate,))
-    assert rate < 1.
+    assert rate < 1.0

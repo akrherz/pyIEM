@@ -7,7 +7,7 @@ import numpy as np
 from rasterstats import zonal_stats
 
 _LOG = logging.getLogger(__name__)
-GRIDINFO = namedtuple("GridInfo", ['x0', 'y0', 'xsz', 'ysz', 'mask'])
+GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])
 
 
 class CachingZonalStats(object):
@@ -36,44 +36,49 @@ class CachingZonalStats(object):
         """
         if geometries is None:
             _LOG.warning(
-                ("Cowardly refusing to compute gridnav "
-                 "with None geometries")
+                ("Cowardly refusing to compute gridnav " "with None geometries")
             )
             return
         # TODO: check nodata usage here
-        zs = zonal_stats(geometries, grid, affine=self.affine, nodata=-1,
-                         all_touched=True, raster_out=True)
+        zs = zonal_stats(
+            geometries,
+            grid,
+            affine=self.affine,
+            nodata=-1,
+            all_touched=True,
+            raster_out=True,
+        )
         (gridysz, gridxsz) = grid.shape
         # print("in grid size y: %s x: %s" % (gridysz, gridxsz))
         for entry in zs:
-            aff = entry['mini_raster_affine']
+            aff = entry["mini_raster_affine"]
             # print(aff)
             x0 = int((aff.c - self.affine.c) / self.affine.a)
             y0 = int((self.affine.f - aff.f) / abs(self.affine.e))
-            (ysz, xsz) = entry['mini_raster_array'].mask.shape
-            mask = entry['mini_raster_array'].mask
+            (ysz, xsz) = entry["mini_raster_array"].mask.shape
+            mask = entry["mini_raster_array"].mask
             # print("IN: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
             if x0 >= gridxsz or y0 >= gridysz:
                 # print("out of bounds, skipping")
                 self.gridnav.append(None)
                 continue
             if x0 < 0:
-                mask = mask[:, abs(x0):]
+                mask = mask[:, abs(x0) :]
                 xsz -= abs(x0)
                 x0 = 0
             if (x0 + xsz) >= gridxsz:
                 clipx = (x0 + xsz) - gridxsz
                 # print('clipping %s x points' % (clipx, ))
-                mask = mask[:, :(0 - clipx)]
+                mask = mask[:, : (0 - clipx)]
                 xsz -= clipx
             if y0 < 0:
-                mask = mask[abs(y0):, :]
+                mask = mask[abs(y0) :, :]
                 ysz -= abs(y0)
                 y0 = 0
             if (y0 + ysz) >= gridysz:
                 clipy = (y0 + ysz) - gridysz
                 # print('clipping %s y points' % (clipy, ))
-                mask = mask[:(0 - clipy), :]
+                mask = mask[: (0 - clipy), :]
                 ysz -= clipy
 
             # TODO: likely need some more thought above to prevent this
@@ -82,10 +87,7 @@ class CachingZonalStats(object):
                 continue
 
             # print("OUT: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
-            self.gridnav.append(
-                GRIDINFO(x0=x0, y0=y0,
-                         xsz=xsz, ysz=ysz,
-                         mask=mask))
+            self.gridnav.append(GRIDINFO(x0=x0, y0=y0, xsz=xsz, ysz=ysz, mask=mask))
 
     def gen_stats(self, grid, geometries=None, stat=np.ma.mean):
         """Compute the zonal_stats for the provided geometries and grid
@@ -108,7 +110,12 @@ class CachingZonalStats(object):
             if nav is None:
                 res.append(None)
                 continue
-            res.append(stat(np.ma.array(
-                grid[nav.y0:(nav.y0 + nav.ysz),
-                     nav.x0:(nav.x0 + nav.xsz)], mask=nav.mask)))
+            res.append(
+                stat(
+                    np.ma.array(
+                        grid[nav.y0 : (nav.y0 + nav.ysz), nav.x0 : (nav.x0 + nav.xsz)],
+                        mask=nav.mask,
+                    )
+                )
+            )
         return res

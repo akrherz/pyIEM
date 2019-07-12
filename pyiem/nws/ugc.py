@@ -6,12 +6,12 @@ import re
 import datetime
 from collections import OrderedDict
 
-UGC_RE = re.compile(
-    r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M)
+UGC_RE = re.compile(r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M)
 
 
 class UGCParseException(Exception):
     """Custom Exception this parser can raise"""
+
     pass
 
 
@@ -22,7 +22,7 @@ def ugcs_to_text(ugcs):
     for ugc in ugcs:
         code = str(ugc)
         state_abbr = code[:2]
-        if code[2] == 'Z':
+        if code[2] == "Z":
             geotype = "forecast zones"
         if state_abbr not in states:
             states[state_abbr] = []
@@ -37,8 +37,8 @@ def ugcs_to_text(ugcs):
         states[st].sort()
         part = " %s [%s]" % (", ".join(states[st]), st)
         if len(part) > 350:
-            if st == 'LA' and geotype == 'counties':
-                geotype = 'parishes'
+            if st == "LA" and geotype == "counties":
+                geotype = "parishes"
             part = " %s %s in [%s]" % (len(states[st]), geotype, st)
         txt.append(part)
 
@@ -75,6 +75,7 @@ def parse(text, valid, ugc_provider=None):
 
     def _construct(code):
         return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))
+
     ugcs = []
     expire = None
     tokens = UGC_RE.findall(text)
@@ -86,10 +87,11 @@ def parse(text, valid, ugc_provider=None):
     # if len(tokens) == 2 and tokens[0] == tokens[1]:
     #    pass
     if len(tokens) > 1:
-        raise UGCParseException("More than 1 UGC encoding in text:\n%s\n" % (
-                                                            str(tokens),))
+        raise UGCParseException(
+            "More than 1 UGC encoding in text:\n%s\n" % (str(tokens),)
+        )
 
-    parts = re.split('-', tokens[0][0].replace(" ", "").replace("\n", ""))
+    parts = re.split("-", tokens[0][0].replace(" ", "").replace("\n", ""))
     expire = str2time(tokens[0][2], valid)
     state_code = ""
     for i, part in enumerate(parts):
@@ -98,17 +100,19 @@ def parse(text, valid, ugc_provider=None):
                 ugc_type = part[2]
             else:
                 # This is bad encoding
-                raise UGCParseException(('WHOA, bad UGC encoding detected "%s"'
-                                         ) % ('-'.join(parts),))
+                raise UGCParseException(
+                    ('WHOA, bad UGC encoding detected "%s"') % ("-".join(parts),)
+                )
         this_part = parts[i].strip()
         if len(this_part) == 6:  # We have a new state ID
             state_code = this_part[:3]
             ugcs.append(_construct(this_part))
         elif len(this_part) == 3:  # We have an individual Section
-            ugcs.append(_construct("%s%s%s" % (state_code[:2], state_code[2],
-                                               this_part)))
+            ugcs.append(
+                _construct("%s%s%s" % (state_code[:2], state_code[2], this_part))
+            )
         elif len(this_part) > 6:  # We must have a > in there somewhere
-            new_parts = re.split('>', this_part)
+            new_parts = re.split(">", this_part)
             first_part = new_parts[0]
             second_part = new_parts[1]
             if len(first_part) > 3:
@@ -116,17 +120,17 @@ def parse(text, valid, ugc_provider=None):
             first_val = int(first_part[-3:])
             last_val = int(second_part)
             if ugc_type == "C":
-                for j in range(0, last_val+2 - first_val, 2):
-                    str_code = "%03i" % (first_val+j,)
-                    ugcs.append(_construct("%s%s%s" % (state_code[:2],
-                                                       state_code[2],
-                                                       str_code)))
+                for j in range(0, last_val + 2 - first_val, 2):
+                    str_code = "%03i" % (first_val + j,)
+                    ugcs.append(
+                        _construct("%s%s%s" % (state_code[:2], state_code[2], str_code))
+                    )
             else:
-                for j in range(first_val, last_val+1):
+                for j in range(first_val, last_val + 1):
                     str_code = "%03i" % (j,)
-                    ugcs.append(_construct("%s%s%s" % (state_code[:2],
-                                                       state_code[2],
-                                                       str_code)))
+                    ugcs.append(
+                        _construct("%s%s%s" % (state_code[:2], state_code[2], str_code))
+                    )
     return ugcs, expire
 
 
@@ -153,6 +157,8 @@ class UGC(object):
 
     def __eq__(self, other):
         """ Compare this UGC with another """
-        return (self.state == other.state and
-                self.geoclass == other.geoclass and
-                self.number == other.number)
+        return (
+            self.state == other.state
+            and self.geoclass == other.geoclass
+            and self.number == other.number
+        )
