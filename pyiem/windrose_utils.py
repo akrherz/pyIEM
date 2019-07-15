@@ -8,7 +8,11 @@ import pandas as pd
 from pandas.io.sql import read_sql
 import matplotlib.image as mpimage
 from matplotlib.ticker import FormatStrFormatter
+
+# need to get AGG before windrose imports plt
 from pyiem.plot.use_agg import plt
+
+# pylint: disable=wrong-import-order,ungrouped-imports
 from windrose import WindroseAxes
 from windrose.windrose import histogram
 from pyiem.datatypes import speed
@@ -104,12 +108,11 @@ def _get_timeinfo(arr, datepart, fullsize):
     return dict(sqltext=sql, labeltext=lbl)
 
 
-def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo, level):
+def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
     """Helper function to get data out of IEM databases
 
     Args:
       station (str): the station identifier
-      cursor (psycopg2): database cursor to use
       database (str): the name of the database to connect to, we assume we can
         then query a table called `alldata`
       sts (datetime): the floor to query data for
@@ -299,13 +302,32 @@ def _make_plot(
     except Exception as exp:
         sys.stderr.write(str(exp))
     # Figure out the shortest bar
+    # pylint: disable=protected-access
     mindir = ax._info["dir"][np.argmin(np.sum(ax._info["table"], axis=0))]
     ax.set_rlabel_position((450 - mindir) % 360 - 15)
     # Adjust the limits so to get a empty center
     rmin, rmax = ax.get_ylim()
     ax.set_rorigin(0 - (rmax - rmin) * 0.2)
+    rmin, rmax = ax.get_ylim()
     # Make labels have % formatters
     ax.yaxis.set_major_formatter(FormatStrFormatter("%.1f%%"))
+    # Place arrows at the border for better clarity
+    for x in ax.get_xticks():
+        # https://github.com/matplotlib/matplotlib/issues/5344
+        ax.annotate(
+            "",
+            xy=(x + 0.001, rmax - (rmax - rmin) * 0.12),
+            xytext=(x + 0.001, rmax + (rmax - rmin) * 0.02),
+            arrowprops=dict(
+                facecolor="None",
+                edgecolor="k",
+                alpha=0.8,
+                shrink=0.09,
+                zorder=10,
+            ),
+            ha="center",
+            va="center",
+        )
 
     handles = []
     for p in ax.patches_list:
@@ -386,12 +408,7 @@ Period of Record: %s - %s""" % (
             fontsize=14,
         )
     # Denote the direction blowing from
-    plt.gcf().text(
-        0.02,
-        0.125,
-        "Direction is where the wind is\nblowing from, not toward.",
-        va="bottom",
-    )
+    plt.gcf().text(0.02, 0.125, "Arrows indicate wind direction.", va="bottom")
     # Make a logo
     im = mpimage.imread("%s/%s" % (DATADIR, "logo.png"))
     plt.figimage(im, 10, 735)
@@ -410,13 +427,12 @@ def windrose(
     nsector=36,
     justdata=False,
     rmax=None,
-    cursor=None,
     sname=None,
     sknt=None,
     drct=None,
     valid=None,
     level=None,
-    bins=[],
+    bins=None,
     **kwargs
 ):
     """Utility function that generates a windrose plot
@@ -431,8 +447,6 @@ def windrose(
       units (str,optional): units to plot values as
       nsector (int,optional): number of bins to devide the windrose into
       justdata (boolean,optional): if True, write out the data only
-      cursor (psycopg2.cursor,optional): provide a database cursor to run the
-        query against.
       sname (str,optional): The name of this station, if not specified it will
         default to the ((`station`)) identifier
       sknt (list,optional): A list of wind speeds in knots already generated
@@ -448,9 +462,7 @@ def windrose(
     hourinfo = _get_timeinfo(hours, "hour", 24)
 
     if sknt is None or drct is None:
-        df = _get_data(
-            station, cursor, database, sts, ets, monthinfo, hourinfo, level
-        )
+        df = _get_data(station, database, sts, ets, monthinfo, hourinfo, level)
     else:
         df = pd.DataFrame({"sknt": sknt, "drct": drct, "valid": valid})
     # Convert wind speed into the units we want here
