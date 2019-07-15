@@ -26,7 +26,10 @@ def test_totextstr():
         ugc.UGC("IA", "C", "001"),
         ugc.UGC("IA", "C", "002"),
     ]
-    assert ugc.ugcs_to_text(ugcs) == "((DCZ001)) [DC] and ((IAC001)), ((IAC002)) [IA]"
+    assert (
+        ugc.ugcs_to_text(ugcs)
+        == "((DCZ001)) [DC] and ((IAC001)), ((IAC002)) [IA]"
+    )
 
 
 def test_str1():

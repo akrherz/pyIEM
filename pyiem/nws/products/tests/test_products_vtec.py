@@ -324,7 +324,10 @@ def test_170403_mixedlatlon(dbcursor):
     )
     assert dbcursor.rowcount == 1
     row = dbcursor.fetchone()
-    ans = "At stages near 4.0 feet..." "Minor flooding of Goos Ferry Road will occur."
+    ans = (
+        "At stages near 4.0 feet..."
+        "Minor flooding of Goos Ferry Road will occur."
+    )
     assert row["impact_text"] == ans
 
 
@@ -887,7 +890,9 @@ def test_140609_ext_backwards(dbcursor):
     and eventid = 2 and phenomena = 'FL' and significance = 'W' """
     )
     for i in range(1, 6):
-        prod = vtecparser(get_test_file("FLWLBF/FLWLBF_%s.txt" % (i,)), utcnow=utcnow)
+        prod = vtecparser(
+            get_test_file("FLWLBF/FLWLBF_%s.txt" % (i,)), utcnow=utcnow
+        )
         prod.sql(dbcursor)
 
     dbcursor.execute("""SET TIME ZONE 'UTC'""")
@@ -1105,7 +1110,9 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
 def test_affected_wfos():
     """see what affected WFOs we have """
     ugc_provider = {"IAZ006": UGC("IA", "Z", "006", wfos=["DMX"])}
-    prod = vtecparser(get_test_file("WSWDMX/WSW_00.txt"), ugc_provider=ugc_provider)
+    prod = vtecparser(
+        get_test_file("WSWDMX/WSW_00.txt"), ugc_provider=ugc_provider
+    )
     assert prod.segments[0].get_affected_wfos()[0] == "DMX"
 
 

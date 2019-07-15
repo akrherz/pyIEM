@@ -71,7 +71,12 @@ def _compute_bounds(sts, ets):
         row = int(i / cols)
         llx = gx + col * monthtotalwidth
         lly = gy - (row + 1) * monthtotalheight
-        bounds[month] = [llx + hpadding, lly + vpadding, monthwidth, monthheight]
+        bounds[month] = [
+            llx + hpadding,
+            lly + vpadding,
+            monthwidth,
+            monthheight,
+        ]
     return bounds
 
 
@@ -140,7 +145,9 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     )
 
     axes.add_patch(
-        Rectangle((0.0, 0.90), 1, 0.1, zorder=2, facecolor="tan", edgecolor="tan")
+        Rectangle(
+            (0.0, 0.90), 1, 0.1, zorder=2, facecolor="tan", edgecolor="tan"
+        )
     )
 
     sts = datetime.date(month.year, month.month, 1)
@@ -214,7 +221,9 @@ def calendar_plot(sts, ets, data, **kwargs):
                 maxval = data[key]["val"]
         # Need at least 3 slots
         maxval = 5 if maxval < 5 else maxval
-        kwargs["norm"] = mpcolors.BoundaryNorm(np.arange(0, maxval), kwargs["cmap"].N)
+        kwargs["norm"] = mpcolors.BoundaryNorm(
+            np.arange(0, maxval), kwargs["cmap"].N
+        )
     for month in bounds:
         ax = fig.add_axes(bounds[month])
         _do_month(month, ax, data, sts, ets, kwargs)

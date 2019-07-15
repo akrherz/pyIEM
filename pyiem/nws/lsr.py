@@ -126,7 +126,11 @@ class LSR(object):
         remainsize = reference.TWEET_CHARS - 24 - len(msg)
         if self.remark:
             extra = "..." if len(self.remark) > (remainsize - 6) else ""
-            msg = "%s. %s%s" % (msg, self.remark[: (remainsize - 6)].strip(), extra)
+            msg = "%s. %s%s" % (
+                msg,
+                self.remark[: (remainsize - 6)].strip(),
+                extra,
+            )
         return msg
 
     def assign_timezone(self, tz, z):
@@ -134,7 +138,9 @@ class LSR(object):
         if self.valid is None:
             return
         # We can't just assign the timezone as this does not work in pytz
-        self.utcvalid = self.valid + datetime.timedelta(hours=reference.offsets[z])
+        self.utcvalid = self.valid + datetime.timedelta(
+            hours=reference.offsets[z]
+        )
         self.utcvalid = self.utcvalid.replace(tzinfo=pytz.UTC)
         self.valid = self.utcvalid.astimezone(tz)
         # complexity with non-DST sites

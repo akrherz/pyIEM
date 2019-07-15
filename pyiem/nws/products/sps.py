@@ -93,11 +93,15 @@ class SPSProduct(TextProduct):
                 expire = " till %s %s" % (
                     (
                         seg.ugcexpire
-                        - datetime.timedelta(hours=reference.offsets.get(self.z, 0))
+                        - datetime.timedelta(
+                            hours=reference.offsets.get(self.z, 0)
+                        )
                     ).strftime("%-I:%M %p"),
                     self.z,
                 )
-            counties, expire = dedup_headline(headline, seg.ugcs, counties, expire)
+            counties, expire = dedup_headline(
+                headline, seg.ugcs, counties, expire
+            )
             xtra["channels"] = self._get_channels(seg)
             mess = ("%s issues %s%s%s %s?pid=%s") % (
                 self.source[1:],

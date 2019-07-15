@@ -143,7 +143,8 @@ class speed(basetype):
         units = units.upper()
         if units not in speed.known_units:
             raise UnitsError(
-                "unrecognized speed unit: %s known: %s" % (units, speed.known_units)
+                "unrecognized speed unit: %s known: %s"
+                % (units, speed.known_units)
             )
         if units == self._units:
             return self._value

@@ -86,7 +86,8 @@ def test_calendar2():
         ets,
         data,
         title=(
-            "Whiz Bang, Wizzardry. This is even more text and we " "have even more."
+            "Whiz Bang, Wizzardry. This is even more text and we "
+            "have even more."
         ),
         subtitle="This is officially unofficial and hacky.",
     )

@@ -81,7 +81,9 @@ def test_170824_sa_format():
     """Don't be so noisey when we encounter SA formatted products"""
     utcnow = utc(2017, 8, 24, 14)
     prod = PARSER(
-        get_test_file("METAR/sa.txt"), utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER
+        get_test_file("METAR/sa.txt"),
+        utcnow=utcnow,
+        nwsli_provider=NWSLI_PROVIDER,
     )
     assert not prod.metars
 
@@ -90,7 +92,9 @@ def test_170809_nocrcrlf():
     """Product fails WMO parsing due to usage of RTD as bbb field"""
     utcnow = utc(2017, 8, 9, 9)
     prod = PARSER(
-        get_test_file("METAR/rtd_bbb.txt"), utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER
+        get_test_file("METAR/rtd_bbb.txt"),
+        utcnow=utcnow,
+        nwsli_provider=NWSLI_PROVIDER,
     )
     assert len(prod.metars) == 1
 
@@ -99,7 +103,10 @@ def test_metarreport(dbcursor):
     """Can we do things with the METARReport"""
     utcnow = utc(2013, 8, 8, 12, 53)
     mtr = metarcollect.METARReport(
-        ("SPECI CYYE 081253Z 01060KT 1/4SM FG SKC 10/10 A3006 RMK P0000 " "FG6 SLP188=")
+        (
+            "SPECI CYYE 081253Z 01060KT 1/4SM FG SKC 10/10 A3006 RMK P0000 "
+            "FG6 SLP188="
+        )
     )
     assert mtr.wind_gust is None
     mtr.time = utcnow

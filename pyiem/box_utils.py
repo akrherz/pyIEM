@@ -16,7 +16,9 @@ def _store_tokens(access_token, refresh_token):
     set_property("boxclient.refresh_token", refresh_token)
 
 
-def sendfiles2box(remotepath, filenames, remotefilenames=None, overwrite=False):
+def sendfiles2box(
+    remotepath, filenames, remotefilenames=None, overwrite=False
+):
     """Send a file(s) to Box.
 
     Args:
@@ -56,7 +58,10 @@ def sendfiles2box(remotepath, filenames, remotefilenames=None, overwrite=False):
                 limit=100, offset=offset
             )
             for item in items:
-                if item.type == "folder" and item.name.lower() == token.lower():
+                if (
+                    item.type == "folder"
+                    and item.name.lower() == token.lower()
+                ):
                     folder_id = item.id
                     found = True
                     break
@@ -84,7 +89,9 @@ def sendfiles2box(remotepath, filenames, remotefilenames=None, overwrite=False):
                     continue
                 except Exception as exp2:
                     LOG.debug(
-                        "Upload_Contents of %s resulted in exception: %s", localfn, exp2
+                        "Upload_Contents of %s resulted in exception: %s",
+                        localfn,
+                        exp2,
                     )
                     continue
             LOG.debug("Upload of %s resulted in exception: %s", localfn, exp)

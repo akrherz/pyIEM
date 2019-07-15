@@ -88,8 +88,12 @@ def uv(speed, direction):
     @param dir wind direction with zero as north
     @return u and v components
     """
-    if not isinstance(speed, dt.speed) or not isinstance(direction, dt.direction):
-        raise InvalidArguments(("uv() needs speed and direction " "objects as args"))
+    if not isinstance(speed, dt.speed) or not isinstance(
+        direction, dt.direction
+    ):
+        raise InvalidArguments(
+            ("uv() needs speed and direction " "objects as args")
+        )
     # Get radian units
     rad = direction.value("RAD")
     if rad is None or speed.value() is None:
@@ -140,7 +144,9 @@ def windchill(temperature, speed):
         - 35.75 * np.power(sknt, 0.16)
         + 0.4275 * tmpf * np.power(sknt, 0.16)
     )
-    wci = np.where(np.logical_or(np.less(sknt, 3), np.greater(tmpf, 50)), tmpf, wci)
+    wci = np.where(
+        np.logical_or(np.less(sknt, 3), np.greater(tmpf, 50)), tmpf, wci
+    )
     return dt.temperature(wci, "F")
 
 

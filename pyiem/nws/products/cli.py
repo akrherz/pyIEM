@@ -129,7 +129,9 @@ def make_tokens(regime, line):
         if e is None:
             tokens.append(None)
             continue
-        tokens.append(line[pos:e].strip() if line[pos:e].strip() != "" else None)
+        tokens.append(
+            line[pos:e].strip() if line[pos:e].strip() != "" else None
+        )
         pos = e
     for i, token in enumerate(tokens):
         if token is not None and token.startswith("R "):
@@ -162,7 +164,9 @@ def parse_snowfall(regime, lines, data):
             and yeartest is not None
             and data["snow_%s_record_years" % (key,)][0] is not None
         ):
-            while (linenum + 1) < len(lines) and len(lines[linenum + 1].strip()) == 4:
+            while (linenum + 1) < len(lines) and len(
+                lines[linenum + 1].strip()
+            ) == 4:
                 data["snow_today_record_years"].append(int(lines[linenum + 1]))
                 linenum += 1
 
@@ -190,8 +194,12 @@ def parse_precipitation(regime, lines, data):
             and yeartest is not None
             and data["precip_%s_record_years" % (key,)][0] is not None
         ):
-            while (linenum + 1) < len(lines) and len(lines[linenum + 1].strip()) == 4:
-                data["precip_today_record_years"].append(int(lines[linenum + 1]))
+            while (linenum + 1) < len(lines) and len(
+                lines[linenum + 1].strip()
+            ) == 4:
+                data["precip_today_record_years"].append(
+                    int(lines[linenum + 1])
+                )
                 linenum += 1
 
 
@@ -226,7 +234,9 @@ def parse_temperature(regime, lines, data):
         if tokens[5] is not None:
             data["temperature_%s_normal" % (key,)] = get_number(tokens[5])
             # Check next line(s) for more years
-            while (linenum + 1) < len(lines) and len(lines[linenum + 1].strip()) == 4:
+            while (linenum + 1) < len(lines) and len(
+                lines[linenum + 1].strip()
+            ) == 4:
                 data["temperature_%s_record_years" % (key,)].append(
                     int(lines[linenum + 1])
                 )
@@ -238,7 +248,9 @@ class CLIProduct(TextProduct):
     Represents a CLI Daily Climate Report Product
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
@@ -247,7 +259,10 @@ class CLIProduct(TextProduct):
         # Sometimes, we get products that are not really in CLI format but
         # are RER (record event reports) with a CLI AWIPS ID
         if self.wmo[:2] != "CD":
-            print(("Product %s skipped due to wrong header") % (self.get_product_id(),))
+            print(
+                ("Product %s skipped due to wrong header")
+                % (self.get_product_id(),)
+            )
             return
         for section in self.find_sections():
             if not HEADLINE_RE.findall(section.replace("\n", " ")):
@@ -256,7 +271,9 @@ class CLIProduct(TextProduct):
             self.compute_diction(section)
             valid, station = self.parse_cli_headline(section)
             data = self.parse_data(section)
-            self.data.append(dict(cli_valid=valid, cli_station=station, data=data))
+            self.data.append(
+                dict(cli_valid=valid, cli_station=station, data=data)
+            )
 
     def find_sections(self):
         """Some trickery to figure out if we have multiple reports
@@ -291,11 +308,14 @@ class CLIProduct(TextProduct):
         if not tokens:
             raise CLIException("Could not find 'WEATHER ITEM' within text")
         if len(tokens) > 1:
-            raise CLIException("Found %s 'WEATHER ITEM' in text" % (len(tokens),))
+            raise CLIException(
+                "Found %s 'WEATHER ITEM' in text" % (len(tokens),)
+            )
         diction = tokens[0].strip()
         if diction not in REGIMES:
             raise CLIException(
-                ("Unknown diction found in 'WEATHER ITEM'\n" "|%s|") % (diction,)
+                ("Unknown diction found in 'WEATHER ITEM'\n" "|%s|")
+                % (diction,)
             )
 
         self.regime = REGIMES.index(diction)
@@ -306,7 +326,8 @@ class CLIProduct(TextProduct):
         res = []
         for data in self.data:
             mess = (
-                "%s %s Climate Report: High: %s Low: %s " "Precip: %s Snow: %s %s"
+                "%s %s Climate Report: High: %s Low: %s "
+                "Precip: %s Snow: %s %s"
             ) % (
                 data["cli_station"],
                 data["cli_valid"].strftime("%b %-d"),

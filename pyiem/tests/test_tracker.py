@@ -53,7 +53,10 @@ def test_workflow(pcursor, icursor):
     valid = datetime.datetime.utcnow()
     valid = valid.replace(tzinfo=pytz.timezone("UTC"))
     threshold = valid - datetime.timedelta(hours=3)
-    obs = {sid1: {"valid": valid}, sid2: {"valid": valid - datetime.timedelta(hours=6)}}
+    obs = {
+        sid1: {"valid": valid},
+        sid2: {"valid": valid - datetime.timedelta(hours=6)},
+    }
     # Create dummy iem_site_contacts
     pcursor.execute(
         """

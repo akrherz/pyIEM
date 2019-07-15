@@ -18,7 +18,9 @@ def test_190503_badgeom():
     """This SIGMET produced a traceback in prod."""
     utcnow = utc(2019, 5, 3, 18, 25)
     tp = parser(
-        get_test_file("SIGMETS/SIGC_badgeom.txt"), utcnow, nwsli_provider=NWSLI_PROVIDER
+        get_test_file("SIGMETS/SIGC_badgeom.txt"),
+        utcnow,
+        nwsli_provider=NWSLI_PROVIDER,
     )
     assert len(tp.sigmets) == 4
 
@@ -28,7 +30,9 @@ def test_170815_pywwa_issue3():
     utcnow = utc(2015, 9, 30, 16, 56)
 
     tp = parser(
-        get_test_file("SIGMETS/SIGE.txt"), utcnow, nwsli_provider=NWSLI_PROVIDER
+        get_test_file("SIGMETS/SIGE.txt"),
+        utcnow,
+        nwsli_provider=NWSLI_PROVIDER,
     )
     assert len(tp.sigmets) == 4
 
@@ -80,7 +84,10 @@ def test_150915_line():
         "MCW": dict(lon=-85.50, lat=42.79),
     }
     tp = parser(
-        get_test_file("SIGMETS/SIGC_line.txt"), utcnow, ugc_provider, nwsli_provider
+        get_test_file("SIGMETS/SIGC_line.txt"),
+        utcnow,
+        ugc_provider,
+        nwsli_provider,
     )
     assert abs(tp.sigmets[0].geom.area - 0.47) < 0.01
 
@@ -94,7 +101,10 @@ def test_150915_isol():
         "CME": dict(lon=-85.50, lat=42.79),
     }
     tp = parser(
-        get_test_file("SIGMETS/SIGC_ISOL.txt"), utcnow, ugc_provider, nwsli_provider
+        get_test_file("SIGMETS/SIGC_ISOL.txt"),
+        utcnow,
+        ugc_provider,
+        nwsli_provider,
     )
     assert abs(tp.sigmets[0].geom.area - 0.30) < 0.01
     assert abs(tp.sigmets[1].geom.area - 0.30) < 0.01
@@ -153,7 +163,10 @@ def test_50e():
     }
 
     tp = parser(
-        get_test_file("SIGMETS/SIGE3.txt"), utcnow, ugc_provider, nwsli_provider
+        get_test_file("SIGMETS/SIGE3.txt"),
+        utcnow,
+        ugc_provider,
+        nwsli_provider,
     )
     assert abs(tp.sigmets[0].geom.area - 2.15) < 0.01
 
@@ -169,12 +182,16 @@ def test_sigc():
     ).split(","):
         nwsli_provider[sid] = dict(lon=-99, lat=45)
 
-    tp = parser(get_test_file("SIGMETS/SIGC.txt"), utcnow, ugc_provider, nwsli_provider)
+    tp = parser(
+        get_test_file("SIGMETS/SIGC.txt"), utcnow, ugc_provider, nwsli_provider
+    )
     j = tp.get_jabbers("http://localhost", "http://localhost")
     assert tp.sigmets[0].ets == utc(2014, 8, 11, 18, 55)
     ans = "KKCI issues SIGMET 62C for AL MS LA AR till 1855 UTC"
     assert j[0][0] == ans
-    ans = "KKCI issues SIGMET 63C for LA TX AND MS LA TX CSTL WTRS till 1855 UTC"
+    ans = (
+        "KKCI issues SIGMET 63C for LA TX AND MS LA TX CSTL WTRS till 1855 UTC"
+    )
     assert j[1][0] == ans
 
 

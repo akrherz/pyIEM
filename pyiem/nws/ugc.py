@@ -6,7 +6,9 @@ import re
 import datetime
 from collections import OrderedDict
 
-UGC_RE = re.compile(r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M)
+UGC_RE = re.compile(
+    r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M
+)
 
 
 class UGCParseException(Exception):
@@ -101,7 +103,8 @@ def parse(text, valid, ugc_provider=None):
             else:
                 # This is bad encoding
                 raise UGCParseException(
-                    ('WHOA, bad UGC encoding detected "%s"') % ("-".join(parts),)
+                    ('WHOA, bad UGC encoding detected "%s"')
+                    % ("-".join(parts),)
                 )
         this_part = parts[i].strip()
         if len(this_part) == 6:  # We have a new state ID
@@ -109,7 +112,9 @@ def parse(text, valid, ugc_provider=None):
             ugcs.append(_construct(this_part))
         elif len(this_part) == 3:  # We have an individual Section
             ugcs.append(
-                _construct("%s%s%s" % (state_code[:2], state_code[2], this_part))
+                _construct(
+                    "%s%s%s" % (state_code[:2], state_code[2], this_part)
+                )
             )
         elif len(this_part) > 6:  # We must have a > in there somewhere
             new_parts = re.split(">", this_part)
@@ -123,13 +128,19 @@ def parse(text, valid, ugc_provider=None):
                 for j in range(0, last_val + 2 - first_val, 2):
                     str_code = "%03i" % (first_val + j,)
                     ugcs.append(
-                        _construct("%s%s%s" % (state_code[:2], state_code[2], str_code))
+                        _construct(
+                            "%s%s%s"
+                            % (state_code[:2], state_code[2], str_code)
+                        )
                     )
             else:
                 for j in range(first_val, last_val + 1):
                     str_code = "%03i" % (j,)
                     ugcs.append(
-                        _construct("%s%s%s" % (state_code[:2], state_code[2], str_code))
+                        _construct(
+                            "%s%s%s"
+                            % (state_code[:2], state_code[2], str_code)
+                        )
                     )
     return ugcs, expire
 

@@ -11,7 +11,9 @@ LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
     r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE
 )
-ATTN_WFO = re.compile(r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)")
+ATTN_WFO = re.compile(
+    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)"
+)
 ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
@@ -56,12 +58,16 @@ def section_parser(sect):
         vals = re.findall("(...)", line[4:])
         for i, val in enumerate(vals):
             if vname == "T06" and times[i + 1].hour in [0, 6, 12, 18]:
-                data[times[i + 1]]["T06_1"] = vals[i - 1].replace("/", "").strip()
+                data[times[i + 1]]["T06_1"] = (
+                    vals[i - 1].replace("/", "").strip()
+                )
                 data[times[i + 1]]["T06_2"] = val.replace("/", "").strip()
             elif vname == "T06":
                 pass
             elif vname == "T12" and times[i + 1].hour in [0, 12]:
-                data[times[i + 1]]["T12_1"] = vals[i - 1].replace("/", "").strip()
+                data[times[i + 1]]["T12_1"] = (
+                    vals[i - 1].replace("/", "").strip()
+                )
                 data[times[i + 1]]["T12_2"] = val.replace("/", "").strip()
             elif vname == "T12":
                 pass
@@ -84,7 +90,9 @@ class MOSProduct(TextProduct):
     Represents a Model Output Statistics file
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.data = []
@@ -133,7 +141,9 @@ class MOSProduct(TextProduct):
         """Parse out our data!"""
         raw = self.unixtext + "\n"
         raw = raw.replace("\n", "___").replace("\x1e", "")
-        sections = re.findall(r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______", raw)
+        sections = re.findall(
+            r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______", raw
+        )
         self.data = list(map(section_parser, sections))
         if not sections:
             raise Exception("Failed to split MOS Product")

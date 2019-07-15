@@ -30,7 +30,8 @@ def list_rows(txn, table, vtec):
         (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
     )
     res = (
-        "Entries for VTEC within %s\n" "  UGC    STA ISSUED              UPDATED\n"
+        "Entries for VTEC within %s\n"
+        "  UGC    STA ISSUED              UPDATED\n"
     ) % (table,)
     for row in txn.fetchall():
         res += "  %s %s %s %s\n" % (
@@ -63,7 +64,9 @@ def check_dup_ps(segment):
         val = combos.setdefault(key, [])
         # we can't use vtec.endts in this situation
         endts = (
-            segment.tp.valid if thisvtec.status in ["UPG", "CAN"] else thisvtec.endts
+            segment.tp.valid
+            if thisvtec.status in ["UPG", "CAN"]
+            else thisvtec.endts
         )
         val.append([thisvtec.begints, endts])
 
@@ -122,7 +125,9 @@ class VTECProductException(TextProductException):
 class VTECProduct(TextProduct):
     """ Represents a text product of the LSR variety """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         # Make sure we are CRLF above all else
         if text.find("\r\r\n") == -1:
@@ -208,10 +213,15 @@ class VTECProduct(TextProduct):
             if segment.giswkt and not segment.vtec:
                 if self.afos[:3] not in ["MWS"]:
                     self.warnings.append(
-                        ("Product segment has LAT...LON, but " "does not have VTEC?")
+                        (
+                            "Product segment has LAT...LON, but "
+                            "does not have VTEC?"
+                        )
                     )
             if not segment.ugcs and segment.vtec:
-                self.warnings.append(("UGC is missing for segment " "that has VTEC!"))
+                self.warnings.append(
+                    ("UGC is missing for segment " "that has VTEC!")
+                )
                 continue
             if not segment.ugcs:
                 continue
@@ -310,7 +320,12 @@ class VTECProduct(TextProduct):
                             "VTEC Product appears to cross 1 Jan UTC "
                             "minyear: %s maxyear: %s VTEC: %s product_id: %s"
                         )
-                        % (year, row["max"].year, str(vtec), self.get_product_id())
+                        % (
+                            year,
+                            row["max"].year,
+                            str(vtec),
+                            self.get_product_id(),
+                        )
                     )
                 self.db_year = int(row["tablename"].replace("warnings_", ""))
                 return row["tablename"]
@@ -325,7 +340,12 @@ class VTECProduct(TextProduct):
                     "  defaulting to use table: %s\n"
                     "  %s"
                 )
-                % (str(vtec), self.get_product_id(), table, list_rows(txn, table, vtec))
+                % (
+                    str(vtec),
+                    self.get_product_id(),
+                    table,
+                    list_rows(txn, table, vtec),
+                )
             )
         return table
 
@@ -362,7 +382,8 @@ class VTECProduct(TextProduct):
             if maxtime is not None:
                 if maxtime == self.valid:
                     print(
-                        "RESENT Match, skipping SQL for %s!" % (self.get_product_id(),)
+                        "RESENT Match, skipping SQL for %s!"
+                        % (self.get_product_id(),)
                     )
                     return
 
@@ -435,7 +456,10 @@ class VTECProduct(TextProduct):
 
                     else:
                         self.warnings.append(
-                            ("Duplicate(s) WWA found, " "rowcount: %s for UGC: %s")
+                            (
+                                "Duplicate(s) WWA found, "
+                                "rowcount: %s for UGC: %s"
+                            )
                             % (txn.rowcount, ugc)
                         )
 
@@ -511,7 +535,12 @@ class VTECProduct(TextProduct):
             if txn.rowcount != len(segment.ugcs):
                 self.warnings.append(
                     self.debug_warning(
-                        txn, warning_table, ugcstring, vtec, segment, vtec.endts
+                        txn,
+                        warning_table,
+                        ugcstring,
+                        vtec,
+                        segment,
+                        vtec.endts,
                     )
                 )
 
@@ -628,7 +657,9 @@ class VTECProduct(TextProduct):
         """
 
         # Technically, this is a bug as the it would be based on VTEC issuance
-        sbw_table = self.which_warning_table(txn, vtec).replace("warnings", "sbw")
+        sbw_table = self.which_warning_table(txn, vtec).replace(
+            "warnings", "sbw"
+        )
 
         # The following time columns are set in the database
         # issue         - VTEC encoded issuance time, can be null
@@ -667,7 +698,12 @@ class VTECProduct(TextProduct):
                         ", but SBW delete removed %s rows "
                         "instead of 1"
                     )
-                    % (vtec.phenomena, vtec.significance, vtec.etn, txn.rowcount)
+                    % (
+                        vtec.phenomena,
+                        vtec.significance,
+                        vtec.etn,
+                        txn.rowcount,
+                    )
                 )
 
         # Lets go find the initial warning (status == NEW)
@@ -684,7 +720,12 @@ class VTECProduct(TextProduct):
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
                     ("%s.%s.%s is a SBW duplicate! %s other " "row(s) found.")
-                    % (vtec.phenomena, vtec.significance, vtec.etn, txn.rowcount)
+                    % (
+                        vtec.phenomena,
+                        vtec.significance,
+                        vtec.etn,
+                        txn.rowcount,
+                    )
                 )
 
         # Lets go find our current active polygon
@@ -735,7 +776,12 @@ class VTECProduct(TextProduct):
                         "resulted in update of %s rows, "
                         "should be 1"
                     )
-                    % (vtec.phenomena, vtec.significance, vtec.etn, txn.rowcount)
+                    % (
+                        vtec.phenomena,
+                        vtec.significance,
+                        vtec.etn,
+                        txn.rowcount,
+                    )
                 )
 
         # Prepare the TIME...MOT...LOC information
@@ -796,7 +842,10 @@ class VTECProduct(TextProduct):
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(
-                ("%s.%s.%s sbw table insert " "resulted in %s rows, should be 1")
+                (
+                    "%s.%s.%s sbw table insert "
+                    "resulted in %s rows, should be 1"
+                )
                 % (vtec.phenomena, vtec.significance, vtec.etn, txn.rowcount)
             )
 
@@ -852,7 +901,11 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                key = "%s.%s.%s" % (vtec.phenomena, vtec.etn, vtec.significance)
+                key = "%s.%s.%s" % (
+                    vtec.phenomena,
+                    vtec.etn,
+                    vtec.significance,
+                )
                 if key not in keys:
                     keys.append(key)
 
@@ -916,7 +969,8 @@ class VTECProduct(TextProduct):
                 # reference below and is subsequently overwritten otherwise!
                 if self.afos[:3] in ["MWW", "RFW"]:
                     channels = [
-                        "%s%s" % (self.afos[:3], s) for s in self.get_affected_wfos()
+                        "%s%s" % (self.afos[:3], s)
+                        for s in self.get_affected_wfos()
                     ]
                 else:
                     channels = self.get_affected_wfos()
@@ -924,7 +978,8 @@ class VTECProduct(TextProduct):
                 channels.append(self.afos)
                 channels.append("%s..." % (self.afos[:3],))
                 channels.append(
-                    "%s.%s.%s" % (vtec.phenomena, vtec.significance, vtec.office)
+                    "%s.%s.%s"
+                    % (vtec.phenomena, vtec.significance, vtec.office)
                 )
                 for ugc in segment.ugcs:
                     # per state channels
@@ -936,7 +991,8 @@ class VTECProduct(TextProduct):
                     if candidate not in channels:
                         channels.append(candidate)
                     channels.append(
-                        "%s.%s.%s" % (vtec.phenomena, vtec.significance, str(ugc))
+                        "%s.%s.%s"
+                        % (vtec.phenomena, vtec.significance, str(ugc))
                     )
                     channels.append(str(ugc))
                 xtra = {
@@ -949,7 +1005,8 @@ class VTECProduct(TextProduct):
                 }
 
                 long_actions.append(
-                    "%s %s" % (vtec.get_action_string(), ugcs_to_text(segment.ugcs))
+                    "%s %s"
+                    % (vtec.get_action_string(), ugcs_to_text(segment.ugcs))
                 )
                 html_long_actions.append(
                     ("<span style='font-weight: bold;'>" "%s</span> %s")
@@ -1036,11 +1093,14 @@ class VTECProduct(TextProduct):
                     "%(ets)s %(svs_special_html)s</p>"
                 ) % jmsg_dict
                 xtra["twitter"] = (
-                    "%(wfo)s %(product)s%(sts)sfor %(county)s " "%(ets)s %(url)s"
+                    "%(wfo)s %(product)s%(sts)sfor %(county)s "
+                    "%(ets)s %(url)s"
                 ) % jmsg_dict
                 # brute force removal of duplicate spaces
                 xtra["twitter"] = " ".join(xtra["twitter"].split())
-                msgs.append([" ".join(plain.split()), " ".join(html.split()), xtra])
+                msgs.append(
+                    [" ".join(plain.split()), " ".join(html.split()), xtra]
+                )
 
         # If we have a homogeneous product and we have more than one
         # message, lets try to condense it down, some of the xtra settings
@@ -1054,7 +1114,8 @@ class VTECProduct(TextProduct):
                 segment = self.segments[0]
             if self.afos[:3] in ["MWW", "RFW"]:
                 channels = [
-                    "%s%s" % (self.afos[:3], s) for s in self.get_affected_wfos()
+                    "%s%s" % (self.afos[:3], s)
+                    for s in self.get_affected_wfos()
                 ]
             else:
                 channels = self.get_affected_wfos()
@@ -1066,7 +1127,8 @@ class VTECProduct(TextProduct):
             for seg in self.segments:
                 for ugc in seg.ugcs:
                     channels.append(
-                        "%s.%s.%s" % (vtec.phenomena, vtec.significance, str(ugc))
+                        "%s.%s.%s"
+                        % (vtec.phenomena, vtec.significance, str(ugc))
                     )
                     channels.append(str(ugc))
             if any([seg.is_emergency for seg in self.segments]):
@@ -1132,6 +1194,9 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception"""
     prod = VTECProduct(
-        text, utcnow=utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
+        text,
+        utcnow=utcnow,
+        ugc_provider=ugc_provider,
+        nwsli_provider=nwsli_provider,
     )
     return prod

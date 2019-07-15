@@ -275,16 +275,18 @@ class GINIZFile(object):
         # r_E = RE_METERS / cos_psi
         alpha = math.pow(math.tan(psi / 2.0), cos_psi) / math.sin(psi)
 
-        x0, y0 = self.metadata["proj"](self.metadata["lon1"], self.metadata["lat1"])
+        x0, y0 = self.metadata["proj"](
+            self.metadata["lon1"], self.metadata["lat1"]
+        )
         self.metadata["x0"] = x0
         self.metadata["y0"] = y0
         # self.metadata['dx'] *= alpha
         # self.metadata['dy'] *= alpha
         self.metadata["y1"] = y0 + (self.metadata["dy"] * self.metadata["ny"])
 
-        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata["proj"](
-            self.metadata["x0"], self.metadata["y1"], inverse=True
-        )
+        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[
+            "proj"
+        ](self.metadata["x0"], self.metadata["y1"], inverse=True)
         logging.info(
             (
                 "lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f "
@@ -312,20 +314,24 @@ class GINIZFile(object):
             a=6371200.0,
             b=6371200.0,
         )
-        x0, y0 = self.metadata["proj"](self.metadata["lon1"], self.metadata["lat1"])
+        x0, y0 = self.metadata["proj"](
+            self.metadata["lon1"], self.metadata["lat1"]
+        )
         self.metadata["x0"] = x0
         self.metadata["y0"] = y0
 
-        x1, y1 = self.metadata["proj"](self.metadata["lon2"], self.metadata["lat2"])
+        x1, y1 = self.metadata["proj"](
+            self.metadata["lon2"], self.metadata["lat2"]
+        )
         self.metadata["x1"] = x1
         self.metadata["y1"] = y1
 
         self.metadata["dx"] = (x1 - x0) / self.metadata["nx"]
         self.metadata["dy"] = (y1 - y0) / self.metadata["ny"]
 
-        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata["proj"](
-            self.metadata["x0"], self.metadata["y1"], inverse=True
-        )
+        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[
+            "proj"
+        ](self.metadata["x0"], self.metadata["y1"], inverse=True)
 
         logging.info(
             (
@@ -356,14 +362,16 @@ class GINIZFile(object):
             b=6371200.0,
         )
         # First point!
-        x0, y0 = self.metadata["proj"](self.metadata["lon1"], self.metadata["lat1"])
+        x0, y0 = self.metadata["proj"](
+            self.metadata["lon1"], self.metadata["lat1"]
+        )
         self.metadata["x0"] = x0
         self.metadata["y0"] = y0
 
         self.metadata["y1"] = y0 + (self.metadata["dy"] * self.metadata["ny"])
-        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata["proj"](
-            x0, self.metadata["y1"], inverse=True
-        )
+        (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[
+            "proj"
+        ](x0, self.metadata["y1"], inverse=True)
 
         logging.info(
             (
@@ -397,7 +405,9 @@ class GINIZFile(object):
         elif self.metadata["map_projection"] == 5:
             self.init_stereo()
         else:
-            logging.info("Unknown Projection: %s", self.metadata["map_projection"])
+            logging.info(
+                "Unknown Projection: %s", self.metadata["map_projection"]
+            )
 
     def read_header(self, hdata):
         """read the header!"""

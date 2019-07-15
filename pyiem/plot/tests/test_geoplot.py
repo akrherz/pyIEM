@@ -13,7 +13,9 @@ from pyiem.plot import MapPlot, centered_bins
 def test_issue98_labelbar():
     """Sometimes our label bar sucks."""
     mp = MapPlot(
-        title="Proportional Colorbar with some rotation", sector="iowa", nocaption=True
+        title="Proportional Colorbar with some rotation",
+        sector="iowa",
+        nocaption=True,
     )
     cmap = plot.maue()
     cmap.set_under("white")
@@ -51,7 +53,9 @@ def test_usdm():
 @pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_hexbin():
     """See if we can do hexbin OKish"""
-    mp = MapPlot(sector="north_america", continentalcolor="white", nocaption=True)
+    mp = MapPlot(
+        sector="north_america", continentalcolor="white", nocaption=True
+    )
     lons = np.arange(-100, -80, 0.25)
     lats = np.arange(40, 50, 0.25)
     vals = np.linspace(0, 1, lats.shape[0] * lons.shape[0]).reshape(
@@ -59,7 +63,11 @@ def test_hexbin():
     )
     lons, lats = np.meshgrid(lons, lats)
     mp.hexbin(
-        lons.flatten(), lats.flatten(), vals.flatten(), np.arange(0, 1, 0.1), cmap="jet"
+        lons.flatten(),
+        lats.flatten(),
+        vals.flatten(),
+        np.arange(0, 1, 0.1),
+        cmap="jet",
     )
     return mp.fig
 
@@ -293,7 +301,9 @@ def test_colorbar3():
     cmap.set_over("black")
     clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-    mp.draw_colorbar(clevs, cmap, norm, title="Erosion $kg/m^2$", spacing="uniform")
+    mp.draw_colorbar(
+        clevs, cmap, norm, title="Erosion $kg/m^2$", spacing="uniform"
+    )
     return mp.fig
 
 
@@ -301,7 +311,9 @@ def test_colorbar3():
 @pytest.mark.mpl_image_compare(tolerance=1.6)
 def test_drawugcs():
     """test drawing of UGCS"""
-    mp = MapPlot(sector="conus", title="Counties, 3 filled in Iowa", nocaption=True)
+    mp = MapPlot(
+        sector="conus", title="Counties, 3 filled in Iowa", nocaption=True
+    )
     mp.fill_ugcs({"IAC001": 10, "IAC003": 20, "IAC005": 30})
     return mp.fig
 
@@ -445,7 +457,10 @@ def test_textplot2():
     """plot values on a map"""
     mp = MapPlot(sector="iowa", nocaption=True)
     mp.plot_values(
-        np.arange(-99, -94), np.arange(40, 45), np.arange(5), labels=range(5, 11)
+        np.arange(-99, -94),
+        np.arange(40, 45),
+        np.arange(5),
+        labels=range(5, 11),
     )
     return mp.fig
 
@@ -485,7 +500,9 @@ def test_plot22():
 def test_plot3():
     """ Exercise climdiv plot API """
     mp = MapPlot(sector="iowa", nocaption=True)
-    mp.fill_climdiv({"IAC001": 80, "AKC003": 5, "HIC003": 30, "AJK": 40, "HFO": 50})
+    mp.fill_climdiv(
+        {"IAC001": 80, "AKC003": 5, "HIC003": 30, "AJK": 40, "HFO": 50}
+    )
     return mp.fig
 
 

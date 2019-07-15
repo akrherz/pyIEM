@@ -52,7 +52,11 @@ def compute_time(date, timestamp):
     if timestamp is None:
         return None
     return datetime.datetime(
-        date.year, date.month, date.day, int(timestamp[:2]), int(timestamp[2:4])
+        date.year,
+        date.month,
+        date.day,
+        int(timestamp[:2]),
+        int(timestamp[2:4]),
     )
 
 
@@ -74,7 +78,12 @@ class DSMProduct(object):
         offset = tzinfo.utcoffset(
             datetime.datetime(2000, 1, 1), is_dst=False
         ).total_seconds()
-        for name in ["high_time", "low_time", "time_sped_max", "time_sped_gust_max"]:
+        for name in [
+            "high_time",
+            "low_time",
+            "time_sped_max",
+            "time_sped_gust_max",
+        ]:
             val = getattr(self, name)
             if val is None:
                 continue
@@ -83,7 +92,9 @@ class DSMProduct(object):
             setattr(
                 self,
                 name,
-                utc(ts.year, ts.month, ts.day, ts.hour, ts.minute).astimezone(tzinfo),
+                utc(ts.year, ts.month, ts.day, ts.hour, ts.minute).astimezone(
+                    tzinfo
+                ),
             )
 
     def compute_times(self, utcnow):
@@ -97,7 +108,9 @@ class DSMProduct(object):
         if ts.month == 12 and utcnow.month == 1:
             ts = ts.replace(year=(ts.year - 1))
         self.date = datetime.date(ts.year, ts.month, ts.day)
-        self.high_time = compute_time(self.date, self.groupdict.get("hightime"))
+        self.high_time = compute_time(
+            self.date, self.groupdict.get("hightime")
+        )
         self.low_time = compute_time(self.date, self.groupdict.get("lowtime"))
         self.time_sped_max = compute_time(
             self.date, self.groupdict.get("time_sped_max")
@@ -129,7 +142,9 @@ class DSMProduct(object):
         val = self.groupdict.get("sped_max")
         if val is not None:
             cols.append("max_sknt")
-            args.append((int(val) * units("miles / hour")).to(units("knots")).magnitude)
+            args.append(
+                (int(val) * units("miles / hour")).to(units("knots")).magnitude
+            )
 
         val = self.time_sped_max
         if val is not None:
@@ -139,7 +154,9 @@ class DSMProduct(object):
         val = self.groupdict.get("sped_gust_max")
         if val is not None:
             cols.append("max_gust")
-            args.append((int(val) * units("miles / hour")).to(units("knots")).magnitude)
+            args.append(
+                (int(val) * units("miles / hour")).to(units("knots")).magnitude
+            )
 
         val = self.time_sped_gust_max
         if val is not None:
@@ -171,7 +188,9 @@ class DSMProduct(object):
 class DSMCollective(TextProduct):
     """A collective representing a NOAAPort Text Product with many DSMs."""
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # hold our parsing results
@@ -196,7 +215,9 @@ class DSMCollective(TextProduct):
         for dsm in self.data:
             tzinfo = tzprovider.get(dsm.station)
             if tzinfo is None:
-                self.warnings.append("station %s has no tzinfo" % (dsm.station,))
+                self.warnings.append(
+                    "station %s has no tzinfo" % (dsm.station,)
+                )
                 continue
             dsm.tzlocalize(tzinfo)
 

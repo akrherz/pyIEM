@@ -36,7 +36,9 @@ OV_LATLON = re.compile(
 OV_LOCDIR = re.compile(
     r".*?(?P<loc>[A-Z0-9]{3,4})\s?(?P<dir>[0-9]{3})(?P<dist>[0-9]{3})"
 )
-OV_TWOLOC = re.compile(r"(?P<loc1>[A-Z0-9]{3,4})\s?-\s?(?P<loc2>[A-Z0-9]{3,4})")
+OV_TWOLOC = re.compile(
+    r"(?P<loc1>[A-Z0-9]{3,4})\s?-\s?(?P<loc2>[A-Z0-9]{3,4})"
+)
 OV_OFFSET = re.compile(
     (
         r"(?P<dist>[0-9]{1,3})\s?"
@@ -88,7 +90,9 @@ class PilotReport(object):
 class Pirep(product.TextProduct):
     """ Class for parsing and representing Space Wx Products """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         product.TextProduct.__init__(
             self,
@@ -103,7 +107,11 @@ class Pirep(product.TextProduct):
     def parse_reports(self):
         """ Actually do the parsing of the product that generates the reports
         stored within the self.reports list """
-        txt = self.unixtext if self.unixtext[:2] != "\001\n" else self.unixtext[2:]
+        txt = (
+            self.unixtext
+            if self.unixtext[:2] != "\001\n"
+            else self.unixtext[2:]
+        )
 
         lines = txt.split("\n")
         # There may be an AWIPSID in line 3 or silly aviation control char
@@ -180,13 +188,19 @@ class Pirep(product.TextProduct):
                     d = re.match(OV_LATLON, therest).groupdict()
                     _pr.latitude = float(
                         "%s.%i"
-                        % (d["lat"][:-2], int(float(d["lat"][-2:]) / 60.0 * 10000.0))
+                        % (
+                            d["lat"][:-2],
+                            int(float(d["lat"][-2:]) / 60.0 * 10000.0),
+                        )
                     )
                     if d["latsign"] == "S":
                         _pr.latitude = 0 - _pr.latitude
                     _pr.longitude = float(
                         "%s.%i"
-                        % (d["lon"][:-2], int(float(d["lon"][-2:]) / 60.0 * 10000.0))
+                        % (
+                            d["lon"][:-2],
+                            int(float(d["lon"][-2:]) / 60.0 * 10000.0),
+                        )
                     )
                     if d["lonsign"] == "W":
                         _pr.longitude = 0 - _pr.longitude
@@ -231,11 +245,15 @@ class Pirep(product.TextProduct):
                         return None
                     loc = _pr.base_loc
                     if loc not in self.nwsli_provider:
-                        self.warnings.append("Double-unknown location: %s" % (report,))
+                        self.warnings.append(
+                            "Double-unknown location: %s" % (report,)
+                        )
                         return None
                     dist = 0
                     bearing = 0
-                _pr.longitude, _pr.latitude = self.compute_loc(loc, dist, bearing)
+                _pr.longitude, _pr.latitude = self.compute_loc(
+                    loc, dist, bearing
+                )
                 continue
 
             # Time
@@ -270,7 +288,9 @@ class Pirep(product.TextProduct):
 
     def compute_pirep_valid(self, hour, minute):
         """ Based on what utcnow is set to, compute when this is valid """
-        res = self.utcnow.replace(hour=hour, minute=minute, second=0, microsecond=0)
+        res = self.utcnow.replace(
+            hour=hour, minute=minute, second=0, microsecond=0
+        )
         if hour > self.utcnow.hour:
             res -= datetime.timedelta(hours=24)
         return res
@@ -321,7 +341,9 @@ class Pirep(product.TextProduct):
             if report.is_duplicate or report.valid is None:
                 continue
             jmsg = {
-                "priority": "Urgent" if report.priority == "UUA" else "Routine",
+                "priority": "Urgent"
+                if report.priority == "UUA"
+                else "Routine",
                 "ts": report.valid.strftime("%H%M"),
                 "report": html_escape(report.text),
                 "color": "#ff0000" if report.priority == "UUA" else "#00ff00",
@@ -334,7 +356,8 @@ class Pirep(product.TextProduct):
             xtra = {
                 "channels": "%s.%s,%s.PIREP"
                 % (report.priority, report.cwsu, report.priority),
-                "geometry": "POINT(%s %s)" % (report.longitude, report.latitude),
+                "geometry": "POINT(%s %s)"
+                % (report.longitude, report.latitude),
                 "ptype": report.priority,
                 "category": "PIREP",
                 "twitter": plain[:140],
@@ -347,5 +370,8 @@ class Pirep(product.TextProduct):
 def parser(buf, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ A parser implementation """
     return Pirep(
-        buf, utcnow=utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
+        buf,
+        utcnow=utcnow,
+        ugc_provider=ugc_provider,
+        nwsli_provider=nwsli_provider,
     )

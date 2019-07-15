@@ -58,7 +58,8 @@ def test_altimeter():
     )
     data = parser(msg, "EGPC", add_metar=True)
     ans = (
-        "EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK " "SLP905 T00670035 51020 IEM_DS3505"
+        "EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK "
+        "SLP905 T00670035 51020 IEM_DS3505"
     )
     assert data["metar"] == ans
 
@@ -191,7 +192,8 @@ def test_basic():
     data = parser(msg, "ENJA", add_metar=True)
     assert data is not None
     ans = (
-        "ENJA 010000Z AUTO 33036KT 2SM " "M20/M22 RMK SLP021 T12011221 57014 IEM_DS3505"
+        "ENJA 010000Z AUTO 33036KT 2SM "
+        "M20/M22 RMK SLP021 T12011221 57014 IEM_DS3505"
     )
     assert data["metar"] == ans
 

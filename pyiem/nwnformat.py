@@ -186,7 +186,9 @@ class nwnformat(object):
     def parseLineRT(self, tokens):
         if self.ts is None:
             _t = datetime.datetime.utcnow()
-            _t = _t.replace(second=0, microsecond=0, tzinfo=pytz.timezone("UTC"))
+            _t = _t.replace(
+                second=0, microsecond=0, tzinfo=pytz.timezone("UTC")
+            )
             self.ts = _t.astimezone(pytz.timezone("America/Chicago"))
 
         if len(tokens) != 14:
@@ -198,7 +200,9 @@ class nwnformat(object):
             self.parseMinLineRT(tokens)
         else:
             _t = datetime.datetime.utcnow()
-            _t = _t.replace(second=0, microsecond=0, tzinfo=pytz.timezone("UTC"))
+            _t = _t.replace(
+                second=0, microsecond=0, tzinfo=pytz.timezone("UTC")
+            )
             self.ts = _t.astimezone(pytz.timezone("America/Chicago"))
             self.parseCurrentLineRT(tokens)
 
@@ -214,7 +218,9 @@ class nwnformat(object):
                 self.xsped = round(sknt * 1.1507, 0)
 
         if len(tokens[6]) == 4:
-            self.xsrad = int(re.findall("([0-9][0-9][0-9])[F,K]", tokens[6])[0]) * 10
+            self.xsrad = (
+                int(re.findall("([0-9][0-9][0-9])[F,K]", tokens[6])[0]) * 10
+            )
 
         if len(tokens[8]) == 4 or len(tokens[8]) == 3:
             if tokens[8][0] == "0":
@@ -255,7 +261,9 @@ class nwnformat(object):
             self.aSknt.append(self.sknt)
 
         if len(tokens[6]) == 4:
-            self.rad = int(re.findall("([0-9][0-9][0-9])[F,K]", tokens[6])[0]) * 10
+            self.rad = (
+                int(re.findall("([0-9][0-9][0-9])[F,K]", tokens[6])[0]) * 10
+            )
 
         if len(tokens[9]) == 4:
             self.humid = int(re.findall("([0-9][0-9][0-9])%", tokens[9])[0])

@@ -18,7 +18,9 @@ __version__ = "$Revision: 1.1 $"
 
 _open_parens = r"[ \t]*(\([ \t]*)*"
 _close_parens = r"[ \t]*(\)[ \t]*)+"
-rx_point_list = re.compile(_open_parens + r"(?P<coords>[^\)]+)" + _close_parens + ",?")
+rx_point_list = re.compile(
+    _open_parens + r"(?P<coords>[^\)]+)" + _close_parens + ",?"
+)
 
 
 def parse_coordinate_lists(wkt):
