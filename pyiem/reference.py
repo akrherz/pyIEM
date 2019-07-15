@@ -36,9 +36,13 @@ TWEET_CHARS = 280
 
 EPSG = {
     5070: ccrs.AlbersEqualArea(
-        central_longitude=-96, central_latitude=23, standard_parallels=[29.5, 45.5]
+        central_longitude=-96,
+        central_latitude=23,
+        standard_parallels=[29.5, 45.5],
     ),
-    2163: ccrs.LambertAzimuthalEqualArea(central_latitude=45, central_longitude=-100),
+    2163: ccrs.LambertAzimuthalEqualArea(
+        central_latitude=45, central_longitude=-100
+    ),
 }
 
 IA_WEST = -96.7
@@ -633,8 +637,16 @@ IEMVARS = {
         "type": "number",
         "description": "Air Temperature at 2m AGL",
     },
-    "sknt": {"name": "Wind Speed[kt]", "type": "number", "description": "Wind Speed"},
-    "gust": {"name": "Wind Gust[kt]", "type": "number", "description": "Wind Gust"},
+    "sknt": {
+        "name": "Wind Speed[kt]",
+        "type": "number",
+        "description": "Wind Speed",
+    },
+    "gust": {
+        "name": "Wind Gust[kt]",
+        "type": "number",
+        "description": "Wind Gust",
+    },
     "drct": {
         "name": "Wind Direction[deg]",
         "type": "number",

@@ -135,19 +135,91 @@ ADDITIONAL = {
     # Precip estimated?
     "AG1": [["code", 1], ["depth", 3]],
     # Short duration precip
-    "AH1": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AH2": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AH3": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AH4": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AH5": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AH6": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
+    "AH1": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AH2": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AH3": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AH4": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AH5": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AH6": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
     # Short duration precip for month
-    "AI1": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AI2": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AI3": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AI4": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AI5": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
-    "AI6": [["period", 3], ["depth", 4], ["code", 1], ["enddate", 6], ["qc", 1]],
+    "AI1": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AI2": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AI3": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AI4": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AI5": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
+    "AI6": [
+        ["period", 3],
+        ["depth", 4],
+        ["code", 1],
+        ["enddate", 6],
+        ["qc", 1],
+    ],
     # Snow depth
     "AJ1": [
         ["depth", 4],
@@ -526,7 +598,12 @@ ADDITIONAL = {
         ["freq_max_flag", 1],
     ],
     # Visual Runway
-    "ED1": [["angle", 2], ["runway", 1], ["visibility", 4], ["visibility_qc", 1]],
+    "ED1": [
+        ["angle", 2],
+        ["runway", 1],
+        ["visibility", 4],
+        ["visibility_qc", 1],
+    ],
     # Sky coverage
     "GA1": [
         ["coverage", 2],
@@ -1002,9 +1079,27 @@ ADDITIONAL = {
     # Wind gust
     "OC1": [["speed", 4, _d10], ["speed_qc", 1]],
     # Supplementary Wind
-    "OD1": [["code", 1], ["hours", 2], ["speed", 4], ["speed_qc", 1], ["direction", 3]],
-    "OD2": [["code", 1], ["hours", 2], ["speed", 4], ["speed_qc", 1], ["direction", 3]],
-    "OD3": [["code", 1], ["hours", 2], ["speed", 4], ["speed_qc", 1], ["direction", 3]],
+    "OD1": [
+        ["code", 1],
+        ["hours", 2],
+        ["speed", 4],
+        ["speed_qc", 1],
+        ["direction", 3],
+    ],
+    "OD2": [
+        ["code", 1],
+        ["hours", 2],
+        ["speed", 4],
+        ["speed_qc", 1],
+        ["direction", 3],
+    ],
+    "OD3": [
+        ["code", 1],
+        ["hours", 2],
+        ["speed", 4],
+        ["speed_qc", 1],
+        ["direction", 3],
+    ],
     # Wind summary
     "OE1": [
         ["code", 1],
@@ -1031,9 +1126,27 @@ ADDITIONAL = {
         ["qc", 1],
     ],
     # relative humidity
-    "RH1": [["hours", 3], ["code", 1], ["percentage", 3], ["derived", 1], ["qc", 1]],
-    "RH2": [["hours", 3], ["code", 1], ["percentage", 3], ["derived", 1], ["qc", 1]],
-    "RH3": [["hours", 3], ["code", 1], ["percentage", 3], ["derived", 1], ["qc", 1]],
+    "RH1": [
+        ["hours", 3],
+        ["code", 1],
+        ["percentage", 3],
+        ["derived", 1],
+        ["qc", 1],
+    ],
+    "RH2": [
+        ["hours", 3],
+        ["code", 1],
+        ["percentage", 3],
+        ["derived", 1],
+        ["qc", 1],
+    ],
+    "RH3": [
+        ["hours", 3],
+        ["code", 1],
+        ["percentage", 3],
+        ["derived", 1],
+        ["qc", 1],
+    ],
     # Sea Surface temp
     "SA1": [["tmpc", 4], ["qc", 1]],
     # Soil temperature
@@ -1061,7 +1174,12 @@ ADDITIONAL = {
     "UG1": [["seconds", 2], ["height", 3], ["direction", 3], ["swell_qc", 1]],
     "UG2": [["seconds", 2], ["height", 3], ["direction", 3], ["swell_qc", 1]],
     # Ice Accretion
-    "WA1": [["source_code", 1], ["thickness", 3], ["tendency_code", 1], ["qc", 1]],
+    "WA1": [
+        ["source_code", 1],
+        ["thickness", 3],
+        ["tendency_code", 1],
+        ["qc", 1],
+    ],
     # Surface Ice
     "WD1": [
         ["bearing_code", 2],
@@ -1367,7 +1485,10 @@ def gen_metar(data):
     # wind direction
     if data.get("wind_code") == "C":
         mtr += "00000KT "
-    elif data.get("drct_qc") in ["1", "5"] and data["wind_speed_mps"] is not None:
+    elif (
+        data.get("drct_qc") in ["1", "5"]
+        and data["wind_speed_mps"] is not None
+    ):
         if data["drct"] is None:
             mtr += "////"
         else:
@@ -1386,7 +1507,17 @@ def gen_metar(data):
         mtr += "%sSM " % (vsbyfmt(val),)
     # Present Weather Time
     combocode = ""
-    for code in ["AU1", "AU2", "AU3", "AU4", "AU5", "AU6", "AU7", "AU8", "AU9"]:
+    for code in [
+        "AU1",
+        "AU2",
+        "AU3",
+        "AU4",
+        "AU5",
+        "AU6",
+        "AU7",
+        "AU8",
+        "AU9",
+    ]:
         if code not in data["extra"]:
             continue
         val = data["extra"][code]
@@ -1416,7 +1547,10 @@ def gen_metar(data):
             mtr += "%s%03.0f " % (skycode, hft)
     # temperature
     tgroup = None
-    if data.get("airtemp_c_qc") not in ["2", "3"] and data["airtemp_c"] is not None:
+    if (
+        data.get("airtemp_c_qc") not in ["2", "3"]
+        and data["airtemp_c"] is not None
+    ):
         tmpc = data["airtemp_c"]
         dwpc = data["dewpointtemp_c"]
         mtr += "%s%02.0f/" % ("M" if tmpc < 0 else "", abs(tmpc))
@@ -1430,8 +1564,13 @@ def gen_metar(data):
             )
         mtr += " "
     # altimeter
-    if "MA1" in data["extra"] and data["extra"]["MA1"]["altimeter"] is not None:
-        altimeter = pressure(data["extra"]["MA1"]["altimeter"], "HPA").value("IN")
+    if (
+        "MA1" in data["extra"]
+        and data["extra"]["MA1"]["altimeter"] is not None
+    ):
+        altimeter = pressure(data["extra"]["MA1"]["altimeter"], "HPA").value(
+            "IN"
+        )
         mtr += "A%4.0f " % (altimeter * 100,)
     rmk = []
     for code in ["AA1", "AA2", "AA3", "AA4"]:
@@ -1481,16 +1620,26 @@ def gen_metar(data):
             group4[typ] = "%s%03i" % ("1" if tmpc < 0 else "0", abs(tmpc) * 10)
             continue
         else:
-            warnings.warn("Unknown temperature hours %s typ: %s" % (hours, typ))
+            warnings.warn(
+                "Unknown temperature hours %s typ: %s" % (hours, typ)
+            )
             continue
-        rmk.append("%s%s%03i" % (prefix, "1" if tmpc < 0 else "0", abs(tmpc) * 10))
+        rmk.append(
+            "%s%s%03i" % (prefix, "1" if tmpc < 0 else "0", abs(tmpc) * 10)
+        )
     if group4["M"] != "////" or group4["N"] != "////":
         rmk.append("4%(M)s%(N)s" % group4)
     # 3-hour pressure tendency
-    if "MD1" in data["extra"] and data["extra"]["MD1"]["threehour"] is not None:
+    if (
+        "MD1" in data["extra"]
+        and data["extra"]["MD1"]["threehour"] is not None
+    ):
         rmk.append(
             "5%s%03i"
-            % (data["extra"]["MD1"]["code"], data["extra"]["MD1"]["threehour"] * 10)
+            % (
+                data["extra"]["MD1"]["code"],
+                data["extra"]["MD1"]["threehour"] * 10,
+            )
         )
     rmk.append("IEM_DS3505")
     mtr += "RMK %s " % (" ".join(rmk),)
@@ -1590,7 +1739,9 @@ def parse_extra(data, extra):
         data["extra"][code] = dict()
         for token in ADDITIONAL[code]:
             if len(token) == 3:
-                data["extra"][code][token[0]] = token[2](extra[pos : pos + token[1]])
+                data["extra"][code][token[0]] = token[2](
+                    extra[pos : pos + token[1]]
+                )
             else:
                 data["extra"][code][token[0]] = extra[pos : pos + token[1]]
             pos += token[1]

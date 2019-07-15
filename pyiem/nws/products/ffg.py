@@ -56,13 +56,13 @@ class FFGProduct(TextProduct):
             self.warnings.append("Failed to find SHEF variable!")
             return
         group = shef.groupdict()
-        self.issue = datetime.datetime.strptime(group["date"][-6:], "%y%m%d").replace(
-            tzinfo=pytz.utc
-        )
+        self.issue = datetime.datetime.strptime(
+            group["date"][-6:], "%y%m%d"
+        ).replace(tzinfo=pytz.utc)
         self.issue = self.issue.replace(hour=(int(group["hh"]) % 24))
-        dc = datetime.datetime.strptime(group["valid"][-10:], "%y%m%d%H%M").replace(
-            tzinfo=pytz.utc
-        )
+        dc = datetime.datetime.strptime(
+            group["valid"][-10:], "%y%m%d%H%M"
+        ).replace(tzinfo=pytz.utc)
         # Emailed KTUA about this on 17 Apr 2017
         if (
             abs((self.issue - dc).total_seconds()) > (12 * 3600.0)

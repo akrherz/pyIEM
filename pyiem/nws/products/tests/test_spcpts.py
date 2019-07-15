@@ -256,7 +256,8 @@ def test_150612_ptsdy1_3():
 def test_141022_newcats():
     """ Make sure we can parse the new categories """
     spc = parser(
-        get_test_file("SPCPTS/PTSDY1_new.txt"), utcnow=utc(2014, 10, 13, 16, 21)
+        get_test_file("SPCPTS/PTSDY1_new.txt"),
+        utcnow=utc(2014, 10, 13, 16, 21),
     )
     outlook = spc.get_outlook("CATEGORICAL", "ENH")
     assert abs(outlook.geometry.area - 13.02) < 0.01

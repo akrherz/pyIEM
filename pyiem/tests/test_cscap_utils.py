@@ -2,7 +2,12 @@
 import tempfile
 import os
 
-from pyiem.cscap_utils import translate_years, get_config, save_config, cleanvalue
+from pyiem.cscap_utils import (
+    translate_years,
+    get_config,
+    save_config,
+    cleanvalue,
+)
 
 
 def test_cleanvalue():

@@ -256,7 +256,9 @@ class SIGMETProduct(TextProduct):
     Represents a Storm Prediction Center Mesoscale Convective Discussion
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.sigmets = []
@@ -272,7 +274,11 @@ class SIGMETProduct(TextProduct):
         txn.execute("DELETE from sigmets_current where expire < now()")
         for sigmet in self.sigmets:
             for table in ("sigmets_current", "sigmets_archive"):
-                sql = "DELETE from " + table + " where label = %s and expire = %s"
+                sql = (
+                    "DELETE from "
+                    + table
+                    + " where label = %s and expire = %s"
+                )
                 args = (sigmet.label, sigmet.ets)
                 txn.execute(sql, args)
                 sqlwkt = "SRID=4326;%s" % (sigmet.geom.wkt,)
@@ -284,7 +290,13 @@ class SIGMETProduct(TextProduct):
                     expire, raw, geom) VALUES ('C',%s, %s, %s, %s,
                    %s)"""
                 )
-                args = (sigmet.label, self.valid, sigmet.ets, sigmet.raw, sqlwkt)
+                args = (
+                    sigmet.label,
+                    self.valid,
+                    sigmet.ets,
+                    sigmet.raw,
+                    sqlwkt,
+                )
                 txn.execute(sql, args)
             # Compute who is impacted by this SIGMET
             txn.execute(
@@ -366,7 +378,9 @@ class SIGMETProduct(TextProduct):
             sig = SIGMET()
             sig.label = data["label"]
             sig.areatext = data["states"].replace(" FROM", "")
-            sig.ets = figure_expire(self.valid, int(data["hour"]), int(data["minute"]))
+            sig.ets = figure_expire(
+                self.valid, int(data["hour"]), int(data["minute"])
+            )
             lons, lats = locs2lonslats(
                 self.nwsli_provider,
                 data["locs"],

@@ -254,7 +254,10 @@ def test_valid_nomnd():
 def test_headlines():
     """ check headlines Parsing """
     tp = product.TextProduct(get_test_file("AFDDMX.txt"))
-    ans = ["UPDATED FOR 18Z AVIATION DISCUSSION", "Bogus second line with a new line"]
+    ans = [
+        "UPDATED FOR 18Z AVIATION DISCUSSION",
+        "Bogus second line with a new line",
+    ]
     assert tp.segments[0].headlines == ans
 
 
@@ -272,7 +275,10 @@ def test_bullets():
     """ Test bullets parsing """
     tp = product.TextProduct(get_test_file("TORtag.txt"))
     assert len(tp.segments[0].bullets) == 4
-    ans = "LOCATIONS IMPACTED INCLUDE... MARYSVILLE...LOVILIA" "...HAMILTON AND BUSSEY."
+    ans = (
+        "LOCATIONS IMPACTED INCLUDE... MARYSVILLE...LOVILIA"
+        "...HAMILTON AND BUSSEY."
+    )
     assert tp.segments[0].bullets[3] == ans
 
     tp = product.TextProduct(get_test_file("FLSDMX.txt"))

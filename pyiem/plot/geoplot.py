@@ -213,7 +213,9 @@ class MapPlot(object):
             aspect (str): plot aspect, defaults to equal
         """
         self.debug = kwargs.get("debug", False)
-        self.fig = plt.figure(num=None, figsize=figsize, dpi=kwargs.get("dpi", 100))
+        self.fig = plt.figure(
+            num=None, figsize=figsize, dpi=kwargs.get("dpi", 100)
+        )
         # Storage of axes within this plot
         self.state = None
         self.cwa = None
@@ -232,10 +234,16 @@ class MapPlot(object):
             if _a is None:
                 continue
             # legacy usage of axisbg here
-            _c = kwargs.get("axisbg", kwargs.get("continentalcolor", "#EEEEEE"))
+            _c = kwargs.get(
+                "axisbg", kwargs.get("continentalcolor", "#EEEEEE")
+            )
             _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
             coasts = cfeature.NaturalEarthFeature(
-                "physical", "coastline", "10m", edgecolor="black", facecolor="none"
+                "physical",
+                "coastline",
+                "10m",
+                edgecolor="black",
+                facecolor="none",
             )
             _a.add_feature(coasts, lw=1.0, zorder=Z_POLITICAL)
             _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
@@ -312,7 +320,9 @@ class MapPlot(object):
             valid = valid.strftime("%Y-%m-%d")
         elif isinstance(valid, datetime.datetime):
             valid = valid.strftime("%Y-%m-%d")
-        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?date=%s") % (valid,)
+        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?date=%s") % (
+            valid,
+        )
         try:
             req = requests.get(url, timeout=30)
         except requests.ConnectionError as exp:
@@ -544,7 +554,9 @@ class MapPlot(object):
             imgy = int(imgy)
             # Check to see if this overlaps
             _cnt = np.sum(
-                np.where(mask[imgx - 15 : imgx + 15, imgy - 15 : imgy + 15], 1, 0)
+                np.where(
+                    mask[imgx - 15 : imgx + 15, imgy - 15 : imgy + 15], 1, 0
+                )
             )
             if _cnt > 5:
                 continue
@@ -560,8 +572,14 @@ class MapPlot(object):
 
             # Sky Coverage
             skycoverage = stdata.get("coverage")
-            if skycoverage is not None and skycoverage >= 0 and skycoverage <= 100:
-                w = Wedge((x, y), circlesz, 0, 360, ec="k", fc="white", zorder=2)
+            if (
+                skycoverage is not None
+                and skycoverage >= 0
+                and skycoverage <= 100
+            ):
+                w = Wedge(
+                    (x, y), circlesz, 0, 360, ec="k", fc="white", zorder=2
+                )
                 self.ax.add_artist(w)
                 w = Wedge(
                     (x, y),
@@ -695,7 +713,9 @@ class MapPlot(object):
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
-        for o, a, v, m, c, label in zip(lons, lats, vals, valmask, color, labels):
+        for o, a, v, m, c, label in zip(
+            lons, lats, vals, valmask, color, labels
+        ):
             if not m:
                 continue
 
@@ -720,15 +740,27 @@ class MapPlot(object):
             # Now we buffer
             imgx0 = max([0, imgx0 - labelbuffer])
             imgx1 = min(
-                [figwidth, (imgx0 + 2 * labelbuffer + max_mystr_len * xpixels_per_char)]
+                [
+                    figwidth,
+                    (
+                        imgx0
+                        + 2 * labelbuffer
+                        + max_mystr_len * xpixels_per_char
+                    ),
+                ]
             )
             imgy0 = max([0, imgy0 - labelbuffer * 0.75])
             imgy1 = min(
-                [figheight, (imgy0 + mystr_lines * ypixels + 2 * labelbuffer * 0.75)]
+                [
+                    figheight,
+                    (imgy0 + mystr_lines * ypixels + 2 * labelbuffer * 0.75),
+                ]
             )
             _cnt = np.sum(
                 np.where(
-                    self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)],
+                    self.textmask[
+                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                    ],
                     1,
                     0,
                 )
@@ -736,7 +768,9 @@ class MapPlot(object):
             # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
                 if self.debug:
-                    print("culling |%s| due to overlap, %s" % (repr(mystr), _cnt))
+                    print(
+                        "culling |%s| due to overlap, %s" % (repr(mystr), _cnt)
+                    )
                 continue
             if self.debug:
                 rec = plt.Rectangle(
@@ -769,7 +803,9 @@ class MapPlot(object):
                         _cnt,
                     )
                 )
-            self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)] = True
+            self.textmask[
+                int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+            ] = True
             t0 = thisax.text(
                 o,
                 a,
@@ -852,9 +888,16 @@ class MapPlot(object):
         cmap = stretch_cmap(kwargs.get("cmap"), clevs)
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        points = self.ax.projection.transform_points(ccrs.PlateCarree(), lons, lats)
+        points = self.ax.projection.transform_points(
+            ccrs.PlateCarree(), lons, lats
+        )
         _hex = self.ax.hexbin(
-            points[:, 0], points[:, 1], C=vals, norm=norm, cmap=cmap, zorder=Z_FILL
+            points[:, 0],
+            points[:, 1],
+            C=vals,
+            norm=norm,
+            cmap=cmap,
+            zorder=Z_FILL,
         )
         kwargs.pop("cmap", None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
@@ -883,7 +926,14 @@ class MapPlot(object):
     def draw_mask(self):
         """Draw the mask, when appropriate"""
         # can't mask what we don't know
-        if self.sector not in ("iailin", "midwest", "conus", "state", "iowawfo", "cwa"):
+        if self.sector not in (
+            "iailin",
+            "midwest",
+            "conus",
+            "state",
+            "iowawfo",
+            "cwa",
+        ):
             return
         # in lon,lat
         if self.sector == "state":
@@ -925,10 +975,18 @@ class MapPlot(object):
             # Careful here as a rotated projection may have maxes not in ul
             xbnds = self.ax.get_xlim()
             ybnds = self.ax.get_ylim()
-            ll = ccrs.Geodetic().transform_point(xbnds[0], ybnds[0], self.ax.projection)
-            ul = ccrs.Geodetic().transform_point(xbnds[0], ybnds[1], self.ax.projection)
-            ur = ccrs.Geodetic().transform_point(xbnds[1], ybnds[1], self.ax.projection)
-            lr = ccrs.Geodetic().transform_point(xbnds[1], ybnds[0], self.ax.projection)
+            ll = ccrs.Geodetic().transform_point(
+                xbnds[0], ybnds[0], self.ax.projection
+            )
+            ul = ccrs.Geodetic().transform_point(
+                xbnds[0], ybnds[1], self.ax.projection
+            )
+            ur = ccrs.Geodetic().transform_point(
+                xbnds[1], ybnds[1], self.ax.projection
+            )
+            lr = ccrs.Geodetic().transform_point(
+                xbnds[1], ybnds[0], self.ax.projection
+            )
             xi = np.linspace(min(ll[0], ul[0]), max(lr[0], ur[0]), 100)
             yi = np.linspace(min(ll[1], ul[1]), max(ul[1], ur[1]), 100)
             xi, yi = np.meshgrid(xi, yi)
@@ -937,7 +995,9 @@ class MapPlot(object):
             lons = xi
             lats = yi
             window = np.ones((6, 6))
-            vals = convolve2d(vals, window / window.sum(), mode="same", boundary="symm")
+            vals = convolve2d(
+                vals, window / window.sum(), mode="same", boundary="symm"
+            )
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
 
@@ -967,7 +1027,10 @@ class MapPlot(object):
             )
             if kwargs.get("ilabel", False):
                 self.ax.clabel(
-                    csl, fmt=kwargs.get("labelfmt", "%.0f"), colors="k", fontsize=14
+                    csl,
+                    fmt=kwargs.get("labelfmt", "%.0f"),
+                    colors="k",
+                    fontsize=14,
                 )
         if kwargs.get("clip_on", True):
             self.draw_mask()
@@ -1010,7 +1073,9 @@ class MapPlot(object):
             if key[2] == "Z":
                 counties = False
             break
-        ugcs = load_pickle_geo("ugcs_county.pickle" if counties else "ugcs_zone.pickle")
+        ugcs = load_pickle_geo(
+            "ugcs_county.pickle" if counties else "ugcs_zone.pickle"
+        )
         filter_func = true_filter
         if self.sector == "state":
             filter_func = state_filter
@@ -1222,7 +1287,8 @@ class MapPlot(object):
 
         if pqstr is not None:
             subprocess.call(
-                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfn), shell=True
+                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfn),
+                shell=True,
             )
         if view:
             subprocess.call("xv %s" % (tmpfn,), shell=True)

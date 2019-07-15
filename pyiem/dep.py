@@ -34,7 +34,19 @@ RAMPS = {
     "metric": [
         [0.25, 1.0, 10.0, 15.0, 25.0, 35.0, 50.0, 75.0, 100.0, 150.0, 200.0],
         [0.25, 2.0, 20.0, 30.0, 50.0, 70.0, 100.0, 150.0, 200.0, 300.0, 400.0],
-        [0.25, 25.0, 50.0, 125.0, 200.0, 250.0, 300.0, 350.0, 500.0, 700.0, 1000.0],
+        [
+            0.25,
+            25.0,
+            50.0,
+            125.0,
+            200.0,
+            250.0,
+            300.0,
+            350.0,
+            500.0,
+            700.0,
+            1000.0,
+        ],
     ],
 }
 
@@ -83,7 +95,9 @@ def read_yld(filename):
         xref[cropcode] = label
     rows = []
     for (cropcode, doy, ofe, yld, year) in YLD_DATA.findall(data):
-        date = datetime.date(int(year), 1, 1) + datetime.timedelta(days=(int(doy) - 1))
+        date = datetime.date(int(year), 1, 1) + datetime.timedelta(
+            days=(int(doy) - 1)
+        )
         rows.append(
             dict(
                 valid=date,
@@ -188,7 +202,9 @@ def read_man(filename):
             "iplant": int(lines[linenum + 4]),
             "ntill": int(lines[linenum + 5]),
         }
-        res["surfeffects"][surf]["tills"] = [None] * res["surfeffects"][surf]["ntill"]
+        res["surfeffects"][surf]["tills"] = [None] * res["surfeffects"][surf][
+            "ntill"
+        ]
         linenum += 6
         for till in range(res["surfeffects"][surf]["ntill"]):
             res["surfeffects"][surf]["tills"][till] = {
@@ -234,8 +250,12 @@ def read_man(filename):
                     linenum += 15
                 elif res["scens"][scen]["resmgt"] == 2:
                     res["scens"][scen]["jdburn"] = int(lines[linenum + 14])
-                    res["scens"][scen]["fbrna1"] = float(lines[linenum + 15].split()[0])
-                    res["scens"][scen]["fbrno1"] = float(lines[linenum + 15].split()[1])
+                    res["scens"][scen]["fbrna1"] = float(
+                        lines[linenum + 15].split()[0]
+                    )
+                    res["scens"][scen]["fbrno1"] = float(
+                        lines[linenum + 15].split()[1]
+                    )
                     linenum += 16
                 elif res["scens"][scen]["resmgt"] == 3:
                     res["scens"][scen]["jdslge"] = int(lines[linenum + 14])
@@ -261,7 +281,9 @@ def read_man(filename):
                 if res["scens"][scen]["mgtopt"] == 1:
                     # Cutting
                     res["scens"][scen]["ncut"] = int(lines[linenum + 15])
-                    res["scens"][scen]["cuts"] = [None] * res["scens"][scen]["ncut"]
+                    res["scens"][scen]["cuts"] = [None] * res["scens"][scen][
+                        "ncut"
+                    ]
                     linenum += 16
                     for cut in range(res["scens"][scen]["ncut"]):
                         res["scens"][scen]["cuts"][cut] = int(lines[linenum])
@@ -269,7 +291,9 @@ def read_man(filename):
                 elif res["scens"][scen]["mgtopt"] == 2:
                     # Grazing
                     res["scens"][scen]["ncycle"] = int(lines[linenum + 15])
-                    res["scens"][scen]["cycles"] = [None] * res["scens"][scen]["ncycle"]
+                    res["scens"][scen]["cycles"] = [None] * res["scens"][scen][
+                        "ncycle"
+                    ]
                     linenum += 16
                     for cycle in range(res["scens"][scen]["ncycle"]):
                         res["scens"][scen]["cycles"][cycle] = {
@@ -471,6 +495,7 @@ def read_wb(filename):
     else:
         # Considerably faster than df.apply
         df["date"] = pd.to_datetime(
-            df["year"].astype(str) + " " + df["jday"].astype(str), format="%Y %j"
+            df["year"].astype(str) + " " + df["jday"].astype(str),
+            format="%Y %j",
         )
     return df

@@ -31,7 +31,9 @@ def fontscale(ratio, fig=None):
 
 def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     """Fit text into a NDC box."""
-    figbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    figbox = fig.get_window_extent().transformed(
+        fig.dpi_scale_trans.inverted()
+    )
     # need some slop for decimal comparison below
     px0 = x0 * fig.dpi * figbox.width - 0.15
     px1 = x1 * fig.dpi * figbox.width + 0.15
@@ -57,7 +59,12 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
         txt.set_fontsize(fs)
         tbox = txt.get_window_extent(fig.canvas.get_renderer())
         # print("fs: %s tbox: %s" % (fs, str(tbox)))
-        if tbox.x0 >= px0 and tbox.x1 < px1 and tbox.y0 >= py0 and tbox.y1 <= py1:
+        if (
+            tbox.x0 >= px0
+            and tbox.x1 < px1
+            and tbox.y0 >= py0
+            and tbox.y1 <= py1
+        ):
             break
     return txt
 
@@ -150,7 +157,9 @@ def sector_setter(mp, axbounds, **kwargs):
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "iowawfo":
-        mp.ax = make_axes(axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.Mercator(), aspect)
+        mp.ax = make_axes(
+            axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.Mercator(), aspect
+        )
         mp.axes.append(mp.ax)
     elif mp.sector == "custom":
         mp.ax = make_axes(
@@ -165,7 +174,9 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.ax = make_axes(
             axbounds,
             [-145.5, -2.566, 1, 46.352],
-            ccrs.LambertConformal(central_longitude=-107.0, central_latitude=50.0),
+            ccrs.LambertConformal(
+                central_longitude=-107.0, central_latitude=50.0
+            ),
             aspect,
         )
         mp.axes.append(mp.ax)
@@ -241,8 +252,12 @@ def mask_outside_polygon(poly_verts, ax=None):
 
     # A series of codes (1 and 2) to tell matplotlib whether to draw a lineor
     # move the "pen" (So that there's no connecting line)
-    bound_codes = [mpath.Path.MOVETO] + (len(bound_verts) - 1) * [mpath.Path.LINETO]
-    poly_codes = [mpath.Path.MOVETO] + (len(poly_verts) - 1) * [mpath.Path.LINETO]
+    bound_codes = [mpath.Path.MOVETO] + (len(bound_verts) - 1) * [
+        mpath.Path.LINETO
+    ]
+    poly_codes = [mpath.Path.MOVETO] + (len(poly_verts) - 1) * [
+        mpath.Path.LINETO
+    ]
 
     # Plot the masking patch
     path = mpath.Path(
@@ -301,7 +316,11 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
                     ccrs.Geodetic(), a[:, 0], a[:, 1]
                 )
                 p = mpatches.Polygon(
-                    points[:, :2], fc=c, ec="k", zorder=reference.Z_FILL, lw=0.1
+                    points[:, :2],
+                    fc=c,
+                    ec="k",
+                    zorder=reference.Z_FILL,
+                    lw=0.1,
                 )
                 ax.add_patch(p)
                 if ilabel and polyi == 0:
@@ -346,10 +365,16 @@ def mask_outside_geom(ax, geom):
     codes = [mpath.Path.MOVETO] + (len(verts) - 1) * [mpath.Path.LINETO]
     for geo in geom:
         ccw = np.asarray(geo.exterior)[::-1]
-        points = ax.projection.transform_points(ccrs.Geodetic(), ccw[:, 0], ccw[:, 1])
+        points = ax.projection.transform_points(
+            ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
+        )
         verts = np.concatenate([verts, points[:, :2]])
         codes = np.concatenate(
-            [codes, [mpath.Path.MOVETO] + (points.shape[0] - 1) * [mpath.Path.LINETO]]
+            [
+                codes,
+                [mpath.Path.MOVETO]
+                + (points.shape[0] - 1) * [mpath.Path.LINETO],
+            ]
         )
 
     path = mpath.Path(verts, codes)
@@ -360,6 +385,10 @@ def mask_outside_geom(ax, geom):
     ax.add_patch(patch)
     # Then gives a nice semitransparent look
     patch = mpatches.PathPatch(
-        path, facecolor="black", edgecolor="none", zorder=reference.Z_CLIP2, alpha=0.65
+        path,
+        facecolor="black",
+        edgecolor="none",
+        zorder=reference.Z_CLIP2,
+        alpha=0.65,
     )
     ax.add_patch(patch)

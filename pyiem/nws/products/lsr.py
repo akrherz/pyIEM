@@ -95,7 +95,8 @@ class LSRProduct(TextProduct):
                 long=str(mylsr.get_lon()),
             )
             html = (
-                '<p>%s [%s Co, %s] %s <a href="%s">reports %s</a> at ' "%s %s -- %s</p>"
+                '<p>%s [%s Co, %s] %s <a href="%s">reports %s</a> at '
+                "%s %s -- %s</p>"
             ) % (
                 _mylowercase(mylsr.city),
                 mylsr.county.title(),
@@ -136,9 +137,13 @@ class LSRProduct(TextProduct):
             )
 
             html = (
-                "<p>%s issues " "<a href='%s'>Summary Local Storm Report</a>%s</p>"
+                "<p>%s issues "
+                "<a href='%s'>Summary Local Storm Report</a>%s</p>"
             ) % (wfo, url, extra_text)
-            xtra = {"product_id": self.get_product_id(), "channels": "LSR%s" % (wfo,)}
+            xtra = {
+                "product_id": self.get_product_id(),
+                "channels": "LSR%s" % (wfo,),
+            }
             res.append([text, html, xtra])
         return res
 
@@ -179,7 +184,8 @@ def parse_lsr(prod, text):
     lines = text.split("\n")
     if len(lines) < 2:
         prod.warnings.append(
-            ("LSR text is too short |%s|\n%s") % (text.replace("\n", "<NL>"), text)
+            ("LSR text is too short |%s|\n%s")
+            % (text.replace("\n", "<NL>"), text)
         )
         return None
     lsr = LSR()
@@ -196,7 +202,11 @@ def parse_lsr(prod, text):
         utc() + FUTURE_THRESHOLD
     ):
         prod.warnings.append(
-            ("LSR is from the future!\n" "prod.valid: %s lsr.valid: %s\n" "%s\n")
+            (
+                "LSR is from the future!\n"
+                "prod.valid: %s lsr.valid: %s\n"
+                "%s\n"
+            )
             % (prod.valid, lsr.valid, text)
         )
         return None
@@ -205,7 +215,9 @@ def parse_lsr(prod, text):
 
     lsr.typetext = lines[0][12:29].strip()
     if lsr.typetext.upper() not in reference.lsr_events:
-        prod.warnings.append(("Unknown lsr.typetext |%s|\n%s") % (lsr.typetext, text))
+        prod.warnings.append(
+            ("Unknown lsr.typetext |%s|\n%s") % (lsr.typetext, text)
+        )
         return None
 
     lsr.city = lines[0][29:53].strip()

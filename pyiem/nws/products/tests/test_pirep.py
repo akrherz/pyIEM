@@ -33,7 +33,9 @@ def test_161010_missingtime():
         "GTF": {"lat": 44.26, "lon": -88.52},
         "ALB": {"lat": 44.26, "lon": -88.52},
     }
-    prod = pirepparser(get_test_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider)
+    prod = pirepparser(
+        get_test_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider
+    )
     j = prod.get_jabbers()
     assert j[0][2]["channels"] == "UA.None,UA.PIREP"
 
@@ -65,7 +67,9 @@ def test_150202_airmet():
 def test_150126_space():
     """ space.txt has a space where it should not """
     nwsli_provider = {"CZBA": {"lat": 44.26, "lon": -88.52}}
-    prod = pirepparser(get_test_file("PIREPS/space.txt"), nwsli_provider=nwsli_provider)
+    prod = pirepparser(
+        get_test_file("PIREPS/space.txt"), nwsli_provider=nwsli_provider
+    )
     assert not prod.warnings
     assert abs(prod.reports[0].latitude - 44.15) < 0.01
 
@@ -130,15 +134,24 @@ def test_150120_latlonloc():
     assert abs(prod.reports[0].longitude - -144.3) < 0.01
 
     nwsli_provider = {"PKTN": {"lat": 44, "lon": -99}}
-    prod = pirepparser(get_test_file("PIREPS/PKTN.txt"), nwsli_provider=nwsli_provider)
+    prod = pirepparser(
+        get_test_file("PIREPS/PKTN.txt"), nwsli_provider=nwsli_provider
+    )
     assert not prod.warnings
 
 
 def test_150120_OVO():
     """ PIREPS/OVO.txt has a location of OV 0 """
-    nwsli_provider = {"AVK": {"lat": 44, "lon": 99}}
-    prod = pirepparser(get_test_file("PIREPS/OVO.txt"), nwsli_provider=nwsli_provider)
+    nwsli_provider = {
+        "AVK": {"lat": 44, "lon": 99},
+        "TED": {"lat": 61.17, "lon": -149.99},
+    }
+    prod = pirepparser(
+        get_test_file("PIREPS/OVO.txt"), nwsli_provider=nwsli_provider
+    )
     assert not prod.warnings
+    assert abs(prod.reports[1].latitude - 61.17) > 0.009
+    assert abs(prod.reports[1].longitude - -149.99) > 0.009
 
 
 def test_offset():
@@ -147,7 +160,8 @@ def test_offset():
     lon = -92.5
     nwsli_provider = {"BIL": {"lat": lat, "lon": lon}}
     p = pirepparser(
-        "\001\r\r\n000 \r\r\nUBUS01 KMSC 090000\r\r\n", nwsli_provider=nwsli_provider
+        "\001\r\r\n000 \r\r\nUBUS01 KMSC 090000\r\r\n",
+        nwsli_provider=nwsli_provider,
     )
     lon2, lat2 = p.compute_loc("BIL", 0, 0)
     assert lon2 == lon
@@ -172,7 +186,9 @@ def test_1():
         "HPW": {"lat": 47, "lon": 102},
     }
     prod = pirepparser(
-        get_test_file("PIREPS/PIREP.txt"), utcnow=utcnow, nwsli_provider=nwsli_provider
+        get_test_file("PIREPS/PIREP.txt"),
+        utcnow=utcnow,
+        nwsli_provider=nwsli_provider,
     )
     assert not prod.warnings
 

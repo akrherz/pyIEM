@@ -63,7 +63,11 @@ class FTPSession(object):
             # Step 1 Split this big file into 14GB chunks, each file will have
             # suffix .aa then .ab then .ac etc
             basefn = os.path.basename(localfn)
-            cmd = "split --bytes=14000M %s %s/%s." % (localfn, self.tmpdir, basefn)
+            cmd = "split --bytes=14000M %s %s/%s." % (
+                localfn,
+                self.tmpdir,
+                basefn,
+            )
             subprocess.call(cmd, shell=True, stderr=subprocess.PIPE)
             files = glob.glob("%s/%s.??" % (self.tmpdir, basefn))
             for filename in files:
@@ -124,7 +128,9 @@ class FTPSession(object):
             self._reconnect()
             res = exponential_backoff(self._put, path, localfn, remotefn)
             if not res:
-                logging.error("Double Failure to upload filename: '%s'", localfn)
+                logging.error(
+                    "Double Failure to upload filename: '%s'", localfn
+                )
                 return False
         return True
 
@@ -164,7 +170,9 @@ def send2box(
     """
     credentials = netrc.netrc().hosts[ftpserver]
     if fs is None:
-        fs = FTPSession(ftpserver, credentials[0], credentials[2], tmpdir=tmpdir)
+        fs = FTPSession(
+            ftpserver, credentials[0], credentials[2], tmpdir=tmpdir
+        )
     if isinstance(filenames, str):
         filenames = [filenames]
     if remotenames is None:

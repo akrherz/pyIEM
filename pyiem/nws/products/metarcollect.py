@@ -47,13 +47,17 @@ def wind_logic(iem, this):
     if this.wind_dir_peak:
         iem.data["peak_wind_drct"] = this.wind_dir_peak.value()
     if this.peak_wind_time:
-        iem.data["peak_wind_time"] = this.peak_wind_time.replace(tzinfo=pytz.UTC)
+        iem.data["peak_wind_time"] = this.peak_wind_time.replace(
+            tzinfo=pytz.UTC
+        )
 
     # Figure out if we have a new max_drct
     old_max_wind = max(
         [iem.data.get("max_sknt", 0) or 0, iem.data.get("max_gust", 0) or 0]
     )
-    new_max_wind = max([iem.data.get("sknt", 0) or 0, iem.data.get("gust", 0) or 0])
+    new_max_wind = max(
+        [iem.data.get("sknt", 0) or 0, iem.data.get("gust", 0) or 0]
+    )
     # if our sknt or gust is a new max, use drct
     if new_max_wind > old_max_wind:
         iem.data["max_drct"] = iem.data.get("drct", 0)
@@ -126,21 +130,32 @@ def to_metar(textprod, text):
             print("Aborting due to time being None |%s|" % (text,))
             return None
         # don't allow data more than an hour into the future
-        ceiling = (textprod.utcnow + datetime.timedelta(hours=1)).replace(tzinfo=None)
+        ceiling = (textprod.utcnow + datetime.timedelta(hours=1)).replace(
+            tzinfo=None
+        )
         if mtr.time > ceiling:
             # careful, we may have obs from the previous month
             if ceiling.day < 5 and mtr.time.day > 15:
                 prevmonth = ceiling - datetime.timedelta(days=10)
-                mtr.time = mtr.time.replace(year=prevmonth.year, month=prevmonth.month)
+                mtr.time = mtr.time.replace(
+                    year=prevmonth.year, month=prevmonth.month
+                )
             else:
                 print(
-                    ("Aborting due to time in the future " "ceiling: %s mtr.time: %s")
+                    (
+                        "Aborting due to time in the future "
+                        "ceiling: %s mtr.time: %s"
+                    )
                     % (ceiling, mtr.time)
                 )
                 return None
         mtr.code = original_text
-        mtr.iemid = mtr.station_id[-3:] if mtr.station_id[0] == "K" else mtr.station_id
-        mtr.network = textprod.nwsli_provider.get(mtr.iemid, dict()).get("network")
+        mtr.iemid = (
+            mtr.station_id[-3:] if mtr.station_id[0] == "K" else mtr.station_id
+        )
+        mtr.network = textprod.nwsli_provider.get(mtr.iemid, dict()).get(
+            "network"
+        )
     return mtr
 
 
@@ -150,7 +165,11 @@ def sanitize(text):
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
     # daryl does not understand all of what follows as far as encode/decode
-    text = text.encode("utf-8", "ignore").replace(b"\xa0", b" ").replace(b"\001", b"")
+    text = (
+        text.encode("utf-8", "ignore")
+        .replace(b"\xa0", b" ")
+        .replace(b"\001", b"")
+    )
     text = (
         text.replace(b"\003", b"")
         .replace(b"COR ", b"")
@@ -203,7 +222,10 @@ class METARReport(Metar):
 
     def over_wind_threshold(self):
         """Is this METAR over the wind threshold for alerting"""
-        if self.wind_gust and self.wind_gust.value("KT") >= WIND_ALERT_THRESHOLD_KTS:
+        if (
+            self.wind_gust
+            and self.wind_gust.value("KT") >= WIND_ALERT_THRESHOLD_KTS
+        ):
             return True
         if (
             self.wind_speed_peak
@@ -227,7 +249,9 @@ class METARReport(Metar):
 
         # Need to figure out if we have a duplicate ob, if so, check
         # the length of the raw data, if greater, take the temps
-        if iem.data["raw"] is not None and len(iem.data["raw"]) >= len(self.code):
+        if iem.data["raw"] is not None and len(iem.data["raw"]) >= len(
+            self.code
+        ):
             pass
         else:
             if self.temp:
@@ -313,7 +337,9 @@ class METARCollective(TextProduct):
     A TextProduct containing METAR information
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """Constructor
 
         Args:
@@ -348,12 +374,17 @@ class METARCollective(TextProduct):
                     if mtr.type == "SPECI":
                         channels.append("SPECI.%s" % (mtr.station_id,))
                     mstr = "%s %s" % (mtr.type, mtr.code)
-                    jmsgs.append([mstr, mstr, dict(channels=",".join(channels))])
+                    jmsgs.append(
+                        [mstr, mstr, dict(channels=",".join(channels))]
+                    )
             if msg:
                 row = self.nwsli_provider.get(mtr.iemid, dict())
                 wfo = row.get("wfo")
                 if wfo is None or wfo == "":
-                    print(("Unknown WFO for id: %s, skipping alert") % (mtr.iemid,))
+                    print(
+                        ("Unknown WFO for id: %s, skipping alert")
+                        % (mtr.iemid,)
+                    )
                     continue
                 channels = ["METAR.%s" % (mtr.station_id,)]
                 if mtr.type == "SPECI":

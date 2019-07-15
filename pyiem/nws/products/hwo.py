@@ -13,7 +13,9 @@ class HWOProduct(TextProduct):
     Represents a HWO
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         TextProduct.__init__(
             self,
@@ -32,7 +34,9 @@ class HWOProduct(TextProduct):
                 continue
             day1 = segment.unixtext.upper().find(".DAY ONE...")
             if day1 == -1 and self.afos != "HWOSPN":
-                raise HWOException("segment %s is missing DAY ONE section" % (segnum,))
+                raise HWOException(
+                    "segment %s is missing DAY ONE section" % (segnum,)
+                )
             day27 = segment.unixtext.upper().find(".DAYS TWO THROUGH SEVEN...")
             if day27 == -1 and self.afos != "HWOSPN":
                 raise HWOException(
@@ -73,5 +77,8 @@ class HWOProduct(TextProduct):
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Helper function """
     return HWOProduct(
-        text, utcnow=utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
+        text,
+        utcnow=utcnow,
+        ugc_provider=ugc_provider,
+        nwsli_provider=nwsli_provider,
     )

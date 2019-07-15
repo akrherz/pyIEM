@@ -143,7 +143,9 @@ def _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo, level):
         stations = [station, "ZZZZ"]
         if station.startswith("_"):
             nt = NetworkTable("RAOB")
-            stations = nt.sts[station]["name"].split("--")[1].strip().split(" ")
+            stations = (
+                nt.sts[station]["name"].split("--")[1].strip().split(" ")
+            )
         sql = """SELECT p.smps * 1.94384 as sknt, p.drct, f.valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
         f.station in %s and p.pressure = %s and p.smps is not null
@@ -225,7 +227,10 @@ def _make_textresult(
         res += " %4.1f-%4.1f," % (var_bins[j], var_bins[j + 1] - 0.1)
     res += "\n"
     dir_edges2 = np.concatenate(
-        (np.array(dir_edges), [dir_edges[-1] + (dir_edges[-1] - dir_edges[-2])])
+        (
+            np.array(dir_edges),
+            [dir_edges[-1] + (dir_edges[-1] - dir_edges[-2])],
+        )
     )
     for i in range(len(dir_edges2) - 1):
         res += "%03i-%03i," % (dir_edges2[i], dir_edges2[i + 1])
@@ -236,7 +241,17 @@ def _make_textresult(
 
 
 def _make_plot(
-    station, df, units, nsector, rmax, hours, months, sname, level, bins, **kwargs
+    station,
+    df,
+    units,
+    nsector,
+    rmax,
+    hours,
+    months,
+    sname,
+    level,
+    bins,
+    **kwargs
 ):
     """Generate a matplotlib windrose plot
 
@@ -323,7 +338,9 @@ def _make_plot(
             )
         else:
             for h in hours:
-                tlimit += "%s," % (datetime.datetime(2000, 1, 1, h).strftime("%-I %p"),)
+                tlimit += "%s," % (
+                    datetime.datetime(2000, 1, 1, h).strftime("%-I %p"),
+                )
     if len(months) < 12:
         for h in months:
             tlimit += "%s," % (datetime.datetime(2000, h, 1).strftime("%b"),)
@@ -431,7 +448,9 @@ def windrose(
     hourinfo = _get_timeinfo(hours, "hour", 24)
 
     if sknt is None or drct is None:
-        df = _get_data(station, cursor, database, sts, ets, monthinfo, hourinfo, level)
+        df = _get_data(
+            station, cursor, database, sts, ets, monthinfo, hourinfo, level
+        )
     else:
         df = pd.DataFrame({"sknt": sknt, "drct": drct, "valid": valid})
     # Convert wind speed into the units we want here
@@ -439,7 +458,15 @@ def windrose(
         df["speed"] = speed(df["sknt"].values, "KT").value(units.upper())
     if justdata:
         return _make_textresult(
-            station, df, units, nsector, sname, monthinfo, hourinfo, level, bins
+            station,
+            df,
+            units,
+            nsector,
+            sname,
+            monthinfo,
+            hourinfo,
+            level,
+            bins,
         )
     if len(df.index) < 5 or not df["sknt"].max() > 0:
         fig = plt.figure(figsize=(6, 7), dpi=80, facecolor="w", edgecolor="w")
@@ -447,5 +474,15 @@ def windrose(
         return fig
 
     return _make_plot(
-        station, df, units, nsector, rmax, hours, months, sname, level, bins, **kwargs
+        station,
+        df,
+        units,
+        nsector,
+        rmax,
+        hours,
+        months,
+        sname,
+        level,
+        bins,
+        **kwargs
     )

@@ -36,7 +36,10 @@ class CachingZonalStats(object):
         """
         if geometries is None:
             _LOG.warning(
-                ("Cowardly refusing to compute gridnav " "with None geometries")
+                (
+                    "Cowardly refusing to compute gridnav "
+                    "with None geometries"
+                )
             )
             return
         # TODO: check nodata usage here
@@ -87,7 +90,9 @@ class CachingZonalStats(object):
                 continue
 
             # print("OUT: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
-            self.gridnav.append(GRIDINFO(x0=x0, y0=y0, xsz=xsz, ysz=ysz, mask=mask))
+            self.gridnav.append(
+                GRIDINFO(x0=x0, y0=y0, xsz=xsz, ysz=ysz, mask=mask)
+            )
 
     def gen_stats(self, grid, geometries=None, stat=np.ma.mean):
         """Compute the zonal_stats for the provided geometries and grid
@@ -113,7 +118,10 @@ class CachingZonalStats(object):
             res.append(
                 stat(
                     np.ma.array(
-                        grid[nav.y0 : (nav.y0 + nav.ysz), nav.x0 : (nav.x0 + nav.xsz)],
+                        grid[
+                            nav.y0 : (nav.y0 + nav.ysz),
+                            nav.x0 : (nav.x0 + nav.xsz),
+                        ],
                         mask=nav.mask,
                     )
                 )

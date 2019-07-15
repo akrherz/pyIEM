@@ -9,7 +9,9 @@ from pyiem.util import get_dbconn, get_test_file
 @pytest.fixture
 def dbcursor():
     """Return a database cursor."""
-    return get_dbconn("postgis").cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return get_dbconn("postgis").cursor(
+        cursor_factory=psycopg2.extras.DictCursor
+    )
 
 
 def test_ffg(dbcursor):

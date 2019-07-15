@@ -94,9 +94,13 @@ class TextProductException(Exception):
 def checker(lon, lat, strdata):
     """make sure our values are within physical bounds"""
     if lat >= 90 or lat <= -90:
-        raise TextProductException("invalid latitude %s from %s" % (lat, strdata))
+        raise TextProductException(
+            "invalid latitude %s from %s" % (lat, strdata)
+        )
     if lon > 180 or lon < -180:
-        raise TextProductException("invalid longitude %s from %s" % (lon, strdata))
+        raise TextProductException(
+            "invalid longitude %s from %s" % (lon, strdata)
+        )
     return (lon, lat)
 
 
@@ -327,7 +331,9 @@ class TextProductSegment(object):
                 ("LAT...LON polygon exterior is CCW, reversing\n%s")
                 % (poly.exterior.xy,)
             )
-            poly = Polygon(zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1]))
+            poly = Polygon(
+                zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1])
+            )
         self.giswkt = "SRID=4326;%s" % (
             dumps(MultiPolygon([poly]), rounding_precision=6),
         )
@@ -348,7 +354,10 @@ class TextProductSegment(object):
         search = TIME_MOT_LOC.search(self.unixtext)
         if not search:
             self.tp.warnings.append(
-                ("process_time_mot_loc segment find OK, " "but regex failed...")
+                (
+                    "process_time_mot_loc segment find OK, "
+                    "but regex failed..."
+                )
             )
             return
 
@@ -551,7 +560,9 @@ class TextProduct(object):
     def get_signature(self):
         """ Find the signature at the bottom of the page
         """
-        return " ".join(self.segments[-1].unixtext.replace(u"\n", " ").strip().split())
+        return " ".join(
+            self.segments[-1].unixtext.replace(u"\n", " ").strip().split()
+        )
 
     def parse_segments(self):
         """ Split the product by its $$ """
@@ -603,7 +614,8 @@ class TextProduct(object):
                 now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
             except ValueError:
                 msg = (
-                    "Invalid timestamp [%s] found in product " "[%s %s %s] header"
+                    "Invalid timestamp [%s] found in product "
+                    "[%s %s %s] header"
                 ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
                 raise TextProductException(self.source[1:], msg)
             now += datetime.timedelta(hours=reference.offsets[self.z])
@@ -638,7 +650,8 @@ class TextProduct(object):
         search = WMO_RE.search(self.unixtext[:100])
         if search is None:
             raise TextProductException(
-                ("FATAL: Could not parse WMO header! " "%s") % (self.text[:100])
+                ("FATAL: Could not parse WMO header! " "%s")
+                % (self.text[:100])
             )
         gdict = search.groupdict()
         self.wmo = gdict["ttaaii"]
@@ -647,7 +660,10 @@ class TextProduct(object):
         self.bbb = gdict["bbb"]
         if len(self.wmo) == 4:
             # Don't whine about known problems
-            if self.source not in KNOWN_BAD_TTAAII and not self.source.startswith("S"):
+            if (
+                self.source not in KNOWN_BAD_TTAAII
+                and not self.source.startswith("S")
+            ):
                 self.warnings.append(
                     ("WMO ttaaii found four chars: %s %s " "adding 00")
                     % (self.wmo, self.source)
@@ -669,7 +685,9 @@ class TextProduct(object):
     def parse_afos(self):
         """ Figure out what the AFOS PIL is """
         # at most, only look at the top four lines
-        data = "\n".join([line.strip() for line in self.sections[0].split("\n")[:4]])
+        data = "\n".join(
+            [line.strip() for line in self.sections[0].split("\n")[:4]]
+        )
         tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
         if tokens:
             self.afos = tokens[0]

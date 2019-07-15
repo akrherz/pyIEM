@@ -37,7 +37,10 @@ def test_gdd_with_nans():
     highs = np.ma.array([70, 80, np.nan, 90], mask=[False, False, True, False])
     lows = highs - 10
     r = meteorology.gdd(
-        datatypes.temperature(highs, "F"), datatypes.temperature(lows, "F"), 50, 86
+        datatypes.temperature(highs, "F"),
+        datatypes.temperature(lows, "F"),
+        50,
+        86,
     )
     assert np.ma.is_masked(r[2])
 
@@ -92,17 +95,17 @@ def test_drct():
         datatypes.speed(np.array([10, 20]), "KT"),
     ).value("DEG")
     assert r[0] == 225
-    r = meteorology.drct(datatypes.speed(-10, "KT"), datatypes.speed(10, "KT")).value(
-        "DEG"
-    )
+    r = meteorology.drct(
+        datatypes.speed(-10, "KT"), datatypes.speed(10, "KT")
+    ).value("DEG")
     assert r == 135
-    r = meteorology.drct(datatypes.speed(-10, "KT"), datatypes.speed(-10, "KT")).value(
-        "DEG"
-    )
+    r = meteorology.drct(
+        datatypes.speed(-10, "KT"), datatypes.speed(-10, "KT")
+    ).value("DEG")
     assert r == 45
-    r = meteorology.drct(datatypes.speed(10, "KT"), datatypes.speed(-10, "KT")).value(
-        "DEG"
-    )
+    r = meteorology.drct(
+        datatypes.speed(10, "KT"), datatypes.speed(-10, "KT")
+    ).value("DEG")
     assert r == 315
 
 

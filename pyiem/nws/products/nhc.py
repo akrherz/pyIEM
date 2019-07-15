@@ -16,7 +16,9 @@ class NHCProduct(TextProduct):
     Represents a NHC
     """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
 
@@ -77,7 +79,9 @@ class NHCProduct(TextProduct):
 
         if len(self.segments[0].headlines) > 0:
             headline = self.segments[0].headlines[0]
-            headline = headline.lower().replace(name.lower(), "#%s" % (twitter_name,))
+            headline = headline.lower().replace(
+                name.lower(), "#%s" % (twitter_name,)
+            )
             headline = headline[0].upper() + headline[1:] + "."
             if (144 - len(tformat % tdict)) > len(headline):
                 tdict["headline"] = headline
@@ -93,7 +97,8 @@ class NHCProduct(TextProduct):
                 mess.replace("#", "") % tdict,
                 htmlmess.replace("#", "") % tdict,
                 {
-                    "channels": "NHC,%s,%s,%s" % (self.afos[:5], name, self.afos),
+                    "channels": "NHC,%s,%s,%s"
+                    % (self.afos[:5], name, self.afos),
                     "product_id": self.get_product_id(),
                     "twitter": " ".join(tweet.split()),
                 },

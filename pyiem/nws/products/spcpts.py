@@ -17,7 +17,9 @@ from pyiem.util import utc
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {"line": None, "poly": None}
-DAYRE = re.compile(r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])", re.IGNORECASE)
+DAYRE = re.compile(
+    r"SEVERE WEATHER OUTLOOK POINTS DAY\s+(?P<day>[0-9])", re.IGNORECASE
+)
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 
 THRESHOLD2TEXT = {
@@ -235,7 +237,10 @@ def str2multipolygon(s):
                     if newp.is_valid:
                         polys[j] = newp
                         print(
-                            ("     polygon is interior to polys #%s, " "area now %.2f")
+                            (
+                                "     polygon is interior to polys #%s, "
+                                "area now %.2f"
+                            )
                             % (j, polys[j].area)
                         )
                     else:
@@ -273,7 +278,8 @@ def str2multipolygon(s):
                 (x, y) = poly.exterior.xy
                 pie = np.array(list(zip(x, y)))
                 distance = (
-                    (pie[:, 0] - line[q, 0]) ** 2 + (pie[:, 1] - line[q, 1]) ** 2
+                    (pie[:, 0] - line[q, 0]) ** 2
+                    + (pie[:, 1] - line[q, 1]) ** 2
                 ) ** 0.5
                 idx1 = np.argmin(distance) - 1
                 idx1 = idx1 if idx1 > -1 else 0
@@ -292,7 +298,10 @@ def str2multipolygon(s):
 
                 sz = np.shape(pie)[0]
                 print(
-                    ("     Q:%s computed intersections " "idx1: %s/%s idx2: %s/%s")
+                    (
+                        "     Q:%s computed intersections "
+                        "idx1: %s/%s idx2: %s/%s"
+                    )
                     % (q, idx1, sz, idx2, sz)
                 )
                 if idx1 < idx2:
@@ -321,7 +330,10 @@ def str2multipolygon(s):
                         newpoly = newpoly.buffer(0)
                     polys.append(newpoly)
                     print(
-                        ("     + adding polygon index: %s area: %.2f " "isvalid: %s")
+                        (
+                            "     + adding polygon index: %s area: %.2f "
+                            "isvalid: %s"
+                        )
                         % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
                     )
                 # It is possible that our line start and end points are closest
@@ -335,7 +347,10 @@ def str2multipolygon(s):
                         newpoly = newpoly.buffer(0)
                     polys.append(newpoly)
                     print(
-                        ("     + adding polygon index: %s area: %.2f " "isvalid: %s")
+                        (
+                            "     + adding polygon index: %s area: %.2f "
+                            "isvalid: %s"
+                        )
                         % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
                     )
                 print("     breaking out of q loop")
@@ -345,7 +360,10 @@ def str2multipolygon(s):
             print("     segment did not intersect")
 
     res = []
-    print(("  Resulted in len(polys): %s, now quality controlling") % (len(polys),))
+    print(
+        ("  Resulted in len(polys): %s, now quality controlling")
+        % (len(polys),)
+    )
     for i, poly in enumerate(polys):
         if not poly.is_valid:
             print("     ERROR: polygon %s is invalid!" % (i,))
@@ -397,7 +415,9 @@ class SPCOutlook(object):
 class SPCPTS(TextProduct):
     """A class representing the polygons and metadata in SPC PTS Product"""
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """Constructor
 
         Args:
@@ -450,12 +470,20 @@ class SPCPTS(TextProduct):
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []
-                for poly1, poly2 in itertools.permutations(outlook.geometry, 2):
+                for poly1, poly2 in itertools.permutations(
+                    outlook.geometry, 2
+                ):
                     if poly1.contains(poly2):
                         rewrite = True
                         msg = (
-                            "Discarding exterior polygon: " "Day: %s %s %s Area: %.2f"
-                        ) % (day, outlook.category, outlook.threshold, poly1.area)
+                            "Discarding exterior polygon: "
+                            "Day: %s %s %s Area: %.2f"
+                        ) % (
+                            day,
+                            outlook.category,
+                            outlook.threshold,
+                            poly1.area,
+                        )
                         print(msg)
                         self.warnings.append(msg)
                     elif tstm is not None and poly1.area > tstm.geometry.area:
@@ -463,7 +491,12 @@ class SPCPTS(TextProduct):
                         msg = (
                             "Discarding polygon as it is larger than TSTM: "
                             "Day: %s %s %s Area: %.2f"
-                        ) % (day, outlook.category, outlook.threshold, poly1.area)
+                        ) % (
+                            day,
+                            outlook.category,
+                            outlook.threshold,
+                            poly1.area,
+                        )
                         print(msg)
                         self.warnings.append(msg)
                     else:
@@ -471,7 +504,10 @@ class SPCPTS(TextProduct):
                 if rewrite:
                     outlook.geometry = MultiPolygon(good_polys)
         # 2. Do the time bounds make sense, limited scope here
-        if self.day == 1 and (self.issue - self.valid).total_seconds() > 8 * 3600:
+        if (
+            self.day == 1
+            and (self.issue - self.valid).total_seconds() > 8 * 3600
+        ):
             self.warnings.append(
                 ("time_bounds_check: day: %s issue: %s valid: %s expire: %s")
                 % (self.day, self.issue, self.valid, self.expire)
@@ -505,12 +541,22 @@ class SPCPTS(TextProduct):
                 ax = fig.add_subplot(111)
                 # pylint: disable=unsubscriptable-object
                 ax.plot(
-                    CONUS["line"][:, 0], CONUS["line"][:, 1], color="b", label="Conus"
+                    CONUS["line"][:, 0],
+                    CONUS["line"][:, 1],
+                    color="b",
+                    label="Conus",
                 )
                 for poly in outlook.geometry:
-                    patch = PolygonPatch(poly, fc="tan", label="Outlook", zorder=2)
+                    patch = PolygonPatch(
+                        poly, fc="tan", label="Outlook", zorder=2
+                    )
                     ax.add_patch(patch)
-                    ax.plot(poly.exterior.xy[0], poly.exterior.xy[1], lw=2, color="r")
+                    ax.plot(
+                        poly.exterior.xy[0],
+                        poly.exterior.xy[1],
+                        lw=2,
+                        color="r",
+                    )
                 ax.set_title(
                     ("Day %s Category %s Threshold %s")
                     % (day, outlook.category, outlook.threshold)
@@ -554,7 +600,9 @@ class SPCPTS(TextProduct):
         elif self.afos == "PFWF38":
             self.outlook_type = "F"
         else:
-            self.warnings.append(("Unknown awipsid '%s' for metadata") % (self.afos,))
+            self.warnings.append(
+                ("Unknown awipsid '%s' for metadata") % (self.afos,)
+            )
 
     def find_issue_expire(self):
         """
@@ -619,7 +667,9 @@ class SPCPTS(TextProduct):
                 point_data[threshold] += line.replace(threshold, " ")
 
             if day is not None:
-                issue, expire = compute_times(self.afos, self.issue, self.expire, day)
+                issue, expire = compute_times(
+                    self.afos, self.issue, self.expire, day
+                )
                 collect = self.outlook_collections.setdefault(
                     day, SPCOutlookCollection(issue, expire, day)
                 )
@@ -704,7 +754,10 @@ class SPCPTS(TextProduct):
                 (self.valid, self.expire, self.outlook_type, day),
             )
             if txn.rowcount > 0:
-                print(("Removed %s previous spc_outlook entries") % (txn.rowcount,))
+                print(
+                    ("Removed %s previous spc_outlook entries")
+                    % (txn.rowcount,)
+                )
 
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
@@ -785,7 +838,10 @@ class SPCPTS(TextProduct):
             day = "Day 3-8"
             product_descript = "Fire Weather"
             url = self.issue.strftime(
-                ("https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m%d" ".html")
+                (
+                    "https://www.spc.noaa.gov/products/exper/fire_wx/%Y/%y%m%d"
+                    ".html"
+                )
             )
 
         return product_descript, url, day
@@ -846,7 +902,10 @@ class SPCPTS(TextProduct):
                 "IDRT",
                 "SDRT",
             ]:
-                jdict["ttext"] = "%s %s Risk" % (THRESHOLD2TEXT[cat], product_descript)
+                jdict["ttext"] = "%s %s Risk" % (
+                    THRESHOLD2TEXT[cat],
+                    product_descript,
+                )
                 for wfo in wfos[cat]:
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [

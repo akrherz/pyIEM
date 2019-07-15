@@ -22,7 +22,9 @@ def daily_offset(ts):
     """ Compute the timestamp index in the netcdf file """
     # In case ts is passed here as a datetime.date object
     ts = datetime.datetime(ts.year, ts.month, ts.day)
-    base = ts.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    base = ts.replace(
+        month=1, day=1, hour=0, minute=0, second=0, microsecond=0
+    )
     days = (ts - base).days
     return int(days)
 

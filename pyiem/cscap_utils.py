@@ -27,7 +27,11 @@ def save_config(config, filename=None):
     if filename is None:
         filename = CONFIG_FN
     json.dump(
-        config, open(filename, "w"), sort_keys=True, indent=4, separators=(",", ": ")
+        config,
+        open(filename, "w"),
+        sort_keys=True,
+        indent=4,
+        separators=(",", ": "),
     )
 
 
@@ -36,7 +40,9 @@ def get_config(filename=None):
     if filename is None:
         filename = CONFIG_FN
     if not os.path.isfile(filename):
-        sys.stderr.write(("cscap_utils.get_config(%s) File Not Found.\n") % (filename,))
+        sys.stderr.write(
+            ("cscap_utils.get_config(%s) File Not Found.\n") % (filename,)
+        )
         return None
     return json.load(open(filename))
 
@@ -205,7 +211,9 @@ class Worksheet(object):
             entry.cell.input_value = ""
             exponential_backoff(self.spr_client.update, entry)
 
-            updateFeed = spdata.build_batch_cells_update(self.spread_id, self.id)
+            updateFeed = spdata.build_batch_cells_update(
+                self.spread_id, self.id
+            )
             for row in range(1, int(self.rows) + 1):
                 updateFeed.add_set_cell(str(row), str(col), "")
             self.cell_feed = exponential_backoff(
@@ -292,11 +300,15 @@ class Worksheet(object):
                     self.drop_last_column()
                     return True
                 # Move columns left
-                updateFeed = spdata.build_batch_cells_update(self.spread_id, self.id)
+                updateFeed = spdata.build_batch_cells_update(
+                    self.spread_id, self.id
+                )
                 for col2 in range(int(col), int(self.cols)):
                     for row in range(1, int(self.rows) + 1):
                         updateFeed.add_set_cell(
-                            str(row), str(col2), self.get_cell_value(row, col2 + 1)
+                            str(row),
+                            str(col2),
+                            self.get_cell_value(row, col2 + 1),
                         )
                 self.cell_feed = exponential_backoff(
                     self.spr_client.batch, updateFeed, force=True
@@ -321,7 +333,9 @@ class Spreadsheet(object):
         if feed is None:
             return
         for entry in feed.entry:
-            self.worksheets[entry.title.text] = Worksheet(self.spr_client, entry)
+            self.worksheets[entry.title.text] = Worksheet(
+                self.spr_client, entry
+            )
 
 
 def get_xref_siteids_plotids(drive, spr_client, config):
@@ -427,8 +441,16 @@ def build_treatments(feed):
                 if cell is not None and cell != "":
                     if treatment_key[:3] in data[sitekey].keys():
                         data[sitekey][treatment_key[:3]].append(treatment_key)
-                if treatment_key == "REPS" and cell not in ("?", "TBD", "REPS", None):
-                    print(("Found REPS for site: %s as: %s") % (sitekey, int(cell)))
+                if treatment_key == "REPS" and cell not in (
+                    "?",
+                    "TBD",
+                    "REPS",
+                    None,
+                ):
+                    print(
+                        ("Found REPS for site: %s as: %s")
+                        % (sitekey, int(cell))
+                    )
                     data[sitekey]["REPS"] = int(cell)
 
     return data, treatment_names
@@ -527,7 +549,9 @@ def get_folders(drive):
     # than 999, it does not mean the list was complete
     folders = (
         drive.files()
-        .list(q="mimeType = 'application/vnd.google-apps.folder'", maxResults=999)
+        .list(
+            q="mimeType = 'application/vnd.google-apps.folder'", maxResults=999
+        )
         .execute()
     )
     folder_list = folders["items"]

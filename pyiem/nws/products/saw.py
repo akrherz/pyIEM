@@ -290,7 +290,9 @@ class SAWProduct(TextProduct):
                 self.ets.strftime("%-H:%M"),
             )
             if REPLACES_RE.findall(self.unixtext):
-                rtext = ("WW %s ") % (REPLACES_RE.findall(self.unixtext)[0][0].strip(),)
+                rtext = ("WW %s ") % (
+                    REPLACES_RE.findall(self.unixtext)[0][0].strip(),
+                )
                 plain += ", new watch replaces " + rtext
                 html += ", new watch replaces " + rtext
 

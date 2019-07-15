@@ -163,7 +163,9 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     ).replace(tzinfo=pytz.UTC)
 
 
-def get_dbconn(database="mesosite", user=None, host=None, port=5432, password=None):
+def get_dbconn(
+    database="mesosite", user=None, host=None, port=5432, password=None
+):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -334,7 +336,9 @@ def get_autoplot_context(fdict, cfg):
         elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.datetime.strptime(default, "%Y/%m/%d").date()
+                default = datetime.datetime.strptime(
+                    default, "%Y/%m/%d"
+                ).date()
             if minval is not None:
                 minval = datetime.datetime.strptime(minval, "%Y/%m/%d").date()
             if maxval is not None:
@@ -347,7 +351,11 @@ def get_autoplot_context(fdict, cfg):
             # Only set a default value when the field is not optional
             if default is not None and not optional:
                 tokens = default.split(".")
-                if len(tokens) == 2 and len(tokens[0]) == 2 and len(tokens[1]) == 1:
+                if (
+                    len(tokens) == 2
+                    and len(tokens[0]) == 2
+                    and len(tokens[1]) == 1
+                ):
                     defaults["phenomena"] = tokens[0]
                     defaults["significance"] = tokens[1]
             for label in ["phenomena", "significance"]:
@@ -513,5 +521,6 @@ def grid_bounds(lons, lats, bounds):
         (szy, szx) = lons.shape
 
     return [
-        int(i) for i in [max([0, x0]), max([0, y0]), min([szx, x1]), min([szy, y1])]
+        int(i)
+        for i in [max([0, x0]), max([0, y0]), min([szx, x1]), min([szy, y1])]
     ]

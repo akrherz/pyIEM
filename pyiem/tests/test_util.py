@@ -90,8 +90,12 @@ def test_get_autoplot_context():
     cfg = dict(
         arguments=[
             dict(type="station", name="station", default="IA0000"),
-            dict(type="select", name="type", default="max-high", options=pdict),
-            dict(type="select", name="type2", default="max-high", options=pdict),
+            dict(
+                type="select", name="type", default="max-high", options=pdict
+            ),
+            dict(
+                type="select", name="type2", default="max-high", options=pdict
+            ),
             dict(
                 type="select",
                 name="type3",
@@ -107,7 +111,9 @@ def test_get_autoplot_context():
                 multiple=True,
                 optional=True,
             ),
-            dict(type="select", name="type5", default="max-high", options=pdict),
+            dict(
+                type="select", name="type5", default="max-high", options=pdict
+            ),
             dict(type="int", name="threshold", default=-99),
             dict(type="int", name="t", default=9, min=0, max=10),
             dict(type="date", name="d", default="2011/11/12"),
@@ -139,7 +145,12 @@ def test_get_autoplot_context():
     form = dict(zstation="DSM")
     cfg = dict(
         arguments=[
-            dict(type="zstation", name="station", default="DSM", network="IA_ASOS")
+            dict(
+                type="zstation",
+                name="station",
+                default="DSM",
+                network="IA_ASOS",
+            )
         ]
     )
     ctx = util.get_autoplot_context(form, cfg)
@@ -223,7 +234,10 @@ def test_vtecps():
         ]
     )
     form = dict(
-        phenomenav1="SV", significancev1="A", phenomenav4="TO", significancev4="W"
+        phenomenav1="SV",
+        significancev1="A",
+        phenomenav4="TO",
+        significancev4="W",
     )
     ctx = util.get_autoplot_context(form, cfg)
     # For v1, we were explicitly provided by from the form

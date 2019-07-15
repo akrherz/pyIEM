@@ -44,7 +44,9 @@ def get_table(valid):
     """
     # careful here, a datetime is not an instance of date
     if isinstance(valid, datetime.datetime):
-        table = "iemre_hourly_%s" % (valid.astimezone(pytz.UTC).strftime("%Y%m"),)
+        table = "iemre_hourly_%s" % (
+            valid.astimezone(pytz.UTC).strftime("%Y%m"),
+        )
     else:
         table = "iemre_daily_%s" % (valid.year,)
     return table
@@ -76,7 +78,9 @@ def set_grids(valid, ds, cursor=None):
     if cursor.rowcount == 1:
         # Update mode
         insertmode = False
-        update_cols = ", ".join(["%s = $%i" % (v, i + 1) for i, v in enumerate(ds)])
+        update_cols = ", ".join(
+            ["%s = $%i" % (v, i + 1) for i, v in enumerate(ds)]
+        )
         arg = "$%i" % (len(ds) + 1,)
         cursor.execute(
             """
@@ -219,7 +223,9 @@ def daily_offset(ts):
     """ Compute the timestamp index in the netcdf file """
     # In case ts is passed here as a datetime.date object
     ts = datetime.datetime(ts.year, ts.month, ts.day)
-    base = ts.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    base = ts.replace(
+        month=1, day=1, hour=0, minute=0, second=0, microsecond=0
+    )
     days = (ts - base).days
     return int(days)
 
@@ -235,7 +241,9 @@ def hourly_offset(dtobj):
     """
     if dtobj.tzinfo and dtobj.tzinfo != pytz.utc:
         dtobj = dtobj.astimezone(pytz.utc)
-    base = dtobj.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+    base = dtobj.replace(
+        month=1, day=1, hour=0, minute=0, second=0, microsecond=0
+    )
     seconds = (dtobj - base).total_seconds()
     return int(seconds / 3600.0)
 

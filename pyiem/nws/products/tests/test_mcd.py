@@ -9,7 +9,9 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture
 def dbcursor():
     """Database cursor."""
-    return get_dbconn("postgis").cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return get_dbconn("postgis").cursor(
+        cursor_factory=psycopg2.extras.DictCursor
+    )
 
 
 def test_170926_nodbinsert(dbcursor):

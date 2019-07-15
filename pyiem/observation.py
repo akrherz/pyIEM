@@ -126,7 +126,9 @@ def get_summary_table(valid):
     """
     if valid is None:
         return "summary"
-    if (valid.month == 12 and valid.day >= 30) or (valid.month == 1 and valid.day < 3):
+    if (valid.month == 12 and valid.day >= 30) or (
+        valid.month == 1 and valid.day < 3
+    ):
         return "summary"
     return "summary_%s" % (valid.year,)
 
@@ -255,7 +257,8 @@ class Observation(object):
         ]:
             self.data["relh"] = bounded(
                 mcalc.relative_humidity_from_dewpoint(
-                    self.data["tmpf"] * munits.degF, self.data["dwpf"] * munits.degF
+                    self.data["tmpf"] * munits.degF,
+                    self.data["dwpf"] * munits.degF,
                 )
                 .to(munits.percent)
                 .magnitude,
@@ -270,7 +273,8 @@ class Observation(object):
         ):
             self.data["dwpf"] = bounded(
                 mcalc.dewpoint_rh(
-                    self.data["tmpf"] * munits.degF, self.data["relh"] * munits.percent
+                    self.data["tmpf"] * munits.degF,
+                    self.data["relh"] * munits.percent,
                 )
                 .to(munits.degF)
                 .magnitude,

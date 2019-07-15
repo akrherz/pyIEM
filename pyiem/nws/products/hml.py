@@ -50,7 +50,9 @@ def parse_xml(token):
                     valid=parseUTC(datum.find("valid").text),
                     primary=no999(datum.find("primary").text),
                     secondary=(
-                        no999(secondary.text) if secondary is not None else None
+                        no999(secondary.text)
+                        if secondary is not None
+                        else None
                     ),
                 )
             )
@@ -60,7 +62,12 @@ def parse_xml(token):
         df["secondary"] = pd.to_numeric(df["secondary"], errors="coerse")
         mydict["dataframe"] = df
         mydict["issued"] = parseUTC(child.attrib.get("issued"))
-        for attr in ["primaryName", "secondaryName", "primaryUnits", "secondaryUnits"]:
+        for attr in [
+            "primaryName",
+            "secondaryName",
+            "primaryUnits",
+            "secondaryUnits",
+        ]:
             mydict[attr] = child.attrib.get(attr)
     return hml
 
@@ -97,7 +104,9 @@ class HMLData(object):
 class HML(product.TextProduct):
     """ Class for parsing and representing Space Wx Products """
 
-    def __init__(self, text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         product.TextProduct.__init__(
             self,
