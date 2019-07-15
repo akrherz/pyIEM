@@ -71,7 +71,7 @@ DRCT2DIR = {
 }
 
 
-class PilotReport(object):
+class PilotReport:
     """ A Pilot Report Object """
 
     def __init__(self):
@@ -88,7 +88,7 @@ class PilotReport(object):
 
 
 class Pirep(product.TextProduct):
-    """ Class for parsing and representing Space Wx Products """
+    """ Class for parsing and representing Space Wx Products. """
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
@@ -249,6 +249,7 @@ class Pirep(product.TextProduct):
                             "Double-unknown location: %s" % (report,)
                         )
                         return None
+                    # So we discard the offset when we go back to the base
                     dist = 0
                     bearing = 0
                 _pr.longitude, _pr.latitude = self.compute_loc(

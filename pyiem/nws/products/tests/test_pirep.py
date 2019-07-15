@@ -142,11 +142,16 @@ def test_150120_latlonloc():
 
 def test_150120_OVO():
     """ PIREPS/OVO.txt has a location of OV 0 """
-    nwsli_provider = {"AVK": {"lat": 44, "lon": 99}}
+    nwsli_provider = {
+        "AVK": {"lat": 44, "lon": 99},
+        "TED": {"lat": 61.17, "lon": -149.99},
+    }
     prod = pirepparser(
         get_test_file("PIREPS/OVO.txt"), nwsli_provider=nwsli_provider
     )
     assert not prod.warnings
+    assert abs(prod.reports[1].latitude - 61.17) > 0.009
+    assert abs(prod.reports[1].longitude - -149.99) > 0.009
 
 
 def test_offset():
