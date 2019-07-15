@@ -308,8 +308,26 @@ def _make_plot(
     # Adjust the limits so to get a empty center
     rmin, rmax = ax.get_ylim()
     ax.set_rorigin(0 - (rmax - rmin) * 0.2)
+    rmin, rmax = ax.get_ylim()
     # Make labels have % formatters
     ax.yaxis.set_major_formatter(FormatStrFormatter("%.1f%%"))
+    # Place arrows at the border for better clarity
+    for x in ax.get_xticks():
+        # https://github.com/matplotlib/matplotlib/issues/5344
+        ax.annotate(
+            "",
+            xy=(x + 0.001, rmax - (rmax - rmin) * 0.12),
+            xytext=(x + 0.001, rmax + (rmax - rmin) * 0.02),
+            arrowprops=dict(
+                facecolor="None",
+                edgecolor="k",
+                alpha=0.8,
+                shrink=0.09,
+                zorder=10,
+            ),
+            ha="center",
+            va="center",
+        )
 
     handles = []
     for p in ax.patches_list:
@@ -390,12 +408,7 @@ Period of Record: %s - %s""" % (
             fontsize=14,
         )
     # Denote the direction blowing from
-    plt.gcf().text(
-        0.02,
-        0.125,
-        "Direction is where the wind is\nblowing from, not toward.",
-        va="bottom",
-    )
+    plt.gcf().text(0.02, 0.125, "Arrows indicate wind direction.", va="bottom")
     # Make a logo
     im = mpimage.imread("%s/%s" % (DATADIR, "logo.png"))
     plt.figimage(im, 10, 735)
