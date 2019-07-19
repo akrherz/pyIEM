@@ -58,8 +58,8 @@ def parse_xml(token):
             )
         mydict = hml.data[child.tag]
         df = pd.DataFrame(rows)
-        df["primary"] = pd.to_numeric(df["primary"], errors="coerse")
-        df["secondary"] = pd.to_numeric(df["secondary"], errors="coerse")
+        df["primary"] = pd.to_numeric(df["primary"], errors="coerce")
+        df["secondary"] = pd.to_numeric(df["secondary"], errors="coerce")
         mydict["dataframe"] = df
         mydict["issued"] = parseUTC(child.attrib.get("issued"))
         for attr in [
@@ -220,13 +220,13 @@ class HML(product.TextProduct):
             if token.find("</site>") == -1:
                 continue
             content = token.strip()
-            # try:
-            self.data.append(parse_xml(content))
-            # except Exception as exp:
-            #    self.warnings.append(
-            #        ("Parsing %s resulted in %s\n%s")
-            #        % (self.get_product_id(), exp, content)
-            #    )
+            try:
+                self.data.append(parse_xml(content))
+            except Exception as exp:
+                self.warnings.append(
+                    ("Parsing %s resulted in %s\n%s")
+                    % (self.get_product_id(), exp, content)
+                )
 
     def __str__(self):
         """string representation"""
