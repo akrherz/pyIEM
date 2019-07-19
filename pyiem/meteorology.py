@@ -121,6 +121,9 @@ def mcalc_feelslike(tmpf, dwpf, smps):
             app[app.mask] = tmpf[app.mask]
         else:
             app = tmpf
+    elif hasattr(tmpf, "mask"):
+        app = mcalc.masked_array(app.m, app.units)
+        app.mask = tmpf.mask
 
     return app
 
