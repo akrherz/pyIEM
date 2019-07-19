@@ -34,8 +34,14 @@ def logger():
 
 def test_logger(logger, caplog):
     """Can we emit logs."""
-    logger.info("hi daryl")
+    logger.warning("hi daryl")
     assert "hi daryl" in caplog.text
+
+
+def test_logger_no(logger, caplog):
+    """Can we not emit logs."""
+    logger.info("hi daryl")
+    assert "hi daryl" not in caplog.text
 
 
 def test_find_ij():

@@ -55,7 +55,7 @@ def logger():
     ch.setFormatter(CustomFormatter())
     logging.basicConfig(handlers=[ch])
     log = logging.getLogger()
-    log.setLevel(logging.DEBUG if sys.stdout.isatty() else logging.INFO)
+    log.setLevel(logging.INFO if sys.stdout.isatty() else logging.WARNING)
     return log
 
 
