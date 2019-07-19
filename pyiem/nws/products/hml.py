@@ -220,13 +220,13 @@ class HML(product.TextProduct):
             if token.find("</site>") == -1:
                 continue
             content = token.strip()
-            try:
-                self.data.append(parse_xml(content))
-            except Exception as exp:
-                self.warnings.append(
-                    ("Parsing %s resulted in %s\n%s")
-                    % (self.get_product_id(), exp, content)
-                )
+            # try:
+            self.data.append(parse_xml(content))
+            # except Exception as exp:
+            #    self.warnings.append(
+            #        ("Parsing %s resulted in %s\n%s")
+            #        % (self.get_product_id(), exp, content)
+            #    )
 
     def __str__(self):
         """string representation"""
