@@ -13,8 +13,9 @@ import pytz
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from metpy.units import units
-from metpy.calc import apparent_temperature, relative_humidity_from_dewpoint
+from metpy.calc import relative_humidity_from_dewpoint
 from pyiem.datatypes import speed, distance, pressure
+from pyiem.meteorology import mcalc_feelslike
 
 
 MISSING_RE = re.compile(r"^\+?\-?9+$")
@@ -1333,9 +1334,9 @@ def process_metar(mstr, now):
         )
         if ob.sknt is not None:
             ob.feel = (
-                apparent_temperature(
-                    ob.tmpf * units("degF"),
-                    ob.relh * units("percent"),
+                mcalc_feelslike(
+                    ob.tmpf * units.degF,
+                    ob.dwpf * units.degF,
                     ob.sknt * units("knots"),
                 )
                 .to(units("degF"))
