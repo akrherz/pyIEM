@@ -5,6 +5,7 @@ import math
 
 import numpy as np
 import metpy.calc as mcalc
+from metpy.units import masked_array
 import pyiem.datatypes as dt
 
 
@@ -122,7 +123,7 @@ def mcalc_feelslike(tmpf, dwpf, smps):
         else:
             app = tmpf
     elif hasattr(tmpf, "mask"):
-        app = mcalc.masked_array(app.m, app.units)
+        app = masked_array(app.m, app.units)
         app.mask = tmpf.mask
 
     return app
