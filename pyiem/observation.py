@@ -135,7 +135,10 @@ def get_summary_table(valid):
 
 def bounded(val, floor, ceiling):
     """Make sure this is not NaN and between some value."""
+    if val is None or math.isnan(val):
+        return None
     val = float(val)
+    # belt and suspenders check here
     if math.isnan(val) or val < floor or val > ceiling:
         return None
     return val
