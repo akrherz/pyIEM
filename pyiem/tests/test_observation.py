@@ -5,6 +5,7 @@ import datetime
 import random
 
 import psycopg2.extras
+import numpy as np
 import pytest
 from pyiem import observation
 from pyiem.util import get_dbconn, utc
@@ -17,6 +18,25 @@ class blah:
     ob = None
     conn = None
     cursor = None
+
+
+@pytest.mark.parametrize(
+    "val, expected",
+    [
+        (np.nan, None),
+        (np.ma.array(1, mask=True), None),
+        (None, None),
+        (10, 10),
+        (np.ma.array(1, mask=False), 1),
+        (101, None),
+        (-1, None),
+    ],
+)
+def test_bounded(val, expected):
+    """Test that our bounded function works and does not raise Warnings."""
+    with pytest.warns(None) as record:
+        assert observation.bounded(val, 0, 100) == expected
+    assert not record.list
 
 
 def test_calc():
