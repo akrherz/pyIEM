@@ -1,11 +1,12 @@
 """HML"""
+# pylint: disable=redefined-outer-name
 from __future__ import print_function
 import datetime
 
 import psycopg2.extras
 import pytest
 from pyiem.nws.products.hml import parser as hmlparser
-from pyiem.util import get_dbconn, get_test_file
+from pyiem.util import get_dbconn, get_test_file, utc
 
 
 @pytest.fixture
@@ -33,7 +34,8 @@ def test_190313_missingstage(dbcursor):
 
 def test_160826_hmlarx(dbcursor):
     """Lets dance"""
-    prod = hmlparser(get_test_file("HML/HMLARX.txt"))
+    utcnow = utc(2016, 8, 26, 8)
+    prod = hmlparser(get_test_file("HML/HMLARX.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
     assert not prod.warnings
     assert prod.data[0].stationname == "CEDAR RIVER 2 S St. Ansgar"

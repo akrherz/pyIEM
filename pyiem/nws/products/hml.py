@@ -58,8 +58,8 @@ def parse_xml(token):
             )
         mydict = hml.data[child.tag]
         df = pd.DataFrame(rows)
-        df["primary"] = pd.to_numeric(df["primary"], errors="coerse")
-        df["secondary"] = pd.to_numeric(df["secondary"], errors="coerse")
+        df["primary"] = pd.to_numeric(df["primary"], errors="coerce")
+        df["secondary"] = pd.to_numeric(df["secondary"], errors="coerce")
         mydict["dataframe"] = df
         mydict["issued"] = parseUTC(child.attrib.get("issued"))
         for attr in [

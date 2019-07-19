@@ -5,12 +5,11 @@ import math
 
 import numpy as np
 import metpy.calc as mcalc
-from metpy.units import units, masked_array
+from metpy.units import masked_array
 import pyiem.datatypes as dt
 
 
-class InvalidArguments(Exception):
-    pass
+InvalidArguments = Exception
 
 
 def clearsky_shortwave_irradiance_year(lat, elevation):
@@ -114,14 +113,20 @@ def mcalc_feelslike(tmpf, dwpf, smps):
     Returns:
       temperature (temperature): The feels like temperature
     """
+    is_not_scalar = isinstance(tmpf.m, (list, tuple, np.ndarray))
     rh = mcalc.relative_humidity_from_dewpoint(tmpf, dwpf)
-    hidx = mcalc.heat_index(tmpf, rh, mask_undefined=True)
-    wcht = mcalc.windchill(tmpf, smps, mask_undefined=True)
-    # Where heat index is masked, replace with temperature
-    hidx[hidx.mask] = tmpf[hidx.mask]
-    # where ever wcht is not masked, replace with wind chill
-    hidx[~wcht.mask] = wcht[~wcht.mask]
-    return hidx
+    # NB: update this once metpy 0.11 is released
+    app = mcalc.apparent_temperature(tmpf, rh, smps)
+    if hasattr(app, "mask"):
+        if is_not_scalar:
+            app[app.mask] = tmpf[app.mask]
+        else:
+            app = tmpf
+    elif hasattr(tmpf, "mask"):
+        app = masked_array(app.m, app.units)
+        app.mask = tmpf.mask
+
+    return app
 
 
 def windchill(temperature, speed):
@@ -211,26 +216,26 @@ def dewpoint(temperature, relhumid):
     Compute Dew Point given a temperature and RH%
     """
     tmpk = temperature.value("K")
-    relh = relhumid.value("%")
-    dwpk = tmpk / (1 + 0.000425 * tmpk * -(np.log10(relh / 100.0)))
+    _relh = relhumid.value("%")
+    dwpk = tmpk / (1 + 0.000425 * tmpk * -(np.log10(_relh / 100.0)))
     return dt.temperature(dwpk, "K")
 
 
-def relh(temperature, dewpoint):
+def relh(temperature, _dewpoint):
     """
     Compute Relative Humidity based on a temperature and dew point
     """
     # Get temperature in Celsius
     tmpc = temperature.value("C")
-    dwpc = dewpoint.value("C")
+    dwpc = _dewpoint.value("C")
 
     e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
     es = 6.112 * np.exp((17.67 * tmpc) / (tmpc + 243.5))
-    relh = (e / es) * 100.00
-    return dt.humidity(relh, "%")
+    _relh = (e / es) * 100.00
+    return dt.humidity(_relh, "%")
 
 
-def mixing_ratio(dewpoint):
+def mixing_ratio(_dewpoint):
     """Compute the mixing ratio
 
     Args:
@@ -239,7 +244,7 @@ def mixing_ratio(dewpoint):
     Returns:
       mixing ratio
     """
-    dwpc = dewpoint.value("C")
+    dwpc = _dewpoint.value("C")
     e = 6.112 * np.exp((17.67 * dwpc) / (dwpc + 243.5))
     return dt.mixingratio(0.62197 * e / (1000.0 - e), "KG/KG")
 

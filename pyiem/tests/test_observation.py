@@ -1,4 +1,5 @@
 """Test Observation"""
+# pylint: disable=redefined-outer-name
 import string
 import datetime
 import random
