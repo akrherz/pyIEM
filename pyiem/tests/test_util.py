@@ -3,6 +3,7 @@
 import datetime
 import string
 import random
+import logging
 from io import BytesIO
 from collections import OrderedDict
 import mock
@@ -40,8 +41,22 @@ def test_logger(logger, caplog):
 
 def test_logger_no(logger, caplog):
     """Can we not emit logs."""
-    logger.info("hi daryl")
+    logger.debug("hi daryl")
     assert "hi daryl" not in caplog.text
+
+
+def test_logger_set_level(caplog):
+    """Can we not emit logs when we set a high level."""
+    log = util.logger(level=logging.WARNING)
+    log.info("hi daryl")
+    assert "hi daryl" not in caplog.text
+
+
+def test_logger_set_level_get_out(caplog):
+    """Can we emit logs when we set a high level."""
+    log = util.logger(level=logging.DEBUG)
+    log.debug("hi daryl")
+    assert "hi daryl" in caplog.text
 
 
 def test_find_ij():

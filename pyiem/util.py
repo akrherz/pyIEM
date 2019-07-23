@@ -49,13 +49,24 @@ def get_test_file(name, fponly=False):
     return fp.read().decode("utf-8")
 
 
-def logger():
-    """Create a standarized logger."""
+def logger(name="pyiem", level=None):
+    """Create a standarized logger.
+
+    Args:
+      name (str): The name of the logger to get, default pyiem
+      level (logging.LEVEL): The log level for this pyiem logget, default is
+        INFO for non interactive sessions, DEBUG otherwise
+
+    Returns:
+      logger instance
+    """
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
     logging.basicConfig(handlers=[ch])
-    log = logging.getLogger()
-    log.setLevel(logging.INFO if sys.stdout.isatty() else logging.WARNING)
+    log = logging.getLogger(name)
+    if level is None and sys.stdout.isatty():
+        level = logging.DEBUG
+    log.setLevel(level if level is not None else logging.INFO)
     return log
 
 
