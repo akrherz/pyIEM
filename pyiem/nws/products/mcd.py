@@ -12,6 +12,7 @@ import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
 from pyiem.nws.product import TextProduct
+from pyiem.exceptions import MCDException
 
 if not six.PY2:
     from html import escape as html_escape
@@ -30,12 +31,6 @@ WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
 )
 VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?")
-
-
-class MCDException(Exception):
-    """ Exception """
-
-    pass
 
 
 class MCDProduct(TextProduct):

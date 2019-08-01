@@ -8,6 +8,7 @@ from shapely.geometry import Polygon, MultiPolygon
 from shapely.wkt import dumps
 
 from pyiem import reference
+from pyiem.exceptions import TextProductException
 from pyiem.nws import ugc, vtec, hvtec
 
 
@@ -83,12 +84,6 @@ EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
 KNOWN_BAD_TTAAII = ["KAWN"]
-
-
-class TextProductException(Exception):
-    """ throwable """
-
-    pass
 
 
 def checker(lon, lat, strdata):

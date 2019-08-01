@@ -2,12 +2,7 @@
   Classes Representing various variables
 """
 import numpy as np
-
-
-class UnitsError(Exception):
-    """ Exception for bad Units """
-
-    pass
+from pyiem.exceptions import UnitsError
 
 
 class basetype(object):
