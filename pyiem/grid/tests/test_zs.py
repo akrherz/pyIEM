@@ -9,7 +9,7 @@ from pyiem.grid import zs
 
 def test_gen_stats():
     """Run a test"""
-    affine = Affine(10., 0., 0., 0., -10, 100)
+    affine = Affine(10.0, 0.0, 0.0, 0.0, -10, 100)
     grid = np.reshape(np.arange(100), (10, 10))
     sq1 = Polygon([(50, 50), (50, 60), (60, 60), (60, 50)])
     sq2 = Polygon([(60, 60), (60, 70), (70, 70), (70, 60)])

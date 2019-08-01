@@ -11,6 +11,7 @@ import itertools
 
 import numpy as np
 from shapely.geometry import Polygon, LineString, MultiPolygon
+from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
@@ -269,8 +270,15 @@ def str2multipolygon(s):
             poly = polys[j]
             print("     polys iter j=%s len(polys)=%s" % (j, len(polys)))
             if not poly.intersection(ls):
-                print("    - linestring does not intersect poly, continue")
-                continue
+                # If this line segment does not intersect the only polygon we
+                # have, then we add back in the CONUS one and try again
+                if len(polys) == 1:
+                    print("     - linestring does not intersect, adding CONUS")
+                    polys.insert(0, copy.deepcopy(CONUS["poly"]))
+                    poly = polys[0]
+                else:
+                    print("     - linestring does not intersect poly, cont")
+                    continue
             found = True
             for q in list(range(5)):
                 # Compute the intersection points of this segment and what
@@ -466,7 +474,15 @@ class SPCPTS(TextProduct):
                 # clip polygons to the CONUS
                 good_polys = []
                 for poly in outlook.geometry:
-                    good_polys.append(CONUS["poly"].intersection(poly))
+                    intersect = CONUS["poly"].intersection(poly)
+                    if isinstance(intersect, GeometryCollection):
+                        for p in intersect:
+                            if isinstance(p, Polygon):
+                                good_polys.append(p)
+                            else:
+                                print("Discarding %s as not polygon" % (p,))
+                    else:
+                        good_polys.append(intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []
@@ -940,8 +956,8 @@ class SPCPTS(TextProduct):
         res.append(
             [
                 (
-                    "%(name)s issues %(title)s %(outlooktype)s Outlook at %(tstamp)s"
-                    " %(url)s"
+                    "%(name)s issues %(title)s %(outlooktype)s Outlook at "
+                    "%(tstamp)s %(url)s"
                 )
                 % jdict,
                 (
