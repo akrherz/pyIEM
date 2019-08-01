@@ -3,12 +3,7 @@
 import re
 
 from pyiem.nws.product import TextProduct
-
-
-class NHCException(Exception):
-    """ Exception """
-
-    pass
+from pyiem.exceptions import NHCException
 
 
 class NHCProduct(TextProduct):

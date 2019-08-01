@@ -5,16 +5,11 @@ from __future__ import print_function
 import re
 import datetime
 from collections import OrderedDict
+from pyiem.exceptions import UGCParseException
 
 UGC_RE = re.compile(
     r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-$", re.M
 )
-
-
-class UGCParseException(Exception):
-    """Custom Exception this parser can raise"""
-
-    pass
 
 
 def ugcs_to_text(ugcs):

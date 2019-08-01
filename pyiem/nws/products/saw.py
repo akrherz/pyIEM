@@ -9,6 +9,7 @@ from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
+from pyiem.exceptions import SAWException
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(
@@ -17,12 +18,6 @@ NUM_RE = re.compile(
 REPLACES_RE = re.compile("REPLACES WW ([0-9]*)")
 DBTYPES = ["TOR", "SVR"]
 TYPE2STRING = ["Tornado", "Severe Thunderstorm"]
-
-
-class SAWException(Exception):
-    """Custom local exception"""
-
-    pass
 
 
 class SAWProduct(TextProduct):
