@@ -217,7 +217,10 @@ def test_tcp():
         "http://localhost?pid=201407051500-KNHC-WTNT31-TCPAT1"
     )
     assert j[0][0] == ans
-    ans = "Post-Tropical Cyclone " "#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H"
+    ans = (
+        "Post-Tropical Cyclone "
+        "#Arthur ADVISORY 19 issued. http://go.usa.gov/W3H"
+    )
     assert j[0][2]["twitter"] == ans
 
 

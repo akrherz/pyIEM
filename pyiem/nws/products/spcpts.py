@@ -949,8 +949,8 @@ class SPCPTS(TextProduct):
         res.append(
             [
                 (
-                    "%(name)s issues %(title)s %(outlooktype)s Outlook at %(tstamp)s"
-                    " %(url)s"
+                    "%(name)s issues %(title)s %(outlooktype)s Outlook at "
+                    "%(tstamp)s %(url)s"
                 )
                 % jdict,
                 (
