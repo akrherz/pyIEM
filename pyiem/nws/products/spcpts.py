@@ -270,8 +270,15 @@ def str2multipolygon(s):
             poly = polys[j]
             print("     polys iter j=%s len(polys)=%s" % (j, len(polys)))
             if not poly.intersection(ls):
-                print("    - linestring does not intersect poly, continue")
-                continue
+                # If this line segment does not intersect the only polygon we
+                # have, then we add back in the CONUS one and try again
+                if len(polys) == 1:
+                    print("     - linestring does not intersect, adding CONUS")
+                    polys.insert(0, copy.deepcopy(CONUS["poly"]))
+                    poly = polys[0]
+                else:
+                    print("     - linestring does not intersect poly, cont")
+                    continue
             found = True
             for q in list(range(5)):
                 # Compute the intersection points of this segment and what
