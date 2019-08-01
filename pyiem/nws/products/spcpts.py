@@ -11,6 +11,7 @@ import itertools
 
 import numpy as np
 from shapely.geometry import Polygon, LineString, MultiPolygon
+from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
@@ -466,7 +467,15 @@ class SPCPTS(TextProduct):
                 # clip polygons to the CONUS
                 good_polys = []
                 for poly in outlook.geometry:
-                    good_polys.append(CONUS["poly"].intersection(poly))
+                    intersect = CONUS["poly"].intersection(poly)
+                    if isinstance(intersect, GeometryCollection):
+                        for p in intersect:
+                            if isinstance(p, Polygon):
+                                good_polys.append(p)
+                            else:
+                                print("Discarding %s as not polygon" % (p,))
+                    else:
+                        good_polys.append(intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []

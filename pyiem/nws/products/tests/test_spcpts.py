@@ -13,6 +13,14 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_190801_shapely():
+    """Product hit shapely assertion error."""
+    spc = parser(get_test_file("SPCPTS/PTSDY1_shapelyerror.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
+    assert abs(outlook.geometry.area - 14.06) < 0.01
+
+
 def test_190625_nogeom2():
     """This hit some error that we need to debug."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom2.txt"))
