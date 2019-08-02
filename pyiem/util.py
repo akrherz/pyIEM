@@ -309,7 +309,7 @@ def get_autoplot_context(fdict, cfg):
             from pyiem.network import Table as NetworkTable
             from pyiem.exceptions import NoDataFound
 
-            ctx[ntname] = NetworkTable(ctx[netname])
+            ctx[ntname] = NetworkTable(ctx[netname], only_online=False)
             # stations starting with _ are virtual and should not error
             if not value.startswith("_") and value not in ctx[ntname].sts:
                 raise NoDataFound("Station metadata unavailable.")
