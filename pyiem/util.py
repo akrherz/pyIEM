@@ -311,9 +311,10 @@ def get_autoplot_context(fdict, cfg):
 
             ctx[ntname] = NetworkTable(ctx[netname], only_online=False)
             # stations starting with _ are virtual and should not error
-            if value is not None:
-                if not value.startswith("_") and value not in ctx[ntname].sts:
-                    raise NoDataFound("Station metadata unavailable.")
+            if value is None:
+                value = default
+            if not value.startswith("_") and value not in ctx[ntname].sts:
+                raise NoDataFound("Station metadata unavailable.")
 
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
