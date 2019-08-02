@@ -12,6 +12,7 @@ import pytest
 import pytz
 import numpy as np
 from pyiem import util
+from pyiem.exceptions import NoDataFound
 
 
 @pytest.fixture
@@ -90,15 +91,19 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_network():
+    """Do we handle network issues OK."""
+    form = dict(station="AMW", network="IA_ASOS")
+    cfg = dict(
+        arguments=[dict(type="station", name="station", default="IA0000")]
+    )
+    with pytest.raises(NoDataFound):
+        util.get_autoplot_context(form, cfg)
+
+
 def test_get_autoplot_context():
     """See that we can do things."""
-    form = dict(
-        station="AMW",
-        network="IA_ASOS",
-        type2="bogus",
-        t=15,
-        type3=["max-high", "bogus", "min-high"],
-    )
+    form = dict(type2="bogus", t=15, type3=["max-high", "bogus", "min-high"])
     form["type"] = "max-low"
     pdict = OrderedDict(
         [
@@ -110,7 +115,6 @@ def test_get_autoplot_context():
     )
     cfg = dict(
         arguments=[
-            dict(type="station", name="station", default="IA0000"),
             dict(
                 type="select", name="type", default="max-high", options=pdict
             ),
@@ -150,8 +154,6 @@ def test_get_autoplot_context():
         ]
     )
     ctx = util.get_autoplot_context(form, cfg)
-    assert ctx["station"] == "AMW"
-    assert ctx["network"] == "IA_ASOS"
     assert isinstance(ctx["threshold"], int)
     assert ctx["type"] == "max-low"
     assert ctx["type2"] == "max-high"
@@ -162,20 +164,6 @@ def test_get_autoplot_context():
     assert "year" not in ctx
     assert "bogus" not in ctx["type3"]
     assert "type4" not in ctx
-
-    form = dict(zstation="DSM")
-    cfg = dict(
-        arguments=[
-            dict(
-                type="zstation",
-                name="station",
-                default="DSM",
-                network="IA_ASOS",
-            )
-        ]
-    )
-    ctx = util.get_autoplot_context(form, cfg)
-    assert ctx["network"] == "IA_ASOS"
 
 
 def test_backoff():

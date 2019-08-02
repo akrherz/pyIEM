@@ -301,11 +301,18 @@ def get_autoplot_context(fdict, cfg):
         if typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
             netname = "network%s" % (name[-1] if name[-1] != "n" else "",)
-            ctx[netname] = fdict.get(netname)
             # The network variable tags along and within a non-PHP context,
             # this variable is unset, so we do some more hackery here
-            if ctx[netname] is None:
-                ctx[netname] = opt.get("network")
+            ctx[netname] = fdict.get(netname, opt.get("network"))
+            # Convience we load up the network metadata
+            ntname = "_nt%s" % (name[-1] if name[-1] != "n" else "",)
+            from pyiem.network import Table as NetworkTable
+            from pyiem.exceptions import NoDataFound
+
+            ctx[ntname] = NetworkTable(ctx[netname])
+            if value not in ctx[ntname].sts:
+                raise NoDataFound("Station metadata unavailable.")
+
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
                 value = int(value)
