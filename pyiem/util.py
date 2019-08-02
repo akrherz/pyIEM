@@ -143,7 +143,7 @@ def ncopen(ncfn, mode="r", timeout=60):
     import netCDF4
 
     if mode != "w" and not os.path.isfile(ncfn):
-        raise FileNotFoundError("No such file %s" % (ncfn,))
+        raise IOError("No such file %s" % (ncfn,))
     sts = datetime.datetime.utcnow()
     nc = None
     while (datetime.datetime.utcnow() - sts).total_seconds() < timeout:

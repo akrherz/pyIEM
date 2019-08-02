@@ -34,6 +34,12 @@ def logger():
     return util.logger()
 
 
+def test_ncopen():
+    """Does ncopen at least somewhat work."""
+    with pytest.raises(IOError):
+        util.ncopen("/tmp/bogus.nc")
+
+
 def test_logger(logger, caplog):
     """Can we emit logs."""
     logger.warning("hi daryl")
