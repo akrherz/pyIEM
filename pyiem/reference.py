@@ -665,6 +665,17 @@ IEMVARS = {
 }
 DATADIR = os.sep.join([os.path.dirname(__file__), "data", "reference"])
 
+# The below are dynamically generated on-demand, but are hard coded here
+# so that code introspection works.  Likely a better way!
+shef_physical_codes = {}
+state_names = {}
+prodDefinitions = {}
+ncei_state_codes = {}
+nwsli2state = {}
+nwsli2country = {}
+name2pytz = {}
+centertext = {}
+
 
 class Wrapper:
     """Some Magic Here."""
@@ -682,8 +693,6 @@ class Wrapper:
 
     def __init__(self, wrapped):
         """Keep a reference."""
-        self.__all__ = dir(wrapped)
-        self.__all__.extend(self._onthefly_dict)
         self.wrapped = wrapped
 
     def _reader(self, name):
@@ -699,11 +708,12 @@ class Wrapper:
     def __getattr__(self, name):
         """Magic method to build dicts on-demand."""
         res = getattr(self.wrapped, name, None)
-        if res is not None or name not in self._onthefly_dict:
-            return res
-        val = self._reader(name)
-        setattr(self.wrapped, name, val)
-        return val
+        # if empty dict and is something we can build on the fly, then do it
+        if not res and name in self._onthefly_dict:
+            val = self._reader(name)
+            setattr(self.wrapped, name, val)
+            return val
+        return res
 
 
 sys.modules[__name__] = Wrapper(sys.modules[__name__])
