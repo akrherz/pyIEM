@@ -99,7 +99,7 @@ def test_utc():
 
 def test_get_autoplot_context_network():
     """Do we handle network issues OK."""
-    form = dict(station="AMW", network="IA_ASOS")
+    form = dict(station="ZZZ", network="ZZ_ASOS")
     cfg = dict(
         arguments=[dict(type="station", name="station", default="IA0000")]
     )
