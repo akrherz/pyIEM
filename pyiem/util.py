@@ -206,7 +206,15 @@ def get_dbconn(
             user = "mesonet"
     if host is None:
         host = "iemdb.local"
-        if database in ["hads", "mos", "iemre", "talltowers", "radar", "nldn"]:
+        if database in [
+            "hads",
+            "mos",
+            "iemre",
+            "talltowers",
+            "radar",
+            "nldn",
+            "smos",
+        ]:
             host = "iemdb-%s.local" % (database,)
 
     try:
