@@ -52,15 +52,17 @@ def get_table(valid):
     return table
 
 
-def set_grids(valid, ds, cursor=None):
+def set_grids(valid, ds, cursor=None, table=None):
     """Update the database with a given ``xarray.Dataset``.
 
     Args:
       valid (datetime or date): If datetime, save hourly, if date, save daily
       ds (xarray.Dataset): The xarray dataset to save
       cursor (database cursor, optional): cursor to use for queries
+      table (str,optional): hard coded database table to use to set the data
+        on.  Usually dynamically computed.
     """
-    table = get_table(valid)
+    table = table if table is not None else get_table(valid)
     commit = cursor is None
     if cursor is None:
         pgconn = get_dbconn("iemre")
@@ -140,7 +142,7 @@ def set_grids(valid, ds, cursor=None):
         cursor.execute("""DEALLOCATE pyiem_iemre_plan""")
 
 
-def get_grids(valid, varnames=None, cursor=None):
+def get_grids(valid, varnames=None, cursor=None, table=None):
     """Fetch grid(s) from the database, returning xarray.
 
     Args:
@@ -148,10 +150,12 @@ def get_grids(valid, varnames=None, cursor=None):
       varnames (str or list,optional): Which variables to fetch from database,
         defaults to all available
       cursor (database cursor,optional): cursor to use for query
+      table (str,optional): Hard coded table to fetch data from, useful in the
+        case of forecast data.
 
     Returns:
       ``xarray.Dataset``"""
-    table = get_table(valid)
+    table = table if table is not None else get_table(valid)
     if cursor is None:
         pgconn = get_dbconn("iemre")
         cursor = pgconn.cursor()

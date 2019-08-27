@@ -1,3 +1,4 @@
+-- We want Postgis
 CREATE EXTENSION postgis;
 
 -- Our baseline grid
@@ -63,13 +64,16 @@ CREATE TABLE iemre_daily(
     snowd_12z real,
     avg_dwpk real,
     wind_speed real,
-    power_swdn real
+    power_swdn real,
+    min_rh real,
+    max_rh real
 ) PARTITION by RANGE (valid);
-GRANT ALL on iemre_daily to mesonet,ldm;
+ALTER TABLE iemre_daily OWNER to mesonet;
+GRANT ALL on iemre_daily to ldm;
 GRANT SELECT on iemre_daily to nobody,apache;
 
 CREATE INDEX on iemre_daily(valid);
-CREATE UNIQUE INDEX on iemre_daily(gid, valid);
+CREATE INDEX on iemre_daily(gid);
 
 
 do
@@ -94,6 +98,23 @@ end;
 $do$;
 
 -- _______________________________________________________________________
+-- Storage of CFS forecast
+CREATE TABLE iemre_daily_forecast(
+    gid int REFERENCES iemre_grid(gid),
+    valid date,
+    high_tmpk real,
+    low_tmpk real,
+    p01d real,
+    rsds real
+);
+ALTER TABLE iemre_daily_forecast OWNER to mesonet;
+GRANT ALL on iemre_daily_forecast to mesonet,ldm;
+GRANT SELECT on iemre_daily_forecast to nobody,apache;
+
+CREATE INDEX on iemre_daily_forecast(valid);
+CREATE INDEX on iemre_daily_forecast(gid);
+
+-- _______________________________________________________________________
 -- Storage of daily climatology
 CREATE TABLE iemre_dailyc(
     gid int REFERENCES iemre_grid(gid),
@@ -102,11 +123,12 @@ CREATE TABLE iemre_dailyc(
     low_tmpk real,
     p01d real
 );
+ALTER TABLE iemre_dailyc OWNER to mesonet;
 GRANT ALL on iemre_dailyc to mesonet,ldm;
 GRANT SELECT on iemre_dailyc to nobody,apache;
 
 CREATE INDEX on iemre_dailyc(valid);
-CREATE UNIQUE INDEX on iemre_dailyc(gid, valid);
+CREATE INDEX on iemre_dailyc(gid);
 
 -- _______________________________________________________________________
 -- Storage of hourly analysis
@@ -121,11 +143,12 @@ CREATE TABLE iemre_hourly(
     vwnd real,
     p01m real
 ) PARTITION by RANGE (valid);
+ALTER TABLE iemre_hourly OWNER to mesonet;
 GRANT ALL on iemre_hourly to mesonet,ldm;
 GRANT SELECT on iemre_hourly to nobody,apache;
 
 CREATE INDEX on iemre_hourly(valid);
-CREATE UNIQUE INDEX on iemre_hourly(gid, valid);
+CREATE INDEX on iemre_hourly(gid);
 
 
 do

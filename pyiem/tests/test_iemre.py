@@ -12,6 +12,33 @@ def test_get_gid():
     assert iemre.get_gid(-96, 44) is not None
 
 
+def test_forecast_grids():
+    """Test getting and setting grids from the future."""
+    pgconn = get_dbconn("iemre")
+    cursor = pgconn.cursor()
+    valid = datetime.date(2029, 12, 1)
+    cursor.execute(
+        """
+        DELETE from iemre_daily_forecast WHERE valid = %s
+    """,
+        (valid,),
+    )
+    cursor.execute(
+        """
+        INSERT into iemre_daily_forecast
+        (gid, valid, high_tmpk, low_tmpk, p01d, rsds)
+        select gid, %s, random(), random(),
+        random(), random() from iemre_grid LIMIT 100
+    """,
+        (valid,),
+    )
+    ds = iemre.get_grids(valid, cursor=cursor, table="iemre_daily_forecast")
+    assert "high_tmpk" in ds
+    assert "bogus" not in ds
+
+    iemre.set_grids(valid, ds, cursor=cursor, table="iemre_daily_forecast")
+
+
 def test_get_grids():
     """Can we get grids?"""
     pgconn = get_dbconn("iemre")
@@ -34,7 +61,7 @@ def test_get_grids():
         INSERT into iemre_hourly_201912
         (gid, valid, tmpk, dwpk, uwnd, vwnd, p01m)
         select gid, %s, random(), null, random(),
-        random(), random() from iemre_grid
+        random(), random() from iemre_grid LIMIT 100
     """,
         (valid,),
     )
