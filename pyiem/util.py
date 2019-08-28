@@ -214,6 +214,7 @@ def get_dbconn(
             "radar",
             "nldn",
             "smos",
+            "snet",
         ]:
             host = "iemdb-%s.local" % (database,)
 
