@@ -13,6 +13,14 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_190903_invalid():
+    """Product hit invalid geometry error."""
+    spc = parser(get_test_file("SPCPTS/PTSDY2_invalid2.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "TSTM", 2)
+    assert abs(outlook.geometry.area - 343.74) < 0.01
+
+
 def test_190801_shapely():
     """Product hit shapely assertion error."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_shapelyerror.txt"))
@@ -151,7 +159,11 @@ def test_051128_invalid(dbcursor):
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom2.txt"))
     # spc.draw_outlooks()
     spc.sql(dbcursor)
+    # Both of these are invalidly provided in the PTS file and should be
+    # dumped as they are larger than the general thunder
     outlook = spc.get_outlook("WIND", "SIGN", 1)
+    assert outlook.geometry.is_empty
+    outlook = spc.get_outlook("WIND", "0.05", 1)
     assert outlook.geometry.is_empty
     print("\n".join(spc.warnings))
     assert len(spc.warnings) == 2
@@ -242,9 +254,11 @@ def test_150622_ptsdy1_topo():
 
 
 def test_150622_ptsdy2():
-    """PTSDY2_invalid.txt """
-    with pytest.raises(Exception):
-        parser(get_test_file("SPCPTS/PTSDY2_invalid.txt"))
+    """PTSDY2_invalid.txt parsed ok."""
+    spc = parser(get_test_file("SPCPTS/PTSDY2_invalid.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    assert abs(outlook.geometry.area - 78.14) < 0.01
 
 
 def test_150622_ptsdy1():
@@ -274,15 +288,18 @@ def test_141022_newcats():
 
 
 def test_140709_nogeoms():
-    """ Make sure we don't have another failure with geom parsing """
-    with pytest.raises(Exception):
-        parser(get_test_file("SPCPTS/PTSDY3_nogeoms.txt"))
+    """Can we parse holes."""
+    spc = parser(get_test_file("SPCPTS/PTSDY3_nogeoms.txt"))
+    outlook = spc.get_outlook("ANY SEVERE", "0.05")
+    assert abs(outlook.geometry.area - 99.68) < 0.01
 
 
 def test_140710_nogeom():
-    """ Had a failure with no geometries parsed """
-    with pytest.raises(Exception):
-        parser(get_test_file("SPCPTS/PTSDY2_nogeom.txt"))
+    """Can we parse holes."""
+    spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    assert abs(outlook.geometry.area - 43.02) < 0.01
 
 
 def test_23jul_failure():
@@ -298,8 +315,9 @@ def test_140707_general():
     """ Had a problem with General Thunder, lets test this """
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
+    # Linework here is invalid, so we can't account for it.
     outlook = spc.get_outlook("CATEGORICAL", "TSTM")
-    assert abs(outlook.geometry.area - 606.33) < 0.01
+    assert abs(outlook.geometry.area - 755.33) < 0.01
 
 
 def test_complex():
