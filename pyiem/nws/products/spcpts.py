@@ -164,6 +164,141 @@ def clean_segment(segment):
     return list(zip(*newls.geoms[maxi].xy))
 
 
+def look_for_closed_polygon(segment):
+    """Simple logic to see if our polygon is already closed."""
+    if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
+        print("Single closed polygon found, done and done")
+        return MultiPolygon([Polygon(segment)])
+
+    # Slightly bad line-work, whereby the start and end points are very close
+    # to each other
+    if (
+        (segment[0][0] - segment[-1][0]) ** 2
+        + (segment[0][1] - segment[-1][1]) ** 2
+    ) ** 0.5 < 0.05:
+        print(
+            ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)")
+            % (segment[0][0], segment[0][1], segment[-1][0], segment[-1][1])
+        )
+        segment[-1] = segment[0]
+        return MultiPolygon([Polygon(segment)])
+
+
+def segment_logic(segment, currentpoly, polys):
+    """Our segment parsing logic."""
+    if segment[0] == segment[-1] and len(segment) > 2:
+        print("     segment is closed polygon!")
+        lr = LinearRing(LineString(segment))
+        if not lr.is_ccw:
+            print("     polygon is counter-clockwise (exterior)")
+            polys.append(currentpoly)
+            return Polygon(segment)
+        print("     polygon is clockwise (interior), testing intersection")
+        if not currentpoly.intersection(lr):
+            print("     failed intersection with currentpoly, abort")
+            return currentpoly
+        interiors = [l for l in currentpoly.interiors]
+        interiors.append(lr)
+        newp = Polygon(currentpoly.exterior, interiors)
+        if not newp.is_valid:
+            print("     adding interior invalid, buffering")
+            newp = newp.buffer(0)
+        if newp.is_valid:
+            print(
+                ("     polygon is interior to currentpoly, area: %.2f ")
+                % (currentpoly.area,)
+            )
+            return newp
+        raise Exception(
+            (
+                "Adding interior polygon resulted "
+                "in an invalid geometry, aborting"
+            )
+        )
+
+    # Attempt to 'clean' this string against the CONUS Polygon
+    segment = clean_segment(segment)
+    ls = LineString(segment)
+    line = np.array(segment)
+
+    # If this line segment does not intersect the current polygon of interest,
+    # we should check any previous polygons to see if it intersects it. We
+    # could be dealing with invalid ordering in the file, sigh.
+    if not currentpoly.intersection(ls):
+        print("     ls does not intersect currentpoly, looking for match")
+        found = False
+        for i, poly in enumerate(polys):
+            if not poly.intersection(ls):
+                continue
+            print("    found previous polygon i:%s that intersects" % (i,))
+            found = True
+            polys.append(currentpoly)
+            currentpoly = polys.pop(i)
+            break
+        if not found:
+            print("     setting currentpoly back to CONUS")
+            polys.append(currentpoly)
+            currentpoly = copy.deepcopy(CONUS["poly"])
+
+    # Need to figure out where on the current polygon that the line string
+    # intersects to build the new polygon
+    (x, y) = currentpoly.exterior.xy
+    pie = np.array(list(zip(x, y)))
+    distance = (
+        (pie[:, 0] - line[0, 0]) ** 2 + (pie[:, 1] - line[0, 1]) ** 2
+    ) ** 0.5
+    idx1 = np.argmin(distance) - 1
+    idx1 = idx1 if idx1 > -1 else 0
+    distance = (
+        (pie[:, 0] - line[-1, 0]) ** 2 + (pie[:, 1] - line[-1, 1]) ** 2
+    ) ** 0.5
+    idx2 = np.argmin(distance) + 1
+    # if idx1 is one less than idx2, we likely crosssed streams
+    # unintentionally, so we hack around it
+    if (idx2 - idx1) == 1:
+        print("    hack idx2 crossed idx1, reverting hack")
+        idx2 -= 1
+        idx1 += 1
+    idx2 = idx2 if idx2 > -1 else 0
+
+    sz = np.shape(pie)[0]
+    print(
+        "     computed intersections idx1: %s/%s idx2: %s/%s"
+        % (idx1, sz, idx2, sz)
+    )
+    if idx1 < idx2:
+        print(
+            ("     CASE 1: idx1:%s idx2:%s Crosses start finish")
+            % (idx1, idx2)
+        )
+        # We we piece the puzzle together!
+        tmpline = np.concatenate([line, pie[idx2:]])
+        tmpline = np.concatenate([tmpline, pie[:idx1]])
+        newp = Polygon(tmpline, currentpoly.interiors)
+        if not newp.is_valid:
+            print("     doing buffer because of invalid polygon")
+            newp = newp.buffer(0)
+        print("     returning polygon with area: %.2f" % (newp.area,))
+        return newp
+    if idx1 > idx2:
+        print("     CASE 2 idx1:%s idx2:%s" % (idx1, idx2))
+        tmpline = np.concatenate([line, pie[idx2:idx1]])
+        newpoly = Polygon(tmpline)
+        if not newpoly.is_valid:
+            print("    newpolygon is not valid, buffer(0) called ")
+            newpoly = newpoly.buffer(0)
+        return newpoly
+    # It is possible that our line start and end points are closest
+    # to the same point on the pie.
+    # just inject the point into the line
+    tmpline = np.concatenate([line, [pie[idx2]]])
+    newpoly = Polygon(tmpline)
+    if not newpoly.is_valid:
+        print("    newpolygon is not valid, buffer(0) called ")
+        newpoly = newpoly.buffer(0)
+    return newpoly
+
+
 def str2multipolygon(s):
     """Convert string PTS data into a polygon.
 
@@ -171,42 +306,16 @@ def str2multipolygon(s):
       s (str): the cryptic string that we attempt to make valid polygons from
     """
     segments = get_segments_from_text(s)
-
     # Simple case whereby the segment is its own circle, thank goodness
-    if (
-        len(segments) == 1
-        and segments[0][0][0] == segments[0][-1][0]
-        and segments[0][0][1] == segments[0][-1][1]
-    ):
-        print("Single closed polygon found, done and done")
-        return MultiPolygon([Polygon(segments[0])])
+    if len(segments) == 1:
+        res = look_for_closed_polygon(segments[0])
+        if res:
+            return res
 
-    # Slightly bad line-work, whereby the start and end points are very close
-    # to each other
-    if (
-        len(segments) == 1
-        and (
-            (segments[0][0][0] - segments[0][-1][0]) ** 2
-            + (segments[0][0][1] - segments[0][-1][1]) ** 2
-        )
-        ** 0.5
-        < 0.05
-    ):
-        print(
-            ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)")
-            % (
-                segments[0][0][0],
-                segments[0][0][1],
-                segments[0][-1][0],
-                segments[0][-1][1],
-            )
-        )
-        segments[0][-1] = segments[0][0]
-        return MultiPolygon([Polygon(segments[0])])
-
-    # We start with just a conus polygon and we go from here, down the rabbit
-    # hole
-    polys = [copy.deepcopy(CONUS["poly"])]
+    # Keep track of generated polygons
+    polys = []
+    # currentpoly is our present subject of interest
+    currentpoly = copy.deepcopy(CONUS["poly"])
 
     for i, segment in enumerate(segments):
         print(
@@ -221,151 +330,8 @@ def str2multipolygon(s):
                 segment[-1][1],
             )
         )
-        if segment[0] == segment[-1] and len(segment) > 2:
-            print("     segment %s is closed polygon!" % (i,))
-            lr = LinearRing(LineString(segment))
-            if not lr.is_ccw:
-                print("     polygon is counter-clockwise (exterior)")
-                polys.insert(0, Polygon(segment))
-                continue
-            print("     polygon is clockwise (interior), computing which")
-            found = False
-            for j, poly in enumerate(polys):
-                if poly.intersection(lr):
-                    interiors = [l for l in polys[j].interiors]
-                    interiors.append(lr)
-                    newp = Polygon(polys[j].exterior, interiors)
-                    if newp.is_valid:
-                        polys[j] = newp
-                        print(
-                            (
-                                "     polygon is interior to polys #%s, "
-                                "area now %.2f"
-                            )
-                            % (j, polys[j].area)
-                        )
-                    else:
-                        raise Exception(
-                            (
-                                "Adding interior polygon resulted "
-                                "in an invalid geometry, aborting"
-                            )
-                        )
-                    found = True
-                    break
-            if not found:
-                print("      ERROR: did not find intersection!")
-            continue
-
-        # Attempt to 'clean' this string against the CONUS Polygon
-        segment = clean_segment(segment)
-        ls = LineString(segment)
-        line = np.array(segment)
-
-        # Figure out which polygon this line intersects
-        found = False
-        for j in range(-1, -1 - len(polys), -1):
-            if found:
-                break
-            poly = polys[j]
-            print("     polys iter j=%s len(polys)=%s" % (j, len(polys)))
-            if not poly.intersection(ls):
-                # If this line segment does not intersect the only polygon we
-                # have, then we add back in the CONUS one and try again
-                if len(polys) == 1:
-                    print("     - linestring does not intersect, adding CONUS")
-                    polys.insert(0, copy.deepcopy(CONUS["poly"]))
-                    poly = polys[0]
-                else:
-                    print("     - linestring does not intersect poly, cont")
-                    continue
-            found = True
-            for q in list(range(5)):
-                # Compute the intersection points of this segment and what
-                # is left of the pie
-                (x, y) = poly.exterior.xy
-                pie = np.array(list(zip(x, y)))
-                distance = (
-                    (pie[:, 0] - line[q, 0]) ** 2
-                    + (pie[:, 1] - line[q, 1]) ** 2
-                ) ** 0.5
-                idx1 = np.argmin(distance) - 1
-                idx1 = idx1 if idx1 > -1 else 0
-                distance = (
-                    (pie[:, 0] - line[0 - (q + 1), 0]) ** 2
-                    + (pie[:, 1] - line[0 - (q + 1), 1]) ** 2
-                ) ** 0.5
-                idx2 = np.argmin(distance) + 1
-                # if idx1 is one less than idx2, we likely crosssed streams
-                # unintentionally, so we hack around it
-                if (idx2 - idx1) == 1:
-                    print("    hack idx2 crossed idx1, reverting hack")
-                    idx2 -= 1
-                    idx1 += 1
-                idx2 = idx2 if idx2 > -1 else 0
-
-                sz = np.shape(pie)[0]
-                print(
-                    (
-                        "     Q:%s computed intersections "
-                        "idx1: %s/%s idx2: %s/%s"
-                    )
-                    % (q, idx1, sz, idx2, sz)
-                )
-                if idx1 < idx2:
-                    print(
-                        ("     CASE 1: idx1:%s idx2:%s Crosses start finish")
-                        % (idx1, idx2)
-                    )
-                    # We we piece the puzzle together!
-                    tmpline = np.concatenate([line, pie[idx2:]])
-                    tmpline = np.concatenate([tmpline, pie[:idx1]])
-                    if Polygon(tmpline, polys[j].interiors).is_valid:
-                        pie = tmpline
-                        polys[j] = Polygon(pie, polys[j].interiors)
-                        print(
-                            ("     replacing polygon index: %s area: %.2f")
-                            % (j, polys[j].area)
-                        )
-                    else:
-                        continue
-                elif idx1 > idx2:
-                    print("     CASE 2 idx1:%s idx2:%s" % (idx1, idx2))
-                    tmpline = np.concatenate([line, pie[idx2:idx1]])
-                    newpoly = Polygon(tmpline)
-                    if not newpoly.is_valid:
-                        print("    newpolygon is not valid, buffer(0) called ")
-                        newpoly = newpoly.buffer(0)
-                    polys.append(newpoly)
-                    print(
-                        (
-                            "     + adding polygon index: %s area: %.2f "
-                            "isvalid: %s"
-                        )
-                        % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
-                    )
-                # It is possible that our line start and end points are closest
-                # to the same point on the pie.
-                else:
-                    # just inject the point into the line
-                    tmpline = np.concatenate([line, [pie[idx2]]])
-                    newpoly = Polygon(tmpline)
-                    if not newpoly.is_valid:
-                        print("    newpolygon is not valid, buffer(0) called ")
-                        newpoly = newpoly.buffer(0)
-                    polys.append(newpoly)
-                    print(
-                        (
-                            "     + adding polygon index: %s area: %.2f "
-                            "isvalid: %s"
-                        )
-                        % (len(polys) - 1, polys[-1].area, polys[-1].is_valid)
-                    )
-                print("     breaking out of q loop")
-                break
-
-        if not found:
-            print("     segment did not intersect")
+        currentpoly = segment_logic(segment, currentpoly, polys)
+    polys.append(currentpoly)
 
     res = []
     print(
@@ -462,12 +428,13 @@ class SPCPTS(TextProduct):
                         rewrite = True
                         msg = (
                             "Discarding polygon as it is larger than TSTM: "
-                            "Day: %s %s %s Area: %.2f"
+                            "Day: %s %s %s Area: %.2f TSTM Area: %.2f"
                         ) % (
                             day,
                             outlook.category,
                             outlook.threshold,
                             outlook.geometry.area,
+                            tstm.geometry.area,
                         )
                         print(msg)
                         self.warnings.append(msg)
