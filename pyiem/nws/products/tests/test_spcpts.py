@@ -13,6 +13,14 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_190905_invalid():
+    """Product hit geos issue."""
+    spc = parser(get_test_file("SPCPTS/PTSDY1_geos.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 263.61) < 0.01
+
+
 def test_190903_invalid():
     """Product hit invalid geometry error."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_invalid2.txt"))
@@ -26,7 +34,7 @@ def test_190801_shapely():
     spc = parser(get_test_file("SPCPTS/PTSDY1_shapelyerror.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 333.65) < 0.01
+    assert abs(outlook.geometry.area - 333.678) < 0.01
 
 
 def test_190625_nogeom2():
@@ -226,7 +234,7 @@ def test_170404_2002():
     spc = parser(get_test_file("SPCPTS/PTSDY1_2002.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT")
-    assert abs(outlook.geometry.area - 38.92) < 0.01
+    assert abs(outlook.geometry.area - 39.004) < 0.01
 
 
 def test_170329_notimp():
@@ -265,7 +273,7 @@ def test_150622_ptsdy1():
     """PTSDY1_nogeom.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
     outlook = spc.get_outlook("CATEGORICAL", "SLGT")
-    assert abs(outlook.geometry.area - 95.88) < 0.01
+    assert abs(outlook.geometry.area - 95.378) < 0.01
 
 
 def test_150612_ptsdy1_3():
@@ -308,7 +316,7 @@ def test_23jul_failure():
     load_conus_data(utc(2017, 7, 23))
     data = """40067377 40567433 41317429 42097381 42357259 42566991"""
     res = str2multipolygon(data)
-    assert abs(res[0].area - 7.98403) < 0.0001
+    assert abs(res[0].area - 7.96724) < 0.0001
 
 
 def test_140707_general():
@@ -317,7 +325,7 @@ def test_140707_general():
     # spc.draw_outlooks()
     # Linework here is invalid, so we can't account for it.
     outlook = spc.get_outlook("CATEGORICAL", "TSTM")
-    assert abs(outlook.geometry.area - 755.33) < 0.01
+    assert abs(outlook.geometry.area - 755.424) < 0.01
 
 
 def test_complex():

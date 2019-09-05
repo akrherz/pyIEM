@@ -10,9 +10,17 @@ import os
 import itertools
 
 import numpy as np
-from shapely.geometry import Polygon, LineString, MultiPolygon
+from shapely.geometry import (
+    Polygon,
+    LineString,
+    MultiPolygon,
+    Point,
+    MultiPoint,
+    MultiLineString,
+)
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
+from shapely.ops import split, snap
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
 
@@ -123,7 +131,7 @@ def get_segments_from_text(text):
     return segments
 
 
-def clean_segment(segment):
+def clean_segment(ls):
     """Attempt to get this segment cleaned up.
 
     Args:
@@ -132,36 +140,61 @@ def clean_segment(segment):
     Returns:
       segment (list)
     """
-    # Intersect this segment with the CONUS, if we get one segment back, done
-    ls = LineString(segment)
-    newls = ls.intersection(CONUS["poly"])
-    if newls.is_empty:
-        print("     intersection yielded empty geom, uh oh")
-        return segment
-    if newls.geom_type == "LineString":
-        print("     segment intersection with CONUS yielded one segment")
-        return list(zip(*newls.xy))
 
-    # We have work to do, first trim back the original segment
-    segment[0] = [newls.geoms[0].xy[0][0], newls.geoms[0].xy[1][0]]
-    segment[-1] = [newls.geoms[-1].xy[0][-1], newls.geoms[-1].xy[1][-1]]
-    # run the intersection again!
-    ls = LineString(segment)
-    newls = ls.intersection(CONUS["poly"])
-    if newls.geom_type == "LineString":
-        print("     trimmed segment intersection with CONUS yielded one seg")
-        return list(zip(*newls.xy))
+    def _test(val):
+        """Our tester."""
+        return isinstance(val, MultiPoint) and len(val) == 2
 
-    # compute the lengths
-    lengths = [g.length for g in newls.geoms]
-    # if all lengths over 2, abort
-    if min(lengths) > 2:
-        print("     throwing up hands as segments length over 2 each")
-        return segment
-    maxi = lengths.index(max(lengths))
+    # If this intersects twice, we are golden
+    res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
+    if _test(res):
+        return ls
 
-    print("     taking the longest segment as the truth")
-    return list(zip(*newls.geoms[maxi].xy))
+    # First and last point of the ls need to be exterior to the CONUS
+    for idx in [0, -1]:
+        pt = Point(ls.coords[idx])
+        if not pt.within(CONUS["poly"]):
+            continue
+        # go find the next or next to last point
+        start_pt = Point(ls.coords[1 if idx == 0 else -2])
+        end_pt = CONUS["poly"].exterior.interpolate(
+            CONUS["poly"].exterior.project(pt)
+        )
+        # We want to draw a line from start_pt through end_pt and extend by
+        # a small amount to get out of rounding
+        offset = 0.0001
+        while pt.within(CONUS["poly"]) and offset < 10.5:
+            if offset > 1.5:
+                offset += 1.0
+            dx = end_pt.x - start_pt.x
+            dy = end_pt.y - start_pt.y
+            xoff = offset if dx > 0 else (offset * -1)
+            yoff = offset if dy > 0 else (offset * -1)
+            pt = Point(start_pt.x + dx + xoff, start_pt.y + dy + yoff)
+            offset += 0.005
+        print(
+            "     fix idx: %s to new: %.4f %.4f Inside: %s, offset: %s"
+            % (idx, pt.x, pt.y, pt.within(CONUS["poly"]), offset)
+        )
+        coords = list(ls.coords)
+        coords[idx] = (pt.x, pt.y)
+        ls = LineString(coords)
+    res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
+    if _test(res):
+        return ls
+
+    # Are we doing 3+ intersections already
+    if isinstance(res, MultiPoint) and len(res) > 2:
+        return MultiLineString(
+            [
+                r
+                for r in ls.intersection(CONUS["poly"])
+                if isinstance(r, LineString)
+            ]
+        )
+
+    print("     clean_segment failed with res: %s" % (res,))
+    return None
 
 
 def look_for_closed_polygon(segment):
@@ -216,10 +249,26 @@ def segment_logic(segment, currentpoly, polys):
             )
         )
 
-    # Attempt to 'clean' this string against the CONUS Polygon
-    segment = clean_segment(segment)
+    # All open lines need to intersect the CONUS, ensure that happens
     ls = LineString(segment)
-    line = np.array(segment)
+    ls = clean_segment(ls)
+    if isinstance(ls, MultiLineString):
+        for _ls in ls:
+            print("     look out below, recursive we go.")
+            currentpoly = segment_logic(_ls.coords, currentpoly, polys)
+        return currentpoly
+    if ls is None:
+        print("     aborting as clean_segment failed...")
+        return currentpoly
+    print(
+        "     new segment start: %.4f %.4f end: %.4f %.4f"
+        % (
+            ls.coords[0][0],
+            ls.coords[0][1],
+            ls.coords[-1][0],
+            ls.coords[-1][1],
+        )
+    )
 
     # If this line segment does not intersect the current polygon of interest,
     # we should check any previous polygons to see if it intersects it. We
@@ -240,63 +289,14 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
-    # Need to figure out where on the current polygon that the line string
-    # intersects to build the new polygon
-    (x, y) = currentpoly.exterior.xy
-    pie = np.array(list(zip(x, y)))
-    distance = (
-        (pie[:, 0] - line[0, 0]) ** 2 + (pie[:, 1] - line[0, 1]) ** 2
-    ) ** 0.5
-    idx1 = np.argmin(distance) - 1
-    idx1 = idx1 if idx1 > -1 else 0
-    distance = (
-        (pie[:, 0] - line[-1, 0]) ** 2 + (pie[:, 1] - line[-1, 1]) ** 2
-    ) ** 0.5
-    idx2 = np.argmin(distance) + 1
-    # if idx1 is one less than idx2, we likely crosssed streams
-    # unintentionally, so we hack around it
-    if (idx2 - idx1) == 1:
-        print("    hack idx2 crossed idx1, reverting hack")
-        idx2 -= 1
-        idx1 += 1
-    idx2 = idx2 if idx2 > -1 else 0
-
-    sz = np.shape(pie)[0]
-    print(
-        "     computed intersections idx1: %s/%s idx2: %s/%s"
-        % (idx1, sz, idx2, sz)
-    )
-    if idx1 < idx2:
-        print(
-            ("     CASE 1: idx1:%s idx2:%s Crosses start finish")
-            % (idx1, idx2)
-        )
-        # We we piece the puzzle together!
-        tmpline = np.concatenate([line, pie[idx2:]])
-        tmpline = np.concatenate([tmpline, pie[:idx1]])
-        newp = Polygon(tmpline, currentpoly.interiors)
-        if not newp.is_valid:
-            print("     doing buffer because of invalid polygon")
-            newp = newp.buffer(0)
-        print("     returning polygon with area: %.2f" % (newp.area,))
-        return newp
-    if idx1 > idx2:
-        print("     CASE 2 idx1:%s idx2:%s" % (idx1, idx2))
-        tmpline = np.concatenate([line, pie[idx2:idx1]])
-        newpoly = Polygon(tmpline)
-        if not newpoly.is_valid:
-            print("    newpolygon is not valid, buffer(0) called ")
-            newpoly = newpoly.buffer(0)
-        return newpoly
-    # It is possible that our line start and end points are closest
-    # to the same point on the pie.
-    # just inject the point into the line
-    tmpline = np.concatenate([line, [pie[idx2]]])
-    newpoly = Polygon(tmpline)
-    if not newpoly.is_valid:
-        print("    newpolygon is not valid, buffer(0) called ")
-        newpoly = newpoly.buffer(0)
-    return newpoly
+    (polya, polyb) = split(currentpoly, ls)
+    # Linear reference our splitter's start and end distance
+    startdist = polya.exterior.project(Point(ls.coords[0]))
+    enddist = polya.exterior.project(Point(ls.coords[-1]))
+    # if the end is further down the line, we want this polygon
+    res = polya if enddist > startdist else polyb
+    print("     taking polygon.area = %.4f" % (res.area,))
+    return res
 
 
 def str2multipolygon(s):
@@ -449,7 +449,12 @@ class SPCPTS(TextProduct):
                             else:
                                 print("Discarding %s as not polygon" % (p,))
                     else:
-                        good_polys.append(intersect)
+                        if isinstance(intersect, Polygon):
+                            good_polys.append(intersect)
+                        else:
+                            print(
+                                "Discarding %s as not polygon" % (intersect,)
+                            )
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []
