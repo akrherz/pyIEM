@@ -207,6 +207,7 @@ def get_dbconn(
     if host is None:
         host = "iemdb.local"
         if database in [
+            "awos",
             "hads",
             "mos",
             "iemre",
