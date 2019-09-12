@@ -40,6 +40,7 @@ VTEC_SIGNIFICANCE = {
     "F": "Forecast",
 }
 
+# https://www.nws.noaa.gov/directives/sym/pd01017003curr.pdf
 VTEC_PHENOMENA = {
     "AF": "Ashfall",
     "AS": "Air Stagnation",
@@ -48,6 +49,7 @@ VTEC_PHENOMENA = {
     "BW": "Brisk Wind",
     "BZ": "Blizzard",
     "CF": "Coastal Flood",
+    "DF": "Debris Flow",
     "DS": "Dust Storm",
     "DU": "Blowing Dust",
     "EC": "Extreme Cold",
@@ -78,8 +80,8 @@ VTEC_PHENOMENA = {
     "LW": "Lake Wind",
     "MA": "Marine",
     "MF": "Marine Dense Fog",
-    "MS": "Marine Dense Smoke",
     "MH": "Marine Ashfall",
+    "MS": "Marine Dense Smoke",
     "RB": "Small Craft for Rough",
     "RP": "Rip Currents",
     "SB": "Snow and Blowing",
@@ -106,6 +108,7 @@ VTEC_PHENOMENA = {
     "WW": "Winter Weather",
     "ZF": "Freezing Fog",
     "ZR": "Freezing Rain",
+    "ZY": "Freezing Spray",
 }
 
 # Taken from http://www.weather.gov/help-map
