@@ -114,15 +114,23 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
             else "white"
         )
     color = data[now].get("color", color)
-    axes.text(
-        offx * dx + (dx / 2.0),
-        0.9 - (row + 1) * dy + (dy * 0.25),
+    # We need to translate the axes NDC coordinates back to the figure coords
+    bbox = axes.get_position()
+    sdx = (bbox.x1 - bbox.x0) * dx
+    sdy = (bbox.y1 - bbox.y0) * dy
+    x0 = bbox.x0 + offx * sdx
+    ytop = bbox.y0 + (bbox.y1 - bbox.y0) * 0.9
+    y0 = ytop - (row + 1) * sdy
+    fitbox(
+        plt.gcf(),
         val,
-        transform=axes.transAxes,
-        va="center",
+        x0,
+        x0 + sdx,
+        y0,
+        y0 + sdy * 0.55,
         ha="center",
+        va="center",
         color=color,
-        fontsize=kwargs["fontsize"],
     )
 
 
@@ -164,7 +172,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
             1.0 / 7.0 * (i + 0.5),
             0.94,
             dow,
-            fontsize=fontscale(ndcwidth / 7.0 * 0.4),
+            fontsize=fontscale(ndcwidth / 8.0 * 0.4),
             ha="center",
             va="center",
         )
