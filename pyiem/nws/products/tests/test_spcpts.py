@@ -13,6 +13,14 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_190907_invalid():
+    """Product hit geos issue."""
+    spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 314.76) < 0.01
+
+
 def test_190905_invalid():
     """Product hit geos issue."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_geos.txt"))
