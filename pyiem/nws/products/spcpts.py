@@ -20,7 +20,7 @@ from shapely.geometry import (
 )
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
-from shapely.ops import split, snap
+from shapely.ops import split
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
 
@@ -223,10 +223,10 @@ def segment_logic(segment, currentpoly, polys):
         print("     segment is closed polygon!")
         lr = LinearRing(LineString(segment))
         if not lr.is_ccw:
-            print("     polygon is counter-clockwise (exterior)")
+            print("     polygon is clockwise (exterior), done.")
             polys.append(currentpoly)
             return Polygon(segment)
-        print("     polygon is clockwise (interior), testing intersection")
+        print("     polygon is CCW (interior), testing intersection")
         if not currentpoly.intersection(lr):
             print("     failed intersection with currentpoly, abort")
             return currentpoly
@@ -277,9 +277,16 @@ def segment_logic(segment, currentpoly, polys):
         print("     ls does not intersect currentpoly, looking for match")
         found = False
         for i, poly in enumerate(polys):
-            if not poly.intersection(ls):
+            intersect = poly.intersection(ls)
+            if not intersect or isinstance(intersect, MultiLineString):
                 continue
-            print("    found previous polygon i:%s that intersects" % (i,))
+            print(
+                (
+                    "     found previous polygon i:%s area: %.1f "
+                    "that intersects"
+                )
+                % (i, poly.area)
+            )
             found = True
             polys.append(currentpoly)
             currentpoly = polys.pop(i)
@@ -464,7 +471,7 @@ class SPCPTS(TextProduct):
                     if poly1.contains(poly2):
                         rewrite = True
                         msg = (
-                            "Discarding exterior polygon: "
+                            "Discarding overlapping exterior polygon: "
                             "Day: %s %s %s Area: %.2f"
                         ) % (
                             day,
@@ -488,7 +495,8 @@ class SPCPTS(TextProduct):
                         print(msg)
                         self.warnings.append(msg)
                     else:
-                        good_polys.append(poly1)
+                        if poly1 not in good_polys:
+                            good_polys.append(poly1)
                 if rewrite:
                     outlook.geometry = MultiPolygon(good_polys)
         # 2. Do the time bounds make sense, limited scope here
@@ -536,7 +544,10 @@ class SPCPTS(TextProduct):
                 )
                 for poly in outlook.geometry:
                     patch = PolygonPatch(
-                        poly, fc="tan", label="Outlook", zorder=2
+                        poly,
+                        fc="tan",
+                        label="Outlook %.1f" % (poly.area,),
+                        zorder=2,
                     )
                     ax.add_patch(patch)
                     ax.plot(
