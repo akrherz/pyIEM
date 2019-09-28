@@ -10,6 +10,7 @@ from pyiem.util import get_dbconn, utc, get_test_file
 PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
     "CYYE": dict(network="CA_BC_ASOS"),
+    "QQQQ": dict(network="FAKE", tzname="America/Chicago"),
     "SPS": dict(wfo="OUN"),
     "MIA": dict(wfo="MIA"),
     "ALO": dict(wfo="DSM"),
@@ -22,7 +23,78 @@ metarcollect.JABBER_SITES = {"KALO": None}
 def dbcursor():
     """Return a disposable database cursor."""
     pgconn = get_dbconn("iem")
-    return pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor = pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    # Create fake station, so we can create fake entry in summary
+    # and current tables
+    cursor.execute(
+        """
+        INSERT into stations(id, network, iemid, tzname)
+        VALUES ('QQQQ', 'FAKE', -1, 'America/Chicago')
+    """
+    )
+    cursor.execute(
+        """
+        INSERT into current(iemid, valid) VALUES
+        (-1, '2015-09-01 00:00+00')
+    """
+    )
+    cursor.execute(
+        """
+        INSERT into summary_2015(iemid, day) VALUES
+        (-1, '2015-09-01')
+    """
+    )
+    return cursor
+
+
+def test_issue92_6hour(dbcursor):
+    """Can we get the 6 hour right."""
+    utcnow = utc(2015, 9, 1, 23)
+    header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
+    # 4 PM temp is 63
+    data = header + (
+        "QQQQ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK "
+        "AO2 SLP104 T01720044=\r\r\n"
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob.load(dbcursor)
+    assert iemob.data["max_tmpf"] == 63
+    # 5 PM temp is 61, but has 6 hour low of 54, high of 64
+    data = header + (
+        "QQQQ 012253Z 27005KT 10SM FEW025 BKN055 16/05 A2982 RMK AO2 "
+        "SLP105 T01610050 10178 20122 56014=\r\r\n"
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob.load(dbcursor)
+    assert iemob.data["max_tmpf"] == 64
+    assert iemob.data["min_tmpf"] == 54
+
+
+def test_issue92_6hour_nouse(dbcursor):
+    """We should not use the 6 hour in this case."""
+    utcnow = utc(2015, 9, 1, 9)
+    header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
+    # 1 AM temp is 63
+    data = header + (
+        "QQQQ 010653Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK "
+        "AO2 SLP104 T01720044=\r\r\n"
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob.load(dbcursor)
+    assert iemob.data["max_tmpf"] == 63
+    # 2 AM temp is 61, but has 6 hour low of 54, high of 64
+    data = header + (
+        "QQQQ 010753Z 27005KT 10SM FEW025 BKN055 16/05 A2982 RMK AO2 "
+        "SLP105 T01610050 10178 20122 56014=\r\r\n"
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob.load(dbcursor)
+    assert iemob.data["max_tmpf"] == 63
+    assert iemob.data["min_tmpf"] == 61
 
 
 def test_issue89_peakwind(dbcursor):

@@ -82,7 +82,9 @@ CURRENT_COLS = [
 # Not including iemid, day
 SUMMARY_COLS = [
     "max_tmpf",
+    "max_tmpf_cond",  # conditional consideration for daily max_tmpf
     "min_tmpf",
+    "min_tmpf_cond",  # conditional consideration for daily min_tmpf
     "max_sknt",
     "max_gust",
     "max_sknt_ts",
@@ -167,11 +169,11 @@ def summary_update(txn, data):
     min_water_tmpf = coalesce(%(min_water_tmpf)s,
         least( min_water_tmpf, %(water_tmpf)s)),
     max_tmpf = coalesce(%(max_tmpf)s,
-        greatest(max_tmpf, %(tmpf)s)),
+        greatest(max_tmpf, %(max_tmpf_cond)s, %(tmpf)s)),
     max_dwpf = coalesce(%(max_dwpf)s,
         greatest(max_dwpf, %(dwpf)s)),
     min_tmpf = coalesce(%(min_tmpf)s,
-        least(min_tmpf, %(tmpf)s)),
+        least(min_tmpf, %(min_tmpf_cond)s, %(tmpf)s)),
     min_dwpf = coalesce(%(min_dwpf)s,
         least(min_dwpf, %(dwpf)s)),
     min_feel = coalesce(%(min_feel)s,

@@ -1,8 +1,4 @@
-"""Encapsulates a text product holding METARs
-
-The source of the metar library is
-18 Jul 2017: `snowdepth` branch of my python-metar fork installed with pip
-"""
+"""Encapsulates a text product holding METARs."""
 from __future__ import print_function
 import re
 import datetime
@@ -156,6 +152,9 @@ def to_metar(textprod, text):
         mtr.network = textprod.nwsli_provider.get(mtr.iemid, dict()).get(
             "network"
         )
+        mtr.tzname = textprod.nwsli_provider.get(mtr.iemid, dict()).get(
+            "tzname"
+        )
     return mtr
 
 
@@ -183,6 +182,17 @@ def sanitize(text):
     return text
 
 
+def _is_same_day(valid, tzname, hours=6):
+    """Can we trust a six hour total?"""
+    try:
+        tzinfo = pytz.timezone(tzname)
+    except pytz.exceptions.UnknownTimeZoneError:
+        return False
+    lts = valid.astimezone(tzinfo)
+    # TODO we should likely somehow compute this in standard time, shrug
+    return lts.day == (lts - datetime.timedelta(hours=hours)).day
+
+
 class METARReport(Metar):
     """Provide some additional functionality over baseline METAR"""
 
@@ -191,6 +201,7 @@ class METARReport(Metar):
         Metar.__init__(self, text, **kwargs)
         self.iemid = None
         self.network = None
+        self.tzname = None
 
     def wind_message(self):
         """Convert this into a Jabber style message"""
@@ -271,8 +282,12 @@ class METARReport(Metar):
 
         if self.max_temp_6hr:
             iem.data["max_tmpf_6hr"] = round(self.max_temp_6hr.value("F"), 1)
+            if self.tzname and _is_same_day(iem.data["valid"], self.tzname):
+                iem.data["max_tmpf_cond"] = iem.data["max_tmpf_6hr"]
         if self.min_temp_6hr:
             iem.data["min_tmpf_6hr"] = round(self.min_temp_6hr.value("F"), 1)
+            if self.tzname and _is_same_day(iem.data["valid"], self.tzname):
+                iem.data["min_tmpf_cond"] = iem.data["min_tmpf_6hr"]
         if self.max_temp_24hr:
             iem.data["max_tmpf_24hr"] = round(self.max_temp_24hr.value("F"), 1)
         if self.min_temp_24hr:
@@ -440,12 +455,12 @@ class METARCollective(TextProduct):
             if NIL_RE.search(token):
                 continue
             elif token.find("METAR") > -1:
-                token = token[token.find("METAR") + 5 :]
+                token = token[(token.find("METAR") + 5) :]
             # unsure why this LWIS existed
             # elif token.find("LWIS ") > -1:
             #    token = token[token.find("LWIS ")+5:]
             elif token.find("SPECI") > -1:
-                token = token[token.find("SPECI") + 5 :]
+                token = token[(token.find("SPECI") + 5) :]
                 prefix = "SPECI"
             elif len(token.strip()) < 5:
                 continue
