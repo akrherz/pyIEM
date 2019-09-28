@@ -49,7 +49,7 @@ def dbcursor():
 
 def test_issue92_6hour(dbcursor):
     """Can we get the 6 hour right."""
-    utcnow = utc(2019, 9, 1, 23)
+    utcnow = utc(2015, 9, 1, 23)
     header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
     # 4 PM temp is 63
     data = header + (
@@ -74,7 +74,7 @@ def test_issue92_6hour(dbcursor):
 
 def test_issue92_6hour_nouse(dbcursor):
     """We should not use the 6 hour in this case."""
-    utcnow = utc(2019, 9, 1, 9)
+    utcnow = utc(2015, 9, 1, 9)
     header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
     # 1 AM temp is 63
     data = header + (
