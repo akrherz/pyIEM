@@ -118,7 +118,6 @@ def test_TORE_series(dbcursor):
     prod = vtecparser(get_test_file("TORE/TOR.txt"))
     prod.sql(dbcursor)
     assert getval3() == 1
-    assert not prod.warnings
     jmsg = prod.get_jabbers("http://localhost")
     assert "TO.EMERGENCY" not in jmsg[0][2]["channels"].split(",")
     assert getval() is False
