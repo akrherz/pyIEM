@@ -100,13 +100,24 @@ def test_TORE_series(dbcursor):
             """
             SELECT is_emergency from sbw_2018 WHERE
             wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
-            significance = 'W' ORDER by updated DESC LIMIT 1
+            significance = 'W' and status != 'CAN' ORDER by updated DESC
         """
         )
         return dbcursor.fetchone()[0]
 
+    def getval3():
+        dbcursor.execute(
+            """
+            select is_emergency from sbw_2018 where
+            wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
+            significance = 'W'
+        """
+        )
+        return dbcursor.rowcount
+
     prod = vtecparser(get_test_file("TORE/TOR.txt"))
     prod.sql(dbcursor)
+    assert getval3() == 1
     jmsg = prod.get_jabbers("http://localhost")
     assert "TO.EMERGENCY" not in jmsg[0][2]["channels"].split(",")
     assert getval() is False
@@ -114,6 +125,8 @@ def test_TORE_series(dbcursor):
 
     prod = vtecparser(get_test_file("TORE/SVS_E.txt"))
     prod.sql(dbcursor)
+    assert getval3() == 3
+    assert not prod.warnings
     jmsg = prod.get_jabbers("http://localhost")
     assert "TO.EMERGENCY" in jmsg[0][2]["channels"].split(",")
     assert getval()
@@ -703,12 +716,12 @@ def test_141208_upgrade(dbcursor):
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "Segment has duplicated")
         assert not warnings
-    # Check the issuance time for UGC ANZ532
+    # ANZ532 gets too entries from the above check the issuance time of first
     dbcursor.execute(
         """SELECT issue at time zone 'UTC' from warnings_2014
     where wfo = 'LWX' and eventid = 221
     and phenomena = 'SC' and significance = 'Y'
-    and ugc = 'ANZ532'"""
+    and ugc = 'ANZ532' and status != 'UPG'"""
     )
     assert dbcursor.fetchone()[0] == datetime.datetime(2014, 12, 7, 19, 13)
 

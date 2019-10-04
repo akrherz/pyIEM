@@ -854,7 +854,7 @@ CREATE TABLE warnings (
     init_expire timestamptz,
     product_issue timestamptz,
     is_emergency boolean
-) WITH OIDS;
+);
 select addgeometrycolumn('','warnings','geom',4326,'MULTIPOLYGON',2);
 
 grant select on warnings to apache;
@@ -1227,7 +1227,7 @@ create table sbw(
   floodtag_damage varchar(64),
   floodtag_leeve varchar(64),
   floodtag_dam varchar(64)
-) WITH OIDS;
+);
 select addgeometrycolumn('','sbw','geom',4326,'MULTIPOLYGON',2);
 select addGeometryColumn('sbw', 'tml_geom', 4326, 'POINT', 2);
 select addGeometryColumn('sbw', 'tml_geom_line', 4326, 'LINESTRING', 2);
@@ -1352,7 +1352,7 @@ CREATE TABLE lsrs (
     remark text,
     wfo character(3),
     typetext character varying(40)
-) WITH OIDS;
+);
 select addgeometrycolumn('','lsrs','geom',4326,'POINT',2);
 grant select on lsrs to apache,nobody;
 
