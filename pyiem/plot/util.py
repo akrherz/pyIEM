@@ -289,7 +289,7 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
         be mapped? Defaults to `True`
     """
     bins = kwargs.get("bins", np.arange(0, 101, 10))
-    cmap = stretch_cmap(kwargs.get("cmap"), bins)
+    cmap = stretch_cmap(kwargs.get("cmap"), bins, extend=kwargs.get("extend"))
     ilabel = kwargs.get("ilabel", False)
     norm = mpcolors.BoundaryNorm(bins, cmap.N)
     lblformat = kwargs.get("lblformat", "%s")

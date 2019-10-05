@@ -448,19 +448,25 @@ class MapPlot(object):
         """
         if self.cax is None:
             return
+        extend = kwargs.get("extend", "both")
+        # Do we need to muck with the cmap
+        # pylint: disable=W0212
+        if (extend in ["max", "both"] and cmap._rgba_over is None) or (
+            extend in ["min", "both"] and cmap._rgba_under is None
+        ):
+            cmap = stretch_cmap(cmap, clevs, extend=extend)
+            norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         clevlabels = kwargs.get("clevlabels", clevs)
 
         under = clevs[0] - (clevs[1] - clevs[0])
         over = clevs[-1] + (clevs[-1] - clevs[-2])
-        extend = kwargs.get("extend", "both")
-        # inspect the cmap to see if we need to do any extensions
-        # pylint: disable=protected-access
-        if cmap._rgba_under is not None and cmap._rgba_over is None:
+        # create some faked levels in case we want an extended colorbar
+        if extend == "min":
             blevels = np.concatenate([[under], clevs])
-        elif cmap._rgba_under is None and cmap._rgba_over is not None:
+        elif extend == "max":
             blevels = np.concatenate([clevs, [over]])
-        elif cmap._rgba_under is not None and cmap._rgba_over is not None:
+        elif extend == "both":
             blevels = np.concatenate([[under], clevs, [over]])
         else:
             blevels = clevs
@@ -868,7 +874,9 @@ class MapPlot(object):
           clevs (list): Levels to use for ramp
           **kwargs: additional options
         """
-        cmap = stretch_cmap(kwargs.get("cmap"), clevs)
+        cmap = stretch_cmap(
+            kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
+        )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         colors = cmap(norm(vals))
@@ -885,7 +893,9 @@ class MapPlot(object):
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
         """ hexbin wrapper """
-        cmap = stretch_cmap(kwargs.get("cmap"), clevs)
+        cmap = stretch_cmap(
+            kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
+        )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         points = self.ax.projection.transform_points(
@@ -905,7 +915,9 @@ class MapPlot(object):
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """ pcolormesh wrapper """
-        cmap = stretch_cmap(kwargs.get("cmap"), clevs)
+        cmap = stretch_cmap(
+            kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
+        )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         res = self.ax.pcolormesh(
             lons,
@@ -1001,7 +1013,9 @@ class MapPlot(object):
         if lons.ndim == 1:
             lons, lats = np.meshgrid(lons, lats)
 
-        cmap = stretch_cmap(kwargs.get("cmap"), clevs)
+        cmap = stretch_cmap(
+            kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
+        )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         # vals = maskoceans(lons, lats, vals, resolution='h')
         self.ax.contourf(
@@ -1065,7 +1079,9 @@ class MapPlot(object):
         """
         if bins is None:
             bins = np.arange(0, 101, 10)
-        cmap = stretch_cmap(kwargs.get("cmap"), bins)
+        cmap = stretch_cmap(
+            kwargs.get("cmap"), bins, extend=kwargs.get("extend")
+        )
         norm = mpcolors.BoundaryNorm(bins, cmap.N)
         # Figure out if we have zones or counties/parishes
         counties = True

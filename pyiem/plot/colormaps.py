@@ -6,16 +6,18 @@ import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
 
 
-def stretch_cmap(cmap, bins):
-    """Return an adjusted cmap
+def stretch_cmap(cmap, bins, extend="both"):
+    """Return a cmap with appropriate over,under,bad settings.
 
-    The overall goal here is to make the cmap stretch so that the over and
-    under colors are in the selected cmap.  If `set_over` or `set_under` are
-    set, this is a NOOP.
+    The issue at hand is that default color ramps do not properly extend to
+    cover over and under using values from the color ramp.  That is desired
+    behaviour of this library.  If over,under,bad is already set, those
+    settings are retained.
 
     Args:
       cmap (cm.ColorMap): inbound colormap
       bins (list): values for binning
+      extend (str): either 'both', 'neither', 'min', 'max' to control cbar
 
     Retuns:
       cm.ColorMap
@@ -24,19 +26,19 @@ def stretch_cmap(cmap, bins):
         cmap = maue()
     if isinstance(cmap, string_types):
         cmap = cm.get_cmap(cmap)
-    # if we have either specified, don't override
-    # pylint: disable=W0212
-    if cmap._rgba_over is not None or cmap._rgba_under is not None:
-        return cmap
+    if extend not in ["both", "neither", "min", "max"]:
+        extend = "both"
 
     # get effectively two more colors than necessary
     colors = cmap(np.arange(len(bins) + 1) / float(len(bins)))
     # create a new cmap, skipping first and last
-    cmap = mpcolors.ListedColormap(colors[1:-1], "")
-    cmap.set_under(colors[0])
-    cmap.set_over(colors[-1])
+    cmapout = mpcolors.ListedColormap(colors[1:-1], "")
+    # pylint: disable=W0212
+    cmapout.set_bad(cmap._rgba_bad)
+    cmapout.set_over(cmap._rgba_over or colors[-1])
+    cmapout.set_under(cmap._rgba_under or colors[0])
     # we can now return
-    return cmap
+    return cmapout
 
 
 def nwsprecip():
