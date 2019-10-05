@@ -289,7 +289,9 @@ def test_colorbar2():
         100,
     ]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-    mp.draw_colorbar(clevs, cmap, norm, clevlabels=clevlabels)
+    mp.draw_colorbar(
+        clevs, cmap, norm, clevlabels=clevlabels, extend="neither"
+    )
     return mp.fig
 
 
