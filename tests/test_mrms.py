@@ -45,7 +45,7 @@ def test_get_fn():
 
 def test_reader():
     """Can we read the legacy file """
-    fn = ("%s/../../data/product_examples/1hrad.20130920.190000.gz") % (
+    fn = ("%s/../data/product_examples/1hrad.20130920.190000.gz") % (
         os.path.dirname(__file__),
     )
     metadata, _ = mrms.reader(fn)

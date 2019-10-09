@@ -9,7 +9,7 @@ from pyiem import dep
 def get_path(name):
     """helper"""
     basedir = os.path.dirname(__file__)
-    return "%s/../../data/wepp/%s" % (basedir, name)
+    return "%s/../data/wepp/%s" % (basedir, name)
 
 
 def test_ramps():
