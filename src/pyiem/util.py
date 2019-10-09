@@ -42,7 +42,7 @@ class CustomFormatter(logging.Formatter):
 def get_test_file(name, fponly=False):
     """Helper to get data for test usage."""
     basedir = os.path.dirname(__file__)
-    fn = "%s/../data/product_examples/%s" % (basedir, name)
+    fn = "%s/../../data/product_examples/%s" % (basedir, name)
     fp = open(fn, "rb")
     if fponly:
         return fp
