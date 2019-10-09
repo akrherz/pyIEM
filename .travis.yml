@@ -12,6 +12,23 @@ addons:
     - iemdb-mos.local
     - iemdb-iemre.local
     - iemdb2.local
+    - iemdb-postgis.local
+    - iemdb-mesosite.local
+    - iemdb-afos.local
+    - iemdb-asos.local
+    - iemdb-snet.local
+    - iemdb-mos.local
+    - iemdb-rwis.local
+    - iemdb-squaw.local
+    - iemdb-awos.local
+    - iemdb-iem.local
+    - iemdb-other.local
+    - iemdb-scan.local
+    - iemdb-wepp.local
+    - iemdb-coop.local
+    - iemdb-isuag.local
+    - iemdb-portfolio.local
+    - iemdb-smos.local
 env:
   global:
     - MPLLOCALFREETYPE=1

@@ -205,19 +205,7 @@ def get_dbconn(
         elif user == "akrherz":  # HACK for daryl's development, sigh
             user = "mesonet"
     if host is None:
-        host = "iemdb.local"
-        if database in [
-            "awos",
-            "hads",
-            "mos",
-            "iemre",
-            "talltowers",
-            "radar",
-            "nldn",
-            "smos",
-            "snet",
-        ]:
-            host = "iemdb-%s.local" % (database,)
+        host = "iemdb-%s.local" % (database,)
 
     try:
         pgconn = psycopg2.connect(
