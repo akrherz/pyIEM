@@ -239,9 +239,9 @@ Your name, phone
 # Yearly Section      #
 #######################
 
-4  # looper; number of Yearly Scenarios
+7  # looper; number of Yearly Scenarios
 #
-# Yearly scenario 1 of 4
+# Yearly scenario 1 of 7
 #
 Year 1 
 
@@ -258,7 +258,7 @@ Year 1
    0.7620  # row width
    6   # residue man - <none>
 #
-# Yearly scenario 2 of 4
+# Yearly scenario 2 of 7
 #
 Year 2 
 
@@ -273,9 +273,10 @@ Year 2
    288  # harvest date --- 10 / 15
    130  # planting date --- 5 /10
    0.7620  # row width
-   6   # residue man - <none>
+   1   # residue man - <none>
+   99  # bogus
 #
-# Yearly scenario 3 of 4
+# Yearly scenario 3 of 7
 #
 Year 3 
 
@@ -290,11 +291,69 @@ Year 3
    365  # harvest date --- 12 / 31
    1  # planting date --- 1 /1
    0.0000  # row width
-   6   # residue man - <none>
+   2   # residue man - <none>
+   99  # bogus
+   99  99 # bogus
 #
-# Yearly scenario 4 of 4
+# Yearly scenario 4 of 7
 #
 Year 4 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+3 # management <fallow>
+   365  # harvest date --- 12 / 31
+   1  # planting date --- 1 /1
+   0.0000  # row width
+   3   # residue man - <none>
+   99  # bogus
+#
+# Yearly scenario 5 of 7
+#
+Year 5 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+3 # management <fallow>
+   365  # harvest date --- 12 / 31
+   1  # planting date --- 1 /1
+   0.0000  # row width
+   4   # residue man - <none>
+   99  # bogus
+   99  # bogus
+#
+# Yearly scenario 6 of 7
+#
+Year 6 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+3 # management <fallow>
+   365  # harvest date --- 12 / 31
+   1  # planting date --- 1 /1
+   0.0000  # row width
+   5   # residue man - <none>
+   99  # bogus
+   99  # bogus
+#
+# Yearly scenario 7 of 7
+#
+Year 7 
 
 
 
