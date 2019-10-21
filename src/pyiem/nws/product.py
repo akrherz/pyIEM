@@ -511,7 +511,7 @@ class TextProduct(object):
                 return segment.headlines[0]
         return default
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """Return a tuple of jabber messages [(plain, html, xtra_dict)]
 
         Args:

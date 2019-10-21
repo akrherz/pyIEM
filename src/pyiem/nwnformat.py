@@ -13,6 +13,7 @@ import pyiem.util as util
 
 
 def uv(sped, drct2):
+    """Convert to u,v components."""
     dirr = drct2 * math.pi / 180.00
     s = math.sin(dirr)
     c = math.cos(dirr)
@@ -43,8 +44,6 @@ def mydir(u, v):
         ddir = 180 + ddir
     elif u > 0 and v < 0:
         ddir = 360 + ddir
-    elif u < 0 and v < 0:
-        ddir = ddir
     elif u < 0 and v > 0:
         ddir = 180 + ddir
     return int(round(math.fabs(ddir), 0))
@@ -175,8 +174,8 @@ class nwnformat(object):
 
             utot += u
             vtot += v
-        uavg = utot / len(self.aSknt)
-        vavg = vtot / len(self.aSknt)
+        uavg = utot / float(len(self.aSknt))
+        vavg = vtot / float(len(self.aSknt))
         self.avg_drct = mydir(uavg, vavg)
         self.avg_drctTxt = util.drct2text(self.avg_drct)
 

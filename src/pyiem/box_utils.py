@@ -84,7 +84,7 @@ def sendfiles2box(
                 _fileid = exp.context_info["conflicts"]["id"]
                 LOG.info("overwriting %s fid: %s", remotefn, _fileid)
                 try:
-                    item = client.file(_fileid).update_contents(localfn)
+                    client.file(_fileid).update_contents(localfn)
                     res.append(_fileid)
                     continue
                 except Exception as exp2:
