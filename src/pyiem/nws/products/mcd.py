@@ -10,7 +10,6 @@ import datetime
 import six
 import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
-from shapely.geometry import MultiPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
 
@@ -72,7 +71,7 @@ class MCDProduct(TextProduct):
             expire = self.valid + datetime.timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
 
-        return issue.replace(tzinfo=pytz.utc), expire.replace(tzinfo=pytz.utc)
+        return issue.replace(tzinfo=pytz.UTC), expire.replace(tzinfo=pytz.UTC)
 
     def find_watch_probability(self):
         """ Find the probability of watch issuance for SPC MCD"""
@@ -208,31 +207,42 @@ class MCDProduct(TextProduct):
 
     def database_save(self, txn):
         """Save this product to the database"""
+        table = "mcd" if self.afos == "SWOMCD" else "mpd"
         # Remove any previous entries
-        sql = """
-        DELETE from text_products where product_id = %s
-        and product_num = %s
+        sql = (
+            """
+            DELETE from """
+            + table
+            + """ where product_id = %s
+            and num = %s
         """
+        )
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
             print(
                 ("mcd.database_save %s %s removed %s entries")
                 % (self.get_product_id(), self.discussion_num, txn.rowcount)
             )
-        giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
-        sql = """
-            INSERT into text_products
-            (product, product_id, geom, pil, issue, expire, product_num)
-            values (%s, %s, %s, %s, %s, %s, %s)
+        giswkt = "SRID=4326;%s" % (self.geometry.wkt,)
+        sql = (
+            """
+            INSERT into """
+            + table
+            + """
+            (product, product_id, geom, issue, expire, num, year,
+             watch_confidence)
+            values (%s, %s, %s, %s, %s, %s, %s, %s)
         """
+        )
         args = (
             self.text,
             self.get_product_id(),
             giswkt,
-            self.afos,
             self.sts,
             self.ets,
             self.discussion_num,
+            self.valid.year,
+            self.find_watch_probability(),
         )
         txn.execute(sql, args)
 
