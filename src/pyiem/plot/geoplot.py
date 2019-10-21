@@ -741,8 +741,6 @@ class MapPlot(object):
                 imgx1 = imgx
                 imgx0 = imgx1 - max_mystr_len * xpixels_per_char
                 ha = "right"
-            imgy0 = int(imgy)
-            imgy1 = imgy0 + mystr_lines * ypixels
             # Now we buffer
             imgx0 = max([0, imgx0 - labelbuffer])
             imgx1 = min(
@@ -755,7 +753,7 @@ class MapPlot(object):
                     ),
                 ]
             )
-            imgy0 = max([0, imgy0 - labelbuffer * 0.75])
+            imgy0 = max([0, int(imgy) - labelbuffer * 0.75])
             imgy1 = min(
                 [
                     figheight,
@@ -1280,7 +1278,6 @@ class MapPlot(object):
         pqstr=None,
     ):
         """ postprocess into a slim and trim PNG """
-        tmpfn = tempfile.mktemp()
         ram = BytesIO()
         plt.savefig(ram, format="png")
         ram.seek(0)
@@ -1299,8 +1296,9 @@ class MapPlot(object):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
             return
-        im2.save(tmpfn, format="PNG")
-
+        tmpfd, tmpfn = tempfile.mkstemp()
+        im2.save(tmpfd, format="PNG")
+        tmpfd.close()
         if pqstr is not None:
             subprocess.call(
                 "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfn),
