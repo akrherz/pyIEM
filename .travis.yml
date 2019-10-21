@@ -86,7 +86,3 @@ script:
   - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
   - codecov -e TRAVIS_PYTHON_VERSION;
 
-after_success:
-  - if [[ "$PYTHON_VERSION" == 2* ]]; then
-      coveralls;
-    fi
