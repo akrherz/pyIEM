@@ -20,7 +20,7 @@ def test_170926_nodbinsert(dbcursor):
     prod.database_save(dbcursor)
     dbcursor.execute(
         """
-        SELECT * from text_products where product_id = %s
+        SELECT * from mcd where product_id = %s
     """,
         (prod.get_product_id(),),
     )
