@@ -50,7 +50,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
     )
     try:
         req = requests.get(uri, timeout=30)
-    except:
+    except Exception:
         req = None
     if req and req.status_code == 200 and is_gzipped(req.content):
         o = open(tmpfn, "wb")
@@ -73,7 +73,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         )
         try:
             req = requests.get(uri, timeout=30)
-        except:
+        except Exception:
             req = None
         if req and req.status_code == 200 and is_gzipped(req.content):
             o = open(tmpfn, "wb")
