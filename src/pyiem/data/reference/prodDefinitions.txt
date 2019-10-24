@@ -9,6 +9,7 @@ AVA Avalanche Watch
 AVW Avalanche Warning
 AWU Area Weather Update
 AWW Airport Weather Warning
+BLU Blue Alert
 CAE Child Abduction Emergency
 CDW Civil Danger Warning
 CEM Civil Emergency Message
