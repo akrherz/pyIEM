@@ -499,7 +499,7 @@ def drct2text(drct):
         text = "WNW"
     elif drct < 324:
         text = "NW"
-    elif drct < 350:
+    else:
         text = "NNW"
     return text
 

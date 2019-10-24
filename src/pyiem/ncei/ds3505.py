@@ -1,7 +1,6 @@
 """Implementation of the NCEI DS3505 format
 
-    ftp://ftp.ncdc.noaa.gov/pub/data/noaa/ish-format-document.pdf
-
+    https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
 from __future__ import print_function
 import re
@@ -1290,7 +1289,7 @@ def process_metar(mstr, now):
         except MetarParserError as exp:
             try:
                 msg = str(exp)
-            except Exception as exp:
+            except Exception:
                 return None
             tokens = ERROR_RE.findall(str(exp))
             orig_mstr = mstr
@@ -1473,7 +1472,7 @@ def sql(txn, stid, data):
 
     try:
         txn.execute(_sql, args)
-    except Exception as _exp:
+    except Exception:
         print(metar)
         print(args)
         raise
@@ -1681,14 +1680,14 @@ def parser(msg, call_id, add_metar=False):
     data["extra"] = {}
     try:
         parse_extra(data, msg[105:])
-    except Exception as exp:
+    except Exception:
         # print('parse_extra failed |%s|' % (msg, ))
         # print(exp)
         pass
     if add_metar:
         try:
             gen_metar(data)
-        except Exception as _exp:
+        except Exception:
             print(json.dumps(data, indent=True, sort_keys=True, default=str))
             raise
 
