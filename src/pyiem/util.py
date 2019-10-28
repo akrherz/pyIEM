@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-outside-toplevel
 """Utility functions for pyIEM package
 
 This module contains utility functions used by various parts of the codebase.
@@ -14,7 +15,7 @@ import warnings
 import getpass
 from socket import error as socket_error
 
-from six import string_types
+from six import string_types, PY2
 
 # NB: some third party stuff is expensive to import, so let us be lazy
 
@@ -37,6 +38,15 @@ class CustomFormatter(logging.Formatter):
             record.funcName,
             record.getMessage(),
         )
+
+
+def html_escape(val):
+    """Wrapper around cgi.escape depreciation."""
+    if not PY2:
+        from html import escape
+    else:
+        from cgi import escape
+    return escape(val)  # pylint: disable=deprecated-method
 
 
 def get_test_file(name, fponly=False):

@@ -34,6 +34,12 @@ def logger():
     return util.logger()
 
 
+def test_escape():
+    """Does escaping work?"""
+    res = util.html_escape("Hello THERE!</p>")
+    assert res == "Hello THERE!&lt;/p&gt;"
+
+
 def test_ncopen():
     """Does ncopen at least somewhat work."""
     with pytest.raises(IOError):
