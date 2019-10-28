@@ -1296,19 +1296,19 @@ class MapPlot(object):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
             return
-        tmpfd, tmpfn = tempfile.mkstemp()
+        tmpfd = tempfile.NamedTemporaryFile(delete=False)
         im2.save(tmpfd, format="PNG")
         tmpfd.close()
         if pqstr is not None:
             subprocess.call(
-                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfn),
+                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfd.name),
                 shell=True,
             )
         if view:
-            subprocess.call("xv %s" % (tmpfn,), shell=True)
+            subprocess.call("xv %s" % (tmpfd.name,), shell=True)
         if filename is not None:
-            shutil.copyfile(tmpfn, filename)
-        os.unlink(tmpfn)
+            shutil.copyfile(tmpfd.name, filename)
+        os.unlink(tmpfd.name)
 
 
 def windrose(*args, **kwargs):
