@@ -1,5 +1,7 @@
 """Test plots made by pyiem.plot.geoplot"""
 import datetime
+import tempfile
+import os
 
 import pytest
 import matplotlib.colors as mpcolors
@@ -32,6 +34,14 @@ def test_issue98_labelbar():
     )
     mp.draw_colorbar(clevs, cmap, norm, spacing="proportional")
     return mp.fig
+
+
+def test_savefile():
+    """Can we properly save a file."""
+    mp = MapPlot()
+    tmpfd = tempfile.NamedTemporaryFile(delete=False)
+    mp.postprocess(filename=tmpfd.name)
+    assert os.path.isfile(tmpfd.name)
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
