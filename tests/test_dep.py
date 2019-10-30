@@ -45,7 +45,8 @@ def test_slp():
     """Read a slope file"""
     slp = dep.read_slp(get_path("slp.txt"))
     assert len(slp) == 5
-    assert abs(slp[4]["y"][-1] + 8.3) < 0.1
+    assert abs(slp[4]["y"][-1] + 2.91) < 0.01
+    assert abs(slp[4]["slopes"][-1] - 0.033) < 0.01
 
 
 def test_man():
