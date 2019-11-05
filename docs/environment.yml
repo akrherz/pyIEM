@@ -12,6 +12,7 @@ dependencies:
   - psycopg2
   - pyproj
   - cartopy
+  - windrose
   - pip:
     - matplotlib
     - apiclient
@@ -20,5 +21,4 @@ dependencies:
     - Pillow
     - python-metar 
     - git+https://github.com/smartsheet-platform/smartsheet-python-sdk
-    - git+https://github.com/akrherz/windrose.git@darylchanges
     - pyiem

@@ -26,3 +26,4 @@ shapely
 tqdm
 # prevent xarray 0.12.2 bug
 xarray<0.12.2
+windrose

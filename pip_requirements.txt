@@ -8,6 +8,5 @@ google-api-python-client
 Pillow
 pyproj
 git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git
-git+https://github.com/akrherz/windrose.git@darylchanges
 gdata; python_version=='2.7'
 git+https://github.com/dvska/gdata-python3.git; python_version > '3.0'
