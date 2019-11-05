@@ -1,85 +1,42 @@
 """util script to call `windrose` package"""
-import os
 import datetime
-import sys
 
 import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
-import matplotlib.image as mpimage
-from matplotlib.ticker import FormatStrFormatter
-
-# need to get AGG before windrose imports plt
+from metpy.units import units as mpunits
 from pyiem.plot.use_agg import plt
-
-# pylint: disable=wrong-import-order,ungrouped-imports
-from windrose import WindroseAxes
-from windrose.windrose import histogram
-from pyiem.datatypes import speed
+from pyiem.plot.windrose import histogram, plot
 from pyiem.util import get_dbconn
 from pyiem.network import Table as NetworkTable
-
-DATADIR = os.sep.join([os.path.dirname(__file__), "data"])
 
 WINDUNITS = {
     "mph": {
         "label": "miles per hour",
-        "dbmul": 1.15,
-        "bins": (0, 2, 5, 7, 10, 15, 20),
-        "abbr": "mph",
-        "binlbl": ("2-5", "5-7", "7-10", "10-15", "15-20", "20+"),
+        "units": mpunits("mph"),
+        "bins": (2, 5, 7, 10, 15, 20),
     },
     "kts": {
         "label": "knots",
-        "dbmul": 1.0,
-        "bins": (0, 2, 5, 7, 10, 15, 20),
-        "abbr": "kts",
-        "binlbl": ("2-5", "5-7", "7-10", "10-15", "15-20", "20+"),
+        "units": mpunits("knots"),
+        "bins": (2, 5, 7, 10, 15, 20),
     },
     "mps": {
         "label": "meters per second",
-        "dbmul": 0.5144,
-        "bins": (0, 2, 4, 6, 8, 10, 12),
-        "abbr": "m s$^{-1}$",
-        "binlbl": ("2-4", "4-6", "6-8", "8-10", "10-12", "12+"),
+        "units": mpunits("meter / second"),
+        "bins": (2, 4, 6, 8, 10, 12),
     },
     "kph": {
         "label": "kilometers per hour",
-        "dbmul": 1.609,
-        "bins": (0, 4, 10, 14, 20, 30, 40),
-        "abbr": "$km h^{-1}$",
-        "binlbl": ("4-10", "10-14", "14-20", "20-30", "30-40", "40+"),
+        "units": mpunits("kilometer / hour"),
+        "bins": (4, 10, 14, 20, 30, 40),
     },
 }
-RAOB_WINDUNITS = {
-    "mph": {
-        "label": "miles per hour",
-        "dbmul": 1.15,
-        "bins": (0, 5, 25, 50, 75, 100, 150),
-        "abbr": "mph",
-        "binlbl": ("5-25", "25-50", "50-75", "75-100", "100-150", "150+"),
-    },
-    "kts": {
-        "label": "knots",
-        "dbmul": 1.0,
-        "bins": (0, 5, 25, 50, 75, 100, 15),
-        "abbr": "kts",
-        "binlbl": ("5-25", "25-50", "50-75", "75-100", "100-150", "150+"),
-    },
-    "mps": {
-        "label": "meters per second",
-        "dbmul": 0.5144,
-        "bins": (0, 5, 10, 15, 25, 50, 75),
-        "abbr": "m s$^{-1}$",
-        "binlbl": ("5-10", "10-15", "15-25", "25-50", "50-75", "75+"),
-    },
-    "kph": {
-        "label": "kilometers per hour",
-        "dbmul": 1.609,
-        "bins": (0, 4, 10, 14, 20, 30, 40),
-        "abbr": "$km h^{-1}$",
-        "binlbl": ("4-10", "10-14", "14-20", "20-30", "30-40", "40+"),
-    },
+RAOB_BINS = {
+    "mph": {"bins": (2, 25, 50, 75, 100, 150)},
+    "kts": {"bins": (2, 25, 50, 75, 100, 15)},
+    "mps": {"bins": (1, 10, 15, 25, 50, 75)},
+    "kph": {"bins": (4, 10, 14, 20, 30, 40)},
 }
 
 
@@ -191,17 +148,18 @@ def _make_textresult(
       str of information"""
     if df.empty:
         return "No Data Found"
-    wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
-    if bins:
-        wu["bins"] = bins
+    wu = WINDUNITS[units]
+    if not bins:
+        bins = wu["bins"]
+        if level is not None:
+            bins = RAOB_BINS[units]
     # Effectively filters out the nulls
     df2 = df[df["drct"] >= 0]
-    dir_edges, var_bins, table = histogram(
-        df2["drct"].values,
-        df2["speed"].values,
-        np.asarray(wu["bins"]),
-        nsector,
-        normed=True,
+    speed = df2["sknt"].values * mpunits("knots")
+    direction = df2["drct"].values * mpunits("degree")
+    bins = bins * wu["units"]
+    calm_percent, dir_centers, table = histogram(
+        speed, direction, bins, nsector
     )
     res = ("# Windrose Data Table (Percent Frequency) " "for %s (%s)\n") % (
         sname if sname is not None else "((%s))" % (station,),
@@ -226,19 +184,27 @@ def _make_textresult(
     )
     res += "# First value in table is CALM\n"
     res += "       ,"
-    for j in range(len(var_bins) - 1):
-        res += " %4.1f-%4.1f," % (var_bins[j], var_bins[j + 1] - 0.1)
-    res += "\n"
-    dir_edges2 = np.concatenate(
-        (
-            np.array(dir_edges),
-            [dir_edges[-1] + (dir_edges[-1] - dir_edges[-2])],
+    # Print out Speed Bins
+    for i, val in enumerate(bins.m[:-1]):
+        maxval = (
+            "+"
+            if i == bins.m.shape[0] - 2
+            else "%4.1f" % (bins.m[i + 1] - 0.1,)
         )
-    )
-    for i in range(len(dir_edges2) - 1):
-        res += "%03i-%03i," % (dir_edges2[i], dir_edges2[i + 1])
-        for j in range(len(var_bins) - 1):
-            res += " %9.3f," % (table[j, i],)
+        res += " %4.1f%s," % (val, maxval)
+
+    angle = dir_centers.m[1] - dir_centers.m[0]
+    res += "\n"
+    for i, val in enumerate(dir_centers.m):
+        minval = np.max([0, val - angle])
+        maxval = np.min([360, val + angle])
+        res += "%03i-%03i, %9s," % (
+            minval,
+            maxval,
+            calm_percent.m if i == 0 else "",
+        )
+        for j in range(bins.m.shape[0]):
+            res += " %9.3f," % (table.m[i, j],)
         res += "\n"
     return res
 
@@ -274,80 +240,24 @@ def _make_plot(
     Returns:
       matplotlib.Figure
     """
-    # Generate figure
-    fig = plt.figure(figsize=(8, 8), dpi=100, facecolor="w", edgecolor="w")
-    rect = [0.12, 0.12, 0.76, 0.76]
-    ax = WindroseAxes(fig, rect, facecolor="w", rmax=rmax)
-    fig.add_axes(ax)
-    wu = WINDUNITS[units] if level is None else RAOB_WINDUNITS[units]
-    if bins:
-        wu["bins"] = bins
-        wu["binlbl"] = []
-        for i, mybin in enumerate(bins[1:-1]):
-            wu["binlbl"].append("%g-%g" % (mybin, bins[i + 2]))
-        wu["binlbl"].append("%g+" % (bins[-1],))
+    wu = WINDUNITS[units]
     # Filters the missing values
     df2 = df[df["drct"] >= 0]
-    try:
-        # Unsure why this bombs out sometimes
-        ax.bar(
-            df2["drct"].values,
-            df2["speed"].values,
-            normed=True,
-            bins=wu["bins"],
-            opening=0.8,
-            edgecolor="white",
-            nsector=nsector,
-        )
-    except Exception as exp:
-        sys.stderr.write(str(exp))
-    # Figure out the shortest bar
-    # pylint: disable=protected-access
-    mindir = ax._info["dir"][np.argmin(np.sum(ax._info["table"], axis=0))]
-    ax.set_rlabel_position((450 - mindir) % 360 - 15)
-    # Adjust the limits so to get a empty center
-    rmin, rmax = ax.get_ylim()
-    ax.set_rorigin(0 - (rmax - rmin) * 0.2)
-    rmin, rmax = ax.get_ylim()
-    # Make labels have % formatters
-    ax.yaxis.set_major_formatter(FormatStrFormatter("%.1f%%"))
-    # Place arrows at the border for better clarity
-    for x in ax.get_xticks():
-        # https://github.com/matplotlib/matplotlib/issues/5344
-        ax.annotate(
-            "",
-            xy=(x + 0.001, rmax - (rmax - rmin) * 0.12),
-            xytext=(x + 0.001, rmax + (rmax - rmin) * 0.02),
-            arrowprops=dict(
-                facecolor="None",
-                edgecolor="k",
-                alpha=0.8,
-                shrink=0.09,
-                zorder=10,
-            ),
-            ha="center",
-            va="center",
-        )
+    direction = df2["drct"].values * mpunits("degree")
+    if "speed" in df2.columns:
+        speed = df2["speed"].values * wu["units"]
+    else:
+        speed = df2["sknt"].values * mpunits("knots")
+    if not bins:
+        bins = wu["bins"] * wu["units"]
+        if level is not None:
+            bins = RAOB_BINS[units] * wu["units"]
+    if len(df2.index) < 5:
+        fig, ax = plt.subplots(1, 1)
+        ax.text(0.5, 0.5, "Not Enough Data For Plot.", transform=ax.transAxes)
+        return fig
+    wp = plot(direction, speed, bins=bins, nsector=nsector, rmax=rmax)
 
-    handles = []
-    for p in ax.patches_list:
-        color = p.get_facecolor()
-        handles.append(
-            plt.Rectangle((0, 0), 0.1, 0.3, facecolor=color, edgecolor="black")
-        )
-    legend = fig.legend(
-        handles,
-        wu["binlbl"],
-        bbox_to_anchor=(0.01, 0.01, 0.98, 0.09),
-        loc="center",
-        ncol=6,
-        title="Wind Speed [%s]" % (wu["abbr"],),
-        mode=None,
-        columnspacing=0.9,
-        handletextpad=0.45,
-        fontsize=14,
-    )
-    plt.setp(legend.get_texts(), fontsize=10)
     # Now we put some fancy debugging info on the plot
     tlimit = "Time Domain: "
     if len(hours) == 24 and len(months) == 12:
@@ -376,17 +286,8 @@ Period of Record: %s - %s""" % (
         df["valid"].min().strftime("%d %b %Y"),
         df["valid"].max().strftime("%d %b %Y"),
     )
-    plt.gcf().text(0.14, 0.99, label, va="top", fontsize=14)
-    plt.gcf().text(
-        0.5,
-        0.5,
-        "Calm\n%.1f%%"
-        % (len(df[df["sknt"] == 0].index) / float(len(df2.index)) * 100.0,),
-        ha="center",
-        va="center",
-        fontsize=14,
-    )
-    plt.gcf().text(
+    wp.fig.text(0.14, 0.99, label, va="top", fontsize=14)
+    wp.fig.text(
         0.96,
         0.11,
         ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s")
@@ -394,13 +295,13 @@ Period of Record: %s - %s""" % (
             len(df.index),
             len(df.index) - len(df2.index),
             df["speed"].mean(),
-            wu["abbr"],
+            units,
         ),
         ha="right",
         fontsize=14,
     )
     if not kwargs.get("nogenerated", False):
-        plt.gcf().text(
+        wp.fig.text(
             0.02,
             0.1,
             "Generated: %s" % (datetime.datetime.now().strftime("%d %b %Y"),),
@@ -408,12 +309,9 @@ Period of Record: %s - %s""" % (
             fontsize=14,
         )
     # Denote the direction blowing from
-    plt.gcf().text(0.02, 0.125, "Arrows indicate wind direction.", va="bottom")
-    # Make a logo
-    im = mpimage.imread("%s/%s" % (DATADIR, "logo.png"))
-    plt.figimage(im, 10, 735)
+    wp.fig.text(0.02, 0.125, "Arrows indicate wind direction.", va="bottom")
 
-    return fig
+    return wp.fig
 
 
 def windrose(
@@ -460,14 +358,14 @@ def windrose(
     """
     monthinfo = _get_timeinfo(months, "month", 12)
     hourinfo = _get_timeinfo(hours, "hour", 24)
-
+    wu = WINDUNITS[units]
     if sknt is None or drct is None:
         df = _get_data(station, database, sts, ets, monthinfo, hourinfo, level)
     else:
         df = pd.DataFrame({"sknt": sknt, "drct": drct, "valid": valid})
     # Convert wind speed into the units we want here
     if df["sknt"].max() > 0:
-        df["speed"] = speed(df["sknt"].values, "KT").value(units.upper())
+        df["speed"] = (df["sknt"].values * mpunits("knots")).to(wu["units"]).m
     if justdata:
         return _make_textresult(
             station,
@@ -480,10 +378,6 @@ def windrose(
             level,
             bins,
         )
-    if len(df.index) < 5 or not df["sknt"].max() > 0:
-        fig = plt.figure(figsize=(6, 7), dpi=80, facecolor="w", edgecolor="w")
-        fig.text(0.17, 0.89, "Not enough data available to generate plot")
-        return fig
 
     return _make_plot(
         station,
