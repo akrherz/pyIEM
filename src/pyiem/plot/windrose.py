@@ -7,6 +7,7 @@ import matplotlib.image as mpimage
 from matplotlib.ticker import FormatStrFormatter
 from matplotlib.projections.polar import PolarAxes
 from pyiem.plot.use_agg import plt
+from pyiem.reference import Z_OVERLAY2
 
 LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 
@@ -52,7 +53,7 @@ class WindrosePlot:
                 label=label,
             )
             base += self.table[:, col].m
-        if self.rmax:
+        if self.rmax is not None:
             self.ax.set_ylim(0, self.rmax)
         # Place axis label in least congested spot
         self.ax.set_rlabel_position(dir_centers.m[np.argmin(base)])
@@ -109,6 +110,7 @@ class WindrosePlot:
                 ),
                 ha="center",
                 va="center",
+                zorder=Z_OVERLAY2,
             )
 
 
@@ -162,10 +164,19 @@ def plot(direction, speed, **kwargs):
     Args:
         direction (pint.Quantity): wind direction from North.
         speed (pint.Quantity): wind speeds with units attached.
+        **bins (pint.Quantity): wind speed bins to produce the histogram for.
+        **nsector (int): The number of directional centers to divide the wind
+          rose into.  The first sector is centered on north.
+        **rmax (float): Hard codes the max radius value for the polar plot.
+
+    Returns:
+        WindrosePlot
     """
     wp = WindrosePlot(**kwargs)
     bins = kwargs.get("bins")
-    nsector = kwargs.get("nsector")
+    if bins is None:
+        bins = np.array([2, 5, 10, 20]) * units("mph")
+    nsector = kwargs.get("nsector", 8)
     wp.barplot(direction, speed, bins, nsector)
     wp.plot_calm()
     wp.draw_arrows()
