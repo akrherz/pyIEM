@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
 from metpy.units import units as mpunits
+from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import histogram, plot, WindrosePlot
 from pyiem.util import get_dbconn
 from pyiem.network import Table as NetworkTable
@@ -296,20 +297,14 @@ Period of Record: %s - %s""" % (
         df["valid"].min().strftime("%d %b %Y"),
         df["valid"].max().strftime("%d %b %Y"),
     )
-    wp.fig.text(0.14, 0.99, label, va="top", fontsize=14)
-    wp.fig.text(
-        0.96,
-        0.11,
-        ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s")
-        % (
-            len(df.index),
-            len(df.index) - len(df2.index),
-            df["speed"].mean(),
-            units,
-        ),
-        ha="right",
-        fontsize=14,
+    fitbox(wp.fig, label, 0.14, 0.99, 0.91, 0.99, ha="left")
+    label = ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s") % (
+        len(df.index),
+        len(df.index) - len(df2.index),
+        df["speed"].mean(),
+        units,
     )
+    wp.fig.text(0.96, 0.11, label, ha="right", fontsize=14)
     if not kwargs.get("nogenerated", False):
         wp.fig.text(
             0.02,
