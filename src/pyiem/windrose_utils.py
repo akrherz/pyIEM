@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 from pandas.io.sql import read_sql
 from metpy.units import units as mpunits
-from pyiem.plot.use_agg import plt
-from pyiem.plot.windrose import histogram, plot
+from pyiem.plot.windrose import histogram, plot, WindrosePlot
 from pyiem.util import get_dbconn
 from pyiem.network import Table as NetworkTable
 
@@ -33,10 +32,10 @@ WINDUNITS = {
     },
 }
 RAOB_BINS = {
-    "mph": {"bins": (2, 25, 50, 75, 100, 150)},
-    "kts": {"bins": (2, 25, 50, 75, 100, 15)},
-    "mps": {"bins": (1, 10, 15, 25, 50, 75)},
-    "kph": {"bins": (4, 10, 14, 20, 30, 40)},
+    "mph": [2, 25, 50, 75, 100, 150],
+    "kts": [2, 25, 50, 75, 100, 15],
+    "mps": [1, 10, 15, 25, 50, 75],
+    "kph": [4, 10, 14, 20, 30, 40],
 }
 
 
@@ -99,12 +98,17 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
         rlimiter,
     )
     if level is not None:  # HACK!
+        db = get_dbconn("postgis")
         # here comes another hack, stations with starting with _ are virtual
         stations = [station, "ZZZZ"]
         if station.startswith("_"):
             nt = NetworkTable("RAOB")
             stations = (
-                nt.sts[station]["name"].split("--")[1].strip().split(" ")
+                nt.sts.get(station, dict())
+                .get("name", "X--YYY ZZZ")
+                .split("--")[1]
+                .strip()
+                .split(" ")
             )
         sql = """SELECT p.smps * 1.94384 as sknt, p.drct, f.valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
@@ -253,9 +257,15 @@ def _make_plot(
         if level is not None:
             bins = RAOB_BINS[units] * wu["units"]
     if len(df2.index) < 5:
-        fig, ax = plt.subplots(1, 1)
-        ax.text(0.5, 0.5, "Not Enough Data For Plot.", transform=ax.transAxes)
-        return fig
+        wp = WindrosePlot()
+        wp.ax.text(
+            0.5,
+            0.5,
+            "Not Enough Data For Plot.",
+            ha="center",
+            transform=wp.ax.transAxes,
+        )
+        return wp.fig
     wp = plot(direction, speed, bins=bins, nsector=nsector, rmax=rmax)
 
     # Now we put some fancy debugging info on the plot
