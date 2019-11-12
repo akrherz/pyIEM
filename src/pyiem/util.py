@@ -214,6 +214,8 @@ def get_dbconn(
             user = "nobody"
         elif user == "akrherz":  # HACK for daryl's development, sigh
             user = "mesonet"
+        elif user == "meteor_ldm":  # Another HACK
+            user = "ldm"
     if host is None:
         host = "iemdb-%s.local" % (database,)
 
