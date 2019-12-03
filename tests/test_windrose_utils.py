@@ -2,6 +2,7 @@
 import datetime
 
 import pytest
+from metpy.units import units
 from pyiem.windrose_utils import windrose, _get_timeinfo
 from pyiem.util import utc
 
@@ -26,6 +27,35 @@ def test_timeinfo():
     assert res["labeltext"] == "(1, 2, 3, 4, 5, 6, 7, 8, 9)"
     res = _get_timeinfo([1], "month", 1)
     assert res["sqltext"] == " and extract(month from valid) = 1 "
+
+
+def test_windrose_without_units():
+    """Ensure that we can deal with provided bins."""
+    valid, sknt, drct = faux_data()
+    res = windrose(
+        "AMW2",
+        sknt=sknt,
+        drct=drct,
+        valid=valid,
+        months=[4, 5, 6],
+        bins=[10, 20, 40],
+        justdata=True,
+    )
+    assert res
+
+
+def test_windrose_with_units():
+    """Ensure that we can deal with provided bins."""
+    valid, sknt, drct = faux_data()
+    res = windrose(
+        "AMW2",
+        sknt=sknt,
+        drct=drct,
+        valid=valid,
+        months=[4, 5, 6],
+        bins=[10, 20, 40] * units("mph"),
+    )
+    assert res
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)

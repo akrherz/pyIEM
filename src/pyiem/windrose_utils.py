@@ -154,15 +154,14 @@ def _make_textresult(
     if df.empty:
         return "No Data Found"
     wu = WINDUNITS[units]
-    if not bins:
-        bins = wu["bins"]
+    if not hasattr(bins, "units"):
+        bins = wu["bins"] * wu["units"]
         if level is not None:
-            bins = RAOB_BINS[units]
+            bins = RAOB_BINS[units] * wu["units"]
     # Effectively filters out the nulls
     df2 = df[df["drct"] >= 0]
     speed = df2["sknt"].values * mpunits("knots")
     direction = df2["drct"].values * mpunits("degree")
-    bins = bins * wu["units"]
     calm_percent, dir_centers, table = histogram(
         speed, direction, bins, nsector
     )
@@ -253,7 +252,7 @@ def _make_plot(
         speed = df2["speed"].values * wu["units"]
     else:
         speed = df2["sknt"].values * mpunits("knots")
-    if not bins:
+    if not hasattr(bins, "units"):
         bins = wu["bins"] * wu["units"]
         if level is not None:
             bins = RAOB_BINS[units] * wu["units"]
@@ -368,6 +367,9 @@ def windrose(
         df = _get_data(station, database, sts, ets, monthinfo, hourinfo, level)
     else:
         df = pd.DataFrame({"sknt": sknt, "drct": drct, "valid": valid})
+    # Make sure our bins have units
+    if not hasattr(bins, "units") and bins:
+        bins = bins * wu["units"]
     # Convert wind speed into the units we want here
     if df["sknt"].max() > 0:
         df["speed"] = (df["sknt"].values * mpunits("knots")).to(wu["units"]).m
