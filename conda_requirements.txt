@@ -5,6 +5,8 @@ descartes
 fiona
 # need to pin for comparables
 freetype>=2.10
+# lock down gdal for now due to shapely issue
+gdal<3
 geojson
 matplotlib
 metpy
