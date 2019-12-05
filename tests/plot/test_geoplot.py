@@ -361,6 +361,23 @@ def test_states():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_cwa_with_custom_masking():
+    """Exercise the cwa plotting routines"""
+    mp = MapPlot(sector="cwa", cwa="DLH", nocaption=True)
+    mp.contourf(
+        np.arange(-94, -89),
+        np.arange(45, 50),
+        np.arange(5),
+        np.arange(5),
+        clevlabels=["a", "b", "c", "d", "e"],
+        clip_on=False,
+    )
+    mp.draw_cwas()
+    mp.draw_mask(sector="conus")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_cwa():
     """Exercise the cwa plotting routines"""
     mp = MapPlot(sector="cwa", cwa="MKX", nocaption=True)
