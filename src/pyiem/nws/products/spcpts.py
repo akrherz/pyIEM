@@ -227,7 +227,7 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             return Polygon(segment)
         print("     polygon is CCW (interior), testing intersection")
-        if not currentpoly.intersection(lr):
+        if currentpoly.intersection(lr).is_empty:
             print("     failed intersection with currentpoly, abort")
             return currentpoly
         interiors = [l for l in currentpoly.interiors]
@@ -273,12 +273,12 @@ def segment_logic(segment, currentpoly, polys):
     # If this line segment does not intersect the current polygon of interest,
     # we should check any previous polygons to see if it intersects it. We
     # could be dealing with invalid ordering in the file, sigh.
-    if not currentpoly.intersection(ls):
+    if currentpoly.intersection(ls).is_empty:
         print("     ls does not intersect currentpoly, looking for match")
         found = False
         for i, poly in enumerate(polys):
             intersect = poly.intersection(ls)
-            if not intersect or isinstance(intersect, MultiLineString):
+            if intersect.is_empty or isinstance(intersect, MultiLineString):
                 continue
             print(
                 (
@@ -296,12 +296,17 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
-    (polya, polyb) = split(currentpoly, ls)
-    # Linear reference our splitter's start and end distance
-    startdist = polya.exterior.project(Point(ls.coords[0]))
-    enddist = polya.exterior.project(Point(ls.coords[-1]))
-    # if the end is further down the line, we want this polygon
-    res = polya if enddist > startdist else polyb
+    # Results in either [currentpoly] or [polya, polyb]
+    geomcollect = split(currentpoly, ls)
+    if len(geomcollect) == 1:
+        res = geomcollect.geoms[0]
+    else:
+        (polya, polyb) = geomcollect.geoms
+        # Linear reference our splitter's start and end distance
+        startdist = polya.exterior.project(Point(ls.coords[0]))
+        enddist = polya.exterior.project(Point(ls.coords[-1]))
+        # if the end is further down the line, we want this polygon
+        res = polya if enddist > startdist else polyb
     print("     taking polygon.area = %.4f" % (res.area,))
     return res
 
