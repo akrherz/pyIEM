@@ -933,10 +933,19 @@ class MapPlot(object):
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return res
 
-    def draw_mask(self):
-        """Draw the mask, when appropriate"""
-        # can't mask what we don't know
-        if self.sector not in (
+    def draw_mask(self, sector=None):
+        """Draw a mask on the main axes.
+
+        If `sector` is not provided, this attempts to intelligently to the
+        masking the user wants.
+
+        Args:
+          sector (str,optional): Hard code what type of sector masking should
+            happen.
+        """
+        sector = self.sector if sector is None else sector
+        # can't mask what we don't have a polygon bounds for.
+        if sector not in (
             "iailin",
             "midwest",
             "conus",
@@ -946,20 +955,20 @@ class MapPlot(object):
         ):
             return
         # in lon,lat
-        if self.sector == "state":
+        if sector == "state":
             s = load_pickle_geo("us_states.pickle")
             mask_outside_geom(self.ax, s[self.state.encode()][b"geom"])
             return
-        elif self.sector == "cwa":
+        if sector == "cwa":
             s = load_pickle_geo("cwa.pickle")
             mask_outside_geom(self.ax, s[self.cwa.encode()][b"geom"])
             return
-        elif self.sector == "iowawfo":
+        if sector == "iowawfo":
             s = load_pickle_geo("iowawfo.pickle")
             geo = s[b"iowawfo"][b"geom"]
             ccw = np.asarray(geo.exterior)[::-1]
         else:
-            ccw = load_bounds("%s_ccw" % (self.sector,))
+            ccw = load_bounds("%s_ccw" % (sector,))
         # in map coords
         points = self.ax.projection.transform_points(
             ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
