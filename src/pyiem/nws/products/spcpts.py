@@ -227,7 +227,7 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             return Polygon(segment)
         print("     polygon is CCW (interior), testing intersection")
-        if not currentpoly.intersection(lr):
+        if currentpoly.intersection(lr).is_empty:
             print("     failed intersection with currentpoly, abort")
             return currentpoly
         interiors = [l for l in currentpoly.interiors]
@@ -273,12 +273,12 @@ def segment_logic(segment, currentpoly, polys):
     # If this line segment does not intersect the current polygon of interest,
     # we should check any previous polygons to see if it intersects it. We
     # could be dealing with invalid ordering in the file, sigh.
-    if not currentpoly.intersection(ls):
+    if currentpoly.intersection(ls).is_empty:
         print("     ls does not intersect currentpoly, looking for match")
         found = False
         for i, poly in enumerate(polys):
             intersect = poly.intersection(ls)
-            if not intersect or isinstance(intersect, MultiLineString):
+            if intersect.is_empty or isinstance(intersect, MultiLineString):
                 continue
             print(
                 (
