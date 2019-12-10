@@ -1,6 +1,6 @@
 """tests for windrose_utils."""
 import datetime
-from io import StringIO
+from io import BytesIO
 
 import pytest
 from pandas import read_csv
@@ -43,8 +43,9 @@ def test_windrose_without_units():
         bins=[10, 20, 40],
         justdata=True,
     )
-    sio = StringIO()
-    sio.write(res)
+    # python2-3 hackery here
+    sio = BytesIO()
+    sio.write(res.encode("ascii"))
     sio.seek(0)
     df = read_csv(sio, skiprows=range(0, 8), index_col="Direction")
     assert len(df.columns) == 4
