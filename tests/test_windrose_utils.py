@@ -1,7 +1,9 @@
 """tests for windrose_utils."""
 import datetime
+from io import BytesIO
 
 import pytest
+from pandas import read_csv
 from metpy.units import units
 from pyiem.windrose_utils import windrose, _get_timeinfo
 from pyiem.util import utc
@@ -41,7 +43,13 @@ def test_windrose_without_units():
         bins=[10, 20, 40],
         justdata=True,
     )
-    assert res
+    # python2-3 hackery here
+    sio = BytesIO()
+    sio.write(res.encode("ascii"))
+    sio.seek(0)
+    df = read_csv(sio, skiprows=range(0, 8), index_col="Direction")
+    assert len(df.columns) == 4
+    assert abs(df.sum(axis=0).sum() - 100.0) < 0.1
 
 
 def test_windrose_with_units():

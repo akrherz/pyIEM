@@ -35,5 +35,6 @@ def test_histogram():
     """Can we make histograms properly."""
     nsector = 16
     calm_percent, dirbins, table = histogram(SPEED, DIRECTION, BINS, nsector)
+    # 9 out of 600 above are below 2 MPH, 1.5%
     assert abs(calm_percent.m - 1.50) < 0.01
     assert dirbins.m.shape[0] == table.m.shape[0]
