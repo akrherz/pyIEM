@@ -314,7 +314,11 @@ Period of Record: %s - %s""" % (
             fontsize=14,
         )
     # Denote the direction blowing from
-    wp.fig.text(0.02, 0.125, "Arrows indicate wind direction.", va="bottom")
+    lbl = ("Calm values are < %.1f %s\nArrows indicate wind direction.") % (
+        bins.m[0],
+        units,
+    )
+    wp.fig.text(0.02, 0.125, lbl, va="bottom")
 
     return wp.fig
 
