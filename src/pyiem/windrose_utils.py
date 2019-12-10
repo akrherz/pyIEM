@@ -187,28 +187,29 @@ def _make_textresult(
         datetime.datetime.utcnow().strftime("%d %b %Y %H:%M"),
     )
     res += "# First value in table is CALM\n"
-    res += "       ,"
+    cols = ["Direction", "Calm"]
     # Print out Speed Bins
-    for i, val in enumerate(bins.m[:-1]):
+    for i, val in enumerate(bins.m):
         maxval = (
             "+"
-            if i == bins.m.shape[0] - 2
-            else "%4.1f" % (bins.m[i + 1] - 0.1,)
+            if i == bins.m.shape[0] - 1
+            else " %4.1f" % (bins.m[i + 1] - 0.1,)
         )
-        res += " %4.1f%s," % (val, maxval)
+        cols.append("%4.1f%s" % (val, maxval))
 
     angle = dir_centers.m[1] - dir_centers.m[0]
-    res += "\n"
+    res += ",".join(["%9s" % (c,) for c in cols]) + "\n"
     for i, val in enumerate(dir_centers.m):
         minval = np.max([0, val - angle])
         maxval = np.min([360, val + angle])
-        res += "%03i-%03i, %9s," % (
+        res += "%03i-%03i  ,%9s," % (
             minval,
             maxval,
-            calm_percent.m if i == 0 else "",
+            np.round(calm_percent.m, 2) if i == 0 else "",
         )
-        for j in range(bins.m.shape[0]):
-            res += " %9.3f," % (table.m[i, j],)
+        res += ",".join(
+            ["%9.3f" % (table.m[i, j],) for j in range(bins.m.shape[0])]
+        )
         res += "\n"
     return res
 
