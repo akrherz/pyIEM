@@ -301,7 +301,7 @@ Period of Record: %s - %s""" % (
     label = ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s") % (
         len(df.index),
         len(df.index) - len(df2.index),
-        df["speed"].mean(),
+        speed.m.mean(),
         units,
     )
     wp.fig.text(0.96, 0.11, label, ha="right", fontsize=14)
