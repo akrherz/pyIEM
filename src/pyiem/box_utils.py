@@ -54,8 +54,10 @@ def sendfiles2box(
         found = False
         while not found:
             LOG.debug("folder(%s).get_items(offset=%s)", folder_id, offset)
-            items = client.folder(folder_id=folder_id).get_items(
-                limit=100, offset=offset
+            items = list(
+                client.folder(folder_id=folder_id).get_items(
+                    limit=100, offset=offset
+                )
             )
             for item in items:
                 if (
