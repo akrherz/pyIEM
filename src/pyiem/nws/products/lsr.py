@@ -1,19 +1,14 @@
 """NWS Local Storm Report (LSR) Parsing."""
 import datetime
 import re
+import math
 
 
-import six
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
-from pyiem.util import utc
+from pyiem.util import utc, html_escape
 from pyiem import reference
-
-if not six.PY2:
-    from html import escape as html_escape
-else:
-    from cgi import escape as html_escape
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
@@ -25,8 +20,6 @@ SPLITTER = re.compile(
 
 class LSRProductException(TextProductException):
     """ Something we can raise when bad things happen! """
-
-    pass
 
 
 class LSRProduct(TextProduct):
@@ -233,6 +226,9 @@ def parse_lsr(prod, text):
     lsr.geometry = ShapelyPoint((lon, lat))
 
     lsr.consume_magnitude(lines[1][12:29].strip())
+    if lsr.magnitude_f is not None and math.isnan(lsr.magnitude_f):
+        prod.warnings.append("LSR has NAN magnitude\n%s" % (text,))
+        return None
     lsr.county = lines[1][29:48].strip()
     lsr.state = lines[1][48:50]
     lsr.source = lines[1][53:].strip()

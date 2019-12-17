@@ -17,15 +17,9 @@ import datetime
 import re
 import math
 
-
-import six
 import pyiem.nws.product as product
 from pyiem.datatypes import distance
-
-if not six.PY2:
-    from html import escape as html_escape
-else:
-    from cgi import escape as html_escape
+from pyiem.util import html_escape
 
 OV_LATLON = re.compile(
     (
