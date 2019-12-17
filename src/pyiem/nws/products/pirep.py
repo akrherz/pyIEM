@@ -329,7 +329,7 @@ class Pirep(product.TextProduct):
             row = txn.fetchone()
             report.cwsu = row["id"]
 
-    def get_jabbers(self, uri=None, uri2=None):
+    def get_jabbers(self, _uri, _uri2=None):
         """ get jabber messages """
         res = []
         for report in self.reports:

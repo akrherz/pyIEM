@@ -19,7 +19,7 @@ def test_170324_ampersand():
     prod = pirepparser(
         get_test_file("PIREPS/ampersand.txt"), nwsli_provider=nwsli_provider
     )
-    j = prod.get_jabbers()
+    j = prod.get_jabbers("unused")
     ans = (
         "Routine pilot report at 1259Z: DUG UA /OV SSO/"
         "TM 1259/FL340/TP CRJ9/TB LT TURB &amp; CHOP/RM ZAB FDCS"
@@ -36,7 +36,7 @@ def test_161010_missingtime():
     prod = pirepparser(
         get_test_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider
     )
-    j = prod.get_jabbers()
+    j = prod.get_jabbers("unused")
     assert j[0][2]["channels"] == "UA.None,UA.PIREP"
 
 
@@ -192,5 +192,5 @@ def test_1():
     )
     assert not prod.warnings
 
-    j = prod.get_jabbers()
+    j = prod.get_jabbers("unused")
     assert j[0][2]["channels"] == "UA.None,UA.PIREP"

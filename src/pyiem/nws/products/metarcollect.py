@@ -363,7 +363,7 @@ class METARCollective(TextProduct):
         self.metars = []
         self.split_and_parse()
 
-    def get_jabbers(self, uri=None, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """Make this into jabber messages"""
         jmsgs = []
         for mtr in self.metars:
