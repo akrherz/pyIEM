@@ -203,7 +203,7 @@ def test_basic(dbcursor):
     )
     assert not prod.warnings
     assert len(prod.metars) == 11
-    jmsgs = prod.get_jabbers()
+    jmsgs = prod.get_jabbers("localhost")
     assert len(jmsgs) == 6
     ans = (
         "None,None (SPS) ASOS reports Hail -- KSPS 081352Z 10015KT 10SM "
