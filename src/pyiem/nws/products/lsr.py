@@ -1,6 +1,7 @@
 """NWS Local Storm Report (LSR) Parsing."""
 import datetime
 import re
+import math
 
 
 import six
@@ -233,6 +234,9 @@ def parse_lsr(prod, text):
     lsr.geometry = ShapelyPoint((lon, lat))
 
     lsr.consume_magnitude(lines[1][12:29].strip())
+    if lsr.magnitude_f is not None and math.isnan(lsr.magnitude_f):
+        prod.warnings.append("LSR has NAN magnitude\n%s" % (text,))
+        return None
     lsr.county = lines[1][29:48].strip()
     lsr.state = lines[1][48:50]
     lsr.source = lines[1][53:].strip()
