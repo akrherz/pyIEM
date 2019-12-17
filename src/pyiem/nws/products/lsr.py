@@ -4,17 +4,11 @@ import re
 import math
 
 
-import six
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
-from pyiem.util import utc
+from pyiem.util import utc, html_escape
 from pyiem import reference
-
-if not six.PY2:
-    from html import escape as html_escape
-else:
-    from cgi import escape as html_escape
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
@@ -26,8 +20,6 @@ SPLITTER = re.compile(
 
 class LSRProductException(TextProductException):
     """ Something we can raise when bad things happen! """
-
-    pass
 
 
 class LSRProduct(TextProduct):

@@ -6,17 +6,11 @@ from __future__ import print_function
 import re
 import datetime
 
-
-import six
 import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
-
-if not six.PY2:
-    from html import escape as html_escape
-else:
-    from cgi import escape as html_escape
+from pyiem.util import html_escape
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(

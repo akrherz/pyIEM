@@ -63,9 +63,11 @@ class LSR(object):
         self.z = None
 
     def get_lat(self):
+        """Return the LSR latitude."""
         return self.geometry.xy[1][0]
 
     def get_lon(self):
+        """Return the LSR longitude."""
         return self.geometry.xy[0][0]
 
     def consume_magnitude(self, text):
