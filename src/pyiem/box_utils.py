@@ -8,6 +8,8 @@ from boxsdk import Client, OAuth2
 from pyiem.util import get_properties, set_property
 
 LOG = logging.getLogger()
+# https://github.com/box/box-python-sdk/issues/414
+logging.getLogger("boxsdk").setLevel(logging.CRITICAL)
 
 
 def _store_tokens(access_token, refresh_token):
