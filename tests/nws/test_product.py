@@ -28,9 +28,12 @@ def test_180130_chst():
 
 def test_170411_fakemnd():
     """This RTP has a quasi-faked timestamp in the header causing error"""
-    tp = productparser(get_test_file("RTPSGX.txt"))
+    utcnow = utc(2017, 4, 10, 23, 50)
+    tp = productparser(get_test_file("RTPSGX.txt"), utcnow=utcnow)
     res = utc(2017, 4, 10, 23, 30)
     assert tp.valid == res
+    res = utc(2017, 4, 10, 23, 24)
+    assert tp.wmo_valid == res
 
 
 def test_151024_cae():
