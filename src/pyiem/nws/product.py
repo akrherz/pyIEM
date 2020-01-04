@@ -441,7 +441,10 @@ class TextProduct(object):
         self.unixtext = text.replace(u"\r\r\n", u"\n")
         self.sections = self.unixtext.split(u"\n\n")
         self.afos = None
+        # The "truth" timestamp
         self.valid = None
+        # The WMO header based timestamp
+        self.wmo_valid = None
         self.source = None
         self.wmo = None
         self.ddhhmm = None
@@ -452,8 +455,9 @@ class TextProduct(object):
         self.tz = None
         self.geometry = None
         if utcnow is None:
-            utc = datetime.datetime.utcnow()
-            self.utcnow = utc.replace(tzinfo=pytz.timezone("UTC"))
+            self.utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        # make sure this is actulling in UTC
+        self.utcnow = self.utcnow.astimezone(pytz.UTC)
 
         self.parse_wmo()
         self.parse_afos()
@@ -577,68 +581,69 @@ class TextProduct(object):
 
     def parse_valid(self):
         """ Figre out the valid time of this product """
-        # Now lets look for a local timestamp in the product MND or elsewhere
-        tokens = TIME_RE.findall(self.unixtext)
-        # If we don't find anything, lets default to now, its the best
-        if tokens:
-            # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
-            self.z = tokens[0][2].upper()
-            self.tz = pytz.timezone(reference.name2pytz.get(self.z, "UTC"))
-            hhmi = tokens[0][0]
-            # False positive from regex
-            if hhmi[0] == ":":
-                hhmi = hhmi.replace(u":", "")
-            if hhmi.find(":") > -1:
-                (hh, mi) = hhmi.split(":")
-            elif len(hhmi) < 3:
-                hh = hhmi
-                mi = 0
-            else:
-                hh = hhmi[:-2]
-                mi = hhmi[-2:]
-            dstr = "%s:%s %s %s %s %s" % (
-                hh,
-                mi,
-                tokens[0][1],
-                tokens[0][4],
-                tokens[0][5],
-                tokens[0][6],
-            )
-            # Careful here, need to go to UTC time first then come back!
-            try:
-                now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-            except ValueError:
-                msg = (
-                    "Invalid timestamp [%s] found in product "
-                    "[%s %s %s] header"
-                ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
-                raise TextProductException(self.source[1:], msg)
-            now += datetime.timedelta(hours=reference.offsets[self.z])
-            self.valid = now.replace(tzinfo=pytz.timezone("UTC"))
-            return
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
-
         # Take the first hit, ignore others
         wmo_day = int(self.ddhhmm[:2])
         wmo_hour = int(self.ddhhmm[2:4])
         wmo_minute = int(self.ddhhmm[4:])
 
-        self.valid = self.utcnow.replace(
+        self.wmo_valid = self.utcnow.replace(
             hour=wmo_hour, minute=wmo_minute, second=0, microsecond=0
         )
-        if wmo_day == self.utcnow.day:
+        if wmo_day != self.utcnow.day:
+            if wmo_day - self.utcnow.day == 1:  # Tomorrow
+                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
+            elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
+                self.wmo_valid = self.wmo_valid + datetime.timedelta(days=-10)
+                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
+            elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
+                self.wmo_valid = self.wmo_valid + datetime.timedelta(days=10)
+                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
+            else:
+                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
+
+        # we can do no better
+        self.valid = self.wmo_valid
+
+        # Now lets look for a local timestamp in the product MND or elsewhere
+        tokens = TIME_RE.findall(self.unixtext)
+        # If we don't find anything, lets default to now, its the best
+        if not tokens:
             return
-        elif wmo_day - self.utcnow.day == 1:  # Tomorrow
-            self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
-            self.valid = self.valid + datetime.timedelta(days=-10)
-            self.valid = self.valid.replace(day=wmo_day)
-        elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
-            self.valid = self.valid + datetime.timedelta(days=10)
-            self.valid = self.valid.replace(day=wmo_day)
+        # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
+        self.z = tokens[0][2].upper()
+        self.tz = pytz.timezone(reference.name2pytz.get(self.z, "UTC"))
+        hhmi = tokens[0][0]
+        # False positive from regex
+        if hhmi[0] == ":":
+            hhmi = hhmi.replace(u":", "")
+        if hhmi.find(":") > -1:
+            (hh, mi) = hhmi.split(":")
+        elif len(hhmi) < 3:
+            hh = hhmi
+            mi = 0
         else:
-            self.valid = self.valid.replace(day=wmo_day)
+            hh = hhmi[:-2]
+            mi = hhmi[-2:]
+        dstr = "%s:%s %s %s %s %s" % (
+            hh,
+            mi,
+            tokens[0][1],
+            tokens[0][4],
+            tokens[0][5],
+            tokens[0][6],
+        )
+        # Careful here, need to go to UTC time first then come back!
+        try:
+            now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
+        except ValueError:
+            msg = (
+                "Invalid timestamp [%s] found in product " "[%s %s %s] header"
+            ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
+            raise TextProductException(self.source[1:], msg)
+        now += datetime.timedelta(hours=reference.offsets[self.z])
+        self.valid = now.replace(tzinfo=pytz.UTC)
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
