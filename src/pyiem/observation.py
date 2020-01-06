@@ -278,7 +278,7 @@ class Observation(object):
             and self.data["relh"] <= 100
         ):
             self.data["dwpf"] = bounded(
-                mcalc.dewpoint_rh(
+                mcalc.dewpoint_from_relative_humidity(
                     self.data["tmpf"] * munits.degF,
                     self.data["relh"] * munits.percent,
                 )
