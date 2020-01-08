@@ -28,8 +28,10 @@ import cartopy.crs as ccrs
     Z_CLIP,
     Z_CLIP2,
     Z_OVERLAY,
+    Z_OVERLAY_LABEL,
     Z_OVERLAY2,
-] = range(1, 9)
+    Z_OVERLAY2_LABEL,
+] = range(1, 11)
 
 TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
