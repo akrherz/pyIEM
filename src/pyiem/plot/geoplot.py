@@ -1143,7 +1143,7 @@ class MapPlot(object):
                         mx,
                         my,
                         "%s" % (val,),
-                        zorder=100,
+                        zorder=z + 1,
                         ha="center",
                         va="center",
                         transform=ccrs.PlateCarree(),
