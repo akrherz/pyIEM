@@ -13,6 +13,15 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_200109_nogeoms():
+    """Failed to parse some tricky line work south of New Orleans."""
+    # https://.../products/outlook/archive/2020/day2otlk_20200109_1730.html
+    spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom3.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "ENH", 2)
+    assert abs(outlook.geometry.area - 33.785) < 0.01
+
+
 def test_190907_invalid():
     """Product hit geos issue."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
@@ -55,6 +64,7 @@ def test_190625_nogeom2():
 
 def test_190527_canada():
     """SPC Updated marine bounds."""
+    # https://.../products/outlook/archive/2019/day1otlk_20190528_0100.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_canada.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
@@ -148,11 +158,14 @@ def test_170518_bad_dbtime():
 
 def test_170428_large(dbcursor):
     """PTSDY1 has a large 10 tor"""
+    # https://.../products/outlook/archive/2006/day1otlk_20060510_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_largetor10.txt"))
     # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("TORNADO", "0.10", 1)
     assert abs(outlook.geometry.area - 31.11) < 0.01
+    outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 428.00) < 0.01
 
 
 def test_170417_empty(dbcursor):
@@ -329,6 +342,7 @@ def test_23jul_failure():
 
 def test_140707_general():
     """ Had a problem with General Thunder, lets test this """
+    # https://.../products/outlook/archive/2014/day1otlk_20140707_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
     # Linework here is invalid, so we can't account for it.

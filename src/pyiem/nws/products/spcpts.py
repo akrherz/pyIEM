@@ -21,6 +21,7 @@ from shapely.geometry import (
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
 from shapely.ops import split
+from shapely.affinity import translate
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
 
@@ -163,15 +164,32 @@ def clean_segment(ls):
         # We want to draw a line from start_pt through end_pt and extend by
         # a small amount to get out of rounding
         offset = 0.0001
+        dx = end_pt.x - start_pt.x
+        dy = end_pt.y - start_pt.y
         while pt.within(CONUS["poly"]) and offset < 10.5:
             if offset > 1.5:
                 offset += 1.0
-            dx = end_pt.x - start_pt.x
-            dy = end_pt.y - start_pt.y
             xoff = offset if dx > 0 else (offset * -1)
             yoff = offset if dy > 0 else (offset * -1)
             pt = Point(start_pt.x + dx + xoff, start_pt.y + dy + yoff)
             offset += 0.005
+        if pt.within(CONUS["poly"]):
+            print("     idx: %s is still within, evasive action" % (idx,))
+            for xoff, yoff in [
+                [-0.01, -0.01],
+                [-0.01, 0.0],
+                [-0.01, 0.01],
+                [0.0, -0.01],
+                [0.0, 0.0],
+                [0.0, 0.01],
+                [0.01, -0.01],
+                [0.01, 0.0],
+                [0.01, 0.01],
+            ]:
+                pt = translate(end_pt, xoff=xoff, yoff=yoff)
+                if not pt.within(CONUS["poly"]):
+                    print("     idx: %s is now %s" % (idx, pt))
+                    break
         print(
             "     fix idx: %s to new: %.4f %.4f Inside: %s, offset: %s"
             % (idx, pt.x, pt.y, pt.within(CONUS["poly"]), offset)
@@ -307,8 +325,10 @@ def segment_logic(segment, currentpoly, polys):
         enddist = polya.exterior.project(Point(ls.coords[-1]))
         # if the end is further down the line, we want this polygon
         res = polya if enddist > startdist else polyb
-    print("     taking polygon.area = %.4f" % (res.area,))
-    return res
+    if res.area > 0.01:
+        print("     taking polygon.area = %.4f" % (res.area,))
+        return res
+    return currentpoly
 
 
 def str2multipolygon(s):
