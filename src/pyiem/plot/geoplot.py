@@ -1137,8 +1137,9 @@ class MapPlot(object):
                 if z == Z_OVERLAY2:
                     self.ax.add_patch(p)
                 if polyi == 0 and ilabel:
-                    mx = polygon.centroid.x
-                    my = polygon.centroid.y
+                    # prefer our stored centroid vs calculated one
+                    mx = ugcdict.get("lon", polygon.centroid.x)
+                    my = ugcdict.get("lat", polygon.centroid.y)
                     txt = self.ax.text(
                         mx,
                         my,
