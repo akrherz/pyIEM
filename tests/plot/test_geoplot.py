@@ -346,10 +346,10 @@ def test_drawugcs2():
 def test_filter_functions():
     """Make sure our filter functions are doing what we want!"""
     mp = MapPlot(sector="iowa")
-    assert plot.state_filter(mp, b"IAC001", dict())
-    assert not plot.state_filter(mp, b"MNC001", dict())
+    assert plot.state_filter(mp, "IAC001", dict())
+    assert not plot.state_filter(mp, "MNC001", dict())
     mp = MapPlot(cwa="DMX")
-    assert plot.state_filter(mp, b"IAC001", dict())
+    assert plot.state_filter(mp, "IAC001", dict())
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.15)

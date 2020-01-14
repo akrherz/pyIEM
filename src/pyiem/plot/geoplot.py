@@ -115,12 +115,12 @@ def true_filter(_bm, _key, _val):
 
 def cwa_filter(bm, _key, val):
     """A filter for checking a key against current plot"""
-    return val.get(b"cwa", b"").decode("utf-8") == bm.cwa
+    return val.get("cwa", "") == bm.cwa
 
 
 def state_filter(bm, key, _val):
     """A filter for checking a key against current plot"""
-    return key[:2].decode("utf-8") == bm.state
+    return key[:2] == bm.state
 
 
 def load_bounds(filebase):
@@ -256,7 +256,7 @@ class MapPlot(object):
             if "nostates" not in kwargs:
                 states = load_pickle_geo("us_states.pickle")
                 _a.add_geometries(
-                    [val[b"geom"] for key, val in states.items()],
+                    [val["geom"] for key, val in states.items()],
                     crs=ccrs.PlateCarree(),
                     lw=1.0,
                     edgecolor=kwargs.get("statebordercolor", "k"),
@@ -957,15 +957,15 @@ class MapPlot(object):
         # in lon,lat
         if sector == "state":
             s = load_pickle_geo("us_states.pickle")
-            mask_outside_geom(self.ax, s[self.state.encode()][b"geom"])
+            mask_outside_geom(self.ax, s[self.state]["geom"])
             return
         if sector == "cwa":
             s = load_pickle_geo("cwa.pickle")
-            mask_outside_geom(self.ax, s[self.cwa.encode()][b"geom"])
+            mask_outside_geom(self.ax, s[self.cwa]["geom"])
             return
         if sector == "iowawfo":
             s = load_pickle_geo("iowawfo.pickle")
-            geo = s[b"iowawfo"][b"geom"]
+            geo = s["iowawfo"]["geom"]
             ccw = np.asarray(geo.exterior)[::-1]
         else:
             ccw = load_bounds("%s_ccw" % (sector,))
@@ -1110,7 +1110,7 @@ class MapPlot(object):
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
                 continue
-            if data.get(ugc.decode("utf-8")) is None:
+            if data.get(ugc) is None:
                 if not plotmissing:
                     continue
                 # Holy cow, it appears values above 300 are always firewx,
@@ -1121,10 +1121,10 @@ class MapPlot(object):
                 val = "-"
                 z = Z_OVERLAY
             else:
-                val = data[ugc.decode("utf-8")]
+                val = data[ugc]
                 c = cmap(norm([val]))[0]
                 z = Z_OVERLAY2
-            for polyi, polygon in enumerate(ugcdict.get(b"geom", [])):
+            for polyi, polygon in enumerate(ugcdict.get("geom", [])):
                 if polygon.exterior is None:
                     continue
                 arr = np.asarray(polygon.exterior)
@@ -1137,8 +1137,9 @@ class MapPlot(object):
                 if z == Z_OVERLAY2:
                     self.ax.add_patch(p)
                 if polyi == 0 and ilabel:
-                    mx = polygon.centroid.x
-                    my = polygon.centroid.y
+                    # prefer our stored centroid vs calculated one
+                    mx = ugcdict.get("lon", polygon.centroid.x)
+                    my = ugcdict.get("lat", polygon.centroid.y)
                     txt = self.ax.text(
                         mx,
                         my,
@@ -1174,7 +1175,7 @@ class MapPlot(object):
         cwas = load_pickle_geo("cwa.pickle")
         for _a in self.axes:
             _a.add_geometries(
-                [val[b"geom"] for key, val in cwas.items()],
+                [val["geom"] for key, val in cwas.items()],
                 crs=ccrs.PlateCarree(),
                 zorder=Z_POLITICAL,
                 facecolor="None",
@@ -1256,7 +1257,7 @@ class MapPlot(object):
         ugcdict = load_pickle_geo("ugcs_county.pickle")
         polys = []
         for ugc in ugcdict:
-            for polygon in ugcdict[ugc].get(b"geom", []):
+            for polygon in ugcdict[ugc].get("geom", []):
                 polys.append(polygon)
         self.ax.add_geometries(
             polys,
