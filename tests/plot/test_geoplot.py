@@ -343,6 +343,32 @@ def test_drawugcs2():
     return mp.fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_ugcs_withcustomlabels():
+    """Fill ugcs with provided labels."""
+    mp = MapPlot(
+        sector="iowa",
+        title="Zones, 3 filled in Iowa, custom label",
+        subtitle="test_drawugcs2",
+        nocaption=True,
+    )
+    labels = {"IAZ001": "IAZ001", "IAZ003": "IAZ003"}
+    bins = list(range(24))
+    clevlabels = [""] * 24
+    clevlabels[0] = "mid"
+    clevlabels[12] = "noon"
+    mp.fill_ugcs(
+        {"IAZ001": 1, "IAZ003": 4, "IAZ005": 12},
+        bins=bins,
+        labels=labels,
+        ilabel=True,
+        clevstride=12,
+        clevlabels=clevlabels,
+        extend="neither",
+    )
+    return mp.fig
+
+
 def test_filter_functions():
     """Make sure our filter functions are doing what we want!"""
     mp = MapPlot(sector="iowa")
