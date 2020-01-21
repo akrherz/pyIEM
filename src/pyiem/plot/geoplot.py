@@ -1083,6 +1083,7 @@ class MapPlot(object):
           data(dict): A dictionary of 6 char UGC code keys and values
           bins(list, optional): Bins to use for cloropleth, default 0:101:10
           plotmissing(bool, optional): Should missing UGC data be plotted?
+          labels(dict, optional): UGC indexed dictionary to use for labeling.
         """
         if bins is None:
             bins = np.arange(0, 101, 10)
@@ -1106,6 +1107,7 @@ class MapPlot(object):
             filter_func = cwa_filter
         ilabel = kwargs.get("ilabel", False)
         plotmissing = kwargs.get("plotmissing", True)
+        labels = kwargs.get("labels", dict())
         for ugc in ugcs:
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
@@ -1143,7 +1145,7 @@ class MapPlot(object):
                     txt = self.ax.text(
                         mx,
                         my,
-                        "%s" % (val,),
+                        "%s" % (labels.get(ugc, val),),
                         zorder=z + 1,
                         ha="center",
                         va="center",
