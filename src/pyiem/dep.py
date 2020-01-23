@@ -492,6 +492,13 @@ def read_ofe(filename, year0=2006):
     return df
 
 
+def _date_from_year_jday(df):
+    """Create a date column based on year and jday columns."""
+    df["date"] = pd.to_datetime(
+        df["year"].astype(str) + " " + df["jday"].astype(str), format="%Y %j"
+    )
+
+
 def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
     df = pd.read_csv(filename, sep=r"\s+", na_values=["*******", "******"])
@@ -499,8 +506,56 @@ def read_wb(filename):
         df["date"] = None
     else:
         # Considerably faster than df.apply
-        df["date"] = pd.to_datetime(
-            df["year"].astype(str) + " " + df["jday"].astype(str),
-            format="%Y %j",
-        )
+        _date_from_year_jday(df)
+    return df
+
+
+def read_crop(filename):
+    """Read WEPP's plant and residue output file.
+
+    Args:
+      filename (str): The file to read in.
+
+    Returns:
+      pandas.DataFrame
+    """
+    df = pd.read_csv(
+        filename,
+        skiprows=13,
+        index_col=False,
+        sep=r"\s+",
+        header=None,
+        na_values=["*******", "******", "********"],
+        names=[
+            "ofe",
+            "jday",
+            "year",
+            "canopy_height_m",
+            "canopy_percent",
+            "lai",
+            "cover_rill_percent",
+            "cover_inter_percent",
+            "cover_inter_type",
+            "live_biomass_kgm2",
+            "standing_residue_kgm2",
+            "flat_residue_last_type",
+            "flat_residue_last_kgm2",
+            "flat_residue_prev_type",
+            "flat_residue_prev_kgm2",
+            "flat_residue_all_type",
+            "flat_residue_all_kgm2",
+            "buried_residue_last_kgm2",
+            "buried_residue_prev_kgm2",
+            "buried_residue_all_kgm2",
+            "deadroot_residue_last_type",
+            "deadroot_residue_last_kgm2",
+            "deadroot_residue_prev_type",
+            "deadroot_residue_prev_kgm2",
+            "deadroot_residue_all_type",
+            "deadroot_residue_all_kgm2",
+            "avg_temp_c",
+        ],
+    )
+    # Convert jday into dates
+    _date_from_year_jday(df)
     return df

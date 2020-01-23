@@ -34,6 +34,14 @@ def test_cli_fname():
     assert res == "/i/0/cli/098x042/098.00x042.00.cli"
 
 
+def test_crop():
+    """Read a crop file."""
+    df = dep.read_crop(get_path("crop.txt"))
+    assert len(df.index) > 10
+    assert abs(df["lai"].max() - 9.00) < 0.01
+    assert abs(df["avg_temp_c"].max() - 24.30) < 0.01
+
+
 def test_yld():
     """Read a slope file"""
     df = dep.read_yld(get_path("yld.txt"))
