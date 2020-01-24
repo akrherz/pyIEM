@@ -107,11 +107,32 @@ def test_windrose_upperair():
     return fig
 
 
+def test_windrose_upperair_text():
+    """Test the magic that happens when level= is set."""
+    valid, sknt, drct = faux_data()
+    res = windrose(
+        "_XXX",
+        sknt=sknt,
+        drct=drct,
+        valid=valid,
+        level=500,
+        nogenerated=True,
+        justdata=True,
+    )
+    assert res
+
+
 @pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
     fig = windrose("_XXX", level=500)
     return fig
+
+
+def test_windrose_upperair_nodata_text():
+    """Test what happens with upperair logic and no data found."""
+    res = windrose("_XXX", level=500, justdata=True, hours=list(range(6, 12)))
+    assert res
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)

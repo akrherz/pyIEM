@@ -16,8 +16,7 @@ ncurses
 netCDF4
 geopandas
 pandas
-# need due to busted pint 0.9 conda-forge/pint-feedstock#23
-pint<0.9
+pint
 psycopg2
 pytest
 pytest-mpl

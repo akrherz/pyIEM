@@ -68,7 +68,9 @@ class WindrosePlot:
             mode=None,
             columnspacing=0.9,
             handletextpad=0.75,
-            title="Wind Speed [%s]" % (bins.units,),
+            # Ugly hack here due to aliasing in pint for mph
+            title="Wind Speed [%s]"
+            % ("mph" if bins.units == units("mph") else bins.units,),
         )
 
     def plot_calm(self):
