@@ -53,9 +53,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
     except Exception:
         req = None
     if req and req.status_code == 200 and is_gzipped(req.content):
-        o = open(tmpfn, "wb")
-        o.write(req.content)
-        o.close()
+        with open(tmpfn, "wb") as fd:
+            fd.write(req.content)
         return tmpfn
     # Option 3, we go look at MRMS website, if timestamp is recent
     utcnow = datetime.datetime.utcnow()
@@ -76,9 +75,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         except Exception:
             req = None
         if req and req.status_code == 200 and is_gzipped(req.content):
-            o = open(tmpfn, "wb")
-            o.write(req.content)
-            o.close()
+            with open(tmpfn, "wb") as fd:
+                fd.write(req.content)
             return tmpfn
     return None
 
@@ -216,14 +214,13 @@ def write_worldfile(filename):
     Args:
       filename (str): filename to write the world file information to
     """
-    output = open(filename, "w")
-    output.write(
-        """0.01
+    with open(filename, "w") as fd:
+        fd.write(
+            """0.01
 0.00
 0.00
 -0.01
 %s
 %s"""
-        % (WEST, NORTH)
-    )
-    output.close()
+            % (WEST, NORTH)
+        )

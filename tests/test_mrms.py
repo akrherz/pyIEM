@@ -4,18 +4,37 @@ import os
 import pytz
 
 from pyiem import mrms
+from pyiem.util import utc
+
+PRODUCT = "PrecipRate"
+
+
+def test_fetch_failback():
+    """Can we get files that we don't have."""
+    # A file from the future suffices
+    valid = utc() + datetime.timedelta(hours=1)
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is None
+
+
+def test_fetch_ancient():
+    """Can we get files that we don't have."""
+    # A file from the future suffices
+    valid = utc() - datetime.timedelta(days=10)
+    valid = valid.replace(minute=1)  # should not exist
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is None
 
 
 def test_fetch():
     """Can we fetch MRMS files?  Yes we can!"""
-    product = "PrecipRate"
     valid = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
     valid -= datetime.timedelta(minutes=(valid.minute % 2))
-    fn = mrms.fetch(product, valid, tmpdir="/tmp")
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     if os.path.isfile(fn):
         os.unlink(fn)
     valid = valid.replace(tzinfo=pytz.utc) - datetime.timedelta(minutes=2)
-    fn = mrms.fetch(product, valid, tmpdir="/tmp")
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     if os.path.isfile(fn):
         os.unlink(fn)
     # we don't actually test anything as the above may not be deterministic
