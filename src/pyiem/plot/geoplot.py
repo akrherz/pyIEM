@@ -211,11 +211,15 @@ class MapPlot(object):
             continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
             aspect (str): plot aspect, defaults to equal
+            fig (matplotlib.pyplot.figure,optional): provide a figure instance
+              for more advanced plot control.
         """
         self.debug = kwargs.get("debug", False)
-        self.fig = plt.figure(
-            num=None, figsize=figsize, dpi=kwargs.get("dpi", 100)
-        )
+        self.fig = kwargs.get("fig")
+        if self.fig is None:
+            self.fig = plt.figure(
+                num=None, figsize=figsize, dpi=kwargs.get("dpi", 100)
+            )
         # Storage of axes within this plot
         self.state = None
         self.cwa = None
