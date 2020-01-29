@@ -46,7 +46,6 @@ from PIL import Image
 # Matplotlib
 from matplotlib.patches import Polygon
 import matplotlib.colors as mpcolors
-import matplotlib.image as mpimage
 from matplotlib.patches import Wedge
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
@@ -62,6 +61,7 @@ from pyiem.plot.util import (
     mask_outside_polygon,
     polygon_fill,
     mask_outside_geom,
+    draw_logo,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_CF,
@@ -213,6 +213,7 @@ class MapPlot(object):
             aspect (str): plot aspect, defaults to equal
             fig (matplotlib.pyplot.figure,optional): provide a figure instance
               for more advanced plot control.
+            logo (str,optional): logo name to slap on the plot.
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
@@ -268,8 +269,10 @@ class MapPlot(object):
                     zorder=Z_POLITICAL,
                 )
 
-        if not kwargs.get("nologo"):
-            self.iemlogo()
+        if kwargs.get("logo") == "dep":
+            draw_logo(self.fig, "deplogo.png")
+        elif not kwargs.get("nologo"):
+            draw_logo(self.fig, "logo.png")
         if "title" in kwargs:
             self.fig.text(
                 0.09 if not kwargs.get("nologo") else 0.02,
@@ -1276,12 +1279,7 @@ class MapPlot(object):
 
     def iemlogo(self):
         """Place the IEM Logo"""
-        fn = "%s/%s" % (DATADIR, "logo.png")
-        if not os.path.isfile(fn):
-            return
-        logo = mpimage.imread(fn)
-        y0 = self.fig.get_figheight() * 100.0 - logo.shape[0] - 5
-        self.fig.figimage(logo, 5, y0, zorder=3)
+        draw_logo(self.fig, "logo.png")
 
     def postprocess(
         self,

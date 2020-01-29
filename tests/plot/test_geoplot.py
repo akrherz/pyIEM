@@ -52,6 +52,13 @@ def test_illinois():
     return mp.fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_dep():
+    """Produce a plot with the DEP logo on it."""
+    mp = MapPlot(sector="state", state="IA", nocaption=True, logo="dep")
+    return mp.fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0.7)
 def test_usdm():
     """Can we plot the current USDM"""

@@ -1,13 +1,27 @@
 """pyiem.plot.util Plotting Utilities!"""
+import os
 
 import numpy as np
 import cartopy.crs as ccrs
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
+import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
+
+DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
+
+
+def draw_logo(fig, filename):
+    """Place the logo"""
+    fn = "%s/%s" % (DATADIR, filename)
+    if not os.path.isfile(fn):
+        return
+    logo = mpimage.imread(fn)
+    y0 = fig.get_figheight() * 100.0 - logo.shape[0] - 5
+    fig.figimage(logo, 5, y0, zorder=3)
 
 
 def fontscale(ratio, fig=None):
