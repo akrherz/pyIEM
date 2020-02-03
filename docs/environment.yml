@@ -12,11 +12,10 @@ dependencies:
   - psycopg2
   - pyproj
   - cartopy
+  - google-api-python-client
   - pip:
     - matplotlib
-    - apiclient
     - oauth2client
-    - google-api-python-client
     - Pillow
     - python-metar 
     - git+https://github.com/smartsheet-platform/smartsheet-python-sdk

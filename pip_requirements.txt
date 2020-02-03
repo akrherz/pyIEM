@@ -2,7 +2,6 @@ boxsdk
 sphinxcontrib-napoleon
 scipy
 oauth2client
-apiclient
 urllib3
 Pillow
 pyproj
