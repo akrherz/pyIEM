@@ -2,9 +2,7 @@ boxsdk
 sphinxcontrib-napoleon
 scipy
 oauth2client
-apiclient
 urllib3
-google-api-python-client
 Pillow
 pyproj
 git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git

@@ -12,7 +12,7 @@ import gdata.spreadsheets.client
 import gdata.spreadsheets.data as spdata
 from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 import smartsheet
 from pyiem.util import exponential_backoff
 

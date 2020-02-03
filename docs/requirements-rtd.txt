@@ -5,7 +5,6 @@ scipy
 Pillow
 gdata
 oauth2client
-apiclient
 urllib3
 google-api-python-client
 psycopg2
