@@ -1226,7 +1226,8 @@ create table sbw(
   floodtag_flashflood varchar(64),
   floodtag_damage varchar(64),
   floodtag_leeve varchar(64),
-  floodtag_dam varchar(64)
+  floodtag_dam varchar(64),
+  hvtec_nwsli text
 );
 select addgeometrycolumn('','sbw','geom',4326,'MULTIPOLYGON',2);
 select addGeometryColumn('sbw', 'tml_geom', 4326, 'POINT', 2);
