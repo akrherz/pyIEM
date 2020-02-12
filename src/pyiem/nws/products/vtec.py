@@ -119,8 +119,6 @@ def do_sql_hvtec(txn, segment):
 class VTECProductException(TextProductException):
     """ Something we can raise when bad things happen! """
 
-    pass
-
 
 class VTECProduct(TextProduct):
     """ Represents a text product of the LSR variety """
@@ -805,9 +803,9 @@ class VTECProduct(TextProduct):
             + """, updated,
             waterspouttag, is_emergency, floodtag_heavyrain,
             floodtag_flashflood, floodtag_damage, floodtag_leeve,
-            floodtag_dam)
+            floodtag_dam, hvtec_nwsli)
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         )
         myargs = (
             vtec.office,
@@ -838,6 +836,7 @@ class VTECProduct(TextProduct):
             segment.flood_tags.get("FLASH FLOOD DAMAGE THREAT"),
             segment.flood_tags.get("LEVEE FAILURE"),
             segment.flood_tags.get("DAM FAILURE"),
+            segment.get_hvtec_nwsli(),
         )
         txn.execute(sql, myargs)
         if txn.rowcount != 1:

@@ -160,6 +160,13 @@ def test_181228_issue76_sbwtable(dbcursor):
     prod.sql(dbcursor)
     prod = vtecparser(get_test_file("FLWMOB/FLS.txt"))
     prod.sql(dbcursor)
+    dbcursor.execute(
+        """
+        SELECT hvtec_nwsli from sbw_2018 where wfo = 'MOB' and eventid = 57
+        and phenomena = 'FL' and significance = 'W'
+    """
+    )
+    assert dbcursor.fetchone()["hvtec_nwsli"] == "MRRM6"
     assert not filter_warnings(prod.warnings)
 
 
