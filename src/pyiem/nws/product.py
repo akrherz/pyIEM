@@ -134,6 +134,42 @@ def str2polygon(strdata):
     return Polygon(pts)
 
 
+def date_tokens2datetime(tokens):
+    """Convert tokens from MND regex to a valid time, if possible.
+
+    Returns:
+      z (str): 3-4 char timezone string
+      tz (datetime.timezone): of this product
+      utcvalid (datetimetz): of this product
+    """
+    z = tokens[2].upper()
+    tz = pytz.timezone(reference.name2pytz.get(z, "UTC"))
+    hhmi = tokens[0]
+    # False positive from regex
+    if hhmi[0] == ":":
+        hhmi = hhmi.replace(u":", "")
+    if hhmi.find(":") > -1:
+        (hh, mi) = hhmi.split(":")
+    elif len(hhmi) < 3:
+        hh = hhmi
+        mi = 0
+    else:
+        hh = hhmi[:-2]
+        mi = hhmi[-2:]
+    dstr = "%s:%s %s %s %s %s" % (
+        hh,
+        mi,
+        tokens[1],
+        tokens[4],
+        tokens[5],
+        tokens[6],
+    )
+    # Careful here, need to go to UTC time first then come back!
+    now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
+    now += datetime.timedelta(hours=reference.offsets[z])
+    return z, tz, now.replace(tzinfo=pytz.UTC)
+
+
 class TextProductSegment(object):
     """ A segment of a Text Product """
 
@@ -461,7 +497,7 @@ class TextProduct(object):
 
         self.parse_wmo()
         self.parse_afos()
-        self.parse_valid()
+        self._parse_valid(utcnow)
         if parse_segments:
             self.parse_segments()
 
@@ -579,8 +615,29 @@ class TextProduct(object):
         )
         return pid.strip()
 
-    def parse_valid(self):
-        """ Figre out the valid time of this product """
+    def _parse_valid(self, provided_utcnow):
+        """ Figure out the timestamp of this product.
+
+        Args:
+          provided_utcnow (datetime): What our library was provided for the UTC
+            timestamp, it could be None
+        """
+        # The MND header hopefully has a full timestamp that is the best
+        # truth that we can have for this product.
+        tokens = TIME_RE.findall(self.unixtext)
+        if provided_utcnow is None and tokens:
+            try:
+                _z, _tz, valid = date_tokens2datetime(tokens[0])
+            except ValueError:
+                msg = (
+                    "Invalid timestamp [%s] found in product "
+                    "[%s %s %s] header"
+                ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
+                raise TextProductException(self.source[1:], msg)
+
+            # Set the utcnow based on what we found by looking at the header
+            self.utcnow = valid
+
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
         # Take the first hit, ignore others
@@ -606,44 +663,10 @@ class TextProduct(object):
         # we can do no better
         self.valid = self.wmo_valid
 
-        # Now lets look for a local timestamp in the product MND or elsewhere
-        tokens = TIME_RE.findall(self.unixtext)
         # If we don't find anything, lets default to now, its the best
         if not tokens:
             return
-        # [('1249', 'AM', 'EDT', 'JUL', '1', '2005')]
-        self.z = tokens[0][2].upper()
-        self.tz = pytz.timezone(reference.name2pytz.get(self.z, "UTC"))
-        hhmi = tokens[0][0]
-        # False positive from regex
-        if hhmi[0] == ":":
-            hhmi = hhmi.replace(u":", "")
-        if hhmi.find(":") > -1:
-            (hh, mi) = hhmi.split(":")
-        elif len(hhmi) < 3:
-            hh = hhmi
-            mi = 0
-        else:
-            hh = hhmi[:-2]
-            mi = hhmi[-2:]
-        dstr = "%s:%s %s %s %s %s" % (
-            hh,
-            mi,
-            tokens[0][1],
-            tokens[0][4],
-            tokens[0][5],
-            tokens[0][6],
-        )
-        # Careful here, need to go to UTC time first then come back!
-        try:
-            now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-        except ValueError:
-            msg = (
-                "Invalid timestamp [%s] found in product " "[%s %s %s] header"
-            ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
-            raise TextProductException(self.source[1:], msg)
-        now += datetime.timedelta(hours=reference.offsets[self.z])
-        self.valid = now.replace(tzinfo=pytz.UTC)
+        self.z, self.tz, self.valid = date_tokens2datetime(tokens[0])
 
     def parse_wmo(self):
         """ Parse things related to the WMO header"""
