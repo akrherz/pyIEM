@@ -55,7 +55,7 @@ VTEC_PHENOMENA = {
     "EC": "Extreme Cold",
     "EH": "Excessive Heat",
     "EW": "Extreme Wind",
-    "FA": "Areal Flood",
+    "FA": "Flood",
     "FF": "Flash Flood",
     "FG": "Dense Fog",
     "FL": "Flood",

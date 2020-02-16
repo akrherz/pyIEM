@@ -283,7 +283,7 @@ def test_170718_wrongtz():
     j = prod.get_jabbers("http://localhost/")
     assert "FA.Y.AZ" in j[0][2]["channels"].split(",")
     ans = (
-        "TWC issues Areal Flood Advisory for ((AZC009)) "
+        "TWC issues Flood Advisory for ((AZC009)) "
         "[AZ] till Jul 18, 3:30 PM MST "
         "http://localhost/2017-O-NEW-KTWC-FA-Y-0034"
     )
@@ -1116,12 +1116,12 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
     prod.sql(dbcursor)
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
     assert j[0][0], (
-        "BOU extends time of Areal Flood Advisory "
+        "BOU extends time of Flood Advisory "
         "for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT "
         "http://localhost/2014-O-EXT-KBOU-FA-Y-0018"
     )
     assert j[0][2]["twitter"], (
-        "BOU extends time of Areal Flood "
+        "BOU extends time of Flood "
         "Advisory for ((COC049)), ((COC057)) [CO] till "
         "May 29, 9:30 PM MDT http://localhost/2014-O-EXT-KBOU-FA-Y-0018"
     )

@@ -30,7 +30,7 @@ EQW Earthquake Warning
 ESF Hydrologic Outlook
 EVI Evacuation Immediate
 EWW Extreme Wind Warning
-FFA Areal Flood Watch
+FFA Flood Watch
 FFS Flash Flood Statement
 FFW Flash Flood Warning
 FLS Flood Advisory
