@@ -11,6 +11,7 @@ import mock
 import pytest
 import pytz
 import numpy as np
+import psycopg2
 from pyiem import util
 from pyiem.exceptions import NoDataFound
 
@@ -26,6 +27,13 @@ def test_get_dbconn(dbname):  # noqa
     """Does our code work for various database names."""
     pgconn = util.get_dbconn(dbname)
     assert pgconn is not None
+
+
+def test_get_dbconn_bad():
+    """Test that we raise a warning."""
+    with pytest.warns(UserWarning, match="database connection failure"):
+        with pytest.raises(psycopg2.OperationalError):
+            util.get_dbconn("bogus")
 
 
 @pytest.fixture()
