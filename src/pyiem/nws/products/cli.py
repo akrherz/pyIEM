@@ -243,6 +243,16 @@ def parse_temperature(regime, lines, data):
                 linenum += 1
 
 
+def parse_sky_coverage(lines, data):
+    """Turn section into data."""
+    asc = "AVERAGE SKY COVER"
+    if len(lines) > 1 and lines[1].strip().startswith(asc):
+        try:
+            data["average_sky_cover"] = float(lines[1].replace(asc, ""))
+        except ValueError:
+            pass
+
+
 class CLIProduct(TextProduct):
     """
     Represents a CLI Daily Climate Report Product
@@ -385,6 +395,8 @@ class CLIProduct(TextProduct):
         # Don't look into aux data for things we should not be parsing
         if meat.find("&&") > 0:
             meat = meat[: meat.find("&&")]
+        # replace any 2+ \n with just two
+        meat = re.sub(r"\n{2,}", "\n\n", meat)
         sections = meat.split("\n\n")
         for _section in sections:
             lines = _section.split("\n")
@@ -394,6 +406,8 @@ class CLIProduct(TextProduct):
                 parse_precipitation(self.regime, lines, data)
             elif lines[0] in ["SNOWFALL (IN)", "SNOWFALL"]:
                 parse_snowfall(self.regime, lines, data)
+            elif lines[0] in ["SKY COVER"]:
+                parse_sky_coverage(lines, data)
 
         return data
 
