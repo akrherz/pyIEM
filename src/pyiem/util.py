@@ -229,7 +229,7 @@ def get_dbconn(
             password=password,
         )
     except psycopg2.OperationalError as exp:
-        warnings.warn("database connection failure: %s" % (exp,))
+        warnings.warn("database connection failure: %s" % (exp,), stacklevel=2)
         # as a stop-gap, lets try connecting to iemdb2
         pgconn = psycopg2.connect(
             database=database,
