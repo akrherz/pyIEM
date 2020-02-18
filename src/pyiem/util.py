@@ -184,9 +184,7 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     ).replace(tzinfo=pytz.UTC)
 
 
-def get_dbconn(
-    database="mesosite", user=None, host=None, port=5432, password=None
-):
+def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     """Helper function with business logic to get a database connection
 
     Note that this helper could return a read-only database connection if the
@@ -201,6 +199,8 @@ def get_dbconn(
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
+      allow_failover (bool,optional): Should this method attempt to connect to
+        a failover host (hard coded as iemdb2.local), default is `True`.
 
     Returns:
       psycopg2 database connection
@@ -225,19 +225,20 @@ def get_dbconn(
             host=host,
             user=user,
             port=port,
-            connect_timeout=15,
-            password=password,
+            connect_timeout=kwargs.get("connect_timeout", 15),
+            password=kwargs.get("password"),
         )
     except psycopg2.OperationalError as exp:
         warnings.warn("database connection failure: %s" % (exp,), stacklevel=2)
         # as a stop-gap, lets try connecting to iemdb2
+        host2 = "iemdb2.local" if kwargs.get("allow_failover", True) else host
         pgconn = psycopg2.connect(
             database=database,
-            host="iemdb2.local",
+            host=host2,
             user=user,
             port=port,
-            connect_timeout=15,
-            password=password,
+            connect_timeout=kwargs.get("connect_timeout", 15),
+            password=kwargs.get("password"),
         )
     return pgconn
 

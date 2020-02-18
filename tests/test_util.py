@@ -36,6 +36,13 @@ def test_get_dbconn_bad():
             util.get_dbconn("bogus")
 
 
+def test_get_dbconn_failover():
+    """See if failover works?"""
+    with pytest.warns(UserWarning, match="database connection failure"):
+        with pytest.raises(psycopg2.OperationalError):
+            util.get_dbconn("mesosite", host="b", allow_failover=False)
+
+
 @pytest.fixture()
 def logger():
     """Get a logger"""
