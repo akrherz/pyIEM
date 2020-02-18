@@ -1095,6 +1095,8 @@ class MapPlot(object):
             `True`.
           plotmissing(bool, optional): Should missing UGC data be plotted?
           labels(dict, optional): UGC indexed dictionary to use for labeling.
+          missingval(str, optional): value to use when labelling UGCs with
+            missing values, defaults to '-'.
         """
         if bins is None:
             bins = np.arange(0, 101, 10)
@@ -1133,7 +1135,7 @@ class MapPlot(object):
                 if not counties and int(ugc[3:]) >= 300:
                     continue
                 c = "white"
-                val = "-"
+                val = kwargs.get("missingval", "-")
                 z = Z_OVERLAY
             else:
                 val = data[ugc]
