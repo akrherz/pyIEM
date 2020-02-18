@@ -63,7 +63,7 @@ def test_issue120_ffwtags(dbcursor):
         "flash flood damage threat: catastrophic, dam failure: imminent, "
         "expected rainfall: 2-3 inches in 60 minutes] "
         "for ((GUC100)), ((GUC110)), ((GUC120)) [GU] till Oct 25, 9:15 AM "
-        "CHST http://localhost2018-O-NEW-PGUM-FF-W-0014"
+        "CHST http://localhost2018-O-NEW-PGUM-FF-W-0014_2018-10-24T20:23Z"
     )
     assert j[0][0] == ans
     prod.sql(dbcursor)
@@ -258,7 +258,7 @@ def test_170823_tilde(dbcursor):
     ans = (
         "TWC issues Flash Flood Warning for "
         "((AZC021)) [AZ] till Aug 23, 6:30 PM MST "
-        "http://localhost/2017-O-NEW-KTWC-FF-W-0067"
+        "http://localhost/2017-O-NEW-KTWC-FF-W-0067_2017-08-23T23:34Z"
     )
     assert j[0][0] == ans
 
@@ -271,7 +271,7 @@ def test_170822_duststormwarning():
     ans = (
         "PSR issues Dust Storm Warning for ((AZC021)) "
         "[AZ] till 11:15 AM MST "
-        "http://localhost/2016-O-NEW-KPSR-DS-W-0001"
+        "http://localhost/2016-O-NEW-KPSR-DS-W-0001_2016-11-30T17:49Z"
     )
     assert j[0][0] == ans
 
@@ -285,7 +285,7 @@ def test_170718_wrongtz():
     ans = (
         "TWC issues Flood Advisory for ((AZC009)) "
         "[AZ] till Jul 18, 3:30 PM MST "
-        "http://localhost/2017-O-NEW-KTWC-FA-Y-0034"
+        "http://localhost/2017-O-NEW-KTWC-FA-Y-0034_2017-07-18T19:38Z"
     )
     assert j[0][0] == ans
 
@@ -360,7 +360,7 @@ def test_170324_waterspout(dbcursor):
         "MFL issues Marine Warning [waterspout: POSSIBLE, "
         "wind: &gt;34 KTS, hail: 0.00 IN] for "
         "((AMZ630)), ((AMZ651)) [AM] till 10:15 PM EDT "
-        "http://localhost2017-O-NEW-KMFL-MA-W-0059"
+        "http://localhost2017-O-NEW-KMFL-MA-W-0059_2017-03-24T01:37Z"
     )
     assert j[0][0] == ans
     prod.sql(dbcursor)
@@ -427,7 +427,7 @@ def test_160513_windtag():
         "LWX issues Marine Warning [wind: &gt;34 KTS, "
         "hail: 0.00 IN] for ((ANZ537)) [AN] till "
         "May 13, 5:15 PM EDT "
-        "http://localhost2016-O-NEW-KLWX-MA-W-0035"
+        "http://localhost2016-O-NEW-KLWX-MA-W-0035_2016-05-13T19:51Z"
     )
     assert j[0][0] == ans
 
@@ -441,7 +441,7 @@ def test_160415_mixedcase():
     ans = (
         "GLD continues Flash Flood Warning for ((COC017)) "
         "[CO] till Apr 15, 7:00 PM MDT "
-        "http://localhost2016-O-CON-KGLD-FF-W-0001"
+        "http://localhost2016-O-CON-KGLD-FF-W-0001_2016-04-15T23:41Z"
     )
     assert j[0][0] == ans
 
@@ -630,7 +630,8 @@ def test_150102_multiyear2(dbcursor):
             assert j[0][0] == (
                 "STO expires Frost Advisory for ((CAZ015)), ((CAZ016)), "
                 "((CAZ017)), ((CAZ018)), ((CAZ019)), ((CAZ064)), "
-                "((CAZ066)), ((CAZ067)) [CA] 2014-O-EXP-KSTO-FR-Y-0001"
+                "((CAZ066)), ((CAZ067)) [CA] "
+                "2014-O-EXP-KSTO-FR-Y-0001_2014-12-27T17:03Z"
             )
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -759,7 +760,8 @@ def test_140731_badugclabel():
     ans = (
         "LWX issues Small Craft Advisory "
         "valid at Jul 31, 6:00 PM EDT for 7 forecast zones in [AN] till "
-        "Aug 1, 6:00 AM EDT http://localhost2014-O-NEW-KLWX-SC-Y-0151"
+        "Aug 1, 6:00 AM EDT "
+        "http://localhost2014-O-NEW-KLWX-SC-Y-0151_2014-07-31T22:00Z"
     )
     assert j[0][0] == ans
 
@@ -772,7 +774,8 @@ def test_tornado_emergency():
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         '<p>ICT <a href="http://localhost'
-        '2012-O-NEW-KICT-TO-W-0035">issues Tornado Warning</a> '
+        '2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z">'
+        "issues Tornado Warning</a> "
         "[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
         "hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
         '* AT 1019 PM CDT...<span style="color: #FF0000;">TORNADO '
@@ -867,7 +870,7 @@ def test_140610_tweet_spacing():
     ans = (
         "LCH issues Flood Warning "
         "valid at Jun 10, 9:48 AM CDT for ((VLSL1)) till Jun 12, 1:00 "
-        "PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015"
+        "PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015_2014-06-10T14:48Z"
     )
     assert j[0][2]["twitter"] == ans
 
@@ -982,7 +985,8 @@ def test_tortag():
     assert prod.is_homogeneous()
     ans = (
         '<p>DMX <a href="http://localhost/2011-'
-        'O-NEW-KDMX-TO-W-0057">issues Tornado Warning</a> [tornado: '
+        'O-NEW-KDMX-TO-W-0057_2011-08-07T04:36Z">'
+        "issues Tornado Warning</a> [tornado: "
         "OBSERVED, tornado damage threat: SIGNIFICANT, hail: 2.75 IN] "
         "for ((IAC117)), ((IAC125)), ((IAC135)) [IA] till 12:15 AM CDT "
         "* AT 1132 PM CDT...NATIONAL WEATHER SERVICE DOPPLER RADAR "
@@ -1104,7 +1108,7 @@ def test_140527_astimezone(dbcursor):
         "SEW continues Small Craft Advisory "
         "valid at May 27, 4:00 PM PDT for ((PZZ131)), ((PZZ132)) [PZ] till"
         " May 28, 5:00 AM PDT "
-        "http://localhost/2014-O-CON-KSEW-SC-Y-0113"
+        "http://localhost/2014-O-CON-KSEW-SC-Y-0113_2014-05-27T23:00Z"
     )
     assert j[0][0] == ans
 
@@ -1271,6 +1275,7 @@ def test_vtec(dbcursor):
         "TORNADO WARNING FOR DESTRUCTIVE WINDS OVER 110 MPH IN THE EYE "
         "WALL AND INNER RAIN BANDS OF HURRICANE KATRINA. THESE WINDS "
         "WILL OVERSPREAD MARION...FORREST AND LAMAR COUNTIES DURING "
-        "THE WARNING PERIOD. http://localhost2005-O-NEW-KJAN-TO-W-0130"
+        "THE WARNING PERIOD. "
+        "http://localhost2005-O-NEW-KJAN-TO-W-0130_2005-08-29T16:51Z"
     )
     assert msgs[0][0] == ans

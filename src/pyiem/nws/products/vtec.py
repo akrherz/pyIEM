@@ -1043,10 +1043,20 @@ class VTECProduct(TextProduct):
                 }
                 if segment.hvtec and segment.hvtec[0].nwsli.id != "00000":
                     jmsg_dict["county"] = segment.hvtec[0].nwsli.get_name()
-                if vtec.begints is not None and vtec.begints > (
-                    self.utcnow + datetime.timedelta(hours=1)
-                ):
-                    jmsg_dict["sts"] = " %s " % (vtec.get_begin_string(self),)
+                if vtec.begints is not None:
+                    jmsg_dict["url"] += "_%s" % (
+                        vtec.begints.strftime("%Y-%m-%dT%H:%MZ"),
+                    )
+                    if vtec.begints > (
+                        self.utcnow + datetime.timedelta(hours=1)
+                    ):
+                        jmsg_dict["sts"] = " %s " % (
+                            vtec.get_begin_string(self),
+                        )
+                else:
+                    jmsg_dict["url"] += "_%s" % (
+                        self.utcnow.strftime("%Y-%m-%dT%H:%MZ"),
+                    )
                 jmsg_dict["ets"] = vtec.get_end_string(self)
 
                 # Include the special bulletin for Tornado Warnings
