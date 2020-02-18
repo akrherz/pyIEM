@@ -1078,7 +1078,7 @@ class MapPlot(object):
         clidict = load_pickle_geo("climdiv.pickle")
         polygon_fill(self, clidict, data, **kwargs)
 
-    def fill_ugcs(self, data, bins=None, **kwargs):
+    def fill_ugcs(self, data, bins=None, color=None, **kwargs):
         """Overlay filled UGC geometries
 
         The logic for plotting is a bit tricky due to fire zones overlapping
@@ -1089,6 +1089,10 @@ class MapPlot(object):
         Args:
           data(dict): A dictionary of 6 char UGC code keys and values
           bins(list, optional): Bins to use for cloropleth, default 0:101:10
+          color(dict, optional): Hard code what each UGC should display as
+            for color.
+          nocbar (bool, optional): Should a color bar be generated, default is
+            `True`.
           plotmissing(bool, optional): Should missing UGC data be plotted?
           labels(dict, optional): UGC indexed dictionary to use for labeling.
         """
@@ -1107,6 +1111,8 @@ class MapPlot(object):
         ugcs = load_pickle_geo(
             "ugcs_county.pickle" if counties else "ugcs_zone.pickle"
         )
+        if color is None:
+            color = dict()
         filter_func = true_filter
         if self.sector == "state":
             filter_func = state_filter
@@ -1131,7 +1137,7 @@ class MapPlot(object):
                 z = Z_OVERLAY
             else:
                 val = data[ugc]
-                c = cmap(norm([val]))[0]
+                c = color.get(ugc, cmap(norm([val]))[0])
                 z = Z_OVERLAY2
             for polyi, polygon in enumerate(ugcdict.get("geom", [])):
                 if polygon.exterior is None:
@@ -1164,7 +1170,8 @@ class MapPlot(object):
 
         if "cmap" in kwargs:
             del kwargs["cmap"]
-        self.draw_colorbar(bins, cmap, norm, **kwargs)
+        if not kwargs.get("nocbar", False):
+            self.draw_colorbar(bins, cmap, norm, **kwargs)
 
     def fill_states(self, data, **kwargs):
         """Add overlay of filled state polygons"""
