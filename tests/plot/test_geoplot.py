@@ -53,6 +53,18 @@ def test_illinois():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_fill_ugcs_color():
+    """Provide an explicit color to fill_ugcs"""
+    mp = MapPlot(
+        sector="cwa", cwa="DMX", title="Three Counties", nocaption=True
+    )
+    data = {"IAC001": 10, "IAC003": 20, "IAC135": 30}
+    color = {"IAC001": "#FF0000", "IAC003": "black"}
+    mp.fill_ugcs(data, color=color, nocbar=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_dep():
     """Produce a plot with the DEP logo on it."""
     mp = MapPlot(sector="state", state="IA", nocaption=True, logo="dep")
