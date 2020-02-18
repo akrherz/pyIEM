@@ -215,6 +215,7 @@ def test_140930_negative_temps():
     assert prod.data[0]["data"].get("snow_today_last") == 0.0
     assert prod.data[0]["data"].get("snow_month_last") == TRACE_VALUE
     assert prod.data[0]["data"].get("snow_jul1_last") == 11.3
+    assert prod.data[0]["data"].get("average_sky_cover") is None
 
 
 def test_140930_mm_precip():
@@ -259,3 +260,4 @@ def test_cli3():
     prod = cliparser(get_test_file("CLI/CLINYC.txt"))
     assert prod.data[0]["data"]["snow_today_record_years"][0] == 1925
     assert prod.data[0]["data"]["snow_today_record"] == 11.5
+    assert abs(prod.data[0]["data"]["average_sky_cover"] - 0.0) < 0.01
