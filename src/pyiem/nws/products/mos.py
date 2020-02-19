@@ -4,7 +4,7 @@
 import re
 import datetime
 
-import pytz
+from pyiem.util import utc
 from pyiem.nws.product import TextProduct
 
 
@@ -12,21 +12,20 @@ def section_parser(sect):
     """Parse this section of text"""
     metadata = re.findall(
         (
-            r"([A-Z0-9]{4})\s+(...) .*?(...) GUIDANCE\s+"
+            r"([A-Z0-9_]{3,10})\s+(...) (V[0-9]\.[0-9] )?(...) GUIDANCE\s+"
             r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
             r"([0-2][0-9]00) UTC"
         ),
         sect,
     )
-    (station, model, mos, month, day, year, hhmm) = metadata[0]
+    (station, model, _bogus, mos, month, day, year, hhmm) = metadata[0]
     if model == "NBM":
         model = mos
-    initts = datetime.datetime(int(year), int(month), int(day), int(hhmm[:2]))
-    initts = initts.replace(tzinfo=pytz.utc)
+    initts = utc(int(year), int(month), int(day), int(hhmm[:2]))
 
     times = [initts]
     data = {}
-    lines = sect.split("___")
+    lines = sect.split(";;;")
     hrs = lines[2].split()
     for hr in hrs[1:]:
         if hr == "00":
@@ -128,9 +127,10 @@ class MOSProduct(TextProduct):
     def parse_data(self):
         """Parse out our data!"""
         raw = self.unixtext + "\n"
-        raw = raw.replace("\n", "___").replace("\x1e", "")
+        raw = raw.replace("\n", ";;;").replace("\x1e", "")
         sections = re.findall(
-            r"([A-Z0-9]{4,5}\s+... .*?... GUIDANCE .*?)______", raw
+            r"([A-Z0-9_]{3,10}\s+... V?[0-9]?\.?[0-9]? ?... GUIDANCE .*?);;;;;;",
+            raw,
         )
         self.data = list(map(section_parser, sections))
         if not sections:

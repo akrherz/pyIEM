@@ -1,6 +1,6 @@
 -- Storage of MOS data
 CREATE TABLE alldata(
-  station varchar(5),
+  station text,
  model character varying(12)  ,
  runtime timestamp with time zone ,
  ftime  timestamp with time zone ,
@@ -36,7 +36,13 @@ CREATE TABLE alldata(
   slv smallint,
   i06 smallint,
   lcb smallint,
-  swh smallint
+  swh smallint,
+   dur smallint,
+   mht smallint,
+   twd smallint,
+   tws smallint,
+   hid smallint,
+   sol smallint
 );
 GRANT ALL on alldata to mesonet,ldm;
 GRANT SELECT on alldata to nobody,apache;
@@ -60,3 +66,13 @@ CREATE INDEX t2018_idx on t2018(station, model, runtime);
 CREATE INDEX t2018_runtime_idx on t2018(runtime);
 GRANT SELECT on t2018 to nobody,apache;
 GRANT ALL on t2018 to mesonet,ldm;
+
+create table t2020(
+  CONSTRAINT __t2020_check
+  CHECK(runtime >= '2020-01-01 00:00+00'::timestamptz
+        and runtime < '2021-01-01 00:00+00'::timestamptz))
+  INHERITS (alldata);
+CREATE INDEX t2020_idx on t2020(station, model, runtime);
+CREATE INDEX t2020_runtime_idx on t2020(runtime);
+GRANT SELECT on t2020 to nobody,apache;
+GRANT ALL on t2020 to mesonet,ldm;

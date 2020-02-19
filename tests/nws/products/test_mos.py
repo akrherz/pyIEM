@@ -48,6 +48,17 @@ def test_nbm_v32(cursor):
     utcnow = utc(2020, 2, 19, 12)
     prod = mosparser(get_test_file("MOS/NBSUSA_32.txt"), utcnow=utcnow)
     assert len(prod.data) == 3
+    inserts = prod.sql(cursor)
+    assert inserts == 69
+
+
+def test_nbm_v32_station(cursor):
+    """Can we parse the NBM v3.2 data."""
+    utcnow = utc(2020, 2, 19, 17)
+    prod = mosparser(get_test_file("MOS/NBSUSA_32_station.txt"), utcnow=utcnow)
+    assert len(prod.data) == 4
+    inserts = prod.sql(cursor)
+    assert inserts == 92
 
 
 def test_nbm(cursor):
