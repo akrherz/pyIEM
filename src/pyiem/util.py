@@ -227,6 +227,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             port=port,
             connect_timeout=kwargs.get("connect_timeout", 15),
             password=kwargs.get("password"),
+            gssencmode=kwargs.get("gssencmode", "disable"),
         )
     except psycopg2.OperationalError as exp:
         warnings.warn("database connection failure: %s" % (exp,), stacklevel=2)
@@ -239,6 +240,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             port=port,
             connect_timeout=kwargs.get("connect_timeout", 15),
             password=kwargs.get("password"),
+            gssencmode=kwargs.get("gssencmode", "disable"),
         )
     return pgconn
 
