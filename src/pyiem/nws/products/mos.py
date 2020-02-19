@@ -24,7 +24,7 @@ def section_parser(sect):
     """Parse this section of text"""
     metadata = re.findall(
         (
-            r"([A-Z0-9]{4})\s+(...) (...) GUIDANCE\s+"
+            r"([A-Z0-9]{4})\s+(...) .*?(...) GUIDANCE\s+"
             r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
             r"([0-2][0-9]00) UTC"
         ),
@@ -142,7 +142,7 @@ class MOSProduct(TextProduct):
         raw = self.unixtext + "\n"
         raw = raw.replace("\n", "___").replace("\x1e", "")
         sections = re.findall(
-            r"([A-Z0-9]{4}\s+... ... GUIDANCE .*?)______", raw
+            r"([A-Z0-9]{4,5}\s+... .*?... GUIDANCE .*?)______", raw
         )
         self.data = list(map(section_parser, sections))
         if not sections:

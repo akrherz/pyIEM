@@ -43,6 +43,13 @@ def test_empty_nbm(cursor):
     assert inserts == 0
 
 
+def test_nbm_v32(cursor):
+    """Can we parse the NBM v3.2 data."""
+    utcnow = utc(2020, 2, 19, 12)
+    prod = mosparser(get_test_file("MOS/NBSUSA_32.txt"), utcnow=utcnow)
+    assert len(prod.data) == 3
+
+
 def test_nbm(cursor):
     """Can we parse the NBM data."""
     utcnow = utc(2018, 11, 7, 15)
