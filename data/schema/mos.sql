@@ -1,6 +1,6 @@
 -- Storage of MOS data
 CREATE TABLE alldata(
- station character(4)           ,
+  station varchar(5),
  model character varying(12)  ,
  runtime timestamp with time zone ,
  ftime  timestamp with time zone ,
