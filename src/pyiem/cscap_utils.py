@@ -8,13 +8,11 @@ import sys
 import re
 
 import gdata.gauth
-import gdata.spreadsheets.client
-import gdata.spreadsheets.data as spdata
+import gdata.sites.client as sclient
 from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 from googleapiclient.discovery import build
 import smartsheet
-from pyiem.util import exponential_backoff
 
 CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
@@ -109,252 +107,6 @@ def translate_years(val):
     return [int("%s%s" % ("19" if int(t) > 50 else "20", t)) for t in tokens]
 
 
-class Worksheet(object):
-    """Our wrapper for a worksheet"""
-
-    def __init__(self, spr_client, entry):
-        """Constructor"""
-        self.spr_client = spr_client
-        self.entry = entry
-        self.set_metadata()
-        self.id = entry.id.text.split("/")[-1]
-        self.spread_id = entry.id.text.split("/")[-2]
-
-    def set_metadata(self):
-        self.title = self.entry.title.text
-        self.rows = int(self.entry.row_count.text)
-        self.cols = int(self.entry.col_count.text)
-        self.cell_feed = None
-        self.list_feed = None
-        self.data = {}
-        self.numdata = {}
-
-    def refetch_feed(self):
-        self.entry = exponential_backoff(
-            self.spr_client.get_worksheet, self.spread_id, self.id
-        )
-        self.set_metadata()
-
-    def get_list_feed(self):
-        """Get a ListFeed for this Worksheet
-
-        Returns:
-          list_feed
-        """
-        if self.list_feed is not None:
-            return self.list_feed
-        self.list_feed = exponential_backoff(
-            self.spr_client.get_list_feed, self.spread_id, self.id
-        )
-        return self.list_feed
-
-    def get_cell_feed(self):
-        if self.cell_feed is not None:
-            return
-        self.cell_feed = exponential_backoff(
-            self.spr_client.get_cells, self.spread_id, self.id
-        )
-        for entry in self.cell_feed.entry:
-            row = entry.cell.row
-            _rowstore = self.data.setdefault(row, dict())
-            # https://developers.google.com/google-apps/spreadsheets/?hl=en#working_with_cell-based_feeds
-            # The input_value could be a function, pick the numeric_value
-            # first, which can be None for non-numeric types
-            if entry.cell.numeric_value is not None:
-                _numstore = self.numdata.setdefault(row, dict())
-                _numstore[entry.cell.col] = entry.cell.numeric_value
-            _rowstore[entry.cell.col] = entry.cell.input_value
-
-    def get_cell_value(self, row, col, numeric=False):
-        """Return the cell value
-
-        Args:
-          row (int): the raw desired
-          col (int): the column desired
-          numeric (bool): Attempt to use the numeric value before the text val
-
-        Returns:
-          object
-        """
-        if not numeric:
-            return self.data.get(str(row), {}).get(str(col))
-        txtval = self.data.get(str(row), {}).get(str(col))
-        numval = self.numdata.get(str(row), {}).get(str(col))
-        return numval if numval is not None else txtval
-
-    def get_cell_entry(self, row, col):
-        if self.cell_feed is None:
-            self.get_cell_feed()
-        for entry in self.cell_feed.entry:
-            if entry.cell.row == str(row) and entry.cell.col == str(col):
-                return entry
-        return None
-
-    def del_column(self, label, sloppy=False):
-        """ Delete a column from the worksheet that has a given label
-        this also zeros out any data in the column too
-
-        Args:
-          label (str): the column label based on the first row's value
-          sloppy (bool): should we only find that the contents start the value
-        """
-        self.get_cell_feed()
-        worked = False
-        for col in range(1, int(self.cols) + 1):
-            if self.get_cell_value(1, col) != label and not sloppy:
-                continue
-            if sloppy and not self.get_cell_value(1, col).startswith(label):
-                continue
-            worked = True
-            print("Found %s in column %s, deleting column" % (label, col))
-            entry = self.get_cell_entry(1, col)
-            entry.cell.input_value = ""
-            exponential_backoff(self.spr_client.update, entry)
-
-            updateFeed = spdata.build_batch_cells_update(
-                self.spread_id, self.id
-            )
-            for row in range(1, int(self.rows) + 1):
-                updateFeed.add_set_cell(str(row), str(col), "")
-            self.cell_feed = exponential_backoff(
-                self.spr_client.batch, updateFeed, force=True
-            )
-
-        if not worked:
-            print("Error, did not find column |%s| for deletion" % (label,))
-            print("The columns were:")
-            for col in range(1, int(self.cols) + 1):
-                print("  %2i |%s|" % (col, self.get_cell_value(1, col)))
-            return
-        self.refetch_feed()
-        while self.trim_columns():
-            print("Trimming Columns!")
-
-    def expand_cols(self, amount=1):
-        """ Expand this sheet by the number of columns desired"""
-        self.cols = self.cols + amount
-        self.entry.col_count.text = "%s" % (self.cols,)
-        self.entry = exponential_backoff(self.spr_client.update, self.entry)
-        self.cell_feed = None
-
-    def expand_rows(self, amount=1):
-        """ Expand this sheet by the number of rows desired
-
-        Args:
-          amount (int, optional): The number of rows to expand worksheet by
-        """
-        self.rows = self.rows + amount
-        self.entry.row_count.text = "%s" % (self.rows,)
-        self.entry = exponential_backoff(self.spr_client.update, self.entry)
-
-    def add_column(self, label, row2=None, row3=None):
-        """ Add a column, if it does not exist """
-        self.get_cell_feed()
-        for col in range(1, int(self.cols) + 1):
-            if self.get_cell_value("1", col) == label:
-                print("Column %s with label already found: %s" % (col, label))
-                return
-        self.expand_cols(1)
-
-        for i, lbl in enumerate([label, row2, row3]):
-            if lbl is None:
-                continue
-            entry = exponential_backoff(
-                self.spr_client.get_cell,
-                self.spread_id,
-                self.id,
-                str(i + 1),
-                str(self.cols),
-            )
-            entry.cell.input_value = lbl
-            exponential_backoff(self.spr_client.update, entry)
-
-        self.refetch_feed()
-        self.cell_feed = None
-
-    def drop_last_column(self):
-        self.cols = self.cols - 1
-        self.entry.col_count.text = "%s" % (self.cols,)
-        self.entry = exponential_backoff(self.spr_client.update, self.entry)
-        self.cell_feed = None
-
-    def trim_columns(self):
-        """ Attempt to trim off any extraneous columns """
-        self.get_cell_feed()
-        for col in range(1, int(self.cols) + 1):
-            if self.data["1"].get(str(col)) is not None:
-                continue
-            print("Column Delete Candidate %s" % (col,))
-            found_data = False
-            for row in range(1, int(self.rows) + 1):
-                _v = self.data.get(str(row), {}).get(str(col))
-                if _v not in [None, "n/a", "did not collect"]:
-                    found_data = True
-                    print(
-                        ("ERROR row: %s has data: %s")
-                        % (row, self.data[str(row)][str(col)])
-                    )
-            if not found_data:
-                print("Deleting column %s" % (col,))
-                if col == int(self.cols):
-                    self.drop_last_column()
-                    return True
-                # Move columns left
-                updateFeed = spdata.build_batch_cells_update(
-                    self.spread_id, self.id
-                )
-                for col2 in range(int(col), int(self.cols)):
-                    for row in range(1, int(self.rows) + 1):
-                        updateFeed.add_set_cell(
-                            str(row),
-                            str(col2),
-                            self.get_cell_value(row, col2 + 1),
-                        )
-                self.cell_feed = exponential_backoff(
-                    self.spr_client.batch, updateFeed, force=True
-                )
-                # Drop last column
-                self.refetch_feed()
-                self.drop_last_column()
-                return True
-        return False
-
-
-class Spreadsheet(object):
-    def __init__(self, spr_client, resource_id):
-        self.spr_client = spr_client
-        self.id = resource_id
-        self.worksheets = {}
-        self.get_worksheets()
-
-    def get_worksheets(self):
-        """ Get the worksheets associated with this spreadsheet """
-        feed = exponential_backoff(self.spr_client.GetWorksheets, self.id)
-        if feed is None:
-            return
-        for entry in feed.entry:
-            self.worksheets[entry.title.text] = Worksheet(
-                self.spr_client, entry
-            )
-
-
-def get_xref_siteids_plotids(drive, spr_client, config):
-    """ Get a dict of site IDs with a list of plot IDs for each """
-    spreadkeys = get_xref_plotids(drive)
-    data = {}
-    for uniqueid in spreadkeys.keys():
-        data[uniqueid.lower()] = []
-        feed = exponential_backoff(
-            spr_client.get_list_feed, spreadkeys[uniqueid], "od6"
-        )
-        for entry in feed.entry:
-            row = entry.to_dict()
-            if row["plotid"] is None:
-                continue
-            data[uniqueid.lower()].append(row["plotid"].lower())
-    return data
-
-
 def get_xref_plotids(drive):
     """Dictionary of Sites to PlotID keys
 
@@ -374,24 +126,8 @@ def get_xref_plotids(drive):
     return data
 
 
-def get_spreadsheet_client(config):
-    """ Return an authorized spreadsheet client """
-    token = gdata.gauth.OAuth2Token(
-        client_id=config["appauth"]["client_id"],
-        client_secret=config["appauth"]["app_secret"],
-        user_agent="daryl.testing",
-        scope=config["googleauth"]["scopes"],
-        refresh_token=config["googleauth"]["refresh_token"],
-    )
-
-    spr_client = gdata.spreadsheets.client.SpreadsheetsClient()
-    token.authorize(spr_client)
-    return spr_client
-
-
 def get_sites_client(config, site="sustainablecorn"):
     """ Return an authorized sites client """
-    import gdata.sites.client as sclient
 
     token = gdata.gauth.OAuth2Token(
         client_id=config["appauth"]["client_id"],
@@ -495,23 +231,6 @@ def build_sdc(feed):
                     data[yr][sitekey].append(sdc_key)
 
     return data, sdc_names
-
-
-def get_site_metadata(config, spr_client=None):
-    """
-    Return a dict of research site metadata
-    """
-    meta = {}
-    if spr_client is None:
-        spr_client = get_spreadsheet_client(config)
-
-    lf = exponential_backoff(
-        spr_client.get_list_feed, config["cscap"]["metamaster"], "od6"
-    )
-    for entry in lf.entry:
-        d = entry.to_dict()
-        meta[d["uniqueid"]] = {"climate_site": d["iemclimatesite"].split()[0]}
-    return meta
 
 
 def get_driveclient(config, project="cscap"):
