@@ -1,0 +1,26 @@
+"""Test our CF6 parsing."""
+
+import pytest
+from pyiem.nws.products.cf6 import parser
+from pyiem.util import get_test_file, get_dbconn
+from pyiem.reference import TRACE_VALUE
+
+
+@pytest.fixture
+def dbcursor():
+    """Return a database cursor."""
+    return get_dbconn("iem").cursor()
+
+
+def test_basic(dbcursor):
+    """Test CF6 Parsing."""
+    prod = parser(get_test_file("CF6/CF6DSM.txt"))
+    assert prod.df.iloc[0]["max"] == 42
+    prod.sql(dbcursor)
+
+
+def test_trace(dbcursor):
+    """Ensure that our decoder is properly dealing with trace values."""
+    prod = parser(get_test_file("CF6/CF6SEA.txt"))
+    assert prod.df.iloc[15]["wtr"] == TRACE_VALUE
+    prod.sql(dbcursor)
