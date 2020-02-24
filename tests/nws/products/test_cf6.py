@@ -12,6 +12,12 @@ def dbcursor():
     return get_dbconn("iem").cursor()
 
 
+def test_200224_time():
+    """Test failure found with timestamp parsing."""
+    prod = parser(get_test_file("CF6/CF6WYS.txt"))
+    assert prod.df.iloc[0]["max"] == 32
+
+
 def test_basic(dbcursor):
     """Test CF6 Parsing."""
     prod = parser(get_test_file("CF6/CF6DSM.txt"))
