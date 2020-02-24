@@ -53,6 +53,16 @@ def test_dups():
     assert not res
 
 
+def test_200224_urls():
+    """Test that we are generating the right URLs."""
+    ans = "2020-02-25T06:00Z"
+    for i in range(3):
+        prod = vtecparser(get_test_file("WSWDVN/%s.txt" % (i,)))
+        j = prod.get_jabbers("http://localhost")
+        url = j[0][0].strip().split()[-1].split("_")[1]
+        assert url == ans
+
+
 def test_issue120_ffwtags(dbcursor):
     """Can we support Flood Warning tags."""
     prod = vtecparser(get_test_file("FFW/FFW_tags.txt"))

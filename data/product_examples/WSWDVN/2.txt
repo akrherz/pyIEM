@@ -1,0 +1,86 @@
+917 
+WWUS43 KDVN 240343
+WSWDVN
+
+URGENT - WINTER WEATHER MESSAGE
+National Weather Service Quad Cities IA IL
+943 PM CST Sun Feb 23 2020
+
+...HEAVY SNOW POSSIBLE MONDAY NIGHT THROUGH EARLY WEDNESDAY...
+
+.A slow moving winter storm system moving out of the southern
+plains is expected to bring snow across eastern Iowa and
+northwest Illinois Monday night, which will continue through
+Tuesday night. Precipitation will start out as rain during the
+day Monday which will change to snow Monday evening. Snow may be
+moderate to heavy at times, especially Tuesday through Tuesday
+night. Increasing north to northwest winds may cause blowing and
+drifting snow Tuesday night into Wednesday morning.
+
+The storm has the potential to be one of the strongest winter
+storms of the season so far. While it is too soon to determine
+specific snowfall amounts, there is above average confidence that
+this system will produce heavy snowfall amounts over portions of
+the watch area.
+
+IAZ040>042-051>054-ILZ001-241145-
+/O.CON.KDVN.WS.A.0003.200225T0600Z-200226T1800Z/
+Buchanan-Delaware-Dubuque-Benton-Linn-Jones-Jackson-Jo Daviess-
+Including the cities of Independence, Manchester, Dubuque, 
+Vinton, Cedar Rapids, Anamosa, Maquoketa, and Galena
+943 PM CST Sun Feb 23 2020
+
+...WINTER STORM WATCH REMAINS IN EFFECT FROM LATE MONDAY NIGHT
+THROUGH WEDNESDAY MORNING...
+
+* WHAT...Heavy snow possible. Total snow accumulations of 6 to 
+  10 inches possible.
+
+* WHERE...Portions of east central and northeast Iowa and 
+  northwest Illinois.
+
+* WHEN...From late Monday night through Wednesday morning.
+
+* IMPACTS...Travel could be very difficult. The hazardous
+  conditions could impact the morning or evening commute.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Monitor the latest forecasts for updates on this situation. 
+
+&&
+
+$$
+
+IAZ063>068-076>078-087>089-098-ILZ002-007-009-015-016-024-241145-
+/O.CON.KDVN.WS.A.0003.200225T0000Z-200226T1800Z/
+Iowa-Johnson-Cedar-Clinton-Muscatine-Scott-Keokuk-Washington-
+Louisa-Jefferson-Henry IA-Des Moines-Van Buren-Stephenson-Carroll-
+Whiteside-Rock Island-Henry IL-Mercer-
+Including the cities of Marengo, Iowa City, Tipton, Clinton, 
+Muscatine, Davenport, Bettendorf, Sigourney, Washington, Wapello,
+Fairfield, Mount Pleasant, Burlington, Keosauqua, Freeport, 
+Mount Carroll, Sterling, Moline, Rock Island, Geneseo, and Aledo
+943 PM CST Sun Feb 23 2020
+
+...WINTER STORM WATCH REMAINS IN EFFECT FROM MONDAY EVENING
+THROUGH WEDNESDAY MORNING...
+
+* WHAT...Heavy mixed precipitation possible. Total snow
+  accumulations of 6 to 12 inches.
+
+* WHERE...Portions of east central and southeast Iowa and 
+  northwest Illinois.
+
+* WHEN...From Monday evening through Wednesday morning.
+
+* IMPACTS...Travel could be very difficult. The hazardous
+  conditions could impact the morning or evening commute.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Monitor the latest forecasts for updates on this situation. 
+
+&&
+
+$$
