@@ -8,9 +8,9 @@ from pyiem.nws.product import TextProduct
 from pyiem.reference import TRACE_VALUE
 import pandas as pd
 
-MONTH_RE = re.compile(r"^MONTH:\s+(?P<month>[A-Z]+)$")
-MONTH_RE_NUM = re.compile(r"^MONTH:\s+(?P<month>[0-9]+)$")
-YEAR_RE = re.compile(r"^YEAR:\s+(?P<year>[0-9]{4})$")
+MONTH_RE = re.compile(r"^MONTH:\s+(?P<month>[A-Z]+)$", re.I)
+MONTH_RE_NUM = re.compile(r"^MONTH:\s+(?P<month>[0-9]+)$", re.I)
+YEAR_RE = re.compile(r"^YEAR:\s+(?P<year>[0-9]{4})$", re.I)
 COL_WIDTHS = [2, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 3, 4, 4, 5, 4, 7, 3, 4]
 COL_NAMES = [
     "dy",

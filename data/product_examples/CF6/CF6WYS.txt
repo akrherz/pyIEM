@@ -1,0 +1,54 @@
+709 
+CXUS56 KTFX 240915
+CF6WYS
+23
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6) 
+ 
+                                          STATION:   WEST YELLOWSTO MT
+                                          MONTH:     February
+                                          YEAR:      2020
+                                          LATITUDE:   44.68  N
+                                          LONGITUDE: 111.12  W
+ 
+  TEMPERATURE IN F:       :PCPN:    SNOW:  WIND      :SUNSHINE: SKY     :PK WND 
+================================================================================
+1   2   3   4   5  6A  6B    7    8   9   10  11  12  13   14  15   16   17  18
+                                     12Z  AVG MX 2MIN
+DY MAX MIN AVG DEP HDD CDD  WTR  SNW DPTH SPD SPD DIR MIN PSBL S-S WX    SPD DR
+================================================================================
+ 
+01  32  25  28  15  37   0  0.00  M    M 12.4  M   M   M    M   M        37  250  
+02  30  14  22   9  43   0  0.00  M    M  8.8  M   M   M    M   M        28  350  
+03  16  -8   4  -9  61   0  0.00  M    M 12.6  M   M   M    M   M        26  360  
+04  14 -33  -9 -22  74   0  0.00  M    M  5.0  M   M   M    M   M        24  260  
+05  14   3   8  -5  57   0  0.00  M    M  6.7  M   M   M    M   M        24  250  
+06  21  14  17   4  48   0  0.00  M    M  4.8  M   M   M    M   M        23  240  
+07  32  16  24  11  41   0  0.00  M    M  6.2  M   M   M    M   M        28  260  
+08  28  18  23   9  42   0  0.00  M    M  9.3  M   M   M    M   M        38  350  
+09  23 -13   5  -9  60   0  0.00  M    M  6.2  M   M   M    M   M        28  360  
+10  23 -11   6  -8  59   0  0.00  M    M  4.5  M   M   M    M   M        23  330  
+11  18 -24  -3 -17  68   0  0.00  M    M  5.4  M   M   M    M   M        31  360  
+12  27   3  15   1  50   0  0.00  M    M  3.1  M   M   M    M   M        20  360  
+13  23  -6   8  -6  57   0  0.00  M    M  6.8  M   M   M    M   M        29  320  
+14  28   7  17   2  48   0  0.00  M    M  8.9  M   M   M    M   M        31  330  
+15  23 -11   6  -9  59   0  0.00  M    M  8.2  M   M   M    M   M        28  260  
+16  27  18  22   7  43   0  0.00  M    M  9.8  M   M   M    M   M        24  330  
+17  19  -8   5 -10  60   0  0.00  M    M  6.8  M   M   M    M   M        24  350  
+18  18 -20  -1 -17  66   0  0.00  M    M  4.0  M   M   M    M   M        22  240  
+19  21 -24  -1 -17  66   0  0.00  M    M  1.4  M   M   M    M   M        M     M
+20  27 -31  -2 -18  67   0  0.00  M    M  0.8  M   M   M    M   M        M     M
+21  34 -27   3 -14  62   0  0.00  M    M  3.0  M   M   M    M   M        22  340  
+22  37 -18   9  -8  56   0  0.00  M    M  3.8  M   M   M    M   M        22  240  
+23  34 -15   9  -8  56   0  0.00  M    M  6.0  M   M   M    M   M        35  300  
+24M   M   M                M      M    M  0.0  M   M   M    M   M        M     M
+================================================================================
+SM 569 -131         1280  0  0         144.5 
+================================================================================
+AV 23.7 -5.5                              6.0                        MAX(MPH)
+                                                                      38  
+ 
+[TEMPERATURE DATA]      [PRECIPITATION DATA]
+ 
+Average Monthly:  9.1  Total for Month:  0
+Dptr fm Normal:    -5.0  Dptr fm Normal:  -1.48
+
