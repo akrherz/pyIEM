@@ -1,5 +1,6 @@
 """Parser for the CF6 Product."""
 import re
+import calendar
 from io import StringIO
 import datetime
 
@@ -8,6 +9,7 @@ from pyiem.reference import TRACE_VALUE
 import pandas as pd
 
 MONTH_RE = re.compile(r"^MONTH:\s+(?P<month>[A-Z]+)$")
+MONTH_RE_NUM = re.compile(r"^MONTH:\s+(?P<month>[0-9]+)$")
 YEAR_RE = re.compile(r"^YEAR:\s+(?P<year>[0-9]{4})$")
 COL_WIDTHS = [2, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 3, 4, 4, 5, 4, 7, 3, 4]
 COL_NAMES = [
@@ -58,6 +60,9 @@ class CF6Product(TextProduct):
                 m = MONTH_RE.match(line)
                 if m:
                     month = m.groupdict()["month"]
+                m = MONTH_RE_NUM.match(line)
+                if m:
+                    month = calendar.month_name[int(m.groupdict()["month"])]
             elif line.startswith("YEAR:"):
                 m = YEAR_RE.match(line)
                 if m:
@@ -67,7 +72,8 @@ class CF6Product(TextProduct):
         if year is None or month is None:
             raise ValueError("Failed to find required month and year values")
         day1 = datetime.datetime.strptime(
-            "%s %s 1" % (year, month), "%Y %B %d"
+            "%s %s 1" % (year, month),
+            "%Y %B %d" if len(month) > 3 else "%Y %b %d",
         )
         headercount = 0
         sio = StringIO()
