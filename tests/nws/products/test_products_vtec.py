@@ -53,6 +53,16 @@ def test_dups():
     assert not res
 
 
+def test_200224_urls():
+    """Test that we are generating the right URLs."""
+    ans = "2020-02-25T06:00Z"
+    for i in range(3):
+        prod = vtecparser(get_test_file("WSWDVN/%s.txt" % (i,)))
+        j = prod.get_jabbers("http://localhost")
+        url = j[0][0].strip().split()[-1].split("_")[1]
+        assert url == ans
+
+
 def test_issue120_ffwtags(dbcursor):
     """Can we support Flood Warning tags."""
     prod = vtecparser(get_test_file("FFW/FFW_tags.txt"))
@@ -587,15 +597,16 @@ def test_150105_considerable_tag():
     """ TORFSD has considerable tag """
     prod = vtecparser(get_test_file("TORFSD.txt"))
     j = prod.get_jabbers("http://localhost", "http://localhost")
-    assert j[0][0], (
+    ans = (
         "FSD issues Tornado Warning "
         "[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, "
         "hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 "
         "PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE "
         "AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND "
         "MOVING NORTHEAST AT 30 MPH. "
-        "http://localhost2013-O-NEW-KFSD-TO-W-0020"
+        "http://localhost2013-O-NEW-KFSD-TO-W-0020_2013-10-05T00:22Z"
     )
+    assert j[0][0] == ans
 
 
 def test_150105_sbw(dbcursor):
@@ -818,7 +829,7 @@ def test_wcn_updates():
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, "
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [TN]) till Jun 6, 7:00 PM "
-        "CDT. http://localhost2014-O-EXA-KMEG-SV-A-0240"
+        "CDT. http://localhost2014-O-EXA-KMEG-SV-A-0240_2014-06-06T20:37Z"
     )
     assert j[0][0] == ans
 
@@ -835,7 +846,7 @@ def test_140715_condensed():
         "continues ((IAC121)) [IA]) till 9:15 PM CDT. AT 901 PM CDT...A "
         "CONFIRMED TORNADO WAS LOCATED NEAR WINTERSET... MOVING "
         "SOUTHEAST AT 30 MPH. "
-        "http://localhost2014-O-CON-KDMX-TO-W-0051"
+        "http://localhost2014-O-CON-KDMX-TO-W-0051_2014-07-06T02:01Z"
     )
     assert j[0][0] == ans
 
@@ -857,7 +868,7 @@ def test_140714_segmented_watch():
         "issues ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
         "((ANZ452)), ((ANZ453)), ((ANZ454)), ((ANZ455)) [AN]) "
         "till Jul 14, 8:00 PM EDT. "
-        "http://localhost2014-O-NEW-KPHI-SV-A-0418"
+        "http://localhost2014-O-NEW-KPHI-SV-A-0418_2014-07-14T17:25Z"
     )
     assert j[0][0] == ans
 
@@ -1020,7 +1031,8 @@ def test_wcn():
         "DMX updates Severe Thunderstorm Warning [wind: 60 MPH, hail: "
         "&lt;.75 IN]  (cancels aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
         "[IA], continues aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA]) "
-        "till 10:45 PM CDT http://localhost/2014-O-CON-KDMX-SV-W-0143"
+        "till 10:45 PM CDT "
+        "http://localhost/2014-O-CON-KDMX-SV-W-0143_2014-06-03T00:00Z"
     )
     assert j[0][2]["twitter"] == ans
 
@@ -1029,22 +1041,24 @@ def test_wcn():
     )
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
     assert prod.is_homogeneous()
-    assert j[0][2]["twitter"], (
+    ans = (
         "DMX updates Tornado Watch (cancels a, "
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         "aaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaa"
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties "
         "in [IA]) till Jun 4, 1:00 AM CDT "
-        "http://localhost/2014-O-CON-KDMX-TO-A-0210"
+        "http://localhost/2014-O-CON-KDMX-TO-A-0210_2014-06-03T00:00Z"
     )
-    assert j[0][0], (
+    assert j[0][2]["twitter"] == ans
+    ans = (
         "DMX updates Tornado Watch (cancels a, "
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         "aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaa"
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa [IA], continues 12 counties "
         "in [IA]) till Jun 4, 1:00 AM CDT. "
-        "http://localhost/2014-O-CON-KDMX-TO-A-0210"
+        "http://localhost/2014-O-CON-KDMX-TO-A-0210_2014-06-03T00:00Z"
     )
+    assert j[0][0] == ans
 
 
 def test_140604_sbwupdate(dbcursor):
@@ -1119,16 +1133,19 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
     prod = vtecparser(get_test_file("FLSBOU.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
-    assert j[0][0], (
+    ans = (
         "BOU extends time of Flood Advisory "
         "for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT "
-        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018"
+        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T00:00Z"
     )
-    assert j[0][2]["twitter"], (
+    assert j[0][0] == ans
+    ans = (
         "BOU extends time of Flood "
         "Advisory for ((COC049)), ((COC057)) [CO] till "
-        "May 29, 9:30 PM MDT http://localhost/2014-O-EXT-KBOU-FA-Y-0018"
+        "May 29, 9:30 PM MDT "
+        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T00:00Z"
     )
+    assert j[0][2]["twitter"] == ans
 
 
 def test_affected_wfos():

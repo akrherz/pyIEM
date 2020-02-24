@@ -1133,7 +1133,17 @@ class VTECProduct(TextProduct):
             channels.append(
                 "%s.%s.%s" % (vtec.phenomena, vtec.significance, vtec.office)
             )
+            # Need to figure out a timestamp to associate with this
+            # consolidated message.  Default to utcnow
+            stamp = self.utcnow
             for seg in self.segments:
+                for v in seg.vtec:
+                    if (
+                        v.begints is not None
+                        and v.begints > stamp
+                        and v.status not in ["CAN", "EXP"]
+                    ):
+                        stamp = v.begints
                 for ugc in seg.ugcs:
                     channels.append(
                         "%s.%s.%s"
@@ -1154,7 +1164,12 @@ class VTECProduct(TextProduct):
                 "sts": "",
                 "action": self.get_action(),
                 "product": vtec.get_ps_string(),
-                "url": "%s%s" % (uri, vtec.url(self.db_year)),
+                "url": "%s%s_%s"
+                % (
+                    uri,
+                    vtec.url(self.db_year),
+                    stamp.strftime("%Y-%m-%dT%H:%MZ"),
+                ),
             }
             # Include the special bulletin for Tornado Warnings
             if vtec.phenomena in ["TO"] and vtec.significance == "W":
