@@ -671,6 +671,8 @@ class MapPlot(object):
         showmarker=False,
         labelbuffer=25,
         outlinecolor="#FFFFFF",
+        zorder=None,
+        **kwargs
     ):
         """Plot values onto the map
 
@@ -692,11 +694,15 @@ class MapPlot(object):
           showmarker (bool, optional): Place a marker on the map for the label
           labelbuffer (int): pixel buffer around labels
           outlinecolor (color): color to use for text outlines
+          zorder (int or list, optional): zorder to use for plotting.
+          textoutlinewidth (int): width of the font outline, default 3.
         """
         if valmask is None:
             valmask = [True] * len(lons)
         if labels is None:
             labels = [""] * len(lons)
+        if zorder is None:
+            zorder = [Z_OVERLAY + 2] * len(lons)
         if isinstance(color, str):
             color = [color] * len(lons)
         bbox = self.fig.get_window_extent().transformed(
@@ -726,8 +732,8 @@ class MapPlot(object):
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
-        for o, a, v, m, c, label in zip(
-            lons, lats, vals, valmask, color, labels
+        for o, a, v, m, c, label, z in zip(
+            lons, lats, vals, valmask, color, labels, zorder
         ):
             if not m:
                 continue
@@ -823,7 +829,7 @@ class MapPlot(object):
                 mystr,
                 color=c,
                 size=textsize,
-                zorder=Z_OVERLAY + 2,
+                zorder=z,
                 va="center" if not showmarker else "bottom",
                 ha=ha,
                 transform=ccrs.PlateCarree(),
@@ -843,14 +849,17 @@ class MapPlot(object):
                     o,
                     a,
                     marker="+",
-                    zorder=Z_OVERLAY + 2,
+                    zorder=z,
                     color="k",
                     transform=ccrs.PlateCarree(),
                 )
             t0.set_clip_on(True)
             t0.set_path_effects(
                 [
-                    PathEffects.Stroke(linewidth=3, foreground=outlinecolor),
+                    PathEffects.Stroke(
+                        linewidth=kwargs.get("textoutlinewidth", 3),
+                        foreground=outlinecolor,
+                    ),
                     PathEffects.Normal(),
                 ]
             )
@@ -864,7 +873,7 @@ class MapPlot(object):
                     xytext=(0, 0 - textsize / 2),
                     color=labelcolor,
                     textcoords="offset points",
-                    zorder=Z_OVERLAY + 1,
+                    zorder=z - 1,
                     clip_on=True,
                     fontsize=labeltextsize,
                 )
@@ -1123,6 +1132,7 @@ class MapPlot(object):
         ilabel = kwargs.get("ilabel", False)
         plotmissing = kwargs.get("plotmissing", True)
         labels = kwargs.get("labels", dict())
+        to_label = {"x": [], "y": [], "vals": [], "zorder": []}
         for ugc in ugcs:
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
@@ -1157,19 +1167,20 @@ class MapPlot(object):
                     # prefer our stored centroid vs calculated one
                     mx = ugcdict.get("lon", polygon.centroid.x)
                     my = ugcdict.get("lat", polygon.centroid.y)
-                    txt = self.ax.text(
-                        mx,
-                        my,
-                        "%s" % (labels.get(ugc, val),),
-                        zorder=z + 1,
-                        ha="center",
-                        va="center",
-                        transform=ccrs.PlateCarree(),
-                    )
-                    txt.set_path_effects(
-                        [PathEffects.withStroke(linewidth=2, foreground="w")]
-                    )
-
+                    to_label["x"].append(mx)
+                    to_label["y"].append(my)
+                    to_label["vals"].append("%s" % (labels.get(ugc, val),))
+                    to_label["zorder"].append(z + 1)
+        if to_label:
+            self.plot_values(
+                to_label["x"],
+                to_label["y"],
+                to_label["vals"],
+                zorder=to_label["zorder"],
+                labelbuffer=kwargs.get("labelbuffer", 1),
+                textsize=12,
+                textoutlinewidth=2,
+            )
         if "cmap" in kwargs:
             del kwargs["cmap"]
         if not kwargs.get("nocbar", False):
