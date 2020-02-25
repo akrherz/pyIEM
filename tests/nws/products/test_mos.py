@@ -11,6 +11,15 @@ def cursor():
     return get_dbconn("mos").cursor()
 
 
+def test_ecmwf(cursor):
+    """Test that we can parse the ECMWF MOS."""
+    utcnow = utc(2020, 2, 24, 0)
+    prod = mosparser(get_test_file("MOS/ECS.txt"), utcnow=utcnow)
+    assert len(prod.data) == 3
+    inserts = prod.sql(cursor)
+    assert inserts == 63
+
+
 def test_180125_empty(cursor):
     """Can we parse a MOS product with empty data"""
     utcnow = utc(2018, 1, 26, 1)
