@@ -62,6 +62,7 @@ from pyiem.plot.util import (
     polygon_fill,
     mask_outside_geom,
     draw_logo,
+    fitbox,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_CF,
@@ -274,18 +275,24 @@ class MapPlot(object):
         elif not kwargs.get("nologo"):
             draw_logo(self.fig, "logo.png")
         if "title" in kwargs:
-            self.fig.text(
-                0.09 if not kwargs.get("nologo") else 0.02,
-                0.94,
+            fitbox(
+                self.fig,
                 kwargs.get("title"),
-                fontsize=kwargs.get("titlefontsize", 18),
+                0.09 if not kwargs.get("nologo") else 0.02,
+                0.99,
+                0.94,
+                0.99,
+                textsize=kwargs.get("titlefontsize", 18),
             )
         if "subtitle" in kwargs:
-            self.fig.text(
-                0.09 if not kwargs.get("nologo") else 0.02,
-                0.91,
+            fitbox(
+                self.fig,
                 kwargs.get("subtitle"),
-                fontsize=kwargs.get("subtitlefontsize", 12),
+                0.09 if not kwargs.get("nologo") else 0.02,
+                0.99,
+                0.91,
+                0.94,
+                textsize=kwargs.get("subtitlefontsize", 12),
             )
 
         if "nocaption" not in kwargs:
