@@ -170,7 +170,7 @@ def date_tokens2datetime(tokens):
     return z, tz, now.replace(tzinfo=pytz.UTC)
 
 
-class TextProductSegment(object):
+class TextProductSegment:
     """ A segment of a Text Product """
 
     def __init__(self, text, tp):
@@ -447,7 +447,7 @@ class TextProductSegment(object):
         return affected_wfos
 
 
-class TextProduct(object):
+class TextProduct:
     """class representing a NWS Text Product"""
 
     def __init__(

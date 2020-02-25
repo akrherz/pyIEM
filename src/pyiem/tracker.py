@@ -7,7 +7,7 @@ import pytz
 from pyiem.util import get_dbconn
 
 
-class TrackerEngine(object):
+class TrackerEngine:
     """A processing engine of tracking offline/online events"""
 
     def __init__(self, icursor, pcursor, maxactions=0):

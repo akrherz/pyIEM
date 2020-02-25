@@ -3,13 +3,14 @@
 Example:
    from pyiem.plot.use_agg import plt
 """
+# pylint: disable=unused-import,wrong-import-position
 import os
 
 from pandas.plotting import register_matplotlib_converters
 import matplotlib
 
 matplotlib.use("agg")
-import matplotlib.pyplot as plt  # noqa:  # pylint: disable
+import matplotlib.pyplot as plt  # noqa
 
 # Workaround a pandas dataframe to matplotlib issue
 register_matplotlib_converters()

@@ -90,7 +90,7 @@ dirs = {
 KM_SM = 1.609347
 
 
-class SIGMET(object):
+class SIGMET:
     """Data Structure."""
 
     def __init__(self):

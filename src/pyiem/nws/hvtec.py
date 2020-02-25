@@ -65,7 +65,7 @@ def contime(s):
         return None
 
 
-class HVTEC(object):
+class HVTEC:
     def __init__(self, tokens, nwsli_provider=None):
         """ Constructor """
         if nwsli_provider is None:

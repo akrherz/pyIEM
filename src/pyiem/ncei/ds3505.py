@@ -1245,7 +1245,7 @@ def vsbyfmt(val):
     return "%.0f" % (val,)
 
 
-class OB(object):
+class OB:
     """ hacky representation of the database schema """
 
     station = None

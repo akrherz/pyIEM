@@ -10,7 +10,7 @@ _LOG = logging.getLogger(__name__)
 GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])
 
 
-class CachingZonalStats(object):
+class CachingZonalStats:
     """Implements a cache to speed up zonal_stats computation"""
 
     def __init__(self, affine):

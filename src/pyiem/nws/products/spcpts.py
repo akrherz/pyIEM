@@ -390,7 +390,7 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
-class SPCOutlookCollection(object):
+class SPCOutlookCollection:
     """ A collection of outlooks for a single 'day'"""
 
     def __init__(self, issue, expire, day):
@@ -401,7 +401,7 @@ class SPCOutlookCollection(object):
         self.outlooks = []
 
 
-class SPCOutlook(object):
+class SPCOutlook:
     """A class holding what we store for a single outlook."""
 
     def __init__(self, category, threshold, multipoly):

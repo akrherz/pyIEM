@@ -140,7 +140,7 @@ def parse(text, valid, ugc_provider=None):
     return ugcs, expire
 
 
-class UGC(object):
+class UGC:
     """Representation of a single UGC"""
 
     def __init__(self, state, geoclass, number, name=None, wfos=None):
@@ -168,3 +168,9 @@ class UGC(object):
             and self.geoclass == other.geoclass
             and self.number == other.number
         )
+
+    def __ne__(self, other):
+        """ Compare this UGC with another """
+        return not self == other
+
+    __hash__ = None  # unhashable

@@ -176,7 +176,7 @@ def load_pickle_geo(filename):
     return pickle.load(open(fn, "rb"), **pickle_opts)
 
 
-class MapPlot(object):
+class MapPlot:
     """An object representing a cartopy plot.
 
     An object that allows one to quickly and easily generate map plots of data

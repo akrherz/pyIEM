@@ -38,7 +38,7 @@ def _mylowercase(text):
     return " ".join(tokens)
 
 
-class LSR(object):
+class LSR:
     """ Represents a single Local Storm Report within the LSRProduct """
 
     def __init__(self):

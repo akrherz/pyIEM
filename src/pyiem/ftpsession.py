@@ -10,7 +10,7 @@ import time
 from pyiem.util import exponential_backoff
 
 
-class FTPSession(object):
+class FTPSession:
     """ Attempt to create some robustness and performance to FTPing """
 
     def __init__(self, server, username, password, tmpdir="/tmp", timeout=60):

@@ -12,7 +12,7 @@ from pyiem.nws.ugc import UGCParseException, UGC
 from pyiem.nws.vtec import parse
 
 
-class FakeObject(object):
+class FakeObject:
     """Mocked thing"""
 
     tp = None

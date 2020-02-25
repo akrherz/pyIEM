@@ -7,7 +7,7 @@ import pytz
 import datetime
 
 
-class NLDNProduct(object):
+class NLDNProduct:
     def __init__(self):
         self.header = ""
         self.df = None
