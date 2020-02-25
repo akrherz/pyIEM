@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-outside-toplevel,too-many-lines
 """Plotting utility for generating maps, windroses and everything else under
 the sun.
 
@@ -1241,14 +1242,7 @@ class MapPlot(object):
         cwas = load_pickle_geo("cwa.pickle")
         polygon_fill(self, cwas, data, **kwargs)
 
-    def drawcities(
-        self,
-        minarea=None,
-        labelbuffer=25,
-        textsize=16,
-        color="#000000",
-        outlinecolor="#FFFFFF",
-    ):
+    def drawcities(self, **kwargs):
         """Overlay some cities
 
         Args:
@@ -1260,8 +1254,10 @@ class MapPlot(object):
         """
         df = load_pickle_pd("pd_cities.pickle")
         (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
-        if minarea is None:
-            minarea = 500.0 if self.sector in ["nws", "conus"] else 10.0
+
+        minarea = kwargs.get(
+            "minarea", 500.0 if self.sector in ["nws", "conus"] else 10.0
+        )
         df2 = df[
             (
                 (df["lat"] > south)
@@ -1278,10 +1274,7 @@ class MapPlot(object):
             df2.lat.values,
             df2.name.values,
             showmarker=True,
-            labelbuffer=labelbuffer,
-            textsize=textsize,
-            color=color,
-            outlinecolor=outlinecolor,
+            **kwargs
         )
 
     def drawcounties(self, color="k"):
@@ -1308,47 +1301,47 @@ class MapPlot(object):
         """Place the IEM Logo"""
         draw_logo(self.fig, "logo.png")
 
-    def postprocess(
-        self,
-        view=False,
-        filename=None,
-        web=False,
-        memcache=None,
-        memcachekey=None,
-        memcacheexpire=300,
-        pqstr=None,
-    ):
-        """ postprocess into a slim and trim PNG """
+    def postprocess(self, **kwargs):
+        """Postprocessing.
+
+        Args:
+          filename (str): file to save output to.
+          web (bool): Write result to sys.stdout, default False.
+          memcache (obj): write image to memcache
+          memcachekey (str): key to use when writing to memcache.
+          memcacheexpire (int): how long should we persist in memcache,
+            default is 300.
+          pqstr (str): Do pqinsert with the following LDM product name.
+        """
         ram = BytesIO()
-        plt.savefig(ram, format="png")
+        self.fig.savefig(ram, format="png")
         ram.seek(0)
         im = Image.open(ram)
         im2 = im.convert("RGB").convert("P", palette=Image.ADAPTIVE)
-        if memcache and memcachekey:
+        if kwargs.get("memcache") and kwargs.get("memcachekey"):
             ram = BytesIO()
             im2.save(ram, format="png")
             ram.seek(0)
             r = ram.read()
-            memcache.set(memcachekey, r, time=memcacheexpire)
-            sys.stderr.write(
-                "memcached key %s set time %s" % (memcachekey, memcacheexpire)
+            kwargs.get("memcache").set(
+                kwargs.get("memcachekey"),
+                r,
+                time=kwargs.get("memcacheexpire", 300),
             )
-        if web:
+        if kwargs.get("web", False):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
             return
         tmpfd = tempfile.NamedTemporaryFile(delete=False)
         im2.save(tmpfd, format="PNG")
         tmpfd.close()
-        if pqstr is not None:
+        if kwargs.get("pqstr") is not None:
             subprocess.call(
-                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfd.name),
+                "pqinsert -p '%s' %s" % (kwargs.get("pqstr"), tmpfd.name),
                 shell=True,
             )
-        if view:
-            subprocess.call("xv %s" % (tmpfd.name,), shell=True)
-        if filename is not None:
-            shutil.copyfile(tmpfd.name, filename)
+        if kwargs.get("filename") is not None:
+            shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)
 
 
