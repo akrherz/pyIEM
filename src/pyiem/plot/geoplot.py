@@ -1268,11 +1268,14 @@ class MapPlot:
         ]
         # debug option to test an individual point on the plot
         # df2 = df[(df['name'] == 'Sioux City')]
+        # hack around a API break
+        tsz = kwargs.pop("textsize", 16)
         self.plot_values(
             df2.lon.values,
             df2.lat.values,
             df2.name.values,
             showmarker=True,
+            textsize=tsz,
             **kwargs
         )
 
