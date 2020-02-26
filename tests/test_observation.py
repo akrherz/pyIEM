@@ -125,6 +125,26 @@ def test_hardcoded_maxtmpf(iemob):
     assert iemob.cursor.fetchone()[0] == 54
 
 
+def test_settting_null(iemob):
+    """Test setting a null value into the database after a real value."""
+    iemob.ob.data["max_tmpf"] = 55
+    iemob.ob.save(iemob.cursor)
+    iemob.cursor.execute(
+        """SELECT max_tmpf from summary_2015
+    WHERE day = '2015-09-01' and iemid = %s""",
+        (iemob.iemid,),
+    )
+    assert iemob.cursor.fetchone()[0] == 55
+    iemob.ob.data["null_max_tmpf"] = None
+    iemob.ob.save(iemob.cursor)
+    iemob.cursor.execute(
+        """SELECT max_tmpf from summary_2015
+    WHERE day = '2015-09-01' and iemid = %s""",
+        (iemob.iemid,),
+    )
+    assert iemob.cursor.fetchone()[0] is None
+
+
 def test_null(iemob):
     """ Make sure our null logic is working """
     iemob.ob.data["tmpf"] = 55
