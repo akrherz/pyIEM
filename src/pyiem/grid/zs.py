@@ -1,5 +1,4 @@
 """Utility class to help with fast zonal_stats work"""
-from __future__ import print_function
 from collections import namedtuple
 import logging
 
@@ -10,7 +9,7 @@ _LOG = logging.getLogger(__name__)
 GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])
 
 
-class CachingZonalStats(object):
+class CachingZonalStats:
     """Implements a cache to speed up zonal_stats computation"""
 
     def __init__(self, affine):

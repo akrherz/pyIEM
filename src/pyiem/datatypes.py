@@ -5,7 +5,7 @@ import numpy as np
 from pyiem.exceptions import UnitsError
 
 
-class basetype(object):
+class basetype:
     """ Base Object for all our vars """
 
     def __init__(self, value, units):

@@ -5,7 +5,7 @@ A class to store metadata associated with a NWSLI entry.
 from shapely.geometry import Point
 
 
-class NWSLI(object):
+class NWSLI:
     def __init__(self, identifier, name=None, wfos=None, lon=0, lat=0):
         """Constructor
 

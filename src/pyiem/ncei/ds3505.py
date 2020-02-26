@@ -2,7 +2,6 @@
 
     https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
-from __future__ import print_function
 import re
 import warnings
 import datetime
@@ -1245,7 +1244,7 @@ def vsbyfmt(val):
     return "%.0f" % (val,)
 
 
-class OB(object):
+class OB:
     """ hacky representation of the database schema """
 
     station = None

@@ -212,7 +212,7 @@ def summary_update(txn, data):
     return txn.rowcount
 
 
-class Observation(object):
+class Observation:
     """ my observation object """
 
     def __init__(self, station, network, valid):

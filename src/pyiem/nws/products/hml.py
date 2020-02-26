@@ -72,7 +72,7 @@ def parse_xml(token):
     return hml
 
 
-class HMLData(object):
+class HMLData:
     """Our data object."""
 
     def __init__(self):

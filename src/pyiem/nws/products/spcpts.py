@@ -2,7 +2,6 @@
  Something to deal with SPC PTS Product
  My life was not supposed to end like this, what a brutal format
 """
-from __future__ import print_function
 import re
 import datetime
 import copy
@@ -390,7 +389,7 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
-class SPCOutlookCollection(object):
+class SPCOutlookCollection:
     """ A collection of outlooks for a single 'day'"""
 
     def __init__(self, issue, expire, day):
@@ -401,7 +400,7 @@ class SPCOutlookCollection(object):
         self.outlooks = []
 
 
-class SPCOutlook(object):
+class SPCOutlook:
     """A class holding what we store for a single outlook."""
 
     def __init__(self, category, threshold, multipoly):

@@ -2,7 +2,6 @@
  Supports parsing of Storm Prediction Center's MCD and
  parsing of Weather Prediction Center's MPD
 """
-from __future__ import print_function
 import re
 import datetime
 

@@ -1,5 +1,4 @@
 """Support NWS VTEC encoding"""
-from __future__ import print_function
 import re
 import datetime
 
@@ -240,7 +239,7 @@ def get_action_string(action):
     return VTEC_ACTION.get(action, "unknown %s" % (action,))
 
 
-class VTEC(object):
+class VTEC:
     """A single VTEC encoding instance"""
 
     def __init__(self, tokens):

@@ -1,5 +1,4 @@
 """SIGMET"""
-from __future__ import print_function
 from collections import defaultdict
 
 from pyiem.nws.products.sigmet import parser, compute_esol

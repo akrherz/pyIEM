@@ -154,7 +154,7 @@ def get_ir_ramp():
     return data
 
 
-class GINIZFile(object):
+class GINIZFile:
     """
     Deal with compressed GINI files, which are the standard on NOAAPORT
     """
@@ -186,7 +186,7 @@ class GINIZFile(object):
                 i += 1
                 totsz -= len(chunk)
                 chunk = b"x\xda"
-            except Exception as _exp:
+            except Exception:
                 chunk += b"x\xda"
         if totsz != 0:
             logging.info("Totalsize left: %s", totsz)

@@ -5,7 +5,7 @@ import psycopg2.extras
 from pyiem.util import get_dbconn
 
 
-class Table(object):
+class Table:
     """Our class"""
 
     def __init__(self, network, cursor=None, only_online=True):

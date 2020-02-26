@@ -60,7 +60,7 @@ def compute_time(date, timestamp):
     )
 
 
-class DSMProduct(object):
+class DSMProduct:
     """Represents a single DSM."""
 
     def __init__(self, groupdict):

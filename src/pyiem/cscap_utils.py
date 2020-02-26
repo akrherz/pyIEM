@@ -1,7 +1,6 @@
 """
 Utility Functions that are common to our scripts, I hope
 """
-from __future__ import print_function
 import json
 import os
 import sys

@@ -101,7 +101,7 @@ def wchtidx(tmpf, sped):
     return 35.74 + 0.6215 * tmpf - 35.75 * wci + 0.4275 * tmpf * wci
 
 
-class nwnformat(object):
+class nwnformat:
     def __init__(self, do_avg_winds=True):
         self.error = 0
         self.do_avg_winds = do_avg_winds
@@ -114,6 +114,7 @@ class nwnformat(object):
         self.drctTxt = None
         self.avg_drctTxt = None
         self.sped = None
+        self.sknt = None
         self.rad = 0
         self.insideTemp = 460
         self.tmpf = None
@@ -148,7 +149,7 @@ class nwnformat(object):
     def setTS(self, newval):
         try:
             self.ts = datetime.datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
-        except Exception as _exp:
+        except Exception:
             traceback.print_exc()
             self.error = 100
             return

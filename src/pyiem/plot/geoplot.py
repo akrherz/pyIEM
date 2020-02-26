@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=import-outside-toplevel,too-many-lines
 """Plotting utility for generating maps, windroses and everything else under
 the sun.
 
@@ -16,7 +17,6 @@ Example:
 
 """
 # stdlib
-from __future__ import print_function
 from io import BytesIO
 import tempfile
 import os
@@ -62,6 +62,7 @@ from pyiem.plot.util import (
     polygon_fill,
     mask_outside_geom,
     draw_logo,
+    fitbox,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_CF,
@@ -174,7 +175,7 @@ def load_pickle_geo(filename):
     return pickle.load(open(fn, "rb"), **pickle_opts)
 
 
-class MapPlot(object):
+class MapPlot:
     """An object representing a cartopy plot.
 
     An object that allows one to quickly and easily generate map plots of data
@@ -274,18 +275,24 @@ class MapPlot(object):
         elif not kwargs.get("nologo"):
             draw_logo(self.fig, "logo.png")
         if "title" in kwargs:
-            self.fig.text(
-                0.09 if not kwargs.get("nologo") else 0.02,
-                0.94,
+            fitbox(
+                self.fig,
                 kwargs.get("title"),
-                fontsize=kwargs.get("titlefontsize", 18),
+                0.09 if not kwargs.get("nologo") else 0.02,
+                0.99,
+                0.94,
+                0.99,
+                textsize=kwargs.get("titlefontsize", 18),
             )
         if "subtitle" in kwargs:
-            self.fig.text(
-                0.09 if not kwargs.get("nologo") else 0.02,
-                0.91,
+            fitbox(
+                self.fig,
                 kwargs.get("subtitle"),
-                fontsize=kwargs.get("subtitlefontsize", 12),
+                0.09 if not kwargs.get("nologo") else 0.02,
+                0.99,
+                0.91,
+                0.94,
+                textsize=kwargs.get("subtitlefontsize", 12),
             )
 
         if "nocaption" not in kwargs:
@@ -671,6 +678,8 @@ class MapPlot(object):
         showmarker=False,
         labelbuffer=25,
         outlinecolor="#FFFFFF",
+        zorder=None,
+        **kwargs
     ):
         """Plot values onto the map
 
@@ -692,11 +701,15 @@ class MapPlot(object):
           showmarker (bool, optional): Place a marker on the map for the label
           labelbuffer (int): pixel buffer around labels
           outlinecolor (color): color to use for text outlines
+          zorder (int or list, optional): zorder to use for plotting.
+          textoutlinewidth (int): width of the font outline, default 3.
         """
         if valmask is None:
             valmask = [True] * len(lons)
         if labels is None:
             labels = [""] * len(lons)
+        if zorder is None:
+            zorder = [Z_OVERLAY + 2] * len(lons)
         if isinstance(color, str):
             color = [color] * len(lons)
         bbox = self.fig.get_window_extent().transformed(
@@ -726,8 +739,8 @@ class MapPlot(object):
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
-        for o, a, v, m, c, label in zip(
-            lons, lats, vals, valmask, color, labels
+        for o, a, v, m, c, label, z in zip(
+            lons, lats, vals, valmask, color, labels, zorder
         ):
             if not m:
                 continue
@@ -823,7 +836,7 @@ class MapPlot(object):
                 mystr,
                 color=c,
                 size=textsize,
-                zorder=Z_OVERLAY + 2,
+                zorder=z,
                 va="center" if not showmarker else "bottom",
                 ha=ha,
                 transform=ccrs.PlateCarree(),
@@ -843,14 +856,17 @@ class MapPlot(object):
                     o,
                     a,
                     marker="+",
-                    zorder=Z_OVERLAY + 2,
+                    zorder=z,
                     color="k",
                     transform=ccrs.PlateCarree(),
                 )
             t0.set_clip_on(True)
             t0.set_path_effects(
                 [
-                    PathEffects.Stroke(linewidth=3, foreground=outlinecolor),
+                    PathEffects.Stroke(
+                        linewidth=kwargs.get("textoutlinewidth", 3),
+                        foreground=outlinecolor,
+                    ),
                     PathEffects.Normal(),
                 ]
             )
@@ -864,7 +880,7 @@ class MapPlot(object):
                     xytext=(0, 0 - textsize / 2),
                     color=labelcolor,
                     textcoords="offset points",
-                    zorder=Z_OVERLAY + 1,
+                    zorder=z - 1,
                     clip_on=True,
                     fontsize=labeltextsize,
                 )
@@ -1123,6 +1139,7 @@ class MapPlot(object):
         ilabel = kwargs.get("ilabel", False)
         plotmissing = kwargs.get("plotmissing", True)
         labels = kwargs.get("labels", dict())
+        to_label = {"x": [], "y": [], "vals": [], "zorder": []}
         for ugc in ugcs:
             ugcdict = ugcs[ugc]
             if not filter_func(self, ugc, ugcdict):
@@ -1157,19 +1174,20 @@ class MapPlot(object):
                     # prefer our stored centroid vs calculated one
                     mx = ugcdict.get("lon", polygon.centroid.x)
                     my = ugcdict.get("lat", polygon.centroid.y)
-                    txt = self.ax.text(
-                        mx,
-                        my,
-                        "%s" % (labels.get(ugc, val),),
-                        zorder=z + 1,
-                        ha="center",
-                        va="center",
-                        transform=ccrs.PlateCarree(),
-                    )
-                    txt.set_path_effects(
-                        [PathEffects.withStroke(linewidth=2, foreground="w")]
-                    )
-
+                    to_label["x"].append(mx)
+                    to_label["y"].append(my)
+                    to_label["vals"].append("%s" % (labels.get(ugc, val),))
+                    to_label["zorder"].append(z + 1)
+        if to_label:
+            self.plot_values(
+                to_label["x"],
+                to_label["y"],
+                to_label["vals"],
+                zorder=to_label["zorder"],
+                labelbuffer=kwargs.get("labelbuffer", 1),
+                textsize=12,
+                textoutlinewidth=2,
+            )
         if "cmap" in kwargs:
             del kwargs["cmap"]
         if not kwargs.get("nocbar", False):
@@ -1223,14 +1241,7 @@ class MapPlot(object):
         cwas = load_pickle_geo("cwa.pickle")
         polygon_fill(self, cwas, data, **kwargs)
 
-    def drawcities(
-        self,
-        minarea=None,
-        labelbuffer=25,
-        textsize=16,
-        color="#000000",
-        outlinecolor="#FFFFFF",
-    ):
+    def drawcities(self, **kwargs):
         """Overlay some cities
 
         Args:
@@ -1242,8 +1253,10 @@ class MapPlot(object):
         """
         df = load_pickle_pd("pd_cities.pickle")
         (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
-        if minarea is None:
-            minarea = 500.0 if self.sector in ["nws", "conus"] else 10.0
+
+        minarea = kwargs.get(
+            "minarea", 500.0 if self.sector in ["nws", "conus"] else 10.0
+        )
         df2 = df[
             (
                 (df["lat"] > south)
@@ -1255,15 +1268,15 @@ class MapPlot(object):
         ]
         # debug option to test an individual point on the plot
         # df2 = df[(df['name'] == 'Sioux City')]
+        # hack around a API break
+        tsz = kwargs.pop("textsize", 16)
         self.plot_values(
             df2.lon.values,
             df2.lat.values,
             df2.name.values,
             showmarker=True,
-            labelbuffer=labelbuffer,
-            textsize=textsize,
-            color=color,
-            outlinecolor=outlinecolor,
+            textsize=tsz,
+            **kwargs
         )
 
     def drawcounties(self, color="k"):
@@ -1290,47 +1303,47 @@ class MapPlot(object):
         """Place the IEM Logo"""
         draw_logo(self.fig, "logo.png")
 
-    def postprocess(
-        self,
-        view=False,
-        filename=None,
-        web=False,
-        memcache=None,
-        memcachekey=None,
-        memcacheexpire=300,
-        pqstr=None,
-    ):
-        """ postprocess into a slim and trim PNG """
+    def postprocess(self, **kwargs):
+        """Postprocessing.
+
+        Args:
+          filename (str): file to save output to.
+          web (bool): Write result to sys.stdout, default False.
+          memcache (obj): write image to memcache
+          memcachekey (str): key to use when writing to memcache.
+          memcacheexpire (int): how long should we persist in memcache,
+            default is 300.
+          pqstr (str): Do pqinsert with the following LDM product name.
+        """
         ram = BytesIO()
-        plt.savefig(ram, format="png")
+        self.fig.savefig(ram, format="png")
         ram.seek(0)
         im = Image.open(ram)
         im2 = im.convert("RGB").convert("P", palette=Image.ADAPTIVE)
-        if memcache and memcachekey:
+        if kwargs.get("memcache") and kwargs.get("memcachekey"):
             ram = BytesIO()
             im2.save(ram, format="png")
             ram.seek(0)
             r = ram.read()
-            memcache.set(memcachekey, r, time=memcacheexpire)
-            sys.stderr.write(
-                "memcached key %s set time %s" % (memcachekey, memcacheexpire)
+            kwargs.get("memcache").set(
+                kwargs.get("memcachekey"),
+                r,
+                time=kwargs.get("memcacheexpire", 300),
             )
-        if web:
+        if kwargs.get("web", False):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
             return
         tmpfd = tempfile.NamedTemporaryFile(delete=False)
         im2.save(tmpfd, format="PNG")
         tmpfd.close()
-        if pqstr is not None:
+        if kwargs.get("pqstr") is not None:
             subprocess.call(
-                "/home/ldm/bin/pqinsert -p '%s' %s" % (pqstr, tmpfd.name),
+                "pqinsert -p '%s' %s" % (kwargs.get("pqstr"), tmpfd.name),
                 shell=True,
             )
-        if view:
-            subprocess.call("xv %s" % (tmpfd.name,), shell=True)
-        if filename is not None:
-            shutil.copyfile(tmpfd.name, filename)
+        if kwargs.get("filename") is not None:
+            shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)
 
 

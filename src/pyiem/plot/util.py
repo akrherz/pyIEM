@@ -1,4 +1,5 @@
 """pyiem.plot.util Plotting Utilities!"""
+# pylint: disable=import-outside-toplevel
 import os
 
 import numpy as np
@@ -44,7 +45,11 @@ def fontscale(ratio, fig=None):
 
 
 def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
-    """Fit text into a NDC box."""
+    """Fit text into a NDC box.
+
+    Args:
+      textsize (int, optional): First attempt this textsize to see if it fits.
+    """
     figbox = fig.get_window_extent().transformed(
         fig.dpi_scale_trans.inverted()
     )
@@ -64,22 +69,23 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
         xanchor,
         yanchor,
         text,
-        fontsize=50,
+        fontsize=kwargs.get("textsize", 50),
         ha=kwargs.get("ha", "left"),
         va=kwargs.get("va", "bottom"),
         color=kwargs.get("color", "k"),
     )
-    for fs in range(50, 1, -2):
-        txt.set_fontsize(fs)
-        tbox = txt.get_window_extent(fig.canvas.get_renderer())
-        # print("fs: %s tbox: %s" % (fs, str(tbox)))
-        if (
-            tbox.x0 >= px0
-            and tbox.x1 < px1
-            and tbox.y0 >= py0
-            and tbox.y1 <= py1
-        ):
-            break
+
+    def _fits(txt):
+        """Test for fitting."""
+        tb = txt.get_window_extent(fig.canvas.get_renderer())
+        return tb.x0 >= px0 and tb.x1 < px1 and tb.y0 >= py0 and tb.y1 <= py1
+
+    if not _fits(txt):
+        for size in range(50, 1, -2):
+            # print("fs: %s tbox: %s" % (fs, str(tbox)))
+            txt.set_fontsize(size)
+            if _fits(txt):
+                break
     return txt
 
 

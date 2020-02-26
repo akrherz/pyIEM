@@ -1,6 +1,5 @@
 """ Parse SIGMETs """
 # Stdlib imports
-from __future__ import print_function
 import re
 import datetime
 import math
@@ -90,7 +89,7 @@ dirs = {
 KM_SM = 1.609347
 
 
-class SIGMET(object):
+class SIGMET:
     """Data Structure."""
 
     def __init__(self):

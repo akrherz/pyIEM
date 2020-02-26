@@ -1,6 +1,5 @@
 """Massive omnibus of testing for pyiem.nws.products."""
 # pylint: disable=redefined-outer-name
-from __future__ import print_function
 
 import pytest
 import psycopg2.extras

@@ -1,7 +1,6 @@
 """Create the cities pandas dataframe serialization
 https://www.census.gov/geo/maps-data/data/cbf/cbf_ua.html
 """
-from __future__ import print_function
 import datetime
 import pandas as pd
 from pandas.io.sql import read_sql
