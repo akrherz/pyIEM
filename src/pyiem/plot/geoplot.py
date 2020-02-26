@@ -17,7 +17,6 @@ Example:
 
 """
 # stdlib
-from __future__ import print_function
 from io import BytesIO
 import tempfile
 import os

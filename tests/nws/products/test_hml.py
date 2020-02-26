@@ -1,6 +1,5 @@
 """HML"""
 # pylint: disable=redefined-outer-name
-from __future__ import print_function
 import datetime
 
 import psycopg2.extras

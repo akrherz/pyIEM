@@ -2,7 +2,6 @@
  Something to deal with SPC PTS Product
  My life was not supposed to end like this, what a brutal format
 """
-from __future__ import print_function
 import re
 import datetime
 import copy

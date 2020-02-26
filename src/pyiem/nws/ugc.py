@@ -1,7 +1,6 @@
 """
  Something to store UGC information!
 """
-from __future__ import print_function
 import re
 import datetime
 from collections import OrderedDict

@@ -1,5 +1,4 @@
 """Utility class to help with fast zonal_stats work"""
-from __future__ import print_function
 from collections import namedtuple
 import logging
 

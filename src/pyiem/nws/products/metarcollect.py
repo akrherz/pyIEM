@@ -1,5 +1,4 @@
 """Encapsulates a text product holding METARs."""
-from __future__ import print_function
 import re
 import datetime
 

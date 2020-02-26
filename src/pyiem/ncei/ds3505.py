@@ -2,7 +2,6 @@
 
     https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
-from __future__ import print_function
 import re
 import warnings
 import datetime

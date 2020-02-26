@@ -1,5 +1,4 @@
 """Test CLI products"""
-from __future__ import print_function
 import datetime
 
 from pyiem.reference import TRACE_VALUE

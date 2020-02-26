@@ -1,6 +1,5 @@
 """A NWS TextProduct that contains VTEC information
 """
-from __future__ import print_function
 
 # Standard Library Imports
 import datetime

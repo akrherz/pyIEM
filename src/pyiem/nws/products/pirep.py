@@ -12,7 +12,6 @@ Unfortunately, there is not much documentation of this format and the feed of
 this data contains a bunch of formatting errors.
 
 """
-from __future__ import print_function
 import datetime
 import re
 import math

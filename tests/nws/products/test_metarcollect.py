@@ -1,5 +1,4 @@
 """Make sure our METAR parsing works!"""
-from __future__ import print_function
 
 import pytest
 import psycopg2.extras

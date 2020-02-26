@@ -1,6 +1,5 @@
 """ Parse SIGMETs """
 # Stdlib imports
-from __future__ import print_function
 import re
 import datetime
 import math
