@@ -86,12 +86,12 @@ class CF6Product(TextProduct):
                 sio.write(line + "\n")
         sio.seek(0)
         df = pd.read_fwf(sio, widths=COL_WIDTHS)
-        df = df.replace({"T": TRACE_VALUE})
+        df = df.replace("T", TRACE_VALUE)
+        df.columns = COL_NAMES
         for col in df.columns:
             if col == "wx":
                 continue
             df[col] = pd.to_numeric(df[col], errors="coerce")
-        df.columns = COL_NAMES
         df["valid"] = df["dy"].apply(
             lambda x: datetime.date(day1.year, day1.month, int(x))
         )
