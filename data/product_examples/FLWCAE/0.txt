@@ -1,0 +1,47 @@
+670 
+WGUS42 KCAE 190744
+FLWCAE
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service Columbia SC
+244 AM EST Wed Feb 19 2020
+
+...River Flood Warning for Congaree River at Congaree National 
+Park-Gadsden affecting Calhoun and Richland Counties... 
+  
+.Additional rainfall and reservoir releases will result
+in high river levels along the Congaree River.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Safety message...never drive vehicles through flooded areas. The 
+water may be too deep to allow safe passage. Never allow children to 
+play in or near flood waters. Stay tuned to noaa weather radio...
+local media or the internet for further statements and updated 
+forecasts.
+
+&&
+
+SCC017-079-200743-
+/O.NEW.KCAE.FL.W.0024.200219T1200Z-200303T0000Z/
+/GADS1.1.ER.200219T1200Z.200222T1200Z.000000T0000Z.UU/
+244 AM EST Wed Feb 19 2020
+
+The National Weather Service in Columbia has issued a 
+
+* Flood Warning for the Congaree River at Congaree National Park-Gadsden
+* Until further notice...or until the warning is cancelled.
+* At 2 AM Wednesday the stage was 14.8 feet.
+* Flood stage is 15 feet.
+* Minor flooding is forecast.
+* Forecast...The river at Congaree National Park-Gadsden will rise above
+  flood stage today and crest near 17 feet Saturday and Sunday. 
+* At 17 feet...The access road to the Sandy Run subdivision becomes 
+  flooded. The lower boardwalk in the Congaree National Park becomes 
+  flooded by Cedar Creek.
+
+&&
+ 
+LAT...LON 3384 8090 3380 8083 3377 8085 3380 8091
+
+$$

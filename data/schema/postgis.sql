@@ -1187,15 +1187,6 @@ CREATE INDEX warnings_2015_ugc_idx on warnings_2015(ugc);
 CREATE INDEX warnings_2015_wfo_idx on warnings_2015(wfo);
 grant select on warnings_2015 to nobody,apache;
 
-CREATE TABLE warnings_2016() inherits (warnings);
-CREATE INDEX warnings_2016_combo_idx on 
-	warnings_2016(wfo, phenomena, eventid, significance);
-CREATE INDEX warnings_2016_expire_idx on warnings_2016(expire);
-CREATE INDEX warnings_2016_gtype_idx on warnings_2016(gtype);
-CREATE INDEX warnings_2016_issue_idx on warnings_2016(issue);
-CREATE INDEX warnings_2016_ugc_idx on warnings_2016(ugc);
-CREATE INDEX warnings_2016_wfo_idx on warnings_2016(wfo);
-grant select on warnings_2016 to nobody,apache;
 
 ---
 --- Storm Based Warnings Geo Tables
@@ -2156,6 +2147,23 @@ CREATE INDEX lsrs_2017_valid_idx on lsrs_2017(valid);
 CREATE INDEX lsrs_2017_wfo_idx on lsrs_2017(wfo);
 GRANT SELECT on lsrs_2017 to nobody,apache;
 
+CREATE TABLE warnings_2016() inherits (warnings);
+CREATE INDEX warnings_2016_combo_idx on
+    warnings_2016(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2016_expire_idx on warnings_2016(expire);
+CREATE INDEX warnings_2016_issue_idx on warnings_2016(issue);
+CREATE INDEX warnings_2016_ugc_idx on warnings_2016(ugc);
+CREATE INDEX warnings_2016_wfo_idx on warnings_2016(wfo);
+grant select on warnings_2016 to nobody,apache;
+
+CREATE table sbw_2016() inherits (sbw);
+create index sbw_2016_idx on sbw_2016(wfo,eventid,significance,phenomena);
+create index sbw_2016_expire_idx on sbw_2016(expire);
+create index sbw_2016_issue_idx on sbw_2016(issue);
+create index sbw_2016_wfo_idx on sbw_2016(wfo);
+grant select on sbw_2016 to apache,nobody;
+
+
 CREATE TABLE warnings_2017() inherits (warnings);
 CREATE INDEX warnings_2017_combo_idx on 
 	warnings_2017(wfo, phenomena, eventid, significance);
@@ -2196,6 +2204,38 @@ create index sbw_2018_expire_idx on sbw_2018(expire);
 create index sbw_2018_issue_idx on sbw_2018(issue);
 create index sbw_2018_wfo_idx on sbw_2018(wfo);
 grant select on sbw_2018 to apache,nobody;
+
+CREATE TABLE warnings_2019() inherits (warnings);
+CREATE INDEX warnings_2019_combo_idx on
+    warnings_2019(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2019_expire_idx on warnings_2019(expire);
+CREATE INDEX warnings_2019_issue_idx on warnings_2019(issue);
+CREATE INDEX warnings_2019_ugc_idx on warnings_2019(ugc);
+CREATE INDEX warnings_2019_wfo_idx on warnings_2019(wfo);
+grant select on warnings_2019 to nobody,apache;
+
+CREATE table sbw_2019() inherits (sbw);
+create index sbw_2019_idx on sbw_2019(wfo,eventid,significance,phenomena);
+create index sbw_2019_expire_idx on sbw_2019(expire);
+create index sbw_2019_issue_idx on sbw_2019(issue);
+create index sbw_2019_wfo_idx on sbw_2019(wfo);
+grant select on sbw_2019 to apache,nobody;
+
+CREATE TABLE warnings_2020() inherits (warnings);
+CREATE INDEX warnings_2020_combo_idx on 
+    warnings_2020(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2020_expire_idx on warnings_2020(expire);
+CREATE INDEX warnings_2020_issue_idx on warnings_2020(issue);
+CREATE INDEX warnings_2020_ugc_idx on warnings_2020(ugc);
+CREATE INDEX warnings_2020_wfo_idx on warnings_2020(wfo);
+grant select on warnings_2020 to nobody,apache;
+
+CREATE table sbw_2020() inherits (sbw);
+create index sbw_2020_idx on sbw_2020(wfo,eventid,significance,phenomena);
+create index sbw_2020_expire_idx on sbw_2020(expire);
+create index sbw_2020_issue_idx on sbw_2020(issue);
+create index sbw_2020_wfo_idx on sbw_2020(wfo);
+grant select on sbw_2020 to apache,nobody;
 
 CREATE TABLE ffg(
   ugc char(6),

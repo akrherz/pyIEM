@@ -53,6 +53,18 @@ def test_dups():
     assert not res
 
 
+def test_200302_issue203(dbcursor):
+    """Test that we warn when a polygon goes missing."""
+    for i in range(2):
+        prod = vtecparser(get_test_file("FLWCAE/%s.txt" % (i,)))
+        prod.sql(dbcursor)
+        if i == 0:
+            assert prod.segments[0].sbw
+        if i == 1:
+            assert prod.warnings[0].find("should have contained") > -1
+            assert prod.segments[0].sbw is None
+
+
 def test_200224_urls():
     """Test that we are generating the right URLs."""
     ans = "2020-02-25T06:00Z"

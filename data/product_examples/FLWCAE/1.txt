@@ -1,0 +1,26 @@
+214 
+WGUS82 KCAE 010857
+FLSCAE
+Flood Statement
+National Weather Service Columbia SC
+357 AM EST Sun Mar 1 2020
+
+...The Flood Warning is cancelled for the following rivers in South 
+Carolina...
+
+  Congaree River At Congaree National Park-Gadsden affecting Calhoun 
+  and Richland Counties 
+  
+SCC017-079-010927-
+/O.CAN.KCAE.FL.W.0024.000000T0000Z-200303T0400Z/
+/GADS1.1.ER.200219T1015Z.200223T0445Z.200302T0400Z.UU/
+357 AM EST Sun Mar 1 2020
+
+The Flood Warning is cancelled for
+  The Congaree River At Congaree National Park-Gadsden.
+* At  3 AM Sunday the stage was 14.8 feet.
+* Flood stage is 15.0 feet.
+
+$$
+
+This will be the last statement for this high water event.
