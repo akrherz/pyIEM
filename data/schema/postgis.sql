@@ -1187,15 +1187,6 @@ CREATE INDEX warnings_2015_ugc_idx on warnings_2015(ugc);
 CREATE INDEX warnings_2015_wfo_idx on warnings_2015(wfo);
 grant select on warnings_2015 to nobody,apache;
 
-CREATE TABLE warnings_2016() inherits (warnings);
-CREATE INDEX warnings_2016_combo_idx on 
-	warnings_2016(wfo, phenomena, eventid, significance);
-CREATE INDEX warnings_2016_expire_idx on warnings_2016(expire);
-CREATE INDEX warnings_2016_gtype_idx on warnings_2016(gtype);
-CREATE INDEX warnings_2016_issue_idx on warnings_2016(issue);
-CREATE INDEX warnings_2016_ugc_idx on warnings_2016(ugc);
-CREATE INDEX warnings_2016_wfo_idx on warnings_2016(wfo);
-grant select on warnings_2016 to nobody,apache;
 
 ---
 --- Storm Based Warnings Geo Tables
