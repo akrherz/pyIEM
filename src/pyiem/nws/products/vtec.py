@@ -227,13 +227,20 @@ class VTECProduct(TextProduct):
             for vtec in segment.vtec:
                 if vtec.status == "T" or vtec.action == "ROU":
                     continue
-                if segment.sbw:
-                    self.do_sbw_geometry(txn, segment, vtec)
+                # Send all products to the SBW method in case this segment
+                # should of had a polygon and did not.
+                warning_table = self.which_warning_table(txn, vtec)
+                self.do_sbw_geometry(
+                    txn,
+                    segment,
+                    vtec,
+                    warning_table.replace("warnings_", "sbw_"),
+                )
                 # Check for Hydro-VTEC stuff
                 if segment.hvtec and segment.hvtec[0].nwsli != "00000":
                     do_sql_hvtec(txn, segment)
 
-                self.do_sql_vtec(txn, segment, vtec)
+                self.do_sql_vtec(txn, segment, vtec, warning_table)
 
     def which_warning_table(self, txn, vtec):
         """ Figure out which table we should work against """
@@ -346,7 +353,7 @@ class VTECProduct(TextProduct):
             )
         return table
 
-    def do_sql_vtec(self, txn, segment, vtec):
+    def do_sql_vtec(self, txn, segment, vtec, warning_table):
         """ Persist the non-SBW stuff to the database
 
         Arguments:
@@ -354,7 +361,6 @@ class VTECProduct(TextProduct):
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
-        warning_table = self.which_warning_table(txn, vtec)
         ugcstring = str(tuple([str(u) for u in segment.ugcs]))
         if len(segment.ugcs) == 1:
             ugcstring = "('%s')" % (segment.ugcs[0],)
@@ -642,7 +648,7 @@ class VTECProduct(TextProduct):
                 % (vtec.action,)
             )
 
-    def do_sbw_geometry(self, txn, segment, vtec):
+    def do_sbw_geometry(self, txn, segment, vtec, sbw_table):
         """Storage of Storm Based Warning geometry
 
         The IEM uses a seperate table for the Storm Based Warning geometries.
@@ -652,12 +658,6 @@ class VTECProduct(TextProduct):
           segment (TextProduct.TextProductSegment): Segment
           vtec (pyiem.vtec.VTEC): VTEC instance
         """
-
-        # Technically, this is a bug as the it would be based on VTEC issuance
-        sbw_table = self.which_warning_table(txn, vtec).replace(
-            "warnings", "sbw"
-        )
-
         # The following time columns are set in the database
         # issue         - VTEC encoded issuance time, can be null
         # init_expire   - VTEC encoded expiration
@@ -677,7 +677,7 @@ class VTECProduct(TextProduct):
             else:
                 polygon_end = self.valid + DEFAULT_EXPIRE_DELTA
 
-        if self.is_correction() and vtec.action == "NEW":
+        if segment.sbw and self.is_correction() and vtec.action == "NEW":
             # Go delete the previous NEW polygon
             txn.execute(
                 """
@@ -714,6 +714,11 @@ class VTECProduct(TextProduct):
             (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
         )
         if txn.rowcount > 0:
+            if not segment.sbw:
+                self.warnings.append(
+                    ("%s.%s.%s should have contained a polygon and did not.")
+                    % (vtec.phenomena, vtec.significance, vtec.etn)
+                )
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
                     ("%s.%s.%s is a SBW duplicate! %s other " "row(s) found.")
@@ -724,6 +729,9 @@ class VTECProduct(TextProduct):
                         txn.rowcount,
                     )
                 )
+        # We are done with our piggybacked checks :(  akrherz/pyIEM#203
+        if not segment.sbw:
+            return
 
         # Lets go find our current active polygon
         txn.execute(

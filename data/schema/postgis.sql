@@ -2197,6 +2197,22 @@ create index sbw_2018_issue_idx on sbw_2018(issue);
 create index sbw_2018_wfo_idx on sbw_2018(wfo);
 grant select on sbw_2018 to apache,nobody;
 
+CREATE TABLE warnings_2020() inherits (warnings);
+CREATE INDEX warnings_2020_combo_idx on 
+    warnings_2020(wfo, phenomena, eventid, significance);
+CREATE INDEX warnings_2020_expire_idx on warnings_2020(expire);
+CREATE INDEX warnings_2020_issue_idx on warnings_2020(issue);
+CREATE INDEX warnings_2020_ugc_idx on warnings_2020(ugc);
+CREATE INDEX warnings_2020_wfo_idx on warnings_2020(wfo);
+grant select on warnings_2020 to nobody,apache;
+
+CREATE table sbw_2020() inherits (sbw);
+create index sbw_2020_idx on sbw_2020(wfo,eventid,significance,phenomena);
+create index sbw_2020_expire_idx on sbw_2020(expire);
+create index sbw_2020_issue_idx on sbw_2020(issue);
+create index sbw_2020_wfo_idx on sbw_2020(wfo);
+grant select on sbw_2020 to apache,nobody;
+
 CREATE TABLE ffg(
   ugc char(6),
   valid timestamptz,
