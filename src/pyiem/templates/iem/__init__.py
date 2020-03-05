@@ -9,6 +9,17 @@ TEMPLATE_ENV = Environment(
     autoescape=select_autoescape(["html", "xml"]),
 )
 
+
+def get_template(filename):
+    """Helper for getting a template.
+
+    Args:
+      filename (str): the template file to open.
+    """
+    tpl = TEMPLATE_ENV.get_template(filename)
+    tpl.globals["footer_year"] = datetime.date.today().year
+    return tpl
+
+
 # Default template used downstream.
-TEMPLATE = TEMPLATE_ENV.get_template("full.j2")
-TEMPLATE.globals["footer_year"] = datetime.date.today().year
+TEMPLATE = get_template("full.j2")
