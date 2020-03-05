@@ -9,6 +9,8 @@ gdal
 geojson
 # talk to google
 google-api-python-client
+# templating
+jinja2
 # locked down until we resolve font issues
 matplotlib<3.2.0
 metpy

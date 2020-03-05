@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ refresh }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default("Iowa Environmental Mesonet", true) }}</title>
+    <meta name="description" content="Iowa State University, Iowa Environmental Mesonet">
+    <meta name="author" content="daryl herzmann akrherz@iastate.edu">
+
+    <!-- NB: we are stuck with FA 4.7.0 due to iastate theme -->
+    <link href="/vendor/fa/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendor/iastate-v2.0.13/css/iastate.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-override.css" rel="stylesheet">
+ 
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/vendor/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="/vendor/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<!-- Any page specific headextra content here -->
+	{{ headextra }}
+
+	<!-- Essential Social Tags -->
+	<meta property="og:title" content="{{ title }}">
+	<meta property="og:description" content="{{ twdescription }}">
+	<meta property="og:image" content="https://mesonet.agron.iastate.edu{{ twimage }}">
+	<meta name="twitter:card" content="{{ twcard }}">
+
+	<!-- Non-essential -->
+	<meta name="twitter:creator" content="@akrherz">
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/apple-touch-icon-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
+  </head>
+
+<body{{ bodyextra }}>
+<div class="container{% block containerclass %}{% endblock %}">
+
+{% block navbar %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+</div>
+</body>
+</html>
