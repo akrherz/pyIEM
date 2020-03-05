@@ -22,6 +22,9 @@
     <![endif]-->
 	<!-- Any page specific headextra content here -->
 	{{ headextra }}
+{% if iemss is defined %}
+    <link rel="stylesheet" href="/vendor/openlayers/3.9.0/ol.css" type="text/css">
+{% endif %}
 
 	<!-- Essential Social Tags -->
 	<meta property="og:title" content="{{ title }}">
