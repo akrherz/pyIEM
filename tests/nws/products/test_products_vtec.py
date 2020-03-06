@@ -60,9 +60,18 @@ def test_200302_issue203(dbcursor):
         prod.sql(dbcursor)
         if i == 0:
             assert prod.segments[0].sbw
-        if i == 1:
-            assert prod.warnings[0].find("should have contained") > -1
-            assert prod.segments[0].sbw is None
+            continue
+        assert prod.warnings[0].find("should have contained") > -1
+        assert prod.segments[0].sbw is None
+        assert len(prod.warnings) == 2
+        dbcursor.execute(
+            """
+            SELECT status from sbw_2020 WHERE wfo = 'CAE' and
+            eventid = 24 and phenomena = 'FL' and significance = 'W'
+            and status = 'CAN'
+        """
+        )
+        assert dbcursor.rowcount == 1
 
 
 def test_200224_urls():
