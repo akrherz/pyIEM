@@ -1,5 +1,9 @@
 {% extends "base.j2" %}
 
-{% block containerclass %}-fluid{% endblock%}
-
-{% block content %}{{ content }}{% endblock %}
+{% block content %}
+<main role="main" id="main-content">
+<div class="container-fluid">
+{{ content }}
+</div>
+</main>
+{% endblock %}

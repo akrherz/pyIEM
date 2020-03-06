@@ -1,9 +1,13 @@
 {% extends "base.j2" %}
 
-{% block containerclass %}-fluid{% endblock%}
-
 {% block navbar %}{% include 'navbar.j2' %}{% endblock %}
 
-{% block content %}{{ content }}{% endblock %}
+{% block content %}
+<main role="main" id="main-content">
+<div class="container-fluid">
+{{ content }}
+</div>
+</main>
+{% endblock %}
 
 {% block footer %}{% include 'footer.j2' %}{% endblock %}
