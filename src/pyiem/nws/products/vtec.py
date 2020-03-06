@@ -706,7 +706,7 @@ class VTECProduct(TextProduct):
         # Lets go find the initial warning (status == NEW)
         txn.execute(
             """
-        SELECT issue, expire from """
+        SELECT issue, expire, st_astext(geom) as giswkt from """
             + sbw_table
             + """ WHERE status = 'NEW' and
         eventid = %s and wfo = %s and phenomena = %s and significance = %s
@@ -719,6 +719,16 @@ class VTECProduct(TextProduct):
                     ("%s.%s.%s should have contained a polygon and did not.")
                     % (vtec.phenomena, vtec.significance, vtec.etn)
                 )
+                if (
+                    self.is_homogeneous()
+                    and vtec.action == "CAN"
+                    and self.is_single_action()
+                ):
+                    self.warnings.append(
+                        ("%s.%s.%s adding polygon from issuance to product")
+                        % (vtec.phenomena, vtec.significance, vtec.etn)
+                    )
+                    segment.giswkt = "SRID=4326;%s" % (txn.fetchone()[2],)
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
                     ("%s.%s.%s is a SBW duplicate! %s other " "row(s) found.")
@@ -730,7 +740,7 @@ class VTECProduct(TextProduct):
                     )
                 )
         # We are done with our piggybacked checks :(  akrherz/pyIEM#203
-        if not segment.sbw:
+        if segment.giswkt is None:
             return
 
         # Lets go find our current active polygon
