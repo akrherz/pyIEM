@@ -5,9 +5,64 @@
 {% block navbar %}{% include 'navbar.j2' %}{% endblock %}
 
 {% block sites %}
-<h3>NOT IMPLEMENTED YET!</h3>
+<div class="container-fluid">
+<div class="hidden-print">
+{% set pages = [
+{"key": "base",
+ "vals": {"name": "Information", "uri": "site.php?",
+          "metaok": True, "icon": "info-circle"}},
+  {"key": "current",
+   "vals": {"name": "Last Ob", "uri": "current.php?",
+            "icon": "clock"}},
+  {"key": "pics",
+   "vals": {"name": "Photographs", "uri": "pics.php?",
+            "icon": "camera"}},
+  {"key": "cal",
+   "vals": {"name": "Calibration", "uri": "cal.phtml?",
+            "icon": "wrench",
+            "networks": ["AWOS", "IA_RWIS", "ISUAG", "ISUSM"]}},
+  {"key": "meteo",
+   "vals": {"name": "Meteogram", "uri": "meteo.php?", "icon": "chart-area"}},
+  {"key": "tables",
+   "vals": {"name": "Network Table", "uri": "networks.php?",
+            "metaok": True, "icon": "table"}},
+  {"key": "neighbors",
+   "vals": {"name": "Neighbors", "uri": "neighbors.php?",
+            "metaok": True, "icon": "users"}},
+  {"key": "monthsum",
+   "vals": {"name": "Monthly Summaries",
+            "uri": "monthlysum.php?", "icon": "table"}},
+  {"key": "obhistory",
+   "vals": {"name": "Observation History",
+            "uri": "obhistory.php?", "icon": "time",
+            "azos": True, "rwis": True}},
+  {"key": "windrose",
+   "vals": {"name": "Wind Roses",
+            "uri": "windrose.phtml?", "icon": "asterisk"}},
+  {"key": "custom_windrose",
+   "vals": {"name": "Custom Wind Roses",
+            "uri": "dyn_windrose.phtml?", "icon": "asterisk"}},
+  {"key": "calendar",
+   "vals": {"name": "Data Calendar", "uri": "hist.phtml?",
+            "icon": "calendar"}},
+]
+%}
+{% for item in pages %}
+    <a href="{{ item['vals']['uri'] }}" class="btn btn-default">
+        <span class="fa fa-{{ item['vals']['icon'] }}"></span>
+        {{ item['vals']['name'] }}</a>
+{% endfor %}
+
+</div>
+</div>
 {% endblock %}
 
-{% block content %}{{ content }}{% endblock %}
+{% block content %}
+<main role="main" id="main-content">
+<div class="container-fluid">
+{{ content }}
+</div>
+</main>
+{% endblock %}
 
 {% block footer %}{% include 'footer.j2' %}{% endblock %}
