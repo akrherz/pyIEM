@@ -1,0 +1,27 @@
+417
+WGUS82 KCHS 120216
+FLSCHS
+
+Flood Statement
+National Weather Service Charleston SC
+916 PM EST Sat Jan 11 2020
+
+SCC015-043-089-130216-
+/O.CON.KCHS.FL.W.0016.000000T0000Z-000000T0000Z/
+/JAMS1.1.ER.191216T1352Z.191227T1515Z.000000T0000Z.NO/
+916 PM EST Sat Jan 11 2020
+
+The Flood Warning continues for
+  The Santee River near Jamestown.
+* At 8 PM Saturday the stage was 13.1 feet.
+* Flood stage is 10.0 feet.
+* Minor flooding is occurring.
+* Forecast, the river will remain nearly steady or slowly fall.
+* At 12.0 feet, several dirt logging roads are impassable.
+
+&&
+
+LAT...LON 3347 8002 3354 7998 3325 7937 3321 7938
+          3320 7951 3329 7976
+
+$$

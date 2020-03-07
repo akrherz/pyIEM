@@ -229,7 +229,7 @@ class VTECProduct(TextProduct):
                     continue
                 # Send all products to the SBW method in case this segment
                 # should of had a polygon and did not.
-                warning_table = self.which_warning_table(txn, vtec)
+                warning_table = self.which_warning_table(txn, segment, vtec)
                 self.do_sbw_geometry(
                     txn,
                     segment,
@@ -242,7 +242,7 @@ class VTECProduct(TextProduct):
 
                 self.do_sql_vtec(txn, segment, vtec, warning_table)
 
-    def which_warning_table(self, txn, vtec):
+    def which_warning_table(self, txn, segment, vtec):
         """ Figure out which table we should work against """
         if vtec.action in ["NEW"]:
             table = "warnings_%s" % (self.valid.year,)
@@ -282,18 +282,15 @@ class VTECProduct(TextProduct):
         # the past 3, 10, 31 days, to find with the product_issue was,
         # which guides the table that the data is stored within
         for offset in [3, 10, 31]:
-            # BUG: see akrherz/pyIEM#53 regarding this won't work with two
-            # etns going at once (happens around first of the year), AWIPS
-            # does not handle this properly either
             txn.execute(
                 """
-                SELECT tableoid::regclass as tablename,
+                SELECT tableoid::regclass as tablename, hvtec_nwsli,
                 min(product_issue at time zone 'UTC'),
                 max(product_issue at time zone 'UTC') from warnings
                 WHERE wfo = %s and eventid = %s and significance = %s and
                 phenomena = %s and ((updated > %s and updated <= %s)
                 or expire > %s) and status not in ('UPG', 'CAN')
-                GROUP by tablename ORDER by tablename DESC
+                GROUP by tablename, hvtec_nwsli ORDER by tablename DESC
             """,
                 (
                     vtec.office,
@@ -305,9 +302,18 @@ class VTECProduct(TextProduct):
                     self.valid,
                 ),
             )
-            if txn.rowcount == 0:
+            rows = txn.fetchall()
+            if not rows:
                 continue
-            if txn.rowcount > 1:
+            if len(rows) > 1:
+                # We likely have a flood warning and can use the HVTEC NWSLI
+                # to resolve ambiguity
+                hvtec_nwsli = segment.get_hvtec_nwsli()
+                if hvtec_nwsli:
+                    for row in rows:
+                        if hvtec_nwsli == row["hvtec_nwsli"]:
+                            return row["tablename"]
+
                 self.warnings.append(
                     (
                         "VTEC %s product: %s returned %s rows when "
@@ -315,7 +321,7 @@ class VTECProduct(TextProduct):
                     )
                     % (str(vtec), self.get_product_id(), txn.rowcount)
                 )
-            row = txn.fetchone()
+            row = rows[0]
             if row["min"] is not None:
                 year = row["min"].year
                 if row["max"].year != year:
