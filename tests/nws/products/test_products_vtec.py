@@ -53,6 +53,18 @@ def test_dups():
     assert not res
 
 
+def test_200306_issue210(dbcursor):
+    """Test our logic for figuring out which table has our event."""
+    for i in range(7):
+        prod = vtecparser(get_test_file("FLWCHS/2019_%s.txt" % (i,)))
+        prod.sql(dbcursor)
+        assert not filter_warnings(prod.warnings)
+    for i in range(2):
+        prod = vtecparser(get_test_file("FLWCHS/2020_%s.txt" % (i,)))
+        prod.sql(dbcursor)
+        assert not filter_warnings(prod.warnings)
+
+
 def test_200302_issue203(dbcursor):
     """Test that we warn when a polygon goes missing."""
     for i in range(2):

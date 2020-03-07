@@ -1,0 +1,33 @@
+147
+WGUS42 KCHS 050137
+FLWCHS
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service Charleston SC
+837 PM EST Wed Mar 4 2020
+
+GAC109-060136-
+/O.NEW.KCHS.FL.W.0016.200305T1100Z-000000T0000Z/
+/CNOG1.2.ER.200305T1100Z.200307T0600Z.000000T0000Z.NO/
+837 PM EST Wed Mar 4 2020
+
+The National Weather Service in Charleston has issued a
+
+* Flood Warning for
+  The Canoochee River near Claxton.
+* from Thursday morning until further notice.
+* At 8 PM Wednesday the stage was 10.0 feet.
+* Flood stage is 11.0 feet.
+* Moderate flooding is forecast.
+* Forecast, rise above flood stage by Thursday morning and continue
+  to rise to near 14.7 feet by early Saturday morning.
+* At 14.5 feet, the Highway 169 bridge holds back flood waters, which
+  causes lowlands along the river to flood.
+
+&&
+
+LAT...LON 3222 8199 3222 8189 3222 8182 3215 8183
+          3215 8189 3215 8198
+
+$$

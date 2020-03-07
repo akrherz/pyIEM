@@ -1,0 +1,35 @@
+417
+WGUS42 KCHS 161117
+FLWCHS
+
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service Charleston SC
+617 AM EST Mon Dec 16 2019
+
+SCC015-043-089-171117-
+/O.NEW.KCHS.FL.W.0016.191216T1500Z-000000T0000Z/
+/JAMS1.1.ER.191216T1500Z.191218T0600Z.000000T0000Z.NO/
+617 AM EST Mon Dec 16 2019
+
+The National Weather Service in Charleston has issued a
+
+* Flood Warning for
+  The Santee River near Jamestown.
+* from this morning until further notice.
+* At 5 AM Monday the stage was 9.9 feet.
+* Flood stage is 10.0 feet.
+* Minor flooding is forecast.
+* Forecast, rise above flood stage by late this morning and continue
+  to rise to near 10.3 feet by early Wednesday morning.
+* At 10.0 feet, water covers numerous logging roads and inundates
+  timber land adjacent to the river. Most access points to Wee Tee
+  State Forest are cut off.
+
+&&
+
+LAT...LON 3347 8002 3354 7998 3325 7937 3321 7938
+          3320 7951 3329 7976
+
+$$

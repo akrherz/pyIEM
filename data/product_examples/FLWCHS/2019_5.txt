@@ -1,0 +1,35 @@
+028
+WGUS82 KCHS 170220
+FLSCHS
+
+
+Flood Statement
+National Weather Service Charleston SC
+920 PM EST Sun Feb 16 2020
+
+SCC015-043-089-180219-
+/O.CON.KCHS.FL.W.0016.000000T0000Z-000000T0000Z/
+/JAMS1.3.ER.191216T1352Z.200214T1830Z.000000T0000Z.NO/
+920 PM EST Sun Feb 16 2020
+
+The Flood Warning continues for
+  The Santee River near Jamestown.
+* At 8 PM Sunday the stage was 21.3 feet.
+* Flood stage is 10.0 feet.
+* Moderate flooding is occurring.
+* Forecast, the river will continue to fall.
+* At 22.0 feet, water will surround the residence at the end of Crow
+  Hill Drive and portions of the road will be covered with water due
+  to backwater effects. The lower three quarters of a mile of Corner
+  Loop Road is flooded and a few homes will be impacted. Water will
+  restrict access to Belleflower Way and Belladonna Court and
+  approach a few homes in the Belleflower Plantation subdivision. The
+  residence at the end of Lawton Farm Lane is also surrounded by
+  water and the lower portion of Old Gate Lane is covered by water.
+
+&&
+
+LAT...LON 3347 8002 3354 7998 3325 7937 3321 7938
+          3320 7951 3329 7976
+
+$$
