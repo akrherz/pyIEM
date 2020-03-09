@@ -1,6 +1,5 @@
 boxsdk
 sphinxcontrib-napoleon
-scipy
 oauth2client
 urllib3
 Pillow

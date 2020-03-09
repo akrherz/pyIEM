@@ -27,6 +27,8 @@ pytest
 pytest-mpl
 pytest-runner
 rasterstats
+# interpolation
+scipy
 shapely
 tqdm
 # prevent xarray 0.12.2 bug
