@@ -5,6 +5,7 @@ import re
 import pandas as pd
 from pandas.io.sql import read_sql
 import numpy as np
+from scipy.interpolate import interp1d
 from pyiem.util import get_dbconn
 
 # The bounds of the climate files we store on disk and processing
@@ -333,11 +334,41 @@ def read_man(filename):
     return res
 
 
-def read_cli(filename):
+def rfactor(times, points):
+    """Compute the R-factor.
+
+    https://www.hydrol-earth-syst-sci.net/19/4113/2015/hess-19-4113-2015.pdf
+    """
+    # No precip!
+    if not times:
+        return 0
+    # interpolate dataset into 30 minute bins
+    f = interp1d(
+        times,
+        points,
+        kind="linear",
+        fill_value=(0, points[-1]),
+        bounds_error=False,
+    )
+    accum = f(np.arange(0, 24.01, 0.5))
+    rate_mmhr = (accum[1:] - accum[0:-1]) * 2.0
+    # sum of E x I
+    # I is the 30 minute peak intensity (inch/hour), capped at 3 in/hr
+    Imax = min([3.0 * 25.4, np.max(rate_mmhr)])
+    # E is sum of e_r * v_r
+    e_r = 0.29 * (1.0 - 0.72 * np.exp(-0.082 * rate_mmhr))
+    # rate * times
+    v_r = rate_mmhr / 2.0
+    return np.sum(e_r * v_r) * Imax
+
+
+def read_cli(filename, compute_rfactor=False):
     """Read WEPP CLI File, Return DataFrame
 
     Args:
       filename (str): Filename to read
+      compute_rfactor (bool, optional): Should the R-factor be computed as
+        well, adds computational expense and default is False.
 
     Returns:
       pandas.DataFrame
@@ -378,6 +409,9 @@ def read_cli(filename):
                 "maxr": maxr,
                 "bpcount": breakpoints,
                 "pcpn": float(accum),
+                "rfactor": (
+                    np.nan if not compute_rfactor else rfactor(times, points)
+                ),
             }
         )
 

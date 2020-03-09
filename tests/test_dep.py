@@ -92,6 +92,13 @@ def test_cli():
     assert len(df.index) == 4018
 
 
+def test_cli_rfactor():
+    """read a CLI file please"""
+    df = dep.read_cli(get_path("cli.txt"), compute_rfactor=True)
+    assert abs(df["rfactor"].max() - 872.63) < 0.01
+    assert (df.groupby(df.index.year).sum()["rfactor"].max() - 4276.60) < 0.01
+
+
 def test_empty():
     """don't error out on an empty ENV"""
     df = dep.read_env(get_path("empty_env.txt"))
@@ -105,3 +112,16 @@ def test_read():
     assert len(df2.index) == 1
     row = df2.iloc[0]
     assert row["runoff"] == 86.3
+
+
+def test_rfactor_empty():
+    """Test our R-factor code."""
+    res = dep.rfactor([], [])
+    assert res == 0
+
+
+def test_rfactor_one():
+    """Test our R-factor code."""
+    # 1 inch rain over 1 hour
+    res = dep.rfactor([1.0, 2.0], [0.0, 25.4])
+    assert abs(res - 170.31) < 0.1
