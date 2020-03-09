@@ -27,7 +27,6 @@ import pickle
 import datetime
 import math
 import warnings
-import logging
 
 #
 import requests
@@ -74,7 +73,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_OVERLAY,
     Z_OVERLAY2,
 )
-from pyiem.util import ssw
+from pyiem.util import ssw, logger
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
 import pyiem.meteorology as meteorology
@@ -83,7 +82,7 @@ import pyiem.meteorology as meteorology
 cartopy.config["pre_existing_data_dir"] = "/opt/miniconda3/cartopy_data/"
 # Set a saner default for apache et al
 cartopy.config["data_dir"] = "/tmp/"
-logging.basicConfig()
+LOG = logger()
 
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
@@ -135,7 +134,7 @@ def load_bounds(filebase):
     """
     fn = "%s/%s.npy" % (DATADIR, filebase)
     if not os.path.isfile(fn):
-        print("load_bounds(%s) is missing!" % (fn,))
+        LOG.info("load_bounds(%s) is missing!", fn)
         return
     return np.load(fn)
 
@@ -151,7 +150,7 @@ def load_pickle_pd(filename):
     """
     fn = "%s/%s" % (DATADIR, filename)
     if not os.path.isfile(fn):
-        print("load_pickle_pd(%s) failed, file is missing" % (fn,))
+        LOG.info("load_pickle_pd(%s) failed, file is missing", fn)
         return fn
     return pd.read_pickle(fn)
 
@@ -167,7 +166,7 @@ def load_pickle_geo(filename):
     """
     fn = "%s/%s" % (DATADIR, filename)
     if not os.path.isfile(fn):
-        print("load_pickle_geo(%s) failed, file is missing!" % (fn,))
+        LOG.info("load_pickle_geo(%s) failed, file is missing!", fn)
         return dict()
     pickle_opts = dict()
     if sys.version_info.major > 2:
@@ -792,8 +791,8 @@ class MapPlot:
             # If we have more than 15 pixels of overlap, don't plot this!
             if _cnt > 15:
                 if self.debug:
-                    print(
-                        "culling |%s| due to overlap, %s" % (repr(mystr), _cnt)
+                    LOG.info(
+                        "culling |%s| due to overlap, %s", repr(mystr), _cnt
                     )
                 continue
             if self.debug:
@@ -807,25 +806,23 @@ class MapPlot:
                 self.fig.patches.append(rec)
             # Useful for debugging this algo
             if self.debug:
-                print(
+                LOG.info(
                     (
                         "label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
                         "x:%s-%s y:%s-%s _cnt:%s"
-                    )
-                    % (
-                        repr(mystr),
-                        imgx,
-                        axx0,
-                        axx1,
-                        imgy,
-                        axy0,
-                        axy1,
-                        imgx0,
-                        imgx1,
-                        imgy0,
-                        imgy1,
-                        _cnt,
-                    )
+                    ),
+                    repr(mystr),
+                    imgx,
+                    axx0,
+                    axx1,
+                    imgy,
+                    axy0,
+                    axy1,
+                    imgx0,
+                    imgx1,
+                    imgy0,
+                    imgy1,
+                    _cnt,
                 )
             self.textmask[
                 int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)

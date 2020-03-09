@@ -238,9 +238,6 @@ def read_man(filename):
             "drseq": int(lines[linenum + 8]),
             "imngmt": int(lines[linenum + 9]),
         }
-        # print(("linenum: %s scen: %s iplant: %s imngmt: %s"
-        #       ) % (linenum, scen, res['scens'][scen]['iplant'],
-        #            res['scens'][scen]['imngmt']))
         if res["scens"][scen]["iplant"] == 1:
             if res["scens"][scen]["imngmt"] in [1, 3]:
                 # Annual/Fallow Cropping system
@@ -248,7 +245,6 @@ def read_man(filename):
                 res["scens"][scen]["jdplt"] = int(lines[linenum + 11])
                 res["scens"][scen]["r1"] = float(lines[linenum + 12])
                 res["scens"][scen]["resmgt"] = int(lines[linenum + 13])
-                # print("resmgt is %s" % (res['scens'][scen]['resmgt'], ))
                 if res["scens"][scen]["resmgt"] == 1:
                     res["scens"][scen]["jdherb"] = int(lines[linenum + 14])
                     linenum += 15
@@ -281,7 +277,6 @@ def read_man(filename):
                 res["scens"][scen]["jdstop"] = int(lines[linenum + 12])
                 res["scens"][scen]["r1"] = float(lines[linenum + 13])
                 res["scens"][scen]["mgtopt"] = int(lines[linenum + 14])
-                # print("mgtopt is %s" % (res['scens'][scen]['mgtopt'], ))
                 if res["scens"][scen]["mgtopt"] == 1:
                     # Cutting
                     res["scens"][scen]["ncut"] = int(lines[linenum + 15])
