@@ -14,8 +14,10 @@ from metpy.units import units
 from metpy.calc import relative_humidity_from_dewpoint
 from pyiem.datatypes import speed, distance, pressure
 from pyiem.meteorology import mcalc_feelslike
+from pyiem.util import logger
 
 
+LOG = logger()
 MISSING_RE = re.compile(r"^\+?\-?9+$")
 EQD_RE = re.compile(r"^[QPRCDN][0-9][0-9]$")
 QNN_RE = re.compile(r"^[A-Z][0-9][0-9][A-Z ][0-9]$")
@@ -1296,13 +1298,13 @@ def process_metar(mstr, now):
                 for token in tokens[0].split():
                     mstr = mstr.replace(" %s" % (token,), "")
                 if orig_mstr == mstr:
-                    print("Can't fix badly formatted metar: " + mstr)
+                    LOG.info("Can't fix badly formatted metar: %s", mstr)
                     return None
             else:
-                print("MetarParserError: " + msg)
+                LOG.info("MetarParserError: %s", msg)
                 return None
         except Exception as exp:
-            print("Double Fail: %s %s" % (mstr, exp))
+            LOG.info("Double Fail: %s %s", mstr, exp)
             return None
     if mtr is None or mtr.time is None:
         return None
@@ -1472,8 +1474,8 @@ def sql(txn, stid, data):
     try:
         txn.execute(_sql, args)
     except Exception:
-        print(metar)
-        print(args)
+        LOG.info(metar)
+        LOG.info(args)
         raise
     return txn.rowcount
 
@@ -1680,14 +1682,14 @@ def parser(msg, call_id, add_metar=False):
     try:
         parse_extra(data, msg[105:])
     except Exception:
-        # print('parse_extra failed |%s|' % (msg, ))
-        # print(exp)
         pass
     if add_metar:
         try:
             gen_metar(data)
         except Exception:
-            print(json.dumps(data, indent=True, sort_keys=True, default=str))
+            LOG.info(
+                json.dumps(data, indent=True, sort_keys=True, default=str)
+            )
             raise
 
     return data

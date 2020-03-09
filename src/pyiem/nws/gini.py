@@ -3,17 +3,17 @@ Processing of GINI formatted data found on NOAAPORT
 """
 import struct
 import math
-import pyproj
 import zlib
 import datetime
-import pytz
-import logging
 import os
 
+import pytz
+import pyproj
 import numpy as np
+from pyiem.util import logger
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "../data"])
-
+LOG = logger()
 M_PI_2 = 1.57079632679489661923
 M_PI = 3.14159265358979323846
 RE_METERS = 6371200.0
@@ -189,7 +189,7 @@ class GINIZFile:
             except Exception:
                 chunk += b"x\xda"
         if totsz != 0:
-            logging.info("Totalsize left: %s", totsz)
+            LOG.info("Totalsize left: %s", totsz)
 
         self.data = np.reshape(
             np.fromstring(sdata, np.int8),
@@ -287,7 +287,7 @@ class GINIZFile:
         (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[
             "proj"
         ](self.metadata["x0"], self.metadata["y1"], inverse=True)
-        logging.info(
+        LOG.info(
             (
                 "lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f "
                 "lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f"
@@ -333,7 +333,7 @@ class GINIZFile:
             "proj"
         ](self.metadata["x0"], self.metadata["y1"], inverse=True)
 
-        logging.info(
+        LOG.info(
             (
                 "latin: %.2f lat_ul: %.3f lon_ul: %.3f "
                 "y0: %5.f y1: %.5f dx: %.3f dy: %.3f"
@@ -373,7 +373,7 @@ class GINIZFile:
             "proj"
         ](x0, self.metadata["y1"], inverse=True)
 
-        logging.info(
+        LOG.info(
             (
                 "lon_ul: %.2f lat_ul: %.2f "
                 "lon_ll: %.2f lat_ll: %.2f "
@@ -405,9 +405,7 @@ class GINIZFile:
         elif self.metadata["map_projection"] == 5:
             self.init_stereo()
         else:
-            logging.info(
-                "Unknown Projection: %s", self.metadata["map_projection"]
-            )
+            LOG.info("Unknown Projection: %s", self.metadata["map_projection"])
 
     def read_header(self, hdata):
         """read the header!"""

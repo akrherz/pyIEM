@@ -1,11 +1,11 @@
 """Utility class to help with fast zonal_stats work"""
 from collections import namedtuple
-import logging
 
 import numpy as np
 from rasterstats import zonal_stats
+from pyiem.util import logger
 
-_LOG = logging.getLogger(__name__)
+LOG = logger()
 GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])
 
 
@@ -34,7 +34,7 @@ class CachingZonalStats:
             should not change over the lifetime of this object
         """
         if geometries is None:
-            _LOG.warning(
+            LOG.warning(
                 (
                     "Cowardly refusing to compute gridnav "
                     "with None geometries"

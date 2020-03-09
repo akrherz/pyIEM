@@ -12,7 +12,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 from googleapiclient.discovery import build
 import smartsheet
+from pyiem.util import logger
 
+LOG = logger()
 CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
 CLEANVALUE_COMPLAINED = []
@@ -85,9 +87,9 @@ def cleanvalue(val):
     if val.find("<") > -1:
         return "< %s" % (val.replace("<", "").strip(),)
     if val not in CLEANVALUE_COMPLAINED:
-        print(
-            ("cscap_utils.cleanvalue(%s) is unaccounted for, return None")
-            % (repr(val),)
+        LOG.info(
+            "cscap_utils.cleanvalue(%s) is unaccounted for, return None",
+            repr(val),
         )
         CLEANVALUE_COMPLAINED.append(val)
     return None
@@ -156,7 +158,7 @@ def build_treatments(feed):
             for key in row.keys():
                 if key in ["uniqueid", "name", "key"] or key[0] == "_":
                     continue
-                print("Found Key: %s" % (key,))
+                LOG.info("Found Key: %s", key)
                 data[key] = {
                     "TIL": [None],
                     "ROT": [None],
@@ -182,9 +184,8 @@ def build_treatments(feed):
                     "REPS",
                     None,
                 ):
-                    print(
-                        ("Found REPS for site: %s as: %s")
-                        % (sitekey, int(cell))
+                    LOG.info(
+                        "Found REPS for site: %s as: %s", sitekey, int(cell)
                     )
                     data[sitekey]["REPS"] = int(cell)
 
@@ -287,7 +288,7 @@ def get_folders(drive):
         folder_list = folder_list + folders["items"]
         i += 1
         if i > 10:
-            print("get_folders iterator reached 10, aborting")
+            LOG.info("get_folders iterator reached 10, aborting")
             break
 
     for _, item in enumerate(folder_list):
@@ -301,11 +302,10 @@ def get_folders(drive):
             continue
         parentfolder = f[thisfolder]["parents"][0]
         if parentfolder not in f:
-            print("ERROR: parentfolder: %s not in f" % (parentfolder,))
+            LOG.info("ERROR: parentfolder: %s not in f", parentfolder)
             continue
         while parentfolder in f and len(f[parentfolder]["parents"]) > 0:
             parentfolder = f[parentfolder]["parents"][0]
-        # print title, '->', f[parentfolder]['title']
         f[thisfolder]["basefolder"] = parentfolder
     return f
 
