@@ -125,3 +125,10 @@ def test_rfactor_one():
     # 1 inch rain over 1 hour
     res = dep.rfactor([1.0, 2.0], [0.0, 25.4])
     assert abs(res - 170.31) < 0.1
+
+
+def test_rfactor_english():
+    """Test our R-factor code."""
+    # 1 inch rain over 1 hour
+    res = dep.rfactor([1.0, 2.0], [0.0, 25.4], return_rfactor_metric=False)
+    assert abs(res - 2.71) < 0.1
