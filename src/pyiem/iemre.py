@@ -6,6 +6,8 @@
 
 
 """
+import string
+import random
 import datetime
 
 from affine import Affine
@@ -68,54 +70,37 @@ def set_grids(valid, ds, cursor=None, table=None):
         cursor = pgconn.cursor()
     # see that we have database entries, otherwise create them
     cursor.execute(
-        """
-        SELECT valid from """
-        + table
-        + """ WHERE valid = %s LIMIT 1
-    """,
-        (valid,),
+        f"SELECT valid from {table} WHERE valid = %s LIMIT 1", (valid,)
     )
     insertmode = True
     if cursor.rowcount == 1:
-        # Update mode
+        # Update mode, we do some massive tricks :/
+        temptable = "".join(random.choices(string.ascii_uppercase, k=24))
         insertmode = False
         update_cols = ", ".join(
             ["%s = $%i" % (v, i + 1) for i, v in enumerate(ds)]
         )
         arg = "$%i" % (len(ds) + 1,)
+        # approximate table size is 10 MB
+        cursor.execute("SET temp_buffers = '100MB'")
         cursor.execute(
-            """
-            PREPARE pyiem_iemre_plan as
-            UPDATE """
-            + table
-            + """ SET """
-            + update_cols
-            + """
-            WHERE gid = """
-            + arg
-            + """ and valid = '"""
-            + str(valid)
-            + """'
-        """
+            f"CREATE UNLOGGED TABLE {temptable} AS SELECT * from {table} "
+            f"WHERE valid = '{valid}'"
+        )
+        cursor.execute(f"CREATE INDEX on {temptable}(gid)")
+        cursor.execute(
+            (
+                f"PREPARE pyiem_iemre_plan as UPDATE {temptable} "
+                f"SET {update_cols} WHERE gid = {arg}"
+            )
         )
     else:
         # Insert mode
         insert_cols = ", ".join(["%s" % (v,) for v in ds])
         percents = ", ".join(["$%i" % (i + 2,) for i in range(len(ds))])
         cursor.execute(
-            """
-            PREPARE pyiem_iemre_plan as
-            INSERT into """
-            + table
-            + """(gid, valid, """
-            + insert_cols
-            + """)
-            VALUES($1, '"""
-            + str(valid)
-            + """', """
-            + percents
-            + """)
-        """
+            f"PREPARE pyiem_iemre_plan as INSERT into {table} "
+            f"(gid, valid, {insert_cols}) VALUES($1, '{valid}', {percents})"
         )
     sql = "execute pyiem_iemre_plan (%s)" % (",".join(["%s"] * (len(ds) + 1)),)
 
@@ -123,16 +108,22 @@ def set_grids(valid, ds, cursor=None, table=None):
         """Prevent nan"""
         return None if np.isnan(val) else float(val)
 
-    # Implementation notes: Dataset iteration here is ~25 secs, total ~60s
+    # Implementation notes: xarray iteration was ~25 secs, loading into memory
+    # instead is a few seconds :/
+    pig = {v: ds[v].values for v in ds}
     for y in range(ds.dims["y"]):
         for x in range(ds.dims["x"]):
-            # needed for python2.7 support as (*[list], arg, arg) no worky
-            arr = [_n(ds[v].values[y, x]) for v in ds]
+            arr = [_n(pig[v][y, x]) for v in ds]
             if insertmode:
                 arr.insert(0, y * NX + x)
             else:
                 arr.append(y * NX + x)
             cursor.execute(sql, arr)
+    if not insertmode:
+        # Undo our hackery above
+        cursor.execute(f"DELETE from {table} WHERE valid = '{valid}'")
+        cursor.execute(f"INSERT into {table} SELECT * from {temptable}")
+        cursor.execute(f"DROP TABLE {temptable}")
     # If we generate a cursor, we should save it
     if commit:
         cursor.close()
