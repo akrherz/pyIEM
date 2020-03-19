@@ -944,7 +944,11 @@ class SPCPTS(TextProduct):
                         )
                         % jdict,
                         {
-                            "channels": wfo,
+                            "channels": [
+                                wfo,
+                                "%s.SPC%s" % (wfo, self.afos[3:]),
+                                "%s.SPC%s.%s" % (wfo, self.afos[3:], cat),
+                            ],
                             "product_id": self.get_product_id(),
                             "twitter": (
                                 "SPC issues Day %(day)s %(ttext)s "
@@ -973,7 +977,7 @@ class SPCPTS(TextProduct):
                 )
                 % jdict,
                 {
-                    "channels": "SPC",
+                    "channels": ["SPC", "SPC%s" % (self.afos[3:],)],
                     "product_id": self.get_product_id(),
                     "twitter": (
                         "%(name)s issues %(title)s "
