@@ -2,10 +2,22 @@
 
 import pytest
 from pyiem.nws import product, ugc
-from pyiem.nws.product import WMO_RE
-from pyiem.nws.product import TextProductException
+from pyiem.nws.product import (
+    WMO_RE,
+    TextProductException,
+    date_tokens2datetime,
+)
 from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
+
+
+def test_datetokens():
+    """Test that we can rectify a bad hour value."""
+    tokens = ["18:45", "PM", "CDT", "", "MAR", "20", "2019"]
+    z, tz, valid = date_tokens2datetime(tokens)
+    assert z == "CDT"
+    local = valid.astimezone(tz)
+    assert local.hour == 18
 
 
 def test_180321_mst():

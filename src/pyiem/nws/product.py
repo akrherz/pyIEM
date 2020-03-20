@@ -156,6 +156,9 @@ def date_tokens2datetime(tokens):
     else:
         hh = hhmi[:-2]
         mi = hhmi[-2:]
+    # Workaround 24 hour clock abuse
+    if int(hh) > 12 and tokens[1].upper() == "PM":
+        hh = int(hh) - 12
     dstr = "%s:%s %s %s %s %s" % (
         hh,
         mi,
