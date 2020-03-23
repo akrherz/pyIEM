@@ -13,16 +13,22 @@ from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
+LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 
 
 def draw_logo(fig, filename):
-    """Place the logo"""
+    """Place the logo."""
     fn = "%s/%s" % (DATADIR, filename)
     if not os.path.isfile(fn):
         return
+    # Create a fake axes to place this Logo
     logo = mpimage.imread(fn)
-    y0 = fig.get_figheight() * 100.0 - logo.shape[0] - 5
-    fig.figimage(logo, 5, y0, zorder=3)
+    # imshow messes with the aspect, so about the best we can do here is
+    # pin it to the upper edge
+    ax = fig.add_axes(
+        LOGO_BOUNDS, frameon=False, yticks=[], xticks=[], anchor="NW"
+    )
+    ax.imshow(logo, aspect="equal", zorder=-1)
 
 
 def fontscale(ratio, fig=None):

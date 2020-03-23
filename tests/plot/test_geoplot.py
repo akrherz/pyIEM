@@ -12,6 +12,13 @@ from pyiem.plot import MapPlot, centered_bins
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_issue217():
+    """See what happens with our logo on very scaled figure."""
+    mp = MapPlot(nocaption=True, figsize=(6.00, 3.35))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_issue98_labelbar():
     """Sometimes our label bar sucks."""
     mp = MapPlot(
