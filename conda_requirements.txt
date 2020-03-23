@@ -11,8 +11,8 @@ geojson
 google-api-python-client
 # templating
 jinja2
-# locked down until we resolve font issues
-matplotlib<3.2.0
+# due to font issues
+matplotlib>=3.2.0
 metpy
 metar>=1.7.0
 mock
