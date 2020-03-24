@@ -1,0 +1,50 @@
+123 
+ACUS11 KWNS 240850
+SWOMCD
+SPC MCD 240850 
+KSZ000-OKZ000-241015-
+
+Mesoscale Discussion 0225
+NWS Storm Prediction Center Norman OK
+0350 AM CDT Tue Mar 24 2020
+
+Areas affected...southeast KS into northeast OK
+
+Concerning...Severe Thunderstorm Watch 60...
+
+Valid 240850Z - 241015Z
+
+The severe weather threat for Severe Thunderstorm Watch 60
+continues.
+
+SUMMARY...Isolated hail up to 1 inch will remain possible through
+the early morning hours across parts of southeast Kansas and
+northeast Oklahoma.
+
+DISCUSSION...Clusters of strong thunderstorms will continue to shift
+eastward across southeast KS and northeast OK early this morning.
+The largest hail reported with these storms has been 0.75 inches in
+diameter in Sedgwick County KS about an hour ago. A 50 kt
+south/southwesterly low level jet will continue to spread northeast
+ahead of the cluster of convection across north-central
+OK/south-central KS, maintaining warm advection atop a surface warm
+front. Steep midlevel lapse rates and strong vertical shear in the
+presence of 500-1000 J/kg MUCAPE is more than adequate for sporadic
+intense cells capable of near-severe hail. However, storm mode is
+expected to continue to limit a more substantial hail threat. Severe
+Thunderstorm Watch 60 will continue across parts of southeast KS and
+northeast OK, but a downstream watch is not expected at this time.
+
+..Leitman.. 03/24/2020
+
+...Please see www.spc.noaa.gov for graphic product...
+
+ATTN...WFO...SGF...TSA...TOP...ICT...OUN...
+
+LAT...LON   37489778 37469652 38089648 38089637 38179633 38169597
+            38049595 38039509 37019507 37009500 36169503 36169511
+            36089511 36079555 36169561 36159575 35929577 35909580
+            35839582 35869603 36019603 36009610 36059607 36059627
+            36139626 36169681 36249683 36269714 36169715 36199812
+            36569808 36569744 37009746 37009779 37489778 
+

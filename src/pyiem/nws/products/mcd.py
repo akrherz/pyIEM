@@ -9,6 +9,7 @@ import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
+from pyiem.reference import TWEET_CHARS
 from pyiem.util import html_escape
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
@@ -23,6 +24,7 @@ WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
 )
 VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?")
+CONCERNING = re.compile(r"CONCERNING\s?\.\.\.(.*?)\.\.\.", re.I)
 
 
 class MCDProduct(TextProduct):
@@ -40,6 +42,7 @@ class MCDProduct(TextProduct):
         self.attn_wfo = self.parse_attn_wfo()
         self.attn_rfc = self.parse_attn_rfc()
         self.areas_affected = self.parse_areas_affected()
+        self.concerning = self.parse_concerning()
         self.watch_prob = self.find_watch_probability()
         self.sts, self.ets = self.find_valid_times()
         self.cwsus = []
@@ -75,7 +78,7 @@ class MCDProduct(TextProduct):
 
     def tweet(self):
         """ Return twitter message """
-        charsleft = 140 - 22  # default safe 22 for t.co shortening
+        charsleft = TWEET_CHARS - 24  # default safe 24 for t.co shortening
         if self.afos == "SWOMCD":
             center = "SPC"
         else:
@@ -83,10 +86,14 @@ class MCDProduct(TextProduct):
         prob_extra = ""
         if self.watch_prob is not None:
             prob_extra = " [watch prob: %.0f%%]" % (self.watch_prob,)
-        attempt = ("#%s issues %s %s%s: %s ") % (
+        concerning_text = ""
+        if self.concerning is not None:
+            concerning_text = f" concerning {self.concerning}"
+        attempt = ("#%s issues %s %s%s%s: %s ") % (
             center,
             self.afos[3:],
             self.discussion_num,
+            concerning_text,
             prob_extra,
             self.areas_affected,
         )
@@ -95,12 +102,12 @@ class MCDProduct(TextProduct):
     def get_url(self):
         """ Return the URL for SPC's website """
         if self.afos == "SWOMCD":
-            return ("http://www.spc.noaa.gov/products/md/%s/md%04i.html") % (
+            return ("https://www.spc.noaa.gov/products/md/%s/md%04i.html") % (
                 self.valid.year,
                 self.discussion_num,
             )
         return (
-            "http://www.wpc.ncep.noaa.gov/metwatch/"
+            "https://wpc.ncep.noaa.gov/metwatch/"
             "metwatch_mpd_multi.php?md=%s&yr=%s"
         ) % (self.discussion_num, self.valid.year)
 
@@ -132,22 +139,27 @@ class MCDProduct(TextProduct):
         prob_extra = " "
         if self.watch_prob is not None:
             prob_extra = " [watch probability: %.0f%%] " % (self.watch_prob,)
-        plain = ("%s issues Mesoscale %sDiscussion #%s%s%s") % (
+        concerning_text = ""
+        if self.concerning is not None:
+            concerning_text = f" concerning {self.concerning}"
+        plain = ("%s issues Mesoscale %sDiscussion #%s%s%s%s") % (
             center,
             pextra,
             self.discussion_num,
+            concerning_text,
             prob_extra,
             spcuri,
         )
         html = (
             '<p>%s issues <a href="%s">'
-            "Mesoscale %sDiscussion #%s</a>%s"
+            "Mesoscale %sDiscussion #%s</a>%s%s"
             '(<a href="%s?pid=%s">View text</a>)</p>'
         ) % (
             center,
             spcuri,
             pextra,
             self.discussion_num,
+            concerning_text,
             prob_extra,
             uri,
             self.get_product_id(),
@@ -163,15 +175,22 @@ class MCDProduct(TextProduct):
         )
         return [[plain, html, xtra]]
 
+    def parse_concerning(self):
+        """Figure out the concerning text, if it exists."""
+        tokens = CONCERNING.findall(self.unixtext.replace("\n", ""))
+        if not tokens:
+            return []
+        return tokens[0]
+
     def parse_attn_rfc(self):
-        """ FIgure out which RFCs this product is seeking attention """
+        """ Figure out which RFCs this product is seeking attention """
         tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             return []
         return re.findall("([A-Z]{5})", tokens[0])
 
     def parse_attn_wfo(self):
-        """ FIgure out which WFOs this product is seeking attention """
+        """ Figure out which WFOs this product is seeking attention """
         tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             raise MCDException("Could not parse attention WFOs")
@@ -202,14 +221,7 @@ class MCDProduct(TextProduct):
         """Save this product to the database"""
         table = "mcd" if self.afos == "SWOMCD" else "mpd"
         # Remove any previous entries
-        sql = (
-            """
-            DELETE from """
-            + table
-            + """ where product_id = %s
-            and num = %s
-        """
-        )
+        sql = f"DELETE from {table} where product_id = %s and num = %s"
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
             print(
@@ -223,8 +235,8 @@ class MCDProduct(TextProduct):
             + table
             + """
             (product, product_id, geom, issue, expire, num, year,
-             watch_confidence)
-            values (%s, %s, %s, %s, %s, %s, %s, %s)
+             watch_confidence, concerning)
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         )
         args = (
@@ -236,6 +248,7 @@ class MCDProduct(TextProduct):
             self.discussion_num,
             self.valid.year,
             self.find_watch_probability(),
+            self.concerning,
         )
         txn.execute(sql, args)
 
