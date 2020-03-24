@@ -1,4 +1,5 @@
 """MCD/MPD tests."""
+# pylint: disable=redefined-outer-name
 
 import psycopg2.extras
 import pytest
@@ -12,6 +13,18 @@ def dbcursor():
     return get_dbconn("postgis").cursor(
         cursor_factory=psycopg2.extras.DictCursor
     )
+
+
+def test_issue163(dbcursor):
+    """Test parsing of the concerning tag."""
+    prod = parser(get_test_file("MCD_MPD/SWOMCDconcerning.txt"))
+    prod.database_save(dbcursor)
+    dbcursor.execute(
+        "SELECT concerning from mcd where product_id = %s",
+        (prod.get_product_id(),),
+    )
+    ans = "Severe Thunderstorm Watch 60"
+    assert dbcursor.fetchone()[0] == ans
 
 
 def test_170926_nodbinsert(dbcursor):
@@ -34,16 +47,16 @@ def test_mpd_mcdparser(dbcursor):
     assert prod.attn_wfo == ["PHI", "AKQ", "CTP", "LWX"]
     assert prod.attn_rfc == ["MARFC"]
     ans = (
-        "#WPC issues MPD 98: NRN VA...D.C"
+        "#WPC issues MPD 98 concerning HEAVY RAINFALL: NRN VA...D.C"
         "....CENTRAL MD INTO SERN PA "
-        "http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
+        "https://wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&yr=2013"
     )
     assert prod.tweet() == ans
     ans = (
         "Weather Prediction Center issues "
-        "Mesoscale Precipitation Discussion #98"
-        " http://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
+        "Mesoscale Precipitation Discussion #98 concerning HEAVY RAINFALL"
+        " https://wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&amp;yr=2013"
     )
     assert prod.get_jabbers("http://localhost")[0][0] == ans
@@ -67,16 +80,17 @@ def test_mcdparser(dbcursor):
     jmsg = prod.get_jabbers("http://localhost")
     ans = (
         "<p>Storm Prediction Center issues "
-        '<a href="http://www.spc.noaa.gov/'
+        '<a href="https://www.spc.noaa.gov/'
         'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
-        '[watch probability: 20%] (<a href="http://localhost'
+        "concerning SEVERE POTENTIAL [watch probability: 20%] "
+        '(<a href="http://localhost'
         '?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)</p>'
     )
     assert jmsg[0][1] == ans
     ans = (
         "Storm Prediction Center issues Mesoscale Discussion #1678 "
-        "[watch probability: 20%] "
-        "http://www.spc.noaa.gov/products/md/2013/md1678.html"
+        "concerning SEVERE POTENTIAL [watch probability: 20%] "
+        "https://www.spc.noaa.gov/products/md/2013/md1678.html"
     )
     assert jmsg[0][0] == ans
     ans = utc(2013, 8, 9, 17, 25)

@@ -2267,7 +2267,8 @@ CREATE TABLE mcd(
     num int NOT NULL,
     issue timestamptz,
     expire timestamptz,
-    watch_confidence smallint
+    watch_confidence smallint,
+    concerning text
 );
 ALTER TABLE mcd OWNER to mesonet;
 GRANT ALL on mcd to ldm;
@@ -2286,7 +2287,8 @@ CREATE TABLE mpd(
     num int NOT NULL,
     issue timestamptz,
     expire timestamptz,
-    watch_confidence smallint
+    watch_confidence smallint,
+    concerning text
 );
 ALTER TABLE mpd OWNER to mesonet;
 GRANT ALL on mpd to ldm;
