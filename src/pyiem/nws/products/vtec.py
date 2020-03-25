@@ -1128,7 +1128,7 @@ class VTECProduct(TextProduct):
                     "%(ets)s %(svs_special_html)s</p>"
                 ) % jmsg_dict
                 xtra["twitter"] = (
-                    "%(wfo)s %(product)s%(sts)sfor %(county)s "
+                    "%(wfo)s %(product)s%(svr_special)s%(sts)sfor %(county)s "
                     "%(ets)s %(url)s"
                 ) % jmsg_dict
                 # brute force removal of duplicate spaces

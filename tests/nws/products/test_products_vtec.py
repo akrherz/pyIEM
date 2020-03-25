@@ -829,8 +829,9 @@ def test_tornado_emergency():
     )
     assert j[0][1] == ans
     ans = (
-        "ICT issues Tornado Emergency for ((KSC015)), ((KSC173)) [KS] till "
-        "11:00 PM CDT "
+        "ICT issues Tornado Emergency [tornado: OBSERVED, tornado damage "
+        "threat: CATASTROPHIC, hail: 2.50 IN] "
+        "for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
         "http://localhost2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z"
     )
     assert j[0][2]["twitter"] == ans
