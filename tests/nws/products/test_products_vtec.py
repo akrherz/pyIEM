@@ -819,7 +819,7 @@ def test_tornado_emergency():
     ans = (
         '<p>ICT <a href="http://localhost'
         '2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z">'
-        "issues Tornado Warning</a> "
+        "issues Tornado Emergency</a> "
         "[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
         "hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
         '* AT 1019 PM CDT...<span style="color: #FF0000;">TORNADO '
@@ -828,6 +828,12 @@ def test_tornado_emergency():
         "HAYSVILLE...AND MOVING NORTHEAST AT 50 MPH.</p>"
     )
     assert j[0][1] == ans
+    ans = (
+        "ICT issues Tornado Emergency for ((KSC015)), ((KSC173)) [KS] till "
+        "11:00 PM CDT "
+        "http://localhost2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z"
+    )
+    assert j[0][2]["twitter"] == ans
 
 
 def test_badtimestamp():

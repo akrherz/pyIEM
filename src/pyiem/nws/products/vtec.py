@@ -1089,6 +1089,9 @@ class VTECProduct(TextProduct):
 
                 # Emergencies
                 if segment.is_emergency:
+                    jmsg_dict["product"] = jmsg_dict["product"].replace(
+                        "Warning", "Emergency"
+                    )
                     channels.append("%s.EMERGENCY" % (vtec.phenomena,))
                     xtra["channels"] += ",%s" % (channels[-1],)
                     _btext = segment.svs_search()
