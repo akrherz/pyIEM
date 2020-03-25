@@ -1089,6 +1089,9 @@ class VTECProduct(TextProduct):
 
                 # Emergencies
                 if segment.is_emergency:
+                    jmsg_dict["product"] = jmsg_dict["product"].replace(
+                        "Warning", "Emergency"
+                    )
                     channels.append("%s.EMERGENCY" % (vtec.phenomena,))
                     xtra["channels"] += ",%s" % (channels[-1],)
                     _btext = segment.svs_search()
@@ -1125,7 +1128,7 @@ class VTECProduct(TextProduct):
                     "%(ets)s %(svs_special_html)s</p>"
                 ) % jmsg_dict
                 xtra["twitter"] = (
-                    "%(wfo)s %(product)s%(sts)sfor %(county)s "
+                    "%(wfo)s %(product)s%(svr_special)s%(sts)sfor %(county)s "
                     "%(ets)s %(url)s"
                 ) % jmsg_dict
                 # brute force removal of duplicate spaces
