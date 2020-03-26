@@ -1,4 +1,3 @@
-boxsdk
 sphinxcontrib-napoleon
 oauth2client
 urllib3
