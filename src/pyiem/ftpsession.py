@@ -6,6 +6,7 @@ import os
 import glob
 import subprocess
 import time
+import warnings
 
 from pyiem.util import exponential_backoff
 
@@ -15,6 +16,7 @@ class FTPSession:
 
     def __init__(self, server, username, password, tmpdir="/tmp", timeout=60):
         """Build a FTP session """
+        warnings.warn("FTPSession to be removed in v0.16", stacklevel=2)
         self.conn = None
         self.server = server
         self.username = username

@@ -13,6 +13,7 @@ import pytz
 import numpy as np
 import psycopg2
 from pyiem import util
+from pyiem import box_utils
 from pyiem.exceptions import NoDataFound
 
 
@@ -27,6 +28,12 @@ def test_get_dbconn(dbname):  # noqa
     """Does our code work for various database names."""
     pgconn = util.get_dbconn(dbname)
     assert pgconn is not None
+
+
+def test_depreciated():
+    """Test that we have a warning on a soon to be removed func."""
+    with pytest.warns(UserWarning):
+        box_utils.sendfiles2box("", [])
 
 
 def test_get_dbconn_bad():

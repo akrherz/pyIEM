@@ -1,6 +1,7 @@
 """A helper to work with Box API"""
 import os
 import logging
+import warnings
 
 from six import string_types
 from boxsdk import Client, OAuth2
@@ -33,6 +34,7 @@ def sendfiles2box(
     Returns:
       list of ids of the uploaded content
     """
+    warnings.warn("sendfiles2box to be removed in v0.16", stacklevel=2)
     if isinstance(filenames, string_types):
         filenames = [filenames]
     if isinstance(remotefilenames, string_types):
@@ -40,6 +42,8 @@ def sendfiles2box(
     if remotefilenames is None:
         remotefilenames = [os.path.basename(f) for f in filenames]
     iemprops = get_properties()
+    if "boxclient.access_token" not in iemprops:
+        return []
     oauth = OAuth2(
         client_id=iemprops["boxclient.client_id"],
         client_secret=iemprops["boxclient.client_secret"],
