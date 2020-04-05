@@ -1,0 +1,844 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+g6b30bb6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="nws Package" href="pyiem.nws.html" />
+    <link rel="prev" title="pyiem" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.nws.html" title="nws Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="pyiem"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6b30bb6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pyiem-package">
+<h1>pyiem Package<a class="headerlink" href="#pyiem-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyiem</span></code> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pyiem.__init__"></span><p>Python Utilities developed for/by Iowa Environmental Mesonet</p>
+<p>Python is an important part of the Iowa Environmental Mesonet (IEM).  This
+package is used by many parts of the IEM codebase and hopefully somewhat
+useful to others!?!?</p>
+</div>
+<div class="section" id="module-pyiem.datatypes">
+<span id="datatypes-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">datatypes</span></code> Module<a class="headerlink" href="#module-pyiem.datatypes" title="Permalink to this headline">¶</a></h2>
+<p>Classes Representing various variables</p>
+<dl class="py class">
+<dt id="pyiem.datatypes.basetype">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">basetype</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.basetype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base Object for all our vars</p>
+<dl class="py method">
+<dt id="pyiem.datatypes.basetype.get_units">
+<code class="sig-name descname">get_units</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.basetype.get_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the units for this current datatype</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the unit of this datatype</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.direction">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">direction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Direction from North</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.direction.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['DEG', 'RAD']</em><a class="headerlink" href="#pyiem.datatypes.direction.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.direction.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.direction.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.distance">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Distance</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.distance.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['SM', 'MI', 'M', 'KM', 'FT', 'MM', 'IN', 'CM']</em><a class="headerlink" href="#pyiem.datatypes.distance.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.distance.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.distance.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.humidity">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">humidity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.humidity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Humidity, this is not as straight forward as the others</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.humidity.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['%']</em><a class="headerlink" href="#pyiem.datatypes.humidity.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.humidity.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.humidity.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.mixingratio">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">mixingratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.mixingratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Mixing Ratio.</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.mixingratio.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['KG/KG']</em><a class="headerlink" href="#pyiem.datatypes.mixingratio.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.mixingratio.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.mixingratio.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the value into the provided units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.precipitation">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">precipitation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.precipitation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Precipitation</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.precipitation.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['IN', 'CM', 'MM']</em><a class="headerlink" href="#pyiem.datatypes.precipitation.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.precipitation.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.precipitation.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.pressure">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">pressure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Pressure</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.pressure.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['MB', 'HPA', 'IN', 'PA']</em><a class="headerlink" href="#pyiem.datatypes.pressure.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.pressure.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.pressure.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.speed">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Speed</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.speed.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['KT', 'MPH', 'MPS', 'KMH', 'KTS']</em><a class="headerlink" href="#pyiem.datatypes.speed.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.speed.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.speed.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.datatypes.temperature">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.datatypes.</code><code class="sig-name descname">temperature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyiem.datatypes.basetype" title="pyiem.datatypes.basetype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.datatypes.basetype</span></code></a></p>
+<p>Temperature</p>
+<dl class="py attribute">
+<dt id="pyiem.datatypes.temperature.known_units">
+<code class="sig-name descname">known_units</code><em class="property"> = ['F', 'K', 'C']</em><a class="headerlink" href="#pyiem.datatypes.temperature.known_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.datatypes.temperature.value">
+<code class="sig-name descname">value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">units</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.temperature.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a value in the given units</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="iemre-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">iemre</span></code> Module<a class="headerlink" href="#iemre-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="meteorology-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">meteorology</span></code> Module<a class="headerlink" href="#meteorology-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyiem.mrms">
+<span id="mrms-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">mrms</span></code> Module<a class="headerlink" href="#module-pyiem.mrms" title="Permalink to this headline">¶</a></h2>
+<p>Multi-RADAR Multi-Sensor (MRMS) Helper Functions</p>
+<p>Hopefully useful functions to help with the processing of MRMS data</p>
+<dl class="py function">
+<dt id="pyiem.mrms.fetch">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">fetch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">product</span></em>, <em class="sig-param"><span class="n">valid</span></em>, <em class="sig-param"><span class="n">tmpdir</span><span class="o">=</span><span class="default_value">'/mesonet/tmp'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a desired MRMS product</p>
+<dl class="simple">
+<dt>Applies the following logic:</dt><dd><ul class="simple">
+<li><p>does the file exist in <cite>tmpdir</cite>?</p></li>
+<li><p>can I fetch it from mtarchive?</p></li>
+<li><p>if recent, can I fetch it from NOAA MRMS website</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product</strong> (<em>str</em>) – MRMS product type</p></li>
+<li><p><strong>valid</strong> (<em>datetime</em>) – Datetime object for desired timestamp</p></li>
+<li><p><strong>tmpdir</strong> (<em>str</em><em>,</em><em>optional</em>) – location to check/place the downloaded file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.mrms.get_fn">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">get_fn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span></em>, <em class="sig-param"><span class="n">now</span></em>, <em class="sig-param"><span class="n">tile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.get_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the filename for this timestamp and tile</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.mrms.is_gzipped">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">is_gzipped</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.is_gzipped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that we have gzipped content</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.mrms.make_colorramp">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">make_colorramp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.make_colorramp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make me a crude color ramp</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.mrms.reader">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return metadata and the data</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.mrms.write_worldfile">
+<code class="sig-prename descclassname">pyiem.mrms.</code><code class="sig-name descname">write_worldfile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.write_worldfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a worldfile to the given filename</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – filename to write the world file information to</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyiem.network">
+<span id="network-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module<a class="headerlink" href="#module-pyiem.network" title="Permalink to this headline">¶</a></h2>
+<p>Network Table.</p>
+<dl class="py class">
+<dt id="pyiem.network.Table">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.network.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">network</span></em>, <em class="sig-param"><span class="n">cursor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only_online</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.network.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Our class</p>
+</dd></dl>
+
+</div>
+<div class="section" id="observation-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">observation</span></code> Module<a class="headerlink" href="#observation-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="plot-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code> Module<a class="headerlink" href="#plot-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="reference-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">reference</span></code> Module<a class="headerlink" href="#reference-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyiem.tracker">
+<span id="tracker-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">tracker</span></code> Module<a class="headerlink" href="#module-pyiem.tracker" title="Permalink to this headline">¶</a></h2>
+<p>IEM Tracker Related Stuff.</p>
+<dl class="py class">
+<dt id="pyiem.tracker.TrackerEngine">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.tracker.</code><code class="sig-name descname">TrackerEngine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">icursor</span></em>, <em class="sig-param"><span class="n">pcursor</span></em>, <em class="sig-param"><span class="n">maxactions</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A processing engine of tracking offline/online events</p>
+<dl class="py method">
+<dt id="pyiem.tracker.TrackerEngine.offline_logic">
+<code class="sig-name descname">offline_logic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sid</span></em>, <em class="sig-param"><span class="n">ob</span></em>, <em class="sig-param"><span class="n">pnetwork</span></em>, <em class="sig-param"><span class="n">nt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.offline_logic" title="Permalink to this definition">¶</a></dt>
+<dd><p>offline logic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sid</strong> (<em>str</em>) – site identifier</p></li>
+<li><p><strong>ob</strong> (<em>dict</em>) – observation dictionary</p></li>
+<li><p><strong>pnetwork</strong> (<em>str</em>) – Portfolio name of this network</p></li>
+<li><p><strong>nt</strong> (<em>dict</em>) – provider of station metadata</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.tracker.TrackerEngine.online_logic">
+<code class="sig-name descname">online_logic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sid</span></em>, <em class="sig-param"><span class="n">offline</span></em>, <em class="sig-param"><span class="n">ob</span></em>, <em class="sig-param"><span class="n">pnetwork</span></em>, <em class="sig-param"><span class="n">nt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.online_logic" title="Permalink to this definition">¶</a></dt>
+<dd><p>online logic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sid</strong> (<em>str</em>) – site identifier</p></li>
+<li><p><strong>offline</strong> (<em>dict</em>) – dictionary of offline metadata</p></li>
+<li><p><strong>ob</strong> (<em>dict</em>) – observation dictionary</p></li>
+<li><p><strong>pnetwork</strong> (<em>str</em>) – Portfolio name of this network</p></li>
+<li><p><strong>nt</strong> (<em>dict</em>) – provider of station metadata</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.tracker.TrackerEngine.process_network">
+<code class="sig-name descname">process_network</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obs</span></em>, <em class="sig-param"><span class="n">pnetwork</span></em>, <em class="sig-param"><span class="n">nt</span></em>, <em class="sig-param"><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.process_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a list of dicts representing the network’s observations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs</strong> (<em>list</em>) – list of dicts representing the network obs</p></li>
+<li><p><strong>pnetwork</strong> (<em>str</em>) – the identifier of this network used in Portfolio DB</p></li>
+<li><p><strong>nt</strong> (<em>NetworkTable</em>) – dictionary provider of station metadata</p></li>
+<li><p><strong>threshold</strong> (<em>datetime</em>) – datetime instance with tzinfo set represeting
+the minimum time a site is considered to be ‘online’ within</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.tracker.TrackerEngine.send_emails">
+<code class="sig-name descname">send_emails</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">really_send</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.send_emails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send out those SPAM emails!</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.tracker.loadqc">
+<code class="sig-prename descclassname">pyiem.tracker.</code><code class="sig-name descname">loadqc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cursor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.loadqc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the current IEM Tracker QC’d variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cursor</strong> (<em>cursor</em><em>,</em><em>optional</em>) – Optionally provided database cursor</p></li>
+<li><p><strong>date</strong> (<em>date</em><em>,</em><em>optional</em>) – Defaults to today, which tickets are valid for now</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyiem.twistedpg">
+<span id="twistedpg-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">twistedpg</span></code> Module<a class="headerlink" href="#module-pyiem.twistedpg" title="Permalink to this headline">¶</a></h2>
+<p>module twistedpg.py
+Author: Federico Di Gregorio
+<a class="reference external" href="http://twistedmatrix.com/pipermail/twisted-python/2006-April/012955.html">http://twistedmatrix.com/pipermail/twisted-python/2006-April/012955.html</a></p>
+<dl class="py function">
+<dt id="pyiem.twistedpg.connect">
+<code class="sig-prename descclassname">pyiem.twistedpg.</code><code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.twistedpg.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxy connect with an additional kwarg set</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.twistedpg.connection">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.twistedpg.</code><code class="sig-name descname">connection</code><a class="headerlink" href="#pyiem.twistedpg.connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">psycopg2.extensions.connection</span></code></p>
+<dl class="py method">
+<dt id="pyiem.twistedpg.connection.cursor">
+<code class="sig-name descname">cursor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.twistedpg.connection.cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>cursor(name=None, cursor_factory=extensions.cursor, withhold=False) – new cursor</p>
+<p>Return a new cursor.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cursor_factory</span></code> argument can be used to
+create non-standard cursors by passing a class different from the
+default. Note that the new class <em>should</em> be a sub-class of
+<cite>extensions.cursor</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><cite>extensions.cursor</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyiem.util">
+<span id="util-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">util</span></code> Module<a class="headerlink" href="#module-pyiem.util" title="Permalink to this headline">¶</a></h2>
+<p>Utility functions for pyIEM package</p>
+<p>This module contains utility functions used by various parts of the codebase.</p>
+<dl class="py class">
+<dt id="pyiem.util.CustomFormatter">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">CustomFormatter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">datefmt</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">'%'</span></em>, <em class="sig-param"><span class="n">validate</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.CustomFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Formatter</span></code></p>
+<p>A custom log formatter class.</p>
+<dl class="py method">
+<dt id="pyiem.util.CustomFormatter.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.CustomFormatter.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string!</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.drct2text">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">drct2text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">drct</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.drct2text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an degree value to text representation of direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>drct</strong> (<em>int</em><em> or </em><em>float</em>) – Value in degrees to convert to text</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>String representation of the direction, could be <cite>None</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.exponential_backoff">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">exponential_backoff</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.exponential_backoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponentially backoff some function until it stops erroring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_ebfactor</strong> (<em>int</em><em>,</em><em>optional</em>) – Optional scale factor, allowing for faster test</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.find_ij">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">find_ij</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lons</span></em>, <em class="sig-param"><span class="n">lats</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.find_ij" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the i,j closest cell.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.get_autoplot_context">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">get_autoplot_context</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fdict</span></em>, <em class="sig-param"><span class="n">cfg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_autoplot_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the variables out of a dict of strings</p>
+<p>This helper for IEM autoplot gets values out of a dictionary of strings,
+as provided by CGI.  It does some magic to get types right, defaults right
+and so on.  The typical way this is called</p>
+<blockquote>
+<div><p>ctx = iemutils.get_context(fdict, get_description())</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fdict</strong> (<em>dictionary</em>) – what was likely provided by <cite>cgi.FieldStorage()</cite></p></li>
+<li><p><strong>cfg</strong> (<em>dictionary</em>) – autoplot value of get_description</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of variable names and values, with proper types!</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.get_dbconn">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">get_dbconn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">'mesosite'</span></em>, <em class="sig-param"><span class="n">user</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">5432</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_dbconn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function with business logic to get a database connection</p>
+<p>Note that this helper could return a read-only database connection if the
+connection to the primary server fails.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>database</strong> (<em>str</em><em>,</em><em>optional</em>) – the database name to connect to.
+default: mesosite</p></li>
+<li><p><strong>user</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded user to connect as, default: current user</p></li>
+<li><p><strong>host</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded hostname to connect as,
+default: iemdb.local</p></li>
+<li><p><strong>port</strong> (<em>int</em><em>,</em><em>optional</em>) – the TCP port that PostgreSQL is listening
+defaults to 5432</p></li>
+<li><p><strong>password</strong> (<em>str</em><em>,</em><em>optional</em>) – the password to use.</p></li>
+<li><p><strong>allow_failover</strong> (<em>bool</em><em>,</em><em>optional</em>) – Should this method attempt to connect to
+a failover host (hard coded as iemdb2.local), default is <cite>True</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>psycopg2 database connection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.get_properties">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">get_properties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cursor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the properties set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a dictionary of property names and values (both str)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.get_test_file">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">get_test_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">fponly</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_test_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper to get data for test usage.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.get_twitter">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">get_twitter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">screen_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_twitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide an authorized Twitter API Client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>screen_name</strong> (<em>str</em>) – The twitter user we are fetching creds for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.grid_bounds">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">grid_bounds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lons</span></em>, <em class="sig-param"><span class="n">lats</span></em>, <em class="sig-param"><span class="n">bounds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.grid_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Figure out indices that we can truncate big grid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lons</strong> (<em>np.array</em>) – grid lons</p></li>
+<li><p><strong>lats</strong> (<em>np.array</em>) – grid lats</p></li>
+<li><p><strong>bounds</strong> (<em>list</em>) – [x0, y0, x1, y1]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[x0, y0, x1, y1]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.html_escape">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">html_escape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.html_escape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around cgi.escape depreciation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.logger">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">logger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'pyiem'</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a standarized logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the logger to get, default pyiem</p></li>
+<li><p><strong>level</strong> (<em>logging.LEVEL</em>) – The log level for this pyiem logget, default is
+INFO for non interactive sessions, DEBUG otherwise</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>logger instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.ncopen">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">ncopen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncfn</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">60</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.ncopen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safely open netcdf files</p>
+<p>The issue here is that we can only have the following situation for a
+given NetCDF file.
+1.  Only 1 or more readers
+2.  Only 1 appender</p>
+<p>The netcdf is being accessed over NFS and perhaps local disk, so writing
+lock files is problematic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncfn</strong> (<em>str</em>) – The netCDF filename</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>,</em><em>optional</em>) – The netCDF4.Dataset open mode, default ‘r’</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – The total time in seconds to attempt a read, default 60</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>netCDF4.Dataset</cite> or <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.noaaport_text">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">noaaport_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.noaaport_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make whatever text look like it is NOAAPort Pristine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>string</em>) – the inbound text</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>text that looks noaaportish</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.set_property">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">set_property</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">propname</span></em>, <em class="sig-param"><span class="n">propvalue</span></em>, <em class="sig-param"><span class="n">pgconn</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.set_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a property</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.ssw">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">ssw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mixedobj</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.ssw" title="Permalink to this definition">¶</a></dt>
+<dd><p>python23 wrapper for sys.stdout.write</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mixedobj</strong> (<em>str</em><em> or </em><em>bytes</em>) – what content we want to send</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.utc">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">utc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">year</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">month</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">day</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">hour</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">minute</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">second</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">microsecond</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.utc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a datetime instance with tzinfo=pytz.UTC</p>
+<p>When no arguments are provided, returns <cite>datetime.utcnow()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>datetime with tzinfo set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyiem.wellknowntext">
+<span id="wellknowntext-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module<a class="headerlink" href="#module-pyiem.wellknowntext" title="Permalink to this headline">¶</a></h2>
+<p>Convert Well-Known Text format to python objects</p>
+<p>Main entry point is the convert_well_known_text function which takes a
+geometry in Well-Known Text format and returns a python object with the
+geometry.</p>
+<dl class="py function">
+<dt id="pyiem.wellknowntext.convert_well_known_text">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">convert_well_known_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.convert_well_known_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the geometry given in well-known text format as python objects</p>
+<p>The function accepts only 2D data and supports the POINT, POLYGON,
+MULTIPOLYGON, LINESTRING and MULTILINESTRING geometries.</p>
+<p>The structure of the return value depends on the geometry type. For
+MULTIPOLYGON and MULTILINESTRING return a list of lists of
+coordinate pairs. For POLYGON and LINESTRING return a list of
+coordinate pairs. For POINT return a coordinate pair. All
+coordinates are floats.</p>
+<p>The string wkt may contain an SRID specification in addition to the
+actual geometry. This SRID is ignored.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_coordinate_lists">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_coordinate_lists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_coordinate_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coordinates in wkt as a list of lists of coordinate pairs.</p>
+<p>The wkt parameter is the coordinate part of a geometry in well-known
+text format.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_linestring">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_linestring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_linestring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the LINESTRING geometry in wkt as a list of float pairs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_multilinestring">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_multilinestring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_multilinestring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the MULTILINESTRING geometry wkt as a list of lists of float pairs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_multipolygon">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_multipolygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_multipolygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the MULTIPOLYGON geometry wkt as a list of lists of float pairs</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_point">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the POINT geometry in wkt format as pair of floats</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.wellknowntext.parse_polygon">
+<code class="sig-prename descclassname">pyiem.wellknowntext.</code><code class="sig-name descname">parse_polygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wkt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wellknowntext.parse_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the POLYGON geometry in wkt as a list of float pairs</p>
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.html">nws Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#gini-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#hvtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#nwsli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#product-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#module-pyiem.nws.ugc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#module-pyiem.nws.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html">products Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#id1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">products</span></code> Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#cli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cli</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#hwo-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hwo</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#mcd-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mcd</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#nhc-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nhc</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pirep-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pirep</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#sigmet-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sigmet</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#spacewx-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spacewx</span></code> Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#vtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pyiem Package</a><ul>
+<li><a class="reference internal" href="#id1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyiem</span></code> Package</a></li>
+<li><a class="reference internal" href="#module-pyiem.datatypes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datatypes</span></code> Module</a></li>
+<li><a class="reference internal" href="#iemre-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">iemre</span></code> Module</a></li>
+<li><a class="reference internal" href="#meteorology-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">meteorology</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.mrms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mrms</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
+<li><a class="reference internal" href="#observation-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observation</span></code> Module</a></li>
+<li><a class="reference internal" href="#plot-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code> Module</a></li>
+<li><a class="reference internal" href="#reference-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reference</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.tracker"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tracker</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.twistedpg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">twistedpg</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.util"><code class="xref py py-mod docutils literal notranslate"><span class="pre">util</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.wellknowntext"><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">pyiem</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pyiem.nws.html"
+                        title="next chapter">nws Package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/pyiem.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.nws.html" title="nws Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="pyiem"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6b30bb6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, daryl herzmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.0.
+    </div>
+  </body>
+</html>

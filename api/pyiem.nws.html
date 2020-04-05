@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>nws Package &#8212; pyIEM 0.0.post1+g6b30bb6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="products Package" href="pyiem.nws.products.html" />
+    <link rel="prev" title="pyiem Package" href="pyiem.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.nws.products.html" title="products Package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pyiem.html" title="pyiem Package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6b30bb6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nws-package">
+<h1>nws Package<a class="headerlink" href="#nws-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gini-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#gini-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="hvtec-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#hvtec-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="lsr-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module<a class="headerlink" href="#lsr-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="nwsli-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module<a class="headerlink" href="#nwsli-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="product-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module<a class="headerlink" href="#product-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyiem.nws.ugc">
+<span id="ugc-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module<a class="headerlink" href="#module-pyiem.nws.ugc" title="Permalink to this headline">¶</a></h2>
+<p>Something to store UGC information!</p>
+<dl class="py class">
+<dt id="pyiem.nws.ugc.UGC">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.ugc.</code><code class="sig-name descname">UGC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">geoclass</span></em>, <em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wfos</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a single UGC</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.ugc.parse">
+<code class="sig-prename descclassname">pyiem.nws.ugc.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">valid</span></em>, <em class="sig-param"><span class="n">ugc_provider</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that parses text and yields UGC and expiration time
+&#64;param text to parse
+&#64;param valid is the issue time of the product this text was found in
+&#64;param ugc_provider of UGC objects</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.ugc.str2time">
+<code class="sig-prename descclassname">pyiem.nws.ugc.</code><code class="sig-name descname">str2time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">valid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.str2time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string that is the UGC product expiration to a valid
+datetime
+&#64;param text string to convert
+&#64;param valid datetime instance</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.ugc.ugcs_to_text">
+<code class="sig-prename descclassname">pyiem.nws.ugc.</code><code class="sig-name descname">ugcs_to_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ugcs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.ugcs_to_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a list of UGC objects to a textual string</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyiem.nws.vtec">
+<span id="vtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.vtec" title="Permalink to this headline">¶</a></h2>
+<p>Support NWS VTEC encoding</p>
+<dl class="py class">
+<dt id="pyiem.nws.vtec.VTEC">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.vtec.</code><code class="sig-name descname">VTEC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tokens</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A single VTEC encoding instance</p>
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.get_action_string">
+<code class="sig-name descname">get_action_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_action_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the action string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.get_begin_string">
+<code class="sig-name descname">get_begin_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_begin_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an appropriate beginning string for this VTEC</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.get_end_string">
+<code class="sig-name descname">get_end_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prod</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_end_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an appropriate end string for this VTEC</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.get_id">
+<code class="sig-name descname">get_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">year</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a custom string identifier for this VTEC product</p>
+<p>This is used by the Live client</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.get_ps_string">
+<code class="sig-name descname">get_ps_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_ps_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the combination of Phenomena + Significance as string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.product_string">
+<code class="sig-name descname">product_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.product_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the combination of action and phenomena+significance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.vtec.VTEC.url">
+<code class="sig-name descname">url</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">year</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a VTEC url string needed</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.vtec.contime">
+<code class="sig-prename descclassname">pyiem.nws.vtec.</code><code class="sig-name descname">contime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.contime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent the fun that is 0000 time in VTEC</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.vtec.get_action_string">
+<code class="sig-prename descclassname">pyiem.nws.vtec.</code><code class="sig-name descname">get_action_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_action_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the action string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.vtec.get_ps_string">
+<code class="sig-prename descclassname">pyiem.nws.vtec.</code><code class="sig-name descname">get_ps_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phenomena</span></em>, <em class="sig-param"><span class="n">significance</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_ps_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the combination of Phenomena + Significance as string</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.vtec.parse">
+<code class="sig-prename descclassname">pyiem.nws.vtec.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>I look for and return vtec objects as I find them</p>
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.products.html">products Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#id1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">products</span></code> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#cli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cli</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#hwo-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hwo</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#mcd-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mcd</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#nhc-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nhc</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#pirep-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pirep</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#sigmet-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sigmet</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#spacewx-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spacewx</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#vtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">nws Package</a><ul>
+<li><a class="reference internal" href="#gini-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a></li>
+<li><a class="reference internal" href="#hvtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a></li>
+<li><a class="reference internal" href="#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a></li>
+<li><a class="reference internal" href="#nwsli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a></li>
+<li><a class="reference internal" href="#product-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.nws.ugc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.nws.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pyiem.html"
+                        title="previous chapter">pyiem Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pyiem.nws.products.html"
+                        title="next chapter">products Package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/pyiem.nws.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.nws.products.html" title="products Package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pyiem.html" title="pyiem Package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6b30bb6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, daryl herzmann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.0.
+    </div>
+  </body>
+</html>
