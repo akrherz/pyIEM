@@ -16,7 +16,7 @@ SENTINEL = 99999
 class ObDict(UserDict):  # pylint: disable=too-many-ancestors
     """Custom dictionary implementation.
 
-    If the key starts with null_ and is not defined, we return a sentinel.
+    If the key starts with ``null_`` and is not defined, we return a sentinel.
     If the key is not defined, we return None.
     """
 

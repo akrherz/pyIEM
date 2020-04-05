@@ -41,14 +41,6 @@ nws Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`spcpts` Module
---------------------
-
-.. automodule:: pyiem.nws.spcpts
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`ugc` Module
 -----------------
 
