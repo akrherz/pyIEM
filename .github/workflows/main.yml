@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Update Ubuntu
-      run: sudo apt-get install gdal libproj-dev proj-bin libgeos-dev
+      run: sudo apt-get install gdal-bin libproj-dev proj-bin libgeos-dev libgdal-dev
 
     - name: Set up Python 3.x
       uses: actions/setup-python@v1
