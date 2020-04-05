@@ -11,6 +11,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Update Ubuntu
+      run: sudo apt-get install gdal proj geos
+
     - name: Set up Python 3.x
       uses: actions/setup-python@v1
       with:
