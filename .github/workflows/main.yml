@@ -15,8 +15,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Update Ubuntu
-      run: sudo apt-get install postgresql-devel
     - name: Checkout
       uses: actions/checkout@master
 
