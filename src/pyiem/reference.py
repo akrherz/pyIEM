@@ -695,6 +695,7 @@ class Wrapper:
 
     def __init__(self, wrapped):
         """Keep a reference."""
+        self.__all__ = []
         self.wrapped = wrapped
 
     def _reader(self, name):
