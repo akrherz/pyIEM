@@ -247,6 +247,7 @@ class SAWProduct(TextProduct):
             self.valid.year,
             self.ww_num,
         )
+        spc_channels = f"SPC,SPC.{DBTYPES[self.ww_type]}WATCH"
         if self.action == self.CANCELS:
             plain = (
                 "Storm Prediction Center cancels Weather Watch Number %s " "%s"
@@ -255,7 +256,9 @@ class SAWProduct(TextProduct):
                 '<p>Storm Prediction Center cancels <a href="%s">'
                 "Weather Watch Number %s</a></p>"
             ) % (url, self.ww_num)
-            res.append([plain, html, dict(channels="SPC", twitter=plain)])
+            res.append(
+                [plain, html, dict(channels=spc_channels, twitter=plain)]
+            )
             # Now create templates
             plain = (
                 "Storm Prediction Center cancels Weather Watch Number %s "
@@ -294,7 +297,9 @@ class SAWProduct(TextProduct):
             html2 = html + (
                 ' (<a href="%s?year=%s&amp;num=%s">Watch ' "Quickview</a>)</p>"
             ) % (uri, self.sts.year, self.ww_num)
-            res.append([plain2, html2, dict(channels="SPC", twitter=plain2)])
+            res.append(
+                [plain2, html2, dict(channels=spc_channels, twitter=plain2)]
+            )
             # Now create templates
             plain += " for portions of %%s %s" % (url,)
             html += (
