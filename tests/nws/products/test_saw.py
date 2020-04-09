@@ -1,4 +1,5 @@
 """Can we process the SAW"""
+# pylint: disable=redefined-outer-name
 
 import psycopg2.extras
 import pytest
@@ -26,6 +27,7 @@ def test_181231_linkisok():
         "https://www.spc.noaa.gov/products/watch/2014/ww0503.html"
     )
     assert jmsgs[0][0] == ans
+    assert jmsgs[0][2]["channels"] == "SPC,SPC.SVRWATCH"
 
 
 def test_replacement(dbcursor):
