@@ -55,7 +55,7 @@ class LSRProduct(TextProduct):
             max_time.strftime("%Y%m%d%H%M"),
         )
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """ return a text and html variant for Jabber stuff """
         res = []
         if len(self.lsrs) == 0:

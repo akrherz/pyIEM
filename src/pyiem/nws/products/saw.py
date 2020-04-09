@@ -233,7 +233,7 @@ class SAWProduct(TextProduct):
             pts.append((lon, lat))
         return ShapelyPolygon(pts)
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """Generate the jabber messages for this Product
 
         NOTE: In the past, the messages generated here have tripped twitter's

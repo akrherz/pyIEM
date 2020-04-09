@@ -119,12 +119,12 @@ class MCDProduct(TextProduct):
                 return section[17:].replace("\n", " ")
         return None
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """Return plain text and html variants for a Jabber msg
 
         Args:
           uri (str): URL number one needed for constructing the URI
-          uri2 (str): not used, but needed for the over-ride
+          _uri2 (str): not used, but needed for the over-ride
 
         Returns:
           (list): List of lists, plain text, html text, xtra dict

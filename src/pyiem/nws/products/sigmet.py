@@ -403,7 +403,7 @@ class SIGMETProduct(TextProduct):
     def process_WS(self):
         """ Process this type of SIGMET """
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """ Return the Jabber for this sigmet """
         j = []
         for sig in self.sigmets:

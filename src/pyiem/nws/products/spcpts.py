@@ -869,7 +869,7 @@ class SPCPTS(TextProduct):
 
         return product_descript, url, day
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """Wordsmith the Jabber/Twitter Messaging
 
         Examples

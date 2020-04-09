@@ -19,7 +19,7 @@ class TAFProduct(TextProduct):
         """ Return a list of channels """
         return [self.afos, "TAF...", "%s.TAF" % (self.source,)]
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """ Get the jabber variant of this message """
         res = []
         # These products can be ignored

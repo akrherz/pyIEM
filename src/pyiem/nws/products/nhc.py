@@ -17,7 +17,7 @@ class NHCProduct(TextProduct):
         """ constructor """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """ Get the jabber variant of this message """
         myurl = "%s?pid=%s" % (uri, self.get_product_id())
 
