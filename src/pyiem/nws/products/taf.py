@@ -17,7 +17,7 @@ class TAFProduct(TextProduct):
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos, "TAF...", "%s.TAF" % (self.source,)]
+        return [self.afos, "TAF...", f"{self.source}.TAF"]
 
     def get_jabbers(self, uri, _uri2=None):
         """ Get the jabber variant of this message """
@@ -25,7 +25,7 @@ class TAFProduct(TextProduct):
         # These products can be ignored
         if self.afos is None:
             return res
-        url = "%s?pid=%s" % (uri, self.get_product_id())
+        url = f"{uri}?pid={self.get_product_id()}"
         aaa = self.afos[:3]
         nicedate = self.get_nicedate()
         plain = ("%s issues %s (%s) at %s for %s %s") % (

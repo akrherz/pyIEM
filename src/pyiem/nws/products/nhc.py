@@ -4,6 +4,15 @@ import re
 
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import NHCException
+from pyiem.reference import TWEET_CHARS
+
+TITLE = (
+    "(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"
+    "POTENTIAL TROPICAL CYCLONE|TROPICAL CYCLONE|"
+    r"TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "
+    "(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "
+    r"NUMBER\s+([0-9A-Z]+)"
+)
 
 
 class NHCProduct(TextProduct):
@@ -21,17 +30,8 @@ class NHCProduct(TextProduct):
         """ Get the jabber variant of this message """
         myurl = "%s?pid=%s" % (uri, self.get_product_id())
 
-        tokens = re.findall(
-            (
-                "(POST-TROPICAL CYCLONE|TROPICAL STORM|HURRICANE|"
-                "POTENTIAL TROPICAL CYCLONE|TROPICAL CYCLONE|"
-                "TROPICAL DEPRESSION|REMNANTS OF) ([A-Z0-9\- ]*) "
-                "(DISCUSSION|INTERMEDIATE ADVISORY|FORECAST/ADVISORY|ADVISORY) "
-                "NUMBER\s+([0-9A-Z]+)"
-            ),
-            self.unixtext.upper().replace("\n", " "),
-        )
-        if len(tokens) == 0:
+        tokens = re.findall(TITLE, self.unixtext.upper().replace("\n", " "))
+        if not tokens:
             raise NHCException("Could not parse header from NHC Product!")
 
         classification = tokens[0][0]
@@ -72,17 +72,17 @@ class NHCProduct(TextProduct):
             name,
         )
 
-        if len(self.segments[0].headlines) > 0:
+        if self.segments[0].headlines:
             headline = self.segments[0].headlines[0]
             headline = headline.lower().replace(
                 name.lower(), "#%s" % (twitter_name,)
             )
             headline = headline[0].upper() + headline[1:] + "."
-            if (144 - len(tformat % tdict)) > len(headline):
+            if (TWEET_CHARS - len(tformat % tdict)) > len(headline):
                 tdict["headline"] = headline
             else:
                 headline = headline[: headline.find(",")]
-                if (144 - len(tformat % tdict)) > len(headline):
+                if (TWEET_CHARS - len(tformat % tdict)) > len(headline):
                     tdict["headline"] = headline
 
         tweet = tformat % tdict

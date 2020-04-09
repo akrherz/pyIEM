@@ -148,15 +148,12 @@ class HML(product.TextProduct):
                 val = row[col]
                 if val is None:
                     continue
-                y = "%s" % (row["valid"].year,)
                 cursor.execute(
-                    """
-                    INSERT into hml_observed_data_"""
-                    + y
-                    + """
-                    (station, valid, key, value)
-                    VALUES (%s, %s, get_hml_observed_key(%s), %s)
-                    """,
+                    (
+                        f"INSERT into hml_observed_data_{row['valid'].year} "
+                        "(station, valid, key, value) "
+                        "VALUES (%s, %s, get_hml_observed_key(%s), %s)"
+                    ),
                     (_hml.station, row["valid"], key, val),
                 )
 

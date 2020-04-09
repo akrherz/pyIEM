@@ -1,5 +1,6 @@
 """A NWS TextProduct that contains VTEC information
 """
+# pylint: disable=too-many-lines
 
 # Standard Library Imports
 import datetime
@@ -18,27 +19,20 @@ DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
 def list_rows(txn, table, vtec):
     """Return a simple listing of what exists in the database"""
     txn.execute(
-        """
-    SELECT ugc, issue at time zone 'UTC' as utc_issue, status,
-    updated at time zone 'UTC' as utc_updated
-    from """
-        + table
-        + """ WHERE wfo = %s and phenomena = %s and
-    significance = %s and eventid = %s ORDER by ugc
-    """,
+        (
+            "SELECT ugc, issue at time zone 'UTC' as ui, status, "
+            f"updated at time zone 'UTC' as uu from {table} "
+            "WHERE wfo = %s and phenomena = %s and significance = %s and "
+            "eventid = %s ORDER by ugc"
+        ),
         (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
     )
     res = (
-        "Entries for VTEC within %s\n"
+        f"Entries for VTEC within {table}\n"
         "  UGC    STA ISSUED              UPDATED\n"
-    ) % (table,)
+    )
     for row in txn.fetchall():
-        res += "  %s %s %s %s\n" % (
-            row["ugc"],
-            row["status"],
-            row["utc_issue"],
-            row["utc_updated"],
-        )
+        res += f"  {row['ugc']} {row['status']} {row['ui']} {row['uu']}\n"
     return res
 
 
@@ -686,26 +680,19 @@ class VTECProduct(TextProduct):
         if segment.sbw and self.is_correction() and vtec.action == "NEW":
             # Go delete the previous NEW polygon
             txn.execute(
-                """
-            DELETE from """
-                + sbw_table
-                + """ WHERE status = 'NEW' and
-            eventid = %s and wfo = %s and phenomena = %s and significance = %s
-            """,
+                (
+                    f"DELETE from {sbw_table} WHERE status = 'NEW' and "
+                    "eventid = %s and wfo = %s and phenomena = %s and "
+                    "significance = %s"
+                ),
                 (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
             )
             if txn.rowcount != 1:
                 self.warnings.append(
                     (
-                        "%s.%s.%s product is a correction"
-                        ", but SBW delete removed %s rows "
-                        "instead of 1"
-                    )
-                    % (
-                        vtec.phenomena,
-                        vtec.significance,
-                        vtec.etn,
-                        txn.rowcount,
+                        f"{vtec.phenomena}.{vtec.significance}.{vtec.etn} "
+                        "product is a correction, but SBW delete removed "
+                        f"{txn.rowcount} rows instead of 1"
                     )
                 )
 
@@ -773,14 +760,12 @@ class VTECProduct(TextProduct):
         # to when our new polygon starts
         if vtec.action != "NEW" and current is not None:
             txn.execute(
-                """
-            UPDATE """
-                + sbw_table
-                + """ SET polygon_end = %s WHERE
-            eventid = %s and wfo = %s and phenomena = %s and significance = %s
-            and polygon_end != polygon_begin
-            and polygon_end = %s and status != 'CAN'
-            """,
+                (
+                    f"UPDATE {sbw_table} SET polygon_end = %s WHERE "
+                    "eventid = %s and wfo = %s and phenomena = %s "
+                    "and significance = %s and polygon_end != polygon_begin "
+                    "and polygon_end = %s and status != 'CAN'"
+                ),
                 (
                     polygon_begin,
                     vtec.etn,
@@ -815,20 +800,16 @@ class VTECProduct(TextProduct):
 
         # OK, ready to insert away!
         sql = (
-            """INSERT into """
-            + sbw_table
-            + """(wfo, eventid,
-            significance, phenomena, issue, expire, init_expire,
-            polygon_begin, polygon_end, geom, status, report, windtag,
-            hailtag, tornadotag, tornadodamagetag, tml_valid,
-            tml_direction, tml_sknt, """
-            + tml_column
-            + """, updated,
-            waterspouttag, is_emergency, floodtag_heavyrain,
-            floodtag_flashflood, floodtag_damage, floodtag_leeve,
-            floodtag_dam, hvtec_nwsli)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            f"INSERT into {sbw_table} (wfo, eventid, "
+            "significance, phenomena, issue, expire, init_expire, "
+            "polygon_begin, polygon_end, geom, status, report, windtag, "
+            "hailtag, tornadotag, tornadodamagetag, tml_valid, "
+            f"tml_direction, tml_sknt, {tml_column}, updated, "
+            "waterspouttag, is_emergency, floodtag_heavyrain, "
+            "floodtag_flashflood, floodtag_damage, floodtag_leeve, "
+            "floodtag_dam, hvtec_nwsli) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, "
+            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
             vtec.office,
@@ -874,13 +855,11 @@ class VTECProduct(TextProduct):
         # If this is a CAN, UPG action and single purpose, update expiration
         if vtec.action in ["CAN", "UPG"] and self.is_single_action():
             txn.execute(
-                """
-            UPDATE """
-                + sbw_table
-                + """ SET expire = %s WHERE
-            wfo = %s and phenomena = %s and significance = %s and eventid = %s
-            and %s <= expire
-            """,
+                (
+                    f"UPDATE {sbw_table} SET expire = %s WHERE wfo = %s and "
+                    "phenomena = %s and significance = %s and eventid = %s "
+                    "and expire >= %s "
+                ),
                 (
                     self.valid,
                     vtec.office,
@@ -923,11 +902,7 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                key = "%s.%s.%s" % (
-                    vtec.phenomena,
-                    vtec.etn,
-                    vtec.significance,
-                )
+                key = f"{vtec.phenomena}.{vtec.etn}.{vtec.significance}"
                 if key not in keys:
                     keys.append(key)
 
@@ -966,10 +941,10 @@ class VTECProduct(TextProduct):
                 % (wfo, river_uri, wfo),
             }
             text = (
-                "%s has sent an updated FLS product (continued products "
+                f"{wfo} has sent an updated FLS product (continued products "
                 "were not reported here).  Consult this website for more "
-                "details. %s?wfo=%s"
-            ) % (wfo, river_uri, wfo)
+                f"details. {river_uri}?wfo={wfo}"
+            )
             html = (
                 "<p>%s has sent an updated FLS product "
                 "(continued products were not reported here).  Consult "
@@ -1000,8 +975,7 @@ class VTECProduct(TextProduct):
                 channels.append(self.afos)
                 channels.append("%s..." % (self.afos[:3],))
                 channels.append(
-                    "%s.%s.%s"
-                    % (vtec.phenomena, vtec.significance, vtec.office)
+                    f"{vtec.phenomena}.{vtec.significance}.{vtec.office}"
                 )
                 for ugc in segment.ugcs:
                     # per state channels
@@ -1027,8 +1001,7 @@ class VTECProduct(TextProduct):
                 }
 
                 long_actions.append(
-                    "%s %s"
-                    % (vtec.get_action_string(), ugcs_to_text(segment.ugcs))
+                    f"{vtec.get_action_string()} {ugcs_to_text(segment.ugcs)}"
                 )
                 html_long_actions.append(
                     ("<span style='font-weight: bold;'>" "%s</span> %s")
@@ -1154,7 +1127,7 @@ class VTECProduct(TextProduct):
                 ]
             else:
                 channels = self.get_affected_wfos()
-            channels.append("%s.%s" % (vtec.phenomena, vtec.significance))
+            channels.append(f"{vtec.phenomena}.{vtec.significance}")
             channels.append(self.afos)
             channels.append(
                 "%s.%s.%s" % (vtec.phenomena, vtec.significance, vtec.office)
@@ -1177,7 +1150,7 @@ class VTECProduct(TextProduct):
                     )
                     channels.append(str(ugc))
             if any([seg.is_emergency for seg in self.segments]):
-                channels.append("%s.EMERGENCY" % (vtec.phenomena,))
+                channels.append(f"{vtec.phenomena}.EMERGENCY")
             xtra["channels"] = ",".join(channels)
             jdict = {
                 "as": ", ".join(actions),

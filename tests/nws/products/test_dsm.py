@@ -1,4 +1,5 @@
 """Test our DSM Parsing."""
+# pylint: disable=redefined-outer-name
 import datetime
 
 import pytest

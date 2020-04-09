@@ -1,4 +1,5 @@
 """Make sure our METAR parsing works!"""
+# pylint: disable=redefined-outer-name
 
 import pytest
 import psycopg2.extras
