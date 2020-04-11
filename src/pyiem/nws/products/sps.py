@@ -74,7 +74,7 @@ class SPSProduct(TextProduct):
             channels.append(str(ugc))
         return channels
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """return the standard [[text, html, xtra], ] for jabber"""
         res = []
         xtra = {"product_id": self.get_product_id()}

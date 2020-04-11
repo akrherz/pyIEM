@@ -22,7 +22,7 @@ class SpaceWxProduct(product.TextProduct):
             return
         self.title = self.sections[2].split("\n")[0]
 
-    def get_jabbers(self, uri, uri2=None):
+    def get_jabbers(self, uri, _uri2=None):
         """ Custom Implementation of the TextProduct#get_jabbers """
         url = "%s?pid=%s" % (uri, self.get_product_id())
         xtra = {

@@ -143,7 +143,7 @@ class DSMProduct:
         if val is not None:
             cols.append("max_sknt")
             args.append(
-                (int(val) * units("miles / hour")).to(units("knots")).magnitude
+                (int(val) * units("miles / hour")).to(units("knots")).m
             )
 
         val = self.time_sped_max
@@ -155,7 +155,7 @@ class DSMProduct:
         if val is not None:
             cols.append("max_gust")
             args.append(
-                (int(val) * units("miles / hour")).to(units("knots")).magnitude
+                (int(val) * units("miles / hour")).to(units("knots")).m
             )
 
         val = self.time_sped_gust_max
@@ -164,22 +164,16 @@ class DSMProduct:
             args.append(val)
 
         if not cols:
-            return
-        table = "summary_%s" % (self.date.year,)
+            return False
         cs = ", ".join(["%s = %%s" % (c,) for c in cols])
         slicer = slice(0, 4) if self.station[0] != "K" else slice(1, 4)
         args.extend([self.station[slicer], self.date])
         txn.execute(
-            """
-            UPDATE """
-            + table
-            + """ s SET """
-            + cs
-            + """
-            FROM stations t WHERE s.iemid = t.iemid
-            and t.network ~* 'ASOS' and t.id = %s and
-            s.day = %s
-        """,
+            (
+                f"UPDATE summary_{self.date.year} s SET {cs} FROM stations t "
+                "WHERE s.iemid = t.iemid and t.network ~* 'ASOS' and t.id = %s "
+                "and s.day = %s"
+            ),
             args,
         )
         return txn.rowcount == 1
@@ -205,7 +199,7 @@ class DSMCollective(TextProduct):
                 continue
             res = process(piece)
             if res is None:
-                self.warnings.append("DSM RE Match Failure: '%s'" % (piece,))
+                self.warnings.append(f"DSM RE Match Failure: '{piece}'")
                 continue
             res.compute_times(utcnow)
             self.data.append(res)
@@ -215,9 +209,7 @@ class DSMCollective(TextProduct):
         for dsm in self.data:
             tzinfo = tzprovider.get(dsm.station)
             if tzinfo is None:
-                self.warnings.append(
-                    "station %s has no tzinfo" % (dsm.station,)
-                )
+                self.warnings.append(f"station {dsm.station} has no tzinfo")
                 continue
             dsm.tzlocalize(tzinfo)
 

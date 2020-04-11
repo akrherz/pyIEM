@@ -1,14 +1,18 @@
 """
 http://www.unidata.ucar.edu/data/lightning/nldn.html
 """
+import datetime
 import struct
+
 import pandas as pd
 import pytz
-import datetime
 
 
 class NLDNProduct:
+    """Simple class representing obs found in a NLDNProduct."""
+
     def __init__(self):
+        """Constructor."""
         self.header = ""
         self.df = None
 
@@ -74,6 +78,6 @@ def parser(buf):
                 chisqr=chisqr,
             )
         )
-    if len(rows) > 0:
+    if rows:
         np.df = pd.DataFrame(rows)
     return np
