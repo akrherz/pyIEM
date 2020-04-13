@@ -75,6 +75,7 @@ def test_200302_issue203(dbcursor):
             continue
         assert prod.warnings[0].find("should have contained") > -1
         assert prod.segments[0].sbw is None
+        assert prod.segments[0].is_pds is False
         assert len(prod.warnings) == 2
         dbcursor.execute(
             """
@@ -631,7 +632,7 @@ def test_150105_considerable_tag():
     prod = vtecparser(get_test_file("TORFSD.txt"))
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "FSD issues Tornado Warning "
+        "FSD issues Tornado Warning (PDS) "
         "[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, "
         "hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 "
         "PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE "
@@ -640,6 +641,7 @@ def test_150105_considerable_tag():
         "http://localhost2013-O-NEW-KFSD-TO-W-0020_2013-10-05T00:22Z"
     )
     assert j[0][0] == ans
+    assert prod.segments[0].is_pds
 
 
 def test_150105_sbw(dbcursor):

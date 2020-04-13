@@ -473,9 +473,9 @@ class VTECProduct(TextProduct):
                     + """ (issue, expire, updated,
                 wfo, eventid, status, fcster, report, ugc, phenomena,
                 significance, gid, init_expire, product_issue, hvtec_nwsli,
-                is_emergency)
+                is_emergency, is_pds)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                get_gid(%s, %s), %s, %s, %s, %s)
+                get_gid(%s, %s), %s, %s, %s, %s, %s)
                 RETURNING gid
                 """,
                     (
@@ -496,6 +496,7 @@ class VTECProduct(TextProduct):
                         self.valid,
                         segment.get_hvtec_nwsli(),
                         segment.is_emergency,
+                        segment.is_pds,
                     ),
                 )
                 # For unit tests, these mostly get filtered out
@@ -613,7 +614,8 @@ class VTECProduct(TextProduct):
                 + """ SET status = %s, updated = %s,
                 svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
                    || %s || '__' , expire = %s,
-                is_emergency = (case when %s then true else is_emergency end)
+                is_emergency = (case when %s then true else is_emergency end),
+                is_pds = (case when %s then true else is_pds end)
                 WHERE
                 wfo = %s and eventid = %s and ugc in """
                 + ugcstring
@@ -628,6 +630,7 @@ class VTECProduct(TextProduct):
                     self.unixtext,
                     ets,
                     segment.is_emergency,
+                    segment.is_pds,
                     vtec.office,
                     vtec.etn,
                     vtec.significance,
@@ -805,11 +808,11 @@ class VTECProduct(TextProduct):
             "polygon_begin, polygon_end, geom, status, report, windtag, "
             "hailtag, tornadotag, tornadodamagetag, tml_valid, "
             f"tml_direction, tml_sknt, {tml_column}, updated, "
-            "waterspouttag, is_emergency, floodtag_heavyrain, "
+            "waterspouttag, is_emergency, is_pds, floodtag_heavyrain, "
             "floodtag_flashflood, floodtag_damage, floodtag_leeve, "
             "floodtag_dam, hvtec_nwsli) "
             "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, "
-            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
             vtec.office,
@@ -835,6 +838,7 @@ class VTECProduct(TextProduct):
             self.valid,
             segment.waterspouttag,
             segment.is_emergency,
+            segment.is_pds,
             segment.flood_tags.get("EXPECTED RAINFALL"),
             segment.flood_tags.get("FLASH FLOOD"),
             segment.flood_tags.get("FLASH FLOOD DAMAGE THREAT"),
@@ -1060,10 +1064,18 @@ class VTECProduct(TextProduct):
                     jmsg_dict["svs_special"] = segment.svs_search()
                     jmsg_dict["svs_special_html"] = segment.svs_search()
 
+                # PDS
+                if segment.is_pds:
+                    jmsg_dict["product"] += " (PDS)"
+                    channels.append(f"{vtec.phenomena}.PDS")
+                    xtra["channels"] += ",%s" % (channels[-1],)
+
                 # Emergencies
                 if segment.is_emergency:
-                    jmsg_dict["product"] = jmsg_dict["product"].replace(
-                        "Warning", "Emergency"
+                    jmsg_dict["product"] = (
+                        jmsg_dict["product"]
+                        .replace("Warning", "Emergency")
+                        .replace(" (PDS)", "")
                     )
                     channels.append("%s.EMERGENCY" % (vtec.phenomena,))
                     xtra["channels"] += ",%s" % (channels[-1],)
@@ -1151,6 +1163,8 @@ class VTECProduct(TextProduct):
                     channels.append(str(ugc))
             if any([seg.is_emergency for seg in self.segments]):
                 channels.append(f"{vtec.phenomena}.EMERGENCY")
+            if any([seg.is_pds for seg in self.segments]):
+                channels.append(f"{vtec.phenomena}.PDS")
             xtra["channels"] = ",".join(channels)
             jdict = {
                 "as": ", ".join(actions),
