@@ -80,6 +80,9 @@ FLOOD_TAGS = re.compile(
 TORNADO = re.compile(r"^AT |^\* AT")
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
 EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
+PDS_RE = re.compile(
+    r"THIS\s+IS\s+A\s+PARTICULARLY\s+DANGEROUS\s+SITUATION", re.I
+)
 
 # http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
 # DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
@@ -210,6 +213,7 @@ class TextProductSegment:
         # allows for deterministic testing of results
         self.flood_tags = OrderedDict()
         self.is_emergency = False
+        self.is_pds = False
         self.process_tags()
 
         self.bullets = self.process_bullets()
@@ -247,6 +251,9 @@ class TextProductSegment:
         if res:
             # TODO: this can be based off the IBW Tags too
             self.is_emergency = True
+        res = PDS_RE.findall(nolf)
+        if res:
+            self.is_pds = True
         match = WINDHAIL.match(nolf)
         if match:
             gdict = match.groupdict()

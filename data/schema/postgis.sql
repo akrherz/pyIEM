@@ -853,7 +853,8 @@ CREATE TABLE warnings (
     gid int references ugcs(gid),
     init_expire timestamptz,
     product_issue timestamptz,
-    is_emergency boolean
+    is_emergency boolean,
+    is_pds boolean
 );
 select addgeometrycolumn('','warnings','geom',4326,'MULTIPOLYGON',2);
 
@@ -1213,6 +1214,7 @@ create table sbw(
   tml_sknt smallint,
   updated timestamptz,
   is_emergency boolean,
+  is_pds boolean,
   floodtag_heavyrain varchar(64),
   floodtag_flashflood varchar(64),
   floodtag_damage varchar(64),
