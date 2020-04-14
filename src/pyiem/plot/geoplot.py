@@ -32,7 +32,7 @@ import warnings
 import requests
 import numpy as np
 import pandas as pd
-import geojson
+import geopandas as gpd
 from shapely.geometry import shape
 
 #
@@ -341,13 +341,13 @@ class MapPlot:
         except requests.ConnectionError as exp:
             warnings.warn("draw_usdm IEM USDM Webservice failed: %s" % (exp,))
             return None
-        feats = geojson.loads(req.content)
+        df = gpd.GeoDataFrame().from_features(req.json())
         lw = 1 if filled else 4.0
         usdm_valid = None
-        for record in feats.features:
-            color = colors[record.properties["dm"]]
-            geom = shape(record["geometry"])
-            usdm_valid = record.properties["date"]
+        for _, row in df.iterrows():
+            color = colors[row["dm"]]
+            geom = shape(row["geometry"])
+            usdm_valid = row["date"]
             fc = color if filled else "None"
             ec = color if not filled else "k"
             self.ax.add_geometries(
@@ -372,7 +372,7 @@ class MapPlot:
                     [geom],
                     ccrs.PlateCarree(),
                     facecolor="None",
-                    hatch=hatches[record.properties["dm"]],
+                    hatch=hatches[row["dm"]],
                     edgecolor=color,
                     zorder=Z_OVERLAY2 + 2,
                 )
