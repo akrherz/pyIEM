@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>nws Package &#8212; pyIEM 0.0.post1+g1f0a536 documentation</title>
+    <title>nws Package &#8212; pyIEM 0.0.post1+gece0feb documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g1f0a536 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gece0feb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li> 
       </ul>
@@ -47,8 +47,99 @@
             
   <div class="section" id="nws-package">
 <h1>nws Package<a class="headerlink" href="#nws-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="gini-module">
-<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#gini-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyiem.nws.gini">
+<span id="gini-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#module-pyiem.nws.gini" title="Permalink to this headline">¶</a></h2>
+<p>Processing of GINI formatted data found on NOAAPORT</p>
+<dl class="py class">
+<dt id="pyiem.nws.gini.GINIZFile">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.gini.</code><code class="sig-name descname">GINIZFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fobj</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Deal with compressed GINI files, which are the standard on NOAAPORT</p>
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.archive_filename">
+<code class="sig-name descname">archive_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.archive_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a filename for this product, we’ll use the format
+{SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.awips_grid">
+<code class="sig-name descname">awips_grid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.awips_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the awips grid number based on the WMO header</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.current_filename">
+<code class="sig-name descname">current_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.current_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a filename for this product, we’ll use the format
+{SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.get_bird">
+<code class="sig-name descname">get_bird</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_bird" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string label for this satellite</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.get_channel">
+<code class="sig-name descname">get_channel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_channel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.get_sector">
+<code class="sig-name descname">get_sector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_sector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.init_llc">
+<code class="sig-name descname">init_llc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_llc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Lambert Conic Comformal</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.init_mercator">
+<code class="sig-name descname">init_mercator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_mercator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mercator projection stuff</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.init_projection">
+<code class="sig-name descname">init_projection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup Grid and projection details</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.init_stereo">
+<code class="sig-name descname">init_stereo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_stereo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Polar Stereographic</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyiem.nws.gini.GINIZFile.read_header">
+<code class="sig-name descname">read_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hdata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.read_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>read the header!</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.gini.get_ir_ramp">
+<code class="sig-prename descclassname">pyiem.nws.gini.</code><code class="sig-name descname">get_ir_ramp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.get_ir_ramp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a np 256x3 array of colors to use for IR</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.gini.int24">
+<code class="sig-prename descclassname">pyiem.nws.gini.</code><code class="sig-name descname">int24</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.int24" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.gini.uint24">
+<code class="sig-prename descclassname">pyiem.nws.gini.</code><code class="sig-name descname">uint24</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.uint24" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert three byte data that represents an unsigned int</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyiem.nws.hvtec">
 <span id="hvtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.hvtec" title="Permalink to this headline">¶</a></h2>
@@ -492,7 +583,7 @@ datetime
   <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">nws Package</a><ul>
-<li><a class="reference internal" href="#gini-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pyiem.nws.gini"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pyiem.nws.hvtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pyiem.nws.lsr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pyiem.nws.nwsli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a></li>
@@ -546,13 +637,13 @@ datetime
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g1f0a536 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gece0feb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2015, daryl herzmann.
+        &#169; Copyright 2015-2020, daryl herzmann.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.1.
     </div>
   </body>
