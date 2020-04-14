@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys
+import datetime
 import pyiem
 
 
@@ -43,8 +44,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"pyIEM"
-copyright = u"2015, daryl herzmann"
+project = "pyIEM"
+copyright = "2015-%s, daryl herzmann" % (datetime.date.today().year,)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
