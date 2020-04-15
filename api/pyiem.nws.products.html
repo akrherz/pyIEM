@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>products Package &#8212; pyIEM 0.0.post1+gece0feb documentation</title>
+    <title>products Package &#8212; pyIEM 0.0.post1+g8132a87 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gece0feb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g8132a87 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">nws Package</a> &#187;</li> 
@@ -589,18 +589,12 @@ stored within the self.reports list</p>
 </div>
 <div class="section" id="module-pyiem.nws.products.vtec">
 <span id="vtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.products.vtec" title="Permalink to this headline">¶</a></h2>
-<p>A NWS TextProduct that contains VTEC information</p>
+<p>A NWS TextProduct that contains VTEC information.</p>
 <dl class="py class">
 <dt id="pyiem.nws.products.vtec.VTECProduct">
 <em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.products.vtec.</code><code class="sig-name descname">VTECProduct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">utcnow</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ugc_provider</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nwsli_provider</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct" title="pyiem.nws.product.TextProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyiem.nws.product.TextProduct</span></code></a></p>
-<p>Represents a text product of the LSR variety</p>
-<dl class="py method">
-<dt id="pyiem.nws.products.vtec.VTECProduct.debug_warning">
-<code class="sig-name descname">debug_warning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">warning_table</span></em>, <em class="sig-param"><span class="n">ugcstring</span></em>, <em class="sig-param"><span class="n">vtec</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">ets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.debug_warning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a more useful warning message for this failure</p>
-</dd></dl>
-
+<p>A TextProduct that contains VTEC information.</p>
 <dl class="py method">
 <dt id="pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry">
 <code class="sig-name descname">do_sbw_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em>, <em class="sig-param"><span class="n">sbw_table</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry" title="Permalink to this definition">¶</a></dt>
@@ -702,34 +696,6 @@ exec() database calls against.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="pyiem.nws.products.vtec.check_dup_ps">
-<code class="sig-prename descclassname">pyiem.nws.products.vtec.</code><code class="sig-name descname">check_dup_ps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">segment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.check_dup_ps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Does this TextProductSegment have duplicated VTEC</p>
-<p>NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
-phenomena and significance that are reused. In practice, this error is
-in the case of having the same phenomena.significance overlap in time. The
-combination of the same pheom.sig for events happening now and in the
-future is OK and common</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyiem.nws.products.vtec.do_sql_hvtec">
-<code class="sig-prename descclassname">pyiem.nws.products.vtec.</code><code class="sig-name descname">do_sql_hvtec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.do_sql_hvtec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Process the HVTEC in this product</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pyiem.nws.products.vtec.list_rows">
-<code class="sig-prename descclassname">pyiem.nws.products.vtec.</code><code class="sig-name descname">list_rows</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">table</span></em>, <em class="sig-param"><span class="n">vtec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.list_rows" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a simple listing of what exists in the database</p>
-</dd></dl>
-
-<dl class="py function">
 <dt id="pyiem.nws.products.vtec.parser">
 <code class="sig-prename descclassname">pyiem.nws.products.vtec.</code><code class="sig-name descname">parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">utcnow</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ugc_provider</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nwsli_provider</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper function that actually converts the raw text and emits an
@@ -798,7 +764,7 @@ VTECProduct instance or returns an exception</p>
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gece0feb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g8132a87 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >nws Package</a> &#187;</li> 
