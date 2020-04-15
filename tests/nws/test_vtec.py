@@ -3,6 +3,8 @@
 from pyiem.util import utc
 from pyiem.nws import vtec
 
+EX1 = "/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/"
+
 
 def test_fireweather():
     """Do we return different things for FW"""
@@ -12,9 +14,21 @@ def test_fireweather():
     assert res == "Red Flag Warning"
 
 
+def test_s3():
+    """Test our s3 API."""
+    vc = vtec.parse(EX1)
+    assert vc[0].s3() == "TO.W.130"
+
+
+def test_s2():
+    """Test our s2 API."""
+    vc = vtec.parse(EX1)
+    assert vc[0].s2() == "TO.W"
+
+
 def test_get_id():
     """check that getID() works as we expect"""
-    vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
+    vc = vtec.parse(EX1)
     assert vc[0].get_id(2005) == "2005-KJAN-TO-W-0130"
 
 
@@ -26,14 +40,14 @@ def test_endstring():
 
 def test_begints():
     """ check vtec.begints Parsing """
-    vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
+    vc = vtec.parse(EX1)
     ts = utc(2005, 8, 29, 16, 51)
     assert vc[0].begints == ts
 
 
 def test_endts():
     """ check vtec.endts Parsing """
-    vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
+    vc = vtec.parse(EX1)
     ts = utc(2005, 8, 29, 18, 15)
     assert vc[0].endts == ts
 

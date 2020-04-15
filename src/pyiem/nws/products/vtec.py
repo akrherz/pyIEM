@@ -1,112 +1,21 @@
-"""A NWS TextProduct that contains VTEC information
-"""
-# pylint: disable=too-many-lines
-
+"""A NWS TextProduct that contains VTEC information."""
 # Standard Library Imports
 import datetime
-import itertools
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
-
-# When a VTEC product has an infinity time 000000T0000Z, we need some value
-# for the database to make things logically work.  We arb pick 21 days, which
-# seems to be enough time to ensure a WFO issues some followup statement
-DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
-
-
-def list_rows(txn, table, vtec):
-    """Return a simple listing of what exists in the database"""
-    txn.execute(
-        (
-            "SELECT ugc, issue at time zone 'UTC' as ui, status, "
-            f"updated at time zone 'UTC' as uu from {table} "
-            "WHERE wfo = %s and phenomena = %s and significance = %s and "
-            "eventid = %s ORDER by ugc"
-        ),
-        (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
-    )
-    res = (
-        f"Entries for VTEC within {table}\n"
-        "  UGC    STA ISSUED              UPDATED\n"
-    )
-    for row in txn.fetchall():
-        res += f"  {row['ugc']} {row['status']} {row['ui']} {row['uu']}\n"
-    return res
-
-
-def check_dup_ps(segment):
-    """Does this TextProductSegment have duplicated VTEC
-
-    NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
-    phenomena and significance that are reused. In practice, this error is
-    in the case of having the same phenomena.significance overlap in time. The
-    combination of the same pheom.sig for events happening now and in the
-    future is OK and common
-
-    Returns:
-      bool
-    """
-    combos = {}
-    for thisvtec in segment.vtec:
-        if thisvtec.begints is None or thisvtec.endts is None:
-            # The logic here is too difficult for now, so we ignore
-            continue
-        key = "%s.%s" % (thisvtec.phenomena, thisvtec.significance)
-        val = combos.setdefault(key, [])
-        # we can't use vtec.endts in this situation
-        endts = (
-            segment.tp.valid
-            if thisvtec.status in ["UPG", "CAN"]
-            else thisvtec.endts
-        )
-        val.append([thisvtec.begints, endts])
-
-    for key in combos:
-        if len(combos[key]) == 1:
-            continue
-        for one, two in itertools.permutations(combos[key], 2):
-            # We check for overlap
-            if one[0] >= two[0] and one[0] < two[1]:
-                return True
-    return False
-
-
-def do_sql_hvtec(txn, segment):
-    """ Process the HVTEC in this product """
-    nwsli = segment.hvtec[0].nwsli.id
-    if len(segment.bullets) < 4:
-        return
-    stage_text = ""
-    flood_text = ""
-    forecast_text = ""
-    impact_text = ""
-    for _, bullet in enumerate(segment.bullets):
-        if bullet.strip().upper().find("FLOOD STAGE") == 0:
-            flood_text = bullet
-        if bullet.strip().upper().find("FORECAST") == 0:
-            forecast_text = bullet
-        if bullet.strip().upper().find("AT ") == 0 and stage_text == "":
-            stage_text = bullet
-        if bullet.strip().upper().startswith("IMPACT..."):
-            impact_text = bullet.strip()[9:]
-
-    txn.execute(
-        """
-        INSERT into riverpro(nwsli, stage_text,
-          flood_text, forecast_text, impact_text, severity) VALUES
-          (%s,%s,%s,%s,%s,%s)
-        """,
-        (
-            nwsli,
-            stage_text,
-            flood_text,
-            forecast_text,
-            impact_text,
-            segment.hvtec[0].severity,
-        ),
-    )
+from pyiem.nws.products._vtec_util import (
+    _resent_match,
+    _do_sql_vtec_new,
+    _do_sql_vtec_cor,
+    _do_sql_vtec_can,
+    _do_sql_vtec_con,
+    DEFAULT_EXPIRE_DELTA,
+    list_rows,
+    check_dup_ps,
+    do_sql_hvtec,
+)
 
 
 class VTECProductException(TextProductException):
@@ -114,7 +23,7 @@ class VTECProductException(TextProductException):
 
 
 class VTECProduct(TextProduct):
-    """ Represents a text product of the LSR variety """
+    """ A TextProduct that contains VTEC information. """
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
@@ -130,60 +39,7 @@ class VTECProduct(TextProduct):
         # Which time partitioned table does this product belong to
         # defaults to current UTC valid
         self.db_year = self.valid.year
-        self.nwsli_provider = nwsli_provider
         self.skip_con = self.get_skip_con()
-
-    def debug_warning(self, txn, warning_table, ugcstring, vtec, segment, ets):
-        """ Get a more useful warning message for this failure """
-        cnt = txn.rowcount
-        txn.execute(
-            """SELECT ugc,
-                    issue at time zone 'UTC' as utc_issue,
-                    expire at time zone 'UTC' as utc_expire,
-                    updated at time zone 'UTC' as utc_updated,
-                    status from """
-            + warning_table
-            + """
-                    WHERE wfo = %s and eventid = %s
-                    and ugc in """
-            + ugcstring
-            + """ and significance = %s
-                    and phenomena = %s ORDER by ugc ASC, issue ASC""",
-            (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
-        )
-        debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
-
-        def myfmt(val):
-            """ Be more careful """
-            if val is None:
-                return "%-16s" % ("((NULL))",)
-            return val.strftime("%Y-%m-%d %H:%M")
-
-        for row in txn.fetchall():
-            debugmsg += "%s %s %s %s %s\n" % (
-                row["ugc"],
-                row["status"],
-                myfmt(row["utc_issue"]),
-                myfmt(row["utc_expire"]),
-                myfmt(row["utc_updated"]),
-            )
-        return (
-            "Warning: %s.%s.%s do_sql_vtec %s %s "
-            "updated %s row, should %s rows\nUGCS: %s\n"
-            "valid: %s expire: %s\n%s"
-        ) % (
-            vtec.phenomena,
-            vtec.significance,
-            vtec.etn,
-            warning_table,
-            vtec.action,
-            cnt,
-            len(segment.ugcs),
-            segment.ugcs,
-            self.valid,
-            ets,
-            debugmsg,
-        )
 
     def sql(self, txn):
         """Persist to the database
@@ -196,22 +52,18 @@ class VTECProduct(TextProduct):
         for segment in self.segments:
             if len(segment.vtec) > 1 and check_dup_ps(segment):
                 self.warnings.append(
-                    (
-                        "Segment has duplicated VTEC for a "
-                        "single phenomena / significance"
-                    )
+                    "Segment has duplicated VTEC for a "
+                    "single phenomena / significance"
                 )
             if segment.giswkt and not segment.vtec:
                 if self.afos[:3] not in ["MWS"]:
                     self.warnings.append(
-                        (
-                            "Product segment has LAT...LON, but "
-                            "does not have VTEC?"
-                        )
+                        "Product segment has LAT...LON, "
+                        "but does not have VTEC?"
                     )
             if not segment.ugcs and segment.vtec:
                 self.warnings.append(
-                    ("UGC is missing for segment " "that has VTEC!")
+                    "UGC is missing for segment " "that has VTEC!"
                 )
                 continue
             if not segment.ugcs:
@@ -239,37 +91,23 @@ class VTECProduct(TextProduct):
     def which_warning_table(self, txn, segment, vtec):
         """ Figure out which table we should work against """
         if vtec.action in ["NEW"]:
-            table = "warnings_%s" % (self.valid.year,)
+            table = f"warnings_{self.db_year}"
             # Lets piggyback a check to see if this ETN has been reused?
             # Can this realiably be done?
             txn.execute(
-                """
-                SELECT max(updated) from """
-                + table
-                + """ WHERE
-                wfo = %s and eventid = %s and significance = %s and
-                phenomena = %s
-            """,
+                f"SELECT max(updated) from {table} WHERE wfo = %s and "
+                "eventid = %s and significance = %s and phenomena = %s",
                 (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
             )
             row = txn.fetchone()
             if row["max"] is not None:
                 if (self.valid - row["max"]).total_seconds() > (21 * 86400):
                     self.warnings.append(
-                        (
-                            "Possible Duplicated ETN\n"
-                            "  max(updated) is %s, prod.valid is %s\n"
-                            "  table is %s\n"
-                            "  VTEC: %s\n"
-                            "  product_id: %s"
-                        )
-                        % (
-                            row["max"],
-                            self.valid,
-                            table,
-                            str(vtec),
-                            self.get_product_id(),
-                        )
+                        "Possible Duplicated ETN\n"
+                        f"  max(updated) is {row['max']}, "
+                        f"prod.valid is {self.valid}\n  table is {table}\n"
+                        f"  VTEC: {str(vtec)}\n  "
+                        f"product_id: {self.get_product_id()}"
                     )
             return table
         # Lets query the database to look for any matching entries within
@@ -277,15 +115,13 @@ class VTECProduct(TextProduct):
         # which guides the table that the data is stored within
         for offset in [3, 10, 31]:
             txn.execute(
-                """
-                SELECT tableoid::regclass as tablename, hvtec_nwsli,
-                min(product_issue at time zone 'UTC'),
-                max(product_issue at time zone 'UTC') from warnings
-                WHERE wfo = %s and eventid = %s and significance = %s and
-                phenomena = %s and ((updated > %s and updated <= %s)
-                or expire > %s) and status not in ('UPG', 'CAN')
-                GROUP by tablename, hvtec_nwsli ORDER by tablename DESC
-            """,
+                "SELECT tableoid::regclass as tablename, hvtec_nwsli, "
+                "min(product_issue at time zone 'UTC'), "
+                "max(product_issue at time zone 'UTC') from warnings "
+                "WHERE wfo = %s and eventid = %s and significance = %s and "
+                "phenomena = %s and ((updated > %s and updated <= %s) "
+                "or expire > %s) and status not in ('UPG', 'CAN') "
+                "GROUP by tablename, hvtec_nwsli ORDER by tablename DESC ",
                 (
                     vtec.office,
                     vtec.etn,
@@ -320,36 +156,21 @@ class VTECProduct(TextProduct):
                 year = row["min"].year
                 if row["max"].year != year:
                     print(
-                        (
-                            "VTEC Product appears to cross 1 Jan UTC "
-                            "minyear: %s maxyear: %s VTEC: %s product_id: %s"
-                        )
-                        % (
-                            year,
-                            row["max"].year,
-                            str(vtec),
-                            self.get_product_id(),
-                        )
+                        "VTEC Product appears to cross 1 Jan UTC "
+                        f"minyear: {year} maxyear: {row['max'].year} "
+                        f"VTEC: {str(vtec)} productid: {self.get_product_id()}"
                     )
                 self.db_year = int(row["tablename"].replace("warnings_", ""))
                 return row["tablename"]
 
         # Give up
-        table = "warnings_%s" % (self.valid.year,)
+        table = f"warnings_{self.db_year}"
         if not self.is_correction():
             self.warnings.append(
-                (
-                    "Failed to find year of product issuance:\n"
-                    "  VTEC:%s\n  PRODUCT: %s\n"
-                    "  defaulting to use table: %s\n"
-                    "  %s"
-                )
-                % (
-                    str(vtec),
-                    self.get_product_id(),
-                    table,
-                    list_rows(txn, table, vtec),
-                )
+                "Failed to find year of product issuance:\n"
+                f"  VTEC:{str(vtec)}\n  PRODUCT: {self.get_product_id()}\n"
+                f"  defaulting to use table: {table}\n"
+                f"  {list_rows(txn, table, vtec)}"
             )
         return table
 
@@ -361,294 +182,26 @@ class VTECProduct(TextProduct):
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
-        ugcstring = str(tuple([str(u) for u in segment.ugcs]))
-        if len(segment.ugcs) == 1:
-            ugcstring = "('%s')" % (segment.ugcs[0],)
-        fcster = self.get_signature()
-        if fcster is not None:
-            fcster = fcster[:24]
-
         # If this product is ...RESENT, lets check to make sure we did not
         # already get it
-        if self.is_resent():
-            txn.execute(
-                """SELECT max(updated) as maxtime
-            from """
-                + warning_table
-                + """
-            WHERE eventid = %s and significance = %s and wfo = %s and
-            phenomena = %s
-            """,
-                (vtec.etn, vtec.significance, vtec.office, vtec.phenomena),
-            )
-            maxtime = txn.fetchone()["maxtime"]
-            if maxtime is not None:
-                if maxtime == self.valid:
-                    print(
-                        "RESENT Match, skipping SQL for %s!"
-                        % (self.get_product_id(),)
-                    )
-                    return
+        if self.is_resent() and _resent_match(self, txn, warning_table, vtec):
+            return
 
         if vtec.action in ["NEW", "EXB", "EXA"]:
-            # New Event Types!
-            bts = self.valid if vtec.begints is None else vtec.begints
-            # If this product has no expiration time, but db needs a value
-            ets = vtec.endts
-            if vtec.endts is None:
-                ets = bts + DEFAULT_EXPIRE_DELTA
-
-            # For each UGC code in this segment, we create a database entry
-            for ugc in segment.ugcs:
-                # Check to see if we have entries already for this UGC
-                # Some previous entries may not be in a terminated state, so
-                # also check the expiration time
-                txn.execute(
-                    """
-                SELECT issue, expire, updated from """
-                    + warning_table
-                    + """
-                WHERE ugc = %s and eventid = %s and significance = %s and
-                wfo = %s and phenomena = %s
-                and status not in ('CAN', 'UPG') and expire > %s
-                """,
-                    (
-                        str(ugc),
-                        vtec.etn,
-                        vtec.significance,
-                        vtec.office,
-                        vtec.phenomena,
-                        self.valid,
-                    ),
-                )
-                if txn.rowcount > 0:
-                    if self.is_correction():
-                        # We'll delete old entries, gulp
-                        txn.execute(
-                            """
-                        DELETE from """
-                            + warning_table
-                            + """ WHERE ugc = %s
-                        and eventid = %s and significance = %s and
-                        wfo = %s and phenomena = %s and
-                        status in ('NEW', 'EXB', 'EXA')
-                        """,
-                            (
-                                str(ugc),
-                                vtec.etn,
-                                vtec.significance,
-                                vtec.office,
-                                vtec.phenomena,
-                            ),
-                        )
-                        if txn.rowcount != 1:
-                            self.warnings.append(
-                                (
-                                    "%s.%s.%s %s duplicated via "
-                                    "product correction, deleted %s old rows "
-                                    "instead of 1"
-                                )
-                                % (
-                                    vtec.phenomena,
-                                    vtec.significance,
-                                    vtec.etn,
-                                    str(ugc),
-                                    txn.rowcount,
-                                )
-                            )
-
-                    else:
-                        self.warnings.append(
-                            (
-                                "Duplicate(s) WWA found, "
-                                "rowcount: %s for UGC: %s"
-                            )
-                            % (txn.rowcount, ugc)
-                        )
-
-                txn.execute(
-                    """
-                INSERT into """
-                    + warning_table
-                    + """ (issue, expire, updated,
-                wfo, eventid, status, fcster, report, ugc, phenomena,
-                significance, gid, init_expire, product_issue, hvtec_nwsli,
-                is_emergency, is_pds)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                get_gid(%s, %s), %s, %s, %s, %s, %s)
-                RETURNING gid
-                """,
-                    (
-                        bts,
-                        ets,
-                        self.valid,
-                        vtec.office,
-                        vtec.etn,
-                        vtec.action,
-                        fcster,
-                        self.unixtext,
-                        str(ugc),
-                        vtec.phenomena,
-                        vtec.significance,
-                        str(ugc),
-                        self.valid,
-                        ets,
-                        self.valid,
-                        segment.get_hvtec_nwsli(),
-                        segment.is_emergency,
-                        segment.is_pds,
-                    ),
-                )
-                # For unit tests, these mostly get filtered out
-                if txn.fetchone().get("gid") is None:
-                    self.warnings.append(
-                        ("get_gid(%s,%s) was null") % (str(ugc), self.valid)
-                    )
+            _do_sql_vtec_new(self, txn, warning_table, segment, vtec)
 
         elif vtec.action in ["COR"]:
-            # A previous issued product is being corrected
-            txn.execute(
-                """
-            UPDATE """
-                + warning_table
-                + """
-            SET expire = coalesce(%s, expire), status = %s,
-            svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-                   || %s || '__',
-            issue = coalesce(%s, issue),
-            init_expire = coalesce(%s, init_expire) WHERE
-            wfo = %s and eventid = %s and ugc in """
-                + ugcstring
-                + """
-            and significance = %s and phenomena = %s and
-            (expire + '1 hour'::interval) >= %s
-            """,
-                (
-                    vtec.endts,
-                    vtec.action,
-                    self.unixtext,
-                    vtec.begints,
-                    vtec.endts,
-                    vtec.office,
-                    vtec.etn,
-                    vtec.significance,
-                    vtec.phenomena,
-                    self.valid,
-                ),
-            )
-            if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(
-                    self.debug_warning(
-                        txn,
-                        warning_table,
-                        ugcstring,
-                        vtec,
-                        segment,
-                        vtec.endts,
-                    )
-                )
+            _do_sql_vtec_cor(self, txn, warning_table, segment, vtec)
 
         elif vtec.action in ["CAN", "UPG", "EXT"]:
-            ets = vtec.endts
-            # These are terminate actions, so we act accordingly
-            if vtec.action in ["CAN", "UPG"]:
-                ets = self.valid
-            # If we are extending into infinity, but need a value
-            if vtec.action == "EXT" and vtec.endts is None:
-                ets = self.valid + DEFAULT_EXPIRE_DELTA
-
-            # An EXT action could change the issuance time, gasp
-            issuesql = ""
-            if vtec.action == "EXT" and vtec.begints is not None:
-                issuesql = " issue = '%s', " % (vtec.begints,)
-            txn.execute(
-                """
-                UPDATE """
-                + warning_table
-                + """ SET """
-                + issuesql
-                + """
-                expire = %s,
-                status = %s,
-                updated = %s,
-                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-                   || %s || '__'
-                WHERE wfo = %s and eventid = %s and ugc in """
-                + ugcstring
-                + """
-                and significance = %s and phenomena = %s
-                and status not in ('CAN', 'UPG') and
-                (expire + '1 hour'::interval) >= %s
-                """,
-                (
-                    ets,
-                    vtec.action,
-                    self.valid,
-                    self.unixtext,
-                    vtec.office,
-                    vtec.etn,
-                    vtec.significance,
-                    vtec.phenomena,
-                    self.valid,
-                ),
-            )
-            if txn.rowcount != len(segment.ugcs):
-                if not self.is_correction():
-                    self.warnings.append(
-                        self.debug_warning(
-                            txn, warning_table, ugcstring, vtec, segment, ets
-                        )
-                    )
+            _do_sql_vtec_can(self, txn, warning_table, segment, vtec)
 
         elif vtec.action in ["CON", "EXP", "ROU"]:
-            # These are no-ops, just updates
-            ets = vtec.endts
-            if vtec.endts is None:
-                ets = self.valid + DEFAULT_EXPIRE_DELTA
-
-            # Offices have 1 hour to expire something :), actually 30 minutes
-            txn.execute(
-                """
-                UPDATE """
-                + warning_table
-                + """ SET status = %s, updated = %s,
-                svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-                   || %s || '__' , expire = %s,
-                is_emergency = (case when %s then true else is_emergency end),
-                is_pds = (case when %s then true else is_pds end)
-                WHERE
-                wfo = %s and eventid = %s and ugc in """
-                + ugcstring
-                + """
-                and significance = %s and phenomena = %s
-                and status not in ('CAN', 'UPG') and
-                (expire + '1 hour'::interval) >= %s
-                """,
-                (
-                    vtec.action,
-                    self.valid,
-                    self.unixtext,
-                    ets,
-                    segment.is_emergency,
-                    segment.is_pds,
-                    vtec.office,
-                    vtec.etn,
-                    vtec.significance,
-                    vtec.phenomena,
-                    self.valid,
-                ),
-            )
-            if txn.rowcount != len(segment.ugcs):
-                self.warnings.append(
-                    self.debug_warning(
-                        txn, warning_table, ugcstring, vtec, segment, ets
-                    )
-                )
+            _do_sql_vtec_con(self, txn, warning_table, segment, vtec)
 
         else:
             self.warnings.append(
-                ("Warning: do_sql_vtec() encountered %s " "VTEC status")
-                % (vtec.action,)
+                f"do_sql_vtec() encountered {vtec.action} VTEC status"
             )
 
     def do_sbw_geometry(self, txn, segment, vtec, sbw_table):
@@ -683,37 +236,29 @@ class VTECProduct(TextProduct):
         if segment.sbw and self.is_correction() and vtec.action == "NEW":
             # Go delete the previous NEW polygon
             txn.execute(
-                (
-                    f"DELETE from {sbw_table} WHERE status = 'NEW' and "
-                    "eventid = %s and wfo = %s and phenomena = %s and "
-                    "significance = %s"
-                ),
+                f"DELETE from {sbw_table} WHERE status = 'NEW' and "
+                "eventid = %s and wfo = %s and phenomena = %s and "
+                "significance = %s",
                 (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
             )
             if txn.rowcount != 1:
                 self.warnings.append(
-                    (
-                        f"{vtec.phenomena}.{vtec.significance}.{vtec.etn} "
-                        "product is a correction, but SBW delete removed "
-                        f"{txn.rowcount} rows instead of 1"
-                    )
+                    f"{vtec.s3()} product is a correction, but SBW delete "
+                    f"removed {txn.rowcount} rows instead of 1"
                 )
 
         # Lets go find the initial warning (status == NEW)
         txn.execute(
-            """
-        SELECT issue, expire, st_astext(geom) as giswkt from """
-            + sbw_table
-            + """ WHERE status = 'NEW' and
-        eventid = %s and wfo = %s and phenomena = %s and significance = %s
-        """,
+            "SELECT issue, expire, st_astext(geom) as giswkt "
+            f"from {sbw_table} WHERE status = 'NEW' and "
+            "eventid = %s and wfo = %s and phenomena = %s "
+            "and significance = %s",
             (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
         )
         if txn.rowcount > 0:
             if not segment.sbw:
                 self.warnings.append(
-                    ("%s.%s.%s should have contained a polygon and did not.")
-                    % (vtec.phenomena, vtec.significance, vtec.etn)
+                    f"{vtec.s3()} should have contained a polygon and did not."
                 )
                 if (
                     self.is_homogeneous()
@@ -721,19 +266,13 @@ class VTECProduct(TextProduct):
                     and self.is_single_action()
                 ):
                     self.warnings.append(
-                        ("%s.%s.%s adding polygon from issuance to product")
-                        % (vtec.phenomena, vtec.significance, vtec.etn)
+                        f"{vtec.s3()} adding polygon from issuance to product"
                     )
                     segment.giswkt = "SRID=4326;%s" % (txn.fetchone()[2],)
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
-                    ("%s.%s.%s is a SBW duplicate! %s other " "row(s) found.")
-                    % (
-                        vtec.phenomena,
-                        vtec.significance,
-                        vtec.etn,
-                        txn.rowcount,
-                    )
+                    f"{vtec.s3()} is a SBW duplicate! {txn.rowcount} "
+                    "other row(s) found."
                 )
         # We are done with our piggybacked checks :(  akrherz/pyIEM#203
         if segment.giswkt is None:
@@ -741,20 +280,15 @@ class VTECProduct(TextProduct):
 
         # Lets go find our current active polygon
         txn.execute(
-            """
-        SELECT polygon_end from """
-            + sbw_table
-            + """ WHERE
-        eventid = %s and wfo = %s and phenomena = %s and significance = %s
-        and polygon_begin != polygon_end ORDER by updated DESC LIMIT 1
-        """,
+            f"SELECT polygon_end from {sbw_table} WHERE eventid = %s and "
+            "wfo = %s and phenomena = %s and significance = %s and "
+            "polygon_begin != polygon_end ORDER by updated DESC LIMIT 1",
             (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
         )
         current = None
         if txn.rowcount == 0 and vtec.action != "NEW":
             self.warnings.append(
-                ("%s was searched for %s.%s.%s and no results found")
-                % (sbw_table, vtec.phenomena, vtec.significance, vtec.etn)
+                f"{sbw_table} searched for {vtec.s3()} and no results found"
             )
         if txn.rowcount > 0:
             current = txn.fetchone()
@@ -780,17 +314,8 @@ class VTECProduct(TextProduct):
             )
             if txn.rowcount != 1:
                 self.warnings.append(
-                    (
-                        "%s.%s.%s SBW prev polygon update "
-                        "resulted in update of %s rows, "
-                        "should be 1"
-                    )
-                    % (
-                        vtec.phenomena,
-                        vtec.significance,
-                        vtec.etn,
-                        txn.rowcount,
-                    )
+                    f"{vtec.s3()} SBW prev polygon update resulted in update "
+                    f"of {txn.rowcount} rows, should be 1"
                 )
 
         # Prepare the TIME...MOT...LOC information
@@ -849,11 +374,8 @@ class VTECProduct(TextProduct):
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
             self.warnings.append(
-                (
-                    "%s.%s.%s sbw table insert "
-                    "resulted in %s rows, should be 1"
-                )
-                % (vtec.phenomena, vtec.significance, vtec.etn, txn.rowcount)
+                f"{vtec.s3()} sbw table insert "
+                f"resulted in {txn.rowcount} rows, should be 1"
             )
 
         # If this is a CAN, UPG action and single purpose, update expiration
@@ -875,11 +397,8 @@ class VTECProduct(TextProduct):
             )
             if txn.rowcount == 0:
                 self.warnings.append(
-                    (
-                        "%s.%s.%s sbw CAN,UPG update "
-                        "resulted in 0 rows updated, valid: %s"
-                    )
-                    % (vtec.phenomena, vtec.significance, vtec.etn, self.valid)
+                    f"{vtec.s3()} sbw CAN,UPG update "
+                    f"resulted in 0 rows updated, valid: {self.valid}"
                 )
 
     def is_single_action(self):
@@ -906,7 +425,7 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                key = f"{vtec.phenomena}.{vtec.etn}.{vtec.significance}"
+                key = vtec.s3()
                 if key not in keys:
                     keys.append(key)
 
@@ -975,7 +494,7 @@ class VTECProduct(TextProduct):
                     ]
                 else:
                     channels = self.get_affected_wfos()
-                channels.append("%s.%s" % (vtec.phenomena, vtec.significance))
+                channels.append(vtec.s2())
                 channels.append(self.afos)
                 channels.append("%s..." % (self.afos[:3],))
                 channels.append(
@@ -1077,7 +596,7 @@ class VTECProduct(TextProduct):
                         .replace("Warning", "Emergency")
                         .replace(" (PDS)", "")
                     )
-                    channels.append("%s.EMERGENCY" % (vtec.phenomena,))
+                    channels.append(f"{vtec.phenomena}.EMERGENCY")
                     xtra["channels"] += ",%s" % (channels[-1],)
                     _btext = segment.svs_search()
                     if vtec.phenomena == "FF":
@@ -1139,7 +658,7 @@ class VTECProduct(TextProduct):
                 ]
             else:
                 channels = self.get_affected_wfos()
-            channels.append(f"{vtec.phenomena}.{vtec.significance}")
+            channels.append(vtec.s2())
             channels.append(self.afos)
             channels.append(
                 "%s.%s.%s" % (vtec.phenomena, vtec.significance, vtec.office)

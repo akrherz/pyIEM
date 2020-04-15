@@ -218,6 +218,10 @@ class TextProductSegment:
 
         self.bullets = self.process_bullets()
 
+    def get_ugcs_tuple(self):
+        """ Helper to return a tuple useful for SQL. """
+        return tuple([str(u) for u in self.ugcs])
+
     def get_hvtec_nwsli(self):
         """ Return the first hvtec NWSLI entry, if it exists """
         if not self.hvtec:
