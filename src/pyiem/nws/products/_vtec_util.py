@@ -1,11 +1,103 @@
 """Off-loaded private stuff from `vtec.py`."""
 # pylint: disable=too-many-arguments
 import datetime
+import itertools
 
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
 # seems to be enough time to ensure a WFO issues some followup statement.
 DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
+
+
+def check_dup_ps(segment):
+    """Does this TextProductSegment have duplicated VTEC
+
+    NWS AWIPS Developer asked that alerts be made when a VTEC segment has a
+    phenomena and significance that are reused. In practice, this error is
+    in the case of having the same phenomena.significance overlap in time. The
+    combination of the same pheom.sig for events happening now and in the
+    future is OK and common
+
+    Returns:
+      bool
+    """
+    combos = {}
+    for thisvtec in segment.vtec:
+        if thisvtec.begints is None or thisvtec.endts is None:
+            # The logic here is too difficult for now, so we ignore
+            continue
+        key = thisvtec.s2()
+        val = combos.setdefault(key, [])
+        # we can't use vtec.endts in this situation
+        endts = (
+            segment.tp.valid
+            if thisvtec.status in ["UPG", "CAN"]
+            else thisvtec.endts
+        )
+        val.append([thisvtec.begints, endts])
+
+    for key in combos:
+        if len(combos[key]) == 1:
+            continue
+        for one, two in itertools.permutations(combos[key], 2):
+            # We check for overlap
+            if one[0] >= two[0] and one[0] < two[1]:
+                return True
+    return False
+
+
+def do_sql_hvtec(txn, segment):
+    """ Process the HVTEC in this product """
+    nwsli = segment.hvtec[0].nwsli.id
+    if len(segment.bullets) < 4:
+        return
+    stage_text = ""
+    flood_text = ""
+    forecast_text = ""
+    impact_text = ""
+    for _, bullet in enumerate(segment.bullets):
+        bsu = bullet.strip().upper()
+        if bsu.find("FLOOD STAGE") == 0:
+            flood_text = bullet
+        if bsu.find("FORECAST") == 0:
+            forecast_text = bullet
+        if bsu.find("AT ") == 0 and stage_text == "":
+            stage_text = bullet
+        if bsu.startswith("IMPACT..."):
+            impact_text = bullet.strip()[9:]
+
+    txn.execute(
+        "INSERT into riverpro(nwsli, stage_text, flood_text, forecast_text, "
+        "impact_text, severity) VALUES (%s,%s,%s,%s,%s,%s)",
+        (
+            nwsli,
+            stage_text,
+            flood_text,
+            forecast_text,
+            impact_text,
+            segment.hvtec[0].severity,
+        ),
+    )
+
+
+def list_rows(txn, table, vtec):
+    """Return a simple listing of what exists in the database"""
+    txn.execute(
+        (
+            "SELECT ugc, issue at time zone 'UTC' as ui, status, "
+            f"updated at time zone 'UTC' as uu from {table} "
+            "WHERE wfo = %s and phenomena = %s and significance = %s and "
+            "eventid = %s ORDER by ugc"
+        ),
+        (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
+    )
+    res = (
+        f"Entries for VTEC within {table}\n"
+        "  UGC    STA ISSUED              UPDATED\n"
+    )
+    for row in txn.fetchall():
+        res += f"  {row['ugc']} {row['status']} {row['ui']} {row['uu']}\n"
+    return res
 
 
 def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
@@ -30,9 +122,8 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
 
     def myfmt(val):
         """ Be more careful """
-        if val is None:
-            return "%-16s" % ("((NULL))",)
-        return val.strftime("%Y-%m-%d %H:%M")
+        default = "%-16s" % ("((NULL))",)
+        return default if val is None else val.strftime("%Y-%m-%d %H:%M")
 
     for row in txn.fetchall():
         debugmsg += (
