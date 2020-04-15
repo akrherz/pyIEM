@@ -254,6 +254,14 @@ class VTEC:
         self.begints = contime(tokens[7])
         self.endts = contime(tokens[8])
 
+    def s3(self):
+        """Return a commonly used string representation."""
+        return f"{self.phenomena}.{self.significance}.{self.etn}"
+
+    def s2(self):
+        """Return a commonly used string representation."""
+        return f"{self.phenomena}.{self.significance}"
+
     def get_end_string(self, prod):
         """ Return an appropriate end string for this VTEC """
         if self.action in ["CAN", "EXP"]:
