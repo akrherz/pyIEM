@@ -135,7 +135,7 @@ class VTECProduct(TextProduct):
         self.db_year = self.valid.year
         self.skip_con = self.get_skip_con()
 
-    def debug_warning(self, txn, warning_table, ugcstring, vtec, segment, ets):
+    def debug_warning(self, txn, warning_table, vtec, segment, ets):
         """ Get a more useful warning message for this failure """
         cnt = txn.rowcount
         txn.execute(
@@ -143,9 +143,15 @@ class VTECProduct(TextProduct):
             "expire at time zone 'UTC' as utc_expire, "
             "updated at time zone 'UTC' as utc_updated, "
             f"status from {warning_table} WHERE wfo = %s and eventid = %s "
-            f"and ugc in {ugcstring} and significance = %s "
+            f"and ugc in %s and significance = %s "
             "and phenomena = %s ORDER by ugc ASC, issue ASC",
-            (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
+            (
+                vtec.office,
+                vtec.etn,
+                segment.get_ugcs_tuple(),
+                vtec.significance,
+                vtec.phenomena,
+            ),
         )
         debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
 

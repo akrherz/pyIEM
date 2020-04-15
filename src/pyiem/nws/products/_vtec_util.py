@@ -117,9 +117,6 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
 
 def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     """A Product Correction."""
-    ugcstring = str(tuple([str(u) for u in segment.ugcs]))
-    if len(segment.ugcs) == 1:
-        ugcstring = "('%s')" % (segment.ugcs[0],)
     # A previous issued product is being corrected
     txn.execute(
         f"UPDATE {warning_table} SET "
@@ -127,7 +124,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
         "|| %s || '__', issue = coalesce(%s, issue), "
         "init_expire = coalesce(%s, init_expire) WHERE wfo = %s and "
-        f"eventid = %s and ugc in {ugcstring} and significance = %s "
+        f"eventid = %s and ugc in %s and significance = %s "
         "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
         (
             vtec.endts,
@@ -137,6 +134,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
             vtec.endts,
             vtec.office,
             vtec.etn,
+            segment.get_ugcs_tuple(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,
@@ -144,17 +142,12 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         prod.warnings.append(
-            prod.debug_warning(
-                txn, warning_table, ugcstring, vtec, segment, vtec.endts
-            )
+            prod.debug_warning(txn, warning_table, vtec, segment, vtec.endts)
         )
 
 
 def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     """A Product Correction."""
-    ugcstring = str(tuple([str(u) for u in segment.ugcs]))
-    if len(segment.ugcs) == 1:
-        ugcstring = "('%s')" % (segment.ugcs[0],)
     ets = vtec.endts
     # These are terminate actions, so we act accordingly
     if vtec.action in ["CAN", "UPG"]:
@@ -172,7 +165,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
         "status = %s, updated = %s, "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
         "|| %s || '__' WHERE wfo = %s and eventid = %s and ugc in "
-        f"{ugcstring} and significance = %s and phenomena = %s "
+        f"%s and significance = %s and phenomena = %s "
         "and status not in ('CAN', 'UPG') and "
         "(expire + '1 hour'::interval) >= %s",
         (
@@ -182,6 +175,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             prod.unixtext,
             vtec.office,
             vtec.etn,
+            segment.get_ugcs_tuple(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,
@@ -190,17 +184,12 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     if txn.rowcount != len(segment.ugcs):
         if not prod.is_correction():
             prod.warnings.append(
-                prod.debug_warning(
-                    txn, warning_table, ugcstring, vtec, segment, ets
-                )
+                prod.debug_warning(txn, warning_table, vtec, segment, ets)
             )
 
 
 def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
     """Continue."""
-    ugcstring = str(tuple([str(u) for u in segment.ugcs]))
-    if len(segment.ugcs) == 1:
-        ugcstring = "('%s')" % (segment.ugcs[0],)
     # These are no-ops, just updates
     ets = vtec.endts
     if vtec.endts is None:
@@ -213,7 +202,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
         "|| %s || '__' , expire = %s, "
         "is_emergency = (case when %s then true else is_emergency end), "
         "is_pds = (case when %s then true else is_pds end) "
-        f"WHERE wfo = %s and eventid = %s and ugc in {ugcstring} "
+        f"WHERE wfo = %s and eventid = %s and ugc in %s "
         "and significance = %s and phenomena = %s and "
         "status not in ('CAN', 'UPG') and "
         "(expire + '1 hour'::interval) >= %s",
@@ -226,6 +215,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
             segment.is_pds,
             vtec.office,
             vtec.etn,
+            segment.get_ugcs_tuple(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,
@@ -233,7 +223,5 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         prod.warnings.append(
-            prod.debug_warning(
-                txn, warning_table, ugcstring, vtec, segment, ets
-            )
+            prod.debug_warning(txn, warning_table, vtec, segment, ets)
         )
