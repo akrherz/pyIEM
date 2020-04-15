@@ -1,10 +1,50 @@
 """Off-loaded private stuff from `vtec.py`."""
+# pylint: disable=too-many-arguments
 import datetime
 
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
 # seems to be enough time to ensure a WFO issues some followup statement.
 DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
+
+
+def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
+    """ Get a more useful warning message for this failure """
+    cnt = txn.rowcount
+    txn.execute(
+        "SELECT ugc, issue at time zone 'UTC' as utc_issue, "
+        "expire at time zone 'UTC' as utc_expire, "
+        "updated at time zone 'UTC' as utc_updated, "
+        f"status from {warning_table} WHERE wfo = %s and eventid = %s and "
+        "ugc in %s and significance = %s and phenomena = %s "
+        "ORDER by ugc ASC, issue ASC",
+        (
+            vtec.office,
+            vtec.etn,
+            segment.get_ugcs_tuple(),
+            vtec.significance,
+            vtec.phenomena,
+        ),
+    )
+    debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
+
+    def myfmt(val):
+        """ Be more careful """
+        if val is None:
+            return "%-16s" % ("((NULL))",)
+        return val.strftime("%Y-%m-%d %H:%M")
+
+    for row in txn.fetchall():
+        debugmsg += (
+            f"{row['ugc']} {row['status']} {myfmt(row['utc_issue'])} "
+            f"{myfmt(row['utc_expire'])} {myfmt(row['utc_updated'])}\n"
+        )
+    return (
+        f"Warning: {vtec.s3()} do_sql_vtec {warning_table} {vtec.action} "
+        f"updated {cnt} row, should {len(segment.ugcs)} rows\n"
+        f"UGCS: {segment.ugcs}\n"
+        f"valid: {prod.valid} expire: {ets}\n{debugmsg}"
+    )
 
 
 def _resent_match(prod, txn, warning_table, vtec):
@@ -142,7 +182,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         prod.warnings.append(
-            prod.debug_warning(txn, warning_table, vtec, segment, vtec.endts)
+            _debug_warning(prod, txn, warning_table, vtec, segment, vtec.endts)
         )
 
 
@@ -184,7 +224,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     if txn.rowcount != len(segment.ugcs):
         if not prod.is_correction():
             prod.warnings.append(
-                prod.debug_warning(txn, warning_table, vtec, segment, ets)
+                _debug_warning(prod, txn, warning_table, vtec, segment, ets)
             )
 
 
@@ -223,5 +263,5 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         prod.warnings.append(
-            prod.debug_warning(txn, warning_table, vtec, segment, ets)
+            _debug_warning(prod, txn, warning_table, vtec, segment, ets)
         )

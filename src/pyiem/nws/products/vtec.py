@@ -135,47 +135,6 @@ class VTECProduct(TextProduct):
         self.db_year = self.valid.year
         self.skip_con = self.get_skip_con()
 
-    def debug_warning(self, txn, warning_table, vtec, segment, ets):
-        """ Get a more useful warning message for this failure """
-        cnt = txn.rowcount
-        txn.execute(
-            "SELECT ugc, issue at time zone 'UTC' as utc_issue, "
-            "expire at time zone 'UTC' as utc_expire, "
-            "updated at time zone 'UTC' as utc_updated, "
-            f"status from {warning_table} WHERE wfo = %s and eventid = %s "
-            f"and ugc in %s and significance = %s "
-            "and phenomena = %s ORDER by ugc ASC, issue ASC",
-            (
-                vtec.office,
-                vtec.etn,
-                segment.get_ugcs_tuple(),
-                vtec.significance,
-                vtec.phenomena,
-            ),
-        )
-        debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
-
-        def myfmt(val):
-            """ Be more careful """
-            if val is None:
-                return "%-16s" % ("((NULL))",)
-            return val.strftime("%Y-%m-%d %H:%M")
-
-        for row in txn.fetchall():
-            debugmsg += "%s %s %s %s %s\n" % (
-                row["ugc"],
-                row["status"],
-                myfmt(row["utc_issue"]),
-                myfmt(row["utc_expire"]),
-                myfmt(row["utc_updated"]),
-            )
-        return (
-            f"Warning: {vtec.s3()} do_sql_vtec {warning_table} {vtec.action} "
-            f"updated {cnt} row, should {len(segment.ugcs)} rows\n"
-            f"UGCS: {segment.ugcs}\n"
-            f"valid: {self.valid} expire: {ets}\n{debugmsg}"
-        )
-
     def sql(self, txn):
         """Persist to the database
 
