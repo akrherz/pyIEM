@@ -4,6 +4,7 @@ import datetime
 import string
 import random
 import logging
+import tempfile
 from io import BytesIO
 from collections import OrderedDict
 import mock
@@ -53,6 +54,17 @@ def test_escape():
     """Does escaping work?"""
     res = util.html_escape("Hello THERE!</p>")
     assert res == "Hello THERE!&lt;/p&gt;"
+
+
+def test_ncopen_conflict():
+    """Test what happens when we get a conflict."""
+    with tempfile.NamedTemporaryFile() as tmp:
+        nc = util.ncopen(tmp.name, mode="w")
+        nc.title = "hello"
+        nc.close()
+        nc = util.ncopen(tmp.name, "r")
+        nc2 = util.ncopen(tmp.name, "w", timeout=5)
+        assert nc2 is None
 
 
 def test_ncopen():
@@ -312,6 +324,8 @@ def test_drct2text():
     """ Test conversion of drct2text """
     assert util.drct2text(360) == "N"
     assert util.drct2text(90) == "E"
+    assert util.drct2text(None) is None
+    assert util.drct2text(400) is None
     # A hack to get move coverage
     for i in range(360):
         util.drct2text(i)
