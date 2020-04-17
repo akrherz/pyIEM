@@ -1,5 +1,7 @@
 """Can we parse UGC strings"""
 
+import pytest
+from pyiem.exceptions import UGCParseException
 from pyiem.util import utc
 from pyiem.nws import ugc
 
@@ -19,6 +21,14 @@ def test_missed_ugc():
     assert ugcs[3] != ugc.UGC("NM", "C", "006")
 
 
+def test_louisana():
+    """Test that some specific logic works."""
+    ugcs = [ugc.UGC("LA", "C", i) for i in range(100)]
+    res = ugc.ugcs_to_text(ugcs)
+    ans = "100 parishes in [LA]"
+    assert res == ans
+
+
 def test_totextstr():
     """ See if we can generate a proper string from a UGCS """
     ugcs = [
@@ -30,6 +40,14 @@ def test_totextstr():
         ugc.ugcs_to_text(ugcs)
         == "((DCZ001)) [DC] and ((IAC001)), ((IAC002)) [IA]"
     )
+
+
+def test_parse_exception():
+    """Test that we raise a proper exception when given bad data."""
+    valid = utc(2008, 12, 17, 3, 0)
+    text = "IA078-170300-"
+    with pytest.raises(UGCParseException):
+        ugc.parse(text, valid)
 
 
 def test_str1():

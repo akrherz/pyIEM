@@ -43,6 +43,8 @@ TIME_MOT_LOC = re.compile(
 )
 LAT_LON_PREFIX = re.compile(r"LAT\.\.\.LON", re.IGNORECASE)
 LAT_LON = re.compile(r"([0-9]{4,8})\s+")
+# This is a legacy tag that is no longer used, but we want to continue to
+# parse it.
 WINDHAIL = re.compile(
     (
         r".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
