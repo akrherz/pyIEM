@@ -36,6 +36,17 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_old_windhail_tag():
+    """Test that we can parse legacy wind...hail tags."""
+    valid = utc(2010, 4, 5, 21, 47)
+    prod = vtecparser(get_test_file("SVRLMK.txt"), utcnow=valid)
+    assert prod.segments[0].hailtag == "1.00"
+    # manually edited the polygon to make it invalid
+    assert filter_warnings(prod.warnings)[0].startswith("process_time_mot_loc")
+    # manually edited TIME...MOT...LOC to make it invalid
+    assert filter_warnings(prod.warnings)[1].startswith("LAT...LON")
+
+
 def test_dups():
     """We had a false positive :("""
     segment = FakeObject()

@@ -6,9 +6,34 @@ from pyiem.nws.product import (
     WMO_RE,
     TextProductException,
     date_tokens2datetime,
+    checker,
+    str2polygon,
 )
 from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
+
+
+def test_str2polygon():
+    """Test our str2polygon implementation."""
+    res = str2polygon("4400 3200 4500 3300 4400 3300")
+    assert res is not None
+
+
+def test_checker():
+    """Test that exceptions are raised in certain cases."""
+    with pytest.raises(TextProductException):
+        checker(-90, 91, "")
+    with pytest.raises(TextProductException):
+        checker(-650, 31, "")
+
+
+def test_datetokens_just_hour():
+    """Test that we can handle having just an hour."""
+    tokens = ["3", "PM", "CDT", "", "MAR", "20", "2019"]
+    z, tz, valid = date_tokens2datetime(tokens)
+    assert z == "CDT"
+    local = valid.astimezone(tz)
+    assert local.hour == 15
 
 
 def test_datetokens():
