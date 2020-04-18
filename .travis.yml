@@ -10,6 +10,7 @@ addons:
     - iemdb.local
     - iemdb-hads.local
     - iemdb-mos.local
+    - iemdb-idep.local
     - iemdb-iemre.local
     - iemdb2.local
     - iemdb-postgis.local
