@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>nws Package &#8212; pyIEM 0.0.post1+g3af5892 documentation</title>
+    <title>nws Package &#8212; pyIEM 0.0.post1+g392176e documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g3af5892 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g392176e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li> 
       </ul>
@@ -84,12 +84,14 @@
 <dl class="py method">
 <dt id="pyiem.nws.gini.GINIZFile.get_channel">
 <code class="sig-name descname">get_channel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_channel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the channel.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pyiem.nws.gini.GINIZFile.get_sector">
 <code class="sig-name descname">get_sector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_sector" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the sector.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pyiem.nws.gini.GINIZFile.init_llc">
@@ -132,7 +134,8 @@
 <dl class="py function">
 <dt id="pyiem.nws.gini.int24">
 <code class="sig-prename descclassname">pyiem.nws.gini.</code><code class="sig-name descname">int24</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.int24" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert to int.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyiem.nws.gini.uint24">
@@ -143,16 +146,19 @@
 </div>
 <div class="section" id="module-pyiem.nws.hvtec">
 <span id="hvtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.hvtec" title="Permalink to this headline">¶</a></h2>
+<p>Process HVTEC encoding.</p>
 <dl class="py class">
 <dt id="pyiem.nws.hvtec.HVTEC">
 <em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.hvtec.</code><code class="sig-name descname">HVTEC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tokens</span></em>, <em class="sig-param"><span class="n">nwsli_provider</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.HVTEC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hydro VTEC.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="pyiem.nws.hvtec.contime">
 <code class="sig-prename descclassname">pyiem.nws.hvtec.</code><code class="sig-name descname">contime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.contime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Process a string into time.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt id="pyiem.nws.hvtec.parse">
@@ -228,6 +234,7 @@
 <dt id="pyiem.nws.nwsli.NWSLI">
 <em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.nwsli.</code><code class="sig-name descname">NWSLI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">identifier</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wfos</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>National Weather Service Location Idenitifiers (NWSLI)</p>
 <dl class="py method">
 <dt id="pyiem.nws.nwsli.NWSLI.get_name">
 <code class="sig-name descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI.get_name" title="Permalink to this definition">¶</a></dt>
@@ -655,7 +662,7 @@ datetime
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g3af5892 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g392176e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li> 
       </ul>
