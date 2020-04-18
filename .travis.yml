@@ -17,6 +17,7 @@ addons:
     - iemdb-mesosite.local
     - iemdb-afos.local
     - iemdb-asos.local
+    - iemdb-nldn.local
     - iemdb-snet.local
     - iemdb-mos.local
     - iemdb-rwis.local

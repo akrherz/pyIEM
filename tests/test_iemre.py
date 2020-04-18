@@ -7,6 +7,21 @@ from pyiem.util import utc, get_dbconn
 from pyiem import iemre
 
 
+def test_ncname():
+    """Test the responses for get_names."""
+    assert iemre.get_daily_ncname(2020) is not None
+    assert iemre.get_hourly_ncname(2020) is not None
+    assert iemre.get_daily_mrms_ncname(2020) is not None
+
+
+def test_get_table():
+    """Test get_table."""
+    d1 = datetime.date(2000, 8, 1)
+    assert iemre.get_table(d1) == "iemre_daily_2000"
+    d2 = utc(2000, 9, 1, 12)
+    assert iemre.get_table(d2) == "iemre_hourly_200009"
+
+
 def test_get_gid():
     """Can we get a gid?"""
     assert iemre.get_gid(-96, 44) is not None
