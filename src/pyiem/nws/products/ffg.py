@@ -58,7 +58,7 @@ class FFGProduct(TextProduct):
         group = shef.groupdict()
         self.issue = datetime.datetime.strptime(
             group["date"][-6:], "%y%m%d"
-        ).replace(tzinfo=pytz.utc)
+        ).replace(tzinfo=pytz.UTC)
         self.issue = self.issue.replace(hour=(int(group["hh"]) % 24))
         dc = datetime.datetime.strptime(
             group["valid"][-10:], "%y%m%d%H%M"
@@ -69,11 +69,9 @@ class FFGProduct(TextProduct):
             and self.source != "KTUA"
         ):
             self.warnings.append(
-                ("Product has large delta between DC: %s " "and SHEF Date: %s")
-                % (
-                    dc.strftime("%Y-%m-%d %H:%MZ"),
-                    self.issue.strftime("%Y-%m-%d %H:%MZ"),
-                )
+                "Product has large delta between DC: "
+                f"{dc.strftime('%Y-%m-%d %H:%MZ')} and "
+                f"SHEF Date: {self.issue.strftime('%Y-%m-%d %H:%MZ')}"
             )
         rows = []
         pos1 = self.unixtext.find(".B ")
@@ -106,13 +104,8 @@ class FFGProduct(TextProduct):
         table = "ffg_%s" % (self.issue.year,)
         for _, row in self.data.iterrows():
             txn.execute(
-                """
-            INSERT into """
-                + table
-                + """(ugc, valid, hour01, hour03,
-            hour06, hour12, hour24) VALUES (%s, %s, %s, %s, %s,
-            %s, %s)
-            """,
+                f"INSERT into {table} (ugc, valid, hour01, hour03, hour06, "
+                "hour12, hour24) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (
                     row["ugc"],
                     self.issue,

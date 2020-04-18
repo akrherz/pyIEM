@@ -58,9 +58,8 @@ class TrackerEngine:
         # Get a listing of OPEN tickets
         open_tickets = ""
         self.pcursor.execute(
-            """SELECT id, entered, subject from
-        tt_base WHERE portfolio = %s and s_mid = %s and status != 'CLOSED'
-        ORDER by id DESC""",
+            "SELECT id, entered, subject from tt_base WHERE portfolio = %s "
+            "and s_mid = %s and status != 'CLOSED' ORDER by id DESC",
             (pnetwork, sid),
         )
         for row in self.pcursor:
@@ -72,9 +71,8 @@ class TrackerEngine:
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
         self.pcursor.execute(
-            """SELECT id, entered, subject from
-        tt_base WHERE portfolio = %s and s_mid = %s and status = 'CLOSED'
-        ORDER by id DESC LIMIT 5""",
+            "SELECT id, entered, subject from tt_base WHERE portfolio = %s "
+            "and s_mid = %s and status = 'CLOSED' ORDER by id DESC LIMIT 5",
             (pnetwork, sid),
         )
         for row in self.pcursor:
@@ -89,8 +87,8 @@ class TrackerEngine:
             open_tickets = " --None-- "
         # Create an entry in tt_base
         self.pcursor.execute(
-            """INSERT into tt_base (portfolio, s_mid, subject,
-        status, author) VALUES (%s, %s, %s, %s, %s) RETURNING id""",
+            "INSERT into tt_base (portfolio, s_mid, subject, "
+            "status, author) VALUES (%s, %s, %s, %s, %s) RETURNING id",
             (pnetwork, sid, "Site Offline", "OPEN", "mesonet"),
         )
         trackerid = self.pcursor.fetchone()[0]
@@ -98,58 +96,46 @@ class TrackerEngine:
         lts = ob["valid"].astimezone(pytz.timezone(nt.sts[sid]["tzname"]))
         msg = "Site Offline since %s" % (lts.strftime("%d %b %Y %H:%M %Z"),)
         self.pcursor.execute(
-            """INSERT into tt_log (portfolio, s_mid, author,
-        status_c, comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)
-        """,
+            "INSERT into tt_log (portfolio, s_mid, author, status_c, "
+            "comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)",
             (pnetwork, sid, "mesonet", "OKAY", msg, trackerid),
         )
 
         # Update iemaccess
         self.icursor.execute(
-            """INSERT into offline(station, network,
-        valid, trackerid) VALUES (%s, %s, %s, %s)
-        """,
+            "INSERT into offline(station, network, "
+            "valid, trackerid) VALUES (%s, %s, %s, %s)",
             (sid, nt.sts[sid]["network"], ob["valid"], trackerid),
         )
 
-        mformat = """
+        mailstr = f"""
 ----------------------
-| IEM TRACKER REPORT |  New Ticket Generated: # %s
+| IEM TRACKER REPORT |  New Ticket Generated: # {trackerid}
 ================================================================
- ID                :  %s [IEM Network: %s]
- Station Name      :  %s
+ ID                :  {sid} [IEM Network: {nt.sts[sid]["network"]}]
+ Station Name      :  {nt.sts[sid]["name"]}
  Status Change     :  [OFFLINE] Site is NOT reporting to the IEM
- Last Observation  :  %s
+ Last Observation  :  {lts.strftime("%d %b %Y %I:%M %p %Z")}
 
  Other Currently 'Open' Tickets for this Site:
  #      OPENED_ON            TICKET TITLE
-%s
+{open_tickets}
 
  Most Recently 'Closed' Trouble Tickets for this Site:
  #      CLOSED_ON            TICKET TITLE
-%s
+{closed_tickets}
 ================================================================
 """
-        mailstr = mformat % (
-            trackerid,
-            sid,
-            nt.sts[sid]["network"],
-            nt.sts[sid]["name"],
-            lts.strftime("%d %b %Y %I:%M %p %Z"),
-            open_tickets,
-            closed_tickets,
-        )
         # Get contacts for site
         self.pcursor.execute(
-            """SELECT distinct email from
-        iem_site_contacts WHERE s_mid = %s and email is not NULL
-        """,
+            "SELECT distinct email from iem_site_contacts "
+            "WHERE s_mid = %s and email is not NULL",
             (sid,),
         )
         for row in self.pcursor:
             email = row[0].lower()
             if email not in self.emails:
-                subject = ("[IEM] %s Offline" "") % (nt.sts[sid]["name"],)
+                subject = f"[IEM] {nt.sts[sid]['name']} Offline"
                 self.emails[email] = {"subject": subject, "body": mailstr}
             else:
                 subject = "[IEM] Multiple Sites"
@@ -174,36 +160,38 @@ class TrackerEngine:
             ob["valid"].strftime("%Y-%m-%d %H:%M:%S"),
         )
         self.pcursor.execute(
-            """INSERT into tt_log
-            (portfolio, s_mid, author, status_c, comments, tt_id)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """,
+            "INSERT into tt_log (portfolio, s_mid, author, status_c, "
+            "comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)",
             (pnetwork, sid, "mesonet", "CLOSED", cmt, trackerid),
         )
         # Update tt_base
         self.pcursor.execute(
-            """UPDATE tt_base SET
-        last = now(), status = 'CLOSED' WHERE id = %s
-        """,
+            "UPDATE tt_base SET last = now(), status = 'CLOSED' WHERE id = %s",
             (trackerid,),
         )
         # Update iemaccess
         self.icursor.execute(
-            """DELETE from offline where
-        station = %s and network = %s""",
+            "DELETE from offline where station = %s and network = %s",
             (sid, nt.sts[sid]["network"]),
         )
-        mformat = """
+        ltz = pytz.timezone(nt.sts[sid]["tzname"])
+        lts = ob["valid"].astimezone(ltz)
+        delta = ob["valid"] - offline[sid]["valid"]
+        days = delta.days
+        hours = delta.seconds / 3600.0
+        minutes = (delta.seconds % 3600) / 60.0
+        duration = "%.0f days %.0f hours %.0f minutes" % (days, hours, minutes)
+        mailstr = f"""
    ---------------------------------
    |  *** IEM TRACKER REPORT ***   |
 ------------------------------------------------------------
-ID                :  %s [IEM Network: %s]
-Station Name      :  %s
+ID                :  {sid} [IEM Network: {nt.sts[sid]["network"]}]
+Station Name      :  {nt.sts[sid]["name"]}
 Status Change     :  [ONLINE] Site is reporting to the IEM
-Trouble Ticket#   :  %s
+Trouble Ticket#   :  {trackerid}
 
-Last Observation  :  %s
-Outage Duration   :  %s
+Last Observation  :  {lts.strftime("%d %b %Y %I:%M %p %Z")}
+Outage Duration   :  {duration}
 
 IEM Tracker Action:  This trouble ticket has been marked
                      CLOSED pending any further information.
@@ -214,26 +202,10 @@ IEM Tracker Action:  This trouble ticket has been marked
   * Questions about this alert?  Email:  akrherz@iastate.edu
   * Thanks!!!
 """
-        ltz = pytz.timezone(nt.sts[sid]["tzname"])
-        lts = ob["valid"].astimezone(ltz)
-        delta = ob["valid"] - offline[sid]["valid"]
-        days = delta.days
-        hours = delta.seconds / 3600.0
-        minutes = (delta.seconds % 3600) / 60.0
-        duration = "%.0f days %.0f hours %.0f minutes" % (days, hours, minutes)
-        mailstr = mformat % (
-            sid,
-            nt.sts[sid]["network"],
-            nt.sts[sid]["name"],
-            trackerid,
-            lts.strftime("%d %b %Y %I:%M %p %Z"),
-            duration,
-        )
         # Get contacts for site
         self.pcursor.execute(
-            """SELECT distinct email from
-        iem_site_contacts WHERE s_mid = %s and email is not NULL
-        """,
+            "SELECT distinct email from iem_site_contacts WHERE "
+            "s_mid = %s and email is not NULL",
             (sid,),
         )
         for row in self.pcursor:
@@ -260,8 +232,7 @@ IEM Tracker Action:  This trouble ticket has been marked
         """
         network = nt.sts[list(nt.sts.keys())[0]]["network"]
         self.icursor.execute(
-            """SELECT station, trackerid, valid from offline
-            WHERE network = %s""",
+            "SELECT station, trackerid, valid from offline WHERE network = %s",
             (network,),
         )
         offline = {}
@@ -302,13 +273,9 @@ def loadqc(cursor=None, date=None):
         cursor = portfolio.cursor()
 
     cursor.execute(
-        """
-        select s_mid, sensor, status from tt_base
-        WHERE sensor is not null
-        and date(entered) <= %s and
-        (status != 'CLOSED' or closed > %s)
-        and s_mid is not null
-    """,
+        "select s_mid, sensor, status from tt_base WHERE sensor is not null "
+        "and date(entered) <= %s and (status != 'CLOSED' or closed > %s) "
+        "and s_mid is not null",
         (date, date),
     )
     for row in cursor:

@@ -89,15 +89,12 @@ class LSR:
 
     def sql(self, txn):
         """ Provided a database transaction object, persist this LSR """
-        table = "lsrs_%s" % (self.utcvalid.year,)
-        wkt = "SRID=4326;%s" % (self.geometry.wkt,)
+        table = f"lsrs_{self.utcvalid.year}"
+        wkt = f"SRID=4326;{self.geometry.wkt}"
         sql = (
-            """INSERT into """
-            + table
-            + """ (valid, type, magnitude, city,
-               county, state, source, remark, geom, wfo, typetext)
-               values (%s, %s, %s, %s, %s, %s,
-               %s, %s, %s, %s, %s)"""
+            f"INSERT into {table} (valid, type, magnitude, city, county, "
+            "state, source, remark, geom, wfo, typetext) values (%s, %s, %s, "
+            "%s, %s, %s, %s, %s, %s, %s, %s)"
         )
         args = (
             self.utcvalid,

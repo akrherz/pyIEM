@@ -8,6 +8,8 @@ from pyiem.exceptions import UnitsError
 class basetype:
     """ Base Object for all our vars """
 
+    known_units = []
+
     def __init__(self, value, units):
         """ constructor with value and units required """
         if units.upper() not in self.known_units:

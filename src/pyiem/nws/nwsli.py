@@ -6,6 +6,8 @@ from shapely.geometry import Point
 
 
 class NWSLI:
+    """National Weather Service Location Idenitifiers (NWSLI)"""
+
     def __init__(self, identifier, name=None, wfos=None, lon=0, lat=0):
         """Constructor
 
@@ -28,5 +30,5 @@ class NWSLI:
             str: the name of this site
         """
         if self.name is None:
-            return "((%s))" % (self.id,)
+            return f"(({self.id}))"
         return self.name

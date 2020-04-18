@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for versioning."""
+# pylint: disable=import-outside-toplevel
 
 
 def get_version():
@@ -11,9 +12,9 @@ def get_version():
     information if a development install.
     """
     try:
-        from setuptools_scm import get_version
+        from setuptools_scm import get_version as gv
 
-        return get_version(
+        return gv(
             root="..",
             relative_to=__file__,
             version_scheme="post-release",

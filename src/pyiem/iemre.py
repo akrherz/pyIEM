@@ -49,7 +49,7 @@ def get_table(valid):
             valid.astimezone(pytz.UTC).strftime("%Y%m"),
         )
     else:
-        table = "iemre_daily_%s" % (valid.year,)
+        table = f"iemre_daily_{valid.year}"
     return table
 
 
@@ -154,11 +154,9 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
         varnames = [varnames]
     # Compute variable names
     cursor.execute(
-        """
-        SELECT column_name FROM information_schema.columns
-        WHERE table_schema = 'public' AND table_name = %s and
-        column_name not in ('gid', 'valid')
-    """,
+        "SELECT column_name FROM information_schema.columns "
+        "WHERE table_schema = 'public' AND table_name = %s and "
+        "column_name not in ('gid', 'valid')",
         (table,),
     )
     use_columns = []
@@ -167,14 +165,8 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
             use_columns.append(row[0])
     colsql = ",".join(use_columns)
     cursor.execute(
-        """
-        SELECT (gid / %s)::int as y, gid %% %s as x,
-        """
-        + colsql
-        + """ from """
-        + table
-        + """ WHERE valid = %s
-    """,
+        f"SELECT (gid / %s)::int as y, gid %% %s as x, {colsql} "
+        f"from {table} WHERE valid = %s",
         (NX, NX, valid),
     )
     data = dict((key, np.full((NY, NX), np.nan)) for key in use_columns)
@@ -195,7 +187,7 @@ def get_dailyc_ncname():
 
 def get_daily_ncname(year):
     """Get the daily netcdf filename for the given year"""
-    return "/mesonet/data/iemre/%s_iemre_daily.nc" % (year,)
+    return f"/mesonet/data/iemre/{year}_iemre_daily.nc"
 
 
 def get_dailyc_mrms_ncname():
@@ -205,12 +197,12 @@ def get_dailyc_mrms_ncname():
 
 def get_daily_mrms_ncname(year):
     """Get the daily netcdf MRMS filename for the given year"""
-    return "/mesonet/data/iemre/%s_iemre_mrms_daily.nc" % (year,)
+    return f"/mesonet/data/iemre/{year}_iemre_mrms_daily.nc"
 
 
 def get_hourly_ncname(year):
     """Get the daily netcdf filename for the given year"""
-    return "/mesonet/data/iemre/%s_iemre_hourly.nc" % (year,)
+    return f"/mesonet/data/iemre/{year}_iemre_hourly.nc"
 
 
 def daily_offset(ts):

@@ -40,7 +40,7 @@ def get_config(filename=None):
         filename = CONFIG_FN
     if not os.path.isfile(filename):
         sys.stderr.write(
-            ("cscap_utils.get_config(%s) File Not Found.\n") % (filename,)
+            f"cscap_utils.get_config({filename}) File Not Found.\n"
         )
         return None
     return json.load(open(filename))

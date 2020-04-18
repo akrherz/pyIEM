@@ -43,7 +43,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
     if os.path.isfile(tmpfn):
         return tmpfn
     # Option 2, go fetch it from mtarchive
-    uri = ("http://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
+    uri = ("https://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
         valid.strftime("%Y/%m/%d"),
         product,
         fn,
@@ -196,15 +196,8 @@ def reader(fn):
 def get_fn(prefix, now, tile):
     """ Get the filename for this timestamp and tile """
     return now.strftime(
-        (
-            "/mnt/a4/data/%Y/%m/%d/mrms/tile"
-            + str(tile)
-            + "/"
-            + prefix
-            + "/"
-            + prefix
-            + ".%Y%m%d.%H%M00.gz"
-        )
+        f"/mnt/a4/data/%Y/%m/%d/mrms/tile{tile}/{prefix}/{prefix}"
+        ".%Y%m%d.%H%M00.gz"
     )
 
 
@@ -215,12 +208,4 @@ def write_worldfile(filename):
       filename (str): filename to write the world file information to
     """
     with open(filename, "w") as fd:
-        fd.write(
-            """0.01
-0.00
-0.00
--0.01
-%s
-%s"""
-            % (WEST, NORTH)
-        )
+        fd.write(f"0.01\n0.00\n0.00\n-0.01\n{WEST}\n{NORTH}")

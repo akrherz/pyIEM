@@ -4,6 +4,7 @@
 import re
 import datetime
 from collections import OrderedDict
+
 from pyiem.exceptions import UGCParseException
 
 UGC_RE = re.compile(
@@ -23,7 +24,7 @@ def ugcs_to_text(ugcs):
         if state_abbr not in states:
             states[state_abbr] = []
         if ugc.name is None:
-            name = "((%s))" % (code,)
+            name = f"(({code}))"
         else:
             name = ugc.name
         states[state_abbr].append(name)

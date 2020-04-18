@@ -23,13 +23,9 @@ class NLDNProduct:
         for _, row in self.df.iterrows():
             table = "nldn%s" % (row["valid"].strftime("%Y_%m"),)
             cursor.execute(
-                """INSERT into """
-                + table
-                + """
-            (valid, geom, signal, multiplicity, axis, eccentricity,
-            ellipse, chisqr) VALUES (%s, 'SRID=4326;POINT(%s %s)',
-            %s, %s, %s, %s, %s, %s)
-            """,
+                f"INSERT into {table} (valid, geom, signal, multiplicity, "
+                "axis, eccentricity, ellipse, chisqr) VALUES (%s, "
+                "'SRID=4326;POINT(%s %s)', %s, %s, %s, %s, %s, %s)",
                 (
                     row["valid"],
                     row["longitude"],

@@ -80,8 +80,8 @@ CHANNELS = [
     "TSURF",
     "WINDEX",
 ]
-for u in range(22, 100):
-    CHANNELS.append("U%s" % (u,))
+for _u in range(22, 100):
+    CHANNELS.append(f"U{_u}")
 SECTORS = [
     "NHCOMP",
     "EAST",
@@ -136,6 +136,7 @@ def uint24(data):
 
 
 def int24(data):
+    """Convert to int."""
     u = int(struct.unpack(">B", data[0:1])[0] & 127) << 16
     u += int(struct.unpack(">B", data[1:2])[0]) << 8
     u += int(struct.unpack(">B", data[2:3])[0])
@@ -232,13 +233,11 @@ class GINIZFile:
         return ENTITIES[self.metadata["creating_entity"]]
 
     def get_sector(self):
-        """
-        """
+        """Return the sector."""
         return SECTORS[self.metadata["sector"]]
 
     def get_channel(self):
-        """
-        """
+        """Return the channel."""
         return CHANNELS[self.metadata["channel"]]
 
     def archive_filename(self):

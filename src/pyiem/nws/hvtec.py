@@ -1,12 +1,14 @@
+"""Process HVTEC encoding."""
 import re
 import datetime
+
 import pytz
 from pyiem.nws.nwsli import NWSLI
 
 #         nwsli        sev         cause
 _re = (
-    "(/([A-Z0-9]{5})\.([N0123U])\.([A-Z]{2})\.([0-9TZ]+)\."
-    "([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]{2})/)"
+    r"(/([A-Z0-9]{5})\.([N0123U])\.([A-Z]{2})\.([0-9TZ]+)\."
+    r"([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]{2})/)"
 )
 
 _statusDict = {
@@ -54,6 +56,7 @@ def parse(text, nwsli_provider=None):
 
 
 def contime(s):
+    """Process a string into time."""
     if len(re.findall("0000*T", s)) > 0:
         return None
     try:
@@ -65,6 +68,8 @@ def contime(s):
 
 
 class HVTEC:
+    """Hydro VTEC."""
+
     def __init__(self, tokens, nwsli_provider=None):
         """ Constructor """
         if nwsli_provider is None:
