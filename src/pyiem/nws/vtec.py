@@ -226,17 +226,17 @@ def contime(text):
 
 def get_ps_string(phenomena, significance):
     """Return the combination of Phenomena + Significance as string"""
-    pstr = VTEC_PHENOMENA.get(phenomena, "Unknown %s" % (phenomena,))
-    astr = VTEC_SIGNIFICANCE.get(significance, "Unknown %s" % (significance,))
+    pstr = VTEC_PHENOMENA.get(phenomena, f"Unknown {phenomena}")
+    astr = VTEC_SIGNIFICANCE.get(significance, f"Unknown {significance}")
     # Hack for special FW case
     if significance == "A" and phenomena == "FW":
         pstr = "Fire Weather"
-    return "%s %s" % (pstr, astr)
+    return f"{pstr} {astr}"
 
 
 def get_action_string(action):
     """Return the action string"""
-    return VTEC_ACTION.get(action, "unknown %s" % (action,))
+    return VTEC_ACTION.get(action, f"unknown {action}")
 
 
 class VTEC:

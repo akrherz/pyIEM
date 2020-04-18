@@ -55,11 +55,7 @@ def load_scenarios():
     """Build a dataframe of DEP scenarios."""
     pgconn = get_dbconn("idep")
     df = read_sql(
-        """
-        SELECT * from scenarios ORDER by id ASC
-    """,
-        pgconn,
-        index_col="id",
+        "SELECT * from scenarios ORDER by id ASC", pgconn, index_col="id"
     )
     pgconn.close()
     return df
@@ -354,14 +350,14 @@ def rfactor(times, points, return_rfactor_metric=True):
     if not times:
         return 0
     # interpolate dataset into 30 minute bins
-    f = interp1d(
+    func = interp1d(
         times,
         points,
         kind="linear",
         fill_value=(0, points[-1]),
         bounds_error=False,
     )
-    accum = f(np.arange(0, 24.01, 0.5))
+    accum = func(np.arange(0, 24.01, 0.5))
     rate_mmhr = (accum[1:] - accum[0:-1]) * 2.0
     # sum of E x I
     # I is the 30 minute peak intensity (mm h-1), capped at 3 in/hr

@@ -109,8 +109,7 @@ def convert_well_known_text(wkt):
         if part.startswith("SRID"):
             # ignore SRIDs
             continue
-        else:
-            for geotype, function in _function_map:
-                if part.startswith(geotype):
-                    return function(part[len(geotype) :])
-            raise ValueError("Unsupported WKT-part %s" % repr(part[:20]))
+        for geotype, function in _function_map:
+            if part.startswith(geotype):
+                return function(part[len(geotype) :])
+        raise ValueError("Unsupported WKT-part %s" % repr(part[:20]))

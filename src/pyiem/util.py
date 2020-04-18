@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel,unbalanced-tuple-unpacking
 """Utility functions for pyIEM package
 
 This module contains utility functions used by various parts of the codebase.
@@ -50,7 +50,7 @@ def html_escape(val):
 def get_test_file(name, fponly=False):
     """Helper to get data for test usage."""
     basedir = os.path.dirname(__file__)
-    fn = "%s/../../data/product_examples/%s" % (basedir, name)
+    fn = f"{basedir}/../../data/product_examples/{name}"
     fp = open(fn, "rb")
     if fponly:
         return fp
@@ -100,10 +100,8 @@ def get_twitter(screen_name):
     props = get_properties(cursor)
     # fetch the oauth saved creds
     cursor.execute(
-        """
-    select access_token, access_token_secret from iembot_twitter_oauth
-    WHERE screen_name = %s
-    """,
+        "select access_token, access_token_secret from iembot_twitter_oauth "
+        "WHERE screen_name = %s",
         (screen_name,),
     )
     row = cursor.fetchone()
@@ -438,7 +436,7 @@ def get_properties(cursor=None):
     if cursor is None:
         pgconn = get_dbconn("mesosite", user="nobody")
         cursor = pgconn.cursor()
-    cursor.execute("""SELECT propname, propvalue from properties""")
+    cursor.execute("SELECT propname, propvalue from properties")
     res = {}
     for row in cursor:
         res[row[0]] = row[1]

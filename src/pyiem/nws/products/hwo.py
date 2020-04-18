@@ -27,23 +27,23 @@ class HWOProduct(TextProduct):
         no_storms_day1 = True
         no_storms_day27 = True
         for segnum, segment in enumerate(self.segments):
-            if len(segment.ugcs) == 0:
+            if not segment.ugcs:
                 continue
             day1 = segment.unixtext.upper().find(".DAY ONE...")
             if day1 == -1 and self.afos != "HWOSPN":
                 raise HWOException(
-                    "segment %s is missing DAY ONE section" % (segnum,)
+                    f"segment {segnum} is missing DAY ONE section"
                 )
             day27 = segment.unixtext.upper().find(".DAYS TWO THROUGH SEVEN...")
             if day27 == -1 and self.afos != "HWOSPN":
                 raise HWOException(
-                    ("segment %s is missing DAYS TWO " "THROUGH SEVEN section")
-                    % (segnum,)
+                    f"segment {segnum} is missing DAYS TWO "
+                    "THROUGH SEVEN section"
                 )
 
             day1text = re.search(
                 (
-                    r"(NO HAZARDOUS WEATHER IS EXPECTED AT "
+                    "(NO HAZARDOUS WEATHER IS EXPECTED AT "
                     "THIS TIME|THE PROBABILITY FOR WIDESPREAD "
                     "HAZARDOUS WEATHER IS LOW)"
                 ),
@@ -52,7 +52,7 @@ class HWOProduct(TextProduct):
             )
             day27text = re.search(
                 (
-                    r"(NO HAZARDOUS WEATHER IS EXPECTED AT "
+                    "(NO HAZARDOUS WEATHER IS EXPECTED AT "
                     "THIS TIME|THE PROBABILITY FOR WIDESPREAD "
                     "HAZARDOUS WEATHER IS LOW)"
                 ),

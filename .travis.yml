@@ -10,12 +10,14 @@ addons:
     - iemdb.local
     - iemdb-hads.local
     - iemdb-mos.local
+    - iemdb-idep.local
     - iemdb-iemre.local
     - iemdb2.local
     - iemdb-postgis.local
     - iemdb-mesosite.local
     - iemdb-afos.local
     - iemdb-asos.local
+    - iemdb-nldn.local
     - iemdb-snet.local
     - iemdb-mos.local
     - iemdb-rwis.local
