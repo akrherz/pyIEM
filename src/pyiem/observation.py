@@ -1,4 +1,5 @@
 """A class representing an observation stored in the IEM database"""
+# pylint: disable=no-member
 from collections import UserDict
 import warnings
 import datetime
@@ -334,7 +335,6 @@ class Observation:
         rowcount = summary_update(txn, self.data)
         if rowcount != 1:
             # Create a new entry
-            # pylint: disable=no-member
             localvalid = self.data["valid"].astimezone(
                 pytz.timezone(self.data["tzname"])
             )
@@ -342,16 +342,13 @@ class Observation:
             if localvalid.date() > datetime.date.today():
                 return False
             txn.execute(
-                """
-                INSERT into summary_"""
-                + str(localvalid.year)
-                + """
-                (iemid, day) VALUES (%s, %s)
-            """,
+                f"INSERT into summary_{localvalid.year} "
+                "(iemid, day) VALUES (%s, %s)",
                 (self.data["iemid"], localvalid.date()),
             )
             # try once more
             rowcount = summary_update(txn, self.data)
+            # Unsure how this could be reachable
             if rowcount != 1:
                 return False
 
