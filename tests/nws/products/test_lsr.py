@@ -1,7 +1,22 @@
 """Test Local Storm Report parsing."""
+# pylint: disable=redefined-outer-name
 
-from pyiem.util import get_test_file
+import pytest
+from pyiem.util import get_test_file, get_dbconn
 from pyiem.nws.products.lsr import parser
+
+
+@pytest.fixture
+def dbcursor():
+    """Database cursor."""
+    return get_dbconn("postgis").cursor()
+
+
+def test_sql(dbcursor):
+    """Test that we can insert into the database."""
+    prod = parser(get_test_file("LSRBOX.txt"))
+    for lsr in prod.lsrs:
+        lsr.sql(dbcursor)
 
 
 def test_issue170_nan():

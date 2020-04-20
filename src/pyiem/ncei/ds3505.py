@@ -72,16 +72,14 @@ def _d1000(val):
 
 
 def _d10(val):
-    """Divide the value by 1000"""
+    """Divide the value by 10"""
     return _tonumeric(val, 10.0)
 
 
 def _i10(val):
-    """Divide the value by 1000"""
+    """Divide the value by 10"""
     val = _tonumeric(val, 10.0)
-    if val is None:
-        return val
-    return int(val)
+    return None if val is None else int(val)
 
 
 def _i(val):

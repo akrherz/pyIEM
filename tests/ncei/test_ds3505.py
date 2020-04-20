@@ -1,7 +1,9 @@
 """Tests for the DS3505 format."""
+# pylint: disable=redefined-outer-name
 
 import pytest
-from pyiem.ncei.ds3505 import parser, process_metar, sql
+import numpy as np
+from pyiem.ncei import ds3505
 from pyiem import util
 from pyiem.util import get_dbconn, utc, get_test_file
 
@@ -12,11 +14,28 @@ def dbcursor():
     return get_dbconn("asos").cursor()
 
 
+def test_vsby_format():
+    """Test our conversion to fractions."""
+    for i in np.arange(0, 3, 0.1):
+        assert ds3505.vsbyfmt(i) is not None
+
+
+def test_process_metar_bad():
+    """Test that we can deal with an invalid formatted METAR."""
+    metar = (
+        "QQQQ 012153Z 23016G25KT 10TSM TSGRRA FEW025 SCT055 17/04 A2982 RMK "
+        "P0000 AO2 SLP104 T01720044 10106 20072 53018="
+    )
+    now = util.utc(2017, 11, 1)
+    ob = ds3505.process_metar(metar, now)
+    assert abs(ob.mslp - 1010.4) < 0.1
+
+
 def test_process_metar():
     """Exercise some deamons from that function"""
     metar = "KALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
     now = util.utc(2017, 11, 1)
-    ob = process_metar(metar, now)
+    ob = ds3505.process_metar(metar, now)
     assert ob.vsby == 0
 
 
@@ -28,7 +47,7 @@ def test_171024():
         "JPWTH 1QNNG11 1 00000K11 1 00035L11 1 00000N11 1 00000S11 "
         "1 00036W11 1 00000"
     )
-    data = parser(msg, "ALO", add_metar=True)
+    data = ds3505.parser(msg, "ALO", add_metar=True)
     ans = "ALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
     assert data["metar"] == ans
 
@@ -42,7 +61,7 @@ def test_badtemp():
         "REMMET045EGPC 190820Z 14009KT 9999 FEW032 35/33 Q1009;"
         "EQDQ01+003503ATOT  Q02+003303ATOD  Q03+000000PRSWM2"
     )
-    data = parser(msg, "EGPC", add_metar=True)
+    data = ds3505.parser(msg, "EGPC", add_metar=True)
     ans = "EGPC 190820Z AUTO 14009KT 7SM A2980 RMK IEM_DS3505"
     assert data["metar"] == ans
 
@@ -56,7 +75,7 @@ def test_altimeter():
         "45980 /2519 10067 20035 39861 49905 51020 333 8//99 90710 "
         "91128="
     )
-    data = parser(msg, "EGPC", add_metar=True)
+    data = ds3505.parser(msg, "EGPC", add_metar=True)
     ans = (
         "EGPC 232200Z AUTO 25019KT 19SM 07/04 RMK "
         "SLP905 T00670035 51020 IEM_DS3505"
@@ -78,7 +97,7 @@ def test_6hour_temp(dbcursor):
         "35014G23KT 10SM CLR 25/21 A2983 RMK AO2 SLP092 60000 "
         "T02500211 10272 20250 55001"
     )
-    data = parser(msg, "KAMW", add_metar=True)
+    data = ds3505.parser(msg, "KAMW", add_metar=True)
     # db schema for testing only goes to 2015
     data["valid"] = utc(2011, 1, 12, 23, 53)
     ans = (
@@ -87,7 +106,7 @@ def test_6hour_temp(dbcursor):
     )
     assert data["metar"] == ans
 
-    assert sql(dbcursor, "AMW", data) == 1
+    assert ds3505.sql(dbcursor, "AMW", data) == 1
 
 
 def test_precip_6group():
@@ -109,7 +128,7 @@ def test_precip_6group():
         "ALQDS RAE00B24 TSE0155B27 SLP119 P0080 60232 "
         "T02110211 53037EQDQ01  05898PRCP03"
     )
-    data = parser(msg, "KAMW", add_metar=True)
+    data = ds3505.parser(msg, "KAMW", add_metar=True)
     # NOTE, this should be 0.80 instead of 0.81 !?!?!, NCDC wrong?
     ans = (
         "KAMW 120253Z AUTO 36012KT 1 1/4SM +TSRA BR "
@@ -132,7 +151,7 @@ def test_metar():
         "099065REMMET09501/01/16 01:13:02 SPECI KAMW 010713Z "
         "29013KT 10SM BKN017 OVC033 M05/M08 A3028 RMK AO2 T10501083"
     )
-    data = parser(msg, "KAMW", add_metar=True)
+    data = ds3505.parser(msg, "KAMW", add_metar=True)
     ans = (
         "KAMW 010713Z AUTO 29013KT 10SM BKN017 OVC033 "
         "M05/M08 A3028 RMK T10501083 IEM_DS3505"
@@ -152,7 +171,7 @@ def test_metar2():
         "9999REMMET10101/01/16 02:53:02 METAR KAMW 010853Z 30013KT "
         "10SM OVC017 M05/M08 A3028 RMK AO2 SLP266 T10501083 55004"
     )
-    data = parser(msg, "KAMW", add_metar=True)
+    data = ds3505.parser(msg, "KAMW", add_metar=True)
     ans = (
         "KAMW 010853Z AUTO 30013KT 10SM OVC017 M05/M08 "
         "A3028 RMK SLP266 T10501083 55004 IEM_DS3505"
@@ -169,7 +188,7 @@ def test_171023():
         "066009029GF107991021081008001031061MD1710131+9999MW1021WG"
         "199999999999REMSYN02920310 70307 81820 83362 86272"
     )
-    data = parser(msg, "KAMW", add_metar=True)
+    data = ds3505.parser(msg, "KAMW", add_metar=True)
     assert data is not None
 
     msg = (
@@ -177,7 +196,7 @@ def test_171023():
         "V02099999999999999999N9999999N1+99999+99999999999REMSYN058"
         "AAXX  20184 03075 46/// ///// 1//// 2//// 4//// 5//// 333;"
     )
-    data = parser(msg, "EGPC", add_metar=True)
+    data = ds3505.parser(msg, "EGPC", add_metar=True)
     assert data is not None
 
 
@@ -189,7 +208,7 @@ def test_basic():
         "6000091AG14000AY131061AY221061GF102991021051008001001001"
         "MD1710141+9999MW1381OA149902631REMSYN011333   91151"
     )
-    data = parser(msg, "ENJA", add_metar=True)
+    data = ds3505.parser(msg, "ENJA", add_metar=True)
     assert data is not None
     ans = (
         "ENJA 010000Z AUTO 33036KT 2SM "
@@ -201,9 +220,9 @@ def test_basic():
 def test_read():
     """Can we process an entire file?"""
     for line in get_test_file("NCEI/DS3505.txt", fponly=True):
-        data = parser(line.decode("ascii").strip(), "ENJA")
+        data = ds3505.parser(line.decode("ascii").strip(), "ENJA")
         assert data is not None
 
     for line in get_test_file("NCEI/DS3505_KAMW_2016.txt", fponly=True):
-        data = parser(line.decode("ascii").strip(), "KAMW")
+        data = ds3505.parser(line.decode("ascii").strip(), "KAMW")
         assert data is not None

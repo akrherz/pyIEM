@@ -66,27 +66,26 @@ def iemob():
     # Create fake station, so we can create fake entry in summary
     # and current tables
     res.cursor.execute(
-        """
-        INSERT into stations(id, network, iemid, tzname)
-        VALUES (%s, 'FAKE', %s, 'UTC')
-    """,
+        "INSERT into stations(id, network, iemid, tzname) "
+        "VALUES (%s, 'FAKE', %s, 'UTC')",
         (sid, res.iemid),
     )
     res.cursor.execute(
-        """
-        INSERT into current(iemid, valid) VALUES
-        (%s, '2015-09-01 00:00+00')
-    """,
+        "INSERT into current(iemid, valid) VALUES (%s, '2015-09-01 00:00+00')",
         (res.iemid,),
     )
     res.cursor.execute(
-        """
-        INSERT into summary_2015(iemid, day) VALUES
-        (%s, '2015-09-01')
-    """,
+        "INSERT into summary_2015(iemid, day) VALUES (%s, '2015-09-01')",
         (res.iemid,),
     )
     return res
+
+
+def test_notz():
+    """Test that we warn when there is no timezone set."""
+    msg = "tzinfo is not set on valid, defaulting to UTC"
+    with pytest.warns(UserWarning, match=msg):
+        observation.Observation("Z", "Z", datetime.datetime(2000, 1, 1))
 
 
 def test_nodata(iemob):
@@ -143,6 +142,18 @@ def test_settting_null(iemob):
         (iemob.iemid,),
     )
     assert iemob.cursor.fetchone()[0] is None
+
+
+def test_newdate(iemob):
+    """Test that we can add a summary table entry."""
+    iemob.ob.data["valid"] = iemob.ob.data["valid"].replace(day=2)
+    assert iemob.ob.save(iemob.cursor) is True
+
+    tomorrow = datetime.date.today() + datetime.timedelta(days=2)
+    iemob.ob.data["valid"] = iemob.ob.data["valid"].replace(
+        year=tomorrow.year, month=tomorrow.month, day=tomorrow.day
+    )
+    assert iemob.ob.save(iemob.cursor) is False
 
 
 def test_null(iemob):
