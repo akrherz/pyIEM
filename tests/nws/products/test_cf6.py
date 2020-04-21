@@ -1,5 +1,7 @@
 """Test our CF6 parsing."""
 # pylint: disable=redefined-outer-name
+import datetime
+
 import pytest
 from pyiem.nws.products.cf6 import parser
 from pyiem.util import get_test_file, get_dbconn
@@ -43,8 +45,22 @@ def test_basic(dbcursor):
     prod.sql(dbcursor)
 
 
+def test_missing_header():
+    """Test exception when there is a missing header."""
+    with pytest.raises(ValueError):
+        parser(get_test_file("CF6/CF6DSM_bad.txt"))
+
+
+def test_nodata(dbcursor):
+    """Test when there is no data in the product."""
+    prod = parser(get_test_file("CF6/CF6DSM_empty.txt"))
+    prod.sql(dbcursor)
+    assert prod.df.empty
+
+
 def test_trace(dbcursor):
     """Ensure that our decoder is properly dealing with trace values."""
     prod = parser(get_test_file("CF6/CF6SEA.txt"))
+    assert prod.df.index.values[0] == datetime.date(2020, 2, 1)
     assert prod.df.iloc[15]["wtr"] == TRACE_VALUE
     prod.sql(dbcursor)
