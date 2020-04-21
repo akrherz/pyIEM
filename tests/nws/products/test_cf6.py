@@ -64,3 +64,9 @@ def test_trace(dbcursor):
     assert prod.df.index.values[0] == datetime.date(2020, 2, 1)
     assert prod.df.iloc[15]["wtr"] == TRACE_VALUE
     prod.sql(dbcursor)
+
+    dbcursor.execute(
+        "SELECT possible_sunshine from cf6_data_2020 where station = 'KSEA' "
+        "and valid = '2020-02-01'"
+    )
+    assert dbcursor.fetchone()[0] is None

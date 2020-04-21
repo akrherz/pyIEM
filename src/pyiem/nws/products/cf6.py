@@ -101,7 +101,9 @@ class CF6Product(TextProduct):
         """Send the data to the database."""
         if self.df is None or self.df.empty:
             return
-        for valid, row in self.df.iterrows():
+        # Prevent NaN numbers from going to the database.
+        _df = self.df.where(pd.notnull(self.df), None)
+        for valid, row in _df.iterrows():
             cursor.execute(
                 "DELETE from cf6_data where station = %s and valid = %s",
                 (self.station, valid),
