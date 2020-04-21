@@ -12,6 +12,18 @@ def dbcursor():
     return get_dbconn("iem").cursor()
 
 
+def test_200421_nan(dbcursor):
+    """Test database insert that was failing with NaN values."""
+    prod = parser(get_test_file("CF6/CF6MKK.txt"))
+    prod.sql(dbcursor)
+
+    dbcursor.execute(
+        "SELECT wxcodes from cf6_data_2020 where station = 'PMKK' and "
+        "valid = '2020-04-18'"
+    )
+    assert dbcursor.fetchone()[0] == "X"
+
+
 def test_200302_regex_error():
     """Test failure found with some regex failure."""
     prod = parser(get_test_file("CF6/CF6GRR.txt"))

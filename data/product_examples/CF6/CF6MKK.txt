@@ -1,0 +1,89 @@
+915 
+CXHW52 PHFO 211250
+CF6MKK
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6)
+
+                                          STATION:   MOLOKAI HI
+                                          MONTH:     APRIL
+                                          YEAR:      2020
+                                          LATITUDE:   21  8 N                   
+                                          LONGITUDE: 157  6 W                   
+
+  TEMPERATURE IN F:       :PCPN:    SNOW:  WIND      :SUNSHINE: SKY     :PK WND 
+================================================================================
+1   2   3   4   5  6A  6B    7    8   9   10  11  12  13   14  15   16   17  18
+                                     12Z  AVG MX 2MIN
+DY MAX MIN AVG DEP HDD CDD  WTR  SNW DPTH SPD SPD DIR MIN PSBL S-S WX    SPD DR
+================================================================================
+
+ 1  81  62  72   0   0   7    T  0.0    M  6.8 16  60   M    M   M        21  10
+ 2  83  60  72   0   0   7 0.00  0.0    M  3.7 13  30   M    M   M        21 260
+ 3  82  61  72   0   0   7 0.00  0.0    M  5.0 15 180   M    M   M        21 170
+ 4  87  61  74   2   0   9 0.00  0.0    M  4.6 16 250   M    M   M        21 230
+ 5  82  67  75   3   0  10 0.00  0.0    M  4.7 14 260   M    M   M        16 140
+ 6  81  65  73   1   0   8 1.33  0.0    M  8.0 17 150   M    M   M 1      23 160
+ 7  83  68  76   4   0  11 1.35  0.0    M  5.7 15 160   M    M   M 1      24 240
+ 8  80  65  73   1   0   8 0.06  0.0    M  3.8 13 260   M    M   M 18     17 270
+ 9  81  68  75   3   0  10 0.45  0.0    M  4.1 13 310   M    M   M 1      16 300
+10  81  64  73   1   0   8 0.01  0.0    M  6.7 16 160   M    M   M        22 160
+11  81  69  75   3   0  10    T  0.0    M  7.6 16 170   M    M   M        20 190
+12  78  70  74   2   0   9 0.00  0.0    M 10.9 18  10   M    M   M        26  10
+13  81  68  75   3   0  10 0.11  0.0    M  6.3 15  50   M    M   M 18     21  40
+14  77  68  73   1   0   8 0.35  0.0    M  2.9 12 230   M    M   M 18     16 210
+15  84  69  77   4   0  12 0.00  0.0    M  7.7 21  60   M    M   M        25  50
+16  82  70  76   3   0  11 0.00  0.0    M 12.4 21  50   M    M   M        30  50
+17  82  68  75   2   0  10 0.00  0.0    M 10.3 22  50   M    M   M        27  40
+18  82  63  73   0   0   8 0.00  0.0    M  7.2 18  60   M    M   M X      22  50
+19  82  60  71  -2   0   6 0.00  0.0    M  4.6 12 350   M    M   M        17 150
+20  82  62  72  -1   0   7    T  0.0    M  2.7 12 160   M    M   M        16 210
+================================================================================
+SM 1632 1308         0 176  3.66     0.0 125.7          M        M              
+================================================================================
+AV 81.6 65.4                               6.3 FASTST   M    M   0    MAX(MPH)  
+                                 MISC ---->  # 22  50               # 30   50   
+================================================================================
+NOTES:
+# LAST OF SEVERAL OCCURRENCES
+
+COLUMN 17 PEAK WIND IN M.P.H.
+
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6) , PAGE 2
+
+                                          STATION:  MOLOKAI HI
+                                          MONTH:    APRIL
+                                          YEAR:     2020
+                                          LATITUDE:   21  8 N                   
+                                          LONGITUDE: 157  6 W                   
+
+[TEMPERATURE DATA]      [PRECIPITATION DATA]       SYMBOLS USED IN COLUMN 16    
+
+AVERAGE MONTHLY: 73.5   TOTAL FOR MONTH:   3.66    1 = FOG OR MIST              
+DPTR FM NORMAL:   1.2   DPTR FM NORMAL:    2.24    2 = FOG REDUCING VISIBILITY  
+HIGHEST:    87 ON  4    GRTST 24HR  1.35 ON  7- 7      TO 1/4 MILE OR LESS      
+LOWEST:     60 ON 19, 2                            3 = THUNDER                  
+                        SNOW, ICE PELLETS, HAIL    4 = ICE PELLETS              
+                        TOTAL MONTH:   0.0 INCH    5 = HAIL                     
+                        GRTST 24HR     0.0         6 = FREEZING RAIN OR DRIZZLE 
+                        GRTST DEPTH:  M  ON   M    7 = DUSTSTORM OR SANDSTORM:  
+                                                       VSBY 1/2 MILE OR LESS    
+                                                   8 = SMOKE OR HAZE            
+[NO. OF DAYS WITH]      [WEATHER - DAYS WITH]      9 = BLOWING SNOW             
+                                                   X = TORNADO                  
+MAX 32 OR BELOW:   0    0.01 INCH OR MORE:   7                                  
+MAX 90 OR ABOVE:   0    0.10 INCH OR MORE:   5                                  
+MIN 32 OR BELOW:   0    0.50 INCH OR MORE:   2                                  
+MIN  0 OR BELOW:   0    1.00 INCH OR MORE:   2                                  
+
+[HDD (BASE 65) ]                                                                
+TOTAL THIS MO.     0    CLEAR  (SCALE 0-3)   0                                  
+DPTR FM NORMAL     0    PTCLDY (SCALE 4-7)   0                                  
+TOTAL FM JUL 1     0    CLOUDY (SCALE 8-10)  0                                  
+DPTR FM NORMAL    -3                                                            
+
+[CDD (BASE 65) ]                                                                
+TOTAL THIS MO.   176                                                            
+DPTR FM NORMAL    29    [PRESSURE DATA]                                         
+TOTAL FM JAN 1   877    HIGHEST SLP M ON M                                      
+DPTR FM NORMAL   219    LOWEST  SLP 30.00 ON 11                                 
+
+[REMARKS]
