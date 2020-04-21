@@ -99,7 +99,7 @@ class CF6Product(TextProduct):
 
     def sql(self, cursor):
         """Send the data to the database."""
-        if self.df is None:
+        if self.df is None or self.df.empty:
             return
         for valid, row in self.df.iterrows():
             cursor.execute(
