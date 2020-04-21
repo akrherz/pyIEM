@@ -1,0 +1,63 @@
+351 
+CXUS53 KDMX 230920
+CF6DSM
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6)
+
+                                          STATION:   DES MOINES IA
+                                          MONTH:     2
+                                          YEAR:      2020
+                                          LATITUDE:   41 31 N                   
+                                          LONGITUDE:  93 39 W                   
+
+  TEMPERATURE IN F:       :PCPN:    SNOW:  WIND      :SUNSHINE: SKY     :PK WND 
+================================================================================
+1   2   3   4   5  6A  6B    7    8   9   10  11  12  13   14  15   16   17  18
+                                     12Z  AVG MX 2MIN
+DY MAX MIN AVG DEP HDD CDD  WTR  SNW DPTH SPD SPD DIR MIN PSBL S-S WX    SPD DR
+================================================================================
+================================================================================
+NOTES:
+# LAST OF SEVERAL OCCURRENCES
+
+COLUMN 17 PEAK WIND IN M.P.H.
+
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6) , PAGE 2
+
+                                          STATION:  DES MOINES IA
+                                          YEAR:     2020
+                                          LATITUDE:   41 31 N                   
+                                          LONGITUDE:  93 39 W                   
+
+[TEMPERATURE DATA]      [PRECIPITATION DATA]       SYMBOLS USED IN COLUMN 16    
+
+AVERAGE MONTHLY: 25.6   TOTAL FOR MONTH:   0.21    1 = FOG OR MIST              
+DPTR FM NORMAL:  -0.9   DPTR FM NORMAL:   -0.75    2 = FOG REDUCING VISIBILITY  
+HIGHEST:    55 ON  2    GRTST 24HR  0.07 ON 17-17      TO 1/4 MILE OR LESS      
+LOWEST:    -10 ON 13                               3 = THUNDER                  
+                        SNOW, ICE PELLETS, HAIL    4 = ICE PELLETS              
+                        TOTAL MONTH:   2.7 INCHES  5 = HAIL                     
+                        GRTST 24HR   1.6 ON  7- 7  6 = FREEZING RAIN OR DRIZZLE 
+                        GRTST DEPTH:   8 ON  1     7 = DUSTSTORM OR SANDSTORM:  
+                                                       VSBY 1/2 MILE OR LESS    
+                                                   8 = SMOKE OR HAZE            
+[NO. OF DAYS WITH]      [WEATHER - DAYS WITH]      9 = BLOWING SNOW             
+                                                   X = TORNADO                  
+MAX 32 OR BELOW:   8    0.01 INCH OR MORE:   3                                  
+MAX 90 OR ABOVE:   0    0.10 INCH OR MORE:   0                                  
+MIN 32 OR BELOW:  21    0.50 INCH OR MORE:   0                                  
+MIN  0 OR BELOW:   2    1.00 INCH OR MORE:   0                                  
+
+[HDD (BASE 65) ]                                                                
+TOTAL THIS MO.   862    CLEAR  (SCALE 0-3)   7                                  
+DPTR FM NORMAL    13    PTCLDY (SCALE 4-7)   9                                  
+TOTAL FM JUL 1  4522    CLOUDY (SCALE 8-10)  6                                  
+DPTR FM NORMAL  -107                                                            
+
+[CDD (BASE 65) ]                                                                
+TOTAL THIS MO.     0                                                            
+DPTR FM NORMAL     0    [PRESSURE DATA]                                         
+TOTAL FM JAN 1     0    HIGHEST SLP M ON M                                      
+DPTR FM NORMAL     0    LOWEST  SLP 29.63 ON  2                                 
+
+[REMARKS]
+

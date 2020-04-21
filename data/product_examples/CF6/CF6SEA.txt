@@ -4,7 +4,7 @@ CF6SEA
 PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6)
 
                                           STATION:   SEATTLE-TACOMA WA AIRPORT
-                                          MONTH:     FEBRUARY
+                                          MONTH:     2
                                           YEAR:      2020
                                           LATITUDE:   47 27 N                   
                                           LONGITUDE: 122 18 W                   

@@ -1,0 +1,90 @@
+351 
+CXUS53 KDMX 230920
+CF6DSM
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6)
+
+                                          STATION:   DES MOINES IA
+                                          YEAR:      2020
+                                          LATITUDE:   41 31 N                   
+                                          LONGITUDE:  93 39 W                   
+
+  TEMPERATURE IN F:       :PCPN:    SNOW:  WIND      :SUNSHINE: SKY     :PK WND 
+================================================================================
+1   2   3   4   5  6A  6B    7    8   9   10  11  12  13   14  15   16   17  18
+                                     12Z  AVG MX 2MIN
+DY MAX MIN AVG DEP HDD CDD  WTR  SNW DPTH SPD SPD DIR MIN PSBL S-S WX    SPD DR
+================================================================================
+
+ 1  42  32  37  13  28   0 0.00  0.0    8 10.3 17 230   M    M   8 1      23 230
+ 2  55  33  44  20  21   0 0.00  0.0    6  7.7 20 310   M    M   3        24 310
+ 3  36  29  33   9  32   0 0.00  0.0    3 16.1 25  20   M    M   7        34  20
+ 4  29  20  25   1  40   0 0.00  0.0    3 15.1 24  30   M    M   9        32  30
+ 5  28  18  23  -1  42   0 0.00  0.0    3  6.6 14  30   M    M  10        16  40
+ 6  33  12  23  -2  42   0 0.00  0.0    3  3.6  9 130   M    M   3        17 100
+ 7  26  20  23  -2  42   0 0.07  1.6    3 11.7 21 320   M    M  10 1      29 330
+ 8  29  13  21  -4  44   0    T    T    4  8.5 16 310   M    M   7 1      20 310
+ 9  42  19  31   6  34   0    T  0.0    3 13.6 25 310   M    M   9        34 340
+10  37  14  26   0  39   0 0.00  0.0    2  5.1 10 210   M    M   4        14 320
+11  35  21  28   2  37   0 0.00  0.0    1  9.3 17 310   M    M   3        23 310
+12  36   2  19  -7  46   0 0.07  0.9    T 12.4 28 340   M    M   8 19     36 350
+13   4 -10  -3 -30  68   0    T    T    1 14.7 25 320   M    M   1        37 330
+14  20  -5   8 -19  57   0 0.00  0.0    1 13.2 24 170   M    M   3        32 180
+15  42  17  30   3  35   0 0.00  0.0    1 10.3 22 240   M    M   4        30 240
+16  46  23  35   7  30   0 0.00  0.0    T  7.5 16 170   M    M   8        21 180
+17  43  28  36   8  29   0 0.07  0.0    T 10.3 31 320   M    M  10 18     41 330
+18  36  21  29   1  36   0 0.00  0.0    T 10.6 23 320   M    M   3        32 310
+19  21  12  17 -12  48   0    T  0.2    T 10.1 15 360   M    M  10 1      22  60
+20  23   3  13 -16  52   0 0.00  0.0    T  6.7 14 360   M    M   1        19 350
+21  44  15  30   0  35   0 0.00  0.0    T 12.8 28 220   M    M   1        38 220
+22  53  27  40  10  25   0 0.00  0.0    T 11.8 22 180   M    M   1        28 180
+================================================================================
+SM  760  364       862   0  0.21     2.7 228.0          M      123              
+================================================================================
+AV 34.6 16.6                              10.4 FASTST   M    M   6    MAX(MPH)  
+                                 MISC ---->  # 31 320               # 41  330   
+================================================================================
+NOTES:
+# LAST OF SEVERAL OCCURRENCES
+
+COLUMN 17 PEAK WIND IN M.P.H.
+
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6) , PAGE 2
+
+                                          STATION:  DES MOINES IA
+                                          YEAR:     2020
+                                          LATITUDE:   41 31 N                   
+                                          LONGITUDE:  93 39 W                   
+
+[TEMPERATURE DATA]      [PRECIPITATION DATA]       SYMBOLS USED IN COLUMN 16    
+
+AVERAGE MONTHLY: 25.6   TOTAL FOR MONTH:   0.21    1 = FOG OR MIST              
+DPTR FM NORMAL:  -0.9   DPTR FM NORMAL:   -0.75    2 = FOG REDUCING VISIBILITY  
+HIGHEST:    55 ON  2    GRTST 24HR  0.07 ON 17-17      TO 1/4 MILE OR LESS      
+LOWEST:    -10 ON 13                               3 = THUNDER                  
+                        SNOW, ICE PELLETS, HAIL    4 = ICE PELLETS              
+                        TOTAL MONTH:   2.7 INCHES  5 = HAIL                     
+                        GRTST 24HR   1.6 ON  7- 7  6 = FREEZING RAIN OR DRIZZLE 
+                        GRTST DEPTH:   8 ON  1     7 = DUSTSTORM OR SANDSTORM:  
+                                                       VSBY 1/2 MILE OR LESS    
+                                                   8 = SMOKE OR HAZE            
+[NO. OF DAYS WITH]      [WEATHER - DAYS WITH]      9 = BLOWING SNOW             
+                                                   X = TORNADO                  
+MAX 32 OR BELOW:   8    0.01 INCH OR MORE:   3                                  
+MAX 90 OR ABOVE:   0    0.10 INCH OR MORE:   0                                  
+MIN 32 OR BELOW:  21    0.50 INCH OR MORE:   0                                  
+MIN  0 OR BELOW:   2    1.00 INCH OR MORE:   0                                  
+
+[HDD (BASE 65) ]                                                                
+TOTAL THIS MO.   862    CLEAR  (SCALE 0-3)   7                                  
+DPTR FM NORMAL    13    PTCLDY (SCALE 4-7)   9                                  
+TOTAL FM JUL 1  4522    CLOUDY (SCALE 8-10)  6                                  
+DPTR FM NORMAL  -107                                                            
+
+[CDD (BASE 65) ]                                                                
+TOTAL THIS MO.     0                                                            
+DPTR FM NORMAL     0    [PRESSURE DATA]                                         
+TOTAL FM JAN 1     0    HIGHEST SLP M ON M                                      
+DPTR FM NORMAL     0    LOWEST  SLP 29.63 ON  2                                 
+
+[REMARKS]
+

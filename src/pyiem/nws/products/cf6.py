@@ -99,30 +99,24 @@ class CF6Product(TextProduct):
 
     def sql(self, cursor):
         """Send the data to the database."""
-        if self.df is None:
+        if self.df is None or self.df.empty:
             return
         for valid, row in self.df.iterrows():
             cursor.execute(
-                """
-                DELETE from cf6_data where station = %s and valid = %s
-            """,
+                "DELETE from cf6_data where station = %s and valid = %s",
                 (self.station, valid),
             )
             cursor.execute(
-                """
-                INSERT into cf6_data(station, valid, product,
-                high, low, avg_temp,
-                dep_temp, hdd, cdd, precip, snow, snowd_12z, avg_smph,
-                max_smph, avg_drct, minutes_sunshine, possible_sunshine,
-                cloud_ss, wxcodes, gust_smph, gust_drct) VALUES
-                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s, %s, %s)
-            """,
+                "INSERT into cf6_data(station, valid, product, high, low, "
+                "avg_temp, dep_temp, hdd, cdd, precip, snow, snowd_12z, "
+                "avg_smph, max_smph, avg_drct, minutes_sunshine, "
+                "possible_sunshine, cloud_ss, wxcodes, gust_smph, gust_drct) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+                "%s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     self.station,
                     valid,
                     self.get_product_id(),
-                    row[COL_NAMES[0]],
                     row[COL_NAMES[1]],
                     row[COL_NAMES[2]],
                     row[COL_NAMES[3]],
@@ -140,6 +134,7 @@ class CF6Product(TextProduct):
                     row[COL_NAMES[15]],
                     row[COL_NAMES[16]],
                     row[COL_NAMES[17]],
+                    row[COL_NAMES[18]],
                 ),
             )
 
