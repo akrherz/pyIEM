@@ -245,11 +245,12 @@ def parse_temperature(regime, lines, data):
 def parse_sky_coverage(lines, data):
     """Turn section into data."""
     asc = "AVERAGE SKY COVER"
-    if len(lines) > 1 and lines[1].strip().startswith(asc):
-        try:
-            data["average_sky_cover"] = float(lines[1].replace(asc, ""))
-        except ValueError:
-            pass
+    for line in lines:
+        if line.strip().startswith(asc):
+            try:
+                data["average_sky_cover"] = float(line.replace(asc, ""))
+            except ValueError:
+                pass
 
 
 class CLIProduct(TextProduct):
