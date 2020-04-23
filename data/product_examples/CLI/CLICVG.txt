@@ -1,0 +1,102 @@
+922 
+CDUS41 KILN 230549
+CLICVG
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE WILMINGTON OH                               
+147 AM EDT THU APR 23 2020
+
+
+................................... 
+
+...THE CINCINNATI OH CLIMATE SUMMARY FOR APRIL 22 2020...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1869 TO 2020
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         69    357 PM  86    1985  67      2       75       
+                                      1946                          
+  MINIMUM         35    511 AM  28    1986  46    -11       47       
+  AVERAGE         52                        56     -4       61      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          1.76 1887   0.13  -0.13     0.00    
+  MONTH TO DATE    2.33                      2.80  -0.47     3.15    
+  SINCE MAR 1      7.79                      6.76   1.03     8.97    
+  SINCE JAN 1     15.51                     12.57   2.94    20.31    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0           0.1  1893   0.0    0.0      0.0     
+  MONTH TO DATE    0.0                       0.5   -0.5      0.0     
+  SINCE MAR 1      T                         3.5   -3.5      3.0     
+  SINCE JUL 1     11.2                      22.1  -10.9     21.6     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY       13                         9      4        4       
+  MONTH TO DATE  321                       277     44      202       
+  SINCE MAR 1    812                       943   -131      943       
+  SINCE JUL 1   4205                      4770   -565     4662       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        0                         1     -1        0       
+  MONTH TO DATE    5                        10     -5        4       
+  SINCE MAR 1     10                        10      0        4       
+  SINCE JAN 1     10                        10      0        4       
+..................................................................
+
+
+WIND (MPH)                                                           
+  RESULTANT WIND SPEED   6   RESULTANT WIND DIRECTION   S (180)      
+  HIGHEST WIND SPEED    20   HIGHEST WIND DIRECTION    SW (220)      
+  HIGHEST GUST SPEED    26   HIGHEST GUST DIRECTION    SW (230)      
+  AVERAGE WIND SPEED     7.7                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.4                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    52           100 AM                                     
+ LOWEST     29           300 PM                                     
+ AVERAGE    41                                                       
+
+..........................................................
+
+                                                                     
+THE CINCINNATI OH CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   67        88      1925                    
+ MINIMUM TEMPERATURE (F)   46        23      1986                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+APRIL 23 2020.........SUNRISE   650 AM EDT   SUNSET   824 PM EDT   
+APRIL 24 2020.........SUNRISE   649 AM EDT   SUNSET   825 PM EDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$

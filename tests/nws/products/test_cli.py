@@ -12,6 +12,12 @@ def test_190510_parsefail():
     assert prod.data[0]["data"]["temperature_maximum"] == 74
 
 
+def test_200423_missing_skycover():
+    """Test that we are processing skycover properly."""
+    prod = cliparser(get_test_file("CLI/CLICVG.txt"))
+    assert prod.data[0]["data"]["average_sky_cover"] == 0.4
+
+
 def test_180208_issue56_tweetmissing():
     """Report None values as missing, not None"""
     prod = cliparser(get_test_file("CLI/CLIFFC.txt"))
