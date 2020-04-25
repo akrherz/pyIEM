@@ -1,11 +1,11 @@
 922 
-CDUS41 KILN 230547
+CDUS41 KILN 230546
 CLICVG
 
 
 CLIMATE REPORT
 NATIONAL WEATHER SERVICE WILMINGTON OH                               
-147 AM EDT THU APR 23 2020
+146 AM EDT THU APR 23 2020
 
 
 ................................... 
@@ -22,7 +22,7 @@ WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST
 ..................................................................
 TEMPERATURE (F)                                                     
  YESTERDAY                                                           
-  MAXIMUM         69    357 PM  86    1985  67      2       75       
+  MAXIMUM         68    357 PM  86    1985  67      2       75       
                                       1946                          
   MINIMUM         35    511 AM  28    1986  46    -11       47       
   AVERAGE         52                        56     -4       61      
