@@ -1,9 +1,18 @@
 """Test CLI products"""
+# pylint: disable=redefined-outer-name
 import datetime
 
+import pytest
+import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
-from pyiem.util import utc, get_test_file
+from pyiem.util import utc, get_test_file, get_dbconn
 from pyiem.nws.products.cli import parser as cliparser
+
+
+@pytest.fixture
+def dbcursor():
+    """Get a database cursor for testing."""
+    return get_dbconn("iem").cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
 def test_190510_parsefail():
@@ -18,7 +27,29 @@ def test_200423_missing_skycover():
     assert prod.data[0]["data"]["average_sky_cover"] == 0.4
 
 
-def test_issue15_wind():
+def test_database_progression(dbcursor):
+    """Test our deletion logic."""
+
+    def _get():
+        """Fetch our current value."""
+        dbcursor.execute(
+            "SELECT high from cli_data "
+            "where station = 'KCVG' and valid = '2020-04-22'"
+        )
+        return dbcursor.fetchone()["high"]
+
+    prod = cliparser(get_test_file("CLI/CLICVG.txt"))
+    prod.sql(dbcursor)
+    assert abs(_get() - 69.0) < 0.01
+    prod = cliparser(get_test_file("CLI/CLICVG_older.txt"))
+    prod.sql(dbcursor)
+    assert abs(_get() - 69.0) < 0.01
+    prod = cliparser(get_test_file("CLI/CLICVG_newer.txt"))
+    prod.sql(dbcursor)
+    assert abs(_get() - 70.0) < 0.01
+
+
+def test_issue15_wind(dbcursor):
     """Test parsing of available wind information."""
     prod = cliparser(get_test_file("CLI/CLICVG.txt"))
     assert abs(prod.data[0]["data"]["resultant_wind_speed"] - 6.0) < 0.01
@@ -28,6 +59,8 @@ def test_issue15_wind():
     assert abs(prod.data[0]["data"]["highest_gust_speed"] - 26.0) < 0.01
     assert abs(prod.data[0]["data"]["highest_gust_direction"] - 230.0) < 0.01
     assert abs(prod.data[0]["data"]["average_wind_speed"] - 7.7) < 0.01
+    prod.sql(dbcursor)
+    assert prod.data[0]["db_station"] == "KCVG"
 
 
 def test_180208_issue56_tweetmissing():

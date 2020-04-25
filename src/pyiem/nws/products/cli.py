@@ -298,7 +298,12 @@ class CLIProduct(TextProduct):
             valid, station = self.parse_cli_headline(section)
             data = self.parse_data(section)
             self.data.append(
-                dict(cli_valid=valid, cli_station=station, data=data)
+                dict(
+                    cli_valid=valid,
+                    cli_station=station,
+                    db_station=None,
+                    data=data,
+                )
             )
 
     def find_sections(self):
@@ -449,6 +454,115 @@ class CLIProduct(TextProduct):
             raise CLIException(
                 "Could not find date valid in %s" % (self.get_product_id(),)
             )
+
+    def _sql_data(self, cursor, data):
+        """Do an individual data entry."""
+        if data["db_station"] is None:
+            station = f"{self.source[0]}{self.afos[3:]}"
+            self.warnings.append(
+                f"Using crude logic to compute station of {station}"
+            )
+            data["db_station"] = station
+        # See what we currently have stored.
+        cursor.execute(
+            "SELECT product from cli_data where station = %s and valid = %s",
+            (data["db_station"], data["cli_valid"]),
+        )
+        if cursor.rowcount == 1:
+            row = cursor.fetchone()
+            if self.get_product_id() < row["product"]:
+                return
+            cursor.execute(
+                "DELETE from cli_data WHERE station = %s and valid = %s",
+                (data["db_station"], data["cli_valid"]),
+            )
+        cursor.execute(
+            """INSERT into cli_data(
+        station, product, valid, high, high_normal, high_record,
+        high_record_years, low, low_normal, low_record, low_record_years,
+        precip, precip_month, precip_jan1, precip_jul1, precip_normal,
+        precip_record,
+        precip_record_years, precip_month_normal, snow, snow_month,
+        snow_jun1, snow_jul1,
+        snow_dec1, precip_dec1, precip_dec1_normal, precip_jan1_normal,
+        high_time, low_time, snow_record_years, snow_record,
+        snow_jun1_normal, snow_jul1_normal, snow_dec1_normal,
+        snow_month_normal, precip_jun1, precip_jun1_normal,
+        average_sky_cover,
+        resultant_wind_speed, resultant_wind_direction,
+        highest_wind_speed, highest_wind_direction,
+        highest_gust_speed, highest_gust_direction,
+        average_wind_speed)
+        VALUES (
+        %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s,
+        %s,
+        %s, %s, %s, %s,
+        %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s,
+        %s,
+        %s, %s,
+        %s, %s,
+        %s, %s,
+        %s
+        )
+        """,
+            (
+                data["db_station"],
+                self.get_product_id(),
+                data["cli_valid"],
+                data["data"].get("temperature_maximum"),
+                data["data"].get("temperature_maximum_normal"),
+                data["data"].get("temperature_maximum_record"),
+                data["data"].get("temperature_maximum_record_years", []),
+                data["data"].get("temperature_minimum"),
+                data["data"].get("temperature_minimum_normal"),
+                data["data"].get("temperature_minimum_record"),
+                data["data"].get("temperature_minimum_record_years", []),
+                data["data"].get("precip_today"),
+                data["data"].get("precip_month"),
+                data["data"].get("precip_jan1"),
+                data["data"].get("precip_jul1"),
+                data["data"].get("precip_today_normal"),
+                data["data"].get("precip_today_record"),
+                data["data"].get("precip_today_record_years", []),
+                data["data"].get("precip_month_normal"),
+                data["data"].get("snow_today"),
+                data["data"].get("snow_month"),
+                data["data"].get("snow_jun1"),
+                data["data"].get("snow_jul1"),
+                data["data"].get("snow_dec1"),
+                data["data"].get("precip_dec1"),
+                data["data"].get("precip_dec1_normal"),
+                data["data"].get("precip_jan1_normal"),
+                data["data"].get("temperature_maximum_time"),
+                data["data"].get("temperature_minimum_time"),
+                data["data"].get("snow_today_record_years", []),
+                data["data"].get("snow_today_record"),
+                data["data"].get("snow_jun1_normal"),
+                data["data"].get("snow_jul1_normal"),
+                data["data"].get("snow_dec1_normal"),
+                data["data"].get("snow_month_normal"),
+                data["data"].get("precip_jun1"),
+                data["data"].get("precip_jun1_normal"),
+                data["data"].get("average_sky_cover"),
+                data["data"].get("resultant_wind_speed"),
+                data["data"].get("resultant_wind_direction"),
+                data["data"].get("highest_wind_speed"),
+                data["data"].get("highest_wind_direction"),
+                data["data"].get("highest_gust_speed"),
+                data["data"].get("highest_gust_direction"),
+                data["data"].get("average_wind_speed"),
+            ),
+        )
+
+    def sql(self, cursor):
+        """Do the database update!"""
+        for data in self.data:
+            self._sql_data(cursor, data)
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):

@@ -214,8 +214,20 @@ CREATE TABLE cli_data(
   snow_jun1_normal float,
   snow_jul1_normal float,
   snow_dec1_normal float,
-  snow_month_normal float
+  snow_month_normal float,
+  precip_jun1 real,
+  precip_jun1_normal real,
+  average_sky_cover real,
+  resultant_wind_speed real,
+  resultant_wind_direction real,
+  highest_wind_speed real,
+  highest_wind_direction real,
+  highest_gust_speed real,
+  highest_gust_direction real,
+  average_wind_speed real
 );
+ALTER TABLE cli_data OWNER to mesonet;
+GRANT ALL on cli_data to ldm;
 CREATE UNIQUE index cli_data_idx on cli_data(station,valid);
 GRANT SELECT on cli_data to nobody,apache;
 
