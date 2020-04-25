@@ -18,6 +18,18 @@ def test_200423_missing_skycover():
     assert prod.data[0]["data"]["average_sky_cover"] == 0.4
 
 
+def test_issue15_wind():
+    """Test parsing of available wind information."""
+    prod = cliparser(get_test_file("CLI/CLICVG.txt"))
+    assert abs(prod.data[0]["data"]["resultant_wind_speed"] - 6.0) < 0.01
+    assert abs(prod.data[0]["data"]["resultant_wind_direction"] - 180.0) < 0.01
+    assert abs(prod.data[0]["data"]["highest_wind_speed"] - 20.0) < 0.01
+    assert abs(prod.data[0]["data"]["highest_wind_direction"] - 220.0) < 0.01
+    assert abs(prod.data[0]["data"]["highest_gust_speed"] - 26.0) < 0.01
+    assert abs(prod.data[0]["data"]["highest_gust_direction"] - 230.0) < 0.01
+    assert abs(prod.data[0]["data"]["average_wind_speed"] - 7.7) < 0.01
+
+
 def test_180208_issue56_tweetmissing():
     """Report None values as missing, not None"""
     prod = cliparser(get_test_file("CLI/CLIFFC.txt"))

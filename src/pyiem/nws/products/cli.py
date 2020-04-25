@@ -13,6 +13,9 @@ HEADLINE_RE = re.compile(
         r"([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\."
     )
 )
+WIND_RE = re.compile(
+    r"(HIGHEST|AVERAGE|RESULTANT)\s(WIND|GUST)\s(SPEED|DIRECTION)"
+)
 
 REGIMES = [
     "WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST",
@@ -253,6 +256,19 @@ def parse_sky_coverage(lines, data):
                 pass
 
 
+def parse_wind(lines, data):
+    """Parse any wind information."""
+    # hold your nose here
+    # make everything space seperated
+    content = " ".join((" ".join(lines[1:])).strip().split())
+    tokens = WIND_RE.findall(content)
+    for token in tokens:
+        content = content.replace(" ".join(token), ";")
+    vals = content[1:].split(";")
+    for token, val in zip(tokens, vals):
+        data[("_".join(token)).lower()] = get_number(val)
+
+
 class CLIProduct(TextProduct):
     """
     Represents a CLI Daily Climate Report Product
@@ -408,6 +424,8 @@ class CLIProduct(TextProduct):
                 parse_snowfall(self.regime, lines, data)
             elif lines[0] in ["SKY COVER"]:
                 parse_sky_coverage(lines, data)
+            elif lines[0] in ["WIND (MPH)"] and len(lines) > 1:
+                parse_wind(lines, data)
 
         return data
 
