@@ -260,10 +260,7 @@ def segment_logic(segment, currentpoly, polys):
             )
             return newp
         raise Exception(
-            (
-                "Adding interior polygon resulted "
-                "in an invalid geometry, aborting"
-            )
+            "Adding interior polygon resulted in an invalid geometry, aborting"
         )
 
     # All open lines need to intersect the CONUS, ensure that happens
@@ -371,10 +368,10 @@ def str2multipolygon(s):
     )
     for i, poly in enumerate(polys):
         if not poly.is_valid:
-            print("     ERROR: polygon %s is invalid!" % (i,))
+            print(f"     ERROR: polygon {i} is invalid!")
             continue
         if poly.area == CONUS["poly"].area:
-            print("     polygon %s is just CONUS, skipping" % (i,))
+            print(f"     polygon {i} is just CONUS, skipping")
             continue
         print("     polygon: %s has area: %s" % (i, poly.area))
         res.append(poly)
