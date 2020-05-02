@@ -12,10 +12,12 @@ Unfortunately, there is not much documentation of this format and the feed of
 this data contains a bunch of formatting errors.
 
 """
+from enum import Enum
 import datetime
 import re
 import math
 
+from pydantic import BaseModel
 import pyiem.nws.product as product
 from pyiem.datatypes import distance
 from pyiem.util import html_escape
@@ -64,20 +66,29 @@ DRCT2DIR = {
 }
 
 
-class PilotReport:
-    """ A Pilot Report Object """
+class Priority(str, Enum):
+    """Types of reports."""
 
-    def __init__(self):
-        """ Constructor"""
-        self.base_loc = None
-        self.text = None
-        self.priority = None
-        self.latitude = None
-        self.longitude = None
-        self.valid = None
-        self.cwsu = None
-        self.aircraft_type = None
-        self.is_duplicate = False
+    def __str__(self):
+        """When we want the str repr."""
+        return str(self.value)
+
+    UA = "UA"
+    UUA = "UUA"
+
+
+class PilotReport(BaseModel):
+    """ A Pilot Report. """
+
+    base_loc: str = None
+    text: str = None
+    priority: Priority = None
+    latitude: float = None
+    longitude: float = None
+    valid: datetime.datetime = None
+    cwsu: str = None
+    aircraft_type: str = None
+    is_duplicate: bool = False
 
 
 class Pirep(product.TextProduct):
@@ -130,9 +141,9 @@ class Pirep(product.TextProduct):
                     print("Aborting as not-PIREP? |%s|" % (report,))
                     return
                 if token.find(" UUA") > 0:
-                    _pr.priority = "UUA"
+                    _pr.priority = Priority.UUA
                 else:
-                    _pr.priority = "UA"
+                    _pr.priority = Priority.UA
                 parts = token.split()
                 if len(parts) == 2:
                     _pr.base_loc = parts[0]
@@ -219,7 +230,7 @@ class Pirep(product.TextProduct):
                                 loc = loc[1:]
                             if loc not in self.nwsli_provider:
                                 self.warnings.append(
-                                    "Unknown location: %s '%s'" % (loc, report)
+                                    f"Unknown location: {loc} '{report}'"
                                 )
                                 return None
                             lats.append(self.nwsli_provider[loc]["lat"])
@@ -233,13 +244,13 @@ class Pirep(product.TextProduct):
                 if loc not in self.nwsli_provider:
                     if _pr.base_loc is None:
                         self.warnings.append(
-                            "Unknown location: %s '%s'" % (loc, report)
+                            f"Unknown location: {loc} '{report}'"
                         )
                         return None
                     loc = _pr.base_loc
                     if loc not in self.nwsli_provider:
                         self.warnings.append(
-                            "Double-unknown location: %s" % (report,)
+                            f"Double-unknown location: {report}"
                         )
                         return None
                     # So we discard the offset when we go back to the base
@@ -295,16 +306,14 @@ class Pirep(product.TextProduct):
             if report.is_duplicate:
                 continue
             txn.execute(
-                """
-                INSERT into pireps(valid, geom, is_urgent,
-                aircraft_type, report) VALUES (%s,
-                ST_GeographyFromText('SRID=4326;POINT(%s %s)'),%s,%s,%s)
-            """,
+                "INSERT into pireps(valid, geom, is_urgent, "
+                "aircraft_type, report) VALUES (%s, "
+                "ST_GeographyFromText('SRID=4326;POINT(%s %s)'),%s,%s,%s)",
                 (
                     report.valid,
                     report.longitude,
                     report.latitude,
-                    report.priority == "UUA",
+                    report.priority == Priority.UUA,
                     report.aircraft_type,
                     report.text,
                 ),
@@ -313,14 +322,11 @@ class Pirep(product.TextProduct):
     def assign_cwsu(self, txn):
         """ Use this transaction object to assign CWSUs for the pireps """
         for report in self.reports:
-            sql = """
-                select distinct id from cwsu WHERE
-                st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))
-            """ % (
-                report.longitude,
-                report.latitude,
+            txn.execute(
+                "select distinct id from cwsu WHERE "
+                "st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))",
+                (report.longitude, report.latitude),
             )
-            txn.execute(sql)
             if txn.rowcount == 0:
                 # self.warnings.append("Find CWSU failed %.3f %.3f %s" % (
                 #    report.longitude, report.latitude, report.text))
@@ -336,11 +342,13 @@ class Pirep(product.TextProduct):
                 continue
             jmsg = {
                 "priority": "Urgent"
-                if report.priority == "UUA"
+                if report.priority == Priority.UUA
                 else "Routine",
                 "ts": report.valid.strftime("%H%M"),
                 "report": html_escape(report.text),
-                "color": "#ff0000" if report.priority == "UUA" else "#00ff00",
+                "color": (
+                    "#ff0000" if report.priority == Priority.UUA else "#00ff00"
+                ),
             }
             plain = "%(priority)s pilot report at %(ts)sZ: %(report)s" % jmsg
             html = (
@@ -348,8 +356,9 @@ class Pirep(product.TextProduct):
                 "report</span> at %(ts)sZ: %(report)s"
             ) % jmsg
             xtra = {
-                "channels": "%s.%s,%s.PIREP"
-                % (report.priority, report.cwsu, report.priority),
+                "channels": (
+                    f"{report.priority}.{report.cwsu},{report.priority}.PIREP"
+                ),
                 "geometry": "POINT(%s %s)"
                 % (report.longitude, report.latitude),
                 "ptype": report.priority,
