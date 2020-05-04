@@ -23,6 +23,8 @@ geopandas
 pandas
 pint
 psycopg2
+# Models
+pydantic
 pytest
 pytest-mpl
 pytest-runner

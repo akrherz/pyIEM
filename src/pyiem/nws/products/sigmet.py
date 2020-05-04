@@ -11,10 +11,8 @@ from shapely.geometry import Polygon, Point
 from pyiem.nws.product import TextProduct
 
 O_LINE1 = re.compile(
-    (
-        "SIGMET (?P<name>[A-Z]*) (?P<num>[0-9]*) "
-        "VALID (?P<sts>[0-9]{6})/(?P<ets>[0-9]{6})"
-    )
+    "SIGMET (?P<name>[A-Z]*) (?P<num>[0-9]*) "
+    "VALID (?P<sts>[0-9]{6})/(?P<ets>[0-9]{6})"
 )
 
 O_PAIRS = re.compile(r"(?P<lat>[NS][0-9]{2,4})\s?(?P<lon>[EW][0-9]{3,5})")
@@ -25,45 +23,35 @@ VALID\sUNTIL\s(?P<hour>[0-2][0-9])(?P<minute>[0-5][0-9])Z\s
 (?P<states>[A-Z ]+)\s
 (?P<from>FROM)?\s?(?P<locs>[0-9A-Z \-]+?)\s
 (?P<dmshg>DMSHG|DVLPG|INTSF)?\s?(?P<geotype>AREA|LINE|ISOL)?\s?
-(?P<cutype>EMBD|SEV|SEV\sEMBD|EMBD\sSEV)?\s?TS\s(?P<width>[0-9]+\sNM\sWIDE)?(?P<diameter>D[0-9]+)?
+(?P<cutype>EMBD|SEV|SEV\sEMBD|EMBD\sSEV)?\s?TS\s(?P<width>[0-9]+\sNM\sWIDE)?
+(?P<diameter>D[0-9]+)?
 """,
     re.VERBOSE,
 )
 
 FROM_RE = re.compile(
     r"""
-(?P<offset>[0-9]+)?(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s?(?P<loc>[A-Z0-9]{3})
+(?P<offset>[0-9]+)?
+(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s?
+(?P<loc>[A-Z0-9]{3})
 """,
     re.VERBOSE,
 )
 
 OL_RE = re.compile(
-    r"""
-OUTLOOK\sVALID\s(?P<begin>[0-9]{6})-(?P<end>[0-9]{6})\n
-""",
-    re.VERBOSE,
+    r"OUTLOOK\sVALID\s(?P<begin>[0-9]{6})-(?P<end>[0-9]{6})\n", re.VERBOSE
 )
 
 AREA_RE = re.compile(
-    r"""
-AREA\s(?P<areanum>[0-9]+)\.\.\.FROM\s(?P<locs>[0-9A-Z \-]+)\n
-""",
+    r"AREA\s(?P<areanum>[0-9]+)\.\.\.FROM\s(?P<locs>[0-9A-Z \-]+)\n",
     re.VERBOSE,
 )
 
 LINE_RE = re.compile(
-    r"""
-(?P<distance>[0-9]*)NM\s+EITHER\s+SIDE\s+OF\s+LINE\s+
-""",
-    re.VERBOSE,
+    r"(?P<distance>[0-9]*)NM\s+EITHER\s+SIDE\s+OF\s+LINE\s+", re.VERBOSE
 )
 
-CIRCLE_RE = re.compile(
-    r"""
-WI\s+(?P<distance>[0-9]*)NM\s+OF\s+
-""",
-    re.VERBOSE,
-)
+CIRCLE_RE = re.compile(r"WI\s+(?P<distance>[0-9]*)NM\s+OF\s+", re.VERBOSE)
 
 
 dirs = {
@@ -272,22 +260,14 @@ class SIGMETProduct(TextProduct):
         """ Do SQL related stuff that is required """
         txn.execute("DELETE from sigmets_current where expire < now()")
         for sigmet in self.sigmets:
+            sqlwkt = f"SRID=4326;{sigmet.geom.wkt}"
             for table in ("sigmets_current", "sigmets_archive"):
-                sql = (
-                    "DELETE from "
-                    + table
-                    + " where label = %s and expire = %s"
-                )
+                sql = f"DELETE from {table} where label = %s and expire = %s"
                 args = (sigmet.label, sigmet.ets)
                 txn.execute(sql, args)
-                sqlwkt = "SRID=4326;%s" % (sigmet.geom.wkt,)
                 sql = (
-                    """
-                    INSERT into """
-                    + table
-                    + """(sigmet_type, label, issue,
-                    expire, raw, geom) VALUES ('C',%s, %s, %s, %s,
-                   %s)"""
+                    f"INSERT into {table} (sigmet_type, label, issue, "
+                    "expire, raw, geom) VALUES ('C',%s, %s, %s, %s, %s)"
                 )
                 args = (
                     sigmet.label,
@@ -299,12 +279,9 @@ class SIGMETProduct(TextProduct):
                 txn.execute(sql, args)
             # Compute who is impacted by this SIGMET
             txn.execute(
-                """
-            SELECT distinct id from cwsu WHERE
-            st_overlaps(geomFromEWKT('SRID=4326;%s'), geom) or
-            st_contains(geomFromEWKT('SRID=4326;%s'), geom)
-            """
-                % (sigmet.geom, sigmet.geom)
+                "SELECT distinct id from cwsu WHERE "
+                f"st_overlaps(geomFromEWKT('{sqlwkt}'), geom) or "
+                f"st_contains(geomFromEWKT('{sqlwkt}'), geom) "
             )
             for row in txn.fetchall():
                 sigmet.centers.append(row["id"])

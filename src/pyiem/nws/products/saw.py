@@ -13,7 +13,7 @@ from pyiem.exceptions import SAWException
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(
-    (r"WW ([0-9]*) (TEST)?\s?" "(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)")
+    r"WW ([0-9]*) (TEST)?\s?" "(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)"
 )
 REPLACES_RE = re.compile("REPLACES WW ([0-9]*)")
 DBTYPES = ["TOR", "SVR"]
@@ -56,13 +56,9 @@ class SAWProduct(TextProduct):
         if self.geometry is None:
             return
         txn.execute(
-            """
-            SELECT distinct wfo from ugcs WHERE
-             ST_Contains('SRID=4326;"""
-            + self.geometry.wkt
-            + """', geom)
-             and end_ts is null
-        """
+            "SELECT distinct wfo from ugcs WHERE "
+            f"ST_Contains('SRID=4326;{self.geometry.wkt}', geom) "
+            "and end_ts is null"
         )
         for row in txn.fetchall():
             self.affected_wfos.append(row[0])
@@ -76,18 +72,16 @@ class SAWProduct(TextProduct):
         if self.action == self.ISSUES:
             # Delete any current entries
             txn.execute(
-                """
-                DELETE from watches WHERE num = %s and
-               extract(year from issued) = %s
-            """,
+                "DELETE from watches WHERE num = %s and "
+                "extract(year from issued) = %s",
                 (self.ww_num, self.sts.year),
             )
             # Insert into the main watches table
             giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
-            sql = """
-                INSERT into watches (sel, issued, expired, type, report,
-                geom, num) VALUES(%s,%s,%s,%s,%s,%s, %s)
-            """
+            sql = (
+                "INSERT into watches (sel, issued, expired, type, report, "
+                "geom, num) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+            )
             args = (
                 "SEL%s" % (self.saw,),
                 self.sts,
@@ -99,10 +93,10 @@ class SAWProduct(TextProduct):
             )
             txn.execute(sql, args)
             # Update the watches_current table
-            sql = """
-                UPDATE watches_current SET issued = %s, expired = %s,
-                type = %s, report = %s, geom = %s, num = %s WHERE sel = %s
-            """
+            sql = (
+                "UPDATE watches_current SET issued = %s, expired = %s, "
+                "type = %s, report = %s, geom = %s, num = %s WHERE sel = %s"
+            )
             args = (
                 self.sts,
                 self.ets,
@@ -117,30 +111,21 @@ class SAWProduct(TextProduct):
             if REPLACES_RE.findall(self.unixtext):
                 rnum = REPLACES_RE.findall(self.unixtext)[0][0]
                 txn.execute(
-                    """
-                    UPDATE watches SET expired  = %s
-                    WHERE num = %s and extract(year from expired) = %s
-                """,
+                    "UPDATE watches SET expired = %s "
+                    "WHERE num = %s and extract(year from expired) = %s",
                     (self.valid, rnum, self.sts.year),
                 )
         elif self.action == self.CANCELS:
             for table in ("watches", "watches_current"):
                 txn.execute(
-                    """
-                    UPDATE """
-                    + table
-                    + """ SET expired = %s
-                    WHERE num = %s and extract(year from expired) = %s
-                """,
+                    f"UPDATE {table} SET expired = %s "
+                    "WHERE num = %s and extract(year from expired) = %s",
                     (self.valid, self.ww_num, self.valid.year),
                 )
                 if table == "watches" and txn.rowcount != 0:
                     self.warnings.append(
-                        (
-                            "Expiration of watch resulted in "
-                            "update of %s rows, instead of 1."
-                        )
-                        % (txn.rowcount,)
+                        "Expiration of watch resulted in "
+                        f"update of {txn.rowcount} rows, instead of 1."
                     )
 
     def find_time(self):
@@ -152,10 +137,8 @@ class SAWProduct(TextProduct):
         if self.action == self.CANCELS:
             return (None, None)
         tokens = re.findall(
-            (
-                "([0-3][0-9])([0-2][0-9])([0-6][0-9])Z - "
-                "([0-3][0-9])([0-2][0-9])([0-6][0-9])Z"
-            ),
+            "([0-3][0-9])([0-2][0-9])([0-6][0-9])Z - "
+            "([0-3][0-9])([0-2][0-9])([0-6][0-9])Z",
             self.unixtext,
         )
 
