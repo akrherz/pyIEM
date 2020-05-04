@@ -52,10 +52,10 @@ class SPSProduct(TextProduct):
             if seg.ugcexpire is not None:
                 ets = seg.ugcexpire
             giswkt = "SRID=4326;%s" % (MultiPolygon([seg.sbw]).wkt,)
-            sql = """
-                INSERT into text_products(product, product_id, geom,
-                issue, expire, pil) values (%s, %s, %s, %s, %s, %s)
-            """
+            sql = (
+                "INSERT into text_products(product, product_id, geom, "
+                "issue, expire, pil) values (%s, %s, %s, %s, %s, %s)"
+            )
             myargs = (
                 self.unixtext,
                 self.get_product_id(),
@@ -70,7 +70,7 @@ class SPSProduct(TextProduct):
         """Returns a list of channels for this SPS."""
         channels = self.get_channels()
         for ugc in segment.ugcs:
-            channels.append("%s.%s" % (self.afos, ugc))
+            channels.append(f"{self.afos}.{ugc}")
             channels.append(str(ugc))
         return channels
 

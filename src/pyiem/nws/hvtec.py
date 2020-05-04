@@ -61,7 +61,7 @@ def contime(s):
         return None
     try:
         ts = datetime.datetime.strptime(s, "%y%m%dT%H%MZ")
-        return ts.replace(tzinfo=pytz.timezone("UTC"))
+        return ts.replace(tzinfo=pytz.UTC)
     except Exception as err:
         print(err)
         return None

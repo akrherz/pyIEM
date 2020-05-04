@@ -18,66 +18,49 @@ from pyiem.nws import ugc, vtec, hvtec
 # match the LDM sequence number at the top!
 AFOSRE = re.compile(r"^([A-Z][A-Z0-9\s]{3,5})$", re.M)
 TIME_RE = re.compile(
-    (
-        "^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) "
-        "([A-Z][A-Z][A-Z]) "
-        "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$"
-    ),
+    "^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
+    "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$",
     re.M | re.IGNORECASE,
 )
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(
-    (
-        "^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
-        r"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
-        r"(?P<bbb>[ACR][ACMORT][A-Z])?\s*$"
-    ),
+    "^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
+    r"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
+    r"(?P<bbb>[ACR][ACMORT][A-Z])?\s*$",
     re.M,
 )
 TIME_MOT_LOC = re.compile(
-    (
-        r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
-        r"(?P<dir>[0-9]{1,3})DEG\s+"
-        r"(?P<sknt>[0-9]{1,3})KT\s+(?P<loc>[0-9 ]+)"
-    )
+    r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
+    r"(?P<dir>[0-9]{1,3})DEG\s+"
+    r"(?P<sknt>[0-9]{1,3})KT\s+(?P<loc>[0-9 ]+)"
 )
 LAT_LON_PREFIX = re.compile(r"LAT\.\.\.LON", re.IGNORECASE)
 LAT_LON = re.compile(r"([0-9]{4,8})\s+")
 # This is a legacy tag that is no longer used, but we want to continue to
 # parse it.
 WINDHAIL = re.compile(
-    (
-        r".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
-        "(?P<windunits>MPH|KTS) "
-        r"(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"
-    )
+    r".*WIND\.\.\.HAIL (?P<winddir>[><]?)(?P<wind>[0-9]+)"
+    "(?P<windunits>MPH|KTS) "
+    r"(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"
 )
 HAILTAG = re.compile(r".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
 WINDTAG = re.compile(
-    (
-        r".*WIND\.\.\."
-        r"(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
-        "(?P<windunits>MPH|KTS)"
-    )
+    r".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
+    "(?P<windunits>MPH|KTS)"
 )
 TORNADOTAG = re.compile(
-    (r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|" "OBSERVED|POSSIBLE)")
+    r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|" "OBSERVED|POSSIBLE)"
 )
 WATERSPOUTTAG = re.compile(
-    (r".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|OBSERVED|POSSIBLE)")
+    r".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|OBSERVED|POSSIBLE)"
 )
 TORNADODAMAGETAG = re.compile(
-    (
-        r".*TORNADO DAMAGE THREAT\.\.\."
-        "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"
-    )
+    r".*TORNADO DAMAGE THREAT\.\.\."
+    "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"
 )
 FLOOD_TAGS = re.compile(
-    (
-        r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|"
-        r"DAM FAILURE|LEVEE FAILURE)\.\.\."
-        r"(?P<value>.*?)\n"
-    )
+    r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|"
+    r"DAM FAILURE|LEVEE FAILURE)\.\.\.(?P<value>.*?)\n"
 )
 TORNADO = re.compile(r"^AT |^\* AT")
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
@@ -94,13 +77,9 @@ KNOWN_BAD_TTAAII = ["KAWN"]
 def checker(lon, lat, strdata):
     """make sure our values are within physical bounds"""
     if lat >= 90 or lat <= -90:
-        raise TextProductException(
-            "invalid latitude %s from %s" % (lat, strdata)
-        )
+        raise TextProductException(f"invalid latitude {lat} from {strdata}")
     if lon > 180 or lon < -180:
-        raise TextProductException(
-            "invalid longitude %s from %s" % (lon, strdata)
-        )
+        raise TextProductException(f"invalid longitude {lon} from {strdata}")
     return (lon, lat)
 
 
@@ -152,7 +131,7 @@ def date_tokens2datetime(tokens):
     hhmi = tokens[0]
     # False positive from regex
     if hhmi[0] == ":":
-        hhmi = hhmi.replace(u":", "")
+        hhmi = hhmi.replace(":", "")
     if hhmi.find(":") > -1:
         (hh, mi) = hhmi.split(":")
     elif len(hhmi) < 3:
@@ -235,7 +214,7 @@ class TextProductSegment:
         sections = self.unixtext.split("\n\n")
         for section in sections:
             if TORNADO.findall(section):
-                return " ".join(section.replace(u"\n", " ").split())
+                return " ".join(section.replace("\n", " ").split())
         return ""
 
     def process_bullets(self):
@@ -245,9 +224,9 @@ class TextProductSegment:
         for part in parts:
             pos = part.find("\n\n")
             if pos > 0:
-                bullets.append(" ".join(part[:pos].replace(u"\n", "").split()))
+                bullets.append(" ".join(part[:pos].replace("\n", "").split()))
             else:
-                bullets.append(" ".join(part.replace(u"\n", "").split()))
+                bullets.append(" ".join(part.replace("\n", "").split()))
         return bullets
 
     def process_tags(self):
@@ -393,18 +372,13 @@ class TextProductSegment:
             return
         if self.unixtext[pos - 1] != "\n":
             self.tp.warnings.append(
-                (
-                    "process_time_mot_loc segment likely has "
-                    "poorly formatted TIME...MOT...LOC"
-                )
+                "process_time_mot_loc segment likely has "
+                "poorly formatted TIME...MOT...LOC"
             )
         search = TIME_MOT_LOC.search(self.unixtext)
         if not search:
             self.tp.warnings.append(
-                (
-                    "process_time_mot_loc segment find OK, "
-                    "but regex failed..."
-                )
+                "process_time_mot_loc segment find OK, but regex failed..."
             )
             return
 
@@ -490,8 +464,8 @@ class TextProduct:
             nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
-        self.unixtext = text.replace(u"\r\r\n", u"\n")
-        self.sections = self.unixtext.split(u"\n\n")
+        self.unixtext = text.replace("\r\r\n", "\n")
+        self.sections = self.unixtext.split("\n\n")
         self.afos = None
         # The "truth" timestamp
         self.valid = None
@@ -544,7 +518,7 @@ class TextProduct:
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos, "%s..." % (self.afos[:3],)]
+        return [self.afos, f"{self.afos[:3]}..."]
 
     def get_nicedate(self):
         """Nicely format the issuance time of this product"""
@@ -612,7 +586,7 @@ class TextProduct:
         """ Find the signature at the bottom of the page
         """
         return " ".join(
-            self.segments[-1].unixtext.replace(u"\n", " ").strip().split()
+            self.segments[-1].unixtext.replace("\n", " ").strip().split()
         )
 
     def parse_segments(self):
@@ -689,8 +663,7 @@ class TextProduct:
         search = WMO_RE.search(self.unixtext[:100])
         if search is None:
             raise TextProductException(
-                ("FATAL: Could not parse WMO header! " "%s")
-                % (self.text[:100])
+                f"FATAL: Could not parse WMO header! '{self.text[:100]}'"
             )
         gdict = search.groupdict()
         self.wmo = gdict["ttaaii"]
@@ -704,8 +677,8 @@ class TextProduct:
                 and not self.source.startswith("S")
             ):
                 self.warnings.append(
-                    ("WMO ttaaii found four chars: %s %s " "adding 00")
-                    % (self.wmo, self.source)
+                    f"WMO ttaaii found four chars: {self.wmo} {self.source} "
+                    "adding 00"
                 )
             self.wmo += "00"
 

@@ -13,7 +13,7 @@ from pyiem.exceptions import SAWException
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(
-    (r"WW ([0-9]*) (TEST)?\s?" "(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)")
+    r"WW ([0-9]*) (TEST)?\s?" "(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)"
 )
 REPLACES_RE = re.compile("REPLACES WW ([0-9]*)")
 DBTYPES = ["TOR", "SVR"]
