@@ -1236,6 +1236,10 @@ class MapPlot:
 
         """
         cwas = load_pickle_geo("cwa.pickle")
+        # Painfull.  San Juan's WFO identifier is SJU, but VTEC uses JSJ, our
+        # plotting here uses SJU
+        if "JSJ" in data:
+            data["SJU"] = data["JSJ"]
         polygon_fill(self, cwas, data, **kwargs)
 
     def drawcities(self, **kwargs):

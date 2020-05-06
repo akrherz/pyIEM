@@ -572,7 +572,8 @@ def test_textplot2():
 def test_plot():
     """ Exercise the API """
     mp = MapPlot(sector="midwest", nocaption=True)
-    mp.fill_cwas({"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40}, units="no units")
+    # test the translation of JSJ to SJU
+    mp.fill_cwas({"DMX": 80, "MKX": 5, "JSJ": 30, "AJK": 40}, units="no units")
     return mp.fig
 
 
