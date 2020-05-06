@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>products Package &#8212; pyIEM 0.0.post1+ge077e27 documentation</title>
+    <title>products Package &#8212; pyIEM 0.0.post1+g4e0f526 documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -30,7 +30,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ge077e27 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4e0f526 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">nws Package</a> &#187;</li> 
@@ -425,8 +425,53 @@ this data contains a bunch of formatting errors.</p>
 <dl class="py class">
 <dt id="pyiem.nws.products.pirep.PilotReport">
 <em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.products.pirep.</code><code class="sig-name descname">PilotReport</code><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A Pilot Report Object</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>A Pilot Report.</p>
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.aircraft_type">
+<code class="sig-name descname">aircraft_type</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.aircraft_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.base_loc">
+<code class="sig-name descname">base_loc</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.base_loc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.cwsu">
+<code class="sig-name descname">cwsu</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.cwsu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.is_duplicate">
+<code class="sig-name descname">is_duplicate</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.is_duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.latitude">
+<code class="sig-name descname">latitude</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.latitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.longitude">
+<code class="sig-name descname">longitude</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.longitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.priority">
+<code class="sig-name descname">priority</code><em class="property">: Priority</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.priority" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.text">
+<code class="sig-name descname">text</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.PilotReport.valid">
+<code class="sig-name descname">valid</code><em class="property">: datetime.datetime</em><em class="property"> = None</em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -476,6 +521,23 @@ stored within the self.reports list</p>
 <code class="sig-name descname">sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.sql" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the reports to the database via the transaction</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pyiem.nws.products.pirep.Priority">
+<em class="property">class </em><code class="sig-prename descclassname">pyiem.nws.products.pirep.</code><code class="sig-name descname">Priority</code><a class="headerlink" href="#pyiem.nws.products.pirep.Priority" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Types of reports.</p>
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.Priority.UA">
+<code class="sig-name descname">UA</code><em class="property"> = 'UA'</em><a class="headerlink" href="#pyiem.nws.products.pirep.Priority.UA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pyiem.nws.products.pirep.Priority.UUA">
+<code class="sig-name descname">UUA</code><em class="property"> = 'UUA'</em><a class="headerlink" href="#pyiem.nws.products.pirep.Priority.UUA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -776,7 +838,7 @@ VTECProduct instance or returns an exception</p>
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ge077e27 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4e0f526 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >nws Package</a> &#187;</li> 
@@ -784,7 +846,7 @@ VTECProduct instance or returns an exception</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015-2020, daryl herzmann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>
