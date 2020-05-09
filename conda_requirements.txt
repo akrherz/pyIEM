@@ -1,5 +1,5 @@
 affine
-cartopy>=0.17,<0.18
+cartopy>=0.18
 cython
 descartes
 fiona
