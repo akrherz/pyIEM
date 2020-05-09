@@ -19,6 +19,7 @@ mock
 # needed for fiona?
 ncurses
 netCDF4
+numpy
 geopandas
 pandas
 pint
