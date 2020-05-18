@@ -48,6 +48,14 @@ before_install:
   - . .ci_tooling/postgres.sh
   - sudo ls -la /var/run/postgresql
   - sudo ls -la /run/postgresql
+  - sudo systemctl status postgresql@9.3-main.service
+  - sudo systemctl stop postgresql@9.3-main.service
+  - sudo systemctl status postgresql@9.4-main.service
+  - sudo systemctl stop postgresql@9.4-main.service
+  - sudo systemctl status postgresql@9.5-main.service
+  - sudo systemctl stop postgresql@9.5-main.service
+  - sudo systemctl status postgresql@9.6-main.service
+  - sudo systemctl stop postgresql@9.6-main.service
   - sudo apt list --installed
 
 install:
