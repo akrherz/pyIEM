@@ -43,7 +43,8 @@ language: python
 before_install:
   - git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
   - ps auxw
-  - sudo ls /var/run/postgresql
+  - sudo ls -la /var/run/postgresql
+  - sudo ls -la /run/postgresql
   - . .ci_tooling/postgres.sh
 
 install:
