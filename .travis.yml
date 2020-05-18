@@ -42,21 +42,7 @@ language: python
 
 before_install:
   - git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
-  - ps auxw
-  - sudo ls -la /var/run/postgresql
-  - sudo ls -la /run/postgresql
   - . .ci_tooling/postgres.sh
-  - sudo ls -la /var/run/postgresql
-  - sudo ls -la /run/postgresql
-  - sudo systemctl status postgresql@9.3-main.service
-  - sudo systemctl stop postgresql@9.3-main.service
-  - sudo systemctl status postgresql@9.4-main.service
-  - sudo systemctl stop postgresql@9.4-main.service
-  - sudo systemctl status postgresql@9.5-main.service
-  - sudo systemctl stop postgresql@9.5-main.service
-  - sudo systemctl status postgresql@9.6-main.service
-  - sudo systemctl stop postgresql@9.6-main.service
-  - sudo apt list --installed
 
 install:
   - . .ci_tooling/miniconda.sh
