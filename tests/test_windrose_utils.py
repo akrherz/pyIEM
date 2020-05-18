@@ -25,9 +25,9 @@ def faux_data():
 
 def test_timeinfo():
     """Exercise the _get_timeinfo method"""
-    res = _get_timeinfo(range(1, 10), "hour", 24)
+    res = _get_timeinfo(range(1, 10), "hour", 24, None)
     assert res["labeltext"] == "(1, 2, 3, 4, 5, 6, 7, 8, 9)"
-    res = _get_timeinfo([1], "month", 1)
+    res = _get_timeinfo([1], "month", 1, None)
     assert res["sqltext"] == " and extract(month from valid) = 1 "
 
 
@@ -102,7 +102,13 @@ def test_windrose_upperair():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
     fig = windrose(
-        "_XXX", sknt=sknt, drct=drct, valid=valid, level=500, nogenerated=True
+        "_XXX",
+        sknt=sknt,
+        drct=drct,
+        valid=valid,
+        level=500,
+        nogenerated=True,
+        tzname="UTC",
     )
     return fig
 
@@ -118,6 +124,7 @@ def test_windrose_upperair_text():
         level=500,
         nogenerated=True,
         justdata=True,
+        tzname="UTC",
     )
     assert res
 

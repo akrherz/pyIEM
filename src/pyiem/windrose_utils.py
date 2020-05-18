@@ -3,6 +3,7 @@ import datetime
 
 import numpy as np
 import pandas as pd
+import pytz
 from pandas.io.sql import read_sql
 from metpy.units import units as mpunits
 from pyiem.plot.util import fitbox
@@ -40,13 +41,14 @@ RAOB_BINS = {
 }
 
 
-def _get_timeinfo(arr, datepart, fullsize):
+def _get_timeinfo(arr, datepart, fullsize, tzname):
     """Convert the months/hours array provided into label text and SQL
 
     Args:
       arr (list): A list of ints
       datepart (str): the part to extract from the database timestamp
       fullsize (int): the size of specifying all dates
+      tzname (str): The timezone to compute this limiter in.
 
     Returns:
       dict with keys `sqltext` and `labeltext`
@@ -54,11 +56,16 @@ def _get_timeinfo(arr, datepart, fullsize):
     sql = ""
     lbl = "All included"
     if len(arr) == 1:
-        sql = " and extract(%s from valid) = %s " % (datepart, arr[0])
+        sql = " and extract(%s from valid%s) = %s " % (
+            datepart,
+            "" if tzname is None else " at time zone '%s'" % (tzname,),
+            arr[0],
+        )
         lbl = str(tuple(arr))
     elif len(arr) < fullsize:
-        sql = (" and extract(%s from valid) in %s ") % (
+        sql = (" and extract(%s from valid%s) in %s ") % (
             datepart,
+            "" if tzname is None else " at time zone '%s'" % (tzname,),
             (str(tuple(arr))).replace("'", ""),
         )
         lbl = str(tuple(arr))
@@ -134,7 +141,16 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
 
 
 def _make_textresult(
-    station, df, units, nsector, sname, monthinfo, hourinfo, level, bins
+    station,
+    df,
+    units,
+    nsector,
+    sname,
+    monthinfo,
+    hourinfo,
+    level,
+    bins,
+    tzname,
 ):
     """Generate a text table of windrose information
 
@@ -148,6 +164,7 @@ def _make_textresult(
       hourinfo (dict): information on hour limiting
       level (int): in case of RAOB, which level do we care for
       bins (list): values to bin the wind speeds
+      tzname (str): Time zone for the report.
 
     Returns:
       str of information"""
@@ -174,10 +191,7 @@ def _make_textresult(
         len(df.index) - len(df2.index),
         len(df.index),
     )
-    res += ("# Period: %s - %s\n") % (
-        df["valid"].min().strftime("%-d %b %Y"),
-        df["valid"].max().strftime("%-d %b %Y"),
-    )
+    res += f"# {_time_domain_string(df, tzname)}\n"
     res += "# Hour Limiter: %s\n" % (hourinfo["labeltext"],)
     res += "# Month Limiter: %s\n" % (monthinfo["labeltext"],)
     res += "# Wind Speed Units: %s\n" % (wu["label"],)
@@ -214,6 +228,23 @@ def _make_textresult(
     return res
 
 
+def _time_domain_string(df, tzname):
+    """Custom time label option."""
+    sts = df["valid"].min()
+    ets = df["valid"].max()
+    timeformat = "%d %b %Y %I:%M %p"
+    if tzname is not None:
+        sts = sts.astimezone(pytz.timezone(tzname))
+        ets = ets.astimezone(pytz.timezone(tzname))
+    if tzname == "UTC":
+        timeformat = "%d %b %Y %H:%M"
+    return "%s - %s %s" % (
+        sts.strftime(timeformat),
+        ets.strftime(timeformat),
+        "" if tzname is None else tzname,
+    )
+
+
 def _make_plot(
     station,
     df,
@@ -225,7 +256,8 @@ def _make_plot(
     sname,
     level,
     bins,
-    **kwargs
+    tzname,
+    **kwargs,
 ):
     """Generate a matplotlib windrose plot
 
@@ -241,6 +273,7 @@ def _make_plot(
       sname (str): station name
       level (int): RAOB level in hPa of interest
       bins (list): values for binning the wind speeds
+      tzname (str): Time zone this plot is produced in.
 
     Returns:
       matplotlib.Figure
@@ -270,9 +303,9 @@ def _make_plot(
     wp = plot(direction, speed, bins=bins, nsector=nsector, rmax=rmax)
 
     # Now we put some fancy debugging info on the plot
-    tlimit = "Time Domain: "
+    tlimit = "[Time Domain: "
     if len(hours) == 24 and len(months) == 12:
-        tlimit = "All Year"
+        tlimit = ""
     if len(hours) < 24:
         if len(hours) > 4:
             tlimit += "%s-%s" % (
@@ -287,17 +320,16 @@ def _make_plot(
     if len(months) < 12:
         for h in months:
             tlimit += "%s," % (datetime.datetime(2000, h, 1).strftime("%b"),)
-    label = """[%s] %s%s
-Windrose Plot [%s]
-Period of Record: %s - %s""" % (
+    if tlimit != "":
+        tlimit += "]"
+    label = ("[%s] %s%s\n" "Windrose Plot %s\n" "Time Bounds: %s") % (
         station,
         sname if sname is not None else "((%s))" % (station,),
         "" if level is None else " @%s hPa" % (level,),
         tlimit,
-        df["valid"].min().strftime("%d %b %Y"),
-        df["valid"].max().strftime("%d %b %Y"),
+        _time_domain_string(df, tzname),
     )
-    fitbox(wp.fig, label, 0.14, 0.99, 0.91, 0.99, ha="left")
+    fitbox(wp.fig, label, 0.14, 0.99, 0.92, 0.99, ha="left")
     label = ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s") % (
         len(df.index),
         len(df.index) - len(df2.index),
@@ -340,7 +372,8 @@ def windrose(
     valid=None,
     level=None,
     bins=None,
-    **kwargs
+    tzname=None,
+    **kwargs,
 ):
     """Utility function that generates a windrose plot
 
@@ -361,12 +394,13 @@ def windrose(
       valid (list,optional): A list of valid datetimes (with tzinfo set)
       level (int,optional): In case of RAOB, which level interests us (hPa)
       bins (list,optional): bins to use for the wind speed
+      tzname (str,optional): Time zone to use for the plot.
 
     Returns:
       matplotlib.Figure instance or textdata
     """
-    monthinfo = _get_timeinfo(months, "month", 12)
-    hourinfo = _get_timeinfo(hours, "hour", 24)
+    monthinfo = _get_timeinfo(months, "month", 12, tzname)
+    hourinfo = _get_timeinfo(hours, "hour", 24, tzname)
     wu = WINDUNITS[units]
     if sknt is None or drct is None:
         df = _get_data(station, database, sts, ets, monthinfo, hourinfo, level)
@@ -389,6 +423,7 @@ def windrose(
             hourinfo,
             level,
             bins,
+            tzname,
         )
 
     return _make_plot(
@@ -402,5 +437,6 @@ def windrose(
         sname,
         level,
         bins,
-        **kwargs
+        tzname,
+        **kwargs,
     )
