@@ -42,7 +42,7 @@ language: python
 
 before_install:
   - git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
-  - sudo netstat -peanut | grep ":5432 "
+  - ps auxw
   - . .ci_tooling/postgres.sh
 
 install:
