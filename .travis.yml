@@ -46,6 +46,9 @@ before_install:
   - sudo ls -la /var/run/postgresql
   - sudo ls -la /run/postgresql
   - . .ci_tooling/postgres.sh
+  - sudo ls -la /var/run/postgresql
+  - sudo ls -la /run/postgresql
+  - sudo apt list --installed
 
 install:
   - . .ci_tooling/miniconda.sh
