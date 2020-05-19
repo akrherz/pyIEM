@@ -1565,7 +1565,7 @@ def gen_metar(data):
     # altimeter
     if (
         "MA1" in data["extra"]
-        and data["extra"]["MA1"]["altimeter"] is not None
+        and data["extra"]["MA1"].get("altimeter") is not None
     ):
         altimeter = pressure(data["extra"]["MA1"]["altimeter"], "HPA").value(
             "IN"
