@@ -39,6 +39,24 @@ def test_process_metar():
     assert ob.vsby == 0
 
 
+def test_200519():
+    """Found another issue with BRO."""
+    msg = (
+        "0251722500129191995040600003+25900-097433SY-SA+0006BRO  "
+        "V0201405N004652200019N0160001N1+02445+01835100815ADDAA101000095AA2"
+        "06000091AG10000GF100991001001999999001001GP10060021701024053201027"
+        "006401024GQ100600732926889GR100600393913669MA1100811100755REMSYN015 "
+        "333 555 90600;AWY022FEW CU TIDE DEP 00///;QNNKA1 0 00065MA1D0 "
+        "29750QA1 0 10081SA1 0 00076YA1 0 14009"
+    )
+    data = ds3505.parser(msg, "BRO", add_metar=True)
+    ans = (
+        "BRO 060000Z AUTO 14009KT 10SM 24/18 A2977 "
+        "RMK SLP081 T02440183 IEM_DS3505"
+    )
+    assert data["metar"] == ans
+
+
 def test_171024():
     """Bad parse for ALO"""
     msg = (

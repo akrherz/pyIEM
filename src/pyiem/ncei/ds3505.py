@@ -63,7 +63,10 @@ def _tonumeric(val, scale_factor=1.0):
     """Convert to what we want"""
     if MISSING_RE.match(val) or val == "D0":
         return None
-    return float(val) / scale_factor
+    try:
+        return float(val) / scale_factor
+    except ValueError:
+        return None
 
 
 def _d1000(val):
