@@ -49,14 +49,14 @@ def test_mpd_mcdparser(dbcursor):
     ans = (
         "#WPC issues MPD 98 concerning HEAVY RAINFALL: NRN VA...D.C"
         "....CENTRAL MD INTO SERN PA "
-        "https://wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
+        "https://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&yr=2013"
     )
     assert prod.tweet() == ans
     ans = (
         "Weather Prediction Center issues "
         "Mesoscale Precipitation Discussion #98 concerning HEAVY RAINFALL"
-        " https://wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
+        " https://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&amp;yr=2013"
     )
     assert prod.get_jabbers("http://localhost")[0][0] == ans
