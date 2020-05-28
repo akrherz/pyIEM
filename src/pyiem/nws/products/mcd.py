@@ -107,7 +107,7 @@ class MCDProduct(TextProduct):
                 self.discussion_num,
             )
         return (
-            "https://wpc.ncep.noaa.gov/metwatch/"
+            "https://www.wpc.ncep.noaa.gov/metwatch/"
             "metwatch_mpd_multi.php?md=%s&yr=%s"
         ) % (self.discussion_num, self.valid.year)
 
