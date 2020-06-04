@@ -13,6 +13,15 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_200602_unpack():
+    """Workaround a full failure, but this still fails :("""
+    # https://.../products/outlook/archive/2020/day2otlk_20200602_1730.html
+    spc = parser(get_test_file("SPCPTS/PTSDY2_unpack.txt"))
+    # spc.draw_outlooks()
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
+    assert abs(outlook.geometry.area - 18.75) < 0.01
+
+
 def test_200109_nogeoms():
     """Failed to parse some tricky line work south of New Orleans."""
     # https://.../products/outlook/archive/2020/day2otlk_20200109_1730.html

@@ -310,17 +310,21 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
-    # Results in either [currentpoly] or [polya, polyb]
+    # Results in either [currentpoly] or [polya, polyb, ...]
     geomcollect = split(currentpoly, ls)
+    if len(geomcollect) > 2:
+        print("     line intersects polygon 3+ times, can't handle")
+        return currentpoly
     if len(geomcollect) == 1:
         res = geomcollect.geoms[0]
     else:
-        (polya, polyb) = geomcollect.geoms
+        (polya, polyb) = geomcollect.geoms[0], geomcollect.geoms[1]
         # Linear reference our splitter's start and end distance
         startdist = polya.exterior.project(Point(ls.coords[0]))
         enddist = polya.exterior.project(Point(ls.coords[-1]))
         # if the end is further down the line, we want this polygon
         res = polya if enddist > startdist else polyb
+
     if res.area > 0.01:
         print("     taking polygon.area = %.4f" % (res.area,))
         return res
