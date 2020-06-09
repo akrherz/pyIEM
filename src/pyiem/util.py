@@ -214,31 +214,42 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             user = "ldm"
     if host is None:
         host = "iemdb-%s.local" % (database,)
-
-    try:
-        pgconn = psycopg2.connect(
-            database=database,
-            host=host,
-            user=user,
-            port=port,
-            connect_timeout=kwargs.get("connect_timeout", 15),
-            password=kwargs.get("password"),
-            gssencmode=kwargs.get("gssencmode", "disable"),
-        )
-    except psycopg2.OperationalError as exp:
-        warnings.warn("database connection failure: %s" % (exp,), stacklevel=2)
-        # as a stop-gap, lets try connecting to iemdb2
-        host2 = "iemdb2.local" if kwargs.get("allow_failover", True) else host
-        pgconn = psycopg2.connect(
-            database=database,
-            host=host2,
-            user=user,
-            port=port,
-            connect_timeout=kwargs.get("connect_timeout", 15),
-            password=kwargs.get("password"),
-            gssencmode=kwargs.get("gssencmode", "disable"),
-        )
-    return pgconn
+    conn_kwargs = {
+        "database": database,
+        "host": host,
+        "user": user,
+        "password": kwargs.get("password"),
+        "port": port,
+        "connect_timeout": kwargs.get("connect_timeout", 15),
+        "gssencode": kwargs.get("gssencmode", "disable"),
+    }
+    allow_failover = kwargs.pop("allow_failover", True)
+    conn_kwargs.update(kwargs)
+    attempt = 0
+    while attempt < 3:
+        attempt += 1
+        try:
+            return psycopg2.connect(**conn_kwargs)
+        except psycopg2.ProgrammingError as exp:
+            # Likely gssencode is not permitted
+            if "gssencode" in conn_kwargs:
+                conn_kwargs.pop("gssencode")
+            else:
+                warnings.warn(
+                    f"database connection failure: {exp}", stacklevel=2
+                )
+            if attempt == 3:
+                raise exp
+        except psycopg2.OperationalError as exp:
+            # as a stop-gap, lets try connecting to iemdb2
+            host2 = "iemdb2.local" if allow_failover else host
+            conn_kwargs["host"] = host2
+            if attempt == 3:
+                raise exp
+            warnings.warn(
+                f"database connection failure: {exp}, trying {host2}",
+                stacklevel=2,
+            )
 
 
 def noaaport_text(text):

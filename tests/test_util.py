@@ -44,6 +44,13 @@ def test_get_dbconn_failover():
             util.get_dbconn("mesosite", host="b", allow_failover=False)
 
 
+def test_get_dbconn_bad_argument():
+    """Test that we raise for a bad kwarg"""
+    with pytest.warns(UserWarning, match="database connection failure"):
+        with pytest.raises(psycopg2.ProgrammingError):
+            util.get_dbconn("mesosite", daryl="daryl")
+
+
 @pytest.fixture()
 def logger():
     """Get a logger"""
