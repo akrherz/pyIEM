@@ -420,6 +420,11 @@ class METARCollective(TextProduct):
                     mtr.code,
                     url,
                 )
+                jhtml = (
+                    f'<p><a href="{url}">{nm},{st}</a> ({mtr.iemid}) ASOS '
+                    f"{extra} reports <strong>{msg}</strong>"
+                    f"<br/>{mtr.code}</p>"
+                )
                 xtra = {
                     "channels": ",".join(channels),
                     "lat": str(row.get("lat")),
@@ -429,7 +434,7 @@ class METARCollective(TextProduct):
                     ("%s,%s (%s) ASOS reports %s -- %s")
                     % (nm, st, mtr.iemid, msg, mtr.code)
                 )[:TWEET_CHARS]
-                jmsgs.append([jtxt, jtxt, xtra])
+                jmsgs.append([jtxt, jhtml, xtra])
 
         return jmsgs
 
