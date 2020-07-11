@@ -152,7 +152,6 @@ class MOSProduct(TextProduct):
             r"....? GUIDANCE .*?);;;;;;",
             raw,
         )
-        print(sections)
         self.data = list(map(section_parser, sections))
         if not sections:
             raise Exception("Failed to split MOS Product")
