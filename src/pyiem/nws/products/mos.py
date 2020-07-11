@@ -7,28 +7,40 @@ import datetime
 from pyiem.util import utc
 from pyiem.nws.product import TextProduct
 
+REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
+
 
 def section_parser(sect):
     """Parse this section of text"""
     metadata = re.findall(
         (
-            r"([A-Z0-9_]{3,10})\s+(...) (V[0-9]\.[0-9] )?(...) GUIDANCE\s+"
+            r"([A-Z0-9_]{3,10})\s+(....?) (V[0-9]\.[0-9] )?(....?) GUIDANCE\s+"
             r"([01]?[0-9])/([0-3][0-9])/([0-9]{4})\s+"
-            r"([0-2][0-9]00) UTC"
+            r"([0-2][0-9][0-6][0-9]) UTC"
         ),
         sect,
     )
     (station, model, _bogus, mos, month, day, year, hhmm) = metadata[0]
     if model == "NBM":
         model = mos
+    if mos == "LAMP":
+        model = "LAV"
+    if model == "GFSX":
+        model = "MEX"
+    # We drop the minutes for the LAV, which has :30 after for some reason?
     initts = utc(int(year), int(month), int(day), int(hhmm[:2]))
 
     times = [initts]
     data = {}
     lines = sect.split(";;;")
-    hrs = lines[2].split()
-    for hr in hrs[1:]:
-        if hr == "00":
+    hrs = lines[1 if model in ["MEX", "LAV"] else 2].replace("|", " ").split()
+    for i, hr in enumerate(hrs[1:]):
+        if model == "LAV":
+            ts = initts + datetime.timedelta(hours=(i + 1))
+            assert ts.hour == int(hr)
+        elif model == "MEX":
+            ts = initts + datetime.timedelta(hours=int(hr))
+        elif hr == "00":
             ts = times[-1] + datetime.timedelta(days=1)
             ts = ts.replace(hour=0)
         else:
@@ -36,14 +48,18 @@ def section_parser(sect):
         times.append(ts)
         data[ts] = {}
 
-    for line in lines[3:]:
+    chars = "(...)" if model != "MEX" else "(....)"
+    startline = 2 if model in ["LAV"] else 3
+    for line in lines[startline:]:
         if len(line) < 10:
             continue
+        line = line.replace("|", " ")
         vname = line[:3].replace("/", "_")
-        if vname == "X_N":
-            vname = "N_X"
-        vals = re.findall("(...)", line[4:])
+        vals = re.findall(chars, line[4:])
         for i, val in enumerate(vals):
+            # Some products have more data than columns :(
+            if i >= len(data):
+                continue
             if vname == "T06" and times[i + 1].hour in [0, 6, 12, 18]:
                 data[times[i + 1]]["T06_1"] = (
                     vals[i - 1].replace("/", "").strip()
@@ -66,8 +82,8 @@ def section_parser(sect):
 
 
 def make_null(val):
-    """Hmmm"""
-    if val == "" or val is None:
+    """Hmmm, perhaps we should set 999 as null too?"""
+    if val in ["", "NG"] or val is None:
         return None
     return val
 
@@ -113,7 +129,8 @@ class MOSProduct(TextProduct):
                     # variables we don't wish to database
                     if vname in ["FHR"]:
                         continue
-                    fst += " %s," % (vname,)
+                    # save some database space :/
+                    fst += " %s," % (REMAP_VARS.get(vname, vname),)
                     sst += "%s,"
                     args.append(make_null(sect["data"][ts][vname]))
                 if len(args) == 4:
@@ -126,12 +143,16 @@ class MOSProduct(TextProduct):
 
     def parse_data(self):
         """Parse out our data!"""
-        raw = self.unixtext + "\n"
+        # Whitespace trim
+        raw = "\n".join([s.strip() for s in self.unixtext.split("\n")])
+        raw = raw + "\n"
         raw = raw.replace("\n", ";;;").replace("\x1e", "")
         sections = re.findall(
-            r"([A-Z0-9_]{3,10}\s+... V?[0-9]?\.?[0-9]? ?... GUIDANCE .*?);;;;;;",
+            r"([A-Z0-9_]{3,10}\s+....? V?[0-9]?\.?[0-9]? ?"
+            r"....? GUIDANCE .*?);;;;;;",
             raw,
         )
+        print(sections)
         self.data = list(map(section_parser, sections))
         if not sections:
             raise Exception("Failed to split MOS Product")

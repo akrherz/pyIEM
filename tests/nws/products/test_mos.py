@@ -1,4 +1,5 @@
 """Test MOS Parsing."""
+# pylint: disable=redefined-outer-name
 
 import pytest
 from pyiem.nws.products.mos import parser as mosparser
@@ -9,6 +10,24 @@ from pyiem.util import get_dbconn, utc, get_test_file
 def cursor():
     """Return a database cursor."""
     return get_dbconn("mos").cursor()
+
+
+def test_mex(cursor):
+    """Test that we can parse the Extended GFS MEX."""
+    utcnow = utc(2020, 7, 10, 12)
+    prod = mosparser(get_test_file("MOS/MEXNC1.txt"), utcnow=utcnow)
+    assert len(prod.data) == 4
+    inserts = prod.sql(cursor)
+    assert inserts == 60
+
+
+def test_lav(cursor):
+    """Test that we can parse the GFS LAMP."""
+    utcnow = utc(2020, 7, 10, 12, 30)
+    prod = mosparser(get_test_file("MOS/LAVUSA.txt"), utcnow=utcnow)
+    assert len(prod.data) == 3
+    inserts = prod.sql(cursor)
+    assert inserts == 75
 
 
 def test_ecmwf(cursor):
