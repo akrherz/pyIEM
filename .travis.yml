@@ -41,8 +41,10 @@ env:
 language: python
 
 before_install:
+  - git clone --depth 1 https://github.com/akrherz/iem-database.git database
   - git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
   - . .ci_tooling/postgres.sh
+
 
 install:
   - . .ci_tooling/miniconda.sh
@@ -50,9 +52,11 @@ install:
   - python -m pip install . --upgrade
 
 before_script:
+  # https://travis-ci.community/t/t/712/12
   - export PATH="/usr/lib/postgresql/11/bin:$PATH"
   - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres || true
-  - cd data; sh bootstrap.sh
+  - cd database; sh bootstrap.sh
+  - python schema_manager.py
   - cd ..
 
 script:
