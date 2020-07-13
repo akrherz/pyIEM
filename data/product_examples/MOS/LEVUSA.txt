@@ -1,0 +1,28 @@
+
+100 
+FEUS11 KWNO 131200
+LEVUSA
+PHBK   GFS LAMP GUIDANCE   7/13/2020  1230 UTC 
+DT /JULY 14                        /JULY 15     
+HR   26 27 28 29 30 31 32 33 34 35 36 37 38     
+UTC  14 15 16 17 18 19 20 21 22 23 00 01 02     
+CIG   7  8  8  7  7  8  8  8  8  8  7  7  6     
+VIS   7  7  7  7  7  7  7  7  7  7  7  7  7     
+OBV   N  N  N  N  N  N  N  N  N  N  N  N  N     
+                                                
+PHHI   GFS LAMP GUIDANCE   7/13/2020  1230 UTC 
+DT /JULY 14                        /JULY 15     
+HR   26 27 28 29 30 31 32 33 34 35 36 37 38     
+UTC  14 15 16 17 18 19 20 21 22 23 00 01 02     
+CIG   8  7  8  8  8  8  8  7  6  6  6  6  6     
+VIS   7  7  7  7  7  7  7  7  7  7  7  7  7     
+OBV   N  N  N  N  N  N  N  N  N  N  N  N  N     
+                                                
+PHJH   GFS LAMP GUIDANCE   7/13/2020  1230 UTC 
+DT /JULY 14                        /JULY 15     
+HR   26 27 28 29 30 31 32 33 34 35 36 37 38     
+UTC  14 15 16 17 18 19 20 21 22 23 00 01 02     
+CIG   7  7  7  7  7  7  7  7  7  7  8  8  8     
+VIS   7  7  7  7  7  7  7  7  7  7  7  7  7     
+OBV   N  N  N  N  N  N  N  N  N  N  N  N  N     
+                                                
