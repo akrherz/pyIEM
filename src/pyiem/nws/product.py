@@ -560,7 +560,9 @@ class TextProduct:
             "headline": " ...%s..." % (hdl,) if hdl != "" else "",
             "source": self.source[1:],
             "aaa": aaa,
-            "name": reference.prodDefinitions.get(aaa, aaa),
+            "name": reference.prodDefinitions.get(
+                aaa, reference.prodDefinitions.get(self.afos, self.afos)
+            ),
             "stamp": self.get_nicedate(),
             "url": "%s?pid=%s" % (uri, self.get_product_id()),
         }
