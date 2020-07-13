@@ -109,6 +109,7 @@ TAF Terminal Aerodrome Forecast
 TCE Tropical Cyclone Position Estimate
 TCM Tropical Storm Forecast
 TCU Tropical Cyclone Update
+TCV Tropical Watch/Warning Local Statement
 TIB Tsunami Information Statement
 TID Tide Data
 TOE Telephone Outage Emergency
