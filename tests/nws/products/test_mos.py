@@ -21,6 +21,17 @@ def test_mex(cursor):
     assert inserts == 60
 
 
+def test_lev(cursor):
+    """Test that we can parse the GFS LAMP (LEV stored as LAV)."""
+    utcnow = utc(2020, 7, 13, 12, 30)
+    prod = mosparser(get_test_file("MOS/LEVUSA.txt"), utcnow=utcnow)
+    assert prod.data[0]["model"] == "LAV"
+    assert max(prod.data[0]["data"].keys()) == utc(2020, 7, 15, 2)
+    assert len(prod.data) == 3
+    inserts = prod.sql(cursor)
+    assert inserts == 39
+
+
 def test_lav(cursor):
     """Test that we can parse the GFS LAMP."""
     utcnow = utc(2020, 7, 10, 12, 30)

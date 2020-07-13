@@ -34,8 +34,12 @@ def section_parser(sect):
     data = {}
     lines = sect.split(";;;")
     hrs = lines[1 if model in ["MEX", "LAV"] else 2].replace("|", " ").split()
+    if hrs[0] == "DT":  # Hack
+        hrs = lines[2].split()
     for i, hr in enumerate(hrs[1:]):
-        if model == "LAV":
+        if model == "LAV" and hrs[0] == "HR":
+            ts = initts + datetime.timedelta(hours=int(hr))
+        elif model == "LAV":
             ts = initts + datetime.timedelta(hours=(i + 1))
             assert ts.hour == int(hr)
         elif model == "MEX":
@@ -51,10 +55,10 @@ def section_parser(sect):
     chars = "(...)" if model != "MEX" else "(....)"
     startline = 2 if model in ["LAV"] else 3
     for line in lines[startline:]:
-        if len(line) < 10:
+        if len(line) < 20:
             continue
         line = line.replace("|", " ")
-        vname = line[:3].replace("/", "_")
+        vname = line[:3].replace("/", "_").strip()
         vals = re.findall(chars, line[4:])
         for i, val in enumerate(vals):
             # Some products have more data than columns :(
@@ -127,7 +131,7 @@ class MOSProduct(TextProduct):
                 args = [sect["station"], sect["model"], sect["initts"], ts]
                 for vname in sect["data"][ts].keys():
                     # variables we don't wish to database
-                    if vname in ["FHR"]:
+                    if vname in ["FHR", "HR", "UTC"]:
                         continue
                     # save some database space :/
                     fst += " %s," % (REMAP_VARS.get(vname, vname),)
