@@ -26,7 +26,8 @@ pint
 psycopg2
 # Models
 pydantic
-pytest
+# having troubles with v6?
+pytest<6
 pytest-mpl
 pytest-runner
 rasterstats
