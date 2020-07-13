@@ -69,10 +69,19 @@ OEP TAF Collaboration Product
 OFF Offshore Waters Forecast
 OMR Other Marine Reports
 PFM Point Forecast Matrices
+PMDAK Alaska Discussion
+PMDCA Tropical Discussion
+PMDEPD Extended Forecast Discussion
+PMDHI Hawaii Discussion
+PMDHMD Model Diagnostic Discussion
+PMDSA South America Forecast Discussion
+PMDSPD Short Range Forecast Discussion
 PNS Public Information Statement
 PSH Post Tropical Event Report
 PWO Public Severe Weather Outlook
 QPS Quantitative Precipitation Forecast
+QPFERD Excessive Rainfall Discussion
+QPFHSD Heavy Snow Discussion
 REC Recreational Forecast
 RER Record Event Report
 RFD Grassland Fire Danger
@@ -85,6 +94,7 @@ RVD River and Lake Summary
 RVF River Forecast
 RVS Hydrologic Statement
 RWS Regional Weather Summary
+SCC Storm Summary
 SFT State Forecast Tabular Product
 SIG Convective Sigment
 SMF Smoke Management Weather Forecast

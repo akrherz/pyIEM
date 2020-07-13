@@ -45,6 +45,17 @@ def test_datetokens():
     assert local.hour == 18
 
 
+def test_wpc():
+    """Can we deal with the AWIPS ID in WPC products."""
+    tp = productparser(get_test_file("PMDSA.txt"))
+    res = tp.get_jabbers("http://localhost")
+    ans = (
+        "WBC issues South America Forecast Discussion (PMD) at Jul 13, "
+        "11:17 AM EDT http://localhost?pid=202007131517-KWBC-FXSA20-PMDSA"
+    )
+    assert res[0][0] == ans
+
+
 def test_180321_mst():
     """Do we do the right thing with MST products whilst in DST"""
     tp = productparser(get_test_file("AFDMST.txt"))
