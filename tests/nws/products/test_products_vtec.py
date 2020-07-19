@@ -1,5 +1,5 @@
 """Test some of the atomic stuff in the VTEC module"""
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name,too-many-lines
 import datetime
 
 import pytest
@@ -62,6 +62,20 @@ def test_dups():
     )
     res = check_dup_ps(segment)
     assert not res
+
+
+def test_200719_nomnd():
+    """Test that we can handle a product without a MND header."""
+    utcnow = utc(2020, 7, 18, 18, 51)
+    prod = vtecparser(get_test_file("FLSBRO_nomnd.txt"), utcnow=utcnow)
+    assert "Could not find local timezone in text." in prod.warnings
+    j = prod.get_jabbers("http://localhost")
+    ans = (
+        "BRO issues Flood Advisory for ((TXC261)), ((TXC489)) [TX] till "
+        "Jul 18, 20:45 UTC "
+        "http://localhost2020-O-NEW-KBRO-FA-Y-0074_2020-07-18T18:51Z"
+    )
+    assert j[0][0] == ans
 
 
 def test_200306_issue210(dbcursor):

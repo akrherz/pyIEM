@@ -482,7 +482,7 @@ class TextProduct:
         self.geometry = None
         if utcnow is None:
             self.utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
-        # make sure this is actulling in UTC
+        # make sure this is actualing in UTC
         self.utcnow = self.utcnow.astimezone(pytz.UTC)
 
         self.parse_wmo()

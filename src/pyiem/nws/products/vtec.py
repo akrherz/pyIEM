@@ -40,6 +40,10 @@ class VTECProduct(TextProduct):
         # defaults to current UTC valid
         self.db_year = self.valid.year
         self.skip_con = self.get_skip_con()
+        # If there was no/bad MND header, a backwards way to know is that the
+        # product time zone will be None, add a warning
+        if self.z is None:
+            self.warnings.append("Could not find local timezone in text.")
 
     def sql(self, txn):
         """Persist to the database

@@ -271,11 +271,18 @@ class VTEC:
         fmt = "%b %-d, %-I:%M %p"
         if self.endts < (prod.valid + datetime.timedelta(hours=1)):
             fmt = "%-I:%M %p"
-        localts = self.endts.astimezone(prod.tz)
+        if prod.tz is None:
+            fmt = "%b %-d, %-H:%M"
+        localts = self.endts
+        if prod.tz is not None:
+            localts = self.endts.astimezone(prod.tz)
         # A bit of complexity as offices may not implement daylight saving
-        if prod.z.endswith("ST") and localts.dst():
+        if prod.z is not None and prod.z.endswith("ST") and localts.dst():
             localts -= datetime.timedelta(hours=1)
-        return "till %s %s" % (localts.strftime(fmt), prod.z)
+        return "till %s %s" % (
+            localts.strftime(fmt),
+            prod.z if prod.z is not None else "UTC",
+        )
 
     def get_begin_string(self, prod):
         """Return an appropriate beginning string for this VTEC"""
