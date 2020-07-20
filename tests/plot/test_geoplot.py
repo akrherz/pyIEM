@@ -2,6 +2,7 @@
 import datetime
 import tempfile
 import os
+import copy
 
 import pytest
 import matplotlib.colors as mpcolors
@@ -26,7 +27,7 @@ def test_issue98_labelbar():
         sector="iowa",
         nocaption=True,
     )
-    cmap = plot.maue()
+    cmap = copy.copy(plot.maue())
     cmap.set_under("white")
     cmap.set_over("black")
     clevs = np.arange(0, 1.0, 0.1)
@@ -300,7 +301,7 @@ def test_climdiv():
 def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = plot.maue()
+    cmap = copy.copy(plot.maue())
     cmap.set_under("white")
     clevs = list(range(0, 101, 10))
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -339,7 +340,7 @@ def test_colorbar2():
 def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = plot.maue()
+    cmap = copy.copy(plot.maue())
     cmap.set_over("black")
     clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
