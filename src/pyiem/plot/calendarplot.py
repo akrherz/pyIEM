@@ -229,8 +229,9 @@ def calendar_plot(sts, ets, data, **kwargs):
                 maxval = data[key]["val"]
         # Need at least 3 slots
         maxval = 5 if maxval < 5 else maxval
+        # Need to have more colors than bins
         kwargs["norm"] = mpcolors.BoundaryNorm(
-            np.arange(0, maxval), kwargs["cmap"].N
+            np.arange(0, maxval, int(maxval / 255.0) + 1), kwargs["cmap"].N
         )
     for month in bounds:
         ax = fig.add_axes(bounds[month])
