@@ -243,14 +243,7 @@ class MapPlot:
                 "axisbg", kwargs.get("continentalcolor", "#EEEEEE")
             )
             _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
-            coasts = cfeature.NaturalEarthFeature(
-                "physical",
-                "coastline",
-                "10m",
-                edgecolor="black",
-                facecolor="none",
-            )
-            _a.add_feature(coasts, lw=1.0, zorder=Z_POLITICAL)
+            _a.add_feature(cfeature.COASTLINE, lw=1.0, zorder=Z_POLITICAL)
             _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
             _a.add_feature(
                 cfeature.OCEAN, facecolor=(0.4471, 0.6235, 0.8117), zorder=Z_CF
