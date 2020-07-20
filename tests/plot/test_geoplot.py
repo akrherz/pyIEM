@@ -126,6 +126,10 @@ def test_pcolormesh():
     vals = np.linspace(0, 1, lats.shape[0] * lons.shape[0]).reshape(
         [lats.shape[0], lons.shape[0]]
     )
+    # NB: mpl 3.3.0 does proper enforcement of sizing here.  We want the lons
+    # and lats to be +1 in size to the vals grid.
+    lons = np.append(lons, -80)
+    lats = np.append(lats, 50)
     lons, lats = np.meshgrid(lons, lats)
     mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
     return mp.fig
