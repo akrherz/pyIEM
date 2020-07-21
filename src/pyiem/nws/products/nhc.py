@@ -39,7 +39,7 @@ class NHCProduct(TextProduct):
         twitter_name = name.title().replace("-", "_")
         prodtype = tokens[0][2]
         prodnumber = tokens[0][3]
-        center = "National Hurricance Center"
+        center = "National Hurricane Center"
 
         tformat = (
             "%(classification)s #%(storm_name)s "
