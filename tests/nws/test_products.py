@@ -211,7 +211,7 @@ def test_tcp():
     prod = parser(get_test_file("TCPAT1.txt"))
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "National Hurricance Center issues "
+        "National Hurricane Center issues "
         "ADVISORY 19 for POST-TROPICAL CYCLONE ARTHUR "
         "http://localhost?pid=201407051500-KNHC-WTNT31-TCPAT1"
     )

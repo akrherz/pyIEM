@@ -10,7 +10,7 @@ def test_170618_potential():
     assert not prod.warnings
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "National Hurricance Center issues ADVISORY 2 "
+        "National Hurricane Center issues ADVISORY 2 "
         "for POTENTIAL TROPICAL CYCLONE TWO "
         "http://localhost?pid=201706190300-KNHC-WTNT32-TCPAT2"
     )
@@ -23,7 +23,7 @@ def test_160905_correction():
     assert not prod.warnings
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "National Hurricance Center issues ADVISORY 28A "
+        "National Hurricane Center issues ADVISORY 28A "
         "for POST-TROPICAL CYCLONE HERMINE INTERMEDIATE "
         "http://localhost?pid=201609041200-KNHC-WTNT34-TCPAT4"
     )
