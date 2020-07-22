@@ -12,6 +12,30 @@ def cursor():
     return get_dbconn("mos").cursor()
 
 
+def test_nbe(cursor):
+    """Test that we can parse the NBE."""
+    utcnow = utc(2020, 7, 22, 14)
+    prod = mosparser(get_test_file("MOS/NBEUSA.txt"), utcnow=utcnow)
+    assert len(prod.data) == 2
+    inserts = prod.sql(cursor)
+    assert inserts == 30
+    # Check that we parsed data OK
+    assert prod.data[0]["data"][utc(2020, 7, 30, 12)]["P12"] == "5"
+    assert prod.data[0]["data"][utc(2020, 7, 30, 12)]["PRA"] == "100"
+
+
+def test_nbx(cursor):
+    """Test that we can parse the NBE."""
+    utcnow = utc(2020, 7, 22, 14)
+    prod = mosparser(get_test_file("MOS/NBXUSA.txt"), utcnow=utcnow)
+    assert prod.data[0]["model"] == "NBE"
+    assert len(prod.data) == 3
+    inserts = prod.sql(cursor)
+    assert inserts == 18
+    # Check that we parsed data OK
+    assert prod.data[0]["data"][utc(2020, 8, 2, 12)]["Q12"] == "0"
+
+
 def test_mex(cursor):
     """Test that we can parse the Extended GFS MEX."""
     utcnow = utc(2020, 7, 10, 12)
