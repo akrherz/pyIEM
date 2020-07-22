@@ -23,6 +23,8 @@ def section_parser(sect):
     (station, model, _bogus, mos, month, day, year, hhmm) = metadata[0]
     if model == "NBM":
         model = mos
+        if mos == "NBX":
+            model = "NBE"
     if mos == "LAMP":
         model = "LAV"
     if model == "GFSX":
@@ -33,7 +35,12 @@ def section_parser(sect):
     times = [initts]
     data = {}
     lines = sect.split(";;;")
-    hrs = lines[1 if model in ["MEX", "LAV"] else 2].replace("|", " ").split()
+    hrline = 2
+    if model in ["MEX", "LAV"]:
+        hrline = 1
+    elif model in ["NBE"]:
+        hrline = 3
+    hrs = lines[hrline].replace("|", " ").split()
     if hrs[0] == "DT":  # Hack
         hrs = lines[2].split()
     for i, hr in enumerate(hrs[1:]):
@@ -42,7 +49,7 @@ def section_parser(sect):
         elif model == "LAV":
             ts = initts + datetime.timedelta(hours=(i + 1))
             assert ts.hour == int(hr)
-        elif model == "MEX":
+        elif model in ["MEX", "NBE"]:
             ts = initts + datetime.timedelta(hours=int(hr))
         elif hr == "00":
             ts = times[-1] + datetime.timedelta(days=1)
@@ -52,14 +59,17 @@ def section_parser(sect):
         times.append(ts)
         data[ts] = {}
 
-    chars = "(...)" if model != "MEX" else "(....)"
+    chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
+    startlinepos = 4 if model not in ["NBE"] else 5
+    if mos == "NBX":
+        startlinepos = 3
     for line in lines[startline:]:
         if len(line) < 20:
             continue
         line = line.replace("|", " ")
         vname = line[:3].replace("/", "_").strip()
-        vals = re.findall(chars, line[4:])
+        vals = re.findall(chars, line[startlinepos:])
         for i, val in enumerate(vals):
             # Some products have more data than columns :(
             if i >= len(data):
