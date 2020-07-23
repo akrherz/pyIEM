@@ -221,7 +221,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         "password": kwargs.get("password"),
         "port": port,
         "connect_timeout": kwargs.get("connect_timeout", 15),
-        "gssencode": kwargs.get("gssencmode", "disable"),
+        "gssencmode": kwargs.get("gssencmode", "disable"),
     }
     allow_failover = kwargs.pop("allow_failover", True)
     conn_kwargs.update(kwargs)
@@ -231,9 +231,9 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         try:
             return psycopg2.connect(**conn_kwargs)
         except psycopg2.ProgrammingError as exp:
-            # Likely gssencode is not permitted
-            if "gssencode" in conn_kwargs:
-                conn_kwargs.pop("gssencode")
+            # Likely gssencmode is not permitted
+            if "gssencmode" in conn_kwargs:
+                conn_kwargs.pop("gssencmode")
             else:
                 warnings.warn(
                     f"database connection failure: {exp}", stacklevel=2
