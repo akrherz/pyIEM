@@ -443,9 +443,9 @@ def test_170324_waterspout(dbcursor):
 
 
 def test_170303_ccwpoly():
-    """Check that we produce a warning on a CCW polygon"""
+    """Test that CCW polygon does not trip us up."""
     prod = vtecparser(get_test_file("FLWHGX_ccw.txt"))
-    assert len(prod.warnings) == 1
+    assert not filter_warnings(prod.warnings)
 
 
 def test_170115_table_failure(dbcursor):
@@ -532,7 +532,7 @@ def test_151225_extfuture(dbcursor):
     prod = vtecparser(get_test_file("FLWPAH/FLWPAH_2.txt"))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
-    assert len(warnings) == 2
+    assert len(warnings) == 1
 
 
 def test_150915_noexpire(dbcursor):
