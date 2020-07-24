@@ -353,7 +353,8 @@ class TextProductSegment:
             return
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
-            self.tp.warnings.append(
+            # No longer a warning as it was too much noise
+            print(
                 ("LAT...LON polygon exterior is CCW, reversing\n%s")
                 % (poly.exterior.xy,)
             )
