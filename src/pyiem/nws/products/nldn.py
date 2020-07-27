@@ -2,10 +2,10 @@
 http://www.unidata.ucar.edu/data/lightning/nldn.html
 """
 import datetime
+from datetime import timezone
 import struct
 
 import pandas as pd
-import pytz
 
 
 class NLDNProduct:
@@ -56,7 +56,7 @@ def parser(buf):
         (tsec, nsec, lat1000, lon1000) = struct.unpack(">4i", chunk[:16])
         secs = float(tsec) + (nsec / 1000000.0)
         ts = datetime.datetime(1970, 1, 1) + datetime.timedelta(seconds=secs)
-        ts = ts.replace(tzinfo=pytz.utc)
+        ts = ts.replace(tzinfo=timezone.utc)
         (_, sgnl10, _) = struct.unpack(">3h", chunk[16:22])
         (multi, _, axis, eccentricity, ellipse, chisqr) = struct.unpack(
             "6b", chunk[22:28]

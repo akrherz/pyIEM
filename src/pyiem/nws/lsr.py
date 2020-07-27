@@ -2,7 +2,7 @@
 # pylint: disable=unsubscriptable-object
 import re
 import datetime
-import pytz
+from datetime import timezone
 
 from pyiem import reference
 
@@ -137,11 +137,11 @@ class LSR:
         """ retroactive assignment of timezone, so to improve attrs """
         if self.valid is None:
             return
-        # We can't just assign the timezone as this does not work in pytz
+        # We can't just assign the timezone (maybe we can someday)
         self.utcvalid = self.valid + datetime.timedelta(
             hours=reference.offsets[z]
         )
-        self.utcvalid = self.utcvalid.replace(tzinfo=pytz.UTC)
+        self.utcvalid = self.utcvalid.replace(tzinfo=timezone.utc)
         self.valid = self.utcvalid.astimezone(tz)
         # complexity with non-DST sites
         if z.endswith("ST") and self.valid.dst():

@@ -4,8 +4,8 @@
 """
 import re
 import datetime
+from datetime import timezone
 
-import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
@@ -67,7 +67,10 @@ class MCDProduct(TextProduct):
             expire = self.valid + datetime.timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
 
-        return issue.replace(tzinfo=pytz.UTC), expire.replace(tzinfo=pytz.UTC)
+        return (
+            issue.replace(tzinfo=timezone.utc),
+            expire.replace(tzinfo=timezone.utc),
+        )
 
     def find_watch_probability(self):
         """ Find the probability of watch issuance for SPC MCD"""

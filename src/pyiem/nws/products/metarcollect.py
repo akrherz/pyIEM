@@ -1,8 +1,13 @@
 """Encapsulates a text product holding METARs."""
 import re
 import datetime
+from datetime import timezone
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from pyiem.nws.product import TextProduct
@@ -43,7 +48,7 @@ def wind_logic(iem, this):
         iem.data["peak_wind_drct"] = this.wind_dir_peak.value()
     if this.peak_wind_time:
         iem.data["peak_wind_time"] = this.peak_wind_time.replace(
-            tzinfo=pytz.UTC
+            tzinfo=timezone.utc
         )
 
     # Figure out if we have a new max_drct
@@ -65,7 +70,9 @@ def wind_logic(iem, this):
         and this.wind_speed_peak.value("KT") > new_max_wind
     ):
         iem.data["max_drct"] = this.wind_dir_peak.value()
-        iem.data["max_gust_ts"] = this.peak_wind_time.replace(tzinfo=pytz.UTC)
+        iem.data["max_gust_ts"] = this.peak_wind_time.replace(
+            tzinfo=timezone.utc
+        )
         iem.data["max_gust"] = this.wind_speed_peak.value("KT")
 
 
@@ -184,8 +191,8 @@ def sanitize(text):
 def _is_same_day(valid, tzname, hours=6):
     """Can we trust a six hour total?"""
     try:
-        tzinfo = pytz.timezone(tzname)
-    except pytz.exceptions.UnknownTimeZoneError:
+        tzinfo = ZoneInfo(tzname)
+    except Exception:
         return False
     lts = valid.astimezone(tzinfo)
     # TODO we should likely somehow compute this in standard time, shrug
@@ -206,7 +213,7 @@ class METARReport(Metar):
         """Convert this into a Jabber style message"""
         drct = 0
         sknt = 0
-        time = self.time.replace(tzinfo=pytz.UTC)
+        time = self.time.replace(tzinfo=timezone.utc)
         if self.wind_gust:
             sknt = self.wind_gust.value("KT")
             if self.wind_dir:
@@ -214,7 +221,7 @@ class METARReport(Metar):
         if self.wind_speed_peak:
             v1 = self.wind_speed_peak.value("KT")
             d1 = self.wind_dir_peak.value()
-            t1 = self.peak_wind_time.replace(tzinfo=pytz.UTC)
+            t1 = self.peak_wind_time.replace(tzinfo=timezone.utc)
             if v1 > sknt:
                 sknt = v1
                 drct = d1
@@ -252,7 +259,7 @@ class METARReport(Metar):
           force_current_log (boolean): should this ob always go to current_log
           skip_current (boolean): should this ob always skip current table
         """
-        gts = self.time.replace(tzinfo=pytz.utc)
+        gts = self.time.replace(tzinfo=timezone.utc)
         iem = Observation(self.iemid, self.network, gts)
         # Load the observation from the database, if the same time exists!
         iem.load(txn)

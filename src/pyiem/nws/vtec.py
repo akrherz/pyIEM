@@ -1,8 +1,8 @@
 """Support NWS VTEC encoding"""
 import re
 import datetime
+from datetime import timezone
 
-import pytz
 
 VTEC_RE = (
     r"(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\."
@@ -218,7 +218,7 @@ def contime(text):
         return None
     try:
         ts = datetime.datetime.strptime(text, "%y%m%dT%H%MZ")
-        return ts.replace(tzinfo=pytz.utc)
+        return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
         print(err)
         return None

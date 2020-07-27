@@ -3,12 +3,17 @@
 from collections import UserDict
 import warnings
 import datetime
+from datetime import timezone
 import math
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 
 import numpy as np
 import metpy.calc as mcalc
 from metpy.units import units as munits
-import pytz
 
 # A nonsense default that is not None/SQL-null
 SENTINEL = 99999
@@ -156,7 +161,7 @@ class Observation:
         """
         if valid.tzinfo is None:
             warnings.warn("tzinfo is not set on valid, defaulting to UTC")
-            valid = valid.replace(tzinfo=pytz.UTC)
+            valid = valid.replace(tzinfo=timezone.utc)
         self.data = ObDict(
             {"station": station, "network": network, "valid": valid}
         )
@@ -336,7 +341,7 @@ class Observation:
         if rowcount != 1:
             # Create a new entry
             localvalid = self.data["valid"].astimezone(
-                pytz.timezone(self.data["tzname"])
+                ZoneInfo(self.data["tzname"])
             )
             # we don't want dates into the future as this will foul up others
             if localvalid.date() > datetime.date.today():

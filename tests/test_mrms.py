@@ -1,7 +1,7 @@
 """tests"""
 import datetime
+from datetime import timezone
 import os
-import pytz
 
 from pyiem import mrms
 from pyiem.util import utc
@@ -33,7 +33,7 @@ def test_fetch():
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     if os.path.isfile(fn):
         os.unlink(fn)
-    valid = valid.replace(tzinfo=pytz.utc) - datetime.timedelta(minutes=2)
+    valid = valid.replace(tzinfo=timezone.utc) - datetime.timedelta(minutes=2)
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     if os.path.isfile(fn):
         os.unlink(fn)

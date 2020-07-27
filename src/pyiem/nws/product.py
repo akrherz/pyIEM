@@ -1,9 +1,14 @@
 """Base Class encapsulating a NWS Text Product"""
 import datetime
+from datetime import timezone
 from collections import OrderedDict
 import re
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 from shapely.geometry import Polygon, MultiPolygon
 from shapely.wkt import dumps
 
@@ -127,7 +132,7 @@ def date_tokens2datetime(tokens):
       utcvalid (datetimetz): of this product
     """
     z = tokens[2].upper()
-    tz = pytz.timezone(reference.name2pytz.get(z, "UTC"))
+    tz = ZoneInfo(reference.name2pytz.get(z, "UTC"))
     hhmi = tokens[0]
     # False positive from regex
     if hhmi[0] == ":":
@@ -154,7 +159,7 @@ def date_tokens2datetime(tokens):
     # Careful here, need to go to UTC time first then come back!
     now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
     now += datetime.timedelta(hours=reference.offsets[z])
-    return z, tz, now.replace(tzinfo=pytz.UTC)
+    return z, tz, now.replace(tzinfo=timezone.utc)
 
 
 class TextProductSegment:
@@ -392,7 +397,7 @@ class TextProductSegment:
         if hh > self.ugcexpire.hour:
             self.tml_valid = self.tml_valid - datetime.timedelta(days=1)
 
-        self.tml_valid = self.tml_valid.replace(tzinfo=pytz.utc)
+        self.tml_valid = self.tml_valid.replace(tzinfo=timezone.utc)
 
         tokens = gdict["loc"].split()
         lats = []
@@ -482,9 +487,11 @@ class TextProduct:
         self.tz = None
         self.geometry = None
         if utcnow is None:
-            self.utcnow = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+            self.utcnow = datetime.datetime.utcnow().replace(
+                tzinfo=timezone.utc
+            )
         # make sure this is actualing in UTC
-        self.utcnow = self.utcnow.astimezone(pytz.UTC)
+        self.utcnow = self.utcnow.astimezone(timezone.utc)
 
         self.parse_wmo()
         self.parse_afos()

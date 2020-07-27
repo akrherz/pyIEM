@@ -1,8 +1,8 @@
 """Process HVTEC encoding."""
 import re
 import datetime
+from datetime import timezone
 
-import pytz
 from pyiem.nws.nwsli import NWSLI
 
 #         nwsli        sev         cause
@@ -61,7 +61,7 @@ def contime(s):
         return None
     try:
         ts = datetime.datetime.strptime(s, "%y%m%dT%H%MZ")
-        return ts.replace(tzinfo=pytz.UTC)
+        return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
         print(err)
         return None

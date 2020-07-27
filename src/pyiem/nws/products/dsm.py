@@ -76,7 +76,7 @@ class DSMProduct:
     def tzlocalize(self, tzinfo):
         """Localize the timestamps, tricky."""
         offset = tzinfo.utcoffset(
-            datetime.datetime(2000, 1, 1), is_dst=False
+            datetime.datetime(2000, 1, 1)
         ).total_seconds()
         for name in [
             "high_time",

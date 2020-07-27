@@ -3,11 +3,16 @@
 Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 """
 import datetime
+from datetime import timezone
 import traceback
 import re
 import math
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 import pyiem.reference as reference
 import pyiem.util as util
 
@@ -186,10 +191,8 @@ class nwnformat:
     def parseLineRT(self, tokens):
         if self.ts is None:
             _t = datetime.datetime.utcnow()
-            _t = _t.replace(
-                second=0, microsecond=0, tzinfo=pytz.timezone("UTC")
-            )
-            self.ts = _t.astimezone(pytz.timezone("America/Chicago"))
+            _t = _t.replace(second=0, microsecond=0, tzinfo=timezone.utc)
+            self.ts = _t.astimezone(ZoneInfo("America/Chicago"))
 
         if len(tokens) != 14:
             return
@@ -200,10 +203,8 @@ class nwnformat:
             self.parseMinLineRT(tokens)
         else:
             _t = datetime.datetime.utcnow()
-            _t = _t.replace(
-                second=0, microsecond=0, tzinfo=pytz.timezone("UTC")
-            )
-            self.ts = _t.astimezone(pytz.timezone("America/Chicago"))
+            _t = _t.replace(second=0, microsecond=0, tzinfo=timezone.utc)
+            self.ts = _t.astimezone(ZoneInfo("America/Chicago"))
             self.parseCurrentLineRT(tokens)
 
     def parseMaxLineRT(self, tokens):

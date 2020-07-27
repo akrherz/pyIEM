@@ -10,6 +10,7 @@ import time
 import random
 import logging
 import datetime
+from datetime import timezone
 import re
 import warnings
 import getpass
@@ -164,20 +165,18 @@ def ncopen(ncfn, mode="r", timeout=60):
 
 
 def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
-    """Create a datetime instance with tzinfo=pytz.UTC
+    """Create a datetime instance with tzinfo=timezone.utc
 
     When no arguments are provided, returns `datetime.utcnow()`.
 
     Returns:
       datetime with tzinfo set
     """
-    import pytz
-
     if year is None:
-        return datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        return datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
     return datetime.datetime(
         year, month, day, hour, minute, second, microsecond
-    ).replace(tzinfo=pytz.UTC)
+    ).replace(tzinfo=timezone.utc)
 
 
 def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):

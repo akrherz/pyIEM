@@ -1,9 +1,13 @@
 """util script to call `windrose` package"""
 import datetime
 
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 import numpy as np
 import pandas as pd
-import pytz
 from pandas.io.sql import read_sql
 from metpy.units import units as mpunits
 from pyiem.plot.util import fitbox
@@ -234,8 +238,8 @@ def _time_domain_string(df, tzname):
     ets = df["valid"].max()
     timeformat = "%d %b %Y %I:%M %p"
     if tzname is not None:
-        sts = sts.astimezone(pytz.timezone(tzname))
-        ets = ets.astimezone(pytz.timezone(tzname))
+        sts = sts.astimezone(ZoneInfo(tzname))
+        ets = ets.astimezone(ZoneInfo(tzname))
     if tzname == "UTC":
         timeformat = "%d %b %Y %H:%M"
     return "%s - %s %s" % (

@@ -2,8 +2,12 @@
 # pylint: disable=redefined-outer-name
 import datetime
 
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 import pytest
-import pytz
 from pyiem.util import utc, get_test_file
 from pyiem.nws.products.dsm import process, parser
 from pyiem.util import get_dbconn
@@ -39,7 +43,7 @@ def test_simple(month):
         "00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/00/225/26381759/"
         "26500949="
     ) % (month,)
-    tzprovider = {"KCVG": pytz.timezone("America/New_York")}
+    tzprovider = {"KCVG": ZoneInfo("America/New_York")}
     dsm = process(text)
     dsm.compute_times(utc(2019, month, 25))
     dsm.tzlocalize(tzprovider["KCVG"])

@@ -5,9 +5,9 @@ Attempt to break up the HML product into atomic data
 """
 import re
 import datetime
+from datetime import timezone
 import xml.etree.cElementTree as ET
 
-import pytz
 import pandas as pd
 import pyiem.nws.product as product
 
@@ -26,7 +26,7 @@ def parseUTC(s):
     if s is None:
         return None
     return datetime.datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S").replace(
-        tzinfo=pytz.UTC
+        tzinfo=timezone.utc
     )
 
 
