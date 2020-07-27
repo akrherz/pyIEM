@@ -2,8 +2,7 @@
 # pylint: disable=no-member
 from collections import UserDict
 import warnings
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 import math
 
 try:
@@ -344,7 +343,7 @@ class Observation:
                 ZoneInfo(self.data["tzname"])
             )
             # we don't want dates into the future as this will foul up others
-            if localvalid.date() > datetime.date.today():
+            if localvalid.date() > datetime.now().date():
                 return False
             txn.execute(
                 f"INSERT into summary_{localvalid.year} "

@@ -1,7 +1,6 @@
 """Encapsulates a text product holding METARs."""
 import re
-import datetime
-from datetime import timezone
+from datetime import timezone, timedelta
 
 try:
     from zoneinfo import ZoneInfo
@@ -120,7 +119,7 @@ def to_metar(textprod, text):
                     print("unparsed groups regex fail: %s" % (inst,))
             if str(inst).find("day is out of range for month") > -1:
                 if valid.day < 10:
-                    valid = valid.replace(day=1) - datetime.timedelta(days=1)
+                    valid = valid.replace(day=1) - timedelta(days=1)
         attempt += 1
 
     if mtr is not None:
@@ -132,13 +131,11 @@ def to_metar(textprod, text):
             print("Aborting due to time being None |%s|" % (text,))
             return None
         # don't allow data more than an hour into the future
-        ceiling = (textprod.utcnow + datetime.timedelta(hours=1)).replace(
-            tzinfo=None
-        )
+        ceiling = (textprod.utcnow + timedelta(hours=1)).replace(tzinfo=None)
         if mtr.time > ceiling:
             # careful, we may have obs from the previous month
             if ceiling.day < 5 and mtr.time.day > 15:
-                prevmonth = ceiling - datetime.timedelta(days=10)
+                prevmonth = ceiling - timedelta(days=10)
                 mtr.time = mtr.time.replace(
                     year=prevmonth.year, month=prevmonth.month
                 )
@@ -196,7 +193,7 @@ def _is_same_day(valid, tzname, hours=6):
         return False
     lts = valid.astimezone(tzinfo)
     # TODO we should likely somehow compute this in standard time, shrug
-    return lts.day == (lts - datetime.timedelta(hours=hours)).day
+    return lts.day == (lts - timedelta(hours=hours)).day
 
 
 class METARReport(Metar):

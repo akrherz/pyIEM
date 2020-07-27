@@ -2,8 +2,7 @@
 
 Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 """
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 import traceback
 import re
 import math
@@ -153,12 +152,12 @@ class nwnformat:
 
     def setTS(self, newval):
         try:
-            self.ts = datetime.datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
+            self.ts = datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
         except Exception:
             traceback.print_exc()
             self.error = 100
             return
-        now = datetime.datetime.now()
+        now = datetime.now()
         if (now - self.ts).total_seconds() > 7200:
             self.error = 101
 
@@ -190,7 +189,7 @@ class nwnformat:
 
     def parseLineRT(self, tokens):
         if self.ts is None:
-            _t = datetime.datetime.utcnow()
+            _t = datetime.utcnow()
             _t = _t.replace(second=0, microsecond=0, tzinfo=timezone.utc)
             self.ts = _t.astimezone(ZoneInfo("America/Chicago"))
 
@@ -202,7 +201,7 @@ class nwnformat:
         elif lineType == "Min":
             self.parseMinLineRT(tokens)
         else:
-            _t = datetime.datetime.utcnow()
+            _t = datetime.utcnow()
             _t = _t.replace(second=0, microsecond=0, tzinfo=timezone.utc)
             self.ts = _t.astimezone(ZoneInfo("America/Chicago"))
             self.parseCurrentLineRT(tokens)

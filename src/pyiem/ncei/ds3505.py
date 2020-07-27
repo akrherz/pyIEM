@@ -5,8 +5,7 @@
 # pylint: disable=too-many-lines
 import re
 import warnings
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 import json
 
 from metar.Metar import Metar
@@ -1667,7 +1666,7 @@ def parser(msg, call_id, add_metar=False):
     # Seems like these obs with this flag are 'bad'
     if data["srcflag"] in ["A", "B"]:
         return
-    data["valid"] = datetime.datetime.strptime(
+    data["valid"] = datetime.strptime(
         "%s %s" % (data["yyyymmdd"], data["hhmi"]), "%Y%m%d %H%M"
     ).replace(tzinfo=timezone.utc)
     data["call_id"] = call_id

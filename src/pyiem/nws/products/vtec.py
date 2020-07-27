@@ -1,6 +1,6 @@
 """A NWS TextProduct that contains VTEC information."""
 # Standard Library Imports
-import datetime
+from datetime import timedelta
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
@@ -131,7 +131,7 @@ class VTECProduct(TextProduct):
                     vtec.etn,
                     vtec.significance,
                     vtec.phenomena,
-                    self.valid - datetime.timedelta(days=offset),
+                    self.valid - timedelta(days=offset),
                     self.valid,
                     self.valid,
                 ),
@@ -570,9 +570,7 @@ class VTECProduct(TextProduct):
                     jmsg_dict["url"] += "_%s" % (
                         vtec.begints.strftime("%Y-%m-%dT%H:%MZ"),
                     )
-                    if vtec.begints > (
-                        self.utcnow + datetime.timedelta(hours=1)
-                    ):
+                    if vtec.begints > (self.utcnow + timedelta(hours=1)):
                         jmsg_dict["sts"] = " %s " % (
                             vtec.get_begin_string(self),
                         )
@@ -711,7 +709,7 @@ class VTECProduct(TextProduct):
             if vtec.phenomena in ["TO"] and vtec.significance == "W":
                 jdict["svs_special"] = segment.svs_search()
             if vtec.begints is not None and vtec.begints > (
-                self.utcnow + datetime.timedelta(hours=1)
+                self.utcnow + timedelta(hours=1)
             ):
                 jdict["sts"] = " %s " % (vtec.get_begin_string(self),)
 

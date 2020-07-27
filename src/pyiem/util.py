@@ -9,8 +9,7 @@ import sys
 import time
 import random
 import logging
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 import re
 import warnings
 import getpass
@@ -151,9 +150,9 @@ def ncopen(ncfn, mode="r", timeout=60):
 
     if mode != "w" and not os.path.isfile(ncfn):
         raise IOError("No such file %s" % (ncfn,))
-    sts = datetime.datetime.utcnow()
+    sts = datetime.utcnow()
     nc = None
-    while (datetime.datetime.utcnow() - sts).total_seconds() < timeout:
+    while (datetime.utcnow() - sts).total_seconds() < timeout:
         try:
             nc = netCDF4.Dataset(ncfn, mode)
             nc.set_auto_scale(True)
@@ -173,8 +172,8 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
       datetime with tzinfo set
     """
     if year is None:
-        return datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
-    return datetime.datetime(
+        return datetime.utcnow().replace(tzinfo=timezone.utc)
+    return datetime(
         year, month, day, hour, minute, second, microsecond
     ).replace(tzinfo=timezone.utc)
 
@@ -368,27 +367,25 @@ def get_autoplot_context(fdict, cfg):
         elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.datetime.strptime(default, "%Y/%m/%d %H%M")
+                default = datetime.strptime(default, "%Y/%m/%d %H%M")
             if minval is not None:
-                minval = datetime.datetime.strptime(minval, "%Y/%m/%d %H%M")
+                minval = datetime.strptime(minval, "%Y/%m/%d %H%M")
             if maxval is not None:
-                maxval = datetime.datetime.strptime(maxval, "%Y/%m/%d %H%M")
+                maxval = datetime.strptime(maxval, "%Y/%m/%d %H%M")
             if value is not None:
                 if value.find(" ") == -1:
                     value += " 0000"
-                value = datetime.datetime.strptime(value, "%Y-%m-%d %H%M")
+                value = datetime.strptime(value, "%Y-%m-%d %H%M")
         elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.datetime.strptime(
-                    default, "%Y/%m/%d"
-                ).date()
+                default = datetime.strptime(default, "%Y/%m/%d").date()
             if minval is not None:
-                minval = datetime.datetime.strptime(minval, "%Y/%m/%d").date()
+                minval = datetime.strptime(minval, "%Y/%m/%d").date()
             if maxval is not None:
-                maxval = datetime.datetime.strptime(maxval, "%Y/%m/%d").date()
+                maxval = datetime.strptime(maxval, "%Y/%m/%d").date()
             if value is not None:
-                value = datetime.datetime.strptime(value, "%Y-%m-%d").date()
+                value = datetime.strptime(value, "%Y-%m-%d").date()
         elif typ == "vtec_ps":
             # VTEC phenomena and significance
             defaults = {}

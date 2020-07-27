@@ -4,8 +4,7 @@ Attempt to break up the HML product into atomic data
 
 """
 import re
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 import xml.etree.cElementTree as ET
 
 import pandas as pd
@@ -25,7 +24,7 @@ def parseUTC(s):
     """Parse an ISO-ish string into UTC timestamp"""
     if s is None:
         return None
-    return datetime.datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S").replace(
+    return datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S").replace(
         tzinfo=timezone.utc
     )
 

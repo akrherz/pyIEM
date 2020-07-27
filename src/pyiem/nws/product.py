@@ -1,6 +1,5 @@
 """Base Class encapsulating a NWS Text Product"""
-import datetime
-from datetime import timezone
+from datetime import timezone, timedelta, datetime
 from collections import OrderedDict
 import re
 
@@ -157,8 +156,8 @@ def date_tokens2datetime(tokens):
         tokens[6],
     )
     # Careful here, need to go to UTC time first then come back!
-    now = datetime.datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-    now += datetime.timedelta(hours=reference.offsets[z])
+    now = datetime.strptime(dstr, "%I:%M %p %b %d %Y")
+    now += timedelta(hours=reference.offsets[z])
     return z, tz, now.replace(tzinfo=timezone.utc)
 
 
@@ -395,7 +394,7 @@ class TextProductSegment:
         mi = int(gdict["ztime"][2:])
         self.tml_valid = self.ugcexpire.replace(hour=hh, minute=mi)
         if hh > self.ugcexpire.hour:
-            self.tml_valid = self.tml_valid - datetime.timedelta(days=1)
+            self.tml_valid = self.tml_valid - timedelta(days=1)
 
         self.tml_valid = self.tml_valid.replace(tzinfo=timezone.utc)
 
@@ -487,9 +486,7 @@ class TextProduct:
         self.tz = None
         self.geometry = None
         if utcnow is None:
-            self.utcnow = datetime.datetime.utcnow().replace(
-                tzinfo=timezone.utc
-            )
+            self.utcnow = datetime.utcnow().replace(tzinfo=timezone.utc)
         # make sure this is actualing in UTC
         self.utcnow = self.utcnow.astimezone(timezone.utc)
 
@@ -538,7 +535,7 @@ class TextProduct:
             localts = self.valid.astimezone(self.tz)
             # A bit of complexity as offices may not implement daylight saving
             if self.z.endswith("ST") and localts.dst():
-                localts -= datetime.timedelta(hours=1)
+                localts -= timedelta(hours=1)
             fmt = "%b %-d, %-I:%M %p " + self.z
         return localts.strftime(fmt)
 
@@ -652,10 +649,10 @@ class TextProduct:
             if wmo_day - self.utcnow.day == 1:  # Tomorrow
                 self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
             elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
-                self.wmo_valid = self.wmo_valid + datetime.timedelta(days=-10)
+                self.wmo_valid = self.wmo_valid + timedelta(days=-10)
                 self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
             elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
-                self.wmo_valid = self.wmo_valid + datetime.timedelta(days=10)
+                self.wmo_valid = self.wmo_valid + timedelta(days=10)
                 self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
             else:
                 self.wmo_valid = self.wmo_valid.replace(day=wmo_day)

@@ -8,8 +8,7 @@
 """
 import string
 import random
-import datetime
-from datetime import timezone
+from datetime import timezone, datetime
 
 from affine import Affine
 import numpy as np
@@ -44,7 +43,7 @@ def get_table(valid):
       str tablename
     """
     # careful here, a datetime is not an instance of date
-    if isinstance(valid, datetime.datetime):
+    if isinstance(valid, datetime):
         table = "iemre_hourly_%s" % (
             valid.astimezone(timezone.utc).strftime("%Y%m"),
         )
@@ -208,7 +207,7 @@ def get_hourly_ncname(year):
 def daily_offset(ts):
     """ Compute the timestamp index in the netcdf file """
     # In case ts is passed here as a datetime.date object
-    ts = datetime.datetime(ts.year, ts.month, ts.day)
+    ts = datetime(ts.year, ts.month, ts.day)
     base = ts.replace(
         month=1, day=1, hour=0, minute=0, second=0, microsecond=0
     )

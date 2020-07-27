@@ -1,8 +1,7 @@
 """The Atomic Local Storm Report ... Report"""
 # pylint: disable=unsubscriptable-object
 import re
-import datetime
-from datetime import timezone
+from datetime import timezone, timedelta
 
 from pyiem import reference
 
@@ -138,14 +137,12 @@ class LSR:
         if self.valid is None:
             return
         # We can't just assign the timezone (maybe we can someday)
-        self.utcvalid = self.valid + datetime.timedelta(
-            hours=reference.offsets[z]
-        )
+        self.utcvalid = self.valid + timedelta(hours=reference.offsets[z])
         self.utcvalid = self.utcvalid.replace(tzinfo=timezone.utc)
         self.valid = self.utcvalid.astimezone(tz)
         # complexity with non-DST sites
         if z.endswith("ST") and self.valid.dst():
-            self.valid -= datetime.timedelta(hours=1)
+            self.valid -= timedelta(hours=1)
         self.z = z
 
     def mag_string(self):
