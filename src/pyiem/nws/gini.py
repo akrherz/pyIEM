@@ -4,10 +4,9 @@ Processing of GINI formatted data found on NOAAPORT
 import struct
 import math
 import zlib
-import datetime
+from datetime import timezone, datetime
 import os
 
-import pytz
 import pyproj
 import numpy as np
 from pyiem.util import logger
@@ -424,8 +423,8 @@ class GINIZFile:
         mi = struct.unpack("> B", hdata[12:13])[0]
         ss = struct.unpack("> B", hdata[13:14])[0]
         # hs = struct.unpack("> B", hdata[14:15] )[0]
-        meta["valid"] = datetime.datetime(yr, mo, dy, hh, mi, ss).replace(
-            tzinfo=pytz.timezone("UTC")
+        meta["valid"] = datetime(yr, mo, dy, hh, mi, ss).replace(
+            tzinfo=timezone.utc
         )
         meta["map_projection"] = struct.unpack("> B", hdata[15:16])[0]
         meta["proj_center_flag"] = struct.unpack("> B", hdata[36:37])[0] >> 7

@@ -1,7 +1,8 @@
 """Test pyiem.tracker."""
+# pylint: disable=redefined-outer-name
 import datetime
+from datetime import timezone
 
-import pytz
 import pytest
 from pyiem.tracker import TrackerEngine, loadqc
 from pyiem.network import Table as NetworkTable
@@ -51,7 +52,7 @@ def test_workflow(pcursor, icursor):
         name="YYY Site Name", network="IA_XXXX", tzname="America/Chicago"
     )
     valid = datetime.datetime.utcnow()
-    valid = valid.replace(tzinfo=pytz.timezone("UTC"))
+    valid = valid.replace(tzinfo=timezone.utc)
     threshold = valid - datetime.timedelta(hours=3)
     obs = {
         sid1: {"valid": valid},

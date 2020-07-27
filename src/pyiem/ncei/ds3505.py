@@ -2,12 +2,12 @@
 
     https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
+# pylint: disable=too-many-lines
 import re
 import warnings
-import datetime
+from datetime import timezone, datetime
 import json
 
-import pytz
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from metpy.units import units
@@ -1666,9 +1666,9 @@ def parser(msg, call_id, add_metar=False):
     # Seems like these obs with this flag are 'bad'
     if data["srcflag"] in ["A", "B"]:
         return
-    data["valid"] = datetime.datetime.strptime(
+    data["valid"] = datetime.strptime(
         "%s %s" % (data["yyyymmdd"], data["hhmi"]), "%Y%m%d %H%M"
-    ).replace(tzinfo=pytz.utc)
+    ).replace(tzinfo=timezone.utc)
     data["call_id"] = call_id
     data["lat"] = _d1000(data["lat"])
     data["lon"] = _d1000(data["lon"])

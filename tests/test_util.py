@@ -1,6 +1,7 @@
 """Testing of util."""
 # pylint: disable=redefined-outer-name
 import datetime
+from datetime import timezone
 import string
 import random
 import logging
@@ -10,7 +11,6 @@ from collections import OrderedDict
 import mock
 
 import pytest
-import pytz
 import numpy as np
 import psycopg2
 from pyiem import util
@@ -130,10 +130,10 @@ def test_ssw():
 
 def test_utc():
     """Does the utc() function work as expected."""
-    answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=pytz.UTC)
+    answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=timezone.utc)
     res = util.utc(2017, 2, 1, 2, 20)
     assert answer == res
-    answer = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+    answer = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
     assert answer.year == util.utc().year
 
 

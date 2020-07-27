@@ -1,3 +1,5 @@
+# workaround pytz shortcomings
+backports.zoneinfo;python_version<"3.9"
 sphinxcontrib-napoleon
 oauth2client
 urllib3

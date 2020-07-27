@@ -3,11 +3,10 @@
 Hopefully useful functions to help with the processing of MRMS data
 """
 import struct
-import datetime
+from datetime import timezone, datetime
 import gzip
 import os
 
-import pytz
 import requests
 import numpy as np
 
@@ -57,9 +56,9 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
             fd.write(req.content)
         return tmpfn
     # Option 3, we go look at MRMS website, if timestamp is recent
-    utcnow = datetime.datetime.utcnow()
+    utcnow = datetime.utcnow()
     if valid.tzinfo is not None:
-        utcnow = utcnow.replace(tzinfo=pytz.utc)
+        utcnow = utcnow.replace(tzinfo=timezone.utc)
     if (utcnow - valid).total_seconds() > 86400:
         # Can't do option 3!
         return None
@@ -168,9 +167,9 @@ def reader(fn):
         metadata["ul_lon_cc"] - (scale_lon / float(grid_scale)) / 2.0
     )
 
-    metadata["valid"] = datetime.datetime(
+    metadata["valid"] = datetime(
         year, month, day, hour, minute, second
-    ).replace(tzinfo=pytz.timezone("UTC"))
+    ).replace(tzinfo=timezone.utc)
 
     struct.unpack("%si" % (nz,), fp.read(nz * 4))  # levels
     struct.unpack("i", fp.read(4))  # z_scale

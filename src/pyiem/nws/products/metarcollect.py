@@ -1,8 +1,12 @@
 """Encapsulates a text product holding METARs."""
 import re
-import datetime
+from datetime import timezone, timedelta
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from pyiem.nws.product import TextProduct
@@ -43,7 +47,7 @@ def wind_logic(iem, this):
         iem.data["peak_wind_drct"] = this.wind_dir_peak.value()
     if this.peak_wind_time:
         iem.data["peak_wind_time"] = this.peak_wind_time.replace(
-            tzinfo=pytz.UTC
+            tzinfo=timezone.utc
         )
 
     # Figure out if we have a new max_drct
@@ -65,7 +69,9 @@ def wind_logic(iem, this):
         and this.wind_speed_peak.value("KT") > new_max_wind
     ):
         iem.data["max_drct"] = this.wind_dir_peak.value()
-        iem.data["max_gust_ts"] = this.peak_wind_time.replace(tzinfo=pytz.UTC)
+        iem.data["max_gust_ts"] = this.peak_wind_time.replace(
+            tzinfo=timezone.utc
+        )
         iem.data["max_gust"] = this.wind_speed_peak.value("KT")
 
 
@@ -113,7 +119,7 @@ def to_metar(textprod, text):
                     print("unparsed groups regex fail: %s" % (inst,))
             if str(inst).find("day is out of range for month") > -1:
                 if valid.day < 10:
-                    valid = valid.replace(day=1) - datetime.timedelta(days=1)
+                    valid = valid.replace(day=1) - timedelta(days=1)
         attempt += 1
 
     if mtr is not None:
@@ -125,13 +131,11 @@ def to_metar(textprod, text):
             print("Aborting due to time being None |%s|" % (text,))
             return None
         # don't allow data more than an hour into the future
-        ceiling = (textprod.utcnow + datetime.timedelta(hours=1)).replace(
-            tzinfo=None
-        )
+        ceiling = (textprod.utcnow + timedelta(hours=1)).replace(tzinfo=None)
         if mtr.time > ceiling:
             # careful, we may have obs from the previous month
             if ceiling.day < 5 and mtr.time.day > 15:
-                prevmonth = ceiling - datetime.timedelta(days=10)
+                prevmonth = ceiling - timedelta(days=10)
                 mtr.time = mtr.time.replace(
                     year=prevmonth.year, month=prevmonth.month
                 )
@@ -184,12 +188,12 @@ def sanitize(text):
 def _is_same_day(valid, tzname, hours=6):
     """Can we trust a six hour total?"""
     try:
-        tzinfo = pytz.timezone(tzname)
-    except pytz.exceptions.UnknownTimeZoneError:
+        tzinfo = ZoneInfo(tzname)
+    except Exception:
         return False
     lts = valid.astimezone(tzinfo)
     # TODO we should likely somehow compute this in standard time, shrug
-    return lts.day == (lts - datetime.timedelta(hours=hours)).day
+    return lts.day == (lts - timedelta(hours=hours)).day
 
 
 class METARReport(Metar):
@@ -206,7 +210,7 @@ class METARReport(Metar):
         """Convert this into a Jabber style message"""
         drct = 0
         sknt = 0
-        time = self.time.replace(tzinfo=pytz.UTC)
+        time = self.time.replace(tzinfo=timezone.utc)
         if self.wind_gust:
             sknt = self.wind_gust.value("KT")
             if self.wind_dir:
@@ -214,7 +218,7 @@ class METARReport(Metar):
         if self.wind_speed_peak:
             v1 = self.wind_speed_peak.value("KT")
             d1 = self.wind_dir_peak.value()
-            t1 = self.peak_wind_time.replace(tzinfo=pytz.UTC)
+            t1 = self.peak_wind_time.replace(tzinfo=timezone.utc)
             if v1 > sknt:
                 sknt = v1
                 drct = d1
@@ -252,7 +256,7 @@ class METARReport(Metar):
           force_current_log (boolean): should this ob always go to current_log
           skip_current (boolean): should this ob always skip current table
         """
-        gts = self.time.replace(tzinfo=pytz.utc)
+        gts = self.time.replace(tzinfo=timezone.utc)
         iem = Observation(self.iemid, self.network, gts)
         # Load the observation from the database, if the same time exists!
         iem.load(txn)

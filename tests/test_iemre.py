@@ -1,6 +1,10 @@
 """test IEMRE stuff"""
 import datetime
-import pytz
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 
 import numpy as np
 from pyiem.util import utc, get_dbconn
@@ -108,7 +112,7 @@ def test_hourly_offset():
     assert offset == 0
 
     ts = utc(2013, 1, 1, 6, 0)
-    ts = ts.astimezone(pytz.timezone("America/Chicago"))
+    ts = ts.astimezone(ZoneInfo("America/Chicago"))
     offset = iemre.hourly_offset(ts)
     assert offset == 6
 

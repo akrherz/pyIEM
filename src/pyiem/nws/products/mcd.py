@@ -3,9 +3,8 @@
  parsing of Weather Prediction Center's MPD
 """
 import re
-import datetime
+from datetime import timezone, datetime
 
-import pytz
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
@@ -61,13 +60,16 @@ class MCDProduct(TextProduct):
         issue = self.valid.replace(day=day1, hour=hour1, minute=min1)
         expire = self.valid.replace(day=day2, hour=hour2, minute=min2)
         if day1 < self.valid.day and day1 == 1:
-            issue = self.valid + datetime.timedelta(days=25)
+            issue = self.valid + timedelta(days=25)
             issue = issue.replace(day=day1, hour=hour1, minute=min1)
         if day2 < self.valid.day and day2 == 1:
-            expire = self.valid + datetime.timedelta(days=25)
+            expire = self.valid + timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
 
-        return issue.replace(tzinfo=pytz.UTC), expire.replace(tzinfo=pytz.UTC)
+        return (
+            issue.replace(tzinfo=timezone.utc),
+            expire.replace(tzinfo=timezone.utc),
+        )
 
     def find_watch_probability(self):
         """ Find the probability of watch issuance for SPC MCD"""

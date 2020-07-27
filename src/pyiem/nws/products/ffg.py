@@ -4,10 +4,9 @@ NWS Discontinued 30 Sep 2018
 https://www.weather.gov/media/notification/pdfs/pns18-13disc_county_ffg.pdf
 """
 import re
-import datetime
+from datetime import timezone, datetime
 
 import pandas as pd
-import pytz
 from pyiem.nws.product import TextProduct
 
 SHEFRE = re.compile(
@@ -56,13 +55,13 @@ class FFGProduct(TextProduct):
             self.warnings.append("Failed to find SHEF variable!")
             return
         group = shef.groupdict()
-        self.issue = datetime.datetime.strptime(
-            group["date"][-6:], "%y%m%d"
-        ).replace(tzinfo=pytz.UTC)
+        self.issue = datetime.strptime(group["date"][-6:], "%y%m%d").replace(
+            tzinfo=timezone.utc
+        )
         self.issue = self.issue.replace(hour=(int(group["hh"]) % 24))
-        dc = datetime.datetime.strptime(
-            group["valid"][-10:], "%y%m%d%H%M"
-        ).replace(tzinfo=pytz.utc)
+        dc = datetime.strptime(group["valid"][-10:], "%y%m%d%H%M").replace(
+            tzinfo=timezone.utc
+        )
         # Emailed KTUA about this on 17 Apr 2017
         if (
             abs((self.issue - dc).total_seconds()) > (12 * 3600.0)

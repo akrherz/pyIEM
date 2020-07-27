@@ -1,8 +1,7 @@
 """Support NWS VTEC encoding"""
 import re
-import datetime
+from datetime import timezone, timedelta, datetime
 
-import pytz
 
 VTEC_RE = (
     r"(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\."
@@ -217,8 +216,8 @@ def contime(text):
     if re.findall("0000*T", text):
         return None
     try:
-        ts = datetime.datetime.strptime(text, "%y%m%dT%H%MZ")
-        return ts.replace(tzinfo=pytz.utc)
+        ts = datetime.strptime(text, "%y%m%dT%H%MZ")
+        return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
         print(err)
         return None
@@ -269,7 +268,7 @@ class VTEC:
         if self.endts is None:
             return "until further notice"
         fmt = "%b %-d, %-I:%M %p"
-        if self.endts < (prod.valid + datetime.timedelta(hours=1)):
+        if self.endts < (prod.valid + timedelta(hours=1)):
             fmt = "%-I:%M %p"
         if prod.tz is None:
             fmt = "%b %-d, %-H:%M"
@@ -278,7 +277,7 @@ class VTEC:
             localts = self.endts.astimezone(prod.tz)
         # A bit of complexity as offices may not implement daylight saving
         if prod.z is not None and prod.z.endswith("ST") and localts.dst():
-            localts -= datetime.timedelta(hours=1)
+            localts -= timedelta(hours=1)
         return "till %s %s" % (
             localts.strftime(fmt),
             prod.z if prod.z is not None else "UTC",
@@ -289,12 +288,12 @@ class VTEC:
         if self.begints is None:
             return ""
         fmt = "%b %-d, %-I:%M %p"
-        if self.begints < (prod.valid + datetime.timedelta(hours=1)):
+        if self.begints < (prod.valid + timedelta(hours=1)):
             fmt = "%-I:%M %p"
         localts = self.begints.astimezone(prod.tz)
         # A bit of complexity as offices may not implement daylight saving
         if prod.z.endswith("ST") and localts.dst():
-            localts -= datetime.timedelta(hours=1)
+            localts -= timedelta(hours=1)
         return "valid at %s %s" % (localts.strftime(fmt), prod.z)
 
     def url(self, year):

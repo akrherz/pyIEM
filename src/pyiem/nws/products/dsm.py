@@ -1,6 +1,6 @@
 """Parser of the Daily Summary Message (DSM)."""
 import re
-import datetime
+from datetime import datetime, timedelta
 
 from metpy.units import units
 from pyiem.nws.product import TextProduct
@@ -51,7 +51,7 @@ def compute_time(date, timestamp):
     """Make a valid timestamp."""
     if timestamp is None:
         return None
-    return datetime.datetime(
+    return datetime(
         date.year,
         date.month,
         date.day,
@@ -75,9 +75,7 @@ class DSMProduct:
 
     def tzlocalize(self, tzinfo):
         """Localize the timestamps, tricky."""
-        offset = tzinfo.utcoffset(
-            datetime.datetime(2000, 1, 1), is_dst=False
-        ).total_seconds()
+        offset = tzinfo.utcoffset(datetime(2000, 1, 1)).total_seconds()
         for name in [
             "high_time",
             "low_time",
@@ -88,7 +86,7 @@ class DSMProduct:
             if val is None:
                 continue
             # Need to convert timestamp into standard time time, tricky
-            ts = val - datetime.timedelta(seconds=offset)
+            ts = val - timedelta(seconds=offset)
             setattr(
                 self,
                 name,
@@ -107,7 +105,7 @@ class DSMProduct:
         # Is this ob from 'last year'
         if ts.month == 12 and utcnow.month == 1:
             ts = ts.replace(year=(ts.year - 1))
-        self.date = datetime.date(ts.year, ts.month, ts.day)
+        self.date = datetime(ts.year, ts.month, ts.day).date()
         self.high_time = compute_time(
             self.date, self.groupdict.get("hightime")
         )

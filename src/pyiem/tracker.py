@@ -3,7 +3,11 @@ import datetime
 import smtplib
 from email.mime.text import MIMEText
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
+
 from pyiem.util import get_dbconn
 
 
@@ -93,7 +97,7 @@ class TrackerEngine:
         )
         trackerid = self.pcursor.fetchone()[0]
         # Create a tt_log entry
-        lts = ob["valid"].astimezone(pytz.timezone(nt.sts[sid]["tzname"]))
+        lts = ob["valid"].astimezone(ZoneInfo(nt.sts[sid]["tzname"]))
         msg = "Site Offline since %s" % (lts.strftime("%d %b %Y %H:%M %Z"),)
         self.pcursor.execute(
             "INSERT into tt_log (portfolio, s_mid, author, status_c, "
@@ -174,7 +178,7 @@ class TrackerEngine:
             "DELETE from offline where station = %s and network = %s",
             (sid, nt.sts[sid]["network"]),
         )
-        ltz = pytz.timezone(nt.sts[sid]["tzname"])
+        ltz = ZoneInfo(nt.sts[sid]["tzname"])
         lts = ob["valid"].astimezone(ltz)
         delta = ob["valid"] - offline[sid]["valid"]
         days = delta.days
