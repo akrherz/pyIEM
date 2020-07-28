@@ -719,4 +719,6 @@ class Wrapper:
         return res
 
 
+# shrug, workaround sphinx autodoc issue with my __getattr__ catchall above
+__annotations__ = []
 sys.modules[__name__] = Wrapper(sys.modules[__name__])
