@@ -47,7 +47,13 @@ def test_windrose_without_units():
     sio = BytesIO()
     sio.write(res.encode("ascii"))
     sio.seek(0)
-    df = read_csv(sio, skiprows=range(0, 8), index_col="Direction")
+    df = read_csv(
+        sio,
+        skiprows=range(0, 8),
+        index_col="Direction",
+        delimiter=" *, *",
+        engine="python",
+    )
     assert len(df.columns) == 4
     assert abs(df.sum(axis=0).sum() - 100.0) < 0.1
 
