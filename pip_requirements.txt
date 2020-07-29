@@ -1,10 +1,10 @@
 # workaround pytz shortcomings
 backports.zoneinfo;python_version<"3.9"
+# needed for docs
 sphinxcontrib-napoleon
+# needed for cscap_utils
 oauth2client
-urllib3
-Pillow
-pyproj
+# cscap_utils stuff
 git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git
 gdata; python_version=='2.7'
 git+https://github.com/dvska/gdata-python3.git; python_version > '3.0'
