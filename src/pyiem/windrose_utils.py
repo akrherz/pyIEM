@@ -29,7 +29,7 @@ WINDUNITS = {
     "mps": {
         "label": "meters per second",
         "units": mpunits("meter / second"),
-        "bins": (2, 4, 6, 8, 10, 12),
+        "bins": (1, 4, 6, 8, 10, 12),
     },
     "kph": {
         "label": "kilometers per hour",
