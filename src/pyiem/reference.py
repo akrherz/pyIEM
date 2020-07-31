@@ -219,6 +219,7 @@ lsr_events = {
 offsets = {
     "GMT": 0,
     "UTC": 0,
+    "CVT": 1,
     "CHDT": -9,
     "CHST": -10,
     "LST": -10,

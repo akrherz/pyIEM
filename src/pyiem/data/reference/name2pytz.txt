@@ -1,4 +1,5 @@
 GMT UTC
+CVT Atlantic/Cape_Verde
 CHDT Etc/GMT-8
 CHST Etc/GMT-9
 LST Etc/GMT-10

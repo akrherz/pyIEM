@@ -1,0 +1,41 @@
+854
+WTNT45 KNHC 312048
+TCDAT5
+ 
+Tropical Depression Ten Discussion Number   1
+NWS National Hurricane Center Miami FL       AL102020
+800 PM CVT Fri Jul 31 2020
+ 
+Deep convection has recently developed closer to the center of a
+small area of low pressure located a couple of hundred miles east of
+the Cabo Verde Islands.  Earlier ASCAT data indicated peak winds of
+around 25 kt, but given the small size of the system and the likely
+undersampling of the instrument, the initial intensity is set at 30
+kt.  This is in line with a Dvorak classification of T2.0 from SAB.
+With the recent increase in convective organization, there is a
+potential for the depression to become a short-lived tropical storm
+tonight.  After that time, the environment is forecast to become
+increasingly hostile as cooler waters and less favorable
+thermodynamic conditions lie ahead.  As a result, weakening should
+begin on Saturday and the system is forecast to become a remnant low
+Saturday night and dissipate shortly thereafter.
+
+The system is moving slightly west of due north, or 355/8 kt.  The
+depression is forecast to turn northwestward tonight, then
+west-northwestward to westward on Saturday and Saturday night as it
+moves around the eastern side of a large cyclonic gyre over the far
+eastern Atlantic.  The track guidance is in relatively good
+agreement, and the NHC forecast is near the TVCA multi-model
+consensus.
+ 
+ 
+FORECAST POSITIONS AND MAX WINDS
+ 
+INIT  31/2100Z 15.9N  20.0W   30 KT  35 MPH
+ 12H  01/0600Z 17.3N  21.0W   35 KT  40 MPH
+ 24H  01/1800Z 18.5N  23.2W   30 KT  35 MPH
+ 36H  02/0600Z 18.8N  25.8W   20 KT  25 MPH...POST-TROP/REMNT LOW
+ 48H  02/1800Z...DISSIPATED
+ 
+$$
+Forecaster Brown
