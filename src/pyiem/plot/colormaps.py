@@ -1,9 +1,15 @@
 """Definition of colormaps"""
+import copy
 
 from six import string_types
 import numpy as np
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
+
+
+def get_cmap(name, *args, **kwargs):
+    """Matplotlib `get_cmap()` proxy to deal with API complexity."""
+    return copy.copy(cm.get_cmap(name, *args, **kwargs))
 
 
 def stretch_cmap(cmap, bins, extend="both"):
