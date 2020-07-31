@@ -56,6 +56,32 @@ def test_wpc():
     assert res[0][0] == ans
 
 
+def test_200731_cvt():
+    """See that we handle CVT timezone products."""
+    tp = productparser(get_test_file("TCDAT5_CVT.txt"))
+    res = tp.get_jabbers("http://localhost")
+    ans = (
+        "NHC issues TCDAT5 (TCD) at Jul 31, 8:00 PM CVT "
+        "http://localhost?pid=202007312100-KNHC-WTNT45-TCDAT5"
+    )
+    assert res[0][0] == ans
+
+
+def test_200731_bogus_timezone():
+    """Test that we don't bomb out with unknown timezone."""
+    tp = productparser(
+        get_test_file("TCDAT5_CVT.txt").replace(" CVT ", " ZZT ")
+    )
+    res = tp.get_jabbers("http://localhost")
+    ans = (
+        "NHC issues TCDAT5 (TCD) at Jul 31, 8:00 PM ZZT "
+        "http://localhost?pid=202007312000-KNHC-WTNT45-TCDAT5"
+    )
+    assert res[0][0] == ans
+    assert len(tp.warnings) == 1
+    assert tp.warnings[0] == "product timezone 'ZZT' unknown"
+
+
 def test_180321_mst():
     """Do we do the right thing with MST products whilst in DST"""
     tp = productparser(get_test_file("AFDMST.txt"))

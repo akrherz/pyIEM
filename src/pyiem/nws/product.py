@@ -157,7 +157,7 @@ def date_tokens2datetime(tokens):
     )
     # Careful here, need to go to UTC time first then come back!
     now = datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-    now += timedelta(hours=reference.offsets[z])
+    now += timedelta(hours=reference.offsets.get(z, 0))
     return z, tz, now.replace(tzinfo=timezone.utc)
 
 
@@ -624,7 +624,9 @@ class TextProduct:
         tokens = TIME_RE.findall(self.unixtext)
         if provided_utcnow is None and tokens:
             try:
-                _z, _tz, valid = date_tokens2datetime(tokens[0])
+                z, _tz, valid = date_tokens2datetime(tokens[0])
+                if z not in reference.offsets:
+                    self.warnings.append(f"product timezone '{z}' unknown")
             except ValueError:
                 msg = (
                     "Invalid timestamp [%s] found in product "
