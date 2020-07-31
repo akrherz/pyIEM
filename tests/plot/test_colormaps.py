@@ -1,5 +1,11 @@
 """test our colormaps.py"""
-from pyiem.plot.colormaps import stretch_cmap, dep_erosion
+from pyiem.plot.colormaps import stretch_cmap, dep_erosion, get_cmap
+
+
+def test_get_cmap():
+    """Test we can call our get_cmap proxy."""
+    cmap = get_cmap("jet")
+    assert cmap is not None
 
 
 def test_stretch():

@@ -9,6 +9,7 @@ import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
 import matplotlib.image as mpimage
 from pyiem.plot.use_agg import plt
+from pyiem.plot.colormaps import get_cmap
 from pyiem.plot.util import fitbox, fontscale
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
@@ -222,7 +223,7 @@ def calendar_plot(sts, ets, data, **kwargs):
         elif len(bounds) < 10:
             kwargs["fontsize"] = 14
     if kwargs.get("heatmap", False):
-        kwargs["cmap"] = plt.get_cmap(kwargs.get("cmap", "viridis"))
+        kwargs["cmap"] = get_cmap(kwargs.get("cmap", "viridis"))
         maxval = -1000
         for key in data:
             if data[key]["val"] > maxval:
