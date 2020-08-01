@@ -24,6 +24,7 @@ class WindrosePlot:
         self.ax = PolarAxes(
             self.fig, rect, theta_offset=np.pi / 2.0, theta_direction=-1
         )
+        self.ax.set_xticks(np.arange(0, 2.0 * np.pi - 0.01, 2.0 * np.pi / 8.0))
         self.ax.set_xticklabels(LABELS)
         self.fig.add_axes(self.ax)
         self.table = None

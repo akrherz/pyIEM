@@ -1,5 +1,5 @@
 """util script to call `windrose` package"""
-import datetime
+from datetime import datetime, timezone
 
 try:
     from zoneinfo import ZoneInfo
@@ -97,17 +97,11 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
     rlimiter = ""
     if database == "asos":
         rlimiter = " and report_type = 2 "
-    sql = """SELECT sknt, drct, valid from alldata WHERE station = '%s'
-        and valid > '%s' and valid < '%s'
-        %s
-        %s %s
-        """ % (
-        station,
-        sts,
-        ets,
-        monthinfo["sqltext"],
-        hourinfo["sqltext"],
-        rlimiter,
+    sql = (
+        "SELECT sknt, drct, valid at time zone 'UTC' as valid "
+        f"from alldata WHERE station = '{station}' "
+        f"and valid > '{sts}' and valid < '{ets}' {monthinfo['sqltext']} "
+        f"{hourinfo['sqltext']} {rlimiter}"
     )
     if level is not None:  # HACK!
         db = get_dbconn("postgis")
@@ -122,7 +116,8 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
                 .strip()
                 .split(" ")
             )
-        sql = """SELECT p.smps * 1.94384 as sknt, p.drct, f.valid from
+        sql = """SELECT p.smps * 1.94384 as sknt, p.drct,
+        f.valid at time zone 'UTC' as valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
         f.station in %s and p.pressure = %s and p.smps is not null
         and p.drct is not null and valid >= '%s' and valid < '%s'
@@ -137,6 +132,9 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
             hourinfo["sqltext"],
         )
     df = read_sql(sql, db, index_col=None)
+    if not df.empty:
+        # Make valid column timezone aware
+        df["valid"] = df["valid"].dt.tz_localize(timezone.utc)
     # If sknt or drct are null, we want to set the other to null as well
     df.loc[pd.isnull(df["drct"]), "sknt"] = None
     df.loc[pd.isnull(df["sknt"]), "drct"] = None
@@ -202,7 +200,7 @@ def _make_textresult(
     if level is not None:
         res += "# RAOB Pressure (hPa) Level: %s\n" % (level,)
     res += ("# Generated %s UTC, contact: akrherz@iastate.edu\n") % (
-        datetime.datetime.utcnow().strftime("%d %b %Y %H:%M"),
+        datetime.utcnow().strftime("%d %b %Y %H:%M"),
     )
     res += "# First value in table is CALM\n"
     cols = ["Direction", "Calm"]
@@ -234,8 +232,8 @@ def _make_textresult(
 
 def _time_domain_string(df, tzname):
     """Custom time label option."""
-    sts = df["valid"].min()
-    ets = df["valid"].max()
+    sts = df["valid"].min().to_pydatetime()
+    ets = df["valid"].max().to_pydatetime()
     timeformat = "%d %b %Y %I:%M %p"
     if tzname is not None:
         sts = sts.astimezone(ZoneInfo(tzname))
@@ -313,17 +311,15 @@ def _make_plot(
     if len(hours) < 24:
         if len(hours) > 4:
             tlimit += "%s-%s" % (
-                datetime.datetime(2000, 1, 1, hours[0]).strftime("%-I %p"),
-                datetime.datetime(2000, 1, 1, hours[-1]).strftime("%-I %p"),
+                datetime(2000, 1, 1, hours[0]).strftime("%-I %p"),
+                datetime(2000, 1, 1, hours[-1]).strftime("%-I %p"),
             )
         else:
             for h in hours:
-                tlimit += "%s," % (
-                    datetime.datetime(2000, 1, 1, h).strftime("%-I %p"),
-                )
+                tlimit += "%s," % (datetime(2000, 1, 1, h).strftime("%-I %p"),)
     if len(months) < 12:
         for h in months:
-            tlimit += "%s," % (datetime.datetime(2000, h, 1).strftime("%b"),)
+            tlimit += "%s," % (datetime(2000, h, 1).strftime("%b"),)
     if tlimit != "":
         tlimit += "]"
     label = ("[%s] %s%s\n" "Windrose Plot %s\n" "Time Bounds: %s") % (
@@ -345,7 +341,7 @@ def _make_plot(
         wp.fig.text(
             0.02,
             0.1,
-            "Generated: %s" % (datetime.datetime.now().strftime("%d %b %Y"),),
+            "Generated: %s" % (datetime.now().strftime("%d %b %Y"),),
             verticalalignment="bottom",
             fontsize=14,
         )
@@ -364,8 +360,8 @@ def windrose(
     database="asos",
     months=np.arange(1, 13),
     hours=np.arange(0, 24),
-    sts=datetime.datetime(1970, 1, 1),
-    ets=datetime.datetime(2050, 1, 1),
+    sts=datetime(1970, 1, 1),
+    ets=datetime(2050, 1, 1),
     units="mph",
     nsector=36,
     justdata=False,
