@@ -217,9 +217,10 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
             f"INSERT into {warning_table} (issue, expire, updated, "
             "wfo, eventid, status, fcster, report, ugc, phenomena, "
             "significance, gid, init_expire, product_issue, "
-            "hvtec_nwsli, is_emergency, is_pds) "
+            "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
+            "is_emergency, is_pds) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "get_gid(%s, %s), %s, %s, %s, %s, %s) RETURNING gid",
+            "get_gid(%s, %s), %s, %s, %s, %s, %s, %s, %s, %s) RETURNING gid",
             (
                 bts,
                 ets,
@@ -237,6 +238,9 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 ets,
                 prod.valid,
                 segment.get_hvtec_nwsli(),
+                segment.get_hvtec_severity(),
+                segment.get_hvtec_cause(),
+                segment.get_hvtec_record(),
                 segment.is_emergency,
                 segment.is_pds,
             ),

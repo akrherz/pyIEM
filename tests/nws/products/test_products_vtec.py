@@ -230,12 +230,14 @@ def test_181228_issue76_sbwtable(dbcursor):
     prod = vtecparser(get_test_file("FLWMOB/FLS.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        """
-        SELECT hvtec_nwsli from sbw_2018 where wfo = 'MOB' and eventid = 57
-        and phenomena = 'FL' and significance = 'W'
-    """
+        "SELECT * from sbw_2018 where wfo = 'MOB' and eventid = 57 "
+        "and phenomena = 'FL' and significance = 'W' and status = 'NEW'"
     )
-    assert dbcursor.fetchone()["hvtec_nwsli"] == "MRRM6"
+    row = dbcursor.fetchone()
+    assert row["hvtec_nwsli"] == "MRRM6"
+    assert row["hvtec_severity"] == "1"
+    assert row["hvtec_cause"] == "ER"
+    assert row["hvtec_record"] == "NO"
     assert not filter_warnings(prod.warnings)
 
 

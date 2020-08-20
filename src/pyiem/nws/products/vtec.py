@@ -339,8 +339,9 @@ class VTECProduct(TextProduct):
             f"tml_direction, tml_sknt, {tml_column}, updated, "
             "waterspouttag, is_emergency, is_pds, floodtag_heavyrain, "
             "floodtag_flashflood, floodtag_damage, floodtag_leeve, "
-            "floodtag_dam, hvtec_nwsli) "
-            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, "
+            "floodtag_dam, hvtec_nwsli, hvtec_severity, hvtec_cause, "
+            "hvtec_record) "
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
             "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
@@ -374,6 +375,9 @@ class VTECProduct(TextProduct):
             segment.flood_tags.get("LEVEE FAILURE"),
             segment.flood_tags.get("DAM FAILURE"),
             segment.get_hvtec_nwsli(),
+            segment.get_hvtec_severity(),
+            segment.get_hvtec_cause(),
+            segment.get_hvtec_record(),
         )
         txn.execute(sql, myargs)
         if txn.rowcount != 1:
