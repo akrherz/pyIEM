@@ -213,6 +213,24 @@ class TextProductSegment:
             return None
         return self.hvtec[0].nwsli.id
 
+    def get_hvtec_cause(self):
+        """ Return the first hvtec cause entry, if it exists """
+        if not self.hvtec:
+            return None
+        return self.hvtec[0].cause
+
+    def get_hvtec_severity(self):
+        """ Return the first hvtec severity entry, if it exists """
+        if not self.hvtec:
+            return None
+        return self.hvtec[0].severity
+
+    def get_hvtec_record(self):
+        """ Return the first hvtec record entry, if it exists """
+        if not self.hvtec:
+            return None
+        return self.hvtec[0].record
+
     def svs_search(self):
         """ Special search the product for special text """
         sections = self.unixtext.split("\n\n")
