@@ -97,8 +97,8 @@ def test_171026_mixedlsr():
     prod = parser(get_test_file("mIxEd_CaSe/LSRBYZ.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
-        "At 1:00 AM MDT, 3 SSW Luther [Carbon Co, MT] Mesonet "
-        "reports Snow of 1.00 inch "
+        "[Delayed Report] On Oct 26, at 1:00 AM MDT, 3 SSW Luther "
+        "[Carbon Co, MT] Mesonet reports Snow of 1.00 inch "
         "http://iem.local/#BYZ/201710260700/201710260700"
     )
 
@@ -177,11 +177,11 @@ def test_150422_tornadomag():
         "APPROXIMATELY 1 MILE.</p>"
     )
     assert j[0][2]["twitter"] == (
-        "At 9:22 AM EDT, 4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports "
+        "[Delayed Report] On Apr 19, at 9:22 AM EDT, "
+        "4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports "
         "TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL "
         "POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. "
-        "DAMAGE LIKELY CONFINED TO TREES. ESTIMATED DURATION 3 MINUTES. "
-        "PATH LE... "
+        "DAMAGE LIKELY CONFINED TO TREES. ESTIMATED... "
         "http://iem.local/#TAE/201504191322/201504191322"
     )
 
@@ -303,8 +303,8 @@ def test_01():
     )
 
     ans = (
-        "At 4:45 PM CDT, Dows [Wright Co, IA] LAW ENFORCEMENT "
-        "reports TSTM WND DMG. DELAYED REPORT. LARGE TREE "
+        "[Delayed Report] On Jul 22, at 4:45 PM CDT, Dows [Wright Co, IA] "
+        "LAW ENFORCEMENT reports TSTM WND DMG. LARGE TREE "
         "BRANCH DOWN IN TOWN THAT TOOK OUT A POWER LINE "
         "AND BLOCKING PART OF A ROAD."
     )

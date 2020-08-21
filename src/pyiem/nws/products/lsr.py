@@ -13,6 +13,8 @@ from pyiem import reference
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
 FUTURE_THRESHOLD = datetime.timedelta(hours=1)
+# Products that are considered delayed reports
+DELAYED_THRESHOLD = datetime.timedelta(hours=12)
 SPLITTER = re.compile(
     r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)", re.MULTILINE
 )
@@ -58,7 +60,7 @@ class LSRProduct(TextProduct):
     def get_jabbers(self, uri, _uri2=None):
         """ return a text and html variant for Jabber stuff """
         res = []
-        if len(self.lsrs) == 0:
+        if not self.lsrs:
             return res
         wfo = self.source[1:]
         url = self.get_url(uri)
@@ -66,13 +68,16 @@ class LSRProduct(TextProduct):
         for mylsr in self.lsrs:
             if mylsr.duplicate:
                 continue
-            time_fmt = "%-I:%M %p"
             url = "%s#%s/%s/%s" % (
                 uri,
                 mylsr.wfo,
                 mylsr.utcvalid.strftime("%Y%m%d%H%M"),
                 mylsr.utcvalid.strftime("%Y%m%d%H%M"),
             )
+            time_fmt = "%-I:%M %p"
+            # Is this a delayed report?
+            if (self.valid - mylsr.valid) > DELAYED_THRESHOLD:
+                time_fmt = "%-d %b, %-I:%M %p"
             if mylsr.valid.day != self.utcnow.day:
                 time_fmt = "%-d %b, %-I:%M %p"
             xtra = dict(
@@ -182,6 +187,7 @@ def parse_lsr(prod, text):
         )
         return None
     lsr = LSR()
+    lsr.product = prod
     lsr.text = text
     tokens = lines[0].split()
     h12 = tokens[0][:-2]

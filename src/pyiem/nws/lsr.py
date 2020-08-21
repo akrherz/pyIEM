@@ -8,6 +8,8 @@ from pyiem import reference
 MAG_UNITS = re.compile(
     r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)", re.IGNORECASE
 )
+# Products that are considered delayed reports
+DELAYED_THRESHOLD = timedelta(hours=12)
 
 
 def _mylowercase(text):
@@ -61,6 +63,8 @@ class LSR:
         self.wfo = None
         self.duplicate = False
         self.z = None
+        # Carry a reference to the product that had this LSR
+        self.product = None
 
     def get_lat(self):
         """Return the LSR latitude."""
@@ -113,8 +117,14 @@ class LSR:
 
     def tweet(self):
         """return a tweet text"""
-        msg = ("At %s %s, %s [%s Co, %s] %s reports %s") % (
-            self.valid.strftime("%-I:%M %p"),
+        msg = ""
+        timefmt = "At %-I:%M %p"
+        # Is this product delayed?
+        if (self.product.valid - self.valid) > DELAYED_THRESHOLD:
+            msg = "[Delayed Report] "
+            timefmt = "On %b %-d, at %-I:%M %p"
+        msg += ("%s %s, %s [%s Co, %s] %s reports %s") % (
+            self.valid.strftime(timefmt),
             self.z,
             _mylowercase(self.city),
             self.county.title(),
@@ -123,13 +133,10 @@ class LSR:
             self.mag_string(),
         )
         remainsize = reference.TWEET_CHARS - 24 - len(msg)
+        remark = self.remark.replace("DELAYED REPORT.", "")
         if self.remark:
-            extra = "..." if len(self.remark) > (remainsize - 6) else ""
-            msg = "%s. %s%s" % (
-                msg,
-                self.remark[: (remainsize - 6)].strip(),
-                extra,
-            )
+            extra = "..." if len(remark) > (remainsize - 6) else ""
+            msg = "%s. %s%s" % (msg, remark[: (remainsize - 6)].strip(), extra)
         return msg
 
     def assign_timezone(self, tz, z):
