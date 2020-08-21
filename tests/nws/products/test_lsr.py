@@ -15,6 +15,7 @@ def dbcursor():
 def test_unknown_units():
     """Test what happens when we have unknown units."""
     prod = parser(get_test_file("LSR/LSRJAN_fakeunits.txt"))
+    assert str(prod.lsrs[0])
     j = prod.get_jabbers("")
     ans = (
         "At 11:37 AM CST, Yokena [Warren Co, MS] AMATEUR RADIO reports "
