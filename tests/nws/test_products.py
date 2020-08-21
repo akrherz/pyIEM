@@ -33,7 +33,7 @@ def test_181207_issue74_guam():
 def test_180917_issue63_tweet_length():
     """Make sure this tweet text is not too long!"""
     utcnow = utc(2018, 9, 15, 11, 56)
-    prod = parser(get_test_file("LSRCRP.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRCRP.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "At 6:45 AM CDT, 2 NNE Odem [San Patricio Co, TX] DEPT OF HIGHWAYS "
@@ -59,7 +59,7 @@ def test_170116_mixedlsr():
 def test_180710_issue58():
     """Crazy MST during MDT"""
     utcnow = utc(2018, 7, 9, 22, 59)
-    prod = parser(get_test_file("LSRPSR.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRPSR.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     ans = (
         "At 3:57 PM MST, 5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER "
@@ -80,7 +80,7 @@ def test_180710_issue58():
 def test_180705_iembot_issue9():
     """LSRBOU has mixed case, see what we can do"""
     utcnow = utc(2018, 7, 4, 22, 11)
-    prod = parser(get_test_file("LSRDMX.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRDMX.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "At 1:30 PM CDT, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER "
@@ -121,7 +121,7 @@ def test_170403_badtime():
 def test_170324_badformat():
     """Look into exceptions"""
     utcnow = utc(2017, 3, 22, 2, 35)
-    prod = parser(get_test_file("LSRPIH.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRPIH.txt"), utcnow=utcnow)
     prod.get_jabbers("http://iem.local/")
     assert len(prod.warnings) == 2
     assert not prod.lsrs
@@ -130,7 +130,7 @@ def test_170324_badformat():
 def test_170324_ampersand():
     """LSRs with ampersands may cause trouble"""
     utcnow = utc(2015, 12, 29, 18, 23)
-    prod = parser(get_test_file("LSRBOXamp.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRBOXamp.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     ans = (
         "Lunenberg [Worcester Co, MA] HAM RADIO reports SNOW of 2.00 INCH "
@@ -157,7 +157,7 @@ def test_160618_chst_tz():
 def test_151229_badgeo_lsr():
     """Make sure we reject a bad Geometry LSR"""
     utcnow = utc(2015, 12, 29, 18, 23)
-    prod = parser(get_test_file("LSRBOX.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRBOX.txt"), utcnow=utcnow)
     assert len(prod.warnings) == 1
     assert not prod.lsrs
 
@@ -165,10 +165,10 @@ def test_151229_badgeo_lsr():
 def test_150422_tornadomag():
     """LSRTAE see what we do with tornado magitnudes"""
     utcnow = utc(2015, 4, 22, 15, 20)
-    prod = parser(get_test_file("LSRTAE.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRTAE.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][1] == (
-        "<p>4 W Bruce [Walton Co, FL] NWS EMPLOYEE "
+        "<p>[Delayed Report] 4 W Bruce [Walton Co, FL] NWS EMPLOYEE "
         '<a href="http://iem.local/#TAE/201504191322/201504191322">'
         "reports TORNADO of EF0</a> at 19 Apr, 9:22 AM EDT -- "
         "SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL POL RADAR DEBRIS "
@@ -246,10 +246,10 @@ def test_160904_resent():
 def test_jabber_lsrtime():
     """Make sure delayed LSRs have proper dates associated with them"""
     utcnow = utc(2014, 6, 6, 16)
-    prod = parser(get_test_file("LSRFSD.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSRFSD.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local")
     ans = (
-        "<p>2 SSE Harrisburg [Lincoln Co, SD] "
+        "<p>[Delayed Report] 2 SSE Harrisburg [Lincoln Co, SD] "
         'TRAINED SPOTTER <a href="http://iem.local#FSD/201406052040/'
         '201406052040">reports TORNADO</a> at 5 Jun, 3:40 PM CDT -- '
         "ON GROUND ALONG HIGHWAY 11 NORTH OF 275TH ST</p>"
@@ -272,14 +272,15 @@ def test_spacewx():
 
 def test_140522_blowingdust():
     """Make sure we can deal with invalid LSR type """
-    prod = parser(get_test_file("LSRTWC.txt"))
+    prod = parser(get_test_file("LSR/LSRTWC.txt"))
     assert not prod.lsrs
 
 
 def test_01():
     """LSR.txt process a valid LSR without blemish """
     utcnow = utc(2013, 7, 23, 23, 54)
-    prod = parser(get_test_file("LSR.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("LSR/LSR.txt"), utcnow=utcnow)
+    assert prod.lsrs[0].remark is None
     assert len(prod.lsrs) == 58
 
     assert abs(prod.lsrs[57].magnitude_f - 73) < 0.01
@@ -302,10 +303,5 @@ def test_01():
         "http://iem.local/#DMX/201307230355/201307230355"
     )
 
-    ans = (
-        "[Delayed Report] On Jul 22, at 4:45 PM CDT, Dows [Wright Co, IA] "
-        "LAW ENFORCEMENT reports TSTM WND DMG. LARGE TREE "
-        "BRANCH DOWN IN TOWN THAT TOOK OUT A POWER LINE "
-        "AND BLOCKING PART OF A ROAD."
-    )
-    assert prod.lsrs[5].tweet() == ans
+    with pytest.deprecated_call():
+        prod.lsrs[5].tweet()

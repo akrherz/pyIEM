@@ -29,7 +29,7 @@ def test_issue277_oldlsr():
 
 def test_sql(dbcursor):
     """Test that we can insert into the database."""
-    prod = parser(get_test_file("LSRBOX.txt"))
+    prod = parser(get_test_file("LSR/LSRBOX.txt"))
     for lsr in prod.lsrs:
         lsr.sql(dbcursor)
 

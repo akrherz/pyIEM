@@ -2,8 +2,10 @@
 # pylint: disable=unsubscriptable-object
 import re
 from datetime import timezone, timedelta
+import warnings
 
 from pyiem import reference
+from pyiem.util import html_escape
 
 MAG_UNITS = re.compile(
     r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)", re.IGNORECASE
@@ -115,15 +117,29 @@ class LSR:
         )
         txn.execute(sql, args)
 
-    def tweet(self):
-        """return a tweet text"""
-        msg = ""
+    def get_jabbers(self, uri):
+        """Return a Jabber formatted message tuple."""
+        url = "%s#%s/%s/%s" % (
+            uri,
+            self.wfo,
+            self.utcvalid.strftime("%Y%m%d%H%M"),
+            self.utcvalid.strftime("%Y%m%d%H%M"),
+        )
+        time_fmt = "%-I:%M %p"
+        # Is this a delayed report?
+        if (self.product.valid - self.valid) > DELAYED_THRESHOLD:
+            time_fmt = "%-d %b, %-I:%M %p"
+        if self.valid.day != self.product.utcnow.day:
+            time_fmt = "%-d %b, %-I:%M %p"
+
+        prefix = ""
         timefmt = "At %-I:%M %p"
         # Is this product delayed?
         if (self.product.valid - self.valid) > DELAYED_THRESHOLD:
-            msg = "[Delayed Report] "
+            prefix = "[Delayed Report] "
             timefmt = "On %b %-d, at %-I:%M %p"
-        msg += ("%s %s, %s [%s Co, %s] %s reports %s") % (
+        tweet = ("%s%s %s, %s [%s Co, %s] %s reports %s") % (
+            prefix,
             self.valid.strftime(timefmt),
             self.z,
             _mylowercase(self.city),
@@ -132,12 +148,69 @@ class LSR:
             self.source,
             self.mag_string(),
         )
-        remainsize = reference.TWEET_CHARS - 24 - len(msg)
-        remark = self.remark.replace("DELAYED REPORT.", "")
-        if self.remark:
+        remainsize = reference.TWEET_CHARS - 24 - len(tweet)
+        remark = ""
+        if self.remark is not None:
+            remark = self.remark.replace("DELAYED REPORT.", "")
             extra = "..." if len(remark) > (remainsize - 6) else ""
-            msg = "%s. %s%s" % (msg, remark[: (remainsize - 6)].strip(), extra)
-        return msg
+            tweet = "%s. %s%s" % (
+                tweet,
+                remark[: (remainsize - 6)].strip(),
+                extra,
+            )
+        # rectify
+        tweet = " ".join(tweet.split())
+
+        xtra = dict(
+            product_id=self.product.get_product_id(),
+            channels="LSR%s,LSR.ALL,LSR.%s"
+            % (self.wfo, self.typetext.replace(" ", "_")),
+            geometry="POINT(%s %s)" % (self.get_lon(), self.get_lat()),
+            ptype=self.get_dbtype(),
+            valid=self.utcvalid.strftime("%Y%m%dT%H:%M:00"),
+            category="LSR",
+            twitter="%s %s" % (tweet, url),
+            lat=str(self.get_lat()),
+            long=str(self.get_lon()),
+        )
+        html = (
+            '<p>%s%s [%s Co, %s] %s <a href="%s">reports %s</a> at '
+            "%s %s -- %s</p>"
+        ) % (
+            prefix,
+            _mylowercase(self.city),
+            self.county.title(),
+            self.state,
+            self.source,
+            url,
+            self.mag_string(),
+            self.valid.strftime(time_fmt),
+            self.z,
+            html_escape(remark),
+        )
+
+        plain = "%s%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
+            prefix,
+            _mylowercase(self.city),
+            self.county.title(),
+            self.state,
+            self.source,
+            self.mag_string(),
+            self.valid.strftime(time_fmt),
+            self.z,
+            html_escape(remark),
+            url,
+        )
+        return [plain, html, xtra]
+
+    def tweet(self):
+        """return a tweet text"""
+        warnings.warn(
+            "tweet() is depreciated, use get_jabbers(uri) instead",
+            DeprecationWarning,
+        )
+        j = self.get_jabbers("")
+        return j[2]["twitter"]
 
     def assign_timezone(self, tz, z):
         """ retroactive assignment of timezone, so to improve attrs """
