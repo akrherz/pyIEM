@@ -7,7 +7,7 @@ import math
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.lsr import LSR
-from pyiem.util import utc, html_escape
+from pyiem.util import utc
 from pyiem import reference
 
 # Don't permit LSRs that are more than 1 hour newer than product time
@@ -25,19 +25,27 @@ class LSRProductException(TextProductException):
 class LSRProduct(TextProduct):
     """ Represents a text product of the LSR variety """
 
-    def __init__(self, text, utcnow=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """ constructor """
         self.lsrs = []
         self.duplicates = 0
-        TextProduct.__init__(self, text, utcnow=utcnow)
+        TextProduct.__init__(
+            self,
+            text,
+            utcnow=utcnow,
+            ugc_provider=ugc_provider,
+            nwsli_provider=nwsli_provider,
+        )
 
     def get_temporal_domain(self):
         """ Return the min and max timestamps of lsrs """
+        if not self.lsrs:
+            return None, None
         valids = []
         for lsr in self.lsrs:
             valids.append(lsr.valid)
-        if len(valids) == 0:
-            return None, None
         return min(valids), max(valids)
 
     def is_summary(self):
@@ -58,7 +66,7 @@ class LSRProduct(TextProduct):
     def get_jabbers(self, uri, _uri2=None):
         """ return a text and html variant for Jabber stuff """
         res = []
-        if len(self.lsrs) == 0:
+        if not self.lsrs:
             return res
         wfo = self.source[1:]
         url = self.get_url(uri)
@@ -66,54 +74,7 @@ class LSRProduct(TextProduct):
         for mylsr in self.lsrs:
             if mylsr.duplicate:
                 continue
-            time_fmt = "%-I:%M %p"
-            url = "%s#%s/%s/%s" % (
-                uri,
-                mylsr.wfo,
-                mylsr.utcvalid.strftime("%Y%m%d%H%M"),
-                mylsr.utcvalid.strftime("%Y%m%d%H%M"),
-            )
-            if mylsr.valid.day != self.utcnow.day:
-                time_fmt = "%-d %b, %-I:%M %p"
-            xtra = dict(
-                product_id=self.get_product_id(),
-                channels="LSR%s,LSR.ALL,LSR.%s"
-                % (mylsr.wfo, mylsr.typetext.replace(" ", "_")),
-                geometry="POINT(%s %s)" % (mylsr.get_lon(), mylsr.get_lat()),
-                ptype=mylsr.get_dbtype(),
-                valid=mylsr.utcvalid.strftime("%Y%m%dT%H:%M:00"),
-                category="LSR",
-                twitter="%s %s" % (mylsr.tweet(), url),
-                lat=str(mylsr.get_lat()),
-                long=str(mylsr.get_lon()),
-            )
-            html = (
-                '<p>%s [%s Co, %s] %s <a href="%s">reports %s</a> at '
-                "%s %s -- %s</p>"
-            ) % (
-                _mylowercase(mylsr.city),
-                mylsr.county.title(),
-                mylsr.state,
-                mylsr.source,
-                url,
-                mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt),
-                self.z,
-                html_escape(mylsr.remark),
-            )
-
-            plain = "%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
-                _mylowercase(mylsr.city),
-                mylsr.county.title(),
-                mylsr.state,
-                mylsr.source,
-                mylsr.mag_string(),
-                mylsr.valid.strftime(time_fmt),
-                self.z,
-                html_escape(mylsr.remark),
-                url,
-            )
-            res.append([plain, html, xtra])
+            res.append(mylsr.get_jabbers(uri))
 
         if self.is_summary():
             extra_text = ""
@@ -182,6 +143,7 @@ def parse_lsr(prod, text):
         )
         return None
     lsr = LSR()
+    lsr.product = prod
     lsr.text = text
     tokens = lines[0].split()
     h12 = tokens[0][:-2]
@@ -234,14 +196,17 @@ def parse_lsr(prod, text):
     lsr.source = lines[1][53:].strip()
     if len(lines) > 2:
         meat = " ".join(lines[2:]).strip()
-        lsr.remark = " ".join(meat.split())
+        if meat.strip() != "":
+            lsr.remark = " ".join(meat.split())
     return lsr
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """ Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception"""
-    prod = LSRProduct(text, utcnow)
+    prod = LSRProduct(
+        text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
+    )
 
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr(prod, "".join(match.groups()))
