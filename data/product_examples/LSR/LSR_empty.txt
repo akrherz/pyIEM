@@ -1,0 +1,18 @@
+999 
+NWUS54 KMAF 152219
+LSRMAF
+
+PRELIMINARY LOCAL STORM REPORT
+National Weather Service Midland/Odessa TX
+519 PM CDT FRI MAY 15 2020
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+
+&&
+
+$$
+
+MATTHEW.D.JOHNSON

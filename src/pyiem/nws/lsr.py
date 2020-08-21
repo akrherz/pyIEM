@@ -68,6 +68,13 @@ class LSR:
         # Carry a reference to the product that had this LSR
         self.product = None
 
+    def __str__(self):
+        """String Representation."""
+        s = ""
+        for attr in self.__dict__:
+            s += "%s %s\n" % (attr, getattr(self, attr, ""))
+        return s
+
     def get_lat(self):
         """Return the LSR latitude."""
         return self.geometry.xy[1][0]
@@ -80,6 +87,9 @@ class LSR:
         """ Convert LSR magnitude text into something atomic """
         self.magnitude_str = text
         tokens = MAG_UNITS.findall(text)
+        if not tokens:
+            self.product.warnings.append(f"Unable to parse Units |{text}|")
+            return
         if len(tokens) == 2:
             self.magnitude_qualifier = tokens[0]
             self.magnitude_units = tokens[1]
@@ -95,10 +105,10 @@ class LSR:
 
     def sql(self, txn):
         """ Provided a database transaction object, persist this LSR """
-        table = f"lsrs_{self.utcvalid.year}"
         wkt = f"SRID=4326;{self.geometry.wkt}"
+        # Newer schema supports range partitioning, so can direct insert
         sql = (
-            f"INSERT into {table} (valid, type, magnitude, city, county, "
+            "INSERT into lsrs (valid, type, magnitude, city, county, "
             "state, source, remark, geom, wfo, typetext) values (%s, %s, %s, "
             "%s, %s, %s, %s, %s, %s, %s, %s)"
         )
@@ -138,6 +148,7 @@ class LSR:
         if (self.product.valid - self.valid) > DELAYED_THRESHOLD:
             prefix = "[Delayed Report] "
             timefmt = "On %b %-d, at %-I:%M %p"
+        magstr = self.mag_string()
         tweet = ("%s%s %s, %s [%s Co, %s] %s reports %s") % (
             prefix,
             self.valid.strftime(timefmt),
@@ -146,7 +157,7 @@ class LSR:
             self.county.title(),
             self.state,
             self.source,
-            self.mag_string(),
+            magstr,
         )
         remainsize = reference.TWEET_CHARS - 24 - len(tweet)
         remark = ""
@@ -183,7 +194,7 @@ class LSR:
             self.state,
             self.source,
             url,
-            self.mag_string(),
+            magstr,
             self.valid.strftime(time_fmt),
             self.z,
             html_escape(remark),
@@ -195,7 +206,7 @@ class LSR:
             self.county.title(),
             self.state,
             self.source,
-            self.mag_string(),
+            magstr,
             self.valid.strftime(time_fmt),
             self.z,
             html_escape(remark),
@@ -214,8 +225,6 @@ class LSR:
 
     def assign_timezone(self, tz, z):
         """ retroactive assignment of timezone, so to improve attrs """
-        if self.valid is None:
-            return
         # We can't just assign the timezone (maybe we can someday)
         self.utcvalid = self.valid + timedelta(hours=reference.offsets[z])
         self.utcvalid = self.utcvalid.replace(tzinfo=timezone.utc)
@@ -227,7 +236,7 @@ class LSR:
 
     def mag_string(self):
         """ Return a string representing the magnitude and units """
-        mag_long = "%s" % (self.typetext,)
+        mag_long = str(self.typetext)
         if self.magnitude_units == "MPH":
             mag_long = "%s of %s%.0f %s" % (
                 mag_long,
@@ -237,6 +246,7 @@ class LSR:
             )
         elif (
             self.typetext == "HAIL"
+            and self.magnitude_f is not None
             and ("%.2f" % (self.magnitude_f,)) in reference.hailsize
         ):
             haildesc = reference.hailsize["%.2f" % (self.magnitude_f,)]
@@ -248,6 +258,7 @@ class LSR:
                 self.magnitude_units,
             )
         elif self.magnitude_units == "F":
+            # Report Tornados as EF scale and not F
             mag_long = "%s of E%s" % (mag_long, self.magnitude_str)
         elif self.magnitude_f:
             mag_long = "%s of %.2f %s" % (

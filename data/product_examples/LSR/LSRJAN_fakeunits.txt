@@ -1,0 +1,23 @@
+453 
+NWUS54 KJAN 161737
+LSRJAN
+
+PRELIMINARY LOCAL STORM REPORT
+NATIONAL WEATHER SERVICE JACKSON MS
+1137 AM CST MON DEC 16 2019
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+1137 AM     HAIL             YOKENA                  32.18N 90.94W
+12/16/2019  40 C             WARREN             MS   AMATEUR RADIO    
+
+            FAKED LSR FOR TESTING PURPOSES.
+
+
+&&
+
+$$
+
+TW

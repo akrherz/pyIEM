@@ -41,11 +41,11 @@ class LSRProduct(TextProduct):
 
     def get_temporal_domain(self):
         """ Return the min and max timestamps of lsrs """
+        if not self.lsrs:
+            return None, None
         valids = []
         for lsr in self.lsrs:
             valids.append(lsr.valid)
-        if len(valids) == 0:
-            return None, None
         return min(valids), max(valids)
 
     def is_summary(self):
@@ -74,10 +74,7 @@ class LSRProduct(TextProduct):
         for mylsr in self.lsrs:
             if mylsr.duplicate:
                 continue
-            j = mylsr.get_jabbers(uri)
-            if not j:
-                continue
-            res.append(j)
+            res.append(mylsr.get_jabbers(uri))
 
         if self.is_summary():
             extra_text = ""
