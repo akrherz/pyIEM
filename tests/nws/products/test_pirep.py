@@ -1,16 +1,25 @@
 """PIREP."""
+# pylint: disable=redefined-outer-name
 
+import pytest
 from pyiem.nws.products.pirep import parser as pirepparser
-from pyiem.util import utc, get_test_file
+from pyiem.util import utc, get_test_file, get_dbconn
 
 
-def test_180307_aviation_controlchar():
+@pytest.fixture()
+def dbcursor():
+    """Get a database cursor."""
+    return get_dbconn("postgis").cursor()
+
+
+def test_180307_aviation_controlchar(dbcursor):
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {"BWI": {"lat": 44.26, "lon": -88.52}}
     prod = pirepparser(
         get_test_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider
     )
     assert len(prod.reports) == 1
+    prod.sql(dbcursor)
 
 
 def test_170324_ampersand():
@@ -25,6 +34,8 @@ def test_170324_ampersand():
         "TM 1259/FL340/TP CRJ9/TB LT TURB &amp; CHOP/RM ZAB FDCS"
     )
     assert j[0][0] == ans
+    prod.reports[0].is_duplicate = True
+    assert not prod.get_jabbers("")
 
 
 def test_161010_missingtime():

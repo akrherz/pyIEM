@@ -287,13 +287,8 @@ def test_180202_issue54(dbcursor):
     def get_expire(colname):
         """get expiration"""
         dbcursor.execute(
-            """
-        SELECT distinct """
-            + colname
-            + """ from warnings_2018
-        WHERE wfo = 'LWX' and eventid = 6 and phenomena = 'WW'
-        and significance = 'Y'
-        """
+            f"SELECT distinct {colname} from warnings_2018 WHERE wfo = 'LWX' "
+            "and eventid = 6 and phenomena = 'WW' and significance = 'Y'"
         )
         assert dbcursor.rowcount == 1
         return dbcursor.fetchone()[0]

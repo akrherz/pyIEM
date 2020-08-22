@@ -192,14 +192,8 @@ class HML(product.TextProduct):
         table = "hml_forecast_data_%s" % (fx["issued"].year,)
         for _, row in fx["dataframe"].iterrows():
             cursor.execute(
-                """
-                INSERT into """
-                + table
-                + """
-                (hml_forecast_id, valid, primary_value,
-                secondary_value) VALUES
-                (%s, %s, %s, %s)
-                """,
+                f"INSERT into {table} (hml_forecast_id, valid, primary_value, "
+                "secondary_value) VALUES (%s, %s, %s, %s)",
                 (fid, row["valid"], row["primary"], row["secondary"]),
             )
 

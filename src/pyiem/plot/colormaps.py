@@ -104,6 +104,16 @@ def nwssnow():
     return cmap
 
 
+def _gen(name, cpool):
+    """Generator Helper."""
+    cmap = mpcolors.ListedColormap(cpool, name)
+    cmap.set_over("#000000")
+    cmap.set_under("#FFFFFF")
+    cmap.set_bad("#FFFFFF")
+    cm.register_cmap(cmap=cmap)
+    return cmap
+
+
 def dep_erosion():
     """DEP Erosion ramp yelllow to brown (jump at 5T) `cool`"""
     cpool = [
@@ -120,12 +130,7 @@ def dep_erosion():
         "#aa55ff",
         "#d52aff",
     ]
-    cmap = mpcolors.ListedColormap(cpool, "dep_erosion")
-    cmap.set_over("#000000")
-    cmap.set_under("#FFFFFF")
-    cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
-    return cmap
+    return _gen("dep_erosion", cpool)
 
 
 def james2():
@@ -144,12 +149,7 @@ def james2():
         "#822507",
         "#6B0000",
     ]
-    cmap3 = mpcolors.ListedColormap(cpool, "james2")
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
+    return _gen("james2", cpool)
 
 
 def james():
@@ -168,12 +168,7 @@ def james():
         "#1B3187",
         "#0C1078",
     ]
-    cmap3 = mpcolors.ListedColormap(cpool, "james")
-    cmap3.set_over("#000000")
-    cmap3.set_under("#FFFFFF")
-    cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
-    return cmap3
+    return _gen("james", cpool)
 
 
 def whitebluegreenyellowred():

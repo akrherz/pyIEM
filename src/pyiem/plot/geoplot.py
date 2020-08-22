@@ -151,7 +151,7 @@ def load_pickle_pd(filename):
     fn = "%s/%s" % (DATADIR, filename)
     if not os.path.isfile(fn):
         LOG.info("load_pickle_pd(%s) failed, file is missing", fn)
-        return fn
+        return
     return pd.read_pickle(fn)
 
 
@@ -1343,7 +1343,10 @@ class MapPlot:
 
 def windrose(*args, **kwargs):
     """Depreciated."""
-    warnings.warn("windrose() is depreciated, use pyiem.windrose_utils!")
+    warnings.warn(
+        "windrose() is depreciated, use pyiem.windrose_utils!",
+        DeprecationWarning,
+    )
     import pyiem.windrose_utils as wru
 
     return wru.windrose(*args, **kwargs)

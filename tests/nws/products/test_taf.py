@@ -1,7 +1,7 @@
 """Test TAF Parsing"""
 
 from pyiem.util import get_test_file, utc
-from pyiem.nws.products.taf import parser as tafparser
+from pyiem.nws.products import parser as tafparser
 
 
 def test_parse():

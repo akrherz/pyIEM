@@ -3,7 +3,7 @@
 
 import psycopg2.extras
 import pytest
-from pyiem.nws.products.mcd import parser
+from pyiem.nws.products import parser
 from pyiem.util import get_dbconn, utc, get_test_file
 
 

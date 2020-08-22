@@ -1,10 +1,11 @@
 """SPS Parsing"""
+# pylint: disable=redefined-outer-name
 
 import pytest
 from psycopg2.extras import RealDictCursor
 from pyiem.util import get_dbconn, get_test_file
 from pyiem.nws.ugc import UGC
-from pyiem.nws.products.sps import parser as spsparser
+from pyiem.nws.products import parser as spsparser
 
 
 @pytest.fixture

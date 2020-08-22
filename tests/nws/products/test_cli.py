@@ -6,7 +6,7 @@ import pytest
 import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file, get_dbconn
-from pyiem.nws.products.cli import parser as cliparser
+from pyiem.nws.products import parser as cliparser
 
 
 @pytest.fixture

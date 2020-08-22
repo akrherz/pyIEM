@@ -1425,11 +1425,8 @@ def sql(txn, stid, data):
     if ob is None:
         return
     stid = stid if len(stid) == 4 and stid[0] != "K" else stid[-3:]
-    _sql = (
-        """
-        INSERT into """
-        + table
-        + """ (station, valid,
+    _sql = f"""
+        INSERT into {table} (station, valid,
         tmpf, dwpf, vsby, drct, sknt, gust, p01i, alti, skyc1, skyc2,
         skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, metar, mslp,
         wxcodes, p03i, p06i, p24i, max_tmpf_6hr, max_tmpf_24hr,
@@ -1438,7 +1435,6 @@ def sql(txn, stid, data):
         %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2, %s, %s)
         RETURNING valid
             """
-    )
     args = (
         stid,
         ob.valid,
