@@ -30,6 +30,7 @@ def test_summary():
     prod = parser(get_test_file("LSR/LSR.txt"))
     j = prod.get_jabbers("")
     prod.lsrs[0].duplicate = True
+    prod.duplicates = 1
     j2 = prod.get_jabbers("")
     assert (len(j) - len(j2)) == 1
 

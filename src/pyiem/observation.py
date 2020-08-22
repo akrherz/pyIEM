@@ -74,10 +74,7 @@ def summary_update(txn, data):
     # NB with the coalesce func, we prioritize if we have explicit max/min vals
     # But, some of these max values are not tru max daily values
     table = get_summary_table(data["valid"])
-    sql = (
-        """UPDATE """
-        + table
-        + """ s SET
+    sql = f"""UPDATE {table} s SET
     max_water_tmpf = case when %(null_max_water_tmpf)s is null then null
         else coalesce(%(max_water_tmpf)s,
             greatest(max_water_tmpf, %(water_tmpf)s)) end,
@@ -143,7 +140,6 @@ def summary_update(txn, data):
     WHERE s.iemid = %(iemid)s
         and s.day = date(%(valid)s at time zone %(tzname)s)
     """
-    )
     txn.execute(sql, data)
     return txn.rowcount
 
@@ -173,12 +169,9 @@ class Observation:
             return False
         table = get_summary_table(self.data["valid"])
         sql = (
-            """SELECT * from current c, """
-            + table
-            + """ s WHERE
-        s.iemid = c.iemid and s.iemid = %(iemid)s and
-        s.day = date(%(valid)s at time zone %(tzname)s) and
-        c.valid = %(valid)s"""
+            f"SELECT * from current c, {table} s WHERE s.iemid = c.iemid and "
+            "s.iemid = %(iemid)s and s.day = date(%(valid)s at time zone "
+            "%(tzname)s) and c.valid = %(valid)s"
         )
         txn.execute(sql, self.data)
         if txn.rowcount < 1:

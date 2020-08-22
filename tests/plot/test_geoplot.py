@@ -9,7 +9,27 @@ import matplotlib.colors as mpcolors
 import numpy as np
 from pyiem import reference
 from pyiem import plot
-from pyiem.plot import MapPlot, centered_bins
+from pyiem.plot.geoplot import windrose
+from pyiem.plot import (
+    MapPlot,
+    centered_bins,
+    load_bounds,
+    load_pickle_pd,
+    load_pickle_geo,
+)
+
+
+def test_depreciated():
+    """Test that our windrose is depreciated."""
+    with pytest.deprecated_call():
+        windrose("")
+
+
+def test_invalid_file():
+    """Test that we don't error out on an invalid filename."""
+    assert load_bounds("this shall not work") is None
+    assert load_pickle_pd("this shall not work") is None
+    assert not load_pickle_geo("this shall not work")
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)

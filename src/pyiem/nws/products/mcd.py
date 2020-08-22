@@ -3,7 +3,7 @@
  parsing of Weather Prediction Center's MPD
 """
 import re
-from datetime import timezone, datetime
+from datetime import timezone, timedelta
 
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
@@ -232,14 +232,9 @@ class MCDProduct(TextProduct):
             )
         giswkt = "SRID=4326;%s" % (self.geometry.wkt,)
         sql = (
-            """
-            INSERT into """
-            + table
-            + """
-            (product, product_id, geom, issue, expire, num, year,
-             watch_confidence, concerning)
-            values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
+            f"INSERT into {table} (product, product_id, geom, issue, expire, "
+            "num, year, watch_confidence, concerning) "
+            "values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         args = (
             self.text,

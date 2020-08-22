@@ -30,7 +30,7 @@ class Table:
         online_extra = " and online " if only_online else ""
 
         cursor.execute(
-            """
+            f"""
             WITH myattrs as (
                 SELECT a.iemid, array_agg(attr) as attrs,
                 array_agg(value) as attr_values from stations s JOIN
@@ -41,9 +41,7 @@ class Table:
             a.attrs, a.attr_values
             from stations s LEFT JOIN myattrs a
             on (s.iemid = a.iemid)
-            WHERE network in %s """
-            + online_extra
-            + """ ORDER by name ASC
+            WHERE network in %s {online_extra} ORDER by name ASC
             """,
             (tuple(network), tuple(network)),
         )

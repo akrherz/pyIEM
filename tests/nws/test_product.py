@@ -13,6 +13,12 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_no_afos():
+    """Test product without AFOS/AWIPS ID."""
+    with pytest.raises(TextProductException):
+        productparser(get_test_file("PMDSA.txt").replace("PMDSA ", ""))
+
+
 def test_str2polygon():
     """Test our str2polygon implementation."""
     res = str2polygon("4400 3200 4500 3300 4400 3300")
