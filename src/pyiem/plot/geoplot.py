@@ -691,7 +691,8 @@ class MapPlot:
           labeltextsize (int, optional): Size of the label text
           labelcolor (str, optional): Color to use for drawing labels
           showmarker (bool, optional): Place a marker on the map for the label
-          labelbuffer (int): pixel buffer around labels
+          labelbuffer (int): pixel buffer around labels, a value of `0`
+            disables the label culling logic.
           outlinecolor (color): color to use for text outlines
           zorder (int or list, optional): zorder to use for plotting.
           textoutlinewidth (int): width of the font outline, default 3.
@@ -717,7 +718,8 @@ class MapPlot:
         figwidth = bbox.width * self.fig.dpi
         figheight = bbox.height * self.fig.dpi
         if self.textmask is None:
-            self.textmask = np.zeros((int(figwidth), int(figheight)), bool)
+            # zorder is used to track plotting priorities
+            self.textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
         thisax = self.ax
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(
@@ -772,17 +774,13 @@ class MapPlot:
                     (imgy0 + mystr_lines * ypixels + 2 * labelbuffer * 0.75),
                 ]
             )
-            _cnt = np.sum(
-                np.where(
-                    self.textmask[
-                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                    ],
-                    1,
-                    0,
-                )
+            overlap = (
+                self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
+                >= z
             )
+            _cnt = np.sum(overlap)
             # If we have more than 15 pixels of overlap, don't plot this!
-            if _cnt > 15:
+            if _cnt > 15 and labelbuffer > 0:
                 if self.debug:
                     LOG.info(
                         "culling |%s| due to overlap, %s", repr(mystr), _cnt
@@ -819,7 +817,14 @@ class MapPlot:
                 )
             self.textmask[
                 int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-            ] = True
+            ] = np.where(
+                self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
+                < z,
+                z,
+                self.textmask[
+                    int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                ],
+            )
             t0 = thisax.text(
                 o,
                 a,
