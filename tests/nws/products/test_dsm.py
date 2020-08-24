@@ -63,6 +63,16 @@ def test_collective(dbcursor):
     assert res[0]
 
 
+def test_200824_refail():
+    """Test a RE parse failure."""
+    text = (
+        "KHEI DS 1500 23/08 M/M// 86/M//7061455/00/00/00/00/00/00/00/00/00/00/"
+        "00/00/00/00/00/00/-187/-51/-/-/-/-/-/-/-/-/06231121/05311119="
+    )
+    dsm = process(text)
+    assert dsm is not None
+
+
 def test_190225_regress():
     """Parse something that failed RE."""
     text = (
