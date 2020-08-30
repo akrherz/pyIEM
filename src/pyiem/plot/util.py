@@ -110,7 +110,15 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     # Lazy import to prevent backend setting
     import matplotlib.pyplot as plt
 
-    ax = plt.axes(ndc_axbounds, projection=projection, aspect=aspect)
+    ax = plt.axes(
+        ndc_axbounds,
+        projection=projection,
+        aspect=aspect,
+        facecolor=(0.4471, 0.6235, 0.8117),
+    )
+    # Get the frame at the proper zorder
+    for _k, spine in ax.spines.items():
+        spine.set_zorder(reference.Z_FRAME)
     ax.set_extent(geoextent)
     if aspect != "equal":
         return ax

@@ -31,7 +31,8 @@ import cartopy.crs as ccrs
     Z_OVERLAY_LABEL,
     Z_OVERLAY2,
     Z_OVERLAY2_LABEL,
-] = range(1, 11)
+    Z_FRAME,
+] = range(2, 13)
 
 TRACE_VALUE = 0.0001
 TWEET_CHARS = 280

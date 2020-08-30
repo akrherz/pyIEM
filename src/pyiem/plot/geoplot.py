@@ -72,6 +72,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_POLITICAL,
     Z_OVERLAY,
     Z_OVERLAY2,
+    Z_FRAME,
 )
 from pyiem.util import ssw, logger
 from pyiem.datatypes import speed, direction
@@ -245,9 +246,6 @@ class MapPlot:
             _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
             _a.add_feature(cfeature.COASTLINE, lw=1.0, zorder=Z_POLITICAL)
             _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
-            _a.add_feature(
-                cfeature.OCEAN, facecolor=(0.4471, 0.6235, 0.8117), zorder=Z_CF
-            )
             _a.add_feature(
                 cfeature.LAKES, facecolor=(0.4471, 0.6235, 0.8117), zorder=Z_CF
             )
