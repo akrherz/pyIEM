@@ -3,6 +3,7 @@
 
 import psycopg2.extras
 import pytest
+from pyiem.exceptions import MCDException
 from pyiem.nws.products import parser
 from pyiem.util import get_dbconn, utc, get_test_file
 
@@ -15,6 +16,31 @@ def dbcursor():
     )
 
 
+def test_exceptions():
+    """Test that various things lead to exceptions."""
+    orig = get_test_file("MCD_MPD/SWOMCD.txt")
+    with pytest.raises(MCDException):
+        parser(orig.replace("LAT...LON", "BLAH"))
+    # See if -40 logic works
+    parser(orig.replace("44738786", "44733786"))
+
+    prod = parser(orig.replace("CONCERNING", "BLAH"))
+    assert prod.concerning is None
+
+    prod = parser(orig.replace("VALID", "BLAH"))
+    assert prod.warnings
+
+    with pytest.raises(MCDException):
+        parser(orig.replace("DISCUSSION", "BLAH"))
+    with pytest.raises(MCDException):
+        parser(orig.replace("ATTN...WFO", "BLAH"))
+
+
+def test_datetime_coverage():
+    """Test products that cross the first of the month."""
+    assert parser(get_test_file("MCD_MPD/SWOMCD_sep1.txt")) is not None
+
+
 def test_issue163(dbcursor):
     """Test parsing of the concerning tag."""
     prod = parser(get_test_file("MCD_MPD/SWOMCDconcerning.txt"))
@@ -25,6 +51,13 @@ def test_issue163(dbcursor):
     )
     ans = "Severe Thunderstorm Watch 60"
     assert dbcursor.fetchone()[0] == ans
+    # Exercise that the remove worked.
+    prod.database_save(dbcursor)
+    dbcursor.execute(
+        "SELECT count(*) from mcd where product_id = %s",
+        (prod.get_product_id(),),
+    )
+    assert dbcursor.fetchone()[0] == 1
 
 
 def test_170926_nodbinsert(dbcursor):
