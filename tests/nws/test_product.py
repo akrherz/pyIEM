@@ -13,6 +13,14 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_first_flapping():
+    """Test for product crossing month backwards, prevent flapping test."""
+    # Scenario is utcnow is the first and the WMO header is > 25th
+    utcnow = utc(2012, 6, 1)
+    prod = productparser(get_test_file("SVRBMX.txt"), utcnow=utcnow)
+    assert prod.valid == utc(2012, 5, 31, 23, 11)
+
+
 def test_no_afos():
     """Test product without AFOS/AWIPS ID."""
     with pytest.raises(TextProductException):
