@@ -1,0 +1,45 @@
+039 
+ACUS11 KWNS 312346
+SWOMCD
+SPC MCD 312345 
+TXZ000-010115-
+
+Mesoscale Discussion 1659
+NWS Storm Prediction Center Norman OK
+0645 PM CDT Mon Aug 31 2020
+
+Areas affected...Central Texas
+
+Concerning...Severe potential...Watch unlikely, IEM edited valid time.
+
+Valid 010005Z - 010115Z
+
+Probability of Watch Issuance...20 percent
+
+SUMMARY...A storm or two may pose a risk for strong damaging winds
+and some hail through this evening. Uncertainty remains about the
+organization/severity of the storms.
+
+DISCUSSION...Thunderstorms along the lee trough/dryline feature
+through central Texas have intensified over the last 45 minutes. A
+65 mph gust recorded near Colorado City, TX shows these storms have
+the potential to produce occasional damaging wind gusts and perhaps
+some hail. Steep low-level lapse rates, 8 to 9 C/km, from very warm
+surface temperatures in the 90s to 100 F downstream of the ongoing
+storms will continue to support strong evaporational cooling and
+robust downdrafts. Storm organization so far has remained modest,
+with mostly multicellular structure noted. This is likely due to
+weak vertical shear of only 20 kt. Decreasing buoyancy and the
+limited vertical shear downstream may serve to limit greater severe
+potential. Despite the uncertainty in storm longevity/severity, a
+few strong updrafts may continue to propagate eastward through
+sunset, with a risk for gusty outflow winds and hail.
+
+..Lyons/Guyer.. 08/31/2020
+
+...Please see www.spc.noaa.gov for graphic product...
+
+ATTN...WFO...FWD...SJT...LUB...MAF...
+
+LAT...LON   31799986 31440068 31660132 32320111 33240031 33399994
+            33389857 32939847 31799986 

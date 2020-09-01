@@ -22,7 +22,7 @@ ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
 )
-VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?")
+VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?", re.I)
 CONCERNING = re.compile(r"CONCERNING\s?\.\.\.(.*?)\.\.\.", re.I)
 
 
@@ -50,6 +50,7 @@ class MCDProduct(TextProduct):
         """Figure out when this product is valid for"""
         tokens = VALID_TIME.findall(self.unixtext)
         if not tokens:
+            self.warnings.append("failed to find VALID...")
             return None, None
         day1 = int(tokens[0][0][:2])
         hour1 = int(tokens[0][0][2:4])
@@ -181,7 +182,7 @@ class MCDProduct(TextProduct):
         """Figure out the concerning text, if it exists."""
         tokens = CONCERNING.findall(self.unixtext.replace("\n", ""))
         if not tokens:
-            return []
+            return None
         return tokens[0]
 
     def parse_attn_rfc(self):
