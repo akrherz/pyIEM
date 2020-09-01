@@ -12,6 +12,15 @@ def cursor():
     return get_dbconn("mos").cursor()
 
 
+def test_winter_mex(cursor):
+    """Test that we store the GFSX fields in the winter."""
+    utcnow = utc(2020, 9, 1, 0)
+    prod = mosparser(get_test_file("MOS/MEXNC1_winter.txt"), utcnow=utcnow)
+    assert len(prod.data) == 2
+    inserts = prod.sql(cursor)
+    assert inserts == 30
+
+
 def test_nbe(cursor):
     """Test that we can parse the NBE."""
     utcnow = utc(2020, 7, 22, 14)

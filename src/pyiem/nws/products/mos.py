@@ -127,8 +127,6 @@ class MOSProduct(TextProduct):
         inserts = 0
         for sect in self.data:
             for ts in sect["data"]:
-                if ts == sect["initts"]:
-                    continue
                 # Account for 'empty' MOS products
                 if not sect["data"][ts]:
                     continue
