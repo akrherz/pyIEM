@@ -54,6 +54,7 @@ def test_windrose_without_units():
         delimiter=" *, *",
         engine="python",
     )
+    assert df.index.values[0] == "355-004"
     assert len(df.columns) == 4
     assert abs(df.sum(axis=0).sum() - 100.0) < 0.1
 
@@ -67,7 +68,8 @@ def test_windrose_with_units():
         drct=drct,
         valid=valid,
         months=[4, 5, 6],
-        bins=[10, 20, 40] * units("mph"),
+        bins=[0.0001, 20, 40] * units("mph"),
+        justdata=True,
     )
     assert res
 
