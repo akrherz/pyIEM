@@ -213,11 +213,13 @@ def _make_textresult(
         )
         cols.append("%4.1f%s" % (val, maxval))
 
-    angle = dir_centers.m[1] - dir_centers.m[0]
+    delta = dir_centers.m[1] - dir_centers.m[0]
     res += ",".join(["%9s" % (c,) for c in cols]) + "\n"
     for i, val in enumerate(dir_centers.m):
-        minval = np.max([0, val - angle])
-        maxval = np.min([360, val + angle])
+        minval = val - delta / 2.0
+        if minval < 0:
+            minval += 360.0
+        maxval = np.min([360, val + delta / 2.0 - 1])
         res += "%03i-%03i  ,%9s," % (
             minval,
             maxval,
