@@ -1,0 +1,22 @@
+517
+WTUS82 KTAE 121517
+HLSTAE
+ALZ065>069-FLZ007>019-026>029-034-108-112-114-115-118-127-128-134-GAZ142>147-155>160-122330-
+
+Tropical Depression Nineteen Local Statement Advisory Number 4
+National Weather Service Tallahassee FL  AL192020
+1117 AM EDT Sat Sep 12 2020 /1017 AM CDT Sat Sep 12 2020/
+
+This product covers eastern Florida panhandle, Florida Big Bend, southeastern Alabama and southwestern Georgia
+
+**TROPICAL DEPRESSION 19 EXPECTED TO BECOME A TROPICAL STORM LATER
+TODAY**
+
+
+NEW INFORMATION
+---------------
+
+SNIPPED FOR PYIEM TESTING PURPOSES.
+
+$$
+MM

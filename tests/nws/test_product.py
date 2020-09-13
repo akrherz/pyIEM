@@ -70,6 +70,13 @@ def test_wpc():
     assert res[0][0] == ans
 
 
+def test_200913_dualtime():
+    """Process a HLS in two timezones, sigh."""
+    tp = productparser(get_test_file("HLS.txt"))
+    assert not tp.warnings
+    assert tp.z == "EDT"
+
+
 def test_200731_cvt():
     """See that we handle CVT timezone products."""
     tp = productparser(get_test_file("TCDAT5_CVT.txt"))
