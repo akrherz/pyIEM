@@ -35,6 +35,12 @@ def test_summary():
     assert (len(j) - len(j2)) == 1
 
 
+def test_200913_nounits():
+    """Test that we properly handle LSRs without units."""
+    prod = parser(get_test_file("LSR/LSRCRP.txt"))
+    assert not prod.warnings
+
+
 def test_empty():
     """Test that we can handle an empty LSR."""
     prod = parser(get_test_file("LSR/LSR_empty.txt"))
