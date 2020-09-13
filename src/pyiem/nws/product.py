@@ -21,10 +21,14 @@ from pyiem.nws import ugc, vtec, hvtec
 # We do require that the first character be a A-Z one as otherwise this will
 # match the LDM sequence number at the top!
 AFOSRE = re.compile(r"^([A-Z][A-Z0-9\s]{3,5})$", re.M)
-TIME_RE = re.compile(
-    "^([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
-    "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])$",
-    re.M | re.IGNORECASE,
+TIME_FMT = (
+    "([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
+    "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])"
+)
+TIME_RE = re.compile(f"^{TIME_FMT}$", re.M | re.IGNORECASE)
+# Sometimes products have a duplicated timestamp in another tz
+TIME_EXT_RE = re.compile(
+    rf"^{TIME_FMT}\s?/\s?{TIME_FMT}\s?/$", re.M | re.IGNORECASE
 )
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(
@@ -640,6 +644,8 @@ class TextProduct:
         # The MND header hopefully has a full timestamp that is the best
         # truth that we can have for this product.
         tokens = TIME_RE.findall(self.unixtext)
+        if not tokens:
+            tokens = TIME_EXT_RE.findall(self.unixtext)
         if provided_utcnow is None and tokens:
             try:
                 z, _tz, valid = date_tokens2datetime(tokens[0])
