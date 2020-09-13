@@ -88,7 +88,8 @@ class LSR:
         self.magnitude_str = text
         tokens = MAG_UNITS.findall(text)
         if not tokens:
-            self.product.warnings.append(f"Unable to parse Units |{text}|")
+            if text != "":
+                self.product.warnings.append(f"Unable to parse Units |{text}|")
             return
         if len(tokens) == 2:
             self.magnitude_qualifier = tokens[0]
