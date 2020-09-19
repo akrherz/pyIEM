@@ -81,6 +81,15 @@ def test_illinois():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_issue292_nws_fill_ugcs():
+    """Test that fill_ugcs works for nws sector view."""
+    mp = MapPlot(sector="nws", title="Four Counties", nocaption=True)
+    data = {"IAC001": 10, "AKC013": 20, "HIC001": 30, "PRC001": 40}
+    mp.fill_ugcs(data)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_fill_ugcs_color():
     """Provide an explicit color to fill_ugcs"""
     mp = MapPlot(

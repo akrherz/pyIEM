@@ -230,6 +230,9 @@ class MapPlot:
         self.cax = plt.axes(CAX_BOUNDS, frameon=False, yticks=[], xticks=[])
         self.axes = []
         self.ax = None
+        self.pr_ax = None
+        self.hi_ax = None
+        self.ak_ax = None
         # hack around sector=iowa
         if self.sector == "iowa":
             self.sector = "state"
@@ -1154,15 +1157,23 @@ class MapPlot:
             for polyi, polygon in enumerate(ugcdict.get("geom", [])):
                 if polygon.exterior is None:
                     continue
-                arr = np.asarray(polygon.exterior)
-                points = self.ax.projection.transform_points(
-                    ccrs.Geodetic(), arr[:, 0], arr[:, 1]
-                )
-                p = Polygon(points[:, :2], fc=c, ec="k", zorder=z, lw=0.1)
-                if z == Z_OVERLAY:
-                    self.ax.add_patch(p)
-                if z == Z_OVERLAY2:
-                    self.ax.add_patch(p)
+                if z in [Z_OVERLAY, Z_OVERLAY2]:
+                    arr = np.asarray(polygon.exterior)
+                    # Figure out which ax this goes with
+                    ax = self.ax
+                    if self.sector == "nws":
+                        if ugc.startswith("PR"):
+                            ax = self.pr_ax
+                        elif ugc.startswith("AK"):
+                            ax = self.ak_ax
+                        elif ugc.startswith("HI"):
+                            ax = self.hi_ax
+                    points = ax.projection.transform_points(
+                        ccrs.Geodetic(), arr[:, 0], arr[:, 1]
+                    )
+                    ax.add_patch(
+                        Polygon(points[:, :2], fc=c, ec="k", zorder=z, lw=0.1)
+                    )
                 if polyi == 0 and ilabel:
                     # prefer our stored centroid vs calculated one
                     mx = ugcdict.get("lon", polygon.centroid.x)
