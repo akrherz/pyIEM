@@ -1,0 +1,36 @@
+982 
+WGUS74 KLCH 231517
+FFSLCH
+
+Flash Flood Statement
+National Weather Service Lake Charles LA
+1017 AM CDT Wed Sep 23 2020
+
+LAC019-231527-
+/O.CAN.KLCH.FF.W.0026.000000T0000Z-200923T1545Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+Calcasieu LA-
+1017 AM CDT Wed Sep 23 2020
+
+...FLASH FLOOD WARNING IS CANCELLED FOR NORTHWESTERN CALCASIEU 
+PARISH...
+
+Flooding is no longer expected to pose a threat. Please continue to 
+heed remaining road closures.
+
+A Flash Flood Watch remains in effect until 1000 PM CDT Wednesday 
+for portions of Louisiana and southeast Texas.
+
+A Flash Flood Watch remains in effect until 1000 PM CDT Wednesday 
+for portions of Louisiana and southeast Texas.
+
+A Flash Flood Watch remains in effect until 1000 PM CDT Wednesday 
+for portions of Louisiana and southeast Texas.
+
+LAT...LON 3057 9375 3068 9367 3078 9365 3090 9370
+      3099 9362 3117 9358 3120 9354 3124 9356
+      3128 9353 3128 9344 3136 9339 3136 9329
+      3115 9321 3089 9319 3042 9320 3040 9339
+      3049 9338 3049 9349 3040 9349 3040 9370
+
+$$

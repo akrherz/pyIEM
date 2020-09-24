@@ -518,6 +518,18 @@ class TextProduct:
         if parse_segments:
             self.parse_segments()
 
+    def suv_iter(self):
+        """Return [(segment, ugcs, vtec)] combos found in product."""
+        res = []
+        for segment in self.segments:
+            if not segment.ugcs or not segment.vtec:
+                continue
+            for _vtec in segment.vtec:
+                if _vtec.status == "T" or _vtec.action == "ROU":
+                    continue
+                res.append((segment, segment.ugcs, _vtec))
+        return res
+
     def is_resent(self):
         """ Check to see if this product is a ...RESENT product """
         return self.unixtext.find("...RESENT") > 0
