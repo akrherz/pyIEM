@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>products Package &#8212; pyIEM 0.0.post1+g5c27220 documentation</title>
+    <title>products Package &#8212; pyIEM 0.0.post1+g82c2bda documentation</title>
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g5c27220 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g82c2bda documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">nws Package</a> &#187;</li>
@@ -673,7 +673,7 @@ stored within the self.reports list</p>
 <p>A TextProduct that contains VTEC information.</p>
 <dl class="py method">
 <dt id="pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry">
-<code class="sig-name descname">do_sbw_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em>, <em class="sig-param"><span class="n">sbw_table</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">do_sbw_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Storage of Storm Based Warning geometry</p>
 <p>The IEM uses a seperate table for the Storm Based Warning geometries.</p>
 <dl class="field-list simple">
@@ -689,7 +689,7 @@ stored within the self.reports list</p>
 
 <dl class="py method">
 <dt id="pyiem.nws.products.vtec.VTECProduct.do_sql_vtec">
-<code class="sig-name descname">do_sql_vtec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em>, <em class="sig-param"><span class="n">warning_table</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">do_sql_vtec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Persist the non-SBW stuff to the database</p>
 <p>Arguments:
 txn – A pyscopg2 transaction
@@ -754,12 +754,6 @@ river_uri – The URL of the River App</p>
 exec() database calls against.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pyiem.nws.products.vtec.VTECProduct.which_warning_table">
-<code class="sig-name descname">which_warning_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">txn</span></em>, <em class="sig-param"><span class="n">segment</span></em>, <em class="sig-param"><span class="n">vtec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.vtec.VTECProduct.which_warning_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Figure out which table we should work against</p>
 </dd></dl>
 
 </dd></dl>
@@ -841,7 +835,7 @@ VTECProduct instance or returns an exception</p>
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g5c27220 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g82c2bda documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >nws Package</a> &#187;</li>
