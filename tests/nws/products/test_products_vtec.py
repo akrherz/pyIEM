@@ -42,7 +42,7 @@ def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
     prod.sql(dbcursor)
-    assert not filter_warnings(prod.warnings)
+    assert not prod.warnings
     prod = vtecparser(get_test_file("FFW/FFSLCH_1.txt"))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)
