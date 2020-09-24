@@ -1,12 +1,132 @@
 """Off-loaded private stuff from `vtec.py`."""
 # pylint: disable=too-many-arguments
-import datetime
+from datetime import timedelta
 import itertools
+
+import pandas as pd
 
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
 # seems to be enough time to ensure a WFO issues some followup statement.
-DEFAULT_EXPIRE_DELTA = datetime.timedelta(hours=(21 * 24))
+DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
+
+
+def which_year(txn, prod, segment, vtec):
+    """ Figure out which table we should work against """
+    if vtec.action in ["NEW"]:
+        # Lets piggyback a check to see if this ETN has been reused?
+        # Can this realiably be done?
+        txn.execute(
+            f"SELECT max(updated) from warnings_{prod.db_year} WHERE wfo = %s "
+            "and eventid = %s and significance = %s and phenomena = %s",
+            (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
+        )
+        row = txn.fetchone()
+        if row["max"] is not None:
+            if (prod.valid - row["max"]).total_seconds() > (21 * 86400):
+                prod.warnings.append(
+                    "Possible Duplicated ETN\n"
+                    f"  max(updated) is {row['max']}, "
+                    f"prod.valid is {prod.valid}\n year is {prod.db_year}\n"
+                    f"  VTEC: {str(vtec)}\n  "
+                    f"product_id: {prod.get_product_id()}"
+                )
+        return prod.db_year
+    # Lets query the database to look for any matching entries within
+    # the past 3, 10, 31 days, to find with the product_issue was,
+    # which guides the table that the data is stored within
+    for offset in [3, 10, 31]:
+        txn.execute(
+            "SELECT tableoid::regclass as tablename, hvtec_nwsli, "
+            "min(product_issue at time zone 'UTC'), "
+            "max(product_issue at time zone 'UTC') from warnings "
+            "WHERE wfo = %s and eventid = %s and significance = %s and "
+            "phenomena = %s and ((updated > %s and updated <= %s) "
+            "or expire > %s) and status not in ('UPG', 'CAN') "
+            "GROUP by tablename, hvtec_nwsli ORDER by tablename DESC ",
+            (
+                vtec.office,
+                vtec.etn,
+                vtec.significance,
+                vtec.phenomena,
+                prod.valid - timedelta(days=offset),
+                prod.valid,
+                prod.valid,
+            ),
+        )
+        rows = txn.fetchall()
+        if not rows:
+            continue
+        if len(rows) > 1:
+            # We likely have a flood warning and can use the HVTEC NWSLI
+            # to resolve ambiguity
+            hvtec_nwsli = segment.get_hvtec_nwsli()
+            if hvtec_nwsli:
+                for row in rows:
+                    if hvtec_nwsli == row["hvtec_nwsli"]:
+                        return int(row["tablename"].replace("warnings_", ""))
+
+            prod.warnings.append(
+                (
+                    "VTEC %s product: %s returned %s rows when "
+                    "searching for current table"
+                )
+                % (str(vtec), prod.get_product_id(), txn.rowcount)
+            )
+        row = rows[0]
+        if row["min"] is not None:
+            year = row["min"].year
+            if row["max"].year != year:
+                print(
+                    "VTEC Product appears to cross 1 Jan UTC "
+                    f"minyear: {year} maxyear: {row['max'].year} "
+                    f"VTEC: {str(vtec)} productid: {prod.get_product_id()}"
+                )
+            return int(row["tablename"].replace("warnings_", ""))
+
+    # Give up
+    if not prod.is_correction():
+        table = f"warnings_{prod.db_year}"
+        prod.warnings.append(
+            "Failed to find year of product issuance:\n"
+            f"  VTEC:{str(vtec)}\n  PRODUCT: {prod.get_product_id()}\n"
+            f"  defaulting to use year: {prod.db_year}\n"
+            f"  {list_rows(txn, table, vtec)}"
+        )
+    return prod.db_year
+
+
+def _associate_vtec_year(prod, txn):
+    """Figure out to which year each VTEC in the product belongs.
+
+    Modifies the prod.segment.vtec objects."""
+    for seg, _ugcs, vtec in prod.suv_iter():
+        vtec.year = which_year(txn, prod, seg, vtec)
+
+
+def _load_database_status(txn, prod):
+    """Build a pandas dataframe for what the database knows."""
+    rows = []
+    for _seg, _ugcs, vtec in prod.suv_iter():
+        if vtec.status == "NEW" or vtec.year is None:
+            continue
+        txn.execute(
+            f"SELECT ugc, status from warnings_{vtec.year} WHERE wfo = %s and "
+            "phenomena = %s and significance = %s and eventid = %s and "
+            "status not in ('CAN', 'UPG', 'EXP')",
+            (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
+        )
+        for row in txn:
+            entry = {
+                "ugc": row[0],
+                "status": row[1],
+                "year": vtec.year,
+                "phenomena": vtec.phenomena,
+                "significance": vtec.significance,
+                "etn": vtec.etn,
+            }
+            rows.append(entry)
+    return pd.DataFrame(rows)
 
 
 def check_dup_ps(segment):
@@ -49,6 +169,9 @@ def check_dup_ps(segment):
 def do_sql_hvtec(txn, segment):
     """ Process the HVTEC in this product """
     nwsli = segment.hvtec[0].nwsli.id
+    # No point in saving these events
+    if nwsli == "00000":
+        return
     if len(segment.bullets) < 4:
         return
     stage_text = ""

@@ -6,15 +6,16 @@ from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
 from pyiem.nws.products._vtec_util import (
+    _associate_vtec_year,
     _resent_match,
     _do_sql_vtec_new,
     _do_sql_vtec_cor,
     _do_sql_vtec_can,
     _do_sql_vtec_con,
     DEFAULT_EXPIRE_DELTA,
-    list_rows,
     check_dup_ps,
     do_sql_hvtec,
+    _load_database_status,
 )
 
 
@@ -53,6 +54,13 @@ class VTECProduct(TextProduct):
             exec() database calls against.
 
         """
+        # Associate a year to each VTEC found in the product, this informs
+        # which database table to use
+        _associate_vtec_year(self, txn)
+        # Build a pandas dataframe to track what we are doing here.
+        dbdf = _load_database_status(txn, self)
+        dbdf["missed"] = True
+
         for segment in self.segments:
             if len(segment.vtec) > 1 and check_dup_ps(segment):
                 self.warnings.append(
@@ -79,106 +87,31 @@ class VTECProduct(TextProduct):
                     continue
                 # Send all products to the SBW method in case this segment
                 # should of had a polygon and did not.
-                warning_table = self.which_warning_table(txn, segment, vtec)
-                self.do_sbw_geometry(
-                    txn,
-                    segment,
-                    vtec,
-                    warning_table.replace("warnings_", "sbw_"),
-                )
+                self.do_sbw_geometry(txn, segment, vtec)
                 # Check for Hydro-VTEC stuff
                 if segment.hvtec and segment.hvtec[0].nwsli != "00000":
                     do_sql_hvtec(txn, segment)
 
-                self.do_sql_vtec(txn, segment, vtec, warning_table)
+                self.do_sql_vtec(txn, segment, vtec)
+                if dbdf.empty:
+                    continue
+                for ugc in segment.ugcs:
+                    dbdf.at[
+                        (dbdf["ugc"] == str(ugc))
+                        & (dbdf["phenomena"] == vtec.phenomena)
+                        & (dbdf["significance"] == vtec.significance)
+                        & (dbdf["etn"] == vtec.etn)
+                        & (dbdf["year"] == vtec.year),
+                        "missed",
+                    ] = False
+        if dbdf.empty:
+            return
+        df = dbdf[dbdf["missed"]]
+        if df.empty:
+            return
+        self.warnings.append(f"Product failed to cover all UGC\n{df}")
 
-    def which_warning_table(self, txn, segment, vtec):
-        """ Figure out which table we should work against """
-        if vtec.action in ["NEW"]:
-            table = f"warnings_{self.db_year}"
-            # Lets piggyback a check to see if this ETN has been reused?
-            # Can this realiably be done?
-            txn.execute(
-                f"SELECT max(updated) from {table} WHERE wfo = %s and "
-                "eventid = %s and significance = %s and phenomena = %s",
-                (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
-            )
-            row = txn.fetchone()
-            if row["max"] is not None:
-                if (self.valid - row["max"]).total_seconds() > (21 * 86400):
-                    self.warnings.append(
-                        "Possible Duplicated ETN\n"
-                        f"  max(updated) is {row['max']}, "
-                        f"prod.valid is {self.valid}\n  table is {table}\n"
-                        f"  VTEC: {str(vtec)}\n  "
-                        f"product_id: {self.get_product_id()}"
-                    )
-            return table
-        # Lets query the database to look for any matching entries within
-        # the past 3, 10, 31 days, to find with the product_issue was,
-        # which guides the table that the data is stored within
-        for offset in [3, 10, 31]:
-            txn.execute(
-                "SELECT tableoid::regclass as tablename, hvtec_nwsli, "
-                "min(product_issue at time zone 'UTC'), "
-                "max(product_issue at time zone 'UTC') from warnings "
-                "WHERE wfo = %s and eventid = %s and significance = %s and "
-                "phenomena = %s and ((updated > %s and updated <= %s) "
-                "or expire > %s) and status not in ('UPG', 'CAN') "
-                "GROUP by tablename, hvtec_nwsli ORDER by tablename DESC ",
-                (
-                    vtec.office,
-                    vtec.etn,
-                    vtec.significance,
-                    vtec.phenomena,
-                    self.valid - timedelta(days=offset),
-                    self.valid,
-                    self.valid,
-                ),
-            )
-            rows = txn.fetchall()
-            if not rows:
-                continue
-            if len(rows) > 1:
-                # We likely have a flood warning and can use the HVTEC NWSLI
-                # to resolve ambiguity
-                hvtec_nwsli = segment.get_hvtec_nwsli()
-                if hvtec_nwsli:
-                    for row in rows:
-                        if hvtec_nwsli == row["hvtec_nwsli"]:
-                            return row["tablename"]
-
-                self.warnings.append(
-                    (
-                        "VTEC %s product: %s returned %s rows when "
-                        "searching for current table"
-                    )
-                    % (str(vtec), self.get_product_id(), txn.rowcount)
-                )
-            row = rows[0]
-            if row["min"] is not None:
-                year = row["min"].year
-                if row["max"].year != year:
-                    print(
-                        "VTEC Product appears to cross 1 Jan UTC "
-                        f"minyear: {year} maxyear: {row['max'].year} "
-                        f"VTEC: {str(vtec)} productid: {self.get_product_id()}"
-                    )
-                self.db_year = int(row["tablename"].replace("warnings_", ""))
-                return row["tablename"]
-
-        # Give up
-        table = f"warnings_{self.db_year}"
-        if not self.is_correction():
-            self.warnings.append(
-                "Failed to find year of product issuance:\n"
-                f"  VTEC:{str(vtec)}\n  PRODUCT: {self.get_product_id()}\n"
-                f"  defaulting to use table: {table}\n"
-                f"  {list_rows(txn, table, vtec)}"
-            )
-        return table
-
-    def do_sql_vtec(self, txn, segment, vtec, warning_table):
+    def do_sql_vtec(self, txn, segment, vtec):
         """ Persist the non-SBW stuff to the database
 
         Arguments:
@@ -186,6 +119,7 @@ class VTECProduct(TextProduct):
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
+        warning_table = f"warnings_{vtec.year}"
         # If this product is ...RESENT, lets check to make sure we did not
         # already get it
         if self.is_resent() and _resent_match(self, txn, warning_table, vtec):
@@ -208,7 +142,7 @@ class VTECProduct(TextProduct):
                 f"do_sql_vtec() encountered {vtec.action} VTEC status"
             )
 
-    def do_sbw_geometry(self, txn, segment, vtec, sbw_table):
+    def do_sbw_geometry(self, txn, segment, vtec):
         """Storage of Storm Based Warning geometry
 
         The IEM uses a seperate table for the Storm Based Warning geometries.
@@ -226,6 +160,7 @@ class VTECProduct(TextProduct):
         # polygon_end   - Time domain this polygon is valid for exclusive
         # updated       - Product time of this product
 
+        sbw_table = f"sbw_{vtec.year}"
         # Figure out when this polygon begins and ends
         polygon_begin = self.valid
         if vtec.action == "NEW" and vtec.begints is not None:

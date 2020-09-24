@@ -1,0 +1,63 @@
+581 
+WGUS54 KLCH 231242
+FFWLCH
+LAC011-019-115-TXC351-231545-
+/O.NEW.KLCH.FF.W.0026.200923T1242Z-200923T1545Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service Lake Charles LA
+742 AM CDT Wed Sep 23 2020
+
+The National Weather Service in Lake Charles has issued a
+
+* Flash Flood Warning for...
+  Beauregard Parish in southwestern Louisiana...
+  Northwestern Calcasieu Parish in southwestern Louisiana...
+  Western Vernon Parish in west central Louisiana...
+  Eastern Newton County in southeastern Texas...
+
+* Until 1045 AM CDT.
+
+* At 742 AM CDT, Doppler radar indicated thunderstorms producing 
+  heavy rain across the warned area. Between 1 and 3 inches of rain 
+  have fallen. Flash flooding is ongoing or expected to begin 
+  shortly.
+
+  HAZARD...Flash flooding caused by thunderstorms.
+
+  SOURCE...Doppler radar.
+
+  IMPACT...Flooding of small creeks and streams, urban areas,
+           highways, streets and underpasses as well as other
+           drainage and low lying areas.
+
+* Some locations that will experience flash flooding include...
+  De Ridder, Leesville, Rosepine, Merryville, Anacoco, Singer, Bon 
+  Weir, Burkeville, Fields, De Quincy, Ragley, Fort Polk, Toledo 
+  Bend Dam, New Llano, Hornbeck, Junction, Stringtown, Tulla, Bivens 
+  and Burr Ferry.
+
+Additional rainfall amounts of 1 to 3 inches are possible in the 
+warned area.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood 
+deaths occur in vehicles.
+
+&&
+
+LAT...LON 3037 9379 3057 9375 3068 9367 3078 9365
+      3090 9370 3117 9376 3117 9358 3120 9354
+      3124 9356 3128 9354 3128 9344 3136 9339
+      3136 9329 3115 9321 3089 9319 3036 9320
+      3035 9321 3035 9373
+
+FLASH FLOOD...RADAR INDICATED
+EXPECTED RAINFALL...1-3 INCHES IN 3 HOURS 
+
+$$
+
+Rua

@@ -11,6 +11,8 @@ from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.ugc import UGCParseException, UGC
 from pyiem.nws.vtec import parse
 
+CUGC = "Product failed to cover all UGC"
+
 
 class FakeObject:
     """Mocked thing"""
@@ -20,11 +22,13 @@ class FakeObject:
     vtec = None
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def dbcursor():
     """Return a disposable database cursor."""
     pgconn = get_dbconn("postgis")
-    return pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor = pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    yield cursor
+    pgconn.close()
 
 
 def filter_warnings(ar, startswith="get_gid"):
@@ -34,6 +38,18 @@ def filter_warnings(ar, startswith="get_gid"):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
+
+
+def test_issue284_incomplete_update(dbcursor):
+    """Test that we emit warnings when a product fails to update everything."""
+    prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
+    prod.sql(dbcursor)
+    assert not filter_warnings(prod.warnings)
+    prod = vtecparser(get_test_file("FFW/FFSLCH_1.txt"))
+    prod.sql(dbcursor)
+    warnings = filter_warnings(prod.warnings)
+    assert len(warnings) == 1
+    assert warnings[0].startswith(CUGC)
 
 
 def test_old_windhail_tag():
@@ -211,9 +227,10 @@ def test_TORE_series(dbcursor):
 def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
+        print(f"processing {i}")
         prod = vtecparser(get_test_file("WSWAFG/%s.txt" % (i,)))
         prod.sql(dbcursor)
-        assert not filter_warnings(prod.warnings)
+        assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
     dbcursor.execute(
         """
         SELECT count(*) from warnings_2018 where wfo = 'AFG' and eventid = 127
@@ -528,7 +545,7 @@ def test_151225_extfuture(dbcursor):
     # /O.EXT.KPAH.FL.W.0093.151227T0358Z-151229T0442Z/
     prod = vtecparser(get_test_file("FLWPAH/FLWPAH_2.txt"))
     prod.sql(dbcursor)
-    warnings = filter_warnings(prod.warnings)
+    warnings = filter_warnings(filter_warnings(prod.warnings), CUGC)
     assert len(warnings) == 1
 
 
@@ -760,8 +777,7 @@ def test_141212_mqt(dbcursor):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("MWWMQT/%i.txt" % (i,)))
         prod.sql(dbcursor)
-        warnings = filter_warnings(prod.warnings)
-        assert not warnings
+        assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
 
 
 def test_141211_null_expire(dbcursor):
@@ -786,18 +802,17 @@ def test_141210_continues(dbcursor):
 def test_141208_upgrade(dbcursor):
     """ See that we can handle the EXB case """
     for i in range(0, 18):
-        print("Processing %s" % (i,))
+        print(f"Processing {i}")
         prod = vtecparser(get_test_file("MWWLWX/%02i.txt" % (i,)))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "Segment has duplicated")
-        assert not warnings
+        assert not filter_warnings(warnings, CUGC)
     # ANZ532 gets too entries from the above check the issuance time of first
     dbcursor.execute(
-        """SELECT issue at time zone 'UTC' from warnings_2014
-    where wfo = 'LWX' and eventid = 221
-    and phenomena = 'SC' and significance = 'Y'
-    and ugc = 'ANZ532' and status != 'UPG'"""
+        "SELECT issue at time zone 'UTC' from warnings_2014 where wfo = 'LWX' "
+        "and eventid = 221 and phenomena = 'SC' and significance = 'Y' "
+        "and ugc = 'ANZ532' and status != 'UPG'"
     )
     assert dbcursor.fetchone()[0] == datetime.datetime(2014, 12, 7, 19, 13)
 

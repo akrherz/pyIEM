@@ -252,6 +252,8 @@ class VTEC:
         self.etn = int(tokens[6])
         self.begints = contime(tokens[7])
         self.endts = contime(tokens[8])
+        # Not explicitly defined, but set later by product parsing logic
+        self.year = None
 
     def s3(self):
         """Return a commonly used string representation."""
@@ -299,7 +301,7 @@ class VTEC:
     def url(self, year):
         """ Generate a VTEC url string needed """
         return ("%s-%s-%s-%s-%s-%s-%04i") % (
-            year,
+            year if self.year is None else self.year,
             self.status,
             self.action,
             self.office4,
@@ -314,7 +316,7 @@ class VTEC:
         This is used by the Live client
         """
         return "%s-%s-%s-%s-%04i" % (
-            year,
+            year if self.year is None else self.year,
             self.office4,
             self.phenomena,
             self.significance,
