@@ -42,11 +42,12 @@ def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
     prod.sql(dbcursor)
-    assert not prod.warnings
+    assert not filter_warnings(prod.warnings)
     prod = vtecparser(get_test_file("FFW/FFSLCH_1.txt"))
     prod.sql(dbcursor)
-    assert len(prod.warnings) == 1
-    assert prod.warnings[0].startswith(CUGC)
+    warnings = filter_warnings(prod.warnings)
+    assert len(warnings) == 1
+    assert warnings[0].startswith(CUGC)
 
 
 def test_old_windhail_tag():
