@@ -309,13 +309,15 @@ class TextProductSegment:
         """
         Convert the special tags into a nice text
         """
-        if (
-            self.windtag is None
-            and self.tornadotag is None
-            and self.hailtag is None
-            and self.tornadodamagetag is None
-            and self.waterspouttag is None
-            and not self.flood_tags
+        if all(
+            [
+                self.windtag is None,
+                self.tornadotag is None,
+                self.hailtag is None,
+                self.tornadodamagetag is None,
+                self.waterspouttag is None,
+                not self.flood_tags,
+            ]
         ):
             return ""
 
@@ -376,7 +378,7 @@ class TextProductSegment:
             self.tp.warnings.append(
                 ("LAT...LON polygon is invalid!\n%s") % (poly.exterior.xy,)
             )
-            return
+            return None
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             # No longer a warning as it was too much noise
@@ -519,16 +521,14 @@ class TextProduct:
             self.parse_segments()
 
     def suv_iter(self):
-        """Return [(segment, ugcs, vtec)] combos found in product."""
-        res = []
+        """Yield [(segment, ugcs, vtec)] combos found in product."""
         for segment in self.segments:
             if not segment.ugcs or not segment.vtec:
                 continue
             for _vtec in segment.vtec:
                 if _vtec.status == "T" or _vtec.action == "ROU":
                     continue
-                res.append((segment, segment.ugcs, _vtec))
-        return res
+                yield (segment, segment.ugcs, _vtec)
 
     def is_resent(self):
         """ Check to see if this product is a ...RESENT product """

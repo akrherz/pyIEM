@@ -60,7 +60,7 @@ before_script:
   - cd ..
 
 script:
-  - coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults";
+  - coverage run --source=pyiem setup.py test --addopts "-x --mpl --mpl-results-path=mplresults";
   - if [[ $PYTHON_VERSION == "3.8" ]]; then
     codecov -e TRAVIS_PYTHON_VERSION;
     fi
