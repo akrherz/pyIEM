@@ -22,11 +22,13 @@ class FakeObject:
     vtec = None
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def dbcursor():
     """Return a disposable database cursor."""
     pgconn = get_dbconn("postgis")
-    return pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor = pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    yield cursor
+    pgconn.close()
 
 
 def filter_warnings(ar, startswith="get_gid"):
@@ -42,7 +44,7 @@ def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
     prod.sql(dbcursor)
-    assert not prod.warnings
+    assert not filter_warnings(prod.warnings)
     prod = vtecparser(get_test_file("FFW/FFSLCH_1.txt"))
     prod.sql(dbcursor)
     warnings = filter_warnings(prod.warnings)

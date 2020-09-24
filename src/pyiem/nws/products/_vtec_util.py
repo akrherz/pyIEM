@@ -169,6 +169,9 @@ def check_dup_ps(segment):
 def do_sql_hvtec(txn, segment):
     """ Process the HVTEC in this product """
     nwsli = segment.hvtec[0].nwsli.id
+    # No point in saving these events
+    if nwsli == "00000":
+        return
     if len(segment.bullets) < 4:
         return
     stage_text = ""
