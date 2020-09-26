@@ -149,7 +149,7 @@ class HML(product.TextProduct):
                     continue
                 cursor.execute(
                     (
-                        f"INSERT into hml_observed_data_{row['valid'].year} "
+                        "INSERT into hml_observed_data "
                         "(station, valid, key, value) "
                         "VALUES (%s, %s, get_hml_observed_key(%s), %s) "
                         "RETURNING key"

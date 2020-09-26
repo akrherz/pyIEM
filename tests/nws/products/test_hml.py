@@ -23,7 +23,7 @@ def test_200926_nokey(dbcursor):
     prod = hmlparser(get_test_file("HML/HMLMOB.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT key from hml_observed_data_2020 WHERE station = 'EFRA1' "
+        "SELECT key from hml_observed_data WHERE station = 'EFRA1' "
         "and valid >= '2020-09-26 13:36+00' and valid < '2020-09-26 13:43+00' "
         "and key is null"
     )
@@ -37,7 +37,7 @@ def test_190313_missingstage(dbcursor):
     prod.sql(dbcursor)
     dbcursor.execute(
         """
-        SELECT * from hml_observed_data_2019 WHERE station = 'JANI4'
+        SELECT * from hml_observed_data WHERE station = 'JANI4'
         and valid > '2019-03-13' and valid < '2019-03-14'
     """
     )
