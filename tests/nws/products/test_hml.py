@@ -11,10 +11,23 @@ from pyiem.util import get_dbconn, get_test_file, utc
 @pytest.fixture
 def dbcursor():
     """Get database conn."""
-    dbconn = get_dbconn("hads")
+    dbconn = get_dbconn("hml")
     # Note the usage of RealDictCursor here, as this is what
     # pyiem.twistedpg uses
-    return dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    yield dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    dbconn.close()
+
+
+def test_200926_nokey(dbcursor):
+    """Test that we add a new observation key, when necessary."""
+    prod = hmlparser(get_test_file("HML/HMLMOB.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT key from hml_observed_data_2020 WHERE station = 'EFRA1' "
+        "and valid >= '2020-09-26 13:36+00' and valid < '2020-09-26 13:43+00' "
+        "and key is null"
+    )
+    assert dbcursor.rowcount == 0
 
 
 def test_190313_missingstage(dbcursor):
