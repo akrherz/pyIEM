@@ -1,0 +1,34 @@
+452 
+SRUS54 KMOB 261409
+HMLMOB
+<?xml version="1.0" standalone="yes"?>
+<site xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      generationtime="2020-09-26T14:09:06+00:00"
+      timezone="CST6CDT"
+      originator="MOB"
+      name="FOWL RIVER  AT EAST FOWL RIVER BRIDGE Tide gauge"
+      id="EFRA1"
+      xsi:noNamespaceSchemaLocation="http://weather.gov/ohd/hydroxc/schemas/hydrogen/HydData.xsd">
+  <disclaimers>
+    <AHPSXMLversion>2.0</AHPSXMLversion>
+    <status>Experimental</status>
+    <quality trace="observed">not manually quality-controlled</quality>
+  </disclaimers>
+  <observed primaryUnits="ft"
+            pedts="HCIRG"
+            primaryName="Water Height (MHHW)"
+            timezone="UTC"
+            secondaryUnits="kcfs"
+            secondaryName="Flow">
+    <datum>
+      <valid>2020-09-26T13:36:00-00:00</valid>
+      <primary>1.26</primary>
+      <secondary>-999</secondary>
+    </datum>
+    <datum>
+      <valid>2020-09-26T13:42:00-00:00</valid>
+      <primary>1.25</primary>
+      <secondary>-999</secondary>
+    </datum>
+  </observed>
+</site> 

@@ -151,10 +151,27 @@ class HML(product.TextProduct):
                     (
                         f"INSERT into hml_observed_data_{row['valid'].year} "
                         "(station, valid, key, value) "
-                        "VALUES (%s, %s, get_hml_observed_key(%s), %s)"
+                        "VALUES (%s, %s, get_hml_observed_key(%s), %s) "
+                        "RETURNING key"
                     ),
                     (_hml.station, row["valid"], key, val),
                 )
+                if cursor.fetchone()[0] is not None:
+                    continue
+                # Delete the bad row
+                cursor.execute(
+                    "DELETE from hml_observed_data WHERE station = %s and "
+                    "valid = %s and key is null",
+                    (_hml.station, row["valid"]),
+                )
+                # Need to create a new unit!
+                cursor.execute(
+                    "INSERT into hml_observed_keys(id, label) VALUES ("
+                    "(SELECT coalesce(max(id) + 1, 0) from hml_observed_keys),"
+                    "%s) RETURNING id",
+                    (key,),
+                )
+                print("Created key %s for %s" % (cursor.fetchone()[0], key))
 
     def do_sql_forecast(self, cursor, _hml):
         """Process the forecast portion of the dataset"""
