@@ -101,10 +101,11 @@ def load_conus_data(valid):
     )
     lons = []
     lats = []
-    for line in open(fn):
-        tokens = line.split(",")
-        lons.append(float(tokens[0]))
-        lats.append(float(tokens[1]))
+    with open(fn) as fh:
+        for line in fh:
+            tokens = line.split(",")
+            lons.append(float(tokens[0]))
+            lats.append(float(tokens[1]))
     CONUS["line"] = np.column_stack([lons, lats])
     CONUS["poly"] = Polygon(CONUS["line"])
 
@@ -155,23 +156,9 @@ def clean_segment(ls):
         pt = Point(ls.coords[idx])
         if not pt.within(CONUS["poly"]):
             continue
-        # go find the next or next to last point
-        start_pt = Point(ls.coords[1 if idx == 0 else -2])
-        end_pt = CONUS["poly"].exterior.interpolate(
+        pt = CONUS["poly"].exterior.interpolate(
             CONUS["poly"].exterior.project(pt)
         )
-        # We want to draw a line from start_pt through end_pt and extend by
-        # a small amount to get out of rounding
-        offset = 0.0001
-        dx = end_pt.x - start_pt.x
-        dy = end_pt.y - start_pt.y
-        while pt.within(CONUS["poly"]) and offset < 10.5:
-            if offset > 1.5:
-                offset += 1.0
-            xoff = offset if dx > 0 else (offset * -1)
-            yoff = offset if dy > 0 else (offset * -1)
-            pt = Point(start_pt.x + dx + xoff, start_pt.y + dy + yoff)
-            offset += 0.005
         if pt.within(CONUS["poly"]):
             print("     idx: %s is still within, evasive action" % (idx,))
             for xoff, yoff in [
@@ -185,13 +172,14 @@ def clean_segment(ls):
                 [0.01, 0.0],
                 [0.01, 0.01],
             ]:
-                pt = translate(end_pt, xoff=xoff, yoff=yoff)
-                if not pt.within(CONUS["poly"]):
+                pt2 = translate(pt, xoff=xoff, yoff=yoff)
+                if not pt2.within(CONUS["poly"]):
+                    pt = pt2
                     print("     idx: %s is now %s" % (idx, pt))
                     break
         print(
-            "     fix idx: %s to new: %.4f %.4f Inside: %s, offset: %s"
-            % (idx, pt.x, pt.y, pt.within(CONUS["poly"]), offset)
+            "     fix idx: %s to new: %.4f %.4f Inside: %s"
+            % (idx, pt.x, pt.y, pt.within(CONUS["poly"]))
         )
         coords = list(ls.coords)
         coords[idx] = (pt.x, pt.y)
@@ -247,7 +235,7 @@ def segment_logic(segment, currentpoly, polys):
         if currentpoly.intersection(lr).is_empty:
             print("     failed intersection with currentpoly, abort")
             return currentpoly
-        interiors = [l for l in currentpoly.interiors]
+        interiors = [ln for ln in currentpoly.interiors]
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
         if not newp.is_valid:
@@ -331,6 +319,21 @@ def segment_logic(segment, currentpoly, polys):
     return currentpoly
 
 
+# def debug_draw(segment, current_poly):
+#    """Draw this for debugging purposes."""
+#    segment = np.array(segment)
+#    from pyiem.plot.use_agg import plt
+#    (fig, ax) = plt.subplots(1, 1)
+#    ax.plot(segment[:, 0], segment[:, 1], c='b')
+#    ylim = ax.get_ylim()
+#    xlim = ax.get_xlim()
+#    ax.plot(current_poly.exterior.xy[0], current_poly.exterior.xy[1], c='r')
+#    ax.set_xlim(*xlim)
+#    ax.set_ylim(*ylim)
+#    print("writting /tmp/debugdraw.png")
+#    fig.savefig("/tmp/debugdraw.png")
+
+
 def str2multipolygon(s):
     """Convert string PTS data into a polygon.
 
@@ -350,6 +353,7 @@ def str2multipolygon(s):
     currentpoly = copy.deepcopy(CONUS["poly"])
 
     for i, segment in enumerate(segments):
+        # debug_draw(segment, currentpoly)
         print(
             ("  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)")
             % (
