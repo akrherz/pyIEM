@@ -13,13 +13,26 @@ def dbcursor():
     return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
 
 
+def test_issue295_geometryfail():
+    """Test that we can make a geometry out of this."""
+    # https://.../products/outlook/archive/2020/day1otlk_20200926_1300.html
+    s = (
+        "45048223 44728372 45018571 44818788 44798832 44758914 "
+        "44679048 44759155 45509260 46349268 46749220 47199029 "
+        "47608787 47258575"
+    )
+    load_conus_data(utc(2020, 9, 26))
+    res = str2multipolygon(s)
+    assert abs(res[0].area - 21.09) < 0.001
+
+
 def test_200602_unpack():
     """Workaround a full failure, but this still fails :("""
     # https://.../products/outlook/archive/2020/day2otlk_20200602_1730.html
     spc = parser(get_test_file("SPCPTS/PTSDY2_unpack.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
-    assert abs(outlook.geometry.area - 18.75) < 0.01
+    assert abs(outlook.geometry.area - 78.7056) < 0.01
 
 
 def test_200109_nogeoms():
@@ -77,7 +90,7 @@ def test_190527_canada():
     spc = parser(get_test_file("SPCPTS/PTSDY1_canada.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 118.22) < 0.01
+    assert abs(outlook.geometry.area - 118.245) < 0.01
 
 
 def test_190515_issue117_month():
@@ -264,7 +277,7 @@ def test_170404_2002():
     spc = parser(get_test_file("SPCPTS/PTSDY1_2002.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT")
-    assert abs(outlook.geometry.area - 39.004) < 0.01
+    assert abs(outlook.geometry.area - 38.614) < 0.01
 
 
 def test_170329_notimp():
@@ -303,7 +316,7 @@ def test_150622_ptsdy1():
     """PTSDY1_nogeom.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
     outlook = spc.get_outlook("CATEGORICAL", "SLGT")
-    assert abs(outlook.geometry.area - 95.378) < 0.01
+    assert abs(outlook.geometry.area - 95.900) < 0.01
 
 
 def test_150612_ptsdy1_3():
