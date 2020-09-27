@@ -101,10 +101,11 @@ def load_conus_data(valid):
     )
     lons = []
     lats = []
-    for line in open(fn):
-        tokens = line.split(",")
-        lons.append(float(tokens[0]))
-        lats.append(float(tokens[1]))
+    with open(fn) as fh:
+        for line in fh:
+            tokens = line.split(",")
+            lons.append(float(tokens[0]))
+            lats.append(float(tokens[1]))
     CONUS["line"] = np.column_stack([lons, lats])
     CONUS["poly"] = Polygon(CONUS["line"])
 
