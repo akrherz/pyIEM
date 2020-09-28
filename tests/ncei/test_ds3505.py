@@ -11,7 +11,24 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture()
 def dbcursor():
     """Get a database cursor."""
-    return get_dbconn("asos").cursor()
+    pgconn = get_dbconn("asos")
+    yield pgconn.cursor()
+    pgconn.close()
+
+
+def test_issue298_precip():
+    """Test what our code does with AH precip fields."""
+    msg = (
+        "0083010010999991988123100004+70933-008667FM-12+0009ENJA "
+        "V0202801N01181004201CN0010001N9-01061-01191101621ADDAA106000591"
+        "AG10000AY181061AY231061GF107991071091004501001001MD1210451+9999MW1851"
+    )
+    data = ds3505.parser(msg, "ENJA", add_metar=True)
+    ans = (
+        "ENJA 310000Z AUTO 28023KT 1SM M11/M12 RMK 60002 SLP162 "
+        "T11061119 52045 IEM_DS3505"
+    )
+    assert data["metar"] == ans
 
 
 def test_vsby_format():
@@ -29,6 +46,14 @@ def test_process_metar_bad():
     now = util.utc(2017, 11, 1)
     ob = ds3505.process_metar(metar, now)
     assert abs(ob.mslp - 1010.4) < 0.1
+
+
+def test_process_really_bad_metar():
+    """Test what happens with very bad metar garbage."""
+    metar = "QQQQ 012453Z"
+    now = util.utc(2017, 11, 1)
+    ob = ds3505.process_metar(metar, now)
+    assert ob is None
 
 
 def test_process_metar():

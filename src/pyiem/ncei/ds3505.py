@@ -12,7 +12,7 @@ from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
 from metpy.units import units
 from metpy.calc import relative_humidity_from_dewpoint
-from pyiem.datatypes import speed, distance, pressure
+from pyiem.datatypes import speed, pressure
 from pyiem.meteorology import mcalc_feelslike
 from pyiem.util import logger
 
@@ -1289,10 +1289,7 @@ def process_metar(mstr, now):
         try:
             mtr = Metar(mstr, now.month, now.year)
         except MetarParserError as exp:
-            try:
-                msg = str(exp)
-            except Exception:
-                return None
+            msg = str(exp)
             tokens = ERROR_RE.findall(str(exp))
             orig_mstr = mstr
             if tokens:
@@ -1501,7 +1498,7 @@ def gen_metar(data):
         mtr += "KT "
     # vis
     if data["vsby_m"] is not None:
-        val = distance(data["vsby_m"], "M").value("MI")
+        val = (units("meter") * data["vsby_m"]).to(units("mile")).m
         mtr += "%sSM " % (vsbyfmt(val),)
     # Present Weather Time
     combocode = ""
@@ -1541,7 +1538,7 @@ def gen_metar(data):
         elif height is None:
             continue
         else:
-            hft = distance(height, "M").value("FT") / 100.0
+            hft = (units("meter") * height).to(units("feet")).m / 100.0
             mtr += "%s%03.0f " % (skycode, hft)
     # temperature
     tgroup = None
@@ -1578,18 +1575,18 @@ def gen_metar(data):
         depth = data["extra"][code].get("depth")
         if hours is None or depth is None or hours == 12:
             continue
-        elif depth == 0 and data["extra"][code]["cond_code"] != "2":
+        if depth == 0 and data["extra"][code]["cond_code"] != "2":
             continue
-        elif hours in [3, 6]:
+        if hours in [3, 6]:
             prefix = "6"
         elif hours == 24:
             prefix = "7"
         elif hours == 1:
             prefix = "P"
         else:
-            warnings.warn("Unknown precip hours %s" % (hours,))
+            warnings.warn(f"Unknown precip hours {hours}")
             continue
-        amount = distance(depth, "MM").value("IN")
+        amount = (units("mm") * depth).to(units("inch")).m
         rmk.append("%s%04.0f" % (prefix, amount * 100))
     if data["mslp_hpa"] is not None:
         rmk.append("SLP%03.0f" % (data["mslp_hpa"] * 10 % 1000,))
