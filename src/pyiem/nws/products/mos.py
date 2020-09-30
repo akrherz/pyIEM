@@ -88,7 +88,7 @@ def section_parser(sect):
                 data[times[i + 1]]["T12_2"] = val.replace("/", "").strip()
             elif vname == "T12":
                 pass
-            elif vname == "WDR":
+            elif vname == "WDR" and vals[i].strip() != "":
                 data[times[i + 1]][vname] = int(vals[i].strip()) * 10
             else:
                 data[times[i + 1]][vname] = val.strip()

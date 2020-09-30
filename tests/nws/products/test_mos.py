@@ -9,7 +9,18 @@ from pyiem.util import get_dbconn, utc, get_test_file
 @pytest.fixture
 def cursor():
     """Return a database cursor."""
-    return get_dbconn("mos").cursor()
+    pgconn = get_dbconn("mos")
+    yield pgconn.cursor()
+    pgconn.close()
+
+
+def test_200930_nbx_int(cursor):
+    """Test a problem found with the product."""
+    utcnow = utc(2020, 9, 30, 12)
+    prod = mosparser(get_test_file("MOS/NBXUSA_int.txt"), utcnow=utcnow)
+    assert len(prod.data) == 6
+    inserts = prod.sql(cursor)
+    assert inserts == 84
 
 
 def test_winter_mex(cursor):
