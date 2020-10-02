@@ -116,7 +116,7 @@ def _load_database_status(txn, prod):
             "status not in ('CAN', 'UPG', 'EXP')",
             (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
         )
-        for row in txn:
+        for row in txn.fetchall():
             entry = {
                 "ugc": row[0],
                 "status": row[1],
