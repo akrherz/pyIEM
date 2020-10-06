@@ -1,0 +1,51 @@
+879 
+WHUS76 KPQR 060957
+MWWPQR
+
+URGENT - MARINE WEATHER MESSAGE
+National Weather Service Portland OR
+257 AM PDT Tue Oct 6 2020
+
+PZZ250-061100-
+/O.CAN.KPQR.SC.Y.0147.000000T0000Z-201007T0700Z/
+Coastal waters from Cape Shoalwater WA to Cascade Head OR out
+10 NM-
+257 AM PDT Tue Oct 6 2020
+
+...SMALL CRAFT ADVISORY ON THE INNER NORTH WATERS CANCELLED...
+
+Northerly winds 10 to 15 kt today into this evening. with gusts 15
+to 20 kt. Winds generally not strong enough or gusts frequent
+enough to support a Small Craft Advisory.
+
+$$
+
+PZZ270-275-062300-
+/O.EXT.KPQR.SC.Y.0147.000000T0000Z-201007T0700Z/
+Waters from Cape Shoalwater WA to Cascade Head OR from 10 to
+60 NM-Waters from Cascade Head to Florence OR from 10 to 60 NM-
+257 AM PDT Tue Oct 6 2020
+
+...SMALL CRAFT ADVISORY IN EFFECT UNTIL MIDNIGHT TONIGHT...
+
+* WHAT...North winds 15 to 20 kt, with gusts up to 25 kt. Also,
+  wind choppy seas of 7 to 9 feet.
+
+* WHERE...Waters from Cape Shoalwater WA to Florence OR from 10 
+  to 60 NM.
+
+* WHEN...Until midnight tonight.
+
+* IMPACTS...Conditions could be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+For more information from the National Weather Service visit
+http://weather.gov/portland

@@ -107,14 +107,27 @@ def _associate_vtec_year(prod, txn):
 def _load_database_status(txn, prod):
     """Build a pandas dataframe for what the database knows."""
     rows = []
+    done = []
     for _seg, _ugcs, vtec in prod.suv_iter():
         if vtec.status == "NEW" or vtec.year is None:
             continue
+        key = f"{vtec.office}.{vtec.phenomena}.{vtec.significance}.{vtec.etn}"
+        if key in done:
+            continue
+        done.append(key)
         txn.execute(
-            f"SELECT ugc, status from warnings_{vtec.year} WHERE wfo = %s and "
+            "SELECT ugc, status, updated at time zone 'UTC' as utc_updated, "
+            "expire at time zone 'UTC' as utc_expire "
+            f"from warnings_{vtec.year} WHERE wfo = %s and "
             "phenomena = %s and significance = %s and eventid = %s and "
-            "status not in ('CAN', 'UPG', 'EXP')",
-            (vtec.office, vtec.phenomena, vtec.significance, vtec.etn),
+            "status not in ('CAN', 'UPG', 'EXP') and expire >= %s",
+            (
+                vtec.office,
+                vtec.phenomena,
+                vtec.significance,
+                vtec.etn,
+                prod.valid,
+            ),
         )
         for row in txn.fetchall():
             entry = {
@@ -124,6 +137,8 @@ def _load_database_status(txn, prod):
                 "phenomena": vtec.phenomena,
                 "significance": vtec.significance,
                 "etn": vtec.etn,
+                "updated": row[2],
+                "expire": row[3],
             }
             rows.append(entry)
     return pd.DataFrame(rows)
