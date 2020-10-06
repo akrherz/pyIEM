@@ -132,6 +132,7 @@ NWS_COLORS = {
     "EC.W": "#0000FF",
     "EC.A": "#0000FF",
     "EW.W": "#FF8C00",
+    "FA.Y": "#00FF7F",
     "FW.A": "#FFDEAD",
     "FF.S": "#8B0000",
     "FF.W": "#8B0000",
