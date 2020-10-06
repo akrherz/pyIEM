@@ -1,0 +1,94 @@
+590 
+WHUS76 KPQR 050135
+MWWPQR
+
+URGENT - MARINE WEATHER MESSAGE
+National Weather Service Portland OR
+635 PM PDT Sun Oct 4 2020
+
+PZZ270-275-051445-
+/O.NEW.KPQR.SC.Y.0147.201005T2000Z-201007T1200Z/
+Waters from Cape Shoalwater WA to Cascade Head OR from 10 to
+60 NM-Waters from Cascade Head to Florence OR from 10 to 60 NM-
+635 PM PDT Sun Oct 4 2020
+
+...SMALL CRAFT ADVISORY IN EFFECT FROM 1 PM MONDAY TO 5 AM PDT
+WEDNESDAY...
+
+* WHAT...North winds 15 to 20 kt with gusts up to 25 kt and seas 
+  6 to 9 feet at 14 seconds expected.
+
+* WHERE...Waters from Cape Shoalwater WA to Cascade Head OR from 
+  10 to 60 NM and Waters from Cascade Head to Florence OR from 
+  10 to 60 NM.
+
+* WHEN...From 1 PM Monday to 5 AM PDT Wednesday.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PZZ255-051445-
+/O.NEW.KPQR.SC.Y.0147.201005T2000Z-201006T0700Z/
+Coastal waters from Cascade Head to Florence OR out 10 NM-
+635 PM PDT Sun Oct 4 2020
+
+...SMALL CRAFT ADVISORY IN EFFECT FROM 1 PM MONDAY TO MIDNIGHT
+PDT MONDAY NIGHT...
+
+* WHAT...North winds 15 to 20 kt with gusts up to 25 kt and seas 
+  around 6 feet at 11 seconds expected.
+
+* WHERE...Coastal waters from Cascade Head to Florence OR out 10 
+  NM.
+
+* WHEN...From 1 PM Monday to midnight PDT Monday night.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+PZZ250-051445-
+/O.NEW.KPQR.SC.Y.0147.201005T2000Z-201007T0700Z/
+Coastal waters from Cape Shoalwater WA to Cascade Head OR out
+10 NM-
+635 PM PDT Sun Oct 4 2020
+
+...SMALL CRAFT ADVISORY IN EFFECT FROM 1 PM MONDAY TO MIDNIGHT
+PDT TUESDAY NIGHT...
+
+* WHAT...North winds 10 to 20 kt with gusts up to 25 kt and seas 
+  5 to 8 feet at 14 seconds expected.
+
+* WHERE...Coastal waters from Cape Shoalwater WA to Cascade Head 
+  OR out 10 NM.
+
+* WHEN...From 1 PM Monday to midnight PDT Tuesday night.
+
+* IMPACTS...Conditions will be hazardous to small craft.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Inexperienced mariners, especially those operating smaller
+vessels, should avoid navigating in hazardous conditions.
+
+&&
+
+$$
+
+For more information from the National Weather Service visit
+http://weather.gov/portland

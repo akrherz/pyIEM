@@ -40,6 +40,16 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_201006_invalid_warning(dbcursor):
+    """Test that we don't complain about a dangling CON statement."""
+    prod = vtecparser(get_test_file("MWWPQR/MWWPQR_0.txt"))
+    prod.sql(dbcursor)
+    assert not filter_warnings(prod.warnings)
+    prod = vtecparser(get_test_file("MWWPQR/MWWPQR_1.txt"))
+    prod.sql(dbcursor)
+    assert not filter_warnings(prod.warnings)
+
+
 def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
