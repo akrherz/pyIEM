@@ -291,7 +291,8 @@ class Observation:
         feel = %(feel)s, valid = %(valid)s,
         peak_wind_gust = %(peak_wind_gust)s,
         peak_wind_drct = %(peak_wind_drct)s,
-        peak_wind_time = %(peak_wind_time)s
+        peak_wind_time = %(peak_wind_time)s,
+        updated = now()
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not skip_current:
             txn.execute(sql, self.data)
