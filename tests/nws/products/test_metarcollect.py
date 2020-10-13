@@ -47,6 +47,17 @@ def dbcursor():
     return cursor
 
 
+def test_corrected(dbcursor):
+    """Test that the COR does not get dropped from the raw METAR."""
+    code = (
+        "KSAT 121751Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
+        "T03220194 10328 20228 58011 $="
+    )
+    mtr = metarcollect.METARReport(code, year=2020, month=10)
+    iemob, _ = mtr.to_iemaccess(dbcursor)
+    assert mtr.code == iemob.data["raw"]
+
+
 def test_issue92_6hour(dbcursor):
     """Can we get the 6 hour right."""
     utcnow = utc(2015, 9, 1, 23)
