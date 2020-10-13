@@ -166,15 +166,11 @@ def sanitize(text):
     """
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
-    # daryl does not understand all of what follows as far as encode/decode
     text = (
         text.encode("utf-8", "ignore")
         .replace(b"\xa0", b" ")
         .replace(b"\001", b"")
-    )
-    text = (
-        text.replace(b"\003", b"")
-        .replace(b"COR ", b"")
+        .replace(b"\003", b"")
         .decode("utf-8", errors="ignore")
     )
     text = " ".join(text.strip().split())
@@ -263,11 +259,7 @@ class METARReport(Metar):
 
         # Need to figure out if we have a duplicate ob, if so, check
         # the length of the raw data, if greater, take the temps
-        if iem.data["raw"] is not None and len(iem.data["raw"]) >= len(
-            self.code
-        ):
-            pass
-        else:
+        if iem.data["raw"] is None or len(iem.data["raw"]) < len(self.code):
             if self.temp:
                 val = self.temp.value("F")
                 # Place reasonable bounds on the temperature before saving it!
@@ -278,7 +270,10 @@ class METARReport(Metar):
                 # Place reasonable bounds on the temperature before saving it!
                 if val > -150 and val < 100:
                     iem.data["dwpf"] = round(val, 1)
-            # Daabase only allows len 254
+            # Database only allows len 254
+            iem.data["raw"] = self.code[:254]
+        # Always take a COR
+        if self.code.find(" COR ") > -1:
             iem.data["raw"] = self.code[:254]
 
         wind_logic(iem, self)
