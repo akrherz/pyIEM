@@ -69,7 +69,7 @@ def test_calendar4():
         ets,
         data,
         title="Whiz Bang, Wizzardry",
-        subtitle="This is officially unofficial and hacky.",
+        subtitle="This is officially unofficial and hacky.\nAnd a second line",
     )
 
 
