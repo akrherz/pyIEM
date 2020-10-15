@@ -245,6 +245,9 @@ def calendar_plot(sts, ets, data, **kwargs):
 
     subtitle = kwargs.get("subtitle")
     if subtitle is not None:
-        fitbox(fig, subtitle, 0.1, 0.99, 0.925, 0.945)
+        if subtitle.find("\n") > 0:  # Allow more room
+            fitbox(fig, subtitle, 0.1, 0.99, 0.909, 0.949)
+        else:
+            fitbox(fig, subtitle, 0.1, 0.99, 0.925, 0.945)
 
     return fig
