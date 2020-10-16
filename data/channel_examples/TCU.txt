@@ -1,0 +1,33 @@
+151 
+WTNT61 KNHC 100156
+TCUAT1
+ 
+Hurricane Delta Tropical Cyclone Update
+NWS National Hurricane Center Miami FL       AL262020
+900 PM CDT Fri Oct 09 2020
+
+...9 PM CDT POSITION AND INTENSITY UPDATE...
+...STRONG WINDS CONTINUE TO SPREAD INLAND ACROSS LOUISIANA...
+
+Strong winds from Delta continue to spread inland across Louisiana. 
+Opelousas St. Landry Parish Airport recently reported a sustained 
+wind of 39 mph (63 km/h) and a gust to 64 mph (104 km/h).
+
+This will be the final hourly Tropical Cyclone Update issued to 
+update Delta's position and intensity.  The next full advisory will 
+be issued at 10 PM CDT (0300 UTC).
+
+ 
+SUMMARY OF 900 PM CDT...0200 UTC...INFORMATION
+----------------------------------------------
+LOCATION...30.4N 92.7W
+ABOUT 10 MI...20 KM N OF JENNINGS LOUISIANA
+ABOUT 35 MI...60 KM ENE OF LAKE CHARLES LOUISIANA
+MAXIMUM SUSTAINED WINDS...80 MPH...130 KM/H
+PRESENT MOVEMENT...NNE OR 25 DEGREES AT 15 MPH...24 KM/H
+MINIMUM CENTRAL PRESSURE...971 MB...28.67 INCHES
+ 
+$$
+Forecaster Berg
+
+

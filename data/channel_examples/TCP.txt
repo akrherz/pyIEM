@@ -1,0 +1,69 @@
+918 
+WTNT31 KWNH 120245
+TCPAT1
+ 
+BULLETIN
+Post-Tropical Cyclone Delta Advisory Number  30
+NWS Weather Prediction Center College Park MD   AL262020
+1100 PM EDT Sun Oct 11 2020
+ 
+...POST-TROPICAL REMNANTS OF DELTA CONTINUE WEAKEN, AS THE HEAVY
+RAINFALL THREAT DIMINISHES LATE SUNDAY NIGHT...
+ 
+ 
+SUMMARY OF 1100 PM EDT...0300 UTC...INFORMATION
+-----------------------------------------------
+LOCATION...34.5N 84.1W
+ABOUT 90 MI...145 KM S OF KNOXVILLE TENNESSEE
+ABOUT 60 MI...95 KM NNE OF ATLANTA GEORGIA
+MAXIMUM SUSTAINED WINDS...15 MPH...30 KM/H
+PRESENT MOVEMENT...E OR 90 DEGREES AT 15 MPH...24 KM/H
+MINIMUM CENTRAL PRESSURE...1008 MB...29.77 INCHES
+ 
+ 
+WATCHES AND WARNINGS
+--------------------
+Flood and Flash Flood Watches in and near the southern Appalachians 
+will expire by midnight EDT Sunday night.
+ 
+ 
+DISCUSSION AND OUTLOOK
+----------------------
+At 1100 PM EDT (0300 UTC), the center of Post-Tropical Cyclone Delta
+was located near latitude 34.5 North, longitude 84.1 West. The
+post-tropical cyclone is moving toward the east near 15 mph, and 
+this motion is expected to continue tonight and Monday morning. 
+ 
+Maximum sustained winds are near 15 mph (30 km/h) with higher gusts.
+Some further weakening is possible tonight as a new surface low 
+develops in the Carolinas, and Delta's surface low is expected to 
+be absorbed by this new low pressure area on Monday.
+ 
+The estimated minimum central pressure is 1008 mb (29.77 inches).
+ 
+ 
+HAZARDS AFFECTING LAND
+----------------------
+RAINFALL: Across the Mid-Atlantic, 1 to 3 inches of rain, with
+locally higher amounts, are expected. Localized flash and urban
+flooding are possible, but overall hydrologic impacts are expected
+to be minimal.
+ 
+Moderate to major river flooring will continue across the Calcasieu
+and Mermentau river basins in Louisiana through much of next week
+ 
+ 
+NEXT ADVISORY
+-------------
+This is the last public advisory issued by the Weather Prediction
+Center on this system.
+ 
+$$
+Forecaster Hurley
+ 
+FORECAST POSITIONS AND MAX WINDS
+ 
+INIT  12/0300Z 34.5N  84.1W   15 KT  15 MPH...POST-TROPICAL
+ 12H  12/1200Z 34.6N  81.8W   15 KT  15 MPH...DISSIPATED
+  
+

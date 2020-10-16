@@ -1,0 +1,38 @@
+704 
+WTNT41 KNHC 101441
+TCDAT1
+ 
+Tropical Depression Delta Discussion Number  24
+NWS National Hurricane Center Miami FL       AL262020
+1000 AM CDT Sat Oct 10 2020
+
+Surface observations, Doppler radar data, and satellite imagery 
+indicate that Delta has continued to weaken as it moves from 
+northeastern Louisiana into western Mississippi.  There are no 
+recent surface observations of sustained tropical-storm-force 
+winds in the areas where the radar data show the strongest winds 
+are occurring, so based on this the initial intensity is reduced to 
+30 kt.  It should be noted that wind gusts to tropical-storm force 
+are still occurring over portions of northern Mississippi and 
+southeastern Arkansas, and these should continue through this 
+afternoon.
+
+The initial motion is now northeastward or 035/14.  The flow 
+between a mid-to upper-level ridge over the Gulf of Mexico and the 
+mid-latitude westerlies over the United States should steer Delta 
+or its remnants generally northeastward until the system 
+dissipates.  The new forecast track has only minor adjustments from 
+the previous forecast, and it lies near the consensus models.
+
+Continued weakening is expected, and Delta is forecast to 
+degenerate to a remnant low pressure area in about 24 h.  The 
+global models are in good agreement that the cyclone should weaken 
+to a trough between 48-60 h, and the intensity forecast follows 
+this scenario.
+
+This is the last advisory on Delta issued by the National Hurricane 
+Center.  Future information on this system can be found in Public
+Advisories issued by the Weather Prediction Center beginning at     
+4 PM CDT, under AWIPS header TCPAT1, WMO header WTNT31 KWNH, and on 
+the web at http://www.wpc.ncep.noaa.gov. 
+ 
