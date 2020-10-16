@@ -455,8 +455,8 @@ class TextProductSegment:
         return headlines
 
     def get_affected_wfos(self):
-        """ Based on the ugc_provider, figure out which WFOs are impacted by
-        this product segment """
+        """Based on the ugc_provider, figure out which WFOs are impacted by
+        this product segment"""
         affected_wfos = []
         for _ugc in self.ugcs:
             for wfo in _ugc.wfos:
@@ -557,7 +557,10 @@ class TextProduct:
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos, f"{self.afos[:3]}..."]
+        res = [self.afos, f"{self.afos[:3]}..."]
+        if self.afos[:3] in ["TCU", "TCD", "TCM", "TCP", "TWO"]:
+            res.append(self.afos[:5])
+        return res
 
     def get_nicedate(self):
         """Nicely format the issuance time of this product"""
@@ -624,8 +627,7 @@ class TextProduct:
         return res
 
     def get_signature(self):
-        """ Find the signature at the bottom of the page
-        """
+        """Find the signature at the bottom of the page"""
         return " ".join(
             self.segments[-1].unixtext.replace("\n", " ").strip().split()
         )
@@ -647,7 +649,7 @@ class TextProduct:
         return pid.strip()
 
     def _parse_valid(self, provided_utcnow):
-        """ Figure out the timestamp of this product.
+        """Figure out the timestamp of this product.
 
         Args:
           provided_utcnow (datetime): What our library was provided for the UTC
@@ -728,8 +730,8 @@ class TextProduct:
             self.wmo += "00"
 
     def get_affected_wfos(self):
-        """ Based on the ugc_provider, figure out which WFOs are impacted by
-        this product """
+        """Based on the ugc_provider, figure out which WFOs are impacted by
+        this product"""
         affected_wfos = []
         for segment in self.segments:
             for ugcs in segment.ugcs:
