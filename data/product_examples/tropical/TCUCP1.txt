@@ -1,0 +1,27 @@
+
+380 
+WTPA61 PHFO 082014
+TCUCP1
+ 
+Hurricane Hector Tropical Cyclone Update
+NWS Central Pacific Hurricane Center Honolulu HI   EP102018
+1000 AM HST Wed Aug 08 2018
+
+...HECTOR MAINTAINS WEST MOVEMENT TO THE SOUTH OF THE BIG ISLAND...
+ 
+The eye of Hurricane Hector is being tracked by the South Hawaii
+WSR-88D radar as the tropical cyclone moves westward to the south
+of the Big Island.
+ 
+SUMMARY OF 1000 AM HST...2000 UTC...INFORMATION
+----------------------------------------------
+LOCATION...16.5N 155.0W
+ABOUT 220 MI...355 KM S OF HILO HAWAII
+ABOUT 380 MI...610 KM SSE OF HONOLULU HAWAII
+MAXIMUM SUSTAINED WINDS...115 MPH...185 KM/H
+PRESENT MOVEMENT...W OR 275 DEGREES AT 16 MPH...26 KM/H
+MINIMUM CENTRAL PRESSURE...959 MB...28.32 INCHES
+ 
+$$
+Forecaster Kodama
+

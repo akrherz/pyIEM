@@ -13,6 +13,13 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_tropical_channels():
+    """Test the channels we have some products go into."""
+    prod = productparser(get_test_file("tropical/TCUCP1.txt"))
+    j = prod.get_jabbers("")
+    assert "TCUCP" in j[0][2]["channels"].split(",")
+
+
 def test_first_flapping():
     """Test for product crossing month backwards, prevent flapping test."""
     # Scenario is utcnow is the first and the WMO header is > 25th
