@@ -1,43 +1,86 @@
 """tests"""
 import datetime
-from datetime import timezone
 import os
 
+import requests
 from pyiem import mrms
 from pyiem.util import utc
 
 PRODUCT = "PrecipRate"
+CENTERS = ["mtarchive", "", "bldr", "cprk"]
 
 
-def test_fetch_failback():
+def test_nofailback(requests_mock):
+    """Test that code bails on old date."""
+    valid = utc() - datetime.timedelta(days=20)
+    requests_mock.get(
+        mrms.get_url("mtarchive", valid, PRODUCT), status_code=404
+    )
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is None
+
+
+def test_failback(requests_mock):
+    """Test that we can do option 3."""
+    valid = utc() + datetime.timedelta(hours=1)
+    requests_mock.get(
+        mrms.get_url("mtarchive", valid, PRODUCT), status_code=404
+    )
+    for center in CENTERS[1:]:
+        requests_mock.get(
+            mrms.get_url(center, valid, PRODUCT), content=b"\x1f\x8bHello"
+        )
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is not None
+    os.unlink(fn)
+
+
+def test_exception(requests_mock):
+    """Test what happens when we raise an exception."""
+    valid = utc() + datetime.timedelta(hours=1)
+    for center in CENTERS:
+        requests_mock.get(
+            mrms.get_url(center, valid, PRODUCT),
+            exc=requests.exceptions.ConnectTimeout,
+        )
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is None
+
+
+def test_existing_file():
+    """Test that we return once we already have the file on disk."""
+    valid = utc()
+    fn = "%s_00.00_%s00.grib2.gz" % (PRODUCT, valid.strftime("%Y%m%d-%H%M"))
+    with open(f"/tmp/{fn}", "w") as fh:
+        fh.write("Hello")
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is not None
+    os.unlink(fn)
+
+
+def test_fetch_failback(requests_mock):
     """Can we get files that we don't have."""
     # A file from the future suffices
     valid = utc() + datetime.timedelta(hours=1)
+    for center in CENTERS:
+        requests_mock.get(
+            mrms.get_url(center, valid, PRODUCT), status_code=404
+        )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is None
 
 
-def test_fetch_ancient():
-    """Can we get files that we don't have."""
-    # A file from the future suffices
-    valid = utc() - datetime.timedelta(days=10)
-    valid = valid.replace(minute=1)  # should not exist
-    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    assert fn is None
-
-
-def test_fetch():
+def test_fetch(requests_mock):
     """Can we fetch MRMS files?  Yes we can!"""
-    valid = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
-    valid -= datetime.timedelta(minutes=(valid.minute % 2))
+    valid = utc()
+    requests_mock.get(
+        mrms.get_url("mtarchive", valid, PRODUCT), content=b"\x1f\x8bHello"
+    )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    if os.path.isfile(fn):
-        os.unlink(fn)
-    valid = valid.replace(tzinfo=timezone.utc) - datetime.timedelta(minutes=2)
-    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    if os.path.isfile(fn):
-        os.unlink(fn)
-    # we don't actually test anything as the above may not be deterministic
+    assert fn is not None
+    with open(fn, "rb") as fh:
+        assert fh.read() == b"\x1f\x8bHello"
+    os.unlink(fn)
 
 
 def test_colorramp():

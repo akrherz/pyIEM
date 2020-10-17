@@ -23,6 +23,24 @@ def is_gzipped(text):
     return text[:2] == b"\x1f\x8b"
 
 
+def get_url(center, valid, product):
+    """Return the URL given the provided options."""
+    fn = "%s_00.00_%s00.grib2.gz" % (product, valid.strftime("%Y%m%d-%H%M"))
+    if center == "mtarchive":
+        uri = ("https://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
+            valid.strftime("%Y/%m/%d"),
+            product,
+            fn,
+        )
+    else:
+        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s") % (
+            center,
+            product,
+            fn,
+        )
+    return uri
+
+
 def fetch(product, valid, tmpdir="/mesonet/tmp"):
     """Get a desired MRMS product
 
@@ -42,13 +60,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
     if os.path.isfile(tmpfn):
         return tmpfn
     # Option 2, go fetch it from mtarchive
-    uri = ("https://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
-        valid.strftime("%Y/%m/%d"),
-        product,
-        fn,
-    )
     try:
-        req = requests.get(uri, timeout=30)
+        req = requests.get(get_url("mtarchive", valid, product), timeout=30)
     except Exception:
         req = None
     if req and req.status_code == 200 and is_gzipped(req.content):
@@ -64,13 +77,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
         return None
     # Loop over all IDP data centers
     for center in ["", "-bldr", "-cprk"]:
-        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s") % (
-            center,
-            product,
-            fn,
-        )
         try:
-            req = requests.get(uri, timeout=30)
+            req = requests.get(get_url(center, valid, product), timeout=30)
         except Exception:
             req = None
         if req and req.status_code == 200 and is_gzipped(req.content):

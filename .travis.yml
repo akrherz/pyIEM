@@ -48,7 +48,7 @@ before_install:
 
 install:
   - . .ci_tooling/miniconda.sh
-  - pip install codecov
+  - pip install codecov requests-mock
   - python -m pip install . --upgrade
 
 before_script:

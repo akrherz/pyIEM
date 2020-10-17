@@ -21,10 +21,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install gdal-bin libproj-dev proj-bin libgeos-dev libgdal-dev libpq-dev
 
-    - name: Set up Python 3.x
+    - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: '3.x' # Semantic version range syntax or exact version of a Python version
+        python-version: '3.8' # 3.9 causing build issues at the moment
         architecture: 'x64' # Optional - x64 or x86, defaults to x64
 
     - name: Display Python version
