@@ -1,43 +1,37 @@
 """tests"""
 import datetime
-from datetime import timezone
 import os
 
 from pyiem import mrms
 from pyiem.util import utc
 
 PRODUCT = "PrecipRate"
+CENTERS = ["mtarchive", "bldr", "cprk"]
 
 
-def test_fetch_failback():
+def test_fetch_failback(requests_mock):
     """Can we get files that we don't have."""
     # A file from the future suffices
     valid = utc() + datetime.timedelta(hours=1)
+    for center in CENTERS:
+        requests_mock.get(
+            mrms.get_url(center, valid, PRODUCT), status_code=404
+        )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is None
 
 
-def test_fetch_ancient():
-    """Can we get files that we don't have."""
-    # A file from the future suffices
-    valid = utc() - datetime.timedelta(days=10)
-    valid = valid.replace(minute=1)  # should not exist
-    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    assert fn is None
-
-
-def test_fetch():
+def test_fetch(requests_mock):
     """Can we fetch MRMS files?  Yes we can!"""
-    valid = datetime.datetime.utcnow() - datetime.timedelta(minutes=10)
-    valid -= datetime.timedelta(minutes=(valid.minute % 2))
+    valid = utc()
+    requests_mock.get(
+        mrms.get_url("mtarchive", valid, PRODUCT), content=b"\x1f\x8bHello"
+    )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    if os.path.isfile(fn):
-        os.unlink(fn)
-    valid = valid.replace(tzinfo=timezone.utc) - datetime.timedelta(minutes=2)
-    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
-    if os.path.isfile(fn):
-        os.unlink(fn)
-    # we don't actually test anything as the above may not be deterministic
+    assert fn is not None
+    with open(fn, "rb") as fh:
+        assert fh.read() == b"\x1f\x8bHello"
+    os.unlink(fn)
 
 
 def test_colorramp():
