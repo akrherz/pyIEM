@@ -10,6 +10,16 @@ PRODUCT = "PrecipRate"
 CENTERS = ["mtarchive", "", "bldr", "cprk"]
 
 
+def test_nofailback(requests_mock):
+    """Test that code bails on old date."""
+    valid = utc() - datetime.timedelta(days=20)
+    requests_mock.get(
+        mrms.get_url("mtarchive", valid, PRODUCT), status_code=404
+    )
+    fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
+    assert fn is None
+
+
 def test_failback(requests_mock):
     """Test that we can do option 3."""
     valid = utc() + datetime.timedelta(hours=1)
