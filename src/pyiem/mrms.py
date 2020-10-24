@@ -188,13 +188,10 @@ def reader(fn):
     struct.unpack(
         "%sc" % (num_radars * 4,), fp.read(num_radars * 4)
     )  # rad_list
-    # print unit, var_scale, miss_val
     sz = nx * ny * nz
     data = struct.unpack("%sh" % (sz,), fp.read(sz * 2))
     data = np.reshape(np.array(data), (ny, nx)) / float(var_scale)
     # ma.masked_equal(data, miss_val)
-    # print nx, ny, nz, levels, rad_list, len(data), data[1000], var_scale
-    # print miss_val, np.shape(data)
 
     fp.close()
     return metadata, data

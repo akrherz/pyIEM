@@ -263,7 +263,7 @@ IEM Tracker Action:  This trouble ticket has been marked
 
 
 def loadqc(cursor=None, date=None):
-    """ Load the current IEM Tracker QC'd variables
+    """Load the current IEM Tracker QC'd variables
 
     Args:
       cursor (cursor,optional): Optionally provided database cursor

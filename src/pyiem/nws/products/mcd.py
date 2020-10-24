@@ -9,7 +9,7 @@ from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
 from pyiem.reference import TWEET_CHARS
-from pyiem.util import html_escape
+from pyiem.util import html_escape, LOG
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
@@ -227,9 +227,11 @@ class MCDProduct(TextProduct):
         sql = f"DELETE from {table} where product_id = %s and num = %s"
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
-            print(
-                ("mcd.database_save %s %s removed %s entries")
-                % (self.get_product_id(), self.discussion_num, txn.rowcount)
+            LOG.info(
+                "mcd.database_save %s %s removed %s entries",
+                self.get_product_id(),
+                self.discussion_num,
+                txn.rowcount,
             )
         giswkt = "SRID=4326;%s" % (self.geometry.wkt,)
         sql = (

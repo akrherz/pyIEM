@@ -4,6 +4,7 @@ from datetime import timedelta
 import itertools
 
 import pandas as pd
+from pyiem.util import LOG
 
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
@@ -77,10 +78,13 @@ def which_year(txn, prod, segment, vtec):
         if row["min"] is not None:
             year = row["min"].year
             if row["max"].year != year:
-                print(
+                LOG.info(
                     "VTEC Product appears to cross 1 Jan UTC "
-                    f"minyear: {year} maxyear: {row['max'].year} "
-                    f"VTEC: {str(vtec)} productid: {prod.get_product_id()}"
+                    "minyear: %s maxyear: %s VTEC: %s productid: %s",
+                    year,
+                    row["max"].year,
+                    str(vtec),
+                    prod.get_product_id(),
                 )
             return int(row["tablename"].replace("warnings_", ""))
 
@@ -286,7 +290,7 @@ def _resent_match(prod, txn, warning_table, vtec):
     )
     maxtime = txn.fetchone()["maxtime"]
     if maxtime is not None and maxtime == prod.valid:
-        print(f"RESENT Match, skipping SQL for {prod.get_product_id()}!")
+        LOG.info("RESENT Match, skipping SQL for %s!", prod.get_product_id())
         return True
     return False
 

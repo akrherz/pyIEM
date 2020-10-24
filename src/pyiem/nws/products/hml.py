@@ -9,6 +9,7 @@ import xml.etree.cElementTree as ET
 
 import pandas as pd
 import pyiem.nws.product as product
+from pyiem.util import LOG
 
 DELIMITER = r"""\<\?xml version="1.0" standalone="yes"\?\>"""
 
@@ -171,7 +172,7 @@ class HML(product.TextProduct):
                     "%s) RETURNING id",
                     (key,),
                 )
-                print("Created key %s for %s" % (cursor.fetchone()[0], key))
+                LOG.info("Created key %s for %s", cursor.fetchone()[0], key)
 
     def do_sql_forecast(self, cursor, _hml):
         """Process the forecast portion of the dataset"""

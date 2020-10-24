@@ -13,7 +13,7 @@ from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
 from pyiem.reference import TRACE_VALUE, TWEET_CHARS
 from pyiem import datatypes
-from pyiem.util import drct2text
+from pyiem.util import drct2text, LOG
 
 NIL_RE = re.compile(r"[\s\n]NIL")
 ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
@@ -104,9 +104,10 @@ def to_metar(textprod, text):
             if tokens:
                 if tokens[0] == text or text.startswith(tokens[0]):
                     if not SA_RE.match(text):
-                        print(
-                            ("%s Aborting due to non-replace %s")
-                            % (textprod.get_product_id(), str(inst))
+                        LOG.info(
+                            "%s Aborting due to non-replace %s",
+                            textprod.get_product_id(),
+                            str(inst),
                         )
                     return
                 # So tokens contains a series of groups that needs updated
@@ -116,7 +117,7 @@ def to_metar(textprod, text):
                 if newtext != text:
                     text = newtext
                 else:
-                    print("unparsed groups regex fail: %s" % (inst,))
+                    LOG.info("unparsed groups regex fail: %s", inst)
             if str(inst).find("day is out of range for month") > -1:
                 if valid.day < 10:
                     valid = valid.replace(day=1) - timedelta(days=1)
@@ -125,10 +126,10 @@ def to_metar(textprod, text):
     if mtr is not None:
         # Attempt to figure out more things
         if mtr.station_id is None:
-            print("Aborting due to station_id being None |%s|" % (text,))
+            LOG.info("Aborting due to station_id being None |%s|", text)
             return None
         if mtr.time is None:
-            print("Aborting due to time being None |%s|" % (text,))
+            LOG.info("Aborting due to time being None |%s|", text)
             return None
         # don't allow data more than an hour into the future
         ceiling = (textprod.utcnow + timedelta(hours=1)).replace(tzinfo=None)
@@ -140,12 +141,11 @@ def to_metar(textprod, text):
                     year=prevmonth.year, month=prevmonth.month
                 )
             else:
-                print(
-                    (
-                        "Aborting due to time in the future "
-                        "ceiling: %s mtr.time: %s"
-                    )
-                    % (ceiling, mtr.time)
+                LOG.info(
+                    "Aborting due to time in the future "
+                    "ceiling: %s mtr.time: %s",
+                    ceiling,
+                    mtr.time,
                 )
                 return None
         mtr.code = original_text
@@ -162,8 +162,7 @@ def to_metar(textprod, text):
 
 
 def sanitize(text):
-    """Clean our text string with METAR data
-    """
+    """Clean our text string with METAR data"""
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
     text = (
@@ -313,9 +312,12 @@ class METARReport(Metar):
             alti = self.press.value("MB")
             mslp = self.press_sea_level.value("MB")
             if abs(alti - mslp) > 25:
-                print(
-                    ("PRESSURE ERROR %s %s ALTI: %s MSLP: %s")
-                    % (iem.data["station"], iem.data["valid"], alti, mslp)
+                LOG.info(
+                    "PRESSURE ERROR %s %s ALTI: %s MSLP: %s",
+                    iem.data["station"],
+                    iem.data["valid"],
+                    alti,
+                    mslp,
                 )
                 if alti > mslp:
                     iem.data["mslp"] += 100.0
@@ -394,9 +396,8 @@ class METARCollective(TextProduct):
                 row = self.nwsli_provider.get(mtr.iemid, dict())
                 wfo = row.get("wfo")
                 if wfo is None or wfo == "":
-                    print(
-                        ("Unknown WFO for id: %s, skipping alert")
-                        % (mtr.iemid,)
+                    LOG.info(
+                        "Unknown WFO for id: %s, skipping alert", mtr.iemid
                     )
                     continue
                 channels = ["METAR.%s" % (mtr.station_id,)]

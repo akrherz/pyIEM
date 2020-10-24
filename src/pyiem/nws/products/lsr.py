@@ -131,7 +131,7 @@ def _mylowercase(text):
 
 
 def parse_lsr(prod, text):
-    """ Emit a LSR object based on this text!
+    """Emit a LSR object based on this text!
     0914 PM     HAIL             SHAW                    33.60N 90.77W
     04/29/2005  1.00 INCH        BOLIVAR            MS   EMERGENCY MNGR
     """
@@ -202,7 +202,7 @@ def parse_lsr(prod, text):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function that actually converts the raw text and emits an
+    """Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception"""
     prod = LSRProduct(
         text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider

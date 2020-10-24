@@ -74,7 +74,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_OVERLAY2,
     Z_FRAME,
 )
-from pyiem.util import ssw, logger
+from pyiem.util import ssw, LOG
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
 import pyiem.meteorology as meteorology
@@ -83,7 +83,6 @@ import pyiem.meteorology as meteorology
 cartopy.config["pre_existing_data_dir"] = "/opt/miniconda3/cartopy_data/"
 # Set a saner default for apache et al
 cartopy.config["data_dir"] = "/tmp/"
-LOG = logger()
 
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
@@ -995,7 +994,7 @@ class MapPlot:
         mask_outside_polygon(points[:, :2], ax=self.ax)
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
-        """ Contourf
+        """Contourf
 
         Args:
           ilabel (boolean,optional): Should we label contours
@@ -1288,7 +1287,7 @@ class MapPlot:
         )
 
     def drawcounties(self, color="k"):
-        """ Draw counties onto the map
+        """Draw counties onto the map
 
         Args:
           color (color,optional): line color to use

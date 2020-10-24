@@ -20,7 +20,7 @@ import math
 from pydantic import BaseModel
 import pyiem.nws.product as product
 from pyiem.datatypes import distance
-from pyiem.util import html_escape
+from pyiem.util import html_escape, LOG
 
 OV_LATLON = re.compile(
     (
@@ -109,8 +109,8 @@ class Pirep(product.TextProduct):
         self.parse_reports()
 
     def parse_reports(self):
-        """ Actually do the parsing of the product that generates the reports
-        stored within the self.reports list """
+        """Actually do the parsing of the product that generates the reports
+        stored within the self.reports list"""
         txt = (
             self.unixtext
             if self.unixtext[:2] != "\001\n"
@@ -138,7 +138,7 @@ class Pirep(product.TextProduct):
             # First token is always priority
             if i == 0:
                 if len(token) > 10:
-                    print("Aborting as not-PIREP? |%s|" % (report,))
+                    LOG.info("Aborting as not-PIREP? |%s|", report)
                     return
                 if token.find(" UUA") > 0:
                     _pr.priority = Priority.UUA

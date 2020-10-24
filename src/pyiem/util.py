@@ -23,6 +23,9 @@ from six import string_types
 # circular references.
 
 SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+# Setup a default logging instance for this module
+LOG = logging.getLogger("pyiem")
+LOG.addHandler(logging.NullHandler())
 
 
 class CustomFormatter(logging.Formatter):
@@ -58,7 +61,7 @@ def get_test_file(name, fponly=False):
 
 
 def logger(name="pyiem", level=None):
-    """Create a standarized logger.
+    """Get pyiem's logger with a stream handler attached.
 
     Args:
       name (str): The name of the logger to get, default pyiem
@@ -70,8 +73,8 @@ def logger(name="pyiem", level=None):
     """
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
-    logging.basicConfig(handlers=[ch])
     log = logging.getLogger(name)
+    log.addHandler(ch)
     if level is None and sys.stdout.isatty():
         level = logging.DEBUG
     log.setLevel(level if level is not None else logging.INFO)
@@ -413,7 +416,7 @@ def get_autoplot_context(fdict, cfg):
 
 
 def exponential_backoff(func, *args, **kwargs):
-    """ Exponentially backoff some function until it stops erroring
+    """Exponentially backoff some function until it stops erroring
 
     Args:
       _ebfactor (int,optional): Optional scale factor, allowing for faster test

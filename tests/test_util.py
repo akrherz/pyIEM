@@ -4,7 +4,6 @@ import datetime
 from datetime import timezone
 import string
 import random
-import logging
 import tempfile
 from io import BytesIO
 from collections import OrderedDict
@@ -51,12 +50,6 @@ def test_get_dbconn_bad_argument():
             util.get_dbconn("mesosite", daryl="daryl")
 
 
-@pytest.fixture()
-def logger():
-    """Get a logger"""
-    return util.logger()
-
-
 def test_escape():
     """Does escaping work?"""
     res = util.html_escape("Hello THERE!</p>")
@@ -80,30 +73,16 @@ def test_ncopen():
         util.ncopen("/tmp/bogus.nc")
 
 
-def test_logger(logger, caplog):
+def test_logger(caplog):
     """Can we emit logs."""
-    logger.warning("hi daryl")
+    util.LOG.warning("hi daryl")
     assert "hi daryl" in caplog.text
 
 
-def test_logger_no(logger, caplog):
+def test_logger_no(caplog):
     """Can we not emit logs."""
-    logger.debug("hi daryl")
+    util.LOG.debug("hi daryl")
     assert "hi daryl" not in caplog.text
-
-
-def test_logger_set_level(caplog):
-    """Can we not emit logs when we set a high level."""
-    log = util.logger(level=logging.WARNING)
-    log.info("hi daryl")
-    assert "hi daryl" not in caplog.text
-
-
-def test_logger_set_level_get_out(caplog):
-    """Can we emit logs when we set a high level."""
-    log = util.logger(level=logging.DEBUG)
-    log.debug("hi daryl")
-    assert "hi daryl" in caplog.text
 
 
 def test_find_ij():

@@ -30,8 +30,7 @@ def daily_offset(ts):
 
 
 def find_ij(lon, lat):
-    """ Compute which grid cell this lon, lat resides within
-    """
+    """Compute which grid cell this lon, lat resides within"""
     if lon < WEST or lon >= EAST or lat < SOUTH or lat >= NORTH:
         return None, None
 

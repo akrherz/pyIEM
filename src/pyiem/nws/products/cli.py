@@ -5,6 +5,7 @@ import datetime
 
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.product import TextProduct
+from pyiem.util import LOG
 
 HEADLINE_RE = re.compile(
     (
@@ -101,7 +102,7 @@ def get_number(text):
             else:
                 retval = int(number[0])
         else:
-            print("get_number() failed for |%s|" % (text,))
+            LOG.info("get_number() failed for |%s|", text)
             retval = None
     return retval
 
@@ -118,7 +119,7 @@ def convert_key(text):
         return "month"
     if text.startswith("SINCE "):
         return text.replace("SINCE ", "").replace(" ", "").lower()
-    print("convert_key() failed for |%s|" % (text,))
+    LOG.info("convert_key() failed for |%s|", text)
     return "fail"
 
 
@@ -142,8 +143,7 @@ def make_tokens(regime, line):
 
 
 def parse_snowfall(regime, lines, data):
-    """ Parse the snowfall data
-    """
+    """Parse the snowfall data"""
     for linenum, line in enumerate(lines):
         # skipme
         if len(line.strip()) < 14:
@@ -213,8 +213,7 @@ def no99(val):
 
 
 def parse_temperature(regime, lines, data):
-    """ Here we parse a temperature section
-    """
+    """Here we parse a temperature section"""
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 18:
             continue
@@ -285,9 +284,8 @@ class CLIProduct(TextProduct):
         # Sometimes, we get products that are not really in CLI format but
         # are RER (record event reports) with a CLI AWIPS ID
         if self.wmo[:2] != "CD":
-            print(
-                ("Product %s skipped due to wrong header")
-                % (self.get_product_id(),)
+            LOG.info(
+                "Product %s skipped due to wrong header", self.get_product_id()
             )
             return
         for section in self.find_sections():

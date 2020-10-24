@@ -2,6 +2,7 @@
 import re
 from datetime import timezone, datetime
 
+from pyiem.util import LOG
 from pyiem.nws.nwsli import NWSLI
 
 #         nwsli        sev         cause
@@ -62,7 +63,7 @@ def contime(s):
         ts = datetime.strptime(s, "%y%m%dT%H%MZ")
         return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
-        print(err)
+        LOG.exception(err)
         return None
 
 
