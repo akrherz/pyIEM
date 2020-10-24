@@ -162,8 +162,7 @@ def to_metar(textprod, text):
 
 
 def sanitize(text):
-    """Clean our text string with METAR data
-    """
+    """Clean our text string with METAR data"""
     text = re.sub("\015", " ", text)
     # Remove any multiple whitespace, bad chars
     text = (

@@ -112,7 +112,7 @@ class VTECProduct(TextProduct):
         self.warnings.append(f"Product failed to cover all UGC\n{df}")
 
     def do_sql_vtec(self, txn, segment, vtec):
-        """ Persist the non-SBW stuff to the database
+        """Persist the non-SBW stuff to the database
 
         Arguments:
         txn -- A pyscopg2 transaction
@@ -688,7 +688,7 @@ class VTECProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function that actually converts the raw text and emits an
+    """Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception"""
     prod = VTECProduct(
         text,

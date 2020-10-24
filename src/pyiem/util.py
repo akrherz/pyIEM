@@ -416,7 +416,7 @@ def get_autoplot_context(fdict, cfg):
 
 
 def exponential_backoff(func, *args, **kwargs):
-    """ Exponentially backoff some function until it stops erroring
+    """Exponentially backoff some function until it stops erroring
 
     Args:
       _ebfactor (int,optional): Optional scale factor, allowing for faster test

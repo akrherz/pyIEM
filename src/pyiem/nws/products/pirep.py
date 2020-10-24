@@ -109,8 +109,8 @@ class Pirep(product.TextProduct):
         self.parse_reports()
 
     def parse_reports(self):
-        """ Actually do the parsing of the product that generates the reports
-        stored within the self.reports list """
+        """Actually do the parsing of the product that generates the reports
+        stored within the self.reports list"""
         txt = (
             self.unixtext
             if self.unixtext[:2] != "\001\n"

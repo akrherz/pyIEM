@@ -43,7 +43,7 @@ def ugcs_to_text(ugcs):
 
 
 def str2time(text, valid):
-    """ Convert a string that is the UGC product expiration to a valid
+    """Convert a string that is the UGC product expiration to a valid
     datetime
     @param text string to convert
     @param valid datetime instance
@@ -62,7 +62,7 @@ def str2time(text, valid):
 
 
 def parse(text, valid, ugc_provider=None):
-    """ Helper method that parses text and yields UGC and expiration time
+    """Helper method that parses text and yields UGC and expiration time
     @param text to parse
     @param valid is the issue time of the product this text was found in
     @param ugc_provider of UGC objects

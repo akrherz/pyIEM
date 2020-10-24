@@ -143,8 +143,7 @@ def make_tokens(regime, line):
 
 
 def parse_snowfall(regime, lines, data):
-    """ Parse the snowfall data
-    """
+    """Parse the snowfall data"""
     for linenum, line in enumerate(lines):
         # skipme
         if len(line.strip()) < 14:
@@ -214,8 +213,7 @@ def no99(val):
 
 
 def parse_temperature(regime, lines, data):
-    """ Here we parse a temperature section
-    """
+    """Here we parse a temperature section"""
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 18:
             continue
