@@ -10,7 +10,6 @@ import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 from pyiem import reference
-from pyiem.util import LOG
 from pyiem.plot.colormaps import stretch_cmap
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
