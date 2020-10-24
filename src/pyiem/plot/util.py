@@ -10,6 +10,7 @@ import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 from pyiem import reference
+from pyiem.util import LOG
 from pyiem.plot.colormaps import stretch_cmap
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
@@ -64,7 +65,6 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     px1 = x1 * fig.dpi * figbox.width + 0.15
     py0 = y0 * fig.dpi * figbox.height - 0.15
     py1 = y1 * fig.dpi * figbox.height + 0.15
-    # print("px0: %s px1: %s py0: %s py1: %s" % (px0, px1, py0, py1))
     xanchor = x0
     if kwargs.get("ha", "") == "center":
         xanchor = x0 + (x1 - x0) / 2.0
@@ -88,7 +88,6 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
 
     if not _fits(txt):
         for size in range(50, 1, -2):
-            # print("fs: %s tbox: %s" % (fs, str(tbox)))
             txt.set_fontsize(size)
             if _fits(txt):
                 break
@@ -128,7 +127,6 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     ndc_bbox = ax.get_position()
     # pixel_bbox = ax.get_window_extent()
     (projx0, projx1, projy0, projy1) = ax.get_extent()
-    # print(ax.get_extent())
     # Figure out which axis got shrunk
     xscaled = ndc_bbox.width / float(ndc_axbounds[2])
     yscaled = ndc_bbox.height / float(ndc_axbounds[3])
@@ -138,8 +136,6 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     # expand one way or another to fit, via set_extent
     xneeded = (projx1 - projx0) / xscaled - (projx1 - projx0)
     yneeded = (projy1 - projy0) / yscaled - (projy1 - projy0)
-    # print(("xscaled: %s xneeded: %.1f yscaled: %s yneeded: %.1f"
-    #       ) % (xscaled, xneeded, yscaled, yneeded))
     newbounds = [
         projx0 - xneeded / 2.0,
         projx1 + xneeded / 2.0,

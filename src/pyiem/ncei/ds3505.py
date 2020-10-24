@@ -14,10 +14,9 @@ from metpy.units import units
 from metpy.calc import relative_humidity_from_dewpoint
 from pyiem.datatypes import speed, pressure
 from pyiem.meteorology import mcalc_feelslike
-from pyiem.util import logger
+from pyiem.util import LOG
 
 
-LOG = logger()
 MISSING_RE = re.compile(r"^\+?\-?9+$")
 EQD_RE = re.compile(r"^[QPRCDN][0-9][0-9]$")
 QNN_RE = re.compile(r"^[A-Z][0-9][0-9][A-Z ][0-9]$")

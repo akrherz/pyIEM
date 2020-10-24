@@ -9,10 +9,9 @@ import os
 
 import pyproj
 import numpy as np
-from pyiem.util import logger
+from pyiem.util import LOG
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "../data"])
-LOG = logger()
 M_PI_2 = 1.57079632679489661923
 M_PI = 3.14159265358979323846
 RE_METERS = 6371200.0
@@ -436,7 +435,6 @@ class GINIZFile:
         # Is Calibration Info included?
         # http://www.nws.noaa.gov/noaaport/document/ICD%20CH5-2005-1.pdf
         # page24
-        # print struct.unpack(">B", hdata[46:47] )[0]
         # Mercator
         if meta["map_projection"] == 1:
             meta["lat1"] = int24(hdata[20:23])

@@ -12,9 +12,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 from googleapiclient.discovery import build
 import smartsheet
-from pyiem.util import logger
+from pyiem.util import LOG
 
-LOG = logger()
 CONFIG_FN = "/opt/datateam/config/mytokens.json"
 NUMBER_RE = re.compile(r"^[-+]?\d*\.\d+$|^\d+$")
 CLEANVALUE_COMPLAINED = []

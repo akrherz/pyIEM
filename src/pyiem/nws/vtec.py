@@ -2,6 +2,7 @@
 import re
 from datetime import timezone, timedelta, datetime
 
+from pyiem.util import LOG
 
 VTEC_RE = (
     r"(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\."
@@ -220,7 +221,7 @@ def contime(text):
         ts = datetime.strptime(text, "%y%m%dT%H%MZ")
         return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
-        print(err)
+        LOG.exception(err)
         return None
 
 

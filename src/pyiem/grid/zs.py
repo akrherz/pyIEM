@@ -3,9 +3,8 @@ from collections import namedtuple
 
 import numpy as np
 from rasterstats import zonal_stats
-from pyiem.util import logger
+from pyiem.util import LOG
 
-LOG = logger()
 GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])
 
 
@@ -51,17 +50,17 @@ class CachingZonalStats:
             raster_out=True,
         )
         (gridysz, gridxsz) = grid.shape
-        # print("in grid size y: %s x: %s" % (gridysz, gridxsz))
+        LOG.debug("in grid size y: %s x: %s", gridysz, gridxsz)
         for entry in zs:
             aff = entry["mini_raster_affine"]
-            # print(aff)
+            LOG.debug(aff)
             x0 = int((aff.c - self.affine.c) / self.affine.a)
             y0 = int((self.affine.f - aff.f) / abs(self.affine.e))
             (ysz, xsz) = entry["mini_raster_array"].mask.shape
             mask = entry["mini_raster_array"].mask
-            # print("IN: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
+            LOG.debug("IN: x0: %s y0: %s xsz: %s ysz: %s", x0, y0, xsz, ysz)
             if x0 >= gridxsz or y0 >= gridysz:
-                # print("out of bounds, skipping")
+                LOG.debug("out of bounds, skipping")
                 self.gridnav.append(None)
                 continue
             if x0 < 0:
@@ -70,7 +69,7 @@ class CachingZonalStats:
                 x0 = 0
             if (x0 + xsz) >= gridxsz:
                 clipx = (x0 + xsz) - gridxsz
-                # print('clipping %s x points' % (clipx, ))
+                LOG.debug("clipping %s x points", clipx)
                 mask = mask[:, : (0 - clipx)]
                 xsz -= clipx
             if y0 < 0:
@@ -79,7 +78,7 @@ class CachingZonalStats:
                 y0 = 0
             if (y0 + ysz) >= gridysz:
                 clipy = (y0 + ysz) - gridysz
-                # print('clipping %s y points' % (clipy, ))
+                LOG.debug("clipping %s y points", clipy)
                 mask = mask[: (0 - clipy), :]
                 ysz -= clipy
 
@@ -88,7 +87,7 @@ class CachingZonalStats:
                 self.gridnav.append(None)
                 continue
 
-            # print("OUT: x0: %s y0: %s xsz: %s ysz: %s" % (x0, y0, xsz, ysz))
+            LOG.debug("OUT: x0: %s y0: %s xsz: %s ysz: %s", x0, y0, xsz, ysz)
             self.gridnav.append(
                 GRIDINFO(x0=x0, y0=y0, xsz=xsz, ysz=ysz, mask=mask)
             )

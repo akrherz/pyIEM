@@ -22,7 +22,7 @@ from shapely.geometry.polygon import LinearRing
 from shapely.ops import split
 from shapely.affinity import translate
 from pyiem.nws.product import TextProduct
-from pyiem.util import utc
+from pyiem.util import utc, LOG
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {"line": None, "poly": None}
@@ -160,7 +160,7 @@ def clean_segment(ls):
             CONUS["poly"].exterior.project(pt)
         )
         if pt.within(CONUS["poly"]):
-            print("     idx: %s is still within, evasive action" % (idx,))
+            LOG.info("     idx: %s is still within, evasive action", idx)
             for xoff, yoff in [
                 [-0.01, -0.01],
                 [-0.01, 0.0],
@@ -175,11 +175,14 @@ def clean_segment(ls):
                 pt2 = translate(pt, xoff=xoff, yoff=yoff)
                 if not pt2.within(CONUS["poly"]):
                     pt = pt2
-                    print("     idx: %s is now %s" % (idx, pt))
+                    LOG.info("     idx: %s is now %s", idx, pt)
                     break
-        print(
-            "     fix idx: %s to new: %.4f %.4f Inside: %s"
-            % (idx, pt.x, pt.y, pt.within(CONUS["poly"]))
+        LOG.info(
+            "     fix idx: %s to new: %.4f %.4f Inside: %s",
+            idx,
+            pt.x,
+            pt.y,
+            pt.within(CONUS["poly"]),
         )
         coords = list(ls.coords)
         coords[idx] = (pt.x, pt.y)
@@ -198,14 +201,14 @@ def clean_segment(ls):
             ]
         )
 
-    print("     clean_segment failed with res: %s" % (res,))
+    LOG.info("     clean_segment failed with res: %s", res)
     return None
 
 
 def look_for_closed_polygon(segment):
     """Simple logic to see if our polygon is already closed."""
     if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
-        print("Single closed polygon found, done and done")
+        LOG.info("Single closed polygon found, done and done")
         return MultiPolygon([Polygon(segment)])
 
     # Slightly bad line-work, whereby the start and end points are very close
@@ -214,9 +217,12 @@ def look_for_closed_polygon(segment):
         (segment[0][0] - segment[-1][0]) ** 2
         + (segment[0][1] - segment[-1][1]) ** 2
     ) ** 0.5 < 0.05:
-        print(
-            ("assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)")
-            % (segment[0][0], segment[0][1], segment[-1][0], segment[-1][1])
+        LOG.info(
+            "assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)",
+            segment[0][0],
+            segment[0][1],
+            segment[-1][0],
+            segment[-1][1],
         )
         segment[-1] = segment[0]
         return MultiPolygon([Polygon(segment)])
@@ -225,26 +231,26 @@ def look_for_closed_polygon(segment):
 def segment_logic(segment, currentpoly, polys):
     """Our segment parsing logic."""
     if segment[0] == segment[-1] and len(segment) > 2:
-        print("     segment is closed polygon!")
+        LOG.info("     segment is closed polygon!")
         lr = LinearRing(LineString(segment))
         if not lr.is_ccw:
-            print("     polygon is clockwise (exterior), done.")
+            LOG.info("     polygon is clockwise (exterior), done.")
             polys.append(currentpoly)
             return Polygon(segment)
-        print("     polygon is CCW (interior), testing intersection")
+        LOG.info("     polygon is CCW (interior), testing intersection")
         if currentpoly.intersection(lr).is_empty:
-            print("     failed intersection with currentpoly, abort")
+            LOG.info("     failed intersection with currentpoly, abort")
             return currentpoly
         interiors = [ln for ln in currentpoly.interiors]
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
         if not newp.is_valid:
-            print("     adding interior invalid, buffering")
+            LOG.info("     adding interior invalid, buffering")
             newp = newp.buffer(0)
         if newp.is_valid:
-            print(
-                ("     polygon is interior to currentpoly, area: %.2f ")
-                % (currentpoly.area,)
+            LOG.info(
+                "     polygon is interior to currentpoly, area: %.2f ",
+                currentpoly.area,
             )
             return newp
         raise Exception(
@@ -256,52 +262,48 @@ def segment_logic(segment, currentpoly, polys):
     ls = clean_segment(ls)
     if isinstance(ls, MultiLineString):
         for _ls in ls:
-            print("     look out below, recursive we go.")
+            LOG.info("     look out below, recursive we go.")
             currentpoly = segment_logic(_ls.coords, currentpoly, polys)
         return currentpoly
     if ls is None:
-        print("     aborting as clean_segment failed...")
+        LOG.info("     aborting as clean_segment failed...")
         return currentpoly
-    print(
-        "     new segment start: %.4f %.4f end: %.4f %.4f"
-        % (
-            ls.coords[0][0],
-            ls.coords[0][1],
-            ls.coords[-1][0],
-            ls.coords[-1][1],
-        )
+    LOG.info(
+        "     new segment start: %.4f %.4f end: %.4f %.4f",
+        ls.coords[0][0],
+        ls.coords[0][1],
+        ls.coords[-1][0],
+        ls.coords[-1][1],
     )
 
     # If this line segment does not intersect the current polygon of interest,
     # we should check any previous polygons to see if it intersects it. We
     # could be dealing with invalid ordering in the file, sigh.
     if currentpoly.intersection(ls).is_empty:
-        print("     ls does not intersect currentpoly, looking for match")
+        LOG.info("     ls does not intersect currentpoly, looking for match")
         found = False
         for i, poly in enumerate(polys):
             intersect = poly.intersection(ls)
             if intersect.is_empty or isinstance(intersect, MultiLineString):
                 continue
-            print(
-                (
-                    "     found previous polygon i:%s area: %.1f "
-                    "that intersects"
-                )
-                % (i, poly.area)
+            LOG.info(
+                "     found previous polygon i:%s area: %.1f that intersects",
+                i,
+                poly.area,
             )
             found = True
             polys.append(currentpoly)
             currentpoly = polys.pop(i)
             break
         if not found:
-            print("     setting currentpoly back to CONUS")
+            LOG.info("     setting currentpoly back to CONUS")
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
     # Results in either [currentpoly] or [polya, polyb, ...]
     geomcollect = split(currentpoly, ls)
     if len(geomcollect) > 2:
-        print("     line intersects polygon 3+ times, can't handle")
+        LOG.info("     line intersects polygon 3+ times, can't handle")
         return currentpoly
     if len(geomcollect) == 1:
         res = geomcollect.geoms[0]
@@ -314,7 +316,7 @@ def segment_logic(segment, currentpoly, polys):
         res = polya if enddist > startdist else polyb
 
     if res.area > 0.01:
-        print("     taking polygon.area = %.4f" % (res.area,))
+        LOG.info("     taking polygon.area = %.4f", res.area)
         return res
     return currentpoly
 
@@ -330,7 +332,7 @@ def segment_logic(segment, currentpoly, polys):
 #    ax.plot(current_poly.exterior.xy[0], current_poly.exterior.xy[1], c='r')
 #    ax.set_xlim(*xlim)
 #    ax.set_ylim(*ylim)
-#    print("writting /tmp/debugdraw.png")
+#    LOG.info("writting /tmp/debugdraw.png")
 #    fig.savefig("/tmp/debugdraw.png")
 
 
@@ -354,34 +356,31 @@ def str2multipolygon(s):
 
     for i, segment in enumerate(segments):
         # debug_draw(segment, currentpoly)
-        print(
-            ("  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)")
-            % (
-                i + 1,
-                len(segments),
-                len(segment),
-                segment[0][0],
-                segment[0][1],
-                segment[-1][0],
-                segment[-1][1],
-            )
+        LOG.info(
+            "  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)",
+            i + 1,
+            len(segments),
+            len(segment),
+            segment[0][0],
+            segment[0][1],
+            segment[-1][0],
+            segment[-1][1],
         )
         currentpoly = segment_logic(segment, currentpoly, polys)
     polys.append(currentpoly)
 
     res = []
-    print(
-        ("  Resulted in len(polys): %s, now quality controlling")
-        % (len(polys),)
+    LOG.info(
+        "  Resulted in len(polys): %s, now quality controlling", len(polys)
     )
     for i, poly in enumerate(polys):
         if not poly.is_valid:
-            print(f"     ERROR: polygon {i} is invalid!")
+            LOG.info("     ERROR: polygon %s is invalid!", i)
             continue
         if poly.area == CONUS["poly"].area:
-            print(f"     polygon {i} is just CONUS, skipping")
+            LOG.info("     polygon %s is just CONUS, skipping", i)
             continue
-        print("     polygon: %s has area: %s" % (i, poly.area))
+        LOG.info("     polygon: %s has area: %s", i, poly.area)
         res.append(poly)
     if not res:
         raise Exception(
@@ -437,7 +436,7 @@ class SPCPTS(TextProduct):
           nwsli_provider (dict, optional): unused in this class
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        print("==== SPCPTS Processing: %s" % (self.get_product_id(),))
+        LOG.info("==== SPCPTS Processing: %s", self.get_product_id())
         load_conus_data(self.valid)
         self.issue = None
         self.expire = None
@@ -452,7 +451,7 @@ class SPCPTS(TextProduct):
     def quality_control(self):
         """Run some checks against what was parsed"""
         # 1. Do polygons overlap for the same outlook
-        print("==== Running Quality Control Checks")
+        LOG.info("==== Running Quality Control Checks")
         for day, collect in self.outlook_collections.items():
             # Everything should be smaller than General Thunder, for conv
             tstm = self.get_outlook("CATEGORICAL", "TSTM", day)
@@ -472,7 +471,7 @@ class SPCPTS(TextProduct):
                             outlook.geometry.area,
                             tstm.geometry.area,
                         )
-                        print(msg)
+                        LOG.info(msg)
                         self.warnings.append(msg)
                 # clip polygons to the CONUS
                 good_polys = []
@@ -483,14 +482,12 @@ class SPCPTS(TextProduct):
                             if isinstance(p, Polygon):
                                 good_polys.append(p)
                             else:
-                                print("Discarding %s as not polygon" % (p,))
+                                LOG.info("Discarding %s as not polygon", p)
                     else:
                         if isinstance(intersect, Polygon):
                             good_polys.append(intersect)
                         else:
-                            print(
-                                "Discarding %s as not polygon" % (intersect,)
-                            )
+                            LOG.info("Discarding %s as not polygon", intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
                 good_polys = []
@@ -508,7 +505,7 @@ class SPCPTS(TextProduct):
                             outlook.threshold,
                             poly1.area,
                         )
-                        print(msg)
+                        LOG.info(msg)
                         self.warnings.append(msg)
                     elif tstm is not None and poly1.area > tstm.geometry.area:
                         rewrite = True
@@ -521,7 +518,7 @@ class SPCPTS(TextProduct):
                             outlook.threshold,
                             poly1.area,
                         )
-                        print(msg)
+                        LOG.info(msg)
                         self.warnings.append(msg)
                     else:
                         if poly1 not in good_polys:
@@ -599,7 +596,7 @@ class SPCPTS(TextProduct):
                         outlook.threshold,
                     )
                 ).replace(" ", "_")
-                print(":: creating plot %s" % (fn,))
+                LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
                 del fig
                 del ax
@@ -704,7 +701,7 @@ class SPCPTS(TextProduct):
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
                 if threshold == "TSTM" and self.afos == "PFWF38":
-                    print(("Failing to parse TSTM in PFWF38"))
+                    LOG.info(("Failing to parse TSTM in PFWF38"))
                     del point_data[threshold]
                     continue
                 match = DMATCH.match(threshold)
@@ -713,7 +710,7 @@ class SPCPTS(TextProduct):
                     if data.get("day2") is not None:
                         day1 = int(data["day1"])
                         day2 = int(data["day2"])
-                        print("Duplicating threshold %s-%s" % (day1, day2))
+                        LOG.info("Duplicating threshold %s-%s", day1, day2)
                         for i in range(day1, day2 + 1):
                             key = "D%s" % (i,)
                             point_data[key] = point_data[threshold]
@@ -728,14 +725,16 @@ class SPCPTS(TextProduct):
                     collect = self.outlook_collections.setdefault(
                         day, SPCOutlookCollection(issue, expire, day)
                     )
-                print(
-                    ("--> Start Day: %s Category: '%s' Threshold: '%s' =====")
-                    % (day, category, threshold)
+                LOG.info(
+                    "--> Start Day: %s Category: '%s' Threshold: '%s' =====",
+                    day,
+                    category,
+                    threshold,
                 )
                 mp = str2multipolygon(point_data[threshold])
                 if DMATCH.match(threshold):
                     threshold = "0.15"
-                print(("----> End threshold is: %s" % (threshold,)))
+                LOG.info("----> End threshold is: %s", threshold)
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, txn):
@@ -756,15 +755,13 @@ class SPCPTS(TextProduct):
                 txn.execute(sql)
                 for row in txn.fetchall():
                     outlook.wfos.append(row["wfo"])
-                print(
-                    ("Day: %s Category: %s Threshold: %s #WFOS: %s %s")
-                    % (
-                        day,
-                        outlook.category,
-                        outlook.threshold,
-                        len(outlook.wfos),
-                        ",".join(outlook.wfos),
-                    )
+                LOG.info(
+                    "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
+                    day,
+                    outlook.category,
+                    outlook.threshold,
+                    len(outlook.wfos),
+                    ",".join(outlook.wfos),
                 )
 
     def sql(self, txn):
@@ -782,9 +779,8 @@ class SPCPTS(TextProduct):
                 (self.valid, self.expire, self.outlook_type, day),
             )
             if txn.rowcount > 0:
-                print(
-                    ("Removed %s previous spc_outlook entries")
-                    % (txn.rowcount,)
+                LOG.info(
+                    "Removed %s previous spc_outlook entries", txn.rowcount
                 )
 
             for outlook in collect.outlooks:

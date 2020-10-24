@@ -12,6 +12,7 @@ from shapely.geometry import Polygon, MultiPolygon
 from shapely.wkt import dumps
 
 from pyiem import reference
+from pyiem.util import LOG
 from pyiem.exceptions import TextProductException
 from pyiem.nws import ugc, vtec, hvtec
 
@@ -382,9 +383,9 @@ class TextProductSegment:
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             # No longer a warning as it was too much noise
-            print(
-                ("LAT...LON polygon exterior is CCW, reversing\n%s")
-                % (poly.exterior.xy,)
+            LOG.info(
+                "LAT...LON polygon exterior is CCW, reversing\n%s",
+                poly.exterior.xy,
             )
             poly = Polygon(
                 zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1])
