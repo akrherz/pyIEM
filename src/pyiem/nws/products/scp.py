@@ -11,11 +11,14 @@ SCP = namedtuple(
 LINEFMT = re.compile(r"^([A-Z0-9]){3,5}\s+[0-3][0-9]/[0-2][0-9][0-5][0-9]\s")
 
 
-def _to_int(val):
+def _to_int(val, multi=100.0):
     """Safe conversion."""
     if val.strip() == "":
         return None
-    return int(val) * 100.0
+    try:
+        return int(val) * multi
+    except ValueError:
+        return None
 
 
 def _processor(textprod):
@@ -23,6 +26,8 @@ def _processor(textprod):
     res = []
     for line in textprod.unixtext.split("\n"):
         if not LINEFMT.match(line):
+            continue
+        if line[9] != "/":
             continue
         station = line[:5].strip()
         da = int(line[7:9])
@@ -37,7 +42,7 @@ def _processor(textprod):
         high = line[23:26]
         cldtop1 = _to_int(line[28:31])
         cldtop2 = _to_int(line[32:35])
-        eca = int(line[37:40])
+        eca = _to_int(line[37:40], 1)
         res.append(
             SCP._make([station, valid, mid, high, cldtop1, cldtop2, eca])
         )
