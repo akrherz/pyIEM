@@ -73,7 +73,8 @@ class SCPProduct(TextProduct):
             inserts += 1
             txn.execute(
                 "INSERT into scp_alldata(station, valid, mid, high, cldtop1, "
-                "cldtop2, eca) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                "cldtop2, eca, source) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     ob.station,
                     ob.valid,
@@ -82,6 +83,7 @@ class SCPProduct(TextProduct):
                     ob.cldtop1,
                     ob.cldtop2,
                     ob.eca,
+                    self.afos[-1],
                 ),
             )
         return inserts
