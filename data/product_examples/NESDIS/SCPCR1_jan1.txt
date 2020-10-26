@@ -1,0 +1,14 @@
+511 
+TCUS41 KNES 010030
+SCPCR1
+SATELLITE-DERIVED CLOUD INFORMATION FOR MID (CLD TOPS 631-400 MB) AND
+HIGH LEVEL (CLD TOPS ABOVE 400 MB)
+(JAN)                                                   
+STA    DA/TIMEZ  MID  HIGH  CLD TOP  ECA
+CO
+AFAC1  31/2357   CLR                   0
+K04V   31/2358   SCT        150-160    8
+K20V   31/2355   CLR                   0
+K4BM   31/2356   CLR                   0
+K5SM   31/2356   SCT        180-180    4
+K7BM   31/2357   CLR                   0

@@ -1,0 +1,16 @@
+319 
+TCUS54 KNES 261505
+SCPPR2
+SATELLITE-DERIVED CLOUD INFORMATION FOR MID (CLD TOPS 631-400 MB) AND
+HIGH LEVEL (CLD TOPS ABOVE 400 MB)
+(OCT) (month of year)                                   
+STA    DA/TIMEZ  MID  HIGH  CLD TOP  ECA
+AK
+BLAIR  26/1450   BKN        130-270   56
+EIELS  26/1450   BKN        130-270   61
+P0Z0   26/1450   SCT        130-160    8
+P9Z1   26/1450         SCT  130-350   37
+PACD   26/1450   CLR                   0
+PADE   26/1450   SCT        130-160    8
+PADK   26/1450   BKN        130-240   44
+PADQ   26/1450   CLR                   0
