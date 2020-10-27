@@ -105,7 +105,8 @@ def _associate_vtec_year(prod, txn):
 
     Modifies the prod.segment.vtec objects."""
     for seg, _ugcs, vtec in prod.suv_iter():
-        vtec.year = which_year(txn, prod, seg, vtec)
+        if vtec.year is None:
+            vtec.year = which_year(txn, prod, seg, vtec)
 
 
 def _load_database_status(txn, prod):
