@@ -11,6 +11,13 @@ SCP = namedtuple(
 LINEFMT = re.compile(r"^([A-Z0-9]){3,5}\s+[0-3][0-9]/[0-2][0-9][0-5][0-9]\s")
 
 
+def _to_str(val):
+    """Safe conversion."""
+    if val.strip() == "":
+        return None
+    return val.strip()
+
+
 def _to_int(val, multi=100.0):
     """Safe conversion."""
     if val.strip() == "":
@@ -38,8 +45,8 @@ def _processor(textprod):
             # Yesterday
             valid = textprod.valid - timedelta(days=1)
         valid = valid.replace(day=da, hour=hr, minute=mi)
-        mid = line[17:20]
-        high = line[23:26]
+        mid = _to_str(line[17:20])
+        high = _to_str(line[23:26])
         cldtop1 = _to_int(line[28:31])
         cldtop2 = _to_int(line[32:35])
         eca = _to_int(line[37:40], 1)
