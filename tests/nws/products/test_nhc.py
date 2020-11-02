@@ -4,6 +4,13 @@ from pyiem.nws.products.nhc import parser as nhcparser
 from pyiem.util import get_test_file
 
 
+def test_issue317_nowarning():
+    """Test that no warning is emitted for a tropical product from TJSJ."""
+    prod = nhcparser(get_test_file("tropical/TCPSP4.txt"))
+    prod.get_jabbers("http://localhost", "http://localhost")
+    assert not prod.warnings
+
+
 def test_170618_potential():
     """New TCP type"""
     prod = nhcparser(get_test_file("TCPAT2.txt"))

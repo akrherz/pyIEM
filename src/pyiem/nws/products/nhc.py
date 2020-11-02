@@ -32,6 +32,8 @@ class NHCProduct(TextProduct):
 
         tokens = re.findall(TITLE, self.unixtext.upper().replace("\n", " "))
         if not tokens:
+            if self.source != "KNHC":
+                return []
             raise NHCException("Could not parse header from NHC Product!")
 
         classification = tokens[0][0]
