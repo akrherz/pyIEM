@@ -14,6 +14,14 @@ def cursor():
     pgconn.close()
 
 
+def test_201107_mex_negative():
+    """Test problem with negative low temperature climo."""
+    utcnow = utc(2020, 11, 7)
+    prod = mosparser(get_test_file("MOS/MEXAFG.txt"), utcnow=utcnow)
+    # Leaked column data
+    assert prod.data[0]["data"][utc(2020, 11, 15)]["X_N"] == "7"
+
+
 def test_200930_nbx_int(cursor):
     """Test a problem found with the product."""
     utcnow = utc(2020, 9, 30, 12)
