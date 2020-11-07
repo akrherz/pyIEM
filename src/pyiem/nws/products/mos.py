@@ -62,7 +62,7 @@ def section_parser(sect):
     chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
     startlinepos = 4 if model not in ["NBE"] else 5
-    if mos == "NBX":
+    if mos == "NBX" or model == "MEX":
         startlinepos = 3
     for line in lines[startline:]:
         if len(line) < 20:
