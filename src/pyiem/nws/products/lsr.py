@@ -207,7 +207,9 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     prod = LSRProduct(
         text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
     )
-
+    if prod.z is None:
+        prod.warnings.append("Abort parsing as no timezone was found.")
+        return prod
     for match in SPLITTER.finditer(prod.unixtext):
         lsr = parse_lsr(prod, "".join(match.groups()))
         if lsr is None:

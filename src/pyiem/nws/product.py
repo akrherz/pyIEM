@@ -31,6 +31,9 @@ TIME_RE = re.compile(f"^{TIME_FMT}$", re.M | re.IGNORECASE)
 TIME_EXT_RE = re.compile(
     rf"^{TIME_FMT}\s?/\s?{TIME_FMT}\s?/$", re.M | re.IGNORECASE
 )
+# Without the line start and end requirement
+TIME_RE_ANYWHERE = re.compile(f"{TIME_FMT}", re.IGNORECASE)
+
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(
     "^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
@@ -661,6 +664,8 @@ class TextProduct:
         tokens = TIME_RE.findall(self.unixtext)
         if not tokens:
             tokens = TIME_EXT_RE.findall(self.unixtext)
+            if not tokens:
+                tokens = TIME_RE_ANYWHERE.findall(self.unixtext)
         if provided_utcnow is None and tokens:
             try:
                 z, _tz, valid = date_tokens2datetime(tokens[0])

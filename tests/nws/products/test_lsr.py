@@ -35,6 +35,19 @@ def test_summary():
     assert (len(j) - len(j2)) == 1
 
 
+def test_issue320_badmnd():
+    """Test we can deal with a bad MND timestamp header."""
+    prod = parser(get_test_file("LSR/LSRTBW_badmnd.txt"))
+    assert prod.z is not None
+
+
+def test_issue320_reallybadmnd():
+    """Test what happens when we have no workable MND."""
+    prod = parser(get_test_file("LSR/LSRTBW_badmnd.txt").replace("NOV 12", ""))
+    assert prod.z is None
+    assert not prod.lsrs
+
+
 def test_200913_nounits():
     """Test that we properly handle LSRs without units."""
     prod = parser(get_test_file("LSR/LSRCRP.txt"))
