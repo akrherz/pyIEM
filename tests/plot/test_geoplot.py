@@ -13,6 +13,7 @@ from pyiem.plot.geoplot import windrose
 from pyiem.plot import (
     MapPlot,
     centered_bins,
+    pretty_bins,
     load_bounds,
     load_pickle_pd,
     load_pickle_geo,
@@ -199,16 +200,28 @@ def test_conus2():
     return mp.fig
 
 
+def test_pretty_bins():
+    """Test that we get nice pretty bins!"""
+    a = pretty_bins(-1, 10)
+    assert abs(a[-1] - 10.5) < 0.01
+
+
 def test_centered_bins():
     """See that we can compute some nice centered bins"""
-    a = centered_bins(10, bins=9)
-    assert a[0] == -12
-    a = centered_bins(55, bins=9)
+    a = centered_bins(10)
+    assert a[0] == -10
+    a = centered_bins(55)
     assert a[0] == -56
-    a = centered_bins(99, bins=9)
+    a = centered_bins(99)
     assert a[0] == -100
-    a = centered_bins(0.9, bins=9)
-    assert a[0] == -0.9
+    a = centered_bins(99, bins=9)
+    assert a[0] == -99
+    a = centered_bins(100, on=100)
+    assert a[0] == 0
+    a = centered_bins(0.9)
+    assert abs(a[-1] - 1.2) < 0.001
+    a = centered_bins(1.2888)
+    assert abs(a[-1] - 1.6) < 0.001
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
