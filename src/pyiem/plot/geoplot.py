@@ -25,7 +25,6 @@ import subprocess
 import shutil
 import pickle
 import datetime
-import math
 import warnings
 
 #
@@ -88,24 +87,6 @@ cartopy.config["data_dir"] = "/tmp/"
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 MAIN_AX_BOUNDS = [0.01, 0.05, 0.898, 0.85]
 CAX_BOUNDS = [0.917, 0.1, 0.02, 0.8]
-
-
-def centered_bins(absmax, _on=0, bins=9):
-    """Return a smooth binning
-
-    Args:
-      absmax (real): positive absolute value we want or bins to enclose
-      on (real): where to center the bins at (TODO)
-      bins (int): number of bins to generate
-    Returns:
-      list of bins"""
-    mx = (bins - 1) / 2.0
-    width = absmax / float(mx)
-    if width > 1:
-        width = math.ceil(width)
-    else:
-        return np.linspace(0 - absmax, absmax, bins)
-    return np.arange(0 - mx, mx + 1) * width
 
 
 def true_filter(_bm, _key, _val):

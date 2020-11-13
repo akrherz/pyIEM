@@ -16,6 +16,52 @@ DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 
 
+def pretty_bins(minval, maxval, bins=8):
+    """Return a **smooth** binning that encloses the min and max value.
+
+    The returned array is +1 in size of the bins specified, since we want the
+    bin edges.
+
+    Args:
+      minval (real): minimum value to enclose.
+      maxval (real): maximum value to enclose.
+      bins (int): number of bins to generate
+    Returns:
+      ``np.array`` of bins"""
+    center = (maxval + minval) / 2.0
+    return centered_bins(maxval - center, on=center, bins=bins)
+
+
+def centered_bins(absmax, on=0, bins=8):
+    """Return a **smooth** binning around some number.
+
+    The returned array is +1 in size of the bins specified, since we want the
+    bin edges.
+
+    Args:
+      absmax (real): positive distance from the `on` value for bins to enclose.
+      on (real): where to center these bins.
+      bins (int): number of bins to generate
+    Returns:
+      ``np.array`` of bins"""
+    # We want an array returned with +1 bins
+    sz = float(bins) / 2.0
+    mx = (absmax) / sz
+    interval = np.around(mx, 2)
+    # We don't want any floating point numbers over 5
+    if interval > 5 and interval * 100 % 100 != 0:
+        interval = np.ceil(mx)
+        return np.linspace(on - sz * interval, on + sz * interval, bins + 1)
+    if mx == interval:
+        return np.linspace(on - sz * interval, on + sz * interval, bins + 1)
+    # Find a pretty interval >= mx
+    c = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 5]
+    for interval in c:
+        if interval > mx:
+            break
+    return np.linspace(on - sz * interval, on + sz * interval, bins + 1)
+
+
 def draw_logo(fig, filename):
     """Place the logo."""
     fn = "%s/%s" % (DATADIR, filename)
