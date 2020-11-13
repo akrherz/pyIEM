@@ -911,11 +911,28 @@ class MapPlot:
         return _hex
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
-        """ pcolormesh wrapper """
+        """Opinionated mpl.pcolormesh wrapper.
+
+        If you supply a lons in the same shape of the vals, this method will
+        tack on an extra row and column to make matplotlib happy. If you do
+        not want this, then pass your own lons + lats that is 1 column and 1
+        row greater than vals.
+        """
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
         )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        if lons.shape == vals.shape:
+            # Tack on some extra
+            new = lons[-1, :] * 2 - lons[-2, :]
+            lons = np.r_[lons, [new]]
+            new = lats[-1, :] * 2 - lats[-2, :]
+            lats = np.r_[lats, [new]]
+            new = lons[:, -1] * 2 - lons[:, -2]
+            lons = np.c_[lons, new]
+            new = lats[:, -1] * 2 - lats[:, -2]
+            lats = np.c_[lats, new]
+
         res = self.ax.pcolormesh(
             lons,
             lats,
