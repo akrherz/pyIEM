@@ -261,14 +261,9 @@ def noaaport_text(text):
     Returns:
       text that looks noaaportish
     """
-    # Convert to LFLFCR
-    text = (
-        text.replace("\003", "")
-        .replace("\001", "")
-        .replace("\n", "\r\r\n")
-        .replace("\r\r\r\r", "\r\r")
-    )
-    lines = text.split("\r\r\n")
+    # Rectify the text to remove any stray stuff
+    text = text.replace("\003", "").replace("\001", "").replace("\r", "")
+    lines = text.split("\n")
     # remove any beginning empty lines
     while lines and lines[0] == "":
         lines.pop(0)
@@ -286,9 +281,6 @@ def noaaport_text(text):
     # last line should be the control-c, by itself
     if lines[-1] != "\003":
         lines.append("\003")
-    # Second line should not be blank
-    if lines[1].strip() == 0:
-        lines = [lines[0]] + lines[2:]
 
     return "\r\r\n".join(lines)
 

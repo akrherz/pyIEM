@@ -219,6 +219,20 @@ def test_grid_bounds():
     assert y1 == 55
 
 
+def test_noaaport_text_cruft_at_top():
+    """Test that we properly remove empty lines at the top."""
+    data = "\r\r\r\n\r\n\r\r\r\r\r\n" + util.get_test_file("WCN.txt")
+    res = util.noaaport_text(data)
+    assert res[:11] == "\001\r\r\n098 \r\r\n"
+
+
+def test_noaaport_text_no_ldm_sequence():
+    """Test that we deal with not having an LDM sequence number."""
+    data = "AAAAAA\r\r\n" + util.get_test_file("WCN.txt")
+    res = util.noaaport_text(data)
+    assert res[:11] == "\001\r\r\n000 \r\r\n"
+
+
 def test_noaaport_text():
     """See that we do what we expect with noaaport text processing"""
     data = util.get_test_file("WCN.txt")
