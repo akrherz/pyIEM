@@ -265,22 +265,18 @@ def noaaport_text(text):
     text = text.replace("\003", "").replace("\001", "").replace("\r", "")
     lines = text.split("\n")
     # remove any beginning empty lines
-    while lines and lines[0] == "":
-        lines.pop(0)
-    # remove any empty ending lines
-    while lines and lines[-1] == "":
-        lines.pop(-1)
+    for pos in [0, -1]:
+        while lines and lines[pos].strip() == "":
+            lines.pop(pos)
 
     # lime 0 should be start of product sequence
-    if lines[0] != "\001":
-        lines.insert(0, "\001")
+    lines.insert(0, "\001")
     # line 1 should be the LDM sequence number 4 chars
     if not SEQNUM.match(lines[1]):
         if len(lines[1]) > 5:
             lines.insert(1, "000 ")
     # last line should be the control-c, by itself
-    if lines[-1] != "\003":
-        lines.append("\003")
+    lines.append("\003")
 
     return "\r\r\n".join(lines)
 
