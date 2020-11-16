@@ -1,0 +1,80 @@
+281
+WGUS86 KSEW 080142
+FLSSEW
+Flood Statement
+National Weather Service Seattle WA
+542 PM PST Tue Jan 7 2020
+
+...The Flood Warning has ended for the following rivers in
+Washington...
+
+  Samish River At Burlington affecting Skagit County
+  North Fork Stillaguamish River Near Arlington affecting Snohomish
+  County
+  Skykomish River Near Gold Bar affecting Snohomish County
+  Tolt River Above Carnation affecting King County
+  Newaukum River Near Chehalis affecting Lewis County
+
+...The Flood Warning continues for the following rivers in
+Washington...
+
+  Satsop River Near Satsop affecting Grays Harbor County
+  Snohomish River At Snohomish affecting Snohomish County
+  Snoqualmie River Near Snoqualmie Falls affecting King County
+  Snoqualmie River Near Carnation affecting King County
+  Skookumchuck River Near Bucoda affecting Thurston County
+  Chehalis River Above Grand Mound affecting Grays Harbor and Thurston
+  Counties
+  Chehalis River At Porter affecting Grays Harbor County
+  Bogachiel River Near La Push affecting Clallam County
+  Skokomish River At Potlatch affecting Mason County
+  Stillaguamish River At Arlington affecting Snohomish County
+
+
+Some rivers have crested and flooding has ended while others are
+still rising or still above flood stage. Rain coming in overnight
+could keep some river levels from falling or even cause additional
+rises, but should not add any new flooding. Here is the latest river
+forecast updates.
+
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Do not drive cars...vans...or trucks through flooded areas...this is
+the cause of most flood related deaths in Washington. Be alert for
+rapid changes and monitor developments by listening to NOAA Weather
+radio or other local media.
+
+
+&&
+
+WAC033-080941-
+/O.EXT.KSEW.FL.W.0005.700101T0000Z-200108T1230Z/
+/SQUW1.1.ER.200107T0835Z.200107T1500Z.200107T2325Z.NO/
+542 PM PST Tue Jan 7 2020
+
+...Flood Warning extended until late tonight...
+
+The Flood Warning continues for
+  The Snoqualmie River Near Snoqualmie Falls
+* Until late tonight.
+* At  4:00 PM Tuesday the flow was 19609 cfs.
+* Flood flow is 20000 cfs.
+* Fell below flood flow late this afternoon.
+* No additional flooding is forecast.
+* Forecast...The river fell below flood stage at  3:25 PM Tuesday and
+  will continue to fall. Flooding will continue in some areas until
+  the flood wave has completely passed downstream.
+* Impact...At 12000 cfs, the Snoqualmie River will spill over its
+  banks between the town of Snoqualmie and Fall City...covering
+  pasture lands and several roads along the river. This river level
+  on the Snoqualmie corresponds roughly to a phase 2 flood in the
+  King County flood system.
+
+&&
+
+LAT...LON 4742 12175 4752 12186 4756 12196 4761 12188 4758 12178
+      4756 12170
+
+$$
+

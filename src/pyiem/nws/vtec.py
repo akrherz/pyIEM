@@ -214,15 +214,19 @@ def parse(text):
 
 
 def contime(text):
-    """Represent the fun that is 0000 time in VTEC"""
-    if re.findall("0000*T", text):
+    """Convert text into a UTC datetime."""
+    # The 0000 is the standard VTEC undefined time
+    if text.startswith("0000"):
         return None
     try:
         ts = datetime.strptime(text, "%y%m%dT%H%MZ")
-        return ts.replace(tzinfo=timezone.utc)
     except Exception as err:
         LOG.exception(err)
         return None
+    # NWS has a bug sometimes whereby 1969 or 1970s timestamps are emitted
+    if ts.year < 1971:
+        return None
+    return ts.replace(tzinfo=timezone.utc)
 
 
 def get_ps_string(phenomena, significance):

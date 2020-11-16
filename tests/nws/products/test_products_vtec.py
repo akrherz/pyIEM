@@ -40,6 +40,12 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_201116_1970vtec():
+    """Test that we don't allow a 1970s VTEC timestamp, which is in error."""
+    prod = vtecparser(get_test_file("FLS/FLSSEW_vtec1970.txt"))
+    assert prod.segments[0].vtec[0].begints is None
+
+
 def test_201006_invalid_warning(dbcursor):
     """Test that we don't complain about a dangling CON statement."""
     prod = vtecparser(get_test_file("MWWPQR/MWWPQR_0.txt"))
