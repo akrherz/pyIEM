@@ -40,6 +40,12 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_201116_1970vtec():
+    """Test that we don't allow a 1970s VTEC timestamp, which is in error."""
+    prod = vtecparser(get_test_file("FLS/FLSSEW_vtec1970.txt"))
+    assert prod.segments[0].vtec[0].begints is None
+
+
 def test_201006_invalid_warning(dbcursor):
     """Test that we don't complain about a dangling CON statement."""
     prod = vtecparser(get_test_file("MWWPQR/MWWPQR_0.txt"))
@@ -60,6 +66,22 @@ def test_issue284_incomplete_update(dbcursor):
     warnings = filter_warnings(prod.warnings)
     assert len(warnings) == 1
     assert warnings[0].startswith(CUGC)
+
+
+def test_201116_timezone():
+    """Test what happens with some timezone fun."""
+    valid = utc(2020, 9, 9, 0, 29)
+    prod = vtecparser(get_test_file("SVR/SVRPSR.txt"), utcnow=valid)
+    ans = "valid at 5:29 PM MST"
+    assert prod.segments[0].vtec[0].get_begin_string(prod) == ans
+
+
+def test_vtec_begin_time_format():
+    """Test that we can call vtec begin_time."""
+    valid = utc(2010, 4, 5, 21, 47)
+    prod = vtecparser(get_test_file("SVRLMK.txt"), utcnow=valid)
+    ans = "valid at 5:47 PM EDT"
+    assert prod.segments[0].vtec[0].get_begin_string(prod) == ans
 
 
 def test_old_windhail_tag():

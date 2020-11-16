@@ -6,6 +6,24 @@ from pyiem.nws import vtec
 EX1 = "/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/"
 
 
+def test_beginstring_combos():
+    """Test our begin string logic."""
+    vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.000000T0000Z-000000T0000Z/")
+    assert vc[0].get_begin_string(None) == ""
+
+
+def test_endstring_until_further_notice():
+    """Make sure that the end time string is empty for cancel action"""
+    vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-000000T0000Z/")
+    assert vc[0].get_end_string(None) == "until further notice"
+
+
+def test_badformat():
+    """Test that we handle bad timestamps."""
+    res = vtec.contime("AABBCCTHHMMZ")
+    assert res is None
+
+
 def test_fireweather():
     """Do we return different things for FW"""
     res = vtec.get_ps_string("FW", "A")
