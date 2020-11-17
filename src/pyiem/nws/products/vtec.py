@@ -68,7 +68,7 @@ class VTECProduct(TextProduct):
                     "single phenomena / significance"
                 )
             if segment.giswkt and not segment.vtec:
-                if self.afos[:3] not in ["MWS"]:
+                if self.afos is not None and self.afos[:3] not in ["MWS"]:
                     self.warnings.append(
                         "Product segment has LAT...LON, "
                         "but does not have VTEC?"
@@ -682,7 +682,11 @@ class VTECProduct(TextProduct):
 
     def get_skip_con(self):
         """ Should this product be skipped from generating jabber messages"""
-        if self.afos[:3] == "FLS" and len(self.segments) > 4:
+        if (
+            self.afos is not None
+            and self.afos[:3] == "FLS"
+            and len(self.segments) > 4
+        ):
             return True
         return False
 
