@@ -110,8 +110,8 @@ class LSR:
         # Newer schema supports range partitioning, so can direct insert
         sql = (
             "INSERT into lsrs (valid, type, magnitude, city, county, "
-            "state, source, remark, geom, wfo, typetext) values (%s, %s, %s, "
-            "%s, %s, %s, %s, %s, %s, %s, %s)"
+            "state, source, remark, geom, wfo, typetext, product_id, updated) "
+            "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         args = (
             self.utcvalid,
@@ -125,6 +125,8 @@ class LSR:
             wkt,
             self.wfo,
             self.typetext,
+            self.product.get_product_id(),
+            self.product.valid,
         )
         txn.execute(sql, args)
 
