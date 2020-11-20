@@ -40,6 +40,69 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_201120_tml_line(dbcursor):
+    """Test that we can insert TML lines."""
+    data = get_test_file("TORFSD.txt")
+    prod = vtecparser(data.replace("4260 9567", "4260 9567 4160 8567"))
+    prod.sql(dbcursor)
+
+
+def test_201120_sbw_duplicate(dbcursor):
+    """Test that we get an error for a SBW duplicated."""
+    data = get_test_file("TOR.txt")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    prod.sql(dbcursor)
+    assert any([x.find("is a SBW duplicate") > -1 for x in prod.warnings])
+    prod = vtecparser(data.replace(".NEW.", ".CON."))
+    prod.sql(dbcursor)
+    assert any([x.find("SBW prev polygon") > -1 for x in prod.warnings])
+
+
+def test_201120_correction(dbcursor):
+    """Test that we emit a warning for first found correction."""
+    data = get_test_file("TOR.txt").replace("291656", "291656 CCA")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    assert any([x.find("is a correction") > -1 for x in prod.warnings])
+
+
+def test_201120_unknown_vtec(dbcursor):
+    """Test that we emit a warning when finding an unknown VTEC action."""
+    data = get_test_file("TOR.txt").replace(".NEW.KJAN", ".QQQ.KJAN")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    assert any([x.find("QQQ") > -1 for x in prod.warnings])
+
+
+def test_201120_resent(dbcursor):
+    """Test that we can handle a resent product."""
+    data = get_test_file("TOR.txt")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    eas = "EAS ACTIVATION REQUESTED"
+    prod = vtecparser(data.replace(eas, f"{eas}...RESENT"))
+    prod.sql(dbcursor)
+
+
+def test_201120_missing_ugc(dbcursor):
+    """Test that a warning for missing ugc is emitted."""
+    data = get_test_file("CFW/CFWSJU.txt")
+    data = data.replace("PRZ001-002-005-008-211645-", "")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    ans = "UGC is missing for segment that has VTEC!"
+    assert ans in prod.warnings
+
+
+def test_201120_dup(dbcursor):
+    """Test that a warning for duplicated VTEC is emitted."""
+    prod = vtecparser(get_test_file("CFW/CFWSJU.txt"))
+    prod.sql(dbcursor)
+    ans = "Segment has duplicated VTEC"
+    assert any([x.startswith(ans) for x in prod.warnings])
+
+
 def test_201116_1970vtec():
     """Test that we don't allow a 1970s VTEC timestamp, which is in error."""
     prod = vtecparser(get_test_file("FLS/FLSSEW_vtec1970.txt"))

@@ -75,7 +75,7 @@ class VTECProduct(TextProduct):
                     )
             if not segment.ugcs and segment.vtec:
                 self.warnings.append(
-                    "UGC is missing for segment " "that has VTEC!"
+                    "UGC is missing for segment that has VTEC!"
                 )
                 continue
             if not segment.ugcs:
@@ -107,7 +107,10 @@ class VTECProduct(TextProduct):
         if dbdf.empty:
             return
         df = dbdf[dbdf["missed"]]
-        if df.empty:
+        # Tropical and Earthquake products with ETNs over 1000 are too complex
+        # to check in this manner, I suppose an office could issue 1000 SVRs,
+        # but alas.  See akrherz/pyIEM#316
+        if df.empty or df["etn"].min() >= 1000:
             return
         self.warnings.append(f"Product failed to cover all UGC\n{df}")
 
@@ -315,11 +318,6 @@ class VTECProduct(TextProduct):
             segment.get_hvtec_record(),
         )
         txn.execute(sql, myargs)
-        if txn.rowcount != 1:
-            self.warnings.append(
-                f"{vtec.s3()} sbw table insert "
-                f"resulted in {txn.rowcount} rows, should be 1"
-            )
 
         # If this is a CAN, UPG action and single purpose, update expiration
         if vtec.action in ["CAN", "UPG"] and self.is_single_action():

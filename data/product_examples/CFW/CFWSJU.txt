@@ -1,0 +1,63 @@
+117
+WHCA42 TJSJ 210842
+CFWSJU
+
+Coastal Hazard Message
+National Weather Service San Juan PR
+442 AM AST Wed Oct 21 2020
+
+PRZ001-002-005-008-211645-
+/O.CAN.TJSJ.CF.Y.0009.201021T1000Z-201022T2200Z/
+/O.EXT.TJSJ.CF.Y.0010.201021T0842Z-201022T2200Z/
+/O.CON.TJSJ.SU.Y.0011.000000T0000Z-201023T1000Z/
+/O.CON.TJSJ.RP.S.0042.000000T0000Z-201023T2200Z/
+San Juan and Vicinity-Northeast-North Central-Northwest-
+442 AM AST Wed Oct 21 2020
+
+...COASTAL FLOOD ADVISORY NOW IN EFFECT UNTIL 6 PM AST THURSDAY...
+...HIGH SURF ADVISORY REMAINS IN EFFECT UNTIL 6 AM AST FRIDAY...
+...HIGH RIP CURRENT RISK REMAINS IN EFFECT THROUGH FRIDAY
+AFTERNOON...
+
+* WHAT...For the High Surf Advisory, large breaking waves of 10 to
+  15 and occasionally higher. For the Coastal Flood Advisory,
+  minor coastal flooding expected, especially during the time of
+  high tide. For the High Rip Current Risk, dangerous rip
+  currents.
+
+* WHERE...Northeast, San Juan and Vicinity, North Central and
+  Northwest Counties.
+
+* WHEN...For the High Surf Advisory, until 6 AM AST Friday. For
+  the Coastal Flood Advisory, until 6 PM AST Thursday. For the
+  High Rip Current Risk, through Friday afternoon.
+
+* IMPACTS...Flooding of lots, parks, and roads with only
+  isolated road closures expected. Dangerous swimming and
+  surfing conditions and localized beach erosion. Rip currents
+  can sweep even the best swimmers away from shore into deeper
+  water.
+
+* ADDITIONAL DETAILS...High tides for the following locations...
+  San Juan 1:08 PM today at 2.04 feet. Arecibo 12:16 PM today at
+  2.14 feet. Aguadilla 12:03 PM today at 1.79 feet.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+If travel is required, allow extra time as some roads may be
+closed. Do not drive around barricades or through water of
+unknown depth. Take the necessary actions to protect flood-prone
+property.
+
+Inexperienced swimmers should remain out of the water due to
+dangerous surf conditions.
+
+Swim near a lifeguard. If caught in a rip current, relax and
+float. Don't swim against the current. If able, swim in a
+direction following the shoreline. If unable to escape, face the
+shore and call or wave for help.
+
+&&
+
+$$
+
