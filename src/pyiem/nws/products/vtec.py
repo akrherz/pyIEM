@@ -75,7 +75,7 @@ class VTECProduct(TextProduct):
                     )
             if not segment.ugcs and segment.vtec:
                 self.warnings.append(
-                    "UGC is missing for segment " "that has VTEC!"
+                    "UGC is missing for segment that has VTEC!"
                 )
                 continue
             if not segment.ugcs:
@@ -318,11 +318,6 @@ class VTECProduct(TextProduct):
             segment.get_hvtec_record(),
         )
         txn.execute(sql, myargs)
-        if txn.rowcount != 1:
-            self.warnings.append(
-                f"{vtec.s3()} sbw table insert "
-                f"resulted in {txn.rowcount} rows, should be 1"
-            )
 
         # If this is a CAN, UPG action and single purpose, update expiration
         if vtec.action in ["CAN", "UPG"] and self.is_single_action():
