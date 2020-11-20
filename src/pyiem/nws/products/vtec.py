@@ -107,7 +107,10 @@ class VTECProduct(TextProduct):
         if dbdf.empty:
             return
         df = dbdf[dbdf["missed"]]
-        if df.empty:
+        # Tropical and Earthquake products with ETNs over 1000 are too complex
+        # to check in this manner, I suppose an office could issue 1000 SVRs,
+        # but alas.  See akrherz/pyIEM#316
+        if df.empty or df["etn"].min() >= 1000:
             return
         self.warnings.append(f"Product failed to cover all UGC\n{df}")
 
