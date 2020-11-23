@@ -38,8 +38,7 @@ REGIMES = [
     "WEATHER ITEM   OBSERVED NORMAL DEPARTURE",
     "WEATHER ITEM   OBSERVED TIME   RECORD NORMAL DEPARTURE LAST",
 ]
-# pylint: disable=bad-whitespace
-#   label, value, time, record, year, normal, departure, last
+# label, value, time, record, year, normal, departure, last
 COLS = [
     [16, 23, 30, 37, 42, 49, 56, 65],
     [16, 23, 30, None, None, 37, 44, 53],
