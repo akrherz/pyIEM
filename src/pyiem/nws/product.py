@@ -21,7 +21,7 @@ from pyiem.nws import ugc, vtec, hvtec
 # but in practice it is sometimes something between 4 and 6 chars
 # We do require that the first character be a A-Z one as otherwise this will
 # match the LDM sequence number at the top!
-AFOSRE = re.compile(r"^([A-Z][A-Z0-9\s]{3,5})$", re.M)
+AFOSRE = re.compile(r"^([A-Z][A-Z0-9]{3,5})\s*\t*$", re.M)
 TIME_FMT = (
     "([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
     "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])"
@@ -753,6 +753,6 @@ class TextProduct:
         data = "\n".join(
             [line.strip() for line in self.sections[0].split("\n")[:4]]
         )
-        tokens = re.findall("^([A-Z0-9 ]{4,6})$", data, re.M)
+        tokens = re.findall(r"^([A-Z0-9\s\t]{4,6})$", data, re.M)
         if tokens:
-            self.afos = tokens[0]
+            self.afos = tokens[0].strip()
