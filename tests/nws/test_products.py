@@ -23,6 +23,13 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_201124_tab_in_afos():
+    """Test that we can deal with a tab in the AFOS ID."""
+    data = get_test_file("FFW/FFWGUM.txt").replace("FFWGUM", "FFWGUM\t")
+    prod = parser(data)
+    assert prod.afos == "FFWGUM"
+
+
 def test_181207_issue74_guam():
     """Guam's longitudes are east, not west like code assumes."""
     prod = parser(get_test_file("FFW/FFWGUM.txt"))
