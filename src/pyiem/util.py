@@ -263,7 +263,8 @@ def noaaport_text(text):
     """
     # Rectify the text to remove any stray stuff
     text = text.replace("\003", "").replace("\001", "").replace("\r", "")
-    lines = text.split("\n")
+    # trim any right hand space
+    lines = [x.rstrip() for x in text.split("\n")]
     # remove any beginning empty lines
     for pos in [0, -1]:
         while lines and lines[pos].strip() == "":
