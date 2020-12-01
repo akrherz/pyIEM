@@ -39,9 +39,6 @@ jobs:
         if [[ ${{ matrix.python-version }} == "3.8" ]]; then
           codecov -e TRAVIS_PYTHON_VERSION;
         fi
-
-    - name: Build Docs
-      run: |
         conda install sphinx
         cd docs
         make html
@@ -49,6 +46,7 @@ jobs:
         cd ..
       
     - name: Build and Deploy
+      if: ${{ matrix.python-version == "3.8" }}
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
