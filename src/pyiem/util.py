@@ -22,7 +22,7 @@ from six import string_types
 # NB: We shall not be importing other parts of pyIEM here as we then get
 # circular references.
 
-SEQNUM = re.compile(r"\001?[0-9]{3}\s?")
+SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 # Setup a default logging instance for this module
 LOG = logging.getLogger("pyiem")
 LOG.addHandler(logging.NullHandler())
@@ -263,7 +263,8 @@ def noaaport_text(text):
     """
     # Rectify the text to remove any stray stuff
     text = text.replace("\003", "").replace("\001", "").replace("\r", "")
-    lines = text.split("\n")
+    # trim any right hand space
+    lines = [x.rstrip() for x in text.split("\n")]
     # remove any beginning empty lines
     for pos in [0, -1]:
         while lines and lines[pos].strip() == "":
@@ -275,6 +276,8 @@ def noaaport_text(text):
     if not SEQNUM.match(lines[1]):
         if len(lines[1]) > 5:
             lines.insert(1, "000 ")
+    else:
+        lines[1] = f"{lines[1][:3]} "
     # last line should be the control-c, by itself
     lines.append("\003")
 
