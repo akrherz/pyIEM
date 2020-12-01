@@ -40,6 +40,13 @@ jobs:
           codecov -e TRAVIS_PYTHON_VERSION;
         fi
 
+    - name: Build Docs
+      run: |
+        conda install sphinx
+        cd docs
+        make html
+        touch build/html/.nojekyll
+        cd ..
       
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
