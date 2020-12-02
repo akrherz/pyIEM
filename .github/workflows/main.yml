@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         PYTHON_VERSION: ["3.6", "3.8", "3.9"]
+    env:
+      PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
     steps:
     - uses: actions/checkout@v2
 
