@@ -1,21 +1,14 @@
-# This is a basic workflow to help you get started with Actions
 
 name: CI
-# We don't want pushes (or PRs) to gh-pages to kick anything off
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: ["push"]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-and-deploy:
-    name: Python (${{ matrix.python-version }})
+    name: Python (${{ matrix.PYTHON_VERSION }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.6", "3.8", "3.9"]
+        PYTHON_VERSION: ["3.6", "3.8", "3.9"]
     steps:
     - uses: actions/checkout@v2
 
@@ -36,8 +29,8 @@ jobs:
         python schema_manager.py
         cd ..
         coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
-        if [[ ${{ matrix.python-version }} == "3.8" ]]; then
-          codecov -e TRAVIS_PYTHON_VERSION;
+        if [[ ${{ matrix.PYTHON_VERSION }} == '3.8' ]]; then
+          codecov
         fi
         conda install sphinx
         cd docs
@@ -46,7 +39,7 @@ jobs:
         cd ..
       
     - name: Build and Deploy
-      if: ${{ matrix.python-version == 3.8 }}
+      if: ${{ matrix.PYTHON_VERSION == '3.8' }}
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
