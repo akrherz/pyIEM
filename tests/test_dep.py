@@ -15,7 +15,7 @@ def test_ramps():
     """Ramps should be of length 11"""
     for q in dep.RAMPS:
         for val in dep.RAMPS[q]:
-            assert len(val) == 11
+            assert len(val) == 9
 
 
 def test_scenarios():
