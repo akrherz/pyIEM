@@ -113,9 +113,9 @@ class CF6Product(TextProduct):
                 "avg_temp, dep_temp, hdd, cdd, precip, snow, snowd_12z, "
                 "avg_smph, max_smph, avg_drct, minutes_sunshine, "
                 "possible_sunshine, cloud_ss, wxcodes, gust_smph, gust_drct, "
-                "product_id, updated) "
+                "updated) "
                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-                "%s, %s, %s, %s, %s, %s, %s, %s, %s, now())",
+                "%s, %s, %s, %s, %s, %s, %s, %s, now())",
                 (
                     self.station,
                     valid,
@@ -138,7 +138,6 @@ class CF6Product(TextProduct):
                     row[COL_NAMES[16]],
                     row[COL_NAMES[17]],
                     row[COL_NAMES[18]],
-                    self.get_product_id(),
                 ),
             )
 
