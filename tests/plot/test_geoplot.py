@@ -434,6 +434,27 @@ def test_ugcs_lwx():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_ugcs_lwx_zones():
+    """Ensure that we can plot some zones in LWX CWA."""
+    mp = MapPlot(
+        sector="cwa",
+        cwa="LWX",
+        title="Two Maryland Counties",
+        subtitle="test_ugcs_lwx",
+        nocaption=True,
+    )
+    labels = {"MDZ001": "MDZ001", "MDZ008": "MDZ008"}
+    mp.fill_ugcs(
+        {"MDZ001": 1, "MDZ008": 40},
+        bins=list(range(0, 101, 10)),
+        labels=labels,
+        ilabel=True,
+        extend="min",
+    )
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_ugcs_withcustomlabels():
     """Fill ugcs with provided labels."""
     mp = MapPlot(
