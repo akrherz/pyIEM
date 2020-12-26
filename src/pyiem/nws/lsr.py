@@ -14,6 +14,19 @@ MAG_UNITS = re.compile(
 DELAYED_THRESHOLD = timedelta(hours=12)
 
 
+def _generate_channels(lsrobj):
+    """Generate the channels string for this LSR."""
+    cleantype = lsrobj.typetext.replace(" ", "_")
+    res = [
+        f"LSR{lsrobj.wfo}",
+        "LSR.ALL",
+        f"LSR.{cleantype}",
+        f"LSR.{lsrobj.state}",
+        f"LSR.{lsrobj.state}.{cleantype}",
+    ]
+    return ",".join(res)
+
+
 def _mylowercase(text):
     """ Specialized lowercase function """
     tokens = text.split()
@@ -180,8 +193,7 @@ class LSR:
 
         xtra = dict(
             product_id=self.product.get_product_id(),
-            channels="LSR%s,LSR.ALL,LSR.%s"
-            % (self.wfo, self.typetext.replace(" ", "_")),
+            channels=_generate_channels(self),
             geometry="POINT(%s %s)" % (self.get_lon(), self.get_lat()),
             ptype=self.get_dbtype(),
             valid=self.utcvalid.strftime("%Y%m%dT%H:%M:00"),

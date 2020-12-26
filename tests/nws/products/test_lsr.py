@@ -12,6 +12,15 @@ def dbcursor():
     return get_dbconn("postgis").cursor()
 
 
+def test_issue331_state_channels():
+    """Test that we assign new state based channels to LSRs."""
+    prod = parser(get_test_file("LSR/LSRFSD.txt"))
+    j = prod.get_jabbers("")
+    channels = j[0][2]["channels"].split(",")
+    assert "LSR.SD.TORNADO" in channels
+    assert "LSR.SD" in channels
+
+
 def test_unknown_units():
     """Test what happens when we have unknown units."""
     prod = parser(get_test_file("LSR/LSRJAN_fakeunits.txt"))
