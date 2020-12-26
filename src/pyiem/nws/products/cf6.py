@@ -54,7 +54,12 @@ class CF6Product(TextProduct):
         """Do the parsing we need to do!"""
         year = None
         month = None
-        for line in self.unixtext.split("\n"):
+        lines = self.unixtext.split("\n")
+        # Arbitrary pick to eliminate products that are likely this:
+        # Bad date: 12/2020. Last month in file is 11 / 2020 .
+        if len(lines) < 8:
+            return
+        for line in lines:
             line = line.strip()
             if line.startswith("MONTH:"):
                 m = MONTH_RE.match(line)
