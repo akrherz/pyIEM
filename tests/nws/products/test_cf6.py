@@ -11,7 +11,16 @@ from pyiem.reference import TRACE_VALUE
 @pytest.fixture
 def dbcursor():
     """Return a database cursor."""
-    return get_dbconn("iem").cursor()
+    pgconn = get_dbconn("iem")
+    yield pgconn.cursor()
+    pgconn.close()
+
+
+def test_201226_bad_date(dbcursor):
+    """Test that no error is emitted for a CF6 with a 'Bad Date'."""
+    prod = parser(get_test_file("CF6/CF6WYS_error.txt"))
+    prod.sql(dbcursor)
+    assert prod
 
 
 def test_200421_nan(dbcursor):
