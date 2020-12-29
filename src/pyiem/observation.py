@@ -2,7 +2,7 @@
 # pylint: disable=no-member
 from collections import UserDict
 import warnings
-from datetime import timezone, datetime
+from datetime import timezone, datetime, date, timedelta
 import math
 
 try:
@@ -74,6 +74,11 @@ def summary_update(txn, data):
     # NB with the coalesce func, we prioritize if we have explicit max/min vals
     # But, some of these max values are not tru max daily values
     table = get_summary_table(data["valid"])
+    dateconst = (
+        " %(localdate)s "
+        if data["_isdaily"]
+        else " date(%(valid)s at time zone %(tzname)s) "
+    )
     sql = f"""UPDATE {table} s SET
     max_water_tmpf = case when %(null_max_water_tmpf)s is null then null
         else coalesce(%(max_water_tmpf)s,
@@ -137,8 +142,7 @@ def summary_update(txn, data):
         else coalesce(%(avg_sknt)s, avg_sknt) end,
     vector_avg_drct = case when %(null_vector_avg_drct)s is null then null
         else coalesce(%(vector_avg_drct)s, vector_avg_drct) end
-    WHERE s.iemid = %(iemid)s
-        and s.day = date(%(valid)s at time zone %(tzname)s)
+    WHERE s.iemid = %(iemid)s and s.day = {dateconst}
     """
     txn.execute(sql, data)
     return txn.rowcount
@@ -152,13 +156,21 @@ class Observation:
         Constructor for the Observation
         @param station is a string of the station ID
         @param network is a string of the network for this station
-        @param valid is a datetime object with tzinfo set
+        @param valid is a datetime object with tzinfo set or date.
         """
-        if valid.tzinfo is None:
+        # datetime is a subclass of date
+        isdaily = not isinstance(valid, datetime)
+        if not isdaily and valid.tzinfo is None:
             warnings.warn("tzinfo is not set on valid, defaulting to UTC")
             valid = valid.replace(tzinfo=timezone.utc)
         self.data = ObDict(
-            {"station": station, "network": network, "valid": valid}
+            {
+                "station": station,
+                "network": network,
+                "valid": valid,
+                "localdate": valid if isdaily else None,
+                "_isdaily": isdaily,
+            }
         )
 
     def load(self, txn):
@@ -168,11 +180,18 @@ class Observation:
         if not self.compute_iemid(txn):
             return False
         table = get_summary_table(self.data["valid"])
-        sql = (
-            f"SELECT * from current c, {table} s WHERE s.iemid = c.iemid and "
-            "s.iemid = %(iemid)s and s.day = date(%(valid)s at time zone "
-            "%(tzname)s) and c.valid = %(valid)s"
-        )
+        if self.data["_isdaily"]:
+            sql = (
+                f"SELECT * from {table} WHERE iemid = %(iemid)s and "
+                "day = %(valid)s"
+            )
+        else:
+            sql = (
+                f"SELECT * from current c, {table} s WHERE s.iemid = c.iemid "
+                "and s.iemid = %(iemid)s and "
+                "s.day = date(%(valid)s at time zone %(tzname)s) and "
+                "c.valid = %(valid)s"
+            )
         txn.execute(sql, self.data)
         if txn.rowcount < 1:
             return False
@@ -294,7 +313,7 @@ class Observation:
         peak_wind_time = %(peak_wind_time)s,
         updated = now()
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
-        if not skip_current:
+        if not self.data["_isdaily"] and not skip_current:
             txn.execute(sql, self.data)
         if skip_current or (force_current_log and txn.rowcount == 0):
             sql = """INSERT into current_log
@@ -328,21 +347,28 @@ class Observation:
             %(peak_wind_time)s
             )
             """
-            txn.execute(sql, self.data)
+            if not self.data["_isdaily"]:
+                txn.execute(sql, self.data)
 
         rowcount = summary_update(txn, self.data)
         if rowcount != 1:
-            # Create a new entry
-            localvalid = self.data["valid"].astimezone(
-                ZoneInfo(self.data["tzname"])
-            )
-            # we don't want dates into the future as this will foul up others
-            if localvalid.date() > datetime.now().date():
+            tomorrow = date.today() + timedelta(days=1)
+            if self.data["_isdaily"]:
+                localvalid = self.data["valid"]
+            else:
+                # Create a new entry
+                localvalid = (
+                    self.data["valid"]
+                    .astimezone(ZoneInfo(self.data["tzname"]))
+                    .date()
+                )
+            # we don't want dates into the future as this will foul others
+            if localvalid > tomorrow:
                 return False
             txn.execute(
                 f"INSERT into summary_{localvalid.year} "
                 "(iemid, day) VALUES (%s, %s)",
-                (self.data["iemid"], localvalid.date()),
+                (self.data["iemid"], localvalid),
             )
             # try once more
             summary_update(txn, self.data)
