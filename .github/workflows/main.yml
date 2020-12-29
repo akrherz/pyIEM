@@ -30,6 +30,7 @@ jobs:
         cd database; sh bootstrap.sh
         python schema_manager.py
         cd ..
+        python util/insert_testing_data.py
         coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
         if [[ ${{ matrix.PYTHON_VERSION }} == '3.8' ]]; then
           codecov

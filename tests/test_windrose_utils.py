@@ -23,6 +23,13 @@ def faux_data():
     return valid, sknt, drct
 
 
+def test_database():
+    """Test that we can read data from the database."""
+    wr = windrose("AMW2", justdata=True, hours=[1, 2])
+    assert wr
+    wr = windrose("AMW2", hours=[1, 2])
+
+
 def test_timeinfo():
     """Exercise the _get_timeinfo method"""
     res = _get_timeinfo(range(1, 10), "hour", 24, None)

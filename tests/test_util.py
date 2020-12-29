@@ -75,7 +75,8 @@ def test_ncopen():
 
 def test_logger(caplog):
     """Can we emit logs."""
-    util.LOG.warning("hi daryl")
+    log = util.logger()
+    log.warning("hi daryl")
     assert "hi daryl" in caplog.text
 
 
@@ -301,6 +302,12 @@ def test_vtecps():
     assert ctx.get("phenomenav5") is None
 
 
+def test_properties_nocursor():
+    """Test that a cursor is generated when necessary."""
+    props = util.get_properties()
+    assert isinstance(props, dict)
+
+
 def test_properties(cursor):
     """ Try the properties function"""
     tmpname = "".join(
@@ -310,9 +317,7 @@ def test_properties(cursor):
         random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
     )
     cursor.execute(
-        """
-    INSERT into properties(propname, propvalue) VALUES (%s, %s)
-    """,
+        "INSERT into properties(propname, propvalue) VALUES (%s, %s)",
         (tmpname, tmpval),
     )
     prop = util.get_properties(cursor)
