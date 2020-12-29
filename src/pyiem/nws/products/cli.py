@@ -596,7 +596,6 @@ class CLIProduct(TextProduct):
     def sql(self, cursor):
         """Do the database update!"""
         for entry in self.data:
-            print(entry)
             self._sql_data(cursor, entry)
             update_iemaccess(cursor, entry)
 
