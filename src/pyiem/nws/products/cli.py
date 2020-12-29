@@ -6,6 +6,8 @@ import datetime
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
+from pyiem.observation import Observation
+from pyiem.exceptions import CLIException
 
 HEADLINE_RE = re.compile(
     (
@@ -59,9 +61,60 @@ COLS = [
     [16, 23, None, None, None, 30, 37, None],
     [16, 23, 30, 37, None, 44, 51, 60],
 ]
+# Allow manual provision of IDS
+HARDCODED = {}
 
 
-CLIException = Exception
+def update_iemaccess(txn, entry):
+    """Update the IEM Access Database."""
+    if entry["access_network"] is None:
+        return
+    ob = Observation(
+        entry["access_station"], entry["access_network"], entry["cli_valid"]
+    )
+    ob.load(txn)
+    current = ob.data
+    data = entry["data"]
+    logmsg = []
+    if data.get("temperature_maximum") is not None:
+        climax = int(data["temperature_maximum"])
+        if climax != current["max_tmpf"]:
+            logmsg.append("MaxT O:%s N:%s" % (current["max_tmpf"], climax))
+            current["max_tmpf"] = climax
+
+    if data.get("temperature_minimum") is not None:
+        climin = int(data["temperature_minimum"])
+        if climin != current["min_tmpf"]:
+            logmsg.append("MinT O:%s N:%s" % (current["min_tmpf"], climin))
+            current["min_tmpf"] = climin
+
+    if data.get("precip_month") is not None:
+        val = data["precip_month"]
+        if val != current["pmonth"]:
+            logmsg.append("PMonth O:%s N:%s" % (current["pmonth"], val))
+            current["pmonth"] = val
+
+    if data.get("precip_today") is not None:
+        val = data["precip_today"]
+        if val != current["pday"]:
+            logmsg.append("PDay O:%s N:%s" % (current["pday"], val))
+            current["pday"] = val
+
+    if data.get("snow_today") is not None:
+        val = data["snow_today"]
+        if current["snow"] is None or val != current["snow"]:
+            logmsg.append("Snow O:%s N:%s" % (current["snow"], val))
+            current["snow"] = val
+
+    if not logmsg:
+        return
+    ob.save(txn, skip_current=True)
+    LOG.info(
+        "%s (%s) %s",
+        entry["access_station"],
+        entry["cli_valid"].strftime("%y%m%d"),
+        ",".join(logmsg),
+    )
 
 
 def trace_r(val):
@@ -201,8 +254,6 @@ def parse_temperature(regime, lines, data):
         if len(line.strip()) < 18:
             continue
         tokens = make_tokens(regime, line)
-        if tokens[0] is None:
-            continue
         key = tokens[0].strip().lower()
         if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
             continue
@@ -251,6 +302,36 @@ def parse_wind(lines, data):
         data[("_".join(token)).lower()] = get_number(val)
 
 
+def _compute_station_ids(prod, cli_station, is_multi):
+    """Figure out what the various station IDs are."""
+    # Can't always use the AFOS as the station ID :(
+    if is_multi:
+        station = None
+        for st in prod.nwsli_provider:
+            if prod.nwsli_provider[st]["name"].upper() == cli_station:
+                station = st[1:]  # drop first char
+                break
+        if station is None:
+            raise CLIException(
+                "Unknown CLI Station Text: |%s|" % (cli_station,)
+            )
+    else:
+        station = prod.afos[3:]
+    db_station = "%s%s" % (prod.source[0], station)
+    db_station = HARDCODED.get(db_station, db_station)
+    access_station = db_station if not db_station.startswith("K") else station
+    # Compute the Network
+    if access_station not in prod.nwsli_provider:
+        prod.warnings.append(
+            "Unknown IEMAccess station |%s|" % (access_station,)
+        )
+        network = None
+    else:
+        network = prod.nwsli_provider[access_station]["network"]
+
+    return db_station, access_station, network
+
+
 class CLIProduct(TextProduct):
     """
     Represents a CLI Daily Climate Report Product
@@ -271,21 +352,23 @@ class CLIProduct(TextProduct):
                 "Product %s skipped due to wrong header", self.get_product_id()
             )
             return
-        for section in self.find_sections():
-            if not HEADLINE_RE.findall(section.replace("\n", " ")):
-                continue
+        sections = self.find_sections()
+        for section in sections:
             # We have meat!
             self.compute_diction(section)
-            valid, station = self.parse_cli_headline(section)
-            data = self.parse_data(section)
-            self.data.append(
-                dict(
-                    cli_valid=valid,
-                    cli_station=station,
-                    db_station=None,
-                    data=data,
-                )
+            entry = {}
+            entry["cli_valid"], entry["cli_station"] = self.parse_cli_headline(
+                section
             )
+            (
+                entry["db_station"],
+                entry["access_station"],
+                entry["access_network"],
+            ) = _compute_station_ids(
+                self, entry["cli_station"], len(sections) > 1
+            )
+            entry["data"] = self.parse_data(section)
+            self.data.append(entry)
 
     def find_sections(self):
         """Some trickery to figure out if we have multiple reports
@@ -300,15 +383,13 @@ class CLIProduct(TextProduct):
             tokens = re.findall("^WEATHER ITEM.*$", section, re.M)
             if not tokens:
                 raise CLIException("Could not find 'WEATHER ITEM' within text")
-            elif len(tokens) == 1:
+            if len(tokens) == 1:
                 sections.append(section)
                 continue
             # Uh oh, we need to do some manual splitting
             pos = []
             for match in re.finditer(HEADLINE_RE, section.replace("\n", " ")):
                 pos.append(match.start())
-            if len(pos) < 2:
-                raise CLIException("find_sections logic failure!")
             pos.append(len(section))
             for i, p in enumerate(pos[:-1]):
                 sections.append(section[max([0, p - 10]) : pos[i + 1]])
@@ -317,17 +398,10 @@ class CLIProduct(TextProduct):
     def compute_diction(self, text):
         """ Try to determine what we have for a format """
         tokens = re.findall("^WEATHER ITEM.*$", text, re.M)
-        if not tokens:
-            raise CLIException("Could not find 'WEATHER ITEM' within text")
-        if len(tokens) > 1:
-            raise CLIException(
-                "Found %s 'WEATHER ITEM' in text" % (len(tokens),)
-            )
         diction = tokens[0].strip()
         if diction not in REGIMES:
             raise CLIException(
-                ("Unknown diction found in 'WEATHER ITEM'\n" "|%s|")
-                % (diction,)
+                "Unknown diction found in 'WEATHER ITEM'\n|%s|" % (diction,)
             )
 
         self.regime = REGIMES.index(diction)
@@ -389,14 +463,9 @@ class CLIProduct(TextProduct):
         pos = section.find("TEMPERATURE")
         if pos == -1:
             raise CLIException("Failed to find TEMPERATURE, aborting")
-        if self.regime is None:
-            return data
 
         # Strip extraneous spaces
         meat = "\n".join([s.rstrip() for s in section[pos:].split("\n")])
-        # Don't look into aux data for things we should not be parsing
-        if meat.find("&&") > 0:
-            meat = meat[: meat.find("&&")]
         # replace any 2+ \n with just two
         meat = re.sub(r"\n{2,}", "\n\n", meat)
         sections = meat.split("\n\n")
@@ -418,32 +487,16 @@ class CLIProduct(TextProduct):
     def parse_cli_headline(self, section):
         """ Figure out when this product is valid for """
         tokens = HEADLINE_RE.findall(section.replace("\n", " "))
-        if len(tokens) == 1:
-            if len(tokens[0][1].split()[0]) == 3:
-                myfmt = "%b %d %Y"
-            else:
-                myfmt = "%B %d %Y"
-            cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt)
-            cli_station = (tokens[0][0]).strip()
-            return (cli_valid, cli_station)
-        elif len(tokens) > 1:
-            raise CLIException("Found two headers in product, unsupported!")
+        if len(tokens[0][1].split()[0]) == 3:
+            myfmt = "%b %d %Y"
         else:
-            # Known sources of bad data...
-            if self.source in ["PKMR", "NSTU", "PTTP", "PTKK", "PTKR"]:
-                return (None, None)
-            raise CLIException(
-                "Could not find date valid in %s" % (self.get_product_id(),)
-            )
+            myfmt = "%B %d %Y"
+        cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
+        cli_station = (tokens[0][0]).strip()
+        return (cli_valid, cli_station)
 
     def _sql_data(self, cursor, data):
         """Do an individual data entry."""
-        if data["db_station"] is None:
-            station = f"{self.source[0]}{self.afos[3:]}"
-            self.warnings.append(
-                f"Using crude logic to compute station of {station}"
-            )
-            data["db_station"] = station
         # See what we currently have stored.
         cursor.execute(
             "SELECT product from cli_data where station = %s and valid = %s",
@@ -542,8 +595,10 @@ class CLIProduct(TextProduct):
 
     def sql(self, cursor):
         """Do the database update!"""
-        for data in self.data:
-            self._sql_data(cursor, data)
+        for entry in self.data:
+            print(entry)
+            self._sql_data(cursor, entry)
+            update_iemaccess(cursor, entry)
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
