@@ -64,15 +64,6 @@ COLS = [
 CLIException = Exception
 
 
-def trace(val):
-    """ This value could be T or M, account for it! """
-    if val == "M" or val == "MM":
-        return None
-    if val == "T":
-        return TRACE_VALUE
-    return float(val)
-
-
 def trace_r(val):
     """ Convert our value back into meaningful string """
     if val is None:
@@ -202,13 +193,6 @@ def parse_precipitation(regime, lines, data):
                     int(lines[linenum + 1])
                 )
                 linenum += 1
-
-
-def no99(val):
-    """ Giveme int val of null! """
-    if val == "-99":
-        return None
-    return int(val)
 
 
 def parse_temperature(regime, lines, data):
@@ -409,7 +393,7 @@ class CLIProduct(TextProduct):
             return data
 
         # Strip extraneous spaces
-        meat = "\n".join([l.rstrip() for l in section[pos:].split("\n")])
+        meat = "\n".join([s.rstrip() for s in section[pos:].split("\n")])
         # Don't look into aux data for things we should not be parsing
         if meat.find("&&") > 0:
             meat = meat[: meat.find("&&")]

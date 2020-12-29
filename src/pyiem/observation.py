@@ -345,9 +345,6 @@ class Observation:
                 (self.data["iemid"], localvalid.date()),
             )
             # try once more
-            rowcount = summary_update(txn, self.data)
-            # Unsure how this could be reachable
-            if rowcount != 1:
-                return False
+            summary_update(txn, self.data)
 
         return True

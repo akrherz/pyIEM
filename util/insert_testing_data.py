@@ -15,8 +15,8 @@ def asos():
         sknt = s / 13.0
         drct = s
         cursor.execute(
-            f"INSERT into t{valid.year} (station, valid, sknt, drct) "
-            "VALUES ('AMW2', %s, %s, %s)",
+            f"INSERT into t{valid.year} (station, valid, sknt, drct, "
+            "report_type) VALUES ('AMW2', %s, %s, %s, 2)",
             (valid, sknt, drct),
         )
     cursor.close()

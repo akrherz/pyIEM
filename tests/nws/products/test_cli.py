@@ -7,12 +7,19 @@ import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file, get_dbconn
 from pyiem.nws.products import parser as cliparser
+from pyiem.nws.products.cli import get_number
 
 
 @pytest.fixture
 def dbcursor():
     """Get a database cursor for testing."""
     return get_dbconn("iem").cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+
+def test_get_number():
+    """Test the number to float conversion."""
+    assert get_number("") is None
+    assert get_number("ABC") is None
 
 
 def test_190510_parsefail():

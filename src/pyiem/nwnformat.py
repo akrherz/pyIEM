@@ -295,8 +295,8 @@ class nwnformat:
         Returns:
           str: A NWN format string"""
         return (
-            "%s %03i  %5s %8s %-3s %02iMPH %03iK %03iF %03iF %03i%s "
-            '%05.2f%s %05.2f"D %05.2f"M %05.2f"R\015\012'
+            "%s %03.0f  %5s %8s %-3s %02.0fMPH %03.0fK %03.0fF %03.0fF "
+            '%03.0f%s %05.2f%s %05.2f"D %05.2f"M %05.2f"R\015\012'
         ) % (
             "A",
             self.sid,
@@ -369,38 +369,8 @@ class nwnformat:
             0,
         )
 
-    def setPMonth(self, newval):
-        if newval != "NA":
-            self.pMonth = float(newval)
-
-    def parseWind(self, newval):
-        tokens = re.split("-", newval)
-        if len(tokens) != 2:
-            return
-
-        if tokens[0] != "Missing":
-            self.drctTxt = tokens[0]
-
-        if tokens[1] == "Missing":
-            return
-
-        try:
-            self.sped = int(tokens[1])
-        except ValueError:
-            traceback.print_exc()
-
-    def setRad(self, newval):
-        if newval != "NA":
-            self.rad = newval
-
-    def parsePDay(self, newval):
-        if newval == "Missing":
-            self.pDay = 0.00
-        else:
-            self.pDay = float(newval)
-
-    # Make sure that nothing bad is going on here....
     def sanityCheck(self):
+        """Bounds Check."""
         if self.xsped is None or self.xsped < 0:
             self.xsped = 0
             self.xdrct = -99
