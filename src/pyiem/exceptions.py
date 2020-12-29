@@ -31,3 +31,7 @@ class SAWException(Exception):
 
 class UGCParseException(Exception):
     """Custom Exception this parser can raise"""
+
+
+class CLIException(Exception):
+    """Custom Exception for CLI Parsing Issues"""

@@ -30,6 +30,7 @@ TEMPERATURE (F)
                                                                      
 PRECIPITATION (IN)                                                   
   YESTERDAY        0.01   2.67 1896   0.25  -0.24     0.00           
+                               1999
   MONTH TO DATE    9.65               7.40   2.25     0.56           
   SINCE JUL 1     21.41              16.33   5.08     5.12           
   SINCE JAN 1     37.40              39.61  -2.21    16.60           
