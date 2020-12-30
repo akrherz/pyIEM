@@ -41,6 +41,13 @@ def test_issue217():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_twitter_resolution():
+    """Test that we get good plot domain when we want a twitter resolution."""
+    mp = MapPlot(sector="conus", nocaption=True, twitter=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_issue98_labelbar():
     """Sometimes our label bar sucks."""
     mp = MapPlot(
