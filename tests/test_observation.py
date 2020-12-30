@@ -7,6 +7,7 @@ import random
 import psycopg2.extras
 import numpy as np
 import pytest
+import pandas as pd
 from pyiem import observation
 from pyiem.util import get_dbconn, utc
 
@@ -18,6 +19,42 @@ class blah:
     ob = None
     conn = None
     cursor = None
+
+
+def test_numpy_datetime64():
+    """Test that numpy's datetime64 is not considered as daily."""
+    ts = np.datetime64("2020-12-30")
+    with pytest.warns(UserWarning):
+        ob = observation.Observation("XXX", "XXX", ts)
+    assert ob.data["_isdaily"] is False
+    assert ob.data["valid"] == utc(2020, 12, 30)
+
+
+def test_date_isdaily():
+    """Test that providing a date triggers the isdaily logic."""
+    ts = datetime.date(2020, 12, 30)
+    with pytest.warns(None) as record:
+        ob = observation.Observation("XXX", "XXX", ts)
+    assert not record
+    assert ob.data["_isdaily"] is True
+    assert ob.data["valid"] == ts
+
+
+def test_pandas_timestamp():
+    """Test that Pandas Timestamp objects are not considered as daily."""
+    ts = pd.Timestamp("2020/12/30")
+    with pytest.warns(UserWarning):
+        ob = observation.Observation("XXX", "XXX", ts)
+    assert ob.data["_isdaily"] is False
+    assert ob.data["valid"] == utc(2020, 12, 30)
+
+
+def test_pandas_timestamp_tz():
+    """Test that Pandas Timestamp tz objects are not considered as daily."""
+    ts = pd.Timestamp("2020/12/30", tz="America/Chicago")
+    ob = observation.Observation("XXX", "XXX", ts)
+    assert ob.data["_isdaily"] is False
+    assert ob.data["valid"] == utc(2020, 12, 30, 6)
 
 
 @pytest.mark.parametrize(
