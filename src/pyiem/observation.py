@@ -2,7 +2,7 @@
 # pylint: disable=no-member
 from collections import UserDict
 import warnings
-from datetime import timezone, datetime, date, timedelta
+from datetime import timezone, date, timedelta
 import math
 
 try:
@@ -11,6 +11,7 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo
 
 import numpy as np
+import pandas as pd
 import metpy.calc as mcalc
 from metpy.units import units as munits
 
@@ -158,10 +159,13 @@ class Observation:
         @param network is a string of the network for this station
         @param valid is a datetime object with tzinfo set or date.
         """
-        # datetime is a subclass of date
-        isdaily = not isinstance(valid, datetime)
-        if not isdaily and valid.tzinfo is None:
+        # This is somewhat hacky to ensure that we *only* get date objects
+        # to trigger the isdaily logic
+        isdaily = valid.__class__.__name__ == "date"
+        if not isdaily and getattr(valid, "tzinfo", None) is None:
             warnings.warn("tzinfo is not set on valid, defaulting to UTC")
+            if isinstance(valid, np.datetime64):
+                valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)
         self.data = ObDict(
             {
