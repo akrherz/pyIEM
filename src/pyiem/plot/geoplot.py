@@ -72,6 +72,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_OVERLAY,
     Z_OVERLAY2,
     Z_FRAME,
+    TWITTER_RESOLUTION_INCH,
 )
 from pyiem.util import ssw, LOG
 from pyiem.datatypes import speed, direction
@@ -195,9 +196,13 @@ class MapPlot:
             fig (matplotlib.pyplot.figure,optional): provide a figure instance
               for more advanced plot control.
             logo (str,optional): logo name to slap on the plot.
+            twitter (bool): Set an image resolution that is favorable to
+              posting to Twitter. Default: False.
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
+        if kwargs.get("twitter", False) is True:
+            figsize = TWITTER_RESOLUTION_INCH
         if self.fig is None:
             self.fig = plt.figure(
                 num=None, figsize=figsize, dpi=kwargs.get("dpi", 100)

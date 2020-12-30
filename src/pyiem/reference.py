@@ -36,6 +36,7 @@ import cartopy.crs as ccrs
 
 TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
+TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
 EPSG = {
     5070: ccrs.AlbersEqualArea(

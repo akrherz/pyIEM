@@ -163,7 +163,7 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     # Get the frame at the proper zorder
     for _k, spine in ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
-    ax.set_extent(geoextent)
+    ax.set_extent(geoextent, crs=ccrs.PlateCarree())
     if aspect != "equal":
         return ax
     # Render the canvas so we know what happened with our axis
@@ -263,7 +263,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.CONUS_WEST + 14,
                 reference.CONUS_EAST - 12,
                 reference.CONUS_SOUTH,
-                reference.CONUS_NORTH + 1,
+                reference.CONUS_NORTH + 0.2,
             ],
             reference.EPSG[5070],
             aspect,
