@@ -395,21 +395,16 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
 
 def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     """A Product Correction."""
-    # A previous issued product is being corrected
+    # For corrections, we only update the SVS and updated
     txn.execute(
         f"UPDATE {warning_table} SET "
-        "expire = coalesce(%s, expire), status = %s, "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__', issue = coalesce(%s, issue), "
-        "init_expire = coalesce(%s, init_expire) WHERE wfo = %s and "
+        "|| %s || '__', updated = %s WHERE wfo = %s and "
         f"eventid = %s and ugc in %s and significance = %s "
         "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
         (
-            vtec.endts,
-            vtec.action,
             prod.unixtext,
-            vtec.begints,
-            vtec.endts,
+            prod.valid,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_tuple(),

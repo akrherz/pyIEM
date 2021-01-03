@@ -1,0 +1,62 @@
+041 
+WWUS73 KGID 030812
+NPWGID
+
+URGENT - WEATHER MESSAGE
+National Weather Service Hastings NE
+212 AM CST Sun Jan 3 2021
+
+NEZ063-076-077-087-030915-
+/O.CAN.KGID.FG.Y.0002.000000T0000Z-210103T1500Z/
+Hamilton-Clay-Fillmore-Thayer-
+Including the cities of Aurora, Sutton, Harvard, Clay Center, 
+Edgar, Fairfield, Geneva, Exeter, Fairmont, Hebron, and Deshler
+212 AM CST Sun Jan 3 2021
+
+...DENSE FOG ADVISORY IS CANCELLED...
+
+While there may be some areas of reduced visibility in fog through
+the early morning, widespread dense fog appears unlikely.
+Travelers overnight should expect localized reduced visibilities 
+in low lying areas such as river valleys through sunrise. The
+visibility may be down to less than one half mile at times but
+could vary widely from one location to the next. For most of the
+area, visibilities should be at last a few miles. 
+
+$$
+
+NEZ041-048-049-064-031500-
+/O.CON.KGID.FG.Y.0002.000000T0000Z-210103T1500Z/
+Nance-Merrick-Polk-York-
+Including the cities of Fullerton, Genoa, Central City, 
+Stromsburg, Osceola, Shelby, Polk, and York
+212 AM CST Sun Jan 3 2021
+
+...DENSE FOG ADVISORY REMAINS IN EFFECT UNTIL 9 AM CST THIS
+MORNING...
+
+* WHAT...Visibility less down to one quarter mile in dense fog.
+
+* WHERE...Nance, Merrick, Polk and York Counties. 
+
+* WHEN...Until 9 AM CST this morning.
+
+* IMPACTS...Potentially hazardous driving conditions due to low 
+  visibility.
+ 
+* ADDITIONAL DETAILS...Areas of locally dense fog will linger
+  until shortly after sunrise today. Visibilities may be down to
+  one quarter mile at times, but will vary widely from place to
+  place. Travelers should expect widely varying visibilities 
+  early this morning, with the lowest visibility in low lying 
+  areas such as river valleys. 
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+If driving, slow down, use your headlights, and leave plenty of
+distance ahead of you. Also, be alert for frost on bridge decks
+causing slippery roads.
+
+&&
+
+$$

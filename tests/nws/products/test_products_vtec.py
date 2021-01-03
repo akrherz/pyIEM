@@ -40,6 +40,27 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_210103_vtec_cor(dbcursor):
+    """Test that VTEC COR actions do not get their status stored."""
+    prod = vtecparser(get_test_file("NPWGID/00.txt"))
+    prod.sql(dbcursor)
+    # CAN 4 ugcs
+    prod = vtecparser(get_test_file("NPWGID/01.txt"))
+    prod.sql(dbcursor)
+    # CORrected the product, ensure those four ugcs are still cancelled
+    prod = vtecparser(get_test_file("NPWGID/02.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT ugc from warnings_2021 where wfo = 'GID' and eventid = 2 and "
+        "phenomena = 'FG' and significance = 'Y' and status = 'CAN'"
+    )
+    assert dbcursor.rowcount == 4
+    # CAN the rest, make sure we have no warnings
+    prod = vtecparser(get_test_file("NPWGID/02.txt"))
+    prod.sql(dbcursor)
+    assert not filter_warnings(prod.warnings)
+
+
 def test_201120_tml_line(dbcursor):
     """Test that we can insert TML lines."""
     data = get_test_file("TORFSD.txt")

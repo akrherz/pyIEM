@@ -1,0 +1,23 @@
+808 
+WWUS73 KGID 031118
+NPWGID
+
+URGENT - WEATHER MESSAGE
+National Weather Service Hastings NE
+518 AM CST Sun Jan 3 2021
+
+NEZ041-048-049-064-031230-
+/O.CAN.KGID.FG.Y.0002.000000T0000Z-210103T1500Z/
+Nance-Merrick-Polk-York-
+Including the cities of Fullerton, Genoa, Central City, 
+Stromsburg, Osceola, Shelby, Polk, and York
+518 AM CST Sun Jan 3 2021
+
+...DENSE FOG ADVISORY IS CANCELLED...
+
+The dense fog advisory has been cancelled. While there may some
+occasional spots of patchy fog, especially in low lying areas,
+widespread dense fog is not expected. Lingering fog should lift
+shortly after sunrise. 
+
+$$
