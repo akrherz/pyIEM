@@ -309,27 +309,34 @@ def _compute_station_ids(prod, cli_station, is_multi):
         station = None
         for st in prod.nwsli_provider:
             if prod.nwsli_provider[st]["name"].upper() == cli_station:
-                station = st[1:]  # drop first char
+                station = st
                 break
         if station is None:
             raise CLIException(
                 "Unknown CLI Station Text: |%s|" % (cli_station,)
             )
     else:
-        station = prod.afos[3:]
-    db_station = "%s%s" % (prod.source[0], station)
-    db_station = HARDCODED.get(db_station, db_station)
-    access_station = db_station if not db_station.startswith("K") else station
-    # Compute the Network
-    if access_station not in prod.nwsli_provider:
+        station = prod.source[0] + prod.afos[3:]
+    # We have computed a four character station ID, is it known?
+    access_station = None
+    network = None
+    if station not in prod.nwsli_provider:
         prod.warnings.append(
-            "Unknown IEMAccess station |%s|" % (access_station,)
+            "Station not known to NWSCLI Network |%s|" % (station,)
         )
-        network = None
     else:
-        network = prod.nwsli_provider[access_station]["network"]
+        network = prod.nwsli_provider[station].get("access_network")
+        access_station = prod.nwsli_provider[station].get(
+            "access_station",
+            station[1:] if station.startswith("K") else station,
+        )
+    if network is None:
+        prod.warnings.append(
+            "Unknown IEMAccess station |%s| access_station |%s|"
+            % (station, access_station)
+        )
 
-    return db_station, access_station, network
+    return station, access_station, network
 
 
 class CLIProduct(TextProduct):
@@ -601,6 +608,12 @@ class CLIProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Provide back CLI objects based on the parsing of this text """
+    """Parse CLI Text Products.
+
+    Args:
+      nwsli_provider (dict): This dictionary provider in the form of the
+        `pyiem.network.Table` object should contain additional attributes of
+        `access_station` and `access_network` to map back to IEMAccess.
+    """
     # Careful here, see if we have two CLIs in one product!
     return CLIProduct(text, utcnow, ugc_provider, nwsli_provider)
