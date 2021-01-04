@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>products Package &#8212; pyIEM 0.0.post1+ge8c725d documentation</title>
+    <title>products Package &#8212; pyIEM 0.0.post1+g1fe3b6d documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     
@@ -30,7 +30,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ge8c725d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g1fe3b6d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">nws Package</a> &#187;</li>
@@ -181,7 +181,14 @@ allow lookup of geographic information for station identifiers.</p></li>
 <dl class="py function">
 <dt id="pyiem.nws.products.cli.parser">
 <code class="sig-prename descclassname">pyiem.nws.products.cli.</code><code class="sig-name descname">parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">utcnow</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ugc_provider</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nwsli_provider</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provide back CLI objects based on the parsing of this text</p>
+<dd><p>Parse CLI Text Products.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nwsli_provider</strong> (<em>dict</em>) – This dictionary provider in the form of the
+<cite>pyiem.network.Table</cite> object should contain additional attributes of
+<cite>access_station</cite> and <cite>access_network</cite> to map back to IEMAccess.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -828,7 +835,7 @@ VTECProduct instance or returns an exception</p>
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ge8c725d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g1fe3b6d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >nws Package</a> &#187;</li>
@@ -837,7 +844,7 @@ VTECProduct instance or returns an exception</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015-2021, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.2.
     </div>
   </body>
 </html>
