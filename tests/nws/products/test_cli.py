@@ -10,16 +10,16 @@ from pyiem.nws.products import parser as cliparser
 from pyiem.nws.products.cli import get_number, CLIException
 
 NWSLI_PROVIDER = {
-    "IAD": dict(name="HOUSTON INTERCONTINENTAL", network="ZZ_ASOS"),
-    "DMH": dict(name="", network="ZZ_ASOS"),
-    "HOU": dict(name="HOUSTON/HOBBY AIRPORT", network="ZZ_ASOS"),
-    "PADQ": dict(name="KODIAK", network="AK_ASOS"),
-    "PAKN": dict(name="KING SALMON", network="AK_ASOS"),
-    "PANC": dict(name="ANCHORAGE AK", network="AK_ASOS"),
-    "PASN": dict(name="SAINT PAUL ISLAND", network="AK_ASOS"),
-    "PBET": dict(name="BETHEL", network="AK_ASOS"),
-    "PCBD": dict(name="COLD BAY", network="AK_ASOS"),
-    "POME": dict(name="NOME WSO AP", network="AK_ASOS"),
+    "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),
+    "KDMH": dict(name="", attributes={"MAPS_TO": "QQQ|ZZ_ASOS"}),
+    "KHOU": dict(name="HOUSTON/HOBBY AIRPORT", access_network="ZZ_ASOS"),
+    "PADQ": dict(name="KODIAK", access_network="AK_ASOS"),
+    "PAKN": dict(name="KING SALMON", access_network="AK_ASOS"),
+    "PANC": dict(name="ANCHORAGE AK", access_network="AK_ASOS"),
+    "PASN": dict(name="SAINT PAUL ISLAND", access_network="AK_ASOS"),
+    "PBET": dict(name="BETHEL", access_network="AK_ASOS"),
+    "PCBD": dict(name="COLD BAY", accesss_network="AK_ASOS"),
+    "POME": dict(name="NOME WSO AP", access_network="AK_ASOS"),
 }
 
 
@@ -101,11 +101,12 @@ def test_190510_parsefail(dbcursor):
     # Create an entry to actually update
     dbcursor.execute(
         "INSERT into stations(iemid, id, network) VALUES (%s, %s, %s)",
-        (-1, "DMH", "ZZ_ASOS"),
+        (-1, "QQQ", "ZZ_ASOS"),
     )
     prod = factory("CLI/CLIDMH.txt")
     assert not prod.warnings
-    assert prod.data[0]["access_network"] == NWSLI_PROVIDER["DMH"]["network"]
+    pd0 = prod.data[0]
+    assert pd0["access_network"] == "ZZ_ASOS"
     assert prod.data[0]["data"]["temperature_maximum"] == 74
     prod.sql(dbcursor)
     # Run twice to hit a no-op
