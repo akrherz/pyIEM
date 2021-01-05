@@ -11,7 +11,7 @@ from pyiem.nws.products.cli import get_number, CLIException
 
 NWSLI_PROVIDER = {
     "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),
-    "KDMH": dict(name="", access_network="ZZ_ASOS", access_station="QQQ"),
+    "KDMH": dict(name="", attributes={"MAPS_TO": "QQQ|ZZ_ASOS"}),
     "KHOU": dict(name="HOUSTON/HOBBY AIRPORT", access_network="ZZ_ASOS"),
     "PADQ": dict(name="KODIAK", access_network="AK_ASOS"),
     "PAKN": dict(name="KING SALMON", access_network="AK_ASOS"),
@@ -106,7 +106,7 @@ def test_190510_parsefail(dbcursor):
     prod = factory("CLI/CLIDMH.txt")
     assert not prod.warnings
     pd0 = prod.data[0]
-    assert pd0["access_network"] == NWSLI_PROVIDER["KDMH"]["access_network"]
+    assert pd0["access_network"] == "ZZ_ASOS"
     assert prod.data[0]["data"]["temperature_maximum"] == 74
     prod.sql(dbcursor)
     # Run twice to hit a no-op

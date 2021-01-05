@@ -68,7 +68,7 @@ HARDCODED = {}
 def update_iemaccess(txn, entry):
     """Update the IEM Access Database."""
     if entry["access_network"] is None:
-        return
+        return False
     ob = Observation(
         entry["access_station"], entry["access_network"], entry["cli_valid"]
     )
@@ -107,14 +107,16 @@ def update_iemaccess(txn, entry):
             current["snow"] = val
 
     if not logmsg:
-        return
-    ob.save(txn, skip_current=True)
+        return True
+    res = ob.save(txn, skip_current=True)
     LOG.info(
-        "%s (%s) %s",
+        "%s (%s) %s ob.save: %s",
         entry["access_station"],
         entry["cli_valid"].strftime("%y%m%d"),
         ",".join(logmsg),
+        res,
     )
+    return res
 
 
 def trace_r(val):
@@ -302,41 +304,44 @@ def parse_wind(lines, data):
         data[("_".join(token)).lower()] = get_number(val)
 
 
-def _compute_station_ids(prod, cli_station, is_multi):
-    """Figure out what the various station IDs are."""
+def _compute_station_ids(prod, cli_station_name, is_multi):
+    """Compute needed station IDs."""
     # Can't always use the AFOS as the station ID :(
     if is_multi:
         station = None
         for st in prod.nwsli_provider:
-            if prod.nwsli_provider[st]["name"].upper() == cli_station:
+            if prod.nwsli_provider[st]["name"].upper() == cli_station_name:
                 station = st
                 break
         if station is None:
             raise CLIException(
-                "Unknown CLI Station Text: |%s|" % (cli_station,)
+                "Unknown CLI Station Text: |%s|" % (cli_station_name,)
             )
     else:
         station = prod.source[0] + prod.afos[3:]
     # We have computed a four character station ID, is it known?
-    access_station = None
-    network = None
     if station not in prod.nwsli_provider:
         prod.warnings.append(
             "Station not known to NWSCLI Network |%s|" % (station,)
         )
-    else:
-        network = prod.nwsli_provider[station].get("access_network")
-        access_station = prod.nwsli_provider[station].get(
-            "access_station",
-            station[1:] if station.startswith("K") else station,
-        )
-    if network is None:
-        prod.warnings.append(
-            "Unknown IEMAccess station |%s| access_station |%s|"
-            % (station, access_station)
+        return station, None, None
+
+    access_station = None
+    access_network = None
+    # See if our network table provides an attribute that maps us to an ASOS
+    val = prod.nwsli_provider[station].get("attributes", dict()).get("MAPS_TO")
+    if val is not None:
+        tokens = val.split("|")
+        if len(tokens) == 2:
+            access_station, access_network = tokens
+    if access_station is None:
+        # Our default mapping
+        access_station = station[1:] if station.startswith("K") else station
+        access_network = "%s_ASOS" % (
+            prod.nwsli_provider[station].get("state"),
         )
 
-    return station, access_station, network
+    return station, access_station, access_network
 
 
 class CLIProduct(TextProduct):
@@ -499,7 +504,7 @@ class CLIProduct(TextProduct):
         else:
             myfmt = "%B %d %Y"
         cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
-        cli_station = (tokens[0][0]).strip()
+        cli_station = (tokens[0][0]).strip().upper()
         return (cli_valid, cli_station)
 
     def _sql_data(self, cursor, data):
@@ -604,7 +609,15 @@ class CLIProduct(TextProduct):
         """Do the database update!"""
         for entry in self.data:
             self._sql_data(cursor, entry)
-            update_iemaccess(cursor, entry)
+            if not update_iemaccess(cursor, entry):
+                self.warnings.append(
+                    "IEMAccess Update failed %s %s %s"
+                    % (
+                        entry["access_network"],
+                        entry["access_station"],
+                        entry["cli_valid"],
+                    )
+                )
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
