@@ -12,6 +12,15 @@ def dbcursor():
     return get_dbconn("postgis").cursor()
 
 
+def test_icestorm(dbcursor):
+    """Test that we guess the ice storm magnitude and units."""
+    prod = parser(get_test_file("LSR/LSRTOP_ICE.txt"))
+    assert prod.lsrs[0].magnitude_f == 0.20
+    j = prod.get_jabbers("")
+    assert j[0][0].find("ICE STORM of 0.20 INCH") > -1
+    prod.lsrs[0].sql(dbcursor)
+
+
 def test_issue331_state_channels():
     """Test that we assign new state based channels to LSRs."""
     prod = parser(get_test_file("LSR/LSRFSD.txt"))

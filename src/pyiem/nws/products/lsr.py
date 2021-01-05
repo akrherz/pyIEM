@@ -6,7 +6,7 @@ import math
 
 from shapely.geometry import Point as ShapelyPoint
 from pyiem.nws.product import TextProduct, TextProductException
-from pyiem.nws.lsr import LSR
+from pyiem.nws.lsr import LSR, _icestorm_remark
 from pyiem.util import utc
 from pyiem import reference
 
@@ -198,6 +198,15 @@ def parse_lsr(prod, text):
         meat = " ".join(lines[2:]).strip()
         if meat.strip() != "":
             lsr.remark = " ".join(meat.split())
+    if lsr.typetext == "ICE STORM" and lsr.magnitude_f is None:
+        try:
+            val = _icestorm_remark(lsr.remark)
+            if val is not None:
+                lsr.magnitude_f = val
+                lsr.magnitude_qualifier = "U"
+                lsr.magnitude_units = "INCH"
+        except Exception as exp:
+            prod.warnings.append(f"_icestorm_remark exception {exp}")
     return lsr
 
 
