@@ -16,11 +16,21 @@ from pyiem.nws.products import lsr
         ("0.5 INCHES", 0.5),
         ("A QUARTER TO HALF INCH OF ICE", 0.5),
         ("LIMBS 6 TO 10 INCHES IN DIAMETER. THREE-TENTHS OF AN INCH", 0.3),
+        ("ONE QUARTER INCH OF ICE ACCUMULATION", 0.25),
+        ("3/8THS OF AN INCH", 0.375),
+        ("3 TENTHS OF AN INCH", 0.3),
     ],
 )
 def test_icestorm_remark(text, ans):
     """Ripping out a magnitude from the remark text."""
     assert ir(text) == ans
+
+
+def test_icestorm_remark_none():
+    """Make sure a None or empty remark causes grief."""
+    assert ir(None) is None
+    assert ir("") is None
+    assert ir("BLAH BLAH BLAH") is None
 
 
 def test_mag_string():

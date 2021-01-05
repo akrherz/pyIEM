@@ -199,14 +199,11 @@ def parse_lsr(prod, text):
         if meat.strip() != "":
             lsr.remark = " ".join(meat.split())
     if lsr.typetext == "ICE STORM" and lsr.magnitude_f is None:
-        try:
-            val = _icestorm_remark(lsr.remark)
-            if val is not None:
-                lsr.magnitude_f = val
-                lsr.magnitude_qualifier = "U"
-                lsr.magnitude_units = "INCH"
-        except Exception as exp:
-            prod.warnings.append(f"_icestorm_remark exception {exp}")
+        val = _icestorm_remark(lsr.remark)
+        if val is not None:
+            lsr.magnitude_f = val
+            lsr.magnitude_qualifier = "U"
+            lsr.magnitude_units = "INCH"
     return lsr
 
 

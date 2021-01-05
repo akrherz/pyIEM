@@ -9,7 +9,7 @@ from pyiem.util import html_escape
 
 ICE_ACCUM_V0 = re.compile(r"(\d)/(\d)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
 ICE_ACCUM_V1 = re.compile(
-    r"(0\.\d|\.\d|\d\.?\d?\d?)\"? T?E?N?T?H?S?O?F?\s*A?N?\s*(INCHES|INCH)"
+    r"(0\.\d|\.\d|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
 )
 ICE_ACCUM_V2 = re.compile(
     r"(THREE QUARTERS|ONE QUARTER|ONE HALF|HALF|ONE THIRD|QUARTER|ONE|"
@@ -64,9 +64,9 @@ def _icestorm_remark(remark):
 
     tokens = ICE_ACCUM_V1.findall(remark)
     mags = []
-    for _m, _u in tokens:
-        if _m.find(".") == -1 and len(_m) > 1:  # arb
-            mags.append(float(_m) / 100.0)
+    for _m, _t, _u in tokens:
+        if _t.startswith("TENTH"):
+            mags.append(float(_m) / 10.0)
             continue
         mags.append(float(_m))
     if mags:
