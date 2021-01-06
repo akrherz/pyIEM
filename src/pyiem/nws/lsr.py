@@ -7,11 +7,75 @@ import warnings
 from pyiem import reference
 from pyiem.util import html_escape
 
+ICE_ACCUM_V0 = re.compile(r"(\d)/(\d)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
+ICE_ACCUM_V1 = re.compile(
+    r"(0\.\d|\.\d|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
+)
+ICE_ACCUM_V2 = re.compile(
+    r"(THREE QUARTERS|ONE QUARTER|ONE HALF|HALF|ONE THIRD|QUARTER|ONE|"
+    "THREE TENTHS|THIRD|ONE TENTH|TWO THIRDS|TWO TENTHS) "
+    r"O?F?\s*A?N?\s*(INCHES|INCH)"
+)
+ICE_XREF = {
+    "ONE TENTH": 0.10,
+    "TWO TENTHS": 0.20,
+    "ONE QUARTER": 0.25,
+    "QUARTER": 0.25,
+    "THREE TENTHS": 0.30,
+    "ONE THIRD": 0.33,
+    "THIRD": 0.33,
+    "HALF": 0.5,
+    "ONE HALF": 0.5,
+    "TWO THIRDS": 0.66,
+    "THREE QUARTERS": 0.75,
+    "ONE": 1.0,
+}
+
 MAG_UNITS = re.compile(
     r"(ACRE|INCHES|INCH|MILE|MPH|KTS|U|FT|F|E|M|TRACE)", re.IGNORECASE
 )
 # Products that are considered delayed reports
 DELAYED_THRESHOLD = timedelta(hours=12)
+
+
+def _icestorm_remark(remark):
+    """Glean a magnitude from an ICE STORM event."""
+    if remark is None:
+        return None
+    # Remove things that confuse logic
+    replaces = [
+        ["-", " "],
+        ["PRECIPITATION", "SNOW"],
+        ["SLEET", "SNOW"],
+        ["INCH OF SNOW", " "],
+        ["INCHES OF SNOW", " "],
+        ["INCHES IN DIAMETER", " "],
+        ["INCH TREE BRANCH", " "],
+        ["INCH DIAMETER", " "],
+    ]
+    for subject, replacement in replaces:
+        remark = remark.replace(subject, replacement)
+    tokens = ICE_ACCUM_V0.findall(remark)
+    mags = []
+    for _n, _d, _u in tokens:
+        mags.append(float(_n) / float(_d))
+    if mags:
+        return min(mags)
+
+    tokens = ICE_ACCUM_V1.findall(remark)
+    mags = []
+    for _m, _t, _u in tokens:
+        if _t.startswith("TENTH"):
+            mags.append(float(_m) / 10.0)
+            continue
+        mags.append(float(_m))
+    if mags:
+        return min(mags)
+    tokens = ICE_ACCUM_V2.findall(remark)
+    if tokens:
+        return ICE_XREF[tokens[0][0]]
+
+    return None
 
 
 def _generate_channels(lsrobj):
