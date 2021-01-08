@@ -497,7 +497,7 @@ class TextProduct:
             nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
-        self.unixtext = text.replace("\r\r\n", "\n")
+        self.unixtext = text.replace("\r", "")
         self.sections = self.unixtext.split("\n\n")
         self.afos = None
         # The "truth" timestamp
@@ -749,10 +749,10 @@ class TextProduct:
 
     def parse_afos(self):
         """ Figure out what the AFOS PIL is """
-        # at most, only look at the top four lines
+        # at most, only look at the top four lines, skipping the first
         data = "\n".join(
-            [line.strip() for line in self.sections[0].split("\n")[:4]]
+            [line.strip() for line in self.sections[0].split("\n")[1:4]]
         )
-        tokens = re.findall(r"^([A-Z0-9\s\t]{4,6})$", data, re.M)
+        tokens = re.findall(r"^([A-Z][A-Z0-9\s\t]{3,6})$", data, re.M)
         if tokens:
             self.afos = tokens[0].strip()
