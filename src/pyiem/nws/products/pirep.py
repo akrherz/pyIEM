@@ -125,7 +125,7 @@ class Pirep(product.TextProduct):
             if report.strip() == "":
                 continue
             res = self.process_pirep(" ".join(report.strip().split()))
-            if res is not None:
+            if res is not None and res.valid is not None:
                 self.reports.append(res)
 
     def process_pirep(self, report):
@@ -139,7 +139,7 @@ class Pirep(product.TextProduct):
             if i == 0:
                 if len(token) > 10:
                     LOG.info("Aborting as not-PIREP? |%s|", report)
-                    return
+                    return None
                 if token.find(" UUA") > 0:
                     _pr.priority = Priority.UUA
                 else:
@@ -177,7 +177,33 @@ class Pirep(product.TextProduct):
                         loc = loc[1:]
                     dist = int(d["dist"])
                     bearing = DRCT2DIR[d["dir"]]
-
+                elif therest.find("-") > 0 and re.match(OV_TWOLOC, therest):
+                    d = re.match(OV_TWOLOC, therest).groupdict()
+                    numbers = re.findall("[0-9]{6}", therest)
+                    if numbers:
+                        bearing = int(numbers[0][:3])
+                        dist = int(numbers[0][3:])
+                        loc = d["loc2"]
+                        if len(loc) == 4 and loc[0] == "K":
+                            loc = loc[1:]
+                    else:
+                        # Split the distance between the two points
+                        lats = []
+                        lons = []
+                        for loc in [d["loc1"], d["loc2"]]:
+                            if len(loc) == 4 and loc[0] == "K":
+                                loc = loc[1:]
+                            if loc not in self.nwsli_provider:
+                                self.warnings.append(
+                                    f"Unknown location: {loc} '{report}'"
+                                )
+                            else:
+                                lats.append(self.nwsli_provider[loc]["lat"])
+                                lons.append(self.nwsli_provider[loc]["lon"])
+                        if len(lats) == 2:
+                            _pr.latitude = sum(lats) / 2.0
+                            _pr.longitude = sum(lons) / 2.0
+                        continue
                 elif re.match(OV_LOCDIR, therest):
                     # KFAR330008
                     d = re.match(OV_LOCDIR, therest).groupdict()
@@ -212,32 +238,6 @@ class Pirep(product.TextProduct):
                 elif therest == "O":
                     # Use the first part of the report in this case
                     loc = report[:3]
-                elif therest.find("-") > 0 and re.match(OV_TWOLOC, therest):
-                    d = re.match(OV_TWOLOC, therest).groupdict()
-                    numbers = re.findall("[0-9]{6}", therest)
-                    if numbers:
-                        bearing = int(numbers[0][:3])
-                        dist = int(numbers[0][3:])
-                        loc = d["loc2"]
-                        if len(loc) == 4 and loc[0] == "K":
-                            loc = loc[1:]
-                    else:
-                        # Split the distance between the two points
-                        lats = []
-                        lons = []
-                        for loc in [d["loc1"], d["loc2"]]:
-                            if len(loc) == 4 and loc[0] == "K":
-                                loc = loc[1:]
-                            if loc not in self.nwsli_provider:
-                                self.warnings.append(
-                                    f"Unknown location: {loc} '{report}'"
-                                )
-                                return None
-                            lats.append(self.nwsli_provider[loc]["lat"])
-                            lons.append(self.nwsli_provider[loc]["lon"])
-                        _pr.latitude = sum(lats) / 2.0
-                        _pr.longitude = sum(lons) / 2.0
-                        continue
                 else:
                     loc = therest[:3]
 
@@ -246,13 +246,12 @@ class Pirep(product.TextProduct):
                         self.warnings.append(
                             f"Unknown location: {loc} '{report}'"
                         )
-                        return None
-                    loc = _pr.base_loc
-                    if loc not in self.nwsli_provider:
-                        self.warnings.append(
-                            f"Double-unknown location: {report}"
-                        )
-                        return None
+                    else:
+                        loc = _pr.base_loc
+                        if loc not in self.nwsli_provider:
+                            self.warnings.append(
+                                f"Double-unknown location: {report}"
+                            )
                     # So we discard the offset when we go back to the base
                     dist = 0
                     bearing = 0
@@ -272,10 +271,12 @@ class Pirep(product.TextProduct):
                 _pr.valid = self.compute_pirep_valid(hour, minute)
                 continue
 
-        return _pr if _pr.latitude is not None else None
+        return _pr
 
     def compute_loc(self, loc, dist, bearing):
         """ Figure out the lon/lat for this location """
+        if loc is None or loc not in self.nwsli_provider:
+            return None, None
         lat = self.nwsli_provider[loc]["lat"]
         lon = self.nwsli_provider[loc]["lon"]
         # shortcut
@@ -305,14 +306,17 @@ class Pirep(product.TextProduct):
         for report in self.reports:
             if report.is_duplicate:
                 continue
+            if report.longitude is None:
+                geom = "POINT EMPTY"
+            else:
+                geom = f"SRID=4326;POINT({report.longitude} {report.latitude})"
             txn.execute(
                 "INSERT into pireps(valid, geom, is_urgent, "
                 "aircraft_type, report) VALUES (%s, "
-                "ST_GeographyFromText('SRID=4326;POINT(%s %s)'),%s,%s,%s)",
+                "ST_GeographyFromText(%s), %s, %s, %s)",
                 (
                     report.valid,
-                    report.longitude,
-                    report.latitude,
+                    geom,
                     report.priority == Priority.UUA,
                     report.aircraft_type,
                     report.text,
@@ -322,6 +326,8 @@ class Pirep(product.TextProduct):
     def assign_cwsu(self, txn):
         """ Use this transaction object to assign CWSUs for the pireps """
         for report in self.reports:
+            if report.latitude is None:
+                continue
             txn.execute(
                 "select distinct id from cwsu WHERE "
                 "st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))",
@@ -359,13 +365,16 @@ class Pirep(product.TextProduct):
                 "channels": (
                     f"{report.priority}.{report.cwsu},{report.priority}.PIREP"
                 ),
-                "geometry": "POINT(%s %s)"
-                % (report.longitude, report.latitude),
                 "ptype": report.priority,
                 "category": "PIREP",
                 "twitter": plain[:140],
                 "valid": report.valid.strftime("%Y%m%dT%H:%M:00"),
             }
+            if report.latitude is not None:
+                xtra["geometry"] = "POINT(%s %s)" % (
+                    report.longitude,
+                    report.latitude,
+                )
             res.append([plain, html, xtra])
         return res
 

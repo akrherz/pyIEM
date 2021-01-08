@@ -12,6 +12,21 @@ def dbcursor():
     return get_dbconn("postgis").cursor()
 
 
+def test_210108_emptygeom(dbcursor):
+    """Test that we insert empty geometries."""
+    utcnow = utc(2020, 1, 1, 21, 34)
+    prod = pirepparser(get_test_file("PIREPS/badgeom.txt"), utcnow=utcnow)
+    prod.reports[3].is_duplicate = True
+    prod.sql(dbcursor)
+    assert len(prod.reports) == 6
+    dbcursor.execute(
+        "SELECT count(*) from pireps where valid = %s and "
+        "ST_IsEmpty(geom::geometry)",
+        (utcnow,),
+    )
+    assert dbcursor.fetchone()[0] >= 1
+
+
 def test_180307_aviation_controlchar(dbcursor):
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {"BWI": {"lat": 44.26, "lon": -88.52}}
@@ -57,7 +72,7 @@ def test_151210_badgeom():
     prod = pirepparser(
         get_test_file("PIREPS/badgeom.txt"), nwsli_provider=nwsli_provider
     )
-    assert not prod.reports
+    assert prod.reports[0].latitude is None
 
 
 def test_150202_groupdict():
@@ -66,7 +81,7 @@ def test_150202_groupdict():
     prod = pirepparser(
         get_test_file("PIREPS/groupdict.txt"), nwsli_provider=nwsli_provider
     )
-    assert len(prod.reports) == 1
+    assert len(prod.reports) == 6
 
 
 def test_150202_airmet():
@@ -192,7 +207,9 @@ def test_1():
     utcnow = utc(2015, 1, 9, 0, 0)
     nwsli_provider = {
         "BIL": {"lat": 44, "lon": 99},
+        "PIB": {"lat": 44, "lon": 99},
         "LBY": {"lat": 45, "lon": 100},
+        "MBO": {"lat": 45, "lon": 100},
         "PUB": {"lat": 46, "lon": 101},
         "HPW": {"lat": 47, "lon": 102},
     }
