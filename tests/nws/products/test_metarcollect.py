@@ -1,11 +1,9 @@
 """Make sure our METAR parsing works!"""
-# pylint: disable=redefined-outer-name
 
 import pytest
-import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
 from pyiem.nws.products import metarcollect
-from pyiem.util import get_dbconn, utc, get_test_file
+from pyiem.util import utc, get_test_file
 
 PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
@@ -19,36 +17,26 @@ NWSLI_PROVIDER = {
 metarcollect.JABBER_SITES = {"KALO": None}
 
 
-@pytest.fixture
-def dbcursor():
+def create_entries(cursor):
     """Return a disposable database cursor."""
-    pgconn = get_dbconn("iem")
-    cursor = pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     # Create fake station, so we can create fake entry in summary
     # and current tables
     cursor.execute(
-        """
-        INSERT into stations(id, network, iemid, tzname)
-        VALUES ('QQQQ', 'FAKE', -1, 'America/Chicago')
-    """
+        "INSERT into stations(id, network, iemid, tzname) "
+        "VALUES ('QQQQ', 'FAKE', -1, 'America/Chicago')"
     )
     cursor.execute(
-        """
-        INSERT into current(iemid, valid) VALUES
-        (-1, '2015-09-01 00:00+00')
-    """
+        "INSERT into current(iemid, valid) VALUES (-1, '2015-09-01 00:00+00')"
     )
     cursor.execute(
-        """
-        INSERT into summary_2015(iemid, day) VALUES
-        (-1, '2015-09-01')
-    """
+        "INSERT into summary_2015(iemid, day) VALUES (-1, '2015-09-01')"
     )
-    return cursor
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_corrected(dbcursor):
     """Test that the COR does not get dropped from the raw METAR."""
+    create_entries(dbcursor)
     code = (
         "KSAT 121751Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
         "T03220194 10328 20228 58011 $="
@@ -58,8 +46,10 @@ def test_corrected(dbcursor):
     assert mtr.code == iemob.data["raw"]
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_issue92_6hour(dbcursor):
     """Can we get the 6 hour right."""
+    create_entries(dbcursor)
     utcnow = utc(2015, 9, 1, 23)
     header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
     # 4 PM temp is 63
@@ -83,8 +73,10 @@ def test_issue92_6hour(dbcursor):
     assert iemob.data["min_tmpf"] == 54
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_issue92_6hour_nouse(dbcursor):
     """We should not use the 6 hour in this case."""
+    create_entries(dbcursor)
     utcnow = utc(2015, 9, 1, 9)
     header = "000 \r\r\nSAUS44 KISU 011200\r\r\nMETAR "
     # 1 AM temp is 63
@@ -108,8 +100,10 @@ def test_issue92_6hour_nouse(dbcursor):
     assert iemob.data["min_tmpf"] == 61
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_issue89_peakwind(dbcursor):
     """Are we roundtripping peak wind."""
+    create_entries(dbcursor)
     code = (
         "KALO 010001Z AUTO 17027G37KT 10SM FEW030 SCT110 19/16 A2979 RMK AO2 "
         "PK WND 18049/2025 RAE48 SLP088 P0005 60014 T01890156 58046"
@@ -119,8 +113,10 @@ def test_issue89_peakwind(dbcursor):
     assert iemob.data["peak_wind_time"] == utc(2016, 12, 31, 20, 25)
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_190118_ice(dbcursor):
     """Process a ICE Report."""
+    create_entries(dbcursor)
     mtr = metarcollect.METARReport(
         (
             "KABI 031752Z 30010KT 6SM BR FEW009 OVC036 02/01 A3003 RMK AO2 "
@@ -148,14 +144,18 @@ def test_future():
     assert prod.metars[1].time.month == 12
 
 
-def test_180201_unparsed():
+@pytest.mark.parametrize("database", ["iem"])
+def test_180201_unparsed(dbcursor):
     """For some reason, this collective was not parsed?!?!"""
+    create_entries(dbcursor)
     utcnow = utc(2018, 2, 1, 0)
     prod = PARSER(
         get_test_file("METAR/collective2.txt"),
         utcnow=utcnow,
         nwsli_provider=NWSLI_PROVIDER,
     )
+    for metar in prod.metars:
+        metar.to_iemaccess(dbcursor)
     assert len(prod.metars) == 35
     assert prod.metars[0].time.month == 1
 
@@ -182,8 +182,10 @@ def test_170809_nocrcrlf():
     assert len(prod.metars) == 1
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_metarreport(dbcursor):
     """Can we do things with the METARReport"""
+    create_entries(dbcursor)
     utcnow = utc(2013, 8, 8, 12, 53)
     mtr = metarcollect.METARReport(
         (
@@ -204,8 +206,10 @@ def test_metarreport(dbcursor):
     assert iemob.data["gust"] is None
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_basic(dbcursor):
     """Simple tests"""
+    create_entries(dbcursor)
     utcnow = utc(2013, 8, 8, 14)
     prod = PARSER(
         get_test_file("METAR/collective.txt"),

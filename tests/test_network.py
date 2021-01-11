@@ -1,17 +1,11 @@
 """See if we can do stuff with the network"""
-# pylint: disable=redefined-outer-name
 
-import psycopg2.extras
 import pytest
 from pyiem import network
-from pyiem.util import get_dbconn
 
 
-@pytest.fixture
-def dbcursor():
+def create_entries(cursor):
     """With each test"""
-    conn = get_dbconn("mesosite")
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute(
         """
         INSERT into stations(id, name, network, online)
@@ -39,11 +33,12 @@ def dbcursor():
         VALUES ('BOGUS3', 'BOGUS3 NAME', 'BOGUS2', 'f')
     """
     )
-    return cursor
 
 
+@pytest.mark.parametrize("database", ["mesosite"])
 def test_basic(dbcursor):
     """ basic test of constructor """
+    create_entries(dbcursor)
     nt = network.Table("BOGUS", cursor=dbcursor)
     assert len(nt.sts.keys()) == 2
 

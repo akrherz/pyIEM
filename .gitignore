@@ -10,3 +10,4 @@
 /.vscode/
 /docs/build
 /.eggs
+/cov.xml

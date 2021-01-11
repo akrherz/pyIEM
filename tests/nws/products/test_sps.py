@@ -1,20 +1,12 @@
 """SPS Parsing"""
-# pylint: disable=redefined-outer-name
 
 import pytest
-from psycopg2.extras import RealDictCursor
-from pyiem.util import get_dbconn, get_test_file
+from pyiem.util import get_test_file
 from pyiem.nws.ugc import UGC
 from pyiem.nws.products import parser as spsparser
 
 
-@pytest.fixture
-def dbcursor():
-    """Get a cursor we can use"""
-    pgconn = get_dbconn("postgis")
-    return pgconn.cursor(cursor_factory=RealDictCursor)
-
-
+@pytest.mark.parametrize("database", ["postgis"])
 def test_sps(dbcursor):
     """Can we parse a SPS properly, yes we can!"""
     ugc_provider = {"ALZ039": UGC("AL", "Z", "039", name="Marengo")}

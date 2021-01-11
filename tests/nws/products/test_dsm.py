@@ -1,5 +1,4 @@
 """Test our DSM Parsing."""
-# pylint: disable=redefined-outer-name
 import datetime
 
 try:
@@ -10,28 +9,19 @@ except ImportError:
 import pytest
 from pyiem.util import utc, get_test_file
 from pyiem.nws.products.dsm import process, parser
-from pyiem.util import get_dbconn
 
 
-@pytest.fixture
-def dbcursor():
+def create_entries(cursor):
     """Get a database cursor for testing."""
-    cursor = get_dbconn("iem").cursor()
     # Create fake station, so we can create fake entry in summary
     # and current tables
     cursor.execute(
-        """
-        INSERT into stations(id, network, iemid, tzname)
-        VALUES ('HKS', 'ZZ_ASOS', -100, 'UTC')
-    """
+        "INSERT into stations(id, network, iemid, tzname) "
+        "VALUES ('HKS', 'ZZ_ASOS', -100, 'UTC')"
     )
     cursor.execute(
-        """
-        INSERT into summary_2015(iemid, day) VALUES
-        (-100, '2015-11-26')
-    """
+        "INSERT into summary_2015(iemid, day) VALUES (-100, '2015-11-26')"
     )
-    return cursor
 
 
 @pytest.mark.parametrize("month", range(1, 13))
@@ -52,8 +42,10 @@ def test_simple(month):
     assert dsm.time_sped_max == utc(2019, month, 24, 22, 59)
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_collective(dbcursor):
     """Can we parse a collective."""
+    create_entries(dbcursor)
     prod = parser(get_test_file("DSM/DSM.txt"), utc(2015, 11, 26))
     assert not prod.warnings
     assert len(prod.data) == 23

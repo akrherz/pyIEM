@@ -1,10 +1,9 @@
 """Test some of the atomic stuff in the VTEC module"""
-# pylint: disable=redefined-outer-name,too-many-lines
+# pylint: disable=too-many-lines
 import datetime
 
 import pytest
-import psycopg2.extras
-from pyiem.util import get_dbconn, utc, get_test_file
+from pyiem.util import utc, get_test_file
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as vtecparser
 from pyiem.nws.nwsli import NWSLI
@@ -22,15 +21,6 @@ class FakeObject:
     vtec = None
 
 
-@pytest.fixture(scope="function")
-def dbcursor():
-    """Return a disposable database cursor."""
-    pgconn = get_dbconn("postgis")
-    cursor = pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    yield cursor
-    pgconn.close()
-
-
 def filter_warnings(ar, startswith="get_gid"):
     """Remove non-deterministic warnings
 
@@ -40,6 +30,7 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_210103_vtec_cor(dbcursor):
     """Test that VTEC COR actions do not get their status stored."""
     prod = vtecparser(get_test_file("NPWGID/00.txt"))
@@ -61,6 +52,7 @@ def test_210103_vtec_cor(dbcursor):
     assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_tml_line(dbcursor):
     """Test that we can insert TML lines."""
     data = get_test_file("TORFSD.txt")
@@ -68,6 +60,7 @@ def test_201120_tml_line(dbcursor):
     prod.sql(dbcursor)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_sbw_duplicate(dbcursor):
     """Test that we get an error for a SBW duplicated."""
     data = get_test_file("TOR.txt")
@@ -80,6 +73,7 @@ def test_201120_sbw_duplicate(dbcursor):
     assert any([x.find("SBW prev polygon") > -1 for x in prod.warnings])
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_correction(dbcursor):
     """Test that we emit a warning for first found correction."""
     data = get_test_file("TOR.txt").replace("291656", "291656 CCA")
@@ -88,6 +82,7 @@ def test_201120_correction(dbcursor):
     assert any([x.find("is a correction") > -1 for x in prod.warnings])
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_unknown_vtec(dbcursor):
     """Test that we emit a warning when finding an unknown VTEC action."""
     data = get_test_file("TOR.txt").replace(".NEW.KJAN", ".QQQ.KJAN")
@@ -96,6 +91,7 @@ def test_201120_unknown_vtec(dbcursor):
     assert any([x.find("QQQ") > -1 for x in prod.warnings])
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_resent(dbcursor):
     """Test that we can handle a resent product."""
     data = get_test_file("TOR.txt")
@@ -106,6 +102,7 @@ def test_201120_resent(dbcursor):
     prod.sql(dbcursor)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_missing_ugc(dbcursor):
     """Test that a warning for missing ugc is emitted."""
     data = get_test_file("CFW/CFWSJU.txt")
@@ -116,6 +113,7 @@ def test_201120_missing_ugc(dbcursor):
     assert ans in prod.warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201120_dup(dbcursor):
     """Test that a warning for duplicated VTEC is emitted."""
     prod = vtecparser(get_test_file("CFW/CFWSJU.txt"))
@@ -130,6 +128,7 @@ def test_201116_1970vtec():
     assert prod.segments[0].vtec[0].begints is None
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_201006_invalid_warning(dbcursor):
     """Test that we don't complain about a dangling CON statement."""
     prod = vtecparser(get_test_file("MWWPQR/MWWPQR_0.txt"))
@@ -140,6 +139,7 @@ def test_201006_invalid_warning(dbcursor):
     assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
@@ -210,6 +210,7 @@ def test_200719_nomnd():
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_200306_issue210(dbcursor):
     """Test our logic for figuring out which table has our event."""
     for i in range(7):
@@ -222,6 +223,7 @@ def test_200306_issue210(dbcursor):
         assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_200302_issue203(dbcursor):
     """Test that we warn when a polygon goes missing."""
     for i in range(2):
@@ -254,6 +256,7 @@ def test_200224_urls():
         assert url == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_issue120_ffwtags(dbcursor):
     """Can we support Flood Warning tags."""
     prod = vtecparser(get_test_file("FFW/FFW_tags.txt"))
@@ -283,6 +286,7 @@ def test_issue120_ffwtags(dbcursor):
     assert row["floodtag_leeve"] is None
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_TORE_series(dbcursor):
     """Can we process a Tornado Emergency that came with SVS update."""
 
@@ -340,6 +344,7 @@ def test_TORE_series(dbcursor):
     assert getval2() is False
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
@@ -356,6 +361,7 @@ def test_190102_exb_newyear(dbcursor):
     assert dbcursor.fetchone()["count"] == 2
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_181228_issue76_sbwtable(dbcursor):
     """Can we locate the current SBW table with polys in the future."""
     prod = vtecparser(get_test_file("FLWMOB/FLW.txt"))
@@ -374,6 +380,7 @@ def test_181228_issue76_sbwtable(dbcursor):
     assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_180411_can_expiration(dbcursor):
     """Do we properly update the expiration time of a CAN event"""
     utcnow = utc(2018, 1, 22, 2, 6)
@@ -396,6 +403,7 @@ def test_180411_can_expiration(dbcursor):
         assert row[0] == utcnow
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_issue9(dbcursor):
     """A product crossing year bondary"""
     utcnow = utc(2017, 12, 31, 9, 24)
@@ -414,6 +422,7 @@ def test_issue9(dbcursor):
     assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_180202_issue54(dbcursor):
     """Are we doing the right thing with VTEC EXP actions?"""
 
@@ -436,6 +445,7 @@ def test_180202_issue54(dbcursor):
         assert get_expire("updated") == prod.valid
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_171121_issue45(dbcursor):
     """Do we alert on duplicated ETNs?"""
     utcnow = utc(2017, 4, 20, 21, 33)
@@ -448,6 +458,7 @@ def test_171121_issue45(dbcursor):
     assert len(warnings) == 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170823_tilde(dbcursor):
     """Can we parse a product that has a non-ascii char in it"""
     prod = vtecparser(get_test_file("FFWTWC_tilde.txt"))
@@ -489,12 +500,14 @@ def test_170718_wrongtz():
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170523_dupfail(dbcursor):
     """The dup check failed with an exception"""
     prod = vtecparser(get_test_file("MWWLWX_dups.txt"))
     prod.sql(dbcursor)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170504_falsepositive(dbcursor):
     """This alert for overlapping VTEC is a false positive"""
     prod = vtecparser(get_test_file("NPWFFC.txt"))
@@ -503,6 +516,7 @@ def test_170504_falsepositive(dbcursor):
     assert not any(res)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170502_novtec(dbcursor):
     """MWS is a product that does not require VTEC, so no warnings"""
     prod = vtecparser(get_test_file("MWSMFL.txt"))
@@ -510,6 +524,7 @@ def test_170502_novtec(dbcursor):
     assert not prod.warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170411_suspect_vtec(dbcursor):
     """MWWSJU contains VTEC that NWS HQ says should not be possible"""
     prod = vtecparser(get_test_file("MWWLWX_twovtec.txt"))
@@ -518,6 +533,7 @@ def test_170411_suspect_vtec(dbcursor):
     assert not any(a)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170411_baddelim(dbcursor):
     """FLSGRB contains an incorrect sequence of $$ and &&"""
     prod = vtecparser(get_test_file("FLSGRB.txt"))
@@ -525,6 +541,7 @@ def test_170411_baddelim(dbcursor):
     assert len(prod.warnings) >= 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170403_mixedlatlon(dbcursor):
     """Check our parsing of mixed case Lat...Lon"""
     prod = vtecparser(get_test_file("mIxEd_CaSe/FLWLCH.txt"))
@@ -550,6 +567,7 @@ def test_170403_mixedlatlon(dbcursor):
     assert row["impact_text"] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170324_waterspout(dbcursor):
     """Do we parse Waterspout tags!"""
     utcnow = utc(2017, 3, 24, 1, 37)
@@ -578,6 +596,7 @@ def test_170303_ccwpoly():
     assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170115_table_failure(dbcursor):
     """Test WSW series for issues"""
     for i in range(12):
@@ -587,6 +606,7 @@ def test_170115_table_failure(dbcursor):
         assert not filter_warnings(prod.warnings)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_160912_missing(dbcursor):
     """see why this series failed in production"""
     for i in range(4):
@@ -602,6 +622,7 @@ def test_160904_resent():
     assert prod.is_correction()
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_160720_unknown_ugc(dbcursor):
     """Unknown UGC logic failed for some reason"""
     # Note that this example has faked UGCs to test things out
@@ -645,6 +666,7 @@ def test_160415_mixedcase():
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_151225_extfuture(dbcursor):
     """Warning failure jumps states!"""
     # /O.NEW.KPAH.FL.W.0093.151227T0517Z-151228T1727Z/
@@ -665,6 +687,7 @@ def test_151225_extfuture(dbcursor):
     assert len(warnings) == 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150915_noexpire(dbcursor):
     """Check that we set an expiration for initial infinity SBW geo"""
     prod = vtecparser(get_test_file("FLWGRB.txt"))
@@ -682,6 +705,7 @@ def test_150915_noexpire(dbcursor):
     assert row[1] is not None
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150820_exb(dbcursor):
     """Found a bug with setting of issuance for EXB case!"""
     for i in range(3):
@@ -698,6 +722,7 @@ def test_150820_exb(dbcursor):
     assert dbcursor.fetchone()[0] == datetime.datetime(2015, 8, 11, 13)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150814_init_expire(dbcursor):
     """ Make sure init_expire is not null"""
     prod = vtecparser(get_test_file("FLWLZK.txt"))
@@ -743,6 +768,7 @@ def test_150304_testtor():
     assert not j
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150203_exp_does_not_end(dbcursor):
     """MWWCAR a VTEC EXP action should not terminate it """
     for i in range(23):
@@ -754,6 +780,7 @@ def test_150203_exp_does_not_end(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150203_null_issue(dbcursor):
     """WSWOKX had null issue times, bad! """
     for i in range(18):
@@ -770,6 +797,7 @@ def test_150203_null_issue(dbcursor):
         assert dbcursor.fetchone()[0] == 0
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150115_correction_sbw(dbcursor):
     """ FLWMHX make sure a correction does not result in two polygons """
     prod = vtecparser(get_test_file("FLWMHX/0.txt"))
@@ -799,6 +827,7 @@ def test_150105_considerable_tag():
     assert prod.segments[0].is_pds
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150105_sbw(dbcursor):
     """ FLSLBF SBW that spans two years! """
     for i in range(7):
@@ -809,6 +838,7 @@ def test_150105_sbw(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150105_manycors(dbcursor):
     """ WSWGRR We had some issues with this series, lets test it """
     for i in range(15):
@@ -819,6 +849,7 @@ def test_150105_manycors(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150102_multiyear2(dbcursor):
     """ WSWSTO See how well we span multiple years """
     for i in range(17):
@@ -838,6 +869,7 @@ def test_150102_multiyear2(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_150102_multiyear(dbcursor):
     """ WSWOUN See how well we span multiple years """
     for i in range(13):
@@ -877,6 +909,7 @@ def test_141226_correction():
         vtecparser(get_test_file("FLSRAH.txt"))
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141215_correction(dbcursor):
     """ I have a feeling we are not doing the right thing for COR """
     for i in range(6):
@@ -887,6 +920,7 @@ def test_141215_correction(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141212_mqt(dbcursor):
     """ Updated four rows instead of three, better check on it """
     for i in range(4):
@@ -896,6 +930,7 @@ def test_141212_mqt(dbcursor):
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141211_null_expire(dbcursor):
     """ Figure out why the database has a null expiration for this FL.W"""
     for i in range(0, 13):
@@ -906,6 +941,7 @@ def test_141211_null_expire(dbcursor):
         assert not filter_warnings(warnings, "LAT...LON")
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141210_continues(dbcursor):
     """ See that we handle CON with infinite time A-OK """
     for i in range(0, 2):
@@ -915,6 +951,7 @@ def test_141210_continues(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141208_upgrade(dbcursor):
     """ See that we can handle the EXB case """
     for i in range(0, 18):
@@ -1081,6 +1118,7 @@ def test_140610_tweet_spacing():
     assert j[0][2]["twitter"] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_routine(dbcursor):
     """what can we do with a ROU VTEC product """
     utcnow = utc(2014, 6, 19, 2, 56)
@@ -1097,6 +1135,7 @@ def test_correction():
     assert prod.is_correction()
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_140610_no_vtec_time(dbcursor):
     """ A VTEC Product with both 0000 for start and end time, sigh """
     utcnow = utc(2014, 6, 10, 0, 56)
@@ -1106,6 +1145,7 @@ def test_140610_no_vtec_time(dbcursor):
     assert prod.segments[0].vtec[0].endts is None
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_140609_ext_backwards(dbcursor):
     """ Sometimes the EXT goes backwards in time, so we have fun """
     utcnow = utc(2014, 6, 6, 15, 40)
@@ -1256,6 +1296,7 @@ def test_wcn():
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_140604_sbwupdate(dbcursor):
     """Make sure we are updating the right info in the sbw table """
     utcnow = utc(2014, 6, 4)
@@ -1307,6 +1348,7 @@ def test_140321_invalidgeom():
     assert prod.segments[0].giswkt == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_140527_astimezone(dbcursor):
     """Test the processing of a begin timestamp """
     utcnow = utc(2014, 5, 27, 16, 3)
@@ -1322,6 +1364,7 @@ def test_140527_astimezone(dbcursor):
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_140527_00000_hvtec_nwsli(dbcursor):
     """Test the processing of a HVTEC NWSLI of 00000 """
     utcnow = utc(2014, 5, 27)
@@ -1352,6 +1395,7 @@ def test_affected_wfos():
     assert prod.segments[0].get_affected_wfos()[0] == "DMX"
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141023_upgrade(dbcursor):
     """ See that we can handle the upgrade and downgrade dance """
     for i in range(1, 8):
@@ -1361,6 +1405,7 @@ def test_141023_upgrade(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_141205_vtec_series(dbcursor):
     """ Make sure we don't get any warnings processing this series """
     for i in range(9):
@@ -1372,6 +1417,7 @@ def test_141205_vtec_series(dbcursor):
         assert not warnings
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_vtec_series(dbcursor):
     """Test a lifecycle of WSW products """
     prod = vtecparser(get_test_file("WSWDMX/WSW_00.txt"))
@@ -1430,6 +1476,7 @@ def test_vtec_series(dbcursor):
     assert row[0] == answer
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_vtec(dbcursor):
     """Simple test of VTEC parser"""
     # Remove cruft first

@@ -1,17 +1,11 @@
 """Test Local Storm Report parsing."""
-# pylint: disable=redefined-outer-name
 
 import pytest
-from pyiem.util import get_test_file, get_dbconn
+from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
-@pytest.fixture
-def dbcursor():
-    """Database cursor."""
-    return get_dbconn("postgis").cursor()
-
-
+@pytest.mark.parametrize("database", ["postgis"])
 def test_icestorm(dbcursor):
     """Test that we guess the ice storm magnitude and units."""
     prod = parser(get_test_file("LSR/LSRTOP_ICE.txt"))
@@ -111,6 +105,7 @@ def test_issue277_oldlsr():
     assert j[0][2]["twitter"] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_sql(dbcursor):
     """Test that we can insert into the database."""
     prod = parser(get_test_file("LSR/LSRDVN_old.txt"))

@@ -1,18 +1,8 @@
 """Can we process the SAW"""
-# pylint: disable=redefined-outer-name
 
-import psycopg2.extras
 import pytest
 from pyiem.nws.products.saw import parser as sawparser
-from pyiem.util import get_dbconn, utc, get_test_file
-
-
-@pytest.fixture
-def dbcursor():
-    """Get database cursor."""
-    return get_dbconn("postgis").cursor(
-        cursor_factory=psycopg2.extras.RealDictCursor
-    )
+from pyiem.util import utc, get_test_file
 
 
 def test_181231_linkisok():
@@ -30,6 +20,7 @@ def test_181231_linkisok():
     assert jmsgs[0][2]["channels"] == "SPC,SPC.SVRWATCH"
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_replacement(dbcursor):
     """Can we do replacements?"""
     utcnow = utc(2017, 8, 21, 9, 17)
@@ -61,6 +52,7 @@ def test_saw3():
     assert prod.action == prod.ISSUES
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_cancelled(dbcursor):
     """SAW-cancelled make sure we can cancel a watch"""
     utcnow = utc(2014, 3, 10, 3, 29)

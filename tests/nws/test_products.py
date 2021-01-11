@@ -1,17 +1,8 @@
 """Massive omnibus of testing for pyiem.nws.products."""
-# pylint: disable=redefined-outer-name
 
 import pytest
-import psycopg2.extras
 from pyiem.nws.products import parser
-from pyiem.util import get_dbconn, utc, get_test_file
-
-
-@pytest.fixture
-def dbcursor():
-    """Return a disposable database cursor."""
-    pgconn = get_dbconn("postgis")
-    return pgconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+from pyiem.util import utc, get_test_file
 
 
 def filter_warnings(ar, startswith="get_gid"):

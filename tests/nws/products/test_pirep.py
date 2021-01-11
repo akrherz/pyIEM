@@ -1,17 +1,11 @@
 """PIREP."""
-# pylint: disable=redefined-outer-name
 
 import pytest
 from pyiem.nws.products.pirep import parser as pirepparser
-from pyiem.util import utc, get_test_file, get_dbconn
+from pyiem.util import utc, get_test_file
 
 
-@pytest.fixture()
-def dbcursor():
-    """Get a database cursor."""
-    return get_dbconn("postgis").cursor()
-
-
+@pytest.mark.parametrize("database", ["postgis"])
 def test_210108_emptygeom(dbcursor):
     """Test that we insert empty geometries."""
     utcnow = utc(2020, 1, 1, 21, 34)
@@ -27,6 +21,7 @@ def test_210108_emptygeom(dbcursor):
     assert dbcursor.fetchone()[0] >= 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_180307_aviation_controlchar(dbcursor):
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {"BWI": {"lat": 44.26, "lon": -88.52}}

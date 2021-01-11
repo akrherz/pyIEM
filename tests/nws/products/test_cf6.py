@@ -1,21 +1,13 @@
 """Test our CF6 parsing."""
-# pylint: disable=redefined-outer-name
 import datetime
 
 import pytest
 from pyiem.nws.products.cf6 import parser
-from pyiem.util import get_test_file, get_dbconn
+from pyiem.util import get_test_file
 from pyiem.reference import TRACE_VALUE
 
 
-@pytest.fixture
-def dbcursor():
-    """Return a database cursor."""
-    pgconn = get_dbconn("iem")
-    yield pgconn.cursor()
-    pgconn.close()
-
-
+@pytest.mark.parametrize("database", ["iem"])
 def test_201226_bad_date(dbcursor):
     """Test that no error is emitted for a CF6 with a 'Bad Date'."""
     prod = parser(get_test_file("CF6/CF6WYS_error.txt"))
@@ -23,6 +15,7 @@ def test_201226_bad_date(dbcursor):
     assert prod
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_200421_nan(dbcursor):
     """Test database insert that was failing with NaN values."""
     prod = parser(get_test_file("CF6/CF6MKK.txt"))
@@ -47,6 +40,7 @@ def test_200224_time():
     assert prod.df.iloc[0]["max"] == 32
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_basic(dbcursor):
     """Test CF6 Parsing."""
     prod = parser(get_test_file("CF6/CF6DSM.txt"))
@@ -60,6 +54,7 @@ def test_missing_header():
         parser(get_test_file("CF6/CF6DSM_bad.txt"))
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_nodata(dbcursor):
     """Test when there is no data in the product."""
     prod = parser(get_test_file("CF6/CF6DSM_empty.txt"))
@@ -67,6 +62,7 @@ def test_nodata(dbcursor):
     assert prod.df.empty
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_trace(dbcursor):
     """Ensure that our decoder is properly dealing with trace values."""
     prod = parser(get_test_file("CF6/CF6SEA.txt"))

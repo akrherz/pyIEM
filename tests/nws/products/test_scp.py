@@ -1,20 +1,11 @@
 """Can we process the SCP"""
-# pylint: disable=redefined-outer-name
 
-import psycopg2.extras
 import pytest
 from pyiem.nws.products.scp import parser
-from pyiem.util import get_dbconn, utc, get_test_file
+from pyiem.util import utc, get_test_file
 
 
-@pytest.fixture
-def dbcursor():
-    """Get database cursor."""
-    dbconn = get_dbconn("asos")
-    yield dbconn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    dbconn.close()
-
-
+@pytest.mark.parametrize("database", ["asos"])
 def test_201026(dbcursor):
     """Basic test."""
     utcnow = utc(2020, 10, 26, 15, 5)

@@ -1,23 +1,12 @@
 """HML"""
-# pylint: disable=redefined-outer-name
 import datetime
 
-import psycopg2.extras
 import pytest
 from pyiem.nws.products.hml import parser as hmlparser
-from pyiem.util import get_dbconn, get_test_file, utc
+from pyiem.util import get_test_file, utc
 
 
-@pytest.fixture
-def dbcursor():
-    """Get database conn."""
-    dbconn = get_dbconn("hml")
-    # Note the usage of RealDictCursor here, as this is what
-    # pyiem.twistedpg uses
-    yield dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    dbconn.close()
-
-
+@pytest.mark.parametrize("database", ["hml"])
 def test_200926_nokey(dbcursor):
     """Test that we add a new observation key, when necessary."""
     prod = hmlparser(get_test_file("HML/HMLMOB.txt"))
@@ -30,6 +19,7 @@ def test_200926_nokey(dbcursor):
     assert dbcursor.rowcount == 0
 
 
+@pytest.mark.parametrize("database", ["hml"])
 def test_190313_missingstage(dbcursor):
     """Figure out why this HML is missing stage info."""
     prod = hmlparser(get_test_file("HML/HMLDMX.txt"))
@@ -44,6 +34,7 @@ def test_190313_missingstage(dbcursor):
     assert dbcursor.rowcount == 8
 
 
+@pytest.mark.parametrize("database", ["hml"])
 def test_160826_hmlarx(dbcursor):
     """Lets dance"""
     utcnow = utc(2016, 8, 26, 8)
