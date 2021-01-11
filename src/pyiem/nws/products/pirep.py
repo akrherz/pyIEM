@@ -91,6 +91,16 @@ class PilotReport(BaseModel):
     is_duplicate: bool = False
 
 
+def _rectify_identifier(station, textprod):
+    """Rectify the station identifer to IEM Nomenclature."""
+    station = station.strip()
+    if len(station) == 4 and station.startswith("K"):
+        return station[1:]
+    if len(station) == 3 and not textprod.source.startswith("K"):
+        return textprod.source[0] + station
+    return station
+
+
 class Pirep(product.TextProduct):
     """ Class for parsing and representing Space Wx Products. """
 
@@ -160,21 +170,14 @@ class Pirep(product.TextProduct):
                 bearing = 0
                 therest = token[3:]
                 if len(therest) == 3:
-                    loc = therest
+                    loc = _rectify_identifier(therest, self)
                 elif therest.startswith("FINAL RWY"):
-                    loc = report[:8].split()[0]
-                    if len(loc) == 4 and loc[0] == "K":
-                        loc = loc[1:]
+                    loc = _rectify_identifier(report[:8].split()[0], self)
                 elif len(therest) == 4:
-                    if therest[0] == "K":
-                        loc = therest[1:]
-                    else:
-                        loc = therest
+                    loc = _rectify_identifier(therest, self)
                 elif re.match(OV_OFFSET, therest):
                     d = re.match(OV_OFFSET, therest).groupdict()
-                    loc = d["loc"]
-                    if len(loc) == 4 and loc[0] == "K":
-                        loc = loc[1:]
+                    loc = _rectify_identifier(d["loc"], self)
                     dist = int(d["dist"])
                     bearing = DRCT2DIR[d["dir"]]
                 elif therest.find("-") > 0 and re.match(OV_TWOLOC, therest):
@@ -183,16 +186,13 @@ class Pirep(product.TextProduct):
                     if numbers:
                         bearing = int(numbers[0][:3])
                         dist = int(numbers[0][3:])
-                        loc = d["loc2"]
-                        if len(loc) == 4 and loc[0] == "K":
-                            loc = loc[1:]
+                        loc = _rectify_identifier(d["loc2"], self)
                     else:
                         # Split the distance between the two points
                         lats = []
                         lons = []
                         for loc in [d["loc1"], d["loc2"]]:
-                            if len(loc) == 4 and loc[0] == "K":
-                                loc = loc[1:]
+                            loc = _rectify_identifier(loc, self)
                             if loc not in self.nwsli_provider:
                                 self.warnings.append(
                                     f"Unknown location: {loc} '{report}'"
@@ -207,9 +207,7 @@ class Pirep(product.TextProduct):
                 elif re.match(OV_LOCDIR, therest):
                     # KFAR330008
                     d = re.match(OV_LOCDIR, therest).groupdict()
-                    loc = d["loc"]
-                    if len(loc) == 4 and loc[0] == "K":
-                        loc = loc[1:]
+                    loc = _rectify_identifier(d["loc"], self)
                     bearing = int(d["dir"])
                     dist = int(d["dist"])
                 elif re.match(OV_LATLON, therest):
@@ -237,9 +235,9 @@ class Pirep(product.TextProduct):
                     continue
                 elif therest == "O":
                     # Use the first part of the report in this case
-                    loc = report[:3]
+                    loc = _rectify_identifier(report[:3], self)
                 else:
-                    loc = therest[:3]
+                    loc = _rectify_identifier(therest[:3], self)
 
                 if loc not in self.nwsli_provider:
                     if _pr.base_loc is None:
@@ -329,22 +327,18 @@ class Pirep(product.TextProduct):
             if report.latitude is None:
                 continue
             txn.execute(
-                "select distinct id from cwsu WHERE "
+                "select id from cwsu WHERE "
                 "st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))",
                 (report.longitude, report.latitude),
             )
-            if txn.rowcount == 0:
-                # self.warnings.append("Find CWSU failed %.3f %.3f %s" % (
-                #    report.longitude, report.latitude, report.text))
-                continue
-            row = txn.fetchone()
-            report.cwsu = row["id"]
+            if txn.rowcount > 0:
+                report.cwsu = txn.fetchone()["id"]
 
     def get_jabbers(self, _uri, _uri2=None):
         """ get jabber messages """
         res = []
         for report in self.reports:
-            if report.is_duplicate or report.valid is None:
+            if report.is_duplicate:
                 continue
             jmsg = {
                 "priority": "Urgent"

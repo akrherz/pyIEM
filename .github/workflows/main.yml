@@ -29,6 +29,7 @@ jobs:
         export PATH="/usr/lib/postgresql/11/bin:$PATH"
         cd database; sh bootstrap.sh
         python schema_manager.py
+        psql -f data/postgis/cwsu.db -U mesonet postgis
         cd ..
         python util/insert_testing_data.py
         coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"

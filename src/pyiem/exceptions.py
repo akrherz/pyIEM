@@ -29,6 +29,10 @@ class SAWException(Exception):
     """Custom local exception"""
 
 
+class SIGMETException(Exception):
+    """Custom SIGMET Parsing Exception."""
+
+
 class UGCParseException(Exception):
     """Custom Exception this parser can raise"""
 

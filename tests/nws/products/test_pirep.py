@@ -1,23 +1,26 @@
 """PIREP."""
-# pylint: disable=redefined-outer-name
 
 import pytest
 from pyiem.nws.products.pirep import parser as pirepparser
-from pyiem.util import utc, get_test_file, get_dbconn
+from pyiem.util import utc, get_test_file
 
 
-@pytest.fixture()
-def dbcursor():
-    """Get a database cursor."""
-    return get_dbconn("postgis").cursor()
+def test_210110_canada():
+    """Test that generated error is for canada site id."""
+    utcnow = utc(2020, 1, 11, 3, 47)
+    prod = pirepparser(get_test_file("PIREPS/canada.txt"), utcnow=utcnow)
+    assert "CYAT" in prod.warnings[0]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_210108_emptygeom(dbcursor):
     """Test that we insert empty geometries."""
     utcnow = utc(2020, 1, 1, 21, 34)
     prod = pirepparser(get_test_file("PIREPS/badgeom.txt"), utcnow=utcnow)
     prod.reports[3].is_duplicate = True
+    prod.assign_cwsu(dbcursor)
     prod.sql(dbcursor)
+    prod.get_jabbers("")
     assert len(prod.reports) == 6
     dbcursor.execute(
         "SELECT count(*) from pireps where valid = %s and "
@@ -27,6 +30,7 @@ def test_210108_emptygeom(dbcursor):
     assert dbcursor.fetchone()[0] >= 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_180307_aviation_controlchar(dbcursor):
     """Darn Aviation control character showing up in WMO products"""
     nwsli_provider = {"BWI": {"lat": 44.26, "lon": -88.52}}
@@ -34,6 +38,7 @@ def test_180307_aviation_controlchar(dbcursor):
         get_test_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider
     )
     assert len(prod.reports) == 1
+    prod.assign_cwsu(dbcursor)
     prod.sql(dbcursor)
 
 

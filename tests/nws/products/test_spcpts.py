@@ -1,16 +1,8 @@
 """Unit Tests"""
-# pylint: disable=redefined-outer-name
 
 import pytest
-from psycopg2.extras import RealDictCursor
 from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
-from pyiem.util import get_dbconn, utc, get_test_file
-
-
-@pytest.fixture
-def dbcursor():
-    """Get database."""
-    return get_dbconn("postgis").cursor(cursor_factory=RealDictCursor)
+from pyiem.util import utc, get_test_file
 
 
 def test_issue295_geometryfail():
@@ -131,6 +123,7 @@ def test_180807_idx1_idx2():
     assert abs(outlook.geometry.area - 37.83) < 0.02
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170926_largeenh(dbcursor):
     """This Day1 generated a massive ENH"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_bigenh.txt"))
@@ -153,6 +146,7 @@ def test_170703_badday3link():
     assert jdict[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170612_nullgeom(dbcursor):
     """See why this has an error with null geom reported"""
     spc = parser(get_test_file("SPCPTS/PTSD48_nullgeom.txt"))
@@ -178,6 +172,7 @@ def test_170518_bad_dbtime():
         assert outlook.expire == answer
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170428_large(dbcursor):
     """PTSDY1 has a large 10 tor"""
     # https://.../products/outlook/archive/2006/day1otlk_20060510_1630.html
@@ -190,6 +185,7 @@ def test_170428_large(dbcursor):
     assert abs(outlook.geometry.area - 428.00) < 0.01
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170417_empty(dbcursor):
     """An empty PTSD48 was causing an exception in get_jabbers"""
     spc = parser(get_test_file("SPCPTS/PTSD48_empty.txt"))
@@ -205,6 +201,7 @@ def test_170417_empty(dbcursor):
     assert jabber[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_051128_invalid(dbcursor):
     """Make sure that the SIG wind threshold does not eat the US"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom2.txt"))
@@ -241,6 +238,7 @@ def test_170411_jabber_error():
     assert j[0][0] == ans
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170406_day48_pre2015(dbcursor):
     """Can we parse a pre2015 days 4-8"""
     spc = parser(get_test_file("SPCPTS/PTSD48_pre2015.txt"))
@@ -252,6 +250,7 @@ def test_170406_day48_pre2015(dbcursor):
     spc.sql(dbcursor)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170406_day48(dbcursor):
     """Can we parse a present day days 4-8"""
     spc = parser(get_test_file("SPCPTS/PTSD48.txt"))
@@ -442,6 +441,7 @@ def test_complex_2():
     assert abs(outlook.geometry.area - 47.65) < 0.01
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_str1(dbcursor):
     """ check spcpts parsing """
     spc = parser(get_test_file("SPCPTS/SPCPTS.txt"))

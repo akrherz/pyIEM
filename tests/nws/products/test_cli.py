@@ -1,11 +1,9 @@
 """Test CLI products"""
-# pylint: disable=redefined-outer-name
 import datetime
 
 import pytest
-import psycopg2.extras
 from pyiem.reference import TRACE_VALUE
-from pyiem.util import utc, get_test_file, get_dbconn
+from pyiem.util import utc, get_test_file
 from pyiem.nws.products import parser as cliparser
 from pyiem.nws.products.cli import get_number, CLIException
 
@@ -26,14 +24,6 @@ NWSLI_PROVIDER = {
 def factory(fn):
     """Common cliparser logic."""
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
-
-
-@pytest.fixture
-def dbcursor():
-    """Get a database cursor for testing."""
-    dbconn = get_dbconn("iem")
-    yield dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    dbconn.close()
 
 
 def test_wrong_wmo_header():
@@ -96,6 +86,7 @@ def test_get_number():
     assert get_number("ABC") is None
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_190510_parsefail(dbcursor):
     """This CLIDMH is not happy."""
     # Create an entry to actually update
@@ -121,6 +112,7 @@ def test_200423_missing_skycover():
     assert prod.data[0]["data"]["average_sky_cover"] == 0.4
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_database_progression(dbcursor):
     """Test our deletion logic."""
 
@@ -143,6 +135,7 @@ def test_database_progression(dbcursor):
     assert abs(_get() - 70.0) < 0.01
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_issue15_wind(dbcursor):
     """Test parsing of available wind information."""
     prod = factory("CLI/CLICVG.txt")
@@ -306,6 +299,7 @@ def test_141103_recordsnow():
     assert prod.data[0]["data"]["snow_today"] == 12.0
 
 
+@pytest.mark.parametrize("database", ["iem"])
 def test_141024_recordsnow(dbcursor):
     """ CLIOME See that we can handle record snowfall """
     prod = factory("CLI/CLIOME.txt")

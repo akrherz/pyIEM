@@ -1,19 +1,9 @@
 """MCD/MPD tests."""
-# pylint: disable=redefined-outer-name
 
-import psycopg2.extras
 import pytest
 from pyiem.exceptions import MCDException
 from pyiem.nws.products import parser
-from pyiem.util import get_dbconn, utc, get_test_file
-
-
-@pytest.fixture
-def dbcursor():
-    """Database cursor."""
-    return get_dbconn("postgis").cursor(
-        cursor_factory=psycopg2.extras.DictCursor
-    )
+from pyiem.util import utc, get_test_file
 
 
 def test_exceptions():
@@ -41,6 +31,7 @@ def test_datetime_coverage():
     assert parser(get_test_file("MCD_MPD/SWOMCD_sep1.txt")) is not None
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_issue163(dbcursor):
     """Test parsing of the concerning tag."""
     prod = parser(get_test_file("MCD_MPD/SWOMCDconcerning.txt"))
@@ -60,6 +51,7 @@ def test_issue163(dbcursor):
     assert dbcursor.fetchone()[0] == 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_170926_nodbinsert(dbcursor):
     """This product never hit the database for some reason?"""
     prod = parser(get_test_file("MCD_MPD/SWOMCD_2010.txt"))
@@ -73,6 +65,7 @@ def test_170926_nodbinsert(dbcursor):
     assert dbcursor.rowcount == 1
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_mpd_mcdparser(dbcursor):
     """ The mcdparser can do WPC's MPD as well, test it """
     prod = parser(get_test_file("MCD_MPD/MPD.txt"))
@@ -96,6 +89,7 @@ def test_mpd_mcdparser(dbcursor):
     prod.database_save(dbcursor)
 
 
+@pytest.mark.parametrize("database", ["postgis"])
 def test_mcdparser(dbcursor):
     """ Test Parsing of MCD Product """
     prod = parser(get_test_file("MCD_MPD/SWOMCD.txt"))

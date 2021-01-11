@@ -1,6 +1,12 @@
 """SIGMET"""
+# stdlib
 from collections import defaultdict
 
+# 3rd Party
+import pytest
+
+# this
+from pyiem.exceptions import SIGMETException
 from pyiem.nws.products.sigmet import parser, compute_esol
 from pyiem.util import utc, get_test_file
 
@@ -11,6 +17,17 @@ def mydict():
 
 
 NWSLI_PROVIDER = defaultdict(mydict)
+
+
+def test_opairs():
+    """Test that exception is raised."""
+    utcnow = utc(2021, 1, 9, 7, 58)
+    with pytest.raises(SIGMETException):
+        parser(
+            get_test_file("SIGMETS/SIGAK3.txt"),
+            utcnow,
+            nwsli_provider=NWSLI_PROVIDER,
+        )
 
 
 def test_190503_badgeom():
@@ -151,7 +168,8 @@ def test_sigaob():
     assert not tp.sigmets
 
 
-def test_50e():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_50e(dbcursor):
     """ See about parsing 50E properly """
     utcnow = utc(2014, 8, 11, 18, 55)
     ugc_provider = {}
@@ -168,6 +186,7 @@ def test_50e():
         nwsli_provider,
     )
     assert abs(tp.sigmets[0].geom.area - 2.15) < 0.01
+    tp.sql(dbcursor)
 
 
 def test_sigc():
