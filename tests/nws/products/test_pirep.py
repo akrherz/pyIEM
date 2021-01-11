@@ -18,7 +18,9 @@ def test_210108_emptygeom(dbcursor):
     utcnow = utc(2020, 1, 1, 21, 34)
     prod = pirepparser(get_test_file("PIREPS/badgeom.txt"), utcnow=utcnow)
     prod.reports[3].is_duplicate = True
+    prod.assign_cwsu(dbcursor)
     prod.sql(dbcursor)
+    prod.get_jabbers("")
     assert len(prod.reports) == 6
     dbcursor.execute(
         "SELECT count(*) from pireps where valid = %s and "
@@ -36,6 +38,7 @@ def test_180307_aviation_controlchar(dbcursor):
         get_test_file("PIREPS/ubmd90.txt"), nwsli_provider=nwsli_provider
     )
     assert len(prod.reports) == 1
+    prod.assign_cwsu(dbcursor)
     prod.sql(dbcursor)
 
 

@@ -327,22 +327,18 @@ class Pirep(product.TextProduct):
             if report.latitude is None:
                 continue
             txn.execute(
-                "select distinct id from cwsu WHERE "
+                "select id from cwsu WHERE "
                 "st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))",
                 (report.longitude, report.latitude),
             )
-            if txn.rowcount == 0:
-                # self.warnings.append("Find CWSU failed %.3f %.3f %s" % (
-                #    report.longitude, report.latitude, report.text))
-                continue
-            row = txn.fetchone()
-            report.cwsu = row["id"]
+            if txn.rowcount > 0:
+                report.cwsu = txn.fetchone()["id"]
 
     def get_jabbers(self, _uri, _uri2=None):
         """ get jabber messages """
         res = []
         for report in self.reports:
-            if report.is_duplicate or report.valid is None:
+            if report.is_duplicate:
                 continue
             jmsg = {
                 "priority": "Urgent"
