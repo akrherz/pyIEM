@@ -5,6 +5,13 @@ from pyiem.nws.products.pirep import parser as pirepparser
 from pyiem.util import utc, get_test_file
 
 
+def test_210110_canada():
+    """Test that generated error is for canada site id."""
+    utcnow = utc(2020, 1, 11, 3, 47)
+    prod = pirepparser(get_test_file("PIREPS/canada.txt"), utcnow=utcnow)
+    assert "CYAT" in prod.warnings[0]
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_210108_emptygeom(dbcursor):
     """Test that we insert empty geometries."""
