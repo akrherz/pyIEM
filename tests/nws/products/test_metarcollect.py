@@ -9,6 +9,7 @@ PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
     "CYYE": dict(network="CA_BC_ASOS"),
     "QQQQ": dict(network="FAKE", tzname="America/Chicago"),
+    "ZZZZ": dict(network="FAKE", tzname="Nowhere'sVille"),
     "SPS": dict(wfo="OUN"),
     "MIA": dict(wfo="MIA"),
     "ALO": dict(wfo="DSM"),
@@ -33,17 +34,50 @@ def create_entries(cursor):
     )
 
 
+def test_future_crosses():
+    """Test some hairy logic with METARs from the future."""
+    utcnow = utc(2015, 9, 15, 23)
+    data = "\r\r\n".join(
+        [
+            "000 ",
+            "SAUS44 KISU 152300",
+            "METAR "
+            "QQQQ 172153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
+            "AO2 SLP104 T01720044=",
+        ]
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    assert not prod.metars
+
+
 @pytest.mark.parametrize("database", ["iem"])
 def test_corrected(dbcursor):
     """Test that the COR does not get dropped from the raw METAR."""
     create_entries(dbcursor)
     code = (
-        "KSAT 121751Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
+        "QQQQ 121751Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
         "T03220194 10328 20228 58011 $="
     )
     mtr = metarcollect.METARReport(code, year=2020, month=10)
     iemob, _ = mtr.to_iemaccess(dbcursor)
     assert mtr.code == iemob.data["raw"]
+
+
+@pytest.mark.parametrize("database", ["iem"])
+def test_bad_tzname(dbcursor):
+    """Test what happens with a bad tzname."""
+    utcnow = utc(2015, 9, 1, 23)
+    data = "\r\r\n".join(
+        [
+            "000 ",
+            "SAUS44 KISU 011200",
+            "METAR ",
+            "ZZZZ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
+            "AO2 SLP104 T01720044 10178 20122 56014=",
+        ]
+    )
+    prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    prod.metars[0].to_iemaccess(dbcursor)
 
 
 @pytest.mark.parametrize("database", ["iem"])

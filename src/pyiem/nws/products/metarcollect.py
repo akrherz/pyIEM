@@ -37,10 +37,7 @@ def wind_logic(iem, this):
     if this.wind_gust:
         iem.data["gust"] = this.wind_gust.value("KT")
     if this.wind_dir:
-        if this.wind_dir.value() == "VRB":
-            iem.data["drct"] = 0
-        else:
-            iem.data["drct"] = float(this.wind_dir.value())
+        iem.data["drct"] = float(this.wind_dir.value())
     if this.wind_speed_peak:
         iem.data["peak_wind_gust"] = this.wind_speed_peak.value("KT")
     if this.wind_dir_peak:
@@ -90,7 +87,7 @@ def to_metar(textprod, text):
     """Create a METAR object, if possible"""
     # Do some cleaning and whitespace trimming
     text = sanitize(text)
-    if len(text) < 10:
+    if len(text) < 14:  # arb
         return
     attempt = 1
     mtr = None
@@ -103,12 +100,6 @@ def to_metar(textprod, text):
             tokens = ERROR_RE.findall(str(inst))
             if tokens:
                 if tokens[0] == text or text.startswith(tokens[0]):
-                    if not SA_RE.match(text):
-                        LOG.info(
-                            "%s Aborting due to non-replace %s",
-                            textprod.get_product_id(),
-                            str(inst),
-                        )
                     return
                 # So tokens contains a series of groups that needs updated
                 newtext = text
@@ -116,8 +107,6 @@ def to_metar(textprod, text):
                     newtext = newtext.replace(" %s" % (token,), "")
                 if newtext != text:
                     text = newtext
-                else:
-                    LOG.info("unparsed groups regex fail: %s", inst)
             if str(inst).find("day is out of range for month") > -1:
                 if valid.day < 10:
                     valid = valid.replace(day=1) - timedelta(days=1)
