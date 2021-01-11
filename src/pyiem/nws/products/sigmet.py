@@ -8,6 +8,7 @@ import math
 from shapely.geometry import Polygon, Point
 
 # Local stuff
+from pyiem.exceptions import SIGMETException
 from pyiem.nws.product import TextProduct
 
 O_LINE1 = re.compile(
@@ -91,9 +92,6 @@ class SIGMET:
         self.raw = None
 
 
-SIGMETException = Exception
-
-
 def figure_expire(ptime, hour, minute):
     """
     Convert something like 0255Z into a full blown time
@@ -134,14 +132,14 @@ def go2lonlat(lon0, lat0, direction, displacement):
     return lon2, lat2
 
 
-def locs2lonslats(loc_provider, locstr, geotype, widthstr, diameterstr):
+def locs2lonslats(loc_provider, locstr, geotype, _widthstr, diameterstr):
     """
     Convert a locstring into a lon lat arrays
     """
     lats = []
     lons = []
-    for l in locstr.split("-"):
-        s = FROM_RE.search(l)
+    for loc in locstr.split("-"):
+        s = FROM_RE.search(loc)
         if s:
             d = s.groupdict()
             if d["offset"] is not None:
@@ -252,7 +250,7 @@ class SIGMETProduct(TextProduct):
         if self.afos in ["SIGC", "SIGW", "SIGE", "SIGAK1", "SIGAK2"]:
             self.process_SIGC()
         elif self.afos[:2] == "WS":
-            self.process_WS()
+            pass
         else:
             self.process_ocean()
 
@@ -302,8 +300,6 @@ class SIGMETProduct(TextProduct):
         meat = self.unixtext.replace("\n", " ")
         m = O_LINE1.search(meat)
         d = m.groupdict()
-        if d is None:
-            raise SIGMETException("Failed to parse O_LINE1: %s" % (meat,))
         s = SIGMET()
         s.label = "%s %s" % (d["name"], d["num"])
         s.sts = self.compute_time(d["sts"])
@@ -376,9 +372,6 @@ class SIGMETProduct(TextProduct):
             sig.raw = section
 
             self.sigmets.append(sig)
-
-    def process_WS(self):
-        """ Process this type of SIGMET """
 
     def get_jabbers(self, uri, _uri2=None):
         """ Return the Jabber for this sigmet """
