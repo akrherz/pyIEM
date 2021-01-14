@@ -14,6 +14,7 @@ from pyiem.plot.colormaps import stretch_cmap
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
+LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
 
 
 def pretty_bins(minval, maxval, bins=8):
@@ -62,8 +63,11 @@ def centered_bins(absmax, on=0, bins=8):
     return np.linspace(on - sz * interval, on + sz * interval, bins + 1)
 
 
-def draw_logo(fig, filename):
+def draw_logo(fig, logoname):
     """Place the logo."""
+    if logoname is None:
+        return
+    filename = LOGOFILES.get(logoname, "logo.png")
     fn = "%s/%s" % (DATADIR, filename)
     if not os.path.isfile(fn):
         return
@@ -102,6 +106,8 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     Args:
       textsize (int, optional): First attempt this textsize to see if it fits.
     """
+    if text is None:
+        return None
     figbox = fig.get_window_extent().transformed(
         fig.dpi_scale_trans.inverted()
     )
