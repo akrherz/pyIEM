@@ -103,10 +103,11 @@ def dump_ugc(gtype, fn):
     pgconn = get_dbconn("postgis", user="nobody")
     cursor = pgconn.cursor()
 
+    # We want UGCs valid for the time of running this script
     cursor.execute(
-        """ SELECT ugc, wfo, simple_geom,
-        ST_x(centroid), ST_Y(centroid) from ugcs
-        WHERE end_ts is null and substr(ugc, 3, 1) = %s""",
+        "SELECT ugc, wfo, simple_geom, ST_x(centroid), ST_Y(centroid) "
+        "from ugcs WHERE begin_ts < now() and "
+        "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s",
         (gtype,),
     )
 
