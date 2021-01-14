@@ -7,22 +7,12 @@ import calendar
 import numpy as np
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
-import matplotlib.image as mpimage
 from pyiem.plot.use_agg import plt
 from pyiem.plot.colormaps import get_cmap
 from pyiem.plot.util import fitbox, fontscale
+from pyiem.plot.layouts import figure
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
-
-
-def iemlogo(fig):
-    """Place the IEM Logo"""
-    fn = "%s/%s" % (DATADIR, "logo.png")
-    if not os.path.isfile(fn):
-        return
-    logo = mpimage.imread(fn)
-    y0 = fig.get_figheight() * 100.0 - logo.shape[0] - 5
-    fig.figimage(logo, 5, y0, zorder=3)
 
 
 def _compute_bounds(sts, ets):
@@ -213,7 +203,7 @@ def calendar_plot(sts, ets, data, **kwargs):
     # Compute the number of month calendars we need.
 
     # We want 'square' boxes for each month's calendar, 4x3
-    fig = plt.figure(figsize=(10.24, 7.68))
+    fig = figure()
     if "fontsize" not in kwargs:
         kwargs["fontsize"] = 12
         if len(bounds) < 3:
@@ -238,7 +228,6 @@ def calendar_plot(sts, ets, data, **kwargs):
         ax = fig.add_axes(bounds[month])
         _do_month(month, ax, data, sts, ets, kwargs)
 
-    iemlogo(fig)
     title = kwargs.get("title")
     if title is not None:
         fitbox(fig, title, 0.1, 0.99, 0.95, 0.99)

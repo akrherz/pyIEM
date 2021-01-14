@@ -248,10 +248,8 @@ class MapPlot:
                     zorder=Z_POLITICAL,
                 )
 
-        if kwargs.get("logo") == "dep":
-            draw_logo(self.fig, "deplogo.png")
-        elif not kwargs.get("nologo"):
-            draw_logo(self.fig, "logo.png")
+        if not kwargs.get("nologo", False):
+            draw_logo(self.fig, kwargs.get("logo", "iem"))
         if "title" in kwargs:
             fitbox(
                 self.fig,
@@ -1308,10 +1306,6 @@ class MapPlot:
             lw=0.4,
             zorder=Z_POLITICAL,
         )
-
-    def iemlogo(self):
-        """Place the IEM Logo"""
-        draw_logo(self.fig, "logo.png")
 
     def postprocess(self, **kwargs):
         """Postprocessing.
