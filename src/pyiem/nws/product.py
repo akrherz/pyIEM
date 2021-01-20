@@ -19,9 +19,8 @@ from pyiem.nws import ugc, vtec, hvtec
 
 # The AWIPS Product Identifier is supposed to be 6chars as per directive,
 # but in practice it is sometimes something between 4 and 6 chars
-# We do require that the first character be a A-Z one as otherwise this will
-# match the LDM sequence number at the top!
-AFOSRE = re.compile(r"^([A-Z][A-Z0-9]{3,5})\s*\t*$", re.M)
+# We need to be careful this does not match the LDM sequence identifier
+AFOSRE = re.compile(r"^([A-Z0-9]{4,6})\s*\t*$", re.M)
 TIME_FMT = (
     "([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
     "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])"
@@ -753,6 +752,6 @@ class TextProduct:
         data = "\n".join(
             [line.strip() for line in self.sections[0].split("\n")[1:4]]
         )
-        tokens = re.findall(r"^([A-Z][A-Z0-9\s\t]{3,6})$", data, re.M)
+        tokens = AFOSRE.findall(data)
         if tokens:
             self.afos = tokens[0].strip()
