@@ -138,6 +138,13 @@ def test_170411_fakemnd():
     assert tp.wmo_valid == res
 
 
+def test_210120_numeric_afos():
+    """Test that a AFOS ID that starts with a number is OK."""
+    replacement = "3MWBRO"
+    text = get_test_file("MWWBRO.txt").replace("MWWBRO", replacement)
+    assert productparser(text).afos == replacement
+
+
 def test_151024_cae():
     """Make sure this CAE product works and does not throw an UGC error"""
     tp = productparser(get_test_file("CAEIA.txt"))
