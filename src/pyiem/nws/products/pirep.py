@@ -24,8 +24,8 @@ from pyiem.util import html_escape, LOG
 
 OV_LATLON = re.compile(
     (
-        r"\s?(?P<lat>[0-9]{3,4})(?P<latsign>[NS])"
-        r"\s?(?P<lon>[0-9]{3,5})(?P<lonsign>[EW])"
+        r"\s?(?P<lat>[0-9]{2,4})(?P<latsign>[NS])"
+        r"\s?(?P<lon>[0-9]{2,5})(?P<lonsign>[EW])"
     )
 )
 OV_LOCDIR = re.compile(
@@ -99,6 +99,34 @@ def _rectify_identifier(station, textprod):
     if len(station) == 3 and not textprod.source.startswith("K"):
         return textprod.source[0] + station
     return station
+
+
+def _parse_lonlat(text):
+    """Convert string into lon, lat values"""
+    # 2500N07000W
+    # -or- 25N070W -or- 25N70W
+    # FMH-12 says this is in degrees and minutes!
+    d = re.match(OV_LATLON, text).groupdict()
+
+    if len(d["lat"]) == 2 and len(d["lon"]) <= 3:
+        # We have integer values :/
+        lat = int(d["lat"])
+        lon = int(d["lon"])
+    else:
+        # We have Degrees and minutes
+        lat = float(
+            "%s.%i"
+            % (d["lat"][:-2], int(float(d["lat"][-2:]) / 60.0 * 10000.0))
+        )
+        lon = float(
+            "%s.%i"
+            % (d["lon"][:-2], int(float(d["lon"][-2:]) / 60.0 * 10000.0))
+        )
+    if d["latsign"] == "S":
+        lat *= -1
+    if d["lonsign"] == "W":
+        lon *= -1
+    return lon, lat
 
 
 class Pirep(product.TextProduct):
@@ -211,27 +239,7 @@ class Pirep(product.TextProduct):
                     bearing = int(d["dir"])
                     dist = int(d["dist"])
                 elif re.match(OV_LATLON, therest):
-                    # 2500N07000W
-                    # FMH-12 says this is in degrees and minutes!
-                    d = re.match(OV_LATLON, therest).groupdict()
-                    _pr.latitude = float(
-                        "%s.%i"
-                        % (
-                            d["lat"][:-2],
-                            int(float(d["lat"][-2:]) / 60.0 * 10000.0),
-                        )
-                    )
-                    if d["latsign"] == "S":
-                        _pr.latitude = 0 - _pr.latitude
-                    _pr.longitude = float(
-                        "%s.%i"
-                        % (
-                            d["lon"][:-2],
-                            int(float(d["lon"][-2:]) / 60.0 * 10000.0),
-                        )
-                    )
-                    if d["lonsign"] == "W":
-                        _pr.longitude = 0 - _pr.longitude
+                    _pr.longitude, _pr.latitude = _parse_lonlat(therest)
                     continue
                 elif therest == "O":
                     # Use the first part of the report in this case
