@@ -5,6 +5,14 @@ from pyiem.nws.products.pirep import parser as pirepparser
 from pyiem.util import utc, get_test_file
 
 
+def test_210121_int_latlon():
+    """Test successful parsing of an integer lat lon value, tricky."""
+    utcnow = utc(2020, 1, 21, 10, 22)
+    prod = pirepparser(get_test_file("PIREPS/latlonint.txt"), utcnow=utcnow)
+    assert prod.reports[0].latitude == 47
+    assert prod.reports[0].longitude == -51
+
+
 def test_210110_canada():
     """Test that generated error is for canada site id."""
     utcnow = utc(2020, 1, 11, 3, 47)
