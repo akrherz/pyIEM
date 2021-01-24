@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_170619_maine():
+    """Test that we don't light up all of Main for the slight."""
+    spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
+    assert abs(outlook.geometry.area - 49.058) < 0.01
+
+
 def test_issue295_geometryfail():
     """Test that we can make a geometry out of this."""
     # https://.../products/outlook/archive/2020/day1otlk_20200926_1300.html
