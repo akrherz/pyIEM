@@ -772,10 +772,8 @@ class SPCPTS(TextProduct):
         """
         for day, collect in self.outlook_collections.items():
             txn.execute(
-                """
-                DELETE from spc_outlooks where product_issue = %s
-                and expire = %s and outlook_type = %s and day = %s
-            """,
+                "DELETE from spc_outlooks where product_issue = %s "
+                "and expire = %s and outlook_type = %s and day = %s",
                 (self.valid, self.expire, self.outlook_type, day),
             )
             if txn.rowcount > 0:
@@ -786,22 +784,22 @@ class SPCPTS(TextProduct):
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
-                sql = """
-                    INSERT into spc_outlooks(product_issue, issue, expire,
-                    threshold, category, day, outlook_type, geom)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """
-                args = (
-                    self.valid,
-                    collect.issue,
-                    collect.expire,
-                    outlook.threshold,
-                    outlook.category,
-                    collect.day,
-                    self.outlook_type,
-                    "SRID=4326;%s" % (outlook.geometry.wkt,),
+                txn.execute(
+                    "INSERT into spc_outlooks(product_issue, issue, expire, "
+                    "threshold, category, day, outlook_type, geom, "
+                    "product_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (
+                        self.valid,
+                        collect.issue,
+                        collect.expire,
+                        outlook.threshold,
+                        outlook.category,
+                        collect.day,
+                        self.outlook_type,
+                        "SRID=4326;%s" % (outlook.geometry.wkt,),
+                        self.get_product_id(),
+                    ),
                 )
-                txn.execute(sql, args)
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""
