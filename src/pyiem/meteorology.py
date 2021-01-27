@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 import metpy.calc as mcalc
-from metpy.units import masked_array
+from metpy.units import masked_array, units
 import pyiem.datatypes as dt
 
 
@@ -253,21 +253,25 @@ def gdd(high, low, base=50.0, ceiling=86.0):
     """Compute Growing Degree Days
 
     Args:
-      high (temperature): High Temperature
-      low (temperature): Low Temperature
+      high (temperature, or metpy.units): High Temperature
+      low (temperature or metpy.units): Low Temperature
       base (int): Base to use in GDD Computation (F)
       ceiling (int): Ceiling to use in GDD Computation (F)
 
     Returns:
       float value for GDDs
     """
-    highf = high.value("F")
-    lowf = low.value("F")
+    if hasattr(high, "units"):
+        highf = high.to(units("degF")).m
+        lowf = low.to(units("degF")).m
+    else:
+        highf = high.value("F")
+        lowf = low.value("F")
     highf = np.ma.where(np.ma.less(highf, base), base, highf)
     lowf = np.ma.where(np.ma.less(lowf, base), base, lowf)
     highf = np.ma.where(np.ma.greater(highf, ceiling), ceiling, highf)
     lowf = np.ma.where(np.ma.greater(lowf, ceiling), ceiling, lowf)
-    res = (highf + lowf) / 2.0 - 50.0
+    res = (highf + lowf) / 2.0 - base
     if res.shape == [1]:
         return res[0]
     return res
