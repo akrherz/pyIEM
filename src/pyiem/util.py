@@ -15,7 +15,9 @@ import warnings
 import getpass
 from socket import error as socket_error
 
+# third party
 from six import string_types
+from metpy.units import units, masked_array
 
 # NB: some third party stuff is expensive to import, so let us be lazy
 
@@ -41,6 +43,45 @@ class CustomFormatter(logging.Formatter):
             record.funcName,
             record.getMessage(),
         )
+
+
+def convert_value(val, units_in, units_out):
+    """DRY Helper to return magnitude of a metpy unit conversion.
+
+    Args:
+      val (mixed): something with values.
+      units_in (str): What units those values have.
+      units_out (str): What values we want with given magnitude.
+
+    Returns:
+      mixed: magnitude of val with unit conversion applied
+    """
+    fval = masked_array(val, units(units_in)).to(units(units_out)).m
+    return fval
+
+
+def c2f(val):
+    """Helper to return magnitude of Celcius to Fahrenheit conversion.
+
+    Args:
+      val (mixed): something with values in C
+
+    Returns:
+      val: something with values in F
+    """
+    return convert_value(val, "degC", "degF")
+
+
+def mm2inch(val):
+    """Helper to return magnitude of milimeters to inch conversion.
+
+    Args:
+      val (mixed): something with values in mm
+
+    Returns:
+      val: something with values in inch
+    """
+    return convert_value(val, "mm", "inch")
 
 
 def html_escape(val):

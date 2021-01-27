@@ -9,6 +9,7 @@ from io import BytesIO
 from collections import OrderedDict
 import mock
 
+# third party
 import pytest
 import numpy as np
 import psycopg2
@@ -27,6 +28,29 @@ def test_get_dbconn(dbname):  # noqa
     """Does our code work for various database names."""
     pgconn = util.get_dbconn(dbname)
     assert pgconn is not None
+
+
+def test_c2f_singleton():
+    """Test that we get back a singleton when providing one."""
+    assert abs(util.c2f(0) - 32) < 0.01
+
+
+def test_c2f_list():
+    """Test that we get back a list when providing one."""
+    assert abs(util.c2f([0])[0] - 32) < 0.01
+
+
+def test_c2f_masked_array():
+    """Test that we get back a masked array."""
+    val = np.ma.masked_array([0, 0], mask=[True, False])
+    res = util.c2f(val)
+    assert res[0].mask
+    assert not np.ma.is_masked(res[1])
+
+
+def test_mm2inch():
+    """Test conversion of mm value to inch."""
+    assert abs(util.mm2inch(25.4) - 1) < 0.01
 
 
 def test_get_dbconn_bad():
