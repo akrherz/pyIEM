@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+gce04e17 documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+ga15f781 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gce04e17 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ga15f781 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -810,6 +810,44 @@ default. Note that the new class <em>should</em> be a sub-class of
 </dd></dl>
 
 <dl class="py function">
+<dt id="pyiem.util.c2f">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">c2f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.c2f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper to return magnitude of Celcius to Fahrenheit conversion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>mixed</em>) – something with values in C</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>something with values in F</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>val</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.convert_value">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">convert_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em>, <em class="sig-param"><span class="n">units_in</span></em>, <em class="sig-param"><span class="n">units_out</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.convert_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>DRY Helper to return magnitude of a metpy unit conversion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>val</strong> (<em>mixed</em>) – something with values.</p></li>
+<li><p><strong>units_in</strong> (<em>str</em>) – What units those values have.</p></li>
+<li><p><strong>units_out</strong> (<em>str</em>) – What values we want with given magnitude.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>magnitude of val with unit conversion applied</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>mixed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pyiem.util.drct2text">
 <code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">drct2text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">drct</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.drct2text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert an degree value to text representation of direction.</p>
@@ -962,6 +1000,23 @@ INFO for non interactive sessions, DEBUG otherwise</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>logger instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.util.mm2inch">
+<code class="sig-prename descclassname">pyiem.util.</code><code class="sig-name descname">mm2inch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.mm2inch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper to return magnitude of milimeters to inch conversion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> (<em>mixed</em>) – something with values in mm</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>something with values in inch</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>val</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1193,7 +1248,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gce04e17 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ga15f781 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
