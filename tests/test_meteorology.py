@@ -8,6 +8,13 @@ from pyiem import datatypes, meteorology
 warnings.simplefilter("ignore", RuntimeWarning)
 
 
+def test_gdd_with_metpy_units():
+    """Test that we can handle being provided metpy units."""
+    # 62.33F 41F
+    res = meteorology.gdd(units("degK") * 290, units("degC") * 5)
+    assert abs(res - 6.16) < 0.01
+
+
 def test_vectorized():
     """See that heatindex and windchill can do lists"""
     temp = datatypes.temperature([0, 10], "F")
