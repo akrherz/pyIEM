@@ -19,6 +19,7 @@ from pyiem.nws.products import lsr
         ("ONE QUARTER INCH OF ICE ACCUMULATION", 0.25),
         ("3/8THS OF AN INCH", 0.375),
         ("3 TENTHS OF AN INCH", 0.3),
+        ("3/16 INCH ICE ACCRETION REPORTED.", 0.1875),
     ],
 )
 def test_icestorm_remark(text, ans):

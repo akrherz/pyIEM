@@ -7,7 +7,7 @@ import warnings
 from pyiem import reference
 from pyiem.util import html_escape
 
-ICE_ACCUM_V0 = re.compile(r"(\d)/(\d)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
+ICE_ACCUM_V0 = re.compile(r"(\d+)/(\d+)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
 ICE_ACCUM_V1 = re.compile(
     r"(0\.\d|\.\d|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
 )
