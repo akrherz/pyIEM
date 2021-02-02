@@ -534,6 +534,7 @@ def test_cwa():
         clevlabels=["a", "b", "c", "d", "e"],
     )
     mp.draw_cwas()
+    mp.drawcounties()
     assert mp.cwa == "MKX"
     return mp.fig
 
