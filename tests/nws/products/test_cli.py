@@ -26,6 +26,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_210206_colon():
+    """Test that we can handle colons in the timestamp."""
+    prod = cliparser(get_test_file("CLI/CLICVG_colon.txt"))
+    assert prod.data[0]["data"]["temperature_maximum"] == 39
+    assert prod.data[0]["data"]["temperature_maximum_normal"] == 40
+
+
 def test_wrong_wmo_header():
     """Test that we raise an exception for this."""
     prod = cliparser(

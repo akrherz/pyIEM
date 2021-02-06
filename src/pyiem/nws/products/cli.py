@@ -9,6 +9,7 @@ from pyiem.util import LOG
 from pyiem.observation import Observation
 from pyiem.exceptions import CLIException
 
+AMPM_COLON = re.compile(r"\s\d?\d:\d\d\s[AP]M")
 HEADLINE_RE = re.compile(
     (
         r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) "
@@ -389,7 +390,11 @@ class CLIProduct(TextProduct):
           list of text sections
         """
         sections = []
-        for section in self.unixtext.split("&&"):
+        text = self.unixtext
+        # Correct bad encoding of colons due to new NWS software
+        for token in AMPM_COLON.findall(text):
+            text = text.replace(token, " " + token.replace(":", ""))
+        for section in text.split("&&"):
             if not HEADLINE_RE.findall(section.replace("\n", " ")):
                 continue
             tokens = re.findall("^WEATHER ITEM.*$", section, re.M)
