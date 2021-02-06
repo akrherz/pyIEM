@@ -1,0 +1,105 @@
+680 
+CDUS41 KILN 050534
+CLICVG
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE WILMINGTON OH
+1234 AM EST FRI FEB 05 2021
+
+...................................
+
+...THE CINCINNATI OH CLIMATE SUMMARY FOR FEBRUARY 4 2021...
+
+CLIMATE NORMAL PERIOD: 1981 TO 2010
+CLIMATE RECORD PERIOD: 1869 TO 2021
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST      
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL           
+...................................................................
+TEMPERATURE (F)                                                          
+ YESTERDAY                                                           
+  MAXIMUM         39  11:29 PM  70    1890  40     -1       62        
+  MINIMUM         22  12:43 AM -11    1996  24     -2       35        
+  AVERAGE         31                        32     -1       49     
+
+PRECIPITATION (IN)                                                    
+  YESTERDAY        0.14          1.35 1884   0.11   0.03     0.35     
+  MONTH TO DATE    0.34                      0.43  -0.09     0.35     
+  SINCE DEC 1      5.31                      6.80  -1.49     8.07     
+  SINCE JAN 1      3.53                      3.43   0.10     4.49     
+
+SNOWFALL (IN)                                                              
+  YESTERDAY        T            11.8  1998   0.2   -0.2      0.0      
+  MONTH TO DATE    2.2                       1.1    1.1      0.0      
+  SINCE DEC 1      8.3                      12.4   -4.1      3.7      
+  SINCE JUL 1      9.5                      13.2   -3.7      6.4      
+  SNOW DEPTH       1                                                 
+
+DEGREE DAYS                                                           
+ HEATING                                                              
+  YESTERDAY       34                        33      1       16        
+  MONTH TO DATE  146                       132     14       71        
+  SINCE DEC 1   2005                      2144   -139     1659        
+  SINCE JUL 1   2799                      3104   -305     2624        
+
+ COOLING                                                              
+  YESTERDAY        0                         0      0        0        
+  MONTH TO DATE    0                         0      0        0        
+  SINCE DEC 1      0                         0      0        0        
+  SINCE JAN 1      0                         0      0        0        
+...................................................................
+
+
+WIND (MPH)                                                            
+  RESULTANT WIND SPEED  10   RESULTANT WIND DIRECTION   S (160)       
+  HIGHEST WIND SPEED    28   HIGHEST WIND DIRECTION     W (270)       
+  HIGHEST GUST SPEED    35   HIGHEST GUST DIRECTION     W (270)       
+  AVERAGE WIND SPEED    11.7                                        
+
+
+SKY COVER                                                             
+  POSSIBLE SUNSHINE  MM                                                 
+  AVERAGE SKY COVER 1.0                                                 
+
+
+WEATHER CONDITIONS                                                    
+THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                         
+  RAIN                                                                
+  LIGHT RAIN                                                          
+  LIGHT SNOW                                                          
+  SLEET                                                               
+  FOG                                                                 
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    92          10:00 PM                                      
+ LOWEST     56           3:00 PM                                      
+ AVERAGE    74                                                        
+
+..........................................................
+
+
+THE CINCINNATI OH CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                     
+ MAXIMUM TEMPERATURE (F)   41        67      1927                      
+ MINIMUM TEMPERATURE (F)   24        -9      1917                      
+                                             1979                     
+
+
+SUNRISE AND SUNSET                                                    
+FEBRUARY  5 2021......SUNRISE   7:41 AM EST   SUNSET   6:05 PM EST     
+FEBRUARY  6 2021......SUNRISE   7:40 AM EST   SUNSET   6:06 PM EST     
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+
+
+
+$$
+
