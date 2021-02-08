@@ -34,6 +34,22 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_issue365_cape_cod():
+    """Test that we don't mask out Cape Cod."""
+    mp = MapPlot(nocaption=True, sector="cwa", cwa="BOX")
+    mp.contourf(
+        np.arange(-75, -66),
+        np.arange(36, 45),
+        np.arange(9),
+        np.arange(9),
+        clevlabels=["a", "b", "c", "d", "e", "f", "g", "h", "i"],
+        clip_on=False,
+    )
+    mp.draw_mask(sector="conus")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_issue217():
     """See what happens with our logo on very scaled figure."""
     mp = MapPlot(nocaption=True, figsize=(6.00, 3.35))

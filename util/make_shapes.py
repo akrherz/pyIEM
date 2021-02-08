@@ -5,12 +5,37 @@ We use a pickled protocol=2, which is compat binary.
 import datetime
 
 import pickle
+from shapely.geometry import MultiPolygon
 from shapely.wkb import loads
+from geopandas import read_postgis
 from pyiem.util import get_dbconn
 
 PATH = "../src/pyiem/data"
 # Be annoying
 print("Be sure to run this against Mesonet database and not laptop!")
+
+
+def dump_conus(fn):
+    """states."""
+    pgconn = get_dbconn("postgis", user="nobody")
+
+    df = read_postgis(
+        """SELECT
+            ST_Transform(
+                ST_Simplify(
+                    ST_Union(ST_Transform(the_geom,2163)),
+                    500.),
+                4326) as geo from states
+        WHERE state_abbr not in ('HI', 'AK', 'PR')""",
+        pgconn,
+        geom_col="geo",
+    )
+    # Now we want to filter out some smaller geometries
+    mp = MultiPolygon([geo for geo in df["geo"].values[0] if geo.area > 0.002])
+    data = {}
+    data["conus"] = dict(geom=mp, lon=mp.centroid.x, lat=mp.centroid.y)
+    with open("%s/%s" % (PATH, fn), "wb") as f:
+        pickle.dump(data, f, 2)
 
 
 def dump_states(fn):
@@ -140,6 +165,8 @@ def check_file(fn):
 
 def main():
     """Go Main"""
+    dump_conus("conus.pickle")
+    check_file("conus.pickle")
     dump_iowawfo("iowawfo.pickle")
     dump_ugc("C", "ugcs_county.pickle")
     dump_ugc("Z", "ugcs_zone.pickle")

@@ -982,6 +982,10 @@ class MapPlot:
             s = load_pickle_geo("cwa.pickle")
             mask_outside_geom(self.ax, s[self.cwa]["geom"])
             return
+        if sector == "conus":
+            s = load_pickle_geo("conus.pickle")
+            mask_outside_geom(self.ax, s["conus"]["geom"])
+            return
         if sector == "iowawfo":
             s = load_pickle_geo("iowawfo.pickle")
             geo = s["iowawfo"]["geom"]
