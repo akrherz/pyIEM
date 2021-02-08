@@ -4,6 +4,7 @@ import os
 
 import numpy as np
 import cartopy.crs as ccrs
+from shapely.geometry import Polygon
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.image as mpimage
@@ -444,6 +445,10 @@ def mask_outside_geom(ax, geom):
         ]
     )
     codes = [mpath.Path.MOVETO] + (len(verts) - 1) * [mpath.Path.LINETO]
+    if isinstance(geom, Polygon):
+        geom = [
+            geom,
+        ]
     for geo in geom:
         ccw = np.asarray(geo.exterior)[::-1]
         points = ax.projection.transform_points(
