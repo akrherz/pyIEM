@@ -35,6 +35,18 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_roadcond():
+    """Test being able to plot Iowa Road Conditions."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="iowa",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_roadcond(utc(2021, 2, 4, 17))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_overlay_nexrad():
     """Test being able to plot NEXRAD."""
     mp = MapPlot(

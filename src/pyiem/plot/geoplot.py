@@ -1354,6 +1354,48 @@ class MapPlot:
             shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)
 
+    def overlay_roadcond(self, valid=None):
+        """Overlay Iowa Winter Road Conditions.
+
+        Args:
+          valid (datetime.datetime): Valid time for NEXRAD overlay.
+        """
+        if valid is None:
+            valid = utc()
+        if hasattr(valid, "tzinfo"):
+            valid = valid.astimezone(datetime.timezone.utc)
+        url = (
+            "https://mesonet.agron.iastate.edu/"
+            "api/1/iowa_winter_roadcond.geojson"
+        )
+        tstamp = valid.strftime("%Y-%m-%d %H:%M")
+        try:
+            req = requests.get(url, params={"valid": tstamp}, timeout=30)
+        except requests.ConnectionError as exp:
+            warnings.warn("overlay_roadcond failed: %s" % (exp,))
+            return None
+        df = gpd.GeoDataFrame().from_features(req.json())
+        labels = []
+        for _, row in df.iterrows():
+            for geo in row["geometry"]:
+                self.ax.plot(
+                    *geo.xy,
+                    transform=ccrs.PlateCarree(),
+                    color=row["color"],
+                    linewidth=2 if row["rtype"] > 1 else 4,
+                    zorder=Z_OVERLAY2,
+                    label=None if row["label"] in labels else row["label"],
+                )
+                if row["label"] not in labels:
+                    labels.append(row["label"])
+        self.ax.legend(
+            loc=3,
+            ncol=6,
+            fontsize=10,
+            facecolor="white",
+            framealpha=1,
+        ).set_zorder(Z_OVERLAY2 + 5)
+
     def overlay_nexrad(self, valid=None, product="N0Q"):
         """Overlay an IEM NEXRAD Composite Image.
 
