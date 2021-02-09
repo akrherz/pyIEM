@@ -74,7 +74,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_FRAME,
     TWITTER_RESOLUTION_INCH,
 )
-from pyiem.util import ssw, LOG
+from pyiem.util import ssw, LOG, utc, exponential_backoff
 from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
 import pyiem.meteorology as meteorology
@@ -655,7 +655,7 @@ class MapPlot:
         labelbuffer=25,
         outlinecolor="#FFFFFF",
         zorder=None,
-        **kwargs
+        **kwargs,
     ):
         """Plot values onto the map
 
@@ -1223,7 +1223,7 @@ class MapPlot:
                 crs=ccrs.PlateCarree(),
                 zorder=Z_POLITICAL,
                 facecolor="None",
-                **kwargs
+                **kwargs,
             )
 
     def fill_cwas(self, data, **kwargs):
@@ -1288,7 +1288,7 @@ class MapPlot:
             df2.name.values,
             showmarker=True,
             textsize=tsz,
-            **kwargs
+            **kwargs,
         )
 
     def drawcounties(self, color="k"):
@@ -1353,6 +1353,97 @@ class MapPlot:
         if kwargs.get("filename") is not None:
             shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)
+
+    def overlay_nexrad(self, valid=None, product="N0Q"):
+        """Overlay an IEM NEXRAD Composite Image.
+
+        Args:
+          valid (datetime.datetime): Valid time for NEXRAD overlay.
+          product (str): either N0Q or N0R for the mosaic type.
+
+        Returns:
+          valid time of the NEXRAD, or None if not found.
+        """
+        if valid is None:
+            valid = utc()
+        if hasattr(valid, "tzinfo"):
+            valid = valid.astimezone(datetime.timezone.utc)
+        if product not in ["N0R", "N0Q"]:
+            raise ValueError("nexrad `product` not in {N0R,N0Q}")
+        # Rectify to modulus 5 minutes
+        valid -= datetime.timedelta(minutes=(valid.minute % 5))
+        compsector = "us"
+        if self.sector == "state" and self.state in ["AK", "HI", "PR"]:
+            compsector = self.state.lower()
+        elif self.sector == "cwa" and self.cwa in ["AFG", "AJK", "AFC"]:
+            compsector = "ak"
+        elif self.sector == "cwa" and self.cwa in [
+            "HFO",
+        ]:
+            compsector = "hi"
+        elif self.sector == "cwa" and self.cwa in [
+            "SJU",
+        ]:
+            compsector = "pr"
+        baseurl = valid.strftime(
+            "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/"
+            f"GIS/{compsector}comp/{product.lower()}_%Y%m%d%H%M."
+        )
+        req_png = exponential_backoff(
+            requests.get, baseurl + "png", timeout=10
+        )
+        req_wld = exponential_backoff(
+            requests.get, baseurl + "wld", timeout=10
+        )
+        if req_png is None or req_png.status_code != 200:
+            LOG.debug("Failed to fetch %spng", baseurl)
+            return None
+        if req_wld is None or req_wld.status_code != 200:
+            LOG.debug("Failed to fetch %swld", baseurl)
+            return None
+        (dx, _, _, dy, west, north) = [
+            float(x) for x in req_wld.content.decode("ascii").split("\n")
+        ]
+        bio = BytesIO(req_png.content)
+        bio.seek(0)
+        im = np.asarray(Image.open(bio))
+        east = west + im.shape[1] * dx
+        south = north + im.shape[0] * dy
+        ramp = pd.read_csv(f"{DATADIR}/ramps/composite_{product.lower()}.txt")
+        cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
+        cmap.set_under((0, 0, 0, 0))
+        norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
+        res = self.ax.imshow(
+            im,
+            extent=(west, east, south, north),
+            transform=ccrs.PlateCarree(),
+            interpolation="nearest",
+            cmap=cmap,
+            norm=norm,
+            zorder=Z_FILL,
+            origin="upper",
+        )
+        res.set_rasterized(True)
+        pos = self.ax.get_position()
+        cax = self.fig.add_axes([pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015])
+        cb = mpcolorbar.ColorbarBase(
+            cax,
+            cmap=cmap,
+            norm=norm,
+            ticks=ramp.loc[ramp["value"] % 20 == 0]["coloridx"].values,
+            extend="neither",
+            orientation="horizontal",
+            drawedges=False,
+            ticklocation="top",
+        )
+        cb.set_ticklabels(
+            [
+                "%.0d" % (d,)
+                for d in ramp.loc[ramp["value"] % 20 == 0]["value"].values
+            ]
+        )
+        self.fig.text(pos.x1, pos.y1 + 0.005, "dBZ", ha="left")
+        return valid
 
 
 def windrose(*args, **kwargs):
