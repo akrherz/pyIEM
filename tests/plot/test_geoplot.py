@@ -18,6 +18,7 @@ from pyiem.plot import (
     load_pickle_pd,
     load_pickle_geo,
 )
+from pyiem.util import utc
 
 
 def test_depreciated():
@@ -31,6 +32,69 @@ def test_invalid_file():
     assert load_bounds("this shall not work") is None
     assert load_pickle_pd("this shall not work") is None
     assert not load_pickle_geo("this shall not work")
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_roadcond():
+    """Test being able to plot Iowa Road Conditions."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="iowa",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_roadcond(utc(2021, 2, 4, 17))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_nexrad():
+    """Test being able to plot NEXRAD."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="conus",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_nexrad(utc(2021, 2, 9, 17))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_nexrad_hawaii():
+    """Test that we can plot nexrad over Hawaii."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="state",
+        state="HI",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_nexrad(utc(2021, 2, 9, 17))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_nexrad_alaska():
+    """Test that we can plot nexrad over Alaska."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="AJK",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_nexrad(utc(2021, 2, 9, 17))
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_overlay_nexrad_puerto_rico():
+    """Test that we can plot nexrad over Puerto Rico."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="SJU",
+        title="A long and long title that has no purpose but to test things",
+    )
+    mp.overlay_nexrad(utc(2021, 2, 9, 17))
+    return mp.fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
