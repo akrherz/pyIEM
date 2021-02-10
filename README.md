@@ -4,7 +4,7 @@ pyIEM
 A collection of python code that support various other python projects I have
 and the [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu). A goal here is to upstream anything useful into [Unidata's MetPy](https://github.com/Unidata/MetPy) and also remove any redundant code.
 
-[![CodeCov](https://codecov.io/gh/akrherz/pyIEM/branch/master/graph/badge.svg)](https://codecov.io/gh/akrherz/pyIEM)
+[![CodeCov](https://codecov.io/gh/akrherz/pyIEM/branch/main/graph/badge.svg)](https://codecov.io/gh/akrherz/pyIEM)
 
 Dependencies
 ------------
