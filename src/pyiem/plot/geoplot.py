@@ -27,32 +27,27 @@ import pickle
 import datetime
 import warnings
 
-#
+# third party
+import rasterio
+from rasterio.warp import reproject, Resampling
 import requests
 import numpy as np
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import shape
-
-#
 from scipy.signal import convolve2d
 from scipy.interpolate import NearestNDInterpolator
-
-#
 from PIL import Image
-
-# Matplotlib
 from matplotlib.patches import Polygon
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Wedge
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
-
-# cartopy
 import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
+# local
 from pyiem.plot.use_agg import plt
 from pyiem.plot.util import (
     sector_setter,
@@ -1449,23 +1444,42 @@ class MapPlot:
         bio = BytesIO(req_png.content)
         bio.seek(0)
         im = np.asarray(Image.open(bio))
-        east = west + im.shape[1] * dx
-        south = north + im.shape[0] * dy
+        # Use rasterio to reproject this grid into the projection of axes
+        with rasterio.Env():
+            src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
+            src_crs = {"init": "EPSG:4326"}
+            (px0, px1, py0, py1) = self.ax.get_extent()
+            pbbox = self.ax.get_window_extent()
+            pdx = (px1 - px0) / pbbox.width
+            pdy = (py1 - py0) / pbbox.height
+            dest_aff = rasterio.Affine(pdx, 0, px0, 0, pdy, py0)
+            res = np.zeros(
+                (int(pbbox.height), int(pbbox.width)), dtype=im.dtype
+            )
+            reproject(
+                im,
+                res,
+                src_transform=src_aff,
+                src_crs=src_crs,
+                src_nodata=0,
+                dst_transform=dest_aff,
+                dst_crs=self.ax.projection.proj4_params,
+                resampling=Resampling.nearest,
+            )
+
         ramp = pd.read_csv(f"{DATADIR}/ramps/composite_{product.lower()}.txt")
         cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
         cmap.set_under((0, 0, 0, 0))
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
-        res = self.ax.imshow(
-            im,
-            extent=(west, east, south, north),
-            transform=ccrs.PlateCarree(),
-            interpolation="nearest",
+        self.ax.imshow(
+            res,
+            interpolation="nearest",  # prevents artifacts
+            extent=(px0, px1, py0, py1),
             cmap=cmap,
             norm=norm,
             zorder=Z_FILL,
-            origin="upper",
-        )
-        res.set_rasterized(True)
+            origin="lower",
+        ).set_rasterized(True)
         pos = self.ax.get_position()
         cax = self.fig.add_axes([pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015])
         cb = mpcolorbar.ColorbarBase(
