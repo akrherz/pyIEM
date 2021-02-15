@@ -35,6 +35,19 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_memphis_cwa():
+    """Test that we can draw a map with Memphis CWA.."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="MEG",
+        title="Memphis including Hardin, TN TNZ092",
+    )
+    mp.fill_ugcs({"TNZ092": 10})
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_overlay_roadcond():
     """Test being able to plot Iowa Road Conditions."""
     mp = MapPlot(
