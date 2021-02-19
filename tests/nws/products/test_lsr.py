@@ -5,6 +5,20 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
+def test_tweetlen():
+    """Test that our tweet is not too long!"""
+    prod = parser(get_test_file("LSR/LSRBRO.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "At 12:45 AM CST, RIO Grande City [Starr Co, TX] DEPT OF HIGHWAYS "
+        "reports FREEZING RAIN of U0.00 INCH. MULTIPLE REPORTS RECEIVED VIA "
+        "DRIVETEXAS.ORG OF ICE AND SNOW ACCUMLATION OCCURRING ON BRIDGES AND "
+        "OVERPASSES ON HIGHWAY 83, FM1017, FM2686, FM2294, F... "
+        "#BRO/202102150645/202102150645"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_icestorm(dbcursor):
     """Test that we guess the ice storm magnitude and units."""
