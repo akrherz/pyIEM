@@ -242,16 +242,17 @@ class LSR:
             self.source,
             magstr,
         )
-        remainsize = reference.TWEET_CHARS - 24 - len(tweet)
         remark = ""
         if self.remark is not None:
             remark = self.remark.replace("DELAYED REPORT.", "")
-            extra = "..." if len(remark) > (remainsize - 6) else ""
-            tweet = "%s. %s%s" % (
-                tweet,
-                remark[: (remainsize - 6)].strip(),
-                extra,
-            )
+            tweet = f"{tweet}. {remark}"
+            # https://github.com/twitter/twitter-text/tree/master/config
+            # says that transformedURLLength is 23
+            size = reference.TWEET_CHARS - 24 - len(tweet)
+            if size <= 0:
+                # We need to truncate
+                tweet = tweet[: (size - 5)] + "..."
+
         # rectify
         tweet = " ".join(tweet.split())
 
