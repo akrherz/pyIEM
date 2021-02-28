@@ -378,10 +378,15 @@ class TextProductSegment:
 
         # check 1, is the polygon valid?
         if not poly.is_valid:
+            poly = poly.buffer(0)
+            if not poly.is_valid:
+                self.tp.warnings.append(
+                    f"LAT...LON polygon is invalid twice!\n{poly.exterior.xy}"
+                )
+                return None
             self.tp.warnings.append(
-                ("LAT...LON polygon is invalid!\n%s") % (poly.exterior.xy,)
+                "LAT...LON polygon is invalid, but buffer(0) fixed it!"
             )
-            return None
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             # No longer a warning as it was too much noise
