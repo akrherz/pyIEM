@@ -213,12 +213,22 @@ def test_200719_nomnd():
 @pytest.mark.parametrize("database", ["postgis"])
 def test_200306_issue210(dbcursor):
     """Test our logic for figuring out which table has our event."""
+    nwsli_provider = {
+        "JAMS1": NWSLI("JAMS1", "Ames", ["XXX"], -99, 44),
+        "CNOG1": NWSLI("CNOG1", "Ames", ["XXX"], -99, 44),
+    }
     for i in range(7):
-        prod = vtecparser(get_test_file("FLWCHS/2019_%s.txt" % (i,)))
+        prod = vtecparser(
+            get_test_file("FLWCHS/2019_%s.txt" % (i,)),
+            nwsli_provider=nwsli_provider,
+        )
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
     for i in range(2):
-        prod = vtecparser(get_test_file("FLWCHS/2020_%s.txt" % (i,)))
+        prod = vtecparser(
+            get_test_file("FLWCHS/2020_%s.txt" % (i,)),
+            nwsli_provider=nwsli_provider,
+        )
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
 
@@ -232,10 +242,10 @@ def test_200302_issue203(dbcursor):
         if i == 0:
             assert prod.segments[0].sbw
             continue
-        assert prod.warnings[0].find("should have contained") > -1
+        assert prod.warnings[1].find("should have contained") > -1
         assert prod.segments[0].sbw is None
         assert prod.segments[0].is_pds is False
-        assert len(prod.warnings) == 2
+        assert len(prod.warnings) == 3
         dbcursor.execute(
             """
             SELECT status from sbw_2020 WHERE wfo = 'CAE' and
@@ -366,7 +376,11 @@ def test_181228_issue76_sbwtable(dbcursor):
     """Can we locate the current SBW table with polys in the future."""
     prod = vtecparser(get_test_file("FLWMOB/FLW.txt"))
     prod.sql(dbcursor)
-    prod = vtecparser(get_test_file("FLWMOB/FLS.txt"))
+    assert "HVTEC NWSLI MRRM6 is unknown." in prod.warnings
+    prod = vtecparser(
+        get_test_file("FLWMOB/FLS.txt"),
+        nwsli_provider={"MRRM6": NWSLI("MRRM6", "Ames", ["XXX"], -99, 44)},
+    )
     prod.sql(dbcursor)
     dbcursor.execute(
         "SELECT * from sbw_2018 where wfo = 'MOB' and eventid = 57 "
@@ -593,7 +607,7 @@ def test_170324_waterspout(dbcursor):
 def test_170303_ccwpoly():
     """Test that CCW polygon does not trip us up."""
     prod = vtecparser(get_test_file("FLWHGX_ccw.txt"))
-    assert not filter_warnings(prod.warnings)
+    assert not filter_warnings(filter_warnings(prod.warnings), "HVTEC")
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -684,7 +698,7 @@ def test_151225_extfuture(dbcursor):
     prod = vtecparser(get_test_file("FLWPAH/FLWPAH_2.txt"))
     prod.sql(dbcursor)
     warnings = filter_warnings(filter_warnings(prod.warnings), CUGC)
-    assert len(warnings) == 1
+    assert len(warnings) == 2
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -802,11 +816,11 @@ def test_150115_correction_sbw(dbcursor):
     """ FLWMHX make sure a correction does not result in two polygons """
     prod = vtecparser(get_test_file("FLWMHX/0.txt"))
     prod.sql(dbcursor)
-    warnings = filter_warnings(prod.warnings)
+    warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
     assert not warnings
     prod = vtecparser(get_test_file("FLWMHX/1.txt"))
     prod.sql(dbcursor)
-    warnings = filter_warnings(prod.warnings)
+    warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
     assert not warnings
 
 
@@ -937,7 +951,7 @@ def test_141211_null_expire(dbcursor):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("FLSIND/%i.txt" % (i,)))
         prod.sql(dbcursor)
-        warnings = filter_warnings(prod.warnings)
+        warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not filter_warnings(warnings, "LAT...LON")
 
 
@@ -947,7 +961,7 @@ def test_141210_continues(dbcursor):
     for i in range(0, 2):
         prod = vtecparser(get_test_file("FFAEKA/%i.txt" % (i,)))
         prod.sql(dbcursor)
-        warnings = filter_warnings(prod.warnings)
+        warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not warnings
 
 
@@ -1124,7 +1138,7 @@ def test_routine(dbcursor):
     utcnow = utc(2014, 6, 19, 2, 56)
     prod = vtecparser(get_test_file("FLWMKX_ROU.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
-    warnings = filter_warnings(prod.warnings)
+    warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
     assert not warnings
 
 
