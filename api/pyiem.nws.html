@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nws Package &#8212; pyIEM 0.0.post1+g2d75414 documentation</title>
+    <title>nws Package &#8212; pyIEM 0.0.post1+gdb9607f documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g2d75414 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gdb9607f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
@@ -163,8 +163,20 @@
 
 <dl class="py function">
 <dt id="pyiem.nws.hvtec.parse">
-<code class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></code><code class="sig-name descname"><span class="pre">parse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>I look for and return hvtec objects as I find them</p>
+<code class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></code><code class="sig-name descname"><span class="pre">parse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of HVTEC entries found within text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – String to look for HVTEC tokens within.</p></li>
+<li><p><strong>nwsli_provider</strong> (<em>dict</em>) – Provider of metadata.</p></li>
+<li><p><strong>tp</strong> (<a class="reference internal" href="#pyiem.nws.product.TextProduct" title="pyiem.nws.product.TextProduct"><em>TextProduct</em></a>) – TextProduct instance used for provider and warnings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list(HVTEC)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -694,7 +706,7 @@ datetime
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g2d75414 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gdb9607f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
