@@ -46,12 +46,32 @@ _severityDict = {
 }
 
 
-def parse(text, nwsli_provider=None):
-    """ I look for and return hvtec objects as I find them """
+def parse(text, nwsli_provider=None, tp=None):
+    """Return list of HVTEC entries found within text.
+
+    Args:
+      text (str): String to look for HVTEC tokens within.
+      nwsli_provider (dict): Provider of metadata.
+      tp (TextProduct): TextProduct instance used for provider and warnings.
+
+    Returns:
+      list(HVTEC)
+    """
     hvtec = []
     tokens = re.findall(_re, text)
+    if nwsli_provider is None and tp is not None:
+        nwsli_provider = tp.nwsli_provider
+    if nwsli_provider is None:
+        nwsli_provider = dict()
     for t in tokens:
-        hvtec.append(HVTEC(t, nwsli_provider))
+        entry = HVTEC(t, nwsli_provider)
+        if (
+            entry.nwsli.id != "00000"
+            and entry.nwsli.id not in nwsli_provider
+            and tp is not None
+        ):
+            tp.warnings.append(f"HVTEC NWSLI {entry.nwsli.id} is unknown.")
+        hvtec.append(entry)
     return hvtec
 
 

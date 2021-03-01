@@ -180,7 +180,7 @@ class TextProductSegment:
         )
         self.vtec = vtec.parse(text)
         self.headlines = self.parse_headlines()
-        self.hvtec = hvtec.parse(text, nwsli_provider=tp.nwsli_provider)
+        self.hvtec = hvtec.parse(text, tp=tp)
 
         # TIME...MOT...LOC Stuff!
         self.tml_giswkt = None
