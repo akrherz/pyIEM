@@ -31,6 +31,14 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_210302_multipolygon(dbcursor):
+    """Test that buffer(0) producing a multipolygon is culled."""
+    prod = vtecparser(get_test_file("FLW/FLWJKL_multipolygon.txt"))
+    prod.sql(dbcursor)
+    assert any(["culling" in x for x in prod.warnings])
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_210103_vtec_cor(dbcursor):
     """Test that VTEC COR actions do not get their status stored."""
     prod = vtecparser(get_test_file("NPWGID/00.txt"))

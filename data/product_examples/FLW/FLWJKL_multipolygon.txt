@@ -1,0 +1,47 @@
+495 
+WGUS43 KJKL 012059
+FLWJKL
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service Jackson KY
+359 PM EST Mon Mar 1 2021
+
+KYC159-195-020600-
+/O.NEW.KJKL.FA.W.0022.210301T2059Z-210302T0600Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+Martin KY-Pike KY-
+359 PM EST Mon Mar 1 2021
+
+The National Weather Service in Jackson has issued a
+
+* Flood Warning for...
+  Northeastern Martin County in northeastern Kentucky...
+  Northeastern Pike County in southeastern Kentucky...
+
+* Until 100 AM EST Tuesday.
+
+* At 359 PM EST, local law enforcement reported ongoing flooding 
+  along portions of the Tug Fork.
+
+Some locations that will experience flooding include...
+  Forest Hills, Warfield, South Williamson, Aflex, Turkey Creek, 
+  Hardy, Whitepost, Rural, Buskirk, Oppy, Majestic, Beauty, Hode, 
+  Woodman and Calf Creek.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood 
+deaths occur in vehicles.
+
+&&
+
+LAT...LON 3782 8242 3796 8254 3788 8242 3781 8240
+      3776 8231 3774 8233 3768 8230 3765 8224
+      3763 8221 3765 8217 3759 8213 3754 8213
+      3756 8208 3753 8205 3754 8204 3754 8197
+      3749 8204 3769 8236
+
+$$
+
+KAS
