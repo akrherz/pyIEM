@@ -379,6 +379,12 @@ class TextProductSegment:
         # check 1, is the polygon valid?
         if not poly.is_valid:
             poly = poly.buffer(0)
+            # Careful, this could return a multipolygon
+            if isinstance(poly, MultiPolygon):
+                self.tp.warnings.append(
+                    "LAT...LON buffer(0) returned multipolygon, culling."
+                )
+                return None
             if not poly.is_valid:
                 self.tp.warnings.append(
                     f"LAT...LON polygon is invalid twice!\n{poly.exterior.xy}"
