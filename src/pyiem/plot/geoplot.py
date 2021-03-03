@@ -1089,19 +1089,20 @@ class MapPlot:
         clidict = load_pickle_geo("climdiv.pickle")
         polygon_fill(self, clidict, data, **kwargs)
 
-    def fill_ugcs(self, data, bins=None, color=None, **kwargs):
+    def fill_ugcs(
+        self, data, bins=None, color=None, is_firewx=False, **kwargs
+    ):
         """Overlay filled UGC geometries
 
-        The logic for plotting is a bit tricky due to fire zones overlapping
-        forecast zones.  In general, provide the zone code if you want it to
-        display on top.  Otherwise, I attempt to place forecast zones overtop
-        fire weather zones.
+        Note the importance of the `is_firewx` flag.  This determines which
+        UGC database to look at in the face of ambiquity.
 
         Args:
           data(dict): A dictionary of 6 char UGC code keys and values
           bins(list, optional): Bins to use for cloropleth, default 0:101:10
           color(dict, optional): Hard code what each UGC should display as
             for color.
+          is_firewx(bool, optional): Are we plotting fire weather zones?
           nocbar (bool, optional): Should a color bar be generated, default is
             `True`.
           plotmissing(bool, optional): Should missing UGC data be plotted?
@@ -1121,8 +1122,9 @@ class MapPlot:
             if key[2] == "Z":
                 counties = False
             break
+        zonesfn = "firewx" if is_firewx else "zone"
         ugcs = load_pickle_geo(
-            "ugcs_county.pickle" if counties else "ugcs_zone.pickle"
+            "ugcs_county.pickle" if counties else f"ugcs_{zonesfn}.pickle"
         )
         if color is None:
             color = dict()
@@ -1141,10 +1143,6 @@ class MapPlot:
                 continue
             if data.get(ugc) is None:
                 if not plotmissing:
-                    continue
-                # Holy cow, it appears values above 300 are always firewx,
-                # so lets ignore these when we have no data!
-                if not counties and int(ugc[3:]) >= 300:
                     continue
                 c = "white"
                 val = kwargs.get("missingval", "-")
