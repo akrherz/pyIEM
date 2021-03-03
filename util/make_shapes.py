@@ -123,16 +123,21 @@ def dump_iowawfo(fn):
         pickle.dump(data, f, 2)
 
 
-def dump_ugc(gtype, fn):
+def dump_ugc(gtype, fn, is_firewx=False):
     """UGCS."""
     pgconn = get_dbconn("postgis", user="nobody")
     cursor = pgconn.cursor()
+
+    source_limiter = "source != 'fz'"
+    if is_firewx:
+        source_limiter = "source = 'fz'"
 
     # We want UGCs valid for the time of running this script
     cursor.execute(
         "SELECT ugc, wfo, simple_geom, ST_x(centroid), ST_Y(centroid) "
         "from ugcs WHERE begin_ts < now() and "
-        "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s",
+        "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s "
+        f"and {source_limiter}",
         (gtype,),
     )
 
@@ -169,9 +174,11 @@ def main():
     check_file("conus.pickle")
     dump_iowawfo("iowawfo.pickle")
     dump_ugc("C", "ugcs_county.pickle")
-    dump_ugc("Z", "ugcs_zone.pickle")
+    dump_ugc("Z", "ugcs_zone.pickle", is_firewx=False)
+    dump_ugc("Z", "ugcs_firewx.pickle", is_firewx=True)
     check_file("ugcs_county.pickle")
     check_file("ugcs_zone.pickle")
+    check_file("ugcs_firewx.pickle")
     dump_cwa("cwa.pickle")
     check_file("cwa.pickle")
     dump_climdiv("climdiv.pickle")

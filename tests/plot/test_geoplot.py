@@ -35,6 +35,19 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_issue374_pah():
+    """Test drawing fire weather zones for Paducah."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="PAH",
+        title="Paducah Fire Weather Zones including MOZ098 Shannon",
+    )
+    mp.fill_ugcs({"MOZ098": 10}, is_firewx=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_memphis_cwa():
     """Test that we can draw a map with Memphis CWA.."""
     mp = MapPlot(
@@ -539,7 +552,7 @@ def test_ugcs_lwx_zones():
     mp = MapPlot(
         sector="cwa",
         cwa="LWX",
-        title="Two Maryland Counties",
+        title="Two Maryland Zones that Should not be plotted",
         subtitle="test_ugcs_lwx",
         nocaption=True,
     )
