@@ -124,6 +124,21 @@ def test_overlay_nexrad_puerto_rico():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_conus_contour():
+    """Test that a conus sector plot can generate a contour correctly."""
+    mp = MapPlot(nocaption=True, sector="conus", twitter=True)
+    mp.contourf(
+        np.arange(-120, -47, 3),
+        np.arange(25, 50),
+        np.arange(25),
+        np.arange(25),
+        clip_on=False,
+    )
+    mp.draw_mask(sector="conus")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_issue365_cape_cod():
     """Test that we don't mask out Cape Cod."""
     mp = MapPlot(nocaption=True, sector="cwa", cwa="BOX")
