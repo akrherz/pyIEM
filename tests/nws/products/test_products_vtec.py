@@ -30,6 +30,17 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_210304_notimezone():
+    """Test that we not care that this product has no local timezone."""
+    data = get_test_file("TSU/TSUPAC.txt")
+    prod = vtecparser(data)
+    assert not prod.warnings
+    assert prod.valid == utc(2021, 3, 4, 18, 58)
+    prod = vtecparser(data.replace("1858", "0448"))
+    assert not prod.warnings
+    assert prod.valid == utc(2021, 3, 4, 4, 48)
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_210302_multipolygon(dbcursor):
     """Test that buffer(0) producing a multipolygon is culled."""
