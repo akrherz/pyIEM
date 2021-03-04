@@ -26,6 +26,10 @@ TIME_FMT = (
     "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])"
 )
 TIME_RE = re.compile(f"^{TIME_FMT}$", re.M | re.IGNORECASE)
+TIME_UTC_RE = re.compile(
+    TIME_FMT.replace("(AM|PM) ([A-Z][A-Z][A-Z]?T)", r"(AM|PM)?\s?(UTC)"),
+    re.M | re.I,
+)
 # Sometimes products have a duplicated timestamp in another tz
 TIME_EXT_RE = re.compile(
     rf"^{TIME_FMT}\s?/\s?{TIME_FMT}\s?/$", re.M | re.IGNORECASE
@@ -137,6 +141,7 @@ def date_tokens2datetime(tokens):
       tz (datetime.timezone): of this product
       utcvalid (datetimetz): of this product
     """
+    tokens = list(tokens)  # ensure mutable
     z = tokens[2].upper()
     tz = ZoneInfo(reference.name2pytz.get(z, "UTC"))
     hhmi = tokens[0]
@@ -152,12 +157,16 @@ def date_tokens2datetime(tokens):
         hh = hhmi[:-2]
         mi = hhmi[-2:]
     # Workaround 24 hour clock abuse
-    if int(hh) > 12 and tokens[1].upper() == "PM":
+    if int(hh) > 12 and (
+        tokens[1].upper() == "PM" or tokens[2] in ["UTC", "GMT"]
+    ):
+        # this is a hack to ensure this is PM when we are in UTC
+        tokens[1] = "PM"
         hh = int(hh) - 12
     dstr = "%s:%s %s %s %s %s" % (
         hh,
         mi,
-        tokens[1],
+        tokens[1] if tokens[1] != "" else "AM",
         tokens[4],
         tokens[5],
         tokens[6],
@@ -676,17 +685,19 @@ class TextProduct:
             tokens = TIME_EXT_RE.findall(self.unixtext)
             if not tokens:
                 tokens = TIME_RE_ANYWHERE.findall(self.unixtext)
+                if not tokens:
+                    tokens = TIME_UTC_RE.findall(self.unixtext)
         if provided_utcnow is None and tokens:
             try:
                 z, _tz, valid = date_tokens2datetime(tokens[0])
                 if z not in reference.offsets:
                     self.warnings.append(f"product timezone '{z}' unknown")
-            except ValueError:
+            except ValueError as exp:
                 msg = (
                     "Invalid timestamp [%s] found in product "
                     "[%s %s %s] header"
                 ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
-                raise TextProductException(self.source[1:], msg)
+                raise TextProductException(self.source[1:], msg) from exp
 
             # Set the utcnow based on what we found by looking at the header
             self.utcnow = valid
