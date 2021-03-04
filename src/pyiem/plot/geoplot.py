@@ -1015,17 +1015,37 @@ class MapPlot:
             ll = ccrs.Geodetic().transform_point(
                 xbnds[0], ybnds[0], self.ax.projection
             )
+            cl = ccrs.Geodetic().transform_point(
+                xbnds[0], sum(ybnds) / 2, self.ax.projection
+            )
             ul = ccrs.Geodetic().transform_point(
                 xbnds[0], ybnds[1], self.ax.projection
+            )
+            uc = ccrs.Geodetic().transform_point(
+                sum(xbnds) / 2, ybnds[1], self.ax.projection
             )
             ur = ccrs.Geodetic().transform_point(
                 xbnds[1], ybnds[1], self.ax.projection
             )
+            cr = ccrs.Geodetic().transform_point(
+                xbnds[1], sum(ybnds) / 2, self.ax.projection
+            )
             lr = ccrs.Geodetic().transform_point(
                 xbnds[1], ybnds[0], self.ax.projection
             )
-            xi = np.linspace(min(ll[0], ul[0]), max(lr[0], ur[0]), 100)
-            yi = np.linspace(min(ll[1], ul[1]), max(ul[1], ur[1]), 100)
+            lc = ccrs.Geodetic().transform_point(
+                sum(xbnds) / 2, ybnds[0], self.ax.projection
+            )
+            xi = np.linspace(
+                min(ll[0], cl[0], ul[0]),
+                max(lr[0], cr[0], ur[0]),
+                100,
+            )
+            yi = np.linspace(
+                min(ll[1], lc[1], lr[1]),
+                max(ul[1], uc[1], ur[1]),
+                100,
+            )
             xi, yi = np.meshgrid(xi, yi)
             nn = NearestNDInterpolator((lons, lats), vals)
             vals = nn(xi, yi)
