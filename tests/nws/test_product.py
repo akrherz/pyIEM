@@ -236,7 +236,7 @@ def test_invalid_mnd_date():
 
 def test_ugc_error130214():
     """ Check parsing of SPSJAX  """
-    tp = product.TextProduct(get_test_file("SPSJAX.txt"))
+    tp = product.TextProduct(get_test_file("SPS/SPSJAX.txt"))
     assert tp.segments[0].ugcs, [
         ugc.UGC("FL", "Z", 23),
         ugc.UGC("FL", "Z", 25),

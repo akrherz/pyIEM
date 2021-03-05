@@ -2,7 +2,6 @@
 import re
 import datetime
 
-from shapely.geometry import MultiPolygon
 from pyiem import reference
 from pyiem.nws.product import TextProduct
 from pyiem.nws.ugc import ugcs_to_text
@@ -44,27 +43,49 @@ class SPSProduct(TextProduct):
 
     def sql(self, txn):
         """Do database save in the case of a polygon"""
-        for seg in self.segments:
-            if not seg.sbw:
-                continue
-            # Figure out an end time
-            ets = self.valid + datetime.timedelta(hours=1)
-            if seg.ugcexpire is not None:
-                ets = seg.ugcexpire
-            giswkt = "SRID=4326;%s" % (MultiPolygon([seg.sbw]).wkt,)
-            sql = (
-                "INSERT into text_products(product, product_id, geom, "
-                "issue, expire, pil) values (%s, %s, %s, %s, %s, %s)"
-            )
-            myargs = (
-                self.unixtext,
+        if not self.segments:
+            self.warnings.append("sql() save failed with no segments?")
+            return
+        seg = self.segments[0]
+        if seg.sbw is None:
+            self.warnings.append("sql() save failed without polygon")
+            return
+        ugcs = [str(s) for s in seg.ugcs]
+        ets = self.valid + datetime.timedelta(hours=1)
+        if seg.ugcexpire is not None:
+            ets = seg.ugcexpire
+        tml_valid = None
+        tml_column = "tml_geom"
+        if seg.tml_giswkt and seg.tml_giswkt.find("LINE") > 0:
+            tml_column = "tml_geom_line"
+        if seg.tml_valid:
+            tml_valid = seg.tml_valid
+
+        txn.execute(
+            "INSERT into sps(product_id, product, pil, wfo, issue, expire, "
+            "geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "
+            f"tml_valid, tml_direction, tml_sknt, {tml_column}) "
+            "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+            "%s, %s)",
+            (
                 self.get_product_id(),
-                giswkt,
+                self.unixtext,
+                self.afos,
+                self.source[1:],
                 self.valid,
                 ets,
-                self.afos,
-            )
-            txn.execute(sql, myargs)
+                "SRID=4326;%s" % (seg.sbw.wkt,),
+                ugcs,
+                seg.landspouttag,
+                seg.waterspouttag,
+                seg.hailtag,
+                seg.windtag,
+                tml_valid,
+                seg.tml_dir,
+                seg.tml_sknt,
+                seg.tml_giswkt,
+            ),
+        )
 
     def _get_channels(self, segment):
         """Returns a list of channels for this SPS."""
@@ -103,24 +124,30 @@ class SPSProduct(TextProduct):
                 headline, seg.ugcs, counties, expire
             )
             xtra["channels"] = self._get_channels(seg)
-            mess = ("%s issues %s%s%s %s?pid=%s") % (
+            tags = seg.special_tags_to_text()
+            mess = ("%s issues %s%s%s%s %s?pid=%s") % (
                 self.source[1:],
                 headline,
+                tags,
                 counties,
                 expire,
                 uri,
                 xtra["product_id"],
             )
-            htmlmess = ("<p>%s issues <a href='%s?pid=%s'>%s</a>%s%s</p>") % (
+            htmlmess = (
+                "<p>%s issues <a href='%s?pid=%s'>%s</a>%s%s%s</p>"
+            ) % (
                 self.source[1:],
                 uri,
                 xtra["product_id"],
                 headline,
+                tags,
                 counties,
                 expire,
             )
-            xtra["twitter"] = "%s%s%s %s?pid=%s" % (
+            xtra["twitter"] = "%s%s%s%s %s?pid=%s" % (
                 headline,
+                tags,
                 counties,
                 expire,
                 uri,
