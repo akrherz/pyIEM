@@ -36,9 +36,9 @@ def test_210304_notimezone():
     prod = vtecparser(data)
     assert not prod.warnings
     assert prod.valid == utc(2021, 3, 4, 18, 58)
-    prod = vtecparser(data.replace("1858", "0448"))
+    prod = vtecparser(data.replace("1858", "0048"))
     assert not prod.warnings
-    assert prod.valid == utc(2021, 3, 4, 4, 48)
+    assert prod.valid == utc(2021, 3, 4, 0, 48)
 
 
 @pytest.mark.parametrize("database", ["postgis"])

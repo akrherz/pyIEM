@@ -164,7 +164,7 @@ def date_tokens2datetime(tokens):
         tokens[1] = "PM"
         hh = int(hh) - 12
     dstr = "%s:%s %s %s %s %s" % (
-        hh,
+        hh if int(hh) > 0 else 12,
         mi,
         tokens[1] if tokens[1] != "" else "AM",
         tokens[4],
