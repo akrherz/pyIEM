@@ -1,0 +1,50 @@
+777 
+WWUS84 KBMX 292152
+SPSBMX
+
+Special Weather Statement
+National Weather Service Birmingham AL
+452 PM CDT TUE MAY 29 2018
+ 
+ALZ039-041-292215-
+Marengo AL-
+452 PM CDT TUE MAY 29 2018
+
+...SIGNIFICANT WEATHER ADVISORY FOR SOUTHWESTERN MARENGO COUNTY UNTIL
+515 PM CDT...
+
+At 451 PM CDT, Doppler radar was tracking a strong thunderstorm near
+Putnam, or 12 miles southeast of Butler, moving northeast at 25 mph.
+
+Winds in excess of 40 mph will be possible with this storm.
+
+Locations impacted include...
+Sweet Water, Myrtlewood, Putnam, Wayne, Miller, Nanafalia, Dixons
+Mill, Magnolia, Surginer, Half Acre, Clayhill and Nicholsville.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Torrential rainfall is also occurring with this storm, and may lead
+to localized flooding. Do not drive your vehicle through flooded
+roadways.
+
+Frequent cloud to ground lightning is occurring with this storm.
+Lightning can strike 10 miles away from a thunderstorm. Seek a safe
+shelter inside a building or vehicle.
+
+&&
+
+LAT...LON 3206 8812 3207 8809 3206 8807 3208 8804
+      3211 8805 3214 8804 3215 8802 3219 8801
+      3229 8792 3213 8762 3211 8762 3199 8782
+      3199 8807 3201 8809 3200 8809 3200 8811
+      3201 8812
+TIME...MOT...LOC 2022Z 281DEG 27KT 3818 8905 3802 8911 3793 8936
+
+LANDSPOUT...POSSIBLE
+MAX HAIL SIZE...0.88 IN
+MAX WIND GUST...40 MPH
+
+$$
+
+25/Owen

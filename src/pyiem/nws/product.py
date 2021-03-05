@@ -58,16 +58,19 @@ WINDHAIL = re.compile(
     "(?P<windunits>MPH|KTS) "
     r"(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN"
 )
-HAILTAG = re.compile(r".*HAIL\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)IN")
+HAILTAG = re.compile(
+    r".*(HAIL|MAX HAIL SIZE)\.\.\.(?P<haildir>[><]?)(?P<hail>[0-9\.]+)\s?IN"
+)
 WINDTAG = re.compile(
-    r".*WIND\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
+    r".*(WIND|MAX WIND GUST)\.\.\.(?P<winddir>[><]?)\s?(?P<wind>[0-9]+)\s?"
     "(?P<windunits>MPH|KTS)"
 )
 TORNADOTAG = re.compile(
     r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|" "OBSERVED|POSSIBLE)"
 )
-WATERSPOUTTAG = re.compile(
-    r".*WATERSPOUT\.\.\.(?P<waterspout>RADAR INDICATED|OBSERVED|POSSIBLE)"
+SPOUTTAG = re.compile(
+    r".*(?P<species>LAND|WATER)SPOUT\.\.\."
+    "(?P<spout>RADAR INDICATED|OBSERVED|POSSIBLE)"
 )
 TORNADODAMAGETAG = re.compile(
     r".*TORNADO DAMAGE THREAT\.\.\."
@@ -205,11 +208,14 @@ class TextProductSegment:
         # tags
         self.windtag = None
         self.windtagunits = None
+        self.windthreat = None
         self.hailtag = None
         self.haildirtag = None
+        self.hailtreat = None
         self.winddirtag = None
         self.tornadotag = None
         self.waterspouttag = None
+        self.landspouttag = None
         self.tornadodamagetag = None
         # allows for deterministic testing of results
         self.flood_tags = OrderedDict()
@@ -309,10 +315,13 @@ class TextProductSegment:
             gdict = match.groupdict()
             self.tornadodamagetag = gdict["damage"]
 
-        match = WATERSPOUTTAG.match(nolf)
+        match = SPOUTTAG.match(nolf)
         if match:
             gdict = match.groupdict()
-            self.waterspouttag = gdict["waterspout"]
+            if gdict["species"] == "WATER":
+                self.waterspouttag = gdict["spout"]
+            else:
+                self.landspouttag = gdict["spout"]
 
         for token in FLOOD_TAGS.findall(self.unixtext):
             self.flood_tags[token[0]] = token[1]
@@ -328,6 +337,7 @@ class TextProductSegment:
                 self.hailtag is None,
                 self.tornadodamagetag is None,
                 self.waterspouttag is None,
+                self.landspouttag is None,
                 not self.flood_tags,
             ]
         ):
@@ -338,6 +348,8 @@ class TextProductSegment:
             parts.append("tornado: %s" % (self.tornadotag))
         if self.waterspouttag is not None:
             parts.append("waterspout: %s" % (self.waterspouttag))
+        if self.landspouttag is not None:
+            parts.append("landspout: %s" % (self.landspouttag))
         if self.tornadodamagetag is not None:
             parts.append("tornado damage threat: %s" % (self.tornadodamagetag))
         if self.windtag is not None:
