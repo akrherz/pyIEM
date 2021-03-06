@@ -30,6 +30,27 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_issue253_ibwthunderstorm(dbcursor):
+    """Test the processing of IBW Thunderstorm Damage Threat."""
+    data = get_test_file("SVR/SVRPSR_IBW1.txt")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "select thunderstormdamagetag from sbw_2020 where wfo = 'PSR' "
+        "and eventid = 43 and phenomena = 'SV' and significance = 'W' "
+    )
+    assert dbcursor.fetchone()[0] == "CONSIDERABLE"
+    j = prod.get_jabbers("")
+    ans = (
+        "PSR issues Severe Thunderstorm Warning [tornado: POSSIBLE, "
+        "t'storm damage threat: CONSIDERABLE, wind: 70 MPH, "
+        "hail: 1.00 IN] for ((AZC013)), ((AZC021)) [AZ] till 6:00 PM MST "
+        "2020-O-NEW-KPSR-SV-W-0043_2020-09-09T00:29Z"
+    )
+    assert j[0][0] == ans
+
+
 def test_210304_notimezone():
     """Test that we not care that this product has no local timezone."""
     data = get_test_file("TSU/TSUPAC.txt")
