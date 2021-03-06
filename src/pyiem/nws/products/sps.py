@@ -47,8 +47,8 @@ class SPSProduct(TextProduct):
             self.warnings.append("sql() save failed with no segments?")
             return
         seg = self.segments[0]
+        # The database storage here is only for those SPSs with polygons
         if seg.sbw is None:
-            self.warnings.append("sql() save failed without polygon")
             return
         ugcs = [str(s) for s in seg.ugcs]
         ets = self.valid + datetime.timedelta(hours=1)
