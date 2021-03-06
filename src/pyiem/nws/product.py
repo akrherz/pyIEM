@@ -72,8 +72,8 @@ SPOUTTAG = re.compile(
     r".*(?P<species>LAND|WATER)SPOUT\.\.\."
     "(?P<spout>RADAR INDICATED|OBSERVED|POSSIBLE)"
 )
-TORNADODAMAGETAG = re.compile(
-    r".*TORNADO DAMAGE THREAT\.\.\."
+DAMAGETAG = re.compile(
+    r".*(?P<species>TORNADO|THUNDERSTORM) DAMAGE THREAT\.\.\."
     "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"
 )
 FLOOD_TAGS = re.compile(
@@ -217,6 +217,7 @@ class TextProductSegment:
         self.waterspouttag = None
         self.landspouttag = None
         self.tornadodamagetag = None
+        self.thunderstormdamagetag = None
         # allows for deterministic testing of results
         self.flood_tags = OrderedDict()
         self.is_emergency = False
@@ -310,10 +311,13 @@ class TextProductSegment:
             gdict = match.groupdict()
             self.tornadotag = gdict["tornado"]
 
-        match = TORNADODAMAGETAG.match(nolf)
+        match = DAMAGETAG.match(nolf)
         if match:
             gdict = match.groupdict()
-            self.tornadodamagetag = gdict["damage"]
+            if gdict["species"] == "TORNADO":
+                self.tornadodamagetag = gdict["damage"]
+            elif gdict["species"] == "THUNDERSTORM":
+                self.thunderstormdamagetag = gdict["damage"]
 
         match = SPOUTTAG.match(nolf)
         if match:
@@ -336,6 +340,7 @@ class TextProductSegment:
                 self.tornadotag is None,
                 self.hailtag is None,
                 self.tornadodamagetag is None,
+                self.thunderstormdamagetag is None,
                 self.waterspouttag is None,
                 self.landspouttag is None,
                 not self.flood_tags,
@@ -352,6 +357,10 @@ class TextProductSegment:
             parts.append("landspout: %s" % (self.landspouttag))
         if self.tornadodamagetag is not None:
             parts.append("tornado damage threat: %s" % (self.tornadodamagetag))
+        if self.thunderstormdamagetag is not None:
+            parts.append(
+                f"t'storm damage threat: {self.thunderstormdamagetag}"
+            )
         if self.windtag is not None:
             parts.append(
                 "wind: %s%s %s"

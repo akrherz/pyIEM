@@ -1,0 +1,56 @@
+701 
+WUUS55 KPSR 090029
+SVRPSR
+AZC013-021-090100-
+/O.NEW.KPSR.SV.W.0043.200909T0029Z-200909T0100Z/
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Severe Thunderstorm Warning
+National Weather Service Phoenix AZ
+529 PM MST Tue Sep 8 2020
+
+The National Weather Service in Phoenix has issued a
+
+* Severe Thunderstorm Warning for...
+  Maricopa County in south central Arizona...
+  Pinal County in southeastern Arizona...
+
+* Until 600 PM MST.
+
+* At 529 PM MST, a severe thunderstorm was located over Sun Lakes,
+  moving east at 35 mph.
+
+  HAZARD...60 mph wind gusts and penny size hail.
+
+  SOURCE...Radar indicated.
+
+  IMPACT...Expect damage to roofs, siding, and trees.
+
+* Locations impacted include...
+  Chandler, Gilbert, Sun Lakes, Queen Creek,  San Tan Valley, 
+  Seville, Bapchule, Olberg, Sacaton and Santan.
+
+* This includes the following highways...
+  AZ Interstate 10 between mile markers 162 and 179.
+  AZ Route 87 between mile markers 145 and 164.
+  AZ Route 202 between mile markers 43 and 47, and near mile marker
+  49.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+For your protection move to an interior room on the lowest floor of a
+building.
+
+&&
+
+LAT...LON 3310 11199 3329 11199 3328 11156 3304 11157
+TIME...MOT...LOC 0029Z 275DEG 29KT 3319 11183 
+
+TORNADO...POSSIBLE
+THUNDERSTORM DAMAGE THREAT...CONSIDERABLE
+HAIL THREAT...RADAR INDICATED
+MAX HAIL SIZE...1.00 IN
+WIND THREAT...OBSERVED
+MAX WIND GUST...70 MPH
+
+$$
