@@ -74,7 +74,11 @@ SPOUTTAG = re.compile(
 )
 DAMAGETAG = re.compile(
     r".*(?P<species>TORNADO|THUNDERSTORM) DAMAGE THREAT\.\.\."
-    "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC)"
+    "(?P<damage>CONSIDERABLE|SIGNIFICANT|CATASTROPHIC|DESTRUCTIVE)"
+)
+THREATTAG = re.compile(
+    r"(?P<species>HAIL|WIND) THREAT\.\.\."
+    r"(?P<tag>RADAR INDICATED|OBSERVED|POSSIBLE)"
 )
 FLOOD_TAGS = re.compile(
     r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|"
@@ -211,7 +215,7 @@ class TextProductSegment:
         self.windthreat = None
         self.hailtag = None
         self.haildirtag = None
-        self.hailtreat = None
+        self.hailthreat = None
         self.winddirtag = None
         self.tornadotag = None
         self.waterspouttag = None
@@ -315,6 +319,12 @@ class TextProductSegment:
             gdict = match.groupdict()
             self.damagetag = gdict["damage"]
 
+        for (species, tag) in THREATTAG.findall(nolf):
+            if species == "HAIL":
+                self.hailthreat = tag
+            elif species == "WIND":
+                self.windthreat = tag
+
         match = SPOUTTAG.match(nolf)
         if match:
             gdict = match.groupdict()
@@ -354,19 +364,21 @@ class TextProductSegment:
             parts.append("damage threat: %s" % (self.damagetag))
         if self.windtag is not None:
             parts.append(
-                "wind: %s%s %s"
+                "wind: %s%s %s%s"
                 % (
                     self.winddirtag.replace(">", "&gt;").replace("<", "&lt;"),
                     self.windtag,
                     self.windtagunits,
+                    "" if self.windthreat is None else f" ({self.windthreat})",
                 )
             )
         if self.hailtag is not None:
             parts.append(
-                "hail: %s%s IN"
+                "hail: %s%s IN%s"
                 % (
                     self.haildirtag.replace(">", "&gt;").replace("<", "&lt;"),
                     self.hailtag,
+                    "" if self.hailthreat is None else f" ({self.hailthreat})",
                 )
             )
         for k, v in self.flood_tags.items():

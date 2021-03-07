@@ -44,8 +44,9 @@ def test_issue253_ibwthunderstorm(dbcursor):
     j = prod.get_jabbers("")
     ans = (
         "PSR issues Severe Thunderstorm Warning [tornado: POSSIBLE, "
-        "damage threat: CONSIDERABLE, wind: 70 MPH, "
-        "hail: 1.00 IN] for ((AZC013)), ((AZC021)) [AZ] till 6:00 PM MST "
+        "damage threat: CONSIDERABLE, wind: 70 MPH (OBSERVED), "
+        "hail: 1.00 IN (RADAR INDICATED)] for "
+        "((AZC013)), ((AZC021)) [AZ] till 6:00 PM MST "
         "2020-O-NEW-KPSR-SV-W-0043_2020-09-09T00:29Z"
     )
     assert j[0][0] == ans
