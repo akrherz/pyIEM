@@ -37,14 +37,14 @@ def test_issue253_ibwthunderstorm(dbcursor):
     prod = vtecparser(data)
     prod.sql(dbcursor)
     dbcursor.execute(
-        "select thunderstormdamagetag from sbw_2020 where wfo = 'PSR' "
+        "select damagetag from sbw_2020 where wfo = 'PSR' "
         "and eventid = 43 and phenomena = 'SV' and significance = 'W' "
     )
     assert dbcursor.fetchone()[0] == "CONSIDERABLE"
     j = prod.get_jabbers("")
     ans = (
         "PSR issues Severe Thunderstorm Warning [tornado: POSSIBLE, "
-        "t'storm damage threat: CONSIDERABLE, wind: 70 MPH, "
+        "damage threat: CONSIDERABLE, wind: 70 MPH, "
         "hail: 1.00 IN] for ((AZC013)), ((AZC021)) [AZ] till 6:00 PM MST "
         "2020-O-NEW-KPSR-SV-W-0043_2020-09-09T00:29Z"
     )
@@ -870,7 +870,7 @@ def test_150105_considerable_tag():
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         "FSD issues Tornado Warning (PDS) "
-        "[tornado: RADAR INDICATED, tornado damage threat: CONSIDERABLE, "
+        "[tornado: RADAR INDICATED, damage threat: CONSIDERABLE, "
         "hail: 1.50 IN] for ((IAC035)) [IA] till 8:00 PM CDT * AT 720 "
         "PM CDT...A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A LARGE "
         "AND EXTREMELY DANGEROUS TORNADO WAS LOCATED NEAR WASHTA...AND "
@@ -1066,7 +1066,7 @@ def test_tornado_emergency():
         '<p>ICT <a href="http://localhost'
         '2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z">'
         "issues Tornado Emergency</a> "
-        "[tornado: OBSERVED, tornado damage threat: CATASTROPHIC, "
+        "[tornado: OBSERVED, damage threat: CATASTROPHIC, "
         "hail: 2.50 IN] for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
         '* AT 1019 PM CDT...<span style="color: #FF0000;">TORNADO '
         "EMERGENCY</span> FOR THE WICHITA METRO AREA. A CONFIRMED LARGE..."
@@ -1075,7 +1075,7 @@ def test_tornado_emergency():
     )
     assert j[0][1] == ans
     ans = (
-        "ICT issues Tornado Emergency [tornado: OBSERVED, tornado damage "
+        "ICT issues Tornado Emergency [tornado: OBSERVED, damage "
         "threat: CATASTROPHIC, hail: 2.50 IN] "
         "for ((KSC015)), ((KSC173)) [KS] till 11:00 PM CDT "
         "http://localhost2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z"
@@ -1287,7 +1287,7 @@ def test_tortag():
         '<p>DMX <a href="http://localhost/2011-'
         'O-NEW-KDMX-TO-W-0057_2011-08-07T04:36Z">'
         "issues Tornado Warning</a> [tornado: "
-        "OBSERVED, tornado damage threat: SIGNIFICANT, hail: 2.75 IN] "
+        "OBSERVED, damage threat: SIGNIFICANT, hail: 2.75 IN] "
         "for ((IAC117)), ((IAC125)), ((IAC135)) [IA] till 12:15 AM CDT "
         "* AT 1132 PM CDT...NATIONAL WEATHER SERVICE DOPPLER RADAR "
         "INDICATED A SEVERE THUNDERSTORM CAPABLE OF PRODUCING A TORNADO. "

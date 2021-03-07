@@ -216,8 +216,7 @@ class TextProductSegment:
         self.tornadotag = None
         self.waterspouttag = None
         self.landspouttag = None
-        self.tornadodamagetag = None
-        self.thunderstormdamagetag = None
+        self.damagetag = None
         # allows for deterministic testing of results
         self.flood_tags = OrderedDict()
         self.is_emergency = False
@@ -314,10 +313,7 @@ class TextProductSegment:
         match = DAMAGETAG.match(nolf)
         if match:
             gdict = match.groupdict()
-            if gdict["species"] == "TORNADO":
-                self.tornadodamagetag = gdict["damage"]
-            elif gdict["species"] == "THUNDERSTORM":
-                self.thunderstormdamagetag = gdict["damage"]
+            self.damagetag = gdict["damage"]
 
         match = SPOUTTAG.match(nolf)
         if match:
@@ -339,8 +335,7 @@ class TextProductSegment:
                 self.windtag is None,
                 self.tornadotag is None,
                 self.hailtag is None,
-                self.tornadodamagetag is None,
-                self.thunderstormdamagetag is None,
+                self.damagetag is None,
                 self.waterspouttag is None,
                 self.landspouttag is None,
                 not self.flood_tags,
@@ -355,12 +350,8 @@ class TextProductSegment:
             parts.append("waterspout: %s" % (self.waterspouttag))
         if self.landspouttag is not None:
             parts.append("landspout: %s" % (self.landspouttag))
-        if self.tornadodamagetag is not None:
-            parts.append("tornado damage threat: %s" % (self.tornadodamagetag))
-        if self.thunderstormdamagetag is not None:
-            parts.append(
-                f"t'storm damage threat: {self.thunderstormdamagetag}"
-            )
+        if self.damagetag is not None:
+            parts.append("damage threat: %s" % (self.damagetag))
         if self.windtag is not None:
             parts.append(
                 "wind: %s%s %s"
