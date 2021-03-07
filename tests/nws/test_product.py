@@ -407,7 +407,7 @@ def test_tags():
     """ Test tags parsing """
     tp = product.TextProduct(get_test_file("TORtag.txt"))
     assert tp.segments[0].tornadotag == "OBSERVED"
-    assert tp.segments[0].tornadodamagetag == "SIGNIFICANT"
+    assert tp.segments[0].damagetag == "SIGNIFICANT"
 
 
 def test_longitude_processing():
