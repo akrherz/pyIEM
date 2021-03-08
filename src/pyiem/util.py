@@ -16,7 +16,6 @@ import getpass
 from socket import error as socket_error
 
 # third party
-from six import string_types
 from metpy.units import units, masked_array
 
 # NB: some third party stuff is expensive to import, so let us be lazy
@@ -165,7 +164,7 @@ def ssw(mixedobj):
       mixedobj (str or bytes): what content we want to send
     """
     stdout = getattr(sys.stdout, "buffer", sys.stdout)
-    if isinstance(mixedobj, string_types):
+    if isinstance(mixedobj, str):
         stdout.write(mixedobj.encode("utf-8"))
     else:
         stdout.write(mixedobj)
@@ -388,7 +387,7 @@ def get_autoplot_context(fdict, cfg):
             # in case of multi, value could be a list
             if value is None:
                 value = default
-            elif isinstance(value, string_types):
+            elif isinstance(value, str):
                 if value not in options:
                     value = default
                 if opt.get("multiple"):

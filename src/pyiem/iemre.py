@@ -13,7 +13,6 @@ from datetime import timezone, datetime
 from affine import Affine
 import numpy as np
 import xarray as xr
-from six import string_types
 from pyiem.util import get_dbconn
 
 # 1/8 degree grid, grid cell is the lower left corner
@@ -149,7 +148,7 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
         pgconn = get_dbconn("iemre")
         cursor = pgconn.cursor()
     # rectify varnames
-    if isinstance(varnames, string_types):
+    if isinstance(varnames, str):
         varnames = [varnames]
     # Compute variable names
     cursor.execute(
