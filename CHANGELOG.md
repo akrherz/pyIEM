@@ -2,11 +2,22 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased
+
+### API Changes
+
+### New Features
+
+### Bug Fixes
+
+- Update bundled `states` geographies to include territories of `AS`, `PR`,
+`VI`, `GU`, and `MP`.
+
 ## **1.4.0** (9 March 2021)
 
 The repo's `master` branch has been renamed `main`.
 
-### API changes
+### API Changes
 
 - While implementing the new NWS SVS, SVR, and TOR IBW tag changes (#253), the
 attributes for the `pyiem.nws.product#TextProductSegment` attributes subtly
