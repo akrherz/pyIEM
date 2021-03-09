@@ -1,7 +1,6 @@
 """Definition of colormaps"""
 import copy
 
-from six import string_types
 import numpy as np
 import matplotlib.cm as cm
 import matplotlib.colors as mpcolors
@@ -30,7 +29,7 @@ def stretch_cmap(cmap, bins, extend="both"):
     """
     if cmap is None:
         cmap = maue()
-    if isinstance(cmap, string_types):
+    if isinstance(cmap, str):
         cmap = cm.get_cmap(cmap)
     if extend not in ["both", "neither", "min", "max"]:
         extend = "both"
