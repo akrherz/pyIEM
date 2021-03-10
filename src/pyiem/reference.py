@@ -214,6 +214,7 @@ lsr_events = {
     "FROST/FREEZE": "6",
     "EXTR WIND CHILL": "7",
     "EXT COLD/WND CHL": "7",
+    "DROUGHT": "8",
     "SEICHE": "9",
 }
 
