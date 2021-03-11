@@ -90,10 +90,12 @@ def html_escape(val):
     return escape(val)
 
 
-def get_test_file(name, fponly=False):
+def get_test_file(name, fponly=False, fnonly=False):
     """Helper to get data for test usage."""
     basedir = os.path.dirname(__file__)
     fn = f"{basedir}/../../data/product_examples/{name}"
+    if fnonly:
+        return fn
     fp = open(fn, "rb")
     if fponly:
         return fp
