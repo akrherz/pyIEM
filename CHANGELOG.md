@@ -8,6 +8,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Introduce a BUFKIT file reader.  `pyiem.nws.bufkit.read_bufkit` (#390).
+
 ### Bug Fixes
 
 - Update bundled `states` geographies to include territories of `AS`, `PR`,
