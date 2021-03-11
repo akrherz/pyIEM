@@ -40,3 +40,13 @@ def test_stringio():
     sndf, stndf = read_bufkit(sio)
     assert sndf is not None
     assert stndf is not None
+
+
+def test_invalid_args():
+    """Test passing garbage."""
+    with pytest.raises(ValueError):
+        read_bufkit(None)
+    sio = StringIO()
+    sio.write("ZZZZZZZZZZZZZZ")
+    with pytest.raises(ValueError):
+        read_bufkit(sio)
