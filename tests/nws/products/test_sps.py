@@ -1,9 +1,26 @@
 """SPS Parsing"""
 
 import pytest
+from pyiem.reference import TWEET_CHARS
 from pyiem.util import get_test_file
 from pyiem.nws.ugc import UGC
 from pyiem.nws.products import parser as spsparser
+
+
+def test_issue393_tweet_length():
+    """Test that we actually truncate messages."""
+    longname = "HERE THERE EVERYWHERE, SUCH A LONG NAME..."
+    ugp = {
+        "OHZ066": UGC("OH", "Z", "066", name=longname),
+        "OHZ067": UGC("OH", "Z", "067", name=longname),
+        "WVZ008": UGC("WV", "Z", "008", name=longname),
+        "WVZ016": UGC("WV", "Z", "016", name=longname),
+        "WVZ040": UGC("WV", "Z", "040", name=longname),
+    }
+    prod = spsparser(get_test_file("SPS/SPSRLX.txt"), ugc_provider=ugp)
+    j = prod.get_jabbers("")
+    meat = j[0][2]["twitter"].rsplit(" ", 1)[0]
+    assert (len(meat) + 24) < TWEET_CHARS
 
 
 @pytest.mark.parametrize("database", ["postgis"])
