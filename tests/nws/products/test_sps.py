@@ -29,6 +29,7 @@ def test_sps_ibw2():
         "?pid=201805292152-KBMX-WWUS84-SPSBMX"
     )
     assert j[0][0] == ans
+    assert "twitter_media" in j[0][2]
 
 
 @pytest.mark.parametrize("database", ["postgis"])
