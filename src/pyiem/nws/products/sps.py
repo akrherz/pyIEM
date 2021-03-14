@@ -159,6 +159,21 @@ class SPSProduct(TextProduct):
                 uri,
                 xtra["product_id"],
             )
+            # Check our length
+            remaining = (
+                reference.TWEET_CHARS
+                - len(xtra["twitter"].rsplit(" ", 1)[0])
+                - 25
+            )
+            if remaining <= 0:
+                xtra["twitter"] = "%s%s%s%s %s?pid=%s" % (
+                    headline,
+                    tags,
+                    counties[: (remaining - 5)] + "... ",
+                    expire,
+                    uri,
+                    xtra["product_id"],
+                )
             res.append([mess, htmlmess, xtra])
 
         return res
