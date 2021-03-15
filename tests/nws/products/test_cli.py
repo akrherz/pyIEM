@@ -180,6 +180,11 @@ def test_180208_issue56_tweetmissing():
         "http://localhost?pid=201410032032-KFFC-CDUS42-CLIFFC"
     )
     assert j[0][2]["twitter"] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
+        "network:NWSCLI::station:KFFC::date:2014-10-03.png"
+    )
+    assert j[0][2]["twitter_media"] == ans
 
 
 def test_170530_none():
