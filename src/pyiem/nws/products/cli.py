@@ -427,6 +427,10 @@ class CLIProduct(TextProduct):
         """ Override the jabber message formatter """
         url = "%s?pid=%s" % (uri, self.get_product_id())
         res = []
+        xtra = {
+            "channels": self.get_channels(),
+            "product_id": self.get_product_id(),
+        }
         for data in self.data:
             mess = (
                 "%s %s Climate Report: High: %s Low: %s "
@@ -452,7 +456,14 @@ class CLIProduct(TextProduct):
                 trace_r(data["data"].get("precip_today", "M")),
                 trace_r(data["data"].get("snow_today", "M")),
             )
-            tweet = ("%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s") % (
+            xtra["twitter_media"] = (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
+                f"network:NWSCLI::station:{data['db_station']}::"
+                f"date:{data['cli_valid'].strftime('%Y-%m-%d')}.png"
+            )
+            xtra["twitter"] = (
+                "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s"
+            ) % (
                 data["cli_station"],
                 data["cli_valid"].strftime("%b %-d"),
                 data["data"].get("temperature_maximum", "M"),
@@ -465,11 +476,7 @@ class CLIProduct(TextProduct):
                 [
                     mess.replace(str(TRACE_VALUE), "Trace"),
                     htmlmess.replace(str(TRACE_VALUE), "Trace"),
-                    {
-                        "channels": self.get_channels(),
-                        "product_id": self.get_product_id(),
-                        "twitter": tweet,
-                    },
+                    xtra,
                 ]
             )
         return res
