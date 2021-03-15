@@ -15,6 +15,7 @@ All notable changes to this library are documented in this file.
 - Update bundled `states` geographies to include territories of `AS`, `PR`,
 `VI`, `GU`, and `MP`.
 - Implement tweet message truncation for SPS messages (#393).
+- Add CLI database storage of `snow_normal` (#396).
 
 ## **1.4.0** (9 March 2021)
 

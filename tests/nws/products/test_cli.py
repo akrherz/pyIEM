@@ -26,11 +26,24 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+@pytest.mark.parametrize("database", ["iem"])
+def test_issue396_snow_normal(dbcursor):
+    """See that snow_normal goes to the database."""
+    prod = cliparser(get_test_file("CLI/CLICVG_colon.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT snow_normal from cli_data where station = 'KCVG' and "
+        "valid = '2021-02-04'"
+    )
+    assert abs(dbcursor.fetchone()[0] - 0.2) < 0.01
+
+
 def test_210206_colon():
     """Test that we can handle colons in the timestamp."""
     prod = cliparser(get_test_file("CLI/CLICVG_colon.txt"))
     assert prod.data[0]["data"]["temperature_maximum"] == 39
     assert prod.data[0]["data"]["temperature_maximum_normal"] == 40
+    assert prod.data[0]["data"]["snow_today_normal"] == 0.2
 
 
 def test_wrong_wmo_header():
