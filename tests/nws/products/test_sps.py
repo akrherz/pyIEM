@@ -2,9 +2,21 @@
 
 import pytest
 from pyiem.reference import TWEET_CHARS
-from pyiem.util import get_test_file
+from pyiem.util import get_test_file, utc
 from pyiem.nws.ugc import UGC
 from pyiem.nws.products import parser as spsparser
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_210314_sps_without_polygon(dbcursor):
+    """Test that we insert a record for a SPS without a polygon."""
+    prod = spsparser(get_test_file("SPS/SPSOKX.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT expire from sps where product_id = %s and ST_isempty(geom)",
+        (prod.get_product_id(),),
+    )
+    assert dbcursor.fetchone()[0] == utc(2021, 3, 15, 8)
 
 
 def test_issue393_tweet_length():
