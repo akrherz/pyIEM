@@ -47,9 +47,6 @@ class SPSProduct(TextProduct):
             self.warnings.append("sql() save failed with no segments?")
             return
         seg = self.segments[0]
-        # The database storage here is only for those SPSs with polygons
-        if seg.sbw is None:
-            return
         ugcs = [str(s) for s in seg.ugcs]
         ets = self.valid + datetime.timedelta(hours=1)
         if seg.ugcexpire is not None:
@@ -61,6 +58,7 @@ class SPSProduct(TextProduct):
         if seg.tml_valid:
             tml_valid = seg.tml_valid
 
+        empty = "POLYGON EMPTY"
         txn.execute(
             "INSERT into sps(product_id, product, pil, wfo, issue, expire, "
             "geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "
@@ -74,7 +72,7 @@ class SPSProduct(TextProduct):
                 self.source[1:],
                 self.valid,
                 ets,
-                "SRID=4326;%s" % (seg.sbw.wkt,),
+                empty if seg.sbw is None else f"SRID=4326;{seg.sbw.wkt}",
                 ugcs,
                 seg.landspouttag,
                 seg.waterspouttag,
