@@ -72,7 +72,7 @@ class SPSProduct(TextProduct):
                 self.source[1:],
                 self.valid,
                 ets,
-                empty if seg.sbw is None else f"SRID=4326;{seg.sbw.wkt}",
+                f"SRID=4326;{empty if seg.sbw is None else seg.sbw.wkt}",
                 ugcs,
                 seg.landspouttag,
                 seg.waterspouttag,
