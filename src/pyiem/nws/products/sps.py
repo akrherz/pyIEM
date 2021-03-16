@@ -89,6 +89,8 @@ class SPSProduct(TextProduct):
             self.warnings.append("sql() save failed with no segments?")
             return
         for seg in self.segments:
+            if not seg.ugcs:
+                continue
             _sql_segment(self, txn, seg)
 
     def _get_channels(self, segment):
