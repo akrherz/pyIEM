@@ -8,6 +8,20 @@ from pyiem.nws.products import parser as spsparser
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_issue399_multisegment(dbcursor):
+    """Test that inserts are made for multi-segment products."""
+    prod = spsparser(get_test_file("SPS/SPSRIW.txt"))
+    prod.sql(dbcursor)
+    ugcs = [["WYZ020", "WYZ022"], ["WYZ009", "WYZ010", "WYZ011"]]
+    for segnum, ans in enumerate(ugcs):
+        dbcursor.execute(
+            "SELECT ugcs from sps where product_id = %s and segmentnum = %s",
+            (prod.get_product_id(), segnum),
+        )
+        assert dbcursor.fetchone()[0] == ans
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_210314_sps_without_polygon(dbcursor):
     """Test that we insert a record for a SPS without a polygon."""
     prod = spsparser(get_test_file("SPS/SPSOKX.txt"))

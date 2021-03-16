@@ -16,6 +16,7 @@ All notable changes to this library are documented in this file.
 `VI`, `GU`, and `MP`.
 - Implement tweet message truncation for SPS messages (#393).
 - Add CLI database storage of `snow_normal` (#396).
+- Support database insert of multi-segment SPS products (#399).
 
 ## **1.4.0** (9 March 2021)
 
