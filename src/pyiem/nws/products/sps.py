@@ -38,6 +38,48 @@ def dedup_headline(headline, ugcs, counties, expire):
     return counties, expire
 
 
+def _sql_segment(prod, txn, seg):
+    """Do the database insert for this segment."""
+    ugcs = [str(s) for s in seg.ugcs]
+    ets = prod.valid + datetime.timedelta(hours=1)
+    if seg.ugcexpire is not None:
+        ets = seg.ugcexpire
+    tml_valid = None
+    tml_column = "tml_geom"
+    if seg.tml_giswkt and seg.tml_giswkt.find("LINE") > 0:
+        tml_column = "tml_geom_line"
+    if seg.tml_valid:
+        tml_valid = seg.tml_valid
+
+    empty = "POLYGON EMPTY"
+    txn.execute(
+        "INSERT into sps(product_id, product, pil, wfo, issue, expire, "
+        "geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "
+        f"tml_valid, tml_direction, tml_sknt, {tml_column}, segmentnum) "
+        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+        "%s, %s, %s)",
+        (
+            prod.get_product_id(),
+            prod.unixtext,
+            prod.afos,
+            prod.source[1:],
+            prod.valid,
+            ets,
+            f"SRID=4326;{empty if seg.sbw is None else seg.sbw.wkt}",
+            ugcs,
+            seg.landspouttag,
+            seg.waterspouttag,
+            seg.hailtag,
+            seg.windtag,
+            tml_valid,
+            seg.tml_dir,
+            seg.tml_sknt,
+            seg.tml_giswkt,
+            prod.segments.index(seg),
+        ),
+    )
+
+
 class SPSProduct(TextProduct):
     """A Special Weather Statement"""
 
@@ -46,44 +88,10 @@ class SPSProduct(TextProduct):
         if not self.segments:
             self.warnings.append("sql() save failed with no segments?")
             return
-        seg = self.segments[0]
-        ugcs = [str(s) for s in seg.ugcs]
-        ets = self.valid + datetime.timedelta(hours=1)
-        if seg.ugcexpire is not None:
-            ets = seg.ugcexpire
-        tml_valid = None
-        tml_column = "tml_geom"
-        if seg.tml_giswkt and seg.tml_giswkt.find("LINE") > 0:
-            tml_column = "tml_geom_line"
-        if seg.tml_valid:
-            tml_valid = seg.tml_valid
-
-        empty = "POLYGON EMPTY"
-        txn.execute(
-            "INSERT into sps(product_id, product, pil, wfo, issue, expire, "
-            "geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "
-            f"tml_valid, tml_direction, tml_sknt, {tml_column}) "
-            "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "%s, %s)",
-            (
-                self.get_product_id(),
-                self.unixtext,
-                self.afos,
-                self.source[1:],
-                self.valid,
-                ets,
-                f"SRID=4326;{empty if seg.sbw is None else seg.sbw.wkt}",
-                ugcs,
-                seg.landspouttag,
-                seg.waterspouttag,
-                seg.hailtag,
-                seg.windtag,
-                tml_valid,
-                seg.tml_dir,
-                seg.tml_sknt,
-                seg.tml_giswkt,
-            ),
-        )
+        for seg in self.segments:
+            if not seg.ugcs:
+                continue
+            _sql_segment(self, txn, seg)
 
     def _get_channels(self, segment):
         """Returns a list of channels for this SPS."""
@@ -98,15 +106,15 @@ class SPSProduct(TextProduct):
         res = []
         xtra = {
             "product_id": self.get_product_id(),
-            "twitter_media": (
-                "https://mesonet.agron.iastate.edu/plotting/auto/plot/217/"
-                f"pid:{self.get_product_id()}.png"
-            ),
         }
-        for seg in self.segments:
+        for segnum, seg in enumerate(self.segments):
             # Skip any segments that don't have UGC information
             if not seg.ugcs:
                 continue
+            xtra["twitter_media"] = (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/217/"
+                f"pid:{self.get_product_id()}::segnum:{segnum}.png"
+            )
             headline = "[No headline was found in SPS]"
             if seg.headlines:
                 headline = (seg.headlines[0]).replace("\n", " ")
