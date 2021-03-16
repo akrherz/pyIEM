@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Introduce a BUFKIT file reader.  `pyiem.nws.bufkit.read_bufkit` (#390).
+- Generalized `MapPlot.fill_{ugcs,states,climdiv,etc}` now support provision
+of colors via `color=` or combo of `fc=` and `ec=`.
 
 ### Bug Fixes
 
@@ -17,6 +19,7 @@ All notable changes to this library are documented in this file.
 - Implement tweet message truncation for SPS messages (#393).
 - Add CLI database storage of `snow_normal` (#396).
 - Support database insert of multi-segment SPS products (#399).
+- `MapPlot.fill_ugcs` was refactored to use generic `polygon_fill`.
 
 ## **1.4.0** (9 March 2021)
 

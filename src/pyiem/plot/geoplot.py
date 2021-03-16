@@ -38,7 +38,6 @@ from shapely.geometry import shape
 from scipy.signal import convolve2d
 from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
-from matplotlib.patches import Polygon
 import matplotlib.colors as mpcolors
 from matplotlib.patches import Wedge
 import matplotlib.colorbar as mpcolorbar
@@ -699,19 +698,29 @@ class MapPlot:
         if self.textmask is None:
             # zorder is used to track plotting priorities
             self.textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
-        thisax = self.ax
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(
             0.5,
             0.5,
             "ABCDEFGHIJ",
-            transform=thisax.transAxes,
+            transform=self.ax.transAxes,
             color="None",
             size=textsize,
         )
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
+
+        def _find_ax(lon, lat):
+            """Figure out whom this point belongs."""
+            for ax in self.axes:
+                (x0, x1, y0, y1) = ax.get_extent()
+                (x, y) = ax.projection.transform_point(
+                    lon, lat, ccrs.Geodetic()
+                )
+                if (x0 <= x <= x1) and (y0 <= y <= y1):
+                    return ax
+
         for o, a, v, m, c, label, z in zip(
             lons, lats, vals, valmask, color, labels, zorder
         ):
@@ -723,8 +732,11 @@ class MapPlot:
             max_mystr_len = max([len(s) for s in mystr.split("\n")])
             mystr_lines = len(mystr.split("\n"))
             # compute the pixel coordinate of this data point
-            (x, y) = thisax.projection.transform_point(o, a, ccrs.Geodetic())
-            (imgx, imgy) = thisax.transData.transform([x, y])
+            ax = _find_ax(o, a)
+            if ax is None:
+                continue
+            (x, y) = ax.projection.transform_point(o, a, ccrs.Geodetic())
+            (imgx, imgy) = ax.transData.transform([x, y])
             imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
             if imgx0 < axx0:
                 ha = "left"
@@ -804,7 +816,7 @@ class MapPlot:
                     int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
                 ],
             )
-            t0 = thisax.text(
+            t0 = ax.text(
                 o,
                 a,
                 mystr,
@@ -826,7 +838,7 @@ class MapPlot:
                 )
                 self.fig.patches.append(rec)
             if showmarker:
-                thisax.scatter(
+                ax.scatter(
                     o,
                     a,
                     marker="+",
@@ -846,7 +858,7 @@ class MapPlot:
             )
 
             if label and label != "":
-                thisax.annotate(
+                ax.annotate(
                     "%s" % (label,),
                     xy=(x, y),
                     ha="center",
@@ -1102,16 +1114,11 @@ class MapPlot:
 
         Args:
           data (dict): A dictionary of climate division IDs and values
-          bins (optional[list]): a list of values for classification
-          lblformat (optional[str]): a format specifier to use
-          **kwargs (optional): other values
         """
         clidict = load_pickle_geo("climdiv.pickle")
         polygon_fill(self, clidict, data, **kwargs)
 
-    def fill_ugcs(
-        self, data, bins=None, color=None, is_firewx=False, **kwargs
-    ):
+    def fill_ugcs(self, data, **kwargs):
         """Overlay filled UGC geometries
 
         Note the importance of the `is_firewx` flag.  This determines which
@@ -1130,89 +1137,26 @@ class MapPlot:
           missingval(str, optional): value to use when labelling UGCs with
             missing values, defaults to '-'.
         """
-        if bins is None:
-            bins = np.arange(0, 101, 10)
-        cmap = stretch_cmap(
-            kwargs.get("cmap"), bins, extend=kwargs.get("extend")
-        )
-        norm = mpcolors.BoundaryNorm(bins, cmap.N)
         # Figure out if we have zones or counties/parishes
         counties = True
         for key in data:
             if key[2] == "Z":
                 counties = False
             break
-        zonesfn = "firewx" if is_firewx else "zone"
+        zonesfn = "firewx" if kwargs.get("is_firewx", False) else "zone"
         ugcs = load_pickle_geo(
             "ugcs_county.pickle" if counties else f"ugcs_{zonesfn}.pickle"
         )
-        if color is None:
-            color = dict()
         filter_func = true_filter
         if self.sector == "state":
             filter_func = state_filter
         elif self.sector == "cwa":
             filter_func = cwa_filter
-        ilabel = kwargs.get("ilabel", False)
-        plotmissing = kwargs.get("plotmissing", True)
-        labels = kwargs.get("labels", dict())
-        to_label = {"x": [], "y": [], "vals": [], "zorder": []}
-        for ugc in ugcs:
-            ugcdict = ugcs[ugc]
-            if not filter_func(self, ugc, ugcdict):
-                continue
-            if data.get(ugc) is None:
-                if not plotmissing:
-                    continue
-                c = "white"
-                val = kwargs.get("missingval", "-")
-                z = Z_OVERLAY
-            else:
-                val = data[ugc]
-                c = color.get(ugc, cmap(norm([val]))[0])
-                z = Z_OVERLAY2
-            for polyi, polygon in enumerate(ugcdict.get("geom", [])):
-                if polygon.exterior is None:
-                    continue
-                if z in [Z_OVERLAY, Z_OVERLAY2]:
-                    arr = np.asarray(polygon.exterior)
-                    # Figure out which ax this goes with
-                    ax = self.ax
-                    if self.sector == "nws":
-                        if ugc.startswith("PR"):
-                            ax = self.pr_ax
-                        elif ugc.startswith("AK"):
-                            ax = self.ak_ax
-                        elif ugc.startswith("HI"):
-                            ax = self.hi_ax
-                    points = ax.projection.transform_points(
-                        ccrs.Geodetic(), arr[:, 0], arr[:, 1]
-                    )
-                    ax.add_patch(
-                        Polygon(points[:, :2], fc=c, ec="k", zorder=z, lw=0.1)
-                    )
-                if polyi == 0 and ilabel:
-                    # prefer our stored centroid vs calculated one
-                    mx = ugcdict.get("lon", polygon.centroid.x)
-                    my = ugcdict.get("lat", polygon.centroid.y)
-                    to_label["x"].append(mx)
-                    to_label["y"].append(my)
-                    to_label["vals"].append("%s" % (labels.get(ugc, val),))
-                    to_label["zorder"].append(z + 1)
-        if to_label:
-            self.plot_values(
-                to_label["x"],
-                to_label["y"],
-                to_label["vals"],
-                zorder=to_label["zorder"],
-                labelbuffer=kwargs.get("labelbuffer", 1),
-                textsize=12,
-                textoutlinewidth=2,
-            )
-        if "cmap" in kwargs:
-            del kwargs["cmap"]
-        if not kwargs.get("nocbar", False):
-            self.draw_colorbar(bins, cmap, norm, **kwargs)
+        # Filter down the database
+        ugcs = dict(
+            filter(lambda e: filter_func(self, e[0], e[1]), ugcs.items())
+        )
+        polygon_fill(self, ugcs, data, **kwargs)
 
     def fill_states(self, data, **kwargs):
         """Add overlay of filled state polygons"""
@@ -1250,14 +1194,6 @@ class MapPlot:
           data (dict): Dictionary of values with keys representing the 3 char
             or 4 char idenitifer for the WFO.  This assumes the 3 char sites
             are the K ones.
-          labels (dict, optional): Optional dictionary that follows the
-            ``data`` attribute, but hard codes what should be plotted as a
-            label.
-          bins (list, optional): List of increasing values to use as bins to
-            determine color levels.
-          lblformat (str, optional): Format string to use to place labels.
-          cmap (matplotlib.cmap, optional): Colormap to use with ``bins``
-
         """
         cwas = load_pickle_geo("cwa.pickle")
         # Painfull.  San Juan's WFO identifier is SJU, but VTEC uses JSJ, our

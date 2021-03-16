@@ -35,6 +35,45 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_plotmissing():
+    """Test that we can plotmissing."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="FSD",
+        title="Testing plotmissing",
+    )
+    mp.fill_climdiv({"IAC001": 10}, plotmissing=False)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_fill_by_str():
+    """Test that we can fill by string or dict."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="state",
+        state="CA",
+        title="Testing color provision",
+    )
+    mp.fill_climdiv({"CAC001": 10}, color="b", plotmissing=False)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_fill_by_dict():
+    """Test that we can fill by string or dict."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="state",
+        state="CA",
+        title="Testing color provision",
+    )
+    mp.fill_climdiv({"CAC001": 10}, color={"CAC001": "r"}, plotmissing=False)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_issue374_pah():
     """Test drawing fire weather zones for Paducah."""
     mp = MapPlot(
@@ -225,8 +264,9 @@ def test_fill_ugcs_color():
         sector="cwa", cwa="DMX", title="Three Counties", nocaption=True
     )
     data = {"IAC001": 10, "IAC003": 20, "IAC135": 30}
-    color = {"IAC001": "#FF0000", "IAC003": "black"}
-    mp.fill_ugcs(data, color=color, nocbar=True)
+    fc = {"IAC001": "#FF0000", "IAC003": "black"}
+    ec = {}
+    mp.fill_ugcs(data, fc=fc, ec=ec, nocbar=True)
     return mp.fig
 
 
