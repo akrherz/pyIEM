@@ -411,7 +411,7 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
                 _fc, _ec = (color, color)
             else:
                 _fc = color.get(polykey, "white")
-                _ec = color.get(polykey, "white")
+                _ec = color.get(polykey, "k")
         if fc is not None:
             _fc = fc if isinstance(fc, str) else fc.get(polykey, "white")
         if ec is not None:
