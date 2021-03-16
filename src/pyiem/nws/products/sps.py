@@ -104,15 +104,15 @@ class SPSProduct(TextProduct):
         res = []
         xtra = {
             "product_id": self.get_product_id(),
-            "twitter_media": (
-                "https://mesonet.agron.iastate.edu/plotting/auto/plot/217/"
-                f"pid:{self.get_product_id()}.png"
-            ),
         }
-        for seg in self.segments:
+        for segnum, seg in enumerate(self.segments):
             # Skip any segments that don't have UGC information
             if not seg.ugcs:
                 continue
+            xtra["twitter_media"] = (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/217/"
+                f"pid:{self.get_product_id()}::segnum:{segnum}.png"
+            )
             headline = "[No headline was found in SPS]"
             if seg.headlines:
                 headline = (seg.headlines[0]).replace("\n", " ")
