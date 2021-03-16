@@ -9,7 +9,7 @@ import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
-import matplotlib.patheffects as PathEffects
+from matplotlib.transforms import Bbox
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
 
@@ -365,10 +365,21 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
       mymap (MapPlot): The MapPlot instance
       geo_provider (dict): The dictionary of keys and geometries
       data (dict): The dictionary of keys and values used for picking colors
-      **kwargs (Optional): Other things needed for mapping
-        ilabel (Optional[bool]): should values be labelled? Defaults to `False`
-        plotmissing (bool): should geometries not included in the `data`
+
+    These are kwargs general to `polygon_fill`.
+    **kwargs (Optional): Other things needed for mapping
+    ilabel (Optional[bool]): should values be labelled? Defaults to `False`
+    plotmissing (bool): should geometries not included in the `data`
         be mapped? Defaults to `True`
+    color (str or dict): Providing an explicit color (used for both edge
+        and fill).  Either provide one color or a dictionary to lookup a
+        color by the mapping key.
+    fc (str or dict): Same as `color`, but controls the fill color.
+        Providing this value will over-ride any `color` setting.
+    ec (str or dict): Same as `color`, but controls the edge color.
+        Providing this value will over-ride any `color` setting.
+    zorder (int): The zorder to use for this layer, default `Z_FILL`
+    lw (float): polygon outline width
     """
     bins = kwargs.get("bins", np.arange(0, 101, 10))
     cmap = stretch_cmap(kwargs.get("cmap"), bins, extend=kwargs.get("extend"))
@@ -377,52 +388,84 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     lblformat = kwargs.get("lblformat", "%s")
     labels = kwargs.get("labels", dict())
     plotmissing = kwargs.get("plotmissing", True)
+    color = kwargs.get("color")
+    ec = kwargs.get("ec")
+    fc = kwargs.get("fc")
+    zorder = kwargs.get("zorder", reference.Z_FILL)
+    to_label = {"x": [], "y": [], "vals": []}
     for polykey, polydict in geo_provider.items():
         # our dictionary is bytes so we need str
         val = data.get(polykey, None)
-        if val is None:
-            if not plotmissing:
-                continue
-            lbl = labels.get(polykey, "-")
-            c = "white"
-        else:
-            lbl = labels.get(polykey, lblformat % (val,))
-            c = cmap(norm([val]))[0]
+        if not plotmissing and val is None:
+            continue
+        # compute a label
+        lbl = (
+            labels.get(polykey, "-")
+            if val is None
+            else labels.get(polykey, lblformat % (val,))
+        )
+        # How we compute a fill and edge color
+        _fc, _ec = (None, None)
+        if color is not None:
+            if isinstance(color, str):
+                _fc, _ec = (color, color)
+            else:
+                _fc = color.get(polykey, "white")
+                _ec = color.get(polykey, "white")
+        if fc is not None:
+            _fc = fc if isinstance(fc, str) else fc.get(polykey, "white")
+        if ec is not None:
+            _ec = ec if isinstance(ec, str) else ec.get(polykey, "k")
+        _ec = "k" if _ec is None else _ec
+        if _fc is None:
+            _fc = "white" if val is None else cmap(norm([val]))[0]
+
+        bboxes = []
+        for ax in mymap.axes:
+            x = ax.get_extent()
+            bboxes.append(Bbox.from_extents(x[0], x[2], x[1], x[3]))
+
         # in python3, our dict types are byte arrays
         for polyi, polygon in enumerate(polydict.get("geom", [])):
             if polygon.exterior is None:
                 continue
             a = np.asarray(polygon.exterior)
-            for ax in mymap.axes:
+            for ax, bbox in zip(mymap.axes, bboxes):
                 points = ax.projection.transform_points(
                     ccrs.Geodetic(), a[:, 0], a[:, 1]
                 )
                 p = mpatches.Polygon(
                     points[:, :2],
-                    fc=c,
-                    ec="k",
-                    zorder=reference.Z_FILL,
-                    lw=0.1,
+                    fc=_fc,
+                    ec=_ec,
+                    zorder=zorder,
+                    lw=kwargs.get("lw", 0.1),
                 )
+                # Check for overlap
+                if not p.get_extents().overlaps(bbox):
+                    continue
                 ax.add_patch(p)
                 if ilabel and polyi == 0:
-                    txt = ax.text(
-                        polydict.get("lon", polygon.centroid.x),
-                        polydict.get("lat", polygon.centroid.y),
-                        lbl,
-                        zorder=100,
-                        clip_on=True,
-                        ha="center",
-                        va="center",
-                        transform=ccrs.PlateCarree(),
-                    )
-                    txt.set_path_effects(
-                        [PathEffects.withStroke(linewidth=2, foreground="w")]
-                    )
-
+                    # prefer our stored centroid vs calculated one
+                    mx = polydict.get("lon", polygon.centroid.x)
+                    my = polydict.get("lat", polygon.centroid.y)
+                    to_label["x"].append(mx)
+                    to_label["y"].append(my)
+                    to_label["vals"].append(lbl)
+    if to_label:
+        mymap.plot_values(
+            to_label["x"],
+            to_label["y"],
+            to_label["vals"],
+            labelbuffer=kwargs.get("labelbuffer", 1),
+            textsize=12,
+            textoutlinewidth=2,
+            clip_on=True,
+        )
     kwargs.pop("cmap", None)
     kwargs.pop("bins", None)
-    mymap.draw_colorbar(bins, cmap, norm, **kwargs)
+    if not kwargs.get("nocbar", False):
+        mymap.draw_colorbar(bins, cmap, norm, **kwargs)
 
 
 def mask_outside_geom(ax, geom):

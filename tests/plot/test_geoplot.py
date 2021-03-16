@@ -225,8 +225,8 @@ def test_fill_ugcs_color():
         sector="cwa", cwa="DMX", title="Three Counties", nocaption=True
     )
     data = {"IAC001": 10, "IAC003": 20, "IAC135": 30}
-    color = {"IAC001": "#FF0000", "IAC003": "black"}
-    mp.fill_ugcs(data, color=color, nocbar=True)
+    fc = {"IAC001": "#FF0000", "IAC003": "black"}
+    mp.fill_ugcs(data, fc=fc, nocbar=True)
     return mp.fig
 
 
