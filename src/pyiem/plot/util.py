@@ -4,12 +4,12 @@ import os
 
 import numpy as np
 import cartopy.crs as ccrs
+import pandas as pd
 from shapely.geometry import Polygon
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
-from matplotlib.transforms import Bbox
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
 
@@ -282,7 +282,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.pr_ax = make_axes(
                 [0.78, 0.055, 0.125, 0.1],
                 [-68.0, -65.0, 17.5, 18.6],
-                ccrs.PlateCarree(central_longitude=-105.0),
+                reference.EPSG[4326],
                 aspect,
             )
             mp.axes.append(mp.pr_ax)
@@ -290,7 +290,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.ak_ax = make_axes(
                 [0.015, 0.055, 0.25, 0.2],
                 [-179.5, -129.0, 51.08, 72.1],
-                ccrs.PlateCarree(central_longitude=-105.0),
+                reference.EPSG[4326],
                 aspect,
             )
             mp.axes.append(mp.ak_ax)
@@ -298,7 +298,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.hi_ax = make_axes(
                 [0.47, 0.055, 0.2, 0.1],
                 [-161.0, -154.0, 18.5, 22.5],
-                ccrs.PlateCarree(central_longitude=-105.0),
+                reference.EPSG[4326],
                 aspect,
             )
             mp.axes.append(mp.hi_ax)
@@ -358,12 +358,12 @@ def mask_outside_polygon(poly_verts, ax=None):
     return patch
 
 
-def polygon_fill(mymap, geo_provider, data, **kwargs):
+def polygon_fill(mymap, geodf, data, **kwargs):
     """Generalized function for overlaying filled polygons on the map
 
     Args:
       mymap (MapPlot): The MapPlot instance
-      geo_provider (dict): The dictionary of keys and geometries
+      geodf (GeoDataFrame): A GeoDataFrame with a `geom` column.
       data (dict): The dictionary of keys and values used for picking colors
 
     These are kwargs general to `polygon_fill`.
@@ -386,69 +386,64 @@ def polygon_fill(mymap, geo_provider, data, **kwargs):
     ilabel = kwargs.get("ilabel", False)
     norm = mpcolors.BoundaryNorm(bins, cmap.N)
     lblformat = kwargs.get("lblformat", "%s")
-    labels = kwargs.get("labels", dict())
     plotmissing = kwargs.get("plotmissing", True)
     color = kwargs.get("color")
     ec = kwargs.get("ec")
     fc = kwargs.get("fc")
+    labels = kwargs.get("labels", dict())
     zorder = kwargs.get("zorder", reference.Z_FILL)
     to_label = {"x": [], "y": [], "vals": []}
-    for polykey, polydict in geo_provider.items():
-        # our dictionary is bytes so we need str
-        val = data.get(polykey, None)
-        if not plotmissing and val is None:
-            continue
-        # compute a label
-        lbl = (
-            labels.get(polykey, "-")
-            if val is None
-            else labels.get(polykey, lblformat % (val,))
-        )
-        # How we compute a fill and edge color
-        _fc, _ec = (None, None)
-        if color is not None:
-            if isinstance(color, str):
-                _fc, _ec = (color, color)
-            else:
-                _fc = color.get(polykey, "white")
-                _ec = color.get(polykey, "k")
-        if fc is not None:
-            _fc = fc if isinstance(fc, str) else fc.get(polykey, "white")
-        if ec is not None:
-            _ec = ec if isinstance(ec, str) else ec.get(polykey, "k")
-        _ec = "k" if _ec is None else _ec
-        if _fc is None:
-            _fc = "white" if val is None else cmap(norm([val]))[0]
-
-        bboxes = []
-        for ax in mymap.axes:
-            x = ax.get_extent()
-            bboxes.append(Bbox.from_extents(x[0], x[2], x[1], x[3]))
-
-        # in python3, our dict types are byte arrays
-        for polyi, polygon in enumerate(polydict.get("geom", [])):
-            if polygon.exterior is None:
-                continue
-            a = np.asarray(polygon.exterior)
-            for ax, bbox in zip(mymap.axes, bboxes):
-                points = ax.projection.transform_points(
-                    ccrs.Geodetic(), a[:, 0], a[:, 1]
+    # Merge data into the data frame
+    geodf["val"] = pd.Series(data)
+    if not plotmissing:
+        geodf = geodf[~pd.isna(geodf["val"])].copy()
+    for ax in mymap.axes:
+        # Reproject data into plot native
+        native = geodf["geom"].to_crs(ax.projection.proj4_init)
+        # Filter data by bounds
+        # pylint: disable=protected-access
+        idx = native.intersects(ax._get_extent_geom())
+        for polykey, row in geodf.loc[idx].iterrows():
+            lbl = (
+                labels.get(polykey, "-")
+                if pd.isna(row["val"])
+                else labels.get(polykey, lblformat % (row["val"],))
+            )
+            # How we compute a fill and edge color
+            _fc, _ec = (None, None)
+            if color is not None:
+                if isinstance(color, str):
+                    _fc, _ec = (color, color)
+                else:
+                    _fc = color.get(polykey, "white")
+                    _ec = color.get(polykey, "k")
+            if fc is not None:
+                _fc = fc if isinstance(fc, str) else fc.get(polykey, "white")
+            if ec is not None:
+                _ec = ec if isinstance(ec, str) else ec.get(polykey, "k")
+            _ec = "k" if _ec is None else _ec
+            if _fc is None:
+                _fc = (
+                    "white"
+                    if pd.isna(row["val"])
+                    else cmap(norm([row["val"]]))[0]
                 )
+            for polyi, polygon in enumerate(native.loc[polykey]):
+                if polygon.exterior is None:
+                    continue
+                a = np.asarray(polygon.exterior)
                 p = mpatches.Polygon(
-                    points[:, :2],
+                    a[:, :2],
                     fc=_fc,
                     ec=_ec,
                     zorder=zorder,
                     lw=kwargs.get("lw", 0.1),
                 )
-                # Check for overlap
-                if not p.get_extents().overlaps(bbox):
-                    continue
                 ax.add_patch(p)
                 if ilabel and polyi == 0:
                     # prefer our stored centroid vs calculated one
-                    mx = polydict.get("lon", polygon.centroid.x)
-                    my = polydict.get("lat", polygon.centroid.y)
+                    mx = row.get("lon", polygon.centroid.x)
+                    my = row.get("lat", polygon.centroid.y)
                     to_label["x"].append(mx)
                     to_label["y"].append(my)
                     to_label["vals"].append(lbl)

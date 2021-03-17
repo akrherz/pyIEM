@@ -6,11 +6,19 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Refactor mostly internal MapPlot feature plotting.  This library does not
+have a public API promise, so alas.  Generally, this should not impact users
+unless you were accessing internal geo-databases or using the bundled pickled
+libraries directly.  This should be low impact as for example, my `iem`
+code repo required no changes for this (#402).
+
 ### New Features
 
 - Introduce a BUFKIT file reader.  `pyiem.nws.bufkit.read_bufkit` (#390).
 - Generalized `MapPlot.fill_{ugcs,states,climdiv,etc}` now support provision
 of colors via `color=` or combo of `fc=` and `ec=`.
+- Introduce `pyarrow` as package requirement to read parquet files for
+GeoPandas (#402).
 
 ### Bug Fixes
 

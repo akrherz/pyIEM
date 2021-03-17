@@ -23,7 +23,6 @@ import os
 import sys
 import subprocess
 import shutil
-import pickle
 import datetime
 import warnings
 
@@ -73,6 +72,8 @@ from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
 import pyiem.meteorology as meteorology
 
+# geopandas currently emits this as parquet is unstable.
+warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 # we ran the cartopy/tools downloader
 cartopy.config["pre_existing_data_dir"] = "/opt/miniconda3/cartopy_data/"
 # Set a saner default for apache et al
@@ -82,21 +83,6 @@ cartopy.config["data_dir"] = "/tmp/"
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 MAIN_AX_BOUNDS = [0.01, 0.05, 0.898, 0.85]
 CAX_BOUNDS = [0.917, 0.1, 0.02, 0.8]
-
-
-def true_filter(_bm, _key, _val):
-    """Always return true"""
-    return True
-
-
-def cwa_filter(bm, _key, val):
-    """A filter for checking a key against current plot"""
-    return val.get("cwa", "") == bm.cwa
-
-
-def state_filter(bm, key, _val):
-    """A filter for checking a key against current plot"""
-    return key[:2] == bm.state
 
 
 def load_bounds(filebase):
@@ -131,23 +117,20 @@ def load_pickle_pd(filename):
     return pd.read_pickle(fn)
 
 
-def load_pickle_geo(filename):
-    """Load pickled dictionaries containing geometries and other metadata
+def load_geodf(filename):
+    """Load GeoPandas GeoDataFrame.
 
     Args:
       filename(str): The filename to load, contained in project data/
 
     Returns:
-      dict: The dictionary of data
+      GeoDataFrame
     """
-    fn = "%s/%s" % (DATADIR, filename)
+    fn = "%s/geodf/%s.parquet" % (DATADIR, filename)
     if not os.path.isfile(fn):
-        LOG.info("load_pickle_geo(%s) failed, file is missing!", fn)
-        return dict()
-    pickle_opts = dict()
-    if sys.version_info.major > 2:
-        pickle_opts["encoding"] = "bytes"
-    return pickle.load(open(fn, "rb"), **pickle_opts)
+        LOG.info("load_geodf(%s) failed, file is missing!", fn)
+        return gpd.GeoDataFrame()
+    return gpd.read_parquet(fn)
 
 
 class MapPlot:
@@ -232,9 +215,9 @@ class MapPlot:
                 cfeature.LAKES, facecolor=(0.4471, 0.6235, 0.8117), zorder=Z_CF
             )
             if "nostates" not in kwargs:
-                states = load_pickle_geo("us_states.pickle")
+                states = load_geodf("us_states")
                 _a.add_geometries(
-                    [val["geom"] for key, val in states.items()],
+                    states["geom"].values,
                     crs=ccrs.PlateCarree(),
                     lw=1.0,
                     edgecolor=kwargs.get("statebordercolor", "k"),
@@ -982,20 +965,20 @@ class MapPlot:
             return
         # in lon,lat
         if sector == "state":
-            s = load_pickle_geo("us_states.pickle")
-            mask_outside_geom(self.ax, s[self.state]["geom"])
+            s = load_geodf("us_states")
+            mask_outside_geom(self.ax, s.at[self.state, "geom"])
             return
         if sector == "cwa":
-            s = load_pickle_geo("cwa.pickle")
-            mask_outside_geom(self.ax, s[self.cwa]["geom"])
+            s = load_geodf("cwa")
+            mask_outside_geom(self.ax, s.at[self.cwa, "geom"])
             return
         if sector == "conus":
-            s = load_pickle_geo("conus.pickle")
-            mask_outside_geom(self.ax, s["conus"]["geom"])
+            s = load_geodf("conus")
+            mask_outside_geom(self.ax, s.iloc[0]["geom"])
             return
         if sector == "iowawfo":
-            s = load_pickle_geo("iowawfo.pickle")
-            geo = s["iowawfo"]["geom"]
+            s = load_geodf("iowawfo")
+            geo = s["geom"].values[0]
             ccw = np.asarray(geo.exterior)[::-1]
         else:
             ccw = load_bounds("%s_ccw" % (sector,))
@@ -1115,8 +1098,8 @@ class MapPlot:
         Args:
           data (dict): A dictionary of climate division IDs and values
         """
-        clidict = load_pickle_geo("climdiv.pickle")
-        polygon_fill(self, clidict, data, **kwargs)
+        geodf = load_geodf("climdiv")
+        polygon_fill(self, geodf, data, **kwargs)
 
     def fill_ugcs(self, data, **kwargs):
         """Overlay filled UGC geometries
@@ -1144,24 +1127,17 @@ class MapPlot:
                 counties = False
             break
         zonesfn = "firewx" if kwargs.get("is_firewx", False) else "zone"
-        ugcs = load_pickle_geo(
-            "ugcs_county.pickle" if counties else f"ugcs_{zonesfn}.pickle"
-        )
-        filter_func = true_filter
+        geodf = load_geodf("ugcs_county" if counties else f"ugcs_{zonesfn}")
         if self.sector == "state":
-            filter_func = state_filter
+            geodf = geodf[geodf.index.str.slice(0, 2) == self.state]
         elif self.sector == "cwa":
-            filter_func = cwa_filter
-        # Filter down the database
-        ugcs = dict(
-            filter(lambda e: filter_func(self, e[0], e[1]), ugcs.items())
-        )
-        polygon_fill(self, ugcs, data, **kwargs)
+            geodf = geodf[geodf["cwa"] == self.cwa]
+        polygon_fill(self, geodf, data, **kwargs)
 
     def fill_states(self, data, **kwargs):
         """Add overlay of filled state polygons"""
-        states = load_pickle_geo("us_states.pickle")
-        polygon_fill(self, states, data, **kwargs)
+        geodf = load_geodf("us_states")
+        polygon_fill(self, geodf, data, **kwargs)
 
     def draw_cwas(self, color="k", **kwargs):
         """Overlay CWA Borders
@@ -1173,10 +1149,10 @@ class MapPlot:
           kwargs(dict, optional): Parameters passed to matplotlib for plotting
         """
         kwargs["edgecolor"] = color
-        cwas = load_pickle_geo("cwa.pickle")
+        cwas = load_geodf("cwa")
         for _a in self.axes:
             _a.add_geometries(
-                [val["geom"] for key, val in cwas.items()],
+                cwas["geom"].values,
                 crs=ccrs.PlateCarree(),
                 zorder=Z_POLITICAL,
                 facecolor="None",
@@ -1195,12 +1171,12 @@ class MapPlot:
             or 4 char idenitifer for the WFO.  This assumes the 3 char sites
             are the K ones.
         """
-        cwas = load_pickle_geo("cwa.pickle")
+        geodf = load_geodf("cwa")
         # Painfull.  San Juan's WFO identifier is SJU, but VTEC uses JSJ, our
         # plotting here uses SJU
         if "JSJ" in data:
             data["SJU"] = data["JSJ"]
-        polygon_fill(self, cwas, data, **kwargs)
+        polygon_fill(self, geodf, data, **kwargs)
 
     def drawcities(self, **kwargs):
         """Overlay some cities
@@ -1246,13 +1222,9 @@ class MapPlot:
         Args:
           color (color,optional): line color to use
         """
-        ugcdict = load_pickle_geo("ugcs_county.pickle")
-        polys = []
-        for ugc in ugcdict:
-            for polygon in ugcdict[ugc].get("geom", []):
-                polys.append(polygon)
+        geodf = load_geodf("ugcs_county")
         self.ax.add_geometries(
-            polys,
+            geodf["geom"].values,
             crs=ccrs.PlateCarree(),
             facecolor="None",
             edgecolor=color,

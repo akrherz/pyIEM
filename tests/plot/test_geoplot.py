@@ -16,7 +16,7 @@ from pyiem.plot import (
     pretty_bins,
     load_bounds,
     load_pickle_pd,
-    load_pickle_geo,
+    load_geodf,
 )
 from pyiem.util import utc
 
@@ -31,7 +31,7 @@ def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
     assert load_pickle_pd("this shall not work") is None
-    assert not load_pickle_geo("this shall not work")
+    assert load_geodf("this shall not work").empty
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
@@ -459,7 +459,7 @@ def test_fillstates():
         subtitle="test_fillstates",
         nocaption=True,
     )
-    mp.fill_states(data, ilabel=True)
+    mp.fill_states(data, lblformat="%.0f", ilabel=True)
     return mp.fig
 
 
@@ -499,7 +499,7 @@ def test_climdiv():
     """Run tests agains the fill_climdiv"""
     mp = MapPlot(sector="conus", title="Climate Divisions", nocaption=True)
     data = {"IAC001": 10, "MNC001": 20, "NMC001": 30}
-    mp.fill_climdiv(data, ilabel=True)
+    mp.fill_climdiv(data, ilabel=True, lblformat="%.0f")
     return mp.fig
 
 
@@ -576,7 +576,8 @@ def test_drawugcs2():
         subtitle="test_drawugcs2",
         nocaption=True,
     )
-    mp.fill_ugcs({"IAZ001": 10, "IAZ003": 20, "IAZ005": 30}, ilabel=True)
+    mydict = {"IAZ001": 10, "IAZ003": 20, "IAZ005": 30}
+    mp.fill_ugcs(mydict, ilabel=True, lblformat="%.0f")
     return mp.fig
 
 
@@ -643,18 +644,10 @@ def test_ugcs_withcustomlabels():
         ilabel=True,
         clevstride=12,
         clevlabels=clevlabels,
+        lblformat="%.0f",
         extend="neither",
     )
     return mp.fig
-
-
-def test_filter_functions():
-    """Make sure our filter functions are doing what we want!"""
-    mp = MapPlot(sector="iowa")
-    assert plot.state_filter(mp, "IAC001", dict())
-    assert not plot.state_filter(mp, "MNC001", dict())
-    mp = MapPlot(cwa="DMX")
-    assert plot.state_filter(mp, "IAC001", dict())
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.15)
@@ -818,6 +811,7 @@ def test_plot2():
         {"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40, "HFO": 50},
         units="NWS Something or Another",
         ilabel=True,
+        lblformat="%.0f",
     )
     return mp.fig
 
@@ -829,6 +823,7 @@ def test_plot22():
     mp.fill_cwas(
         {"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40, "HFO": 50},
         units="NWS Something or Another",
+        lblformat="%.0f",
     )
     return mp.fig
 
