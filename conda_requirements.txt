@@ -27,6 +27,8 @@ pandas
 # geoplot usage
 pillow
 psycopg2
+# parquet format support in geopandas
+pyarrow
 # Models
 pydantic
 # gini reader

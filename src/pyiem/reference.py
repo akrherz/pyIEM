@@ -47,6 +47,7 @@ EPSG = {
     2163: ccrs.LambertAzimuthalEqualArea(
         central_latitude=45, central_longitude=-100
     ),
+    4326: ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
 }
 
 IA_WEST = -96.7
