@@ -464,6 +464,13 @@ class VTECProduct(TextProduct):
                     "vtec": vtec.get_id(self.db_year),
                     "ptype": vtec.phenomena,
                     "twitter": "",
+                    "twitter_media": (
+                        "https://mesonet.agron.iastate.edu/plotting/auto/plot/"
+                        f"208/network:WFO::wfo:{vtec.office}::"
+                        f"year:{self.db_year}::phenomenav:{vtec.phenomena}::"
+                        f"significancev:{vtec.significance}::"
+                        f"etn:{vtec.etn}::valid:"
+                    ),
                 }
 
                 long_actions.append(
@@ -509,14 +516,21 @@ class VTECProduct(TextProduct):
                     jmsg_dict["url"] += "_%s" % (
                         vtec.begints.strftime("%Y-%m-%dT%H:%MZ"),
                     )
+                    xtra["twitter_media"] += vtec.begints.strftime(
+                        "%Y-%m-%d%%20%H%M"
+                    )
                     if vtec.begints > (self.utcnow + timedelta(hours=1)):
                         jmsg_dict["sts"] = " %s " % (
                             vtec.get_begin_string(self),
                         )
                 else:
                     jmsg_dict["url"] += "_%s" % (
-                        self.utcnow.strftime("%Y-%m-%dT%H:%MZ"),
+                        self.valid.strftime("%Y-%m-%dT%H:%MZ"),
                     )
+                    xtra["twitter_media"] += self.valid.strftime(
+                        "%Y-%m-%d%%20%H%M"
+                    )
+                xtra["twitter_media"] += ".png"
                 jmsg_dict["ets"] = vtec.get_end_string(self)
 
                 # Include the special bulletin for Tornado Warnings

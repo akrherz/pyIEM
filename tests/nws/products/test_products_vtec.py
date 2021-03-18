@@ -1082,6 +1082,12 @@ def test_tornado_emergency():
         "http://localhost2012-O-NEW-KICT-TO-W-0035_2012-04-15T03:27Z"
     )
     assert j[0][2]["twitter"] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/"
+        "network:WFO::wfo:ICT::year:2012::phenomenav:TO::significancev:W"
+        "::etn:35::valid:2012-04-15%200327.png"
+    )
+    assert j[0][2]["twitter_media"] == ans
 
 
 def test_badtimestamp():
@@ -1171,6 +1177,12 @@ def test_140610_tweet_spacing():
         "PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015_2014-06-10T14:48Z"
     )
     assert j[0][2]["twitter"] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/network:WFO"
+        "::wfo:LCH::year:2014::phenomenav:FL::significancev:W::etn:15::"
+        "valid:2014-06-10%201448.png"
+    )
+    assert j[0][2]["twitter_media"] == ans
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1325,6 +1337,12 @@ def test_wcn():
         "http://localhost/2014-O-CON-KDMX-SV-W-0143_2014-06-03T00:00Z"
     )
     assert j[0][2]["twitter"] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/network:"
+        "WFO::wfo:DMX::year:2014::phenomenav:SV::significancev:W::etn:143::"
+        "valid:2014-06-04%200331.png"
+    )
+    assert j[0][2]["twitter_media"] == ans
 
     prod = vtecparser(
         get_test_file("WCN.txt"), utcnow=utcnow, ugc_provider=ugc_provider
@@ -1429,14 +1447,14 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
     ans = (
         "BOU extends time of Flood Advisory "
         "for ((COC049)), ((COC057)) [CO] till May 29, 9:30 PM MDT "
-        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T00:00Z"
+        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T15:25Z"
     )
     assert j[0][0] == ans
     ans = (
         "BOU extends time of Flood "
         "Advisory for ((COC049)), ((COC057)) [CO] till "
         "May 29, 9:30 PM MDT "
-        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T00:00Z"
+        "http://localhost/2014-O-EXT-KBOU-FA-Y-0018_2014-05-27T15:25Z"
     )
     assert j[0][2]["twitter"] == ans
 
