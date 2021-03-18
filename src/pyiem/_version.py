@@ -6,7 +6,7 @@
 
 
 def get_version():
-    """Get MetPy's version.
+    """Get pyIEM's version.
 
     Either get it from package metadata, or get it using version control
     information if a development install.
@@ -15,7 +15,7 @@ def get_version():
         from setuptools_scm import get_version as gv
 
         return gv(
-            root="..",
+            root="../..",
             relative_to=__file__,
             version_scheme="post-release",
             local_scheme="dirty-tag",
