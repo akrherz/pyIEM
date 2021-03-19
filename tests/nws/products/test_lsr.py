@@ -5,6 +5,15 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
+def test_issue406_empty():
+    """Test that we emit warnings for missing counties/states."""
+    text = get_test_file("LSR/LSRAJK.txt")
+    prod = parser(text)
+    assert len(prod.warnings) == 3
+    prod = parser(text.replace("TRAINED SPOTTER", "               "))
+    assert len(prod.warnings) == 4
+
+
 def test_tweetlen():
     """Test that our tweet is not too long!"""
     prod = parser(get_test_file("LSR/LSRBRO.txt"))

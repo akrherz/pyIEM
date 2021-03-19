@@ -192,8 +192,14 @@ def parse_lsr(prod, text):
         prod.warnings.append("LSR has NAN magnitude\n%s" % (text,))
         return None
     lsr.county = lines[1][29:48].strip()
-    lsr.state = lines[1][48:50]
+    if lsr.county == "":
+        prod.warnings.append(f"LSR has empty county\n{text}")
+    lsr.state = lines[1][48:50].strip()
+    if lsr.state == "":
+        prod.warnings.append(f"LSR has empty state\n{text}")
     lsr.source = lines[1][53:].strip()
+    if lsr.source == "":
+        prod.warnings.append(f"LSR has empty source\n{text}")
     if len(lines) > 2:
         meat = " ".join(lines[2:]).strip()
         if meat.strip() != "":
