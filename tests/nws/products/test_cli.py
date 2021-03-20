@@ -27,6 +27,14 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_invalid_temperature_year_second_line():
+    """Test that we don't allow an invalid year in the second line."""
+    text = get_test_file("CLI/CLIEKA.txt")
+    text = text.replace("    1978    ", "    9999    ")
+    prod = cliparser(text)
+    assert "9999" in prod.warnings[1]
+
+
 def test_invalid_temperature_year():
     """Test that we don't allow an invalid year."""
     text = get_test_file("CLI/CLIRDU.txt")

@@ -279,23 +279,24 @@ def parse_temperature(prod, regime, lines, data):
             data[f"temperature_{key}_time"] = tokens[2]
         if tokens[3] is not None:
             data[f"temperature_{key}_record"] = get_number(tokens[3])
-        if tokens[4] is not None and tokens[4].strip() != "":
+        if tokens[4] is not None and tokens[4].strip() not in ["", "M", "MM"]:
             n = get_number_year(tokens[4])
             if n is not None:
                 data[f"temperature_{key}_record_years"] = [n]
             else:
-                prod.warnings.append(f"Found invalid year |{line}|")
+                prod.warnings.append(f"Found invalid year |{tokens[4]}|")
         if tokens[5] is not None:
             data[f"temperature_{key}_normal"] = get_number(tokens[5])
             # Check next line(s) for more years
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                n = get_number_year(lines[linenum + 1])
+                line2 = lines[linenum + 1].strip()
+                n = get_number_year(line2)
                 if n is not None:
                     data[f"temperature_{key}_record_years"].append(n)
                 else:
-                    prod.warnings.append(f"Found invalid year |{line}|")
+                    prod.warnings.append(f"Found invalid year |{line2}|")
                 linenum += 1
 
 
