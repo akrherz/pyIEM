@@ -399,6 +399,7 @@ class VTECProduct(TextProduct):
         [[plain, html, xtra]] -- A list of triples of plain text, html, xtra
         """
         wfo = self.source[1:]
+        wfo4 = wfo if self.source.startswith("K") else self.source
         if self.skip_con:
             xtra = {
                 "product_id": self.get_product_id(),
@@ -466,7 +467,7 @@ class VTECProduct(TextProduct):
                     "twitter": "",
                     "twitter_media": (
                         "https://mesonet.agron.iastate.edu/plotting/auto/plot/"
-                        f"208/network:WFO::wfo:{vtec.office}::"
+                        f"208/network:WFO::wfo:{wfo4}::"
                         f"year:{self.db_year}::phenomenav:{vtec.phenomena}::"
                         f"significancev:{vtec.significance}::"
                         f"etn:{vtec.etn}::valid:"

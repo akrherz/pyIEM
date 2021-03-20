@@ -129,6 +129,14 @@ def trace_r(val):
     return val
 
 
+def get_number_year(text):
+    """Ensure we get a year that makes sense."""
+    val = get_number(text)
+    if val is None or val < 1700 or val > (datetime.date.today().year + 1):
+        return None
+    return val
+
+
 def get_number(text):
     """ Convert a string into a number, preferable a float! """
     if text is None:
@@ -199,23 +207,25 @@ def parse_snowfall(regime, lines, data):
         if key == "SNOW DEPTH":
             continue
         key = convert_key(key)
-        data["snow_%s" % (key,)] = get_number(tokens[1])
-        data["snow_%s_record" % (key,)] = get_number(tokens[3])
-        yeartest = get_number(tokens[4])
+        data[f"snow_{key}"] = get_number(tokens[1])
+        data[f"snow_{key}_record"] = get_number(tokens[3])
+        yeartest = get_number_year(tokens[4])
         if yeartest is not None:
-            data["snow_%s_record_years" % (key,)] = [yeartest]
-        data["snow_%s_normal" % (key,)] = get_number(tokens[5])
-        data["snow_%s_departure" % (key,)] = get_number(tokens[6])
-        data["snow_%s_last" % (key,)] = get_number(tokens[7])
+            data[f"snow_{key}_record_years"] = [yeartest]
+        data[f"snow_{key}_normal"] = get_number(tokens[5])
+        data[f"snow_{key}_departure"] = get_number(tokens[6])
+        data[f"snow_{key}_last"] = get_number(tokens[7])
         if (
             key == "today"
             and yeartest is not None
-            and data["snow_%s_record_years" % (key,)][0] is not None
+            and data[f"snow_{key}_record_years"][0] is not None
         ):
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["snow_today_record_years"].append(int(lines[linenum + 1]))
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data["snow_today_record_years"].append(n)
                 linenum += 1
 
 
@@ -229,55 +239,63 @@ def parse_precipitation(regime, lines, data):
         if key is None:
             continue
 
-        data["precip_%s" % (key,)] = get_number(tokens[1])
-        data["precip_%s_record" % (key,)] = get_number(tokens[3])
-        yeartest = get_number(tokens[4])
+        data[f"precip_{key}"] = get_number(tokens[1])
+        data[f"precip_{key}_record"] = get_number(tokens[3])
+        yeartest = get_number_year(tokens[4])
         if yeartest is not None:
-            data["precip_%s_record_years" % (key,)] = [yeartest]
-        data["precip_%s_normal" % (key,)] = get_number(tokens[5])
-        data["precip_%s_departure" % (key,)] = get_number(tokens[6])
-        data["precip_%s_last" % (key,)] = get_number(tokens[7])
+            data[f"precip_{key}_record_years"] = [yeartest]
+        data[f"precip_{key}_normal"] = get_number(tokens[5])
+        data[f"precip_{key}_departure"] = get_number(tokens[6])
+        data[f"precip_{key}_last"] = get_number(tokens[7])
         if (
             key == "today"
             and yeartest is not None
-            and data["precip_%s_record_years" % (key,)][0] is not None
+            and data[f"precip_{key}_record_years"][0] is not None
         ):
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["precip_today_record_years"].append(
-                    int(lines[linenum + 1])
-                )
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data["precip_today_record_years"].append(n)
                 linenum += 1
 
 
-def parse_temperature(regime, lines, data):
+def parse_temperature(prod, regime, lines, data):
     """Here we parse a temperature section"""
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 18:
             continue
+        # Repair a broken (E) product, see akrherz/pyIEM#08
+        if line[20:23] == "(E)" and line[38] == " ":
+            prod.warnings.append(f"Invalid line repaired |{line}|")
+            line = line.replace("(E)", "E ")
         tokens = make_tokens(regime, line)
         key = tokens[0].strip().lower()
         if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
             continue
-        data["temperature_%s" % (key,)] = get_number(tokens[1])
+        data[f"temperature_{key}"] = get_number(tokens[1])
         if tokens[2] is not None:
-            data["temperature_%s_time" % (key,)] = tokens[2]
+            data[f"temperature_{key}_time"] = tokens[2]
         if tokens[3] is not None:
-            data["temperature_%s_record" % (key,)] = get_number(tokens[3])
-        if tokens[4] is not None:
-            n = get_number(tokens[4])
+            data[f"temperature_{key}_record"] = get_number(tokens[3])
+        if tokens[4] is not None and tokens[4].strip() != "":
+            n = get_number_year(tokens[4])
             if n is not None:
-                data["temperature_%s_record_years" % (key,)] = [n]
+                data[f"temperature_{key}_record_years"] = [n]
+            else:
+                prod.warnings.append(f"Found invalid year |{line}|")
         if tokens[5] is not None:
-            data["temperature_%s_normal" % (key,)] = get_number(tokens[5])
+            data[f"temperature_{key}_normal"] = get_number(tokens[5])
             # Check next line(s) for more years
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["temperature_%s_record_years" % (key,)].append(
-                    int(lines[linenum + 1])
-                )
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data[f"temperature_{key}_record_years"].append(n)
+                else:
+                    prod.warnings.append(f"Found invalid year |{line}|")
                 linenum += 1
 
 
@@ -316,14 +334,14 @@ def _compute_station_ids(prod, cli_station_name, is_multi):
                 break
         if station is None:
             raise CLIException(
-                "Unknown CLI Station Text: |%s|" % (cli_station_name,)
+                f"Unknown CLI Station Text: |{cli_station_name}|"
             )
     else:
         station = prod.source[0] + prod.afos[3:]
     # We have computed a four character station ID, is it known?
     if station not in prod.nwsli_provider:
         prod.warnings.append(
-            "Station not known to NWSCLI Network |%s|" % (station,)
+            f"Station not known to NWSCLI Network |{station}|"
         )
         return station, None, None
 
@@ -338,9 +356,7 @@ def _compute_station_ids(prod, cli_station_name, is_multi):
     if access_station is None:
         # Our default mapping
         access_station = station[1:] if station.startswith("K") else station
-        access_network = "%s_ASOS" % (
-            prod.nwsli_provider[station].get("state"),
-        )
+        access_network = f"{prod.nwsli_provider[station].get('state')}_ASOS"
 
     return station, access_station, access_network
 
@@ -418,14 +434,14 @@ class CLIProduct(TextProduct):
         diction = tokens[0].strip()
         if diction not in REGIMES:
             raise CLIException(
-                "Unknown diction found in 'WEATHER ITEM'\n|%s|" % (diction,)
+                f"Unknown diction found in 'WEATHER ITEM'\n|{diction}|"
             )
 
         self.regime = REGIMES.index(diction)
 
     def get_jabbers(self, uri, _=None):
         """ Override the jabber message formatter """
-        url = "%s?pid=%s" % (uri, self.get_product_id())
+        url = f"{uri}?pid={self.get_product_id()}"
         res = []
         xtra = {
             "channels": self.get_channels(),
@@ -496,7 +512,7 @@ class CLIProduct(TextProduct):
         for _section in sections:
             lines = _section.split("\n")
             if lines[0] in ["TEMPERATURE (F)", "TEMPERATURE"]:
-                parse_temperature(self.regime, lines, data)
+                parse_temperature(self, self.regime, lines, data)
             elif lines[0] in ["PRECIPITATION (IN)", "PRECIPITATION"]:
                 parse_precipitation(self.regime, lines, data)
             elif lines[0] in ["SNOWFALL (IN)", "SNOWFALL"]:
@@ -539,34 +555,18 @@ class CLIProduct(TextProduct):
         station, product, valid, high, high_normal, high_record,
         high_record_years, low, low_normal, low_record, low_record_years,
         precip, precip_month, precip_jan1, precip_jul1, precip_normal,
-        precip_record,
-        precip_record_years, precip_month_normal, snow, snow_month,
-        snow_jun1, snow_jul1, snow_normal,
+        precip_record, precip_record_years, precip_month_normal, snow,
+        snow_month, snow_jun1, snow_jul1, snow_normal,
         snow_dec1, precip_dec1, precip_dec1_normal, precip_jan1_normal,
         high_time, low_time, snow_record_years, snow_record,
         snow_jun1_normal, snow_jul1_normal, snow_dec1_normal,
         snow_month_normal, precip_jun1, precip_jun1_normal,
-        average_sky_cover,
-        resultant_wind_speed, resultant_wind_direction,
-        highest_wind_speed, highest_wind_direction,
-        highest_gust_speed, highest_gust_direction,
-        average_wind_speed)
-        VALUES (
-        %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s,
-        %s,
-        %s, %s, %s, %s,
-        %s, %s, %s,
-        %s, %s, %s, %s,
-        %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s,
-        %s,
-        %s, %s,
-        %s, %s,
-        %s, %s,
-        %s
-        )
+        average_sky_cover, resultant_wind_speed, resultant_wind_direction,
+        highest_wind_speed, highest_wind_direction, highest_gust_speed,
+        highest_gust_direction, average_wind_speed)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """,
             (
                 data["db_station"],
