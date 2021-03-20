@@ -27,6 +27,14 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_invalid_temperature_year():
+    """Test that we don't allow an invalid year."""
+    text = get_test_file("CLI/CLIRDU.txt")
+    text = text.replace("1945  64", " 945  64")
+    prod = cliparser(text)
+    assert prod.data[0]["data"].get("temperature_maximum_record_years") is None
+
+
 def test_issue408_estimated():
     """Test that we catch some GIO with estimated temperature flag."""
     prod = factory("CLI/CLIRDU.txt")
