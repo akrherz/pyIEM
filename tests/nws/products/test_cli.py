@@ -11,6 +11,7 @@ NWSLI_PROVIDER = {
     "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),
     "KDMH": dict(name="", attributes={"MAPS_TO": "QQQ|ZZ_ASOS"}),
     "KHOU": dict(name="HOUSTON/HOBBY AIRPORT", access_network="ZZ_ASOS"),
+    "KRDU": dict(name="RALEIGH-DURHAM", access_network="NC_ASOS"),
     "PADQ": dict(name="KODIAK", access_network="AK_ASOS"),
     "PAKN": dict(name="KING SALMON", access_network="AK_ASOS"),
     "PANC": dict(name="ANCHORAGE AK", access_network="AK_ASOS"),
@@ -24,6 +25,13 @@ NWSLI_PROVIDER = {
 def factory(fn):
     """Common cliparser logic."""
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
+
+
+def test_issue408_estimated():
+    """Test that we catch some GIO with estimated temperature flag."""
+    prod = factory("CLI/CLIRDU.txt")
+    assert prod.warnings[0].find("repaired") > -1
+    assert prod.data[0]["data"]["temperature_maximum_record_years"][0] == 1945
 
 
 @pytest.mark.parametrize("database", ["iem"])

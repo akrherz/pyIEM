@@ -29,6 +29,7 @@ GeoPandas (#402).
 - Support database insert of multi-segment SPS products (#399).
 - `MapPlot.fill_ugcs` was refactored to use generic `polygon_fill`.
 - Correct how version is set during local development.
+- Account for (E) usage in CLIRDU (#408).
 
 ## **1.4.0** (9 March 2021)
 

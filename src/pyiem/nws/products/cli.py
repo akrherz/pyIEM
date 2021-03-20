@@ -129,6 +129,14 @@ def trace_r(val):
     return val
 
 
+def get_number_year(text):
+    """Ensure we get a year that makes sense."""
+    val = get_number(text)
+    if val is None or val < 1700 or val > (datetime.date.today().year + 1):
+        return None
+    return val
+
+
 def get_number(text):
     """ Convert a string into a number, preferable a float! """
     if text is None:
@@ -201,7 +209,7 @@ def parse_snowfall(regime, lines, data):
         key = convert_key(key)
         data["snow_%s" % (key,)] = get_number(tokens[1])
         data["snow_%s_record" % (key,)] = get_number(tokens[3])
-        yeartest = get_number(tokens[4])
+        yeartest = get_number_year(tokens[4])
         if yeartest is not None:
             data["snow_%s_record_years" % (key,)] = [yeartest]
         data["snow_%s_normal" % (key,)] = get_number(tokens[5])
@@ -215,7 +223,9 @@ def parse_snowfall(regime, lines, data):
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["snow_today_record_years"].append(int(lines[linenum + 1]))
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data["snow_today_record_years"].append(n)
                 linenum += 1
 
 
@@ -231,7 +241,7 @@ def parse_precipitation(regime, lines, data):
 
         data["precip_%s" % (key,)] = get_number(tokens[1])
         data["precip_%s_record" % (key,)] = get_number(tokens[3])
-        yeartest = get_number(tokens[4])
+        yeartest = get_number_year(tokens[4])
         if yeartest is not None:
             data["precip_%s_record_years" % (key,)] = [yeartest]
         data["precip_%s_normal" % (key,)] = get_number(tokens[5])
@@ -245,17 +255,21 @@ def parse_precipitation(regime, lines, data):
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["precip_today_record_years"].append(
-                    int(lines[linenum + 1])
-                )
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data["precip_today_record_years"].append(n)
                 linenum += 1
 
 
-def parse_temperature(regime, lines, data):
+def parse_temperature(prod, regime, lines, data):
     """Here we parse a temperature section"""
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 18:
             continue
+        # Repair a broken (E) product, see akrherz/pyIEM#08
+        if line[20:23] == "(E)" and line[38] == " ":
+            prod.warnings.append(f"Invalid line repaired |{line}|")
+            line = line.replace("(E)", "E ")
         tokens = make_tokens(regime, line)
         key = tokens[0].strip().lower()
         if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
@@ -265,19 +279,23 @@ def parse_temperature(regime, lines, data):
             data["temperature_%s_time" % (key,)] = tokens[2]
         if tokens[3] is not None:
             data["temperature_%s_record" % (key,)] = get_number(tokens[3])
-        if tokens[4] is not None:
-            n = get_number(tokens[4])
+        if tokens[4] is not None and tokens[4].strip() != "":
+            n = get_number_year(tokens[4])
             if n is not None:
                 data["temperature_%s_record_years" % (key,)] = [n]
+            else:
+                prod.warnings.append(f"Found invalid year |{line}|")
         if tokens[5] is not None:
             data["temperature_%s_normal" % (key,)] = get_number(tokens[5])
             # Check next line(s) for more years
             while (linenum + 1) < len(lines) and len(
                 lines[linenum + 1].strip()
             ) == 4:
-                data["temperature_%s_record_years" % (key,)].append(
-                    int(lines[linenum + 1])
-                )
+                n = get_number_year(lines[linenum + 1])
+                if n is not None:
+                    data[f"temperature_{key}_record_years"].append(n)
+                else:
+                    prod.warnings.append(f"Found invalid year |{line}|")
                 linenum += 1
 
 
@@ -496,7 +514,7 @@ class CLIProduct(TextProduct):
         for _section in sections:
             lines = _section.split("\n")
             if lines[0] in ["TEMPERATURE (F)", "TEMPERATURE"]:
-                parse_temperature(self.regime, lines, data)
+                parse_temperature(self, self.regime, lines, data)
             elif lines[0] in ["PRECIPITATION (IN)", "PRECIPITATION"]:
                 parse_precipitation(self.regime, lines, data)
             elif lines[0] in ["SNOWFALL (IN)", "SNOWFALL"]:
