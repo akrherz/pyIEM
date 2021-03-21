@@ -1,0 +1,109 @@
+759 
+CDUS42 KRAH 210922 CCA
+CLIRDU
+
+CLIMATE REPORT...CORRECTED LOW TEMPERATURE...
+NATIONAL WEATHER SERVICE RALEIGH NC
+521 AM EDT SUN MAR 21 2021
+
+...................................
+
+...THE RALEIGH-DURHAM INTL AIRPORT NC CLIMATE SUMMARY FOR MARCH 20 2021...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1887 TO 2021
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST      
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL           
+...................................................................
+TEMPERATURE (F)                                                          
+ YESTERDAY                                                           
+  MAXIMUM         57 E  300 PM  88    1948  65     -8       86       
+  MINIMUM         31 E  651 AM  22    1923  41    -11       66       
+  AVERAGE         44                        53     -9       76     
+
+PRECIPITATION (IN)                                                    
+  YESTERDAY        T             1.97 1895   0.13  -0.13      T       
+  MONTH TO DATE    0.64                      2.69  -2.05     0.35     
+  SINCE MAR 1      0.64                      2.69  -2.05     0.35     
+  SINCE JAN 1     12.23                      9.42   2.81    10.20     
+
+SNOWFALL (IN)                                                              
+  YESTERDAY        0.0           1.8  1908   0.0    0.0      0.0      
+  MONTH TO DATE    0.0                       0.4   -0.4      0.0      
+  SINCE MAR 1      0.0                       0.4   -0.4      0.0      
+  SNOW DEPTH       0                                                 
+
+DEGREE DAYS                                                           
+ HEATING                                                              
+  YESTERDAY       21                        13      8        0        
+  MONTH TO DATE  275                       305    -30      182        
+  SINCE MAR 1    275                       305    -30      182        
+  SINCE JUL 1   2682                      2877   -195     2328        
+
+ COOLING                                                              
+  YESTERDAY        0                         0      0       11        
+  MONTH TO DATE    2                         0      2       20        
+  SINCE MAR 1      2                         0      2       20        
+  SINCE JAN 1      2                         1      1       23        
+...................................................................
+
+
+WIND (MPH)                                                            
+  HIGHEST WIND SPEED    17   HIGHEST WIND DIRECTION    NE (40)        
+  HIGHEST GUST SPEED    23   HIGHEST GUST DIRECTION    NE (50)        
+  AVERAGE WIND SPEED    10.4                                        
+
+
+SKY COVER                                                             
+  POSSIBLE SUNSHINE  MM                                                 
+  AVERAGE SKY COVER 0.7                                                 
+
+
+WEATHER CONDITIONS                                                    
+THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                         
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                                  
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    78           700 AM                                      
+ LOWEST     34           300 PM                                      
+ AVERAGE    56                                                        
+
+..........................................................
+
+
+THE RALEIGH-DURHAM INTL AIRPORT NC CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                     
+ MAXIMUM TEMPERATURE (F)   65        89      1968                      
+ MINIMUM TEMPERATURE (F)   41        17      1965                      
+
+
+SUNRISE AND SUNSET                                                    
+MARCH 21 2021.........SUNRISE   717 AM EDT   SUNSET   728 PM EDT     
+MARCH 22 2021.........SUNRISE   715 AM EDT   SUNSET   729 PM EDT     
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+&&
+
+CLIMATE REPORT 
+NWS FORECAST OFFICE 
+NCSU CENTENNIAL CAMPUS 
+RALEIGH, NC
+
+MAXIMUM TEMPERATURE... 59 
+
+MINIMUM TEMPERATURE... 34
+
+PRECIPITATION... 0.01
+
+
+$$
+
