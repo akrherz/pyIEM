@@ -27,6 +27,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_clirdu():
+    """Test handling of another CLI variant."""
+    text = get_test_file("CLI/CLIRDU_v2.txt")
+    prod = cliparser(text)
+    assert prod.data[0]["data"].get("temperature_maximum") == 57
+
+
 def test_invalid_temperature_year_second_line():
     """Test that we don't allow an invalid year in the second line."""
     text = get_test_file("CLI/CLIEKA.txt")

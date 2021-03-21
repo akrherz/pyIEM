@@ -501,10 +501,11 @@ class CLIProduct(TextProduct):
     def parse_data(self, section):
         """ Actually do the parsing of this silly format """
         data = {}
-        pos = section.find("TEMPERATURE")
-        if pos == -1:
+        pos = section.find("........")
+        pos2 = section[pos:].find("TEMPERATURE")
+        if pos2 == -1:
             raise CLIException("Failed to find TEMPERATURE, aborting")
-
+        pos += pos2
         # Strip extraneous spaces
         meat = "\n".join([s.rstrip() for s in section[pos:].split("\n")])
         # replace any 2+ \n with just two
