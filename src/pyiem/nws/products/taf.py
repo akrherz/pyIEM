@@ -88,9 +88,12 @@ def ddhhmi2valid(prod, text):
         valid = prod.valid.replace(hour=0, minute=mi) + timedelta(days=1)
     else:
         valid = prod.valid.replace(hour=hr, minute=mi)
-    if valid.day == 1 and dd > 20:
-        # Last month
-        valid += timedelta(days=10)
+    # Next month
+    if valid.day > 20 and dd < 3:
+        valid += timedelta(days=14)
+        valid = valid.replace(day=dd)
+    elif valid.day == 1 and dd > 20:
+        valid -= timedelta(days=14)
         valid = valid.replace(day=dd)
     return valid
 
@@ -154,18 +157,9 @@ class TAFProduct(TextProduct):
     def sql(self, txn):
         """Persist to the database."""
         taf = self.data
-        txn.execute(
-            "SELECT product_id from taf where station = %s and valid = %s",
-            (taf.station, taf.valid),
-        )
-        if txn.rowcount > 0:
-            pid = txn.fetchone()[0]
-            if pid > self.get_product_id():
-                return
-            txn.execute(
-                "DELETE from taf WHERE station = %s and valid = %s",
-                (taf.station, taf.valid),
-            )
+        # Product corrections are not really accounted for here due to
+        # performance worries
+
         # Create an entry
         txn.execute(
             "INSERT into taf(station, valid, product_id) VALUES (%s, %s, %s) "

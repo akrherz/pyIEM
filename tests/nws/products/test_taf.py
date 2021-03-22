@@ -8,6 +8,20 @@ from pyiem.util import get_test_file, utc
 from pyiem.nws.products import parser as tafparser
 
 
+def test_jan1():
+    """Test when TAF crosses 1 Jan."""
+    utcnow = utc(2020, 12, 31, 17, 21)
+    prod = tafparser(get_test_file("TAF/TAFDSM.txt"), utcnow=utcnow)
+    assert prod.data.forecasts[2].valid == utc(2021, 1, 1, 9)
+
+
+def test_feb29():
+    """Test when TAF crosses 1 Jan."""
+    utcnow = utc(2020, 3, 1, 0, 5)
+    prod = tafparser(get_test_file("TAF/TAFDSM_2.txt"), utcnow=utcnow)
+    assert prod.data.observation.valid == utc(2020, 2, 29, 23, 54)
+
+
 def test_24hour():
     """Test that we can handle a 24 hour value."""
     utcnow = utc(2021, 3, 22, 20, 19)
@@ -20,8 +34,14 @@ def test_24hour():
 def test_dbinsert(dbcursor):
     """Test the database insert."""
     utcnow = utc(2017, 7, 25)
-    prod = tafparser(get_test_file("TAF/TAFHPN.txt"), utcnow=utcnow)
+    text = get_test_file("TAF/TAFHPN.txt")
+    prod = tafparser(text, utcnow=utcnow)
     prod.sql(dbcursor)
+    # Do it again so to test deletion
+    prod = tafparser(text.replace("200931 AAS", "200932 AAS"), utcnow=utcnow)
+    prod.sql(dbcursor)
+    # bad TEMPO
+    prod = tafparser(text.replace("2011/2012", "Q011/Q012"), utcnow=utcnow)
 
 
 def test_datamodel():

@@ -255,6 +255,13 @@ def test_jabber_lsrtime():
     assert j[0][1] == ans
 
 
+def test_spacewx():
+    """See if we can parse a space weather product """
+    utcnow = utc(2014, 5, 10)
+    prod = parser(get_test_file("SPACEWX.txt"), utcnow=utcnow)
+    assert prod is not None
+
+
 def test_140522_blowingdust():
     """Make sure we can deal with invalid LSR type """
     prod = parser(get_test_file("LSR/LSRTWC.txt"))
