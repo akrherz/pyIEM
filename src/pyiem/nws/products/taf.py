@@ -22,9 +22,6 @@ class TAFProduct(TextProduct):
     def get_jabbers(self, uri, _uri2=None):
         """ Get the jabber variant of this message """
         res = []
-        # These products can be ignored
-        if self.afos is None:
-            return res
         url = f"{uri}?pid={self.get_product_id()}"
         aaa = self.afos[:3]
         nicedate = self.get_nicedate()

@@ -14,13 +14,8 @@ class SpaceWxProduct(product.TextProduct):
             self, text, utcnow, ugc_provider, nwsli_provider
         )
         self.title = "Unknown (AWIPSID: %s)" % (self.afos,)
-        self.parse_title()
-
-    def parse_title(self):
-        """ Figure out the title of this product """
-        if len(self.sections) < 2:
-            return
-        self.title = self.sections[2].split("\n")[0]
+        if len(self.sections) >= 2:
+            self.title = self.sections[2].split("\n")[0]
 
     def get_jabbers(self, uri, _uri2=None):
         """ Custom Implementation of the TextProduct#get_jabbers """

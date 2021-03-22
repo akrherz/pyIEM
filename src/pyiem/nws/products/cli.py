@@ -287,17 +287,17 @@ def parse_temperature(prod, regime, lines, data):
                 prod.warnings.append(f"Found invalid year |{tokens[4]}|")
         if tokens[5] is not None:
             data[f"temperature_{key}_normal"] = get_number(tokens[5])
-            # Check next line(s) for more years
-            while (linenum + 1) < len(lines) and len(
-                lines[linenum + 1].strip()
-            ) == 4:
-                line2 = lines[linenum + 1].strip()
-                n = get_number_year(line2)
-                if n is not None:
-                    data[f"temperature_{key}_record_years"].append(n)
-                else:
-                    prod.warnings.append(f"Found invalid year |{line2}|")
-                linenum += 1
+        # Check next line(s) for more years
+        while (linenum + 1) < len(lines) and len(
+            lines[linenum + 1].strip()
+        ) == 4:
+            line2 = lines[linenum + 1].strip()
+            n = get_number_year(line2)
+            if n is not None:
+                data[f"temperature_{key}_record_years"].append(n)
+            else:
+                prod.warnings.append(f"Found invalid year |{line2}|")
+            linenum += 1
 
 
 def parse_sky_coverage(lines, data):
@@ -309,6 +309,15 @@ def parse_sky_coverage(lines, data):
                 data["average_sky_cover"] = float(line.replace(asc, ""))
             except ValueError:
                 pass
+
+
+def parse_headline(section):
+    """ Figure out when this product is valid for """
+    tokens = HEADLINE_RE.findall(section.replace("\n", " "))
+    myfmt = "%b %d %Y" if len(tokens[0][1].split()[0]) == 3 else "%B %d %Y"
+    cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
+    cli_station = (tokens[0][0]).strip().upper()
+    return (cli_valid, cli_station)
 
 
 def parse_wind(lines, data):
@@ -362,6 +371,91 @@ def _compute_station_ids(prod, cli_station_name, is_multi):
     return station, access_station, access_network
 
 
+def sql_data(prod, cursor, data):
+    """Do an individual data entry."""
+    # See what we currently have stored.
+    cursor.execute(
+        "SELECT product from cli_data where station = %s and valid = %s",
+        (data["db_station"], data["cli_valid"]),
+    )
+    if cursor.rowcount == 1:
+        row = cursor.fetchone()
+        pid = row["product"]
+        if pid is not None and prod.get_product_id() < pid:
+            return
+        cursor.execute(
+            "DELETE from cli_data WHERE station = %s and valid = %s",
+            (data["db_station"], data["cli_valid"]),
+        )
+    dd = data["data"]
+    cursor.execute(
+        """
+        INSERT into cli_data(station, product, valid, high, high_normal,
+        high_record, high_record_years, low, low_normal, low_record,
+        low_record_years, precip, precip_month, precip_jan1, precip_jul1,
+        precip_normal, precip_record, precip_record_years, precip_month_normal,
+        snow, snow_month, snow_jun1, snow_jul1, snow_normal, snow_dec1,
+        precip_dec1, precip_dec1_normal, precip_jan1_normal, high_time,
+        low_time, snow_record_years, snow_record, snow_jun1_normal,
+        snow_jul1_normal, snow_dec1_normal, snow_month_normal, precip_jun1,
+        precip_jun1_normal, average_sky_cover, resultant_wind_speed,
+        resultant_wind_direction, highest_wind_speed, highest_wind_direction,
+        highest_gust_speed, highest_gust_direction, average_wind_speed)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (
+            data["db_station"],
+            prod.get_product_id(),
+            data["cli_valid"],
+            dd.get("temperature_maximum"),
+            dd.get("temperature_maximum_normal"),
+            dd.get("temperature_maximum_record"),
+            dd.get("temperature_maximum_record_years", []),
+            dd.get("temperature_minimum"),
+            dd.get("temperature_minimum_normal"),
+            dd.get("temperature_minimum_record"),
+            dd.get("temperature_minimum_record_years", []),
+            dd.get("precip_today"),
+            dd.get("precip_month"),
+            dd.get("precip_jan1"),
+            dd.get("precip_jul1"),
+            dd.get("precip_today_normal"),
+            dd.get("precip_today_record"),
+            dd.get("precip_today_record_years", []),
+            dd.get("precip_month_normal"),
+            dd.get("snow_today"),
+            dd.get("snow_month"),
+            dd.get("snow_jun1"),
+            dd.get("snow_jul1"),
+            dd.get("snow_today_normal"),
+            dd.get("snow_dec1"),
+            dd.get("precip_dec1"),
+            dd.get("precip_dec1_normal"),
+            dd.get("precip_jan1_normal"),
+            dd.get("temperature_maximum_time"),
+            dd.get("temperature_minimum_time"),
+            dd.get("snow_today_record_years", []),
+            dd.get("snow_today_record"),
+            dd.get("snow_jun1_normal"),
+            dd.get("snow_jul1_normal"),
+            dd.get("snow_dec1_normal"),
+            dd.get("snow_month_normal"),
+            dd.get("precip_jun1"),
+            dd.get("precip_jun1_normal"),
+            dd.get("average_sky_cover"),
+            dd.get("resultant_wind_speed"),
+            dd.get("resultant_wind_direction"),
+            dd.get("highest_wind_speed"),
+            dd.get("highest_wind_direction"),
+            dd.get("highest_gust_speed"),
+            dd.get("highest_gust_direction"),
+            dd.get("average_wind_speed"),
+        ),
+    )
+
+
 class CLIProduct(TextProduct):
     """
     Represents a CLI Daily Climate Report Product
@@ -387,9 +481,7 @@ class CLIProduct(TextProduct):
             # We have meat!
             self.compute_diction(section)
             entry = {}
-            entry["cli_valid"], entry["cli_station"] = self.parse_cli_headline(
-                section
-            )
+            entry["cli_valid"], entry["cli_station"] = parse_headline(section)
             (
                 entry["db_station"],
                 entry["access_station"],
@@ -449,44 +541,33 @@ class CLIProduct(TextProduct):
             "product_id": self.get_product_id(),
         }
         for data in self.data:
-            mess = (
-                "%s %s Climate Report: High: %s Low: %s "
-                "Precip: %s Snow: %s %s"
-            ) % (
-                data["cli_station"],
-                data["cli_valid"].strftime("%b %-d"),
+            msg = "High: %s Low: %s Precip: %s Snow: %s" % (
                 data["data"].get("temperature_maximum", "M"),
                 data["data"].get("temperature_minimum", "M"),
                 trace_r(data["data"].get("precip_today", "M")),
                 trace_r(data["data"].get("snow_today", "M")),
+            )
+            mess = ("%s %s Climate Report: %s %s") % (
+                data["cli_station"],
+                data["cli_valid"].strftime("%b %-d"),
+                msg,
                 url,
             )
-            htmlmess = (
-                '%s <a href="%s">%s Climate Report</a>: High: %s '
-                "Low: %s Precip: %s Snow: %s"
-            ) % (
+            htmlmess = ('%s <a href="%s">%s Climate Report</a>: %s') % (
                 data["cli_station"],
                 url,
                 data["cli_valid"].strftime("%b %-d"),
-                data["data"].get("temperature_maximum", "M"),
-                data["data"].get("temperature_minimum", "M"),
-                trace_r(data["data"].get("precip_today", "M")),
-                trace_r(data["data"].get("snow_today", "M")),
+                msg,
             )
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
                 f"network:NWSCLI::station:{data['db_station']}::"
                 f"date:{data['cli_valid'].strftime('%Y-%m-%d')}.png"
             )
-            xtra["twitter"] = (
-                "%s %s Climate: Hi: %s Lo: %s Precip: %s Snow: %s %s"
-            ) % (
+            xtra["twitter"] = ("%s %s Climate: %s %s") % (
                 data["cli_station"],
                 data["cli_valid"].strftime("%b %-d"),
-                data["data"].get("temperature_maximum", "M"),
-                data["data"].get("temperature_minimum", "M"),
-                trace_r(data["data"].get("precip_today", "M")),
-                trace_r(data["data"].get("snow_today", "M")),
+                msg,
                 url,
             )
             res.append(
@@ -501,11 +582,13 @@ class CLIProduct(TextProduct):
     def parse_data(self, section):
         """ Actually do the parsing of this silly format """
         data = {}
-        pos = section.find("........")
-        pos2 = section[pos:].find("TEMPERATURE")
-        if pos2 == -1:
+        # We need to first search down the section to look for where the
+        # first TEMPERATURE section starts.
+        regex = re.compile("^TEMPERATURE", re.M)
+        search = regex.search(section)
+        if search is None:
             raise CLIException("Failed to find TEMPERATURE, aborting")
-        pos += pos2
+        pos = search.start()
         # Strip extraneous spaces
         meat = "\n".join([s.rstrip() for s in section[pos:].split("\n")])
         # replace any 2+ \n with just two
@@ -526,104 +609,10 @@ class CLIProduct(TextProduct):
 
         return data
 
-    def parse_cli_headline(self, section):
-        """ Figure out when this product is valid for """
-        tokens = HEADLINE_RE.findall(section.replace("\n", " "))
-        if len(tokens[0][1].split()[0]) == 3:
-            myfmt = "%b %d %Y"
-        else:
-            myfmt = "%B %d %Y"
-        cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
-        cli_station = (tokens[0][0]).strip().upper()
-        return (cli_valid, cli_station)
-
-    def _sql_data(self, cursor, data):
-        """Do an individual data entry."""
-        # See what we currently have stored.
-        cursor.execute(
-            "SELECT product from cli_data where station = %s and valid = %s",
-            (data["db_station"], data["cli_valid"]),
-        )
-        if cursor.rowcount == 1:
-            row = cursor.fetchone()
-            if self.get_product_id() < row["product"]:
-                return
-            cursor.execute(
-                "DELETE from cli_data WHERE station = %s and valid = %s",
-                (data["db_station"], data["cli_valid"]),
-            )
-        cursor.execute(
-            """INSERT into cli_data(
-        station, product, valid, high, high_normal, high_record,
-        high_record_years, low, low_normal, low_record, low_record_years,
-        precip, precip_month, precip_jan1, precip_jul1, precip_normal,
-        precip_record, precip_record_years, precip_month_normal, snow,
-        snow_month, snow_jun1, snow_jul1, snow_normal,
-        snow_dec1, precip_dec1, precip_dec1_normal, precip_jan1_normal,
-        high_time, low_time, snow_record_years, snow_record,
-        snow_jun1_normal, snow_jul1_normal, snow_dec1_normal,
-        snow_month_normal, precip_jun1, precip_jun1_normal,
-        average_sky_cover, resultant_wind_speed, resultant_wind_direction,
-        highest_wind_speed, highest_wind_direction, highest_gust_speed,
-        highest_gust_direction, average_wind_speed)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """,
-            (
-                data["db_station"],
-                self.get_product_id(),
-                data["cli_valid"],
-                data["data"].get("temperature_maximum"),
-                data["data"].get("temperature_maximum_normal"),
-                data["data"].get("temperature_maximum_record"),
-                data["data"].get("temperature_maximum_record_years", []),
-                data["data"].get("temperature_minimum"),
-                data["data"].get("temperature_minimum_normal"),
-                data["data"].get("temperature_minimum_record"),
-                data["data"].get("temperature_minimum_record_years", []),
-                data["data"].get("precip_today"),
-                data["data"].get("precip_month"),
-                data["data"].get("precip_jan1"),
-                data["data"].get("precip_jul1"),
-                data["data"].get("precip_today_normal"),
-                data["data"].get("precip_today_record"),
-                data["data"].get("precip_today_record_years", []),
-                data["data"].get("precip_month_normal"),
-                data["data"].get("snow_today"),
-                data["data"].get("snow_month"),
-                data["data"].get("snow_jun1"),
-                data["data"].get("snow_jul1"),
-                data["data"].get("snow_today_normal"),
-                data["data"].get("snow_dec1"),
-                data["data"].get("precip_dec1"),
-                data["data"].get("precip_dec1_normal"),
-                data["data"].get("precip_jan1_normal"),
-                data["data"].get("temperature_maximum_time"),
-                data["data"].get("temperature_minimum_time"),
-                data["data"].get("snow_today_record_years", []),
-                data["data"].get("snow_today_record"),
-                data["data"].get("snow_jun1_normal"),
-                data["data"].get("snow_jul1_normal"),
-                data["data"].get("snow_dec1_normal"),
-                data["data"].get("snow_month_normal"),
-                data["data"].get("precip_jun1"),
-                data["data"].get("precip_jun1_normal"),
-                data["data"].get("average_sky_cover"),
-                data["data"].get("resultant_wind_speed"),
-                data["data"].get("resultant_wind_direction"),
-                data["data"].get("highest_wind_speed"),
-                data["data"].get("highest_wind_direction"),
-                data["data"].get("highest_gust_speed"),
-                data["data"].get("highest_gust_direction"),
-                data["data"].get("average_wind_speed"),
-            ),
-        )
-
     def sql(self, cursor):
         """Do the database update!"""
         for entry in self.data:
-            self._sql_data(cursor, entry)
+            sql_data(self, cursor, entry)
             if not update_iemaccess(cursor, entry):
                 self.warnings.append(
                     "IEMAccess Update failed %s %s %s"
