@@ -442,7 +442,7 @@ class SPCPTS(TextProduct):
         self.expire = None
         self.day = None
         self.outlook_type = None
-        self.outlook_collections = dict()
+        self.outlook_collections = {}
         self.set_metadata()
         self.find_issue_expire()
         self.find_outlooks()

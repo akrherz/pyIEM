@@ -141,12 +141,8 @@ def to_metar(textprod, text):
         mtr.iemid = (
             mtr.station_id[-3:] if mtr.station_id[0] == "K" else mtr.station_id
         )
-        mtr.network = textprod.nwsli_provider.get(mtr.iemid, dict()).get(
-            "network"
-        )
-        mtr.tzname = textprod.nwsli_provider.get(mtr.iemid, dict()).get(
-            "tzname"
-        )
+        mtr.network = textprod.nwsli_provider.get(mtr.iemid, {}).get("network")
+        mtr.tzname = textprod.nwsli_provider.get(mtr.iemid, {}).get("tzname")
     return mtr
 
 
@@ -382,7 +378,7 @@ class METARCollective(TextProduct):
                         [mstr, mstr, dict(channels=",".join(channels))]
                     )
             if msg:
-                row = self.nwsli_provider.get(mtr.iemid, dict())
+                row = self.nwsli_provider.get(mtr.iemid, {})
                 wfo = row.get("wfo")
                 if wfo is None or wfo == "":
                     LOG.info(

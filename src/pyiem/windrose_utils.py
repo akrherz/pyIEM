@@ -110,7 +110,7 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
         if station.startswith("_"):
             nt = NetworkTable("RAOB")
             stations = (
-                nt.sts.get(station, dict())
+                nt.sts.get(station, {})
                 .get("name", "X--YYY ZZZ")
                 .split("--")[1]
                 .strip()

@@ -73,14 +73,14 @@ def _compute_bounds(sts, ets):
 
 def _do_cell(axes, now, data, row, dx, dy, kwargs):
     """Do what work is necessary within the cell"""
-    val = data.get(now, dict()).get("val")
+    val = data.get(now, {}).get("val")
     cellcolor = (
         "None"
         if kwargs.get("norm") is None or val is None
         else kwargs["cmap"](kwargs["norm"]([val]))[0]
     )
     offx = (now.weekday() + 1) if now.weekday() != 6 else 0
-    cellcolor = data.get(now, dict()).get("cellcolor", cellcolor)
+    cellcolor = data.get(now, {}).get("cellcolor", cellcolor)
     rect = Rectangle(
         (offx * dx, 0.9 - (row + 1) * dy),
         dx,

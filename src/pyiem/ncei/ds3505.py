@@ -1730,7 +1730,7 @@ def parse_extra(data, extra):
                 ("Unaccounted for %s\n" "remaining '%s'\n" "extra: '%s'")
                 % (code, extra[pos:], extra)
             )
-        data["extra"][code] = dict()
+        data["extra"][code] = {}
         for token in ADDITIONAL[code]:
             if len(token) == 3:
                 data["extra"][code][token[0]] = token[2](
