@@ -122,7 +122,7 @@ class SAWProduct(TextProduct):
                     "WHERE num = %s and extract(year from expired) = %s",
                     (self.valid, self.ww_num, self.valid.year),
                 )
-                if table == "watches" and txn.rowcount != 0:
+                if table == "watches" and txn.rowcount != 1:
                     self.warnings.append(
                         "Expiration of watch resulted in "
                         f"update of {txn.rowcount} rows, instead of 1."

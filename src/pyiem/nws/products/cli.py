@@ -358,7 +358,7 @@ def _compute_station_ids(prod, cli_station_name, is_multi):
     access_station = None
     access_network = None
     # See if our network table provides an attribute that maps us to an ASOS
-    val = prod.nwsli_provider[station].get("attributes", dict()).get("MAPS_TO")
+    val = prod.nwsli_provider[station].get("attributes", {}).get("MAPS_TO")
     if val is not None:
         tokens = val.split("|")
         if len(tokens) == 2:

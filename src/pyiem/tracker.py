@@ -252,7 +252,7 @@ IEM Tracker Action:  This trouble ticket has been marked
                     self.action_count += 1
                     self.online_logic(sid, offline, ob, pnetwork, nt)
                 continue
-            elif sid in offline:
+            if sid in offline:
                 # NOOP
                 # print '%s is offline and known offline' % (sid, )
                 continue

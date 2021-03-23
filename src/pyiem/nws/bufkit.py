@@ -48,8 +48,7 @@ def _read_sounding(text):
     # Split into sections, skipping the already parsed header
     sections = text.split("STID =")[1:]
     for section in sections:
-        tokens = KEY_VAL_RE.findall(section)
-        settings = {k: v for k, v in tokens}
+        settings = dict(KEY_VAL_RE.findall(section))
         stnrows.append(settings)
         # split based on the last snparm
         numbers = section.split(snparm[-1])[-1].split()

@@ -62,7 +62,7 @@ def parse(text, nwsli_provider=None, tp=None):
     if nwsli_provider is None and tp is not None:
         nwsli_provider = tp.nwsli_provider
     if nwsli_provider is None:
-        nwsli_provider = dict()
+        nwsli_provider = {}
     for t in tokens:
         entry = HVTEC(t, nwsli_provider)
         if (
@@ -93,7 +93,7 @@ class HVTEC:
     def __init__(self, tokens, nwsli_provider=None):
         """ Constructor """
         if nwsli_provider is None:
-            nwsli_provider = dict()
+            nwsli_provider = {}
         self.line = tokens[0]
         self.nwsli = nwsli_provider.get(tokens[1], NWSLI(tokens[1]))
         self.severity = tokens[2]

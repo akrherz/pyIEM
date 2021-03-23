@@ -68,7 +68,7 @@ def parse(text, valid, ugc_provider=None):
     @param ugc_provider of UGC objects
     """
     if ugc_provider is None:
-        ugc_provider = dict()
+        ugc_provider = {}
 
     def _construct(code):
         return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))

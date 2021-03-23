@@ -385,7 +385,7 @@ def get_autoplot_context(fdict, cfg):
             if default is not None:
                 default = float(default)
         elif typ == "select":
-            options = opt.get("options", dict())
+            options = opt.get("options", {})
             # in case of multi, value could be a list
             if value is None:
                 value = default

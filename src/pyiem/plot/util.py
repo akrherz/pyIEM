@@ -390,7 +390,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
     color = kwargs.get("color")
     ec = kwargs.get("ec")
     fc = kwargs.get("fc")
-    labels = kwargs.get("labels", dict())
+    labels = kwargs.get("labels", {})
     zorder = kwargs.get("zorder", reference.Z_FILL)
     to_label = {"x": [], "y": [], "vals": []}
     # Merge data into the data frame

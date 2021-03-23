@@ -241,7 +241,7 @@ def segment_logic(segment, currentpoly, polys):
         if currentpoly.intersection(lr).is_empty:
             LOG.info("     failed intersection with currentpoly, abort")
             return currentpoly
-        interiors = [ln for ln in currentpoly.interiors]
+        interiors = list(currentpoly.interiors)
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
         if not newp.is_valid:
@@ -442,7 +442,7 @@ class SPCPTS(TextProduct):
         self.expire = None
         self.day = None
         self.outlook_type = None
-        self.outlook_collections = dict()
+        self.outlook_collections = {}
         self.set_metadata()
         self.find_issue_expire()
         self.find_outlooks()
@@ -598,8 +598,7 @@ class SPCPTS(TextProduct):
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
-                del fig
-                del ax
+                fig.close()
 
     def set_metadata(self):
         """

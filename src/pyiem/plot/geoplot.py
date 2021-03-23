@@ -1254,8 +1254,8 @@ class MapPlot:
             im2.save(ram, format="png")
             ram.seek(0)
             r = ram.read()
-            kwargs.get("memcache").set(
-                kwargs.get("memcachekey"),
+            kwargs["memcache"].set(
+                kwargs["memcachekey"],
                 r,
                 time=kwargs.get("memcacheexpire", 300),
             )
