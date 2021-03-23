@@ -443,7 +443,7 @@ class METARCollective(TextProduct):
             prefix = "METAR" if self.afos != "SPECI" else "SPECI"
             if NIL_RE.search(token):
                 continue
-            elif token.find("METAR") > -1:
+            if token.find("METAR") > -1:
                 token = token[(token.find("METAR") + 5) :]
             # unsure why this LWIS existed
             # elif token.find("LWIS ") > -1:

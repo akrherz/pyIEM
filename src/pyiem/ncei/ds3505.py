@@ -1606,7 +1606,7 @@ def gen_metar(data):
             continue
         if hours is None or hours == 12:
             continue
-        elif hours == 6 and typ == "M":
+        if hours == 6 and typ == "M":
             prefix = "1"
         elif hours == 6 and typ == "N":
             prefix = "2"
@@ -1614,9 +1614,7 @@ def gen_metar(data):
             group4[typ] = "%s%03i" % ("1" if tmpc < 0 else "0", abs(tmpc) * 10)
             continue
         else:
-            warnings.warn(
-                "Unknown temperature hours %s typ: %s" % (hours, typ)
-            )
+            warnings.warn(f"Unknown temperature hours {hours} typ: {typ}")
             continue
         rmk.append(
             "%s%s%03i" % (prefix, "1" if tmpc < 0 else "0", abs(tmpc) * 10)

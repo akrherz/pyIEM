@@ -241,7 +241,7 @@ def segment_logic(segment, currentpoly, polys):
         if currentpoly.intersection(lr).is_empty:
             LOG.info("     failed intersection with currentpoly, abort")
             return currentpoly
-        interiors = [ln for ln in currentpoly.interiors]
+        interiors = currentpoly.interiors
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
         if not newp.is_valid:
@@ -598,8 +598,7 @@ class SPCPTS(TextProduct):
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
-                del fig
-                del ax
+                fig.close()
 
     def set_metadata(self):
         """
