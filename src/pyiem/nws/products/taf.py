@@ -85,15 +85,17 @@ def ddhhmi2valid(prod, text):
     hr = int(text[2:4])
     mi = int(text[4:6])
     if hr == 24:
-        valid = prod.valid.replace(hour=0, minute=mi) + timedelta(days=1)
+        valid = prod.valid.replace(day=dd, hour=0, minute=mi) + timedelta(
+            days=1
+        )
     else:
         valid = prod.valid.replace(hour=hr, minute=mi)
     # Next month
     if valid.day > 20 and dd < 3:
         valid += timedelta(days=14)
-        valid = valid.replace(day=dd)
     elif valid.day == 1 and dd > 20:
         valid -= timedelta(days=14)
+    if hr < 24:
         valid = valid.replace(day=dd)
     return valid
 

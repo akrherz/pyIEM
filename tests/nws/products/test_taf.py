@@ -8,6 +8,18 @@ from pyiem.util import get_test_file, utc
 from pyiem.nws.products import parser as tafparser
 
 
+def test_210323_timestamps():
+    """Test that our timestamps generated are right, sigh."""
+    utcnow = utc(2017, 7, 25)
+    prod = tafparser(get_test_file("TAF/TAFJFK.txt"), utcnow=utcnow)
+    assert prod.data.observation.valid == utc(2017, 7, 25, 13, 41)
+    assert prod.data.forecasts[0].valid == utc(2017, 7, 25, 16)
+    assert prod.data.forecasts[1].valid == utc(2017, 7, 25, 22)
+    assert prod.data.forecasts[2].valid == utc(2017, 7, 26, 5)
+    assert prod.data.forecasts[3].valid == utc(2017, 7, 26, 14)
+    assert prod.data.forecasts[4].valid == utc(2017, 7, 26, 17)
+
+
 def test_jan1():
     """Test when TAF crosses 1 Jan."""
     utcnow = utc(2020, 12, 31, 17, 21)
