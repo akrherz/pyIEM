@@ -84,3 +84,8 @@ def test_parse():
     )
     assert j[0][0] == ans
     assert "TAFJFK" in j[0][2]["channels"].split(",")
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/219/"
+        "station:KJFK::valid:2017-07-25%201341.png"
+    )
+    assert j[0][2]["twitter_media"] == ans

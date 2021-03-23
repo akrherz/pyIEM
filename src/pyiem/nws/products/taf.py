@@ -221,6 +221,11 @@ class TAFProduct(TextProduct):
             "channels": ",".join(self.get_channels()),
             "product_id": self.get_product_id(),
             "twitter": plain,
+            "twitter_media": (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/219/"
+                f"station:{self.data.station}::valid:"
+                f"{self.data.valid.strftime('%Y-%m-%d%%20%H%M')}.png"
+            ),
         }
         res.append((plain, html, xtra))
         return res
