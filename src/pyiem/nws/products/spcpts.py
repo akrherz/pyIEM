@@ -241,7 +241,7 @@ def segment_logic(segment, currentpoly, polys):
         if currentpoly.intersection(lr).is_empty:
             LOG.info("     failed intersection with currentpoly, abort")
             return currentpoly
-        interiors = currentpoly.interiors
+        interiors = list(currentpoly.interiors)
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
         if not newp.is_valid:
