@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>products Package &#8212; pyIEM 0.0.post1+gf00e8f2 documentation</title>
+    <title>products Package &#8212; pyIEM 0.0.post1+gec9ae93 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     
@@ -30,7 +30,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gf00e8f2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gec9ae93 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">nws Package</a> &#187;</li>
@@ -111,12 +111,6 @@ allow lookup of geographic information for station identifiers.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pyiem.nws.products.cli.CLIProduct.parse_cli_headline">
-<code class="sig-name descname"><span class="pre">parse_cli_headline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.CLIProduct.parse_cli_headline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Figure out when this product is valid for</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="pyiem.nws.products.cli.CLIProduct.parse_data">
 <code class="sig-name descname"><span class="pre">parse_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.CLIProduct.parse_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Actually do the parsing of this silly format</p>
@@ -152,6 +146,12 @@ allow lookup of geographic information for station identifiers.</p></li>
 <dt id="pyiem.nws.products.cli.make_tokens">
 <code class="sig-prename descclassname"><span class="pre">pyiem.nws.products.cli.</span></code><code class="sig-name descname"><span class="pre">make_tokens</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.make_tokens" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a line into tokens based on a regime</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.products.cli.parse_headline">
+<code class="sig-prename descclassname"><span class="pre">pyiem.nws.products.cli.</span></code><code class="sig-name descname"><span class="pre">parse_headline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.parse_headline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Figure out when this product is valid for</p>
 </dd></dl>
 
 <dl class="py function">
@@ -195,6 +195,12 @@ allow lookup of geographic information for station identifiers.</p></li>
 <cite>access_station</cite> and <cite>access_network</cite> to map back to IEMAccess.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pyiem.nws.products.cli.sql_data">
+<code class="sig-prename descclassname"><span class="pre">pyiem.nws.products.cli.</span></code><code class="sig-name descname"><span class="pre">sql_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.cli.sql_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do an individual data entry.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -648,12 +654,6 @@ stored within the self.reports list</p>
 <dd><p>Custom Implementation of the TextProduct#get_jabbers</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pyiem.nws.products.spacewx.SpaceWxProduct.parse_title">
-<code class="sig-name descname"><span class="pre">parse_title</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.spacewx.SpaceWxProduct.parse_title" title="Permalink to this definition">¶</a></dt>
-<dd><p>Figure out the title of this product</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py function">
@@ -835,7 +835,7 @@ VTECProduct instance or returns an exception</p>
         <li class="right" >
           <a href="pyiem.nws.html" title="nws Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gf00e8f2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gec9ae93 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >nws Package</a> &#187;</li>
