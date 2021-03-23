@@ -44,11 +44,10 @@ PARSER_RE = re.compile(
 
 def process(text):
     """Emit DSMProduct object for what we can parse."""
-    m = PARSER_RE.match(text.replace("\r\r\n", "").replace("\n", ""))
+    m = PARSER_RE.match(text.replace("\r", "").replace("\n", ""))
     if m is None:
         return None
-    dsm = DSMProduct(m.groupdict())
-    return dsm
+    return DSMProduct(m.groupdict())
 
 
 def compute_time(date, timestamp):
@@ -101,8 +100,6 @@ class DSMProduct:
 
     def compute_times(self, utcnow):
         """Figure out when this DSM is valid for."""
-        if utcnow is None:
-            utcnow = utc()
         ts = utcnow.replace(
             day=int(self.groupdict["day"]), month=int(self.groupdict["month"])
         )
@@ -188,10 +185,19 @@ class DSMCollective(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """ constructor """
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        TextProduct.__init__(
+            self,
+            text,
+            utcnow,
+            ugc_provider,
+            nwsli_provider,
+            parse_segments=False,
+        )
         # hold our parsing results
         self.data = []
         lines = self.unixtext.split("\n")
+        if len(lines) < 4:
+            raise ValueError("Impossibly small DSM Text Product?")
         if len(lines[3]) < 10:
             meat = ("".join(lines[4:])).split("=")
         else:
@@ -203,7 +209,7 @@ class DSMCollective(TextProduct):
             if res is None:
                 self.warnings.append(f"DSM RE Match Failure: '{piece}'")
                 continue
-            res.compute_times(utcnow)
+            res.compute_times(utcnow if utcnow is not None else utc())
             self.data.append(res)
 
     def tzlocalize(self, tzprovider):
@@ -217,10 +223,7 @@ class DSMCollective(TextProduct):
 
     def sql(self, txn):
         """Do databasing."""
-        res = []
-        for dsm in self.data:
-            res.append(dsm.sql(txn))
-        return res
+        return [dsm.sql(txn) for dsm in self.data]
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):

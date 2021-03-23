@@ -8,7 +8,7 @@ except ImportError:
 
 import pytest
 from pyiem.util import utc, get_test_file
-from pyiem.nws.products.dsm import process, parser
+from pyiem.nws.products.dsm import process, parser, compute_time
 
 
 def create_entries(cursor):
@@ -24,6 +24,34 @@ def create_entries(cursor):
     )
 
 
+def test_none_compute_time():
+    """Test we can handle a none."""
+    assert compute_time(datetime.date(2000, 1, 1), None) is None
+
+
+def test_jan1():
+    """Test that a DSM for the previous year works properly."""
+    text = """
+794
+CDUS27 KZME 010616
+KHKS DS 31/12 661152/ 470316// 66/ 46//0021509/45/00/00/00/00/00/05/
+02/06/T/T/12/00/03/17/T/T/T/00/00/00/00/T/00/00/78/17171245/16231238/
+13/NN/N/N/NN/ET EP EW=
+"""
+    prod = parser(text, utcnow=utc(2021, 1, 1, 6, 16))
+    assert prod.data[0].date == datetime.date(2020, 12, 31)
+
+
+def test_junk():
+    """Test that we gracefully handle GIGO."""
+    text = "000 \nCDUS27 KISU 020200\nBLAH BLAH="
+    with pytest.raises(ValueError):
+        parser(text)
+    text += "\nBLAH BLAH BLAH=\n"
+    prod = parser(text)
+    assert prod.warnings
+
+
 @pytest.mark.parametrize("month", range(1, 13))
 def test_simple(month):
     """Can we walk before we run."""
@@ -36,6 +64,7 @@ def test_simple(month):
     tzprovider = {"KCVG": ZoneInfo("America/New_York")}
     dsm = process(text)
     dsm.compute_times(utc(2019, month, 25))
+    dsm.time_sped_gust_max = None
     dsm.tzlocalize(tzprovider["KCVG"])
     assert dsm.date == datetime.date(2019, month, 24)
     assert dsm.station == "KCVG"

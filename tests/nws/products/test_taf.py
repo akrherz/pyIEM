@@ -1,7 +1,63 @@
 """Test TAF Parsing"""
 
+# Third Party
+import pytest
+
+# Local
 from pyiem.util import get_test_file, utc
 from pyiem.nws.products import parser as tafparser
+
+
+def test_jan1():
+    """Test when TAF crosses 1 Jan."""
+    utcnow = utc(2020, 12, 31, 17, 21)
+    prod = tafparser(get_test_file("TAF/TAFDSM.txt"), utcnow=utcnow)
+    assert prod.data.forecasts[2].valid == utc(2021, 1, 1, 9)
+
+
+def test_feb29():
+    """Test when TAF crosses 1 Jan."""
+    utcnow = utc(2020, 3, 1, 0, 5)
+    prod = tafparser(get_test_file("TAF/TAFDSM_2.txt"), utcnow=utcnow)
+    assert prod.data.observation.valid == utc(2020, 2, 29, 23, 54)
+
+
+def test_24hour():
+    """Test that we can handle a 24 hour value."""
+    utcnow = utc(2021, 3, 22, 20, 19)
+    prod = tafparser(get_test_file("TAF/TAFGRI.txt"), utcnow=utcnow)
+    assert prod.data.valid == utcnow
+    assert prod.data.forecasts[0].end_valid == utc(2021, 3, 23)
+
+
+@pytest.mark.parametrize("database", ["asos"])
+def test_dbinsert(dbcursor):
+    """Test the database insert."""
+    utcnow = utc(2017, 7, 25)
+    text = get_test_file("TAF/TAFHPN.txt")
+    prod = tafparser(text, utcnow=utcnow)
+    prod.sql(dbcursor)
+    # Do it again so to test deletion
+    prod = tafparser(text.replace("200931 AAS", "200932 AAS"), utcnow=utcnow)
+    prod.sql(dbcursor)
+    # bad TEMPO
+    prod = tafparser(text.replace("2011/2012", "Q011/Q012"), utcnow=utcnow)
+
+
+def test_datamodel():
+    """Test the resulting datamodel we get"""
+    utcnow = utc(2017, 7, 25)
+    prod = tafparser(get_test_file("TAF/TAFHPN.txt"), utcnow=utcnow)
+    assert prod.data.forecasts[6].gust == 20
+    assert prod.data.forecasts[5].visibility == 6
+    assert prod.data.forecasts[0].presentwx[1] == "VCSH"
+    assert prod.data.forecasts[0].sky[0].amount == "OVC"
+    assert prod.data.forecasts[0].shear.level == 2000
+    assert prod.data.observation.presentwx[0] == "BR"
+    assert prod.data.observation.sky[0].amount == "SCT"
+    lens = [[0, 2], [1, 1], [2, 2], [3, 1]]
+    for pos, _len in lens:
+        assert len(prod.data.forecasts[pos].presentwx) == _len
 
 
 def test_parse():

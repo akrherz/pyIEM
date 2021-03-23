@@ -19,6 +19,7 @@ code repo required no changes for this (#402).
 of colors via `color=` or combo of `fc=` and `ec=`.
 - Introduce `pyarrow` as package requirement to read parquet files for
 GeoPandas (#402).
+- Support parsing and database storage of TAF information (#377).
 
 ### Bug Fixes
 
