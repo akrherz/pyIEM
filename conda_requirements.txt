@@ -29,6 +29,8 @@ pillow
 psycopg2
 # parquet format support in geopandas
 pyarrow
+# so cartopy can read EPSG codes
+pyepsg
 # Models
 pydantic
 # gini reader

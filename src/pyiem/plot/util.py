@@ -214,7 +214,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.wfo_bounds[mp.cwa][1],
                 reference.wfo_bounds[mp.cwa][3],
             ],
-            ccrs.Mercator(),
+            ccrs.epsg(3857),
             aspect,
         )
         mp.axes.append(mp.ax)
@@ -229,25 +229,25 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.state_bounds[mp.state][1],
                 reference.state_bounds[mp.state][3],
             ],
-            ccrs.Mercator(),
+            ccrs.epsg(3857),
             aspect if mp.state != "AK" else "auto",
         )
         mp.axes.append(mp.ax)
     elif mp.sector in reference.SECTORS:
         mp.ax = make_axes(
-            axbounds, reference.SECTORS[mp.sector], ccrs.Mercator(), aspect
+            axbounds, reference.SECTORS[mp.sector], ccrs.epsg(3857), aspect
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "iowawfo":
         mp.ax = make_axes(
-            axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.Mercator(), aspect
+            axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.epsg(3857), aspect
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "custom":
         mp.ax = make_axes(
             axbounds,
             [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
-            kwargs.get("projection", ccrs.Mercator()),
+            kwargs.get("projection", ccrs.epsg(3857)),
             aspect,
         )
         mp.axes.append(mp.ax)

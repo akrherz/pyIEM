@@ -38,15 +38,11 @@ TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
+# This is legacy hack that we likely no longer need
+# 4326 is geodetic special
 EPSG = {
-    5070: ccrs.AlbersEqualArea(
-        central_longitude=-96,
-        central_latitude=23,
-        standard_parallels=[29.5, 45.5],
-    ),
-    2163: ccrs.LambertAzimuthalEqualArea(
-        central_latitude=45, central_longitude=-100
-    ),
+    5070: ccrs.epsg(5070),
+    2163: ccrs.epsg(2163),
     4326: ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
 }
 
