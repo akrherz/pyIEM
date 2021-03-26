@@ -282,7 +282,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.pr_ax = make_axes(
                 [0.78, 0.055, 0.125, 0.1],
                 [-68.0, -65.0, 17.5, 18.6],
-                reference.EPSG[4326],
+                reference.LATLON,
                 aspect,
             )
             mp.axes.append(mp.pr_ax)
@@ -290,7 +290,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.ak_ax = make_axes(
                 [0.015, 0.055, 0.25, 0.2],
                 [-179.5, -129.0, 51.08, 72.1],
-                reference.EPSG[4326],
+                reference.LATLON,
                 aspect,
             )
             mp.axes.append(mp.ak_ax)
@@ -298,7 +298,7 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.hi_ax = make_axes(
                 [0.47, 0.055, 0.2, 0.1],
                 [-161.0, -154.0, 18.5, 22.5],
-                reference.EPSG[4326],
+                reference.LATLON,
                 aspect,
             )
             mp.axes.append(mp.hi_ax)

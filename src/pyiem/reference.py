@@ -38,6 +38,8 @@ TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
+# Maybe this can go away with future cartopy versions?
+LATLON = ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84"))
 EPSG = {
     2163: ccrs.LambertAzimuthalEqualArea(
         central_latitude=45,
