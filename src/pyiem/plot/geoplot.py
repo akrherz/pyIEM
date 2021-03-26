@@ -30,6 +30,8 @@ import warnings
 import rasterio
 from rasterio.warp import reproject, Resampling
 import requests
+from metpy.calc import wind_components
+from metpy.units import units
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -56,6 +58,7 @@ from pyiem.plot.util import (
     fitbox,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
+    LATLON,
     Z_CF,
     Z_FILL,
     Z_FILL_LABEL,
@@ -68,9 +71,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     TWITTER_RESOLUTION_INCH,
 )
 from pyiem.util import ssw, LOG, utc, exponential_backoff
-from pyiem.datatypes import speed, direction
 from pyiem.plot.colormaps import stretch_cmap
-import pyiem.meteorology as meteorology
 
 # geopandas currently emits this as parquet is unstable.
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
@@ -536,12 +537,12 @@ class MapPlot:
             mask[imgx - 15 : imgx + 15, imgy - 15 : imgy + 15] = True
             # Plot bars
             if stdata.get("sknt") is not None and stdata["sknt"] > 1:
-                (u, v) = meteorology.uv(
-                    speed(stdata.get("sknt", 0), "KT"),
-                    direction(stdata.get("drct", 0), "DEG"),
+                (u, v) = wind_components(
+                    units("knot") * stdata["sknt"],
+                    units("degree") * stdata["drct"],
                 )
                 if u is not None and v is not None:
-                    self.ax.barbs(x, y, u.value("KT"), v.value("KT"), zorder=1)
+                    self.ax.barbs(x, y, u.m, v.m, zorder=Z_OVERLAY)
 
             # Sky Coverage
             skycoverage = stdata.get("coverage")

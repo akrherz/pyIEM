@@ -38,16 +38,24 @@ TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
+# Maybe this can go away with future cartopy versions?
+LATLON = ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84"))
 EPSG = {
+    2163: ccrs.LambertAzimuthalEqualArea(
+        central_latitude=45,
+        central_longitude=-100,
+        globe=ccrs.Globe(
+            semimajor_axis=6370997.0,
+            semiminor_axis=6370997.0,
+        ),
+    ),
+    3857: ccrs.GOOGLE_MERCATOR,
+    4326: ccrs.Geodetic(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
     5070: ccrs.AlbersEqualArea(
         central_longitude=-96,
         central_latitude=23,
         standard_parallels=[29.5, 45.5],
     ),
-    2163: ccrs.LambertAzimuthalEqualArea(
-        central_latitude=45, central_longitude=-100
-    ),
-    4326: ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
 }
 
 IA_WEST = -96.7
@@ -60,10 +68,11 @@ MW_EAST = -80.1
 MW_NORTH = 49.51
 MW_SOUTH = 35.47
 
-CONUS_WEST = -134.2
-CONUS_EAST = -60.1
-CONUS_NORTH = 49.51
-CONUS_SOUTH = 24.47
+# We generally buffer things by 0.25
+CONUS_WEST = -125.0
+CONUS_EAST = -66.5
+CONUS_NORTH = 49.75
+CONUS_SOUTH = 24.25
 
 SECTORS = {
     "midwest": [MW_WEST, MW_EAST, MW_SOUTH, MW_NORTH],

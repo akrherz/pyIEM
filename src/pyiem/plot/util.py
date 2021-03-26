@@ -146,14 +146,16 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     return txt
 
 
-def make_axes(ndc_axbounds, geoextent, projection, aspect):
+def make_axes(ndc_axbounds, extent, projection, aspect, is_geoextent=False):
     """Factory for making an axis
 
     Args:
       ndc_axbounds (list): the NDC coordinates of axes to create
-      geoextent (list): x0,x1,y0,y1 the lon/lon extent of the axes to create
+      extent (list): x0,x1,y0,y1 *in projected space* plot extent, unless
+        `is_geoextent` is based as True, then it is Geodetic.
       projection (ccrs.Projection): the projection of the axes
       aspect (str): matplotlib's aspect of axes
+      is_geoextent(bool): is the passed extent Geodetic?
 
     Returns:
       ax
@@ -165,37 +167,15 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
         ndc_axbounds,
         projection=projection,
         aspect=aspect,
+        adjustable="datalim",
         facecolor=(0.4471, 0.6235, 0.8117),
     )
     # Get the frame at the proper zorder
     for _k, spine in ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
-    ax.set_extent(geoextent, crs=ccrs.PlateCarree())
-    if aspect != "equal":
-        return ax
-    # Render the canvas so we know what happened with our axis
-    ax.figure.canvas.draw()
-    # Compute the current NDC extent of the axes
-    ndc_bbox = ax.get_position()
-    # pixel_bbox = ax.get_window_extent()
-    (projx0, projx1, projy0, projy1) = ax.get_extent()
-    # Figure out which axis got shrunk
-    xscaled = ndc_bbox.width / float(ndc_axbounds[2])
-    yscaled = ndc_bbox.height / float(ndc_axbounds[3])
-    # compute the dx/dy of this image
-    # dx = (projx1 - projx0) / pixel_bbox.width
-    # dx = (projy1 - projy0) / pixel_bbox.height
-    # expand one way or another to fit, via set_extent
-    xneeded = (projx1 - projx0) / xscaled - (projx1 - projx0)
-    yneeded = (projy1 - projy0) / yscaled - (projy1 - projy0)
-    newbounds = [
-        projx0 - xneeded / 2.0,
-        projx1 + xneeded / 2.0,
-        projy0 - yneeded / 2.0,
-        projy1 + yneeded / 2.0,
-    ]
-    ax.set_extent(newbounds, crs=projection)
-    # Render the canvas so we know what happened with our axis
+    ax.set_extent(extent, crs=None if is_geoextent else projection)
+    # Sadly, we need to force a render so that the actual plot extent gets
+    # calculated with the adjustable datalim above
     ax.figure.canvas.draw()
     return ax
 
@@ -214,8 +194,9 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.wfo_bounds[mp.cwa][1],
                 reference.wfo_bounds[mp.cwa][3],
             ],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "state":
@@ -229,77 +210,83 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.state_bounds[mp.state][1],
                 reference.state_bounds[mp.state][3],
             ],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect if mp.state != "AK" else "auto",
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector in reference.SECTORS:
         mp.ax = make_axes(
-            axbounds, reference.SECTORS[mp.sector], ccrs.Mercator(), aspect
+            axbounds,
+            reference.SECTORS[mp.sector],
+            reference.EPSG[3857],
+            aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "iowawfo":
         mp.ax = make_axes(
-            axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.Mercator(), aspect
+            axbounds,
+            [-99.6, -89.0, 39.8, 45.5],
+            reference.EPSG[3857],
+            aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "custom":
         mp.ax = make_axes(
             axbounds,
             [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
-            kwargs.get("projection", ccrs.Mercator()),
+            kwargs.get("projection", reference.LATLON),
             aspect,
+            is_geoextent="projection" not in kwargs,
         )
         mp.axes.append(mp.ax)
 
     elif mp.sector == "north_america":
         mp.ax = make_axes(
             axbounds,
-            [-145.5, -2.566, 1, 46.352],
-            ccrs.LambertConformal(
-                central_longitude=-107.0, central_latitude=50.0
-            ),
-            aspect,
+            [-4.5e6, 4.3e6, -3.9e6, 3.8e6],
+            reference.EPSG[2163],
+            "auto",
         )
         mp.axes.append(mp.ax)
 
     elif mp.sector in ["conus", "nws"]:
         mp.ax = make_axes(
             axbounds,
-            [
-                reference.CONUS_WEST + 14,
-                reference.CONUS_EAST - 12,
-                reference.CONUS_SOUTH,
-                reference.CONUS_NORTH + 0.2,
-            ],
+            [-2400000, 2300000, 27600, 3173000],
             reference.EPSG[5070],
             aspect,
         )
         mp.axes.append(mp.ax)
 
         if mp.sector == "nws":
-            # Create PR, AK, and HI sectors
+            # Create PR
             mp.pr_ax = make_axes(
                 [0.78, 0.055, 0.125, 0.1],
                 [-68.0, -65.0, 17.5, 18.6],
-                reference.EPSG[4326],
+                reference.LATLON,
                 aspect,
+                is_geoextent=True,
             )
             mp.axes.append(mp.pr_ax)
             # Create AK
             mp.ak_ax = make_axes(
-                [0.015, 0.055, 0.25, 0.2],
-                [-179.5, -129.0, 51.08, 72.1],
-                reference.EPSG[4326],
-                aspect,
+                [0.015, 0.055, 0.28, 0.23],
+                [-179.5, -129.0, 51.3, 71.5],
+                reference.LATLON,
+                "auto",
+                is_geoextent=True,
             )
             mp.axes.append(mp.ak_ax)
             # Create HI
             mp.hi_ax = make_axes(
-                [0.47, 0.055, 0.2, 0.1],
+                [0.47, 0.055, 0.24, 0.14],
                 [-161.0, -154.0, 18.5, 22.5],
-                reference.EPSG[4326],
+                reference.LATLON,
                 aspect,
+                is_geoextent=True,
             )
             mp.axes.append(mp.hi_ax)
 
