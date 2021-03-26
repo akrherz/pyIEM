@@ -165,38 +165,13 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
         ndc_axbounds,
         projection=projection,
         aspect=aspect,
+        adjustable="datalim",
         facecolor=(0.4471, 0.6235, 0.8117),
     )
     # Get the frame at the proper zorder
     for _k, spine in ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
-    ax.set_extent(geoextent, crs=ccrs.PlateCarree())
-    if aspect != "equal":
-        return ax
-    # Render the canvas so we know what happened with our axis
-    ax.figure.canvas.draw()
-    # Compute the current NDC extent of the axes
-    ndc_bbox = ax.get_position()
-    # pixel_bbox = ax.get_window_extent()
-    (projx0, projx1, projy0, projy1) = ax.get_extent()
-    # Figure out which axis got shrunk
-    xscaled = ndc_bbox.width / float(ndc_axbounds[2])
-    yscaled = ndc_bbox.height / float(ndc_axbounds[3])
-    # compute the dx/dy of this image
-    # dx = (projx1 - projx0) / pixel_bbox.width
-    # dx = (projy1 - projy0) / pixel_bbox.height
-    # expand one way or another to fit, via set_extent
-    xneeded = (projx1 - projx0) / xscaled - (projx1 - projx0)
-    yneeded = (projy1 - projy0) / yscaled - (projy1 - projy0)
-    newbounds = [
-        projx0 - xneeded / 2.0,
-        projx1 + xneeded / 2.0,
-        projy0 - yneeded / 2.0,
-        projy1 + yneeded / 2.0,
-    ]
-    ax.set_extent(newbounds, crs=projection)
-    # Render the canvas so we know what happened with our axis
-    ax.figure.canvas.draw()
+    ax.set_extent(geoextent, crs=ccrs.Geodetic())
     return ax
 
 
