@@ -146,14 +146,16 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     return txt
 
 
-def make_axes(ndc_axbounds, geoextent, projection, aspect):
+def make_axes(ndc_axbounds, extent, projection, aspect, is_geoextent=False):
     """Factory for making an axis
 
     Args:
       ndc_axbounds (list): the NDC coordinates of axes to create
-      geoextent (list): x0,x1,y0,y1 the lon/lon extent of the axes to create
+      extent (list): x0,x1,y0,y1 *in projected space* plot extent, unless
+        `is_geoextent` is based as True, then it is Geodetic.
       projection (ccrs.Projection): the projection of the axes
       aspect (str): matplotlib's aspect of axes
+      is_geoextent(bool): is the passed extent Geodetic?
 
     Returns:
       ax
@@ -171,7 +173,7 @@ def make_axes(ndc_axbounds, geoextent, projection, aspect):
     # Get the frame at the proper zorder
     for _k, spine in ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
-    ax.set_extent(geoextent, crs=ccrs.Geodetic())
+    ax.set_extent(extent, crs=None if is_geoextent else projection)
     return ax
 
 
@@ -191,6 +193,7 @@ def sector_setter(mp, axbounds, **kwargs):
             ],
             ccrs.Mercator(),
             aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "state":
@@ -206,16 +209,25 @@ def sector_setter(mp, axbounds, **kwargs):
             ],
             ccrs.Mercator(),
             aspect if mp.state != "AK" else "auto",
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector in reference.SECTORS:
         mp.ax = make_axes(
-            axbounds, reference.SECTORS[mp.sector], ccrs.Mercator(), aspect
+            axbounds,
+            reference.SECTORS[mp.sector],
+            ccrs.Mercator(),
+            aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "iowawfo":
         mp.ax = make_axes(
-            axbounds, [-99.6, -89.0, 39.8, 45.5], ccrs.Mercator(), aspect
+            axbounds,
+            [-99.6, -89.0, 39.8, 45.5],
+            ccrs.Mercator(),
+            aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
     elif mp.sector == "custom":
@@ -224,6 +236,7 @@ def sector_setter(mp, axbounds, **kwargs):
             [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
             kwargs.get("projection", ccrs.Mercator()),
             aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
 
@@ -235,6 +248,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 central_longitude=-107.0, central_latitude=50.0
             ),
             aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
 
@@ -249,6 +263,7 @@ def sector_setter(mp, axbounds, **kwargs):
             ],
             reference.EPSG[5070],
             aspect,
+            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
 
@@ -259,6 +274,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 [-68.0, -65.0, 17.5, 18.6],
                 reference.LATLON,
                 aspect,
+                is_geoextent=True,
             )
             mp.axes.append(mp.pr_ax)
             # Create AK
@@ -267,6 +283,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 [-179.5, -129.0, 51.08, 72.1],
                 reference.LATLON,
                 aspect,
+                is_geoextent=True,
             )
             mp.axes.append(mp.ak_ax)
             # Create HI
@@ -275,6 +292,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 [-161.0, -154.0, 18.5, 22.5],
                 reference.LATLON,
                 aspect,
+                is_geoextent=True,
             )
             mp.axes.append(mp.hi_ax)
 
