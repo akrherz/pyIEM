@@ -39,15 +39,21 @@ TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
 EPSG = {
+    2163: ccrs.LambertAzimuthalEqualArea(
+        central_latitude=45,
+        central_longitude=-100,
+        globe=ccrs.Globe(
+            semimajor_axis=6370997.0,
+            semiminor_axis=6370997.0,
+        ),
+    ),
+    3857: ccrs.GOOGLE_MERCATOR,
+    4326: ccrs.Geodetic(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
     5070: ccrs.AlbersEqualArea(
         central_longitude=-96,
         central_latitude=23,
         standard_parallels=[29.5, 45.5],
     ),
-    2163: ccrs.LambertAzimuthalEqualArea(
-        central_latitude=45, central_longitude=-100
-    ),
-    4326: ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
 }
 
 IA_WEST = -96.7
