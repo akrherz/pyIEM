@@ -31,8 +31,8 @@ psycopg2
 pyarrow
 # Models
 pydantic
-# gini reader
-pyproj
+# gini reader and friends, locked to less then 3 for now
+pyproj<3
 pytest
 pytest-mpl
 pytest-runner
