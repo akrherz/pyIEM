@@ -7,7 +7,6 @@ import copy
 import pytest
 import matplotlib.colors as mpcolors
 import numpy as np
-from pyiem import reference
 from pyiem import plot
 from pyiem.plot.geoplot import windrose
 from pyiem.plot import (
@@ -316,7 +315,6 @@ def test_pcolormesh():
         east=-80,
         west=-96,
         south=38,
-        projection=reference.EPSG[2163],
         continentalcolor="white",
         nocaption=True,
     )
@@ -327,40 +325,6 @@ def test_pcolormesh():
     )
     lons, lats = np.meshgrid(lons, lats)
     mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
-    return mp.fig
-
-
-@pytest.mark.mpl_image_compare(tolerance=0.3)
-def test_conus():
-    """See if we can plot albers"""
-    mp = MapPlot(
-        sector="custom",
-        title="EPSG: 5070 Albers",
-        north=reference.CONUS_NORTH + 1,
-        east=reference.CONUS_EAST - 12,
-        west=reference.CONUS_WEST + 14,
-        south=reference.CONUS_SOUTH,
-        projection=reference.EPSG[5070],
-        continentalcolor="white",
-        nocaption=True,
-    )
-    return mp.fig
-
-
-@pytest.mark.mpl_image_compare(tolerance=0.3)
-def test_conus2():
-    """Map the conus in LEA"""
-    mp = MapPlot(
-        sector="custom",
-        title="EPSG: 2163 Lambert Azimuthal Equal Area",
-        north=reference.CONUS_NORTH + 1,
-        east=reference.CONUS_EAST - 12,
-        west=reference.CONUS_WEST + 14,
-        south=reference.CONUS_SOUTH,
-        projection=reference.EPSG[2163],
-        continentalcolor="white",
-        nocaption=True,
-    )
     return mp.fig
 
 

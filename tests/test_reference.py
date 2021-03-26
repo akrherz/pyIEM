@@ -1,7 +1,6 @@
 """Is our reference hackery usable."""
 
 # Third party
-import cartopy.crs as ccrs
 from pyproj import Transformer
 import pytest
 import numpy as np

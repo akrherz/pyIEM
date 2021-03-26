@@ -174,6 +174,9 @@ def make_axes(ndc_axbounds, extent, projection, aspect, is_geoextent=False):
     for _k, spine in ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
     ax.set_extent(extent, crs=None if is_geoextent else projection)
+    # Sadly, we need to force a render so that the actual plot extent gets
+    # calculated with the adjustable datalim above
+    ax.figure.canvas.draw()
     return ax
 
 
@@ -191,7 +194,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.wfo_bounds[mp.cwa][1],
                 reference.wfo_bounds[mp.cwa][3],
             ],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect,
             is_geoextent=True,
         )
@@ -207,7 +210,7 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.state_bounds[mp.state][1],
                 reference.state_bounds[mp.state][3],
             ],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect if mp.state != "AK" else "auto",
             is_geoextent=True,
         )
@@ -216,7 +219,7 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.ax = make_axes(
             axbounds,
             reference.SECTORS[mp.sector],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect,
             is_geoextent=True,
         )
@@ -225,7 +228,7 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.ax = make_axes(
             axbounds,
             [-99.6, -89.0, 39.8, 45.5],
-            ccrs.Mercator(),
+            reference.EPSG[3857],
             aspect,
             is_geoextent=True,
         )
@@ -234,41 +237,32 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.ax = make_axes(
             axbounds,
             [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
-            kwargs.get("projection", ccrs.Mercator()),
+            kwargs.get("projection", reference.LATLON),
             aspect,
-            is_geoextent=True,
+            is_geoextent="projection" not in kwargs,
         )
         mp.axes.append(mp.ax)
 
     elif mp.sector == "north_america":
         mp.ax = make_axes(
             axbounds,
-            [-145.5, -2.566, 1, 46.352],
-            ccrs.LambertConformal(
-                central_longitude=-107.0, central_latitude=50.0
-            ),
-            aspect,
-            is_geoextent=True,
+            [-4.5e6, 4.3e6, -3.9e6, 3.8e6],
+            reference.EPSG[2163],
+            "auto",
         )
         mp.axes.append(mp.ax)
 
     elif mp.sector in ["conus", "nws"]:
         mp.ax = make_axes(
             axbounds,
-            [
-                reference.CONUS_WEST + 14,
-                reference.CONUS_EAST - 12,
-                reference.CONUS_SOUTH,
-                reference.CONUS_NORTH + 0.2,
-            ],
+            [-2400000, 2300000, 27600, 3173000],
             reference.EPSG[5070],
             aspect,
-            is_geoextent=True,
         )
         mp.axes.append(mp.ax)
 
         if mp.sector == "nws":
-            # Create PR, AK, and HI sectors
+            # Create PR
             mp.pr_ax = make_axes(
                 [0.78, 0.055, 0.125, 0.1],
                 [-68.0, -65.0, 17.5, 18.6],
@@ -279,16 +273,16 @@ def sector_setter(mp, axbounds, **kwargs):
             mp.axes.append(mp.pr_ax)
             # Create AK
             mp.ak_ax = make_axes(
-                [0.015, 0.055, 0.25, 0.2],
-                [-179.5, -129.0, 51.08, 72.1],
+                [0.015, 0.055, 0.28, 0.23],
+                [-179.5, -129.0, 51.3, 71.5],
                 reference.LATLON,
-                aspect,
+                "auto",
                 is_geoextent=True,
             )
             mp.axes.append(mp.ak_ax)
             # Create HI
             mp.hi_ax = make_axes(
-                [0.47, 0.055, 0.2, 0.1],
+                [0.47, 0.055, 0.24, 0.14],
                 [-161.0, -154.0, 18.5, 22.5],
                 reference.LATLON,
                 aspect,
