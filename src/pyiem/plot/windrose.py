@@ -135,8 +135,8 @@ def histogram(speed, direction, bins, nsector):
     # Figure out the partition size
     angle = 360.0 / float(nsector)
     # Create bins based on centered around 0 degree angle_slices
-    dir_bins = np.arange(-angle / 2.0, 360 + angle, angle, dtype=np.float)
-    dir_centers = np.arange(0.0, 360.0, angle, dtype=np.float)
+    dir_bins = np.arange(-angle / 2.0, 360 + angle, angle, dtype=float)
+    dir_centers = np.arange(0.0, 360.0, angle, dtype=float)
     dirvals = direction.to(units("degree")).m
     speedvals = speed.to(bins.units).m
     # compute speed bins
