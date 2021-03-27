@@ -92,7 +92,7 @@ def make_colorramp():
     """
     Make me a crude color ramp
     """
-    c = np.zeros((256, 3), np.int)
+    c = np.zeros((256, 3), int)
 
     # Ramp blue
     for b in range(0, 37):
