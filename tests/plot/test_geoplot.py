@@ -572,7 +572,7 @@ def test_ugcs_lwx_zones():
     mp = MapPlot(
         sector="cwa",
         cwa="LWX",
-        title="Two Maryland Zones that Should not be plotted",
+        title="Two Maryland zones (MDZ001, MDZ008) xfered to LWX",
         subtitle="test_ugcs_lwx",
         nocaption=True,
     )
