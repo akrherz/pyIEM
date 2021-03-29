@@ -21,6 +21,8 @@ of colors via `color=` or combo of `fc=` and `ec=`.
 GeoPandas (#402).
 - Support parsing and database storage of TAF information (#377).
 - Update bundled NWS counties/zones to be current on 30 March 2021.
+- Backend database storage for SPC Outlooks has changed, please see repo
+akrherz/iem-database for current schema.
 
 ### Bug Fixes
 

@@ -393,6 +393,20 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
+def init_days(afos):
+    """Figure out which days this product should have based on the AFOS."""
+
+    def f(day):
+        """generator."""
+        return SPCOutlookCollection(None, None, day)
+
+    if afos == "PTSD48":
+        return {4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
+    if afos == "PFWF38":
+        return {3: f(3), 4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
+    return {int(afos[5]): f(int(afos[5]))}
+
+
 class SPCOutlookCollection:
     """ A collection of outlooks for a single 'day'"""
 
@@ -442,9 +456,9 @@ class SPCPTS(TextProduct):
         self.expire = None
         self.day = None
         self.outlook_type = None
-        self.outlook_collections = {}
         self.set_metadata()
         self.find_issue_expire()
+        self.outlook_collections = init_days(self.afos)
         self.find_outlooks()
         self.quality_control()
 
@@ -541,8 +555,6 @@ class SPCPTS(TextProduct):
 
     def get_outlook(self, category, threshold, day=None):
         """ Get an outlook by category and threshold """
-        if not self.outlook_collections:
-            return None
         if day is None:
             day = self.day
         if day not in self.outlook_collections:
@@ -694,9 +706,9 @@ class SPCPTS(TextProduct):
                 issue, expire = compute_times(
                     self.afos, self.issue, self.expire, day
                 )
-                collect = self.outlook_collections.setdefault(
-                    day, SPCOutlookCollection(issue, expire, day)
-                )
+                collect = self.get_outlookcollection(day)
+                collect.issue = issue
+                collect.expire = expire
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
                 if threshold == "TSTM" and self.afos == "PFWF38":
@@ -721,9 +733,9 @@ class SPCPTS(TextProduct):
                     issue, expire = compute_times(
                         self.afos, self.issue, self.expire, day
                     )
-                    collect = self.outlook_collections.setdefault(
-                        day, SPCOutlookCollection(issue, expire, day)
-                    )
+                    collect = self.get_outlookcollection(day)
+                    collect.issue = issue
+                    collect.expire = expire
                 LOG.info(
                     "--> Start Day: %s Category: '%s' Threshold: '%s' =====",
                     day,
@@ -770,33 +782,51 @@ class SPCPTS(TextProduct):
           txn (psycopg2.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
+            # Establish the outlook_id
             txn.execute(
-                "DELETE from spc_outlooks where product_issue = %s "
-                "and expire = %s and outlook_type = %s and day = %s",
-                (self.valid, self.expire, self.outlook_type, day),
+                "SELECT id from spc_outlook where product_issue = %s and "
+                "day = %s and outlook_type = %s",
+                (self.valid, day, self.outlook_type),
             )
             if txn.rowcount > 0:
-                LOG.info(
-                    "Removed %s previous spc_outlook entries", txn.rowcount
+                outlook_id = txn.fetchone()[0]
+                # Do some deleting
+                txn.execute(
+                    "DELETE from spc_outlook_geometries "
+                    "where spc_outlook_id = %s",
+                    (outlook_id,),
                 )
+                LOG.info(
+                    "Removed %s rows from spc_outlook_geometries",
+                    txn.rowcount,
+                )
+            else:
+                txn.execute(
+                    "INSERT into spc_outlook(issue, product_issue, expire, "
+                    "product_id, outlook_type, day) VALUES "
+                    "(%s, %s, %s, %s, %s, %s) RETURNING id",
+                    (
+                        collect.issue,
+                        self.valid,
+                        collect.expire,
+                        self.get_product_id(),
+                        self.outlook_type,
+                        day,
+                    ),
+                )
+                outlook_id = txn.fetchone()[0]
 
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
                 txn.execute(
-                    "INSERT into spc_outlooks(product_issue, issue, expire, "
-                    "threshold, category, day, outlook_type, geom, "
-                    "product_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    "INSERT into spc_outlook_geometries(spc_outlook_id, "
+                    "threshold, category, geom) VALUES (%s, %s, %s, %s)",
                     (
-                        self.valid,
-                        collect.issue,
-                        collect.expire,
+                        outlook_id,
                         outlook.threshold,
                         outlook.category,
-                        collect.day,
-                        self.outlook_type,
                         "SRID=4326;%s" % (outlook.geometry.wkt,),
-                        self.get_product_id(),
                     ),
                 )
 
@@ -886,7 +916,16 @@ class SPCPTS(TextProduct):
             "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
             "outlooktype": product_descript,
             "url": url,
+            "wfo": "XXX",
+            "cat": "C" if self.afos[2] == "T" else "F",
         }
+        twmedia = (
+            "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
+            "cat:categorical::which:%(day)s%(cat)s::t:cwa::network:WFO::"
+            "wfo:%(wfo)s::"
+            f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
+            ".png"
+        ).replace(" ", "%%20")
         for _, collect in self.outlook_collections.items():
 
             wfos = {
@@ -948,6 +987,7 @@ class SPCPTS(TextProduct):
                                 "%s.SPC%s.%s" % (wfo, self.afos[3:], cat),
                             ],
                             "product_id": self.get_product_id(),
+                            "twitter_media": twmedia % jdict,
                             "twitter": (
                                 "SPC issues Day %(day)s %(ttext)s "
                                 "at %(tstamp)s for %(wfo)s %(url)s"
