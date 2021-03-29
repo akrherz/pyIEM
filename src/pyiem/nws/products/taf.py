@@ -106,7 +106,7 @@ def parse_prod(prod):
     d = m.groupdict()
     meat = ""
     tokens = []
-    parts = prod.unixtext[m.end() :].split("\n")
+    parts = prod.unixtext[m.end() : prod.unixtext.find("=")].split("\n")
     # Deal with the observation
     valid = ddhhmi2valid(prod, d["ddhhmi"])
     data = TAFReport(
@@ -154,7 +154,7 @@ class TAFProduct(TextProduct):
 
     def get_channels(self):
         """ Return a list of channels """
-        return [self.afos, "TAF...", f"{self.source}.TAF"]
+        return [f"TAF{self.data.station[1:]}", "TAF...", f"{self.source}.TAF"]
 
     def sql(self, txn):
         """Persist to the database."""
@@ -199,23 +199,23 @@ class TAFProduct(TextProduct):
         """ Get the jabber variant of this message """
         res = []
         url = f"{uri}?pid={self.get_product_id()}"
-        aaa = self.afos[:3]
+        aaa = "TAF"
         nicedate = self.get_nicedate()
-        plain = ("%s issues %s (%s) at %s for %s %s") % (
+        plain = "%s issues %s (%s) at %s for %s %s" % (
             self.source[1:],
             reference.prodDefinitions.get(aaa, aaa),
             aaa,
             nicedate,
-            self.afos[3:],
+            self.data.station[1:],
             url,
         )
-        html = ('<p>%s issues <a href="%s">%s (%s)</a> at %s for %s</p>') % (
+        html = '<p>%s issues <a href="%s">%s (%s)</a> at %s for %s</p>' % (
             self.source[1:],
             url,
             reference.prodDefinitions.get(aaa, aaa),
             aaa,
             nicedate,
-            self.afos[3:],
+            self.data.station[1:],
         )
         xtra = {
             "channels": ",".join(self.get_channels()),
