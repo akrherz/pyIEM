@@ -393,6 +393,20 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
+def init_days(afos):
+    """Figure out which days this product should have based on the AFOS."""
+
+    def f(day):
+        """generator."""
+        return SPCOutlookCollection(None, None, day)
+
+    if afos == "PTSD48":
+        return {4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
+    if afos == "PFWF38":
+        return {3: f(3), 4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
+    return {int(afos[5]): f(int(afos[5]))}
+
+
 class SPCOutlookCollection:
     """ A collection of outlooks for a single 'day'"""
 
@@ -442,9 +456,9 @@ class SPCPTS(TextProduct):
         self.expire = None
         self.day = None
         self.outlook_type = None
-        self.outlook_collections = {}
         self.set_metadata()
         self.find_issue_expire()
+        self.outlook_collections = init_days(self.afos)
         self.find_outlooks()
         self.quality_control()
 
@@ -541,8 +555,6 @@ class SPCPTS(TextProduct):
 
     def get_outlook(self, category, threshold, day=None):
         """ Get an outlook by category and threshold """
-        if not self.outlook_collections:
-            return None
         if day is None:
             day = self.day
         if day not in self.outlook_collections:
@@ -694,9 +706,9 @@ class SPCPTS(TextProduct):
                 issue, expire = compute_times(
                     self.afos, self.issue, self.expire, day
                 )
-                collect = self.outlook_collections.setdefault(
-                    day, SPCOutlookCollection(issue, expire, day)
-                )
+                collect = self.get_outlookcollection(day)
+                collect.issue = issue
+                collect.expire = expire
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
                 if threshold == "TSTM" and self.afos == "PFWF38":
@@ -721,9 +733,9 @@ class SPCPTS(TextProduct):
                     issue, expire = compute_times(
                         self.afos, self.issue, self.expire, day
                     )
-                    collect = self.outlook_collections.setdefault(
-                        day, SPCOutlookCollection(issue, expire, day)
-                    )
+                    collect = self.get_outlookcollection(day)
+                    collect.issue = issue
+                    collect.expire = expire
                 LOG.info(
                     "--> Start Day: %s Category: '%s' Threshold: '%s' =====",
                     day,
