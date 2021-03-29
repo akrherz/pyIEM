@@ -886,7 +886,16 @@ class SPCPTS(TextProduct):
             "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
             "outlooktype": product_descript,
             "url": url,
+            "wfo": "XXX",
+            "cat": "C" if self.afos[2] == "T" else "F",
         }
+        twmedia = (
+            "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
+            "cat:categorical::which:%(day)s%(cat)s::t:cwa::network:WFO::"
+            "wfo:%(wfo)s::"
+            f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
+            ".png"
+        ).replace(" ", "%%20")
         for _, collect in self.outlook_collections.items():
 
             wfos = {
@@ -948,6 +957,7 @@ class SPCPTS(TextProduct):
                                 "%s.SPC%s.%s" % (wfo, self.afos[3:], cat),
                             ],
                             "product_id": self.get_product_id(),
+                            "twitter_media": twmedia % jdict,
                             "twitter": (
                                 "SPC issues Day %(day)s %(ttext)s "
                                 "at %(tstamp)s for %(wfo)s %(url)s"
