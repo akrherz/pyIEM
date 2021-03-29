@@ -770,33 +770,51 @@ class SPCPTS(TextProduct):
           txn (psycopg2.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
+            # Establish the outlook_id
             txn.execute(
-                "DELETE from spc_outlooks where product_issue = %s "
-                "and expire = %s and outlook_type = %s and day = %s",
-                (self.valid, self.expire, self.outlook_type, day),
+                "SELECT id from spc_outlook where product_issue = %s and "
+                "day = %s and outlook_type = %s",
+                (self.valid, day, self.outlook_type),
             )
             if txn.rowcount > 0:
-                LOG.info(
-                    "Removed %s previous spc_outlook entries", txn.rowcount
+                outlook_id = txn.fetchone()[0]
+                # Do some deleting
+                txn.execute(
+                    "DELETE from spc_outlook_geometries "
+                    "where spc_outlook_id = %s",
+                    (outlook_id,),
                 )
+                LOG.info(
+                    "Removed %s rows from spc_outlook_geometries",
+                    txn.rowcount,
+                )
+            else:
+                txn.execute(
+                    "INSERT into spc_outlook(issue, product_issue, expire, "
+                    "product_id, outlook_type, day) VALUES "
+                    "(%s, %s, %s, %s, %s, %s) RETURNING id",
+                    (
+                        collect.issue,
+                        self.valid,
+                        collect.expire,
+                        self.get_product_id(),
+                        self.outlook_type,
+                        day,
+                    ),
+                )
+                outlook_id = txn.fetchone()[0]
 
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
                 txn.execute(
-                    "INSERT into spc_outlooks(product_issue, issue, expire, "
-                    "threshold, category, day, outlook_type, geom, "
-                    "product_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    "INSERT into spc_outlook_geometries(spc_outlook_id, "
+                    "threshold, category, geom) VALUES (%s, %s, %s, %s)",
                     (
-                        self.valid,
-                        collect.issue,
-                        collect.expire,
+                        outlook_id,
                         outlook.threshold,
                         outlook.category,
-                        collect.day,
-                        self.outlook_type,
                         "SRID=4326;%s" % (outlook.geometry.wkt,),
-                        self.get_product_id(),
                     ),
                 )
 

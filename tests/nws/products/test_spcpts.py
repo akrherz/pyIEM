@@ -11,7 +11,7 @@ def test_product_id_roundtrip(dbcursor):
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
     spc.sql(dbcursor)
     dbcursor.execute(
-        "SELECT product_id from spc_outlooks where day = 1 and "
+        "SELECT product_id from spc_outlook where day = 1 and "
         "product_issue = '2017-06-19 05:56+00' and outlook_type = 'C' LIMIT 1"
     )
     assert dbcursor.fetchone()[0] == spc.get_product_id()
@@ -147,6 +147,8 @@ def test_170926_largeenh(dbcursor):
     """This Day1 generated a massive ENH"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_bigenh.txt"))
     # spc.draw_outlooks()
+    spc.sql(dbcursor)
+    # Do twice to force a deletion
     spc.sql(dbcursor)
     outlook = spc.get_outlook("CATEGORICAL", "ENH", 1)
     assert abs(outlook.geometry.area - 17.50) < 0.01
