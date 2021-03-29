@@ -393,18 +393,20 @@ def str2multipolygon(s):
     return MultiPolygon(res)
 
 
-def init_days(afos):
+def init_days(prod):
     """Figure out which days this product should have based on the AFOS."""
 
     def f(day):
         """generator."""
-        return SPCOutlookCollection(None, None, day)
+        issue, expire = compute_times(prod.afos, prod.issue, prod.expire, day)
 
-    if afos == "PTSD48":
+        return SPCOutlookCollection(issue, expire, day)
+
+    if prod.afos == "PTSD48":
         return {4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
-    if afos == "PFWF38":
+    if prod.afos == "PFWF38":
         return {3: f(3), 4: f(4), 5: f(5), 6: f(6), 7: f(7), 8: f(8)}
-    return {int(afos[5]): f(int(afos[5]))}
+    return {int(prod.afos[5]): f(int(prod.afos[5]))}
 
 
 class SPCOutlookCollection:
@@ -458,7 +460,7 @@ class SPCPTS(TextProduct):
         self.outlook_type = None
         self.set_metadata()
         self.find_issue_expire()
-        self.outlook_collections = init_days(self.afos)
+        self.outlook_collections = init_days(self)
         self.find_outlooks()
         self.quality_control()
 
@@ -703,12 +705,7 @@ class SPCPTS(TextProduct):
                 point_data[threshold] += line.replace(threshold, " ")
 
             if day is not None:
-                issue, expire = compute_times(
-                    self.afos, self.issue, self.expire, day
-                )
                 collect = self.get_outlookcollection(day)
-                collect.issue = issue
-                collect.expire = expire
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
                 if threshold == "TSTM" and self.afos == "PFWF38":
@@ -730,12 +727,7 @@ class SPCPTS(TextProduct):
                 match = DMATCH.match(threshold)
                 if match:
                     day = int(match.groupdict()["day1"])
-                    issue, expire = compute_times(
-                        self.afos, self.issue, self.expire, day
-                    )
                     collect = self.get_outlookcollection(day)
-                    collect.issue = issue
-                    collect.expire = expire
                 LOG.info(
                     "--> Start Day: %s Category: '%s' Threshold: '%s' =====",
                     day,
