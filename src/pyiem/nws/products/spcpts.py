@@ -909,7 +909,7 @@ class SPCPTS(TextProduct):
             "outlooktype": product_descript,
             "url": url,
             "wfo": "XXX",
-            "cat": "C" if self.afos[2] == "T" else "F",
+            "cat": self.outlook_type,
         }
         twmedia = (
             "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
