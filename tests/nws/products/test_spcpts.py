@@ -220,6 +220,12 @@ def test_170417_empty(dbcursor):
         "2008/day4-8_20081225.html"
     )
     assert jabber[-1][0] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
+        "cat:categorical::which:0C::t:conus::network:WFO::wfo:DMX::"
+        "csector:conus::valid:2008-12-25%200941.png"
+    )
+    assert jabber[-1][2]["twitter_media"] == ans
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -429,6 +435,12 @@ def test_bug_140506_day2():
         "day2otlk_20140506_1730.html"
     )
     assert j[-1][0] == ans
+    ans = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
+        "cat:categorical::which:2C::t:conus::network:WFO::wfo:TSA::"
+        "csector:conus::valid:2014-05-06%201731.png"
+    )
+    assert j[-1][2]["twitter_media"] == ans
 
 
 def test_bug_140518_day2():

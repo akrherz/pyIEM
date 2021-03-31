@@ -900,17 +900,18 @@ class SPCPTS(TextProduct):
             "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
             "outlooktype": product_descript,
             "url": url,
-            "wfo": "XXX",
+            "wfo": "DMX",  # autoplot expects something valid here
             "cat": self.outlook_type,
+            "t220": "cwa",
         }
         twmedia = (
             "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-            "cat:categorical::which:%(day)s%(cat)s::t:cwa::network:WFO::"
+            "cat:categorical::which:%(day)s%(cat)s::t:%(t220)s::network:WFO::"
             "wfo:%(wfo)s::"
             f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
             ".png"
         ).replace(" ", "%%20")
-        for _, collect in self.outlook_collections.items():
+        for day, collect in self.outlook_collections.items():
 
             wfos = {
                 "TSTM": [],
@@ -930,7 +931,7 @@ class SPCPTS(TextProduct):
                 _d = wfos.setdefault(outlook.threshold, [])
                 _d.extend(outlook.wfos)
 
-            jdict["day"] = collect.day
+            jdict["day"] = day
             wfomsgs = {}
             # We order in least to greatest, so that the highest threshold
             # overwrites lower ones
@@ -986,6 +987,9 @@ class SPCPTS(TextProduct):
                 res.append(wfomsgs[wfo])
 
         # Generic for SPC
+        jdict["t220"] = "conus"
+        if len(self.outlook_collections) > 1:
+            jdict["day"] = "0"
         res.append(
             [
                 (
@@ -1001,6 +1005,7 @@ class SPCPTS(TextProduct):
                 {
                     "channels": ["SPC", "SPC%s" % (self.afos[3:],)],
                     "product_id": self.get_product_id(),
+                    "twitter_media": twmedia % jdict,
                     "twitter": (
                         "%(name)s issues %(title)s "
                         "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
