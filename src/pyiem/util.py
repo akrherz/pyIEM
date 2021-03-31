@@ -44,6 +44,25 @@ class CustomFormatter(logging.Formatter):
         )
 
 
+def load_geodf(dataname):
+    """Load a given bundled GeoDataFrame.
+
+    Args:
+      dataname (str): The name of the dataset name to load.
+
+    Returns:
+      GeoDataFrame
+    """
+    import geopandas as gpd
+
+    datadir = os.sep.join([os.path.dirname(__file__), "data"])
+    fn = f"{datadir}/geodf/{dataname}.parquet"
+    if not os.path.isfile(fn):
+        LOG.info("load_geodf(%s) failed, file is missing!", fn)
+        return gpd.GeoDataFrame()
+    return gpd.read_parquet(fn)
+
+
 def convert_value(val, units_in, units_out):
     """DRY Helper to return magnitude of a metpy unit conversion.
 

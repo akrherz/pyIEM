@@ -6,6 +6,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Moved `pyiem.plot.geoplot.load_geodf` to `pyiem.util.load_geodf`.
+
 ### New Features
 
 ### Bug Fixes
