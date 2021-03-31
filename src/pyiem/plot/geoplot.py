@@ -400,6 +400,7 @@ class MapPlot:
         """
         if self.cax is None:
             return
+        self.cax.set_frame_on(True)
         extend = kwargs.get("extend", "both")
         # Do we need to muck with the cmap
         # pylint: disable=W0212

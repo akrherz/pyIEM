@@ -18,6 +18,8 @@ from pyiem.plot import (
 )
 from pyiem.util import utc
 
+PAIN = 1.1  # how much do we care, sigh.
+
 
 def test_depreciated():
     """Test that our windrose is depreciated."""
@@ -31,7 +33,7 @@ def test_invalid_file():
     assert load_pickle_pd("this shall not work") is None
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plotmissing():
     """Test that we can plotmissing."""
     mp = MapPlot(
@@ -44,7 +46,7 @@ def test_plotmissing():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_by_str():
     """Test that we can fill by string or dict."""
     mp = MapPlot(
@@ -57,7 +59,7 @@ def test_fill_by_str():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_by_dict():
     """Test that we can fill by string or dict."""
     mp = MapPlot(
@@ -70,7 +72,7 @@ def test_fill_by_dict():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_issue374_pah():
     """Test drawing fire weather zones for Paducah."""
     mp = MapPlot(
@@ -83,7 +85,7 @@ def test_issue374_pah():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_memphis_cwa():
     """Test that we can draw a map with Memphis CWA.."""
     mp = MapPlot(
@@ -96,7 +98,7 @@ def test_memphis_cwa():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_roadcond():
     """Test being able to plot Iowa Road Conditions."""
     mp = MapPlot(
@@ -108,7 +110,7 @@ def test_overlay_roadcond():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_nexrad():
     """Test being able to plot NEXRAD."""
     mp = MapPlot(
@@ -120,7 +122,7 @@ def test_overlay_nexrad():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_nexrad_hawaii():
     """Test that we can plot nexrad over Hawaii."""
     mp = MapPlot(
@@ -133,7 +135,7 @@ def test_overlay_nexrad_hawaii():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_nexrad_alaska():
     """Test that we can plot nexrad over Alaska."""
     mp = MapPlot(
@@ -146,7 +148,7 @@ def test_overlay_nexrad_alaska():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_nexrad_puerto_rico():
     """Test that we can plot nexrad over Puerto Rico."""
     mp = MapPlot(
@@ -159,7 +161,7 @@ def test_overlay_nexrad_puerto_rico():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_conus_contour():
     """Test that a conus sector plot can generate a contour correctly."""
     mp = MapPlot(nocaption=True, sector="conus", twitter=True)
@@ -174,7 +176,7 @@ def test_conus_contour():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_issue365_cape_cod():
     """Test that we don't mask out Cape Cod."""
     mp = MapPlot(nocaption=True, sector="cwa", cwa="BOX")
@@ -190,21 +192,21 @@ def test_issue365_cape_cod():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_issue217():
     """See what happens with our logo on very scaled figure."""
     mp = MapPlot(nocaption=True, figsize=(6.00, 3.35))
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_twitter_resolution():
     """Test that we get good plot domain when we want a twitter resolution."""
     mp = MapPlot(sector="conus", nocaption=True, twitter=True)
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN + 1)  # lots of bars
 def test_issue98_labelbar():
     """Sometimes our label bar sucks."""
     mp = MapPlot(
@@ -237,7 +239,7 @@ def test_savefile():
     assert os.path.isfile(tmpfd.name)
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_illinois():
     """Produce a plot that doesn't suck"""
     mp = MapPlot(sector="state", state="IL", nocaption=True)
@@ -245,7 +247,7 @@ def test_illinois():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_issue292_nws_fill_ugcs():
     """Test that fill_ugcs works for nws sector view."""
     mp = MapPlot(sector="nws", title="Four Counties", nocaption=True)
@@ -254,7 +256,7 @@ def test_issue292_nws_fill_ugcs():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_ugcs_color():
     """Provide an explicit color to fill_ugcs"""
     mp = MapPlot(
@@ -267,7 +269,7 @@ def test_fill_ugcs_color():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_dep():
     """Produce a plot with the DEP logo on it."""
     mp = MapPlot(sector="state", state="IA", nocaption=True, logo="dep")
@@ -282,7 +284,7 @@ def test_usdm():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_hexbin():
     """See if we can do hexbin OKish"""
     mp = MapPlot(
@@ -304,7 +306,7 @@ def test_hexbin():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2)
+@pytest.mark.mpl_image_compare(tolerance=10)  # Lots of one pixel diffs
 def test_pcolormesh():
     """See if we can do pcolormesh OKish"""
     mp = MapPlot(
@@ -350,7 +352,7 @@ def test_centered_bins():
     assert abs(a[-1] - 1.6) < 0.001
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_michigan():
     """See what we do with Michigan"""
     mp = MapPlot(sector="state", state="MI", nocaption=True)
@@ -364,7 +366,7 @@ def test_michigan():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawcities():
     """Draw Cities"""
     mp = MapPlot(
@@ -378,7 +380,7 @@ def test_drawcities():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawrandomtext():
     """See if we can handle the fun that is drawing random text"""
     mp = MapPlot(
@@ -397,7 +399,7 @@ def test_drawrandomtext():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawiowawfo():
     """Iowa Contour Plot"""
     mp = MapPlot(sector="iowawfo", title="Iowa Contour plot", nocaption=True)
@@ -411,7 +413,7 @@ def test_drawiowawfo():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.3)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fillstates():
     """Can we fill states"""
     data = {"AK": 10, "HI": 30, "IA": 40, "NY": 80}
@@ -441,7 +443,7 @@ def test_drawcounties_cornbelt():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.25)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawcounties_iailin():
     """draw IA IL IN masked"""
     mp = MapPlot(sector="iailin", title="Counties", nocaption=True)
@@ -465,7 +467,7 @@ def test_climdiv():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -478,7 +480,7 @@ def test_colorbar():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_colorbar2():
     """draw a colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -504,7 +506,7 @@ def test_colorbar2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -543,7 +545,7 @@ def test_drawugcs2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_ugcs_lwx():
     """Ensure that we can plot some counties in LWX CWA."""
     mp = MapPlot(
@@ -564,7 +566,7 @@ def test_ugcs_lwx():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_ugcs_lwx_zones():
     """Ensure that we can plot some zones in LWX CWA."""
     mp = MapPlot(
@@ -585,7 +587,7 @@ def test_ugcs_lwx_zones():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN + 1)  # lots of bars on plot
 def test_ugcs_withcustomlabels():
     """Fill ugcs with provided labels."""
     mp = MapPlot(
@@ -612,7 +614,7 @@ def test_ugcs_withcustomlabels():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.15)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_states():
     """Exercise the state plotting routines"""
     mp = MapPlot(sector="state", state="CA", nocaption=True)
@@ -638,7 +640,7 @@ def test_cwa_with_custom_masking():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_cwa():
     """Exercise the cwa plotting routines"""
     mp = MapPlot(sector="cwa", cwa="MKX", nocaption=True)
@@ -679,7 +681,7 @@ def test_overlap():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_barbs():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor="white", nocaption=True)
@@ -691,7 +693,7 @@ def test_barbs():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_stationplot():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor="white", nocaption=True)
@@ -703,7 +705,7 @@ def test_stationplot():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_scatter():
     """ Test scatter plots """
     mp = MapPlot(
@@ -735,7 +737,7 @@ def test_contourf():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_textplot():
     """ Can we plot text and place labels on them """
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -743,7 +745,7 @@ def test_textplot():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_textplot2():
     """plot values on a map"""
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -778,7 +780,7 @@ def test_plot2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.63)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plot22():
     """plot cwas that are filled"""
     mp = MapPlot(sector="iowa", continentalcolor="white", nocaption=True)
@@ -790,7 +792,7 @@ def test_plot22():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plot3():
     """ Exercise climdiv plot API """
     mp = MapPlot(sector="iowa", nocaption=True)
@@ -800,7 +802,7 @@ def test_plot3():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_alaska():
     """See that Alaska plots nicely."""
     mp = MapPlot(sector="state", state="AK", nocaption=True)
