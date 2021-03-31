@@ -1,6 +1,7 @@
 """Serialization of geometries for use in pyIEM.plot mapping."""
 import datetime
 import warnings
+import sys
 
 import geopandas as gpd
 from geopandas import read_postgis
@@ -72,7 +73,7 @@ def dump_cwa(fn):
 
     df = read_postgis(
         """
-        SELECT wfo, ST_Simplify(the_geom, 0.01) as geom,
+        SELECT wfo, ST_Buffer(ST_Simplify(the_geom, 0.01), 0) as geom,
         ST_x(ST_Centroid(the_geom)) as lon,
         ST_Y(ST_Centroid(the_geom)) as lat, region
         from cwa""",
@@ -80,6 +81,7 @@ def dump_cwa(fn):
         index_col="wfo",
         geom_col="geom",
     )
+
     df.to_parquet(fn)
 
 
@@ -125,7 +127,10 @@ def check_file(fn):
     sts = datetime.datetime.now()
     df = gpd.read_parquet(fn)
     ets = datetime.datetime.now()
-
+    for geom in df["geom"]:
+        if not geom.is_valid:
+            print("Invalid Geom Found?")
+            sys.exit()
     print(
         "runtime: %.5fs, entries: %s, fn: %s"
         % ((ets - sts).total_seconds(), len(df.index), fn)
