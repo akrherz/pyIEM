@@ -22,7 +22,7 @@ from shapely.geometry.polygon import LinearRing
 from shapely.ops import split
 from shapely.affinity import translate
 from pyiem.nws.product import TextProduct
-from pyiem.util import utc, LOG
+from pyiem.util import utc, LOG, load_geodf
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {"line": None, "poly": None}
@@ -463,6 +463,7 @@ class SPCPTS(TextProduct):
         self.outlook_collections = init_days(self)
         self.find_outlooks()
         self.quality_control()
+        self.compute_wfos()
 
     def quality_control(self):
         """Run some checks against what was parsed"""
@@ -740,24 +741,15 @@ class SPCPTS(TextProduct):
                 LOG.info("----> End threshold is: %s", threshold)
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
-    def compute_wfos(self, txn):
+    def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon"""
+        geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
-                sql = """
-                    select distinct wfo from ugcs WHERE
-                    st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
-                    substr(ugc,3,1) = 'C' and wfo is not null
-                    and end_ts is null ORDER by wfo ASC
-                """ % (
-                    outlook.geometry.wkt,
-                )
-
-                txn.execute(sql)
-                for row in txn.fetchall():
-                    outlook.wfos.append(row["wfo"])
+                df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
+                outlook.wfos = df2.index.to_list()
                 LOG.info(
                     "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
                     day,
@@ -908,17 +900,18 @@ class SPCPTS(TextProduct):
             "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
             "outlooktype": product_descript,
             "url": url,
-            "wfo": "XXX",
+            "wfo": "DMX",  # autoplot expects something valid here
             "cat": self.outlook_type,
+            "t220": "cwa",
         }
         twmedia = (
             "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-            "cat:categorical::which:%(day)s%(cat)s::t:cwa::network:WFO::"
+            "cat:categorical::which:%(day)s%(cat)s::t:%(t220)s::network:WFO::"
             "wfo:%(wfo)s::"
             f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
             ".png"
         ).replace(" ", "%%20")
-        for _, collect in self.outlook_collections.items():
+        for day, collect in self.outlook_collections.items():
 
             wfos = {
                 "TSTM": [],
@@ -938,7 +931,7 @@ class SPCPTS(TextProduct):
                 _d = wfos.setdefault(outlook.threshold, [])
                 _d.extend(outlook.wfos)
 
-            jdict["day"] = collect.day
+            jdict["day"] = day
             wfomsgs = {}
             # We order in least to greatest, so that the highest threshold
             # overwrites lower ones
@@ -994,6 +987,9 @@ class SPCPTS(TextProduct):
                 res.append(wfomsgs[wfo])
 
         # Generic for SPC
+        jdict["t220"] = "conus"
+        if len(self.outlook_collections) > 1:
+            jdict["day"] = "0"
         res.append(
             [
                 (
@@ -1009,6 +1005,7 @@ class SPCPTS(TextProduct):
                 {
                     "channels": ["SPC", "SPC%s" % (self.afos[3:],)],
                     "product_id": self.get_product_id(),
+                    "twitter_media": twmedia % jdict,
                     "twitter": (
                         "%(name)s issues %(title)s "
                         "%(outlooktype)s Outlook at %(tstamp)s %(url)s"

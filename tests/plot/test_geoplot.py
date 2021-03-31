@@ -15,7 +15,6 @@ from pyiem.plot import (
     pretty_bins,
     load_bounds,
     load_pickle_pd,
-    load_geodf,
 )
 from pyiem.util import utc
 
@@ -30,7 +29,6 @@ def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
     assert load_pickle_pd("this shall not work") is None
-    assert load_geodf("this shall not work").empty
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)

@@ -23,6 +23,11 @@ def cursor():
     return util.get_dbconn("mesosite").cursor()
 
 
+def test_invalid_file():
+    """Test that we don't error out on an invalid filename."""
+    assert util.load_geodf("this shall not work").empty
+
+
 @pytest.mark.parametrize("dbname", ["mos", "hads", "iemre", "postgis"])
 def test_get_dbconn(dbname):  # noqa
     """Does our code work for various database names."""

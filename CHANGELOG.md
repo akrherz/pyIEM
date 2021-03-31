@@ -6,7 +6,12 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Moved `pyiem.plot.geoplot.load_geodf` to `pyiem.util.load_geodf`.
+
 ### New Features
+
+- Storm Prediction Center outlook parser now uses internal WFO geometries to
+compute which WFOs are impacted by an outlook.
 
 ### Bug Fixes
 

@@ -70,7 +70,7 @@ from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     Z_FRAME,
     TWITTER_RESOLUTION_INCH,
 )
-from pyiem.util import ssw, LOG, utc, exponential_backoff
+from pyiem.util import ssw, LOG, utc, exponential_backoff, load_geodf
 from pyiem.plot.colormaps import stretch_cmap
 
 # geopandas currently emits this as parquet is unstable.
@@ -116,22 +116,6 @@ def load_pickle_pd(filename):
         LOG.info("load_pickle_pd(%s) failed, file is missing", fn)
         return
     return pd.read_pickle(fn)
-
-
-def load_geodf(filename):
-    """Load GeoPandas GeoDataFrame.
-
-    Args:
-      filename(str): The filename to load, contained in project data/
-
-    Returns:
-      GeoDataFrame
-    """
-    fn = "%s/geodf/%s.parquet" % (DATADIR, filename)
-    if not os.path.isfile(fn):
-        LOG.info("load_geodf(%s) failed, file is missing!", fn)
-        return gpd.GeoDataFrame()
-    return gpd.read_parquet(fn)
 
 
 class MapPlot:
