@@ -22,7 +22,7 @@ from shapely.geometry.polygon import LinearRing
 from shapely.ops import split
 from shapely.affinity import translate
 from pyiem.nws.product import TextProduct
-from pyiem.util import utc, LOG
+from pyiem.util import utc, LOG, load_geodf
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {"line": None, "poly": None}
@@ -463,6 +463,7 @@ class SPCPTS(TextProduct):
         self.outlook_collections = init_days(self)
         self.find_outlooks()
         self.quality_control()
+        self.compute_wfos()
 
     def quality_control(self):
         """Run some checks against what was parsed"""
@@ -740,24 +741,15 @@ class SPCPTS(TextProduct):
                 LOG.info("----> End threshold is: %s", threshold)
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
-    def compute_wfos(self, txn):
+    def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon"""
+        geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
                 if outlook.geometry.is_empty:
                     continue
-                sql = """
-                    select distinct wfo from ugcs WHERE
-                    st_contains(ST_geomFromEWKT('SRID=4326;%s'), centroid) and
-                    substr(ugc,3,1) = 'C' and wfo is not null
-                    and end_ts is null ORDER by wfo ASC
-                """ % (
-                    outlook.geometry.wkt,
-                )
-
-                txn.execute(sql)
-                for row in txn.fetchall():
-                    outlook.wfos.append(row["wfo"])
+                df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
+                outlook.wfos = df2.index.to_list()
                 LOG.info(
                     "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
                     day,

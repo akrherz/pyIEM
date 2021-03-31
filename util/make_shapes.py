@@ -73,7 +73,8 @@ def dump_cwa(fn):
 
     df = read_postgis(
         """
-        SELECT wfo, ST_Buffer(ST_Simplify(the_geom, 0.01), 0) as geom,
+        SELECT wfo,
+        ST_Multi(ST_Buffer(ST_Simplify(the_geom, 0.01), 0)) as geom,
         ST_x(ST_Centroid(the_geom)) as lon,
         ST_Y(ST_Centroid(the_geom)) as lat, region
         from cwa""",

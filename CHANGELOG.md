@@ -10,6 +10,9 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Storm Prediction Center outlook parser now uses internal WFO geometries to
+compute which WFOs are impacted by an outlook.
+
 ### Bug Fixes
 
 ## **1.5.0** (30 March 2021)
