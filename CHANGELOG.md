@@ -15,6 +15,8 @@ compute which WFOs are impacted by an outlook.
 
 ### Bug Fixes
 
+- Matplotlib 3.4 is generally supported with `pytest-mpl` tests passing.
+
 ## **1.5.0** (30 March 2021)
 
 ### API Changes
