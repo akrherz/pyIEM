@@ -76,6 +76,7 @@ def nwsprecip():
     cmap.set_over("#FFFFFF")
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
+    cm.unregister_cmap("nwsprecip")
     cm.register_cmap(cmap=cmap)
     return cmap
 
@@ -99,6 +100,7 @@ def nwssnow():
     cmap.set_over([0.16862745, 0.0, 0.18039216])
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
+    cm.unregister_cmap("nwssnow")
     cm.register_cmap(cmap=cmap)
     return cmap
 
@@ -109,6 +111,7 @@ def _gen(name, cpool):
     cmap.set_over("#000000")
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
+    cm.unregister_cmap(name)
     cm.register_cmap(cmap=cmap)
     return cmap
 
@@ -414,6 +417,7 @@ def whitebluegreenyellowred():
     cmap3.set_over("#000000")
     cmap3.set_under("#FFFFFF")
     cmap3.set_bad("#FFFFFF")
+    cm.unregister_cmap("whitebluegreenyellowred")
     cm.register_cmap(cmap=cmap3)
     return cmap3
 
@@ -464,5 +468,6 @@ def maue():
     ]
 
     cmap3 = mpcolors.ListedColormap(cpool, "maue")
+    cm.unregister_cmap("maue")
     cm.register_cmap(cmap=cmap3)
     return cmap3
