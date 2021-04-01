@@ -10,6 +10,22 @@ import matplotlib.colors as mpcolors
 from pyiem.reference import DATADIR
 
 
+def _register_cmap(cmap):
+    """Workaround tricky matplotlib API.
+
+    see matplotlib/matplotlib#19842
+    """
+    hascmap = False
+    try:
+        cm.get_cmap(cmap.name)
+        hascmap = True
+    except ValueError:
+        pass
+    if not hascmap:
+        cm.register_cmap(cmap=cmap)
+    return hascmap
+
+
 def _load_local_cmap_colors(name):
     """Return list of colors for this cmap from local file."""
     return (
@@ -90,7 +106,7 @@ def nwsprecip():
     cmap.set_over("#FFFFFF")
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
+    _register_cmap(cmap)
     return cmap
 
 
@@ -113,7 +129,7 @@ def nwssnow():
     cmap.set_over([0.16862745, 0.0, 0.18039216])
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
+    _register_cmap(cmap)
     return cmap
 
 
@@ -123,7 +139,7 @@ def _gen(name, cpool):
     cmap.set_over("#000000")
     cmap.set_under("#FFFFFF")
     cmap.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap)
+    _register_cmap(cmap)
     return cmap
 
 
@@ -191,7 +207,7 @@ def whitebluegreenyellowred():
     cmap3.set_over("#000000")
     cmap3.set_under("#FFFFFF")
     cmap3.set_bad("#FFFFFF")
-    cm.register_cmap(cmap=cmap3)
+    _register_cmap(cmap=cmap3)
     return cmap3
 
 
@@ -199,5 +215,5 @@ def maue():
     """ Pretty color ramp Dr Ryan Maue uses """
     cpool = _load_local_cmap_colors("maue")
     cmap3 = mpcolors.ListedColormap(cpool, "maue")
-    cm.register_cmap(cmap=cmap3)
+    _register_cmap(cmap=cmap3)
     return cmap3
