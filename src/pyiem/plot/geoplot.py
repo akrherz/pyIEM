@@ -1303,12 +1303,14 @@ class MapPlot:
             framealpha=1,
         ).set_zorder(Z_OVERLAY2 + 5)
 
-    def overlay_nexrad(self, valid=None, product="N0Q"):
+    def overlay_nexrad(self, valid=None, product="N0Q", caxpos=None):
         """Overlay an IEM NEXRAD Composite Image.
 
         Args:
           valid (datetime.datetime): Valid time for NEXRAD overlay.
           product (str): either N0Q or N0R for the mosaic type.
+          caxpos (array-like): `matplotlib.axes.set_position` value for the
+            colorbar.  Defaults to something in the upper-right.
 
         Returns:
           valid time of the NEXRAD, or None if not found.
@@ -1393,7 +1395,9 @@ class MapPlot:
             origin="lower",
         ).set_rasterized(True)
         pos = self.ax.get_position()
-        cax = self.fig.add_axes([pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015])
+        cax = self.fig.add_axes(
+            caxpos or [pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015]
+        )
         cb = mpcolorbar.ColorbarBase(
             cax,
             cmap=cmap,
@@ -1410,6 +1414,8 @@ class MapPlot:
                 for d in ramp.loc[ramp["value"] % 20 == 0]["value"].values
             ]
         )
+        if caxpos is not None:
+            pos = cb.ax.get_position()
         self.fig.text(pos.x1, pos.y1 + 0.005, "dBZ", ha="left")
         return valid
 
