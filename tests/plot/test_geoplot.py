@@ -131,7 +131,8 @@ def test_overlay_nexrad_hawaii():
         state="HI",
         title="A long and long title that has no purpose but to test things",
     )
-    mp.overlay_nexrad(utc(2021, 2, 9, 17))
+    caxpos = [0.05, 0.05, 0.35, 0.015]
+    mp.overlay_nexrad(utc(2021, 2, 9, 17), caxpos=caxpos)
     return mp.fig
 
 
