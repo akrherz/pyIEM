@@ -66,6 +66,21 @@ THRESHOLD_ORDER = [
     "CRIT",
     "EXTM",
 ]
+CYCLES = {
+    "C1": [6, 13, 16, 20, 1],
+    "C2": [7, 17],
+    "C3": [
+        8,
+    ],  # kind of sloppy as it depends on CST/CDT
+    "C0": [
+        10,
+    ],  # 0 is special nomenclature for days 4-8
+    "F1": [7, 17],
+    "F2": [8, 18],
+    "F0": [
+        21,
+    ],  # 0 is special nomenclature for days 3-8
+}
 
 
 def compute_times(afos, issue, expire, day):
@@ -85,8 +100,10 @@ def compute_times(afos, issue, expire, day):
     return issue, issue + datetime.timedelta(hours=24)
 
 
-def get_day(text):
+def get_day(prod, text):
     """Figure out which day this is for"""
+    if prod.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PFWFD1", "PFWFD2"]:
+        return int(prod.afos[5])
     search = DAYRE.search(text)
     if search is None:
         return None
@@ -409,6 +426,98 @@ def init_days(prod):
     return {int(prod.afos[5]): f(int(prod.afos[5]))}
 
 
+def _compute_cycle(prod):
+    """Figure out an integer cycle that identifies this product."""
+    day = 0
+    if prod.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PFWFD1", "PFWFD2"]:
+        day = int(prod.afos[5])
+    key = f"{prod.outlook_type}{day}"
+    for hr in CYCLES[key]:
+        if prod.valid.hour in [hr - 1, hr, hr + 1]:
+            return hr
+    return -1  # default
+
+
+def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
+    """Check our database."""
+    txn.execute(
+        "SELECT id, product_issue from spc_outlook where expire = %s and "
+        "outlook_type = %s and day = %s and cycle = %s",
+        (collect.expire, prod.outlook_type, day, prod.cycle),
+    )
+    if txn.rowcount == 0:  # yes
+        LOG.info("Setting as canonical cycle of %s", prod.cycle)
+        txn.execute(
+            "UPDATE spc_outlook SET cycle = %s where id = %s",
+            (prod.cycle, outlook_id),
+        )
+    else:
+        # tricky
+        is_canonical = True
+        for row in txn.fetchall():
+            if row["product_issue"] < prod.valid:
+                txn.execute(
+                    "UPDATE spc_outlook SET cycle = -1 where id = %s",
+                    (row["id"],),
+                )
+            else:
+                is_canonical = False
+        txn.execute(
+            "UPDATE spc_outlook SET cycle = %s where id = %s",
+            (prod.cycle if is_canonical else -1, outlook_id),
+        )
+
+
+def _sql_day_collect(prod, txn, day, collect):
+    """Do database work."""
+    # Compute what our outlook identifier is
+    txn.execute(
+        "SELECT id from spc_outlook where product_issue = %s and "
+        "day = %s and outlook_type = %s",
+        (prod.valid, day, prod.outlook_type),
+    )
+    if txn.rowcount > 0:
+        outlook_id = txn.fetchone()[0]
+        # Do some deleting
+        txn.execute(
+            "DELETE from spc_outlook_geometries where spc_outlook_id = %s",
+            (outlook_id,),
+        )
+        LOG.info("Removed %s rows from spc_outlook_geometries", txn.rowcount)
+    else:
+        txn.execute(
+            "INSERT into spc_outlook(issue, product_issue, expire, product_id,"
+            "outlook_type, day, cycle) VALUES (%s, %s, %s, %s, %s, %s, %s) "
+            "RETURNING id",
+            (
+                collect.issue,
+                prod.valid,
+                collect.expire,
+                prod.get_product_id(),
+                prod.outlook_type,
+                day,
+                -1 if prod.cycle < 0 else -2,  # Placeholder, if necessary
+            ),
+        )
+        outlook_id = txn.fetchone()[0]
+    # Now, are we the canonical outlook for this cycle?
+    if prod.cycle > -1:
+        _sql_cycle_canonical(prod, txn, day, collect, outlook_id)
+    for outlook in collect.outlooks:
+        if outlook.geometry.is_empty:
+            continue
+        txn.execute(
+            "INSERT into spc_outlook_geometries(spc_outlook_id, "
+            "threshold, category, geom) VALUES (%s, %s, %s, %s)",
+            (
+                outlook_id,
+                outlook.threshold,
+                outlook.category,
+                "SRID=4326;%s" % (outlook.geometry.wkt,),
+            ),
+        )
+
+
 class SPCOutlookCollection:
     """ A collection of outlooks for a single 'day'"""
 
@@ -456,7 +565,6 @@ class SPCPTS(TextProduct):
         load_conus_data(self.valid)
         self.issue = None
         self.expire = None
-        self.day = None
         self.outlook_type = None
         self.set_metadata()
         self.find_issue_expire()
@@ -464,6 +572,7 @@ class SPCPTS(TextProduct):
         self.find_outlooks()
         self.quality_control()
         self.compute_wfos()
+        self.cycle = _compute_cycle(self)
 
     def quality_control(self):
         """Run some checks against what was parsed"""
@@ -542,24 +651,13 @@ class SPCPTS(TextProduct):
                             good_polys.append(poly1)
                 if rewrite:
                     outlook.geometry = MultiPolygon(good_polys)
-        # 2. Do the time bounds make sense, limited scope here
-        if (
-            self.day == 1
-            and (self.issue - self.valid).total_seconds() > 8 * 3600
-        ):
-            self.warnings.append(
-                ("time_bounds_check: day: %s issue: %s valid: %s expire: %s")
-                % (self.day, self.issue, self.valid, self.expire)
-            )
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""
         return self.outlook_collections.get(day)
 
-    def get_outlook(self, category, threshold, day=None):
+    def get_outlook(self, category, threshold, day):
         """ Get an outlook by category and threshold """
-        if day is None:
-            day = self.day
         if day not in self.outlook_collections:
             return None
         for outlook in self.outlook_collections[day].outlooks:
@@ -619,29 +717,12 @@ class SPCPTS(TextProduct):
         """
         Set some metadata about this product
         """
-        if self.afos == "PTSDY1":
-            self.day = 1
+        if self.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PTSD48"]:
             self.outlook_type = "C"
-        elif self.afos == "PTSDY2":
-            self.day = 2
-            self.outlook_type = "C"
-        elif self.afos == "PTSDY3":
-            self.day = 3
-            self.outlook_type = "C"
-        elif self.afos == "PTSD48":
-            self.outlook_type = "C"
-        elif self.afos == "PFWFD1":
-            self.day = 1
-            self.outlook_type = "F"
-        elif self.afos == "PFWFD2":
-            self.day = 2
-            self.outlook_type = "F"
-        elif self.afos == "PFWF38":
+        elif self.afos in ["PFWFD1", "PFWFD2", "PFWF38"]:
             self.outlook_type = "F"
         else:
-            self.warnings.append(
-                ("Unknown awipsid '%s' for metadata") % (self.afos,)
-            )
+            raise ValueError(f"Unknown awipsid '{self.afos}' for metadata")
 
     def find_issue_expire(self):
         """
@@ -673,9 +754,7 @@ class SPCPTS(TextProduct):
             self.text = self.text.replace("\n... ", "\n&&\n... ")
             self.text += "\n&& "
         for segment in self.text.split("&&")[:-1]:
-            day = self.day
-            if day is None:
-                day = get_day(segment)
+            day = get_day(self, segment)
             # We need to figure out the probabilistic or category
             tokens = re.findall(r"\.\.\.\s+(.*)\s+\.\.\.", segment)
             if not tokens:
@@ -766,58 +845,12 @@ class SPCPTS(TextProduct):
           txn (psycopg2.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
-            # Establish the outlook_id
-            txn.execute(
-                "SELECT id from spc_outlook where product_issue = %s and "
-                "day = %s and outlook_type = %s",
-                (self.valid, day, self.outlook_type),
-            )
-            if txn.rowcount > 0:
-                outlook_id = txn.fetchone()[0]
-                # Do some deleting
-                txn.execute(
-                    "DELETE from spc_outlook_geometries "
-                    "where spc_outlook_id = %s",
-                    (outlook_id,),
-                )
-                LOG.info(
-                    "Removed %s rows from spc_outlook_geometries",
-                    txn.rowcount,
-                )
-            else:
-                txn.execute(
-                    "INSERT into spc_outlook(issue, product_issue, expire, "
-                    "product_id, outlook_type, day) VALUES "
-                    "(%s, %s, %s, %s, %s, %s) RETURNING id",
-                    (
-                        collect.issue,
-                        self.valid,
-                        collect.expire,
-                        self.get_product_id(),
-                        self.outlook_type,
-                        day,
-                    ),
-                )
-                outlook_id = txn.fetchone()[0]
-
-            for outlook in collect.outlooks:
-                if outlook.geometry.is_empty:
-                    continue
-                txn.execute(
-                    "INSERT into spc_outlook_geometries(spc_outlook_id, "
-                    "threshold, category, geom) VALUES (%s, %s, %s, %s)",
-                    (
-                        outlook_id,
-                        outlook.threshold,
-                        outlook.category,
-                        "SRID=4326;%s" % (outlook.geometry.wkt,),
-                    ),
-                )
+            _sql_day_collect(self, txn, day, collect)
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""
         product_descript = "((%s))" % (self.afos,)
-        url = "http://www.spc.noaa.gov"
+        url = "https://www.spc.noaa.gov"
         day = "((%s))" % (self.afos,)
 
         if self.afos == "PTSDY1":

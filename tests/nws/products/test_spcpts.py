@@ -6,6 +6,24 @@ from pyiem.util import utc, get_test_file
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_cycle(dbcursor):
+    """Test that we get the cycle right."""
+    ans = None
+    for i in range(1, 4):
+        prod = parser(get_test_file(f"SPCPTS/PTSDY1_20Z_{i}.txt"))
+        prod.sql(dbcursor)
+        if i == 3:
+            ans = prod.get_product_id()
+    # Check that we have only one canonical and that it is the last prod
+    dbcursor.execute(
+        "SELECT product_id from spc_outlook where cycle = 20 and "
+        "day = 1 and outlook_type = 'C' and expire = '2002-12-20 12:00+00'"
+    )
+    assert dbcursor.rowcount == 1
+    assert dbcursor.fetchone()[0] == ans
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_product_id_roundtrip(dbcursor):
     """Test that the product_id is persisted to the database."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
@@ -127,12 +145,6 @@ def test_190415_elevated():
     for level in ["IDRT", "SDRT", "ELEV", "CRIT", "EXTM"]:
         outlook = spc.get_outlook("FIRE WEATHER CATEGORICAL", level, 1)
         assert outlook is not None
-
-
-def test_190415_badtime():
-    """This product has a bad time period, we should emit a warning."""
-    spc = parser(get_test_file("SPCPTS/PTSDY1_invalidtime.txt"))
-    assert any([w.startswith("time_bounds_check") for w in spc.warnings])
 
 
 def test_180807_idx1_idx2():
@@ -294,7 +306,7 @@ def test_170404_nogeom():
     """nogeom error from a 2002 product"""
     # 26 Sep 2017, we can workaround this now
     spc = parser(get_test_file("SPCPTS/PTSDY1_2002_nogeom.txt"))
-    outlook = spc.get_outlook("TORNADO", "0.05")
+    outlook = spc.get_outlook("TORNADO", "0.05", 1)
     assert abs(outlook.geometry.area - 8.76) < 0.01
 
 
@@ -302,7 +314,7 @@ def test_170404_2002():
     """Can we parse something from 2002?"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_2002.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 38.614) < 0.01
 
 
@@ -310,7 +322,7 @@ def test_170329_notimp():
     """Exception was raised parsing this guy"""
     spc = parser(get_test_file("SPCPTS/PTSDY2_notimp.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "MRGL")
+    outlook = spc.get_outlook("CATEGORICAL", "MRGL", 2)
     assert abs(outlook.geometry.area - 110.24) < 0.01
 
 
@@ -318,7 +330,7 @@ def test_170215_gh23():
     """A marginal for the entire country :/"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_gh23.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "MRGL")
+    outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
     assert abs(outlook.geometry.area - 19.63) < 0.01
 
 
@@ -326,7 +338,7 @@ def test_150622_ptsdy1_topo():
     """PTSDY1_topo.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_topo.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 91.91) < 0.01
 
 
@@ -334,21 +346,21 @@ def test_150622_ptsdy2():
     """PTSDY2_invalid.txt parsed ok."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_invalid.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 78.14) < 0.01
 
 
 def test_150622_ptsdy1():
     """PTSDY1_nogeom.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 95.900) < 0.01
 
 
 def test_150612_ptsdy1_3():
     """We got an error with this, so we shall test"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_3.txt"))
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 53.94) < 0.01
 
 
@@ -358,16 +370,16 @@ def test_141022_newcats():
         get_test_file("SPCPTS/PTSDY1_new.txt"),
         utcnow=utc(2014, 10, 13, 16, 21),
     )
-    outlook = spc.get_outlook("CATEGORICAL", "ENH")
+    outlook = spc.get_outlook("CATEGORICAL", "ENH", 1)
     assert abs(outlook.geometry.area - 13.02) < 0.01
-    outlook = spc.get_outlook("CATEGORICAL", "MRGL")
+    outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
     assert abs(outlook.geometry.area - 47.01) < 0.01
 
 
 def test_140709_nogeoms():
     """Can we parse holes."""
     spc = parser(get_test_file("SPCPTS/PTSDY3_nogeoms.txt"))
-    outlook = spc.get_outlook("ANY SEVERE", "0.05")
+    outlook = spc.get_outlook("ANY SEVERE", "0.05", 3)
     assert abs(outlook.geometry.area - 99.68) < 0.01
 
 
@@ -375,7 +387,7 @@ def test_140710_nogeom():
     """Can we parse holes."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("CATEGORICAL", "SLGT")
+    outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 43.02) < 0.01
 
 
@@ -394,14 +406,14 @@ def test_140707_general():
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
     # Linework here is invalid, so we can't account for it.
-    outlook = spc.get_outlook("CATEGORICAL", "TSTM")
+    outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 755.424) < 0.01
 
 
 def test_complex():
     """ Test our processing """
     spc = parser(get_test_file("SPCPTS/PTSDY3.txt"))
-    outlook = spc.get_outlook("ANY SEVERE", "0.05")
+    outlook = spc.get_outlook("ANY SEVERE", "0.05", 3)
     assert abs(outlook.geometry.area - 10.12) < 0.01
 
 
@@ -470,7 +482,7 @@ def test_complex_2():
     """ Test our processing """
     spc = parser(get_test_file("SPCPTS/PTSDY1.txt"))
     # spc.draw_outlooks()
-    outlook = spc.get_outlook("HAIL", "0.05")
+    outlook = spc.get_outlook("HAIL", "0.05", 1)
     assert abs(outlook.geometry.area - 47.65) < 0.01
 
 
