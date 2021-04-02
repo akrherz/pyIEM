@@ -5,6 +5,17 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_pfwfd2():
+    """Test parsing of a fire weather data2 product."""
+    text = get_test_file("SPCPTS/PFWFD2.txt")
+    prod = parser(text)
+    assert prod.cycle == 18
+    prod = parser(text.replace("0221 PM", "0721 AM"))
+    assert prod.cycle == 8
+    prod = parser(text.replace("0221 PM", "0821 AM"))
+    assert prod.cycle == -1
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_cycle(dbcursor):
     """Test that we get the cycle right."""
