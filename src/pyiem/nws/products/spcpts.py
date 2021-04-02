@@ -66,21 +66,6 @@ THRESHOLD_ORDER = [
     "CRIT",
     "EXTM",
 ]
-CYCLES = {
-    "C1": [6, 13, 16, 20, 1],
-    "C2": [7, 17],
-    "C3": [
-        8,
-    ],  # kind of sloppy as it depends on CST/CDT
-    "C0": [
-        10,
-    ],  # 0 is special nomenclature for days 4-8
-    "F1": [7, 17],
-    "F2": [8, 18],
-    "F0": [
-        21,
-    ],  # 0 is special nomenclature for days 3-8
-}
 
 
 def compute_times(afos, issue, expire, day):
@@ -428,15 +413,32 @@ def init_days(prod):
 
 def _compute_cycle(prod):
     """Figure out an integer cycle that identifies this product."""
-    day = 0
-    if prod.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PFWFD1", "PFWFD2"]:
-        day = int(prod.afos[5])
-    key = f"{prod.outlook_type}{day}"
-    rng = 1 if len(CYCLES[key]) > 2 else 3
-    for hr in CYCLES[key]:
-        if prod.valid.hour in range(hr - rng, hr + rng + 1):
-            return hr
-    return -1  # default
+    # Extended ones are easy
+    if prod.afos in ["PTSD48", "PFWF38"]:
+        return 21 if prod.outlook_type == "F" else 10
+    day = int(prod.afos[5])
+    if day == 3:  # has to be convective
+        return 8
+    # Day 2 are based on the product issuance time
+    if day == 2:
+        if prod.outlook_type == "F":
+            if prod.valid.hour in range(4, 13):
+                return 8
+            if prod.valid.hour in range(14, 23):
+                return 18
+        if prod.outlook_type == "C":
+            if prod.valid.hour in range(4, 13):
+                return 7
+            if prod.valid.hour in range(14, 23):
+                return 17
+        return -1
+    # We are left with day 1
+    hhmi = prod.get_outlookcollection(day).issue.strftime("%H%M")
+    if prod.outlook_type == "C":
+        lkp = {"1200": 6, "1300": 13, "1630": 16, "2000": 20, "0100": 1}
+        return lkp.get(hhmi, -1)
+    lkp = {"1200": 7, "1700": 17}
+    return lkp.get(hhmi, -1)
 
 
 def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
