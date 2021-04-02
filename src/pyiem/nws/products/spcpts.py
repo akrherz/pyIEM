@@ -432,8 +432,9 @@ def _compute_cycle(prod):
     if prod.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PFWFD1", "PFWFD2"]:
         day = int(prod.afos[5])
     key = f"{prod.outlook_type}{day}"
+    rng = 1 if len(CYCLES[key]) > 2 else 3
     for hr in CYCLES[key]:
-        if prod.valid.hour in [hr - 1, hr, hr + 1]:
+        if prod.valid.hour in range(hr - rng, hr + rng + 1):
             return hr
     return -1  # default
 
