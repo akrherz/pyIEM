@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Moved `pyiem.plot.geoplot.load_geodf` to `pyiem.util.load_geodf`.
+- Removed `day` attribute from `pyiem.nws.products.spcpts.SPCPTS` class as it
+was not accurate.
 
 ### New Features
 
