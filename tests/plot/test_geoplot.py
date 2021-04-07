@@ -34,6 +34,20 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_nashville():
+    """Test that Benton County, TNC005 does not show for OHX."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="OHX",
+        title="Don't show Benton County TN!",
+    )
+    mp.fill_ugcs({"TNC005": 10}, plotmissing=True)
+    mp.draw_cwas()
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plotmissing():
     """Test that we can plotmissing."""
     mp = MapPlot(
