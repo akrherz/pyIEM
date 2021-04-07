@@ -253,8 +253,8 @@ def segment_logic(segment, currentpoly, polys):
             (segment[0][0] - segment[-1][0]) ** 2
             + (segment[0][1] - segment[-1][1]) ** 2
         ) ** 0.5
-        if dist < 0.8:  # arb
-            LOG.info("    Start and end pt %.3f apart, ajoining", dist)
+        if dist < 1:  # arb
+            LOG.info("     Start and end pt %.3f apart, ajoining", dist)
             segment.append(segment[0])
     if segment[0] == segment[-1] and len(segment) > 2:
         LOG.info("     segment is closed polygon!")
@@ -289,7 +289,7 @@ def segment_logic(segment, currentpoly, polys):
     if isinstance(ls, MultiLineString):
         for _ls in ls:
             LOG.info("     look out below, recursive we go.")
-            currentpoly = segment_logic(_ls.coords, currentpoly, polys)
+            currentpoly = segment_logic(list(_ls.coords), currentpoly, polys)
         return currentpoly
     if ls is None:
         LOG.info("     aborting as clean_segment failed...")
@@ -329,8 +329,13 @@ def segment_logic(segment, currentpoly, polys):
     # Results in either [currentpoly] or [polya, polyb, ...]
     geomcollect = split(currentpoly, ls)
     if len(geomcollect) > 2:
-        LOG.info("     line intersects polygon 3+ times, can't handle")
-        return currentpoly
+        # Perhaps we got some very small polygons, cull those
+        geomcollect = MultiPolygon(
+            [geo for geo in geomcollect if geo.area > 0.1]
+        )
+        if len(geomcollect) > 2:
+            LOG.info("     line intersects polygon 3+ times, can't handle")
+            return currentpoly
     if len(geomcollect) == 1:
         res = geomcollect.geoms[0]
     else:
