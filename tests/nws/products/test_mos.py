@@ -5,6 +5,16 @@ from pyiem.nws.products.mos import parser as mosparser
 from pyiem.util import utc, get_test_file
 
 
+@pytest.mark.parametrize("z", ["12", "15", "21"])
+def test_210407_negative_dates(z):
+    """Test that we can get the timestamps right, le sigh."""
+    utcnow = utc(2021, 4, 7, 15)
+    prod = mosparser(get_test_file(f"MOS/NBS_{z}Z.txt"), utcnow=utcnow)
+    sect = prod.data[0]
+    for ts in sect["data"]:
+        assert ts > sect["initts"]
+
+
 def test_201107_mex_negative():
     """Test problem with negative low temperature climo."""
     utcnow = utc(2020, 11, 7)
