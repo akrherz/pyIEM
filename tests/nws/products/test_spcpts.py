@@ -5,6 +5,54 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_three():
+    """Test for a three intersection."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_three.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MDT", 1)
+    assert abs(outlook.geometry.area - 31.511) < 0.01
+
+
+def test_sequence():
+    """Test for a bad sequence of multipolygons."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_sequence.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MDT", 1)
+    assert abs(outlook.geometry.area - 28.441) < 0.01
+
+
+def test_badpoly3():
+    """Test that we can get a slight risk from this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly3.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "SLGT", 1)
+    assert abs(outlook.geometry.area - 14.532) < 0.01
+
+
+def test_badpoly2():
+    """Test that we can get a slight risk from this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly2.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "SLGT", 1)
+    assert abs(outlook.geometry.area - 47.538) < 0.01
+
+
+def test_badpoly():
+    """Test that we don't get a bad polygon out of this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 271.45) < 0.01
+
+
+def test_nogeom4():
+    """Test that we can get a slight risk from this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
+    assert abs(outlook.geometry.area - 31.25) < 0.01
+
+
+def test_may3():
+    """Test that we can do something with the may 3, 1999 PTS."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_may3.txt"))
+    assert prod is not None
+
+
 def test_pfwfd2():
     """Test parsing of a fire weather data2 product."""
     text = get_test_file("SPCPTS/PFWFD2.txt")
@@ -49,6 +97,7 @@ def test_product_id_roundtrip(dbcursor):
 def test_170619_maine():
     """Test that we don't light up all of Main for the slight."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
+    spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 49.058) < 0.01
 
@@ -63,7 +112,7 @@ def test_issue295_geometryfail():
     )
     load_conus_data(utc(2020, 9, 26))
     res = str2multipolygon(s)
-    assert abs(res[0].area - 21.09) < 0.001
+    assert abs(res[0].area - 21.0814) < 0.001
 
 
 def test_200602_unpack():
@@ -89,7 +138,7 @@ def test_190907_invalid():
     spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 314.76) < 0.01
+    assert abs(outlook.geometry.area - 306.663) < 0.01
 
 
 def test_190905_invalid():
@@ -130,7 +179,7 @@ def test_190527_canada():
     spc = parser(get_test_file("SPCPTS/PTSDY1_canada.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 118.245) < 0.01
+    assert abs(outlook.geometry.area - 118.229) < 0.01
 
 
 def test_190515_issue117_month():
@@ -224,7 +273,7 @@ def test_170428_large(dbcursor):
     # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("TORNADO", "0.10", 1)
-    assert abs(outlook.geometry.area - 31.11) < 0.01
+    assert outlook.geometry.is_empty
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 428.00) < 0.01
 
@@ -272,8 +321,7 @@ def test_080731_invalid():
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("WIND", "SIGN", 1)
-    assert abs(outlook.geometry.area - 15.82) < 0.01
-    assert len(spc.warnings) == 1
+    assert outlook.geometry.is_empty
 
 
 def test_170411_jabber_error():
@@ -365,7 +413,7 @@ def test_150622_ptsdy1():
     """PTSDY1_nogeom.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
-    assert abs(outlook.geometry.area - 95.900) < 0.01
+    assert abs(outlook.geometry.area - 95.912) < 0.01
 
 
 def test_150612_ptsdy1_3():

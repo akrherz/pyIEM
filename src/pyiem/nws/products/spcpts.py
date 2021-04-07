@@ -134,7 +134,7 @@ def get_segments_from_text(text):
     return segments
 
 
-def clean_segment(ls):
+def clean_segment(ls, trip=0):
     """Attempt to get this segment cleaned up.
 
     Args:
@@ -148,11 +148,6 @@ def clean_segment(ls):
         """Our tester."""
         return isinstance(val, MultiPoint) and len(val) == 2
 
-    # If this intersects twice, we are golden
-    res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
-    if _test(res):
-        return ls
-
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
@@ -163,22 +158,27 @@ def clean_segment(ls):
         )
         if pt.within(CONUS["poly"]):
             LOG.info("     idx: %s is still within, evasive action", idx)
-            for xoff, yoff in [
-                [-0.01, -0.01],
-                [-0.01, 0.0],
-                [-0.01, 0.01],
-                [0.0, -0.01],
-                [0.0, 0.0],
-                [0.0, 0.01],
-                [0.01, -0.01],
-                [0.01, 0.0],
-                [0.01, 0.01],
-            ]:
-                pt2 = translate(pt, xoff=xoff, yoff=yoff)
-                if not pt2.within(CONUS["poly"]):
-                    pt = pt2
-                    LOG.info("     idx: %s is now %s", idx, pt)
+            done = False
+            for multi in [0.01, 0.1, 1.0]:
+                if done:
                     break
+                for xoff, yoff in [
+                    [-0.01 * multi, -0.01 * multi],
+                    [-0.01 * multi, 0.0 * multi],
+                    [-0.01 * multi, 0.01 * multi],
+                    [0.0 * multi, -0.01 * multi],
+                    [0.0 * multi, 0.0 * multi],
+                    [0.0 * multi, 0.01 * multi],
+                    [0.01 * multi, -0.01 * multi],
+                    [0.01 * multi, 0.0 * multi],
+                    [0.01 * multi, 0.01 * multi],
+                ]:
+                    pt2 = translate(pt, xoff=xoff, yoff=yoff)
+                    if not pt2.within(CONUS["poly"]):
+                        pt = pt2
+                        LOG.info("     idx: %s is now %s", idx, pt)
+                        done = True
+                        break
         LOG.info(
             "     fix idx: %s to new: %.4f %.4f Inside: %s",
             idx,
@@ -192,16 +192,26 @@ def clean_segment(ls):
     res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
     if _test(res):
         return ls
-
-    # Are we doing 3+ intersections already
-    if isinstance(res, MultiPoint) and len(res) > 2:
-        return MultiLineString(
-            [
-                r
-                for r in ls.intersection(CONUS["poly"])
-                if isinstance(r, LineString)
-            ]
-        )
+    # Are we doing 3+ intersections already, remove anything very short
+    if trip == 0 and isinstance(res, MultiPoint) and len(res) > 2:
+        take = []
+        for _geo in ls.intersection(CONUS["poly"]):
+            if _geo.length < 0.2:  # arb
+                continue
+            # Make sure the line intersects twice with the CONUS
+            if _test(_geo):
+                take.append(_geo)
+            else:
+                LOG.info("    cleaning segment a second time")
+                res = clean_segment(_geo, 1)
+                pts = LineString(CONUS["poly"].exterior.coords).intersection(
+                    res
+                )
+                if _test(pts):
+                    take.append(res)
+        if len(take) == 1:
+            return take[0]
+        return MultiLineString(take)
 
     LOG.info("     clean_segment failed with res: %s", res)
     return None
@@ -211,7 +221,11 @@ def look_for_closed_polygon(segment):
     """Simple logic to see if our polygon is already closed."""
     if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
         LOG.info("Single closed polygon found, done and done")
-        return MultiPolygon([Polygon(segment)])
+        poly = Polygon(segment)
+        if not poly.is_valid:
+            LOG.info("closed polygon is invalid, buffer(0) to the rescue.")
+            poly = poly.buffer(0)
+        return MultiPolygon([poly])
 
     # Slightly bad line-work, whereby the start and end points are very close
     # to each other
@@ -232,6 +246,16 @@ def look_for_closed_polygon(segment):
 
 def segment_logic(segment, currentpoly, polys):
     """Our segment parsing logic."""
+    # Perhaps our segment end points are close enough to almost touch, we
+    # can finish the job!
+    if segment[0] != segment[-1] and len(segment) > 2:
+        dist = (
+            (segment[0][0] - segment[-1][0]) ** 2
+            + (segment[0][1] - segment[-1][1]) ** 2
+        ) ** 0.5
+        if dist < 1:  # arb
+            LOG.info("     Start and end pt %.3f apart, ajoining", dist)
+            segment.append(segment[0])
     if segment[0] == segment[-1] and len(segment) > 2:
         LOG.info("     segment is closed polygon!")
         lr = LinearRing(LineString(segment))
@@ -265,7 +289,7 @@ def segment_logic(segment, currentpoly, polys):
     if isinstance(ls, MultiLineString):
         for _ls in ls:
             LOG.info("     look out below, recursive we go.")
-            currentpoly = segment_logic(_ls.coords, currentpoly, polys)
+            currentpoly = segment_logic(list(_ls.coords), currentpoly, polys)
         return currentpoly
     if ls is None:
         LOG.info("     aborting as clean_segment failed...")
@@ -305,8 +329,13 @@ def segment_logic(segment, currentpoly, polys):
     # Results in either [currentpoly] or [polya, polyb, ...]
     geomcollect = split(currentpoly, ls)
     if len(geomcollect) > 2:
-        LOG.info("     line intersects polygon 3+ times, can't handle")
-        return currentpoly
+        # Perhaps we got some very small polygons, cull those
+        geomcollect = MultiPolygon(
+            [geo for geo in geomcollect if geo.area > 0.1]
+        )
+        if len(geomcollect) > 2:
+            LOG.info("     line intersects polygon 3+ times, can't handle")
+            return currentpoly
     if len(geomcollect) == 1:
         res = geomcollect.geoms[0]
     else:
@@ -323,7 +352,7 @@ def segment_logic(segment, currentpoly, polys):
     return currentpoly
 
 
-# def debug_draw(segment, current_poly):
+# def debug_draw(i, segment, current_poly):
 #    """Draw this for debugging purposes."""
 #    segment = np.array(segment)
 #    from pyiem.plot.use_agg import plt
@@ -334,8 +363,8 @@ def segment_logic(segment, currentpoly, polys):
 #    ax.plot(current_poly.exterior.xy[0], current_poly.exterior.xy[1], c='r')
 #    ax.set_xlim(*xlim)
 #    ax.set_ylim(*ylim)
-#    LOG.info("writting /tmp/debugdraw.png")
-#    fig.savefig("/tmp/debugdraw.png")
+#    LOG.info(f"writting /tmp/{i}debugdraw.png")
+#    fig.savefig(f"/tmp/{i}debugdraw.png")
 
 
 def str2multipolygon(s):
@@ -357,7 +386,7 @@ def str2multipolygon(s):
     currentpoly = copy.deepcopy(CONUS["poly"])
 
     for i, segment in enumerate(segments):
-        # debug_draw(segment, currentpoly)
+        # debug_draw(i, segment, currentpoly)
         LOG.info(
             "  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)",
             i + 1,
@@ -383,6 +412,29 @@ def str2multipolygon(s):
             LOG.info("     polygon %s is just CONUS, skipping", i)
             continue
         LOG.info("     polygon: %s has area: %s", i, poly.area)
+        res.append(poly)
+    # Look for overlapping polygons
+    toadd = []
+    toremove = []
+    for combo in itertools.combinations(res, 2):
+        if combo[0].intersects(combo[1]):
+            LOG.info("     polygons intersect, differencing!")
+            # Take the difference of the larger from the smaller
+            i = 1
+            j = 0
+            if combo[0].area > combo[1].area:
+                i = 0
+                j = 1
+            poly = combo[i].difference(combo[j])
+            if isinstance(poly, MultiPolygon):
+                toadd.extend([geo for geo in poly])
+            else:
+                toadd.append(poly)
+            toremove.append(combo[0])
+            toremove.append(combo[1])
+    for poly in toremove:
+        res.remove(poly)
+    for poly in toadd:
         res.append(poly)
     if not res:
         raise Exception(
@@ -714,7 +766,7 @@ class SPCPTS(TextProduct):
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
-                fig.close()
+                plt.close()
 
     def set_metadata(self):
         """
@@ -825,6 +877,7 @@ class SPCPTS(TextProduct):
 
     def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon"""
+        # self.draw_outlooks()
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
