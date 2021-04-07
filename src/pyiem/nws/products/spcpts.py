@@ -134,7 +134,7 @@ def get_segments_from_text(text):
     return segments
 
 
-def clean_segment(ls):
+def clean_segment(ls, trip=0):
     """Attempt to get this segment cleaned up.
 
     Args:
@@ -158,22 +158,27 @@ def clean_segment(ls):
         )
         if pt.within(CONUS["poly"]):
             LOG.info("     idx: %s is still within, evasive action", idx)
-            for xoff, yoff in [
-                [-0.01, -0.01],
-                [-0.01, 0.0],
-                [-0.01, 0.01],
-                [0.0, -0.01],
-                [0.0, 0.0],
-                [0.0, 0.01],
-                [0.01, -0.01],
-                [0.01, 0.0],
-                [0.01, 0.01],
-            ]:
-                pt2 = translate(pt, xoff=xoff, yoff=yoff)
-                if not pt2.within(CONUS["poly"]):
-                    pt = pt2
-                    LOG.info("     idx: %s is now %s", idx, pt)
+            done = False
+            for multi in [0.01, 0.1, 1.0]:
+                if done:
                     break
+                for xoff, yoff in [
+                    [-0.01 * multi, -0.01 * multi],
+                    [-0.01 * multi, 0.0 * multi],
+                    [-0.01 * multi, 0.01 * multi],
+                    [0.0 * multi, -0.01 * multi],
+                    [0.0 * multi, 0.0 * multi],
+                    [0.0 * multi, 0.01 * multi],
+                    [0.01 * multi, -0.01 * multi],
+                    [0.01 * multi, 0.0 * multi],
+                    [0.01 * multi, 0.01 * multi],
+                ]:
+                    pt2 = translate(pt, xoff=xoff, yoff=yoff)
+                    if not pt2.within(CONUS["poly"]):
+                        pt = pt2
+                        LOG.info("     idx: %s is now %s", idx, pt)
+                        done = True
+                        break
         LOG.info(
             "     fix idx: %s to new: %.4f %.4f Inside: %s",
             idx,
@@ -187,16 +192,26 @@ def clean_segment(ls):
     res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
     if _test(res):
         return ls
-
-    # Are we doing 3+ intersections already
-    if isinstance(res, MultiPoint) and len(res) > 2:
-        return MultiLineString(
-            [
-                r
-                for r in ls.intersection(CONUS["poly"])
-                if isinstance(r, LineString)
-            ]
-        )
+    # Are we doing 3+ intersections already, remove anything very short
+    if trip == 0 and isinstance(res, MultiPoint) and len(res) > 2:
+        take = []
+        for _geo in ls.intersection(CONUS["poly"]):
+            if _geo.length < 0.2:  # arb
+                continue
+            # Make sure the line intersects twice with the CONUS
+            if _test(_geo):
+                take.append(_geo)
+            else:
+                LOG.info("    cleaning segment a second time")
+                res = clean_segment(_geo, 1)
+                pts = LineString(CONUS["poly"].exterior.coords).intersection(
+                    res
+                )
+                if _test(pts):
+                    take.append(res)
+        if len(take) == 1:
+            return take[0]
+        return MultiLineString(take)
 
     LOG.info("     clean_segment failed with res: %s", res)
     return None
@@ -328,7 +343,7 @@ def segment_logic(segment, currentpoly, polys):
     return currentpoly
 
 
-# def debug_draw(segment, current_poly):
+# def debug_draw(i, segment, current_poly):
 #    """Draw this for debugging purposes."""
 #    segment = np.array(segment)
 #    from pyiem.plot.use_agg import plt
@@ -339,8 +354,8 @@ def segment_logic(segment, currentpoly, polys):
 #    ax.plot(current_poly.exterior.xy[0], current_poly.exterior.xy[1], c='r')
 #    ax.set_xlim(*xlim)
 #    ax.set_ylim(*ylim)
-#    LOG.info("writting /tmp/debugdraw.png")
-#    fig.savefig("/tmp/debugdraw.png")
+#    LOG.info(f"writting /tmp/{i}debugdraw.png")
+#    fig.savefig(f"/tmp/{i}debugdraw.png")
 
 
 def str2multipolygon(s):
@@ -362,7 +377,7 @@ def str2multipolygon(s):
     currentpoly = copy.deepcopy(CONUS["poly"])
 
     for i, segment in enumerate(segments):
-        # debug_draw(segment, currentpoly)
+        # debug_draw(i, segment, currentpoly)
         LOG.info(
             "  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)",
             i + 1,

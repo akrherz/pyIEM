@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_badpoly():
+    """Test that we don't get a bad polygon out of this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 271.45) < 0.01
+
+
 def test_nogeom4():
     """Test that we can get a slight risk from this."""
     prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
@@ -62,6 +69,7 @@ def test_product_id_roundtrip(dbcursor):
 def test_170619_maine():
     """Test that we don't light up all of Main for the slight."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
+    spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 49.058) < 0.01
 
@@ -76,7 +84,7 @@ def test_issue295_geometryfail():
     )
     load_conus_data(utc(2020, 9, 26))
     res = str2multipolygon(s)
-    assert abs(res[0].area - 21.09) < 0.001
+    assert abs(res[0].area - 21.0814) < 0.001
 
 
 def test_200602_unpack():
@@ -143,7 +151,7 @@ def test_190527_canada():
     spc = parser(get_test_file("SPCPTS/PTSDY1_canada.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 118.245) < 0.01
+    assert abs(outlook.geometry.area - 118.229) < 0.01
 
 
 def test_190515_issue117_month():
@@ -378,7 +386,7 @@ def test_150622_ptsdy1():
     """PTSDY1_nogeom.txt """
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
-    assert abs(outlook.geometry.area - 95.900) < 0.01
+    assert abs(outlook.geometry.area - 95.912) < 0.01
 
 
 def test_150612_ptsdy1_3():
