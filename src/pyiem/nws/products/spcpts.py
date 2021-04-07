@@ -709,7 +709,7 @@ class SPCPTS(TextProduct):
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
-                fig.close()
+                plt.close()
 
     def set_metadata(self):
         """
