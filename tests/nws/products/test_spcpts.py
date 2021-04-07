@@ -5,6 +5,12 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_may3():
+    """Test that we can do something with the may 3, 1999 PTS."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_may3.txt"))
+    assert prod is not None
+
+
 def test_pfwfd2():
     """Test parsing of a fire weather data2 product."""
     text = get_test_file("SPCPTS/PFWFD2.txt")

@@ -148,11 +148,6 @@ def clean_segment(ls):
         """Our tester."""
         return isinstance(val, MultiPoint) and len(val) == 2
 
-    # If this intersects twice, we are golden
-    res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
-    if _test(res):
-        return ls
-
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
