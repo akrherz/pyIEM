@@ -38,7 +38,7 @@ def section_parser(sect):
     hrline = 2
     if model in ["MEX", "LAV"]:
         hrline = 1
-    elif model in ["NBE"]:
+    elif model in ["NBE", "NBS"]:
         hrline = 3
     hrs = lines[hrline].replace("|", " ").split()
     if hrs[0] == "DT":  # Hack
@@ -49,7 +49,7 @@ def section_parser(sect):
         elif model == "LAV":
             ts = initts + datetime.timedelta(hours=(i + 1))
             assert ts.hour == int(hr)
-        elif model in ["MEX", "NBE"]:
+        elif model in ["MEX", "NBE", "NBS"]:
             ts = initts + datetime.timedelta(hours=int(hr))
         elif hr == "00":
             ts = times[-1] + datetime.timedelta(days=1)
@@ -58,6 +58,10 @@ def section_parser(sect):
             ts = times[-1].replace(hour=int(hr))
         times.append(ts)
         data[ts] = {}
+    # Double check
+    for ts in data:
+        if ts < initts:
+            raise AssertionError(f"Computed ts of {ts} < initts {initts}")
 
     chars = "(...)" if model not in ["MEX", "NBE"] else "(....)"
     startline = 2 if model in ["LAV"] else 3
