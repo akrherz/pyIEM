@@ -404,6 +404,23 @@ def str2multipolygon(s):
             continue
         LOG.info("     polygon: %s has area: %s", i, poly.area)
         res.append(poly)
+    # Look for overlapping polygons
+    toadd = []
+    toremove = []
+    for combo in itertools.combinations(res, 2):
+        if combo[0].overlaps(combo[1]):
+            LOG.info("     polygons overlap, differencing!")
+            # Take the difference of the larger from the smaller
+            if combo[0].area > combo[1].area:
+                toadd.append(combo[0].difference(combo[1]))
+            else:
+                toadd.append(combo[1].difference(combo[0]))
+            toremove.append(combo[0])
+            toremove.append(combo[1])
+    for poly in toremove:
+        res.remove(poly)
+    for poly in toadd:
+        res.append(poly)
     if not res:
         raise Exception(
             (
