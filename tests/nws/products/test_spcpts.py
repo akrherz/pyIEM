@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_badpoly3():
+    """Test that we can get a slight risk from this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly3.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "SLGT", 1)
+    assert abs(outlook.geometry.area - 14.532) < 0.01
+
+
 def test_badpoly2():
     """Test that we can get a slight risk from this."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly2.txt"))
@@ -117,7 +124,7 @@ def test_190907_invalid():
     spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 314.76) < 0.01
+    assert abs(outlook.geometry.area - 306.663) < 0.01
 
 
 def test_190905_invalid():
@@ -252,7 +259,7 @@ def test_170428_large(dbcursor):
     # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("TORNADO", "0.10", 1)
-    assert abs(outlook.geometry.area - 31.11) < 0.01
+    assert outlook.geometry.is_empty
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 428.00) < 0.01
 
@@ -300,8 +307,7 @@ def test_080731_invalid():
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("WIND", "SIGN", 1)
-    assert abs(outlook.geometry.area - 15.82) < 0.01
-    assert len(spc.warnings) == 1
+    assert outlook.geometry.is_empty
 
 
 def test_170411_jabber_error():

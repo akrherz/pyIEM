@@ -221,7 +221,11 @@ def look_for_closed_polygon(segment):
     """Simple logic to see if our polygon is already closed."""
     if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
         LOG.info("Single closed polygon found, done and done")
-        return MultiPolygon([Polygon(segment)])
+        poly = Polygon(segment)
+        if not poly.is_valid:
+            LOG.info("closed polygon is invalid, buffer(0) to the rescue.")
+            poly = poly.buffer(0)
+        return MultiPolygon([poly])
 
     # Slightly bad line-work, whereby the start and end points are very close
     # to each other
@@ -249,7 +253,7 @@ def segment_logic(segment, currentpoly, polys):
             (segment[0][0] - segment[-1][0]) ** 2
             + (segment[0][1] - segment[-1][1]) ** 2
         ) ** 0.5
-        if dist < 0.5:  # arb
+        if dist < 0.8:  # arb
             LOG.info("    Start and end pt %.3f apart, ajoining", dist)
             segment.append(segment[0])
     if segment[0] == segment[-1] and len(segment) > 2:
@@ -408,8 +412,8 @@ def str2multipolygon(s):
     toadd = []
     toremove = []
     for combo in itertools.combinations(res, 2):
-        if combo[0].overlaps(combo[1]):
-            LOG.info("     polygons overlap, differencing!")
+        if combo[0].intersects(combo[1]):
+            LOG.info("     polygons intersect, differencing!")
             # Take the difference of the larger from the smaller
             if combo[0].area > combo[1].area:
                 toadd.append(combo[0].difference(combo[1]))
@@ -862,6 +866,7 @@ class SPCPTS(TextProduct):
 
     def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon"""
+        # self.draw_outlooks()
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
