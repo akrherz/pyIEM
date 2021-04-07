@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_nogeom4():
+    """Test that we can get a slight risk from this."""
+    prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
+    assert abs(outlook.geometry.area - 31.25) < 0.01
+
+
 def test_may3():
     """Test that we can do something with the may 3, 1999 PTS."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_may3.txt"))

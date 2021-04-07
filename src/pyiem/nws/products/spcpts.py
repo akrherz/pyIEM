@@ -227,6 +227,16 @@ def look_for_closed_polygon(segment):
 
 def segment_logic(segment, currentpoly, polys):
     """Our segment parsing logic."""
+    # Perhaps our segment end points are close enough to almost touch, we
+    # can finish the job!
+    if segment[0] != segment[-1] and len(segment) > 2:
+        dist = (
+            (segment[0][0] - segment[-1][0]) ** 2
+            + (segment[0][1] - segment[-1][1]) ** 2
+        ) ** 0.5
+        if dist < 0.5:  # arb
+            LOG.info("    Start and end pt %.3f apart, ajoining", dist)
+            segment.append(segment[0])
     if segment[0] == segment[-1] and len(segment) > 2:
         LOG.info("     segment is closed polygon!")
         lr = LinearRing(LineString(segment))
