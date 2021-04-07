@@ -415,10 +415,16 @@ def str2multipolygon(s):
         if combo[0].intersects(combo[1]):
             LOG.info("     polygons intersect, differencing!")
             # Take the difference of the larger from the smaller
+            i = 1
+            j = 0
             if combo[0].area > combo[1].area:
-                toadd.append(combo[0].difference(combo[1]))
+                i = 0
+                j = 1
+            poly = combo[i].difference(combo[j])
+            if isinstance(poly, MultiPolygon):
+                toadd.extend([geo for geo in poly])
             else:
-                toadd.append(combo[1].difference(combo[0]))
+                toadd.append(poly)
             toremove.append(combo[0])
             toremove.append(combo[1])
     for poly in toremove:

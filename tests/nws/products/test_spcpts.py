@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_sequence():
+    """Test for a bad sequence of multipolygons."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_sequence.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MDT", 1)
+    assert abs(outlook.geometry.area - 28.441) < 0.01
+
+
 def test_badpoly3():
     """Test that we can get a slight risk from this."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_badpoly3.txt"))
