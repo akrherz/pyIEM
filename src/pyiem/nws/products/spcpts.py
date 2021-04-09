@@ -343,8 +343,13 @@ def segment_logic(segment, currentpoly, polys):
         # Linear reference our splitter's start and end distance
         startdist = polya.exterior.project(Point(ls.coords[0]))
         enddist = polya.exterior.project(Point(ls.coords[-1]))
-        # if the end is further down the line, we want this polygon
-        res = polya if enddist > startdist else polyb
+        # So the ls could cross over the exterior's line origin.
+        exl = polya.exterior.length
+        if startdist < (exl * 0.25) and enddist > (exl * 0.75):  # arb
+            res = polyb
+        else:
+            # if the end is further down the line, we want this polygon
+            res = polya if enddist > startdist else polyb
 
     if res.area > 0.01:
         LOG.info("     taking polygon.area = %.4f", res.area)

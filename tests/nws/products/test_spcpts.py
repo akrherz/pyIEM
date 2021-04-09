@@ -5,6 +5,13 @@ from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210409_day2_invalid_geom():
+    """Test why this outlook bombed for me."""
+    prod = parser(get_test_file("SPCPTS/PTSDY2_invalid3.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 2)
+    assert abs(outlook.geometry.area - 212.9588) < 0.01
+
+
 def test_three():
     """Test for a three intersection."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_three.txt"))
