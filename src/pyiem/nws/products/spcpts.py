@@ -339,16 +339,21 @@ def segment_logic(segment, currentpoly, polys):
     if len(geomcollect) == 1:
         res = geomcollect.geoms[0]
     else:
+        # Need to figure out which polygon is to the left of the splitting
+        # line segment
         (polya, polyb) = geomcollect.geoms[0], geomcollect.geoms[1]
-        # Linear reference our splitter's start and end distance
+        # Project the first two points of the splitter back onto the
+        # polygon exterior
         startdist = polya.exterior.project(Point(ls.coords[0]))
-        enddist = polya.exterior.project(Point(ls.coords[-1]))
-        # So the ls could cross over the exterior's line origin.
-        exl = polya.exterior.length
-        if startdist < (exl * 0.25) and enddist > (exl * 0.75):  # arb
+        enddist = polya.exterior.project(Point(ls.coords[1]))
+        # Since we have to worry about crossing the origin, the distance
+        # should be close when not
+        dist0 = Point(ls.coords[0]).distance(Point(ls.coords[1]))
+        if abs(enddist - startdist) > dist0 * 1.1:  # arb
+            LOG.info("     Likely crosssed the origin of the exterior.")
             res = polyb
         else:
-            # if the end is further down the line, we want this polygon
+            # If this is increasing, this is the polygon we want
             res = polya if enddist > startdist else polyb
 
     if res.area > 0.01:
