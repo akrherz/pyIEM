@@ -19,8 +19,10 @@ from shapely.geometry import (
 )
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
-from shapely.ops import split
 from shapely.affinity import translate
+
+# Local
+from pyiem.geom_util import rhs_split
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc, LOG, load_geodf
 
@@ -326,40 +328,12 @@ def segment_logic(segment, currentpoly, polys):
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
-    # Results in either [currentpoly] or [polya, polyb, ...]
-    geomcollect = split(currentpoly, ls)
-    if len(geomcollect) > 2:
-        # Perhaps we got some very small polygons, cull those
-        geomcollect = MultiPolygon(
-            [geo for geo in geomcollect if geo.area > 0.1]
-        )
-        if len(geomcollect) > 2:
-            LOG.info("     line intersects polygon 3+ times, can't handle")
-            return currentpoly
-    if len(geomcollect) == 1:
-        res = geomcollect.geoms[0]
-    else:
-        # Need to figure out which polygon is to the left of the splitting
-        # line segment
-        (polya, polyb) = geomcollect.geoms[0], geomcollect.geoms[1]
-        # Project the first two points of the splitter back onto the
-        # polygon exterior
-        startdist = polya.exterior.project(Point(ls.coords[0]))
-        enddist = polya.exterior.project(Point(ls.coords[1]))
-        # Since we have to worry about crossing the origin, the distance
-        # should be close when not
-        dist0 = Point(ls.coords[0]).distance(Point(ls.coords[1]))
-        if abs(enddist - startdist) > dist0 * 1.1:  # arb
-            LOG.info("     Likely crosssed the origin of the exterior.")
-            res = polyb
-        else:
-            # If this is increasing, this is the polygon we want
-            res = polya if enddist > startdist else polyb
+    newpoly = rhs_split(currentpoly, ls)
+    if newpoly is None:
+        return currentpoly
 
-    if res.area > 0.01:
-        LOG.info("     taking polygon.area = %.4f", res.area)
-        return res
-    return currentpoly
+    LOG.info("     new polygon.area = %.4f", newpoly.area)
+    return newpoly
 
 
 # def debug_draw(i, segment, current_poly):
