@@ -313,14 +313,10 @@ def test_051128_invalid(dbcursor):
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom2.txt"))
     # spc.draw_outlooks()
     spc.sql(dbcursor)
-    # Both of these are invalidly provided in the PTS file and should be
-    # dumped as they are larger than the general thunder
-    outlook = spc.get_outlook("WIND", "SIGN", 1)
-    assert outlook.geometry.is_empty
     outlook = spc.get_outlook("WIND", "0.05", 1)
     assert outlook.geometry.is_empty
     print("\n".join(spc.warnings))
-    assert len(spc.warnings) == 2
+    assert len(spc.warnings) == 1
 
 
 def test_080731_invalid():
