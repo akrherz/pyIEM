@@ -1,3 +1,4 @@
+"""A generalized parser frontend."""
 from __future__ import absolute_import
 from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
 from . import spacewx
@@ -6,6 +7,7 @@ from . import hwo
 from . import lsr
 from . import mcd
 from . import nhc
+from . import spcpts
 from . import sps
 from . import taf
 
@@ -55,6 +57,8 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         return mcd.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == "LSR":
         return lsr.parser(text, utcnow, ugc_provider, nwsli_provider)
+    elif afos[:3] in ["PTS", "PFW"]:
+        return spcpts.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == "TAF":
         return taf.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == "SPS":

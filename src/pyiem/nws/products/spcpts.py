@@ -1090,6 +1090,6 @@ class SPCPTS(TextProduct):
         return res
 
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Parse this text!"""
-    return SPCPTS(text, utcnow)
+    return SPCPTS(text, utcnow, ugc_provider, nwsli_provider)

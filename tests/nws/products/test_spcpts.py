@@ -1,7 +1,8 @@
 """Unit Tests"""
 
 import pytest
-from pyiem.nws.products.spcpts import parser, str2multipolygon, load_conus_data
+from pyiem.nws.products import parser
+from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
