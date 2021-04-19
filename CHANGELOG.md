@@ -21,6 +21,8 @@ compute which WFOs are impacted by an outlook.
 - Matplotlib 3.4 is generally supported with `pytest-mpl` tests passing.
 - NWS County Warning Areas geometries updated to 10 Nov 2020 release.
 - Corrected time stamp parsing for NBS MOS data at 21, 22, and 23Z.
+- Fix overlay of Hawaii on `nws` sector `GeoPlot` when the resolution is
+not the default.
 
 ## **1.5.0** (30 March 2021)
 

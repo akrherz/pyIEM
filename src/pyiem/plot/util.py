@@ -280,9 +280,18 @@ def sector_setter(mp, axbounds, **kwargs):
                 is_geoextent=True,
             )
             mp.axes.append(mp.ak_ax)
-            # Create HI
+            # Create HI via a glorious hack for now
+            ln = mp.ax.plot(
+                [-95.4, -85.24],
+                [23.3, 27.7],
+                transform=ccrs.PlateCarree(),
+                color="None",
+            )[0]
+            bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
+            width = mp.fig.canvas.get_width_height()[0]
+            axwidth = (bbox.x1 - bbox.x0) / width
             mp.hi_ax = make_axes(
-                [0.47, 0.055, 0.24, 0.14],
+                [bbox.x0 / width, 0.055, axwidth, 0.14],
                 [-161.0, -154.0, 18.5, 22.5],
                 reference.LATLON,
                 aspect,

@@ -34,6 +34,19 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_nws_sector_twitter_res():
+    """Test that Hawaii does not overlap Florida for Twitter Res."""
+    mp = MapPlot(
+        twitter=True,
+        nocaption=True,
+        sector="nws",
+        title="Don't hide Flo Rida",
+    )
+    mp.draw_cwas()
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nashville():
     """Test that Benton County, TNC005 does not show for OHX."""
     mp = MapPlot(
