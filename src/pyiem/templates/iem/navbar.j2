@@ -112,142 +112,6 @@
 	</div>
 </nav>
 </header>
-
-{% set pages = [
-    ['archive', {
-        "title": "Archive",
-        "subs": [
-    ("base", "Archive Mainpage", "/archive/"),
-    ("schema", "Archive Schema" , "/archive/schema.php"),
-    ("browse", "Browse data/" , "/archive/data/"),
-    ("hrain", "Hourly Precip" , "/rainfall/obhour.phtml"),
-    ("iemre", "IEM Reanalysis" , "/iemre/"),
-    ("cases", "Interesting Cases" , "/cases/"),
-    ("mos", "Model Output Statistics" , "/mos/"),
-    ("afos", "NWS Text Products" , "/wx/afos/list.phtml"),
-    ("pireps", "PIREPs" , "/request/gis/pireps.php"),
-    ("smos", "Soil Moisture Satellite" , "/smos/"),
-    ("raob", "Sounding Archive" , "/archive/raob/"),
-    ("tm", "Time Machine" , "/timemachine/"),
-        ],
-    }],
-    ['climatology', {
-        "title": "Climate",
-        "subs": [
-    ("base", "Climate Mainpage", "/climate/"),
-    ("extremes", "Daily Climatology", "/COOP/extremes.php"),
-    ("main", "Mainpage", "/climate/"),
-    ("climodat", "Climodat", "/climodat/"),
-    ("climodatm", "Climodat Monitor", "/climodat/monitor.php"),
-    ("drought", "Drought", "/dm/"),
-    ("today", "Today", "/climate/today.phtml"),
-    ("yesterday", "Yesterday", "/climate/yesterday.phtml"),
-    ("week", "Week", "/climate/week.phtml"),
-    ("month", "Month", "/climate/month.phtml"),
-    ("gs", "Growing Season", "/climate/gs.phtml"),
-    ("year", "Year", "/climate/year.phtml"),
-        ],
-    }],
-    ['current', {
-        "title": "Current",
-        "subs": [
-    ("base", "Current Mainpage", "/current/"),
-    ("plotter", "Auto Data Plotter", "/plotting/auto/"),
-    ("placefiles", "Gibson Ridge Placefiles", "/request/grx/"),
-    ("gs", "Growing Season", "/current/gs.phtml"),
-    ("jsonp", "JSON Webservices", "/json/"),
-    ("afos", "NWS Text", "/wx/afos/"),
-    ("products", "Products", "/current/"),
-    ("radar", "RADAR & Satellite", "/current/radar.phtml"),
-    ("sort", "Sortable Currents", "/my/current.phtml"),
-        ],
-    }],
-    ['iem', {
-        "title": "Info",
-        "subs": [
-    ("base", "Info Mainpage", "/info.php"),
-    ("agweater", "Ag Weather/Climate Info", "/agweather/"),
-    ("apps", "Application Index", "/apps.php"),
-    ("feature", "Daily Features", "/onsite/features/past.php"),
-    ("links", "Links", "/info/links.php"),
-    ("networks", "Network Tables", "/sites/networks.php"),
-    ("news", "News", "/onsite/news.phtml"),
-    ("present", "Presentations", "/present/"),
-    ("sites", "Station Data and Metadata", "/sites/locate.php"),
-    ("qc", "Quality Control", "/QC/"),
-    ("variables", "Variables", "/info/variables.phtml"),
-        ],
-    }],
-    ['gis', {
-        "title": "GIS",
-        "subs": [
-    ("base", "GIS Mainpage", "/GIS/"),
-    ("browse", "Browse Data", "/data/gis/"),
-    ("nexrad", "NEXRAD Mosaic", "/docs/nexrad_mosaic/"),
-    ("ogc", "OGC Webservices", "/ogc/"),
-    ("rainfall", "Rainfall Data", "/rainfall/"),
-    ("radmap", "RadMap API", "/GIS/radmap_api.phtml"),
-    ("radview", "RADAR Services", "/GIS/radview.phtml"),
-    ("satellite", "Satellite Data", "/GIS/goes.phtml"),
-        ],
-    }],
-    ['networks', {
-        "title": "Networks",
-        "subs": [
-    ("base", "Networks Mainpage", "/"),
-    ("asos", "ASOS", "/ASOS/"),
-    ("awos", "AWOS", "/AWOS/"),
-    ("cocorahs", "CoCoRaHS", "/cocorahs/"),
-    ("coop", "NWS COOP", "/COOP/"),
-    ("dcp", "DCP", "/DCP/"),
-    ("agclimate", "ISU Soil Moisture", "/agclimate/"),
-    ("flux", "NLAE Flux", "/nstl_flux/"),
-    ("rwis", "RWIS", "/RWIS/"),
-    ("scan", "SCAN", "/scan/"),
-    ("schoolnet", "SchoolNet", "/schoolnet/"),
-    ("other", "Other", "/other/"),
-        ],
-    }],
-    ['roads', {
-        "title": "Roads",
-        "subs": [
-    ("base", "Roads Mainpage", "/roads/"),
-    ("gis", "GIS Products", "/roads/gis.phtml"),
-    ("history", "Historical", "/roads/history.phtml"),
-    ("maps", "Interactive Map", "/roads/maps.phtml"),
-    ("sort", "Sortable Text", "/roads/rc.phtml"),
-        ],
-    }],
-    ['severe', {
-        "title": "Svr Wx",
-        "subs": [
-    ("base", "Severe Weather Mainpage", "/current/severe.phtml"),
-    ("cow", "IEM Cow (SBW Verification)", "/cow/"),
-    ("iembot", "iembot", "/projects/iembot/"),
-    ("interact", "Interact Radar", "/GIS/apps/rview/warnings.phtml"),
-    ("lsr", "Local Storm Report App", "/lsr/"),
-    ("raccoon", "IEM Raccoon (SBW Powerpoints)", "/raccoon/"),
-    ("river", "River Summary", "/river/"),
-    ("search", "Search for Warnings", "/vtec/search.php"),
-    ("spcoutlook", "SPC Convective Outlook / MCD Search", "/nws/spc_outlook_search/"),
-    ("watch", "SPC Watches", "/GIS/apps/rview/watch.phtml"),
-    ("vtec", "VTEC Browser", "/vtec/"),
-        ],
-    }],
-    ['webcam', {
-        "title": "Webcams",
-        "subs": [
-    ("base", "Webcam mainpage", "/projects/webcam.php"),
-    ("loop", "Build your own lapses", "/current/bloop.phtml"),
-    ("cool", "Cool lapses", "/cool/"),
-    ("viewer", "IEM Webcam Viewer", "/current/viewer.phtml"),
-    ("isu", "ISU Campus Webcams", "/current/isucams.phtml"),
-    ("lapse", "Recent lapses", "/current/camlapse/"),
-    ("stills", "Still images", "/current/webcam.php"),
-        ],
-    }],
-] %}
-
 <div class="container">
 <div class="navbar navbar-default">
     <div class="navbar-header">
@@ -267,20 +131,20 @@
 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" 
         href="#"> <span class="fa fa-home"></span> </a>
         <ul class="dropdown-menu">
-                <li><a href="https://mesonet.agron.iastate.edu">Iowa Environmental Mesonet</a></li>
-            <li><a href="http://iowa.cocorahs.org">Iowa CoCoRaHS</a></li>
-                <li><a href="https://dailyerosion.org">Daily Erosion Project</a></li>
-                <li><a href="https://datateam.agron.iastate.edu/cscap/">Sustainable Corn</a></li>
-                <li><a href="https://weather.im">Weather.IM Project</a></li>
+            <li><a href="https://mesonet.agron.iastate.edu/projects/iao/">Iowa Atmospheric Observatory</a></li>
+            <li><a href="https://mesonet.agron.iastate.edu">Iowa Environmental Mesonet</a></li>
+            <li><a href="https://iowa.cocorahs.org">Iowa CoCoRaHS</a></li>
+            <li><a href="https://dailyerosion.org">Daily Erosion Project</a></li>
+            <li><a href="https://weather.im">Weather.IM Project</a></li>
         </ul></li>
 
 
-{% for item in pages %}
+{% for item in navbardata %}
     <li class="dropdownactive">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ item[1]['title'] }}</a>
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ item['title'] }}</a>
       <ul class="dropdown-menu">
-    {% for entry in item[1]['subs'] %}
-        <li><a href="{{ entry[2] }}">{{ entry[1] }}</a></li>
+    {% for entry in item['subs'] %}
+        <li><a href="{{ entry['url'] }}">{{ entry['title'] }}</a></li>
     {% endfor %}
       </ul>
     </li>
