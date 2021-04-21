@@ -23,6 +23,49 @@ def cursor():
     return util.get_dbconn("mesosite").cursor()
 
 
+def test_web2ldm():
+    """Test that we can ingest something and insert it."""
+    assert util.web2ldm(
+        "http://mesonet.agron.iastate.edu/robots.txt",
+        str(util.utc()),
+        md5_from_name=True,
+        pqinsert="true",
+    )
+
+
+def test_web2ldm_dup():
+    """Test that we fail when inserting a duplicate."""
+    pqstr = str(util.utc())
+    util.web2ldm(
+        "http://mesonet.agron.iastate.edu/robots.txt",
+        pqstr,
+        md5_from_name=True,
+    )
+    assert not util.web2ldm(
+        "http://mesonet.agron.iastate.edu/robots.txt",
+        pqstr,
+        md5_from_name=True,
+    )
+
+
+def test_web2ldm_failed():
+    """Test for graceful failure when pqinsert fails."""
+    assert not util.web2ldm(
+        "http://mesonet.agron.iastate.edu/robots.txt",
+        "Blah",
+        md5_from_name=True,
+        pqinsert="cat",
+    )
+
+
+def test_web2ldm_badurl():
+    """Test for graceful failure when given a URL that will 404."""
+    assert not util.web2ldm(
+        "http://iastate.edu/not_existing",
+        "Blah",
+    )
+
+
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert util.load_geodf("this shall not work").empty

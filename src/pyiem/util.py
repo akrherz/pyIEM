@@ -14,9 +14,12 @@ import re
 import warnings
 import getpass
 from socket import error as socket_error
+import subprocess
+import tempfile
 
 # third party
 from metpy.units import units, masked_array
+import requests
 
 # NB: some third party stuff is expensive to import, so let us be lazy
 
@@ -42,6 +45,50 @@ class CustomFormatter(logging.Formatter):
             record.funcName,
             record.getMessage(),
         )
+
+
+def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
+    """Download a URL and insert into LDM.
+
+    Implements a common IEM workflow whereby a web resource is downloaded,
+    saved to a temporary file, and then inserted into LDM.
+
+    Args:
+      url (str): Web resource to download.
+      ldm_product_name (str): LDM product ID to use when inserting.
+      md5_from_name (bool): Should `pqinsert -i` be used, which causes LDM
+       to compute the MD5 value from the product name instead of data bytes.
+      pqinsert (str): pqinsert command.
+
+    Returns:
+      bool - success of this workflow.
+    """
+    req = requests.get(url, timeout=60)
+    if req.status_code != 200:
+        return False
+    tmp = tempfile.NamedTemporaryFile(mode="wb", delete=False)
+    tmp.write(req.content)
+    tmp.close()
+    args = [pqinsert, "-p", ldm_product_name, tmp.name]
+    if md5_from_name:
+        args.insert(1, "-i")
+    try:
+        proc = subprocess.Popen(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        stderr = proc.stderr.read()
+        res = True
+        if stderr != b"":
+            LOG.info("pqinsert stderr result %s", stderr)
+            res = False
+    except FileNotFoundError:
+        LOG.info("Failed to find `pqinsert` in $PATH")
+        res = False
+
+    os.unlink(tmp.name)
+    return res
 
 
 def load_geodf(dataname):
