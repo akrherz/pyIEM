@@ -15,6 +15,8 @@ was not accurate.
 
 - Storm Prediction Center outlook parser now uses internal WFO geometries to
 compute which WFOs are impacted by an outlook.
+- Introduce `util.web2ldm`, which does a common IEM workflow of taking some
+web resource, downloading it, and inserting into LDM.
 
 ### Bug Fixes
 
