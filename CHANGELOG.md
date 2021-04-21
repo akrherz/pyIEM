@@ -23,6 +23,7 @@ compute which WFOs are impacted by an outlook.
 - Corrected time stamp parsing for NBS MOS data at 21, 22, and 23Z.
 - Fix overlay of Hawaii on `nws` sector `GeoPlot` when the resolution is
 not the default.
+- Correct PIREP location parsing to use nautical miles vs miles (#442).
 
 ## **1.5.0** (30 March 2021)
 
