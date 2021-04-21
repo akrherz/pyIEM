@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+g670bb49 documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+g44930af documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g670bb49 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g44930af documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -1096,6 +1096,28 @@ lock files is problematic.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="pyiem.util.web2ldm">
+<code class="sig-prename descclassname"><span class="pre">pyiem.util.</span></code><code class="sig-name descname"><span class="pre">web2ldm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldm_product_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">md5_from_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pqinsert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pqinsert'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.web2ldm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a URL and insert into LDM.</p>
+<p>Implements a common IEM workflow whereby a web resource is downloaded,
+saved to a temporary file, and then inserted into LDM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – Web resource to download.</p></li>
+<li><p><strong>ldm_product_name</strong> (<em>str</em>) – LDM product ID to use when inserting.</p></li>
+<li><p><strong>md5_from_name</strong> (<em>bool</em>) – Should <cite>pqinsert -i</cite> be used, which causes LDM
+to compute the MD5 value from the product name instead of data bytes.</p></li>
+<li><p><strong>pqinsert</strong> (<em>str</em>) – pqinsert command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool - success of this workflow.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyiem.wellknowntext">
 <span id="wellknowntext-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module<a class="headerlink" href="#module-pyiem.wellknowntext" title="Permalink to this headline">¶</a></h2>
@@ -1262,7 +1284,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g670bb49 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g44930af documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
