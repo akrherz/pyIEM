@@ -12,14 +12,18 @@ Unfortunately, there is not much documentation of this format and the feed of
 this data contains a bunch of formatting errors.
 
 """
+# stdlib
 from enum import Enum
 import datetime
 import re
 import math
 
+# Third Party
+from metpy.units import units
 from pydantic import BaseModel
+
+# Local
 import pyiem.nws.product as product
-from pyiem.datatypes import distance
 from pyiem.util import html_escape, LOG
 
 OV_LATLON = re.compile(
@@ -288,7 +292,8 @@ class Pirep(product.TextProduct):
         # shortcut
         if dist == 0:
             return lon, lat
-        meters = distance(float(dist), "MI").value("M")
+        # Air distances in PIREPs are in nautical miles!
+        meters = (units("nautical_mile") * float(dist)).to(units("meter")).m
         northing = meters * math.cos(math.radians(bearing)) / 111111.0
         easting = (
             meters

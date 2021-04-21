@@ -110,7 +110,7 @@ def test_150126_space():
         get_test_file("PIREPS/space.txt"), nwsli_provider=nwsli_provider
     )
     assert not prod.warnings
-    assert abs(prod.reports[0].latitude - 44.15) < 0.01
+    assert abs(prod.reports[0].latitude - 44.132) < 0.01
 
 
 def test_150121_offset():
@@ -124,9 +124,9 @@ def test_150121_offset():
         get_test_file("PIREPS/offset.txt"), nwsli_provider=nwsli_provider
     )
     assert not prod.warnings
-    assert abs(prod.reports[0].latitude - 44.48) < 0.01
+    assert abs(prod.reports[0].latitude - 44.510) < 0.01
     assert abs(prod.reports[1].latitude - 44.26) < 0.01
-    assert abs(prod.reports[2].latitude - 44.22) < 0.01
+    assert abs(prod.reports[2].latitude - 44.2099) < 0.01
 
 
 def test_150121_runway():
@@ -154,7 +154,7 @@ def test_150121_fourchar():
         get_test_file("PIREPS/fourchar.txt"), nwsli_provider=nwsli_provider
     )
     assert not prod.warnings
-    assert abs(prod.reports[0].latitude - 44.10) < 0.01
+    assert abs(prod.reports[0].latitude - 44.115) < 0.01
     assert abs(prod.reports[1].latitude - 42.50) < 0.01
 
 
@@ -207,12 +207,12 @@ def test_offset():
     assert lat2 == lat
 
     lon2, lat2 = p.compute_loc("BIL", 100, 90)
-    assert abs(lon2 - -90.54) < 0.01
+    assert abs(lon2 - -90.239) < 0.01
     assert lat2 == lat
 
     lon2, lat2 = p.compute_loc("BIL", 100, 0)
     assert lon2 == lon
-    assert abs(lat2 - 43.95) < 0.01
+    assert abs(lat2 - 44.167) < 0.01
 
 
 def test_1():
