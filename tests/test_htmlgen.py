@@ -20,4 +20,4 @@ def test_make_select_dict():
 
 def test_station_select():
     """Test the generation of a station selector."""
-    htmlgen.station_select("IA_ASOS", "DSM", "station")
+    htmlgen.station_select("IA_ASOS", "DSM", "station", select_all=True)
