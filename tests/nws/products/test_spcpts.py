@@ -6,6 +6,13 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210427_day1_west_coast():
+    """Test that we do not light up the west coast."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_west.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 359.536) < 0.01
+
+
 def test_210409_day2_invalid_geom():
     """Test why this outlook bombed for me."""
     prod = parser(get_test_file("SPCPTS/PTSDY2_invalid3.txt"))
@@ -104,8 +111,9 @@ def test_product_id_roundtrip(dbcursor):
 
 def test_170619_maine():
     """Test that we don't light up all of Main for the slight."""
+    # https://.../products/outlook/archive/2017/day1otlk_20170619_1200.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
-    spc.draw_outlooks()
+    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 49.058) < 0.01
 
@@ -317,7 +325,7 @@ def test_051128_invalid(dbcursor):
     outlook = spc.get_outlook("WIND", "0.05", 1)
     assert outlook.geometry.is_empty
     print("\n".join(spc.warnings))
-    assert len(spc.warnings) == 1
+    assert len(spc.warnings) == 2
 
 
 def test_080731_invalid():
