@@ -14,7 +14,6 @@ from shapely.geometry import (
     LineString,
     MultiPolygon,
     Point,
-    MultiPoint,
     MultiLineString,
 )
 from shapely.geometry.collection import GeometryCollection
@@ -136,20 +135,8 @@ def get_segments_from_text(text):
     return segments
 
 
-def clean_segment(ls, trip=0):
-    """Attempt to get this segment cleaned up.
-
-    Args:
-      segment (list): inbound data
-
-    Returns:
-      segment (list)
-    """
-
-    def _test(val):
-        """Our tester."""
-        return isinstance(val, MultiPoint) and len(val) == 2
-
+def ensure_outside_conus(ls):
+    """Make sure the start and end of a given line are outside the CONUS."""
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
@@ -191,32 +178,33 @@ def clean_segment(ls, trip=0):
         coords = list(ls.coords)
         coords[idx] = (pt.x, pt.y)
         ls = LineString(coords)
-    res = LineString(CONUS["poly"].exterior.coords).intersection(ls)
-    if _test(res):
-        return ls
-    # Are we doing 3+ intersections already, remove anything very short
-    if trip == 0 and isinstance(res, MultiPoint) and len(res) > 2:
-        take = []
-        for _geo in ls.intersection(CONUS["poly"]):
-            if _geo.length < 0.2:  # arb
-                continue
-            # Make sure the line intersects twice with the CONUS
-            if _test(_geo):
-                take.append(_geo)
-            else:
-                LOG.info("    cleaning segment a second time")
-                res = clean_segment(_geo, 1)
-                pts = LineString(CONUS["poly"].exterior.coords).intersection(
-                    res
-                )
-                if _test(pts):
-                    take.append(res)
-        if len(take) == 1:
-            return take[0]
-        return MultiLineString(take)
+    return ls
 
-    LOG.info("     clean_segment failed with res: %s", res)
-    return None
+
+def clean_segment(ls):
+    """Attempt to get this segment cleaned up.
+
+    Args:
+      segment (list): inbound data
+
+    Returns:
+      segment (list)
+    """
+    # Make sure this is outside the CONUS
+    ls = ensure_outside_conus(ls)
+    # Examine how our linestring intersects the CONUS polygon
+    res = ls.intersection(CONUS["poly"])
+    if isinstance(res, LineString):
+        LOG.info("     segment generates single line against CONUS, done")
+        return ls
+    # We got multiple linestrings
+    LOG.info("     segment intersection yielded %s linestrings", len(res))
+    res = [r for r in res if r.length > 0.2]  # arb
+    if len(res) == 1:
+        LOG.info("    was able to filter out very short lines")
+        return ensure_outside_conus(res[0])
+    LOG.info("     returning a MultiLineString")
+    return MultiLineString(res)
 
 
 def look_for_closed_polygon(segment):
@@ -286,12 +274,25 @@ def segment_logic(segment, currentpoly, polys):
         )
 
     # All open lines need to intersect the CONUS, ensure that happens
-    ls = LineString(segment)
-    ls = clean_segment(ls)
+    ls = clean_segment(LineString(segment))
     if isinstance(ls, MultiLineString):
-        for _ls in ls:
+        sz = len(ls)
+        for i, _ls in enumerate(ls):
+            # It is likely that all these line segments are trimming the
+            # current polygon, so we collect up the chunks as we go
             LOG.info("     look out below, recursive we go.")
-            currentpoly = segment_logic(list(_ls.coords), currentpoly, polys)
+            res = segment_logic(list(_ls.coords), currentpoly, polys)
+            if i < (sz - 1):
+                nextls = ls[i + 1]
+                # If the next segment does not intersect what we got, then
+                # save it off
+                if not nextls.intersects(res):
+                    LOG.info("     unique taken poly.area = %.4f", res.area)
+                    polys.append(res)
+                else:
+                    currentpoly = res
+            else:
+                currentpoly = res
         return currentpoly
     if ls is None:
         LOG.info("     aborting as clean_segment failed...")
@@ -417,7 +418,8 @@ def str2multipolygon(s):
             toremove.append(combo[0])
             toremove.append(combo[1])
     for poly in toremove:
-        res.remove(poly)
+        if poly in res:
+            res.remove(poly)
     for poly in toadd:
         res.append(poly)
     if not res:
