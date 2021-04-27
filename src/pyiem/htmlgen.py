@@ -18,7 +18,7 @@ def station_select(network, selected, name, select_all=False) -> str:
     nt = NetworkTable(network)
     ar = {}
     for sid in nt.sts:
-        ar[sid] = f"[{sid}] - {nt.sts[sid]['name']}"
+        ar[sid] = nt.sts[sid]["name"]
     if select_all:
         ar["_ALL"] = " -- All Sites --"
     return make_select(name, selected, ar, cssclass="iemselect2")
