@@ -18,6 +18,7 @@ compute which WFOs are impacted by an outlook.
 - Introduce `util.web2ldm`, which does a common IEM workflow of taking some
 web resource, downloading it, and inserting into LDM.
 - Introduce `pyiem.htmlgen` helpers for generating HTML, of all things.
+- Add IEM threading accounting into `pyiem.network.Table`.
 
 ### Bug Fixes
 
