@@ -34,6 +34,7 @@ import cartopy.crs as ccrs
     Z_FRAME,
 ] = range(2, 13)
 
+TAF_VIS_OVER_6SM = 6.01
 TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)

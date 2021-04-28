@@ -28,6 +28,8 @@ web resource, downloading it, and inserting into LDM.
 - Fix overlay of Hawaii on `nws` sector `GeoPlot` when the resolution is
 not the default.
 - Correct PIREP location parsing to use nautical miles vs miles (#442).
+- Differentiate between TAF visibility over 6 miles and that of 6 miles. This
+is currently hard coded as 6.01. (#449)
 
 ## **1.5.0** (30 March 2021)
 

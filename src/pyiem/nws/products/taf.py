@@ -11,7 +11,7 @@ from pyiem.models.taf import TAFForecast, TAFReport, SkyCondition, WindShear
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
 STID_VALID = re.compile(r"(?P<station>[A-Z0-9]{4}) (?P<ddhhmi>\d{6})Z")
 WIND_RE = re.compile(r"(?P<dir>\d{3})(?P<sknt>\d{2,3})G?(?P<gust>\d{2,3})?KT")
-VIS_RE = re.compile(r" P?(?P<miles>[1-6])?\s?(?P<frac>\d/\d+)?SM")
+VIS_RE = re.compile(r" (?P<over>P?)(?P<miles>[1-6])?\s?(?P<frac>\d/\d+)?SM")
 WX_RE = re.compile(r"^([\-\+A-Z]+)$")
 CLOUD_RE = re.compile(r" (?P<skyc>SCT|OVC|VV|BKN|FEW)(?P<skyl>\d{3})")
 SHEAR_RE = re.compile(
@@ -31,6 +31,8 @@ def add_forecast_info(fx, text):
     if m:
         d = m.groupdict()
         fx.visibility = int(d["miles"] or 0)
+        if d.get("over") == "P" and fx.visibility == 6:
+            fx.visibility = reference.TAF_VIS_OVER_6SM
         if d["frac"] is not None:
             tokens = d["frac"].split("/")
             fx.visibility += float(tokens[0]) / float(tokens[1])
