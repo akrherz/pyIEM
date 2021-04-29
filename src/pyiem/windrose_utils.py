@@ -278,6 +278,7 @@ def _make_plot(
       level (int): RAOB level in hPa of interest
       bins (list): values for binning the wind speeds
       tzname (str): Time zone this plot is produced in.
+      cmap (colormap): Matplotlib colormap to use.
 
     Returns:
       matplotlib.Figure
@@ -304,7 +305,14 @@ def _make_plot(
             transform=wp.ax.transAxes,
         )
         return wp.fig
-    wp = plot(direction, speed, bins=bins, nsector=nsector, rmax=rmax)
+    wp = plot(
+        direction,
+        speed,
+        bins=bins,
+        nsector=nsector,
+        rmax=rmax,
+        cmap=kwargs.get("cmap"),
+    )
 
     # Now we put some fancy debugging info on the plot
     tlimit = "[Time Domain: "
@@ -397,6 +405,7 @@ def windrose(
       level (int,optional): In case of RAOB, which level interests us (hPa)
       bins (list,optional): bins to use for the wind speed
       tzname (str,optional): Time zone to use for the plot.
+      cmap (cmap,optional): Matplotlib colormap to pass to barplot.
 
     Returns:
       matplotlib.Figure instance or textdata

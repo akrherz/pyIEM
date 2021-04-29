@@ -19,6 +19,8 @@ compute which WFOs are impacted by an outlook.
 web resource, downloading it, and inserting into LDM.
 - Introduce `pyiem.htmlgen` helpers for generating HTML, of all things.
 - Add IEM threading accounting into `pyiem.network.Table`.
+- Support provision of a `cmap` to windrose plotting and have a more pleasing
+default set of colors.
 
 ### Bug Fixes
 

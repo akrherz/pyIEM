@@ -3,9 +3,10 @@
 import pytest
 import numpy as np
 from metpy.units import units
+from pyiem.plot import get_cmap
 from pyiem.plot.windrose import WindrosePlot, histogram, plot
 
-BINS = np.array([2, 5, 10, 20]) * units("mph")
+BINS = np.array([2, 5, 7, 10, 15, 20]) * units("mph")
 SPEED = np.arange(0, 60, 0.1) * units("meter / second")
 DIRECTION = SPEED.m * 6.0 * units("degree")
 
@@ -28,6 +29,13 @@ def test_windrose_barplot_noopts():
 def test_windrose_barplot():
     """Can we crawl."""
     wr = plot(DIRECTION, SPEED, bins=BINS, nsector=16)
+    return wr.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_windrose_barplot_jet():
+    """Test with providing my own cmap."""
+    wr = plot(DIRECTION, SPEED, bins=BINS, nsector=16, cmap=get_cmap("jet"))
     return wr.fig
 
 
