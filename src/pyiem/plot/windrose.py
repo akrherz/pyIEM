@@ -4,12 +4,14 @@ import os
 import numpy as np
 from metpy.units import units
 import matplotlib.image as mpimage
+import matplotlib.colors as mpcolors
 from matplotlib.ticker import FormatStrFormatter
 from matplotlib.projections.polar import PolarAxes
 from pyiem.plot.use_agg import plt
 from pyiem.reference import Z_OVERLAY2
 
 LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+COLORS = ["#012cff", "#00d5f7", "#7cfd7f", "#fde801", "#ff4503", "#7e0100"]
 
 
 class WindrosePlot:
@@ -31,8 +33,12 @@ class WindrosePlot:
         self.calm_percent = None
         self.rmax = kwargs.get("rmax")
 
-    def barplot(self, direction, speed, bins, nsector):
-        """Do the bar plotting work."""
+    def barplot(self, direction, speed, bins, nsector, **kwargs):
+        """Do the bar plotting work.
+
+        Args:
+          cmap (colormap,optional): Use matplotlib cmap for bars.
+        """
         # compute histogram
         self.calm_percent, dir_centers, self.table = histogram(
             speed, direction, bins, nsector
@@ -40,6 +46,10 @@ class WindrosePlot:
         theta = dir_centers.to(units("radian")).m
         base = np.zeros(dir_centers.m.shape[0])
         width = (theta[1] - theta[0]) * 0.8
+        cmap = kwargs.get("cmap")
+        if cmap is None:
+            cmap = mpcolors.ListedColormap(COLORS, "wrplot")
+        norm = mpcolors.BoundaryNorm(np.arange(len(bins.m) + 1), cmap.N)
         for col in range(self.table.shape[1]):
             if col < (bins.m.shape[0] - 1):
                 label = "%s - %s" % (bins.m[col], bins.m[col + 1])
@@ -52,6 +62,7 @@ class WindrosePlot:
                 width=width,
                 align="center",
                 label=label,
+                color=cmap(norm(col)),
             )
             base += self.table[:, col].m
         if self.rmax is not None:
@@ -171,6 +182,7 @@ def plot(direction, speed, **kwargs):
         **nsector (int): The number of directional centers to divide the wind
           rose into.  The first sector is centered on north.
         **rmax (float): Hard codes the max radius value for the polar plot.
+        **cmap (colormap): Matplotlib colormap to use.
 
     Returns:
         WindrosePlot
@@ -180,7 +192,7 @@ def plot(direction, speed, **kwargs):
     if bins is None:
         bins = np.array([2, 5, 10, 20]) * units("mph")
     nsector = kwargs.get("nsector", 8)
-    wp.barplot(direction, speed, bins, nsector)
+    wp.barplot(direction, speed, bins, nsector, cmap=kwargs.get("cmap"))
     wp.plot_calm()
     wp.draw_arrows()
     wp.draw_logo()
