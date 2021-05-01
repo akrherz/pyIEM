@@ -97,7 +97,7 @@ def get_day(prod, text):
 
 
 def load_conus_data(valid):
-    """ Load up the conus datafile for our perusal """
+    """Load up the conus datafile for our perusal"""
     fn = "%s/../../data/conus_marine_bnds%s.txt" % (
         os.path.dirname(__file__),
         "_pre190509" if valid < CONUS_BASETIME else "",
@@ -114,7 +114,7 @@ def load_conus_data(valid):
 
 
 def get_segments_from_text(text):
-    """ Return list of segments for this text """
+    """Return list of segments for this text"""
     tokens = re.findall("([0-9]{8})", text.replace("\n", ""))
     # First we generate a list of segments, based on what we found
     segments = []
@@ -236,6 +236,11 @@ def look_for_closed_polygon(segment):
 
 def segment_logic(segment, currentpoly, polys):
     """Our segment parsing logic."""
+    LOG.info(
+        "     segment_logic currentpoly.area: %.2f len(polys): %s",
+        currentpoly.area,
+        len(polys),
+    )
     # Perhaps our segment end points are close enough to almost touch, we
     # can finish the job!
     if segment[0] != segment[-1] and len(segment) > 2:
@@ -278,19 +283,19 @@ def segment_logic(segment, currentpoly, polys):
     if isinstance(ls, MultiLineString):
         sz = len(ls)
         for i, _ls in enumerate(ls):
-            # It is likely that all these line segments are trimming the
-            # current polygon, so we collect up the chunks as we go
-            LOG.info("     look out below, recursive we go.")
             res = segment_logic(list(_ls.coords), currentpoly, polys)
             if i < (sz - 1):
-                nextls = ls[i + 1]
-                # If the next segment does not intersect what we got, then
-                # save it off
-                if not nextls.intersects(res):
-                    LOG.info("     unique taken poly.area = %.4f", res.area)
-                    polys.append(res)
-                else:
+                if res.intersects(ls[i + 1]):
+                    LOG.info("     next ls intersects res, keeping")
                     currentpoly = res
+                else:
+                    for k, poly in enumerate(polys):
+                        if poly.intersects(ls[i + 1]):
+                            LOG.info("     resetting currentpoly")
+                            currentpoly = polys.pop(k)
+                            break
+                    LOG.info("     collecting up res.area: %.2f", res.area)
+                    polys.append(res)
             else:
                 currentpoly = res
         return currentpoly
@@ -321,19 +326,22 @@ def segment_logic(segment, currentpoly, polys):
                 poly.area,
             )
             found = True
+            LOG.info("     add poly.area: %.2f to polys", currentpoly.area)
             polys.append(currentpoly)
             currentpoly = polys.pop(i)
             break
         if not found:
             LOG.info("     setting currentpoly back to CONUS")
+            LOG.info("     add poly.area: %.2f to polys", currentpoly.area)
             polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
     newpoly = rhs_split(currentpoly, ls)
     if newpoly is None:
+        LOG.info("     rhs_split yielded None, returning currentpoly?")
         return currentpoly
 
-    LOG.info("     new polygon.area = %.4f", newpoly.area)
+    LOG.info("     newpoly.area = %.4f", newpoly.area)
     return newpoly
 
 
@@ -560,7 +568,7 @@ def _sql_day_collect(prod, txn, day, collect):
 
 
 class SPCOutlookCollection:
-    """ A collection of outlooks for a single 'day'"""
+    """A collection of outlooks for a single 'day'"""
 
     def __init__(self, issue, expire, day):
         """Constructor"""
@@ -698,7 +706,7 @@ class SPCPTS(TextProduct):
         return self.outlook_collections.get(day)
 
     def get_outlook(self, category, threshold, day):
-        """ Get an outlook by category and threshold """
+        """Get an outlook by category and threshold"""
         if day not in self.outlook_collections:
             return None
         for outlook in self.outlook_collections[day].outlooks:
@@ -707,7 +715,7 @@ class SPCPTS(TextProduct):
         return None
 
     def draw_outlooks(self):
-        """ For debugging, draw the outlooks on a simple map for inspection!"""
+        """For debugging, draw the outlooks on a simple map for inspection!"""
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
 
@@ -789,7 +797,7 @@ class SPCPTS(TextProduct):
         self.expire = expire
 
     def find_outlooks(self):
-        """ Find the outlook sections within the text product! """
+        """Find the outlook sections within the text product!"""
         if self.text.find("&&") == -1:
             self.warnings.append("Product contains no &&, adding...")
             self.text = self.text.replace("\n... ", "\n&&\n... ")
