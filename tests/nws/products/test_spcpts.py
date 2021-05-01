@@ -6,8 +6,17 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210501_day2_west_coast():
+    """Test that we do not light up the west coast."""
+    # https://.../products/outlook/archive/2021/day2otlk_20210501_1730.html
+    prod = parser(get_test_file("SPCPTS/PTSDY2_canada.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 2)
+    assert abs(outlook.geometry.area - 351.342) < 0.01
+
+
 def test_210427_day1_west_coast():
     """Test that we do not light up the west coast."""
+    # https://.../products/outlook/archive/2021/day1otlk_20210427_1630.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_west.txt"))
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 359.536) < 0.01
@@ -406,7 +415,7 @@ def test_170215_gh23():
 
 
 def test_150622_ptsdy1_topo():
-    """PTSDY1_topo.txt """
+    """PTSDY1_topo.txt"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_topo.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
@@ -422,7 +431,7 @@ def test_150622_ptsdy2():
 
 
 def test_150622_ptsdy1():
-    """PTSDY1_nogeom.txt """
+    """PTSDY1_nogeom.txt"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom.txt"))
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 95.912) < 0.01
@@ -436,7 +445,7 @@ def test_150612_ptsdy1_3():
 
 
 def test_141022_newcats():
-    """ Make sure we can parse the new categories """
+    """Make sure we can parse the new categories"""
     spc = parser(
         get_test_file("SPCPTS/PTSDY1_new.txt"),
         utcnow=utc(2014, 10, 13, 16, 21),
@@ -463,7 +472,7 @@ def test_140710_nogeom():
 
 
 def test_23jul_failure():
-    """ CCW line near Boston """
+    """CCW line near Boston"""
     # need to load data for this to work as a one
     load_conus_data(utc(2017, 7, 23))
     data = """40067377 40567433 41317429 42097381 42357259 42566991"""
@@ -472,7 +481,7 @@ def test_23jul_failure():
 
 
 def test_140707_general():
-    """ Had a problem with General Thunder, lets test this """
+    """Had a problem with General Thunder, lets test this"""
     # https://.../products/outlook/archive/2014/day1otlk_20140707_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
@@ -482,14 +491,14 @@ def test_140707_general():
 
 
 def test_complex():
-    """ Test our processing """
+    """Test our processing"""
     spc = parser(get_test_file("SPCPTS/PTSDY3.txt"))
     outlook = spc.get_outlook("ANY SEVERE", "0.05", 3)
     assert abs(outlook.geometry.area - 10.12) < 0.01
 
 
 def test_bug_140601_pfwf38():
-    """ Encounted issue with Fire Outlook Day 3-8 """
+    """Encounted issue with Fire Outlook Day 3-8"""
     spc = parser(get_test_file("SPCPTS/PFWF38.txt"))
     # spc.draw_outlooks()
     collect = spc.get_outlookcollection(3)
@@ -497,7 +506,7 @@ def test_bug_140601_pfwf38():
 
 
 def test_bug_140507_day1():
-    """ Bug found in production with GEOS Topology Exception """
+    """Bug found in production with GEOS Topology Exception"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_topoexp.txt"))
     # spc.draw_outlooks()
     collect = spc.get_outlookcollection(1)
@@ -527,7 +536,7 @@ def test_bug_140506_day2():
 
 
 def test_bug_140518_day2():
-    """ 18 May 2014 tripped error with no exterior polygon found """
+    """18 May 2014 tripped error with no exterior polygon found"""
     spc = parser(get_test_file("SPCPTS/PTSDY2_interior.txt"))
     # spc.draw_outlooks()
     collect = spc.get_outlookcollection(2)
@@ -535,7 +544,7 @@ def test_bug_140518_day2():
 
 
 def test_bug_140519_day1():
-    """ 19 May 2014 tripped error with no exterior polygon found """
+    """19 May 2014 tripped error with no exterior polygon found"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_interior.txt"))
     # spc.draw_outlooks()
     collect = spc.get_outlookcollection(1)
@@ -543,14 +552,14 @@ def test_bug_140519_day1():
 
 
 def test_bug():
-    """ Test bug list index outof range """
+    """Test bug list index outof range"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_2.txt"))
     collect = spc.get_outlookcollection(1)
     assert len(collect.outlooks) == 1
 
 
 def test_complex_2():
-    """ Test our processing """
+    """Test our processing"""
     spc = parser(get_test_file("SPCPTS/PTSDY1.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("HAIL", "0.05", 1)
@@ -559,7 +568,7 @@ def test_complex_2():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_str1(dbcursor):
-    """ check spcpts parsing """
+    """check spcpts parsing"""
     spc = parser(get_test_file("SPCPTS/SPCPTS.txt"))
     # spc.draw_outlooks()
     assert spc.valid == utc(2013, 7, 19, 19, 52)
