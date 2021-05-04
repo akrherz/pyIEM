@@ -1,7 +1,12 @@
 """Geometry utility functions."""
 
 # third party
-from shapely.geometry import MultiPolygon, Point, MultiLineString
+from shapely.geometry import (
+    MultiPolygon,
+    Point,
+    MultiLineString,
+    GeometryCollection,
+)
 from shapely.ops import split
 
 # Local
@@ -21,9 +26,14 @@ def rhs_split(poly, splitter):
     # compute the part of the splitter that intersects the polygon
     split_intersection = splitter.intersection(poly)
     # May be a MultiLineString
-    if isinstance(split_intersection, MultiLineString):
-        # Just take the first one, it should not matter
-        split_intersection = split_intersection.geoms[0]
+    if isinstance(split_intersection, (MultiLineString, GeometryCollection)):
+        # Just take the first one, it should not matter as long as it is
+        # not a Point object
+        if isinstance(split_intersection.geoms[0], Point):
+            split_intersection = split_intersection.geoms[1]
+        else:
+            split_intersection = split_intersection.geoms[0]
+
     # do the splitting
     geomcollect = split(poly, splitter)
     # If we got more than two polygons, we likely can cull some small cruft
