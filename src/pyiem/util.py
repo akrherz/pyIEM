@@ -18,6 +18,9 @@ import subprocess
 import tempfile
 
 # third party
+import psycopg2
+from psycopg2.extensions import register_adapter, AsIs
+import numpy as np
 from metpy.units import units, masked_array
 import requests
 
@@ -30,6 +33,18 @@ SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 # Setup a default logging instance for this module
 LOG = logging.getLogger("pyiem")
 LOG.addHandler(logging.NullHandler())
+
+
+def _addapt_num(val):
+    """Take the value verbatim."""
+    if not np.isnan(val):
+        return AsIs(val)
+    return AsIs("NULL")
+
+
+register_adapter(np.float64, _addapt_num)
+register_adapter(np.int64, _addapt_num)
+register_adapter(float, _addapt_num)
 
 
 class CustomFormatter(logging.Formatter):
@@ -191,8 +206,6 @@ def logger(name="pyiem", level=None):
 
 def find_ij(lons, lats, lon, lat):
     """Compute the i,j closest cell."""
-    import numpy as np
-
     dist = ((lons - lon) ** 2 + (lats - lat) ** 2) ** 0.5
     (xidx, yidx) = np.unravel_index(dist.argmin(), dist.shape)
     return xidx, yidx
@@ -310,7 +323,6 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     Returns:
       psycopg2 database connection
     """
-    import psycopg2
 
     if user is None:
         user = getpass.getuser()
@@ -615,8 +627,6 @@ def grid_bounds(lons, lats, bounds):
     Returns:
       [x0, y0, x1, y1]
     """
-    import numpy as np
-
     if len(lons.shape) == 1:
         # Do 1-d work
         (x0, x1) = np.digitize([bounds[0], bounds[2]], lons)

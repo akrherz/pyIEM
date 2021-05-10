@@ -23,6 +23,17 @@ def cursor():
     return util.get_dbconn("mesosite").cursor()
 
 
+def test_insert_nan(cursor):
+    """Test that we properly insert NaN values as nulls."""
+    vals = np.array([0, np.nan, 10], dtype=np.float64)
+    cursor.execute(
+        "INSERT into stations(iemid, remote_id) VALUES (%s, %s) "
+        "RETURNING remote_id",
+        (-100, vals[1]),
+    )
+    assert cursor.fetchone()[0] is None
+
+
 def test_web2ldm():
     """Test that we can ingest something and insert it."""
     assert util.web2ldm(
@@ -381,7 +392,7 @@ def test_properties_nocursor():
 
 
 def test_properties(cursor):
-    """ Try the properties function"""
+    """Try the properties function"""
     tmpname = "".join(
         random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
     )
@@ -398,7 +409,7 @@ def test_properties(cursor):
 
 
 def test_drct2text():
-    """ Test conversion of drct2text """
+    """Test conversion of drct2text"""
     assert util.drct2text(360) == "N"
     assert util.drct2text(90) == "E"
     assert util.drct2text(None) is None

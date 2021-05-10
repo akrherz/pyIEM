@@ -21,6 +21,8 @@ web resource, downloading it, and inserting into LDM.
 - Add IEM threading accounting into `pyiem.network.Table`.
 - Support provision of a `cmap` to windrose plotting and have a more pleasing
 default set of colors.
+- Register default `psycopg2` adapters to hopefully prevent `np.nan` from
+reaching the database.
 
 ### Bug Fixes
 
