@@ -210,6 +210,18 @@ def test_get_autoplot_context_network():
         util.get_autoplot_context(form, cfg)
 
 
+def test_get_autoplot_context_optional():
+    """Test that we require the optional flag nomenclature."""
+    form = dict(year=2011)
+    opts = dict(
+        arguments=[
+            dict(type="year", name="year", optional=True, default=2012),
+        ]
+    )
+    ctx = util.get_autoplot_context(form, opts)
+    assert "year" not in ctx
+
+
 def test_get_autoplot_context():
     """See that we can do things."""
     form = dict(type2="bogus", t=15, type3=["max-high", "bogus", "min-high"])
@@ -368,6 +380,7 @@ def test_vtecps():
     form = dict(
         phenomenav1="SV",
         significancev1="A",
+        _opt_v4="on",
         phenomenav4="TO",
         significancev4="W",
     )
