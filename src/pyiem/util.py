@@ -404,7 +404,7 @@ def noaaport_text(text):
     return "\r\r\n".join(lines)
 
 
-def get_autoplot_context(fdict, cfg):
+def get_autoplot_context(fdict, cfg, enforce_optional=False):
     """Get the variables out of a dict of strings
 
     This helper for IEM autoplot gets values out of a dictionary of strings,
@@ -416,6 +416,8 @@ def get_autoplot_context(fdict, cfg):
     Args:
       fdict (dictionary): what was likely provided by `cgi.FieldStorage()`
       cfg (dictionary): autoplot value of get_description
+      enforce_optional (bool,optional): Should the `optional` flag be enforced
+
     Returns:
       dictionary of variable names and values, with proper types!
     """
@@ -432,7 +434,10 @@ def get_autoplot_context(fdict, cfg):
         if (
             optional
             and typ != "vtec_ps"
-            and (value is None or fdict.get(f"_opt_{name}") != "on")
+            and (
+                value is None
+                or (enforce_optional and fdict.get(f"_opt_{name}") != "on")
+            )
         ):
             continue
         if typ in ["station", "zstation", "sid", "networkselect"]:
