@@ -218,7 +218,7 @@ def test_get_autoplot_context_optional():
             dict(type="year", name="year", optional=True, default=2012),
         ]
     )
-    ctx = util.get_autoplot_context(form, opts)
+    ctx = util.get_autoplot_context(form, opts, enforce_optional=True)
     assert "year" not in ctx
 
 
