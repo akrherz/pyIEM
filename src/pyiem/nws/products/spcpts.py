@@ -125,11 +125,12 @@ def get_segments_from_text(text):
         if lon > -30:
             lon -= 100.0
         if token == "99999999":
-            segments.append(pts)
+            if len(pts) > 1:
+                segments.append(pts)
             pts = []
         else:
             pts.append([lon, lat])
-    if pts:
+    if len(pts) > 1:
         segments.append(pts)
 
     return segments
