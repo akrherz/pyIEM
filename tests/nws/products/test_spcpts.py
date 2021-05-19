@@ -6,6 +6,13 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210519_singlepoint():
+    """Test that we handle when a single point is in the PTS."""
+    prod = parser(get_test_file("SPCPTS/PTSDY2_single.txt"))
+    outlook = prod.get_outlook("HAIL", "0.05", 2)
+    assert abs(outlook.geometry.area - 130.139) < 0.01
+
+
 def test_890526_multi():
     """Test that we can process this PTS."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_multi.txt"))
