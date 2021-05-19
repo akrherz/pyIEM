@@ -428,7 +428,12 @@ def get_autoplot_context(fdict, cfg):
         maxval = opt.get("max")
         optional = opt.get("optional", False)
         value = fdict.get(name)
-        if optional and value is None and typ not in ["vtec_ps"]:
+        # vtec_ps is special since we have special logic to get its value
+        if (
+            optional
+            and typ != "vtec_ps"
+            and (value is None or fdict.get(f"_opt_{name}") != "on")
+        ):
             continue
         if typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
