@@ -10,6 +10,14 @@ from pyiem.nws.products import parser as tafparser
 from pyiem.nws.products.taf import parser as real_tafparser
 
 
+def test_210525_badtimestamp():
+    """Test that we do not error out with this product."""
+    utcnow = utc(2021, 5, 25, 16)
+    with pytest.raises(ValueError) as exp:
+        real_tafparser(get_test_file("TAF/TAFLBF.txt"), utcnow=utcnow)
+    assert str(exp.value) == "Found invalid hr: 63 from '256300'"
+
+
 def test_210428_issue449():
     """Test that we differentiate 6 vs 6+ mile visibility."""
     data = get_test_file("TAF/TAFDSM_2.txt").replace(

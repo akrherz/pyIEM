@@ -90,6 +90,8 @@ def ddhhmi2valid(prod, text):
         valid = prod.valid.replace(day=dd, hour=0, minute=mi) + timedelta(
             days=1
         )
+    elif hr < 0 or hr > 23:
+        raise ValueError(f"Found invalid hr: {hr} from '{text}'")
     else:
         valid = prod.valid.replace(hour=hr, minute=mi)
     # Next month
@@ -150,12 +152,12 @@ class TAFProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.data = parse_prod(self)
 
     def get_channels(self):
-        """ Return a list of channels """
+        """Return a list of channels"""
         return [f"TAF{self.data.station[1:]}", "TAF...", f"{self.source}.TAF"]
 
     def sql(self, txn):
@@ -198,7 +200,7 @@ class TAFProduct(TextProduct):
             )
 
     def get_jabbers(self, uri, _uri2=None):
-        """ Get the jabber variant of this message """
+        """Get the jabber variant of this message"""
         res = []
         url = f"{uri}?pid={self.get_product_id()}"
         aaa = "TAF"
@@ -234,5 +236,5 @@ class TAFProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return TAFProduct(text, utcnow, ugc_provider, nwsli_provider)
