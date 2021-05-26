@@ -185,16 +185,19 @@ def date_tokens2datetime(tokens):
 
 
 class TextProductSegment:
-    """ A segment of a Text Product """
+    """A segment of a Text Product"""
 
     def __init__(self, text, tp):
-        """ Constructor """
+        """Constructor"""
         self.unixtext = text
         self.tp = tp  # Reference to parent
-        self.ugcs, self.ugcexpire = ugc.parse(
-            text, tp.valid, ugc_provider=tp.ugc_provider
-        )
         self.vtec = vtec.parse(text)
+        self.ugcs, self.ugcexpire = ugc.parse(
+            text,
+            tp.valid,
+            ugc_provider=tp.ugc_provider,
+            is_firewx=any([v.phenomena == "FW" for v in self.vtec]),
+        )
         self.headlines = self.parse_headlines()
         self.hvtec = hvtec.parse(text, tp=tp)
 
@@ -230,35 +233,35 @@ class TextProductSegment:
         self.bullets = self.process_bullets()
 
     def get_ugcs_tuple(self):
-        """ Helper to return a tuple useful for SQL. """
+        """Helper to return a tuple useful for SQL."""
         return tuple([str(u) for u in self.ugcs])
 
     def get_hvtec_nwsli(self):
-        """ Return the first hvtec NWSLI entry, if it exists """
+        """Return the first hvtec NWSLI entry, if it exists"""
         if not self.hvtec:
             return None
         return self.hvtec[0].nwsli.id
 
     def get_hvtec_cause(self):
-        """ Return the first hvtec cause entry, if it exists """
+        """Return the first hvtec cause entry, if it exists"""
         if not self.hvtec:
             return None
         return self.hvtec[0].cause
 
     def get_hvtec_severity(self):
-        """ Return the first hvtec severity entry, if it exists """
+        """Return the first hvtec severity entry, if it exists"""
         if not self.hvtec:
             return None
         return self.hvtec[0].severity
 
     def get_hvtec_record(self):
-        """ Return the first hvtec record entry, if it exists """
+        """Return the first hvtec record entry, if it exists"""
         if not self.hvtec:
             return None
         return self.hvtec[0].record
 
     def svs_search(self):
-        """ Special search the product for special text """
+        """Special search the product for special text"""
         sections = self.unixtext.split("\n\n")
         for section in sections:
             if TORNADO.findall(section):
@@ -266,7 +269,7 @@ class TextProductSegment:
         return ""
 
     def process_bullets(self):
-        """ Figure out the bulleted segments """
+        """Figure out the bulleted segments"""
         parts = re.findall(r"^\*([^\*]*)", self.unixtext, re.M | re.DOTALL)
         bullets = []
         for part in parts:
@@ -278,7 +281,7 @@ class TextProductSegment:
         return bullets
 
     def process_tags(self):
-        """ Find various tags in this segment """
+        """Find various tags in this segment"""
         nolf = self.unixtext.replace("\n", " ")
         res = EMERGENCY_RE.findall(nolf)
         if res:
@@ -442,7 +445,7 @@ class TextProductSegment:
         return poly
 
     def process_time_mot_loc(self):
-        """ Try to parse the TIME...MOT...LOC """
+        """Try to parse the TIME...MOT...LOC"""
         pos = self.unixtext.find("TIME...MOT...LOC")
         if pos == -1:
             return
@@ -491,7 +494,7 @@ class TextProductSegment:
         self.tml_dir = int(gdict["dir"])
 
     def parse_headlines(self):
-        """ Find headlines in this segment """
+        """Find headlines in this segment"""
         headlines = re.findall(
             r"^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext, re.M | re.S
         )
@@ -578,7 +581,7 @@ class TextProduct:
                 yield (segment, segment.ugcs, _vtec)
 
     def is_resent(self):
-        """ Check to see if this product is a ...RESENT product """
+        """Check to see if this product is a ...RESENT product"""
         return self.unixtext.find("...RESENT") > 0
 
     def is_correction(self):
@@ -603,7 +606,7 @@ class TextProduct:
         return False
 
     def get_channels(self):
-        """ Return a list of channels """
+        """Return a list of channels"""
         res = [self.afos, f"{self.afos[:3]}..."]
         if self.afos[:3] in ["TCU", "TCD", "TCM", "TCP", "TWO"]:
             res.append(self.afos[:5])
@@ -680,13 +683,13 @@ class TextProduct:
         )
 
     def parse_segments(self):
-        """ Split the product by its $$ """
+        """Split the product by its $$"""
         segs = self.unixtext.split("$$")
         for seg in segs:
             self.segments.append(TextProductSegment(seg, self))
 
     def get_product_id(self):
-        """ Get an identifier of this product used by the IEM """
+        """Get an identifier of this product used by the IEM"""
         pid = "%s-%s-%s-%s" % (
             self.valid.strftime("%Y%m%d%H%M"),
             self.source,
@@ -757,7 +760,7 @@ class TextProduct:
         self.z, self.tz, self.valid = date_tokens2datetime(tokens[0])
 
     def parse_wmo(self):
-        """ Parse things related to the WMO header"""
+        """Parse things related to the WMO header"""
         search = WMO_RE.search(self.unixtext[:100])
         if search is None:
             raise TextProductException(
@@ -793,7 +796,7 @@ class TextProduct:
         return affected_wfos
 
     def parse_afos(self):
-        """ Figure out what the AFOS PIL is """
+        """Figure out what the AFOS PIL is"""
         # at most, only look at the top four lines, skipping the first
         data = "\n".join(
             [line.strip() for line in self.sections[0].split("\n")[1:4]]

@@ -5,7 +5,7 @@ import datetime
 import pytest
 from pyiem.util import utc, get_test_file
 from pyiem.nws.products.vtec import check_dup_ps
-from pyiem.nws.products.vtec import parser as vtecparser
+from pyiem.nws.products.vtec import parser as _vtecparser
 from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.ugc import UGCParseException, UGC
 from pyiem.nws.vtec import parse
@@ -21,6 +21,13 @@ class FakeObject:
     vtec = None
 
 
+def vtecparser(text, utcnow=None, nwsli_provider=None):
+    """Helper."""
+    return _vtecparser(
+        text, ugc_provider={}, utcnow=utcnow, nwsli_provider=nwsli_provider
+    )
+
+
 def filter_warnings(ar, startswith="get_gid"):
     """Remove non-deterministic warnings
 
@@ -28,6 +35,21 @@ def filter_warnings(ar, startswith="get_gid"):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
+
+
+def test_issue461_firewx_ugcs():
+    """Test that we can do the right thing with Fire Weather UGCS."""
+    ugc_provider = {
+        "AZZ101": UGC("AZ", "Z", 101, name="A", wfos=["YYY"]),
+        "NVZ461": UGC("NV", "Z", 461, name="A", wfos=["XXX"]),
+    }
+    prod = _vtecparser(
+        get_test_file("RFWVEF/RFW_00.txt"),
+        ugc_provider=ugc_provider,
+    )
+    wfos = prod.get_affected_wfos()
+    assert "XXX" in wfos
+    assert "YYY" in wfos
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -779,7 +801,7 @@ def test_150820_exb(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150814_init_expire(dbcursor):
-    """ Make sure init_expire is not null"""
+    """Make sure init_expire is not null"""
     prod = vtecparser(get_test_file("FLWLZK.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
@@ -825,7 +847,7 @@ def test_150304_testtor():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150203_exp_does_not_end(dbcursor):
-    """MWWCAR a VTEC EXP action should not terminate it """
+    """MWWCAR a VTEC EXP action should not terminate it"""
     for i in range(23):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("MWWCAR/%i.txt" % (i,)))
@@ -837,7 +859,7 @@ def test_150203_exp_does_not_end(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150203_null_issue(dbcursor):
-    """WSWOKX had null issue times, bad! """
+    """WSWOKX had null issue times, bad!"""
     for i in range(18):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("WSWOKX/%i.txt" % (i,)))
@@ -854,7 +876,7 @@ def test_150203_null_issue(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150115_correction_sbw(dbcursor):
-    """ FLWMHX make sure a correction does not result in two polygons """
+    """FLWMHX make sure a correction does not result in two polygons"""
     prod = vtecparser(get_test_file("FLWMHX/0.txt"))
     prod.sql(dbcursor)
     warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
@@ -866,7 +888,7 @@ def test_150115_correction_sbw(dbcursor):
 
 
 def test_150105_considerable_tag():
-    """ TORFSD has considerable tag """
+    """TORFSD has considerable tag"""
     prod = vtecparser(get_test_file("TORFSD.txt"))
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -884,7 +906,7 @@ def test_150105_considerable_tag():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150105_sbw(dbcursor):
-    """ FLSLBF SBW that spans two years! """
+    """FLSLBF SBW that spans two years!"""
     for i in range(7):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("FLSLBF/%i.txt" % (i,)))
@@ -895,7 +917,7 @@ def test_150105_sbw(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150105_manycors(dbcursor):
-    """ WSWGRR We had some issues with this series, lets test it """
+    """WSWGRR We had some issues with this series, lets test it"""
     for i in range(15):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("WSWGRR/%i.txt" % (i,)))
@@ -906,7 +928,7 @@ def test_150105_manycors(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150102_multiyear2(dbcursor):
-    """ WSWSTO See how well we span multiple years """
+    """WSWSTO See how well we span multiple years"""
     for i in range(17):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("NPWSTO/%i.txt" % (i,)))
@@ -926,7 +948,7 @@ def test_150102_multiyear2(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_150102_multiyear(dbcursor):
-    """ WSWOUN See how well we span multiple years """
+    """WSWOUN See how well we span multiple years"""
     for i in range(13):
         print(datetime.datetime.utcnow())
         print("Parsing Product: %s.txt" % (i,))
@@ -959,14 +981,14 @@ def test_150102_multiyear(dbcursor):
 
 
 def test_141226_correction():
-    """ Add another test for product corrections """
+    """Add another test for product corrections"""
     with pytest.raises(UGCParseException):
         vtecparser(get_test_file("FLSRAH.txt"))
 
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141215_correction(dbcursor):
-    """ I have a feeling we are not doing the right thing for COR """
+    """I have a feeling we are not doing the right thing for COR"""
     for i in range(6):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("NPWMAF/%i.txt" % (i,)))
@@ -977,7 +999,7 @@ def test_141215_correction(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141212_mqt(dbcursor):
-    """ Updated four rows instead of three, better check on it """
+    """Updated four rows instead of three, better check on it"""
     for i in range(4):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("MWWMQT/%i.txt" % (i,)))
@@ -987,7 +1009,7 @@ def test_141212_mqt(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141211_null_expire(dbcursor):
-    """ Figure out why the database has a null expiration for this FL.W"""
+    """Figure out why the database has a null expiration for this FL.W"""
     for i in range(0, 13):
         print("Parsing Product: %s.txt" % (i,))
         prod = vtecparser(get_test_file("FLSIND/%i.txt" % (i,)))
@@ -998,7 +1020,7 @@ def test_141211_null_expire(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141210_continues(dbcursor):
-    """ See that we handle CON with infinite time A-OK """
+    """See that we handle CON with infinite time A-OK"""
     for i in range(0, 2):
         prod = vtecparser(get_test_file("FFAEKA/%i.txt" % (i,)))
         prod.sql(dbcursor)
@@ -1008,7 +1030,7 @@ def test_141210_continues(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141208_upgrade(dbcursor):
-    """ See that we can handle the EXB case """
+    """See that we can handle the EXB case"""
     for i in range(0, 18):
         print(f"Processing {i}")
         prod = vtecparser(get_test_file("MWWLWX/%02i.txt" % (i,)))
@@ -1026,7 +1048,7 @@ def test_141208_upgrade(dbcursor):
 
 
 def test_141016_tsuwca():
-    """TSUWCA Got a null vtec timestamp with this product """
+    """TSUWCA Got a null vtec timestamp with this product"""
     utcnow = utc(2014, 10, 16, 17, 10)
     prod = vtecparser(get_test_file("TSUWCA.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
@@ -1034,7 +1056,7 @@ def test_141016_tsuwca():
 
 
 def test_140731_badugclabel():
-    """ Make sure this says zones and not counties! """
+    """Make sure this says zones and not counties!"""
     ugc_provider = {}
     for u in range(530, 550, 1):
         n = "a" * min((u + 1 / 2), 80)
@@ -1043,7 +1065,7 @@ def test_140731_badugclabel():
         )
 
     utcnow = utc(2014, 7, 31, 17, 35)
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("MWWLWX.txt"), utcnow=utcnow, ugc_provider=ugc_provider
     )
     assert not prod.segments[0].is_emergency
@@ -1058,7 +1080,7 @@ def test_140731_badugclabel():
 
 
 def test_tornado_emergency():
-    """ See what we do with Tornado Emergencies """
+    """See what we do with Tornado Emergencies"""
     utcnow = utc(2012, 4, 15, 3, 27)
     prod = vtecparser(get_test_file("TOR_emergency.txt"), utcnow=utcnow)
     assert prod.segments[0].is_emergency
@@ -1091,14 +1113,14 @@ def test_tornado_emergency():
 
 
 def test_badtimestamp():
-    """ See what happens when the MND provides a bad timestamp """
+    """See what happens when the MND provides a bad timestamp"""
     utcnow = utc(2005, 8, 29, 16, 56)
     with pytest.raises(Exception):
         vtecparser(get_test_file("TOR_badmnd_timestamp.txt"), utcnow=utcnow)
 
 
 def test_wcn_updates():
-    """ Make sure our Tags and svs_special works for combined message """
+    """Make sure our Tags and svs_special works for combined message"""
     utcnow = utc(2014, 6, 6, 20, 37)
     ugc_provider = {}
     for u in range(1, 201, 2):
@@ -1107,7 +1129,7 @@ def test_wcn_updates():
             ugc_provider["%sC%03i" % (st, u)] = UGC(
                 st, "C", "%03i" % (u,), name=n, wfos=["DMX"]
             )
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("WCNMEG.txt"), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers("http://localhost", "http://localhost")
@@ -1128,7 +1150,7 @@ def test_wcn_updates():
 
 
 def test_140715_condensed():
-    """ Make sure our Tags and svs_special works for combined message """
+    """Make sure our Tags and svs_special works for combined message"""
     utcnow = utc(2014, 7, 6, 2, 1)
     prod = vtecparser(get_test_file("TORSVS.txt"), utcnow=utcnow)
     assert not prod.segments[0].is_emergency
@@ -1145,7 +1167,7 @@ def test_140715_condensed():
 
 
 def test_140714_segmented_watch():
-    """ Two segmented watch text formatting stinks """
+    """Two segmented watch text formatting stinks"""
     utcnow = utc(2014, 7, 14, 17, 25)
     prod = vtecparser(get_test_file("WCNPHI.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
@@ -1167,7 +1189,7 @@ def test_140714_segmented_watch():
 
 
 def test_140610_tweet_spacing():
-    """Saw spacing issue in tweet message """
+    """Saw spacing issue in tweet message"""
     utcnow = utc(2014, 6, 10, 13, 23)
     prod = vtecparser(get_test_file("FLWLCH.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
@@ -1187,7 +1209,7 @@ def test_140610_tweet_spacing():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_routine(dbcursor):
-    """what can we do with a ROU VTEC product """
+    """what can we do with a ROU VTEC product"""
     utcnow = utc(2014, 6, 19, 2, 56)
     prod = vtecparser(get_test_file("FLWMKX_ROU.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
@@ -1196,7 +1218,7 @@ def test_routine(dbcursor):
 
 
 def test_correction():
-    """Can we properly parse a product correction """
+    """Can we properly parse a product correction"""
     utcnow = utc(2014, 6, 6, 21, 30)
     prod = vtecparser(get_test_file("CCA.txt"), utcnow=utcnow)
     assert prod.is_correction()
@@ -1204,7 +1226,7 @@ def test_correction():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_140610_no_vtec_time(dbcursor):
-    """ A VTEC Product with both 0000 for start and end time, sigh """
+    """A VTEC Product with both 0000 for start and end time, sigh"""
     utcnow = utc(2014, 6, 10, 0, 56)
     prod = vtecparser(get_test_file("FLSLZK_notime.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
@@ -1214,7 +1236,7 @@ def test_140610_no_vtec_time(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_140609_ext_backwards(dbcursor):
-    """ Sometimes the EXT goes backwards in time, so we have fun """
+    """Sometimes the EXT goes backwards in time, so we have fun"""
     utcnow = utc(2014, 6, 6, 15, 40)
 
     dbcursor.execute(
@@ -1275,7 +1297,7 @@ def test_140609_ext_backwards(dbcursor):
 
 
 def test_svs_search():
-    """See that we get the SVS search done right """
+    """See that we get the SVS search done right"""
     utcnow = utc(2014, 6, 6, 20)
 
     prod = vtecparser(get_test_file("TORBOU_ibw.txt"), utcnow=utcnow)
@@ -1290,7 +1312,7 @@ def test_svs_search():
 
 
 def test_tortag():
-    """See what we can do with warnings with tags in them """
+    """See what we can do with warnings with tags in them"""
     utcnow = utc(2011, 8, 7, 4, 36)
 
     prod = vtecparser(get_test_file("TORtag.txt"), utcnow=utcnow)
@@ -1324,7 +1346,7 @@ def test_wcn():
             "IA", "C", "%03i" % (u,), name=n, wfos=["DMX"]
         )
 
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("SVS.txt"), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
@@ -1344,7 +1366,7 @@ def test_wcn():
     )
     assert j[0][2]["twitter_media"] == ans
 
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("WCN.txt"), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
@@ -1371,7 +1393,7 @@ def test_wcn():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_140604_sbwupdate(dbcursor):
-    """Make sure we are updating the right info in the sbw table """
+    """Make sure we are updating the right info in the sbw table"""
     utcnow = utc(2014, 6, 4)
 
     dbcursor.execute(
@@ -1409,7 +1431,7 @@ def test_140604_sbwupdate(dbcursor):
 
 
 def test_140321_invalidgeom():
-    """See what we do with an invalid geometry from IWX """
+    """See what we do with an invalid geometry from IWX"""
     prod = vtecparser(get_test_file("FLW_badgeom.txt"))
     ans = (
         "SRID=4326;MULTIPOLYGON ((("
@@ -1423,7 +1445,7 @@ def test_140321_invalidgeom():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_140527_astimezone(dbcursor):
-    """Test the processing of a begin timestamp """
+    """Test the processing of a begin timestamp"""
     utcnow = utc(2014, 5, 27, 16, 3)
     prod = vtecparser(get_test_file("MWWSEW.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
@@ -1439,7 +1461,7 @@ def test_140527_astimezone(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_140527_00000_hvtec_nwsli(dbcursor):
-    """Test the processing of a HVTEC NWSLI of 00000 """
+    """Test the processing of a HVTEC NWSLI of 00000"""
     utcnow = utc(2014, 5, 27)
     prod = vtecparser(get_test_file("FLSBOU.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
@@ -1460,9 +1482,9 @@ def test_140527_00000_hvtec_nwsli(dbcursor):
 
 
 def test_affected_wfos():
-    """see what affected WFOs we have """
+    """see what affected WFOs we have"""
     ugc_provider = {"IAZ006": UGC("IA", "Z", "006", wfos=["DMX"])}
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("WSWDMX/WSW_00.txt"), ugc_provider=ugc_provider
     )
     assert prod.segments[0].get_affected_wfos()[0] == "DMX"
@@ -1470,7 +1492,7 @@ def test_affected_wfos():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141023_upgrade(dbcursor):
-    """ See that we can handle the upgrade and downgrade dance """
+    """See that we can handle the upgrade and downgrade dance"""
     for i in range(1, 8):
         prod = vtecparser(get_test_file("NPWBOX/NPW_%02i.txt" % (i,)))
         prod.sql(dbcursor)
@@ -1480,7 +1502,7 @@ def test_141023_upgrade(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_141205_vtec_series(dbcursor):
-    """ Make sure we don't get any warnings processing this series """
+    """Make sure we don't get any warnings processing this series"""
     for i in range(9):
         print("Processing product: %s" % (i,))
         fn = "WSWOTX/WSW_%02i.txt" % (i,)
@@ -1492,7 +1514,7 @@ def test_141205_vtec_series(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_vtec_series(dbcursor):
-    """Test a lifecycle of WSW products """
+    """Test a lifecycle of WSW products"""
     prod = vtecparser(get_test_file("WSWDMX/WSW_00.txt"))
     assert prod.afos == "WSWDMX"
     prod.sql(dbcursor)
@@ -1570,7 +1592,7 @@ def test_vtec(dbcursor):
 
     ugc_provider = {"MSC091": UGC("MS", "C", "091", "DARYL", ["XXX"])}
     nwsli_provider = {"AMWI4": NWSLI("AMWI4", "Ames", ["XXX"], -99, 44)}
-    prod = vtecparser(
+    prod = _vtecparser(
         get_test_file("TOR.txt"),
         ugc_provider=ugc_provider,
         nwsli_provider=nwsli_provider,
