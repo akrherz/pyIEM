@@ -7,7 +7,7 @@ from pyiem.util import utc, get_test_file
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
 from pyiem.nws.nwsli import NWSLI
-from pyiem.nws.ugc import UGCParseException, UGC
+from pyiem.nws.ugc import UGCParseException, UGC, UGCProvider
 from pyiem.nws.vtec import parse
 
 CUGC = "Product failed to cover all UGC"
@@ -39,17 +39,30 @@ def filter_warnings(ar, startswith="get_gid"):
 
 def test_issue461_firewx_ugcs():
     """Test that we can do the right thing with Fire Weather UGCS."""
-    ugc_provider = {
-        "AZZ101": UGC("AZ", "Z", 101, name="A", wfos=["YYY"]),
-        "NVZ461": UGC("NV", "Z", 461, name="A", wfos=["XXX"]),
-    }
+    ugc_provider = UGCProvider(
+        {
+            "AZZ101": UGC("AZ", "Z", 101, name="A", wfos=["YYY"]),
+            "NVZ461": UGC("NV", "Z", 461, name="A", wfos=["XXX"]),
+        }
+    )
+    ugc_provider.df = ugc_provider.df.append(
+        [
+            {"ugc": "AZZ101", "wfo": "QQQ", "name": "A", "source": "fz"},
+            {"ugc": "NVZ466", "wfo": "AAA", "name": "A", "source": "fz"},
+            {"ugc": "NVZ466", "wfo": "AAA", "name": "A", "source": "fz"},
+        ],
+        ignore_index=True,
+    )
     prod = _vtecparser(
         get_test_file("RFWVEF/RFW_00.txt"),
         ugc_provider=ugc_provider,
     )
     wfos = prod.get_affected_wfos()
     assert "XXX" in wfos
-    assert "YYY" in wfos
+    assert "YYY" not in wfos
+    assert "QQQ" in wfos
+    assert ugc_provider["AZZ101"].wfos
+    assert ugc_provider.get("NVZ466").name is None
 
 
 @pytest.mark.parametrize("database", ["postgis"])
