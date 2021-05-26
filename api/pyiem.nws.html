@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>nws Package &#8212; pyIEM 0.0.post1+gfb2444f documentation</title>
+    <title>nws Package &#8212; pyIEM 0.0.post1+gfe136bb documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gfb2444f documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gfe136bb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
@@ -506,13 +506,33 @@ utcvalid (datetimetz): of this product</p>
 <p>Representation of a single UGC</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="pyiem.nws.ugc.UGCProvider">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">UGCProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legacy_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pgconn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper around dataframe to provide UGC information.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.ugc.UGCProvider.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a UGC instance.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.parse">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method that parses text and yields UGC and expiration time
-&#64;param text to parse
-&#64;param valid is the issue time of the product this text was found in
-&#64;param ugc_provider of UGC objects</p>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return UGC list and expiration time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – text to parse.</p></li>
+<li><p><strong>valid</strong> (<em>datetime</em>) – the text product’s valid time.</p></li>
+<li><p><strong>ugc_provider</strong> (<a class="reference internal" href="#pyiem.nws.ugc.UGCProvider" title="pyiem.nws.ugc.UGCProvider"><em>UGCProvider</em></a>) – what will generate UGC instances for us.</p></li>
+<li><p><strong>is_firewx</strong> (<em>bool</em>) – is this product a fire weather product.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -707,7 +727,7 @@ datetime
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gfb2444f documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gfe136bb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
