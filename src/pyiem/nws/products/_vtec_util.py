@@ -13,7 +13,7 @@ DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
 
 
 def which_year(txn, prod, segment, vtec):
-    """ Figure out which table we should work against """
+    """Figure out which table we should work against"""
     if vtec.action in ["NEW"]:
         # Lets piggyback a check to see if this ETN has been reused?
         # Can this realiably be done?
@@ -187,7 +187,7 @@ def check_dup_ps(segment):
 
 
 def do_sql_hvtec(txn, segment):
-    """ Process the HVTEC in this product """
+    """Process the HVTEC in this product"""
     nwsli = segment.hvtec[0].nwsli.id
     # No point in saving these events
     if nwsli == "00000":
@@ -244,7 +244,7 @@ def list_rows(txn, table, vtec):
 
 
 def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
-    """ Get a more useful warning message for this failure """
+    """Get a more useful warning message for this failure"""
     cnt = txn.rowcount
     txn.execute(
         "SELECT ugc, issue at time zone 'UTC' as utc_issue, "
@@ -264,7 +264,7 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
     debugmsg = "UGC    STA ISSUE            EXPIRE           UPDATED\n"
 
     def myfmt(val):
-        """ Be more careful """
+        """Be more careful"""
         default = "%-16s" % ("((NULL))",)
         return default if val is None else val.strftime("%Y-%m-%d %H:%M")
 
@@ -297,7 +297,7 @@ def _resent_match(prod, txn, warning_table, vtec):
 
 
 def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
-    """ Do the NEW style actions."""
+    """Do the NEW style actions."""
     bts = prod.valid if vtec.begints is None else vtec.begints
     # If this product has no expiration time, but db needs a value
     ets = vtec.endts
@@ -363,7 +363,8 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
             "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
             "is_emergency, is_pds) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "get_gid(%s, %s), %s, %s, %s, %s, %s, %s, %s, %s) RETURNING gid",
+            "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s) "
+            "RETURNING gid",
             (
                 bts,
                 ets,
@@ -378,6 +379,7 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 vtec.significance,
                 str(ugc),
                 prod.valid,
+                vtec.phenomena == "FW",
                 ets,
                 prod.valid,
                 segment.get_hvtec_nwsli(),
@@ -390,7 +392,10 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
         )
         # For unit tests, these mostly get filtered out
         if txn.fetchone().get("gid") is None:
-            prod.warnings.append(f"get_gid({str(ugc)},{prod.valid}) was null")
+            prod.warnings.append(
+                f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
+                "was null"
+            )
 
 
 def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
