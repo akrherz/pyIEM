@@ -182,7 +182,7 @@ def james2():
 
 
 def james():
-    """David James suggested color ramp Yellow to Blue """
+    """David James suggested color ramp Yellow to Blue"""
     cpool = [
         "#FFFF80",
         "#CDFA64",
@@ -201,7 +201,7 @@ def james():
 
 
 def whitebluegreenyellowred():
-    """ Rip off NCL's WhiteBlueGreenYellowRed """
+    """Rip off NCL's WhiteBlueGreenYellowRed"""
     cpool = _load_local_cmap_colors("whitebluegreenyellowred")
     cmap3 = mpcolors.ListedColormap(cpool, "whitebluegreenyellowred")
     cmap3.set_over("#000000")
@@ -212,7 +212,7 @@ def whitebluegreenyellowred():
 
 
 def maue():
-    """ Pretty color ramp Dr Ryan Maue uses """
+    """Pretty color ramp Dr Ryan Maue uses"""
     cpool = _load_local_cmap_colors("maue")
     cmap3 = mpcolors.ListedColormap(cpool, "maue")
     _register_cmap(cmap=cmap3)

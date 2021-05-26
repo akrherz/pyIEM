@@ -1221,7 +1221,7 @@ ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")
 
 
 def vsbyfmt(val):
-    """ Tricky formatting of vis"""
+    """Tricky formatting of vis"""
     val = round(val, 3)
     if val == 0:
         return 0
@@ -1247,7 +1247,7 @@ def vsbyfmt(val):
 
 
 class OB:
-    """ hacky representation of the database schema """
+    """hacky representation of the database schema"""
 
     station = None
     valid = None
@@ -1282,7 +1282,7 @@ class OB:
 
 
 def process_metar(mstr, now):
-    """ Do the METAR Processing """
+    """Do the METAR Processing"""
     mtr = None
     while mtr is None:
         try:

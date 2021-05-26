@@ -125,7 +125,7 @@ def test_windchill():
 
 
 def test_dewpoint_from_pq():
-    """ See if we can produce dew point from pressure and mixing ratio """
+    """See if we can produce dew point from pressure and mixing ratio"""
     p = datatypes.pressure(1013.25, "MB")
     mr = datatypes.mixingratio(0.012, "kg/kg")
     dwpk = meteorology.dewpoint_from_pq(p, mr)
@@ -133,7 +133,7 @@ def test_dewpoint_from_pq():
 
 
 def test_dewpoint():
-    """ test out computation of dew point """
+    """test out computation of dew point"""
     for t0, r0, a0 in [[80, 80, 73.42], [80, 20, 35.87]]:
         t = datatypes.temperature(t0, "F")
         rh = datatypes.humidity(r0, "%")
@@ -142,7 +142,7 @@ def test_dewpoint():
 
 
 def test_heatindex():
-    """ Test our heat index calculations """
+    """Test our heat index calculations"""
     t = datatypes.temperature(80.0, "F")
     td = datatypes.temperature(70.0, "F")
     hdx = meteorology.heatindex(t, td)
@@ -154,7 +154,7 @@ def test_heatindex():
 
 
 def test_uv():
-    """ Test calculation of uv wind components """
+    """Test calculation of uv wind components"""
     speed = datatypes.speed([10], "KT")
     mydir = datatypes.direction([0], "DEG")
     u, v = meteorology.uv(speed, mydir)
@@ -170,7 +170,7 @@ def test_uv():
 
 
 def test_relh():
-    """ Simple check of bad units in temperature """
+    """Simple check of bad units in temperature"""
     tmp = datatypes.temperature(24, "C")
     dwp = datatypes.temperature(24, "C")
     relh = meteorology.relh(tmp, dwp)

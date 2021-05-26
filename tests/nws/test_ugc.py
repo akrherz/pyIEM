@@ -30,7 +30,7 @@ def test_louisana():
 
 
 def test_totextstr():
-    """ See if we can generate a proper string from a UGCS """
+    """See if we can generate a proper string from a UGCS"""
     ugcs = [
         ugc.UGC("DC", "Z", "001"),
         ugc.UGC("IA", "C", "001"),
@@ -51,7 +51,7 @@ def test_parse_exception():
 
 
 def test_str1():
-    """ check ugc.parse of STR1 parsing """
+    """check ugc.parse of STR1 parsing"""
     valid = utc(2008, 12, 17, 3, 0)
     (ugcs, expire) = ugc.parse(STR1, valid)
 
@@ -63,7 +63,7 @@ def test_str1():
 
 
 def test_str2():
-    """ check ugc.parse of STR2 parsing """
+    """check ugc.parse of STR2 parsing"""
     valid = utc(2008, 12, 17, 3, 0)
     (ugcs, expire) = ugc.parse(STR2, valid)
 

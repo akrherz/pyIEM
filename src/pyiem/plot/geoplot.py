@@ -245,7 +245,7 @@ class MapPlot:
             )
 
     def close(self):
-        """ Close the figure in the case of batch processing """
+        """Close the figure in the case of batch processing"""
         plt.close()
 
     def draw_usdm(self, valid=None, filled=True, hatched=False):
@@ -868,7 +868,7 @@ class MapPlot:
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
-        """ hexbin wrapper """
+        """hexbin wrapper"""
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
         )

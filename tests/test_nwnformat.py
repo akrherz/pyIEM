@@ -55,7 +55,7 @@ def test_uv():
 
 
 def test_basic():
-    """ basic test of constructor """
+    """basic test of constructor"""
     n = nwnformat.nwnformat()
     n.sid = 100
     n.parseLineRT(

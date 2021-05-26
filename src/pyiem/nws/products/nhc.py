@@ -23,11 +23,11 @@ class NHCProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
 
     def get_jabbers(self, uri, _uri2=None):
-        """ Get the jabber variant of this message """
+        """Get the jabber variant of this message"""
         myurl = "%s?pid=%s" % (uri, self.get_product_id())
 
         tokens = re.findall(TITLE, self.unixtext.upper().replace("\n", " "))
@@ -104,5 +104,5 @@ class NHCProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return NHCProduct(text, utcnow, ugc_provider, nwsli_provider)

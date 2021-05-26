@@ -21,7 +21,7 @@ CLEANVALUE_XREF = {"NA": "n/a", "dnc": "did not collect"}
 
 
 def save_config(config, filename=None):
-    """ Save the configuration to disk """
+    """Save the configuration to disk"""
     if filename is None:
         filename = CONFIG_FN
     json.dump(
@@ -34,7 +34,7 @@ def save_config(config, filename=None):
 
 
 def get_config(filename=None):
-    """ Load a JSON Configuration"""
+    """Load a JSON Configuration"""
     if filename is None:
         filename = CONFIG_FN
     if not os.path.isfile(filename):
@@ -95,7 +95,7 @@ def cleanvalue(val):
 
 
 def translate_years(val):
-    """ Convert X ('YY-'YY) into an array"""
+    """Convert X ('YY-'YY) into an array"""
     if val.find("-") > 0:
         tokens = re.findall("[0-9]+", val)
         one = int(tokens[0])
@@ -127,7 +127,7 @@ def get_xref_plotids(drive):
 
 
 def get_sites_client(config, site="sustainablecorn"):
-    """ Return an authorized sites client """
+    """Return an authorized sites client"""
 
     token = gdata.gauth.OAuth2Token(
         client_id=config["appauth"]["client_id"],
@@ -143,12 +143,12 @@ def get_sites_client(config, site="sustainablecorn"):
 
 
 def get_driveclient(config, project="cscap"):
-    """ Return an authorized apiclient """
+    """Return an authorized apiclient"""
     return get_googleapiclient(config, project, "drive", "v2")
 
 
 def get_sheetsclient(config, project="cscap"):
-    """ Return an authorized apiclient """
+    """Return an authorized apiclient"""
     return get_googleapiclient(config, project, "sheets", "v4")
 
 

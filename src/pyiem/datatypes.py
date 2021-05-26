@@ -7,10 +7,10 @@ from pyiem.exceptions import UnitsError
 
 
 class basetype:
-    """ Base Object for all our vars """
+    """Base Object for all our vars"""
 
     def __init__(self, value, units):
-        """ constructor with value and units required """
+        """constructor with value and units required"""
         if units.upper() not in self.known_units:
             raise UnitsError(
                 "unrecognized temperature unit: %s known: %s"
@@ -37,7 +37,7 @@ class mixingratio(basetype):
     known_units = ["KG/KG"]
 
     def value(self, units):
-        """ Convert the value into the provided units """
+        """Convert the value into the provided units"""
         if units.upper() not in mixingratio.known_units:
             raise UnitsError(
                 "unrecognized mixingratio unit: %s known: %s"
@@ -48,12 +48,12 @@ class mixingratio(basetype):
 
 
 class distance(basetype):
-    """ Distance """
+    """Distance"""
 
     known_units = ["SM", "MI", "M", "KM", "FT", "MM", "IN", "CM"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         units = units.upper()
         if units not in distance.known_units:
             raise UnitsError(
@@ -95,12 +95,12 @@ class distance(basetype):
 
 
 class precipitation(basetype):
-    """ Precipitation """
+    """Precipitation"""
 
     known_units = ["IN", "CM", "MM"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         units = units.upper()
         if units not in precipitation.known_units:
             raise UnitsError(
@@ -128,12 +128,12 @@ class precipitation(basetype):
 
 
 class speed(basetype):
-    """ Speed """
+    """Speed"""
 
     known_units = ["KT", "MPH", "MPS", "KMH", "KTS"]
 
     def value(self, units=None):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         if units is None:
             units = self._units
         units = units.upper()
@@ -165,12 +165,12 @@ class speed(basetype):
 
 
 class humidity(basetype):
-    """ Humidity, this is not as straight forward as the others """
+    """Humidity, this is not as straight forward as the others"""
 
     known_units = ["%"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         if units.upper() not in humidity.known_units:
             raise UnitsError(
                 "unrecognized humidity unit: %s known: %s"
@@ -180,12 +180,12 @@ class humidity(basetype):
 
 
 class direction(basetype):
-    """ Direction from North """
+    """Direction from North"""
 
     known_units = ["DEG", "RAD"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         if units.upper() not in direction.known_units:
             raise UnitsError(
                 "unrecognized direction unit: %s known: %s"
@@ -201,12 +201,12 @@ class direction(basetype):
 
 
 class pressure(basetype):
-    """ Pressure """
+    """Pressure"""
 
     known_units = ["MB", "HPA", "IN", "PA"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         if units.upper() not in pressure.known_units:
             raise UnitsError(
                 "unrecognized pressure unit: %s known: %s"
@@ -232,12 +232,12 @@ class pressure(basetype):
 
 
 class temperature(basetype):
-    """ Temperature """
+    """Temperature"""
 
     known_units = ["F", "K", "C"]
 
     def value(self, units):
-        """ Convert to a value in the given units """
+        """Convert to a value in the given units"""
         units = units.upper()
         if units not in temperature.known_units:
             raise UnitsError(

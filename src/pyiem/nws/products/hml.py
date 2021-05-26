@@ -102,12 +102,12 @@ class HMLData:
 
 
 class HML(product.TextProduct):
-    """ Class for parsing and representing Space Wx Products """
+    """Class for parsing and representing Space Wx Products"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         product.TextProduct.__init__(
             self,
             text,

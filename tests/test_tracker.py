@@ -40,7 +40,7 @@ def test_loadqc(pcursor):
 
 
 def test_workflow(pcursor, icursor):
-    """ Test that we can do stuff! """
+    """Test that we can do stuff!"""
     sid1 = "XXX"
     sid2 = "YYY"
     pnetwork = "xxxxxx"

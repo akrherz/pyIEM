@@ -126,7 +126,7 @@ def make_colorramp():
 
 
 def reader(fn):
-    """ Return metadata and the data """
+    """Return metadata and the data"""
     fp = gzip.open(fn, "rb")
     metadata = {}
     (
@@ -198,7 +198,7 @@ def reader(fn):
 
 
 def get_fn(prefix, now, tile):
-    """ Get the filename for this timestamp and tile """
+    """Get the filename for this timestamp and tile"""
     return now.strftime(
         f"/mnt/a4/data/%Y/%m/%d/mrms/tile{tile}/{prefix}/{prefix}"
         ".%Y%m%d.%H%M00.gz"

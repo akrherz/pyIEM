@@ -126,7 +126,7 @@ def test_notz():
 
 
 def test_nodata(iemob):
-    """ Make sure we return False when we don't have entries in tables"""
+    """Make sure we return False when we don't have entries in tables"""
     iemob.ob.data["station"] = "HaHaHa"
     response = iemob.ob.save(iemob.cursor)
     assert not response
@@ -194,7 +194,7 @@ def test_newdate(iemob):
 
 
 def test_null(iemob):
-    """ Make sure our null logic is working """
+    """Make sure our null logic is working"""
     iemob.ob.data["tmpf"] = 55
     response = iemob.ob.save(iemob.cursor)
     assert response
@@ -215,7 +215,7 @@ def test_null(iemob):
 
 
 def test_update(iemob):
-    """ Make sure we can update the database """
+    """Make sure we can update the database"""
     response = iemob.ob.load(iemob.cursor)
     assert not response
     iemob.ob.data["valid"] = iemob.ob.data["valid"].replace(hour=0)

@@ -204,7 +204,7 @@ def get_hourly_ncname(year):
 
 
 def daily_offset(ts):
-    """ Compute the timestamp index in the netcdf file """
+    """Compute the timestamp index in the netcdf file"""
     # In case ts is passed here as a datetime.date object
     ts = datetime(ts.year, ts.month, ts.day)
     base = ts.replace(

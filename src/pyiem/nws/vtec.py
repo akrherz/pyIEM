@@ -205,7 +205,7 @@ NWS_COLORS = {
 
 
 def parse(text):
-    """ I look for and return vtec objects as I find them """
+    """I look for and return vtec objects as I find them"""
     vtec = []
     tokens = re.findall(VTEC_RE, text)
     for token in tokens:
@@ -270,7 +270,7 @@ class VTEC:
         return f"{self.phenomena}.{self.significance}"
 
     def get_end_string(self, prod):
-        """ Return an appropriate end string for this VTEC """
+        """Return an appropriate end string for this VTEC"""
         if self.action in ["CAN", "EXP"]:
             return ""
         if self.endts is None:
@@ -305,7 +305,7 @@ class VTEC:
         return "valid at %s %s" % (localts.strftime(fmt), prod.z)
 
     def url(self, year):
-        """ Generate a VTEC url string needed """
+        """Generate a VTEC url string needed"""
         return ("%s-%s-%s-%s-%s-%s-%04i") % (
             year if self.year is None else self.year,
             self.status,

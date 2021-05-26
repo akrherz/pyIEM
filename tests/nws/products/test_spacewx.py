@@ -5,7 +5,7 @@ from pyiem.util import utc, get_test_file
 
 
 def test_spacewx():
-    """See if we can parse a space weather product """
+    """See if we can parse a space weather product"""
     utcnow = utc(2014, 5, 10)
     prod = parser(get_test_file("SPACEWX.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost/")

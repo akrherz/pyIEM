@@ -121,7 +121,7 @@ def update_iemaccess(txn, entry):
 
 
 def trace_r(val):
-    """ Convert our value back into meaningful string """
+    """Convert our value back into meaningful string"""
     if val is None:
         return "Missing"
     if val == TRACE_VALUE:
@@ -138,7 +138,7 @@ def get_number_year(text):
 
 
 def get_number(text):
-    """ Convert a string into a number, preferable a float! """
+    """Convert a string into a number, preferable a float!"""
     if text is None:
         return None
     text = text.strip()
@@ -162,7 +162,7 @@ def get_number(text):
 
 
 def convert_key(text):
-    """ Convert a key value to something we store """
+    """Convert a key value to something we store"""
     if text is None:
         return None
     if text == "YESTERDAY":
@@ -178,7 +178,7 @@ def convert_key(text):
 
 
 def make_tokens(regime, line):
-    """ Turn a line into tokens based on a regime """
+    """Turn a line into tokens based on a regime"""
     mycols = COLS[regime]
     tokens = []
     pos = 0
@@ -230,7 +230,7 @@ def parse_snowfall(regime, lines, data):
 
 
 def parse_precipitation(regime, lines, data):
-    """ Parse the precipitation data """
+    """Parse the precipitation data"""
     for linenum, line in enumerate(lines):
         if len(line.strip()) < 20:
             continue
@@ -312,7 +312,7 @@ def parse_sky_coverage(lines, data):
 
 
 def parse_headline(section):
-    """ Figure out when this product is valid for """
+    """Figure out when this product is valid for"""
     tokens = HEADLINE_RE.findall(section.replace("\n", " "))
     myfmt = "%b %d %Y" if len(tokens[0][1].split()[0]) == 3 else "%B %d %Y"
     cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
@@ -464,7 +464,7 @@ class CLIProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
         self.data = []
@@ -522,7 +522,7 @@ class CLIProduct(TextProduct):
         return sections
 
     def compute_diction(self, text):
-        """ Try to determine what we have for a format """
+        """Try to determine what we have for a format"""
         tokens = re.findall("^WEATHER ITEM.*$", text, re.M)
         diction = tokens[0].strip()
         if diction not in REGIMES:
@@ -533,7 +533,7 @@ class CLIProduct(TextProduct):
         self.regime = REGIMES.index(diction)
 
     def get_jabbers(self, uri, _=None):
-        """ Override the jabber message formatter """
+        """Override the jabber message formatter"""
         url = f"{uri}?pid={self.get_product_id()}"
         res = []
         xtra = {
@@ -580,7 +580,7 @@ class CLIProduct(TextProduct):
         return res
 
     def parse_data(self, section):
-        """ Actually do the parsing of this silly format """
+        """Actually do the parsing of this silly format"""
         data = {}
         # We need to first search down the section to look for where the
         # first TEMPERATURE section starts.

@@ -13,7 +13,7 @@ class HWOProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(
             self,
             text,
@@ -23,7 +23,7 @@ class HWOProduct(TextProduct):
         )
 
     def get_channels(self):
-        """ overridden TextProduct#get_channels """
+        """overridden TextProduct#get_channels"""
         no_storms_day1 = True
         no_storms_day27 = True
         for segnum, segment in enumerate(self.segments):
@@ -72,7 +72,7 @@ class HWOProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return HWOProduct(
         text,
         utcnow=utcnow,

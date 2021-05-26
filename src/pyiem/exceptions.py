@@ -18,11 +18,11 @@ class HWOException(Exception):
 
 
 class MCDException(Exception):
-    """ Exception """
+    """Exception"""
 
 
 class NHCException(Exception):
-    """ Exception """
+    """Exception"""
 
 
 class SAWException(Exception):

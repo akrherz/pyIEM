@@ -82,7 +82,7 @@ class Priority(str, Enum):
 
 
 class PilotReport(BaseModel):
-    """ A Pilot Report. """
+    """A Pilot Report."""
 
     base_loc: str = None
     text: str = None
@@ -134,12 +134,12 @@ def _parse_lonlat(text):
 
 
 class Pirep(product.TextProduct):
-    """ Class for parsing and representing Space Wx Products. """
+    """Class for parsing and representing Space Wx Products."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         product.TextProduct.__init__(
             self,
             text,
@@ -171,7 +171,7 @@ class Pirep(product.TextProduct):
                 self.reports.append(res)
 
     def process_pirep(self, report):
-        """ Convert this report text into an actual PIREP object """
+        """Convert this report text into an actual PIREP object"""
         _pr = PilotReport()
         _pr.text = report
 
@@ -284,7 +284,7 @@ class Pirep(product.TextProduct):
         return _pr
 
     def compute_loc(self, loc, dist, bearing):
-        """ Figure out the lon/lat for this location """
+        """Figure out the lon/lat for this location"""
         if loc is None or loc not in self.nwsli_provider:
             return None, None
         lat = self.nwsli_provider[loc]["lat"]
@@ -304,7 +304,7 @@ class Pirep(product.TextProduct):
         return lon + easting, lat + northing
 
     def compute_pirep_valid(self, hour, minute):
-        """ Based on what utcnow is set to, compute when this is valid """
+        """Based on what utcnow is set to, compute when this is valid"""
         res = self.utcnow.replace(
             hour=hour, minute=minute, second=0, microsecond=0
         )
@@ -313,7 +313,7 @@ class Pirep(product.TextProduct):
         return res
 
     def sql(self, txn):
-        """ Save the reports to the database via the transaction """
+        """Save the reports to the database via the transaction"""
         for report in self.reports:
             if report.is_duplicate:
                 continue
@@ -335,7 +335,7 @@ class Pirep(product.TextProduct):
             )
 
     def assign_cwsu(self, txn):
-        """ Use this transaction object to assign CWSUs for the pireps """
+        """Use this transaction object to assign CWSUs for the pireps"""
         for report in self.reports:
             if report.latitude is None:
                 continue
@@ -348,7 +348,7 @@ class Pirep(product.TextProduct):
                 report.cwsu = txn.fetchone()["id"]
 
     def get_jabbers(self, _uri, _uri2=None):
-        """ get jabber messages """
+        """get jabber messages"""
         res = []
         for report in self.reports:
             if report.is_duplicate:
@@ -387,7 +387,7 @@ class Pirep(product.TextProduct):
 
 
 def parser(buf, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ A parser implementation """
+    """A parser implementation"""
     return Pirep(
         buf,
         utcnow=utcnow,

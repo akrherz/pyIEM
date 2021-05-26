@@ -43,7 +43,7 @@ class CF6Product(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
         self.station = "%s%s" % (self.source[0], self.afos[3:])
@@ -148,5 +148,5 @@ class CF6Product(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Provide back CF6 objects based on the parsing of this text """
+    """Provide back CF6 objects based on the parsing of this text"""
     return CF6Product(text, utcnow, ugc_provider, nwsli_provider)

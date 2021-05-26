@@ -67,7 +67,7 @@ def test_170926_nodbinsert(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_mpd_mcdparser(dbcursor):
-    """ The mcdparser can do WPC's MPD as well, test it """
+    """The mcdparser can do WPC's MPD as well, test it"""
     prod = parser(get_test_file("MCD_MPD/MPD.txt"))
     assert abs(prod.geometry.area - 4.657) < 0.001
     assert prod.attn_wfo == ["PHI", "AKQ", "CTP", "LWX"]
@@ -91,7 +91,7 @@ def test_mpd_mcdparser(dbcursor):
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_mcdparser(dbcursor):
-    """ Test Parsing of MCD Product """
+    """Test Parsing of MCD Product"""
     prod = parser(get_test_file("MCD_MPD/SWOMCD.txt"))
     assert abs(prod.geometry.area - 4.302) < 0.001
     assert prod.discussion_num == 1525

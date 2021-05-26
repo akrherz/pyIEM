@@ -75,7 +75,7 @@ def test_150917_cancel():
 
 
 def test_compute_esol():
-    """ Test our algo on either side of a line """
+    """Test our algo on either side of a line"""
     pts = [[0, 0], [5, 0]]
     pts = compute_esol(pts, 111)
     print(pts)
@@ -92,7 +92,7 @@ def test_compute_esol():
 
 
 def test_150915_line():
-    """ See about parsing a SIGMET LINE """
+    """See about parsing a SIGMET LINE"""
     utcnow = utc(2015, 9, 15, 2, 55)
     ugc_provider = {}
     nwsli_provider = {
@@ -109,7 +109,7 @@ def test_150915_line():
 
 
 def test_150915_isol():
-    """ See about parsing a SIGMET ISOL """
+    """See about parsing a SIGMET ISOL"""
     utcnow = utc(2015, 9, 12, 23, 55)
     ugc_provider = {}
     nwsli_provider = {
@@ -127,42 +127,42 @@ def test_150915_isol():
 
 
 def test_150915_nospace():
-    """ See about parsing a SIGMET that has no spaces """
+    """See about parsing a SIGMET that has no spaces"""
     utcnow = utc(2015, 9, 15, 15, 41)
     tp = parser(get_test_file("SIGMETS/SIGAX.txt"), utcnow)
     assert abs(tp.sigmets[0].geom.area - 23.47) < 0.01
 
 
 def test_140907_circle():
-    """ See about parsing a SIGMET that is circle? """
+    """See about parsing a SIGMET that is circle?"""
     utcnow = utc(2014, 9, 6, 22, 15)
     tp = parser(get_test_file("SIGMETS/SIGP0H.txt"), utcnow)
     assert abs(tp.sigmets[0].geom.area - 11.70) < 0.01
 
 
 def test_140813_line():
-    """ See about parsing a SIGMET that is a either side of line """
+    """See about parsing a SIGMET that is a either side of line"""
     utcnow = utc(2014, 8, 12, 13, 15)
     tp = parser(get_test_file("SIGMETS/SIGP0A_line.txt"), utcnow)
     assert abs(tp.sigmets[0].geom.area - 4.32) < 0.01
 
 
 def test_140815_cancel():
-    """ See about parsing a SIGMET that is a either side of line """
+    """See about parsing a SIGMET that is a either side of line"""
     utcnow = utc(2014, 8, 15, 23, 41)
     tp = parser(get_test_file("SIGMETS/SIG_cancel.txt"), utcnow)
     assert not tp.sigmets
 
 
 def test_sigaoa():
-    """ SIGAOA """
+    """SIGAOA"""
     utcnow = utc(2014, 8, 11, 19, 15)
     tp = parser(get_test_file("SIGMETS/SIGA0A.txt"), utcnow)
     assert abs(tp.sigmets[0].geom.area - 24.35) < 0.01
 
 
 def test_sigaob():
-    """ See about parsing 50E properly """
+    """See about parsing 50E properly"""
     utcnow = utc(2014, 8, 11, 19, 15)
     tp = parser(get_test_file("SIGMETS/SIGA0B.txt"), utcnow)
     assert not tp.sigmets
@@ -170,7 +170,7 @@ def test_sigaob():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_50e(dbcursor):
-    """ See about parsing 50E properly """
+    """See about parsing 50E properly"""
     utcnow = utc(2014, 8, 11, 18, 55)
     ugc_provider = {}
     nwsli_provider = {
@@ -190,7 +190,7 @@ def test_50e(dbcursor):
 
 
 def test_sigc():
-    """ See about parsing SIGC """
+    """See about parsing SIGC"""
     utcnow = utc(2014, 8, 11, 16, 55)
     ugc_provider = {}
     nwsli_provider = {}
@@ -214,7 +214,7 @@ def test_sigc():
 
 
 def test_sigpat():
-    """ Make sure we don't have another failure with geom parsing """
+    """Make sure we don't have another failure with geom parsing"""
     utcnow = utc(2014, 8, 11, 12, 34)
     tp = parser(get_test_file("SIGMETS/SIGPAT.txt"), utcnow)
     j = tp.get_jabbers("http://localhost", "http://localhost")

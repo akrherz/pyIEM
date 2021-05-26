@@ -152,13 +152,13 @@ def test_151024_cae():
 
 
 def test_resent():
-    """ Make sure we can tell a ...RESENT product """
+    """Make sure we can tell a ...RESENT product"""
     tp = productparser(get_test_file("MWWBRO.txt"))
     assert tp.is_resent()
 
 
 def test_wmoheader():
-    """" Make sure we can handle some header variations """
+    """ " Make sure we can handle some header variations"""
     ar = [
         "FTUS43 KOAX 102320    ",
         "FTUS43 KOAX 102320  COR ",
@@ -170,7 +170,7 @@ def test_wmoheader():
 
 
 def test_rfd():
-    """ Parse a RFD """
+    """Parse a RFD"""
     tp = productparser(get_test_file("RFDOAX.txt"))
     assert tp.get_channels()[0] == "RFDOAX"
     j = tp.get_jabbers("http://localhost")
@@ -183,7 +183,7 @@ def test_rfd():
 
 
 def test_hwo():
-    """ Parse a HWO """
+    """Parse a HWO"""
     tp = productparser(get_test_file("HWO.txt"))
     assert tp.get_channels()[0] == "HWOLOT"
     j = tp.get_jabbers("http://localhost")
@@ -196,14 +196,14 @@ def test_hwo():
 
 
 def test_140710_wmoheader_fail():
-    """ Make sure COR in WMO header does not trip us up"""
+    """Make sure COR in WMO header does not trip us up"""
     tp = product.TextProduct(get_test_file("MANANN.txt"))
     assert tp.afos == "MANANN"
     assert tp.is_correction()
 
 
 def test_now_jabber():
-    """ See if we can process a NOW and get the jabber result """
+    """See if we can process a NOW and get the jabber result"""
     tp = product.TextProduct(get_test_file("NOWDMX.txt"))
     j = tp.get_jabbers("http://localhost")
     ans = (
@@ -214,7 +214,7 @@ def test_now_jabber():
 
 
 def test_nomnd_with_timestamp():
-    """ Make sure we process timestamps correctly when there is no MND"""
+    """Make sure we process timestamps correctly when there is no MND"""
     utcnow = utc(2013, 12, 31, 18)
     tp = product.TextProduct(get_test_file("MAVWC0.txt"), utcnow=utcnow)
     ts = utc(2014, 1, 1)
@@ -222,20 +222,20 @@ def test_nomnd_with_timestamp():
 
 
 def test_empty():
-    """ see what happens when we send a blank string """
+    """see what happens when we send a blank string"""
     with pytest.raises(TextProductException):
         product.TextProduct("")
 
 
 def test_invalid_mnd_date():
-    """ Check parsing of timestamp  """
+    """Check parsing of timestamp"""
     answer = utc(2013, 1, 3, 6, 16)
     tp = product.TextProduct(get_test_file("CLI/CLINYC.txt"))
     assert tp.valid == answer
 
 
 def test_ugc_error130214():
-    """ Check parsing of SPSJAX  """
+    """Check parsing of SPSJAX"""
     tp = product.TextProduct(get_test_file("SPS/SPSJAX.txt"))
     assert tp.segments[0].ugcs, [
         ugc.UGC("FL", "Z", 23),
@@ -247,14 +247,14 @@ def test_ugc_error130214():
 
 
 def test_no_ugc():
-    """ Product that does not have UGC encoding """
+    """Product that does not have UGC encoding"""
     data = get_test_file("CCFMOB.txt")
     tp = product.TextProduct(data)
     assert not tp.segments[0].ugcs
 
 
 def test_ugc_invalid_coding():
-    """ UGC code regression """
+    """UGC code regression"""
     data = get_test_file("FLW_badugc.txt")
     tp = product.TextProduct(data)
     # self.assertRaises(ugc.UGCParseException, product.TextProduct, data )
@@ -262,19 +262,19 @@ def test_ugc_invalid_coding():
 
 
 def test_000000_ugctime():
-    """ When there is 000000 as UGC expiration time """
+    """When there is 000000 as UGC expiration time"""
     tp = product.TextProduct(get_test_file("RECFGZ.txt"))
     assert tp.segments[0].ugcexpire is None
 
 
 def test_stray_space_in_ugc():
-    """ When there are stray spaces in the UGC! """
+    """When there are stray spaces in the UGC!"""
     tp = product.TextProduct(get_test_file("RVDCTP.txt"))
     assert len(tp.segments[0].ugcs) == 28
 
 
 def test_ugc_in_hwo():
-    """ Parse UGC codes in a HWO """
+    """Parse UGC codes in a HWO"""
     tp = product.TextProduct(get_test_file("HWO.txt"))
     assert tp.segments[1].ugcs == [
         ugc.UGC("LM", "Z", 740),
@@ -287,43 +287,43 @@ def test_ugc_in_hwo():
 
 
 def test_afos():
-    """ check AFOS PIL Parsing """
+    """check AFOS PIL Parsing"""
     tp = product.TextProduct(get_test_file("AFD.txt"))
     assert tp.afos == "AFDBOX"
 
 
 def test_source():
-    """ check tp.source Parsing """
+    """check tp.source Parsing"""
     tp = product.TextProduct(get_test_file("AFD.txt"))
     assert tp.source == "KBOX"
 
 
 def test_wmo():
-    """ check tp.wmo Parsing """
+    """check tp.wmo Parsing"""
     tp = product.TextProduct(get_test_file("AFD.txt"))
     assert tp.wmo == "FXUS61"
 
 
 def test_notml():
-    """ check TOR without TIME...MOT...LOC """
+    """check TOR without TIME...MOT...LOC"""
     tp = product.TextProduct(get_test_file("TOR.txt"))
     assert tp.segments[0].tml_dir is None
 
 
 def test_signature():
-    """ check svs_search """
+    """check svs_search"""
     tp = product.TextProduct(get_test_file("TOR.txt"))
     assert tp.get_signature() == "CBD"
 
 
 def test_spanishMWW():
-    """ check spanish MWW does not break things """
+    """check spanish MWW does not break things"""
     tp = product.TextProduct(get_test_file("MWWspanish.txt"))
     assert tp.z is None
 
 
 def test_svs_search():
-    """ check svs_search """
+    """check svs_search"""
     tp = product.TextProduct(get_test_file("TOR.txt"))
     ans = (
         "* AT 1150 AM CDT...THE NATIONAL WEATHER SERVICE "
@@ -337,26 +337,26 @@ def test_svs_search():
 
 
 def test_product_id():
-    """ check valid Parsing """
+    """check valid Parsing"""
     tp = product.TextProduct(get_test_file("AFD.txt"))
     assert tp.get_product_id() == "201211270001-KBOX-FXUS61-AFDBOX"
 
 
 def test_valid():
-    """ check valid Parsing """
+    """check valid Parsing"""
     tp = product.TextProduct(get_test_file("AFD.txt"))
     ts = utc(2012, 11, 27, 0, 1)
     assert tp.valid == ts
 
 
 def test_FFA():
-    """ check FFA Parsing """
+    """check FFA Parsing"""
     tp = product.TextProduct(get_test_file("FFA.txt"))
     assert tp.segments[0].get_hvtec_nwsli() == "NWYI3"
 
 
 def test_valid_nomnd():
-    """ check valid (no Mass News) Parsing """
+    """check valid (no Mass News) Parsing"""
     utcnow = utc(2012, 11, 27)
     tp = product.TextProduct(get_test_file("AFD_noMND.txt"), utcnow=utcnow)
     ts = utc(2012, 11, 27, 0, 1)
@@ -364,7 +364,7 @@ def test_valid_nomnd():
 
 
 def test_headlines():
-    """ check headlines Parsing """
+    """check headlines Parsing"""
     tp = product.TextProduct(get_test_file("AFDDMX.txt"))
     ans = [
         "UPDATED FOR 18Z AVIATION DISCUSSION",
@@ -374,7 +374,7 @@ def test_headlines():
 
 
 def test_tml():
-    """ Test TIME...MOT...LOC parsing """
+    """Test TIME...MOT...LOC parsing"""
     ts = utc(2012, 5, 31, 23, 10)
     tp = product.TextProduct(get_test_file("SVRBMX.txt"))
     assert tp.segments[0].tml_dir == 238
@@ -384,7 +384,7 @@ def test_tml():
 
 
 def test_bullets():
-    """ Test bullets parsing """
+    """Test bullets parsing"""
     tp = product.TextProduct(get_test_file("TORtag.txt"))
     assert len(tp.segments[0].bullets) == 4
     ans = (
@@ -404,20 +404,20 @@ def test_bullets():
 
 
 def test_tags():
-    """ Test tags parsing """
+    """Test tags parsing"""
     tp = product.TextProduct(get_test_file("TORtag.txt"))
     assert tp.segments[0].tornadotag == "OBSERVED"
     assert tp.segments[0].damagetag == "SIGNIFICANT"
 
 
 def test_longitude_processing():
-    """ Make sure that parsed longitude values are negative! """
+    """Make sure that parsed longitude values are negative!"""
     tp = product.TextProduct(get_test_file("SVRBMX.txt"))
     assert abs(tp.segments[0].sbw.exterior.xy[0][0] - -88.39) < 0.01
 
 
 def test_giswkt():
-    """ Test giswkt parsing """
+    """Test giswkt parsing"""
     tp = product.TextProduct(get_test_file("SVRBMX.txt"))
     assert abs(tp.segments[0].sbw.area - 0.16) < 0.01
 
