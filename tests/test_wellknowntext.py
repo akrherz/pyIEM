@@ -6,7 +6,7 @@ from pyiem import wellknowntext
 
 
 def test_wkt():
-    """ Try the properties function"""
+    """Try the properties function"""
     wkt = "SRID=4326;POINT(-99 43)"
     geom = wellknowntext.convert_well_known_text(wkt)
     assert Point(geom) == Point([-99, 43])

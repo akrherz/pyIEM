@@ -6,7 +6,7 @@ from pyiem import cscap_utils as csu
 
 
 def test_cleanvalue():
-    """ see what we can do with cleaning strings"""
+    """see what we can do with cleaning strings"""
     assert abs(10.54 - csu.cleanvalue("10.54%")) < 0.01
     assert csu.cleanvalue("Did NOt Collect") == "did not collect"
     assert csu.cleanvalue("<0.2") == "< 0.2"

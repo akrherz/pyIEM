@@ -144,7 +144,7 @@ def int24(data):
 
 
 def get_ir_ramp():
-    """ Return a np 256x3 array of colors to use for IR """
+    """Return a np 256x3 array of colors to use for IR"""
     fn = "%s/gini_ir_ramp.txt" % (DATADIR,)
     data = np.zeros((256, 3), np.uint8)
     for i, line in enumerate(open(fn)):

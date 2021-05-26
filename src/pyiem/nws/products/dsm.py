@@ -184,7 +184,7 @@ class DSMCollective(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(
             self,
             text,
@@ -227,5 +227,5 @@ class DSMCollective(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Provide back DSM objects based on the parsing of this text """
+    """Provide back DSM objects based on the parsing of this text"""
     return DSMCollective(text, utcnow, ugc_provider, nwsli_provider)

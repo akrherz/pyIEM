@@ -45,7 +45,7 @@ def create_entries(cursor):
 
 @pytest.mark.parametrize("database", ["mesosite"])
 def test_basic(dbcursor):
-    """ basic test of constructor """
+    """basic test of constructor"""
     create_entries(dbcursor)
     nt = network.Table("BOGUS", cursor=dbcursor)
     assert len(nt.sts.keys()) == 3

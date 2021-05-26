@@ -205,7 +205,7 @@ def test_160418_hwospn():
 
 
 def test_tcp():
-    """ See what we can do with TCP """
+    """See what we can do with TCP"""
     prod = parser(get_test_file("TCPAT1.txt"))
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -224,7 +224,7 @@ def test_tcp():
 
 
 def test_140820_badtimestamp():
-    """ Check our invalid timestamp exception and how it is written """
+    """Check our invalid timestamp exception and how it is written"""
     with pytest.raises(Exception):
         parser(get_test_file("RWSGTF_badtime.txt"))
 
@@ -256,20 +256,20 @@ def test_jabber_lsrtime():
 
 
 def test_spacewx():
-    """See if we can parse a space weather product """
+    """See if we can parse a space weather product"""
     utcnow = utc(2014, 5, 10)
     prod = parser(get_test_file("SPACEWX.txt"), utcnow=utcnow)
     assert prod is not None
 
 
 def test_140522_blowingdust():
-    """Make sure we can deal with invalid LSR type """
+    """Make sure we can deal with invalid LSR type"""
     prod = parser(get_test_file("LSR/LSRTWC.txt"))
     assert not prod.lsrs
 
 
 def test_01():
-    """LSR.txt process a valid LSR without blemish """
+    """LSR.txt process a valid LSR without blemish"""
     utcnow = utc(2013, 7, 23, 23, 54)
     prod = parser(get_test_file("LSR/LSR.txt"), utcnow=utcnow)
     assert prod.lsrs[0].remark is None

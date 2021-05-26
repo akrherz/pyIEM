@@ -57,20 +57,20 @@ def test_endstring():
 
 
 def test_begints():
-    """ check vtec.begints Parsing """
+    """check vtec.begints Parsing"""
     vc = vtec.parse(EX1)
     ts = utc(2005, 8, 29, 16, 51)
     assert vc[0].begints == ts
 
 
 def test_endts():
-    """ check vtec.endts Parsing """
+    """check vtec.endts Parsing"""
     vc = vtec.parse(EX1)
     ts = utc(2005, 8, 29, 18, 15)
     assert vc[0].endts == ts
 
 
 def test_product_string():
-    """ check vtec.product_string() formatting """
+    """check vtec.product_string() formatting"""
     vc = vtec.parse("/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/")
     assert vc[0].product_string() == "issues Tornado Warning"

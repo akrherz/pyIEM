@@ -91,7 +91,7 @@ class HVTEC:
     """Hydro VTEC."""
 
     def __init__(self, tokens, nwsli_provider=None):
-        """ Constructor """
+        """Constructor"""
         if nwsli_provider is None:
             nwsli_provider = {}
         self.line = tokens[0]

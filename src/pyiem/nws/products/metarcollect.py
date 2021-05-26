@@ -460,5 +460,5 @@ class METARCollective(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return METARCollective(text, utcnow, ugc_provider, nwsli_provider)

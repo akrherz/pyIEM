@@ -20,16 +20,16 @@ from pyiem.nws.products._vtec_util import (
 
 
 class VTECProductException(TextProductException):
-    """ Something we can raise when bad things happen! """
+    """Something we can raise when bad things happen!"""
 
 
 class VTECProduct(TextProduct):
-    """ A TextProduct that contains VTEC information. """
+    """A TextProduct that contains VTEC information."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         # Make sure we are CRLF above all else
         if text.find("\r\r\n") == -1:
             text = text.replace("\n", "\r\r\n")
@@ -353,7 +353,7 @@ class VTECProduct(TextProduct):
         return len(keys) == 1
 
     def get_action(self):
-        """ How to describe the action of this product """
+        """How to describe the action of this product"""
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
@@ -364,7 +364,7 @@ class VTECProduct(TextProduct):
         return "updates"
 
     def is_homogeneous(self):
-        """ Test to see if this product contains just one VTEC event """
+        """Test to see if this product contains just one VTEC event"""
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
@@ -375,7 +375,7 @@ class VTECProduct(TextProduct):
         return len(keys) == 1
 
     def get_first_non_cancel_vtec(self):
-        """ Return the first non-CANcel VTEC """
+        """Return the first non-CANcel VTEC"""
         for segment in self.segments:
             for vtec in segment.vtec:
                 if vtec.action != "CAN":
@@ -383,7 +383,7 @@ class VTECProduct(TextProduct):
         return None
 
     def get_first_non_cancel_segment(self):
-        """ Return the first segment that is a non-CAN """
+        """Return the first segment that is a non-CAN"""
         for segment in self.segments:
             if segment.vtec and segment.vtec[0].action != "CAN":
                 return segment
@@ -696,7 +696,7 @@ class VTECProduct(TextProduct):
         return msgs
 
     def get_skip_con(self):
-        """ Should this product be skipped from generating jabber messages"""
+        """Should this product be skipped from generating jabber messages"""
         if (
             self.afos is not None
             and self.afos[:3] == "FLS"

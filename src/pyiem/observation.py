@@ -150,7 +150,7 @@ def summary_update(txn, data):
 
 
 class Observation:
-    """ my observation object """
+    """my observation object"""
 
     def __init__(self, station, network, valid):
         """

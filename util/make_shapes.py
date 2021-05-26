@@ -87,7 +87,7 @@ def dump_cwa(fn):
 
 
 def dump_iowawfo(fn):
-    """ A region with the Iowa WFOs"""
+    """A region with the Iowa WFOs"""
     pgconn = get_dbconn("postgis", user="nobody")
 
     df = read_postgis(

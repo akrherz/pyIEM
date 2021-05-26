@@ -1,10 +1,17 @@
 """
  Something to store UGC information!
 """
+# stdlib
 import re
 import datetime
 from collections import OrderedDict
 
+# third party
+import pandas as pd
+from pandas.io.sql import read_sql
+
+# local
+from pyiem.util import utc, get_dbconn
 from pyiem.exceptions import UGCParseException
 
 UGC_RE = re.compile(
@@ -13,7 +20,7 @@ UGC_RE = re.compile(
 
 
 def ugcs_to_text(ugcs):
-    """ Convert a list of UGC objects to a textual string """
+    """Convert a list of UGC objects to a textual string"""
     states = OrderedDict()
     geotype = "counties"
     for ugc in ugcs:
@@ -61,17 +68,20 @@ def str2time(text, valid):
     return valid.replace(day=day, hour=hour, minute=minute)
 
 
-def parse(text, valid, ugc_provider=None):
-    """Helper method that parses text and yields UGC and expiration time
-    @param text to parse
-    @param valid is the issue time of the product this text was found in
-    @param ugc_provider of UGC objects
+def parse(text, valid, ugc_provider=None, is_firewx=False):
+    """Return UGC list and expiration time.
+
+    Arguments:
+      text (str): text to parse.
+      valid (datetime): the text product's valid time.
+      ugc_provider (UGCProvider): what will generate UGC instances for us.
+      is_firewx (bool): is this product a fire weather product.
     """
-    if ugc_provider is None:
-        ugc_provider = {}
+    if ugc_provider is None or isinstance(ugc_provider, dict):
+        ugc_provider = UGCProvider(legacy_dict=ugc_provider)
 
     def _construct(code):
-        return ugc_provider.get(code, UGC(code[:2], code[2], code[3:]))
+        return ugc_provider.get(code, is_firewx=is_firewx)
 
     ugcs = []
     expire = None
@@ -140,6 +150,85 @@ def parse(text, valid, ugc_provider=None):
     return ugcs, expire
 
 
+def _load_from_database(pgconn=None, valid=None):
+    """Build dataframe from a IEM Schema database.
+
+    Args:
+        pgconn (database engine): something pandas can query
+        valid (timestamp, optional): timestamp version of database to use.
+    """
+    pgconn = pgconn if pgconn is not None else get_dbconn("postgis")
+    valid = valid if valid is not None else utc()
+    return read_sql(
+        "SELECT ugc, name, wfo, source from ugcs WHERE begin_ts <= %s and "
+        "(end_ts is null or end_ts > %s)",
+        pgconn,
+        params=(valid, valid),
+        index_col=None,
+    )
+
+
+class UGCProvider:
+    """Wrapper around dataframe to provide UGC information."""
+
+    def __init__(self, legacy_dict=None, pgconn=None, valid=None):
+        """Constructor.
+
+        Args:
+          legacy_dict(dict, optional): Build based on legacy dictionary.
+          pgconn (database engine): something to query to get ugc data.
+          valid (timestamp): database version to use.
+        """
+        rows = []
+        if legacy_dict is not None:
+            for key, _ugc in legacy_dict.items():
+                rows.append(
+                    {
+                        "ugc": key,
+                        "name": _ugc.name,
+                        "wfo": "".join(_ugc.wfos),
+                        "source": "",
+                    }
+                )
+            self.df = pd.DataFrame(
+                rows, columns=["ugc", "name", "wfo", "source"]
+            )
+        else:
+            self.df = _load_from_database(pgconn, valid)
+
+    def get(self, key, is_firewx=False):
+        """Return a UGC instance."""
+        df2 = self.df[self.df["ugc"] == key]
+        if df2.empty:
+            return UGC(key[:2], key[2], int(key[3:]))
+
+        def _gen(row):
+            """helper"""
+            return UGC(
+                key[:2],
+                key[2],
+                int(key[3:]),
+                name=row["name"],
+                wfos=re.findall(r"([A-Z][A-Z][A-Z])", row["wfo"]),
+            )
+
+        if len(df2.index) == 1:
+            row = df2.iloc[0]
+            return _gen(row)
+        # Ambiguous
+        for _idx, row in df2.iterrows():
+            if is_firewx and row["source"] == "fz":
+                return _gen(row)
+            if not is_firewx and row["source"] != "fz":
+                return _gen(row)
+        # This really should not happen
+        return UGC(key[:2], key[2], int(key[3:]))
+
+    def __getitem__(self, key):
+        """Dictionary access helper."""
+        return self.get(key)
+
+
 class UGC:
     """Representation of a single UGC"""
 
@@ -154,15 +243,15 @@ class UGC:
         self.wfos = wfos if wfos is not None else []
 
     def __str__(self):
-        """ Override str() """
+        """Override str()"""
         return "%s%s%03i" % (self.state, self.geoclass, self.number)
 
     def __repr__(self):
-        """ Override repr() """
+        """Override repr()"""
         return "%s%s%03i" % (self.state, self.geoclass, self.number)
 
     def __eq__(self, other):
-        """ Compare this UGC with another """
+        """Compare this UGC with another"""
         return (
             self.state == other.state
             and self.geoclass == other.geoclass
@@ -170,7 +259,7 @@ class UGC:
         )
 
     def __ne__(self, other):
-        """ Compare this UGC with another """
+        """Compare this UGC with another"""
         return not self == other
 
     __hash__ = None  # unhashable

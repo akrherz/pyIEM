@@ -92,7 +92,7 @@ def _generate_channels(lsrobj):
 
 
 def _mylowercase(text):
-    """ Specialized lowercase function """
+    """Specialized lowercase function"""
     tokens = text.split()
     for i, t in enumerate(tokens):
         if len(t) > 3:
@@ -120,10 +120,10 @@ def _mylowercase(text):
 
 
 class LSR:
-    """ Represents a single Local Storm Report within the LSRProduct """
+    """Represents a single Local Storm Report within the LSRProduct"""
 
     def __init__(self):
-        """ constructor """
+        """constructor"""
         self.utcvalid = None
         self.valid = None
         self.typetext = None
@@ -161,7 +161,7 @@ class LSR:
         return self.geometry.xy[0][0]
 
     def consume_magnitude(self, text):
-        """ Convert LSR magnitude text into something atomic """
+        """Convert LSR magnitude text into something atomic"""
         self.magnitude_str = text
         tokens = MAG_UNITS.findall(text)
         if not tokens:
@@ -178,11 +178,11 @@ class LSR:
             self.magnitude_f = float(val)
 
     def get_dbtype(self):
-        """ Return the typecode used in the database for this event type """
+        """Return the typecode used in the database for this event type"""
         return reference.lsr_events.get(self.typetext.upper(), None)
 
     def sql(self, txn):
-        """ Provided a database transaction object, persist this LSR """
+        """Provided a database transaction object, persist this LSR"""
         wkt = f"SRID=4326;{self.geometry.wkt}"
         # Newer schema supports range partitioning, so can direct insert
         sql = (
@@ -307,7 +307,7 @@ class LSR:
         return j[2]["twitter"]
 
     def assign_timezone(self, tz, z):
-        """ retroactive assignment of timezone, so to improve attrs """
+        """retroactive assignment of timezone, so to improve attrs"""
         # We can't just assign the timezone (maybe we can someday)
         self.utcvalid = self.valid + timedelta(hours=reference.offsets[z])
         self.utcvalid = self.utcvalid.replace(tzinfo=timezone.utc)
@@ -318,7 +318,7 @@ class LSR:
         self.z = z
 
     def mag_string(self):
-        """ Return a string representing the magnitude and units """
+        """Return a string representing the magnitude and units"""
         mag_long = str(self.typetext)
         if self.magnitude_units == "MPH":
             mag_long = "%s of %s%.0f %s" % (

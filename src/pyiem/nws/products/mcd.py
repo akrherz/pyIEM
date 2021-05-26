@@ -34,7 +34,7 @@ class MCDProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.geometry = self.parse_geometry()
         self.discussion_num = self.parse_discussion_num()
@@ -73,14 +73,14 @@ class MCDProduct(TextProduct):
         )
 
     def find_watch_probability(self):
-        """ Find the probability of watch issuance for SPC MCD"""
+        """Find the probability of watch issuance for SPC MCD"""
         tokens = WATCH_PROB.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             return None
         return int(tokens[0])
 
     def tweet(self):
-        """ Return twitter message """
+        """Return twitter message"""
         charsleft = TWEET_CHARS - 24  # default safe 24 for t.co shortening
         if self.afos == "SWOMCD":
             center = "SPC"
@@ -103,7 +103,7 @@ class MCDProduct(TextProduct):
         return "%s%s" % (attempt[:charsleft], self.get_url())
 
     def get_url(self):
-        """ Return the URL for SPC's website """
+        """Return the URL for SPC's website"""
         if self.afos == "SWOMCD":
             return ("https://www.spc.noaa.gov/products/md/%s/md%04i.html") % (
                 self.valid.year,
@@ -115,7 +115,7 @@ class MCDProduct(TextProduct):
         ) % (self.discussion_num, self.valid.year)
 
     def parse_areas_affected(self):
-        """ Return the areas affected """
+        """Return the areas affected"""
         sections = self.unixtext.split("\n\n")
         for section in sections:
             if section.strip().find("AREAS AFFECTED...") == 0:
@@ -186,28 +186,28 @@ class MCDProduct(TextProduct):
         return tokens[0]
 
     def parse_attn_rfc(self):
-        """ Figure out which RFCs this product is seeking attention """
+        """Figure out which RFCs this product is seeking attention"""
         tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             return []
         return re.findall("([A-Z]{5})", tokens[0])
 
     def parse_attn_wfo(self):
-        """ Figure out which WFOs this product is seeking attention """
+        """Figure out which WFOs this product is seeking attention"""
         tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
         if not tokens:
             raise MCDException("Could not parse attention WFOs")
         return re.findall("([A-Z]{3})", tokens[0])
 
     def parse_discussion_num(self):
-        """ Figure out what discussion number this is """
+        """Figure out what discussion number this is"""
         tokens = DISCUSSIONNUM.findall(self.unixtext)
         if not tokens:
             raise MCDException("Could not parse discussion number")
         return int(tokens[0])
 
     def parse_geometry(self):
-        """ Find the polygon that's in this MCD product """
+        """Find the polygon that's in this MCD product"""
         tokens = LATLON.findall(self.unixtext.replace("\n", " "))
         if not tokens:
             raise MCDException("Could not parse LAT...LON geometry")
@@ -254,5 +254,5 @@ class MCDProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return MCDProduct(text, utcnow, ugc_provider, nwsli_provider)

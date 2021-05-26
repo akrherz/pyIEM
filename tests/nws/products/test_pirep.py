@@ -98,13 +98,13 @@ def test_150202_groupdict():
 
 
 def test_150202_airmet():
-    """airmet.txt has no valid data, so don't error out """
+    """airmet.txt has no valid data, so don't error out"""
     prod = pirepparser(get_test_file("PIREPS/airmet.txt"))
     assert not prod.reports
 
 
 def test_150126_space():
-    """ space.txt has a space where it should not """
+    """space.txt has a space where it should not"""
     nwsli_provider = {"CZBA": {"lat": 44.26, "lon": -88.52}}
     prod = pirepparser(
         get_test_file("PIREPS/space.txt"), nwsli_provider=nwsli_provider
@@ -114,7 +114,7 @@ def test_150126_space():
 
 
 def test_150121_offset():
-    """ offset.txt and yet another /OV iteration """
+    """offset.txt and yet another /OV iteration"""
     nwsli_provider = {
         "MRF": {"lat": 44.26, "lon": -88.52},
         "PDT": {"lat": 44.26, "lon": -88.52},
@@ -130,7 +130,7 @@ def test_150121_offset():
 
 
 def test_150121_runway():
-    """ runway.txt has KATW on the runway, this was not good """
+    """runway.txt has KATW on the runway, this was not good"""
     nwsli_provider = {
         "ATW": {"lat": 44.26, "lon": -88.52},
         "IPT": {"lat": 44.26, "lon": -88.52},
@@ -144,7 +144,7 @@ def test_150121_runway():
 
 
 def test_150121_fourchar():
-    """ Another coding edition with four char identifiers """
+    """Another coding edition with four char identifiers"""
     nwsli_provider = {
         "FAR": {"lat": 44, "lon": -99},
         "SMF": {"lat": 42, "lon": -99},
@@ -159,7 +159,7 @@ def test_150121_fourchar():
 
 
 def test_150120_latlonloc():
-    """ latlonloc.txt Turns out there is a LAT/LON option for OV """
+    """latlonloc.txt Turns out there is a LAT/LON option for OV"""
     prod = pirepparser(get_test_file("PIREPS/latlonloc.txt"))
     assert not prod.warnings
     assert prod.reports[0].latitude == 25.00
@@ -180,7 +180,7 @@ def test_150120_latlonloc():
 
 
 def test_150120_OVO():
-    """ PIREPS/OVO.txt has a location of OV 0 """
+    """PIREPS/OVO.txt has a location of OV 0"""
     nwsli_provider = {
         "AVK": {"lat": 44, "lon": 99},
         "TED": {"lat": 61.17, "lon": -149.99},
@@ -194,7 +194,7 @@ def test_150120_OVO():
 
 
 def test_offset():
-    """ Test out our displacement logic """
+    """Test out our displacement logic"""
     lat = 42.5
     lon = -92.5
     nwsli_provider = {"BIL": {"lat": lat, "lon": lon}}
@@ -216,7 +216,7 @@ def test_offset():
 
 
 def test_1():
-    """ PIREP.txt, can we parse it! """
+    """PIREP.txt, can we parse it!"""
     utcnow = utc(2015, 1, 9, 0, 0)
     nwsli_provider = {
         "BIL": {"lat": 44, "lon": 99},

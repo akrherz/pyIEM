@@ -82,7 +82,7 @@ class SIGMET:
     """Data Structure."""
 
     def __init__(self):
-        """ Constructor """
+        """Constructor"""
         self.sts = None
         self.ets = None
         self.geom = None
@@ -218,7 +218,7 @@ def locs2lonslats(loc_provider, locstr, geotype, _widthstr, diameterstr):
 
 
 def compute_esol(pts, distance):
-    """ Figure out the box points given the two points and the distance """
+    """Figure out the box points given the two points and the distance"""
     newpts = []
     deltax = pts[1][0] - pts[0][0]
     deltay = pts[1][1] - pts[0][1]
@@ -244,7 +244,7 @@ class SIGMETProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         self.sigmets = []
         if self.afos in ["SIGC", "SIGW", "SIGE", "SIGAK1", "SIGAK2"]:
@@ -255,7 +255,7 @@ class SIGMETProduct(TextProduct):
             self.process_ocean()
 
     def sql(self, txn):
-        """ Do SQL related stuff that is required """
+        """Do SQL related stuff that is required"""
         txn.execute("DELETE from sigmets_current where expire < now()")
         for sigmet in self.sigmets:
             sqlwkt = f"SRID=4326;{sigmet.geom.wkt}"
@@ -285,7 +285,7 @@ class SIGMETProduct(TextProduct):
                 sigmet.centers.append(row["id"])
 
     def compute_time(self, ddhhmi):
-        """ Convert this string into a proper date time """
+        """Convert this string into a proper date time"""
         day = int(ddhhmi[:2])
         hour = int(ddhhmi[2:4])
         minute = int(ddhhmi[4:6])
@@ -296,7 +296,7 @@ class SIGMETProduct(TextProduct):
         return ts.replace(day=day, hour=hour, minute=minute)
 
     def process_ocean(self):
-        """ Process oceananic """
+        """Process oceananic"""
         meat = self.unixtext.replace("\n", " ")
         m = O_LINE1.search(meat)
         d = m.groupdict()
@@ -341,7 +341,7 @@ class SIGMETProduct(TextProduct):
         self.sigmets.append(s)
 
     def process_SIGC(self):
-        """ Process this type of SIGMET """
+        """Process this type of SIGMET"""
         for section in self.unixtext.split("\n\n"):
             s = CS_RE.search(section.replace("\n", " "))
             if s is None:
@@ -374,7 +374,7 @@ class SIGMETProduct(TextProduct):
             self.sigmets.append(sig)
 
     def get_jabbers(self, uri, _uri2=None):
-        """ Return the Jabber for this sigmet """
+        """Return the Jabber for this sigmet"""
         j = []
         for sig in self.sigmets:
             area = " for " + sig.areatext if sig.areatext != "" else ""
@@ -399,5 +399,5 @@ class SIGMETProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ Helper function """
+    """Helper function"""
     return SIGMETProduct(text, utcnow, ugc_provider, nwsli_provider)

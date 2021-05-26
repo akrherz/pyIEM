@@ -19,16 +19,16 @@ SPLITTER = re.compile(
 
 
 class LSRProductException(TextProductException):
-    """ Something we can raise when bad things happen! """
+    """Something we can raise when bad things happen!"""
 
 
 class LSRProduct(TextProduct):
-    """ Represents a text product of the LSR variety """
+    """Represents a text product of the LSR variety"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         self.lsrs = []
         self.duplicates = 0
         TextProduct.__init__(
@@ -40,7 +40,7 @@ class LSRProduct(TextProduct):
         )
 
     def get_temporal_domain(self):
-        """ Return the min and max timestamps of lsrs """
+        """Return the min and max timestamps of lsrs"""
         if not self.lsrs:
             return None, None
         valids = []
@@ -49,11 +49,11 @@ class LSRProduct(TextProduct):
         return min(valids), max(valids)
 
     def is_summary(self):
-        """ Returns is this LSR is a summary or not """
+        """Returns is this LSR is a summary or not"""
         return self.unixtext.find("...SUMMARY") > 0
 
     def get_url(self, baseuri):
-        """ Get the URL of this product """
+        """Get the URL of this product"""
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
         return "%s#%s/%s/%s" % (
@@ -64,7 +64,7 @@ class LSRProduct(TextProduct):
         )
 
     def get_jabbers(self, uri, _uri2=None):
-        """ return a text and html variant for Jabber stuff """
+        """return a text and html variant for Jabber stuff"""
         res = []
         if not self.lsrs:
             return res
@@ -103,7 +103,7 @@ class LSRProduct(TextProduct):
 
 
 def _mylowercase(text):
-    """ Specialized lowercase function """
+    """Specialized lowercase function"""
     tokens = text.split()
     for i, t in enumerate(tokens):
         if len(t) > 3:

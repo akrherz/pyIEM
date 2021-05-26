@@ -699,7 +699,7 @@ def test_colorramps():
 
 @pytest.mark.mpl_image_compare(tolerance=0.2)
 def test_overlap():
-    """ Do some checking of our overlaps logic """
+    """Do some checking of our overlaps logic"""
     mp = MapPlot(sector="midwest", continentalcolor="white", nocaption=True)
     lons = np.linspace(-99, -90, 100)
     lats = np.linspace(38, 44, 100)
@@ -735,7 +735,7 @@ def test_stationplot():
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_scatter():
-    """ Test scatter plots """
+    """Test scatter plots"""
     mp = MapPlot(
         sector="midwest",
         title="Should see 100 dots",
@@ -753,7 +753,7 @@ def test_scatter():
 
 @pytest.mark.mpl_image_compare(tolerance=4)
 def test_contourf():
-    """ Test the contourf plot with labels specified """
+    """Test the contourf plot with labels specified"""
     mp = MapPlot(sector="iowa", nocaption=True)
     mp.contourf(
         np.arange(-94, -89),
@@ -767,7 +767,7 @@ def test_contourf():
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_textplot():
-    """ Can we plot text and place labels on them """
+    """Can we plot text and place labels on them"""
     mp = MapPlot(sector="iowa", nocaption=True)
     mp.plot_values(np.arange(-99, -94), np.arange(40, 45), np.arange(5))
     return mp.fig
@@ -788,7 +788,7 @@ def test_textplot2():
 
 @pytest.mark.mpl_image_compare(tolerance=1.0)
 def test_plot():
-    """ Exercise the API """
+    """Exercise the API"""
     mp = MapPlot(sector="midwest", nocaption=True)
     # test the translation of JSJ to SJU
     mp.fill_cwas({"DMX": 80, "MKX": 5, "JSJ": 30, "AJK": 40}, units="no units")
@@ -797,7 +797,7 @@ def test_plot():
 
 @pytest.mark.mpl_image_compare(tolerance=1.0)
 def test_plot2():
-    """ Exercise NWS plot API """
+    """Exercise NWS plot API"""
     mp = MapPlot(sector="nws", continentalcolor="white", nocaption=True)
     mp.fill_cwas(
         {"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40, "HFO": 50},
@@ -822,7 +822,7 @@ def test_plot22():
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plot3():
-    """ Exercise climdiv plot API """
+    """Exercise climdiv plot API"""
     mp = MapPlot(sector="iowa", nocaption=True)
     mp.fill_climdiv(
         {"IAC001": 80, "AKC003": 5, "HIC003": 30, "AJK": 40, "HFO": 50}

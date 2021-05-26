@@ -4,12 +4,12 @@ import pyiem.nws.product as product
 
 
 class SpaceWxProduct(product.TextProduct):
-    """ Class for parsing and representing Space Wx Products """
+    """Class for parsing and representing Space Wx Products"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """ constructor """
+        """constructor"""
         product.TextProduct.__init__(
             self, text, utcnow, ugc_provider, nwsli_provider
         )
@@ -18,7 +18,7 @@ class SpaceWxProduct(product.TextProduct):
             self.title = self.sections[2].split("\n")[0]
 
     def get_jabbers(self, uri, _uri2=None):
-        """ Custom Implementation of the TextProduct#get_jabbers """
+        """Custom Implementation of the TextProduct#get_jabbers"""
         url = "%s?pid=%s" % (uri, self.get_product_id())
         xtra = {
             "channels": "WNP,%s" % (self.afos,),
@@ -36,5 +36,5 @@ class SpaceWxProduct(product.TextProduct):
 
 
 def parser(buf, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """ A parser implementation """
+    """A parser implementation"""
     return SpaceWxProduct(buf, utcnow, ugc_provider, nwsli_provider)

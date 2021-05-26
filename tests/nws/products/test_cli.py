@@ -245,139 +245,139 @@ def test_150303_alaska():
 
 
 def test_150112_climso():
-    """ CLIMSO_2 found some issue with this in production? """
+    """CLIMSO_2 found some issue with this in production?"""
     prod = factory("CLI/CLIMSO_2.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 16
 
 
 def test_141230_newregime4():
-    """ CLIMBS has a new regime """
+    """CLIMBS has a new regime"""
     prod = factory("CLI/CLIMBS.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 18
 
 
 def test_141230_newregime3():
-    """ CLICKV has a new regime """
+    """CLICKV has a new regime"""
     prod = factory("CLI/CLICKV.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 33
 
 
 def test_141230_newregime2():
-    """ CLISEW has a new regime """
+    """CLISEW has a new regime"""
     prod = factory("CLI/CLISEW.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 34
 
 
 def test_141230_newregime():
-    """ CLITCS has a new regime """
+    """CLITCS has a new regime"""
     prod = factory("CLI/CLITCS.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 22
 
 
 def test_141229_newregime9():
-    """ CLIMAI has a new regime """
+    """CLIMAI has a new regime"""
     prod = factory("CLI/CLIMAI.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 61
 
 
 def test_141229_newregime8():
-    """ CLIECP has a new regime """
+    """CLIECP has a new regime"""
     prod = factory("CLI/CLIECP.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 62
 
 
 def test_141229_newregime7():
-    """ CLIBOI has a new regime """
+    """CLIBOI has a new regime"""
     prod = factory("CLI/CLIBOI.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 23
 
 
 def test_141229_newregime6():
-    """ CLIMSO has a new regime """
+    """CLIMSO has a new regime"""
     prod = factory("CLI/CLIMSO.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 12
 
 
 def test_141229_newregime4():
-    """ CLIOLF has a new regime """
+    """CLIOLF has a new regime"""
     prod = factory("CLI/CLIOLF.txt")
     assert prod.data[0]["data"]["temperature_average"] == -2
 
 
 def test_141229_newregime5():
-    """ CLIICT has a new regime """
+    """CLIICT has a new regime"""
     prod = factory("CLI/CLIICT.txt")
     assert prod.data[0]["data"]["precip_today"] == 0.00
 
 
 def test_141229_newregime3():
-    """ CLIDRT has a new regime """
+    """CLIDRT has a new regime"""
     prod = factory("CLI/CLIDRT.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 37
 
 
 def test_141229_newregime2():
-    """ CLIFMY has a new regime """
+    """CLIFMY has a new regime"""
     prod = factory("CLI/CLIFMY.txt")
     assert prod.data[0]["data"]["temperature_minimum"] == 63
 
 
 def test_141229_newregime():
-    """ CLIEKA has a new regime """
+    """CLIEKA has a new regime"""
     prod = factory("CLI/CLIEKA.txt")
     assert prod.data[0]["data"]["precip_today_record_years"][0] == 1896
     assert prod.data[0]["data"]["precip_today_record_years"][1] == 1999
 
 
 def test_141215_convkey():
-    """ CLIACT Get a warning about convert key """
+    """CLIACT Get a warning about convert key"""
     prod = factory("CLI/CLIACT.txt")
     assert prod.data[0]["data"]["snow_today_record_years"][0] == 1947
     assert prod.data[0]["data"]["snow_today_record_years"][1] == 1925
 
 
 def test_141201_clihou():
-    """ CLIHOU See that we can finally parse the CLIHOU product! """
+    """CLIHOU See that we can finally parse the CLIHOU product!"""
     prod = factory("CLI/CLIHOU.txt")
     assert prod.data[0]["cli_station"] == "HOUSTON INTERCONTINENTAL"
     assert prod.data[1]["cli_station"] == "HOUSTON/HOBBY AIRPORT"
 
 
 def test_141114_coopaux():
-    """ CLIEAR Product had aux COOP data, which confused ingest """
+    """CLIEAR Product had aux COOP data, which confused ingest"""
     prod = factory("CLI/CLIEAR.txt")
     assert prod.data[0]["data"]["precip_today"] == 0
 
 
 def test_141103_recordsnow():
-    """ CLIBGR Make sure we can deal with record snowfall, again... """
+    """CLIBGR Make sure we can deal with record snowfall, again..."""
     prod = factory("CLI/CLIBGR.txt")
     assert prod.data[0]["data"]["snow_today"] == 12.0
 
 
 @pytest.mark.parametrize("database", ["iem"])
 def test_141024_recordsnow(dbcursor):
-    """ CLIOME See that we can handle record snowfall """
+    """CLIOME See that we can handle record snowfall"""
     prod = factory("CLI/CLIOME.txt")
     assert prod.data[0]["data"]["snow_today"] == 3.6
     prod.sql(dbcursor)
 
 
 def test_141022_correction():
-    """ CLIEWN See what happens if we have a valid product correction """
+    """CLIEWN See what happens if we have a valid product correction"""
     prod = factory("CLI/CLIEWN.txt")
     assert prod.data[0]["data"]["temperature_maximum"] == 83
 
 
 def test_141013_missing():
-    """ CLIEST See why Esterville was not going to the database! """
+    """CLIEST See why Esterville was not going to the database!"""
     prod = factory("CLI/CLIEST.txt")
     assert prod.data[0]["data"]["temperature_maximum"] == 62
     assert prod.data[0]["data"]["precip_month"] == 1.22
 
 
 def test_141013_tracetweet():
-    """ CLIDSM2 Make sure we convert trace amounts in tweet to trace! """
+    """CLIDSM2 Make sure we convert trace amounts in tweet to trace!"""
     prod = factory("CLI/CLIDSM2.txt")
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -389,20 +389,20 @@ def test_141013_tracetweet():
 
 
 def test_141003_missing():
-    """ CLIFFC We are missing some data! """
+    """CLIFFC We are missing some data!"""
     prod = factory("CLI/CLIFFC.txt")
     assert prod.data[0]["data"]["temperature_maximum_normal"] == 78
 
 
 def test_141003_alaska():
-    """ CLIBET Some alaska data was not getting processed"""
+    """CLIBET Some alaska data was not getting processed"""
     prod = factory("CLI/CLIBET.txt")
     assert prod.data[0]["data"]["temperature_maximum"] == 17
     assert prod.data[0]["data"]["snow_jul1"] == 14.4
 
 
 def test_140930_negative_temps():
-    """ CLIALO Royal screwup not supporting negative numbers """
+    """CLIALO Royal screwup not supporting negative numbers"""
     prod = factory("CLI/CLIALO.txt")
     assert prod.data[0]["data"].get("temperature_minimum") == -21
     assert prod.data[0]["data"].get("temperature_minimum_record") == -21
@@ -415,13 +415,13 @@ def test_140930_negative_temps():
 
 
 def test_140930_mm_precip():
-    """ CLIABY Make sure having MM as today's precip does not error out """
+    """CLIABY Make sure having MM as today's precip does not error out"""
     prod = factory("CLI/CLIABY.txt")
     assert prod.data[0]["data"].get("precip_today") is None
 
 
 def test_cli():
-    """ CLIJUN Test the processing of a CLI product """
+    """CLIJUN Test the processing of a CLI product"""
     prod = factory("CLI/CLIJNU.txt")
     assert prod.data[0]["cli_valid"] == datetime.date(2013, 6, 30)
     assert prod.valid == utc(2013, 7, 1, 0, 36)
@@ -440,7 +440,7 @@ def test_cli():
 
 
 def test_cli2():
-    """ CLIDSM test """
+    """CLIDSM test"""
     prod = factory("CLI/CLIDSM.txt")
     assert prod.data[0]["cli_valid"] == datetime.date(2013, 8, 1)
     assert prod.data[0]["data"]["temperature_maximum"] == 89
@@ -452,7 +452,7 @@ def test_cli2():
 
 
 def test_cli3():
-    """ CLINYC test """
+    """CLINYC test"""
     prod = factory("CLI/CLINYC.txt")
     assert prod.data[0]["data"]["snow_today_record_years"][0] == 1925
     assert prod.data[0]["data"]["snow_today_record"] == 11.5

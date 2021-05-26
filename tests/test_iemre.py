@@ -95,7 +95,7 @@ def test_get_grids():
 
 
 def test_simple():
-    """ Get nulls for right and top values """
+    """Get nulls for right and top values"""
     i, j = iemre.find_ij(iemre.EAST, iemre.NORTH)
     assert i is None
     assert j is None
@@ -106,7 +106,7 @@ def test_simple():
 
 
 def test_hourly_offset():
-    """ Compute the offsets """
+    """Compute the offsets"""
     ts = utc(2013, 1, 1, 0, 0)
     offset = iemre.hourly_offset(ts)
     assert offset == 0
@@ -122,7 +122,7 @@ def test_hourly_offset():
 
 
 def test_daily_offset():
-    """ Compute the offsets """
+    """Compute the offsets"""
     ts = utc(2013, 1, 1, 0, 0)
     offset = iemre.daily_offset(ts)
     assert offset == 0
