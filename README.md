@@ -6,12 +6,32 @@ and the [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu). A goal 
 
 [![CodeCov](https://codecov.io/gh/akrherz/pyIEM/branch/main/graph/badge.svg)](https://codecov.io/gh/akrherz/pyIEM)
 
+Current release info
+--------------------
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyiem-green.svg)](https://anaconda.org/conda-forge/pyiem) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyiem.svg)](https://anaconda.org/conda-forge/pyiem) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyiem.svg)](https://anaconda.org/conda-forge/pyiem) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyiem.svg)](https://anaconda.org/conda-forge/pyiem) |
+
 Dependencies
 ------------
 
 The codebase currently makes direct database calls with hardcoded assumptions
 of the hostname `iemdb.local` and database names.  Someday, I'll use a proper ORM
 and software design techniques to make this more extensible for others!
+
+Installation
+------------
+
+Since this library depends on `Cartopy`, you likely do **not** want to let `pip`
+install `Cartopy`.  So the installation options are either:
+
+1. Install `Cartopy` via some other mechanism than `pip`.
+2. Install `pyiem` via pip.
+
+Or:
+
+1. Install `pyiem` via `conda` using the `conda-forge` channel.
 
 How to use NWS product ingestors
 --------------------------------
