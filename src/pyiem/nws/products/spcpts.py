@@ -269,9 +269,15 @@ def segment_logic(segment, currentpoly, polys):
             add_to_polys(currentpoly, polys)
             return Polygon(segment)
         LOG.info("     polygon is CCW (interior), testing intersection")
-        if currentpoly.intersection(lr).is_empty:
-            LOG.info("     failed intersection with currentpoly, abort")
-            return currentpoly
+        # Figure out which polygon this hole intersects with
+        for i, poly in enumerate(polys):
+            if poly.intersection(lr).is_empty:
+                continue
+            LOG.info("     donut hole intersects poly[%s]", i)
+            if poly != currentpoly:
+                add_to_polys(currentpoly, polys)
+                currentpoly = polys.pop(i)
+            break
         interiors = list(currentpoly.interiors)
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
@@ -337,11 +343,6 @@ def segment_logic(segment, currentpoly, polys):
             found = True
             add_to_polys(currentpoly, polys)
             currentpoly = polys.pop(i)
-            LOG.info(
-                "     add poly.area: %.2f to polys, now len=%s",
-                currentpoly.area,
-                len(polys),
-            )
             break
         if not found:
             add_to_polys(currentpoly, polys)

@@ -6,6 +6,15 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210601_hole():
+    """Test that we properly get a hole with the TSTM."""
+    # /products/outlook/archive/2021/day1otlk_20210601_1300.html
+    prod = parser(get_test_file("SPCPTS/PTSDY1_hole.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 315.286) < 0.01
+
+
 def test_210601_last():
     """Test that the last polygon does not dangle in complex logic."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_last.txt"))
