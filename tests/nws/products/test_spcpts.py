@@ -6,6 +6,13 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
+def test_210601_last():
+    """Test that the last polygon does not dangle in complex logic."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_last.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 287.92) < 0.01
+
+
 def test_210519_singlepoint():
     """Test that we handle when a single point is in the PTS."""
     prod = parser(get_test_file("SPCPTS/PTSDY2_single.txt"))
@@ -174,10 +181,11 @@ def test_200109_nogeoms():
 
 def test_190907_invalid():
     """Product hit geos issue."""
+    # /products/outlook/archive/2019/day1otlk_20190907_1300.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 306.663) < 0.01
+    assert abs(outlook.geometry.area - 314.761) < 0.01
 
 
 def test_190905_invalid():
