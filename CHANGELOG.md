@@ -10,6 +10,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Account for another SPC PTS edge case, le sigh.
+
 ## **1.6.0** (26 May 2021)
 
 ### API Changes

@@ -235,6 +235,15 @@ def look_for_closed_polygon(segment):
         return MultiPolygon([Polygon(segment)])
 
 
+def add_to_polys(poly, polys):
+    """Add unique poly to polys."""
+    if poly in polys:
+        LOG.info("     - poly.area %.2f already in polys", poly.area)
+        return
+    polys.append(poly)
+    LOG.info("     + add poly.area %.2f, now len=%s", poly.area, len(polys))
+
+
 def segment_logic(segment, currentpoly, polys):
     """Our segment parsing logic."""
     LOG.info(
@@ -257,12 +266,18 @@ def segment_logic(segment, currentpoly, polys):
         lr = LinearRing(LineString(segment))
         if not lr.is_ccw:
             LOG.info("     polygon is clockwise (exterior), done.")
-            polys.append(currentpoly)
+            add_to_polys(currentpoly, polys)
             return Polygon(segment)
         LOG.info("     polygon is CCW (interior), testing intersection")
-        if currentpoly.intersection(lr).is_empty:
-            LOG.info("     failed intersection with currentpoly, abort")
-            return currentpoly
+        # Figure out which polygon this hole intersects with
+        for i, poly in enumerate(polys):
+            if poly.intersection(lr).is_empty:
+                continue
+            LOG.info("     donut hole intersects poly[%s]", i)
+            if poly != currentpoly:
+                add_to_polys(currentpoly, polys)
+                currentpoly = polys.pop(i)
+            break
         interiors = list(currentpoly.interiors)
         interiors.append(lr)
         newp = Polygon(currentpoly.exterior, interiors)
@@ -295,8 +310,7 @@ def segment_logic(segment, currentpoly, polys):
                             LOG.info("     resetting currentpoly")
                             currentpoly = polys.pop(k)
                             break
-                    LOG.info("     collecting up res.area: %.2f", res.area)
-                    polys.append(res)
+                    add_to_polys(res, polys)
             else:
                 currentpoly = res
         return currentpoly
@@ -327,14 +341,17 @@ def segment_logic(segment, currentpoly, polys):
                 poly.area,
             )
             found = True
-            LOG.info("     add poly.area: %.2f to polys", currentpoly.area)
-            polys.append(currentpoly)
+            add_to_polys(currentpoly, polys)
             currentpoly = polys.pop(i)
             break
         if not found:
+            add_to_polys(currentpoly, polys)
+            LOG.info(
+                "     add poly.area: %.2f to polys, not len=%s",
+                currentpoly.area,
+                len(polys),
+            )
             LOG.info("     setting currentpoly back to CONUS")
-            LOG.info("     add poly.area: %.2f to polys", currentpoly.area)
-            polys.append(currentpoly)
             currentpoly = copy.deepcopy(CONUS["poly"])
 
     newpoly = rhs_split(currentpoly, ls)
@@ -392,7 +409,7 @@ def str2multipolygon(s):
             segment[-1][1],
         )
         currentpoly = segment_logic(segment, currentpoly, polys)
-    polys.append(currentpoly)
+    add_to_polys(currentpoly, polys)
 
     res = []
     LOG.info(
