@@ -141,12 +141,12 @@ def ensure_outside_conus(ls):
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
-        if not pt.within(CONUS["poly"]):
+        if not pt.within(CONUS["poly"]) and pt.distance(CONUS["poly"]) > 0.001:
             continue
         pt = CONUS["poly"].exterior.interpolate(
             CONUS["poly"].exterior.project(pt)
         )
-        if pt.within(CONUS["poly"]):
+        if pt.within(CONUS["poly"]) or pt.distance(CONUS["poly"]) < 0.001:
             LOG.info("     idx: %s is still within, evasive action", idx)
             done = False
             for multi in [0.01, 0.1, 1.0]:
@@ -204,7 +204,7 @@ def clean_segment(ls):
     if len(res) == 1:
         LOG.info("    was able to filter out very short lines")
         return ensure_outside_conus(res[0])
-    LOG.info("     returning a MultiLineString")
+    LOG.info("     returning a MultiLineString len=%s", len(res))
     return MultiLineString(res)
 
 
@@ -324,7 +324,6 @@ def segment_logic(segment, currentpoly, polys):
         ls.coords[-1][0],
         ls.coords[-1][1],
     )
-
     # If this line segment does not intersect the current polygon of interest,
     # we should check any previous polygons to see if it intersects it. We
     # could be dealing with invalid ordering in the file, sigh.
@@ -346,11 +345,6 @@ def segment_logic(segment, currentpoly, polys):
             break
         if not found:
             add_to_polys(currentpoly, polys)
-            LOG.info(
-                "     add poly.area: %.2f to polys, not len=%s",
-                currentpoly.area,
-                len(polys),
-            )
             LOG.info("     setting currentpoly back to CONUS")
             currentpoly = copy.deepcopy(CONUS["poly"])
 
