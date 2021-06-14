@@ -8,6 +8,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `SPS.<state>` channel for SPS Products.
+
 ### Bug Fixes
 
 - Account for another SPC PTS edge case, le sigh.

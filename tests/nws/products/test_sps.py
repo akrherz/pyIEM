@@ -111,6 +111,7 @@ def test_sps(dbcursor):
     assert "SPS..." in jmsgs[0][2]["channels"]
     assert "SPSBMX.ALZ039" in jmsgs[0][2]["channels"]
     assert "ALZ039" in jmsgs[0][2]["channels"]
+    assert "SPS.AL" in jmsgs[0][2]["channels"]
 
     prod.sql(dbcursor)
     dbcursor.execute(

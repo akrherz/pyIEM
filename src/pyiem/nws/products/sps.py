@@ -97,8 +97,12 @@ class SPSProduct(TextProduct):
         """Returns a list of channels for this SPS."""
         channels = self.get_channels()
         for ugc in segment.ugcs:
+            sugc = str(ugc)
             channels.append(f"{self.afos}.{ugc}")
-            channels.append(str(ugc))
+            channels.append(sugc)
+            channel = f"SPS.{sugc[:2]}"
+            if channel not in channels:
+                channels.append(channel)
         return channels
 
     def get_jabbers(self, uri, _uri2=None):
