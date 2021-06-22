@@ -14,7 +14,6 @@ from pyiem.plot import (
     centered_bins,
     pretty_bins,
     load_bounds,
-    load_pickle_pd,
 )
 from pyiem.util import utc
 
@@ -30,7 +29,6 @@ def test_depreciated():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
-    assert load_pickle_pd("this shall not work") is None
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
