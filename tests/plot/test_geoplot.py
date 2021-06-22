@@ -14,7 +14,6 @@ from pyiem.plot import (
     centered_bins,
     pretty_bins,
     load_bounds,
-    load_pickle_pd,
 )
 from pyiem.util import utc
 
@@ -30,7 +29,6 @@ def test_depreciated():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
-    assert load_pickle_pd("this shall not work") is None
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
@@ -570,6 +568,19 @@ def test_drawugcs2():
     )
     mydict = {"IAZ001": 10, "IAZ003": 20, "IAZ005": 30}
     mp.fill_ugcs(mydict, ilabel=True, lblformat="%.0f")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_lwx_cities():
+    """Test that cities plot in a reasonable spot."""
+    mp = MapPlot(
+        sector="cwa",
+        cwa="LWX",
+        title="DC should be where DC is",
+        nocaption=True,
+    )
+    mp.drawcities()
     return mp.fig
 
 

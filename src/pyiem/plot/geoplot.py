@@ -102,22 +102,6 @@ def load_bounds(filebase):
     return np.load(fn)
 
 
-def load_pickle_pd(filename):
-    """Load a pickled pandas dataframe
-
-    Args:
-      filename(str): The filename to load, relative to project data/
-
-    Returns:
-      pandas.DataFrame
-    """
-    fn = "%s/%s" % (DATADIR, filename)
-    if not os.path.isfile(fn):
-        LOG.info("load_pickle_pd(%s) failed, file is missing", fn)
-        return
-    return pd.read_pickle(fn)
-
-
 class MapPlot:
     """An object representing a cartopy plot.
 
@@ -1168,25 +1152,25 @@ class MapPlot:
         """Overlay some cities
 
         Args:
-          minarea (int,optional): Minimum Urban Area size (km2) to plot
+          minpop (int,optional): Minimum population to consider for plotting.
           labelbuffer (int): approximate number of pixels to compute overlap
           textsize (int): size of the text
           color (str): color to plot the text with
           outlinecolor (str): color to outline the text with
         """
-        df = load_pickle_pd("pd_cities.pickle")
+        gdf = load_geodf("cities")
         (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
 
-        minarea = kwargs.get(
-            "minarea", 500.0 if self.sector in ["nws", "conus"] else 10.0
+        minpop = kwargs.get(
+            "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
-        df2 = df[
+        df2 = gdf[
             (
-                (df["lat"] > south)
-                & (df["lat"] < north)
-                & (df["lon"] > west)
-                & (df["lon"] < east)
-                & (df["area_km2"] > minarea)
+                (gdf["geom"].y > south)
+                & (gdf["geom"].y < north)
+                & (gdf["geom"].x > west)
+                & (gdf["geom"].x < east)
+                & (gdf["pop_2010"] > minpop)
             )
         ]
         # debug option to test an individual point on the plot
@@ -1194,9 +1178,9 @@ class MapPlot:
         # hack around a API break
         tsz = kwargs.pop("textsize", 16)
         self.plot_values(
-            df2.lon.values,
-            df2.lat.values,
-            df2.name.values,
+            df2["geom"].x,
+            df2["geom"].y,
+            df2["name"].values,
             showmarker=True,
             textsize=tsz,
             **kwargs,

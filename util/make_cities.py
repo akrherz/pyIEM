@@ -1,30 +1,30 @@
 """Create the cities pandas dataframe serialization
-https://www.census.gov/geo/maps-data/data/cbf/cbf_ua.html
+https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020
 """
 import datetime
-import pandas as pd
-from pandas.io.sql import read_sql
+from geopandas import read_postgis, read_parquet
 from pyiem.util import get_dbconn
+
+FILENAME = "../src/pyiem/data/geodf/cities.parquet"
 
 
 def main():
     """Go Main Go"""
-    pgconn = get_dbconn("postgis", user="nobody")
-    df = read_sql(
+    pgconn = get_dbconn("postgis")
+    df = read_postgis(
         """
-        SELECT st_x(st_centroid(geom)) as lon, st_y(st_centroid(geom)) as lat,
-        SUBSTRING(name10 FROM '[A-Za-z ''\.]+') as name,
-        aland10 / 1000000 as area_km2 from cb_2014_us_ua10_500k
-        ORDER by aland10 DESC
+        SELECT geom, name, pop_2010 from citiesx010g WHERE pop_2010 > 500
+        ORDER by pop_2010 DESC
         """,
         pgconn,
         index_col=None,
+        geom_col="geom",
     )
-    df.to_pickle("../pyiem/data/pd_cities.pickle")
+    df.to_parquet(FILENAME)
     print(df.head(20))
 
     sts = datetime.datetime.now()
-    pd.read_pickle("../pyiem/data/pd_cities.pickle")
+    read_parquet(FILENAME)
     ets = datetime.datetime.now()
     print((ets - sts).total_seconds())
 
