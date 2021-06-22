@@ -1,5 +1,5 @@
 """Create the cities pandas dataframe serialization
-https://www.census.gov/geo/maps-data/data/cbf/cbf_ua.html
+https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020
 """
 import datetime
 import pandas as pd
@@ -9,22 +9,21 @@ from pyiem.util import get_dbconn
 
 def main():
     """Go Main Go"""
-    pgconn = get_dbconn("postgis", user="nobody")
+    pgconn = get_dbconn("postgis")
     df = read_sql(
         """
-        SELECT st_x(st_centroid(geom)) as lon, st_y(st_centroid(geom)) as lat,
-        SUBSTRING(name10 FROM '[A-Za-z ''\.]+') as name,
-        aland10 / 1000000 as area_km2 from cb_2014_us_ua10_500k
-        ORDER by aland10 DESC
+        SELECT st_x(geom) as lon, st_y(geom) as lat,
+        name, pop_2010 from citiesx010g WHERE pop_2010 > 500
+        ORDER by pop_2010 DESC
         """,
         pgconn,
         index_col=None,
     )
-    df.to_pickle("../pyiem/data/pd_cities.pickle")
+    df.to_pickle("../src/pyiem/data/pd_cities.pickle")
     print(df.head(20))
 
     sts = datetime.datetime.now()
-    pd.read_pickle("../pyiem/data/pd_cities.pickle")
+    pd.read_pickle("../src/pyiem/data/pd_cities.pickle")
     ets = datetime.datetime.now()
     print((ets - sts).total_seconds())
 

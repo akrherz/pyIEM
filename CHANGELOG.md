@@ -6,6 +6,10 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Update `MapPlot.drawcities()` to no longer use `minarea` as a filter on
+which cities are potentially labeled on the map.  The bundled dataset was
+updated on use a different [upstream source](https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020).
+
 ### New Features
 
 - Add `SPS.<state>` channel for SPS Products.

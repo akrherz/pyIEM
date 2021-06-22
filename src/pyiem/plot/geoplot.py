@@ -1168,7 +1168,7 @@ class MapPlot:
         """Overlay some cities
 
         Args:
-          minarea (int,optional): Minimum Urban Area size (km2) to plot
+          minpop (int,optional): Minimum population to consider for plotting.
           labelbuffer (int): approximate number of pixels to compute overlap
           textsize (int): size of the text
           color (str): color to plot the text with
@@ -1177,8 +1177,8 @@ class MapPlot:
         df = load_pickle_pd("pd_cities.pickle")
         (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
 
-        minarea = kwargs.get(
-            "minarea", 500.0 if self.sector in ["nws", "conus"] else 10.0
+        minpop = kwargs.get(
+            "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
         df2 = df[
             (
@@ -1186,7 +1186,7 @@ class MapPlot:
                 & (df["lat"] < north)
                 & (df["lon"] > west)
                 & (df["lon"] < east)
-                & (df["area_km2"] > minarea)
+                & (df["pop_2010"] > minpop)
             )
         ]
         # debug option to test an individual point on the plot

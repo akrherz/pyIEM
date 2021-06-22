@@ -574,6 +574,19 @@ def test_drawugcs2():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_lwx_cities():
+    """Test that cities plot in a reasonable spot."""
+    mp = MapPlot(
+        sector="cwa",
+        cwa="LWX",
+        title="DC should be where DC is",
+        nocaption=True,
+    )
+    mp.drawcities()
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_ugcs_lwx():
     """Ensure that we can plot some counties in LWX CWA."""
     mp = MapPlot(
