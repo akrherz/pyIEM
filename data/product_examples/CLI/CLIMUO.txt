@@ -1,0 +1,66 @@
+746
+CDUS45 KBOI 240934
+CLIMUO
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE BOISE ID
+334 AM MDT THU JUN 24 2021
+
+...................................
+
+...THE MOUNTAIN HOME AFB CLIMATE SUMMARY FOR JUNE 23 2021...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1906 TO 2021
+
+
+WEATHER ITEM   OBSERVED RECORD YEAR     LAST                         
+                VALUE   VALUE           YEAR                         
+..............................................
+TEMPERATURE (F)                                                         
+ YESTERDAY                                                          
+  MAXIMUM         92    103    1990    94                            
+  MINIMUM         58     32    1907    57                            
+  AVERAGE         75                   76                         
+
+PRECIPITATION (IN)                                                   
+  YESTERDAY        T      0.19 1918      T                           
+  MONTH TO DATE    0.59                 0.48                         
+  SINCE OCT 1      3.19                 4.50                         
+  SINCE JAN 1      2.23                 3.49                         
+
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                    0                            
+  MONTH TO DATE   18                   79                            
+  SINCE JUN 1     18                   79                            
+  SINCE JUL 1   5421                 5772                            
+
+ COOLING                                                             
+  YESTERDAY       10                   11                            
+  MONTH TO DATE  206                   80                            
+  SINCE JUN 1    206                   80                            
+  SINCE JAN 1    225                  134                            
+..............................................
+
+
+THE MOUNTAIN HOME AFB CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   86       103      1988                     
+ MINIMUM TEMPERATURE (F)   53        32      1920                     
+
+
+SUNRISE AND SUNSET                                                   
+JUNE 24 2021..........SUNRISE   605 AM MDT   SUNSET   927 PM MDT    
+JUNE 25 2021..........SUNRISE   605 AM MDT   SUNSET   927 PM MDT    
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+
+
+
+$$

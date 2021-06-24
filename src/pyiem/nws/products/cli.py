@@ -40,6 +40,11 @@ REGIMES = [
     "WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE",
     "WEATHER ITEM   OBSERVED NORMAL DEPARTURE",
     "WEATHER ITEM   OBSERVED TIME   RECORD NORMAL DEPARTURE LAST",
+    (
+        "WEATHER ITEM   OBSERVED    TIME     RECORD    YEAR    NORMAL    "
+        "DEPARTURE    LAST"
+    ),
+    "WEATHER ITEM   OBSERVED RECORD YEAR     LAST",
 ]
 # label, value, time, record, year, normal, departure, last
 COLS = [
@@ -61,6 +66,8 @@ COLS = [
     [16, 23, 30, None, None, 37, 44, None],
     [16, 23, None, None, None, 30, 37, None],
     [16, 23, 30, 37, None, 44, 51, 60],
+    [16, 23, 34, 40, 50, 58, 67, 80],
+    [16, 23, None, 30, 35, None, None, 44],
 ]
 # Allow manual provision of IDS
 HARDCODED = {}
@@ -596,7 +603,11 @@ class CLIProduct(TextProduct):
         sections = meat.split("\n\n")
         for _section in sections:
             lines = _section.split("\n")
-            if lines[0] in ["TEMPERATURE (F)", "TEMPERATURE"]:
+            if lines[0] in [
+                "TEMPERATURE (F)",
+                "TEMPERATURE",
+                "TEMPERATURE(F)",
+            ]:
                 parse_temperature(self, self.regime, lines, data)
             elif lines[0] in ["PRECIPITATION (IN)", "PRECIPITATION"]:
                 parse_precipitation(self.regime, lines, data)
