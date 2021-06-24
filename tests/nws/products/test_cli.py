@@ -50,6 +50,18 @@ def test_invalid_temperature_year():
     assert prod.data[0]["data"].get("temperature_maximum_record_years") is None
 
 
+def test_clippg2():
+    """Test that we handle the enlongated format from PPG."""
+    prod = factory("CLI/CLIPPG2.txt")
+    assert prod.data[0]["data"]["temperature_maximum_record_years"][0] == 1988
+
+
+def test_climuo():
+    """Test that we handle the shortend format from BOI."""
+    prod = factory("CLI/CLIMUO.txt")
+    assert prod.data[0]["data"]["temperature_maximum_record_years"][0] == 1990
+
+
 def test_issue408_estimated():
     """Test that we catch some GIO with estimated temperature flag."""
     prod = factory("CLI/CLIRDU.txt")
