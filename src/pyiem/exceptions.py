@@ -39,3 +39,7 @@ class UGCParseException(Exception):
 
 class CLIException(Exception):
     """Custom Exception for CLI Parsing Issues"""
+
+
+class InvalidPolygon(Exception):
+    """Parsing of polygon raised a known error condition."""

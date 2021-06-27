@@ -18,6 +18,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 ### Bug Fixes
 
 - Account for another SPC PTS edge case, le sigh.
+- Gracefully handle a one or two point `polygon` attempt from a NWS Product.
 
 ## **1.6.0** (26 May 2021)
 

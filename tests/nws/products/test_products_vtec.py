@@ -66,6 +66,15 @@ def test_issue461_firewx_ugcs():
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_invalidpolygon(dbcursor):
+    """Test that some graceful handling of a bad polygon can happen."""
+    data = get_test_file("FLS/FLSSJU_twopoint.txt")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    assert any(x.startswith("Less than three ") for x in prod.warnings)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_issue253_ibwthunderstorm(dbcursor):
     """Test the processing of IBW Thunderstorm Damage Threat."""
     data = get_test_file("SVR/SVRPSR_IBW1.txt")
