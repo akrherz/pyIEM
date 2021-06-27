@@ -13,7 +13,7 @@ from shapely.wkt import dumps
 
 from pyiem import reference
 from pyiem.util import LOG
-from pyiem.exceptions import TextProductException
+from pyiem.exceptions import TextProductException, InvalidPolygon
 from pyiem.nws import ugc, vtec, hvtec
 
 
@@ -137,6 +137,8 @@ def str2polygon(strdata):
         return None
     if pts[0][0] != pts[-1][0] and pts[0][1] != pts[-1][1]:
         pts.append(pts[0])
+    if len(pts) < 3:
+        raise InvalidPolygon(f"Less than three points for polygon {pts}")
     return Polygon(pts)
 
 
@@ -210,7 +212,11 @@ class TextProductSegment:
 
         #
         self.giswkt = None
-        self.sbw = self.process_latlon()
+        try:
+            self.sbw = self.process_latlon()
+        except InvalidPolygon as exp:
+            tp.warnings.append(str(exp))
+            self.sbw = None
 
         # tags
         self.windtag = None

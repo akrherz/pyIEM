@@ -1,0 +1,39 @@
+000 
+WGCA82 TJSJ 261121
+FLSSJU
+
+Flood Advisory
+National Weather Service San Juan PR
+721 AM AST Sat Jun 26 2021
+
+VIC020-030-261315-
+/O.NEW.TJSJ.FA.Y.0176.210626T1121Z-210626T1315Z/
+/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+Saint John VI-Saint Thomas VI-
+721 AM AST Sat Jun 26 2021
+
+The National Weather Service in San Juan has issued a
+
+* Flood Advisory for...
+  Saint John in Virgin Islands...
+  Saint Thomas in Virgin Islands...
+
+* Until 915 AM AST.
+
+* At 721 AM AST, Doppler radar indicated heavy rain due to
+  thunderstorms. Minor flooding is ongoing or expected to begin
+  shortly in the advisory area. Between 1 and 1.5 inches of rain
+  have fallen.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+&&
+
+LAT...LON 1837 6474 1837 6475
+
+$$
+
+JA
