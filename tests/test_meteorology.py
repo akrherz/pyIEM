@@ -1,9 +1,12 @@
 """Tests for the pyiem.meteorology library"""
 import warnings
 
+import pytest
 import numpy as np
 from metpy.units import units, masked_array
+
 from pyiem import datatypes, meteorology
+from pyiem.exceptions import InvalidArguments
 
 warnings.simplefilter("ignore", RuntimeWarning)
 
@@ -15,6 +18,14 @@ def test_gdd_with_metpy_units():
     assert abs(res - 6.16) < 0.01
 
 
+def test_masked_feelslike():
+    """Test that a masked array can be handled."""
+    tmpf = units("degF") * np.ma.array([80.0, 90.0], mask=[False, True])
+    dwpf = units("degF") * np.ma.array([70.0, 60.0])
+    smps = units("meter per second") * np.ma.array([10.0, 20.0])
+    meteorology.mcalc_feelslike(tmpf, dwpf, smps)
+
+
 def test_vectorized():
     """See that heatindex and windchill can do lists"""
     temp = datatypes.temperature([0, 10], "F")
@@ -22,18 +33,29 @@ def test_vectorized():
     val = meteorology.windchill(temp, sknt).value("F")
     assert abs(val[0] - -24.50) < 0.01
 
+
+def test_vectorized2():
+    """See that heatindex and windchill can do lists"""
     t = datatypes.temperature([80.0, 90.0], "F")
     td = datatypes.temperature([70.0, 60.0], "F")
     hdx = meteorology.heatindex(t, td)
     assert abs(hdx.value("F")[0] - 83.93) < 0.01
 
-    tmpf = np.array([80.0, 90.0]) * units("degF")
-    dwpf = np.array([70.0, 60.0]) * units("degF")
-    smps = np.array([10.0, 20.0]) * units("meter per second")
-    feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
-    assert abs(feels.to(units("degF")).magnitude[0] - 83.15) < 0.01
 
+def test_vectorized3():
+    """See that heatindex and windchill can do lists"""
+    tmpf = units("degF") * np.array([80.0, 90.0])
+    dwpf = units("degF") * np.array([70.0, 60.0])
+    smps = units("meter per second") * np.array([10.0, 20.0])
+    feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
+    assert abs(feels.to(units("degF")).m[0] - 83.15) < 0.01
+
+
+def test_vectorized4():
+    """See that heatindex and windchill can do lists"""
     tmpf = masked_array([80.0, np.nan], units("degF"), mask=[False, True])
+    dwpf = units("degF") * np.array([70.0, 60.0])
+    smps = units("meter per second") * np.array([10.0, 20.0])
     feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps)
     assert abs(feels.to(units("degF")).magnitude[0] - 83.15) < 0.01
     assert feels.mask[1]
@@ -50,6 +72,27 @@ def test_gdd_with_nans():
         86,
     )
     assert np.ma.is_masked(r[2])
+
+
+def test_gdd_unit_array():
+    """Test what happens with length 1 arrays."""
+    r = meteorology.gdd(
+        datatypes.temperature(
+            [
+                86,
+            ],
+            "F",
+        ),
+        datatypes.temperature(
+            [
+                50,
+            ],
+            "F",
+        ),
+        50,
+        86,
+    )
+    assert r == 18
 
 
 def test_gdd():
@@ -141,6 +184,14 @@ def test_dewpoint():
         assert abs(dwpk.value("F") - a0) < 0.01
 
 
+def test_headindex_invalidargs():
+    """Test that we handle invalid args."""
+    bogus = datatypes.speed(10, "KT")
+    td = datatypes.temperature(70.0, "F")
+    with pytest.raises(InvalidArguments):
+        meteorology.heatindex(bogus, td)
+
+
 def test_heatindex():
     """Test our heat index calculations"""
     t = datatypes.temperature(80.0, "F")
@@ -151,6 +202,14 @@ def test_heatindex():
     t = datatypes.temperature(30.0, "F")
     hdx = meteorology.heatindex(t, td)
     assert abs(hdx.value("F") - 30.00) < 0.01
+
+
+def test_uv_invalid_args():
+    """Test code that checks units."""
+    bogus = datatypes.temperature([10], "K")
+    mydir = datatypes.direction([0], "DEG")
+    with pytest.raises(InvalidArguments):
+        meteorology.uv(bogus, mydir)
 
 
 def test_uv():

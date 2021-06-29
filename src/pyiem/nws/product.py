@@ -91,8 +91,6 @@ PDS_RE = re.compile(
     r"THIS\s+IS\s+A\s+PARTICULARLY\s+DANGEROUS\s+SITUATION", re.I
 )
 
-# http://www.nws.noaa.gov/os/notification/pns11mixedcase.txt
-# DISALLOWED_CHARS = re.compile(r'[^\x40-\x7F]')
 KNOWN_BAD_TTAAII = ["KAWN"]
 
 

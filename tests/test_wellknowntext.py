@@ -5,6 +5,18 @@ from shapely.geometry import Point, Polygon, LineString
 from pyiem import wellknowntext
 
 
+def test_parsecoordinate_lists():
+    """Parse!"""
+    with pytest.raises(ValueError):
+        wellknowntext.parse_coordinate_lists("  ")
+
+
+def test_unknown():
+    """Test an emptry string."""
+    with pytest.raises(ValueError):
+        wellknowntext.convert_well_known_text("")
+
+
 def test_wkt():
     """Try the properties function"""
     wkt = "SRID=4326;POINT(-99 43)"

@@ -43,3 +43,7 @@ class CLIException(Exception):
 
 class InvalidPolygon(Exception):
     """Parsing of polygon raised a known error condition."""
+
+
+class InvalidArguments(Exception):
+    """Provided method arguments were not valid (invalid units)."""

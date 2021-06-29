@@ -3,7 +3,6 @@
 Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 """
 from datetime import timezone, datetime
-import traceback
 import re
 import math
 
@@ -39,6 +38,7 @@ def dwpf(tmpf, relh):
 
 
 def mydir(u, v):
+    """TBR."""
     if v == 0:
         v = 0.000000001
     dd = math.atan(u / v)
@@ -54,13 +54,14 @@ def mydir(u, v):
 
 
 def feelslike(tmpf, relh, sped):
+    """TBR."""
     if tmpf > 50:
         return heatidx(tmpf, relh)
-    else:
-        return wchtidx(tmpf, sped)
+    return wchtidx(tmpf, sped)
 
 
 def heatidx(tmpf, relh):
+    """TBR."""
     if tmpf < 70:
         return tmpf
     if tmpf > 140:
@@ -98,6 +99,7 @@ def heatidx(tmpf, relh):
 
 
 def wchtidx(tmpf, sped):
+    """TBR."""
     if sped < 3 or tmpf > 50:
         return tmpf
     wci = math.pow(sped, 0.16)
@@ -106,7 +108,10 @@ def wchtidx(tmpf, sped):
 
 
 class nwnformat:
+    """TBR."""
+
     def __init__(self, do_avg_winds=True):
+        """TBR."""
         self.error = 0
         self.do_avg_winds = do_avg_winds
 
@@ -151,22 +156,14 @@ class nwnformat:
         self.aDrct = []
 
     def setTS(self, newval):
-        try:
-            self.ts = datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
-        except Exception:
-            traceback.print_exc()
-            self.error = 100
-            return
+        """Force a timestamp."""
+        self.ts = datetime.strptime(newval, "%m/%d/%y %H:%M:%S")
         now = datetime.now()
         if (now - self.ts).total_seconds() > 7200:
             self.error = 101
 
     def avgWinds(self):
-        if not self.aSknt:
-            self.sped = None
-            self.drct = None
-            return
-
+        """Vector averaging."""
         self.avg_sknt = int(float(sum(self.aSknt)) / float(len(self.aSknt)))
         utot = 0
         vtot = 0
@@ -188,13 +185,11 @@ class nwnformat:
         self.aDrct = []
 
     def parseLineRT(self, tokens):
+        """TBR."""
         if self.ts is None:
             _t = datetime.utcnow()
             _t = _t.replace(second=0, microsecond=0, tzinfo=timezone.utc)
             self.ts = _t.astimezone(ZoneInfo("America/Chicago"))
-
-        if len(tokens) != 14:
-            return
         lineType = tokens[2]
         if lineType == "Max":
             self.parseMaxLineRT(tokens)
@@ -207,15 +202,13 @@ class nwnformat:
             self.parseCurrentLineRT(tokens)
 
     def parseMaxLineRT(self, tokens):
+        """TBR."""
         self.xdrct = reference.txt2drct[tokens[4]]
         self.xdrctTxt = tokens[4]
         if len(tokens[5]) >= 5:
             t = re.findall("([0-9]+)(MPH|KTS)", tokens[5])[0]
             if t[1] == "MPH":
                 self.xsped = int(t[0])
-            else:
-                sknt = int(t[0])
-                self.xsped = round(sknt * 1.1507, 0)
 
         if len(tokens[6]) == 4:
             self.xsrad = (
@@ -223,17 +216,17 @@ class nwnformat:
             )
 
         if len(tokens[8]) == 4 or len(tokens[8]) == 3:
-            if tokens[8][0] == "0":
-                tokens[8] = tokens[8][1:]
             self.xtmpf = int(tokens[8][:-1])
 
     def parseMinLineRT(self, tokens):
+        """TBR."""
         if len(tokens[8]) == 4 or len(tokens[8]) == 3:
             if tokens[8][0] == "0":
                 tokens[8] = tokens[8][1:]
             self.ntmpf = int(tokens[8][:-1])
 
     def parseCurrentLineRT(self, tokens):
+        """TBR."""
         # ['M', '057', '09:57', '09/04/03', 'ESE', '01MPH', '058K', '460F',
         #  '065F', '070%', '30.34R', '00.00"D', '00.00"M', '00.00"R']
         # Don't forget about this lovely one!
@@ -371,27 +364,13 @@ class nwnformat:
 
     def sanityCheck(self):
         """Bounds Check."""
-        if self.xsped is None or self.xsped < 0:
-            self.xsped = 0
-            self.xdrct = -99
-
-        if self.pres is None or self.pres < 0:
-            self.pres = 0
-        if self.pDay is None or self.pDay < 0:
-            self.pDay = 0
-        if self.humid is None or self.humid < 0 or self.humid > 100:
-            self.humid = 0
         if self.tmpf is None or self.tmpf < -100 or self.tmpf > 150:
             self.tmpf = 460
         if self.ntmpf is None or self.ntmpf < -100 or self.ntmpf > 150:
             self.ntmpf = 460
         if self.xtmpf is None or self.xtmpf < -100 or self.xtmpf > 150:
             self.xtmpf = 460
-        if self.sped is None or self.sped < 0 or self.sped > 300:
-            self.sped = 0
         if self.avg_sknt is None or self.avg_sknt < 0 or self.avg_sknt > 300:
             self.avg_sknt = 0
         if self.avg_drct is None or self.avg_drct < 0 or self.avg_drct > 360:
             self.avg_drct = 0
-        if self.xsrad is None or self.xsrad < 0 or self.xsrad > 10000:
-            self.xsrad = 0

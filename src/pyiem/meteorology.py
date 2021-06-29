@@ -5,11 +5,9 @@ import math
 
 import numpy as np
 import metpy.calc as mcalc
-from metpy.units import masked_array, units
+from metpy.units import units
 import pyiem.datatypes as dt
-
-
-InvalidArguments = Exception
+from pyiem.exceptions import InvalidArguments
 
 
 def clearsky_shortwave_irradiance_year(lat, elevation):
@@ -91,12 +89,10 @@ def uv(speed, direction):
         direction, dt.direction
     ):
         raise InvalidArguments(
-            ("uv() needs speed and direction " "objects as args")
+            ("uv() needs speed and direction objects as args")
         )
     # Get radian units
     rad = direction.value("RAD")
-    if rad is None or speed.value() is None:
-        return None, None
     u = (0 - speed.value()) * np.sin(rad)
     v = (0 - speed.value()) * np.cos(rad)
     return (dt.speed(u, speed.get_units()), dt.speed(v, speed.get_units()))
@@ -122,9 +118,6 @@ def mcalc_feelslike(tmpf, dwpf, smps):
             app[app.mask] = tmpf[app.mask]
         else:
             app = tmpf
-    elif hasattr(tmpf, "mask"):
-        app = masked_array(app.m, app.units)
-        app.mask = tmpf.mask
 
     return app
 
@@ -272,6 +265,6 @@ def gdd(high, low, base=50.0, ceiling=86.0):
     highf = np.ma.where(np.ma.greater(highf, ceiling), ceiling, highf)
     lowf = np.ma.where(np.ma.greater(lowf, ceiling), ceiling, lowf)
     res = (highf + lowf) / 2.0 - base
-    if res.shape == [1]:
+    if res.shape == (1,):
         return res[0]
     return res

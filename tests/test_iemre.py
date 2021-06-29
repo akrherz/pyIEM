@@ -11,6 +11,12 @@ from pyiem.util import utc, get_dbconn
 from pyiem import iemre
 
 
+def test_api():
+    """Test some aux methods."""
+    assert iemre.get_dailyc_mrms_ncname() is not None
+    assert iemre.get_dailyc_ncname() is not None
+
+
 def test_ncname():
     """Test the responses for get_names."""
     assert iemre.get_daily_ncname(2020) is not None
