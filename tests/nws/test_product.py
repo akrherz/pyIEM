@@ -13,6 +13,15 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_kawn():
+    """Test that a bogus KAWN METAR header doesn't cause trouble."""
+    data = get_test_file("METAR/kawn.txt")
+    prod = productparser(data)
+    assert not prod.warnings
+    prod = productparser(data.replace("KAWN", "KZZZ"))
+    assert prod.warnings[0].find("KZZZ") > -1
+
+
 def test_tropical_channels():
     """Test the channels we have some products go into."""
     prod = productparser(get_test_file("tropical/TCUCP1.txt"))
