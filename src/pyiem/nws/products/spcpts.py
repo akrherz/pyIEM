@@ -4,17 +4,17 @@
 """
 import re
 import datetime
-import copy
 import os
 import itertools
+import tempfile
 
 import numpy as np
+import pandas as pd
 from shapely.geometry import (
     Polygon,
     LineString,
     MultiPolygon,
     Point,
-    MultiLineString,
 )
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
@@ -44,29 +44,10 @@ THRESHOLD2TEXT = {
     "CRIT": "Critical",
     "EXTM": "Extreme",
 }
-THRESHOLD_ORDER = [
-    "0.02",
-    "0.05",
-    "0.10",
-    "0.15",
-    "0.25",
-    "0.30",
-    "0.35",
-    "0.40",
-    "0.45",
-    "0.60",
-    "TSTM",
-    "MRGL",
-    "SLGT",
-    "ENH",
-    "MDT",
-    "HIGH",
-    "IDRT",
-    "SDRT",
-    "ELEV",
-    "CRIT",
-    "EXTM",
-]
+THRESHOLD_ORDER = (
+    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH"
+    "MDT HIGH IDRT SDRT ELEV CRIT EXTM"
+).split()
 
 
 def compute_times(afos, issue, expire, day):
@@ -96,8 +77,9 @@ def get_day(prod, text):
     return int(search.groupdict()["day"])
 
 
-def load_conus_data(valid):
+def load_conus_data(valid=None):
     """Load up the conus datafile for our perusal"""
+    valid = utc() if valid is None else valid
     fn = "%s/../../data/conus_marine_bnds%s.txt" % (
         os.path.dirname(__file__),
         "_pre190509" if valid < CONUS_BASETIME else "",
@@ -182,44 +164,30 @@ def ensure_outside_conus(ls):
     return ls
 
 
-def clean_segment(ls):
-    """Attempt to get this segment cleaned up.
+def debug_draw(i, segment):
+    """Draw this for debugging purposes."""
+    segment = np.array(segment)
+    # pylint: disable=import-outside-toplevel
+    from pyiem.plot.use_agg import plt
 
-    Args:
-      segment (list): inbound data
-
-    Returns:
-      segment (list)
-    """
-    # Make sure this is outside the CONUS
-    ls = ensure_outside_conus(ls)
-    # Examine how our linestring intersects the CONUS polygon
-    res = ls.intersection(CONUS["poly"])
-    if isinstance(res, LineString):
-        LOG.info("     segment generates single line against CONUS, done")
-        return ls
-    # We got multiple linestrings
-    LOG.info("     segment intersection yielded %s linestrings", len(res))
-    res = [r for r in res if r.length > 0.2]  # arb
-    if len(res) == 1:
-        LOG.info("    was able to filter out very short lines")
-        return ensure_outside_conus(res[0])
-    LOG.info("     returning a MultiLineString len=%s", len(res))
-    return MultiLineString(res)
+    (fig, ax) = plt.subplots(1, 1)
+    ax.plot(segment[:, 0], segment[:, 1], c="b")
+    ax.plot(CONUS["poly"].exterior.xy[0], CONUS["poly"].exterior.xy[1], c="r")
+    mydir = tempfile.gettempdir()
+    LOG.info("writting %s/%sdebugdraw.png", mydir, i)
+    fig.savefig(f"{mydir}/{i}debugdraw.png")
+    return fig
 
 
-def look_for_closed_polygon(segment):
-    """Simple logic to see if our polygon is already closed."""
+def condition_segment(segment):
+    """Do conditioning of the segment."""
+    # 1. If the start and end points are the same, done and one
     if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
-        LOG.info("Single closed polygon found, done and done")
-        poly = Polygon(segment)
-        if not poly.is_valid:
-            LOG.info("closed polygon is invalid, buffer(0) to the rescue.")
-            poly = poly.buffer(0)
-        return MultiPolygon([poly])
-
-    # Slightly bad line-work, whereby the start and end points are very close
-    # to each other
+        if len(segment) == 2:
+            LOG.info("    REJECTING two point segment, both equal")
+            return None
+        return [segment]
+    # 2. If the start and end points are close, close off the segment
     if (
         (segment[0][0] - segment[-1][0]) ** 2
         + (segment[0][1] - segment[-1][1]) ** 2
@@ -232,144 +200,95 @@ def look_for_closed_polygon(segment):
             segment[-1][1],
         )
         segment[-1] = segment[0]
-        return MultiPolygon([Polygon(segment)])
+        return [segment]
+    # 3. If the line intersects the CONUS 3+ times, split the line
+    ls = ensure_outside_conus(LineString(segment))
+    # Examine how our linestring intersects the CONUS polygon
+    res = ls.intersection(CONUS["poly"])
+    if isinstance(res, LineString):
+        return [ls.coords]
+    # We got multiple linestrings
+    res = [r for r in res if r.length > 0.2]  # pylint: disable=not-an-iterable
+    if len(res) == 1:
+        LOG.info("    was able to filter out very short lines")
+        return [ensure_outside_conus(res[0]).coords]
+    LOG.info("     returning a MultiLineString len=%s", len(res))
+    return [ensure_outside_conus(x).coords for x in res]
 
 
-def add_to_polys(poly, polys):
-    """Add unique poly to polys."""
-    if poly in polys:
-        LOG.info("     - poly.area %.2f already in polys", poly.area)
-        return
-    polys.append(poly)
-    LOG.info("     + add poly.area %.2f, now len=%s", poly.area, len(polys))
-
-
-def segment_logic(segment, currentpoly, polys):
-    """Our segment parsing logic."""
-    LOG.info(
-        "     segment_logic currentpoly.area: %.2f len(polys): %s",
-        currentpoly.area,
-        len(polys),
-    )
-    # Perhaps our segment end points are close enough to almost touch, we
-    # can finish the job!
-    if segment[0] != segment[-1] and len(segment) > 2:
-        dist = (
-            (segment[0][0] - segment[-1][0]) ** 2
-            + (segment[0][1] - segment[-1][1]) ** 2
-        ) ** 0.5
-        if dist < 1:  # arb
-            LOG.info("     Start and end pt %.3f apart, ajoining", dist)
-            segment.append(segment[0])
-    if segment[0] == segment[-1] and len(segment) > 2:
-        LOG.info("     segment is closed polygon!")
-        lr = LinearRing(LineString(segment))
-        if not lr.is_ccw:
-            LOG.info("     polygon is clockwise (exterior), done.")
-            add_to_polys(currentpoly, polys)
-            return Polygon(segment)
-        LOG.info("     polygon is CCW (interior), testing intersection")
-        # Figure out which polygon this hole intersects with
-        for i, poly in enumerate(polys):
-            if poly.intersection(lr).is_empty:
-                continue
-            LOG.info("     donut hole intersects poly[%s]", i)
-            if poly != currentpoly:
-                add_to_polys(currentpoly, polys)
-                currentpoly = polys.pop(i)
-            break
-        interiors = list(currentpoly.interiors)
-        interiors.append(lr)
-        newp = Polygon(currentpoly.exterior, interiors)
-        if not newp.is_valid:
-            LOG.info("     adding interior invalid, buffering")
-            newp = newp.buffer(0)
-        if newp.is_valid:
-            LOG.info(
-                "     polygon is interior to currentpoly, area: %.2f ",
-                currentpoly.area,
-            )
-            return newp
-        raise Exception(
-            "Adding interior polygon resulted in an invalid geometry, aborting"
-        )
-
-    # All open lines need to intersect the CONUS, ensure that happens
-    ls = clean_segment(LineString(segment))
-    if isinstance(ls, MultiLineString):
-        sz = len(ls)
-        for i, _ls in enumerate(ls):
-            res = segment_logic(list(_ls.coords), currentpoly, polys)
-            if i < (sz - 1):
-                if res.intersects(ls[i + 1]):
-                    LOG.info("     next ls intersects res, keeping")
-                    currentpoly = res
-                else:
-                    for k, poly in enumerate(polys):
-                        if poly.intersects(ls[i + 1]):
-                            LOG.info("     resetting currentpoly")
-                            currentpoly = polys.pop(k)
-                            break
-                    add_to_polys(res, polys)
+def convert_segments(segments):
+    """Figure out what we have here for segments."""
+    polygons = []
+    interiors = []
+    linestrings = []
+    for segment in segments:
+        ls = LineString(segment)
+        if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
+            lr = LinearRing(ls)
+            if not lr.is_ccw:
+                polygons.append(Polygon(segment))
             else:
-                currentpoly = res
-        return currentpoly
-    if ls is None:
-        LOG.info("     aborting as clean_segment failed...")
-        return currentpoly
-    LOG.info(
-        "     new segment start: %.4f %.4f end: %.4f %.4f",
-        ls.coords[0][0],
-        ls.coords[0][1],
-        ls.coords[-1][0],
-        ls.coords[-1][1],
-    )
-    # If this line segment does not intersect the current polygon of interest,
-    # we should check any previous polygons to see if it intersects it. We
-    # could be dealing with invalid ordering in the file, sigh.
-    if currentpoly.intersection(ls).is_empty:
-        LOG.info("     ls does not intersect currentpoly, looking for match")
-        found = False
-        for i, poly in enumerate(polys):
-            intersect = poly.intersection(ls)
-            if intersect.is_empty or isinstance(intersect, MultiLineString):
-                continue
-            LOG.info(
-                "     found previous polygon i:%s area: %.1f that intersects",
-                i,
-                poly.area,
-            )
-            found = True
-            add_to_polys(currentpoly, polys)
-            currentpoly = polys.pop(i)
-            break
-        if not found:
-            add_to_polys(currentpoly, polys)
-            LOG.info("     setting currentpoly back to CONUS")
-            currentpoly = copy.deepcopy(CONUS["poly"])
+                interiors.append(lr)
+            continue
+        linestrings.append(ls)
 
-    newpoly = rhs_split(currentpoly, ls)
-    if newpoly is None:
-        LOG.info("     rhs_split yielded None, returning currentpoly?")
-        return currentpoly
-
-    LOG.info("     newpoly.area = %.4f", newpoly.area)
-    return newpoly
+    return polygons, interiors, linestrings
 
 
-# def debug_draw(i, segment, current_poly):
-#    """Draw this for debugging purposes."""
-#    segment = np.array(segment)
-#    from pyiem.plot.use_agg import plt
-#    (fig, ax) = plt.subplots(1, 1)
-#    ax.plot(segment[:, 0], segment[:, 1], c='b')
-#    ylim = ax.get_ylim()
-#    xlim = ax.get_xlim()
-#    ax.plot(current_poly.exterior.xy[0], current_poly.exterior.xy[1], c='r')
-#    ax.set_xlim(*xlim)
-#    ax.set_ylim(*ylim)
-#    LOG.info(f"writting /tmp/{i}debugdraw.png")
-#    fig.savefig(f"/tmp/{i}debugdraw.png")
+def compute_start_end_points(linestrings):
+    """Figure out where each line string starts."""
+    starts = []
+    stops = []
+    for ls in linestrings:
+        pt = Point(ls.coords[0])
+        starts.append(round(CONUS["poly"].exterior.project(pt), 2))
+        pt = Point(ls.coords[-1])
+        stops.append(round(CONUS["poly"].exterior.project(pt), 2))
+    return starts, stops
+
+
+def winding_logic(linestrings):
+    """Make polygons from our linestrings!"""
+    # Winding Rule: project the starting point of the linestrings onto the
+    # CONUS linear ring.
+    start_dists, end_dists = compute_start_end_points(linestrings)
+    df = pd.DataFrame({"start": start_dists, "end": end_dists})
+    df = df.sort_values("start", ascending=True).reindex()
+    df["used"] = False
+    polys = []
+    for i in df.index:
+        # Check if we have used this line already or not
+        if df.at[i, "used"]:
+            LOG.debug("     skipping %s as already used.", i)
+            continue
+        df.at[i, "used"] = True
+        started_at = df.at[i, "start"]
+        LOG.debug("   looping %s, started_at %s", i, started_at)
+        poly = rhs_split(CONUS["poly"], linestrings[i])
+        ended_at = df.at[i, "end"]
+        for _q in range(100):  # belt-suspenders to keep infinite loop
+            LOG.debug("     looping with ended_at of %s", ended_at)
+            # Look for the next line that starts before we get back around
+            if ended_at < started_at:
+                df2 = df[
+                    ~df["used"]
+                    & ((df["start"] >= ended_at) & (df["start"] < started_at))
+                ]
+            else:
+                df2 = df[
+                    ~df["used"]
+                    & ((df["start"] >= ended_at) | (df["start"] < started_at))
+                ]
+            LOG.debug("     found %s filtered rows", len(df2.index))
+            if df2.empty:
+                LOG.info("     i=%s adding poly: %.3f", i, poly.area)
+                polys.append(poly)
+                break
+            # updated ended_at
+            ended_at = df2.iloc[0]["end"]
+            df.at[df2.index[0], "used"] = True
+            poly = rhs_split(poly, linestrings[df2.index[0]])
+    return polys
 
 
 def str2multipolygon(s):
@@ -378,79 +297,32 @@ def str2multipolygon(s):
     Args:
       s (str): the cryptic string that we attempt to make valid polygons from
     """
-    segments = get_segments_from_text(s)
-    # Simple case whereby the segment is its own circle, thank goodness
-    if len(segments) == 1:
-        res = look_for_closed_polygon(segments[0])
+    # 1. Generate list of line segments, no conditioning is done.
+    segments_raw = get_segments_from_text(s)
+    # 2. Quality Control the segments, splitting naughty ones that cross twice
+    segments = []
+    for segment in segments_raw:
+        res = condition_segment(segment)
         if res:
-            return res
-
-    # Keep track of generated polygons
-    polys = []
-    # currentpoly is our present subject of interest
-    currentpoly = copy.deepcopy(CONUS["poly"])
-
-    for i, segment in enumerate(segments):
-        # debug_draw(i, segment, currentpoly)
-        LOG.info(
-            "  Iterate: %s/%s, len(segment): %s (%.2f %.2f) (%.2f %.2f)",
-            i + 1,
-            len(segments),
-            len(segment),
-            segment[0][0],
-            segment[0][1],
-            segment[-1][0],
-            segment[-1][1],
-        )
-        currentpoly = segment_logic(segment, currentpoly, polys)
-    add_to_polys(currentpoly, polys)
-
-    res = []
-    LOG.info(
-        "  Resulted in len(polys): %s, now quality controlling", len(polys)
-    )
-    for i, poly in enumerate(polys):
-        if not poly.is_valid:
-            LOG.info("     ERROR: polygon %s is invalid!", i)
+            segments.extend(res)
+    # 3. Convert segments into what they are
+    polygons, interiors, linestrings = convert_segments(segments)
+    # we do our winding logic now
+    polygons.extend(winding_logic(linestrings))
+    # Assign our interiors
+    for interior in interiors:
+        for i, polygon in enumerate(polygons):
+            if not polygon.intersection(interior).is_empty:
+                current = list(polygon.interiors)
+                current.append(interior)
+                polygons[i] = Polygon(polygon.exterior, current)
+    # Buffer zero any invalid polygons
+    for i, polygon in enumerate(polygons):
+        if polygon.is_valid:
             continue
-        if poly.area == CONUS["poly"].area:
-            LOG.info("     polygon %s is just CONUS, skipping", i)
-            continue
-        LOG.info("     polygon: %s has area: %s", i, poly.area)
-        res.append(poly)
-    # Look for overlapping polygons
-    toadd = []
-    toremove = []
-    for combo in itertools.combinations(res, 2):
-        if combo[0].intersects(combo[1]):
-            LOG.info("     polygons intersect, differencing!")
-            # Take the difference of the larger from the smaller
-            i = 1
-            j = 0
-            if combo[0].area > combo[1].area:
-                i = 0
-                j = 1
-            poly = combo[i].difference(combo[j])
-            if isinstance(poly, MultiPolygon):
-                toadd.extend([geo for geo in poly])
-            else:
-                toadd.append(poly)
-            toremove.append(combo[0])
-            toremove.append(combo[1])
-    for poly in toremove:
-        if poly in res:
-            res.remove(poly)
-    for poly in toadd:
-        res.append(poly)
-    if not res:
-        raise Exception(
-            (
-                "Processed no geometries, this is a bug!\n"
-                "  s is %s\n"
-                "  segments is %s" % (repr(s), repr(segments))
-            )
-        )
-    return MultiPolygon(res)
+        LOG.info("     polygon %s is invalid, buffer(0)", i)
+        polygons[i] = polygon.buffer(0)
+    return MultiPolygon(polygons)
 
 
 def init_days(prod):
@@ -728,6 +600,7 @@ class SPCPTS(TextProduct):
 
     def draw_outlooks(self):
         """For debugging, draw the outlooks on a simple map for inspection!"""
+        # pylint: disable=import-outside-toplevel
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
 
@@ -762,8 +635,9 @@ class SPCPTS(TextProduct):
                 )
                 ax.legend(loc=3)
                 fn = (
-                    ("/tmp/%s_%s_%s_%s.png")
+                    ("%s/%s_%s_%s_%s.png")
                     % (
+                        tempfile.gettempdir(),
                         day,
                         self.issue.strftime("%Y%m%d%H%M"),
                         outlook.category,
@@ -864,7 +738,7 @@ class SPCPTS(TextProduct):
                             key = "D%s" % (i,)
                             point_data[key] = point_data[threshold]
                         del point_data[threshold]
-            for threshold in point_data:
+            for threshold, text in point_data.items():
                 match = DMATCH.match(threshold)
                 if match:
                     day = int(match.groupdict()["day1"])
@@ -875,7 +749,7 @@ class SPCPTS(TextProduct):
                     category,
                     threshold,
                 )
-                mp = str2multipolygon(point_data[threshold])
+                mp = str2multipolygon(text)
                 if DMATCH.match(threshold):
                     threshold = "0.15"
                 LOG.info("----> End threshold is: %s", threshold)
@@ -887,7 +761,7 @@ class SPCPTS(TextProduct):
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
-                if outlook.geometry.is_empty:
+                if outlook.geometry.is_empty or not outlook.geometry.is_valid:
                     continue
                 df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
                 outlook.wfos = df2.index.to_list()

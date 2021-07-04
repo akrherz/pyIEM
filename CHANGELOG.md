@@ -19,6 +19,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 
 - Account for another SPC PTS edge case, le sigh.
 - Gracefully handle a one or two point `polygon` attempt from a NWS Product.
+- Rewrite SPC PTS parsing (again), but this time use @deeplycloudy suggested "Winding" algorithm.
 
 ## **1.6.0** (26 May 2021)
 
