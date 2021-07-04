@@ -2,15 +2,30 @@
 
 import pytest
 from pyiem.nws.products import parser
-from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
+from pyiem.nws.products.spcpts import (
+    str2multipolygon,
+    load_conus_data,
+    debug_draw,
+)
 from pyiem.util import utc, get_test_file
+
+
+def test_debugdraw():
+    """Test we can draw a segment."""
+    load_conus_data()
+    assert debug_draw(0, [[10, 10], [20, 20]]) is not None
+
+
+def test_drawoutlooks():
+    """Test that we can draw an outlook."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_maine2.txt"))
+    prod.draw_outlooks()
 
 
 def test_issue466_maine2():
     """Test that we can handle this harry logic."""
     # /products/outlook/archive/2021/day1otlk_20210602_1300.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_maine2.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 469.71) < 0.01
 

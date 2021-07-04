@@ -6,6 +6,7 @@ import re
 import datetime
 import os
 import itertools
+import tempfile
 
 import numpy as np
 import pandas as pd
@@ -43,29 +44,10 @@ THRESHOLD2TEXT = {
     "CRIT": "Critical",
     "EXTM": "Extreme",
 }
-THRESHOLD_ORDER = [
-    "0.02",
-    "0.05",
-    "0.10",
-    "0.15",
-    "0.25",
-    "0.30",
-    "0.35",
-    "0.40",
-    "0.45",
-    "0.60",
-    "TSTM",
-    "MRGL",
-    "SLGT",
-    "ENH",
-    "MDT",
-    "HIGH",
-    "IDRT",
-    "SDRT",
-    "ELEV",
-    "CRIT",
-    "EXTM",
-]
+THRESHOLD_ORDER = (
+    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH"
+    "MDT HIGH IDRT SDRT ELEV CRIT EXTM"
+).split()
 
 
 def compute_times(afos, issue, expire, day):
@@ -95,8 +77,9 @@ def get_day(prod, text):
     return int(search.groupdict()["day"])
 
 
-def load_conus_data(valid):
+def load_conus_data(valid=None):
     """Load up the conus datafile for our perusal"""
+    valid = utc() if valid is None else valid
     fn = "%s/../../data/conus_marine_bnds%s.txt" % (
         os.path.dirname(__file__),
         "_pre190509" if valid < CONUS_BASETIME else "",
@@ -181,15 +164,19 @@ def ensure_outside_conus(ls):
     return ls
 
 
-# def debug_draw(i, segment):
-#    """Draw this for debugging purposes."""
-#    segment = np.array(segment)
-#    from pyiem.plot.use_agg import plt
-#    (fig, ax) = plt.subplots(1, 1)
-#    ax.plot(segment[:, 0], segment[:, 1], c='b')
-#    ax.plot(CONUS["poly"].exterior.xy[0], CONUS["poly"].exterior.xy[1], c='r')
-#    LOG.info(f"writting /tmp/{i}debugdraw.png")
-#    fig.savefig(f"/tmp/{i}debugdraw.png")
+def debug_draw(i, segment):
+    """Draw this for debugging purposes."""
+    segment = np.array(segment)
+    # pylint: disable=import-outside-toplevel
+    from pyiem.plot.use_agg import plt
+
+    (fig, ax) = plt.subplots(1, 1)
+    ax.plot(segment[:, 0], segment[:, 1], c="b")
+    ax.plot(CONUS["poly"].exterior.xy[0], CONUS["poly"].exterior.xy[1], c="r")
+    mydir = tempfile.gettempdir()
+    LOG.info("writting %s/%sdebugdraw.png", mydir, i)
+    fig.savefig(f"{mydir}/{i}debugdraw.png")
+    return fig
 
 
 def condition_segment(segment):
@@ -219,11 +206,9 @@ def condition_segment(segment):
     # Examine how our linestring intersects the CONUS polygon
     res = ls.intersection(CONUS["poly"])
     if isinstance(res, LineString):
-        LOG.info("     segment generates single line against CONUS, done")
         return [ls.coords]
     # We got multiple linestrings
-    LOG.info("     segment intersection yielded %s linestrings", len(res))
-    res = [r for r in res if r.length > 0.2]  # arb
+    res = [r for r in res if r.length > 0.2]  # pylint: disable=not-an-iterable
     if len(res) == 1:
         LOG.info("    was able to filter out very short lines")
         return [ensure_outside_conus(res[0]).coords]
@@ -241,7 +226,6 @@ def convert_segments(segments):
         if segment[0][0] == segment[-1][0] and segment[0][1] == segment[-1][1]:
             lr = LinearRing(ls)
             if not lr.is_ccw:
-                LOG.info("     polygon is clockwise (exterior), done.")
                 polygons.append(Polygon(segment))
             else:
                 interiors.append(lr)
@@ -275,16 +259,15 @@ def winding_logic(linestrings):
     for i in df.index:
         # Check if we have used this line already or not
         if df.at[i, "used"]:
-            LOG.info("     skipping %s as already used.", i)
+            LOG.debug("     skipping %s as already used.", i)
             continue
         df.at[i, "used"] = True
         started_at = df.at[i, "start"]
-        LOG.info("   looping %s, started_at %s", i, started_at)
+        LOG.debug("   looping %s, started_at %s", i, started_at)
         poly = rhs_split(CONUS["poly"], linestrings[i])
-        LOG.info("     current poly.area = %.3f", poly.area)
         ended_at = df.at[i, "end"]
         for _q in range(100):  # belt-suspenders to keep infinite loop
-            LOG.info("     looping with ended_at of %s", ended_at)
+            LOG.debug("     looping with ended_at of %s", ended_at)
             # Look for the next line that starts before we get back around
             if ended_at < started_at:
                 df2 = df[
@@ -296,7 +279,7 @@ def winding_logic(linestrings):
                     ~df["used"]
                     & ((df["start"] >= ended_at) | (df["start"] < started_at))
                 ]
-            LOG.info("     found %s filtered rows", len(df2.index))
+            LOG.debug("     found %s filtered rows", len(df2.index))
             if df2.empty:
                 LOG.info("     i=%s adding poly: %.3f", i, poly.area)
                 polys.append(poly)
@@ -305,11 +288,6 @@ def winding_logic(linestrings):
             ended_at = df2.iloc[0]["end"]
             df.at[df2.index[0], "used"] = True
             poly = rhs_split(poly, linestrings[df2.index[0]])
-            LOG.info(
-                "     current poly.area = %.3f, ls.length = %.2f",
-                poly.area,
-                linestrings[df2.index[0]].length,
-            )
     return polys
 
 
@@ -327,11 +305,6 @@ def str2multipolygon(s):
         res = condition_segment(segment)
         if res:
             segments.extend(res)
-    LOG.info(
-        "     len(segments_raw) = %s len(segments) = %s",
-        len(segments_raw),
-        len(segments),
-    )
     # 3. Convert segments into what they are
     polygons, interiors, linestrings = convert_segments(segments)
     # we do our winding logic now
@@ -346,7 +319,6 @@ def str2multipolygon(s):
     # Buffer zero any invalid polygons
     for i, polygon in enumerate(polygons):
         if polygon.is_valid:
-            LOG.info("    polygon %.3f %s is valid", polygon.area, i)
             continue
         LOG.info("     polygon %s is invalid, buffer(0)", i)
         polygons[i] = polygon.buffer(0)
@@ -628,6 +600,7 @@ class SPCPTS(TextProduct):
 
     def draw_outlooks(self):
         """For debugging, draw the outlooks on a simple map for inspection!"""
+        # pylint: disable=import-outside-toplevel
         from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
 
@@ -662,8 +635,9 @@ class SPCPTS(TextProduct):
                 )
                 ax.legend(loc=3)
                 fn = (
-                    ("/tmp/%s_%s_%s_%s.png")
+                    ("%s/%s_%s_%s_%s.png")
                     % (
+                        tempfile.gettempdir(),
                         day,
                         self.issue.strftime("%Y%m%d%H%M"),
                         outlook.category,
