@@ -6,13 +6,22 @@ from pyiem.nws.products.spcpts import str2multipolygon, load_conus_data
 from pyiem.util import utc, get_test_file
 
 
-def test_210606_topoerror():
-    """Test that we don't get an error parsing this."""
-    # /products/outlook/archive/2021/day1otlk_20210606_1630.html
+def test_issue466_maine2():
+    """Test that we can handle this harry logic."""
+    # /products/outlook/archive/2021/day1otlk_20210602_1300.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_maine2.txt"))
     # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 402.806) < 0.01
+    assert abs(outlook.geometry.area - 469.71) < 0.01
+
+
+def test_210703_topoerror():
+    """Test that we do not get an exception for this."""
+    # /products/outlook/archive/2021/day1otlk_20210703_2000.html
+    prod = parser(get_test_file("SPCPTS/PTSDY1_topo2.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 452.077) < 0.01
 
 
 def test_210601_hole():
@@ -41,6 +50,7 @@ def test_210519_singlepoint():
 def test_890526_multi():
     """Test that we can process this PTS."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_multi.txt"))
+    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 111.132) < 0.01
 
@@ -106,8 +116,9 @@ def test_badpoly():
 def test_nogeom4():
     """Test that we can get a slight risk from this."""
     prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
+    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
-    assert abs(outlook.geometry.area - 31.25) < 0.01
+    assert abs(outlook.geometry.area - 35.544) < 0.01
 
 
 def test_may3():
@@ -333,12 +344,11 @@ def test_170518_bad_dbtime():
 @pytest.mark.parametrize("database", ["postgis"])
 def test_170428_large(dbcursor):
     """PTSDY1 has a large 10 tor"""
-    # https://.../products/outlook/archive/2006/day1otlk_20060510_1630.html
+    # /products/outlook/archive/2006/day1otlk_20060510_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_largetor10.txt"))
     # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("TORNADO", "0.10", 1)
-    assert outlook.geometry.is_empty
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 428.00) < 0.01
 
@@ -382,7 +392,7 @@ def test_080731_invalid():
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("WIND", "SIGN", 1)
-    assert outlook.geometry.is_empty
+    assert abs(outlook.geometry.area - 15.823) < 0.01
 
 
 def test_170411_jabber_error():
@@ -522,12 +532,11 @@ def test_23jul_failure():
 
 def test_140707_general():
     """Had a problem with General Thunder, lets test this"""
-    # https://.../products/outlook/archive/2014/day1otlk_20140707_1630.html
+    # /products/outlook/archive/2014/day1otlk_20140707_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
-    # Linework here is invalid, so we can't account for it.
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 755.424) < 0.01
+    assert abs(outlook.geometry.area - 606.42) < 0.01
 
 
 def test_complex():
@@ -577,6 +586,7 @@ def test_bug_140506_day2():
 
 def test_bug_140518_day2():
     """18 May 2014 tripped error with no exterior polygon found"""
+    # /products/outlook/archive/2014/day2otlk_20140518_0600.html
     spc = parser(get_test_file("SPCPTS/PTSDY2_interior.txt"))
     # spc.draw_outlooks()
     collect = spc.get_outlookcollection(2)
