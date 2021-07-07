@@ -523,74 +523,62 @@ class SPCPTS(TextProduct):
             # Everything should be smaller than General Thunder, for conv
             tstm = self.get_outlook("CATEGORICAL", "TSTM", day)
             for outlook in collect.outlooks:
-                rewrite = False
-                # case of single polygon
-                if tstm and len(outlook.geometry) == 1:
-                    if outlook.geometry.area > tstm.geometry.area:
-                        rewrite = True
+                good_polys = []
+                for poly in outlook.geometry:
+                    if tstm and poly.area > tstm.geometry.area:
                         msg = (
                             "Discarding polygon as it is larger than TSTM: "
-                            "Day: %s %s %s Area: %.2f TSTM Area: %.2f"
-                        ) % (
-                            day,
-                            outlook.category,
-                            outlook.threshold,
-                            outlook.geometry.area,
-                            tstm.geometry.area,
+                            f"{outlook.category} {outlook.threshold} "
+                            f"Area: {outlook.geometry.area:.2f} "
+                            f"TSTM Area: {tstm.geometry.area:.2f}"
                         )
                         LOG.info(msg)
                         self.warnings.append(msg)
-                # clip polygons to the CONUS
-                good_polys = []
-                for poly in outlook.geometry:
+                        continue
+                    if poly.area < 0.1:
+                        msg = (
+                            f"Impossibly small polygon.area {poly.area:.2f} "
+                            "discarded"
+                        )
+                        LOG.info(msg)
+                        self.warnings.append(msg)
+                        continue
                     intersect = CONUS["poly"].intersection(poly)
-                    if isinstance(intersect, GeometryCollection):
+                    if isinstance(
+                        intersect, (MultiPolygon, GeometryCollection)
+                    ):
                         for p in intersect:
                             if isinstance(p, Polygon):
                                 good_polys.append(p)
                             else:
                                 LOG.info("Discarding %s as not polygon", p)
+                    elif isinstance(intersect, Polygon):
+                        good_polys.append(intersect)
                     else:
-                        if isinstance(intersect, Polygon):
-                            good_polys.append(intersect)
-                        else:
-                            LOG.info("Discarding %s as not polygon", intersect)
+                        LOG.info("Discarding %s as not polygon", intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
-                good_polys = []
-                for poly1, poly2 in itertools.permutations(
-                    outlook.geometry, 2
-                ):
-                    if poly1.contains(poly2):
-                        rewrite = True
-                        msg = (
-                            "Discarding overlapping exterior polygon: "
-                            "Day: %s %s %s Area: %.2f"
-                        ) % (
-                            day,
-                            outlook.category,
-                            outlook.threshold,
-                            poly1.area,
-                        )
-                        LOG.info(msg)
-                        self.warnings.append(msg)
-                    elif tstm is not None and poly1.area > tstm.geometry.area:
-                        rewrite = True
-                        msg = (
-                            "Discarding polygon as it is larger than TSTM: "
-                            "Day: %s %s %s Area: %.2f"
-                        ) % (
-                            day,
-                            outlook.category,
-                            outlook.threshold,
-                            poly1.area,
-                        )
-                        LOG.info(msg)
-                        self.warnings.append(msg)
-                    else:
-                        if poly1 not in good_polys:
-                            good_polys.append(poly1)
-                if rewrite:
+                # Ensure that geometries do not overlap
+                if len(outlook.geometry) > 1:
+                    good_polys = []
+                    for poly1, poly2 in itertools.permutations(
+                        outlook.geometry, 2
+                    ):
+                        if poly1.contains(poly2):
+                            msg = (
+                                "Discarding overlapping exterior polygon: "
+                                "Day: %s %s %s Area: %.2f"
+                            ) % (
+                                day,
+                                outlook.category,
+                                outlook.threshold,
+                                poly1.area,
+                            )
+                            LOG.info(msg)
+                            self.warnings.append(msg)
+                        else:
+                            if poly1 not in good_polys:
+                                good_polys.append(poly1)
                     outlook.geometry = MultiPolygon(good_polys)
 
     def get_outlookcollection(self, day):
