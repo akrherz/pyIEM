@@ -371,6 +371,14 @@ def _compute_cycle(prod):
     return lkp.get(hhmi, -1)
 
 
+def _sql_set_cycle(txn, outlook_id, cycle):
+    """Assign a given outlook a given cycle."""
+    txn.execute(
+        "UPDATE spc_outlook SET cycle = %s, updated = now() where id = %s",
+        (cycle, outlook_id),
+    )
+
+
 def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
     """Check our database."""
     txn.execute(
@@ -380,25 +388,25 @@ def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
     )
     if txn.rowcount == 0:  # yes
         LOG.info("Setting as canonical cycle of %s", prod.cycle)
-        txn.execute(
-            "UPDATE spc_outlook SET cycle = %s where id = %s",
-            (prod.cycle, outlook_id),
-        )
+        _sql_set_cycle(txn, outlook_id, prod.cycle)
     else:
         # tricky
         is_canonical = True
         for row in txn.fetchall():
             if row["product_issue"] < prod.valid:
-                txn.execute(
-                    "UPDATE spc_outlook SET cycle = -1 where id = %s",
-                    (row["id"],),
+                LOG.info(
+                    "Setting old outlook %s to cycle=-1, product_issue = %s "
+                    ", prod.valid = %s",
+                    row["id"],
+                    row["product_issue"],
+                    prod.valid,
                 )
-            else:
+                _sql_set_cycle(txn, row["id"], -1)
+            elif row["product_issue"] > prod.valid:
                 is_canonical = False
-        txn.execute(
-            "UPDATE spc_outlook SET cycle = %s where id = %s",
-            (prod.cycle if is_canonical else -1, outlook_id),
-        )
+        cycle = prod.cycle if is_canonical else -1
+        LOG.info("Setting this outlook to cycle=%s", cycle)
+        _sql_set_cycle(txn, outlook_id, cycle)
 
 
 def _sql_day_collect(prod, txn, day, collect):
