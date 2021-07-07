@@ -10,6 +10,23 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import utc, get_test_file
 
 
+def test_880324_largerslight():
+    """Test that we discard a polygon that is larger than TSTM."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_larger.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 340.537) < 0.01
+
+
+def test_210501_multipolygon():
+    """Test that we handle a polygon that gets clipped into two chunks."""
+    # /products/outlook/archive/2021/day1otlk_20210501_1300.html
+    prod = parser(get_test_file("SPCPTS/PTSDY1_multipoly.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 238.516) < 0.01
+
+
 def test_debugdraw():
     """Test we can draw a segment."""
     load_conus_data()
@@ -157,7 +174,7 @@ def test_pfwfd2():
 def test_cycle(dbcursor):
     """Test that we get the cycle right."""
     ans = None
-    for i in range(1, 4):
+    for i in [1, 3, 2]:  # Run out of order to test some canonical logic
         prod = parser(get_test_file(f"SPCPTS/PTSDY1_20Z_{i}.txt"))
         prod.sql(dbcursor)
         if i == 3:
@@ -551,7 +568,7 @@ def test_140707_general():
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
     # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
-    assert abs(outlook.geometry.area - 606.42) < 0.01
+    assert abs(outlook.geometry.area - 606.333) < 0.01
 
 
 def test_complex():
