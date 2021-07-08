@@ -10,6 +10,13 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import utc, get_test_file
 
 
+def test_issue246():
+    """Test a segment that slightly leaks outside the CONUS."""
+    prod = parser(get_test_file("SPCPTS/PTSDY2_greatlakes.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MRGL", 2)
+    assert abs(outlook.geometry.area - 165.72) < 0.01
+
+
 def test_880324_largerslight():
     """Test that we discard a polygon that is larger than TSTM."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_larger.txt"))
