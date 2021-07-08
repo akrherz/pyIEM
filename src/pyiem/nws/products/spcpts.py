@@ -5,7 +5,6 @@
 import re
 import datetime
 import os
-import itertools
 import tempfile
 
 import numpy as np
@@ -282,7 +281,10 @@ def winding_logic(linestrings):
             LOG.debug("     found %s filtered rows", len(df2.index))
             if df2.empty:
                 LOG.info("     i=%s adding poly: %.3f", i, poly.area)
-                polys.append(poly)
+                if poly not in polys:
+                    polys.append(poly)
+                else:
+                    LOG.info("     this polygon is a dup, skipping")
                 break
             # updated ended_at
             ended_at = df2.iloc[0]["end"]
@@ -558,28 +560,27 @@ class SPCPTS(TextProduct):
                         LOG.info("Discarding %s as not polygon", intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
-                # Ensure that geometries do not overlap
-                if len(outlook.geometry) > 1:
-                    good_polys = []
-                    for poly1, poly2 in itertools.permutations(
-                        outlook.geometry, 2
-                    ):
-                        if poly1.contains(poly2):
-                            msg = (
-                                "Discarding overlapping exterior polygon: "
-                                "Day: %s %s %s Area: %.2f"
-                            ) % (
-                                day,
-                                outlook.category,
-                                outlook.threshold,
-                                poly1.area,
-                            )
-                            LOG.info(msg)
-                            self.warnings.append(msg)
-                        else:
-                            if poly1 not in good_polys:
-                                good_polys.append(poly1)
-                    outlook.geometry = MultiPolygon(good_polys)
+                # All geometries in the outlook shall not overlap with any
+                # other one, if so, cull it!
+                good_polys = []
+                for i, poly in enumerate(outlook.geometry):
+                    passes_check = True
+                    for i2, poly2 in enumerate(outlook.geometry):
+                        if i == i2:
+                            continue
+                        if not poly.intersects(poly2):
+                            continue
+                        passes_check = False
+                        msg = (
+                            f"Discarding polygon idx: {i} as it intersects "
+                            f"idx: {i2} Area: {poly.area:.2f}"
+                        )
+                        LOG.info(msg)
+                        self.warnings.append(msg)
+                        break
+                    if passes_check:
+                        good_polys.append(poly)
+                outlook.geometry = MultiPolygon(good_polys)
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""
