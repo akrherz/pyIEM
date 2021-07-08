@@ -117,16 +117,28 @@ def get_segments_from_text(text):
     return segments
 
 
+def point_outside_conus(pt):
+    """Is this point safely outside the CONUS bounds."""
+    return not pt.within(CONUS["poly"]) and pt.distance(CONUS["poly"]) > 0.001
+
+
+def get_conus_point(pt):
+    """Return interpolated point from projection to CONUS."""
+    return CONUS["poly"].exterior.interpolate(
+        CONUS["poly"].exterior.project(pt)
+    )
+
+
 def ensure_outside_conus(ls):
     """Make sure the start and end of a given line are outside the CONUS."""
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
-        if not pt.within(CONUS["poly"]) and pt.distance(CONUS["poly"]) > 0.001:
+        # If point is safely outside CONUS, done.
+        if point_outside_conus(pt):
             continue
-        pt = CONUS["poly"].exterior.interpolate(
-            CONUS["poly"].exterior.project(pt)
-        )
+        # Get new point that may be too close for comfort
+        pt = get_conus_point(pt)
         if pt.within(CONUS["poly"]) or pt.distance(CONUS["poly"]) < 0.001:
             LOG.info("     idx: %s is still within, evasive action", idx)
             done = False
@@ -186,20 +198,19 @@ def condition_segment(segment):
             LOG.info("    REJECTING two point segment, both equal")
             return None
         return [segment]
-    # 2. If the start and end points are close, close off the segment
-    if (
-        (segment[0][0] - segment[-1][0]) ** 2
-        + (segment[0][1] - segment[-1][1]) ** 2
-    ) ** 0.5 < 0.05:
-        LOG.info(
-            "assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)",
-            segment[0][0],
-            segment[0][1],
-            segment[-1][0],
-            segment[-1][1],
-        )
-        segment[-1] = segment[0]
-        return [segment]
+    # 2. If point start and end points are inside the conus and they are closer
+    #    to each other than the CONUS bounds, then close off polygon
+    if all(not point_outside_conus(Point(segment[i])) for i in [0, -1]):
+        pt0 = Point(segment[0])
+        pt1 = Point(segment[-1])
+        cpt0 = get_conus_point(pt0)
+        cpt1 = get_conus_point(pt1)
+        cdist0 = cpt0.distance(pt0)
+        cdist1 = cpt1.distance(pt1)
+        if pt0.distance(pt1) < 0.5 * min([cdist0, cdist1]):
+            LOG.info("     non-closed polygon assumed unclosed in error.")
+            segment.append(segment[0])
+            return [segment]
     # 3. If the line intersects the CONUS 3+ times, split the line
     ls = ensure_outside_conus(LineString(segment))
     # Examine how our linestring intersects the CONUS polygon
@@ -427,6 +438,11 @@ def _sql_day_collect(prod, txn, day, collect):
             (outlook_id,),
         )
         LOG.info("Removed %s rows from spc_outlook_geometries", txn.rowcount)
+        # Update the updated column
+        txn.execute(
+            "UPDATE spc_outlook SET updated = now() WHERE id = %s",
+            (outlook_id,),
+        )
     else:
         txn.execute(
             "INSERT into spc_outlook(issue, product_issue, expire, product_id,"

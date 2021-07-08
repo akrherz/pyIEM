@@ -10,6 +10,14 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import utc, get_test_file
 
 
+def test_100606_closed():
+    """Test that we can accurately close off an unclosed polygon."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_closed.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 572.878) < 0.01
+
+
 def test_130607_larger_than_conus():
     """Test that we do not yield a multipolygon larger than the CONUS."""
     # /products/outlook/archive/2013/day1otlk_20130607_1630.html
@@ -166,7 +174,7 @@ def test_nogeom4():
     prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
     # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
-    assert abs(outlook.geometry.area - 35.544) < 0.01
+    assert abs(outlook.geometry.area - 31.252) < 0.01
 
 
 def test_may3():
