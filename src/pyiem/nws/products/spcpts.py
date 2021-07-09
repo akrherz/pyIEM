@@ -698,7 +698,6 @@ class SPCPTS(TextProduct):
     def find_outlooks(self):
         """Find the outlook sections within the text product!"""
         if self.text.find("&&") == -1:
-            self.warnings.append("Product contains no &&, adding...")
             self.text = self.text.replace("\n... ", "\n&&\n... ")
             self.text += "\n&& "
         for segment in self.text.split("&&")[:-1]:
