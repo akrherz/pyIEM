@@ -5,7 +5,6 @@
 import re
 import datetime
 import os
-import itertools
 import tempfile
 
 import numpy as np
@@ -16,7 +15,6 @@ from shapely.geometry import (
     MultiPolygon,
     Point,
 )
-from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
 from shapely.affinity import translate
 
@@ -118,16 +116,28 @@ def get_segments_from_text(text):
     return segments
 
 
+def point_outside_conus(pt):
+    """Is this point safely outside the CONUS bounds."""
+    return not pt.within(CONUS["poly"]) and pt.distance(CONUS["poly"]) > 0.001
+
+
+def get_conus_point(pt):
+    """Return interpolated point from projection to CONUS."""
+    return CONUS["poly"].exterior.interpolate(
+        CONUS["poly"].exterior.project(pt)
+    )
+
+
 def ensure_outside_conus(ls):
     """Make sure the start and end of a given line are outside the CONUS."""
     # First and last point of the ls need to be exterior to the CONUS
     for idx in [0, -1]:
         pt = Point(ls.coords[idx])
-        if not pt.within(CONUS["poly"]) and pt.distance(CONUS["poly"]) > 0.001:
+        # If point is safely outside CONUS, done.
+        if point_outside_conus(pt):
             continue
-        pt = CONUS["poly"].exterior.interpolate(
-            CONUS["poly"].exterior.project(pt)
-        )
+        # Get new point that may be too close for comfort
+        pt = get_conus_point(pt)
         if pt.within(CONUS["poly"]) or pt.distance(CONUS["poly"]) < 0.001:
             LOG.info("     idx: %s is still within, evasive action", idx)
             done = False
@@ -187,20 +197,19 @@ def condition_segment(segment):
             LOG.info("    REJECTING two point segment, both equal")
             return None
         return [segment]
-    # 2. If the start and end points are close, close off the segment
-    if (
-        (segment[0][0] - segment[-1][0]) ** 2
-        + (segment[0][1] - segment[-1][1]) ** 2
-    ) ** 0.5 < 0.05:
-        LOG.info(
-            "assuming linework error, begin: (%.2f %.2f) end: (%.2f %.2f)",
-            segment[0][0],
-            segment[0][1],
-            segment[-1][0],
-            segment[-1][1],
-        )
-        segment[-1] = segment[0]
-        return [segment]
+    # 2. If point start and end points are inside the conus and they are closer
+    #    to each other than the CONUS bounds, then close off polygon
+    if all(not point_outside_conus(Point(segment[i])) for i in [0, -1]):
+        pt0 = Point(segment[0])
+        pt1 = Point(segment[-1])
+        cpt0 = get_conus_point(pt0)
+        cpt1 = get_conus_point(pt1)
+        cdist0 = cpt0.distance(pt0)
+        cdist1 = cpt1.distance(pt1)
+        if pt0.distance(pt1) < 0.5 * min([cdist0, cdist1]):
+            LOG.info("     non-closed polygon assumed unclosed in error.")
+            segment.append(segment[0])
+            return [segment]
     # 3. If the line intersects the CONUS 3+ times, split the line
     ls = ensure_outside_conus(LineString(segment))
     # Examine how our linestring intersects the CONUS polygon
@@ -282,7 +291,10 @@ def winding_logic(linestrings):
             LOG.debug("     found %s filtered rows", len(df2.index))
             if df2.empty:
                 LOG.info("     i=%s adding poly: %.3f", i, poly.area)
-                polys.append(poly)
+                if poly not in polys:
+                    polys.append(poly)
+                else:
+                    LOG.info("     this polygon is a dup, skipping")
                 break
             # updated ended_at
             ended_at = df2.iloc[0]["end"]
@@ -425,6 +437,11 @@ def _sql_day_collect(prod, txn, day, collect):
             (outlook_id,),
         )
         LOG.info("Removed %s rows from spc_outlook_geometries", txn.rowcount)
+        # Update the updated column
+        txn.execute(
+            "UPDATE spc_outlook SET updated = now() WHERE id = %s",
+            (outlook_id,),
+        )
     else:
         txn.execute(
             "INSERT into spc_outlook(issue, product_issue, expire, product_id,"
@@ -544,42 +561,35 @@ class SPCPTS(TextProduct):
                         self.warnings.append(msg)
                         continue
                     intersect = CONUS["poly"].intersection(poly)
-                    if isinstance(
-                        intersect, (MultiPolygon, GeometryCollection)
-                    ):
+                    # Current belief is that we can only return a (multi)poly
+                    if isinstance(intersect, MultiPolygon):
                         for p in intersect:
-                            if isinstance(p, Polygon):
-                                good_polys.append(p)
-                            else:
-                                LOG.info("Discarding %s as not polygon", p)
+                            good_polys.append(p)
                     elif isinstance(intersect, Polygon):
                         good_polys.append(intersect)
-                    else:
-                        LOG.info("Discarding %s as not polygon", intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
-                # Ensure that geometries do not overlap
-                if len(outlook.geometry) > 1:
-                    good_polys = []
-                    for poly1, poly2 in itertools.permutations(
-                        outlook.geometry, 2
-                    ):
-                        if poly1.contains(poly2):
-                            msg = (
-                                "Discarding overlapping exterior polygon: "
-                                "Day: %s %s %s Area: %.2f"
-                            ) % (
-                                day,
-                                outlook.category,
-                                outlook.threshold,
-                                poly1.area,
-                            )
-                            LOG.info(msg)
-                            self.warnings.append(msg)
-                        else:
-                            if poly1 not in good_polys:
-                                good_polys.append(poly1)
-                    outlook.geometry = MultiPolygon(good_polys)
+                # All geometries in the outlook shall not overlap with any
+                # other one, if so, cull it!
+                good_polys = []
+                for i, poly in enumerate(outlook.geometry):
+                    passes_check = True
+                    for i2, poly2 in enumerate(outlook.geometry):
+                        if i == i2:
+                            continue
+                        if not poly.intersects(poly2):
+                            continue
+                        passes_check = False
+                        msg = (
+                            f"Discarding polygon idx: {i} as it intersects "
+                            f"idx: {i2} Area: {poly.area:.2f}"
+                        )
+                        LOG.info(msg)
+                        self.warnings.append(msg)
+                        break
+                    if passes_check:
+                        good_polys.append(poly)
+                outlook.geometry = MultiPolygon(good_polys)
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""
@@ -648,6 +658,7 @@ class SPCPTS(TextProduct):
         """
         Set some metadata about this product
         """
+        print(self.afos)
         if self.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PTSD48"]:
             self.outlook_type = "C"
         elif self.afos in ["PFWFD1", "PFWFD2", "PFWF38"]:
@@ -681,7 +692,6 @@ class SPCPTS(TextProduct):
     def find_outlooks(self):
         """Find the outlook sections within the text product!"""
         if self.text.find("&&") == -1:
-            self.warnings.append("Product contains no &&, adding...")
             self.text = self.text.replace("\n... ", "\n&&\n... ")
             self.text += "\n&& "
         for segment in self.text.split("&&")[:-1]:
@@ -719,10 +729,6 @@ class SPCPTS(TextProduct):
                 collect = self.get_outlookcollection(day)
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
-                if threshold == "TSTM" and self.afos == "PFWF38":
-                    LOG.info(("Failing to parse TSTM in PFWF38"))
-                    del point_data[threshold]
-                    continue
                 match = DMATCH.match(threshold)
                 if match:
                     data = match.groupdict()
@@ -757,8 +763,6 @@ class SPCPTS(TextProduct):
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
-                if outlook.geometry.is_empty or not outlook.geometry.is_valid:
-                    continue
                 df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
                 outlook.wfos = df2.index.to_list()
                 LOG.info(

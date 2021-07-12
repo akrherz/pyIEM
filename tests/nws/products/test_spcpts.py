@@ -6,8 +6,39 @@ from pyiem.nws.products.spcpts import (
     str2multipolygon,
     load_conus_data,
     debug_draw,
+    SPCPTS,
 )
 from pyiem.util import utc, get_test_file
+
+
+def test_invalid_awipsid():
+    """Test that exception is raised when passed invalid AWIPS ID."""
+    data = get_test_file("SPCPTS/PTSDY1_closed.txt")
+    with pytest.raises(ValueError):
+        SPCPTS(data.replace("PTSDY1", "XXXYYY"))
+
+
+def test_get_invalid_outlook_day():
+    """Test that we can accurately close off an unclosed polygon."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_closed.txt"))
+    assert prod.get_outlook("", "", -1) is None
+
+
+def test_100606_closed():
+    """Test that we can accurately close off an unclosed polygon."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_closed.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 572.878) < 0.01
+
+
+def test_130607_larger_than_conus():
+    """Test that we do not yield a multipolygon larger than the CONUS."""
+    # /products/outlook/archive/2013/day1otlk_20130607_1630.html
+    prod = parser(get_test_file("SPCPTS/PTSDY1_conus.txt"))
+    # prod.draw_outlooks()
+    outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
+    assert abs(outlook.geometry.area - 4.719) < 0.01
 
 
 def test_issue246():
@@ -157,7 +188,7 @@ def test_nogeom4():
     prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
     # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
-    assert abs(outlook.geometry.area - 35.544) < 0.01
+    assert abs(outlook.geometry.area - 31.252) < 0.01
 
 
 def test_may3():
@@ -170,6 +201,7 @@ def test_pfwfd2():
     """Test parsing of a fire weather data2 product."""
     text = get_test_file("SPCPTS/PFWFD2.txt")
     prod = parser(text)
+    prod.get_jabbers("")
     assert prod.cycle == 18
     prod = parser(text.replace("0221 PM", "0721 AM"))
     assert prod.cycle == 8
@@ -315,6 +347,7 @@ def test_190509_marinebounds():
 def test_190415_elevated():
     """Can we parse elevated threshold firewx?"""
     spc = parser(get_test_file("SPCPTS/PFWFD1_example.txt"))
+    spc.get_jabbers("")
     outlook = spc.get_outlook("FIRE WEATHER CATEGORICAL", "ELEV", 1)
     assert abs(outlook.geometry.area - 145.64) < 0.01
     for level in ["IDRT", "SDRT", "ELEV", "CRIT", "EXTM"]:
