@@ -6,8 +6,22 @@ from pyiem.nws.products.spcpts import (
     str2multipolygon,
     load_conus_data,
     debug_draw,
+    SPCPTS,
 )
 from pyiem.util import utc, get_test_file
+
+
+def test_invalid_awipsid():
+    """Test that exception is raised when passed invalid AWIPS ID."""
+    data = get_test_file("SPCPTS/PTSDY1_closed.txt")
+    with pytest.raises(ValueError):
+        SPCPTS(data.replace("PTSDY1", "XXXYYY"))
+
+
+def test_get_invalid_outlook_day():
+    """Test that we can accurately close off an unclosed polygon."""
+    prod = parser(get_test_file("SPCPTS/PTSDY1_closed.txt"))
+    assert prod.get_outlook("", "", -1) is None
 
 
 def test_100606_closed():
@@ -187,6 +201,7 @@ def test_pfwfd2():
     """Test parsing of a fire weather data2 product."""
     text = get_test_file("SPCPTS/PFWFD2.txt")
     prod = parser(text)
+    prod.get_jabbers("")
     assert prod.cycle == 18
     prod = parser(text.replace("0221 PM", "0721 AM"))
     assert prod.cycle == 8
@@ -332,6 +347,7 @@ def test_190509_marinebounds():
 def test_190415_elevated():
     """Can we parse elevated threshold firewx?"""
     spc = parser(get_test_file("SPCPTS/PFWFD1_example.txt"))
+    spc.get_jabbers("")
     outlook = spc.get_outlook("FIRE WEATHER CATEGORICAL", "ELEV", 1)
     assert abs(outlook.geometry.area - 145.64) < 0.01
     for level in ["IDRT", "SDRT", "ELEV", "CRIT", "EXTM"]:

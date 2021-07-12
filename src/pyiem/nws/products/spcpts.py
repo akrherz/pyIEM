@@ -15,7 +15,6 @@ from shapely.geometry import (
     MultiPolygon,
     Point,
 )
-from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.polygon import LinearRing
 from shapely.affinity import translate
 
@@ -562,18 +561,12 @@ class SPCPTS(TextProduct):
                         self.warnings.append(msg)
                         continue
                     intersect = CONUS["poly"].intersection(poly)
-                    if isinstance(
-                        intersect, (MultiPolygon, GeometryCollection)
-                    ):
+                    # Current belief is that we can only return a (multi)poly
+                    if isinstance(intersect, MultiPolygon):
                         for p in intersect:
-                            if isinstance(p, Polygon):
-                                good_polys.append(p)
-                            else:
-                                LOG.info("Discarding %s as not polygon", p)
+                            good_polys.append(p)
                     elif isinstance(intersect, Polygon):
                         good_polys.append(intersect)
-                    else:
-                        LOG.info("Discarding %s as not polygon", intersect)
                 outlook.geometry = MultiPolygon(good_polys)
 
                 # All geometries in the outlook shall not overlap with any
@@ -665,6 +658,7 @@ class SPCPTS(TextProduct):
         """
         Set some metadata about this product
         """
+        print(self.afos)
         if self.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PTSD48"]:
             self.outlook_type = "C"
         elif self.afos in ["PFWFD1", "PFWFD2", "PFWF38"]:
@@ -735,10 +729,6 @@ class SPCPTS(TextProduct):
                 collect = self.get_outlookcollection(day)
             # We need to duplicate, in the case of day-day spans
             for threshold in list(point_data.keys()):
-                if threshold == "TSTM" and self.afos == "PFWF38":
-                    LOG.info(("Failing to parse TSTM in PFWF38"))
-                    del point_data[threshold]
-                    continue
                 match = DMATCH.match(threshold)
                 if match:
                     data = match.groupdict()
@@ -773,8 +763,6 @@ class SPCPTS(TextProduct):
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
-                if outlook.geometry.is_empty or not outlook.geometry.is_valid:
-                    continue
                 df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
                 outlook.wfos = df2.index.to_list()
                 LOG.info(
