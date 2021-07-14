@@ -418,8 +418,7 @@ class ERO(TextProduct):
         # Generic for WPC
         jdict["t220"] = "conus"
         jdict["title2"] = "%(name)s issues Day %(day)s %(title)s" % jdict
-        res.insert(
-            0,
+        res.append(
             [
                 "%(title2)s at %(tstamp)s %(url)s" % jdict,
                 (

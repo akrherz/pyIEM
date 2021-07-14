@@ -16,8 +16,8 @@ def test_get_jabbers():
         "Outlook at Jul 13, 21:56z "
         "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
     )
-    assert j[0][0] == ans
-    assert "ERODY1" in j[0][2]["channels"]
+    assert j[-1][0] == ans
+    assert "ERODY1" in j[-1][2]["channels"]
 
 
 def test_timestamps():
