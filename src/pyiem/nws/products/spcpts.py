@@ -21,6 +21,7 @@ from ._outlook_util import (
     winding_logic,
     condition_segment,
     THRESHOLD2TEXT,
+    sql_day_collect,
 )
 
 DAYRE = re.compile(
@@ -161,99 +162,6 @@ def _compute_cycle(prod):
         return lkp.get(hhmi, -1)
     lkp = {"1200": 7, "1700": 17}
     return lkp.get(hhmi, -1)
-
-
-def _sql_set_cycle(txn, outlook_id, cycle):
-    """Assign a given outlook a given cycle."""
-    txn.execute(
-        "UPDATE spc_outlook SET cycle = %s, updated = now() where id = %s",
-        (cycle, outlook_id),
-    )
-
-
-def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
-    """Check our database."""
-    txn.execute(
-        "SELECT id, product_issue from spc_outlook where expire = %s and "
-        "outlook_type = %s and day = %s and cycle = %s",
-        (collect.expire, prod.outlook_type, day, prod.cycle),
-    )
-    if txn.rowcount == 0:  # yes
-        LOG.info("Setting as canonical cycle of %s", prod.cycle)
-        _sql_set_cycle(txn, outlook_id, prod.cycle)
-    else:
-        # tricky
-        is_canonical = True
-        for row in txn.fetchall():
-            if row["product_issue"] < prod.valid:
-                LOG.info(
-                    "Setting old outlook %s to cycle=-1, product_issue = %s "
-                    ", prod.valid = %s",
-                    row["id"],
-                    row["product_issue"],
-                    prod.valid,
-                )
-                _sql_set_cycle(txn, row["id"], -1)
-            elif row["product_issue"] > prod.valid:
-                is_canonical = False
-        cycle = prod.cycle if is_canonical else -1
-        LOG.info("Setting this outlook to cycle=%s", cycle)
-        _sql_set_cycle(txn, outlook_id, cycle)
-
-
-def _sql_day_collect(prod, txn, day, collect):
-    """Do database work."""
-    # Compute what our outlook identifier is
-    txn.execute(
-        "SELECT id from spc_outlook where product_issue = %s and "
-        "day = %s and outlook_type = %s",
-        (prod.valid, day, prod.outlook_type),
-    )
-    if txn.rowcount > 0:
-        outlook_id = txn.fetchone()[0]
-        # Do some deleting
-        txn.execute(
-            "DELETE from spc_outlook_geometries where spc_outlook_id = %s",
-            (outlook_id,),
-        )
-        LOG.info("Removed %s rows from spc_outlook_geometries", txn.rowcount)
-        # Update the updated column
-        txn.execute(
-            "UPDATE spc_outlook SET updated = now() WHERE id = %s",
-            (outlook_id,),
-        )
-    else:
-        txn.execute(
-            "INSERT into spc_outlook(issue, product_issue, expire, product_id,"
-            "outlook_type, day, cycle) VALUES (%s, %s, %s, %s, %s, %s, %s) "
-            "RETURNING id",
-            (
-                collect.issue,
-                prod.valid,
-                collect.expire,
-                prod.get_product_id(),
-                prod.outlook_type,
-                day,
-                -1 if prod.cycle < 0 else -2,  # Placeholder, if necessary
-            ),
-        )
-        outlook_id = txn.fetchone()[0]
-    # Now, are we the canonical outlook for this cycle?
-    if prod.cycle > -1:
-        _sql_cycle_canonical(prod, txn, day, collect, outlook_id)
-    for outlook in collect.outlooks:
-        if outlook.geometry.is_empty:
-            continue
-        txn.execute(
-            "INSERT into spc_outlook_geometries(spc_outlook_id, "
-            "threshold, category, geom) VALUES (%s, %s, %s, %s)",
-            (
-                outlook_id,
-                outlook.threshold,
-                outlook.category,
-                "SRID=4326;%s" % (outlook.geometry.wkt,),
-            ),
-        )
 
 
 class SPCOutlookCollection:
@@ -561,7 +469,7 @@ class SPCPTS(TextProduct):
           txn (psycopg2.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
-            _sql_day_collect(self, txn, day, collect)
+            sql_day_collect(self, txn, day, collect)
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""

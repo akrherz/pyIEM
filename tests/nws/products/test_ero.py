@@ -7,6 +7,17 @@ from pyiem.nws.products.ero import parser
 from pyiem.util import get_test_file
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_cycle_lifecycle(dbcursor):
+    """Test the logic with the cycle lifecycle checks."""
+    data = get_test_file("ERO/RBG94E.txt")
+    ans = [1, 8, -1, 8, 16]
+    for i, r in enumerate(["1000 PM", "400 AM", "359 AM", "401 AM", "1 PM"]):
+        prod = parser(data.replace("556 PM", r))
+        prod.sql(dbcursor)
+        assert prod.cycle == ans[i]
+
+
 def test_draw_outlooks():
     """Test that an outlook can be drawn."""
     prod = parser(get_test_file("ERO/RBG99E.txt"))
