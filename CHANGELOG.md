@@ -14,6 +14,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 ### New Features
 
 - Add `SPS.<state>` channel for SPS Products.
+- Implement a parser of the WPC Excessive Rainfall Outlook (#13).
 
 ### Bug Fixes
 
