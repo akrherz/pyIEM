@@ -25,7 +25,7 @@ from metpy.units import units
 from pyiem.reference import txt2drct
 from pyiem.geom_util import rhs_split
 from pyiem.nws.product import TextProduct
-from pyiem.util import utc, LOG, load_geodf
+from pyiem.util import LOG, load_geodf
 
 CONUS = {"line": None, "poly": None}
 RISK_RE = re.compile(
@@ -65,9 +65,8 @@ THRESHOLD_ORDER = (
 ).split()
 
 
-def load_conus_data(valid=None):
+def load_conus_data():
     """Load up the conus datafile for our perusal"""
-    valid = utc() if valid is None else valid
     fn = "%s/../../data/conus_marine_bnds.txt" % (os.path.dirname(__file__),)
     lons = []
     lats = []
@@ -452,7 +451,7 @@ class ERO(TextProduct):
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         LOG.info("==== ERO Processing: %s", self.get_product_id())
-        load_conus_data(self.valid)
+        load_conus_data()
         self.issue = None
         self.expire = None
         self.outlook_type = "E"
@@ -664,16 +663,11 @@ class ERO(TextProduct):
         for day, collect in self.outlook_collections.items():
             _sql_day_collect(self, txn, day, collect)
 
-    def get_descript_and_url(self):
-        """Helper to convert awips id into strings"""
-        url = "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
-        product_descript = f"Excessive Rainfall Outlook"
-        return product_descript, url
-
     def get_jabbers(self, uri, _uri2=None):
         """Wordsmith the Jabber/Twitter Messaging"""
         res = []
-        product_descript, url = self.get_descript_and_url()
+        url = "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
+        product_descript = "Excessive Rainfall Outlook"
         jdict = {
             "title": product_descript,
             "name": "The Weather Prediction Center",
