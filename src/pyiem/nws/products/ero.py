@@ -52,9 +52,9 @@ TEXT2THRESHOLD = {
 def init_days(prod):
     """Figure out which days this product should have based on the AFOS."""
     day = 1
-    if prod.afos == "PBG98E":
+    if prod.afos == "RBG98E":
         day = 2
-    elif prod.afos == "PBG99E":
+    elif prod.afos == "RBG99E":
         day = 3
     return day, {day: OutlookCollection(prod.issue, prod.expire, day)}
 
