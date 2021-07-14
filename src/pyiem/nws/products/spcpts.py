@@ -22,6 +22,7 @@ from ._outlook_util import (
     condition_segment,
     THRESHOLD2TEXT,
     sql_day_collect,
+    quality_control,
 )
 
 DAYRE = re.compile(
@@ -216,68 +217,9 @@ class SPCPTS(TextProduct):
         self.find_issue_expire()
         self.outlook_collections = init_days(self)
         self.find_outlooks()
-        self.quality_control()
+        quality_control(self)
         self.compute_wfos()
         self.cycle = _compute_cycle(self)
-
-    def quality_control(self):
-        """Run some checks against what was parsed"""
-        # 1. Do polygons overlap for the same outlook
-        LOG.info("==== Running Quality Control Checks")
-        for day, collect in self.outlook_collections.items():
-            # Everything should be smaller than General Thunder, for conv
-            tstm = self.get_outlook("CATEGORICAL", "TSTM", day)
-            for outlook in collect.outlooks:
-                good_polys = []
-                for poly in outlook.geometry:
-                    if tstm and poly.area > tstm.geometry.area:
-                        msg = (
-                            "Discarding polygon as it is larger than TSTM: "
-                            f"{outlook.category} {outlook.threshold} "
-                            f"Area: {outlook.geometry.area:.2f} "
-                            f"TSTM Area: {tstm.geometry.area:.2f}"
-                        )
-                        LOG.info(msg)
-                        self.warnings.append(msg)
-                        continue
-                    if poly.area < 0.1:
-                        msg = (
-                            f"Impossibly small polygon.area {poly.area:.2f} "
-                            "discarded"
-                        )
-                        LOG.info(msg)
-                        self.warnings.append(msg)
-                        continue
-                    intersect = CONUS["poly"].intersection(poly)
-                    # Current belief is that we can only return a (multi)poly
-                    if isinstance(intersect, MultiPolygon):
-                        for p in intersect:
-                            good_polys.append(p)
-                    elif isinstance(intersect, Polygon):
-                        good_polys.append(intersect)
-                outlook.geometry = MultiPolygon(good_polys)
-
-                # All geometries in the outlook shall not overlap with any
-                # other one, if so, cull it!
-                good_polys = []
-                for i, poly in enumerate(outlook.geometry):
-                    passes_check = True
-                    for i2, poly2 in enumerate(outlook.geometry):
-                        if i == i2:
-                            continue
-                        if not poly.intersects(poly2):
-                            continue
-                        passes_check = False
-                        msg = (
-                            f"Discarding polygon idx: {i} as it intersects "
-                            f"idx: {i2} Area: {poly.area:.2f}"
-                        )
-                        LOG.info(msg)
-                        self.warnings.append(msg)
-                        break
-                    if passes_check:
-                        good_polys.append(poly)
-                outlook.geometry = MultiPolygon(good_polys)
 
     def get_outlookcollection(self, day):
         """Returns the SPCOutlookCollection for a given day"""

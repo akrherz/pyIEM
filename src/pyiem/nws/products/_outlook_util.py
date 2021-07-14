@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from shapely.affinity import translate
 from shapely.geometry.polygon import LinearRing
-from shapely.geometry import Polygon, Point, LineString
+from shapely.geometry import Polygon, Point, LineString, MultiPolygon
 
 # local
 from pyiem.geom_util import rhs_split
@@ -324,3 +324,63 @@ def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
                 prod.cycle = -1
         LOG.info("Setting this outlook to cycle=%s", prod.cycle)
         _sql_set_cycle(txn, outlook_id, prod.cycle)
+
+
+def quality_control(prod):
+    """Do Quality Control work."""
+    # 1. Do polygons overlap for the same outlook
+    LOG.info("==== Running Quality Control Checks")
+    for day, collect in prod.outlook_collections.items():
+        # Everything should be smaller than General Thunder, for conv
+        tstm = prod.get_outlook("CATEGORICAL", "TSTM", day)
+        for outlook in collect.outlooks:
+            good_polys = []
+            for poly in outlook.geometry:
+                if tstm and poly.area > tstm.geometry.area:
+                    msg = (
+                        "Discarding polygon as it is larger than TSTM: "
+                        f"{outlook.category} {outlook.threshold} "
+                        f"Area: {outlook.geometry.area:.2f} "
+                        f"TSTM Area: {tstm.geometry.area:.2f}"
+                    )
+                    LOG.info(msg)
+                    prod.warnings.append(msg)
+                    continue
+                if poly.area < 0.1:
+                    msg = (
+                        f"Impossibly small polygon.area {poly.area:.2f} "
+                        "discarded"
+                    )
+                    LOG.info(msg)
+                    prod.warnings.append(msg)
+                    continue
+                intersect = CONUS["poly"].intersection(poly)
+                # Current belief is that we can only return a (multi)poly
+                if isinstance(intersect, MultiPolygon):
+                    for p in intersect:
+                        good_polys.append(p)
+                elif isinstance(intersect, Polygon):
+                    good_polys.append(intersect)
+            outlook.geometry = MultiPolygon(good_polys)
+
+            # All geometries in the outlook shall not overlap with any
+            # other one, if so, cull it!
+            good_polys = []
+            for i, poly in enumerate(outlook.geometry):
+                passes_check = True
+                for i2, poly2 in enumerate(outlook.geometry):
+                    if i == i2:
+                        continue
+                    if not poly.intersects(poly2):
+                        continue
+                    passes_check = False
+                    msg = (
+                        f"Discarding polygon idx: {i} as it intersects "
+                        f"idx: {i2} Area: {poly.area:.2f}"
+                    )
+                    LOG.info(msg)
+                    prod.warnings.append(msg)
+                    break
+                if passes_check:
+                    good_polys.append(poly)
+            outlook.geometry = MultiPolygon(good_polys)

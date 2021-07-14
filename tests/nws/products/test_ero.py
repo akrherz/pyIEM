@@ -4,15 +4,29 @@ import pytest
 
 # Local
 from pyiem.nws.products.ero import parser
-from pyiem.util import get_test_file
+from pyiem.util import get_test_file, utc
+
+
+def test_timestamps():
+    """Test the parsing of timestamps."""
+    prod = parser(get_test_file("ERO/RBG94E.txt").replace("12Z ", "1200Z "))
+    assert prod.expire == utc(2021, 7, 14, 12)
+
+
+def test_get_unknown_outlooks():
+    """Test that we can handle not finding things."""
+    prod = parser(get_test_file("ERO/RBG94E.txt"))
+    assert prod.get_outlook("CATEGORICAL", "SLGT", "Q") is None
+    assert prod.get_outlook("Q", "SLGT", 1) is None
 
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_cycle_lifecycle(dbcursor):
     """Test the logic with the cycle lifecycle checks."""
     data = get_test_file("ERO/RBG94E.txt")
-    ans = [1, 8, -1, 8, 16]
-    for i, r in enumerate(["1000 PM", "400 AM", "359 AM", "401 AM", "1 PM"]):
+    ans = [1, 8, -1, 8, 16, -1]
+    rx = ["1000 PM", "400 AM", "359 AM", "401 AM", "1 PM", "0750 PM"]
+    for i, r in enumerate(rx):
         prod = parser(data.replace("556 PM", r))
         prod.sql(dbcursor)
         assert prod.cycle == ans[i]
