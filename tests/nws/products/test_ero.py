@@ -7,6 +7,19 @@ from pyiem.nws.products.ero import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_get_jabbers():
+    """Test the wordsmithing and channels emitted."""
+    prod = parser(get_test_file("ERO/RBG94E.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "The Weather Prediction Center issues Day 1 Excessive Rainfall "
+        "Outlook at Jul 13, 21:56z "
+        "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
+    )
+    assert j[0][0] == ans
+    assert "ERODY1" in j[0][2]["channels"]
+
+
 def test_timestamps():
     """Test the parsing of timestamps."""
     prod = parser(get_test_file("ERO/RBG94E.txt").replace("12Z ", "1200Z "))

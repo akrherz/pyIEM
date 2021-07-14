@@ -339,7 +339,6 @@ class ERO(TextProduct):
             "title": product_descript,
             "name": "The Weather Prediction Center",
             "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
-            "outlooktype": product_descript,
             "url": url,
             "wfo": "DMX",  # autoplot expects something valid here
             "cat": self.outlook_type,
@@ -377,7 +376,7 @@ class ERO(TextProduct):
                 "MDT",
                 "HIGH",
             ]:
-                jdict["ttext"] = "%s %s Risk" % (
+                jdict["ttext"] = "%s Risk %s" % (
                     THRESHOLD2TEXT[cat],
                     product_descript,
                 )
@@ -398,8 +397,8 @@ class ERO(TextProduct):
                         {
                             "channels": [
                                 wfo,
-                                "%s.ERO%s" % (wfo, self.afos[3:]),
-                                "%s.ERO%s.%s" % (wfo, self.afos[3:], cat),
+                                "%s.ERODY%s" % (wfo, self.day),
+                                "%s.ERODY%s.%s" % (wfo, self.day, cat),
                             ],
                             "product_id": self.get_product_id(),
                             "twitter_media": twmedia % jdict,
@@ -418,29 +417,23 @@ class ERO(TextProduct):
 
         # Generic for WPC
         jdict["t220"] = "conus"
-        res.append(
+        jdict["title2"] = "%(name)s issues Day %(day)s %(title)s" % jdict
+        res.insert(
+            0,
             [
+                "%(title2)s at %(tstamp)s %(url)s" % jdict,
                 (
-                    "%(name)s issues %(title)s %(outlooktype)s Outlook at "
-                    "%(tstamp)s %(url)s"
-                )
-                % jdict,
-                (
-                    '<p>%(name)s issues <a href="%(url)s">%(title)s '
-                    "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
+                    '<p>%(name)s issues <a href="%(url)s">Day %(day)s '
+                    "%(title)s</a> at %(tstamp)s</p>"
                 )
                 % jdict,
                 {
-                    "channels": ["WNH", "ERO%s" % (self.afos[3:],)],
+                    "channels": ["WPC", f"ERODY{self.day}", self.afos],
                     "product_id": self.get_product_id(),
                     "twitter_media": twmedia % jdict,
-                    "twitter": (
-                        "%(name)s issues %(title)s "
-                        "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
-                    )
-                    % jdict,
+                    "twitter": "%(title2)s at %(tstamp)s %(url)s" % jdict,
                 },
-            ]
+            ],
         )
         return res
 
