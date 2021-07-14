@@ -30,4 +30,4 @@ def test_basic(dbcursor):
     prod.get_jabbers("")
     # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 188.829) < 0.01
+    assert abs(outlook.geometry.area - 188.754) < 0.01

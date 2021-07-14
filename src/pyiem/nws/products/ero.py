@@ -181,26 +181,34 @@ def compute_loc(lon, lat, dist, bearing):
     return lon + easting, lat + northing
 
 
+def sid_rectify(sid):
+    """Ensure it matches our nomenclature."""
+    if sid.startswith("K") and len(sid) == 4:
+        return sid[1:]
+    return sid
+
+
 def meat2segment(meat):
     """Convert into a list of points."""
-    asos = load_geodf("asos")
+    asos = load_geodf("sfstns")
     tokens = meat.split()
     sz = len(tokens)
     i = 0
     pts = []
+    gc = "geometry"
     while i < sz:
         token = tokens[i]
         if token.isdigit() and (i + 2) < sz:
             miles = float(token)
             drct = txt2drct.get(tokens[i + 1])
-            sid = tokens[i + 2]
+            sid = sid_rectify(tokens[i + 2])
             row = asos.loc[sid]
-            pts.append(compute_loc(row["geom"].x, row["geom"].y, miles, drct))
+            pts.append(compute_loc(row[gc].x, row[gc].y, miles, drct))
             i += 3
             continue
-        sid = tokens[i]
+        sid = sid_rectify(tokens[i])
         row = asos.loc[sid]
-        pts.append([row["geom"].x, row["geom"].y])
+        pts.append([row[gc].x, row[gc].y])
         i += 1
     return pts
 
