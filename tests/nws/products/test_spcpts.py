@@ -5,9 +5,9 @@ from pyiem.nws.products import parser
 from pyiem.nws.products.spcpts import (
     str2multipolygon,
     load_conus_data,
-    debug_draw,
     SPCPTS,
 )
+from pyiem.nws.products._outlook_util import debug_draw
 from pyiem.util import utc, get_test_file
 
 
