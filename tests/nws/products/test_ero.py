@@ -3,7 +3,7 @@
 import pytest
 
 # Local
-from pyiem.nws.products.ero import parser
+from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 

@@ -10,6 +10,7 @@ from . import nhc
 from . import spcpts
 from . import sps
 from . import taf
+from . import ero
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
@@ -59,6 +60,8 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         return lsr.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] in ["PTS", "PFW"]:
         return spcpts.parser(text, utcnow, ugc_provider, nwsli_provider)
+    elif afos[:3] == "RBG":
+        return ero.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == "TAF":
         return taf.parser(text, utcnow, ugc_provider, nwsli_provider)
     elif afos[:3] == "SPS":
