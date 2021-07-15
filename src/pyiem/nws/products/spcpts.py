@@ -288,7 +288,6 @@ class SPCPTS(TextProduct):
         """
         Set some metadata about this product
         """
-        print(self.afos)
         if self.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PTSD48"]:
             self.outlook_type = "C"
         elif self.afos in ["PFWFD1", "PFWFD2", "PFWF38"]:
