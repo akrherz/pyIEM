@@ -6,6 +6,10 @@ import datetime
 import pandas as pd
 import geopandas as gpd
 
+# Local
+from pyiem.util import logger
+
+LOG = logger()
 QUEUE = {"stns/sfstns.tbl": "sfstns.parquet"}
 BASEDIR = "../src/pyiem/data/geodf/"
 GEMPAKDIR = "/home/akrherz/projects/gempak/gempak/tables/"
@@ -30,9 +34,11 @@ def process(gemtbl, outfn):
         lon = float(line[61:67]) / 100.0
         rows.append({"sid": sid, "name": name, "lon": lon, "lat": lat})
 
-    df = pd.DataFrame(rows)
+    LOG.info("Found %s rows in GEMPAK table %s", len(rows), gemtbl)
+    df = pd.DataFrame(rows).groupby("sid").first()
+    LOG.info("after dedup, there are %s rows", len(df.index))
     df = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.lon, df.lat))
-    df = df.drop(["lon", "lat"], axis=1).set_index("sid")
+    df = df.drop(["lon", "lat"], axis=1)
     df.to_parquet(BASEDIR + outfn)
     print(df.head(20))
 
