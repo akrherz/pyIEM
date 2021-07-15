@@ -7,6 +7,13 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_210714_duplicate():
+    """Test that we do not have duplicate sfstns entries causing grief."""
+    prod = parser(get_test_file("ERO/RBG98E_dup.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MRGL", 2)
+    assert abs(outlook.geometry.area - 96.5306) < 0.01
+
+
 def test_get_jabbers():
     """Test the wordsmithing and channels emitted."""
     prod = parser(get_test_file("ERO/RBG94E.txt"))
