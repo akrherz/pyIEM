@@ -10,6 +10,7 @@ import geopandas as gpd
 from pyiem.util import logger
 
 LOG = logger()
+# custom appended from 16 Jul 2021 GC email
 QUEUE = {"stns/sfstns.tbl": "sfstns.parquet"}
 BASEDIR = "../src/pyiem/data/geodf/"
 GEMPAKDIR = "/home/akrherz/projects/gempak/gempak/tables/"

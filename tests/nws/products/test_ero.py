@@ -7,6 +7,13 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_210716_4f4():
+    """Test our updated station table."""
+    prod = parser(get_test_file("ERO/RBG94E_4F4.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MRGL", 1)
+    assert abs(outlook.geometry.area - 127.07999) < 0.01
+
+
 def test_210714_duplicate():
     """Test that we do not have duplicate sfstns entries causing grief."""
     prod = parser(get_test_file("ERO/RBG98E_dup.txt"))
