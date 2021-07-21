@@ -307,15 +307,17 @@ def read_man(filename):
     sz = res["nyears"] * res["nrots"]
     res["rotations"] = [None] * sz
     linenum += 6
+    yidx = 0
     for _rot in range(res["nrots"]):
-        for year in range(res["nyears"]):
-            res["rotations"][year] = [None] * res["nwsofe"]
+        for _year in range(res["nyears"]):
+            res["rotations"][yidx] = [None] * res["nwsofe"]
             for ofe in range(res["nwsofe"]):
-                res["rotations"][year][ofe] = {
+                res["rotations"][yidx][ofe] = {
                     "plant": int(lines[linenum]),
                     "yearindex": int(lines[linenum + 1]),
                 }
                 linenum += 3
+            yidx += 1
         linenum += 4
 
     return res
