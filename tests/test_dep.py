@@ -56,6 +56,14 @@ def test_slp():
     assert abs(slp[4]["slopes"][-1] - 0.033) < 0.01
 
 
+def test_man_rotation_repeats():
+    """Test that a management file can have a rotation repeat read."""
+    manfile = dep.read_man(get_path("man3.txt"))
+    assert manfile["nrots"] == 2
+    assert manfile["nyears"] == 14
+    assert len(manfile["rotations"]) == 28
+
+
 def test_man():
     """Read a management file please"""
     manfile = dep.read_man(get_path("man.txt"))

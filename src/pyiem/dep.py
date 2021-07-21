@@ -304,16 +304,19 @@ def read_man(filename):
     res["nrots"] = int(lines[linenum])
     linenum += 1
     res["nyears"] = int(lines[linenum])
-    res["rotations"] = [None] * res["nyears"]
+    sz = res["nyears"] * res["nrots"]
+    res["rotations"] = [None] * sz
     linenum += 6
-    for year in range(res["nyears"]):
-        res["rotations"][year] = [None] * res["nwsofe"]
-        for ofe in range(res["nwsofe"]):
-            res["rotations"][year][ofe] = {
-                "plant": int(lines[linenum]),
-                "yearindex": int(lines[linenum + 1]),
-            }
-            linenum += 3
+    for _rot in range(res["nrots"]):
+        for year in range(res["nyears"]):
+            res["rotations"][year] = [None] * res["nwsofe"]
+            for ofe in range(res["nwsofe"]):
+                res["rotations"][year][ofe] = {
+                    "plant": int(lines[linenum]),
+                    "yearindex": int(lines[linenum + 1]),
+                }
+                linenum += 3
+        linenum += 4
 
     return res
 
