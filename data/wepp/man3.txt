@@ -1,0 +1,314 @@
+98.4
+#
+#
+#
+#
+
+1 # number of OFE's
+15 # (total) years in simulation
+
+#######################
+# Plant Section       #
+#######################
+
+2  # Number of plant scenarios
+
+
+Corn
+High production level-125 bu/acre for Jefferson Iowa
+J. M. Laflen, Feb 28, 1998
+Cutting height 1 foot,  non-fragile residue,  30 inch rows
+1  #landuse
+WeppWillSet
+3.60000 3.00000 35.00196 10.00000 2.30000 55.00000 0.00000 0.30404 0.65000 0.05100
+0.85000 0.98000 0.65000 0.99000 0.00000 1700.00000 0.50000 2.60099
+2  # mfo - <non fragile>
+0.00650 0.00650 25.00000 0.25000 0.21900 1.51995 0.25000 0.00000 30 0.00000
+0.00000 3.50000 0.00000
+
+Soy_2194
+'Soybeans - DEP'
+J. Laflen, Aug 27, 2013
+(null)
+1  #landuse
+WeppWillSet
+14.00000 3.00000 25.00000 10.00000 5.20000 60.00000 0.00000 0.15200 0.20000 0.00950
+0.90000 0.50000 0.45000 0.99000 0.00000 1500.00000 0.50000 1.01000
+1  # mfo - <fragile>
+0.01300 0.01300 29.40000 0.25000 0.02500 1.50000 0.25000 0.00000 14 0.00000
+0.00000 5.00000 0.00000
+
+#######################
+# Operation Section   #
+#######################
+
+5  # Number of operation scenarios
+
+
+FCSTACDP
+`Field cultivator, secondary tillage, after duckfoot points
+(from WEPP distribution database)
+Maximum depth of 10 cm (4 inches)
+1  #landuse
+0.6000 0.3500 0
+4 # pcode - other 
+0.0250 0.3000 0.6000 0.3500 0.0150 1.0000 0.0500 
+
+TAND0002
+`Tandem Disk'
+From converted V92.2 file `ANSI1.MAN'
+NOTE: MFO values are the min and max of original values.
+1  #landuse
+0.5000 0.5000 0
+4 # pcode - other 
+0.0500 0.2300 0.5000 0.5000 0.0260 1.0000 0.1000 
+
+PLDDO
+`Planter, double disk openers'
+(from WEPP distribution database)
+Tillage depth of 2 inches
+1  #landuse
+0.2000 0.1000 6
+1 # pcode - planter
+0.0250 0.7500 0.2000 0.1000 0.0120 0.1500 0.0500 
+
+CULTMUSW
+`Cultivator, row, multiple sweeps per row'
+(from WEPP distribution database)
+
+1  #landuse
+0.4000 0.2000 0
+4 # pcode - other 
+0.0750 0.7500 0.4000 0.2000 0.0150 0.8500 0.0500 
+
+CHISSTSP
+`Chisel plow, straight with spike pts'
+(from WEPP distribution database)
+
+1  #landuse
+0.5000 0.3000 0
+4 # pcode - other 
+0.0500 0.3000 0.5000 0.3000 0.0230 1.0000 0.1500 
+
+
+
+###############################
+# Initial Conditions Section  #
+###############################
+
+1  # Number of initial scenarios
+
+
+Default
+Default corn initial conditions set - continuous corn - spring/summer tillage only
+90 percent cover, approximately 200 days since last tillage
+500 mm of rain since last tillage in summer prior
+1  #landuse
+1.10000 0.00000 200 92 0.00000 0.90000
+1 # iresd  <Corn>
+1 # mang annual
+500.12601 0.02000 0.90000 0.02000 0.00000
+1  # rtyp - temporary
+0.00000 0.00000 0.10000 0.20000 0.02540
+0.50003 0.19997
+
+
+
+
+############################
+# Surface Effects Section  #
+############################
+
+1  # Number of Surface Effects Scenarios
+
+
+#
+#   Surface Effects Scenario 1 of 1
+#
+Year 1
+From WEPP database
+Your name, phone
+
+1  # landuse  - cropland
+5 # ntill - number of operations
+  133  # mdate  --- 5 / 13 
+  1  # op --- FCSTACDP
+      0.102  # depth
+      1  # type
+  138  # mdate  --- 5 / 18 
+  2  # op --- TAND0002
+      0.102  # depth
+      2  # type
+  143  # mdate  --- 5 / 23 
+  3  # op --- PLDDO
+      0.051  # depth
+      2  # type
+  156  # mdate  --- 6 / 5 
+  4  # op --- CULTMUSW
+      0.102  # depth
+      2  # type
+  305  # mdate  --- 11 / 1 
+  5  # op --- CHISSTSP
+      0.203  # depth
+      2  # type
+
+
+#######################
+# Contouring Section  #
+#######################
+
+0  # Number of contour scenarios
+
+
+#######################
+# Drainage Section    #
+#######################
+
+0  # Number of drainage scenarios
+
+
+#######################
+# Yearly Section      #
+#######################
+
+2  # looper; number of Yearly Scenarios
+#
+# Yearly scenario 1 of 2
+#
+Year 1 
+
+
+
+1  # landuse <cropland>
+1  # plant growth scenario
+0  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+3 # management <fallow>
+   365  # harvest date --- 12 / 31
+   1  # planting date --- 1 /1
+   0.0000  # row width
+   6   # residue man - <none>
+#
+# Yearly scenario 2 of 2
+#
+Year 2 
+
+
+
+1  # landuse <cropland>
+2  # plant growth scenario
+1  # surface effect scenario
+0  # contour scenario
+0  # drainage scenario
+1 # management <annual>
+   283  # harvest date --- 10 / 10
+   143  # planting date --- 5 /23
+   0.7620  # row width
+   6   # residue man - <none>
+
+
+#######################
+# Management Section  #
+#######################
+
+Manage
+description 1
+description 2
+description 3
+1   # number of OFE's
+    1   # initial condition index
+2  # rotation repeats
+14  # years in rotation
+
+#
+# Rotation 1: year 1 to 14
+#
+
+   1	#  <plants/yr 1> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 2> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 3> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 4> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 5> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 6> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 7> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 8> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 9> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 10> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 11> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 12> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 13> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 14> - OFE: 1>
+      2	# year index
+
+#
+# Rotation 2: year 15 to 28
+#
+
+   1	#  <plants/yr 1> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 2> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 3> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 4> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 5> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 6> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 7> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 8> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 9> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 10> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 11> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 12> - OFE: 1>
+      2	# year index
+#-----------------------------------
+   1	#  <plants/yr 13> - OFE: 1>
+      1	# year index
+#-----------------------------------
+   1	#  <plants/yr 14> - OFE: 1>
+      2	# year index
