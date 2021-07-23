@@ -138,6 +138,10 @@ def summary_update(txn, data):
         else greatest(%(max_rh)s, %(relh)s, max_rh) end,
     min_rh = case when %(null_min_rh)s is null then null
         else least(%(min_rh)s, %(relh)s, min_rh) end,
+    max_rstage = case when %(null_max_rstage)s is null then null
+        else greatest(%(max_rstage)s, %(rstage)s, max_rstage) end,
+    min_rstage = case when %(null_min_rstage)s is null then null
+        else least(%(min_rstage)s, %(rstage)s, min_rstage) end,
     srad_mj = %(srad_mj)s,
     avg_sknt = case when %(null_avg_sknt)s is null then null
         else coalesce(%(avg_sknt)s, avg_sknt) end,
