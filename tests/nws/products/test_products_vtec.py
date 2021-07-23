@@ -1221,11 +1221,7 @@ def test_140610_tweet_spacing():
         "PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015_2014-06-10T14:48Z"
     )
     assert j[0][2]["twitter"] == ans
-    ans = (
-        "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/network:WFO"
-        "::wfo:LCH::year:2014::phenomenav:FL::significancev:W::etn:15::"
-        "valid:2014-06-10%201448.png"
-    )
+    ans = "https://water.weather.gov/resources/hydrographs/vlsl1_hg.png"
     assert j[0][2]["twitter_media"] == ans
 
 
