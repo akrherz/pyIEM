@@ -593,6 +593,12 @@ class VTECProduct(TextProduct):
                 ) % jmsg_dict
                 # brute force removal of duplicate spaces
                 xtra["twitter"] = " ".join(xtra["twitter"].split())
+                hvtec_nwsli = segment.get_hvtec_nwsli()
+                if hvtec_nwsli is not None and hvtec_nwsli != "00000":
+                    xtra["twitter_media"] = (
+                        "https://water.weather.gov/resources/hydrographs/"
+                        f"{hvtec_nwsli.lower()}_hg.png"
+                    )
                 msgs.append(
                     [" ".join(plain.split()), " ".join(html.split()), xtra]
                 )
