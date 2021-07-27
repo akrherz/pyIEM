@@ -16,6 +16,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 - Add `SPS.<state>` channel for SPS Products.
 - Implement a parser of the WPC Excessive Rainfall Outlook (#13).
 - For VTEC events with hydro forecast points, the `twitter_media` generated URL points to AHPS's flood forecast image.
+- Python 3.7+ is now routinely tested.
 
 ### Bug Fixes
 
