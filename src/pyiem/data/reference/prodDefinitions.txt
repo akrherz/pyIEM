@@ -104,6 +104,7 @@ SPW Shelter In Place Warning
 SRF Surf Zone Forecast
 STF Tabular State Forecast
 STQ Spot Forecast Request
+SQW Snow Squall Warning
 SVR Severe Thunderstorm Warning
 SVS Severe Weather Statement
 TAF Terminal Aerodrome Forecast
