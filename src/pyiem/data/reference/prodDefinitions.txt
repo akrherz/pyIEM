@@ -116,6 +116,7 @@ TIB Tsunami Information Statement
 TID Tide Data
 TOE Telephone Outage Emergency
 TOR Tornado Warning
+TMA Tsunami Message Acknowledgement
 TWO Tropical Weather Outlook
 VAA Volcanic Ash Advisory
 VOW Volcano Warning
