@@ -1,0 +1,74 @@
+142
+CDUS45 KTWC 061427
+CLISAD
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE TUCSON AZ
+727 AM MST FRI AUG 06 2021
+
+...................................
+
+...THE SAFFORD AZ AIRPORT CLIMATE SUMMARY FOR AUGUST 6 2021...
+VALID AS OF 0700 AM LOCAL TIME.
+
+CLIMATE NORMAL PERIOD 1991 TO 2020
+CLIMATE RECORD PERIOD 1998 TO 2021
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR    
+                                                  NORMAL          
+...................................................................
+TEMPERATURE (F)                                                         
+ TODAY                                                              
+  MINIMUM         76    615 AM  56      63  72      4       69      
+                                      2002                          
+
+PRECIPITATION (IN)                                                   
+  TODAY            0.00          0.10 2010   0.05  -0.05     0.00    
+  MONTH TO DATE    0.00                      0.31  -0.31     0.12    
+  SINCE OCT 1      5.45                      6.13  -0.68     6.35    
+  SINCE JAN 1      4.57                      4.04   0.53     2.48    
+
+DEGREE DAYS                                                          
+ HEATING                                                             
+  TODAY            0                         0      0        0       
+
+ COOLING                                                             
+  TODAY           15                        20     -5       22       
+...................................................................
+
+
+WIND (MPH)                                                           
+  HIGHEST WIND SPEED     8   HIGHEST WIND DIRECTION    SE (120)      
+  HIGHEST GUST SPEED     9   HIGHEST GUST DIRECTION    SE (120)      
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    60                                                       
+ LOWEST     41                                                       
+ AVERAGE    51                                                       
+
+..........................................................
+
+
+THE SAFFORD AZ AIRPORT CLIMATE NORMALS FOR TOMORROW
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   98       106      2012                     
+ MINIMUM TEMPERATURE (F)   72        63      2017                     
+
+
+SUNRISE AND SUNSET                                                   
+AUGUST  6 2021........SUNRISE   536 AM MST   SUNSET   712 PM MST    
+AUGUST  7 2021........SUNRISE   537 AM MST   SUNSET   711 PM MST    
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+
+
+
+$$

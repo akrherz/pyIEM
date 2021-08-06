@@ -27,6 +27,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_mintempyear_failure():
+    """Test that we can handle some GIGO here."""
+    text = get_test_file("CLI/CLISAD.txt")
+    prod = cliparser(text)
+    assert 2002 in prod.data[0]["data"]["temperature_minimum_record_years"]
+
+
 def test_clirdu():
     """Test handling of another CLI variant."""
     text = get_test_file("CLI/CLIRDU_v2.txt")

@@ -232,7 +232,7 @@ def parse_snowfall(regime, lines, data):
             ) == 4:
                 n = get_number_year(lines[linenum + 1])
                 if n is not None:
-                    data["snow_today_record_years"].append(n)
+                    data.setdefault("snow_today_record_years", []).append(n)
                 linenum += 1
 
 
@@ -264,7 +264,7 @@ def parse_precipitation(regime, lines, data):
             ) == 4:
                 n = get_number_year(lines[linenum + 1])
                 if n is not None:
-                    data["precip_today_record_years"].append(n)
+                    data.setdefault("precip_today_record_years", []).append(n)
                 linenum += 1
 
 
@@ -301,7 +301,10 @@ def parse_temperature(prod, regime, lines, data):
             line2 = lines[linenum + 1].strip()
             n = get_number_year(line2)
             if n is not None:
-                data[f"temperature_{key}_record_years"].append(n)
+                data.setdefault(
+                    f"temperature_{key}_record_years",
+                    [],
+                ).append(n)
             else:
                 prod.warnings.append(f"Found invalid year |{line2}|")
             linenum += 1
