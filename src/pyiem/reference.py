@@ -76,9 +76,28 @@ CONUS_NORTH = 49.75
 CONUS_SOUTH = 24.25
 
 SECTORS = {
-    "midwest": [MW_WEST, MW_EAST, MW_SOUTH, MW_NORTH],
+    "conus": [CONUS_WEST, CONUS_EAST, CONUS_SOUTH, CONUS_NORTH],
     "cornbelt": [-99.0, -84.0, 37.17, 45.2],
+    "highplains": [-108, -94, 40, 49.5],
     "iailin": [-97.5, -84.0, 37.0, 44.0],
+    "midwest": [MW_WEST, MW_EAST, MW_SOUTH, MW_NORTH],
+    "northeast": [-87, -66, 36.5, 48],
+    "northwest": [-126, -103.5, 41, 49.5],
+    "southeast": [-95, -74, 24.5, 39],
+    "southernplains": [-109, -88, 25.5, 40],
+    "southwest": [-126, -103.5, 30.8, 41],
+}
+SECTORS_NAME = {
+    "conus": "Contiguous US",
+    "cornbelt": "Corn Belt US",
+    "highplains": "High Plains",
+    "iailin": "IA + IL + IN",
+    "midwest": "Midwestern US",
+    "northeast": "Northeastern US",
+    "northwest": "Northwestern US",
+    "southeast": "Southeast US",
+    "southernplains": "Southern Plains US",
+    "southwest": "Southwestern US",
 }
 
 txt2drct = {
