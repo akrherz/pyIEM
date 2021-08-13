@@ -215,15 +215,6 @@ def sector_setter(mp, axbounds, **kwargs):
             is_geoextent=True,
         )
         mp.axes.append(mp.ax)
-    elif mp.sector in reference.SECTORS:
-        mp.ax = make_axes(
-            axbounds,
-            reference.SECTORS[mp.sector],
-            reference.EPSG[3857],
-            aspect,
-            is_geoextent=True,
-        )
-        mp.axes.append(mp.ax)
     elif mp.sector == "iowawfo":
         mp.ax = make_axes(
             axbounds,
@@ -298,6 +289,16 @@ def sector_setter(mp, axbounds, **kwargs):
                 is_geoextent=True,
             )
             mp.axes.append(mp.hi_ax)
+    # Do last in case of name overlaps above
+    elif mp.sector in reference.SECTORS:
+        mp.ax = make_axes(
+            axbounds,
+            reference.SECTORS[mp.sector],
+            reference.EPSG[3857],
+            aspect,
+            is_geoextent=True,
+        )
+        mp.axes.append(mp.ax)
 
 
 def mask_outside_polygon(poly_verts, ax=None):
