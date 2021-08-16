@@ -62,7 +62,7 @@ def test_issue461_firewx_ugcs():
     assert "YYY" not in wfos
     assert "QQQ" in wfos
     assert ugc_provider["AZZ101"].wfos
-    assert ugc_provider.get("NVZ466").name is None
+    assert ugc_provider.get("NVZ466").name == "((NVZ466))"
 
 
 @pytest.mark.parametrize("database", ["postgis"])

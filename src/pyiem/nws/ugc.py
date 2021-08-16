@@ -30,11 +30,7 @@ def ugcs_to_text(ugcs):
             geotype = "forecast zones"
         if state_abbr not in states:
             states[state_abbr] = []
-        if ugc.name is None:
-            name = f"(({code}))"
-        else:
-            name = ugc.name
-        states[state_abbr].append(name)
+        states[state_abbr].append(ugc.name)
 
     txt = []
     for st in states.keys():
@@ -160,7 +156,8 @@ def _load_from_database(pgconn=None, valid=None):
     pgconn = pgconn if pgconn is not None else get_dbconn("postgis")
     valid = valid if valid is not None else utc()
     return read_sql(
-        "SELECT ugc, name, wfo, source from ugcs WHERE begin_ts <= %s and "
+        "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
+        "from ugcs WHERE begin_ts <= %s and "
         "(end_ts is null or end_ts > %s)",
         pgconn,
         params=(valid, valid),
@@ -185,7 +182,7 @@ class UGCProvider:
                 rows.append(
                     {
                         "ugc": key,
-                        "name": _ugc.name,
+                        "name": _ugc.name.replace("...", " "),
                         "wfo": "".join(_ugc.wfos),
                         "source": "",
                     }
@@ -239,7 +236,7 @@ class UGC:
         self.state = state
         self.geoclass = geoclass
         self.number = int(number)
-        self.name = name
+        self.name = name if name is not None else f"(({self.__str__()}))"
         self.wfos = wfos if wfos is not None else []
 
     def __str__(self):
