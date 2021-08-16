@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 which cities are potentially labeled on the map.  The bundled dataset was
 updated on use a different [upstream source](https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020).
 - Remove internal loading support of pickled pandas DataFrames. Twas bad idea.
+- `pyiem.nws.ugc.UGC.name` is no longer allowed to be `None`.
 
 ### New Features
 

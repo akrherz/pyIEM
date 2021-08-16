@@ -28,8 +28,6 @@ def dedup_headline(headline, ugcs, counties, expire):
     if ugcs:
         hits = 0
         for ugc in ugcs:
-            if ugc.name is None:
-                continue
             if headline.upper().find(ugc.name.upper()) > -1:
                 hits += 1
         if (float(hits) / float(len(ugcs))) > 0.7:
