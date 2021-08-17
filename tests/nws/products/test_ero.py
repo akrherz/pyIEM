@@ -7,6 +7,13 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_210817_length(dbcursor):
+    """Test our database insert."""
+    prod = parser(get_test_file("ERO/RBG94E_dblen.txt"))
+    prod.sql(dbcursor)
+
+
 def test_210716_4f4():
     """Test our updated station table."""
     prod = parser(get_test_file("ERO/RBG94E_4F4.txt"))
