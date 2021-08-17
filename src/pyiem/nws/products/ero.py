@@ -46,7 +46,7 @@ TEXT2THRESHOLD = {
     "SLIGHT": "SLGT",
     "ENHANCED": "ENH",
     "MODERATE": "MDT",
-    "HIGH": "HIGHT",
+    "HIGH": "HIGH",
 }
 
 
