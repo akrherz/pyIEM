@@ -104,7 +104,7 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
         f"{hourinfo['sqltext']} {rlimiter}"
     )
     if level is not None:  # HACK!
-        db = get_dbconn("postgis")
+        db = get_dbconn("raob")
         # here comes another hack, stations with starting with _ are virtual
         stations = [station, "ZZZZ"]
         if station.startswith("_"):
