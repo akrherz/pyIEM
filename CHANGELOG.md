@@ -15,6 +15,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 ### New Features
 
 - Add `SPS.<state>` channel for SPS Products.
+- Add `pyiem.plot.util.ramp2df` to load a bundled color ramp into a DataFrame.
 - Implement a parser of the WPC Excessive Rainfall Outlook (#13).
 - For VTEC events with hydro forecast points, the `twitter_media` generated URL points to AHPS's flood forecast image.
 - Python 3.7+ is now routinely tested.

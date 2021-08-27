@@ -18,6 +18,18 @@ LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
 
 
+def ramp2df(name):
+    """Loads pyIEM color ramp into a Pandas DataFrame.
+
+    Args:
+      name (str): the name of the bundled color ramp.
+
+    Returns:
+      pandas.DataFrame
+    """
+    return pd.read_csv(f"{DATADIR}/ramps/{name}.txt")
+
+
 def pretty_bins(minval, maxval, bins=8):
     """Return a **smooth** binning that encloses the min and max value.
 
