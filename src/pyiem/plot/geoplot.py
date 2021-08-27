@@ -33,7 +33,6 @@ import requests
 from metpy.calc import wind_components
 from metpy.units import units
 import numpy as np
-import pandas as pd
 import geopandas as gpd
 from shapely.geometry import shape
 from scipy.signal import convolve2d
@@ -56,6 +55,7 @@ from pyiem.plot.util import (
     mask_outside_geom,
     draw_logo,
     fitbox,
+    ramp2df,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     LATLON,
@@ -1365,7 +1365,7 @@ class MapPlot:
                 resampling=Resampling.nearest,
             )
 
-        ramp = pd.read_csv(f"{DATADIR}/ramps/composite_{product.lower()}.txt")
+        ramp = ramp2df(f"composite_{product.lower()}")
         cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
         cmap.set_under((0, 0, 0, 0))
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
