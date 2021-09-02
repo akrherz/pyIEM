@@ -2,7 +2,7 @@
 
 All notable changes to this library are documented in this file.
 
-## Unreleased Version
+## **1.7.0** (2 Sep 2021)
 
 ### API Changes
 
@@ -24,6 +24,7 @@ updated on use a different [upstream source](https://geodata.lib.berkeley.edu/ca
 
 - Account for another SPC PTS edge case, le sigh.
 - Gracefully handle a one or two point `polygon` attempt from a NWS Product.
+- Removed hard-coded cartopy data path (#492).
 - Rewrite SPC PTS parsing (again), but this time use @deeplycloudy suggested "Winding" algorithm.
 
 ## **1.6.0** (26 May 2021)
