@@ -2,6 +2,7 @@
 # installing these
 affine
 cartopy>=0.18
+cartopy_offlinedata
 cython
 descartes
 fiona

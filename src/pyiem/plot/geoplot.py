@@ -75,8 +75,6 @@ from pyiem.plot.colormaps import stretch_cmap
 
 # geopandas currently emits this as parquet is unstable.
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
-# we ran the cartopy/tools downloader
-cartopy.config["pre_existing_data_dir"] = "/opt/miniconda3/cartopy_data/"
 # Set a saner default for apache et al
 cartopy.config["data_dir"] = "/tmp/"
 
