@@ -37,6 +37,13 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_issue491_false_emergency_positive():
+    """Test that this product is not flagged as an emergency."""
+    data = get_test_file("SVSFFC.txt")
+    prod = vtecparser(data)
+    assert not prod.segments[0].is_emergency
+
+
 def test_issue461_firewx_ugcs():
     """Test that we can do the right thing with Fire Weather UGCS."""
     ugc_provider = UGCProvider(
@@ -358,7 +365,7 @@ def test_issue120_ffwtags(dbcursor):
     assert "DAM FAILURE" in prod.segments[0].flood_tags
     j = prod.get_jabbers("http://localhost")
     ans = (
-        "GUM issues Flash Flood Warning [flash flood: observed, "
+        "GUM issues Flash Flood Emergency [flash flood: observed, "
         "flash flood damage threat: catastrophic, dam failure: imminent, "
         "expected rainfall: 2-3 inches in 60 minutes] "
         "for ((GUC100)), ((GUC110)), ((GUC120)) [GU] till Oct 25, 9:15 AM "
@@ -1104,7 +1111,8 @@ def test_140731_badugclabel():
 def test_tornado_emergency():
     """See what we do with Tornado Emergencies"""
     utcnow = utc(2012, 4, 15, 3, 27)
-    prod = vtecparser(get_test_file("TOR_emergency.txt"), utcnow=utcnow)
+    data = get_test_file("TOR_emergency.txt")
+    prod = vtecparser(data, utcnow=utcnow)
     assert prod.segments[0].is_emergency
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -1132,6 +1140,12 @@ def test_tornado_emergency():
         "::etn:35::valid:2012-04-15%200327.png"
     )
     assert j[0][2]["twitter_media"] == ans
+    # Remove catastrophic tag
+    prod = vtecparser(
+        data.replace("CATASTROPHIC", "CONSIDERABLE"),
+        utcnow=utcnow,
+    )
+    assert not prod.segments[0].is_emergency
 
 
 def test_badtimestamp():
