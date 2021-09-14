@@ -12,6 +12,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Improved logic for determination of TOR/FFW Emergency events by considering the tags as well (#491).
+
 ## **1.7.0** (2 Sep 2021)
 
 ### API Changes

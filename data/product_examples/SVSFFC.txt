@@ -1,0 +1,29 @@
+752 
+WWUS52 KFFC 260423
+SVSFFC
+
+Severe Weather Statement
+National Weather Service Peachtree City GA
+1223 AM EDT Fri Mar 26 2021
+
+GAC077-260433-
+/O.CAN.KFFC.TO.W.0016.000000T0000Z-210326T0500Z/
+Coweta GA-
+1223 AM EDT Fri Mar 26 2021
+
+...THE TORNADO WARNING FOR NORTH CENTRAL COWETA COUNTY IS
+CANCELLED...
+        
+The storm which prompted the warning has moved out of the area.
+Therefore, the warning has been cancelled.
+
+A Tornado Watch remains in effect until 200 AM EDT for west central
+Georgia.
+
+East Coweta County remains under a TORNADO EMERGENCY.
+
+LAT...LON 3335 8475 3346 8483 3349 8476 3339 8467
+      3336 8468
+TIME...MOT...LOC 0422Z 244DEG 43KT 3345 8459 
+
+$$

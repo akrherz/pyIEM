@@ -184,6 +184,40 @@ def date_tokens2datetime(tokens):
     return z, tz, now.replace(tzinfo=timezone.utc)
 
 
+def qc_is_emergency(seg):
+    """Belt + Suspenders check that this segment is an emergency."""
+    ffdt = seg.flood_tags.get("FLASH FLOOD DAMAGE THREAT")
+    # NOOPS
+    if (
+        not seg.is_emergency
+        and seg.damagetag != "CATASTROPHIC"
+        and ffdt != "CATASTROPHIC"
+    ):
+        return
+    # Auto qualifier
+    tag_confirms = "CATASTROPHIC" in [seg.damagetag, ffdt]
+    if tag_confirms:
+        seg.is_emergency = True
+        return
+    # Oh, we have work to do
+    has_tags = seg.damagetag is not None or ffdt is not None
+    # tags do not confirm the emergency
+    if seg.is_emergency and has_tags and not tag_confirms:
+        seg.tp.warnings.append(
+            "Segment indicated emergency, but tags negated it.\n"
+            f"tag_confirms: {tag_confirms} damagetag: {seg.damagetag} "
+            f"ffdt: {ffdt}"
+        )
+        seg.is_emergency = False
+        return
+    # this segment is a CAN, EXP VTEC sole action
+    if seg.is_emergency and seg.vtec and seg.vtec[0].action in ["CAN", "EXP"]:
+        seg.tp.warnings.append(
+            "Segment indicated emergency, but VTEC action is expiring."
+        )
+        seg.is_emergency = False
+
+
 class TextProductSegment:
     """A segment of a Text Product"""
 
@@ -233,7 +267,7 @@ class TextProductSegment:
         self.is_emergency = False
         self.is_pds = False
         self.process_tags()
-
+        qc_is_emergency(self)
         self.bullets = self.process_bullets()
 
     def get_ugcs_tuple(self):
@@ -289,7 +323,7 @@ class TextProductSegment:
         nolf = self.unixtext.replace("\n", " ")
         res = EMERGENCY_RE.findall(nolf)
         if res:
-            # TODO: this can be based off the IBW Tags too
+            # We later double check this based on the found tags
             self.is_emergency = True
         res = PDS_RE.findall(nolf)
         if res:
