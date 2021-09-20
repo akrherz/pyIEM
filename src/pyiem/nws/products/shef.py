@@ -36,6 +36,7 @@ from datetime import date, timezone, datetime, timedelta
 import re
 from typing import List
 
+from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
@@ -81,6 +82,8 @@ def make_date(text, now):
     """Make the text date unambiguous!"""
     if now is None:
         now = date.today()
+    if len(text) < 4:
+        raise InvalidSHEFEncoding(f"D* text too short '{text}'")
     # “mmdd” or “yymmdd” or “ccyymmdd”
     if len(text) == 8:
         return date(int(text[:4]), int(text[4:6]), int(text[6:]))
@@ -157,9 +160,9 @@ def parse_station_valid(text, utcnow):
     else:
         tzinfo = timezone.utc
     # Take a swing that the last element is DH
+    replacements = {"tzinfo": tzinfo}
     if tokens[-1].startswith("DH"):
         meat = tokens[-1][2:]
-        replacements = {"tzinfo": tzinfo}
         if len(meat) == 4:
             replacements["hour"] = int(meat[:2])
             replacements["minute"] = int(meat[2:])
@@ -172,7 +175,10 @@ def parse_station_valid(text, utcnow):
             replacements["second"] = int(meat[4:6])
         else:
             raise ValueError(f"No logic to parse '{meat}'")
-        valid = datetime24(valid, replacements)
+    else:
+        # SHEF MANUAL SEZ
+        replacements["hour"] = 12 if tzinfo == timezone.utc else 0
+    valid = datetime24(valid, replacements)
     return station, valid
 
 
@@ -190,7 +196,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     station, basevalid = parse_station_valid(tokens[0], utcnow)
     elements = []
     # Iterate through the next tokens and hopefully find DI
-    interval = None
+    interval = timedelta(seconds=0)
     datastart = None
     physical_element = None
     data_created = None
@@ -198,23 +204,34 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
         if token.startswith("DC"):
             data_created = parse_datetime(token[2:], basevalid)
             continue
-        if token.startswith("DI"):
+        if token.startswith("DH"):
+            replacements = {"hour": int(token[2:4])}
+            if len(token) == 6:
+                replacements["minute"] = int(token[4:6])
+            basevalid = datetime24(basevalid, replacements)
+        elif token.startswith("DI"):
+            parts = token.strip().split()
             if token[2] == "H":
-                interval = timedelta(hours=int(token[3:]))
+                interval = timedelta(hours=int(parts[0][3:]))
             elif token[2] == "D":
-                interval = timedelta(days=int(token[3:]))
+                interval = timedelta(days=int(parts[0][3:]))
             elif token[2] == "N":
-                interval = timedelta(minutes=int(token[3:]))
+                interval = timedelta(minutes=int(parts[0][3:]))
             else:
                 raise ValueError(f"Unhandled DI of '{token[2]}")
             datastart = i + 1
+            if len(parts) > 1:
+                # Insert second value back into tokens
+                tokens.insert(i + 1, parts[1])
             break
         if token[0].isalpha():
             physical_element = token[:2]
-
     valid = basevalid
     for token in tokens[datastart:]:
-        for tokens2 in token.strip().split():
+        res = token.strip().split()
+        if not res:
+            res = [""]
+        for tokens2 in res:
             elem = SHEFElement(
                 station=station,
                 valid=valid,
@@ -229,17 +246,49 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     return elements
 
 
+def strip_comments(line):
+    """Remove comments."""
+    # Cull inline comments using ON/OFF nomenclature
+    pos = line.find(":")
+    while pos > -1:
+        pos2 = line[pos + 1 :].find(":")
+        if pos2 > -1:
+            line = line[:pos] + line[pos + pos2 + 2 :]
+        else:
+            # Unbalanced
+            line = line[:pos]
+        pos = line.find(":")
+    return line
+
+
+def clean_b_headerline(text):
+    """Account for invalid encoding. SIGH."""
+    tokens = text.split("/")
+    firstparts = tokens[0].strip().split()
+    # Inspect the last element and see if it is alpha, but not start with D
+    if firstparts[-1][0].isalpha() and firstparts[-1][0] != "D":
+        # Missing /
+        tokens[0] = " ".join(firstparts[:-1]) + "/" + firstparts[-1]
+    return "/".join(tokens)
+
+
 def process_message_b(message, utcnow=None):
     """Convert the message into an object."""
     # line one has the magic
     lines = message.split("\n")
-    tokens = lines[0].split("/")
+    headerline = clean_b_headerline(lines[0])
+    tokens = headerline.split("/")
     _center, valid = parse_station_valid(tokens[0], utcnow)
     # valid time could be modified as we progress with the header
     physical_elements = []
     valids = []
+    unit_convention = "E"
+    unit_conventions = []
+    data_created = None
     for token in tokens[1:]:
         token = token.strip()
+        if token == "":
+            continue
         pe = token[:2]
         if pe[0] == "D":
             # Modifying time as we go here
@@ -264,34 +313,28 @@ def process_message_b(message, utcnow=None):
                 elif token[2] == "N":
                     valid += timedelta(minutes=int(token[3:]))
             elif pe == "DU":
-                # TODO
-                pass
+                unit_convention = token[2]
+            elif pe == "DC":
+                data_created = parse_datetime(token[2:], valid)
             else:
-                raise ValueError(f"Unhandled D code {pe}")
+                raise ValueError(f"Unhandled D code {pe} for B format")
             continue
+        unit_conventions.append(unit_convention)
         physical_elements.append(token.strip()[:2])
         valids.append(valid)
     elements = []
     for line in lines[1:]:
-        # TODO Is this accurate?
-        if line.find("/") == -1:
-            continue
-        # Cull inline comments using ON/OFF nomenclature
-        pos = line.find(":")
-        while pos > -1:
-            pos2 = line[pos + 1 :].find(":")
-            if pos2 > -1:
-                line = line[:pos] + line[pos + pos2 + 2 :]
-            else:
-                # Unbalanced
-                line = line[:pos]
-            pos = line.find(":")
-        if line.strip() == "":
+        line = strip_comments(line)
+        if line.strip() == "" or line.startswith(".END"):
             continue
         # packed B format, LE SIGH
         for section in line.split(","):
             # Account for // oddity
-            tokens = section.strip().replace("//", "/ ").split("/")
+            section = section.strip()
+            # Hack around a tough edge case
+            if section.endswith("//"):
+                section = section[:-2] + "/ "
+            tokens = section.strip().replace("//", "/ /").split("/")
             station = tokens[0].split()[0]
             vals = []
             for token in tokens:
@@ -308,11 +351,16 @@ def process_message_b(message, utcnow=None):
                 else:
                     vals.append(text)
             for i, text in enumerate(vals):
+                # Ignore vague case with trailing /
+                if i == len(valids) and text.strip() == "":
+                    continue
                 elem = SHEFElement(
                     station=station,
                     valid=valids[i],
                     physical_element=physical_elements[i],
+                    unit_convention=unit_conventions[i],
                     str_value=text.strip(),
+                    data_created=data_created,
                 )
                 compute_num_value(elem)
                 elements.append(elem)
@@ -322,10 +370,14 @@ def process_message_b(message, utcnow=None):
 def process_message_a(message, utcnow=None):
     """Convert the message into an object."""
     tokens = message.split("/")
+    # Too short
+    if len(tokens) == 1:
+        return []
     # First tokens should have some mandatory stuff
     station, valid = parse_station_valid(tokens[0], utcnow)
     elements = []
     data_created = None
+    unit_convention = "E"
     for text in tokens[1:]:
         text = text.strip()
         if text == "":
@@ -364,6 +416,8 @@ def process_message_a(message, utcnow=None):
                 if len(text) >= 6:
                     replacements["minute"] = int(text[4:6])
                 valid = datetime24(valid, replacements)
+            elif pe == "DU":
+                unit_convention = text[2]
             else:
                 raise ValueError(f"Unhandled D code {pe[0]}")
             continue
@@ -374,6 +428,7 @@ def process_message_a(message, utcnow=None):
             physical_element=pe,
             data_created=data_created,
             str_value=text.split()[1],
+            unit_convention=unit_convention,
         )
         compute_num_value(elem)
         elements.append(elem)
@@ -430,10 +485,12 @@ def parse_E(prod):
     for line in prod.unixtext.split("\n"):
         # New Message!
         if line.startswith(".ER ") or line.startswith(".E "):
-            messages.append(line)
+            messages.append(strip_comments(line))
             continue
         if messages and line.startswith(".E"):  # continuation
-            messages[-1] += f" {line.split(maxsplit=1)[1]}"
+            if not messages[-1].endswith("/"):
+                messages[-1] += "/"
+            messages[-1] += f" {strip_comments(line.split(maxsplit=1)[1])}"
     # We have messages to parse into objects
     for message in messages:
         res = process_message_e(message, prod.utcnow)
@@ -444,7 +501,7 @@ def parse_E(prod):
 def compute_num_value(element):
     """Attempt to make this into a float."""
     # 5.1.1
-    if element.str_value in ["-9999", "M", "MM"]:
+    if element.str_value in ["-9999", "M", "MM", ""]:
         return
     if element.str_value.endswith("E"):
         element.estimated = True

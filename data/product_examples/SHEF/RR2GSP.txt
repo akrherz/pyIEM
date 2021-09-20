@@ -1,0 +1,15 @@
+184 
+SRUS52 KGSP 200505
+RR2GSP
+:DUKE ENERGY OBSERVED ELEVATION/DISCHARGE
+:.....NANTAHALA SYSTEM.....
+:
+:   HOURLY OBSERVED POOL ELEVATIONS (FT ABOVE GAGE ZERO)
+:   STARTING AT 13GMT...ENDING 12GMT NEXT DAY
+:
+.ER NANN7 20210919 Z DH13/HP/DIH01                  :Nantahala:
+.E1    91.77  /    91.75  /    91.76  /    91.74  /    91.72  /    91.72 		 :ending 18GMT
+.E2    91.71  /    91.70  /    91.69  /    91.66  /    91.67  /    91.65 		 :ending 00GMT
+.E3    91.64  /    91.62  /    91.60  /    91.60  /           /          		 :ending 06GMT
+.E4           /           /           /           /           /          		 :ending 12GMT
+

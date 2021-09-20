@@ -1,8 +1,12 @@
 """SHEF"""
+
+import pytest
+from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.nws.products.shef import (
     parser,
     process_message_a,
     process_message_b,
+    process_message_e,
 )
 from pyiem.util import utc, get_test_file
 
@@ -159,3 +163,98 @@ def test_packed_b():
     )
     res = process_message_b(msg, utc(2021, 3, 5))
     assert res[3].str_value == ""
+
+
+def test_doubleslash():
+    """Test we can handle the tricky doubleslash stuff."""
+    msg = (
+        ".B LCH 0920 C DH0110/HGIRZ/HPIRZ\n"
+        ":\n"
+        ": TOLEDO BEND RES\n"
+        "BKLT2 DM09191600//168.02:\n"
+        ".END"
+    )
+    res = process_message_b(msg, utc(2021, 9, 20))
+    assert res[1].str_value == "168.02"
+
+
+def test_invalid():
+    """Test that we properly fail for an invalid encoding."""
+    msg = ".E NUTQ7  E DH/HGIRG/DIN15/"
+    with pytest.raises(InvalidSHEFEncoding):
+        process_message_e(msg)
+
+
+def test_empty_a():
+    """Test that we don't error on an empty .A message."""
+    msg = ".A   "
+    res = process_message_a(msg)
+    assert not res
+
+
+def test_e_comment_in_header():
+    """Test that we handle a comment found in the header."""
+    utcnow = utc(2021, 9, 20, 5, 5)
+    prod = parser(get_test_file("SHEF/RR2GSP.txt"), utcnow=utcnow)
+    assert len(prod.data) == 24
+    assert prod.data[0].valid == utc(2021, 9, 19, 13)
+
+
+def test_rr2phi():
+    """Test that we can handle this RR2."""
+    utcnow = utc(2021, 9, 20, 5, 10)
+    prod = parser(get_test_file("SHEF/RR2PHI.txt"), utcnow=utcnow)
+    assert len(prod.data) == 560  # assumed correct for now
+
+
+def test_parse_b():
+    """Test that this B message does not error."""
+    msg = (
+        ".B ONJSC 20210920 DH0435/HMIRZ/\n"
+        "RUMN4 0.14/\n"
+        "OCPN4 0.34/\n"
+        "SETN4 0.11/\n"
+        ".END"
+    )
+    res = process_message_b(msg)
+    assert len(res) == 3
+
+
+def test_unit_switching():
+    """Test the handling of units."""
+    msg = (
+        ".A KLRM4 20210919 E DH22 /DUS/TA 22.33/US 0.626/UD 118/"
+        "PPHRP 0.0/XR 69.8/DUE/TV 2.081/TV 4.079"
+    )
+    res = process_message_a(msg)
+    assert len(res) == 7
+    assert res[0].unit_convention == "S"
+
+
+def test_dc():
+    """Test that we can handle fullblown dates."""
+    msg = (
+        ".ER MORW2 20210919 Z DC202109200523/DUE/DQG/DH18/HTIFE/DIH6/"
+        "9.9/9.9/9.9/9.9/9.9/9.9/9.9/9.9"
+    )
+    res = process_message_e(msg)
+    assert res[0].valid == utc(2021, 9, 19, 18)
+
+
+def test_e_timestamps():
+    """Test we can process this."""
+    msg = ".E RBNT1 0920 C DH0500/PPHRZ/0.00"
+    res = process_message_e(msg, utc(2021, 9, 20, 5))
+    assert res[0].valid == utc(2021, 9, 20, 10)
+
+
+def test_dc_in_b():
+    """Test that we can handle a DC code within B format."""
+    msg = (
+        ".B ATR 0919 C DH23/DC0919/QTD\n"
+        "TLLA1   5.482 : Tallapoosa\n"
+        "WPKA1  21.060 : Coosa\n"
+        ".END"
+    )
+    res = process_message_b(msg, utc(2021, 9, 19))
+    assert res[0].data_created == utc(2021, 9, 20, 4)
