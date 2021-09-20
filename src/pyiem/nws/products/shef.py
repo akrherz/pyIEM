@@ -8,6 +8,25 @@ Formats
 .B - multiple station, multiple parameter, header driven
 .E - single station, single parameter, evenly spaced time series
 
+TODO List
+---------
+ - Table 7 has defaults for PEDTSEP
+ - Table 2 has the two character send-codes used for PE starting with S
+ - 4.4.3 data duration values DV*
+ - 4.1.2 the four codes to handle what lat/lon mean in the encoding
+ - 4.4.4 DIE special end-of-month specifier
+ - 4.4.5 DU data units
+ - 4.4.6 DQ data qualifier code  Table 10
+ - Table 10 qualifier codes
+ - 5.1.2 Precipitation Data !important
+ - 5.1.4 how to handle repeated data
+ - Handle when R is being specified
+ - 5.1.6 revision of a missing value
+ - 5.2.1 DR codes, DRE end of month
+ - 5.2.6 evolving time
+ - Table 9a D codes
+
+
 """
 try:
     from zoneinfo import ZoneInfo  # type: ignore
@@ -21,8 +40,8 @@ from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
 
-DM_RE = re.compile(r" DM(\d+)")
 INLINE_COMMENT_RE = re.compile(":.*:")
+# TODO 4.1.5/5.2.5 the two character fields likely define fixed offsets
 TIMEZONES = {
     "C": "America/Chicago",
     "CD": "America/Chicago",
@@ -55,10 +74,13 @@ TIMEZONES = {
     "BS": "Asia/Anadyr",
     "Z": "Etc/UTC",
 }
+PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
 
 
 def make_date(text, now):
     """Make the text date unambiguous!"""
+    if now is None:
+        now = date.today()
     # “mmdd” or “yymmdd” or “ccyymmdd”
     if len(text) == 8:
         return date(int(text[:4]), int(text[4:6]), int(text[6:]))
@@ -86,6 +108,12 @@ def parse_datetime(text, basevalid):
             month=int(text[:2]),
             day=int(text[2:]),
         )
+    if len(text) == 6:
+        return basevalid.replace(
+            month=int(text[:2]),
+            day=int(text[2:4]),
+            hour=int(text[4:]),
+        )
     if len(text) >= 8:
         # TODO better handle year and century here, add tests around 1 Jan
         valid = basevalid.replace(
@@ -96,6 +124,26 @@ def parse_datetime(text, basevalid):
         )
         return valid
     raise ValueError(f"Unable to parse DC '{text}'")
+
+
+def datetime24(dt, replacements):
+    """Handle the junkiness that is a `24` hour."""
+    # dt could be a date
+    if dt.__class__.__name__ == "date":
+        dt = datetime(dt.year, dt.month, dt.day)
+    if int(replacements.get("hour", 0)) == 24:
+        dt = dt + timedelta(days=1)
+        replacements["hour"] = 0
+    return datetime(
+        replacements.get("year", dt.year),
+        replacements.get("month", dt.month),
+        replacements.get("day", dt.day),
+        replacements.get("hour", dt.hour),
+        replacements.get("minute", dt.minute),
+        replacements.get("second", dt.second),
+        replacements.get("microsecond", dt.microsecond),
+        replacements.get("tzinfo", dt.tzinfo),
+    )
 
 
 def parse_station_valid(text, utcnow):
@@ -111,51 +159,35 @@ def parse_station_valid(text, utcnow):
     # Take a swing that the last element is DH
     if tokens[-1].startswith("DH"):
         meat = tokens[-1][2:]
+        replacements = {"tzinfo": tzinfo}
         if len(meat) == 4:
-            valid = datetime(
-                valid.year,
-                valid.month,
-                valid.day,
-                int(meat[:2]),
-                int(meat[2:]),
-                tzinfo=tzinfo,
-            )
+            replacements["hour"] = int(meat[:2])
+            replacements["minute"] = int(meat[2:])
         elif len(meat) == 2:
-            valid = datetime(
-                valid.year,
-                valid.month,
-                valid.day,
-                int(meat[:2]),
-                0,
-                tzinfo=tzinfo,
-            )
+            replacements["hour"] = int(meat[:2])
+            replacements["minute"] = 0
         elif len(meat) == 6:
-            valid = datetime(
-                valid.year,
-                valid.month,
-                valid.day,
-                int(meat[:2]),
-                int(meat[2:4]),
-                int(meat[4:6]),
-                tzinfo=tzinfo,
-            )
+            replacements["hour"] = int(meat[:2])
+            replacements["minute"] = int(meat[2:4])
+            replacements["second"] = int(meat[4:6])
         else:
             raise ValueError(f"No logic to parse '{meat}'")
+        valid = datetime24(valid, replacements)
     return station, valid
 
 
-def process_message_e(prod, message) -> List[SHEFElement]:
+def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     """Process a text string in E SHEF format.
 
     Args:
-      prod (TextProduct): TextProduct that contains this message.
       message (str): The string to parse.
+      utcnow (datetime): The best guess (product.utcnow) at current timestamp.
 
     Returns:
       List(SHEFElement)
     """
     tokens = message.split("/")
-    station, basevalid = parse_station_valid(tokens[0], prod.utcnow)
+    station, basevalid = parse_station_valid(tokens[0], utcnow)
     elements = []
     # Iterate through the next tokens and hopefully find DI
     interval = None
@@ -183,81 +215,168 @@ def process_message_e(prod, message) -> List[SHEFElement]:
     valid = basevalid
     for token in tokens[datastart:]:
         for tokens2 in token.strip().split():
-            elements.append(
-                SHEFElement(
-                    station=station,
-                    valid=valid,
-                    physical_element=physical_element,
-                    str_value=tokens2,
-                    data_created=data_created,
-                )
+            elem = SHEFElement(
+                station=station,
+                valid=valid,
+                physical_element=physical_element,
+                str_value=tokens2,
+                data_created=data_created,
             )
+            compute_num_value(elem)
+            elements.append(elem)
             valid += interval
 
     return elements
 
 
-def process_message_b(prod, message):
+def process_message_b(message, utcnow=None):
     """Convert the message into an object."""
     # line one has the magic
     lines = message.split("\n")
     tokens = lines[0].split("/")
-    _center, valid = parse_station_valid(tokens[0], prod.utcnow)
+    _center, valid = parse_station_valid(tokens[0], utcnow)
+    # valid time could be modified as we progress with the header
     physical_elements = []
+    valids = []
     for token in tokens[1:]:
+        token = token.strip()
+        pe = token[:2]
+        if pe[0] == "D":
+            # Modifying time as we go here
+            if pe == "DM":
+                # Updating the timestamp as we go here
+                replacements = {
+                    "month": int(token[2:4]),
+                    "day": int(token[4:6]),
+                }
+                if len(token) == 8:
+                    replacements["hour"] = int(token[6:8])
+                valid = datetime24(valid, replacements)
+            elif pe == "DH":
+                # Updating the timestamp as we go here
+                replacements = {
+                    "hour": int(token[2:4]),
+                }
+                valid = datetime24(valid, replacements)
+            elif pe == "DR":
+                if token[2] == "H":
+                    valid += timedelta(hours=int(token[3:]))
+                elif token[2] == "N":
+                    valid += timedelta(minutes=int(token[3:]))
+            elif pe == "DU":
+                # TODO
+                pass
+            else:
+                raise ValueError(f"Unhandled D code {pe}")
+            continue
         physical_elements.append(token.strip()[:2])
+        valids.append(valid)
     elements = []
     for line in lines[1:]:
-        if line.startswith(":") or line.find("/") == -1:
+        # TODO Is this accurate?
+        if line.find("/") == -1:
             continue
-        # Cull inline comments
-        m = INLINE_COMMENT_RE.search(line)
-        if m:
-            line = line.replace(m.group(), "/")  # this may be too cute
-        tokens = line.split("/")
-        # 5.2.2 Observational time change via DM nomenclature
-        m = DM_RE.search(tokens[0])
-        if m:
-            res = m.group()
-            localvalid = parse_datetime(res.strip()[2:], valid)
-        else:
-            localvalid = valid
-        for i, token in enumerate(tokens[1:]):
-            elements.append(
-                SHEFElement(
-                    station=tokens[0].split()[0],
-                    valid=localvalid,
+        # Cull inline comments using ON/OFF nomenclature
+        pos = line.find(":")
+        while pos > -1:
+            pos2 = line[pos + 1 :].find(":")
+            if pos2 > -1:
+                line = line[:pos] + line[pos + pos2 + 2 :]
+            else:
+                # Unbalanced
+                line = line[:pos]
+            pos = line.find(":")
+        if line.strip() == "":
+            continue
+        # packed B format, LE SIGH
+        for section in line.split(","):
+            # Account for // oddity
+            tokens = section.strip().replace("//", "/ ").split("/")
+            station = tokens[0].split()[0]
+            vals = []
+            for token in tokens:
+                text = token.replace(station, "").strip()
+                # 5.2.2 Observational time change via DM nomenclature
+                if text.startswith("D"):
+                    if text.startswith("DM"):
+                        valids[0] = parse_datetime(text[2:], valids[0])
+                    elif text.startswith("DH"):
+                        replacements = {"hour": int(text[2:4])}
+                        if len(text) == 6:
+                            replacements["minute"] = int(text[4:6])
+                        valids[0] = datetime24(valids[0], replacements)
+                else:
+                    vals.append(text)
+            for i, text in enumerate(vals):
+                elem = SHEFElement(
+                    station=station,
+                    valid=valids[i],
                     physical_element=physical_elements[i],
-                    str_value=token.strip(),
+                    str_value=text.strip(),
                 )
-            )
+                compute_num_value(elem)
+                elements.append(elem)
     return elements
 
 
-def process_message_a(prod, message):
+def process_message_a(message, utcnow=None):
     """Convert the message into an object."""
     tokens = message.split("/")
     # First tokens should have some mandatory stuff
-    station, valid = parse_station_valid(tokens[0], prod.utcnow)
+    station, valid = parse_station_valid(tokens[0], utcnow)
     elements = []
     data_created = None
     for text in tokens[1:]:
         text = text.strip()
-        pe = text[:2]
-        if pe == "DC":
-            data_created = parse_datetime(text[2:], valid)
-            for elem in elements:
-                elem.data_created = data_created
+        if text == "":
             continue
-        elements.append(
-            SHEFElement(
-                station=station,
-                valid=valid,
-                physical_element=pe,
-                data_created=data_created,
-                str_value=text.split()[1],
-            )
+        pe = text[:2]
+        if pe[0] == "D":
+            # Modififers not to be explicitly stored as elements
+            if pe == "DC":
+                data_created = parse_datetime(text[2:], valid)
+                for elem in elements:
+                    elem.data_created = data_created
+            elif pe == "DM":
+                # Updating the timestamp as we go here
+                replacements = {
+                    "month": int(text[2:4]),
+                    "day": int(text[4:6]),
+                }
+                if len(text) == 8:
+                    replacements["hour"] = int(text[6:8])
+                valid = datetime24(valid, replacements)
+            elif pe == "DD":
+                # Updating the timestamp as we go here
+                replacements = {
+                    "day": int(text[2:4]),
+                }
+                if len(text) >= 6:
+                    replacements["hour"] = int(text[4:6])
+                if len(text) >= 8:
+                    replacements["minute"] = int(text[6:8])
+                valid = datetime24(valid, replacements)
+            elif pe == "DH":
+                # Updating the timestamp as we go here
+                replacements = {
+                    "hour": int(text[2:4]),
+                }
+                if len(text) >= 6:
+                    replacements["minute"] = int(text[4:6])
+                valid = datetime24(valid, replacements)
+            else:
+                raise ValueError(f"Unhandled D code {pe[0]}")
+            continue
+
+        elem = SHEFElement(
+            station=station,
+            valid=valid,
+            physical_element=pe,
+            data_created=data_created,
+            str_value=text.split()[1],
         )
+        compute_num_value(elem)
+        elements.append(elem)
 
     return elements
 
@@ -275,7 +394,7 @@ def parse_A(prod):
             messages[-1] += f"/{line.split(maxsplit=1)[1]}"
     # We have messages to parse into objects
     for message in messages:
-        res = process_message_a(prod, message)
+        res = process_message_a(message, prod.utcnow)
         if res:
             prod.data.extend(res)
 
@@ -300,7 +419,7 @@ def parse_B(prod):
 
     # We have messages to parse into objects
     for message in messages:
-        res = process_message_b(prod, message)
+        res = process_message_b(message, prod.utcnow)
         if res:
             prod.data.extend(res)
 
@@ -317,18 +436,36 @@ def parse_E(prod):
             messages[-1] += f" {line.split(maxsplit=1)[1]}"
     # We have messages to parse into objects
     for message in messages:
-        res = process_message_e(prod, message)
+        res = process_message_e(message, prod.utcnow)
         if res:
             prod.data.extend(res)
 
 
-def str_convert(text):
+def compute_num_value(element):
     """Attempt to make this into a float."""
+    # 5.1.1
+    if element.str_value in ["-9999", "M", "MM"]:
+        return
+    if element.str_value.endswith("E"):
+        element.estimated = True
+        element.str_value = element.str_value[:-1]
+    # 7.4.6 Paired Element!
+    if element.physical_element in PAIRED_PHYSICAL_CODES:
+        # <depth>.<value>
+        value = int(element.str_value.split(".")[1])
+        depth = int(element.str_value.split(".")[0])
+        if depth < 0:
+            value *= -1
+            depth *= -1
+        element.depth = depth
+        # Missing is -9999
+        if value > -9998:
+            element.num_value = value
+        return
     try:
-        return float(text)
+        element.num_value = float(element.str_value)
     except ValueError:
-        LOG.info("Converting '%s' to float failed", text)
-        return None
+        LOG.info("Converting '%s' to float failed", element.str_value)
 
 
 def _parse(prod):
@@ -341,9 +478,6 @@ def _parse(prod):
     # NOTE The .END from .B Format is a false positive here...
     if prod.unixtext.find(".E") > -1:
         parse_E(prod)
-    # Safely do numeric conversions
-    for element in prod.data:
-        element.num_value = str_convert(element.str_value)
 
 
 class SHEFProduct(TextProduct):
