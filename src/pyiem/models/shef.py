@@ -20,3 +20,5 @@ class SHEFElement(BaseModel):
     extremum: str = Field(None)
     probability: str = Field(None)
     str_value: str = Field(None)
+    num_value: float = Field(None)
+    data_created: datetime = Field(None)

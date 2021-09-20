@@ -15,46 +15,46 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo
 from datetime import date, timezone, datetime, timedelta
 import re
+from typing import List
 
 from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
+from pyiem.util import LOG
 
-TYPE_RE = re.compile(r"^\.(?P<type>[ABE])", re.M)
+DM_RE = re.compile(r" DM(\d+)")
+INLINE_COMMENT_RE = re.compile(":.*:")
 TIMEZONES = {
     "C": "America/Chicago",
     "CD": "America/Chicago",
     "CS": "America/Chicago",
+    "N": "Canada/Newfoundland",
+    "NS": "Canada/Newfoundland",
+    "A": "Canada/Atlantic",  # Unsure
+    "AD": "Canada/Atlantic",  # Unsure
+    "AS": "Canada/Atlantic",  # Unsure
+    "E": "America/New_York",
+    "ED": "America/New_York",
+    "ES": "America/New_York",
+    "J": "UTC+8",  # TODO China UTC +8
+    "M": "America/Denver",
+    "MD": "America/Denver",
+    "MS": "America/Denver",
+    "P": "America/Los_Angeles",
+    "PD": "America/Los_Angeles",
+    "PS": "America/Los_Angeles",
+    "Y": "Canada/Yukon",
+    "YD": "Canada/Yukon",
+    "YS": "Canada/Yukon",
+    "H": "US/Hawaii",
+    "HS": "US/Hawaii",
+    "L": "US/Alaska",
+    "LD": "US/Alaska",
+    "LS": "US/Alaska",
+    "B": "Asia/Anadyr",
+    "BD": "Asia/Anadyr",
+    "BS": "Asia/Anadyr",
+    "Z": "Etc/UTC",
 }
-
-"""
-N Newfoundland local time UTC - 3:30 or 2:30
-NS Newfoundland standard time UTC - 2:30
-A Atlantic local time UTC - 4:00 or 3:00
-AD Atlantic daylight time UTC - 3:00
-AS Atlantic standard time UTC - 4:00
-E Eastern local time UTC - 5:00 or 4:00
-ED Eastern daylight time UTC - 4:00
-ES Eastern standard time UTC - 5:00
-J China UTC +8
-M Mountain local time UTC - 7:00 or 6:00
-MD Mountain daylight time UTC - 6:00
-MS Mountain standard time UTC - 7:00
-P Pacific local time UTC - 8:00 or 7:00
-PD Pacific daylight time UTC - 7:00
-PS Pacific standard time UTC - 8:00
-Y Yukon local time UTC - 8:00 or 7:00
-YD Yukon daylight time UTC - 7:00
-YS Yukon standard time UTC - 8:00
-H Hawaiian local time UTC - 10:00
-HS Hawaiian standard time UTC - 10:00
-L Alaskan local time UTC - 9:00 or 8:00
-LD Alaskan daylight time UTC - 8:00
-LS Alaskan standard time UTC - 9:00
-B Bering local time UTC - 10:00 or 9:00
-BD Bering daylight time UTC - 9:00
-BS Bering standard time UTC - 10:00
-Z Zulu time, also Universal Time Code (UTC), formerly Greenwich Mean Time (GMT)
-"""
 
 
 def make_date(text, now):
@@ -67,10 +67,35 @@ def make_date(text, now):
         return date(base + int(text[:2]), int(text[2:4]), int(text[4:]))
     month = int(text[:2])
     day = int(text[2:])
-    if now.month < 6 and month > 6:
+    if now.month < 6 < month:
         # Last year
         return date(now.year - 1, month, day)
     return date(now.year, month, day)
+
+
+def parse_datetime(text, basevalid):
+    """Convert the DC/DM element into a timestamp."""
+    # 4.4.2 If the hour number is NOT given, the default is hour 24 if a
+    # time zone was given previously, else it is 12 if the time zone was
+    # given as Zulu time. This allows for an end-of-day value for mean or
+    # accumulated data types.
+    text = text.strip()
+    # If length is 4, only one option
+    if len(text) == 4:
+        return basevalid.replace(
+            month=int(text[:2]),
+            day=int(text[2:]),
+        )
+    if len(text) >= 8:
+        # TODO better handle year and century here, add tests around 1 Jan
+        valid = basevalid.replace(
+            month=int(text[-8:-6]),
+            day=int(text[-6:-4]),
+            hour=int(text[-4:-2]),
+            minute=int(text[-2:]),
+        )
+        return valid
+    raise ValueError(f"Unable to parse DC '{text}'")
 
 
 def parse_station_valid(text, utcnow):
@@ -95,11 +120,40 @@ def parse_station_valid(text, utcnow):
                 int(meat[2:]),
                 tzinfo=tzinfo,
             )
+        elif len(meat) == 2:
+            valid = datetime(
+                valid.year,
+                valid.month,
+                valid.day,
+                int(meat[:2]),
+                0,
+                tzinfo=tzinfo,
+            )
+        elif len(meat) == 6:
+            valid = datetime(
+                valid.year,
+                valid.month,
+                valid.day,
+                int(meat[:2]),
+                int(meat[2:4]),
+                int(meat[4:6]),
+                tzinfo=tzinfo,
+            )
+        else:
+            raise ValueError(f"No logic to parse '{meat}'")
     return station, valid
 
 
-def process_message_e(prod, message):
-    """Convert the message into an object."""
+def process_message_e(prod, message) -> List[SHEFElement]:
+    """Process a text string in E SHEF format.
+
+    Args:
+      prod (TextProduct): TextProduct that contains this message.
+      message (str): The string to parse.
+
+    Returns:
+      List(SHEFElement)
+    """
     tokens = message.split("/")
     station, basevalid = parse_station_valid(tokens[0], prod.utcnow)
     elements = []
@@ -107,17 +161,20 @@ def process_message_e(prod, message):
     interval = None
     datastart = None
     physical_element = None
+    data_created = None
     for i, token in enumerate(tokens[1:], 1):
         if token.startswith("DC"):
-            # TODO
+            data_created = parse_datetime(token[2:], basevalid)
             continue
         if token.startswith("DI"):
             if token[2] == "H":
                 interval = timedelta(hours=int(token[3:]))
             elif token[2] == "D":
                 interval = timedelta(days=int(token[3:]))
-            elif token[2] == "M":
+            elif token[2] == "N":
                 interval = timedelta(minutes=int(token[3:]))
+            else:
+                raise ValueError(f"Unhandled DI of '{token[2]}")
             datastart = i + 1
             break
         if token[0].isalpha():
@@ -132,6 +189,7 @@ def process_message_e(prod, message):
                     valid=valid,
                     physical_element=physical_element,
                     str_value=tokens2,
+                    data_created=data_created,
                 )
             )
             valid += interval
@@ -145,20 +203,34 @@ def process_message_b(prod, message):
     lines = message.split("\n")
     tokens = lines[0].split("/")
     _center, valid = parse_station_valid(tokens[0], prod.utcnow)
-    # second token should have the PE
-    physical_element = tokens[1][:2]
+    physical_elements = []
+    for token in tokens[1:]:
+        physical_elements.append(token.strip()[:2])
     elements = []
     for line in lines[1:]:
         if line.startswith(":") or line.find("/") == -1:
             continue
-        print(line)
-        elements.append(
-            SHEFElement(
-                station=line.split()[0],
-                valid=valid,
-                physical_element=physical_element,
+        # Cull inline comments
+        m = INLINE_COMMENT_RE.search(line)
+        if m:
+            line = line.replace(m.group(), "/")  # this may be too cute
+        tokens = line.split("/")
+        # 5.2.2 Observational time change via DM nomenclature
+        m = DM_RE.search(tokens[0])
+        if m:
+            res = m.group()
+            localvalid = parse_datetime(res.strip()[2:], valid)
+        else:
+            localvalid = valid
+        for i, token in enumerate(tokens[1:]):
+            elements.append(
+                SHEFElement(
+                    station=tokens[0].split()[0],
+                    valid=localvalid,
+                    physical_element=physical_elements[i],
+                    str_value=token.strip(),
+                )
             )
-        )
     return elements
 
 
@@ -168,11 +240,22 @@ def process_message_a(prod, message):
     # First tokens should have some mandatory stuff
     station, valid = parse_station_valid(tokens[0], prod.utcnow)
     elements = []
+    data_created = None
     for text in tokens[1:]:
         text = text.strip()
+        pe = text[:2]
+        if pe == "DC":
+            data_created = parse_datetime(text[2:], valid)
+            for elem in elements:
+                elem.data_created = data_created
+            continue
         elements.append(
             SHEFElement(
-                station=station, valid=valid, physical_element=text[:2]
+                station=station,
+                valid=valid,
+                physical_element=pe,
+                data_created=data_created,
+                str_value=text.split()[1],
             )
         )
 
@@ -230,7 +313,7 @@ def parse_E(prod):
         if line.startswith(".ER ") or line.startswith(".E "):
             messages.append(line)
             continue
-        if line.startswith(".E"):  # continuation
+        if messages and line.startswith(".E"):  # continuation
             messages[-1] += f" {line.split(maxsplit=1)[1]}"
     # We have messages to parse into objects
     for message in messages:
@@ -239,20 +322,28 @@ def parse_E(prod):
             prod.data.extend(res)
 
 
+def str_convert(text):
+    """Attempt to make this into a float."""
+    try:
+        return float(text)
+    except ValueError:
+        LOG.info("Converting '%s' to float failed", text)
+        return None
+
+
 def _parse(prod):
     """Do what is necessary to get this product parsed."""
-    # Assumption, product has only one SHEF data type per file
-    m = TYPE_RE.search(prod.unixtext)
-    if not m:
-        prod.warnings.append("No SHEF encoding types found, abort!")
-        return
-    typ = m.groupdict()["type"]
-    if typ == "A":
+    # Products could have multiple types, so conditionally run each parser
+    if prod.unixtext.find(".A") > -1:
         parse_A(prod)
-    elif typ == "B":
+    if prod.unixtext.find(".B") > -1:
         parse_B(prod)
-    elif typ == "E":
+    # NOTE The .END from .B Format is a false positive here...
+    if prod.unixtext.find(".E") > -1:
         parse_E(prod)
+    # Safely do numeric conversions
+    for element in prod.data:
+        element.num_value = str_convert(element.str_value)
 
 
 class SHEFProduct(TextProduct):
