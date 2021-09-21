@@ -12,7 +12,6 @@ TODO List
 ---------
  - Table 7 has defaults for PEDTSEP
  - Table 2 has the two character send-codes used for PE starting with S
- - 4.4.3 data duration values DV*
  - 4.1.2 the four codes to handle what lat/lon mean in the encoding
  - 4.4.4 DIE special end-of-month specifier
  - 5.1.2 Precipitation Data !important
@@ -30,6 +29,8 @@ try:
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 from datetime import date, timezone, datetime, timedelta
+from io import StringIO
+import traceback
 from typing import List
 
 from pyiem.exceptions import InvalidSHEFEncoding
@@ -165,6 +166,9 @@ def parse_station_valid(text, utcnow):
     extra = []
     # Look to see what we have here, saving off extra things we can not parse
     if len(tokens) == startidx:
+        replacements = {"tzinfo": tzinfo}
+        replacements["hour"] = 12 if tzinfo == timezone.utc else 0
+        valid = datetime24(valid, replacements)
         return station, valid, extra
     workdone = False
     for token in tokens[startidx:]:
@@ -172,7 +176,7 @@ def parse_station_valid(text, utcnow):
         # Default replacement from above
         replacements = {"tzinfo": tzinfo}
         if pe.startswith("DH"):
-            meat = tokens[-1][2:]
+            meat = token[2:]
             if len(meat) == 4:
                 replacements["hour"] = int(meat[:2])
                 replacements["minute"] = int(meat[2:])
@@ -186,7 +190,7 @@ def parse_station_valid(text, utcnow):
             valid = datetime24(valid, replacements)
             workdone = True
         elif pe.startswith("DM"):
-            meat = tokens[-1][2:]
+            meat = token[2:]
             if len(meat) == 6:
                 replacements["month"] = int(meat[:2])
                 replacements["day"] = int(meat[2:4])
@@ -262,10 +266,26 @@ def process_modifiers(text, diction, basevalid):
         if len(text) >= 10:
             replacements["minute"] = int(text[8:10])
         diction.valid = datetime24(diction.valid, replacements)
-    elif text.startswith("DU"):
-        diction.unit_convention = text[2]
     elif text.startswith("DQ"):
         diction.qualifier = text[2]
+    elif text.startswith("DU"):
+        diction.unit_convention = text[2]
+    elif text.startswith("DV"):
+        # Table 11a
+        val = text[2]
+        reps = {
+            "S": "seconds",
+            "N": "minutes",
+            "H": "hours",
+            "D": "days",
+            "M": "months",
+            "Y": "years",
+        }
+        if val in reps:
+            replace = {reps[val]: int(text[3:])}
+            diction.dv_interval = timedelta(**replace)
+        else:
+            raise ValueError(f"Unsupported DV code {text}")
     elif text.startswith("DR"):
         if text[2] == "H":
             diction.valid = basevalid + timedelta(hours=int(text[3:]))
@@ -404,7 +424,7 @@ def process_message_b(message, utcnow=None):
                     continue
                 elem = diction.copy()
                 elem.station = station
-                elem.str_value = text
+                elem.str_value = text.strip()
                 compute_num_value(elem)
                 elements.append(elem)
                 dictioni += 1
@@ -432,9 +452,10 @@ def process_message_a(message, utcnow=None):
             continue
         if process_modifiers(text, diction, valid):
             continue
+        parts = text.split()
         elem = diction.copy()
         elem.consume_code(text)
-        elem.str_value = text.split()[1]
+        elem.str_value = "" if len(parts) == 1 else parts[1]
         compute_num_value(elem)
         elements.append(elem)
 
@@ -444,6 +465,31 @@ def process_message_a(message, utcnow=None):
             elem.data_created = diction.data_created
 
     return elements
+
+
+def process_messages(func, prod, messages):
+    """Safe frontend to do message processing."""
+    errors = 0
+    for message in messages:
+        if errors > 5:
+            prod.warnings.append("Aborting processing with too many errors")
+            break
+        try:
+            res = func(message, prod.utcnow)
+            if res:
+                prod.data.extend(res)
+        except InvalidSHEFEncoding as exp:
+            # Swallow these generally :/
+            errors += 1
+            LOG.info("%s for '%s' %s", exp, message, prod.get_product_id())
+        except Exception as exp:
+            errors += 1
+            cstr = StringIO()
+            cstr.write(f"Processing '{message}' traceback:\n")
+            traceback.print_exc(file=cstr)
+            LOG.error(exp)
+            cstr.seek(0)
+            prod.warnings.append(cstr.getvalue())
 
 
 def parse_A(prod):
@@ -457,11 +503,8 @@ def parse_A(prod):
             continue
         if line.startswith(".A"):  # continuation
             messages[-1] += f"/{line.split(maxsplit=1)[1]}"
-    # We have messages to parse into objects
-    for message in messages:
-        res = process_message_a(message, prod.utcnow)
-        if res:
-            prod.data.extend(res)
+
+    process_messages(process_message_a, prod, messages)
 
 
 def parse_B(prod):
@@ -489,11 +532,7 @@ def parse_B(prod):
         if inmessage:
             messages[-1] += "\n" + line
 
-    # We have messages to parse into objects
-    for message in messages:
-        res = process_message_b(message, prod.utcnow)
-        if res:
-            prod.data.extend(res)
+    process_messages(process_message_b, prod, messages)
 
 
 def parse_E(prod):
@@ -508,11 +547,8 @@ def parse_E(prod):
             if not messages[-1].endswith("/"):
                 messages[-1] += "/"
             messages[-1] += f" {strip_comments(line.split(maxsplit=1)[1])}"
-    # We have messages to parse into objects
-    for message in messages:
-        res = process_message_e(message, prod.utcnow)
-        if res:
-            prod.data.extend(res)
+
+    process_messages(process_message_e, prod, messages)
 
 
 def compute_num_value(element):
@@ -525,9 +561,13 @@ def compute_num_value(element):
         element.str_value = element.str_value[:-1]
     # 7.4.6 Paired Element!
     if element.physical_element in PAIRED_PHYSICAL_CODES:
+        tokens = element.str_value.split(".")
+        if len(tokens) == 1:
+            element.depth = int(tokens[0])
+            return
         # <depth>.<value>
-        value = int(element.str_value.split(".")[1])
-        depth = int(element.str_value.split(".")[0])
+        value = int(tokens[1])
+        depth = int(tokens[0])
         if depth < 0:
             value *= -1
             depth *= -1

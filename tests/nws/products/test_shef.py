@@ -1,4 +1,6 @@
 """SHEF"""
+# stdlib
+from datetime import timedelta
 
 import pytest
 from pyiem.exceptions import InvalidSHEFEncoding
@@ -327,6 +329,8 @@ def test_process_modififers_unknown_D():
     """Test that we get a value error for this."""
     with pytest.raises(ValueError):
         process_modifiers("DZZ", None, utc())
+    with pytest.raises(ValueError):
+        process_modifiers("DVZ", None, utc())
 
 
 def test_unknown_di():
@@ -351,3 +355,47 @@ def test_a_extra_tokens():
     msg = ".AR SHPP1 20210925 Z DH06 DC202109210148/DUE/DQG/QIIFE 151000.0"
     res = process_message_a(msg)
     assert res[0].qualifier == "G"
+
+
+def test_dv():
+    """Test that we can handle the ugliness of DV codes."""
+    msg = (
+        ".AR MRJA1 210920 C DH0700/TX 81/TN 72/TA 74/DVD04/PPV 2.49"
+        "/TQ 99/DC2109211054"
+    )
+    res = process_message_a(msg)
+    assert res[3].dv_interval == timedelta(days=4)
+    assert res[4].dv_interval is None
+
+
+def test_missing_a():
+    """Test we can handle missing data in A format."""
+    msg = ".A TFX 0921 M DH1000/TAIR /TDIR  0.0/XRIR 255/UDIR /USIR /"
+    res = process_message_a(msg)
+    assert res[0].str_value == ""
+
+
+def test_bad_paired_element():
+    """Test that we can handle a paired element without value."""
+    msg = ".AR HBRA2 210921 Z DH1600/DC2109211600/HGIRZZ 22.65/HQIRZZ 539/"
+    res = process_message_a(msg)
+    assert res[1].depth == 539
+
+
+def test_b_datetime():
+    """Test that we get a datetime in the face of massive ambiguity."""
+    msg = (
+        ".BR BRO 210921 /HP/TW/QT\n"
+        "MADT2  103.85 / 85.10 / 0.88 :ANZALDUAS DAM - RELEASE IN 1000S\n"
+        ".END"
+    )
+    res = process_message_b(msg)
+    assert res[0].valid == utc(2021, 9, 21, 12)
+    assert res[2].str_value == "0.88"
+
+
+def test_a_dh_problem():
+    """Test that we can deal with this fun."""
+    msg = ".A DVT 0921 MS DH0800 DVH13 /TAVRZN 69"
+    res = process_message_a(msg)
+    assert res[0].physical_element == "TA"

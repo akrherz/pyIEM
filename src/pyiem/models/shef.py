@@ -2,7 +2,7 @@
 # pylint: disable=too-few-public-methods
 
 # stdlib
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # third party
 from pydantic import BaseModel, Field
@@ -16,6 +16,7 @@ class SHEFElement(BaseModel):
 
     station: str = Field(...)
     valid: datetime = Field(...)
+    dv_interval: timedelta = Field(None)  # DV
     physical_element: str = Field(None, length=2)
     duration: str = Field(None)
     type: str = Field(None)
@@ -52,3 +53,7 @@ class SHEFElement(BaseModel):
             self.extremum = text[5]
         if length >= 7:
             self.probability = text[6]
+
+        # 4.4.3 has to be a V, or else
+        if self.dv_interval and self.duration != "V":
+            self.dv_interval = None
