@@ -203,6 +203,20 @@ def parse_station_valid(text, utcnow):
     return station, valid, extra
 
 
+def process_di(text):
+    """Convert a DI value into an interval."""
+    parts = text.strip().split()
+    if text[2] == "H":
+        args = {"hours": int(parts[0][3:])}
+    elif text[2] == "D":
+        args = {"days": int(parts[0][3:])}
+    elif text[2] == "N":
+        args = {"minutes": int(parts[0][3:])}
+    else:
+        raise ValueError(f"Unhandled DI of '{text}")
+    return timedelta(**args)
+
+
 def process_modifiers(text, diction, basevalid):
     """Apply modifications based on what the token is telling us.
 
@@ -289,15 +303,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
         if process_modifiers(token, diction, valid):
             continue
         if token.startswith("DI"):
-            parts = token.strip().split()
-            if token[2] == "H":
-                interval = timedelta(hours=int(parts[0][3:]))
-            elif token[2] == "D":
-                interval = timedelta(days=int(parts[0][3:]))
-            elif token[2] == "N":
-                interval = timedelta(minutes=int(parts[0][3:]))
-            else:
-                raise ValueError(f"Unhandled DI of '{token[2]}")
+            interval = process_di(token)
             continue
         # There can only be one physical element for E messages
         if diction.physical_element is None and token[0].isalpha():

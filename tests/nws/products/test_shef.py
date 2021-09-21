@@ -3,10 +3,13 @@
 import pytest
 from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.nws.products.shef import (
+    parse_station_valid,
     parser,
+    process_di,
     process_message_a,
     process_message_b,
     process_message_e,
+    process_modifiers,
 )
 from pyiem.util import utc, get_test_file
 
@@ -309,5 +312,42 @@ def test_cs_timezone():
 def test_qualifier():
     """Test the qualifier logic."""
     msg = ".AR SHPP1 20210925 Z DH06/DC202109210148/DUE/DQG/QIIFE 151000.0"
+    res = process_message_a(msg)
+    assert res[0].qualifier == "G"
+
+
+def test_parse_station_valid():
+    """Test handling of odd things."""
+    station, _valid, res = parse_station_valid(".A DMX 0919", utc())
+    assert station == "DMX"
+    assert not res
+
+
+def test_process_modififers_unknown_D():
+    """Test that we get a value error for this."""
+    with pytest.raises(ValueError):
+        process_modifiers("DZZ", None, utc())
+
+
+def test_unknown_di():
+    """Test that value error is raised for an unknown DI."""
+    with pytest.raises(ValueError):
+        process_di("DIZ")
+
+
+def test_b_extra_tokens():
+    """Test a theoretical B format with extra tokens in the first section."""
+    msg = (
+        ".BR MSP 210920 SDIPZ DM092000/DC09200455/DH01/SFIPZ\n"
+        "ABEC2L      0.0 / 0.0: Avg (inches) Entire Basin\n"
+        ".END"
+    )
+    res = process_message_b(msg, utc(2021, 9, 20))
+    assert res[0].physical_element == "SD"
+
+
+def test_a_extra_tokens():
+    """Test a theoretical A format with extra tokens in first section."""
+    msg = ".AR SHPP1 20210925 Z DH06 DC202109210148/DUE/DQG/QIIFE 151000.0"
     res = process_message_a(msg)
     assert res[0].qualifier == "G"
