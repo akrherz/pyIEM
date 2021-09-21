@@ -13,7 +13,7 @@ class SHEFElement(BaseModel):
 
     station: str = Field(...)
     valid: datetime = Field(...)
-    physical_element: str = Field(..., length=2)
+    physical_element: str = Field(None, length=2)
     duration: str = Field(None)
     type: str = Field(None)
     source: str = Field(None)

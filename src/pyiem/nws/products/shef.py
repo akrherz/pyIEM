@@ -143,40 +143,123 @@ def datetime24(dt, replacements):
 
 
 def parse_station_valid(text, utcnow):
-    """Get what we can get from this cryptic string."""
+    """Parse the first token found in a SHEF observation.
+
+    Args:
+      text (str): the first part of the string
+      utcnow (datetime): The default time.
+
+    Returns:
+      str, datetime, list
+    """
     tokens = text.split()
     station = tokens[1]
     valid = make_date(tokens[2], utcnow)
     # 4.1.4 Timezone is optional, default to Z
-    if len(tokens) > 4 and tokens[3] in TIMEZONES:
+    if len(tokens) >= 4 and tokens[3] in TIMEZONES:
         tzinfo = ZoneInfo(TIMEZONES[tokens[3]])
+        startidx = 4
     else:
         tzinfo = timezone.utc
-    # Take a swing that the last element is DH
-    replacements = {"tzinfo": tzinfo}
-    if tokens[-1].startswith("DH"):
-        meat = tokens[-1][2:]
-        if len(meat) == 4:
-            replacements["hour"] = int(meat[:2])
-            replacements["minute"] = int(meat[2:])
-        elif len(meat) == 2:
-            replacements["hour"] = int(meat[:2])
-            replacements["minute"] = 0
+        startidx = 3
+    extra = []
+    # Look to see what we have here, saving off extra things we can not parse
+    if len(tokens) == startidx:
+        return station, valid, extra
+    workdone = False
+    for token in tokens[startidx:]:
+        pe = token[:2]
+        # Default replacement from above
+        replacements = {"tzinfo": tzinfo}
+        if pe.startswith("DH"):
+            meat = tokens[-1][2:]
+            if len(meat) == 4:
+                replacements["hour"] = int(meat[:2])
+                replacements["minute"] = int(meat[2:])
+            elif len(meat) == 2:
+                replacements["hour"] = int(meat[:2])
+                replacements["minute"] = 0
+            else:
+                replacements["hour"] = int(meat[:2])
+                replacements["minute"] = int(meat[2:4])
+                replacements["second"] = int(meat[4:6])
+            valid = datetime24(valid, replacements)
+            workdone = True
+        elif pe.startswith("DM"):
+            meat = tokens[-1][2:]
+            if len(meat) == 6:
+                replacements["month"] = int(meat[:2])
+                replacements["day"] = int(meat[2:4])
+                replacements["hour"] = int(meat[4:6])
+            valid = datetime24(valid, replacements)
+            workdone = True
         else:
-            replacements["hour"] = int(meat[:2])
-            replacements["minute"] = int(meat[2:4])
-            replacements["second"] = int(meat[4:6])
-    elif tokens[-1].startswith("DM"):
-        meat = tokens[-1][2:]
-        if len(meat) == 6:
-            replacements["month"] = int(meat[:2])
-            replacements["day"] = int(meat[2:4])
-            replacements["hour"] = int(meat[4:6])
-    else:
+            extra.append(token)
+    if not workdone:
         # SHEF MANUAL SEZ
+        replacements = {"tzinfo": tzinfo}
         replacements["hour"] = 12 if tzinfo == timezone.utc else 0
-    valid = datetime24(valid, replacements)
-    return station, valid
+        valid = datetime24(valid, replacements)
+    return station, valid, extra
+
+
+def process_modifiers(text, diction, basevalid):
+    """Apply modifications based on what the token is telling us.
+
+    Args:
+      text (str): Potential new information.
+      diction (SHEFElement): our current elemenet definition
+      basevalid (datetime): the base valid in case of relative time.
+
+    Returns:
+      bool for if this text was handled.
+    """
+    if text.startswith("DI"):
+        # Handled by process_message_e code
+        return False
+    if not text.startswith("D"):
+        return False
+    if text.startswith("DC"):
+        diction.data_created = parse_datetime(text[2:], diction.valid)
+    elif text.startswith("DD"):
+        # Updating the timestamp as we go here
+        replacements = {
+            "day": int(text[2:4]),
+        }
+        if len(text) >= 6:
+            replacements["hour"] = int(text[4:6])
+        if len(text) >= 8:
+            replacements["minute"] = int(text[6:8])
+        diction.valid = datetime24(diction.valid, replacements)
+
+    elif text.startswith("DH"):
+        replacements = {"hour": int(text[2:4])}
+        if len(text) == 6:
+            replacements["minute"] = int(text[4:6])
+        diction.valid = datetime24(diction.valid, replacements)
+    elif text.startswith("DM"):
+        # Updating the timestamp as we go here
+        replacements = {
+            "month": int(text[2:4]),
+            "day": int(text[4:6]),
+        }
+        if len(text) >= 8:
+            replacements["hour"] = int(text[6:8])
+        if len(text) >= 10:
+            replacements["minute"] = int(text[8:10])
+        diction.valid = datetime24(diction.valid, replacements)
+    elif text.startswith("DU"):
+        diction.unit_convention = text[2]
+    elif text.startswith("DQ"):
+        diction.qualifier = text[2]
+    elif text.startswith("DR"):
+        if text[2] == "H":
+            diction.valid = basevalid + timedelta(hours=int(text[3:]))
+        elif text[2] == "D":
+            diction.valid = basevalid + timedelta(days=int(text[3:]))
+    else:
+        raise ValueError(f"Unhandled D variable {text}")
+    return True
 
 
 def process_message_e(message, utcnow=None) -> List[SHEFElement]:
@@ -187,26 +270,25 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
       utcnow (datetime): The best guess (product.utcnow) at current timestamp.
 
     Returns:
-      List(SHEFElement)
+      List[SHEFElement]
     """
     tokens = message.split("/")
-    station, basevalid = parse_station_valid(tokens[0], utcnow)
+    # In the first token, we should find some information about the station
+    # and timing.  Otherstuff could be here as well
+    station, valid, extra = parse_station_valid(tokens[0], utcnow)
+    tokens = tokens[1:]
+    if extra:
+        extra.extend(tokens)
+        tokens = extra
     elements = []
     # Iterate through the next tokens and hopefully find DI
     interval = timedelta(seconds=0)
-    datastart = None
-    physical_element = None
-    data_created = None
-    for i, token in enumerate(tokens[1:], 1):
-        if token.startswith("DC"):
-            data_created = parse_datetime(token[2:], basevalid)
+    # Create element object to track as we parse through the message
+    diction = SHEFElement(station=station, valid=valid)
+    for token in tokens:
+        if process_modifiers(token, diction, valid):
             continue
-        if token.startswith("DH"):
-            replacements = {"hour": int(token[2:4])}
-            if len(token) == 6:
-                replacements["minute"] = int(token[4:6])
-            basevalid = datetime24(basevalid, replacements)
-        elif token.startswith("DI"):
+        if token.startswith("DI"):
             parts = token.strip().split()
             if token[2] == "H":
                 interval = timedelta(hours=int(parts[0][3:]))
@@ -216,27 +298,21 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
                 interval = timedelta(minutes=int(parts[0][3:]))
             else:
                 raise ValueError(f"Unhandled DI of '{token[2]}")
-            datastart = i + 1
-            break
-        if token[0].isalpha():
-            physical_element = token[:2]
-    valid = basevalid
-    for token in tokens[datastart:]:
+            continue
+        # There can only be one physical element for E messages
+        if diction.physical_element is None and token[0].isalpha():
+            diction.physical_element = token[:2]
+            continue
+        # We should be dealing with data now?
         res = token.strip().split()
         if not res:
             res = [""]
         for tokens2 in res:
-            elem = SHEFElement(
-                station=station,
-                valid=valid,
-                physical_element=physical_element,
-                str_value=tokens2,
-                data_created=data_created,
-            )
+            elem = diction.copy()
+            elem.str_value = tokens2
             compute_num_value(elem)
             elements.append(elem)
-            valid += interval
-
+            diction.valid += interval
     return elements
 
 
@@ -272,50 +348,26 @@ def process_message_b(message, utcnow=None):
     lines = message.split("\n")
     headerline = clean_b_headerline(lines[0])
     tokens = headerline.split("/")
-    _center, valid = parse_station_valid(tokens[0], utcnow)
-    # valid time could be modified as we progress with the header
-    physical_elements = []
-    valids = []
-    unit_convention = "E"
-    unit_conventions = []
-    data_created = None
-    for token in tokens[1:]:
+    _center, valid, extra = parse_station_valid(tokens[0], utcnow)
+    tokens = tokens[1:]
+    if extra:
+        extra.extend(tokens)
+        tokens = extra
+    # Keep track of our dictions.
+    dictions = []
+    current_diction = SHEFElement(station="NA", valid=valid)
+    for token in tokens:
         token = token.strip()
         if token == "":
             continue
-        pe = token[:2]
-        if pe[0] == "D":
-            # Modifying time as we go here
-            if pe == "DM":
-                # Updating the timestamp as we go here
-                replacements = {
-                    "month": int(token[2:4]),
-                    "day": int(token[4:6]),
-                }
-                if len(token) == 8:
-                    replacements["hour"] = int(token[6:8])
-                valid = datetime24(valid, replacements)
-            elif pe == "DH":
-                # Updating the timestamp as we go here
-                replacements = {
-                    "hour": int(token[2:4]),
-                }
-                valid = datetime24(valid, replacements)
-            elif pe == "DR":
-                if token[2] == "H":
-                    valid += timedelta(hours=int(token[3:]))
-                elif token[2] == "D":
-                    valid += timedelta(days=int(token[3:]))
-            elif pe == "DU":
-                unit_convention = token[2]
-            elif pe == "DC":
-                data_created = parse_datetime(token[2:], valid)
-            else:
-                raise ValueError(f"Unhandled D code {pe} for B format")
+        if process_modifiers(token, current_diction, valid):
             continue
-        unit_conventions.append(unit_convention)
-        physical_elements.append(token.strip()[:2])
-        valids.append(valid)
+        # Else, we have a new diction!
+        current_diction.physical_element = token[:2]
+        # Set it into our dictions
+        dictions.append(current_diction.copy())
+    # Add silly one to prevent an off-by-one
+    dictions.append(None)
     elements = []
     for line in lines[1:]:
         line = strip_comments(line)
@@ -330,34 +382,27 @@ def process_message_b(message, utcnow=None):
                 section = section[:-2] + "/ "
             tokens = section.strip().replace("//", "/ /").split("/")
             station = tokens[0].split()[0]
-            vals = []
-            for token in tokens:
-                text = token.replace(station, "").strip()
+            dictioni = 0
+            diction = dictions[dictioni]
+            for i, text in enumerate(tokens):
+                if i == 0:
+                    text = text.replace(station, "").strip()
                 # 5.2.2 Observational time change via DM nomenclature
                 if text.startswith("D"):
-                    if text.startswith("DM"):
-                        valids[0] = parse_datetime(text[2:], valids[0])
-                    elif text.startswith("DH"):
-                        replacements = {"hour": int(text[2:4])}
-                        if len(text) == 6:
-                            replacements["minute"] = int(text[4:6])
-                        valids[0] = datetime24(valids[0], replacements)
-                else:
-                    vals.append(text)
-            for i, text in enumerate(vals):
-                # Ignore vague case with trailing /
-                if i == len(valids) and text.strip() == "":
+                    # Uh oh, local diction modifier, sigh
+                    diction = diction.copy()
+                    process_modifiers(text, diction, valid)
                     continue
-                elem = SHEFElement(
-                    station=station,
-                    valid=valids[i],
-                    physical_element=physical_elements[i],
-                    unit_convention=unit_conventions[i],
-                    str_value=text.strip(),
-                    data_created=data_created,
-                )
+                # Extra trailing garbage
+                if text == "" and diction is None:
+                    continue
+                elem = diction.copy()
+                elem.station = station
+                elem.str_value = text
                 compute_num_value(elem)
                 elements.append(elem)
+                dictioni += 1
+                diction = dictions[dictioni]
     return elements
 
 
@@ -368,68 +413,30 @@ def process_message_a(message, utcnow=None):
     if len(tokens) == 1:
         return []
     # First tokens should have some mandatory stuff
-    station, valid = parse_station_valid(tokens[0], utcnow)
+    station, valid, extra = parse_station_valid(tokens[0], utcnow)
+    tokens = tokens[1:]
+    if extra:
+        extra.extend(tokens)
+        tokens = extra
     elements = []
-    data_created = None
-    unit_convention = "E"
-    qualifier = None
-    for text in tokens[1:]:
+    diction = SHEFElement(station=station, valid=valid)
+    for text in tokens:
         text = text.strip()
         if text == "":
             continue
-        pe = text[:2]
-        if pe[0] == "D":
-            # Modififers not to be explicitly stored as elements
-            if pe == "DC":
-                data_created = parse_datetime(text[2:], valid)
-                for elem in elements:
-                    elem.data_created = data_created
-            elif pe == "DM":
-                # Updating the timestamp as we go here
-                replacements = {
-                    "month": int(text[2:4]),
-                    "day": int(text[4:6]),
-                }
-                if len(text) == 8:
-                    replacements["hour"] = int(text[6:8])
-                valid = datetime24(valid, replacements)
-            elif pe == "DD":
-                # Updating the timestamp as we go here
-                replacements = {
-                    "day": int(text[2:4]),
-                }
-                if len(text) >= 6:
-                    replacements["hour"] = int(text[4:6])
-                if len(text) >= 8:
-                    replacements["minute"] = int(text[6:8])
-                valid = datetime24(valid, replacements)
-            elif pe == "DH":
-                # Updating the timestamp as we go here
-                replacements = {
-                    "hour": int(text[2:4]),
-                }
-                if len(text) >= 6:
-                    replacements["minute"] = int(text[4:6])
-                valid = datetime24(valid, replacements)
-            elif pe == "DU":
-                unit_convention = text[2]
-            elif pe == "DQ":
-                qualifier = text[2]
-            else:
-                raise ValueError(f"Unhandled D code {pe} for format A")
+        if process_modifiers(text, diction, valid):
             continue
-
-        elem = SHEFElement(
-            station=station,
-            valid=valid,
-            physical_element=pe,
-            data_created=data_created,
-            str_value=text.split()[1],
-            unit_convention=unit_convention,
-            qualifier=qualifier,
-        )
+        pe = text[:2]
+        elem = diction.copy()
+        elem.physical_element = pe
+        elem.str_value = text.split()[1]
         compute_num_value(elem)
         elements.append(elem)
+
+    # Back-assign DC if it was found.
+    if diction.data_created is not None:
+        for elem in elements:
+            elem.data_created = diction.data_created
 
     return elements
 
