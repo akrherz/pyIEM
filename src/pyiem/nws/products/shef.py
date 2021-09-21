@@ -15,9 +15,6 @@ TODO List
  - 4.4.3 data duration values DV*
  - 4.1.2 the four codes to handle what lat/lon mean in the encoding
  - 4.4.4 DIE special end-of-month specifier
- - 4.4.5 DU data units
- - 4.4.6 DQ data qualifier code  Table 10
- - Table 10 qualifier codes
  - 5.1.2 Precipitation Data !important
  - 5.1.4 how to handle repeated data
  - Handle when R is being specified
@@ -33,7 +30,6 @@ try:
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 from datetime import date, timezone, datetime, timedelta
-import re
 from typing import List
 
 from pyiem.exceptions import InvalidSHEFEncoding
@@ -41,38 +37,37 @@ from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
 
-INLINE_COMMENT_RE = re.compile(":.*:")
-# TODO 4.1.5/5.2.5 the two character fields likely define fixed offsets
+# Table 8
 TIMEZONES = {
     "C": "America/Chicago",
-    "CD": "America/Chicago",
-    "CS": "America/Chicago",
+    "CD": "Etc/GMT+5",
+    "CS": "Etc/GMT+6",
     "N": "Canada/Newfoundland",
-    "NS": "Canada/Newfoundland",
-    "A": "Canada/Atlantic",  # Unsure
-    "AD": "Canada/Atlantic",  # Unsure
-    "AS": "Canada/Atlantic",  # Unsure
+    # "NS": "Unsupported +2.5",
+    "A": "Canada/Atlantic",
+    "AD": "Etc/GMT+3",
+    "AS": "Etc/GMT+4",
     "E": "America/New_York",
-    "ED": "America/New_York",
-    "ES": "America/New_York",
-    "J": "UTC+8",  # TODO China UTC +8
+    "ED": "Etc/GMT+4",
+    "ES": "Etc/GMT+5",
+    "J": "Etc/GMT-8",
     "M": "America/Denver",
-    "MD": "America/Denver",
-    "MS": "America/Denver",
+    "MD": "Etc/GMT+6",
+    "MS": "Etc/GMT+7",
     "P": "America/Los_Angeles",
-    "PD": "America/Los_Angeles",
-    "PS": "America/Los_Angeles",
+    "PD": "Etc/GMT+7",
+    "PS": "Etc/GMT+8",
     "Y": "Canada/Yukon",
-    "YD": "Canada/Yukon",
-    "YS": "Canada/Yukon",
+    "YD": "Etc/GMT+7",
+    "YS": "Etc/GMT+8",
     "H": "US/Hawaii",
-    "HS": "US/Hawaii",
+    "HS": "Etc/GMT+10",
     "L": "US/Alaska",
-    "LD": "US/Alaska",
-    "LS": "US/Alaska",
+    "LD": "Etc/GMT+8",
+    "LS": "Etc/GMT+9",
     "B": "Asia/Anadyr",
-    "BD": "Asia/Anadyr",
-    "BS": "Asia/Anadyr",
+    "BD": "Etc/GMT+9",
+    "BS": "Etc/GMT+10",
     "Z": "Etc/UTC",
 }
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
@@ -117,16 +112,14 @@ def parse_datetime(text, basevalid):
             day=int(text[2:4]),
             hour=int(text[4:]),
         )
-    if len(text) >= 8:
-        # TODO better handle year and century here, add tests around 1 Jan
-        valid = basevalid.replace(
-            month=int(text[-8:-6]),
-            day=int(text[-6:-4]),
-            hour=int(text[-4:-2]),
-            minute=int(text[-2:]),
-        )
-        return valid
-    raise ValueError(f"Unable to parse DC '{text}'")
+    # TODO better handle year and century here, add tests around 1 Jan
+    valid = basevalid.replace(
+        month=int(text[-8:-6]),
+        day=int(text[-6:-4]),
+        hour=int(text[-4:-2]),
+        minute=int(text[-2:]),
+    )
+    return valid
 
 
 def datetime24(dt, replacements):
@@ -169,12 +162,16 @@ def parse_station_valid(text, utcnow):
         elif len(meat) == 2:
             replacements["hour"] = int(meat[:2])
             replacements["minute"] = 0
-        elif len(meat) == 6:
+        else:
             replacements["hour"] = int(meat[:2])
             replacements["minute"] = int(meat[2:4])
             replacements["second"] = int(meat[4:6])
-        else:
-            raise ValueError(f"No logic to parse '{meat}'")
+    elif tokens[-1].startswith("DM"):
+        meat = tokens[-1][2:]
+        if len(meat) == 6:
+            replacements["month"] = int(meat[:2])
+            replacements["day"] = int(meat[2:4])
+            replacements["hour"] = int(meat[4:6])
     else:
         # SHEF MANUAL SEZ
         replacements["hour"] = 12 if tzinfo == timezone.utc else 0
@@ -220,9 +217,6 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
             else:
                 raise ValueError(f"Unhandled DI of '{token[2]}")
             datastart = i + 1
-            if len(parts) > 1:
-                # Insert second value back into tokens
-                tokens.insert(i + 1, parts[1])
             break
         if token[0].isalpha():
             physical_element = token[:2]
@@ -310,8 +304,8 @@ def process_message_b(message, utcnow=None):
             elif pe == "DR":
                 if token[2] == "H":
                     valid += timedelta(hours=int(token[3:]))
-                elif token[2] == "N":
-                    valid += timedelta(minutes=int(token[3:]))
+                elif token[2] == "D":
+                    valid += timedelta(days=int(token[3:]))
             elif pe == "DU":
                 unit_convention = token[2]
             elif pe == "DC":
@@ -378,6 +372,7 @@ def process_message_a(message, utcnow=None):
     elements = []
     data_created = None
     unit_convention = "E"
+    qualifier = None
     for text in tokens[1:]:
         text = text.strip()
         if text == "":
@@ -418,8 +413,10 @@ def process_message_a(message, utcnow=None):
                 valid = datetime24(valid, replacements)
             elif pe == "DU":
                 unit_convention = text[2]
+            elif pe == "DQ":
+                qualifier = text[2]
             else:
-                raise ValueError(f"Unhandled D code {pe[0]}")
+                raise ValueError(f"Unhandled D code {pe} for format A")
             continue
 
         elem = SHEFElement(
@@ -429,6 +426,7 @@ def process_message_a(message, utcnow=None):
             data_created=data_created,
             str_value=text.split()[1],
             unit_convention=unit_convention,
+            qualifier=qualifier,
         )
         compute_num_value(elem)
         elements.append(elem)
@@ -463,14 +461,21 @@ def parse_B(prod):
     for line in prod.unixtext.split("\n"):
         # New Message!
         if line.startswith(".BR ") or line.startswith(".B "):
-            messages.append(line + "\n")
+            messages.append(line.strip())
             inmessage = True
+            continue
+        if inmessage and line.startswith(".B"):
+            meat = line.split(maxsplit=1)[1].strip()
+            if not messages[-1].endswith("/") and not meat.startswith("/"):
+                messages[-1] += "/"
+            # We have more headers, gasp
+            messages[-1] += meat
             continue
         if line.startswith(".END"):
             inmessage = False
             continue
         if inmessage:
-            messages[-1] += line + "\n"
+            messages[-1] += "\n" + line
 
     # We have messages to parse into objects
     for message in messages:

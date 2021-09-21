@@ -24,4 +24,5 @@ class SHEFElement(BaseModel):
     data_created: datetime = Field(None)
     depth: int = Field(None)
     estimated: bool = Field(False)
-    unit_convention: str = Field("E")
+    unit_convention: str = Field("E")  # DU
+    qualifier: str = Field(None)  # DQ

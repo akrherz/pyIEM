@@ -234,7 +234,7 @@ def test_unit_switching():
 def test_dc():
     """Test that we can handle fullblown dates."""
     msg = (
-        ".ER MORW2 20210919 Z DC202109200523/DUE/DQG/DH18/HTIFE/DIH6/"
+        ".ER MORW2 20210919 Z DC202109200523/DUE/DQG/DH1800/HTIFE/DIH6/"
         "9.9/9.9/9.9/9.9/9.9/9.9/9.9/9.9"
     )
     res = process_message_e(msg)
@@ -258,3 +258,56 @@ def test_dc_in_b():
     )
     res = process_message_b(msg, utc(2021, 9, 19))
     assert res[0].data_created == utc(2021, 9, 20, 4)
+
+
+def test_jan1():
+    """Test things when we cross the new year."""
+    msg = ".A COMT2 1231 C DH23/HG 1.89"
+    res = process_message_a(msg, utc(2000, 1, 1))
+    assert res[0].valid == utc(2000, 1, 1, 5)
+
+
+def test_did1():
+    """Test 1 day interval data."""
+    msg = (
+        ".ER HARP1 0920 E DC2109201005/DH20/QRIFF/DID1"
+        "/     /     28.0/     23.0/     19.7"
+    )
+    res = process_message_e(msg, utc(2021, 9, 20))
+    assert res[0].valid == utc(2021, 9, 21, 0)
+    assert res[1].valid == utc(2021, 9, 22, 0)
+
+
+def test_b_dm():
+    """Test B format with DM in header."""
+    msg = (
+        ".BR MSP 210920 DM092000/DC09200455 /SDIPZ/DH01/SFIPZ\n"
+        "ABEC2L      0.0 / 0.0: Avg (inches) Entire Basin\n"
+        ".END"
+    )
+    res = process_message_b(msg, utc(2021, 9, 20))
+    assert res[0].valid == utc(2021, 9, 20)
+    assert len(res) == 2
+    assert res[1].valid == utc(2021, 9, 20, 1)
+
+
+def test_multiline_b_header():
+    """Test that we can deal with a multi-line B header."""
+    utcnow = utc(2021, 9, 20, 12)
+    prod = parser(get_test_file("SHEF/B_multi.txt"), utcnow=utcnow)
+    assert len(prod.data) == 42
+
+
+def test_cs_timezone():
+    """Test that we can handle standard time."""
+    msg = ".E GDMM5 20210919 CS DH1948/TAIRG/DIN06/   70/   67/   67"
+    res = process_message_e(msg, utc(2021, 9, 20))
+    # 748 PM CST -> 848 PM CDT -> 0148 UTC
+    assert res[0].valid == utc(2021, 9, 20, 1, 48)
+
+
+def test_qualifier():
+    """Test the qualifier logic."""
+    msg = ".AR SHPP1 20210925 Z DH06/DC202109210148/DUE/DQG/QIIFE 151000.0"
+    res = process_message_a(msg)
+    assert res[0].qualifier == "G"
