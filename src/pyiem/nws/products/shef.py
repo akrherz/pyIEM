@@ -307,7 +307,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
             continue
         # There can only be one physical element for E messages
         if diction.physical_element is None and token[0].isalpha():
-            diction.physical_element = token[:2]
+            diction.consume_code(token)
             continue
         # We should be dealing with data now?
         res = token.strip().split()
@@ -369,7 +369,7 @@ def process_message_b(message, utcnow=None):
         if process_modifiers(token, current_diction, valid):
             continue
         # Else, we have a new diction!
-        current_diction.physical_element = token[:2]
+        current_diction.consume_code(token)
         # Set it into our dictions
         dictions.append(current_diction.copy())
     # Add silly one to prevent an off-by-one
@@ -432,9 +432,8 @@ def process_message_a(message, utcnow=None):
             continue
         if process_modifiers(text, diction, valid):
             continue
-        pe = text[:2]
         elem = diction.copy()
-        elem.physical_element = pe
+        elem.consume_code(text)
         elem.str_value = text.split()[1]
         compute_num_value(elem)
         elements.append(elem)

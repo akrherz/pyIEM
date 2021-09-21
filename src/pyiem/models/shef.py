@@ -7,6 +7,9 @@ from datetime import datetime
 # third party
 from pydantic import BaseModel, Field
 
+# Local
+from pyiem.reference import shef_send_codes
+
 
 class SHEFElement(BaseModel):
     """A PEDTSEP Element."""
@@ -26,3 +29,26 @@ class SHEFElement(BaseModel):
     estimated: bool = Field(False)
     unit_convention: str = Field("E")  # DU
     qualifier: str = Field(None)  # DQ
+
+    def consume_code(self, text):
+        """Fill out element based on provided text."""
+        # Ensure we have no cruft taging along
+        text = text.strip().split()[0]
+        if text.startswith("D"):
+            # Reserved per 3.3.1
+            raise ValueError(f"Cowardly refusing to set D {text}")
+        # Over-ride for some special codes
+        text = shef_send_codes.get(text, text)
+        length = len(text)
+        # Always present
+        self.physical_element = text[:2]
+        if length >= 3:
+            self.duration = text[2]
+        if length >= 4:
+            self.type = text[3]
+        if length >= 5:
+            self.source = text[4]
+        if length >= 6:
+            self.extremum = text[5]
+        if length >= 7:
+            self.probability = text[6]
