@@ -8,6 +8,12 @@ Formats
 .B - multiple station, multiple parameter, header driven
 .E - single station, single parameter, evenly spaced time series
 
+Implementation Notes
+--------------------
+
+- The IEM uses a nomenclature of 0.0001 float value to represent Trace values,
+not the 0.001 that SHEF does.
+
 TODO List
 ---------
  - Table 7 has defaults for PEDTSEP
@@ -36,6 +42,7 @@ from typing import List
 from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
+from pyiem.reference import TRACE_VALUE
 from pyiem.util import LOG
 
 # Table 8
@@ -155,7 +162,14 @@ def parse_station_valid(text, utcnow):
     """
     tokens = text.split()
     station = tokens[1]
-    valid = make_date(tokens[2], utcnow)
+    # Ensure that station is not all digits as we are likely missing station
+    if all(x.isdigit() for x in station):
+        raise InvalidSHEFEncoding(f"3.1 No station in '{text}'")
+    timestamp = tokens[2]
+    if all(x.isalpha() for x in timestamp):
+        raise InvalidSHEFEncoding(f"3.2 No timestamp in '{text}'")
+    # Ensure that the timestamp is all numbers
+    valid = make_date(timestamp, utcnow)
     # 4.1.4 Timezone is optional, default to Z
     if len(tokens) >= 4 and tokens[3] in TIMEZONES:
         tzinfo = ZoneInfo(TIMEZONES[tokens[3]])
@@ -320,6 +334,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     # Create element object to track as we parse through the message
     diction = SHEFElement(station=station, valid=valid)
     for token in tokens:
+        token = token.lstrip()
         if process_modifiers(token, diction, valid):
             continue
         if token.startswith("DI"):
@@ -467,7 +482,7 @@ def process_message_a(message, utcnow=None):
     return elements
 
 
-def process_messages(func, prod, messages):
+def process_messages(func, prod, messages) -> int:
     """Safe frontend to do message processing."""
     errors = 0
     for message in messages:
@@ -490,6 +505,7 @@ def process_messages(func, prod, messages):
             LOG.error(exp)
             cstr.seek(0)
             prod.warnings.append(cstr.getvalue())
+    return len(prod.data)
 
 
 def parse_A(prod):
@@ -499,10 +515,10 @@ def parse_A(prod):
     for line in prod.unixtext.split("\n"):
         # New Message!
         if line.startswith(".AR ") or line.startswith(".A "):
-            messages.append(line)
+            messages.append(strip_comments(line))
             continue
         if line.startswith(".A"):  # continuation
-            messages[-1] += f"/{line.split(maxsplit=1)[1]}"
+            messages[-1] += f"/{strip_comments(line).split(maxsplit=1)[1]}"
 
     process_messages(process_message_a, prod, messages)
 
@@ -556,8 +572,13 @@ def compute_num_value(element):
     # 5.1.1
     if element.str_value in ["-9999", "M", "MM", ""]:
         return
-    if element.str_value.endswith("E"):
-        element.estimated = True
+    # Can trace
+    if element.str_value == "T":
+        element.num_value = TRACE_VALUE
+        return
+    # 4.4.7 Data Elements
+    if element.str_value[-1].isalpha():
+        element.qualifier = element.str_value[-1]
         element.str_value = element.str_value[:-1]
     # 7.4.6 Paired Element!
     if element.physical_element in PAIRED_PHYSICAL_CODES:
@@ -576,10 +597,14 @@ def compute_num_value(element):
         if value > -9998:
             element.num_value = value
         return
-    try:
-        element.num_value = float(element.str_value)
-    except ValueError:
-        LOG.info("Converting '%s' to float failed", element.str_value)
+    element.num_value = float(element.str_value)
+    # 5.1.2 Precip Trace
+    if (
+        element.physical_element in ["PC", "PP", "PY"]
+        and element.num_value
+        and abs(element.num_value - 0.001) < 0.0001
+    ):
+        element.num_value = TRACE_VALUE
 
 
 def _parse(prod):

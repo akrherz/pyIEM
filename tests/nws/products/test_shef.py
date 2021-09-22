@@ -2,6 +2,7 @@
 # stdlib
 from datetime import timedelta
 
+import mock
 import pytest
 from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.nws.products.shef import (
@@ -11,8 +12,11 @@ from pyiem.nws.products.shef import (
     process_message_a,
     process_message_b,
     process_message_e,
+    process_messages,
     process_modifiers,
+    strip_comments,
 )
+from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
@@ -69,7 +73,7 @@ def test_seconds():
 
 def test_dh24():
     """Test that DH24 is handled properly."""
-    msg = ".A YCPC1 210726 PD DH240000 /PCIRRZZ 6.89:"
+    msg = ".A YCPC1 210726 PD DH240000 /PCIRRZZ 6.89"
     res = process_message_a(msg, utc(2021, 9, 20, 1, 1))
     assert res[0].valid == utc(2021, 7, 27, 7)
 
@@ -120,7 +124,7 @@ def test_5_4_2():
     res = process_message_b(msg, utc(2021, 10, 11))
     assert res[0].valid == utc(2021, 10, 11, 13)
     assert res[1].valid == utc(2021, 10, 11, 1)
-    assert res[1].estimated is True
+    assert res[1].qualifier == "E"
 
     msg = (
         ".B PDR 0807 P DH05/SW/PC/DUS/TA\n"
@@ -399,3 +403,53 @@ def test_a_dh_problem():
     msg = ".A DVT 0921 MS DH0800 DVH13 /TAVRZN 69"
     res = process_message_a(msg)
     assert res[0].physical_element == "TA"
+
+
+def test_process_messages_with_lots_of_errors():
+    """Test that our error handling works."""
+    messages = [".A DVT DH0800/TAVRZN 69"] * 4
+    messages.append(".A DVT DH/TAVRZN 69")
+    prod = mock.Mock()
+    prod.utcnow = utc()
+    prod.data = []
+    prod.warnings = []
+    assert process_messages(process_message_a, prod, messages) == 0
+    assert prod.warnings
+    assert not prod.data
+
+
+def test_strip_comments():
+    """Test that a colon does not trip us up!"""
+    msg = ".A SNPC1 210921 PD DH170500 /TA 85:"
+    res = strip_comments(msg)
+    assert res == ".A SNPC1 210921 PD DH170500 /TA 85"
+
+
+def test_e_spaced_din():
+    """Test that this DIN with a space does not trip us up."""
+    msg = ".E RDCW2 210922 Z DH010000 /PPHRR/ DIH1 / 0.12"
+    res = process_message_e(msg)
+    assert res[0].valid == utc(2021, 9, 22, 1)
+
+
+def test_trace():
+    """Test that Trace values are handled."""
+    msg = ".A UBW 210921 L DH1800/PP 0.05/SF 0.2/SD T/DC2109211739"
+    res = process_message_a(msg)
+    assert abs(res[2].num_value - TRACE_VALUE) < 0.0001
+
+
+def test_a_no_station():
+    """Test that we raise a SHEF Exception when there is no station."""
+    msg = ".A  20210921 Z DH2200/  1982.43"
+    with pytest.raises(InvalidSHEFEncoding) as exp:
+        process_message_a(msg)
+    assert exp.match("^3.1")
+
+
+def test_a_no_time():
+    """Test that we raise a SHEF Exception when there is no timestamp."""
+    msg = ".A DMX Z DH2200/  1982.43"
+    with pytest.raises(InvalidSHEFEncoding) as exp:
+        process_message_a(msg)
+    assert exp.match("^3.2")
