@@ -30,6 +30,7 @@ class SHEFElement(BaseModel):
     unit_convention: str = Field("E")  # DU
     qualifier: str = Field(None)  # DQ
     comment: str = Field(None)
+    raw: str = Field(None)  # The SHEF message
 
     def consume_code(self, text):
         """Fill out element based on provided text."""

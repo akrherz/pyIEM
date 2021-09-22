@@ -392,11 +392,13 @@ def test_b_datetime():
     msg = (
         ".BR BRO 210921 /HP/TW/QT\n"
         "MADT2  103.85 / 85.10 / 0.88 :ANZALDUAS DAM - RELEASE IN 1000S\n"
+        "XXXT2  DHM / 103.85 / 85.10 / 0.88\n"
         ".END"
     )
     res = process_message_b(msg)
     assert res[0].valid == utc(2021, 9, 21, 12)
     assert res[2].str_value == "0.88"
+    assert res[3].valid is None
 
 
 def test_a_dh_problem():
@@ -404,6 +406,7 @@ def test_a_dh_problem():
     msg = ".A DVT 0921 MS DH0800 DVH13 /TAVRZN 69"
     res = process_message_a(msg)
     assert res[0].physical_element == "TA"
+    assert res[0].raw == msg
 
 
 def test_process_messages_with_lots_of_errors():
@@ -480,3 +483,9 @@ def test_retained_comment_field():
     res = process_message_a(msg)
     assert abs(res[0].num_value - 0.92) < 0.001
     assert res[0].comment == "LAT=37.99 LON=-79.12  2 E Greenville  IFLOWS"
+
+
+def test_210922_rr3fgf():
+    """Test successful parsing of RR3FGF."""
+    prod = parser(get_test_file("SHEF/RR3FGF.txt"))
+    assert prod.data[0].station == "GRFN8"

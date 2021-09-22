@@ -13,15 +13,18 @@ Implementation Notes
 
 - The IEM uses a nomenclature of 0.0001 float value to represent Trace values,
 not the 0.001 that SHEF does.
+- When `DH` is blank or `DHM`, this generates a SHEFElement with a None valid
+attribute.  This is ambiguous behavior to consider further.
 
 TODO List
 ---------
  - 4.4.4 DIE special end-of-month specifier
  - 5.1.4 how to handle repeated data
- - Handle when R is being specified
+ - Handle when R is being specified in the AR BR ER
  - 5.1.6 revision of a missing value
  - 5.2.1 DR codes, DRE end of month
  - Table 9a D codes
+ - 4.4.1 ugly time logic and DN support
 """
 try:
     from zoneinfo import ZoneInfo  # type: ignore
@@ -145,6 +148,21 @@ def datetime24(dt, replacements):
     )
 
 
+def parse_dh(text, valid):
+    """Account for the craziness of the DH value."""
+    # This is a bit of an not-specified, but used in the wild.
+    if text.strip() in ["", "M"]:
+        return None
+    replacements = {}
+    if len(text) >= 2:
+        replacements["hour"] = int(text[:2])
+    if len(text) >= 4:
+        replacements["minute"] = int(text[2:4])
+    if len(text) >= 6:
+        replacements["second"] = int(text[4:6])
+    return datetime24(valid, replacements)
+
+
 def parse_station_valid(text, utcnow):
     """Parse the first token found in a SHEF observation.
 
@@ -172,39 +190,22 @@ def parse_station_valid(text, utcnow):
     else:
         tzinfo = timezone.utc
         startidx = 3
+    valid = datetime24(valid, {"tzinfo": tzinfo})
     extra = []
     # Look to see what we have here, saving off extra things we can not parse
     if len(tokens) == startidx:
-        replacements = {"tzinfo": tzinfo}
-        replacements["hour"] = 12 if tzinfo == timezone.utc else 0
+        replacements = {"hour": 12 if tzinfo == timezone.utc else 0}
         valid = datetime24(valid, replacements)
         return station, valid, extra
     workdone = False
     for token in tokens[startidx:]:
         pe = token[:2]
         # Default replacement from above
-        replacements = {"tzinfo": tzinfo}
         if pe.startswith("DH"):
-            meat = token[2:]
-            if len(meat) == 4:
-                replacements["hour"] = int(meat[:2])
-                replacements["minute"] = int(meat[2:])
-            elif len(meat) == 2:
-                replacements["hour"] = int(meat[:2])
-                replacements["minute"] = 0
-            else:
-                replacements["hour"] = int(meat[:2])
-                replacements["minute"] = int(meat[2:4])
-                replacements["second"] = int(meat[4:6])
-            valid = datetime24(valid, replacements)
+            valid = parse_dh(token[2:], valid)
             workdone = True
         elif pe.startswith("DM"):
-            meat = token[2:]
-            if len(meat) == 6:
-                replacements["month"] = int(meat[:2])
-                replacements["day"] = int(meat[2:4])
-                replacements["hour"] = int(meat[4:6])
-            valid = datetime24(valid, replacements)
+            valid = parse_dm(token[2:], valid)
             workdone = True
         else:
             extra.append(token)
@@ -228,6 +229,22 @@ def process_di(text):
     else:
         raise ValueError(f"Unhandled DI of '{text}")
     return timedelta(**args)
+
+
+def parse_dm(text, valid):
+    """Handle the DM one."""
+    if text.strip() in ["", "M"]:
+        return None
+    # Updating the timestamp as we go here
+    replacements = {
+        "month": int(text[:2]),
+        "day": int(text[2:4]),
+    }
+    if len(text) >= 6:
+        replacements["hour"] = int(text[4:6])
+    if len(text) >= 8:
+        replacements["minute"] = int(text[6:8])
+    return datetime24(valid, replacements)
 
 
 def process_modifiers(text, diction, basevalid):
@@ -260,21 +277,9 @@ def process_modifiers(text, diction, basevalid):
         diction.valid = datetime24(diction.valid, replacements)
 
     elif text.startswith("DH"):
-        replacements = {"hour": int(text[2:4])}
-        if len(text) == 6:
-            replacements["minute"] = int(text[4:6])
-        diction.valid = datetime24(diction.valid, replacements)
+        diction.valid = parse_dh(text[2:], diction.valid)
     elif text.startswith("DM"):
-        # Updating the timestamp as we go here
-        replacements = {
-            "month": int(text[2:4]),
-            "day": int(text[4:6]),
-        }
-        if len(text) >= 8:
-            replacements["hour"] = int(text[6:8])
-        if len(text) >= 10:
-            replacements["minute"] = int(text[8:10])
-        diction.valid = datetime24(diction.valid, replacements)
+        diction.valid = parse_dm(text[2:], diction.valid)
     elif text.startswith("DQ"):
         diction.qualifier = text[2]
     elif text.startswith("DU"):
@@ -346,6 +351,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
         for tokens2 in res:
             elem = diction.copy()
             elem.str_value = tokens2
+            elem.raw = message
             compute_num_value(elem)
             elements.append(elem)
             diction.valid += interval
@@ -379,7 +385,7 @@ def clean_b_headerline(text):
     return "/".join(tokens)
 
 
-def process_message_b(message, utcnow=None):
+def process_message_b(message, utcnow=None) -> List[SHEFElement]:
     """Convert the message into an object."""
     # line one has the magic
     lines = message.split("\n")
@@ -436,6 +442,7 @@ def process_message_b(message, utcnow=None):
                 elem = diction.copy()
                 elem.station = station
                 elem.str_value = text.strip()
+                elem.raw = headerline + "\n" + section
                 compute_num_value(elem)
                 elements.append(elem)
                 dictioni += 1
@@ -443,7 +450,7 @@ def process_message_b(message, utcnow=None):
     return elements
 
 
-def process_message_a(message, utcnow=None):
+def process_message_a(message, utcnow=None) -> List[SHEFElement]:
     """Convert the message into an object."""
     tokens = message.split("/")
     # Too short
@@ -467,6 +474,7 @@ def process_message_a(message, utcnow=None):
         elem = diction.copy()
         elem.consume_code(text)
         elem.str_value = "" if len(parts) == 1 else parts[1]
+        elem.raw = message
         compute_num_value(elem)
         elements.append(elem)
 
@@ -514,7 +522,10 @@ def parse_A(prod):
             messages.append(strip_comments(line))
             continue
         if line.startswith(".A"):  # continuation
-            messages[-1] += f"/{strip_comments(line).split(maxsplit=1)[1]}"
+            # Accounts for a line with no data, just comments
+            meat = strip_comments(line).split(maxsplit=1)
+            if len(meat) == 2:
+                messages[-1] += f"/{meat[1]}"
 
     process_messages(process_message_a, prod, messages)
 
@@ -634,7 +645,7 @@ class SHEFProduct(TextProduct):
     ):
         """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        # Storage of parsed results.
+        # Storage of SHEFElements (one variable, one time, one station).
         self.data = []
         _parse(self)
 
