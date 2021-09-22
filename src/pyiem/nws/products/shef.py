@@ -16,9 +16,6 @@ not the 0.001 that SHEF does.
 
 TODO List
 ---------
- - Table 7 has defaults for PEDTSEP
- - Table 2 has the two character send-codes used for PE starting with S
- - 4.1.2 the four codes to handle what lat/lon mean in the encoding
  - 4.4.4 DIE special end-of-month specifier
  - 5.1.2 Precipitation Data !important
  - 5.1.4 how to handle repeated data
@@ -81,7 +78,7 @@ TIMEZONES = {
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
 
 
-def make_date(text, now):
+def make_date(text, now=None):
     """Make the text date unambiguous!"""
     if now is None:
         now = date.today()
@@ -542,7 +539,9 @@ def parse_B(prod):
             # We have more headers, gasp
             messages[-1] += meat
             continue
-        if line.startswith(".END"):
+        # Ugly hack around Chapter 4 wanting all-non comments to be uppercase
+        # but SHEF manual is not precise saying this needs to be in caps
+        if line.upper().startswith(".END"):
             inmessage = False
             continue
         if inmessage:
@@ -598,13 +597,12 @@ def compute_num_value(element):
             element.num_value = value
         return
     element.num_value = float(element.str_value)
-    # 5.1.2 Precip Trace
+    # 5.1.2 Precip is assumed to be in 0.01 inches if an integer is provided
     if (
         element.physical_element in ["PC", "PP", "PY"]
-        and element.num_value
-        and abs(element.num_value - 0.001) < 0.0001
+        and element.str_value.find(".") == -1
     ):
-        element.num_value = TRACE_VALUE
+        element.num_value /= 100.0
 
 
 def _parse(prod):

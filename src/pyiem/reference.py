@@ -715,6 +715,7 @@ DATADIR = os.sep.join([os.path.dirname(__file__), "data", "reference"])
 # so that code introspection works.  Likely a better way!
 shef_physical_codes = {}
 shef_send_codes = {}
+shef_table7 = {}
 state_names = {}
 prodDefinitions = {}
 ncei_state_codes = {}
@@ -730,6 +731,7 @@ class Wrapper:
     _onthefly_dict = [
         "shef_physical_codes",
         "shef_send_codes",
+        "shef_table7",
         "state_names",
         "prodDefinitions",
         "ncei_state_codes",

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 
 # Local
-from pyiem.reference import shef_send_codes
+from pyiem.reference import shef_send_codes, shef_table7
 
 
 class SHEFElement(BaseModel):
@@ -19,10 +19,10 @@ class SHEFElement(BaseModel):
     dv_interval: timedelta = Field(None)  # DV
     physical_element: str = Field(None, length=2)
     duration: str = Field(None)
-    type: str = Field(None)
-    source: str = Field(None)
-    extremum: str = Field(None)
-    probability: str = Field(None)
+    type: str = Field("R")  # Table 7
+    source: str = Field("Z")  # Table 7
+    extremum: str = Field("Z")  # Table 7
+    probability: str = Field("Z")  # Table 7
     str_value: str = Field("")
     num_value: float = Field(None)
     data_created: datetime = Field(None)
@@ -37,13 +37,16 @@ class SHEFElement(BaseModel):
         if text.startswith("D"):
             # Reserved per 3.3.1
             raise ValueError(f"Cowardly refusing to set D {text}")
-        # Over-ride for some special codes
+        # Table 2: Override for some special codes
         text = shef_send_codes.get(text, text)
         length = len(text)
         # Always present
         self.physical_element = text[:2]
         if length >= 3:
             self.duration = text[2]
+        else:
+            # SHEF Manual Table 7 provides duration defaults
+            self.duration = shef_table7.get(self.physical_element, "I")
         if length >= 4:
             self.type = text[3]
         if length >= 5:
@@ -56,3 +59,21 @@ class SHEFElement(BaseModel):
         # 4.4.3 has to be a V, or else
         if self.dv_interval and self.duration != "V":
             self.dv_interval = None
+
+    def lonlat(self):
+        """For 'Stranger Locations', return longitude and latitude."""
+        # 4.1.2  Must be 8 char
+        char0 = self.station[0]
+        if (
+            len(self.station) != 8
+            or char0 not in ["W", "X", "Y", "Z"]
+            or any(x.isalpha() for x in self.station[1:])
+        ):
+            return None, None
+        lat = float(self.station[1:4]) / 10.0
+        lon = float(self.station[4:]) / 10.0
+        if char0 in ["W", "X"]:
+            lon *= -1
+        if char0 in ["W", "Z"]:
+            lat *= -1
+        return lon, lat

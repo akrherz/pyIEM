@@ -28,3 +28,20 @@ def test_sevenchar(elem):
     """Test that we can consume a seven char code."""
     elem.consume_code("QRHRZXA")
     assert elem.probability == "A"
+
+
+def test_lonlat(elem):
+    """Test that we can process stranger locations."""
+    elem.station = "X3080995"
+    res = elem.lonlat()
+    assert abs(res[0] - -99.5) < 0.01
+    assert abs(res[1] - 30.8) < 0.01
+
+    elem.station = "W3080995"
+    res = elem.lonlat()
+    assert abs(res[0] - -99.5) < 0.01
+    assert abs(res[1] - -30.8) < 0.01
+
+    elem.station = "W30800994A"
+    res = elem.lonlat()
+    assert res[0] is None

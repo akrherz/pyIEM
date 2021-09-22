@@ -6,6 +6,7 @@ import mock
 import pytest
 from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.nws.products.shef import (
+    make_date,
     parse_station_valid,
     parser,
     process_di,
@@ -407,7 +408,7 @@ def test_a_dh_problem():
 
 def test_process_messages_with_lots_of_errors():
     """Test that our error handling works."""
-    messages = [".A DVT DH0800/TAVRZN 69"] * 4
+    messages = [".A DVT DH0800/TAVRZN 69"] * 10  # need enough to loop over 5
     messages.append(".A DVT DH/TAVRZN 69")
     prod = mock.Mock()
     prod.utcnow = utc()
@@ -434,8 +435,9 @@ def test_e_spaced_din():
 
 def test_trace():
     """Test that Trace values are handled."""
-    msg = ".A UBW 210921 L DH1800/PP 0.05/SF 0.2/SD T/DC2109211739"
+    msg = ".A UBW 210921 L DH1800/PC 50/SF 0.2/SD T/DC2109211739"
     res = process_message_a(msg)
+    assert abs(res[0].num_value - 0.50) < 0.0001
     assert abs(res[2].num_value - TRACE_VALUE) < 0.0001
 
 
@@ -453,3 +455,9 @@ def test_a_no_time():
     with pytest.raises(InvalidSHEFEncoding) as exp:
         process_message_a(msg)
     assert exp.match("^3.2")
+
+
+def test_make_date():
+    """Test that exception is raised for too short of a DH message."""
+    with pytest.raises(InvalidSHEFEncoding):
+        make_date("DH")
