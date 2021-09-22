@@ -142,10 +142,10 @@ def test_5_4_2():
 def test_7_4_7():
     """Test an evolving time series."""
     msg = (
-        ".A COMT2 850327 C DH07/HG 1.89/DH1422/HG 2.44/DH1635/HG 8.71\n"
-        ".A1 DH1707/HG 7.77/DH1745/HG 11.42/DH2022/HG 4.78/DH2315\n"
-        ".A2 HG 12.55/DD280020/HG 17.02/DH0140/HG 12.00/DH0420\n"
-        ".A3 HG 27.21/DH0700/HG 10.55"
+        ".A COMT2 850327 C DH07/HG 1.89/DH1422/HG 2.44/DH1635/HG 8.71/"
+        "DH1707/HG 7.77/DH1745/HG 11.42/DH2022/HG 4.78/DH2315/"
+        "HG 12.55/DD280020/HG 17.02/DH0140/HG 12.00/DH0420/"
+        "HG 27.21/DH0700/HG 10.55"
     )
     res = process_message_a(msg, utc(1985, 3, 27))
     assert res[-1].valid == utc(1985, 3, 28, 13)
@@ -409,7 +409,7 @@ def test_a_dh_problem():
 def test_process_messages_with_lots_of_errors():
     """Test that our error handling works."""
     messages = [".A DVT DH0800/TAVRZN 69"] * 10  # need enough to loop over 5
-    messages.append(".A DVT DH/TAVRZN 69")
+    messages.insert(0, ".A DVT DH/TAVRZN 69")
     prod = mock.Mock()
     prod.utcnow = utc()
     prod.data = []
@@ -435,9 +435,10 @@ def test_e_spaced_din():
 
 def test_trace():
     """Test that Trace values are handled."""
-    msg = ".A UBW 210921 L DH1800/PC 50/SF 0.2/SD T/DC2109211739"
+    msg = ".A UBW 210921 L DH1800/PC 50/SF *****/SD T/DC2109211739"
     res = process_message_a(msg)
     assert abs(res[0].num_value - 0.50) < 0.0001
+    assert res[1].num_value is None
     assert abs(res[2].num_value - TRACE_VALUE) < 0.0001
 
 
@@ -461,3 +462,21 @@ def test_make_date():
     """Test that exception is raised for too short of a DH message."""
     with pytest.raises(InvalidSHEFEncoding):
         make_date("DH")
+
+
+def test_210922_rtpeax():
+    """Test that we do not raise an exception for parsing this."""
+    prod = parser(get_test_file("SHEF/RTPEAX.txt"))
+    assert not prod.warnings
+    assert len(prod.data) == 255  # assumed correct
+
+
+def test_retained_comment_field():
+    """Test that we support this ugly fun."""
+    msg = (
+        ".A STCV2 0922 Z DH1210/DVH24/"
+        'PPV 0.92"LAT=37.99 LON=-79.12  2 E Greenville  IFLOWS "/'
+    )
+    res = process_message_a(msg)
+    assert abs(res[0].num_value - 0.92) < 0.001
+    assert res[0].comment == "LAT=37.99 LON=-79.12  2 E Greenville  IFLOWS"

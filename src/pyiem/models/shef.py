@@ -29,6 +29,7 @@ class SHEFElement(BaseModel):
     depth: int = Field(None)
     unit_convention: str = Field("E")  # DU
     qualifier: str = Field(None)  # DQ
+    comment: str = Field(None)
 
     def consume_code(self, text):
         """Fill out element based on provided text."""

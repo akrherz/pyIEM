@@ -17,15 +17,11 @@ not the 0.001 that SHEF does.
 TODO List
 ---------
  - 4.4.4 DIE special end-of-month specifier
- - 5.1.2 Precipitation Data !important
  - 5.1.4 how to handle repeated data
  - Handle when R is being specified
  - 5.1.6 revision of a missing value
  - 5.2.1 DR codes, DRE end of month
- - 5.2.6 evolving time
  - Table 9a D codes
-
-
 """
 try:
     from zoneinfo import ZoneInfo  # type: ignore
@@ -35,6 +31,7 @@ from datetime import date, timezone, datetime, timedelta
 from io import StringIO
 import traceback
 from typing import List
+import re
 
 from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.models.shef import SHEFElement
@@ -76,6 +73,7 @@ TIMEZONES = {
     "Z": "Etc/UTC",
 }
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
+RETAINED_COMMENT_RE = re.compile(r"['\"](.*)['\"]")
 
 
 def make_date(text, now=None):
@@ -361,7 +359,8 @@ def strip_comments(line):
     while pos > -1:
         pos2 = line[pos + 1 :].find(":")
         if pos2 > -1:
-            line = line[:pos] + line[pos + pos2 + 2 :]
+            # Add space to keep things seperated
+            line = line[:pos] + " " + line[pos + pos2 + 2 :]
         else:
             # Unbalanced
             line = line[:pos]
@@ -464,7 +463,7 @@ def process_message_a(message, utcnow=None):
             continue
         if process_modifiers(text, diction, valid):
             continue
-        parts = text.split()
+        parts = text.split(maxsplit=1)
         elem = diction.copy()
         elem.consume_code(text)
         elem.str_value = "" if len(parts) == 1 else parts[1]
@@ -568,8 +567,18 @@ def parse_E(prod):
 
 def compute_num_value(element):
     """Attempt to make this into a float."""
-    # 5.1.1
-    if element.str_value in ["-9999", "M", "MM", ""]:
+    # 5.1.1, period is non-standard
+    if element.str_value in ["-9999", "M", "MM", "", "+", "-", "."]:
+        return
+    # 5.3.2 retained comment
+    m = RETAINED_COMMENT_RE.search(element.str_value)
+    if m:
+        meat = m.group()
+        element.str_value = element.str_value.replace(meat, "")
+        element.comment = meat.replace("'", "").replace('"', "").strip()
+
+    # All stars appears in the wild and is supported by SHEFIT
+    if all(x == "*" for x in element.str_value):
         return
     # Can trace
     if element.str_value == "T":
