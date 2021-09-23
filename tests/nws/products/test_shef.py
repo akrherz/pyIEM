@@ -81,12 +81,12 @@ def test_dh24():
 
 def test_encoded_pairs():
     """Test that we can handle this wild encoding."""
-    msg = ".A AMIT2 0124 DH12/DC012412/TB 6.065/TV 12.056/"
+    msg = ".A AMIT2 0124 DH12/DC201101241200/TB 6.065/TV 12.056/"
     res = process_message_a(msg)
     assert res[0].depth == 6
     assert abs(res[0].num_value - 65) < 0.01
 
-    msg = ".A AMIT2 0124 DH12/DC012412/TB -6.005/TV -12.9999/"
+    msg = ".A AMIT2 0124 DH12/DC1101241200/TB -6.005/TV -12.9999/"
     res = process_message_a(msg)
     assert res[0].depth == 6
     assert abs(res[0].num_value - -5) < 0.01
@@ -181,7 +181,7 @@ def test_doubleslash():
         ".B LCH 0920 C DH0110/HGIRZ/HPIRZ\n"
         ":\n"
         ": TOLEDO BEND RES\n"
-        "BKLT2 DM09191600//168.02:\n"
+        "BKLT2 DMM//168.02:\n"
         ".END"
     )
     res = process_message_b(msg, utc(2021, 9, 20))
@@ -489,3 +489,20 @@ def test_210922_rr3fgf():
     """Test successful parsing of RR3FGF."""
     prod = parser(get_test_file("SHEF/RR3FGF.txt"))
     assert prod.data[0].station == "GRFN8"
+
+
+def test_b_missing():
+    """Test some trickiness with missing values."""
+    msg = (
+        ".BR MFR 0923 P DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ\n"
+        "ASHO3 :Ashland      1750 :           M /    M /    M /    M /    M\n"
+        "GLYO3 :Glide COOP    742 : DH0800    M /    M / 0.00 /    M /    M"
+    )
+    res = process_message_b(msg)
+    assert res[7].str_value == "0.00"
+
+
+def test_210923_rr2aly():
+    """Test that we can parse RR2ALY."""
+    prod = parser(get_test_file("SHEF/RR2ALY.txt"))
+    assert not prod.data

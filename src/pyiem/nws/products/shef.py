@@ -99,33 +99,29 @@ def make_date(text, now=None):
     return date(now.year, month, day)
 
 
-def parse_datetime(text, basevalid):
-    """Convert the DC/DM element into a timestamp."""
-    # 4.4.2 If the hour number is NOT given, the default is hour 24 if a
-    # time zone was given previously, else it is 12 if the time zone was
-    # given as Zulu time. This allows for an end-of-day value for mean or
-    # accumulated data types.
+def parse_dc(text, basevalid):
+    """Convert the DC element into a timestamp."""
     text = text.strip()
+    replacements = {}
     # If length is 4, only one option
-    if len(text) == 4:
-        return basevalid.replace(
-            month=int(text[:2]),
-            day=int(text[2:]),
-        )
-    if len(text) == 6:
-        return basevalid.replace(
-            month=int(text[:2]),
-            day=int(text[2:4]),
-            hour=int(text[4:]),
-        )
-    # TODO better handle year and century here, add tests around 1 Jan
-    valid = basevalid.replace(
-        month=int(text[-8:-6]),
-        day=int(text[-6:-4]),
-        hour=int(text[-4:-2]),
-        minute=int(text[-2:]),
-    )
-    return valid
+    if len(text) <= 8:
+        replacements["month"] = int(text[:2])
+        replacements["day"] = int(text[2:4])
+        if len(text) >= 6:
+            replacements["hour"] = int(text[4:6])
+        if len(text) == 8:
+            replacements["minute"] = int(text[6:8])
+    elif len(text) >= 10:
+        replacements["minute"] = int(text[-2:])
+        replacements["hour"] = int(text[-4:-2])
+        replacements["day"] = int(text[-6:-4])
+        replacements["month"] = int(text[-8:-6])
+        if len(text) == 10:
+            replacements["year"] = 2000 + int(text[:2])
+        if len(text) == 12:
+            replacements["year"] = int(text[:4])
+
+    return datetime24(basevalid, replacements)
 
 
 def datetime24(dt, replacements):
@@ -264,7 +260,7 @@ def process_modifiers(text, diction, basevalid):
     if not text.startswith("D"):
         return False
     if text.startswith("DC"):
-        diction.data_created = parse_datetime(text[2:], diction.valid)
+        diction.data_created = parse_dc(text[2:], diction.valid)
     elif text.startswith("DD"):
         # Updating the timestamp as we go here
         replacements = {
@@ -432,10 +428,15 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                     text = text.replace(station, "").strip()
                 # 5.2.2 Observational time change via DM nomenclature
                 if text.startswith("D"):
+                    # Do we have two data parts here
+                    parts = text.split(maxsplit=1)
                     # Uh oh, local diction modifier, sigh
                     diction = diction.copy()
-                    process_modifiers(text, diction, valid)
-                    continue
+                    process_modifiers(parts[0], diction, valid)
+                    if len(parts) == 1:
+                        continue
+                    else:
+                        text = parts[1]
                 # Extra trailing garbage
                 if text == "" and diction is None:
                     continue
@@ -569,9 +570,12 @@ def parse_E(prod):
             messages.append(strip_comments(line))
             continue
         if messages and line.startswith(".E"):  # continuation
-            if not messages[-1].endswith("/"):
-                messages[-1] += "/"
-            messages[-1] += f" {strip_comments(line.split(maxsplit=1)[1])}"
+            # Accounts for a line with no data, just comments
+            tokens = strip_comments(line).split(maxsplit=1)
+            # Empty line
+            if len(tokens) == 1:
+                continue
+            messages[-1] += f"/{tokens[1]}"
 
     process_messages(process_message_e, prod, messages)
 
