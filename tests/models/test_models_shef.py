@@ -45,3 +45,10 @@ def test_lonlat(elem):
     elem.station = "W30800994A"
     res = elem.lonlat()
     assert res[0] is None
+
+
+def test_varname(elem):
+    """Test the varname conversion."""
+    assert elem.varname() is None
+    elem.consume_code("TAI")
+    assert elem.varname() == "TAIRZZZ"

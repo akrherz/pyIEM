@@ -33,6 +33,15 @@ class SHEFElement(BaseModel):
     narrative: str = Field(None)  # Free text after some Wxcoder/IVROCS
     raw: str = Field(None)  # The SHEF message
 
+    def varname(self) -> str:
+        """Return the Full SHEF Code."""
+        if self.physical_element is None or self.duration is None:
+            return None
+        return (
+            f"{self.physical_element}{self.duration}{self.type}{self.source}"
+            f"{self.extremum}{self.probability}"
+        )
+
     def consume_code(self, text):
         """Fill out element based on provided text."""
         # Ensure we have no cruft taging along

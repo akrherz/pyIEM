@@ -435,8 +435,7 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                     process_modifiers(parts[0], diction, valid)
                     if len(parts) == 1:
                         continue
-                    else:
-                        text = parts[1]
+                    text = parts[1]
                 # Extra trailing garbage
                 if text == "" and diction is None:
                     continue
@@ -563,9 +562,9 @@ def parse_A(prod):
             narrative += line[1:].strip() + " "
 
     process_messages(process_message_a, prod, messages)
-    if len(messages) == 1 and narrative != "":
+    if len(messages) == 1 and narrative.strip() not in ["", "END OF REPORT"]:
         for data in prod.data:
-            data.narrative = narrative.strip()
+            data.narrative = f"{messages[0]}\n{narrative.strip()}"
 
 
 def parse_B(prod):
