@@ -451,14 +451,44 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
     return elements
 
 
+def slash_tokenize(message):
+    """Carefully discover tokens."""
+    tokens = []
+    accum = ""
+    i = 0
+    size = len(message)
+    # In-line comments are already gone at this point
+    while i < size:
+        char = message[i]
+        if char == "/":
+            tokens.append(accum)
+            accum = ""
+        elif char in ['"', "'"]:
+            # We are in description block, find the end of this madness
+            pos = message[i + 1 :].find(char)
+            if pos > -1:
+                accum += message[i : i + pos + 2]
+                i += pos + 1
+        else:
+            accum += char
+        i += 1
+    if len(accum) > 0:
+        tokens.append(accum)
+    return tokens
+
+
 def process_message_a(message, utcnow=None) -> List[SHEFElement]:
     """Convert the message into an object."""
-    tokens = message.split("/")
+    # Reading by char appears to be necessary pain until something better
+    tokens = slash_tokenize(message)
     # Too short
     if len(tokens) == 1:
         return []
     # First tokens should have some mandatory stuff
     station, valid, extra = parse_station_valid(tokens[0], utcnow)
+    if valid is None:
+        # This is an empty message
+        return []
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
@@ -517,6 +547,7 @@ def parse_A(prod):
     """Parse A format SHEF data."""
     # Line by Line collecting up what we find!
     messages = []
+    narrative = ""
     for line in prod.unixtext.split("\n"):
         # New Message!
         if line.startswith(".AR ") or line.startswith(".A "):
@@ -527,8 +558,14 @@ def parse_A(prod):
             meat = strip_comments(line).split(maxsplit=1)
             if len(meat) == 2:
                 messages[-1] += f"/{meat[1]}"
+        # Look for comments coming after the first message
+        if messages and line.startswith(":"):
+            narrative += line[1:].strip() + " "
 
     process_messages(process_message_a, prod, messages)
+    if len(messages) == 1 and narrative != "":
+        for data in prod.data:
+            data.narrative = narrative.strip()
 
 
 def parse_B(prod):
@@ -582,8 +619,8 @@ def parse_E(prod):
 
 def compute_num_value(element):
     """Attempt to make this into a float."""
-    # 5.1.1, period is non-standard
-    if element.str_value in ["-9999", "M", "MM", "", "+", "-", "."]:
+    # 5.1.1, period is non-standard, X is non-standard
+    if element.str_value in ["-9999", "X", "M", "", "+", "-", "."]:
         return
     # 5.3.2 retained comment
     m = RETAINED_COMMENT_RE.search(element.str_value)
@@ -592,8 +629,8 @@ def compute_num_value(element):
         element.str_value = element.str_value.replace(meat, "")
         element.comment = meat.replace("'", "").replace('"', "").strip()
 
-    # All stars appears in the wild and is supported by SHEFIT
-    if all(x == "*" for x in element.str_value):
+    # All stars/dashes appears in the wild and is supported by SHEFIT
+    if all(x in ["*", "-", "M"] for x in element.str_value):
         return
     # Can trace
     if element.str_value == "T":

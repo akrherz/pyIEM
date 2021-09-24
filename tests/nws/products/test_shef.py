@@ -506,3 +506,33 @@ def test_210923_rr2aly():
     """Test that we can parse RR2ALY."""
     prod = parser(get_test_file("SHEF/RR2ALY.txt"))
     assert not prod.data
+
+
+def test_a_empty():
+    """Test that we do not error on an empty A message."""
+    msg = ".A MMRN6 20210923 Z DH/QTIRZ"
+    res = process_message_a(msg)
+    assert not res
+
+
+def test_a_comment_with_slash():
+    """Test this nightmare to support."""
+    msg = (
+        ".A AR338 0922 Z DH2346/DVH06/PPV 0.04"
+        '"LAT=39.24 LON=-76.65  Baltimore/Lansdowne  CWOP "/"'
+    )
+    res = process_message_a(msg)
+    assert abs(res[0].num_value - 0.04) < 0.001
+    assert res[0].comment == "LAT=39.24 LON=-76.65  Baltimore/Lansdowne  CWOP"
+
+
+def test_a_dc_on_own_line():
+    """Test that we can handle this fun."""
+    prod = parser(get_test_file("SHEF/RR3RAH.txt"))
+    assert prod.data[0].str_value == "78"
+
+
+def test_rr3_comment():
+    """Test that we can store the free text comments in WxCoder."""
+    prod = parser(get_test_file("SHEF/RR3DMX.txt"))
+    assert prod.data[0].narrative.find(" safe.") > -1

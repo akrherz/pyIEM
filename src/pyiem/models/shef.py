@@ -29,7 +29,8 @@ class SHEFElement(BaseModel):
     depth: int = Field(None)
     unit_convention: str = Field("E")  # DU
     qualifier: str = Field(None)  # DQ
-    comment: str = Field(None)
+    comment: str = Field(None)  # This is found after the value
+    narrative: str = Field(None)  # Free text after some Wxcoder/IVROCS
     raw: str = Field(None)  # The SHEF message
 
     def consume_code(self, text):
