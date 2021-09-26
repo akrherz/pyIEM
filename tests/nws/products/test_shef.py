@@ -185,7 +185,7 @@ def test_doubleslash():
         ".END"
     )
     res = process_message_b(msg, utc(2021, 9, 20))
-    assert res[1].str_value == "168.02"
+    assert not res
 
 
 def test_invalid():
@@ -398,7 +398,7 @@ def test_b_datetime():
     res = process_message_b(msg)
     assert res[0].valid == utc(2021, 9, 21, 12)
     assert res[2].str_value == "0.88"
-    assert res[3].valid is None
+    assert len(res) == 3
 
 
 def test_a_dh_problem():
@@ -536,3 +536,36 @@ def test_rr3_comment():
     """Test that we can store the free text comments in WxCoder."""
     prod = parser(get_test_file("SHEF/RR3DMX.txt"))
     assert prod.data[0].narrative.find(" safe.") > -1
+
+
+def test_ddm():
+    """Test that DDM is handled properly."""
+    msg = (
+        ".BR ALY 0926 E DH00/TAIRZX/DH08/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ\n"
+        "AQW :North Adams     MA: DDM     /      /   53 /   0.00 /   M /   M"
+    )
+    res = process_message_b(msg)
+    assert not res
+
+
+def test_missing_mmm():
+    """Test another missing combo used in the wind."""
+    msg = (
+        ".BR ATL 0926 ES DH00/TAIRZX/DH07/TAIRZP/PPDRZZ\n"
+        ":Cartersville   :VPC        M /    M / M.MM"
+    )
+    res = process_message_b(msg)
+    assert res[2].num_value is None
+
+
+def test_missing_sequence():
+    """Test what happens when we have a missing in a sequence."""
+    msg = (
+        ".BR PSR 0926 MS DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ\n"
+        "ACYA3 :Arizona City    1525: DHM   /     M /   M /     M/    M/  M\n"
+        "FHLA3 :Fountain Hills  1575: DHM   /     M /   M /     M/    M/  M\n"
+        "GLEA3 :Globe           3660: DH0900/    83 /  59 /  0.20/    M/  M\n"
+        "ROOA3 :Roosevelt 1WNW  2205: DHM   /     M /   M /     M/    M/  M\n"
+    )
+    res = process_message_b(msg, utc(2021, 9, 26))
+    assert res[0].valid == utc(2021, 9, 26, 16)

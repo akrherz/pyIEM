@@ -243,6 +243,21 @@ def parse_dm(text, valid):
     return datetime24(valid, replacements)
 
 
+def parse_dd(text, valid):
+    """Handke the DD one."""
+    if text.strip() in ["", "M"]:
+        return None
+    # Updating the timestamp as we go here
+    replacements = {
+        "day": int(text[:2]),
+    }
+    if len(text) >= 4:
+        replacements["hour"] = int(text[2:4])
+    if len(text) >= 6:
+        replacements["minute"] = int(text[4:6])
+    return datetime24(valid, replacements)
+
+
 def process_modifiers(text, diction, basevalid):
     """Apply modifications based on what the token is telling us.
 
@@ -262,16 +277,7 @@ def process_modifiers(text, diction, basevalid):
     if text.startswith("DC"):
         diction.data_created = parse_dc(text[2:], diction.valid)
     elif text.startswith("DD"):
-        # Updating the timestamp as we go here
-        replacements = {
-            "day": int(text[2:4]),
-        }
-        if len(text) >= 6:
-            replacements["hour"] = int(text[4:6])
-        if len(text) >= 8:
-            replacements["minute"] = int(text[6:8])
-        diction.valid = datetime24(diction.valid, replacements)
-
+        diction.valid = parse_dd(text[2:], diction.valid)
     elif text.startswith("DH"):
         diction.valid = parse_dh(text[2:], diction.valid)
     elif text.startswith("DM"):
@@ -412,6 +418,10 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
         line = strip_comments(line)
         if line.strip() == "" or line.startswith(".END"):
             continue
+        # Recheck in case diction valid got set to None
+        for diction in dictions:
+            if diction is not None and diction.valid is None:
+                diction.valid = valid
         # packed B format, LE SIGH
         for section in line.split(","):
             # Account for // oddity
@@ -433,6 +443,11 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                     # Uh oh, local diction modifier, sigh
                     diction = diction.copy()
                     process_modifiers(parts[0], diction, valid)
+                    # If the above set diction.valid to None, they all go
+                    if diction.valid is None:
+                        for d in dictions:
+                            if d is not None:
+                                d.valid = None
                     if len(parts) == 1:
                         continue
                     text = parts[1]
@@ -443,8 +458,9 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                 elem.station = station
                 elem.str_value = text.strip()
                 elem.raw = headerline + "\n" + section
-                compute_num_value(elem)
-                elements.append(elem)
+                if elem.valid is not None:
+                    compute_num_value(elem)
+                    elements.append(elem)
                 dictioni += 1
                 diction = dictions[dictioni]
     return elements
@@ -619,7 +635,7 @@ def parse_E(prod):
 def compute_num_value(element):
     """Attempt to make this into a float."""
     # 5.1.1, period is non-standard, X is non-standard
-    if element.str_value in ["-9999", "X", "M", "", "+", "-", "."]:
+    if element.str_value in ["-9999", "X", "M", "", "+", "-", ".", "M.MM"]:
         return
     # 5.3.2 retained comment
     m = RETAINED_COMMENT_RE.search(element.str_value)
