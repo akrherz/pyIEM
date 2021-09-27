@@ -1,0 +1,119 @@
+AG percent
+BA centimeter
+BB centimeter
+BC centimeter
+BD degC
+BE centimeter
+BF centimeter
+BG percent
+BH centimeter
+BI centimeter
+BJ centimeter
+BK centimeter
+BL centimeter
+BM centimeter
+BN centimeter
+BO centimeter
+BP centimeter
+BQ centimeter
+CA centimeter
+CB centimeter
+CC centimeter
+CD centimeter
+CE centimeter
+CG centimeter
+CI centimeter
+CJ centimeter
+CP centimeter
+CR centimeter
+EP centimeter
+ET centimeter
+EV centimeter
+GD centimeter
+GL percent
+GP centimeter
+GT centimeter
+GW centimeter
+HA meter
+HB meter
+HC meter
+HF meter
+HG meter
+HH meter
+HI meter
+HJ meter
+HK meter
+HL meter
+HM meter
+HP meter
+HR meter
+HS meter
+HT meter
+HU meter
+HV meter
+HW meter
+HZ kilometer
+IC percent
+IE kilometer
+IT centimeter
+LA kiloacre
+LC 1000000 * meter ^3
+LS 1000000 * meter ^3
+MI centimeter
+MM percent
+MT degC
+MW percent
+NG meter
+PA kilopascal
+PC centimeter
+PL kilopascal
+PP centimeter
+PR centimeter / day
+QA meter ^ 3 / second
+QB centimeter
+QC 1000000 * meter ^3
+QD meter ^ 3 / second
+QE percent
+QF kilometer / hour
+QG meter ^ 3 / second
+QI meter ^ 3 / second
+QM meter ^ 3 / second
+QR meter ^ 3 / second
+QS meter ^ 3 / second
+QT meter ^ 3 / second
+QU meter ^ 3 / second
+RA percent
+RI langley
+RN watt * meter ^-2
+RP percent
+RW watt * meter ^-2
+SA percent
+SD centimeter
+SE degC
+SF centimeter
+SI centimeter
+SM centimeter
+SP centimeter
+SR centimeter
+SW centimeter
+TA degC
+TB degC
+TD degC
+TM degC
+TP degC
+TR degC
+TS degC
+TV degC
+TW degC
+TZ degC
+UC kilometer
+UG kilometer / hour
+UL kilometer
+UP kilometer / hour
+US kilometer / hour
+WD centimeter
+WG kilopascal
+WV meter / second
+WX percent
+XR percent
+XV kilometer

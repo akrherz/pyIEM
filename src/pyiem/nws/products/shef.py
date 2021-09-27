@@ -25,6 +25,8 @@ TODO List
  - 5.2.1 DR codes, DRE end of month
  - Table 9a D codes
  - 4.4.1 ugly time logic and DN support
+ - Handle UQ variable SSS.SDDD
+ - Handle UR (tens of degrees)
 """
 try:
     from zoneinfo import ZoneInfo  # type: ignore

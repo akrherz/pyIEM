@@ -6,9 +6,15 @@ from datetime import datetime, timedelta
 
 # third party
 from pydantic import BaseModel, Field
+from metpy.units import units
 
 # Local
-from pyiem.reference import shef_send_codes, shef_table7
+from pyiem.reference import (
+    shef_send_codes,
+    shef_table7,
+    shef_english_units,
+    shef_standard_units,
+)
 
 
 class SHEFElement(BaseModel):
@@ -32,6 +38,18 @@ class SHEFElement(BaseModel):
     comment: str = Field(None)  # This is found after the value
     narrative: str = Field(None)  # Free text after some Wxcoder/IVROCS
     raw: str = Field(None)  # The SHEF message
+
+    def to_english(self) -> float:
+        """Return an English value representation."""
+        # NOOP
+        if self.unit_convention == "E" or self.num_value is None:
+            return self.num_value
+        # We have work to do.
+        ename = shef_english_units.get(self.physical_element)
+        sname = shef_standard_units.get(self.physical_element)
+        if ename is None or sname is None:
+            raise ValueError(f"Unknown unit conv {self.physical_element}")
+        return (units(sname) * self.num_value).to(units(ename)).m
 
     def varname(self) -> str:
         """Return the Full SHEF Code."""

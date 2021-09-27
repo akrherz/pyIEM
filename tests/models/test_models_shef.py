@@ -52,3 +52,18 @@ def test_varname(elem):
     assert elem.varname() is None
     elem.consume_code("TAI")
     assert elem.varname() == "TAIRZZZ"
+
+
+def test_unit_conversion(elem):
+    """Test that we can convert units."""
+    elem.num_value = 100
+    elem.unit_convention = "S"
+    elem.physical_element = "TA"
+    assert abs(elem.to_english() - 212) < 0.01
+
+    elem.physical_element = "--"
+    with pytest.raises(ValueError):
+        elem.to_english()
+
+    elem.unit_convention = "E"
+    assert abs(elem.to_english() - 100) < 0.01

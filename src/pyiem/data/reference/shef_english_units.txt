@@ -1,0 +1,119 @@
+AG percent
+BA inch
+BB inch
+BC inch
+BD degF
+BE inch
+BF inch
+BG percent
+BH inch
+BI inch
+BJ inch
+BK inch
+BL inch
+BM inch
+BN inch
+BO inch
+BP inch
+BQ inch
+CA inch
+CB inch
+CC inch
+CD inch
+CE inch
+CG inch
+CI inch
+CJ inch
+CP inch
+CR inch
+EP inch
+ET inch
+EV inch
+GD inch
+GL percent
+GP inch
+GT inch
+GW inch
+HA foot
+HB foot
+HC foot
+HF foot
+HG foot
+HH foot
+HI foot
+HJ foot
+HK foot
+HL foot
+HM foot
+HP foot
+HR foot
+HS foot
+HT foot
+HU foot
+HV foot
+HW foot
+HZ kilofoot
+IC percent
+IE mile
+IT inch
+LA kiloacre
+LC kiloacre * foot
+LS kiloacre * foot
+MI inch
+MM percent
+MT degF
+MW percent
+NG foot
+PA inch * mercury
+PC inch
+PL inch * mercury
+PP inch
+PR inch / day
+QA 1000 * feet ^ 3 / second
+QB inch
+QC kiloacre * foot
+QD 1000 * feet ^ 3 / second
+QE percent
+QF mile / hour
+QG 1000 * feet ^ 3 / second
+QI 1000 * feet ^ 3 / second
+QM 1000 * feet ^ 3 / second
+QR 1000 * feet ^ 3 / second
+QS 1000 * feet ^ 3 / second
+QT 1000 * feet ^ 3 / second
+QU 1000 * feet ^ 3 / second
+RA percent
+RI langley
+RN watt * meter ^-2
+RP percent
+RW watt * meter ^-2
+SA percent
+SD inch
+SE degF
+SF inch
+SI inch
+SM inch
+SP inch
+SR inch
+SW inch
+TA degF
+TB degF
+TD degF
+TM degF
+TP degF
+TR degF
+TS degF
+TV degF
+TW degF
+TZ degF
+UC mile
+UG mile / hour
+UL mile
+UP mile / hour
+US mile / hour
+WD inch
+WG inch * mercury
+WV foot / second
+WX percent
+XR percent
+XV mile
