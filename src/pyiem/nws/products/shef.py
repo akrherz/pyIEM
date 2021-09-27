@@ -411,8 +411,6 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
         current_diction.consume_code(token)
         # Set it into our dictions
         dictions.append(current_diction.copy())
-    # Add silly one to prevent an off-by-one
-    dictions.append(None)
     elements = []
     for line in lines[1:]:
         line = strip_comments(line)
@@ -420,7 +418,7 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
             continue
         # Recheck in case diction valid got set to None
         for diction in dictions:
-            if diction is not None and diction.valid is None:
+            if diction.valid is None:
                 diction.valid = valid
         # packed B format, LE SIGH
         for section in line.split(","):
@@ -431,9 +429,16 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                 section = section[:-2] + "/ "
             tokens = section.strip().replace("//", "/ /").split("/")
             station = tokens[0].split()[0]
-            dictioni = 0
-            diction = dictions[dictioni]
+            dictioni = -1
             for i, text in enumerate(tokens):
+                dictioni += 1
+                if dictioni >= len(dictions):
+                    # Extra trailing garbage
+                    if text == "":
+                        continue
+                    raise InvalidSHEFEncoding("Found more data than dictions")
+                print(f"{dictioni=}")
+                diction = dictions[dictioni]
                 if i == 0:
                     text = text.replace(station, "").strip()
                 # 5.2.2 Observational time change via DM nomenclature
@@ -443,17 +448,15 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                     # Uh oh, local diction modifier, sigh
                     diction = diction.copy()
                     process_modifiers(parts[0], diction, valid)
-                    # If the above set diction.valid to None, they all go
-                    if diction.valid is None:
+                    # If diction.valid is modified, update everybody else
+                    if diction.valid is None or diction.valid != valid:
                         for d in dictions:
-                            if d is not None:
-                                d.valid = None
+                            d.valid = diction.valid
                     if len(parts) == 1:
+                        dictioni -= 1
                         continue
                     text = parts[1]
-                # Extra trailing garbage
-                if text == "" and diction is None:
-                    continue
+                print(diction.valid)
                 elem = diction.copy()
                 elem.station = station
                 elem.str_value = text.strip()
@@ -461,8 +464,15 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                 if elem.valid is not None:
                     compute_num_value(elem)
                     elements.append(elem)
+            # Fill out any fields not provided
+            while (dictioni + 1) < len(dictions):
                 dictioni += 1
                 diction = dictions[dictioni]
+                elem = dictions[dictioni].copy()
+                if elem.valid is not None:
+                    compute_num_value(elem)
+                    elements.append(elem)
+
     return elements
 
 

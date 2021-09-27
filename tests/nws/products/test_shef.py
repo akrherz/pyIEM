@@ -471,7 +471,10 @@ def test_210922_rtpeax():
     """Test that we do not raise an exception for parsing this."""
     prod = parser(get_test_file("SHEF/RTPEAX.txt"))
     assert not prod.warnings
-    assert len(prod.data) == 255  # assumed correct
+    for elem in prod.data:
+        if elem.station == "KRKM7":
+            print(elem.station)
+    assert len(prod.data) == (51 * 5)  # verified 51 lines of data x 5 cols
 
 
 def test_retained_comment_field():
@@ -568,4 +571,17 @@ def test_missing_sequence():
         "ROOA3 :Roosevelt 1WNW  2205: DHM   /     M /   M /     M/    M/  M\n"
     )
     res = process_message_b(msg, utc(2021, 9, 26))
+    assert len(res) == 5
     assert res[0].valid == utc(2021, 9, 26, 16)
+
+
+def test_unfilled_out_fields():
+    """Test that we can deal with less than diction number of fields."""
+    msg = (
+        ".BR RIW 0924 M DH05/TAIRZX/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ\n"
+        "AFO  : Afton             6215:   68 /  28 /    M\n"
+        "CPR  : Casper            5320:   75 /  36 / 0.00 /      /   0\n"
+        "DUB  : Dubois            7260:   66 /  36 /    M"
+    )
+    res = process_message_b(msg, utc(2021, 9, 24))
+    assert len(res) == 15
