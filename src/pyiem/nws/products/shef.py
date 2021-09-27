@@ -171,9 +171,6 @@ def parse_station_valid(text, utcnow):
     """
     tokens = text.split()
     station = tokens[1]
-    # Ensure that station is not all digits as we are likely missing station
-    if all(x.isdigit() for x in station):
-        raise InvalidSHEFEncoding(f"3.1 No station in '{text}'")
     timestamp = tokens[2]
     if all(x.isalpha() for x in timestamp):
         raise InvalidSHEFEncoding(f"3.2 No timestamp in '{text}'")
@@ -437,7 +434,6 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                     if text == "":
                         continue
                     raise InvalidSHEFEncoding("Found more data than dictions")
-                print(f"{dictioni=}")
                 diction = dictions[dictioni]
                 if i == 0:
                     text = text.replace(station, "").strip()
@@ -456,7 +452,6 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                         dictioni -= 1
                         continue
                     text = parts[1]
-                print(diction.valid)
                 elem = diction.copy()
                 elem.station = station
                 elem.str_value = text.strip()

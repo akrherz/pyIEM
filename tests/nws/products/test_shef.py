@@ -446,11 +446,11 @@ def test_trace():
 
 
 def test_a_no_station():
-    """Test that we raise a SHEF Exception when there is no station."""
+    """Test that we raise a SHEF Exception when no station/datetime."""
     msg = ".A  20210921 Z DH2200/  1982.43"
     with pytest.raises(InvalidSHEFEncoding) as exp:
         process_message_a(msg)
-    assert exp.match("^3.1")
+    assert exp.match("^3.2")
 
 
 def test_a_no_time():
@@ -585,3 +585,10 @@ def test_unfilled_out_fields():
     )
     res = process_message_b(msg, utc(2021, 9, 24))
     assert len(res) == 15
+
+
+def test_allow_numeric_stations():
+    """Test that pure number station IDs are permitted."""
+    msg = ".A 2312000 210927 PD DH090000 /PCIRR 4.76"
+    res = process_message_a(msg)
+    assert res[0].station == "2312000"
