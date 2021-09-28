@@ -107,9 +107,11 @@ TV degF
 TW degF
 TZ degF
 UC mile
+UD degree
 UG mile / hour
 UL mile
 UP mile / hour
+UR 0.1 * degree
 US mile / hour
 WD inch
 WG inch * mercury

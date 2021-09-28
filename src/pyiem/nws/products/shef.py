@@ -330,6 +330,8 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
         extra.extend(tokens)
         tokens = extra
     elements = []
+    # Empty ones that may be considered if an additonal ob is found
+    provisional = []
     # Iterate through the next tokens and hopefully find DI
     interval = timedelta(seconds=0)
     # Create element object to track as we parse through the message
@@ -354,7 +356,13 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
             elem.str_value = tokens2
             elem.raw = message
             compute_num_value(elem)
-            elements.append(elem)
+            if elem.num_value is None and elem.str_value == "":
+                provisional.append(elem)
+            else:
+                if provisional:
+                    elements.extend(provisional)
+                    provisional = []
+                elements.append(elem)
             diction.valid += interval
     return elements
 
@@ -464,7 +472,6 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
             # Fill out any fields not provided
             while (dictioni + 1) < len(dictions):
                 dictioni += 1
-                diction = dictions[dictioni]
                 elem = dictions[dictioni].copy()
                 if elem.valid is not None:
                     compute_num_value(elem)
@@ -551,8 +558,9 @@ def process_messages(func, prod, messages) -> int:
             if res:
                 prod.data.extend(res)
         except InvalidSHEFEncoding as exp:
-            # Swallow these generally :/
-            errors += 1
+            # Swallow these generally, but let no station slide
+            if str(exp).find("3.2") != 0:
+                errors += 1
             LOG.info("%s for '%s' %s", exp, message, prod.get_product_id())
         except Exception as exp:
             errors += 1

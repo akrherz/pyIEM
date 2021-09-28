@@ -107,9 +107,11 @@ TV degC
 TW degC
 TZ degC
 UC kilometer
+UD degree
 UG kilometer / hour
 UL kilometer
 UP kilometer / hour
+UR 0.1 * degree
 US kilometer / hour
 WD centimeter
 WG kilopascal

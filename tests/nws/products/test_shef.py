@@ -206,8 +206,9 @@ def test_e_comment_in_header():
     """Test that we handle a comment found in the header."""
     utcnow = utc(2021, 9, 20, 5, 5)
     prod = parser(get_test_file("SHEF/RR2GSP.txt"), utcnow=utcnow)
-    assert len(prod.data) == 24
-    assert prod.data[0].valid == utc(2021, 9, 19, 13)
+    # Has 24 'obs', but we trim obs from the future and trailing empty for E
+    assert len(prod.data) == 16
+    assert prod.data[15].valid == utc(2021, 9, 20, 4)
 
 
 def test_rr2phi():
