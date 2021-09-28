@@ -61,9 +61,9 @@ def test_unit_conversion(elem):
     elem.physical_element = "TA"
     assert abs(elem.to_english() - 212) < 0.01
 
+    # Unknown conversion yields back original value
     elem.physical_element = "--"
-    with pytest.raises(ValueError):
-        elem.to_english()
+    assert abs(elem.to_english() - 100) < 0.01
 
     elem.unit_convention = "E"
     assert abs(elem.to_english() - 100) < 0.01

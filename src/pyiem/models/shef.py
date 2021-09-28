@@ -15,6 +15,11 @@ from pyiem.reference import (
     shef_english_units,
     shef_standard_units,
 )
+from pyiem.util import LOG
+
+# Manually defined and used within shef_{english,standard}_units.txt
+units.define("KCFS = 1000 * feet ^ 3 / second")
+units.define("MCM = 1000000 * meter ^ 3")
 
 
 class SHEFElement(BaseModel):
@@ -48,7 +53,8 @@ class SHEFElement(BaseModel):
         ename = shef_english_units.get(self.physical_element)
         sname = shef_standard_units.get(self.physical_element)
         if ename is None or sname is None:
-            raise ValueError(f"Unknown unit conv {self.physical_element}")
+            LOG.info("Unknown unit conv %s", self.physical_element)
+            return self.num_value
         return (units(sname) * self.num_value).to(units(ename)).m
 
     def varname(self) -> str:

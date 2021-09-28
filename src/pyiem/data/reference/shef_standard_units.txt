@@ -1,34 +1,50 @@
 AG percent
-BA centimeter
-BB centimeter
-BC centimeter
+BA mm
+BB mm
+BC mm
 BD degC
-BE centimeter
-BF centimeter
+BE mm
+BF mm
 BG percent
-BH centimeter
-BI centimeter
-BJ centimeter
-BK centimeter
-BL centimeter
-BM centimeter
-BN centimeter
-BO centimeter
-BP centimeter
-BQ centimeter
-CA centimeter
-CB centimeter
-CC centimeter
-CD centimeter
-CE centimeter
-CG centimeter
-CI centimeter
-CJ centimeter
-CP centimeter
-CR centimeter
-EP centimeter
-ET centimeter
-EV centimeter
+BH mm
+BI mm
+BJ mm
+BK mm
+BL mm
+BM mm
+BN mm
+BO mm
+BP mm
+BQ mm
+CA mm
+CB mm
+CC mm
+CD mm
+CE mm
+CF mm
+CG mm
+CH mm
+CI mm
+CJ mm
+CK mm
+CL degC
+CM degC
+CP mm
+CQ mm
+CR mm
+CS mm
+CU degC
+CV degC
+CW mm
+CX mm
+CY mm
+EA mm
+ED mm
+EM mm
+EP mm
+ER mm
+ET mm
+EV mm
 GD centimeter
 GL percent
 GP centimeter
@@ -37,65 +53,80 @@ GW centimeter
 HA meter
 HB meter
 HC meter
+HD meter
+HE meter
 HF meter
 HG meter
 HH meter
-HI meter
 HJ meter
 HK meter
 HL meter
 HM meter
+HO meter
 HP meter
 HR meter
 HS meter
 HT meter
 HU meter
-HV meter
+HV mm
 HW meter
 HZ kilometer
 IC percent
 IE kilometer
+IO meter
 IT centimeter
 LA kiloacre
 LC 1000000 * meter ^3
 LS 1000000 * meter ^3
-MI centimeter
+ML centimeter
 MM percent
 MT degC
+MU centimeter
 MW percent
 NG meter
 PA kilopascal
-PC centimeter
+PC mm
+PD kilopascal
+PF mm
+PJ mm
 PL kilopascal
-PP centimeter
-PR centimeter / day
+PN mm
+PP mm
+PR mm / day
+PY mm
 QA meter ^ 3 / second
-QB centimeter
-QC 1000000 * meter ^3
+QB mm
+QC MCM
 QD meter ^ 3 / second
 QE percent
 QF kilometer / hour
 QG meter ^ 3 / second
 QI meter ^ 3 / second
+QL meter ^ 3 / second
 QM meter ^ 3 / second
+QP meter ^ 3 / second
 QR meter ^ 3 / second
 QS meter ^ 3 / second
 QT meter ^ 3 / second
 QU meter ^ 3 / second
+QV MCM
+QY meter ^ 3 / second
 RA percent
 RI langley
 RN watt * meter ^-2
 RP percent
 RW watt * meter ^-2
 SA percent
+SB mm
 SD centimeter
 SE degC
 SF centimeter
 SI centimeter
-SM centimeter
-SP centimeter
-SR centimeter
-SW centimeter
+SL meter
+SM mm
+SP mm
+SU mm
+SW mm
 TA degC
 TB degC
 TD degC
@@ -108,14 +139,15 @@ TW degC
 TZ degC
 UC kilometer
 UD degree
-UG kilometer / hour
+UG meter / second
 UL kilometer
-UP kilometer / hour
-UR 0.1 * degree
-US kilometer / hour
+UP mile / hour
+UR 10 * degree
+US meter / second
 WD centimeter
-WG kilopascal
+WG mm_Hg
 WV meter / second
 WX percent
 XR percent
+XU g * meter^3
 XV kilometer
