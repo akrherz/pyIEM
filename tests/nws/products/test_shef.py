@@ -609,6 +609,16 @@ def test_b_too_much_data():
         process_message_b(msg, utc(2021, 9, 24))
 
 
+def test_b_bad_data():
+    """Test what we get no data when things are poor."""
+    msg = (
+        ".BR RIW 0924 M DH05/TAIRZX/TAIRZP\n"
+        "AFO  : Afton             6215:   Q /  Q\n"
+    )
+    res = process_message_b(msg, utc(2021, 9, 24))
+    assert not res
+
+
 def test_uh_ur_handling():
     """Test what happens when we get the ugly UH, UR field."""
     msg = ".A 2312000 210927 PD DH090000 /UH 3/UR 5"

@@ -479,8 +479,6 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                 dictioni += 1
                 elem = dictions[dictioni].copy()
                 if elem.valid is not None:
-                    if not compute_num_value(elem):
-                        flagged = True
                     provisional.append(elem)
         if not flagged and provisional:
             elements.extend(provisional)
