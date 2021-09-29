@@ -140,9 +140,10 @@ TZ degF
 UC mile
 UD degree
 UG mile / hour
+UH DEG10
 UL mile
 UP mile / hour
-UR decadegree
+UR DEG10
 US mile / hour
 WD inch
 WG inch_Hg

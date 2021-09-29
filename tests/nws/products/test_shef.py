@@ -607,3 +607,12 @@ def test_b_too_much_data():
     )
     with pytest.raises(InvalidSHEFEncoding):
         process_message_b(msg, utc(2021, 9, 24))
+
+
+def test_uh_ur_handling():
+    """Test what happens when we get the ugly UH, UR field."""
+    msg = ".A 2312000 210927 PD DH090000 /UH 3/UR 5"
+    res = process_message_a(msg)
+    assert res[0].num_value == 3
+    assert res[0].to_english() == 30
+    assert res[1].to_english() == 50

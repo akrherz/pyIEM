@@ -140,9 +140,10 @@ TZ degC
 UC kilometer
 UD degree
 UG meter / second
+UH DEG10
 UL kilometer
 UP mile / hour
-UR 10 * degree
+UR DEG10
 US meter / second
 WD centimeter
 WG mm_Hg

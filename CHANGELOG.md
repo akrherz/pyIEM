@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- A pure python SHEF decoder `pyiem.nws.products.shef` (#496).
 - Updated bundled NWS zones database to valid cira 10 Sep 2021.
 
 ### Bug Fixes
