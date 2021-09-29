@@ -714,6 +714,10 @@ DATADIR = os.sep.join([os.path.dirname(__file__), "data", "reference"])
 # The below are dynamically generated on-demand, but are hard coded here
 # so that code introspection works.  Likely a better way!
 shef_physical_codes = {}
+shef_send_codes = {}
+shef_english_units = {}
+shef_standard_units = {}
+shef_table7 = {}
 state_names = {}
 prodDefinitions = {}
 ncei_state_codes = {}
@@ -727,7 +731,11 @@ class Wrapper:
     """Some Magic Here."""
 
     _onthefly_dict = [
+        "shef_english_units",
+        "shef_standard_units",
         "shef_physical_codes",
+        "shef_send_codes",
+        "shef_table7",
         "state_names",
         "prodDefinitions",
         "ncei_state_codes",

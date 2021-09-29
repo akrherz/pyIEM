@@ -1,0 +1,60 @@
+261 
+ASUS63 KDTX 200003
+RTPDTX
+EVENING TEMPERATURE AND PRECIPITATION SUMMARY
+NATIONAL WEATHER SERVICE DETROIT/PONTIAC MI
+803 PM EDT Sun Sep 19 2021
+
+Values represent 18 hour high...low over the last 18 hours
+and precipitation over the last 24 hours since 8 PM EDT.
+
+
+.BR DTX  0919  ES DH19/TAIRZS/TAIRZI/TA/PPDRZZ
+
+
+:SOUTHEAST MICHIGAN -- TEMPERATURE AND PRECIPITATION STATIONS
+:........................................................
+:       STATION              MAX  / MIN  / 8 PM / 24-HR
+:        NAME                TEMP / TEMP / TEMP / PRECIP
+:........................................................
+WHKM4: NWS White Lake      :   79 /  48  /  68  / 0.00  
+ADG  : Adrian Airport      :   83 /  54  /  71  / 0.00
+ARB  : Ann Arbor Airport   :   81 /  51  /  69  / 0.00  
+BAX  :*Bad Axe Airport     :   77 /  40  /  67  / 
+CFS  :*Caro Airport-Tuscola:   78 /  43  /  68  /   
+DET  : Detroit City Airport:   80 /  55  /  72  / 0.00  
+DTW  : Detroit Metro Airprt:   81 /  55  /  72  / 0.00  
+FNT  : Flint Bishop Airport:   80 /  49  /  72  / 0.00  
+ONZ  :*Grosse Ile Airport  :   76 /  58  /  70  /   
+OZW  :*Howell Airport      :   80 /  51  /  72  /   
+DUH  :*Lambertville Airport:   78 /  55  /  70  /   
+D95  :*Lapeer Dupont Airprt:   78 /  44  /  68  /   
+IKW  :*Midland Airport     :   79 /  43  /  67  / 0.00  
+TTF  :*Monroe Airport      :   77 /  53  /  70  /   
+MTC  :*Mt Clemens Selfridge:   78 /  50  /  69  /   
+RNP  :*Owosso Airport      :   80 /  48  /  71  /   
+PTK  : Pontiac Airport     :   79 /  52  /  72  / 0.00  
+P58  : Port Hope           :   69 /  50  /   M  / 0.00  
+PHN  :*Port Huron Airport  :   79 /  43  /  68  /   
+MBS  : Saginaw - Tri Cities:   80 /  48  /  71  / 0.00 
+HYX  :*Saginaw-Harry Browne:   78 /  46  /  72  /   
+VLL  :*Oakland/Troy Airport:   81 /  55  /  73  /   
+.END
+
+
+
+
+*The temperature data for these sites represent the highest and 
+ lowest temperatures that were reported on the METAR observations
+ that transmit three times an hour and may not represent the actual
+ high or low for that site. These sites do not measure precipitation.
+
+
+**This data is preliminary and has not undergone final quality 
+control by the National Center for Environmental Information /NCEI/. 
+Therefore...this data is subject to revision. Final and certified 
+climate data can be accessed at www.ncei.noaa.gov.
+
+
+$$
+

@@ -48,7 +48,7 @@ def get_summary_table(valid):
         valid.month == 1 and valid.day < 3
     ):
         return "summary"
-    return "summary_%s" % (valid.year,)
+    return f"summary_{valid.year}"
 
 
 def bounded(val, floor, ceiling):
@@ -134,6 +134,7 @@ def summary_update(txn, data):
         else coalesce(%(coop_tmpf)s, coop_tmpf) end,
     coop_valid = %(coop_valid)s,
     et_inch = %(et_inch)s,
+    report = coalesce(%(report)s, report),
     max_rh = case when %(null_max_rh)s is null then null
         else greatest(%(max_rh)s, %(relh)s, max_rh) end,
     min_rh = case when %(null_min_rh)s is null then null

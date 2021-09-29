@@ -1,0 +1,132 @@
+812 
+ASUS63 KEAX 221548
+RTPEAX
+
+
+Max/Min Temperature and Precipitation Table for
+Northeast Kansas...Northwest and North Central Missouri
+National Weather Service Kansas City/Pleasant Hill MO
+1048 AM CDT Wed Sep 22 2021
+
+Official Airport Reporting Stations
+Values represent yesterday's highs, morning lows through
+6 am CST/7 am CDT and precipitation over the past
+24 hours ending at 6 am CST/7 am CDT.
+Snow depth is the value at 6 am CST/7 am CDT.
+                                                 
+Precipitation, snowfall, and snow depth are in inches.
+.BR EAX 0922 C DH00/TAIRZX/DH06/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ
+:.............................................................
+:       Station            | Max | Min | 24-hr  | Snow | Snow
+:        Name              | Tmp | Tmp | Precip | Fall | Depth
+:.............................................................
+:
+MCI  :  Kansas City Intl   :  75 /  47 /  0.00  /  0.0 /   0
+STJ  :  St Joseph          :  77 /  41 /  0.00  /      /    
+MKC  :  Kansas City Dwtn   :  75 /  51 /  0.00  /      /    
+OJC  :  Johnson Co Exec    :  75 /  50 /  0.00  /      /    
+IXD  :  Olathe New Cent    :  74 /  47 /  0.00  /      /    
+CDJ  :  Chillicothe        :  75 /  50 /  0.00  /      /    
+IRK  :  Kirksville         :  72 /  49 /    T   /      /    
+DMO  :  Sedalia            :  73 /  50 /    T   /      /    
+LXT  :  Lee's Summit       :  73 /  49 /  0.01  /      /    
+:
+.END
+
+
+.BR EAX 0922 C DH06/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:Cooperative Observations
+:Values are for the previous 24 hours ending at observation time.
+:...................................................................
+:       Station           | Obs  | Max | Min | 24-hr  | Snow | Snow  
+:        Name             | Time | Tmp | Tmp | Precip | Fall | Depth
+:...................................................................
+:
+:In Extreme Eastern Kansas...
+:
+BASK1:Basehor 3NE         :DH0700/  MM /  44 /  0.00  /      /    
+BNRK1:Bonner Springs      :DH0700/  74 /  48 /  0.00  /  0.0 /   0
+HILK1:Hillsdale Lake      :DH0700/     /     /  0.00  /      /    
+LVEK1:Leavenworth 3SW     :DH0700/  MM /  48 /  0.00  /  0.0 /   0
+MODK1:Mound City 1SSW     :DH0800/  71 /  45 /  0.00  /      /    
+SLYK1:Stilwell 1N         :DH0700/     /     /  0.00  /  0.0 /   0
+:
+:...................................................................
+:       Station           | Obs  | Max | Min | 24-hr  | Snow | Snow  
+:        Name             | Time | Tmp | Tmp | Precip | Fall | Depth 
+:...................................................................
+:
+:In Northwest Missouri...
+:
+ALAM7:Albany              :DH0700/  75 /  46 /  0.00  /      /    
+AMTM7:Amity 4NE           :DH0700/  73 /  47 /  0.00  /  0.0 /   0
+BEYM7:Bethany             :DH0500/  75 /  50 /  0.00  /  0.0 /   0
+CAMM7:Cameron             :DH0600/  73 /  48 /  0.00  /  0.0 /   0
+CCPM7:Conception          :DH0800/  73 /  48 /  0.00  /  0.0 /   0
+GRTM7:Grant City 5WSW     :DH0800/  72 /  44 /  0.00  /  0.0 /   0
+MYVM7:Maryville 2E        :DH0700/  75 /  45 /  0.00  /      /    
+:
+:...................................................................
+:       Station           | Obs  | Max | Min | 24-hr  | Snow | Snow  
+:        Name             | Time | Tmp | Tmp | Precip | Fall | Depth 
+:...................................................................
+:
+:In North-Central Missouri...
+:                                             
+CHLM7:Chillicothe 2S      :DH0700/  72 /  37 /  0.00  /  0.0 /   0
+CLMM7:Coloma              :DH0700/     /     /  0.00  /  0.0 /   0
+GRCM7:Green City          :DH0700/  70 /  45 /  0.00  /  0.0 /   0
+KRKM7:Kirksville          :DH0700    /     /     /  0.00  /      /    
+LBRM7:Long Branch Res.    :DH0800/  70 /  54 /  0.00  /      /    
+PRTM7:Princeton           :DH0700/  72 /  45 /  0.00  /  0.0 /   0
+SPKM7:Spickard 7W         :DH0800/  74 /  45 /  0.00  /  0.0 /   0
+TTNM7:Trenton             :DH0700/  73 /  50 /  0.00  /  0.0 /   0
+:
+:...................................................................
+:       Station           | Obs  | Max | Min | 24-hr  | Snow | Snow  
+:        Name             | Time | Tmp | Tmp | Precip | Fall | Depth 
+:...................................................................
+:
+:In West-Central Missouri...
+:
+BLKM7:Blue Lick           :DH0700/     /     /  0.00  /  0.0 /   0
+BSPM7:Blue Springs 2SSE   :DH0600/  73 /  51 /  0.00  /  0.0 /   0
+BUTM7:Butler              :DH0700/  72 /  49 /  0.00  /  0.0 /   0
+CRLM7:Carrollton          :DH0700/  73 /  49 /  0.00  /      /    
+CCRM7:Concordia           :DH0700/     /     /     T  /      /    
+CLNM7:Clinton             :DH0832/  71 /  48 /  0.00  /      /    
+GEEM7:Green Ridge 3SW     :DH0615/     /     /  0.00  /      /    
+HIGM7:Higginsville        :DH0800/  71 /  48 /  0.01  /      /    
+KRNM7:Kearney 3E          :DH0800/  76 /  46 /  0.00  /  0.0 /   0
+MRHM7:Marshall            :DH0700/  71 /  50 /  0.00  /      /    
+NAPM7:Napoleon            :DH0700/  72 /  51 /  0.01  /      /    
+PLHM7:Pleasant Hill       :DH0700/  73 /  50 /     T  /  0.0 /   0
+RATM7:Raytown             :DH0700/     /     /     T  /  0.0 /   0
+RCMM7:Richmond 3S         :DH0700/  MM /  46 /     T  /  0.0 /   0
+SLKM7:Smithville Lake     :DH0700/  72 /  MM /  0.00  /  0.0 /   0
+SSPM7:Sweet Springs       :DH0800/  71 /  47 /  0.00  /  0.0 /   0
+WRRM7:Warrensburg 4NW     :DH0600/  MM /  49 /  0.10  /  0.0 /   0
+WNSM7:Windsor             :DH0700/  70 /  49 /  0.00  /  0.0 /   0
+:
+:...................................................................
+:       Station           | Obs  | Max | Min | 24-hr  | Snow | Snow  
+:        Name             | Time | Tmp | Tmp | Precip | Fall | Depth 
+:...................................................................
+:
+:In Central Missouri...
+:
+BNLM7:Boonville           :DH0451/  71 /  54 /  0.00  /  0.0 /   0
+GLSM7:Glasgow             :DH0700/     /     /  0.00  /      /    
+SBYM7:Salisbury           :DH0600/  72 /  52 /  0.00  /  0.0 /   0
+.END
+
+
+These data are preliminary and have not undergone final quality 
+control. Therefore, these data are subject to revision. Final and 
+certified climate data can be accessed at the National Centers for 
+Environmental Information (NCEI) at www.ncei.noaa.gov
+
+
+
+$$
+
