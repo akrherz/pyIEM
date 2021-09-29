@@ -119,7 +119,7 @@ def test_210302_multipolygon(dbcursor):
     """Test that buffer(0) producing a multipolygon is culled."""
     prod = vtecparser(get_test_file("FLW/FLWJKL_multipolygon.txt"))
     prod.sql(dbcursor)
-    assert any(["culling" in x for x in prod.warnings])
+    assert any("culling" in x for x in prod.warnings)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -159,10 +159,10 @@ def test_201120_sbw_duplicate(dbcursor):
     prod = vtecparser(data)
     prod.sql(dbcursor)
     prod.sql(dbcursor)
-    assert any([x.find("is a SBW duplicate") > -1 for x in prod.warnings])
+    assert any(x.find("is a SBW duplicate") > -1 for x in prod.warnings)
     prod = vtecparser(data.replace(".NEW.", ".CON."))
     prod.sql(dbcursor)
-    assert any([x.find("SBW prev polygon") > -1 for x in prod.warnings])
+    assert any(x.find("SBW prev polygon") > -1 for x in prod.warnings)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -171,7 +171,7 @@ def test_201120_correction(dbcursor):
     data = get_test_file("TOR.txt").replace("291656", "291656 CCA")
     prod = vtecparser(data)
     prod.sql(dbcursor)
-    assert any([x.find("is a correction") > -1 for x in prod.warnings])
+    assert any(x.find("is a correction") > -1 for x in prod.warnings)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -180,7 +180,7 @@ def test_201120_unknown_vtec(dbcursor):
     data = get_test_file("TOR.txt").replace(".NEW.KJAN", ".QQQ.KJAN")
     prod = vtecparser(data)
     prod.sql(dbcursor)
-    assert any([x.find("QQQ") > -1 for x in prod.warnings])
+    assert any(x.find("QQQ") > -1 for x in prod.warnings)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -211,7 +211,7 @@ def test_201120_dup(dbcursor):
     prod = vtecparser(get_test_file("CFW/CFWSJU.txt"))
     prod.sql(dbcursor)
     ans = "Segment has duplicated VTEC"
-    assert any([x.startswith(ans) for x in prod.warnings])
+    assert any(x.startswith(ans) for x in prod.warnings)
 
 
 def test_201116_1970vtec():

@@ -20,6 +20,7 @@ from pyiem.util import LOG
 # Manually defined and used within shef_{english,standard}_units.txt
 units.define("KCFS = 1000 * feet ^ 3 / second")
 units.define("MCM = 1000000 * meter ^ 3")
+units.define("DEG10 = 10 * degree")  # UH, UR
 
 
 class SHEFElement(BaseModel):
@@ -45,7 +46,16 @@ class SHEFElement(BaseModel):
     raw: str = Field(None)  # The SHEF message
 
     def to_english(self) -> float:
-        """Return an English value representation."""
+        """Return an English value representation.
+
+        Implementation Note: In the case of wind direction (UH, UR), this
+        returns the un-scaled value.
+        """
+        if (
+            self.physical_element in ["UH", "UR"]
+            and self.num_value is not None
+        ):
+            return self.num_value * 10
         # NOOP
         if self.unit_convention == "E" or self.num_value is None:
             return self.num_value
