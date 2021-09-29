@@ -4,7 +4,7 @@ from datetime import timedelta
 
 import mock
 import pytest
-from pyiem.exceptions import InvalidSHEFEncoding
+from pyiem.exceptions import InvalidSHEFEncoding, InvalidSHEFValue
 from pyiem.nws.products.shef import (
     make_date,
     parse_station_valid,
@@ -315,6 +315,13 @@ def test_cs_timezone():
     res = process_message_e(msg, utc(2021, 9, 20))
     # 748 PM CST -> 848 PM CDT -> 0148 UTC
     assert res[0].valid == utc(2021, 9, 20, 1, 48)
+
+
+def test_process_e_bad_value():
+    """Test that we get nothing when finding a bad value."""
+    msg = ".E GDMM5 20210919 CS DH1948/TAIRG/DIN06/   70/   HI/   67"
+    with pytest.raises(InvalidSHEFValue):
+        process_message_e(msg, utc(2021, 9, 20))
 
 
 def test_qualifier():

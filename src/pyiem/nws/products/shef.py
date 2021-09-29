@@ -79,6 +79,7 @@ TIMEZONES = {
 }
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
 RETAINED_COMMENT_RE = re.compile(r"['\"](.*)['\"]")
+MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG"]
 
 
 def make_date(text, now=None):
@@ -656,7 +657,7 @@ def parse_E(prod):
 def compute_num_value(element) -> bool:
     """Attempt to make this into a float."""
     # 5.1.1, period is non-standard, X is non-standard
-    if element.str_value in ["-9999", "X", "M", "", "+", "-", ".", "M.MM"]:
+    if element.str_value in MISSING_VALUES:
         return True
     # 5.3.2 retained comment
     m = RETAINED_COMMENT_RE.search(element.str_value)
