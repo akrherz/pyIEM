@@ -51,3 +51,7 @@ class InvalidArguments(Exception):
 
 class InvalidSHEFEncoding(Exception):
     """Product is not encoded to SHEF standard specification."""
+
+
+class InvalidSHEFValue(Exception):
+    """SHEF element value fails to be processed to a float."""

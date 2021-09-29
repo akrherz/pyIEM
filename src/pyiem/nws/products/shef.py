@@ -38,7 +38,7 @@ import traceback
 from typing import List
 import re
 
-from pyiem.exceptions import InvalidSHEFEncoding
+from pyiem.exceptions import InvalidSHEFEncoding, InvalidSHEFValue
 from pyiem.models.shef import SHEFElement
 from pyiem.nws.product import TextProduct
 from pyiem.reference import TRACE_VALUE
@@ -355,7 +355,8 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
             elem = diction.copy()
             elem.str_value = tokens2
             elem.raw = message
-            compute_num_value(elem)
+            if not compute_num_value(elem):
+                raise InvalidSHEFValue(message)
             if elem.num_value is None and elem.str_value == "":
                 provisional.append(elem)
             else:
@@ -427,6 +428,8 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
         for diction in dictions:
             if diction.valid is None:
                 diction.valid = valid
+        provisional = []
+        flagged = False
         # packed B format, LE SIGH
         for section in line.split(","):
             # Account for // oddity
@@ -467,16 +470,19 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
                 elem.str_value = text.strip()
                 elem.raw = headerline + "\n" + section
                 if elem.valid is not None:
-                    compute_num_value(elem)
-                    elements.append(elem)
+                    if not compute_num_value(elem):
+                        flagged = True
+                    provisional.append(elem)
             # Fill out any fields not provided
             while (dictioni + 1) < len(dictions):
                 dictioni += 1
                 elem = dictions[dictioni].copy()
                 if elem.valid is not None:
-                    compute_num_value(elem)
-                    elements.append(elem)
-
+                    if not compute_num_value(elem):
+                        flagged = True
+                    provisional.append(elem)
+        if not flagged and provisional:
+            elements.extend(provisional)
     return elements
 
 
@@ -535,8 +541,8 @@ def process_message_a(message, utcnow=None) -> List[SHEFElement]:
         elem.consume_code(text)
         elem.str_value = "" if len(parts) == 1 else parts[1]
         elem.raw = message
-        compute_num_value(elem)
-        elements.append(elem)
+        if compute_num_value(elem):
+            elements.append(elem)
 
     # Back-assign DC if it was found.
     if diction.data_created is not None:
@@ -647,11 +653,11 @@ def parse_E(prod):
     process_messages(process_message_e, prod, messages)
 
 
-def compute_num_value(element):
+def compute_num_value(element) -> bool:
     """Attempt to make this into a float."""
     # 5.1.1, period is non-standard, X is non-standard
     if element.str_value in ["-9999", "X", "M", "", "+", "-", ".", "M.MM"]:
-        return
+        return True
     # 5.3.2 retained comment
     m = RETAINED_COMMENT_RE.search(element.str_value)
     if m:
@@ -661,11 +667,11 @@ def compute_num_value(element):
 
     # All stars/dashes appears in the wild and is supported by SHEFIT
     if all(x in ["*", "-", "M"] for x in element.str_value):
-        return
+        return True
     # Can trace
     if element.str_value == "T":
         element.num_value = TRACE_VALUE
-        return
+        return True
     # 4.4.7 Data Elements
     if element.str_value[-1].isalpha():
         element.qualifier = element.str_value[-1]
@@ -675,7 +681,7 @@ def compute_num_value(element):
         tokens = element.str_value.split(".")
         if len(tokens) == 1:
             element.depth = int(tokens[0])
-            return
+            return True
         # <depth>.<value>
         value = int(tokens[1])
         depth = int(tokens[0])
@@ -686,14 +692,20 @@ def compute_num_value(element):
         # Missing is -9999
         if value > -9998:
             element.num_value = value
-        return
-    element.num_value = float(element.str_value)
+        return True
+    try:
+        element.num_value = float(element.str_value)
+    except ValueError:
+        print(element.str_value)
+        LOG.info("ValueError: '%s' to float failed", element.str_value)
+        return False
     # 5.1.2 Precip is assumed to be in 0.01 inches if an integer is provided
     if (
         element.physical_element in ["PC", "PP", "PY"]
         and element.str_value.find(".") == -1
     ):
         element.num_value /= 100.0
+    return True
 
 
 def _parse(prod):

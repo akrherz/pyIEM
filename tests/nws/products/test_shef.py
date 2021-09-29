@@ -472,9 +472,6 @@ def test_210922_rtpeax():
     """Test that we do not raise an exception for parsing this."""
     prod = parser(get_test_file("SHEF/RTPEAX.txt"))
     assert not prod.warnings
-    for elem in prod.data:
-        if elem.station == "KRKM7":
-            print(elem.station)
     assert len(prod.data) == (51 * 5)  # verified 51 lines of data x 5 cols
 
 
@@ -593,3 +590,13 @@ def test_allow_numeric_stations():
     msg = ".A 2312000 210927 PD DH090000 /PCIRR 4.76"
     res = process_message_a(msg)
     assert res[0].station == "2312000"
+
+
+def test_b_too_much_data():
+    """Test what happens when there is more data than dictions."""
+    msg = (
+        ".BR RIW 0924 M DH05/TAIRZX/TAIRZP\n"
+        "AFO  : Afton             6215:   68 /  28 /    M\n"
+    )
+    with pytest.raises(InvalidSHEFEncoding):
+        process_message_b(msg, utc(2021, 9, 24))
