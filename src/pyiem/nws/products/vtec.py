@@ -642,9 +642,9 @@ class VTECProduct(TextProduct):
                         % (vtec.phenomena, vtec.significance, str(ugc))
                     )
                     channels.append(str(ugc))
-            if any([seg.is_emergency for seg in self.segments]):
+            if any(seg.is_emergency for seg in self.segments):
                 channels.append(f"{vtec.phenomena}.EMERGENCY")
-            if any([seg.is_pds for seg in self.segments]):
+            if any(seg.is_pds for seg in self.segments):
                 channels.append(f"{vtec.phenomena}.PDS")
             xtra["channels"] = ",".join(channels)
             jdict = {

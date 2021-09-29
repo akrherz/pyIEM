@@ -230,7 +230,7 @@ class TextProductSegment:
             text,
             tp.valid,
             ugc_provider=tp.ugc_provider,
-            is_firewx=any([v.phenomena == "FW" for v in self.vtec]),
+            is_firewx=any(v.phenomena == "FW" for v in self.vtec),
         )
         self.headlines = self.parse_headlines()
         self.hvtec = hvtec.parse(text, tp=tp)
