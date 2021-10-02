@@ -174,6 +174,8 @@ def parse_station_valid(text, utcnow):
     """
     tokens = text.split()
     station = tokens[1]
+    if len(station) > 8:
+        raise InvalidSHEFEncoding(f"4.1.2 Station ID len>8 '{station}'")
     timestamp = tokens[2]
     if all(x.isalpha() for x in timestamp):
         raise InvalidSHEFEncoding(f"3.2 No timestamp in '{text}'")
