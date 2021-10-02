@@ -626,3 +626,9 @@ def test_uh_ur_handling():
     assert res[0].num_value == 3
     assert res[0].to_english() == 30
     assert res[1].to_english() == 50
+
+
+def test_211020_locationid():
+    """Test that a location identifier longer than 8 characters is not ok."""
+    prod = parser(get_test_file("SHEF/RR3GUM.txt"))
+    assert not prod.data

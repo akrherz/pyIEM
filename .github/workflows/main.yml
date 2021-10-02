@@ -26,7 +26,7 @@ jobs:
         . .ci_tooling/miniconda.sh
         pip install codecov requests-mock
         python -m pip install . --upgrade
-        export PATH="/usr/lib/postgresql/12/bin:$PATH"
+        export PATH="/usr/lib/postgresql/14/bin:$PATH"
         cd database; sh bootstrap.sh
         python schema_manager.py
         python store_test_data.py
