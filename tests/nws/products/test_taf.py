@@ -107,7 +107,7 @@ def test_parse():
     ans = (
         "OKX issues Terminal Aerodrome Forecast (TAF) "
         "at Jul 25, 13:41 UTC for JFK http://localhost?"
-        "pid=201707251341-KOKX-FTUS41-TAFJFK"
+        "pid=201707251341-KOKX-FTUS41-TAFJFK-AAA"
     )
     assert j[0][0] == ans
     assert "TAFJFK" in j[0][2]["channels"].split(",")

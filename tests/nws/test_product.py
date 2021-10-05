@@ -125,7 +125,7 @@ def test_180321_mst():
     res = tp.get_jabbers("http://localhost")
     ans = (
         "PSR issues Area Forecast Discussion (AFD) at Mar 21, 5:15 AM "
-        "MST http://localhost?pid=201803211215-KPSR-FXUS65-AFDPSR"
+        "MST http://localhost?pid=201803211215-KPSR-FXUS65-AFDPSR-AAA"
     )
     assert res[0][0] == ans
 

@@ -728,12 +728,9 @@ class TextProduct:
 
     def get_product_id(self):
         """Get an identifier of this product used by the IEM"""
-        pid = "%s-%s-%s-%s" % (
-            self.valid.strftime("%Y%m%d%H%M"),
-            self.source,
-            self.wmo,
-            self.afos,
-        )
+        pid = f"{self.valid:%Y%m%d%H%M}-{self.source}-{self.wmo}-{self.afos}"
+        if self.bbb:
+            pid += f"-{self.bbb}"
         return pid.strip()
 
     def _parse_valid(self, provided_utcnow):
