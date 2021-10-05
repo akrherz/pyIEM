@@ -45,6 +45,6 @@ class TAFReport(BaseModel):
 
     station: str = Field(..., min_length=4, max_length=4)
     valid: datetime
-    product_id: str = Field(..., min_length=28, max_length=32)
+    product_id: str = Field(..., min_length=28, max_length=35)
     observation: TAFForecast
     forecasts: List[TAFForecast] = []

@@ -6,6 +6,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- `pyiem.nws.product.TextProduct#get_product_id` now includes the `BBB` field in the return string, when specified within the parsed text.  This is necessary to fully describe products that may be issued twice within the same minute.
+
 ### New Features
 
 - A pure python SHEF decoder `pyiem.nws.products.shef` (#496).
