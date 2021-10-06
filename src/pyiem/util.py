@@ -317,8 +317,6 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
-      allow_failover (bool,optional): Should this method attempt to connect to
-        a failover host (hard coded as iemdb2.local), default is `True`.
 
     Returns:
       psycopg2 database connection
@@ -344,7 +342,6 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         "connect_timeout": kwargs.get("connect_timeout", 15),
         "gssencmode": kwargs.get("gssencmode", "disable"),
     }
-    allow_failover = kwargs.pop("allow_failover", True)
     conn_kwargs.update(kwargs)
     attempt = 0
     while attempt < 3:
@@ -362,13 +359,10 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             if attempt == 3:
                 raise exp
         except psycopg2.OperationalError as exp:
-            # as a stop-gap, lets try connecting to iemdb2
-            host2 = "iemdb2.local" if allow_failover else host
-            conn_kwargs["host"] = host2
             if attempt == 3:
                 raise exp
             warnings.warn(
-                f"database connection failure: {exp}, trying {host2}",
+                f"database connection failure: {exp}, trying again",
                 stacklevel=2,
             )
 
