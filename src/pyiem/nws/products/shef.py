@@ -246,7 +246,7 @@ def parse_dm(text, valid):
 
 
 def parse_dd(text, valid):
-    """Handke the DD one."""
+    """Handle the DD one."""
     if text.strip() in ["", "M"]:
         return None
     # Updating the timestamp as we go here
@@ -257,6 +257,25 @@ def parse_dd(text, valid):
         replacements["hour"] = int(text[2:4])
     if len(text) >= 6:
         replacements["minute"] = int(text[4:6])
+    return datetime24(valid, replacements)
+
+
+def parse_dt(text, valid):
+    """Handle the DD one."""
+    if text.strip() in ["", "M"]:
+        return None
+    # Updating the timestamp as we go here
+    replacements = {
+        "year": int(text[:4]),
+    }
+    if len(text) >= 6:
+        replacements["month"] = int(text[4:6])
+    if len(text) >= 8:
+        replacements["day"] = int(text[6:8])
+    if len(text) >= 10:
+        replacements["hour"] = int(text[8:10])
+    if len(text) >= 12:
+        replacements["minute"] = int(text[10:12])
     return datetime24(valid, replacements)
 
 
@@ -286,6 +305,8 @@ def process_modifiers(text, diction, basevalid):
         diction.valid = parse_dm(text[2:], diction.valid)
     elif text.startswith("DQ"):
         diction.qualifier = text[2]
+    elif text.startswith("DT"):
+        diction.valid = parse_dt(text[2:], diction.valid)
     elif text.startswith("DU"):
         diction.unit_convention = text[2]
     elif text.startswith("DV"):

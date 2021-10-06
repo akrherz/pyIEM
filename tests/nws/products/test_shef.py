@@ -632,3 +632,17 @@ def test_211020_locationid():
     """Test that a location identifier longer than 8 characters is not ok."""
     prod = parser(get_test_file("SHEF/RR3GUM.txt"))
     assert not prod.data
+
+
+def test_211006_dt():
+    """Test that we can deal with DT time encoding."""
+    msg = (
+        ".BR MSR 20211006 DH12/DRH-18/PPQRZ/DRH-12/PPQRZ/"
+        "DRH-06/PPQRZ/DRH-0/PPQRZ/PPDRZ\n"
+        "SUW DT202110061155/M/M/M/M/M"
+    )
+    res = process_message_b(msg)
+    assert res[0].valid == utc(2021, 10, 6, 11, 55)
+
+    res = process_message_b(msg.replace("DT202110061155", "DTM"))
+    assert not res
