@@ -17,6 +17,7 @@
 127.0.0.1 iemdb-iem.local
 127.0.0.1 iemdb-other.local
 127.0.0.1 iemdb-radar.local
+127.0.0.1 iemdb-raob.local
 127.0.0.1 iemdb-scan.local
 127.0.0.1 iemdb-wepp.local
 127.0.0.1 iemdb-coop.local
