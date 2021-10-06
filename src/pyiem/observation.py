@@ -320,6 +320,7 @@ class Observation:
         peak_wind_gust = %(peak_wind_gust)s,
         peak_wind_drct = %(peak_wind_drct)s,
         peak_wind_time = %(peak_wind_time)s,
+        snowdepth = %(snowdepth)s,
         updated = now()
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not self.data["_isdaily"] and not skip_current:
@@ -336,7 +337,7 @@ class Observation:
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             ice_accretion_1hr, ice_accretion_3hr, ice_accretion_6hr,
             water_tmpf, feel, peak_wind_gust, peak_wind_drct,
-            peak_wind_time) VALUES(
+            peak_wind_time, snowdepth) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
@@ -353,7 +354,7 @@ class Observation:
             %(ice_accretion_1hr)s, %(ice_accretion_3hr)s,
             %(ice_accretion_6hr)s,
             %(water_tmpf)s, %(feel)s, %(peak_wind_gust)s, %(peak_wind_drct)s,
-            %(peak_wind_time)s
+            %(peak_wind_time)s, %(snowdepth)s
             )
             """
             if not self.data["_isdaily"]:

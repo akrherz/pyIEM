@@ -286,7 +286,9 @@ class METARReport(Metar):
             iem.data["phour"] = trace(self.precip_1hr)
 
         if self.snowdepth:
-            iem.data["snowd"] = self.snowdepth.value("IN")
+            # NOTE snowd is a summary variable that wants to be daily, this
+            # METAR value is more instantaneous, so goes to current table
+            iem.data["snowdepth"] = self.snowdepth.value("IN")
         if self.vis:
             iem.data["vsby"] = self.vis.value("SM")
         if self.press:
