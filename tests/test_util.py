@@ -123,7 +123,7 @@ def test_get_dbconn_failover():
     """See if failover works?"""
     with pytest.warns(UserWarning, match="database connection failure"):
         with pytest.raises(psycopg2.OperationalError):
-            util.get_dbconn("mesosite", host="b", allow_failover=False)
+            util.get_dbconn("mesosite", host="b")
 
 
 def test_get_dbconn_bad_argument():
