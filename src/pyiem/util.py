@@ -165,7 +165,7 @@ def mm2inch(val):
 
 
 def html_escape(val):
-    """Wrapper around cgi.escape depreciation."""
+    """Wrapper around cgi.escape deprecation."""
     from html import escape
 
     return escape(val)

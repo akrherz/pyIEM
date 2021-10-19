@@ -2,7 +2,6 @@
 # pylint: disable=unsubscriptable-object
 import re
 from datetime import timezone, timedelta
-import warnings
 
 from pyiem import reference
 from pyiem.util import html_escape
@@ -296,15 +295,6 @@ class LSR:
             url,
         )
         return [plain, html, xtra]
-
-    def tweet(self):
-        """return a tweet text"""
-        warnings.warn(
-            "tweet() is depreciated, use get_jabbers(uri) instead",
-            DeprecationWarning,
-        )
-        j = self.get_jabbers("")
-        return j[2]["twitter"]
 
     def assign_timezone(self, tz, z):
         """retroactive assignment of timezone, so to improve attrs"""

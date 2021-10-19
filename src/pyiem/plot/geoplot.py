@@ -1400,14 +1400,3 @@ class MapPlot:
             pos = cb.ax.get_position()
         self.fig.text(pos.x1, pos.y1 + 0.005, "dBZ", ha="left")
         return valid
-
-
-def windrose(*args, **kwargs):
-    """Depreciated."""
-    warnings.warn(
-        "windrose() is depreciated, use pyiem.windrose_utils!",
-        DeprecationWarning,
-    )
-    import pyiem.windrose_utils as wru
-
-    return wru.windrose(*args, **kwargs)
