@@ -9,8 +9,7 @@ import warnings
 
 import gdata.gauth
 import gdata.sites.client as sclient
-from oauth2client.service_account import ServiceAccountCredentials
-from httplib2 import Http
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import smartsheet
 from pyiem.util import LOG
@@ -166,12 +165,11 @@ def get_googleapiclient(config, project, ns, v):
       ns (str): google endpoint to use
       v (str): google endpoint version to use
     """
-    cred = ServiceAccountCredentials.from_json_keyfile_dict(
+    cred = Credentials.from_service_account_info(
         config[project]["service_account"],
         scopes=["https://www.googleapis.com/auth/drive"],
     )
-    http_auth = cred.authorize(Http())
-    return build(ns, v, http=http_auth)
+    return build(ns, v, credentials=cred)
 
 
 def get_folders(drive):
