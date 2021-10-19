@@ -129,6 +129,50 @@ def read_slp(filename):
     return res
 
 
+def man2df(mandict: dict, year1: int = 1) -> pd.DataFrame:
+    """Convert nasty dictionary returned from `read_man` into `pd.DataFrame`.
+
+    The DataFrame is oriented with OFE, year.
+
+    Args:
+      mandict (dict): Dictionary populated from read_man.
+      year1 (int,optional): What does WEPP year index 1 equate to in the
+        real world!  The default of 1 just uses what WEPP does.
+
+    Returns:
+      pd.DataFrame
+    """
+    rows = []
+    baseyear = year1  # roundabout
+    for iofe in range(mandict["iofe"]):
+        for iyear in range(mandict["inyr"]):
+            year = iyear + baseyear
+            scenyr = mandict["rotations"][iyear][iofe]["yearindex"]
+            ncrop = mandict["scens"][scenyr - 1]["ntype"]
+            tilseq = mandict["scens"][scenyr - 1]["tilseq"]
+            plant_date = None
+            for surfeff in mandict["surfeffects"][tilseq - 1]["tills"]:
+                print(surfeff)
+                op = surfeff["op"]
+                if (
+                    mandict["operations"][op - 1]["scecomment"].find("Planter")
+                    > -1
+                ):
+                    doy = surfeff["mdate"]
+                    plant_date = datetime.date(
+                        year, 1, 1
+                    ) + datetime.timedelta(days=(doy - 1))
+            rows.append(
+                {
+                    "year": year,
+                    "ofe": iofe + 1,
+                    "plant_date": plant_date,
+                    "crop_name": mandict["crops"][ncrop - 1]["crpnam"],
+                }
+            )
+    return pd.DataFrame(rows)
+
+
 def read_man(filename):
     """Implements WEPP's INFILE.for for reading management file
 
