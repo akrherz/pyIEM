@@ -140,3 +140,13 @@ def test_rfactor_english():
     # 1 inch rain over 1 hour
     res = dep.rfactor([1.0, 2.0], [0.0, 25.4], return_rfactor_metric=False)
     assert abs(res - 2.71) < 0.1
+
+
+def test_man2df():
+    """Test generation of DataFrame from management file."""
+    mandict = dep.read_man(get_path("man3.txt"))
+    df = dep.man2df(mandict)
+    ans = "Soy_2194"
+    assert df.query("year == 6 and ofe == 1").iloc[0]["crop_name"] == ans
+    df = dep.man2df(mandict, year1=2007)
+    assert df.query("year == 2012 and ofe == 1").iloc[0]["crop_name"] == ans
