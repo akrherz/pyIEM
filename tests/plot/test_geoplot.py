@@ -8,7 +8,6 @@ import pytest
 import matplotlib.colors as mpcolors
 import numpy as np
 from pyiem import plot
-from pyiem.plot.geoplot import windrose
 from pyiem.plot import (
     MapPlot,
     centered_bins,
@@ -18,12 +17,6 @@ from pyiem.plot import (
 from pyiem.util import utc
 
 PAIN = 1.1  # how much do we care, sigh.
-
-
-def test_depreciated():
-    """Test that our windrose is depreciated."""
-    with pytest.deprecated_call():
-        windrose("")
 
 
 def test_invalid_file():

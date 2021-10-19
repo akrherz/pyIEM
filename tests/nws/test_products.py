@@ -294,6 +294,3 @@ def test_01():
         "DROPPED FROM 63 TO 48 IN 10 MINUTES. "
         "http://iem.local/#DMX/201307230355/201307230355"
     )
-
-    with pytest.deprecated_call():
-        prod.lsrs[5].tweet()

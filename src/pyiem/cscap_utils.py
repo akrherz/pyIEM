@@ -5,11 +5,11 @@ import json
 import os
 import sys
 import re
+import warnings
 
 import gdata.gauth
 import gdata.sites.client as sclient
-from oauth2client.service_account import ServiceAccountCredentials
-from httplib2 import Http
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import smartsheet
 from pyiem.util import LOG
@@ -128,6 +128,10 @@ def get_xref_plotids(drive):
 
 def get_sites_client(config, site="sustainablecorn"):
     """Return an authorized sites client"""
+    warnings.warn(
+        "get_sites_client() will be removed in pyIEM 1.9.0",
+        DeprecationWarning,
+    )
 
     token = gdata.gauth.OAuth2Token(
         client_id=config["appauth"]["client_id"],
@@ -161,12 +165,11 @@ def get_googleapiclient(config, project, ns, v):
       ns (str): google endpoint to use
       v (str): google endpoint version to use
     """
-    cred = ServiceAccountCredentials.from_json_keyfile_dict(
+    cred = Credentials.from_service_account_info(
         config[project]["service_account"],
         scopes=["https://www.googleapis.com/auth/drive"],
     )
-    http_auth = cred.authorize(Http())
-    return build(ns, v, http=http_auth)
+    return build(ns, v, credentials=cred)
 
 
 def get_folders(drive):

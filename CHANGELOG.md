@@ -8,6 +8,8 @@ All notable changes to this library are documented in this file.
 
 - `pyiem.nws.product.TextProduct#get_product_id` now includes the `BBB` field in the return string, when specified within the parsed text.  This is necessary to fully describe products that may be issued twice within the same minute.
 - Removed the hacky `iemdb2.local` database failover concept that hopefully nobody else was somehow using.
+- Previously announced deprecations of `pyiem.nws.lsr.LSR.tweet` and `pyiem.plot.geoplot.windrose` formally removed.
+- Announce deprecation of `pyiem.cscap_utils.get_sites_client` in v1.9.0.
 
 ### New Features
 
