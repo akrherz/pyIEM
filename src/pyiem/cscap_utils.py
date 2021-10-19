@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import re
+import warnings
 
 import gdata.gauth
 import gdata.sites.client as sclient
@@ -128,6 +129,10 @@ def get_xref_plotids(drive):
 
 def get_sites_client(config, site="sustainablecorn"):
     """Return an authorized sites client"""
+    warnings.warn(
+        "get_sites_client() will be removed in pyIEM 1.9.0",
+        DeprecationWarning,
+    )
 
     token = gdata.gauth.OAuth2Token(
         client_id=config["appauth"]["client_id"],
