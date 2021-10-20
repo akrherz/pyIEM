@@ -13,8 +13,8 @@ class basetype:
         """constructor with value and units required"""
         if units.upper() not in self.known_units:
             raise UnitsError(
-                "unrecognized temperature unit: %s known: %s"
-                % (units, self.known_units)
+                f"unrecognized temperature unit: {units} "
+                f"known: {self.known_units}"
             )
         self._units = units.upper()
         if isinstance(value, list):
@@ -40,8 +40,8 @@ class mixingratio(basetype):
         """Convert the value into the provided units"""
         if units.upper() not in mixingratio.known_units:
             raise UnitsError(
-                "unrecognized mixingratio unit: %s known: %s"
-                % (units, mixingratio.known_units)
+                f"unrecognized mixingratio unit: {units} "
+                f"known: {mixingratio.known_units}"
             )
         if units.upper() == self._units:
             return self._value
@@ -57,8 +57,8 @@ class distance(basetype):
         units = units.upper()
         if units not in distance.known_units:
             raise UnitsError(
-                "unrecognized distance unit: %s known: %s"
-                % (units, distance.known_units)
+                f"unrecognized distance unit: {units} "
+                f"known: {distance.known_units}"
             )
         if units == self._units:
             return self._value
@@ -81,15 +81,15 @@ class distance(basetype):
         # Output
         if units in ["SM", "MI"]:
             return meters / 1609.344
-        elif units == "FT":
+        if units == "FT":
             return meters * 3.28084
-        elif units == "KM":
+        if units == "KM":
             return meters / 1000.0
-        elif units == "MM":
+        if units == "MM":
             return meters * 1000.0
-        elif units == "CM":
+        if units == "CM":
             return meters * 100.0
-        elif units == "IN":
+        if units == "IN":
             return meters / 0.0254
         return meters
 
@@ -104,8 +104,8 @@ class precipitation(basetype):
         units = units.upper()
         if units not in precipitation.known_units:
             raise UnitsError(
-                ("unrecognized precipitation unit: %s known: %s")
-                % (units, precipitation.known_units)
+                f"unrecognized precipitation unit: {units} "
+                "known: {precipitation.known_units}"
             )
         if units == self._units:
             return self._value
@@ -121,10 +121,9 @@ class precipitation(basetype):
         # Convert
         if units == "MM":
             return mm
-        elif units == "CM":
+        if units == "CM":
             return mm * 10.0
-        elif units == "IN":
-            return mm / 25.4
+        return mm / 25.4
 
 
 class speed(basetype):
@@ -139,8 +138,7 @@ class speed(basetype):
         units = units.upper()
         if units not in speed.known_units:
             raise UnitsError(
-                "unrecognized speed unit: %s known: %s"
-                % (units, speed.known_units)
+                f"unrecognized speed unit: {units} known: {speed.known_units}"
             )
         if units == self._units:
             return self._value
@@ -156,12 +154,11 @@ class speed(basetype):
         # return
         if units == "KMH":
             return mps_value * 3.6
-        elif units in ["KT", "KTS"]:
+        if units in ["KT", "KTS"]:
             return mps_value / 0.514444
-        elif units == "MPH":
+        if units == "MPH":
             return mps_value / 0.447000
-        elif units == "MPS":
-            return mps_value
+        return mps_value
 
 
 class humidity(basetype):
@@ -173,8 +170,8 @@ class humidity(basetype):
         """Convert to a value in the given units"""
         if units.upper() not in humidity.known_units:
             raise UnitsError(
-                "unrecognized humidity unit: %s known: %s"
-                % (units, humidity.known_units)
+                f"unrecognized humidity unit: {units} "
+                f"known: {humidity.known_units}"
             )
         return self._value
 
@@ -188,16 +185,15 @@ class direction(basetype):
         """Convert to a value in the given units"""
         if units.upper() not in direction.known_units:
             raise UnitsError(
-                "unrecognized direction unit: %s known: %s"
-                % (units, direction.known_units)
+                f"unrecognized direction unit: {units} "
+                f"known: {direction.known_units}"
             )
         if units.upper() == self._units:
             return self._value
 
         if self._units == "DEG" and units.upper() == "RAD":
             return self._value * 3.1415926535897931 / 180.0
-        if self._units == "RAD" and units.upper() == "DEG":
-            return self._value * 180 / 3.1415926535897931
+        return self._value * 180 / 3.1415926535897931
 
 
 class pressure(basetype):
@@ -209,8 +205,8 @@ class pressure(basetype):
         """Convert to a value in the given units"""
         if units.upper() not in pressure.known_units:
             raise UnitsError(
-                "unrecognized pressure unit: %s known: %s"
-                % (units, pressure.known_units)
+                f"unrecognized pressure unit: {units} "
+                f"known: {pressure.known_units}"
             )
         if units.upper() == self._units:
             return self._value
@@ -225,10 +221,9 @@ class pressure(basetype):
         # Now convert
         if units.upper() in ["MB", "HPA"]:
             return mb_value
-        elif units.upper() == "PA":
+        if units.upper() == "PA":
             return mb_value * 100.0
-        elif units.upper() == "IN":
-            return mb_value / 33.86398
+        return mb_value / 33.86398
 
 
 class temperature(basetype):
@@ -241,8 +236,8 @@ class temperature(basetype):
         units = units.upper()
         if units not in temperature.known_units:
             raise UnitsError(
-                "unrecognized temperature unit: %s known: %s"
-                % (units, temperature.known_units)
+                f"unrecognized temperature unit: {units} "
+                f"known: {temperature.known_units}"
             )
         if units == self._units:
             return self._value
@@ -257,7 +252,6 @@ class temperature(basetype):
         # Dump back
         if units == "C":
             return celsius_value
-        elif units == "K":
+        if units == "K":
             return 273.15 + celsius_value
-        elif units == "F":
-            return 32.0 + celsius_value * 1.8
+        return 32.0 + celsius_value * 1.8

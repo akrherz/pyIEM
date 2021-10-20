@@ -6,7 +6,7 @@ from datetime import timezone, date, timedelta
 import math
 
 try:
-    from zoneinfo import ZoneInfo
+    from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 

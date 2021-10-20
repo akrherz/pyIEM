@@ -18,7 +18,7 @@ LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
 
 
-def ramp2df(name):
+def ramp2df(name) -> pd.DataFrame:
     """Loads pyIEM color ramp into a Pandas DataFrame.
 
     Args:

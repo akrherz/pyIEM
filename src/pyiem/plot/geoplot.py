@@ -93,10 +93,10 @@ def load_bounds(filebase):
     Returns:
       numpy 2d array of the data
     """
-    fn = "%s/%s.npy" % (DATADIR, filebase)
+    fn = os.path.join(DATADIR, f"{filebase}.npy")
     if not os.path.isfile(fn):
         LOG.info("load_bounds(%s) is missing!", fn)
-        return
+        return None
     return np.load(fn)
 
 
@@ -185,7 +185,7 @@ class MapPlot:
                 states = load_geodf("us_states")
                 _a.add_geometries(
                     states["geom"].values,
-                    crs=ccrs.PlateCarree(),
+                    crs=LATLON,
                     lw=1.0,
                     edgecolor=kwargs.get("statebordercolor", "k"),
                     facecolor="None",
@@ -219,11 +219,8 @@ class MapPlot:
             self.fig.text(
                 0.01,
                 0.03,
-                ("%s :: generated %s")
-                % (
-                    kwargs.get("caption", "Iowa Environmental Mesonet"),
-                    datetime.datetime.now().strftime("%d %B %Y %I:%M %p %Z"),
-                ),
+                f"{kwargs.get('caption', 'Iowa Environmental Mesonet')} :: "
+                f"generated {datetime.datetime.now():%d %B %Y %I:%M %p %Z}",
             )
 
     def close(self):
@@ -254,13 +251,11 @@ class MapPlot:
             valid = valid.strftime("%Y-%m-%d")
         elif isinstance(valid, datetime.datetime):
             valid = valid.strftime("%Y-%m-%d")
-        url = ("http://mesonet.agron.iastate.edu/geojson/usdm.py?date=%s") % (
-            valid,
-        )
+        url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
         try:
             req = requests.get(url, timeout=30)
         except requests.ConnectionError as exp:
-            warnings.warn("draw_usdm IEM USDM Webservice failed: %s" % (exp,))
+            warnings.warn(f"draw_usdm IEM USDM Webservice failed: {exp}")
             return None
         df = gpd.GeoDataFrame().from_features(req.json())
         lw = 1 if filled else 4.0
@@ -273,7 +268,7 @@ class MapPlot:
             ec = color if not filled else "k"
             self.ax.add_geometries(
                 [geom],
-                ccrs.PlateCarree(),
+                LATLON,
                 facecolor="None",
                 edgecolor=ec,
                 linewidth=lw,
@@ -282,7 +277,7 @@ class MapPlot:
             if filled:
                 self.ax.add_geometries(
                     [geom],
-                    ccrs.PlateCarree(),
+                    LATLON,
                     facecolor=fc,
                     alpha=0.5,
                     edgecolor="None",
@@ -291,7 +286,7 @@ class MapPlot:
             elif hatched:
                 self.ax.add_geometries(
                     [geom],
-                    ccrs.PlateCarree(),
+                    LATLON,
                     facecolor="None",
                     hatch=hatches[row["dm"]],
                     edgecolor=color,
@@ -357,7 +352,7 @@ class MapPlot:
             self.ax.text(
                 0.815,
                 0.99,
-                "USDM %s" % (usdm_valid,),
+                f"USDM {usdm_valid}",
                 color="w",
                 transform=self.ax.transAxes,
                 va="top",
@@ -420,9 +415,9 @@ class MapPlot:
         def _myrepr(val):
             """avoid list conversion in matplotlib that fowls numpy floats."""
             try:
-                return "%g" % (val,)
+                return f"{val:g}"
             except TypeError:
-                return "%s" % (val,)
+                return f"{val}"
 
         cb2.ax.set_yticklabels(list(map(_myrepr, clevlabels[stride])))
         # Attempt to quell offset that sometimes appears with large numbers
@@ -438,7 +433,7 @@ class MapPlot:
 
         if "units" in kwargs:
             self.fig.text(
-                0.99, 0.03, "data units :: %s" % (kwargs["units"],), ha="right"
+                0.99, 0.03, f"data units :: {kwargs['units']}", ha="right"
             )
 
         title = kwargs.get("title")
@@ -572,7 +567,7 @@ class MapPlot:
                     offsets[6] if skycoverage is not None else offsets[5]
                 )
                 self.ax.annotate(
-                    "%s" % (val,),
+                    f"{val}",
                     xy=(x, y),
                     ha=ha,
                     va=va,
@@ -776,7 +771,7 @@ class MapPlot:
                 zorder=z,
                 va="center" if not showmarker else "bottom",
                 ha=ha,
-                transform=ccrs.PlateCarree(),
+                transform=LATLON,
             )
             bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
             if self.debug:
@@ -795,7 +790,7 @@ class MapPlot:
                     marker="+",
                     zorder=z,
                     color="k",
-                    transform=ccrs.PlateCarree(),
+                    transform=LATLON,
                 )
             t0.set_clip_on(True)
             t0.set_path_effects(
@@ -810,7 +805,7 @@ class MapPlot:
 
             if label and label != "":
                 ax.annotate(
-                    "%s" % (label,),
+                    f"{label}",
                     xy=(x, y),
                     ha="center",
                     va="top",
@@ -843,7 +838,7 @@ class MapPlot:
             lats,
             c=colors,
             edgecolors=colors,
-            transform=ccrs.PlateCarree(),
+            transform=LATLON,
             zorder=Z_OVERLAY,
         )
         kwargs.pop("cmap", None)
@@ -856,9 +851,7 @@ class MapPlot:
         )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        points = self.ax.projection.transform_points(
-            ccrs.PlateCarree(), lons, lats
-        )
+        points = self.ax.projection.transform_points(LATLON, lons, lats)
         _hex = self.ax.hexbin(
             points[:, 0],
             points[:, 1],
@@ -901,7 +894,7 @@ class MapPlot:
             norm=norm,
             cmap=cmap,
             zorder=Z_FILL,
-            transform=ccrs.PlateCarree(),
+            transform=LATLON,
         )
 
         if kwargs.get("clip_on", True):
@@ -949,7 +942,7 @@ class MapPlot:
             geo = s["geom"].values[0]
             ccw = np.asarray(geo.exterior)[::-1]
         else:
-            ccw = load_bounds("%s_ccw" % (sector,))
+            ccw = load_bounds(f"{sector}_ccw")
         # in map coords
         points = self.ax.projection.transform_points(
             ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
@@ -1035,7 +1028,7 @@ class MapPlot:
             norm=norm,
             zorder=Z_FILL,
             extend="both",
-            transform=ccrs.PlateCarree(),
+            transform=LATLON,
         )
         if kwargs.get("iline", True):
             csl = self.ax.contour(
@@ -1045,7 +1038,7 @@ class MapPlot:
                 clevs,
                 colors="w",
                 zorder=Z_FILL_LABEL,
-                transform=ccrs.PlateCarree(),
+                transform=LATLON,
             )
             if kwargs.get("ilabel", False):
                 self.ax.clabel(
@@ -1121,7 +1114,7 @@ class MapPlot:
         for _a in self.axes:
             _a.add_geometries(
                 cwas["geom"].values,
-                crs=ccrs.PlateCarree(),
+                crs=LATLON,
                 zorder=Z_POLITICAL,
                 facecolor="None",
                 **kwargs,
@@ -1157,7 +1150,7 @@ class MapPlot:
           outlinecolor (str): color to outline the text with
         """
         gdf = load_geodf("cities")
-        (west, east, south, north) = self.ax.get_extent(crs=ccrs.PlateCarree())
+        (west, east, south, north) = self.ax.get_extent(crs=LATLON)
 
         minpop = kwargs.get(
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
@@ -1193,7 +1186,7 @@ class MapPlot:
         geodf = load_geodf("ugcs_county")
         self.ax.add_geometries(
             geodf["geom"].values,
-            crs=ccrs.PlateCarree(),
+            crs=LATLON,
             facecolor="None",
             edgecolor=color,
             lw=0.4,
@@ -1236,7 +1229,7 @@ class MapPlot:
         tmpfd.close()
         if kwargs.get("pqstr") is not None:
             subprocess.call(
-                "pqinsert -p '%s' %s" % (kwargs.get("pqstr"), tmpfd.name),
+                f"pqinsert -p '{kwargs.get('pqstr')}' {tmpfd.name}",
                 shell=True,
             )
         if kwargs.get("filename") is not None:
@@ -1261,7 +1254,7 @@ class MapPlot:
         try:
             req = requests.get(url, params={"valid": tstamp}, timeout=30)
         except requests.ConnectionError as exp:
-            warnings.warn("overlay_roadcond failed: %s" % (exp,))
+            warnings.warn(f"overlay_roadcond failed: {exp}")
             return None
         df = gpd.GeoDataFrame().from_features(req.json())
         labels = []
@@ -1269,7 +1262,7 @@ class MapPlot:
             for geo in row["geometry"]:
                 self.ax.plot(
                     *geo.xy,
-                    transform=ccrs.PlateCarree(),
+                    transform=LATLON,
                     color=row["color"],
                     linewidth=2 if row["rtype"] > 1 else 4,
                     zorder=Z_OVERLAY2,
@@ -1392,7 +1385,7 @@ class MapPlot:
         )
         cb.set_ticklabels(
             [
-                "%.0d" % (d,)
+                f"{d:0d}"
                 for d in ramp.loc[ramp["value"] % 20 == 0]["value"].values
             ]
         )

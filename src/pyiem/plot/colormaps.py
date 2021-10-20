@@ -29,7 +29,10 @@ def _register_cmap(cmap):
 def _load_local_cmap_colors(name):
     """Return list of colors for this cmap from local file."""
     return (
-        open(os.path.join(DATADIR, "..", "cmap", f"{name}.txt"))
+        open(
+            os.path.join(DATADIR, "..", "cmap", f"{name}.txt"),
+            encoding="utf8",
+        )
         .read()
         .strip()
         .split("\n")
@@ -70,8 +73,10 @@ def stretch_cmap(cmap, bins, extend="both"):
     cmapout = mpcolors.ListedColormap(colors[1:-1], "")
     # pylint: disable=W0212
     cmapout.set_bad(cmap._rgba_bad)
-    cmapout.set_over(cmap._rgba_over or colors[-1])
-    cmapout.set_under(cmap._rgba_under or colors[0])
+    if extend in ["both", "max"]:
+        cmapout.set_over(cmap._rgba_over or colors[-1])
+    if extend in ["both", "min"]:
+        cmapout.set_under(cmap._rgba_under or colors[0])
     # we can now return
     return cmapout
 
