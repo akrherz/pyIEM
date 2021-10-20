@@ -415,7 +415,7 @@ class MapPlot:
         def _myrepr(val):
             """avoid list conversion in matplotlib that fowls numpy floats."""
             try:
-                return f"{val:g}"
+                return "%g" % (val,)
             except TypeError:
                 return f"{val}"
 
@@ -1385,7 +1385,7 @@ class MapPlot:
         )
         cb.set_ticklabels(
             [
-                f"{d:0d}"
+                "%.0d" % (d,)
                 for d in ramp.loc[ramp["value"] % 20 == 0]["value"].values
             ]
         )
