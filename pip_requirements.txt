@@ -4,4 +4,3 @@ backports.zoneinfo;python_version<"3.9"
 sphinxcontrib-napoleon
 # cscap_utils stuff
 git+https://github.com/smartsheet-platform/smartsheet-python-sdk.git
-git+https://github.com/dvska/gdata-python3.git; python_version > '3.0'

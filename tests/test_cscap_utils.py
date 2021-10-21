@@ -2,14 +2,7 @@
 import tempfile
 import os
 
-import pytest
 from pyiem import cscap_utils as csu
-
-
-def test_get_sites_client():
-    """Test the deprecation of this method."""
-    with pytest.deprecated_call(), pytest.raises(KeyError):
-        csu.get_sites_client({})
 
 
 def test_cleanvalue():

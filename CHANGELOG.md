@@ -1,6 +1,17 @@
+<!-- markdownlint-configure-file {"MD024": { "siblings_only": true } } -->
 # Changelog
 
 All notable changes to this library are documented in this file.
+
+## Unreleased Version
+
+### API Changes
+
+- Removed deprecated `pyiem.cscap_utils.get_sites_client`.  It would be nice to migrate this to updated Google API, but classic Google vaporware and such API does not exist.
+
+### New Features
+
+### Bug Fixes
 
 ## **1.8.0** (20 Oct 2021)
 
@@ -129,7 +140,7 @@ suspect folks are using this code path (fa1e2ce).
 
 - Special Weather Statements (SPS) products are now parsed for IBW tags (#253),
 this required database schema updates with these products stored in an explicit
-`sps` table.  See 
+`sps` table.  See
 [akrherz/iem-database](https://github.com/akrherz/iem-database) repo.
 - Add warnings back for when unknown HVTEC NWSLIs are found (#375).
 - Introduce `rasterio` for faster imshow overlays of NEXRAD composites.
