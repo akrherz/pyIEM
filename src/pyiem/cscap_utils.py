@@ -5,10 +5,7 @@ import json
 import os
 import sys
 import re
-import warnings
 
-import gdata.gauth
-import gdata.sites.client as sclient
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import smartsheet
@@ -124,26 +121,6 @@ def get_xref_plotids(drive):
         siteid = item["title"].split()[0]
         data[siteid] = item["id"]
     return data
-
-
-def get_sites_client(config, site="sustainablecorn"):
-    """Return an authorized sites client"""
-    warnings.warn(
-        "get_sites_client() will be removed in pyIEM 1.9.0",
-        DeprecationWarning,
-    )
-
-    token = gdata.gauth.OAuth2Token(
-        client_id=config["appauth"]["client_id"],
-        client_secret=config["appauth"]["app_secret"],
-        user_agent="daryl.testing",
-        scope=config["googleauth"]["scopes"],
-        refresh_token=config["googleauth"]["refresh_token"],
-    )
-
-    sites_client = sclient.SitesClient(site=site)
-    token.authorize(sites_client)
-    return sites_client
 
 
 def get_driveclient(config, project="cscap"):

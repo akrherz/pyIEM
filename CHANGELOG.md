@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Removed deprecated `pyiem.cscap_utils.get_sites_client`.  It would be nice to migrate this to updated Google API, but classic Google vaporware and such API does not exist.
+
 ### New Features
 
 ### Bug Fixes
