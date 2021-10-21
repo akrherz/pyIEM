@@ -190,12 +190,12 @@ def get_daily_ncname(year):
 
 def get_dailyc_mrms_ncname():
     """Get the MRMS daily climatology filename"""
-    return "/mesonet/data/iemre/iemre_mrms_dailyc.nc"
+    return "/mesonet/data/mrms/mrms_dailyc.nc"
 
 
 def get_daily_mrms_ncname(year):
     """Get the daily netcdf MRMS filename for the given year"""
-    return f"/mesonet/data/iemre/{year}_iemre_mrms_daily.nc"
+    return f"/mesonet/data/mrms/{year}_mrms_daily.nc"
 
 
 def get_hourly_ncname(year):
