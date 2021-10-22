@@ -252,6 +252,7 @@ class Observation:
                     self.data["tmpf"] * munits.degF,
                     self.data["relh"] * munits.percent,
                     self.data["sknt"] * munits.knots,
+                    mask_undefined=False,  # less confusion this way
                 )
                 .to(munits.degF)
                 .magnitude,
