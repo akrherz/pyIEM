@@ -7,6 +7,19 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_211025_nullgeom():
+    """Trouble spotted in the wild."""
+    with pytest.raises(ValueError):
+        parser(get_test_file("ERO/RBG94E_nullgeom.txt"))
+
+
+def test_211024_calif():
+    """Test that we get the right geometries."""
+    prod = parser(get_test_file("ERO/RBG94E_calif.txt"))
+    outlook = prod.get_outlook("CATEGORICAL", "MDT", 1)
+    assert abs(outlook.geometry.area - 10.62) < 0.01
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_210817_length(dbcursor):
     """Test our database insert."""

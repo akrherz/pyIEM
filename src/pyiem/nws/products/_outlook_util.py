@@ -206,6 +206,8 @@ def winding_logic(linestrings):
         started_at = df.at[i, "start"]
         LOG.debug("   looping %s, started_at %s", i, started_at)
         poly = rhs_split(CONUS["poly"], linestrings[i])
+        if poly is None:
+            raise ValueError("rhs_split failed, aborting")
         ended_at = df.at[i, "end"]
         for _q in range(100):  # belt-suspenders to keep infinite loop
             LOG.debug("     looping with ended_at of %s", ended_at)
@@ -371,7 +373,11 @@ def quality_control(prod):
                 for i2, poly2 in enumerate(outlook.geometry):
                     if i == i2:
                         continue
-                    if not poly.intersects(poly2):
+                    intersection = poly.intersection(poly2)
+                    if intersection.is_empty:
+                        continue
+                    if intersection.area < 0.1:
+                        LOG.info("Ignoring small intersection of polygons")
                         continue
                     passes_check = False
                     msg = (
