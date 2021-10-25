@@ -21,6 +21,13 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
+def test_211025_rr3mkx():
+    """Test that we do not take some of the bad data here."""
+    utcnow = utc(2021, 10, 25)
+    prod = parser(get_test_file("SHEF/RR3MKX.txt"), utcnow=utcnow)
+    assert not prod.data
+
+
 def test_a_format():
     """Test the parsing of A format SHEF."""
     utcnow = utc(2021, 9, 17, 12)
