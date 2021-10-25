@@ -29,7 +29,7 @@ class SHEFElement(BaseModel):
     station: str = Field(...)
     valid: datetime = Field(...)
     dv_interval: timedelta = Field(None)  # DV
-    physical_element: str = Field(None, length=2)
+    physical_element: str = Field(None)  # PE
     duration: str = Field(None)
     type: str = Field("R")  # Table 7
     source: str = Field("Z")  # Table 7
@@ -83,6 +83,8 @@ class SHEFElement(BaseModel):
         if text.startswith("D"):
             # Reserved per 3.3.1
             raise ValueError(f"Cowardly refusing to set D {text}")
+        if len(text) < 2:
+            raise ValueError(f"text needs to be at least 2 chars {text}")
         # Table 2: Override for some special codes
         text = shef_send_codes.get(text, text)
         length = len(text)
