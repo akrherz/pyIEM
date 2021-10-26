@@ -5,7 +5,7 @@ import os
 import numpy as np
 import cartopy.crs as ccrs
 import pandas as pd
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, MultiPolygon
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.image as mpimage
@@ -437,10 +437,10 @@ def polygon_fill(mymap, geodf, data, **kwargs):
                     if pd.isna(row["val"])
                     else cmap(norm([row["val"]]))[0]
                 )
-            for polyi, polygon in enumerate(native.loc[polykey]):
+            for polyi, polygon in enumerate(native.loc[polykey].geoms):
                 if polygon.exterior is None:
                     continue
-                a = np.asarray(polygon.exterior)
+                a = np.asarray(polygon.exterior.coords)
                 p = mpatches.Polygon(
                     a[:, :2],
                     fc=_fc,
@@ -493,11 +493,9 @@ def mask_outside_geom(ax, geom):
     )
     codes = [mpath.Path.MOVETO] + (len(verts) - 1) * [mpath.Path.LINETO]
     if isinstance(geom, Polygon):
-        geom = [
-            geom,
-        ]
-    for geo in geom:
-        ccw = np.asarray(geo.exterior)[::-1]
+        geom = MultiPolygon([geom])
+    for geo in geom.geoms:
+        ccw = np.asarray(geo.exterior.coords)[::-1]
         points = ax.projection.transform_points(
             ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
         )

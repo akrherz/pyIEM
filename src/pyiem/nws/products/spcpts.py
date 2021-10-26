@@ -251,7 +251,7 @@ class SPCPTS(TextProduct):
                     color="b",
                     label="Conus",
                 )
-                for poly in outlook.geometry:
+                for poly in outlook.geometry.geoms:
                     patch = PolygonPatch(
                         poly,
                         fc="tan",

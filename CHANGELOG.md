@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Addressed upcoming Shapely 2.0 deprecations.
+
 ## **1.8.0** (20 Oct 2021)
 
 ### API Changes
