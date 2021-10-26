@@ -88,7 +88,7 @@ class MCDProduct(TextProduct):
             center = "WPC"
         prob_extra = ""
         if self.watch_prob is not None:
-            prob_extra = " [watch prob: %.0f%%]" % (self.watch_prob,)
+            prob_extra = f" [watch prob: {self.watch_prob:.0f}%]"
         concerning_text = ""
         if self.concerning is not None:
             concerning_text = f" concerning {self.concerning}"
@@ -100,7 +100,7 @@ class MCDProduct(TextProduct):
             prob_extra,
             self.areas_affected,
         )
-        return "%s%s" % (attempt[:charsleft], self.get_url())
+        return f"{attempt[:charsleft]}{self.get_url()}"
 
     def get_url(self):
         """Return the URL for SPC's website"""
@@ -233,7 +233,7 @@ class MCDProduct(TextProduct):
                 self.discussion_num,
                 txn.rowcount,
             )
-        giswkt = "SRID=4326;%s" % (self.geometry.wkt,)
+        giswkt = f"SRID=4326;{self.geometry.wkt}"
         sql = (
             f"INSERT into {table} (product, product_id, geom, issue, expire, "
             "num, year, watch_confidence, concerning) "

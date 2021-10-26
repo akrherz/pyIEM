@@ -82,7 +82,8 @@ def read_bufkit(mixedobj):
       (profile_dataframe, station_dataframe)
     """
     if isinstance(mixedobj, str):
-        text = open(mixedobj).read()
+        with open(mixedobj, encoding="utf8") as fh:
+            text = fh.read()
     elif isinstance(mixedobj, StringIO):
         text = mixedobj.getvalue()
     else:

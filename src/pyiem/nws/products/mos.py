@@ -134,10 +134,9 @@ class MOSProduct(TextProduct):
                 # Account for 'empty' MOS products
                 if not sect["data"][ts]:
                     continue
-                fst = """
-                INSERT into t%s (station, model, runtime, ftime,
-                """ % (
-                    sect["initts"].year,
+                fst = (
+                    f"INSERT into t{sect['initts'].year} "
+                    "(station, model, runtime, ftime, "
                 )
                 sst = "VALUES(%s,%s,%s,%s,"
                 args = [sect["station"], sect["model"], sect["initts"], ts]
@@ -146,7 +145,7 @@ class MOSProduct(TextProduct):
                     if vname in ["FHR", "HR", "UTC"]:
                         continue
                     # save some database space :/
-                    fst += " %s," % (REMAP_VARS.get(vname, vname),)
+                    fst += f" {REMAP_VARS.get(vname, vname)},"
                     sst += "%s,"
                     args.append(make_null(sect["data"][ts][vname]))
                 if len(args) == 4:
