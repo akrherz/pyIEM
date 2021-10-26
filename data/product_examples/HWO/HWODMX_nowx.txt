@@ -1,0 +1,36 @@
+160 
+FLUS43 KDMX 281505
+HWODMX
+
+Hazardous Weather Outlook
+National Weather Service Des Moines IA
+905 AM CST Sun Feb 28 2021
+
+IAZ004>007-015>017-023>028-033>039-044>050-057>062-070>075-
+081>086-092>097-011515-
+Emmet-Kossuth-Winnebago-Worth-Palo Alto-Hancock-Cerro Gordo-
+Pocahontas-Humboldt-Wright-Franklin-Butler-Bremer-Sac-Calhoun-
+Webster-Hamilton-Hardin-Grundy-Black Hawk-Crawford-Carroll-Greene-
+Boone-Story-Marshall-Tama-Audubon-Guthrie-Dallas-Polk-Jasper-
+Poweshiek-Cass-Adair-Madison-Warren-Marion-Mahaska-Adams-Union-
+Clarke-Lucas-Monroe-Wapello-Taylor-Ringgold-Decatur-Wayne-
+Appanoose-Davis-
+905 AM CST Sun Feb 28 2021
+
+This Hazardous Weather Outlook is for portions of central Iowa.
+
+.DAY ONE...Today and tonight
+
+No hazardous weather is expected at this time.
+
+.DAYS TWO THROUGH SEVEN...Monday through Saturday
+
+No hazardous weather is expected at this time.
+
+.SPOTTER INFORMATION STATEMENT...
+
+Spotter activation will not be needed.
+
+$$
+
+KP

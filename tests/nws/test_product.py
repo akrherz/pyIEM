@@ -193,7 +193,7 @@ def test_rfd():
 
 def test_hwo():
     """Parse a HWO"""
-    tp = productparser(get_test_file("HWO.txt"))
+    tp = productparser(get_test_file("HWO/HWO.txt"))
     assert tp.get_channels()[0] == "HWOLOT"
     j = tp.get_jabbers("http://localhost")
     ans = (
@@ -284,7 +284,7 @@ def test_stray_space_in_ugc():
 
 def test_ugc_in_hwo():
     """Parse UGC codes in a HWO"""
-    tp = product.TextProduct(get_test_file("HWO.txt"))
+    tp = product.TextProduct(get_test_file("HWO/HWO.txt"))
     assert tp.segments[1].ugcs == [
         ugc.UGC("LM", "Z", 740),
         ugc.UGC("LM", "Z", 741),
