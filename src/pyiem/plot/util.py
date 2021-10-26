@@ -12,6 +12,7 @@ import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
+from pyiem.reference import LATLON
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
@@ -81,7 +82,7 @@ def draw_logo(fig, logoname):
     if logoname is None:
         return
     filename = LOGOFILES.get(logoname, "logo.png")
-    fn = "%s/%s" % (DATADIR, filename)
+    fn = os.path.join(DATADIR, filename)
     if not os.path.isfile(fn):
         return
     # Create a fake axes to place this Logo
@@ -287,7 +288,7 @@ def sector_setter(mp, axbounds, **kwargs):
             ln = mp.ax.plot(
                 [-95.4, -85.24],
                 [23.3, 27.7],
-                transform=ccrs.PlateCarree(),
+                transform=LATLON,
                 color="None",
             )[0]
             bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
@@ -438,8 +439,6 @@ def polygon_fill(mymap, geodf, data, **kwargs):
                     else cmap(norm([row["val"]]))[0]
                 )
             for polyi, polygon in enumerate(native.loc[polykey].geoms):
-                if polygon.exterior is None:
-                    continue
                 a = np.asarray(polygon.exterior.coords)
                 p = mpatches.Polygon(
                     a[:, :2],
