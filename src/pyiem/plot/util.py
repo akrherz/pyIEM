@@ -83,8 +83,6 @@ def draw_logo(fig, logoname):
         return
     filename = LOGOFILES.get(logoname, "logo.png")
     fn = os.path.join(DATADIR, filename)
-    if not os.path.isfile(fn):
-        return
     # Create a fake axes to place this Logo
     logo = mpimage.imread(fn)
     # imshow messes with the aspect, so about the best we can do here is

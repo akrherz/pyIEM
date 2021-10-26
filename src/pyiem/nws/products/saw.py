@@ -57,8 +57,8 @@ class SAWProduct(TextProduct):
             return
         txn.execute(
             "SELECT distinct wfo from ugcs WHERE "
-            f"ST_Contains('SRID=4326;{self.geometry.wkt}', geom) "
-            "and end_ts is null"
+            "ST_Contains(%s, geom) and end_ts is null",
+            (f"SRID=4326;{self.geometry.wkt}",),
         )
         for row in txn.fetchall():
             self.affected_wfos.append(row[0])
