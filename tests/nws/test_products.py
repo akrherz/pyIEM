@@ -186,7 +186,7 @@ def test_150422_tornadomag():
 
 def test_150202_hwo():
     """HWORNK emitted a poorly worded error message"""
-    prod = parser(get_test_file("HWORNK.txt"))
+    prod = parser(get_test_file("HWO/HWORNK.txt"))
     with pytest.raises(Exception):
         prod.get_jabbers("http://localhost", "http://localhost")
 
@@ -194,7 +194,7 @@ def test_150202_hwo():
 def test_160418_hwospn():
     """Make sure a spanish HWO does not trip us up..."""
     utcnow = utc(2016, 4, 18, 10, 10)
-    prod = parser(get_test_file("HWOSPN.txt"), utcnow=utcnow)
+    prod = parser(get_test_file("HWO/HWOSPN.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         "JSJ issues Hazardous Weather Outlook (HWO) "

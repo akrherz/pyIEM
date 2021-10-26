@@ -3,7 +3,7 @@ import re
 from datetime import timezone, timedelta
 
 try:
-    from zoneinfo import ZoneInfo
+    from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 
@@ -203,16 +203,17 @@ class METARReport(Metar):
                 sknt = v1
                 drct = d1
                 time = t1
-        key = "%s;%s;%s" % (self.station_id, sknt, time)
-        if key not in WIND_ALERTS:
-            WIND_ALERTS[key] = 1
-            speed = datatypes.speed(sknt, "KT")
-            return ("gust of %.0f knots (%.1f mph) from %s @ %s") % (
-                speed.value("KT"),
-                speed.value("MPH"),
-                drct2text(drct),
-                time.strftime("%H%MZ"),
-            )
+        key = f"{self.station_id};{sknt};{time}"
+        if key in WIND_ALERTS:
+            return None
+        WIND_ALERTS[key] = 1
+        speed = datatypes.speed(sknt, "KT")
+        return ("gust of %.0f knots (%.1f mph) from %s @ %s") % (
+            speed.value("KT"),
+            speed.value("MPH"),
+            drct2text(drct),
+            time.strftime("%H%MZ"),
+        )
 
     def over_wind_threshold(self):
         """Is this METAR over the wind threshold for alerting"""

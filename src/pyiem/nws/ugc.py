@@ -33,13 +33,13 @@ def ugcs_to_text(ugcs):
         states[state_abbr].append(ugc.name)
 
     txt = []
-    for st in states.keys():
-        states[st].sort()
-        part = " %s [%s]" % (", ".join(states[st]), st)
+    for st, state in states.items():
+        state.sort()
+        part = f" {', '.join(state)} [{st}]"
         if len(part) > 350:
             if st == "LA" and geotype == "counties":
                 geotype = "parishes"
-            part = " %s %s in [%s]" % (len(states[st]), geotype, st)
+            part = f" {len(state)} {geotype} in [{st}]"
         txt.append(part)
 
     return (" and".join(txt)).strip()
@@ -91,7 +91,7 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
     #    pass
     if len(tokens) > 1:
         raise UGCParseException(
-            "More than 1 UGC encoding in text:\n%s\n" % (str(tokens),)
+            f"More than 1 UGC encoding in text:\n{tokens}\n"
         )
 
     parts = re.split("-", tokens[0][0].replace(" ", "").replace("\n", ""))
@@ -104,8 +104,7 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
             else:
                 # This is bad encoding
                 raise UGCParseException(
-                    ('WHOA, bad UGC encoding detected "%s"')
-                    % ("-".join(parts),)
+                    f'WHOA, bad UGC encoding detected "{"-".join(parts)}"'
                 )
         this_part = parts[i].strip()
         if len(this_part) == 6:  # We have a new state ID

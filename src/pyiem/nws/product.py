@@ -4,7 +4,7 @@ from collections import OrderedDict
 import re
 
 try:
-    from zoneinfo import ZoneInfo
+    from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 
@@ -526,7 +526,7 @@ class TextProductSegment:
         else:
             pairs = []
             for lat, lon in zip(lats, lons):
-                pairs.append("%s %s" % (lon, lat))
+                pairs.append(f"{lon} {lat}")
             self.tml_giswkt = "SRID=4326;LINESTRING(%s)" % (",".join(pairs),)
         self.tml_sknt = int(gdict["sknt"])
         self.tml_dir = int(gdict["dir"])
@@ -687,14 +687,14 @@ class TextProduct:
         aaa = self.afos[:3]
         hdl = self.get_main_headline()
         data = {
-            "headline": " ...%s..." % (hdl,) if hdl != "" else "",
+            "headline": f" ...{hdl}..." if hdl != "" else "",
             "source": self.source[1:],
             "aaa": aaa,
             "name": reference.prodDefinitions.get(
                 aaa, reference.prodDefinitions.get(self.afos, self.afos)
             ),
             "stamp": self.get_nicedate(),
-            "url": "%s?pid=%s" % (uri, self.get_product_id()),
+            "url": f"{uri}?pid={self.get_product_id()}",
         }
         res = []
         plain = (templates[0] + "%(url)s") % data

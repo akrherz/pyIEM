@@ -37,14 +37,14 @@ def rhs_split(poly, splitter):
     # do the splitting
     geomcollect = split(poly, splitter)
     # If we got more than two polygons, we likely can cull some small cruft
-    if len(geomcollect) > 2:
+    if len(geomcollect.geoms) > 2:
         geomcollect = MultiPolygon(
-            [geo for geo in geomcollect if geo.area > 0.1]
+            [geo for geo in geomcollect.geoms if geo.area > 0.1]
         )
-        if len(geomcollect) > 2:
+        if len(geomcollect.geoms) > 2:
             LOG.info("intersection found more than 2 polys, failing")
             return None
-    if len(geomcollect) == 1:
+    if len(geomcollect.geoms) == 1:
         return geomcollect.geoms[0]
     (polya, polyb) = geomcollect.geoms[0], geomcollect.geoms[1]
     # We project two points along the splitter intersection back onto polya

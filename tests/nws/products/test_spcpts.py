@@ -258,7 +258,7 @@ def test_issue295_geometryfail():
     )
     load_conus_data(utc(2020, 9, 26))
     res = str2multipolygon(s)
-    assert abs(res[0].area - 21.0814) < 0.001
+    assert abs(res.geoms[0].area - 21.0814) < 0.001
 
 
 def test_200602_unpack():
@@ -599,7 +599,7 @@ def test_23jul_failure():
     load_conus_data(utc(2017, 7, 23))
     data = """40067377 40567433 41317429 42097381 42357259 42566991"""
     res = str2multipolygon(data)
-    assert abs(res[0].area - 7.96724) < 0.0001
+    assert abs(res.geoms[0].area - 7.96724) < 0.0001
 
 
 def test_140707_general():

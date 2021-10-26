@@ -253,7 +253,7 @@ def test_basic(dbcursor):
     assert not prod.warnings
     assert len(prod.metars) == 11
     jmsgs = prod.get_jabbers("localhost")
-    assert len(jmsgs) == 6
+    assert len(jmsgs) == 7
     ans = (
         "None,None (SPS) ASOS reports Hail -- KSPS 081352Z 10015KT 10SM "
         "TSGRRA BKN022CB BKN050 BKN200 25/16 A2967 RMK AO2 TSB38RAB25GRB49 "
@@ -263,3 +263,6 @@ def test_basic(dbcursor):
 
     iemob, _ = prod.metars[1].to_iemaccess(dbcursor)
     assert abs(iemob.data["phour"] - 0.46) < 0.01
+
+    # Run twice to trigger skip
+    prod.get_jabbers("localhost")

@@ -149,7 +149,7 @@ def condition_segment(segment):
     if isinstance(res, LineString):
         return [ls.coords]
     # We got multiple linestrings
-    res = [r for r in res if r.length > 0.2]  # pylint: disable=not-an-iterable
+    res = [r for r in res.geoms if r.length > 0.2]
     if len(res) == 1:
         LOG.info("    was able to filter out very short lines")
         return [ensure_outside_conus(res[0]).coords]
@@ -337,7 +337,7 @@ def quality_control(prod):
         tstm = prod.get_outlook("CATEGORICAL", "TSTM", day)
         for outlook in collect.outlooks:
             good_polys = []
-            for poly in outlook.geometry:
+            for poly in outlook.geometry.geoms:
                 if tstm and poly.area > tstm.geometry.area:
                     msg = (
                         "Discarding polygon as it is larger than TSTM: "
@@ -359,7 +359,7 @@ def quality_control(prod):
                 intersect = CONUS["poly"].intersection(poly)
                 # Current belief is that we can only return a (multi)poly
                 if isinstance(intersect, MultiPolygon):
-                    for p in intersect:
+                    for p in intersect.geoms:
                         good_polys.append(p)
                 elif isinstance(intersect, Polygon):
                     good_polys.append(intersect)
@@ -368,9 +368,9 @@ def quality_control(prod):
             # All geometries in the outlook shall not overlap with any
             # other one, if so, cull it!
             good_polys = []
-            for i, poly in enumerate(outlook.geometry):
+            for i, poly in enumerate(outlook.geometry.geoms):
                 passes_check = True
-                for i2, poly2 in enumerate(outlook.geometry):
+                for i2, poly2 in enumerate(outlook.geometry.geoms):
                     if i == i2:
                         continue
                     intersection = poly.intersection(poly2)

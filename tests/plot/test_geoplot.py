@@ -7,12 +7,16 @@ import copy
 import pytest
 import matplotlib.colors as mpcolors
 import numpy as np
+from shapely.geometry import Polygon
+
+# Local
 from pyiem import plot
 from pyiem.plot import (
     MapPlot,
     centered_bins,
     pretty_bins,
     load_bounds,
+    mask_outside_geom,
 )
 from pyiem.util import utc
 
@@ -192,6 +196,22 @@ def test_conus_contour():
         clip_on=False,
     )
     mp.draw_mask(sector="conus")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_iowa_contour_with_polygon_mask():
+    """Test that we can mask with a single Polygon."""
+    mp = MapPlot(nocaption=True, sector="iowa", twitter=True)
+    mp.contourf(
+        np.arange(-120, -47, 3),
+        np.arange(25, 50),
+        np.arange(25),
+        np.arange(25),
+        clip_on=False,
+    )
+    poly = Polygon([(-95, 40), (-95, 45), (-90, 45), (-90, 40)])
+    mask_outside_geom(mp.ax, poly)
     return mp.fig
 
 

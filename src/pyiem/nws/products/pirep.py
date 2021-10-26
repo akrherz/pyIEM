@@ -274,7 +274,7 @@ class Pirep(product.TextProduct):
             if token.startswith("TM "):
                 numbers = re.findall("[0-9]{4}", token)
                 if len(numbers) != 1:
-                    self.warnings.append("TM parse failed %s" % (report,))
+                    self.warnings.append(f"TM parse failed {report}")
                     return None
                 hour = int(numbers[0][:2])
                 minute = int(numbers[0][2:])

@@ -57,8 +57,8 @@ class SAWProduct(TextProduct):
             return
         txn.execute(
             "SELECT distinct wfo from ugcs WHERE "
-            f"ST_Contains('SRID=4326;{self.geometry.wkt}', geom) "
-            "and end_ts is null"
+            "ST_Contains(%s, geom) and end_ts is null",
+            (f"SRID=4326;{self.geometry.wkt}",),
         )
         for row in txn.fetchall():
             self.affected_wfos.append(row[0])
@@ -77,13 +77,13 @@ class SAWProduct(TextProduct):
                 (self.ww_num, self.sts.year),
             )
             # Insert into the main watches table
-            giswkt = "SRID=4326;%s" % (MultiPolygon([self.geometry]).wkt,)
+            giswkt = f"SRID=4326;{MultiPolygon([self.geometry]).wkt}"
             sql = (
                 "INSERT into watches (sel, issued, expired, type, report, "
                 "geom, num) VALUES(%s,%s,%s,%s,%s,%s,%s)"
             )
             args = (
-                "SEL%s" % (self.saw,),
+                f"SEL{self.saw}",
                 self.sts,
                 self.ets,
                 DBTYPES[self.ww_type],
@@ -104,7 +104,7 @@ class SAWProduct(TextProduct):
                 self.unixtext,
                 giswkt,
                 self.ww_num,
-                "SEL%s" % (self.saw,),
+                f"SEL{self.saw}",
             )
             txn.execute(sql, args)
             # Is this a replacement?
@@ -233,12 +233,12 @@ class SAWProduct(TextProduct):
         spc_channels = f"SPC,SPC.{DBTYPES[self.ww_type]}WATCH"
         if self.action == self.CANCELS:
             plain = (
-                "Storm Prediction Center cancels Weather Watch Number %s " "%s"
+                "Storm Prediction Center cancels Weather Watch Number %s %s"
             ) % (self.ww_num, url)
             html = (
-                '<p>Storm Prediction Center cancels <a href="%s">'
-                "Weather Watch Number %s</a></p>"
-            ) % (url, self.ww_num)
+                f'<p>Storm Prediction Center cancels <a href="{url}">'
+                f"Weather Watch Number {self.ww_num}</a></p>"
+            )
             res.append(
                 [plain, html, dict(channels=spc_channels, twitter=plain)]
             )
@@ -275,7 +275,7 @@ class SAWProduct(TextProduct):
                 plain += ", new watch replaces " + rtext
                 html += ", new watch replaces " + rtext
 
-            plain2 = "%s %s" % (plain, url)
+            plain2 = f"{plain} {url}"
             plain2 = " ".join(plain2.split())
             html2 = html + (
                 ' (<a href="%s?year=%s&amp;num=%s">Watch ' "Quickview</a>)</p>"
@@ -284,7 +284,7 @@ class SAWProduct(TextProduct):
                 [plain2, html2, dict(channels=spc_channels, twitter=plain2)]
             )
             # Now create templates
-            plain += " for portions of %%s %s" % (url,)
+            plain += f" for portions of %s {url}"
             html += (
                 " for portions of %%s "
                 '(<a href="%s?year=%s&amp;num=%s">Watch '

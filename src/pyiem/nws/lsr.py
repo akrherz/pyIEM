@@ -148,7 +148,7 @@ class LSR:
         """String Representation."""
         s = ""
         for attr in self.__dict__:
-            s += "%s %s\n" % (attr, getattr(self, attr, ""))
+            s += f"{attr} {getattr(self, attr, '')}\n"
         return s
 
     def get_lat(self):
@@ -211,11 +211,9 @@ class LSR:
 
     def get_jabbers(self, uri):
         """Return a Jabber formatted message tuple."""
-        url = "%s#%s/%s/%s" % (
-            uri,
-            self.wfo,
-            self.utcvalid.strftime("%Y%m%d%H%M"),
-            self.utcvalid.strftime("%Y%m%d%H%M"),
+        url = (
+            f"{uri}#{self.wfo}/{self.utcvalid:%Y%m%d%H%M}/"
+            f"{self.utcvalid:%Y%m%d%H%M}"
         )
         time_fmt = "%-I:%M %p"
         # Is this a delayed report?

@@ -940,7 +940,7 @@ class MapPlot:
         if sector == "iowawfo":
             s = load_geodf("iowawfo")
             geo = s["geom"].values[0]
-            ccw = np.asarray(geo.exterior)[::-1]
+            ccw = np.asarray(geo.exterior.coords)[::-1]
         else:
             ccw = load_bounds(f"{sector}_ccw")
         # in map coords
@@ -1259,7 +1259,7 @@ class MapPlot:
         df = gpd.GeoDataFrame().from_features(req.json())
         labels = []
         for _, row in df.iterrows():
-            for geo in row["geometry"]:
+            for geo in row["geometry"].geoms:
                 self.ax.plot(
                     *geo.xy,
                     transform=LATLON,
