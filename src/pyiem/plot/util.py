@@ -134,11 +134,12 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     yanchor = y0
     if kwargs.get("va", "") == "center":
         yanchor = y0 + (y1 - y0) / 2.0
+    fontsize = int(kwargs.get("textsize", kwargs.get("fontsize", 50)))
     txt = fig.text(
         xanchor,
         yanchor,
         text,
-        fontsize=kwargs.get("textsize", 50),
+        fontsize=fontsize,
         ha=kwargs.get("ha", "left"),
         va=kwargs.get("va", "bottom"),
         color=kwargs.get("color", "k"),
@@ -150,7 +151,7 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
         return tb.x0 >= px0 and tb.x1 < px1 and tb.y0 >= py0 and tb.y1 <= py1
 
     if not _fits(txt):
-        for size in range(50, 1, -2):
+        for size in range(fontsize, 1, -2):
             txt.set_fontsize(size)
             if _fits(txt):
                 break
