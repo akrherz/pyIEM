@@ -1155,15 +1155,7 @@ class MapPlot:
         minpop = kwargs.get(
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
-        df2 = gdf[
-            (
-                (gdf["geom"].y > south)
-                & (gdf["geom"].y < north)
-                & (gdf["geom"].x > west)
-                & (gdf["geom"].x < east)
-                & (gdf["pop_2010"] > minpop)
-            )
-        ]
+        df2 = gdf.cx[west:east, south:north].query(f"pop_2010 > {minpop}")
         # debug option to test an individual point on the plot
         # df2 = df[(df['name'] == 'Sioux City')]
         # hack around a API break

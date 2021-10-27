@@ -90,7 +90,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
         edgecolor="tan" if val is None else "k",
     )
     axes.add_patch(rect)
-    if val is None:
+    if val is None or (isinstance(val, str) and val.strip() == ""):
         return
     color = "k"
     if not isinstance(cellcolor, str):  # this is a string comp here
@@ -122,6 +122,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
         ha="center",
         va="center",
         color=color,
+        fontsize=kwargs.get("fontsize"),
     )
 
 
@@ -207,7 +208,7 @@ def calendar_plot(sts, ets, data, **kwargs):
     if "fontsize" not in kwargs:
         kwargs["fontsize"] = 12
         if len(bounds) < 3:
-            kwargs["fontsize"] = 18
+            kwargs["fontsize"] = 36
         elif len(bounds) < 5:
             kwargs["fontsize"] = 16
         elif len(bounds) < 10:
