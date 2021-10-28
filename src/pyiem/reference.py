@@ -17,7 +17,7 @@ No functional code found within this module, just a bunch of statics
 import os
 import sys
 
-import cartopy.crs as ccrs
+import pyproj
 
 # Some z-order stuff for plotting
 [
@@ -39,25 +39,12 @@ TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
-# Maybe this can go away with future cartopy versions?
-LATLON = ccrs.PlateCarree(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84"))
-EPSG = {
-    2163: ccrs.LambertAzimuthalEqualArea(
-        central_latitude=45,
-        central_longitude=-100,
-        globe=ccrs.Globe(
-            semimajor_axis=6370997.0,
-            semiminor_axis=6370997.0,
-        ),
-    ),
-    3857: ccrs.GOOGLE_MERCATOR,
-    4326: ccrs.Geodetic(globe=ccrs.Globe(datum="WGS84", ellipse="WGS84")),
-    5070: ccrs.AlbersEqualArea(
-        central_longitude=-96,
-        central_latitude=23,
-        standard_parallels=[29.5, 45.5],
-    ),
-}
+# Convenience
+LATLON = pyproj.CRS.from_epsg(4326)
+EPSG = {}
+# 3467 Alaska Albers
+for _epsg in [2163, 3857, 4326, 5070, 3467]:
+    EPSG[_epsg] = pyproj.CRS.from_epsg(_epsg)
 
 IA_WEST = -96.7
 IA_EAST = -90.1
@@ -66,7 +53,7 @@ IA_SOUTH = 40.37
 
 MW_WEST = -104.2
 MW_EAST = -80.1
-MW_NORTH = 49.51
+MW_NORTH = 50.022
 MW_SOUTH = 35.47
 
 # We generally buffer things by 0.25
@@ -419,7 +406,7 @@ wfo_dict = {
 # from data ORDER by state_abbr ASC
 #
 state_bounds = {
-    "AK": [-178.43, 51.39, -129.81, 71.58],
+    "AK": [-178.43, 50, -129.81, 70],  # manually adjusted
     "AL": [-88.67, 30.02, -84.69, 35.21],
     "AR": [-94.82, 32.80, -89.44, 36.70],
     "AZ": [-115.02, 31.13, -108.85, 37.20],

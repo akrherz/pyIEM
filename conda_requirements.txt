@@ -1,7 +1,6 @@
 # Some of these are not hard requirements, but attempting to avoid pip
 # installing these
 affine
-cartopy>=0.18
 cartopy_offlinedata
 cython
 descartes

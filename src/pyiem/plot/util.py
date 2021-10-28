@@ -3,8 +3,9 @@
 import os
 
 import numpy as np
-import cartopy.crs as ccrs
 import pandas as pd
+import geopandas as gpd
+from pyproj import Transformer
 from shapely.geometry import Polygon, MultiPolygon
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
@@ -13,10 +14,35 @@ import matplotlib.colors as mpcolors
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
 from pyiem.reference import LATLON
+from ._mpl import GeoPanel
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
+
+
+def draw_features_from_shapefile(gp, name, **kwargs):
+    """Add features as we need to."""
+    name2 = name if name != "borders" else "admin_0_boundary_lines_land"
+    boundpoly = gp.get_bounds_polygon()
+    # Life choices: which resolution to use?
+    threshold = 25 if gp.crs.is_geographic else 3e12
+    resolution = "50m" if boundpoly.area > threshold else "10m"
+    shpfn = os.path.join(
+        os.environ["CARTOPY_OFFLINE_SHARED"],
+        "shapefiles",
+        "natural_earth",
+        "physical" if name != "borders" else "cultural",
+        f"ne_{resolution}_{name2}.shp",
+    )
+    # clip is trouble
+    df = (
+        gpd.read_file(shpfn)
+        .to_crs(gp.crs)
+        .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
+    )
+    if not df.empty:
+        df.plot(ax=gp.ax, aspect=None, **kwargs)
 
 
 def ramp2df(name) -> pd.DataFrame:
@@ -158,48 +184,53 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
     return txt
 
 
-def make_axes(ndc_axbounds, extent, projection, aspect, is_geoextent=False):
-    """Factory for making an axis
+def make_panel(
+    ndc_axbounds, fig, extent, crs, aspect, is_geoextent=False
+) -> GeoPanel:
+    """Factory for making a GeoPanel.
 
     Args:
       ndc_axbounds (list): the NDC coordinates of axes to create
       extent (list): x0,x1,y0,y1 *in projected space* plot extent, unless
         `is_geoextent` is based as True, then it is Geodetic.
-      projection (ccrs.Projection): the projection of the axes
+      crs (pyproj.CRS): the crs of the axes
       aspect (str): matplotlib's aspect of axes
       is_geoextent(bool): is the passed extent Geodetic?
 
     Returns:
-      ax
+        GeoPanel: the panel
     """
-    # Lazy import to prevent backend setting
-    import matplotlib.pyplot as plt
-
-    ax = plt.axes(
+    # https://jdhao.github.io/2017/06/03/change-aspect-ratio-in-mpl/
+    # aspect is data ratio divided by axes ratio
+    gp = GeoPanel(
+        fig,
         ndc_axbounds,
-        projection=projection,
+        crs,
         aspect=aspect,
         adjustable="datalim",
         facecolor=(0.4471, 0.6235, 0.8117),
+        xticks=[],
+        yticks=[],
     )
     # Get the frame at the proper zorder
-    for _k, spine in ax.spines.items():
+    for _k, spine in gp.ax.spines.items():
         spine.set_zorder(reference.Z_FRAME)
-    ax.set_extent(extent, crs=None if is_geoextent else projection)
-    # Sadly, we need to force a render so that the actual plot extent gets
-    # calculated with the adjustable datalim above
-    ax.figure.canvas.draw()
-    return ax
+    # Turn off autoscale so that we can control the axis limits
+    gp.ax.autoscale(False)
+    # Set the extent
+    gp.set_extent(extent, crs=None if is_geoextent else crs)
+    return gp
 
 
 def sector_setter(mp, axbounds, **kwargs):
     """use kwargs to set the MapPlot sector."""
-    aspect = kwargs.get("aspect", "equal")
+    aspect = kwargs.get("aspect", "auto")  # !important
 
     if mp.sector == "cwa":
         mp.cwa = kwargs.get("cwa", "DMX")
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [
                 reference.wfo_bounds[mp.cwa][0],
                 reference.wfo_bounds[mp.cwa][2],
@@ -210,125 +241,134 @@ def sector_setter(mp, axbounds, **kwargs):
             aspect,
             is_geoextent=True,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
     elif mp.sector == "state":
         mp.state = kwargs.get("state", "IA")
-        # We hard code aspect as Alaska does funny things with 'equal' set
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [
                 reference.state_bounds[mp.state][0],
                 reference.state_bounds[mp.state][2],
                 reference.state_bounds[mp.state][1],
                 reference.state_bounds[mp.state][3],
             ],
-            reference.EPSG[3857],
-            aspect if mp.state != "AK" else "auto",
+            reference.EPSG[3857 if mp.state != "AK" else 3467],
+            aspect,
             is_geoextent=True,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
     elif mp.sector == "iowawfo":
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [-99.6, -89.0, 39.8, 45.5],
             reference.EPSG[3857],
             aspect,
             is_geoextent=True,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
     elif mp.sector == "custom":
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
             kwargs.get("projection", reference.LATLON),
             aspect,
             is_geoextent="projection" not in kwargs,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
 
     elif mp.sector == "north_america":
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [-4.5e6, 4.3e6, -3.9e6, 3.8e6],
             reference.EPSG[2163],
             "auto",
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
 
     elif mp.sector in ["conus", "nws"]:
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             [-2400000, 2300000, 27600, 3173000],
             reference.EPSG[5070],
             aspect,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
 
         if mp.sector == "nws":
             # Create PR
-            mp.pr_ax = make_axes(
+            gp = make_panel(
                 [0.78, 0.055, 0.125, 0.1],
+                mp.fig,
                 [-68.0, -65.0, 17.5, 18.6],
                 reference.LATLON,
                 aspect,
                 is_geoextent=True,
             )
-            mp.axes.append(mp.pr_ax)
+            mp.panels.append(gp)
             # Create AK
-            mp.ak_ax = make_axes(
+            gp = make_panel(
                 [0.015, 0.055, 0.28, 0.23],
-                [-179.5, -129.0, 51.3, 71.5],
-                reference.LATLON,
-                "auto",
+                mp.fig,
+                [
+                    reference.state_bounds["AK"][0],
+                    reference.state_bounds["AK"][2],
+                    reference.state_bounds["AK"][1],
+                    reference.state_bounds["AK"][3],
+                ],
+                reference.EPSG[3467],
+                aspect,
                 is_geoextent=True,
             )
-            mp.axes.append(mp.ak_ax)
+            mp.panels.append(gp)
             # Create HI via a glorious hack for now
-            ln = mp.ax.plot(
+            ln = mp.panels[0].plot(
                 [-95.4, -85.24],
                 [23.3, 27.7],
-                transform=LATLON,
                 color="None",
             )[0]
             bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
             width = mp.fig.canvas.get_width_height()[0]
             axwidth = (bbox.x1 - bbox.x0) / width
-            mp.hi_ax = make_axes(
+            gp = make_panel(
                 [bbox.x0 / width, 0.055, axwidth, 0.14],
+                mp.fig,
                 [-161.0, -154.0, 18.5, 22.5],
                 reference.LATLON,
                 aspect,
                 is_geoextent=True,
             )
-            mp.axes.append(mp.hi_ax)
+            mp.panels.append(gp)
     # Do last in case of name overlaps above
     elif mp.sector in reference.SECTORS:
-        mp.ax = make_axes(
+        gp = make_panel(
             axbounds,
+            mp.fig,
             reference.SECTORS[mp.sector],
             reference.EPSG[3857],
             aspect,
             is_geoextent=True,
         )
-        mp.axes.append(mp.ax)
+        mp.panels.append(gp)
+    # Kindof a hack for now
+    if mp.panels:
+        mp.ax = mp.panels[0].ax
 
 
-def mask_outside_polygon(poly_verts, ax=None):
+def mask_outside_polygon(poly_verts, gp):
     """
     We produce a polygon that lies between the plot border and some interior
     polygon.
 
     POLY_VERTS is in CCW order, as this is the interior of the polygon
     """
-    if ax is None:
-        # Lazy import to prevent default backend setting
-        import matplotlib.pyplot as plt
-
-        ax = plt.gca()
-
     # Get current plot limits
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
+    xlim = gp.get_xlim()
+    ylim = gp.get_ylim()
 
     # Verticies of the plot boundaries in clockwise order
     bound_verts = np.array(
@@ -358,11 +398,11 @@ def mask_outside_polygon(poly_verts, ax=None):
     patch = mpatches.PathPatch(
         path, facecolor="white", edgecolor="none", zorder=reference.Z_CLIP
     )
-    patch = ax.add_patch(patch)
+    patch = gp.ax.add_patch(patch)
 
     # Reset the plot limits to their original extents
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
+    gp.ax.set_xlim(xlim)
+    gp.ax.set_ylim(ylim)
 
     return patch
 
@@ -406,17 +446,23 @@ def polygon_fill(mymap, geodf, data, **kwargs):
     geodf["val"] = pd.Series(data)
     if not plotmissing:
         geodf = geodf[~pd.isna(geodf["val"])].copy()
-    for ax in mymap.axes:
-        # Reproject data into plot native
-        native = geodf["geom"].to_crs(ax.projection.proj4_init)
-        # Filter data by bounds
-        # pylint: disable=protected-access
-        idx = native.intersects(ax._get_extent_geom())
-        for polykey, row in geodf.loc[idx].iterrows():
+    for gp in mymap.panels:
+        # Reproject data into plot native, found out that clip() sometimes
+        # returns a GeometryCollection, which geopandas hates to plot
+        native = geodf.to_crs(gp.crs).cx[
+            slice(*gp.get_xlim()), slice(*gp.get_ylim())
+        ]
+        if native.empty:
+            continue
+        native = native.copy()
+        native["fc"] = pd.Series(fc) if fc else "white"
+        native["ec"] = pd.Series(ec) if ec else "k"
+        # Compute colors and such
+        for idx, row in native.iterrows():
             lbl = (
-                labels.get(polykey, "-")
+                labels.get(idx, "-")
                 if pd.isna(row["val"])
-                else labels.get(polykey, lblformat % (row["val"],))
+                else labels.get(idx, lblformat % (row["val"],))
             )
             # How we compute a fill and edge color
             _fc, _ec = (None, None)
@@ -424,36 +470,37 @@ def polygon_fill(mymap, geodf, data, **kwargs):
                 if isinstance(color, str):
                     _fc, _ec = (color, color)
                 else:
-                    _fc = color.get(polykey, "white")
-                    _ec = color.get(polykey, "k")
+                    _fc = color.get(idx, "white")
+                    _ec = color.get(idx, "k")
             if fc is not None:
-                _fc = fc if isinstance(fc, str) else fc.get(polykey, "white")
+                _fc = fc if isinstance(fc, str) else fc.get(idx, "white")
             if ec is not None:
-                _ec = ec if isinstance(ec, str) else ec.get(polykey, "k")
+                _ec = ec if isinstance(ec, str) else ec.get(idx, "k")
             _ec = "k" if _ec is None else _ec
             if _fc is None:
                 _fc = (
                     "white"
                     if pd.isna(row["val"])
-                    else cmap(norm([row["val"]]))[0]
+                    else mpcolors.to_hex(cmap(norm([row["val"]]))[0])
                 )
-            for polyi, polygon in enumerate(native.loc[polykey].geoms):
-                a = np.asarray(polygon.exterior.coords)
-                p = mpatches.Polygon(
-                    a[:, :2],
-                    fc=_fc,
-                    ec=_ec,
-                    zorder=zorder,
-                    lw=kwargs.get("lw", 0.1),
-                )
-                ax.add_patch(p)
-                if ilabel and polyi == 0:
-                    # prefer our stored centroid vs calculated one
-                    mx = row.get("lon", polygon.centroid.x)
-                    my = row.get("lat", polygon.centroid.y)
-                    to_label["x"].append(mx)
-                    to_label["y"].append(my)
-                    to_label["vals"].append(lbl)
+            native.at[idx, "fc"] = _fc
+            native.at[idx, "ec"] = _ec
+            if ilabel:
+                # prefer our stored centroid vs calculated one
+                mx = row.get("lon", native.at[idx, "geom"].centroid.x)
+                my = row.get("lat", native.at[idx, "geom"].centroid.y)
+                to_label["x"].append(mx)
+                to_label["y"].append(my)
+                to_label["vals"].append(lbl)
+
+        native.plot(
+            ax=gp.ax,
+            fc=native["fc"].values,
+            ec=native["ec"].values,
+            aspect=None,
+            zorder=zorder,
+            lw=kwargs.get("lw", 0.1),
+        )
     if to_label:
         mymap.plot_values(
             to_label["x"],
@@ -470,15 +517,15 @@ def polygon_fill(mymap, geodf, data, **kwargs):
         mymap.draw_colorbar(bins, cmap, norm, **kwargs)
 
 
-def mask_outside_geom(ax, geom):
+def mask_outside_geom(gp, geom):
     """Create a white patch over the plot for what we want to ask out
 
     Args:
-      ax (axes):
+      gp (GeoPanel): The GeoPanel instance
       geom (geometry):
     """
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
+    xlim = gp.get_xlim()
+    ylim = gp.get_ylim()
     # Verticies of the plot boundaries in clockwise order
     verts = np.array(
         [
@@ -492,26 +539,29 @@ def mask_outside_geom(ax, geom):
     codes = [mpath.Path.MOVETO] + (len(verts) - 1) * [mpath.Path.LINETO]
     if isinstance(geom, Polygon):
         geom = MultiPolygon([geom])
+    trans = Transformer.from_crs(LATLON, gp.crs, always_xy=True)
     for geo in geom.geoms:
         ccw = np.asarray(geo.exterior.coords)[::-1]
-        points = ax.projection.transform_points(
-            ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
-        )
-        verts = np.concatenate([verts, points[:, :2]])
+        points = trans.transform(ccw[:, 0], ccw[:, 1])
+        # pylint: disable=unsubscriptable-object
+        ar = np.column_stack([*points])[:-1]
+        verts = np.concatenate([verts, ar])
         codes = np.concatenate(
             [
                 codes,
-                [mpath.Path.MOVETO]
-                + (points.shape[0] - 1) * [mpath.Path.LINETO],
+                [mpath.Path.MOVETO] + (ar.shape[0] - 1) * [mpath.Path.LINETO],
             ]
         )
 
     path = mpath.Path(verts, codes)
     # Removes any external data
     patch = mpatches.PathPatch(
-        path, facecolor="white", edgecolor="none", zorder=reference.Z_CLIP
+        path,
+        facecolor="white",
+        edgecolor="none",
+        zorder=reference.Z_CLIP,
     )
-    ax.add_patch(patch)
+    gp.ax.add_patch(patch)
     # Then gives a nice semitransparent look
     patch = mpatches.PathPatch(
         path,
@@ -520,4 +570,4 @@ def mask_outside_geom(ax, geom):
         zorder=reference.Z_CLIP2,
         alpha=0.65,
     )
-    ax.add_patch(patch)
+    gp.ax.add_patch(patch)

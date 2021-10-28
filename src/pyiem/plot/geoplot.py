@@ -42,9 +42,6 @@ import matplotlib.colors as mpcolors
 from matplotlib.patches import Wedge
 import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
-import cartopy
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 
 # local
 from pyiem.plot.use_agg import plt
@@ -54,6 +51,7 @@ from pyiem.plot.util import (
     polygon_fill,
     mask_outside_geom,
     draw_logo,
+    draw_features_from_shapefile,
     fitbox,
     ramp2df,
 )
@@ -75,8 +73,6 @@ from pyiem.plot.colormaps import stretch_cmap
 
 # geopandas currently emits this as parquet is unstable.
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
-# Set a saner default for apache et al
-cartopy.config["data_dir"] = "/tmp/"
 
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
@@ -101,7 +97,7 @@ def load_bounds(filebase):
 
 
 class MapPlot:
-    """An object representing a cartopy plot.
+    """An object representing a matplotlib figure.
 
     An object that allows one to quickly and easily generate map plots of data
     with some customization possible.  This is what drives most of the plots
@@ -125,9 +121,9 @@ class MapPlot:
         """Construct a MapPlot
 
         Args:
-          sector (str): plot domain, set 'custom' to bring your own projection
+          sector (str): plot domain, set 'custom' to bring your own bounds.
           kwargs:
-            projection (cartopy.crs,optional): bring your own projection
+            crs (pyproj.crs,optional): bring your own crs
             north (float,optional): Plot top bounds (degN Lat)
             south (float,optional): Plot bottom bounds (degN Lat)
             east (float,optional): Plot right bounds (degE Lon)
@@ -136,7 +132,7 @@ class MapPlot:
             subtitlefontsize (int): fontsize to use for the plot subtitle
             continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
-            aspect (str): plot aspect, defaults to equal
+            aspect (str): plot aspect, defaults to auto
             fig (matplotlib.pyplot.figure,optional): provide a figure instance
               for more advanced plot control.
             logo (str,optional): logo name to slap on the plot.
@@ -157,40 +153,63 @@ class MapPlot:
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
         self.cax = plt.axes(CAX_BOUNDS, frameon=False, yticks=[], xticks=[])
-        self.axes = []
-        self.ax = None
-        self.pr_ax = None
-        self.hi_ax = None
-        self.ak_ax = None
+        self.panels = []
+        self.ax = None  # Main plot axes, will be set later, hacky
         # hack around sector=iowa
         if self.sector == "iowa":
             self.sector = "state"
             self.state = "IA"
         sector_setter(self, MAIN_AX_BOUNDS, **kwargs)
 
-        for _a in self.axes:
-            if _a is None:
-                continue
+        for gp in self.panels:
             # legacy usage of axisbg here
             _c = kwargs.get(
                 "axisbg", kwargs.get("continentalcolor", "#EEEEEE")
             )
-            _a.add_feature(cfeature.LAND, facecolor=_c, zorder=Z_CF)
-            _a.add_feature(cfeature.COASTLINE, lw=1.0, zorder=Z_POLITICAL)
-            _a.add_feature(cfeature.BORDERS, lw=1.0, zorder=Z_POLITICAL)
-            _a.add_feature(
-                cfeature.LAKES, facecolor=(0.4471, 0.6235, 0.8117), zorder=Z_CF
+            draw_features_from_shapefile(gp, "land", facecolor=_c, zorder=Z_CF)
+            # NB we neeed both borders (lines between countries) and
+            # coastlines (lines between land and water)
+            draw_features_from_shapefile(
+                gp,
+                "borders",
+                lw=1.0,
+                ec="k",
+                zorder=Z_POLITICAL,
+            )
+            draw_features_from_shapefile(
+                gp,
+                "coastline",
+                lw=1.0,
+                ec="k",
+                zorder=Z_POLITICAL,
+            )
+            draw_features_from_shapefile(
+                gp,
+                "lakes",
+                edgecolor=(0.4471, 0.6235, 0.8117),
+                facecolor=(0.4471, 0.6235, 0.8117),
+                zorder=Z_CF,
             )
             if "nostates" not in kwargs:
-                states = load_geodf("us_states")
-                _a.add_geometries(
-                    states["geom"].values,
-                    crs=LATLON,
-                    lw=1.0,
-                    edgecolor=kwargs.get("statebordercolor", "k"),
-                    facecolor="None",
-                    zorder=Z_POLITICAL,
+                xlim = gp.ax.get_xlim()
+                ylim = gp.ax.get_ylim()
+                # NB using clip here was trouble with geos
+                _df = (
+                    load_geodf("us_states")
+                    .to_crs(gp.crs)
+                    .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
                 )
+                if not _df.empty:
+                    _df.plot(
+                        ax=gp.ax,
+                        aspect=None,
+                        lw=1.0,
+                        edgecolor=kwargs.get("statebordercolor", "k"),
+                        facecolor="None",
+                        zorder=Z_POLITICAL,
+                    )
+                gp.ax.set_xlim(xlim)
+                gp.ax.set_ylim(ylim)
 
         if not kwargs.get("nologo", False):
             draw_logo(self.fig, kwargs.get("logo", "iem"))
@@ -266,7 +285,7 @@ class MapPlot:
             usdm_valid = row["date"]
             fc = color if filled else "None"
             ec = color if not filled else "k"
-            self.ax.add_geometries(
+            self.panels[0].add_geometries(
                 [geom],
                 LATLON,
                 facecolor="None",
@@ -275,7 +294,7 @@ class MapPlot:
                 zorder=Z_OVERLAY2,
             )
             if filled:
-                self.ax.add_geometries(
+                self.panels[0].add_geometries(
                     [geom],
                     LATLON,
                     facecolor=fc,
@@ -284,7 +303,7 @@ class MapPlot:
                     zorder=Z_OVERLAY,
                 )
             elif hatched:
-                self.ax.add_geometries(
+                self.panels[0].add_geometries(
                     [geom],
                     LATLON,
                     facecolor="None",
@@ -294,67 +313,67 @@ class MapPlot:
                 )
 
         if usdm_valid is not None:
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.99,
                 0.99,
                 "D4",
                 color="k",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color=colors[4]),
                 zorder=Z_OVERLAY2 + 3,
             )
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.955,
                 0.99,
                 "D3",
                 color="k",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color=colors[3]),
                 zorder=Z_OVERLAY2 + 3,
             )
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.92,
                 0.99,
                 "D2",
                 color="k",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color=colors[2]),
                 zorder=Z_OVERLAY2 + 3,
             )
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.885,
                 0.99,
                 "D1",
                 color="k",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color=colors[1]),
                 zorder=Z_OVERLAY2 + 3,
             )
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.85,
                 0.99,
                 "D0",
                 color="k",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color=colors[0]),
                 zorder=Z_OVERLAY2 + 3,
             )
-            self.ax.text(
+            self.panels[0].ax.text(
                 0.815,
                 0.99,
                 f"USDM {usdm_valid}",
                 color="w",
-                transform=self.ax.transAxes,
+                transform=self.panels[0].ax.transAxes,
                 va="top",
                 ha="right",
                 bbox=dict(color="k"),
@@ -415,8 +434,8 @@ class MapPlot:
         def _myrepr(val):
             """avoid list conversion in matplotlib that fowls numpy floats."""
             try:
-                return "%g" % (val,)
-            except TypeError:
+                return f"{val:g}"
+            except (TypeError, ValueError):
                 return f"{val}"
 
         cb2.ax.set_yticklabels(list(map(_myrepr, clevlabels[stride])))
@@ -438,7 +457,7 @@ class MapPlot:
 
         title = kwargs.get("title")
         if title:
-            self.ax.set_position(
+            self.panels[0].ax.set_position(
                 [
                     MAIN_AX_BOUNDS[0],
                     MAIN_AX_BOUNDS[1],
@@ -464,10 +483,10 @@ class MapPlot:
           data (list): list of dicts with station data to plot
           fontsize (int): font size to use for plotted text
         """
-        (x0, x1) = self.ax.set_xlim()
+        (x0, x1) = self.panels[0].ax.set_xlim()
         # size to use for circles
         circlesz = (x1 - x0) / 180.0
-        # (y0, y1) = self.ax.set_ylim()
+        # (y0, y1) = self.panels[0].ax.set_ylim()
         offsets = {
             1: [-4, 4, "right", "bottom"],
             2: [0, 4, "center", "bottom"],
@@ -482,10 +501,10 @@ class MapPlot:
 
         mask = np.zeros(self.fig.canvas.get_width_height(), bool)
         for stdata in data:
-            (x, y) = self.ax.projection.transform_point(
-                stdata["lon"], stdata["lat"], ccrs.Geodetic()
+            (x, y) = self.panels[0].transform_lonlat(
+                stdata["lon"], stdata["lat"]
             )
-            (imgx, imgy) = self.ax.transData.transform([x, y])
+            (imgx, imgy) = self.panels[0].ax.transData.transform([x, y])
             imgx = int(imgx)
             imgy = int(imgy)
             # Check to see if this overlaps
@@ -504,7 +523,7 @@ class MapPlot:
                     units("degree") * stdata["drct"],
                 )
                 if u is not None and v is not None:
-                    self.ax.barbs(x, y, u.m, v.m, zorder=Z_OVERLAY)
+                    self.panels[0].ax.barbs(x, y, u.m, v.m, zorder=Z_OVERLAY)
 
             # Sky Coverage
             skycoverage = stdata.get("coverage")
@@ -516,7 +535,7 @@ class MapPlot:
                 w = Wedge(
                     (x, y), circlesz, 0, 360, ec="k", fc="white", zorder=2
                 )
-                self.ax.add_artist(w)
+                self.panels[0].ax.add_artist(w)
                 w = Wedge(
                     (x, y),
                     circlesz,
@@ -526,13 +545,13 @@ class MapPlot:
                     fc="k",
                     zorder=3,
                 )
-                self.ax.add_artist(w)
+                self.panels[0].ax.add_artist(w)
 
             # Temperature
             val = stdata.get("tmpf")
             if val is not None:
                 (offx, offy, ha, va) = offsets[1]
-                self.ax.annotate(
+                self.panels[0].ax.annotate(
                     stdata.get("tmpf_format", "%.0f") % (val,),
                     xy=(x, y),
                     ha=ha,
@@ -548,7 +567,7 @@ class MapPlot:
             val = stdata.get("dwpf")
             if val is not None:
                 (offx, offy, ha, va) = offsets[7]
-                self.ax.annotate(
+                self.panels[0].ax.annotate(
                     stdata.get("dwpf_format", "%.0f") % (val,),
                     xy=(x, y),
                     ha=ha,
@@ -566,7 +585,7 @@ class MapPlot:
                 (offx, offy, ha, va) = (
                     offsets[6] if skycoverage is not None else offsets[5]
                 )
-                self.ax.annotate(
+                self.panels[0].ax.annotate(
                     f"{val}",
                     xy=(x, y),
                     ha=ha,
@@ -632,8 +651,10 @@ class MapPlot:
         bbox = self.fig.get_window_extent().transformed(
             self.fig.dpi_scale_trans.inverted()
         )
-        axbbox = self.ax.get_window_extent().transformed(
-            self.fig.dpi_scale_trans.inverted()
+        axbbox = (
+            self.panels[0]
+            .ax.get_window_extent()
+            .transformed(self.fig.dpi_scale_trans.inverted())
         )
         axx0 = axbbox.x0 * self.fig.dpi
         axx1 = (axbbox.x0 + axbbox.width) * self.fig.dpi
@@ -644,12 +665,21 @@ class MapPlot:
         if self.textmask is None:
             # zorder is used to track plotting priorities
             self.textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
+        # Create a geodataframe to use for clipping
+        gdf = gpd.GeoDataFrame(
+            {"geometry": gpd.points_from_xy(lons, lats, crs=LATLON)}
+        )
+        gdf["val"] = vals
+        gdf["valmask"] = valmask
+        gdf["color"] = color
+        gdf["label"] = labels
+        gdf["zorder"] = zorder
         # Create a fake label, to test out our scaling
         t0 = self.fig.text(
             0.5,
             0.5,
             "ABCDEFGHIJ",
-            transform=self.ax.transAxes,
+            transform=self.panels[0].ax.transAxes,
             color="None",
             size=textsize,
         )
@@ -657,165 +687,169 @@ class MapPlot:
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
 
-        def _find_ax(lon, lat):
-            """Figure out whom this point belongs."""
-            for ax in self.axes:
-                (x0, x1, y0, y1) = ax.get_extent()
-                (x, y) = ax.projection.transform_point(
-                    lon, lat, ccrs.Geodetic()
+        for gp in self.panels:
+            # See if we have any data to plot, clip is trouble
+            df = gdf.to_crs(gp.crs).cx[
+                slice(*gp.get_xlim()), slice(*gp.get_ylim())
+            ]
+            if df.empty:
+                continue
+            failures = 0
+            # Life choices: optimization when there are too many cities
+            allowed_failures = 50 if len(lons) > 500 else 500
+            for _idx, row in df.iterrows():
+                if failures > allowed_failures:
+                    break
+                ha = "center"
+                mystr = fmt % (row["val"],)
+                max_mystr_len = max([len(s) for s in mystr.split("\n")])
+                mystr_lines = len(mystr.split("\n"))
+                (x, y) = row["geometry"].x, row["geometry"].y
+                (imgx, imgy) = gp.ax.transData.transform([x, y])
+                imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
+                if imgx0 < axx0:
+                    ha = "left"
+                    imgx0 = imgx
+                imgx1 = imgx0 + max_mystr_len * xpixels_per_char
+                if imgx1 > axx1:
+                    imgx1 = imgx
+                    imgx0 = imgx1 - max_mystr_len * xpixels_per_char
+                    ha = "right"
+                # Now we buffer
+                imgx0 = max([0, imgx0 - labelbuffer])
+                imgx1 = min(
+                    [
+                        figwidth,
+                        (
+                            imgx0
+                            + 2 * labelbuffer
+                            + max_mystr_len * xpixels_per_char
+                        ),
+                    ]
                 )
-                if (x0 <= x <= x1) and (y0 <= y <= y1):
-                    return ax
-
-        for o, a, v, m, c, label, z in zip(
-            lons, lats, vals, valmask, color, labels, zorder
-        ):
-            if not m:
-                continue
-
-            ha = "center"
-            mystr = fmt % (v,)
-            max_mystr_len = max([len(s) for s in mystr.split("\n")])
-            mystr_lines = len(mystr.split("\n"))
-            # compute the pixel coordinate of this data point
-            ax = _find_ax(o, a)
-            if ax is None:
-                continue
-            (x, y) = ax.projection.transform_point(o, a, ccrs.Geodetic())
-            (imgx, imgy) = ax.transData.transform([x, y])
-            imgx0 = int(imgx - (max_mystr_len * xpixels_per_char / 2.0))
-            if imgx0 < axx0:
-                ha = "left"
-                imgx0 = imgx
-            imgx1 = imgx0 + max_mystr_len * xpixels_per_char
-            if imgx1 > axx1:
-                imgx1 = imgx
-                imgx0 = imgx1 - max_mystr_len * xpixels_per_char
-                ha = "right"
-            # Now we buffer
-            imgx0 = max([0, imgx0 - labelbuffer])
-            imgx1 = min(
-                [
-                    figwidth,
-                    (
-                        imgx0
-                        + 2 * labelbuffer
-                        + max_mystr_len * xpixels_per_char
-                    ),
-                ]
-            )
-            imgy0 = max([0, int(imgy) - labelbuffer * 0.75])
-            imgy1 = min(
-                [
-                    figheight,
-                    (imgy0 + mystr_lines * ypixels + 2 * labelbuffer * 0.75),
-                ]
-            )
-            overlap = (
-                self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
-                >= z
-            )
-            _cnt = np.sum(overlap)
-            # If we have more than 15 pixels of overlap, don't plot this!
-            if _cnt > 15 and labelbuffer > 0:
+                imgy0 = max([0, int(imgy) - labelbuffer * 0.75])
+                imgy1 = min(
+                    [
+                        figheight,
+                        (
+                            imgy0
+                            + mystr_lines * ypixels
+                            + 2 * labelbuffer * 0.75
+                        ),
+                    ]
+                )
+                overlap = (
+                    self.textmask[
+                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                    ]
+                    >= row["zorder"]
+                )
+                _cnt = np.sum(overlap)
+                # If we have more than 15 pixels of overlap, don't plot this!
+                if _cnt > 15 and labelbuffer > 0:
+                    failures += 1
+                    if self.debug:
+                        LOG.info(
+                            "culling |%s| due to overlap, %s",
+                            repr(mystr),
+                            _cnt,
+                        )
+                    continue
+                if self.debug:
+                    rec = plt.Rectangle(
+                        [imgx0, imgy0],
+                        (imgx1 - imgx0),
+                        (imgy1 - imgy0),
+                        facecolor="None",
+                        edgecolor="r",
+                    )
+                    self.fig.patches.append(rec)
+                # Useful for debugging this algo
                 if self.debug:
                     LOG.info(
-                        "culling |%s| due to overlap, %s", repr(mystr), _cnt
+                        (
+                            "label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
+                            "x:%s-%s y:%s-%s _cnt:%s"
+                        ),
+                        repr(mystr),
+                        imgx,
+                        axx0,
+                        axx1,
+                        imgy,
+                        axy0,
+                        axy1,
+                        imgx0,
+                        imgx1,
+                        imgy0,
+                        imgy1,
+                        _cnt,
                     )
-                continue
-            if self.debug:
-                rec = plt.Rectangle(
-                    [imgx0, imgy0],
-                    (imgx1 - imgx0),
-                    (imgy1 - imgy0),
-                    facecolor="None",
-                    edgecolor="r",
-                )
-                self.fig.patches.append(rec)
-            # Useful for debugging this algo
-            if self.debug:
-                LOG.info(
-                    (
-                        "label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
-                        "x:%s-%s y:%s-%s _cnt:%s"
-                    ),
-                    repr(mystr),
-                    imgx,
-                    axx0,
-                    axx1,
-                    imgy,
-                    axy0,
-                    axy1,
-                    imgx0,
-                    imgx1,
-                    imgy0,
-                    imgy1,
-                    _cnt,
-                )
-            self.textmask[
-                int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-            ] = np.where(
-                self.textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
-                < z,
-                z,
                 self.textmask[
                     int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                ],
-            )
-            t0 = ax.text(
-                o,
-                a,
-                mystr,
-                color=c,
-                size=textsize,
-                zorder=z,
-                va="center" if not showmarker else "bottom",
-                ha=ha,
-                transform=LATLON,
-            )
-            bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
-            if self.debug:
-                rec = plt.Rectangle(
-                    [bbox.x0, bbox.y0],
-                    bbox.width,
-                    bbox.height,
-                    facecolor="None",
-                    edgecolor="k",
+                ] = np.where(
+                    self.textmask[
+                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                    ]
+                    < row["zorder"],
+                    row["zorder"],
+                    self.textmask[
+                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                    ],
                 )
-                self.fig.patches.append(rec)
-            if showmarker:
-                ax.scatter(
-                    o,
-                    a,
-                    marker="+",
-                    zorder=z,
-                    color="k",
-                    transform=LATLON,
+                t0 = gp.text(
+                    x,
+                    y,
+                    mystr,
+                    color=row["color"],
+                    size=textsize,
+                    zorder=row["zorder"],
+                    va="center" if not showmarker else "bottom",
+                    ha=ha,
+                    crs=gp.crs,
                 )
-            t0.set_clip_on(True)
-            t0.set_path_effects(
-                [
-                    PathEffects.Stroke(
-                        linewidth=kwargs.get("textoutlinewidth", 3),
-                        foreground=outlinecolor,
-                    ),
-                    PathEffects.Normal(),
-                ]
-            )
+                bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
+                if self.debug:
+                    rec = plt.Rectangle(
+                        [bbox.x0, bbox.y0],
+                        bbox.width,
+                        bbox.height,
+                        facecolor="None",
+                        edgecolor="k",
+                    )
+                    self.fig.patches.append(rec)
+                if showmarker:
+                    gp.scatter(
+                        x,
+                        y,
+                        marker="+",
+                        zorder=row["zorder"],
+                        color="k",
+                        crs=gp.crs,
+                    )
+                t0.set_clip_on(True)
+                t0.set_path_effects(
+                    [
+                        PathEffects.Stroke(
+                            linewidth=kwargs.get("textoutlinewidth", 3),
+                            foreground=outlinecolor,
+                        ),
+                        PathEffects.Normal(),
+                    ]
+                )
 
-            if label and label != "":
-                ax.annotate(
-                    f"{label}",
-                    xy=(x, y),
-                    ha="center",
-                    va="top",
-                    xytext=(0, 0 - textsize / 2),
-                    color=labelcolor,
-                    textcoords="offset points",
-                    zorder=z - 1,
-                    clip_on=True,
-                    fontsize=labeltextsize,
-                )
+                if row["label"] and row["label"] != "":
+                    gp.ax.annotate(
+                        f"{row['label']}",
+                        xy=(x, y),
+                        ha="center",
+                        va="top",
+                        xytext=(0, 0 - textsize / 2),
+                        color=labelcolor,
+                        textcoords="offset points",
+                        zorder=row["zorder"] - 1,
+                        clip_on=True,
+                        fontsize=labeltextsize,
+                    )
 
     def scatter(self, lons, lats, vals, clevs, **kwargs):
         """Draw points on the map
@@ -833,12 +867,12 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
         colors = cmap(norm(vals))
-        self.ax.scatter(
+        self.panels[0].scatter(
             lons,
             lats,
             c=colors,
             edgecolors=colors,
-            transform=LATLON,
+            crs=LATLON,
             zorder=Z_OVERLAY,
         )
         kwargs.pop("cmap", None)
@@ -846,21 +880,18 @@ class MapPlot:
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
         """hexbin wrapper"""
-        cmap = stretch_cmap(
-            kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
-        )
+        cmap = kwargs.pop("cmap", None)
+        cmap = stretch_cmap(cmap, clevs, extend=kwargs.get("extend"))
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
 
-        points = self.ax.projection.transform_points(LATLON, lons, lats)
-        _hex = self.ax.hexbin(
-            points[:, 0],
-            points[:, 1],
-            C=vals,
+        _hex = self.panels[0].hexbin(
+            lons,
+            lats,
+            vals,
             norm=norm,
             cmap=cmap,
             zorder=Z_FILL,
         )
-        kwargs.pop("cmap", None)
         self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return _hex
 
@@ -887,14 +918,14 @@ class MapPlot:
             new = lats[:, -1] * 2 - lats[:, -2]
             lats = np.c_[lats, new]
 
-        res = self.ax.pcolormesh(
+        res = self.panels[0].pcolormesh(
             lons,
             lats,
             vals,
             norm=norm,
             cmap=cmap,
             zorder=Z_FILL,
-            transform=LATLON,
+            crs=LATLON,
         )
 
         if kwargs.get("clip_on", True):
@@ -927,15 +958,15 @@ class MapPlot:
         # in lon,lat
         if sector == "state":
             s = load_geodf("us_states")
-            mask_outside_geom(self.ax, s.at[self.state, "geom"])
+            mask_outside_geom(self.panels[0], s.at[self.state, "geom"])
             return
         if sector == "cwa":
             s = load_geodf("cwa")
-            mask_outside_geom(self.ax, s.at[self.cwa, "geom"])
+            mask_outside_geom(self.panels[0], s.at[self.cwa, "geom"])
             return
         if sector == "conus":
             s = load_geodf("conus")
-            mask_outside_geom(self.ax, s.iloc[0]["geom"])
+            mask_outside_geom(self.panels[0], s.iloc[0]["geom"])
             return
         if sector == "iowawfo":
             s = load_geodf("iowawfo")
@@ -944,10 +975,8 @@ class MapPlot:
         else:
             ccw = load_bounds(f"{sector}_ccw")
         # in map coords
-        points = self.ax.projection.transform_points(
-            ccrs.Geodetic(), ccw[:, 0], ccw[:, 1]
-        )
-        mask_outside_polygon(points[:, :2], ax=self.ax)
+        x, y = self.panels[0].transform_lonlat(ccw[:, 0], ccw[:, 1])
+        mask_outside_polygon(list(zip(x, y)), self.panels[0])
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """Contourf
@@ -965,83 +994,50 @@ class MapPlot:
             vals = np.array(vals)
         if np.array(vals).ndim == 1:
             # We need to grid, get current plot bounds in display proj
-            # Careful here as a rotated projection may have maxes not in ul
-            xbnds = self.ax.get_xlim()
-            ybnds = self.ax.get_ylim()
-            ll = ccrs.Geodetic().transform_point(
-                xbnds[0], ybnds[0], self.ax.projection
-            )
-            cl = ccrs.Geodetic().transform_point(
-                xbnds[0], sum(ybnds) / 2, self.ax.projection
-            )
-            ul = ccrs.Geodetic().transform_point(
-                xbnds[0], ybnds[1], self.ax.projection
-            )
-            uc = ccrs.Geodetic().transform_point(
-                sum(xbnds) / 2, ybnds[1], self.ax.projection
-            )
-            ur = ccrs.Geodetic().transform_point(
-                xbnds[1], ybnds[1], self.ax.projection
-            )
-            cr = ccrs.Geodetic().transform_point(
-                xbnds[1], sum(ybnds) / 2, self.ax.projection
-            )
-            lr = ccrs.Geodetic().transform_point(
-                xbnds[1], ybnds[0], self.ax.projection
-            )
-            lc = ccrs.Geodetic().transform_point(
-                sum(xbnds) / 2, ybnds[0], self.ax.projection
-            )
-            xi = np.linspace(
-                min(ll[0], cl[0], ul[0]),
-                max(lr[0], cr[0], ur[0]),
-                100,
-            )
-            yi = np.linspace(
-                min(ll[1], lc[1], lr[1]),
-                max(ul[1], uc[1], ur[1]),
-                100,
-            )
+            # Careful here as a rotated crs may have maxes not in ul
+            xbnds = self.panels[0].get_xlim()
+            ybnds = self.panels[0].get_ylim()
+            xi = np.linspace(xbnds[0], xbnds[1], 100)
+            yi = np.linspace(ybnds[0], ybnds[1], 100)
             xi, yi = np.meshgrid(xi, yi)
-            nn = NearestNDInterpolator((lons, lats), vals)
+            xproj, yproj = self.panels[0].transform_lonlat(lons, lats)
+            nn = NearestNDInterpolator((xproj, yproj), vals)
             vals = nn(xi, yi)
-            lons = xi
-            lats = yi
             window = np.ones((6, 6))
             vals = convolve2d(
                 vals, window / window.sum(), mode="same", boundary="symm"
             )
-        if lons.ndim == 1:
-            lons, lats = np.meshgrid(lons, lats)
+        else:
+            xi, yi = self.panels[0].transform_lonlat(lons, lats)
 
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
         )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
         # vals = maskoceans(lons, lats, vals, resolution='h')
-        self.ax.contourf(
-            lons,
-            lats,
+        self.panels[0].contourf(
+            xi,
+            yi,
             vals,
             clevs,
             cmap=cmap,
             norm=norm,
             zorder=Z_FILL,
             extend="both",
-            transform=LATLON,
+            crs=self.panels[0].crs,
         )
         if kwargs.get("iline", True):
-            csl = self.ax.contour(
-                lons,
-                lats,
+            csl = self.panels[0].contour(
+                xi,
+                yi,
                 vals,
                 clevs,
                 colors="w",
                 zorder=Z_FILL_LABEL,
-                transform=LATLON,
+                crs=self.panels[0].crs,
             )
             if kwargs.get("ilabel", False):
-                self.ax.clabel(
+                self.panels[0].ax.clabel(
                     csl,
                     fmt=kwargs.get("labelfmt", "%.0f"),
                     colors="k",
@@ -1111,10 +1107,10 @@ class MapPlot:
         """
         kwargs["edgecolor"] = color
         cwas = load_geodf("cwa")
-        for _a in self.axes:
-            _a.add_geometries(
-                cwas["geom"].values,
-                crs=LATLON,
+        for gp in self.panels:
+            cwas.to_crs(gp.crs).plot(
+                ax=gp.ax,
+                aspect=None,
                 zorder=Z_POLITICAL,
                 facecolor="None",
                 **kwargs,
@@ -1150,8 +1146,7 @@ class MapPlot:
           outlinecolor (str): color to outline the text with
         """
         gdf = load_geodf("cities")
-        (west, east, south, north) = self.ax.get_extent(crs=LATLON)
-
+        (west, east, south, north) = self.panels[0].get_extent(crs=LATLON)
         minpop = kwargs.get(
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
@@ -1176,14 +1171,15 @@ class MapPlot:
           color (color,optional): line color to use
         """
         geodf = load_geodf("ugcs_county")
-        self.ax.add_geometries(
-            geodf["geom"].values,
-            crs=LATLON,
-            facecolor="None",
-            edgecolor=color,
-            lw=0.4,
-            zorder=Z_POLITICAL,
-        )
+        for gp in self.panels:
+            geodf.to_crs(self.panels[0].crs).plot(
+                ax=gp.ax,
+                aspect=None,
+                facecolor="None",
+                edgecolor=color,
+                lw=0.4,
+                zorder=Z_POLITICAL,
+            )
 
     def postprocess(self, **kwargs):
         """Postprocessing.
@@ -1252,9 +1248,9 @@ class MapPlot:
         labels = []
         for _, row in df.iterrows():
             for geo in row["geometry"].geoms:
-                self.ax.plot(
+                self.panels[0].plot(
                     *geo.xy,
-                    transform=LATLON,
+                    crs=LATLON,
                     color=row["color"],
                     linewidth=2 if row["rtype"] > 1 else 4,
                     zorder=Z_OVERLAY2,
@@ -1262,7 +1258,7 @@ class MapPlot:
                 )
                 if row["label"] not in labels:
                     labels.append(row["label"])
-        self.ax.legend(
+        self.panels[0].ax.legend(
             loc=3,
             ncol=6,
             fontsize=10,
@@ -1325,12 +1321,12 @@ class MapPlot:
         bio = BytesIO(req_png.content)
         bio.seek(0)
         im = np.asarray(Image.open(bio))
-        # Use rasterio to reproject this grid into the projection of axes
+        # Use rasterio to reproject this grid into the crs of axes
         with rasterio.Env():
             src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
             src_crs = {"init": "EPSG:4326"}
-            (px0, px1, py0, py1) = self.ax.get_extent()
-            pbbox = self.ax.get_window_extent()
+            (px0, px1, py0, py1) = self.panels[0].get_extent()
+            pbbox = self.panels[0].ax.get_window_extent()
             pdx = (px1 - px0) / pbbox.width
             pdy = (py1 - py0) / pbbox.height
             dest_aff = rasterio.Affine(pdx, 0, px0, 0, pdy, py0)
@@ -1344,7 +1340,7 @@ class MapPlot:
                 src_crs=src_crs,
                 src_nodata=0,
                 dst_transform=dest_aff,
-                dst_crs=self.ax.projection.proj4_params,
+                dst_crs=self.panels[0].crs,
                 resampling=Resampling.nearest,
             )
 
@@ -1352,7 +1348,7 @@ class MapPlot:
         cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
         cmap.set_under((0, 0, 0, 0))
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
-        self.ax.imshow(
+        self.panels[0].ax.imshow(
             res,
             interpolation="nearest",  # prevents artifacts
             extent=(px0, px1, py0, py1),
@@ -1361,10 +1357,11 @@ class MapPlot:
             zorder=Z_FILL,
             origin="lower",
         ).set_rasterized(True)
-        pos = self.ax.get_position()
+        pos = self.panels[0].ax.get_position()
         cax = self.fig.add_axes(
             caxpos or [pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015]
         )
+        # pylint: disable=unsubscriptable-object
         cb = mpcolorbar.ColorbarBase(
             cax,
             cmap=cmap,
@@ -1375,6 +1372,7 @@ class MapPlot:
             drawedges=False,
             ticklocation="top",
         )
+        # pylint: disable=no-member,consider-using-f-string
         cb.set_ticklabels(
             [
                 "%.0d" % (d,)
