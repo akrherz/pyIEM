@@ -4,7 +4,6 @@ from pyiem.plot import MapPlot
 from pyiem.util import get_dbconn
 from shapely.wkb import loads
 from shapely.geometry import Polygon, MultiPolygon
-from descartes.patch import PolygonPatch
 import numpy as np
 
 
@@ -46,10 +45,6 @@ def main():
             ar.reverse()
             np.save("iailin_ccw.npy", ar)
             # mask_outside_polygon(ar, ax=m.ax)
-            poly = PolygonPatch(Polygon(ar), fc="r", zorder=10000)
-            m.ax.add_patch(poly)
-    # """
-    m.postprocess(filename="test.png")
 
 
 if __name__ == "__main__":

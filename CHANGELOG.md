@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 - Replaced `cartopy` usage with a custom axes class that manages a `matplotlib` axes along with a `pyproj` CRS instance.  Aspects of using internal attributes within `pyiem.plot.MapPlot` are perhaps broken downstream, but I know of no users of this API other than myself (#514).
 - Removed deprecated `pyiem.cscap_utils.get_sites_client`.  It would be nice to migrate this to updated Google API, but classic Google vaporware and such API does not exist.
+- Usage of `descartes` was removed as it was un-necessary for this library.
 
 ### New Features
 

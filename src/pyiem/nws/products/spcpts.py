@@ -237,7 +237,6 @@ class SPCPTS(TextProduct):
     def draw_outlooks(self):
         """For debugging, draw the outlooks on a simple map for inspection!"""
         # pylint: disable=import-outside-toplevel
-        from descartes.patch import PolygonPatch
         import matplotlib.pyplot as plt
 
         for day, collect in self.outlook_collections.items():
@@ -252,13 +251,6 @@ class SPCPTS(TextProduct):
                     label="Conus",
                 )
                 for poly in outlook.geometry.geoms:
-                    patch = PolygonPatch(
-                        poly,
-                        fc="tan",
-                        label="Outlook %.1f" % (poly.area,),
-                        zorder=2,
-                    )
-                    ax.add_patch(patch)
                     ax.plot(
                         poly.exterior.xy[0],
                         poly.exterior.xy[1],
