@@ -29,6 +29,23 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_china():
+    """Test that we can draw china and not overlay any cwas."""
+    mp = MapPlot(
+        twitter=True,
+        nocaption=True,
+        sector="custom",
+        south=13,
+        north=55,
+        east=100,
+        west=70,
+        title="China",
+    )
+    mp.fill_climdiv({})
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nws_sector_twitter_res():
     """Test that Hawaii does not overlap Florida for Twitter Res."""
     mp = MapPlot(
@@ -211,7 +228,7 @@ def test_iowa_contour_with_polygon_mask():
         clip_on=False,
     )
     poly = Polygon([(-95, 40), (-95, 45), (-90, 45), (-90, 40)])
-    mask_outside_geom(mp.ax, poly)
+    mask_outside_geom(mp.panels[0], poly)
     return mp.fig
 
 
@@ -259,11 +276,13 @@ def test_issue98_labelbar():
     clevs = np.arange(0, 1.0, 0.1)
     clevs[-1] = 3.987654
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+    colors = cmap(norm([0.5, 0.25, 1.0, 5.0]))
+    colors = [mpcolors.to_hex(c) for c in colors]
     mp.plot_values(
         [-94, -92, -91, -92],
         [42, 41, 43, 42.4],
         ["0.5", "0.25", "1.0", "5.0"],
-        color=cmap(norm([0.5, 0.25, 1.0, 5.0])),
+        color=colors,
         showmarker=True,
     )
     mp.draw_colorbar(clevs, cmap, norm, spacing="proportional")
@@ -320,6 +339,14 @@ def test_usdm():
     """Can we plot the current USDM"""
     mp = MapPlot(sector="conus", nocaption=True)
     mp.draw_usdm(valid=datetime.date(2018, 5, 7), hatched=True, filled=False)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_usdm_filled():
+    """Can we plot the USDM filled."""
+    mp = MapPlot(sector="southwest", nocaption=True)
+    mp.draw_usdm(valid=datetime.date(2018, 5, 7), hatched=False, filled=True)
     return mp.fig
 
 
@@ -728,7 +755,7 @@ def test_overlap():
     lons = np.linspace(-99, -90, 100)
     lats = np.linspace(38, 44, 100)
     vals = lats
-    labels = ["%.2f" % (s,) for s in lats]
+    labels = [f"{s:.2f}" for s in lats]
     mp.plot_values(lons, lats, vals, fmt="%.2f", labels=labels)
     return mp.fig
 
@@ -738,7 +765,15 @@ def test_barbs():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor="white", nocaption=True)
     data = [
-        dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
+        dict(
+            lat=41.5,
+            lon=-96,
+            tmpf=50,
+            dwpf=30,
+            sknt=10,
+            drct=100,
+            coverage=50,
+        ),
         dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
     ]
     mp.plot_station(data, fontsize=12)
@@ -805,7 +840,7 @@ def test_textplot2():
         np.arange(-99, -94),
         np.arange(40, 45),
         np.arange(5),
-        labels=range(5, 11),
+        labels=range(5, 10),
     )
     return mp.fig
 

@@ -1,10 +1,8 @@
 # Some of these are not hard requirements, but attempting to avoid pip
 # installing these
 affine
-cartopy>=0.18
 cartopy_offlinedata
 cython
-descartes
 fiona
 # need to pin for comparables
 freetype>=2.10
