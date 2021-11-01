@@ -29,6 +29,23 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_china():
+    """Test that we can draw china and not overlay any cwas."""
+    mp = MapPlot(
+        twitter=True,
+        nocaption=True,
+        sector="custom",
+        south=13,
+        north=55,
+        east=100,
+        west=70,
+        title="China",
+    )
+    mp.fill_climdiv({})
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nws_sector_twitter_res():
     """Test that Hawaii does not overlap Florida for Twitter Res."""
     mp = MapPlot(
