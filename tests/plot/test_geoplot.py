@@ -343,6 +343,14 @@ def test_usdm():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_usdm_filled():
+    """Can we plot the USDM filled."""
+    mp = MapPlot(sector="southwest", nocaption=True)
+    mp.draw_usdm(valid=datetime.date(2018, 5, 7), hatched=False, filled=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_hexbin():
     """See if we can do hexbin OKish"""
     mp = MapPlot(
@@ -757,7 +765,15 @@ def test_barbs():
     """Testing the plotting of wind barbs"""
     mp = MapPlot(continentalcolor="white", nocaption=True)
     data = [
-        dict(lat=41.5, lon=-96, tmpf=50, dwpf=30, sknt=10, drct=100),
+        dict(
+            lat=41.5,
+            lon=-96,
+            tmpf=50,
+            dwpf=30,
+            sknt=10,
+            drct=100,
+            coverage=50,
+        ),
         dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
     ]
     mp.plot_station(data, fontsize=12)
