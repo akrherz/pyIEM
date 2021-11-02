@@ -23,6 +23,11 @@ def cursor():
     return util.get_dbconn("mesosite").cursor()
 
 
+def test_write_weblog():
+    """Test writing to the weblog."""
+    util.write_weblog("/", {})
+
+
 def test_insert_nan(cursor):
     """Test that we properly insert NaN values as nulls."""
     vals = np.array([0, np.nan, 10], dtype=np.float64)

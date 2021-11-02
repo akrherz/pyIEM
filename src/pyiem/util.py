@@ -62,6 +62,28 @@ class CustomFormatter(logging.Formatter):
         )
 
 
+def write_weblog(uri, environ, http_status=404):
+    """Save an entry to the mesosite weblog folder."""
+    sys.stderr.write(
+        f"IEM 404 {uri} remote: {environ.get('REMOTE_ADDR')} "
+        f"referer: {environ.get('HTTP_REFERER')}\n"
+    )
+    pgconn = get_dbconn("mesosite")
+    cursor = pgconn.cursor()
+    cursor.execute(
+        "INSERT into weblog(client_addr, uri, referer, http_status) "
+        "VALUES (%s, %s, %s, %s)",
+        (
+            environ.get("REMOTE_ADDR"),
+            uri,
+            environ.get("HTTP_REFERER"),
+            http_status,
+        ),
+    )
+    cursor.close()
+    pgconn.commit()
+
+
 def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     """Download a URL and insert into LDM.
 
