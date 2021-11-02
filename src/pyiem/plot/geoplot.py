@@ -273,10 +273,10 @@ class MapPlot:
         url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
         try:
             req = requests.get(url, timeout=30)
-        except requests.ConnectionError as exp:
+            df = gpd.GeoDataFrame().from_features(req.json())
+        except Exception as exp:
             warnings.warn(f"draw_usdm IEM USDM Webservice failed: {exp}")
             return None
-        df = gpd.GeoDataFrame().from_features(req.json())
         lw = 1 if filled else 4.0
         usdm_valid = None
         for _, row in df.iterrows():
@@ -394,8 +394,6 @@ class MapPlot:
           spacing (str,optional): should the colorbar be `uniform` or
             `proportional`, defaults to `uniform`
         """
-        if self.cax is None:
-            return
         self.cax.set_frame_on(True)
         extend = kwargs.get("extend", "both")
         # Do we need to muck with the cmap
@@ -1042,6 +1040,7 @@ class MapPlot:
                     fmt=kwargs.get("labelfmt", "%.0f"),
                     colors="k",
                     fontsize=14,
+                    zorder=Z_FILL_LABEL + 1,
                 )
         if kwargs.get("clip_on", True):
             self.draw_mask()

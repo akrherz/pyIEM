@@ -25,19 +25,14 @@ def is_gzipped(text):
 
 def get_url(center, valid, product):
     """Return the URL given the provided options."""
-    fn = "%s_00.00_%s00.grib2.gz" % (product, valid.strftime("%Y%m%d-%H%M"))
+    fn = f"{product}_00.00_{valid:%Y%m%d-%H%M}00.grib2.gz"
     if center == "mtarchive":
-        uri = ("https://mtarchive.geol.iastate.edu/%s/mrms/ncep/%s/%s") % (
-            valid.strftime("%Y/%m/%d"),
-            product,
-            fn,
+        uri = (
+            f"https://mtarchive.geol.iastate.edu/{valid:%Y/%m/%d}"
+            f"/mrms/ncep/{product}/{fn}"
         )
     else:
-        uri = ("https://mrms%s.ncep.noaa.gov/data/2D/%s/MRMS_%s") % (
-            center,
-            product,
-            fn,
-        )
+        uri = f"https://mrms{center}.ncep.noaa.gov/data/2D/{product}/MRMS_{fn}"
     return uri
 
 
@@ -54,8 +49,8 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
       valid(datetime): Datetime object for desired timestamp
       tmpdir(str,optional): location to check/place the downloaded file
     """
-    fn = "%s_00.00_%s00.grib2.gz" % (product, valid.strftime("%Y%m%d-%H%M"))
-    tmpfn = "%s/%s" % (tmpdir, fn)
+    fn = f"{product}_00.00_{valid:%Y%m%d-%H%M}00.grib2.gz"
+    tmpfn = os.path.join(tmpdir, fn)
     # Option 1, we have this file already in cache!
     if os.path.isfile(tmpfn):
         return tmpfn
@@ -179,17 +174,15 @@ def reader(fn):
         year, month, day, hour, minute, second
     ).replace(tzinfo=timezone.utc)
 
-    struct.unpack("%si" % (nz,), fp.read(nz * 4))  # levels
+    struct.unpack(f"{nz}i", fp.read(nz * 4))  # levels
     struct.unpack("i", fp.read(4))  # z_scale
     struct.unpack("10i", fp.read(40))  # bogus
     struct.unpack("20c", fp.read(20))  # varname
     metadata["unit"] = struct.unpack("6c", fp.read(6))
     var_scale, _, num_radars = struct.unpack("3i", fp.read(12))
-    struct.unpack(
-        "%sc" % (num_radars * 4,), fp.read(num_radars * 4)
-    )  # rad_list
+    struct.unpack(f"{num_radars * 4}c", fp.read(num_radars * 4))  # rad_list
     sz = nx * ny * nz
-    data = struct.unpack("%sh" % (sz,), fp.read(sz * 2))
+    data = struct.unpack(f"{sz}h", fp.read(sz * 2))
     data = np.reshape(np.array(data), (ny, nx)) / float(var_scale)
     # ma.masked_equal(data, miss_val)
 
@@ -199,9 +192,9 @@ def reader(fn):
 
 def get_fn(prefix, now, tile):
     """Get the filename for this timestamp and tile"""
-    return now.strftime(
-        f"/mnt/a4/data/%Y/%m/%d/mrms/tile{tile}/{prefix}/{prefix}"
-        ".%Y%m%d.%H%M00.gz"
+    return (
+        f"/mnt/a4/data/{now:%Y/%m/%d}/mrms/tile{tile}/{prefix}/{prefix}"
+        f".{now:%Y%m%d.%H%M}00.gz"
     )
 
 
@@ -211,5 +204,5 @@ def write_worldfile(filename):
     Args:
       filename (str): filename to write the world file information to
     """
-    with open(filename, "w") as fd:
+    with open(filename, "w", encoding="utf8") as fd:
         fd.write(f"0.01\n0.00\n0.00\n-0.01\n{WEST}\n{NORTH}")

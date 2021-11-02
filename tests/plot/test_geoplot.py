@@ -23,6 +23,21 @@ from pyiem.util import utc
 PAIN = 1.1  # how much do we care, sigh.
 
 
+def test_exercise_usdm():
+    """Test the various checks in the usdm method."""
+    mp = MapPlot()
+    mp.draw_usdm()
+    mp.draw_usdm(utc())
+    assert mp.draw_usdm("qqq") is None
+    assert mp.draw_usdm(utc(1980, 1, 1)) is None
+
+
+def test_close():
+    """Test that the close method works."""
+    mp = MapPlot()
+    mp.close()
+
+
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
@@ -41,7 +56,7 @@ def test_china():
         west=70,
         title="China",
     )
-    mp.fill_climdiv({})
+    mp.fill_climdiv({"bah": 7})
     return mp.fig
 
 
@@ -206,7 +221,7 @@ def test_conus_contour():
     """Test that a conus sector plot can generate a contour correctly."""
     mp = MapPlot(nocaption=True, sector="conus", twitter=True)
     mp.contourf(
-        np.arange(-120, -47, 3),
+        list(np.arange(-120, -47, 3)),
         np.arange(25, 50),
         np.arange(25),
         np.arange(25),
@@ -456,12 +471,14 @@ def test_drawrandomtext():
         debug=True,
         nocaption=True,
     )
-    mp.plot_values(
-        [-94, -92, -91, -92],
-        [42, 41, 43, 42.4],
-        ["One", "Two\nTwo", "Three\nThree\nThree", "Four\nFour\nFour\nFour"],
-        showmarker=True,
-    )
+    lons = [-94, -92, -91, -92]
+    lats = [42, 41, 43, 42.4]
+    vals = ["One", "Two\nTwo", "Three\nThree\nThree", "Four\nFour\nFour\nFour"]
+    # Add some cruft to exercise culling
+    lons.extend([lons[-1]] * 500)
+    lats.extend([lats[-1]] * 500)
+    vals.extend([vals[-1]] * 500)
+    mp.plot_values(lons, lats, vals, showmarker=True)
     return mp.fig
 
 
@@ -475,6 +492,26 @@ def test_drawiowawfo():
         np.arange(9),
         np.arange(9),
         clevlabels=["a", "b", "c", "d", "e", "f", "g", "h", "i"],
+    )
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_contourf_grid():
+    """Test that contourf can handle a 2d grid"""
+    mp = MapPlot(title="Iowa Contour plot", nocaption=True)
+    x = np.arange(-94, -85)
+    y = np.arange(36, 45)
+    xx, yy = np.meshgrid(x, y)
+    vals = xx
+    mp.contourf(
+        xx,
+        yy,
+        vals,
+        np.arange(-94, -85),
+        clevlabels=["a", "b", "c", "d", "e", "f", "g", "h", "i"],
+        ilabel=True,
+        iline=True,
     )
     return mp.fig
 
@@ -581,7 +618,12 @@ def test_colorbar3():
     clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
     mp.draw_colorbar(
-        clevs, cmap, norm, title="Erosion $kg/m^2$", spacing="uniform"
+        clevs,
+        cmap,
+        norm,
+        title="Erosion $kg/m^2$",
+        spacing="uniform",
+        extend="max",
     )
     return mp.fig
 
@@ -752,9 +794,9 @@ def test_colorramps():
 def test_overlap():
     """Do some checking of our overlaps logic"""
     mp = MapPlot(sector="midwest", continentalcolor="white", nocaption=True)
-    lons = np.linspace(-99, -90, 100)
-    lats = np.linspace(38, 44, 100)
-    vals = lats
+    lons = list(np.linspace(-99, -90, 100))
+    lats = list(np.linspace(38, 44, 100))
+    vals = list(lats)
     labels = [f"{s:.2f}" for s in lats]
     mp.plot_values(lons, lats, vals, fmt="%.2f", labels=labels)
     return mp.fig
@@ -774,6 +816,7 @@ def test_barbs():
             drct=100,
             coverage=50,
         ),
+        dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
         dict(lat=42.0, lon=-95.5, tmpf=50, dwpf=30, sknt=20, drct=200),
     ]
     mp.plot_station(data, fontsize=12)
