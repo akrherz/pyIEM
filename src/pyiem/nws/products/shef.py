@@ -718,7 +718,6 @@ def compute_num_value(element) -> bool:
     try:
         element.num_value = float(element.str_value)
     except ValueError:
-        print(element.str_value)
         LOG.info("ValueError: '%s' to float failed", element.str_value)
         return False
     # 5.1.2 Precip is assumed to be in 0.01 inches if an integer is provided

@@ -73,7 +73,7 @@ def read_yld(filename):
     Returns:
       pandas.DataFrame
     """
-    data = open(filename).read()
+    data = open(filename, encoding="utf8").read()
     xref = {}
     for (cropcode, label) in YLD_CROPTYPE.findall(data):
         xref[cropcode] = label
@@ -103,7 +103,7 @@ def read_slp(filename):
     Returns:
       list of slope profiles
     """
-    lines = [a[: a.find("#")].strip() for a in open(filename)]
+    lines = [a[: a.find("#")].strip() for a in open(filename, encoding="utf8")]
     segments = int(lines[5])
     res = [None] * segments
     xpos = 0
@@ -152,7 +152,6 @@ def man2df(mandict: dict, year1: int = 1) -> pd.DataFrame:
             tilseq = mandict["scens"][scenyr - 1]["tilseq"]
             plant_date = None
             for surfeff in mandict["surfeffects"][tilseq - 1]["tills"]:
-                print(surfeff)
                 op = surfeff["op"]
                 if (
                     mandict["operations"][op - 1]["scecomment"].find("Planter")
