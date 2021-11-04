@@ -200,6 +200,17 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_internal():
+    """Test that internal hacks are handled within autoplot."""
+    form = {}
+    cfg = {"arguments": []}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert "dpi" not in ctx
+    form["_r"] = "43"
+    ctx = util.get_autoplot_context(form, cfg)
+    assert "_r" in ctx
+
+
 def test_get_autoplot_context_network():
     """Do we handle network issues OK."""
     form = dict(station="ZZZ", network="ZZ_ASOS")
