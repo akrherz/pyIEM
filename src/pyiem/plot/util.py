@@ -44,7 +44,10 @@ def update_kwargs_apctx(func):
                     kwargs["state"] = csector
                 else:
                     kwargs["sector"] = csector
-
+            # Merge in dpi, if not set
+            dpi = apctx.get("dpi", None)
+            if dpi is not None and "dpi" not in kwargs:
+                kwargs["dpi"] = dpi
         return func(*args, **kwargs)
 
     return wrapped

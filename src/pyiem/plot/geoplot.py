@@ -57,6 +57,7 @@ from pyiem.plot.util import (
     update_kwargs_apctx,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
+    FIGSIZES,
     LATLON,
     Z_CF,
     Z_FILL,
@@ -144,7 +145,7 @@ class MapPlot:
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
-        figsize = kwargs.get("figsize", (10.24, 7.68))
+        figsize = kwargs.get("figsize", FIGSIZES["43"])
         if kwargs.get("twitter", False) is True:
             figsize = TWITTER_RESOLUTION_INCH
         if self.fig is None:

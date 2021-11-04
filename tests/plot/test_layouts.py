@@ -8,6 +8,16 @@ from pyiem.plot.layouts import figure_axes, figure
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
+def test_dpi():
+    """Test setting a dpi via autoplot context."""
+    fig, ax = figure_axes(
+        apctx={"_r": "169", "_dpi": "30"},
+    )
+    ax.plot([0, 1], [0, 1])
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_crawl_before_walk():
     """Test that we can do basic things."""
     fig, ax = figure_axes(

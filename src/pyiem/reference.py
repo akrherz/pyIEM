@@ -41,9 +41,16 @@ TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
 # Standized sizes for various plots generated
 FIGSIZES = {
-    "43": [8, 6],
+    "43": [10.24, 7.68],
+    "86": [8, 6],
     "t": TWITTER_RESOLUTION_INCH,
     "169": [12.8, 7.2],
+}
+FIGSIZES_NAMES = {
+    "43": "1024x768 (4:3)",
+    "86": "800x600 (4:3)",
+    "t": "Twitter Friendly (1200x675)",
+    "169": "1280x720 (16:9)",
 }
 
 # Convenience
