@@ -4,7 +4,7 @@
 import pytest
 
 # local
-from pyiem.plot.layouts import figure_axes
+from pyiem.plot.layouts import figure_axes, figure
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.1)
@@ -16,3 +16,9 @@ def test_crawl_before_walk():
     )
     ax.plot([0, 1], [0, 1])
     return fig
+
+
+def test_figsize():
+    """Test that figsize gets set properly."""
+    fig = figure(apctx={"_r": "169"})
+    assert fig.get_size_inches()[0] == 12.8

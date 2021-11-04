@@ -39,6 +39,13 @@ TRACE_VALUE = 0.0001
 TWEET_CHARS = 280
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
+# Standized sizes for various plots generated
+FIGSIZES = {
+    "43": [8, 6],
+    "t": TWITTER_RESOLUTION_INCH,
+    "169": [12.8, 7.2],
+}
+
 # Convenience
 LATLON = pyproj.CRS.from_epsg(4326)
 EPSG = {}

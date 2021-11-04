@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Added IEM specific ability to pass autoplot contexts into plotting and set things like the resolution and map sector (#519).
+
 ### Bug Fixes
 
 - Addressed upcoming Shapely 2.0 deprecations.
