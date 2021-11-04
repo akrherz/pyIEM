@@ -982,6 +982,7 @@ class MapPlot:
         Args:
           ilabel (boolean,optional): Should we label contours
           iline (boolean,optional): should we draw contour lines
+          lblformat (str,optional): Format string for labeling contours, %.0f.
 
         Returns:
           vals (np.array): The values used for plotting, maybe after gridding
@@ -1035,9 +1036,11 @@ class MapPlot:
                 crs=self.panels[0].crs,
             )
             if kwargs.get("ilabel", False):
+                # Legacy non-standardized kwarg
+                lf = kwargs.get("lblformat", kwargs.get("labelfmt", "%.0f"))
                 self.panels[0].ax.clabel(
                     csl,
-                    fmt=kwargs.get("labelfmt", "%.0f"),
+                    fmt=lf,
                     colors="k",
                     fontsize=14,
                     zorder=Z_FILL_LABEL + 1,
@@ -1073,6 +1076,7 @@ class MapPlot:
             `True`.
           plotmissing(bool, optional): Should missing UGC data be plotted?
           labels(dict, optional): UGC indexed dictionary to use for labeling.
+          lblformat(str, optional): Format string for labels, default %s.
           missingval(str, optional): value to use when labelling UGCs with
             missing values, defaults to '-'.
         """
