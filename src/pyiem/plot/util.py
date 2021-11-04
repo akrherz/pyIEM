@@ -418,6 +418,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
     These are kwargs general to `polygon_fill`.
     **kwargs (Optional): Other things needed for mapping
     ilabel (Optional[bool]): should values be labelled? Defaults to `False`
+    lblfmt (str,optional): format string for labels. Defaults to %s.
     plotmissing (bool): should geometries not included in the `data`
         be mapped? Defaults to `True`
     color (str or dict): Providing an explicit color (used for both edge

@@ -44,6 +44,18 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fill_ugcs_year_label():
+    """Test that we can control the format of the label shown."""
+    mp = MapPlot(
+        nocaption=True,
+        title="All Years",
+    )
+    data = {"IAC001": 2021, "IAC003": 2021.5}
+    mp.fill_ugcs(data, ilabel=True, lblformat="%.0f")
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_china():
     """Test that we can draw china and not overlay any cwas."""
     mp = MapPlot(
