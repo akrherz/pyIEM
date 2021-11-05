@@ -5,7 +5,7 @@ import pytest
 from pyiem.plot import calendar_plot
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01)
+@pytest.mark.mpl_image_compare(tolerance=0.01, savefig_kwargs={"dpi": 60})
 def test_issue101():
     """We like June, it is a good month, don't drop it."""
     sts = datetime.date(2017, 5, 29)
@@ -19,6 +19,7 @@ def test_issue101():
         data,
         title="Whiz Bang, Wizzardry",
         subtitle="This is officially unofficial and hacky.",
+        apctx={"dpi": 60},
     )
 
 

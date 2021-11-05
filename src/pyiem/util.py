@@ -416,6 +416,11 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
       dictionary of variable names and values, with proper types!
     """
     ctx = {}
+    # This quasi sucks
+    for arg in ["dpi", "_r"]:
+        val = fdict.get(arg)
+        if val is not None:
+            ctx[arg] = val if arg != "dpi" else int(val)
     for opt in cfg.get("arguments", []):
         name = opt.get("name")
         default = opt.get("default")

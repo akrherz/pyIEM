@@ -9,8 +9,9 @@ import matplotlib.colors as mpcolors
 from matplotlib.patches import Rectangle
 from pyiem.plot.use_agg import plt
 from pyiem.plot.colormaps import get_cmap
-from pyiem.plot.util import fitbox, fontscale
+from pyiem.plot.util import fitbox, fontscale, update_kwargs_apctx
 from pyiem.plot.layouts import figure
+from pyiem.reference import TWITTER_RESOLUTION_INCH
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 
@@ -188,6 +189,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
         now += datetime.timedelta(days=1)
 
 
+@update_kwargs_apctx
 def calendar_plot(sts, ets, data, **kwargs):
     """Create a plot that looks like a calendar
 
@@ -199,12 +201,14 @@ def calendar_plot(sts, ets, data, **kwargs):
       kwargs (dict):
         heatmap (bool): background color for cells based on `val`, False
         cmap (str): color map to use for norm
+        apctx (dict): autoplot context.
     """
     bounds = _compute_bounds(sts, ets)
+    figsize = kwargs.get("figsize", TWITTER_RESOLUTION_INCH)
     # Compute the number of month calendars we need.
 
     # We want 'square' boxes for each month's calendar, 4x3
-    fig = figure()
+    fig = figure(figsize=figsize, dpi=kwargs.get("dpi", 100))
     if "fontsize" not in kwargs:
         kwargs["fontsize"] = 12
         if len(bounds) < 3:

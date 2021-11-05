@@ -1,5 +1,6 @@
 """pyiem.plot.util Plotting Utilities!"""
 # pylint: disable=import-outside-toplevel
+import functools
 import os
 
 import numpy as np
@@ -13,12 +14,43 @@ import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
-from pyiem.reference import LATLON
+from pyiem.reference import LATLON, FIGSIZES
 from ._mpl import GeoPanel
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
 LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
+
+
+def update_kwargs_apctx(func):
+    """Decorator to update things provided by an autoplot context dict."""
+
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        """Compute things and update things."""
+        if "apctx" in kwargs:
+            apctx = kwargs["apctx"]
+            # If figsize is set, we take no other action
+            if "figsize" not in kwargs:
+                _r = apctx.get("_r", None)
+                if _r in FIGSIZES:
+                    kwargs["figsize"] = FIGSIZES[_r]
+            # Merge in csector, this will override sector
+            csector = apctx.get("csector", None)
+            if csector is not None:
+                # Quasi magic
+                if len(csector) == 2:
+                    kwargs["sector"] = "state"
+                    kwargs["state"] = csector
+                else:
+                    kwargs["sector"] = csector
+            # Merge in dpi, if not set
+            dpi = apctx.get("dpi", None)
+            if dpi is not None and "dpi" not in kwargs:
+                kwargs["dpi"] = dpi
+        return func(*args, **kwargs)
+
+    return wrapped
 
 
 def draw_features_from_shapefile(gp, name, **kwargs):

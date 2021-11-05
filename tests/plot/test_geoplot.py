@@ -18,6 +18,7 @@ from pyiem.plot import (
     load_bounds,
     mask_outside_geom,
 )
+from pyiem.reference import TWITTER_RESOLUTION_INCH
 from pyiem.util import utc
 
 PAIN = 1.1  # how much do we care, sigh.
@@ -49,7 +50,9 @@ def test_fill_ugcs_year_label():
     mp = MapPlot(
         nocaption=True,
         title="All Years",
+        apctx={"_r": "t"},  # piggy back a change to figure size
     )
+    assert mp.fig.get_size_inches()[0] == TWITTER_RESOLUTION_INCH[0]
     data = {"IAC001": 2021, "IAC003": 2021.5}
     mp.fill_ugcs(data, ilabel=True, lblformat="%.0f")
     return mp.fig
@@ -67,7 +70,9 @@ def test_china():
         east=100,
         west=70,
         title="China",
+        apctx={"_r": "bogus"},  # this should be a noop
     )
+    assert mp.fig.get_size_inches()[0] == TWITTER_RESOLUTION_INCH[0]
     mp.fill_climdiv({"bah": 7})
     return mp.fig
 
@@ -169,7 +174,7 @@ def test_overlay_roadcond():
     """Test being able to plot Iowa Road Conditions."""
     mp = MapPlot(
         nocaption=True,
-        sector="iowa",
+        apctx={"csector": "IA"},
         title="A long and long title that has no purpose but to test things",
     )
     mp.overlay_roadcond(utc(2021, 2, 4, 17))
@@ -193,8 +198,8 @@ def test_overlay_nexrad_hawaii():
     """Test that we can plot nexrad over Hawaii."""
     mp = MapPlot(
         nocaption=True,
-        sector="state",
-        state="HI",
+        sector="iowa",  # this gets overridden
+        apctx={"csector": "HI"},
         title="A long and long title that has no purpose but to test things",
     )
     caxpos = [0.05, 0.05, 0.35, 0.015]
@@ -545,7 +550,9 @@ def test_fillstates():
 @pytest.mark.mpl_image_compare(tolerance=0.25)
 def test_drawcounties():
     """draw counties on the map"""
-    mp = MapPlot(sector="midwest", title="Counties", nocaption=True)
+    mp = MapPlot(
+        apctx={"csector": "midwest"}, title="Counties", nocaption=True
+    )
     mp.drawcounties()
     return mp.fig
 

@@ -54,8 +54,10 @@ from pyiem.plot.util import (
     draw_features_from_shapefile,
     fitbox,
     ramp2df,
+    update_kwargs_apctx,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
+    FIGSIZES,
     LATLON,
     Z_CF,
     Z_FILL,
@@ -117,7 +119,8 @@ class MapPlot:
 
     """
 
-    def __init__(self, sector="iowa", figsize=(10.24, 7.68), **kwargs):
+    @update_kwargs_apctx
+    def __init__(self, sector="iowa", **kwargs):
         """Construct a MapPlot
 
         Args:
@@ -138,9 +141,11 @@ class MapPlot:
             logo (str,optional): logo name to slap on the plot.
             twitter (bool): Set an image resolution that is favorable to
               posting to Twitter. Default: False.
+            apctx (dict,optional): dict of autoplot content
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
+        figsize = kwargs.get("figsize", FIGSIZES["43"])
         if kwargs.get("twitter", False) is True:
             figsize = TWITTER_RESOLUTION_INCH
         if self.fig is None:
