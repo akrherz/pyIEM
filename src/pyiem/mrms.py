@@ -184,18 +184,9 @@ def reader(fn):
     sz = nx * ny * nz
     data = struct.unpack(f"{sz}h", fp.read(sz * 2))
     data = np.reshape(np.array(data), (ny, nx)) / float(var_scale)
-    # ma.masked_equal(data, miss_val)
 
     fp.close()
     return metadata, data
-
-
-def get_fn(prefix, now, tile):
-    """Get the filename for this timestamp and tile"""
-    return (
-        f"/mnt/a4/data/{now:%Y/%m/%d}/mrms/tile{tile}/{prefix}/{prefix}"
-        f".{now:%Y%m%d.%H%M}00.gz"
-    )
 
 
 def write_worldfile(filename):
