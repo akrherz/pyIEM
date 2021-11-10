@@ -10,6 +10,13 @@ PRODUCT = "PrecipRate"
 CENTERS = ["mtarchive", "", "bldr", "cprk"]
 
 
+def test_2001_mrms():
+    """Test that we can fetch older MRMS data in a bit different location."""
+    # NB archive starts at 12z on the 1rst day of 2001
+    fn = mrms.fetch("PrecipRate", utc(2001, 1, 2), tmpdir="/tmp")
+    assert fn is not None
+
+
 def test_nofailback(requests_mock):
     """Test that code bails on old date."""
     valid = utc() - datetime.timedelta(days=20)
@@ -50,8 +57,8 @@ def test_exception(requests_mock):
 def test_existing_file():
     """Test that we return once we already have the file on disk."""
     valid = utc()
-    fn = "%s_00.00_%s00.grib2.gz" % (PRODUCT, valid.strftime("%Y%m%d-%H%M"))
-    with open(f"/tmp/{fn}", "w") as fh:
+    fn = f"{PRODUCT}_00.00_{valid:%Y%m%d-%H%M}00.grib2.gz"
+    with open(f"/tmp/{fn}", "w", encoding="utf8") as fh:
         fh.write("Hello")
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is not None
@@ -97,8 +104,9 @@ def test_write_worldfile():
 
 def test_reader():
     """Can we read the legacy file"""
-    fn = ("%s/../data/product_examples/1hrad.20130920.190000.gz") % (
-        os.path.dirname(__file__),
+    fn = (
+        f"{os.path.dirname(__file__)}/../data/product_examples/"
+        "1hrad.20130920.190000.gz"
     )
     metadata, _ = mrms.reader(fn)
     assert abs(metadata["ul_lat"] - 54.99) < 0.01
