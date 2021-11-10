@@ -31,6 +31,11 @@ def get_url(center, valid, product):
             f"https://mtarchive.geol.iastate.edu/{valid:%Y/%m/%d}"
             f"/mrms/ncep/{product}/{fn}"
         )
+        if 2000 < valid.year < 2012 and product == "PrecipRate":
+            uri = (
+                f"https://mtarchive.geol.iastate.edu/{valid:%Y/%m/%d}"
+                f"/mrms/reanalysis/{product}/{fn}"
+            )
     else:
         uri = f"https://mrms{center}.ncep.noaa.gov/data/2D/{product}/MRMS_{fn}"
     return uri
