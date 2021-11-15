@@ -532,6 +532,10 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
         if maxval is not None and value is not None and value > maxval:
             value = default
         ctx[name] = value if value is not None else default
+    # Ensure defaults are set, if they exist
+    for key in cfg.get("defaults", {}):
+        if key not in ctx:
+            ctx[key] = cfg["defaults"][key]
     return ctx
 
 
