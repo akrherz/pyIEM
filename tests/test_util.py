@@ -186,9 +186,6 @@ def test_ssw():
         util.ssw(b"Hello Daryl!")
         assert fake_out.getvalue() == b"Hello Daryl!"
         fake_out.seek(0)
-        util.ssw(u"Hello Daryl!")
-        assert fake_out.getvalue() == b"Hello Daryl!"
-        fake_out.seek(0)
 
 
 def test_utc():
@@ -198,6 +195,14 @@ def test_utc():
     assert answer == res
     answer = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
     assert answer.year == util.utc().year
+
+
+def test_get_autoplot_context_no_r_set():
+    """Ensure that _r gets set when not provided by the form."""
+    form = {}
+    cfg = {"arguments": [], "defaults": {"_r": "88"}}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["_r"] == "88"
 
 
 def test_get_autoplot_context_internal():
