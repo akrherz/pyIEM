@@ -313,9 +313,22 @@ class TextProductSegment:
         for part in parts:
             pos = part.find("\n\n")
             if pos > 0:
-                bullets.append(" ".join(part[:pos].replace("\n", "").split()))
-            else:
-                bullets.append(" ".join(part.replace("\n", "").split()))
+                part = part[:pos]
+            # look for subheadings :/
+            piece = ""
+            for line in part.split("\n"):
+                if line.strip().startswith("- "):
+                    if piece != "":
+                        bullets.append(piece)
+                    piece = line.split("- ", 1)[1]
+                    continue
+                if piece != "":
+                    piece += f" {line} "
+            if piece != "":
+                bullets.append(piece)
+            bullets.append(" ".join(part.replace("\n", "").split()))
+        # Cleanup
+        bullets = [" ".join(b.split()) for b in bullets]
         return bullets
 
     def process_tags(self):

@@ -206,9 +206,8 @@ def do_sql_hvtec(txn, segment):
             forecast_text = bullet
         if bsu.find("AT ") == 0 and stage_text == "":
             stage_text = bullet
-        if bsu.startswith("IMPACT..."):
-            impact_text = bullet.strip()[9:]
-
+        if bsu.startswith("IMPACT"):
+            impact_text = bullet.split("...", 1)[1].strip()
     txn.execute(
         "INSERT into riverpro(nwsli, stage_text, flood_text, forecast_text, "
         "impact_text, severity) VALUES (%s,%s,%s,%s,%s,%s)",

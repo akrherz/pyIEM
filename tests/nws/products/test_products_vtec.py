@@ -37,6 +37,15 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_211115_bullets(dbcursor):
+    """Test that we can get the bullets for riverpro."""
+    data = get_test_file("FLS/FLSSEW_bullets.txt")
+    prod = vtecparser(data)
+    prod.sql(dbcursor)
+    assert prod.segments[0].bullets
+
+
 def test_issue491_false_emergency_positive():
     """Test that this product is not flagged as an emergency."""
     data = get_test_file("SVSFFC.txt")
