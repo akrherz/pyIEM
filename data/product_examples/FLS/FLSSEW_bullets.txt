@@ -1,0 +1,78 @@
+810 
+WGUS86 KSEW 151919
+FLSSEW
+
+Flood Statement
+National Weather Service Seattle WA
+1119 AM PST Mon Nov 15 2021
+
+...The Flood Warning is extended for the following rivers in 
+Washington...
+
+  Snohomish River At Snohomish affecting Snohomish County.
+
+  Snohomish River Near Monroe affecting Snohomish County.
+
+  Skykomish River Near Gold Bar affecting Snohomish County.
+
+.Heavy rain will come to an end over the Central Washington Cascades 
+this afternoon after a final push this morning that could turn 
+rivers up again. Snow levels will drop significantly this afternoon 
+and evening keeping any addition precipitation later today into 
+Tuesday in the mountains.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Motorists should not attempt to drive around barricades or drive 
+cars through flooded areas.
+
+Turn around, don't drown when encountering flooded roads. Most flood 
+deaths occur in vehicles.
+
+Additional information is available at www.weather.gov.
+
+The next statement will be issued by this evening at 715 PM PST.
+
+&&
+
+
+WAC061-160330-
+/O.EXT.KSEW.FL.W.0076.000000T0000Z-211117T1311Z/
+/SNAW1.2.ER.211114T2120Z.211115T2000Z.211116T2211Z.NO/
+1119 AM PST Mon Nov 15 2021
+
+...FLOOD WARNING NOW IN EFFECT FROM THIS MORNING THROUGH LATE 
+TUESDAY NIGHT...
+
+* WHAT...Moderate flooding is occurring and moderate flooding is 
+  forecast.
+
+* WHERE...Snohomish River At Snohomish.
+
+* WHEN...Until early Wednesday morning.
+
+* IMPACTS...At 27.0 feet, the Snohomish River will flood several 
+  roads...including the Snohomish-Monroe highway...and low areas of 
+  the lower Snohomish valley that are not protected by levees.  A 
+  stage of 27 feet on the Snohomish River corresponds roughly to a 
+  Phase 2 in the Snohomish County flood program.
+
+* ADDITIONAL DETAILS...
+  - At 10:00 AM PST Monday the stage was 27.6 feet.
+  - Recent Activity...The maximum river stage in the 24 hours
+    ending at 10:00 AM PST Monday was 27.6 feet.
+  - Forecast...The river will fluctuate above flood stage with a
+    maximum value of 27.7 feet this afternoon. It will fall below
+    flood stage early tomorrow afternoon.
+  - Flood stage is 25.0 feet.
+  - Flood History...This crest compares to a previous crest of
+    27.7 feet on 01/24/1959.
+  - http://www.weather.gov/safety/flood
+
+&&
+
+LAT...LON 4786 12217 4789 12221 4796 12232 4809 12216
+      4794 12213 4791 12203
+
+
+$$
