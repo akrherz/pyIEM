@@ -697,12 +697,7 @@ class MapPlot:
             ]
             if df.empty:
                 continue
-            failures = 0
-            # Life choices: optimization when there are too many cities
-            allowed_failures = 50 if len(lons) > 500 else 500
             for _idx, row in df.iterrows():
-                if failures > allowed_failures:
-                    break
                 ha = "center"
                 mystr = fmt % (row["val"],)
                 max_mystr_len = max([len(s) for s in mystr.split("\n")])
@@ -750,7 +745,6 @@ class MapPlot:
                 _cnt = np.sum(overlap)
                 # If we have more than 15 pixels of overlap, don't plot this!
                 if _cnt > 15 and labelbuffer > 0:
-                    failures += 1
                     if self.debug:
                         LOG.info(
                             "culling |%s| due to overlap, %s",
