@@ -39,8 +39,8 @@ from scipy.signal import convolve2d
 from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
 import matplotlib.colors as mpcolors
+import matplotlib.cm as mpcm
 from matplotlib.patches import Wedge
-import matplotlib.colorbar as mpcolorbar
 import matplotlib.patheffects as PathEffects
 
 # local
@@ -423,10 +423,9 @@ class MapPlot:
         else:
             blevels = clevs
         stride = slice(None, None, int(kwargs.get("clevstride", 1)))
-        cb2 = mpcolorbar.ColorbarBase(
-            self.cax,
-            cmap=cmap,
-            norm=norm,
+        cb2 = plt.colorbar(
+            mpcm.ScalarMappable(norm=norm, cmap=cmap),
+            cax=self.cax,
             boundaries=blevels,
             extend=extend,
             ticks=clevs[stride],
@@ -1364,10 +1363,9 @@ class MapPlot:
             caxpos or [pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015]
         )
         # pylint: disable=unsubscriptable-object
-        cb = mpcolorbar.ColorbarBase(
-            cax,
-            cmap=cmap,
-            norm=norm,
+        cb = plt.colorbar(
+            mpcm.ScalarMappable(norm=norm, cmap=cmap),
+            cax=cax,
             ticks=ramp.loc[ramp["value"] % 20 == 0]["coloridx"].values,
             extend="neither",
             orientation="horizontal",
