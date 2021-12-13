@@ -21,7 +21,7 @@ from pyiem.plot import (
 from pyiem.reference import TWITTER_RESOLUTION_INCH
 from pyiem.util import utc
 
-PAIN = 1.1  # how much do we care, sigh.
+PAIN = 1.3  # how much do we care, sigh.
 
 
 def test_exercise_usdm():
@@ -547,7 +547,7 @@ def test_fillstates():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.25)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawcounties():
     """draw counties on the map"""
     mp = MapPlot(
@@ -557,7 +557,7 @@ def test_drawcounties():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.25)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawcounties_cornbelt():
     """draw counties on the map"""
     mp = MapPlot(sector="cornbelt", title="Counties", nocaption=True)
