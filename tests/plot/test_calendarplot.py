@@ -4,6 +4,8 @@ import datetime
 import pytest
 from pyiem.plot import calendar_plot
 
+PAIN = 0.02  # how much do we care, sigh.
+
 
 @pytest.mark.mpl_image_compare(tolerance=0.01, savefig_kwargs={"dpi": 60})
 def test_issue101():
@@ -23,7 +25,7 @@ def test_issue101():
     )
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_calendar12():
     """See if we can make a calendar plot!"""
     sts = datetime.date(2015, 5, 4)

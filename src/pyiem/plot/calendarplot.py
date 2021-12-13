@@ -1,4 +1,4 @@
-"""Calendar Plot"""
+"""Calendar Plot."""
 import os
 from collections import OrderedDict
 import datetime
@@ -11,7 +11,15 @@ from pyiem.plot.use_agg import plt
 from pyiem.plot.colormaps import get_cmap
 from pyiem.plot.util import fitbox, fontscale, update_kwargs_apctx
 from pyiem.plot.layouts import figure
-from pyiem.reference import TWITTER_RESOLUTION_INCH
+from pyiem.reference import (
+    TWITTER_RESOLUTION_INCH,
+    Z_FILL,
+    Z_FRAME,
+    Z_OVERLAY,
+    Z_OVERLAY2,
+    Z_OVERLAY_LABEL,
+    Z_OVERLAY2_LABEL,
+)
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 
@@ -86,7 +94,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
         (offx * dx, 0.9 - (row + 1) * dy),
         dx,
         dy,
-        zorder=(2 if val is None else 3),
+        zorder=Z_OVERLAY if val is None else Z_OVERLAY2,
         facecolor=cellcolor,
         edgecolor="tan" if val is None else "k",
     )
@@ -124,13 +132,18 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
         va="center",
         color=color,
         fontsize=kwargs.get("fontsize"),
+        zorder=Z_OVERLAY2_LABEL,
     )
 
 
 def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     """Place data on this axes"""
+    # No ticks
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
+    # Update axes frame zorder to be on-top
+    for _, spine in axes.spines.items():
+        spine.set_zorder(Z_FRAME)
     pos = axes.get_position()
     ndcheight = pos.y1 - pos.y0
     ndcwidth = pos.x1 - pos.x0
@@ -143,11 +156,17 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
         pos.y1,
         pos.y1 + 0.028,
         ha="center",
+        zorder=Z_OVERLAY,
     )
 
     axes.add_patch(
         Rectangle(
-            (0.0, 0.90), 1, 0.1, zorder=2, facecolor="tan", edgecolor="tan"
+            (0.0, 0.90),
+            1,
+            0.1,
+            facecolor="tan",
+            edgecolor="tan",
+            zorder=Z_FILL,
         )
     )
 
@@ -168,6 +187,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
             fontsize=fontscale(ndcwidth / 8.0 * 0.4),
             ha="center",
             va="center",
+            zorder=Z_OVERLAY_LABEL,
         )
     while now < ets:
         # Is this Sunday?
@@ -180,10 +200,11 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
         axes.text(
             offx * dx + 0.01,
             0.9 - row * dy - 0.01,
-            str(now.day),
+            f"{now.day}",
             fontsize=fontscale(ndcheight / 5.0 * 0.25),
             color="tan",
             va="top",
+            zorder=Z_OVERLAY2_LABEL,
         )
         _do_cell(axes, now, data, row, dx, dy, kwargs)
         now += datetime.timedelta(days=1)

@@ -13,8 +13,7 @@ geos
 google-api-python-client
 # templating
 jinja2
-# awaiting matplotlib/matplotlib#21671
-matplotlib-base<3.5
+matplotlib-base
 metpy
 metar>=1.7.0
 mock
