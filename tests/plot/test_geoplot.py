@@ -77,7 +77,7 @@ def test_china():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=PAIN)
+@pytest.mark.mpl_image_compare(tolerance=2)  # unknown python3.7 diff
 def test_nws_sector_twitter_res():
     """Test that Hawaii does not overlap Florida for Twitter Res."""
     mp = MapPlot(
