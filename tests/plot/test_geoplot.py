@@ -355,7 +355,7 @@ def test_fill_ugcs_color():
     data = {"IAC001": 10, "IAC003": 20, "IAC135": 30}
     fc = {"IAC001": "#FF0000", "IAC003": "black"}
     ec = {}
-    mp.fill_ugcs(data, fc=fc, ec=ec, nocbar=True)
+    mp.fill_ugcs(data, fc=fc, ec=ec, draw_colorbar=False)
     return mp.fig
 
 
