@@ -211,19 +211,13 @@ class ERO(TextProduct):
                         color="r",
                     )
                 ax.set_title(
-                    ("Day %s Category %s Threshold %s")
-                    % (day, outlook.category, outlook.threshold)
+                    f"Day {day} Category {outlook.category} "
+                    f"Threshold {outlook.threshold}"
                 )
                 ax.legend(loc=3)
                 fn = (
-                    ("%s/%s_%s_%s_%s.png")
-                    % (
-                        tempfile.gettempdir(),
-                        day,
-                        self.issue.strftime("%Y%m%d%H%M"),
-                        outlook.category,
-                        outlook.threshold,
-                    )
+                    f"{tempfile.gettempdir()}/{day}_{self.issue:%Y%m%d%H%M}_"
+                    f"{outlook.category}_{outlook.threshold}.png"
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
@@ -246,26 +240,14 @@ class ERO(TextProduct):
         else:
             hour2 = int(m[4])
             minute2 = 0
-        sts = "%s:%s %s %s %s" % (
-            hour1,
-            minute1,
-            m[1],
-            m[2],
-            m[3],
-        )
-        sts = datetime.datetime.strptime(sts, "%H:%M %b %d %Y")
-        sts = sts.replace(tzinfo=datetime.timezone.utc)
-        ets = "%s:%s %s %s %s" % (
-            hour2,
-            minute2,
-            m[5],
-            m[6],
-            m[7],
-        )
-        ets = datetime.datetime.strptime(ets, "%H:%M %b %d %Y")
-        ets = ets.replace(tzinfo=datetime.timezone.utc)
-        self.issue = sts
-        self.expire = ets
+        self.issue = datetime.datetime.strptime(
+            f"{hour1}:{minute1} {m[1]} {m[2]} {m[3]}",
+            "%H:%M %b %d %Y",
+        ).replace(tzinfo=datetime.timezone.utc)
+        self.expire = datetime.datetime.strptime(
+            f"{hour2}:{minute2} {m[5]} {m[6]} {m[7]}",
+            "%H:%M %b %d %Y",
+        ).replace(tzinfo=datetime.timezone.utc)
 
     def find_outlooks(self):
         """Find the outlook sections within the text product!"""
@@ -366,10 +348,9 @@ class ERO(TextProduct):
                 "MDT",
                 "HIGH",
             ]:
-                jdict["ttext"] = "%s Risk %s" % (
-                    THRESHOLD2TEXT[cat],
-                    product_descript,
-                )
+                jdict[
+                    "ttext"
+                ] = f"{THRESHOLD2TEXT[cat]} Risk {product_descript}"
                 for wfo in wfos[cat]:
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [
@@ -387,8 +368,8 @@ class ERO(TextProduct):
                         {
                             "channels": [
                                 wfo,
-                                "%s.ERODY%s" % (wfo, self.day),
-                                "%s.ERODY%s.%s" % (wfo, self.day, cat),
+                                f"{wfo}.ERODY{self.day}",
+                                f"{wfo}.ERODY{self.day}.{cat}",
                             ],
                             "product_id": self.get_product_id(),
                             "twitter_media": twmedia % jdict,
