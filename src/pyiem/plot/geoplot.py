@@ -142,6 +142,8 @@ class MapPlot:
             twitter (bool): Set an image resolution that is favorable to
               posting to Twitter. Default: False.
             apctx (dict,optional): dict of autoplot content
+            axes_position (list,optional): list of
+              [left, bottom, width, height] for the main axes.
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
@@ -164,7 +166,8 @@ class MapPlot:
         if self.sector == "iowa":
             self.sector = "state"
             self.state = "IA"
-        sector_setter(self, MAIN_AX_BOUNDS, **kwargs)
+        axes_position = kwargs.pop("axes_position", MAIN_AX_BOUNDS)
+        sector_setter(self, axes_position, **kwargs)
 
         for gp in self.panels:
             # legacy usage of axisbg here
@@ -459,12 +462,13 @@ class MapPlot:
 
         title = kwargs.get("title")
         if title:
+            pos = self.panels[0].ax.get_position()
             self.panels[0].ax.set_position(
                 [
-                    MAIN_AX_BOUNDS[0],
-                    MAIN_AX_BOUNDS[1],
-                    MAIN_AX_BOUNDS[2] - 0.03,
-                    MAIN_AX_BOUNDS[3],
+                    pos.x0,
+                    pos.y0,
+                    pos.width - 0.03,
+                    pos.height,
                 ]
             )
             cb2.ax.text(

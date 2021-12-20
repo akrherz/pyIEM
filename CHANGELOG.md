@@ -9,6 +9,11 @@ All notable changes to this library are documented in this file.
 
 - For `pyiem.plot.geoplot.fill_ugcs` changed `nocbar` kwarg to `draw_colorbar`.
 
+### New Features
+
+- Add `pyiem.plot.geoplot.MapPlot` kwarg of `axes_position` to control where
+the main axes is placed on the figure.
+
 ## **1.9.0** (13 Dec 2021)
 
 ### API Changes
