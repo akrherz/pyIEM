@@ -147,6 +147,133 @@ class Outlook:
         self.wfos = []
 
 
+def jabber_messages(valid, outlook_collections) -> list:
+    """Generate a list of Jabber messages to send.
+
+    Args:
+        valid (datetime): the valid time of the outlook
+        outlook_collections (dict): a list of OutlookCollection objects
+
+    Returns:
+        list: a list of Jabber messages [(plain, html, xtradict), ...]
+    """
+    res = []
+    url = "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
+    product_descript = "Excessive Rainfall Outlook"
+    jdict = {
+        "title": product_descript,
+        "name": "The Weather Prediction Center",
+        "tstamp": valid.strftime("%b %-d, %-H:%Mz"),
+        "url": url,
+        "wfo": "DMX",  # autoplot expects something valid here
+        "cat": "E",
+        "t220": "cwa",
+    }
+    twmedia = (
+        "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
+        "cat:categorical::which:%(day)s%(cat)s::t:%(t220)s::network:WFO::"
+        "wfo:%(wfo)s::"
+        f"csector:conus::valid:{valid.strftime('%Y-%m-%d %H%M')}"
+        ".png"
+    ).replace(" ", "%%20")
+    for day, collect in outlook_collections.items():
+
+        wfos = {
+            "MRGL": [],
+            "SLGT": [],
+            "ENH": [],
+            "MDT": [],
+            "HIGH": [],
+        }
+
+        for outlook in collect.outlooks:
+            _d = wfos.setdefault(outlook.threshold, [])
+            _d.extend(outlook.wfos)
+
+        jdict["day"] = day
+        wfomsgs = {}
+        # We order in least to greatest, so that the highest threshold
+        # overwrites lower ones
+        for cat in [
+            "MRGL",
+            "SLGT",
+            "ENH",
+            "MDT",
+            "HIGH",
+        ]:
+            jdict["ttext"] = f"{THRESHOLD2TEXT[cat]} Risk {product_descript}"
+            for wfo in wfos[cat]:
+                jdict["wfo"] = wfo
+                wfomsgs[wfo] = [
+                    (
+                        "%(name)s issues Day %(day)s %(ttext)s "
+                        "at %(tstamp)s for portions of %(wfo)s %(url)s"
+                    )
+                    % jdict,
+                    (
+                        "<p>%(name)s issues "
+                        '<a href="%(url)s">Day %(day)s %(ttext)s</a> '
+                        "at %(tstamp)s for portions of %(wfo)s's area</p>"
+                    )
+                    % jdict,
+                    {
+                        "channels": [
+                            wfo,
+                            f"{wfo}.ERODY{day}",
+                            f"{wfo}.ERODY{day}.{cat}",
+                        ],
+                        "twitter_media": twmedia % jdict,
+                        "twitter": (
+                            "WPC issues Day %(day)s %(ttext)s "
+                            "at %(tstamp)s for %(wfo)s %(url)s"
+                        )
+                        % jdict,
+                    },
+                ]
+        keys = list(wfomsgs.keys())
+        keys.sort()
+        for wfo in keys:
+            res.append(wfomsgs[wfo])
+
+    # Generic for WPC
+    jdict["t220"] = "conus"
+    jdict["title2"] = "%(name)s issues Day %(day)s %(title)s" % jdict
+    res.append(
+        [
+            "%(title2)s at %(tstamp)s %(url)s" % jdict,
+            (
+                '<p>%(name)s issues <a href="%(url)s">Day %(day)s '
+                "%(title)s</a> at %(tstamp)s</p>"
+            )
+            % jdict,
+            {
+                "channels": ["WPC", "ERODY%(day)s" % jdict],
+                "twitter_media": twmedia % jdict,
+                "twitter": "%(title2)s at %(tstamp)s %(url)s" % jdict,
+            },
+        ],
+    )
+    return res
+
+
+def compute_wfos(outlook_collections):
+    """Compute the WFOs affected for each outlook in collection."""
+    # self.draw_outlooks()
+    geodf = load_geodf("cwa")
+    for day, collect in outlook_collections.items():
+        for outlook in collect.outlooks:
+            df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
+            outlook.wfos = df2.index.to_list()
+            LOG.info(
+                "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
+                day,
+                outlook.category,
+                outlook.threshold,
+                len(outlook.wfos),
+                ",".join(outlook.wfos),
+            )
+
+
 class ERO(TextProduct):
     """A class representing the polygons and metadata in WPC ERO Product"""
 
@@ -171,7 +298,7 @@ class ERO(TextProduct):
         self.day, self.outlook_collections = init_days(self)
         self.find_outlooks()
         quality_control(self)
-        self.compute_wfos()
+        compute_wfos(self.outlook_collections)
         self.cycle = _compute_cycle(self)
 
     def get_outlookcollection(self, day):
@@ -276,23 +403,6 @@ class ERO(TextProduct):
             mp = MultiPolygon(polygons)
             collect.outlooks.append(Outlook("CATEGORICAL", threshold, mp))
 
-    def compute_wfos(self, _txn=None):
-        """Figure out which WFOs are impacted by this polygon"""
-        # self.draw_outlooks()
-        geodf = load_geodf("cwa")
-        for day, collect in self.outlook_collections.items():
-            for outlook in collect.outlooks:
-                df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
-                outlook.wfos = df2.index.to_list()
-                LOG.info(
-                    "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
-                    day,
-                    outlook.category,
-                    outlook.threshold,
-                    len(outlook.wfos),
-                    ",".join(outlook.wfos),
-                )
-
     def sql(self, txn):
         """Do database work
 
@@ -304,108 +414,7 @@ class ERO(TextProduct):
 
     def get_jabbers(self, uri, _uri2=None):
         """Wordsmith the Jabber/Twitter Messaging"""
-        res = []
-        url = "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
-        product_descript = "Excessive Rainfall Outlook"
-        jdict = {
-            "title": product_descript,
-            "name": "The Weather Prediction Center",
-            "tstamp": self.valid.strftime("%b %-d, %-H:%Mz"),
-            "url": url,
-            "wfo": "DMX",  # autoplot expects something valid here
-            "cat": self.outlook_type,
-            "t220": "cwa",
-        }
-        twmedia = (
-            "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-            "cat:categorical::which:%(day)s%(cat)s::t:%(t220)s::network:WFO::"
-            "wfo:%(wfo)s::"
-            f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
-            ".png"
-        ).replace(" ", "%%20")
-        for day, collect in self.outlook_collections.items():
-
-            wfos = {
-                "MRGL": [],
-                "SLGT": [],
-                "ENH": [],
-                "MDT": [],
-                "HIGH": [],
-            }
-
-            for outlook in collect.outlooks:
-                _d = wfos.setdefault(outlook.threshold, [])
-                _d.extend(outlook.wfos)
-
-            jdict["day"] = day
-            wfomsgs = {}
-            # We order in least to greatest, so that the highest threshold
-            # overwrites lower ones
-            for cat in [
-                "MRGL",
-                "SLGT",
-                "ENH",
-                "MDT",
-                "HIGH",
-            ]:
-                jdict[
-                    "ttext"
-                ] = f"{THRESHOLD2TEXT[cat]} Risk {product_descript}"
-                for wfo in wfos[cat]:
-                    jdict["wfo"] = wfo
-                    wfomsgs[wfo] = [
-                        (
-                            "%(name)s issues Day %(day)s %(ttext)s "
-                            "at %(tstamp)s for portions of %(wfo)s %(url)s"
-                        )
-                        % jdict,
-                        (
-                            "<p>%(name)s issues "
-                            '<a href="%(url)s">Day %(day)s %(ttext)s</a> '
-                            "at %(tstamp)s for portions of %(wfo)s's area</p>"
-                        )
-                        % jdict,
-                        {
-                            "channels": [
-                                wfo,
-                                f"{wfo}.ERODY{self.day}",
-                                f"{wfo}.ERODY{self.day}.{cat}",
-                            ],
-                            "product_id": self.get_product_id(),
-                            "twitter_media": twmedia % jdict,
-                            "twitter": (
-                                "WPC issues Day %(day)s %(ttext)s "
-                                "at %(tstamp)s for %(wfo)s %(url)s"
-                            )
-                            % jdict,
-                        },
-                    ]
-            keys = list(wfomsgs.keys())
-            keys.sort()
-            res = []
-            for wfo in keys:
-                res.append(wfomsgs[wfo])
-
-        # Generic for WPC
-        jdict["t220"] = "conus"
-        jdict["title2"] = "%(name)s issues Day %(day)s %(title)s" % jdict
-        res.append(
-            [
-                "%(title2)s at %(tstamp)s %(url)s" % jdict,
-                (
-                    '<p>%(name)s issues <a href="%(url)s">Day %(day)s '
-                    "%(title)s</a> at %(tstamp)s</p>"
-                )
-                % jdict,
-                {
-                    "channels": ["WPC", f"ERODY{self.day}", self.afos],
-                    "product_id": self.get_product_id(),
-                    "twitter_media": twmedia % jdict,
-                    "twitter": "%(title2)s at %(tstamp)s %(url)s" % jdict,
-                },
-            ],
-        )
-        return res
+        return jabber_messages(self.valid, self.outlook_collections)
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
