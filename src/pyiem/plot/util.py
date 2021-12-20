@@ -546,7 +546,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
         )
     kwargs.pop("cmap", None)
     kwargs.pop("bins", None)
-    if not kwargs.get("nocbar", False):
+    if kwargs.pop("draw_colorbar", True):
         mymap.draw_colorbar(bins, cmap, norm, **kwargs)
 
 

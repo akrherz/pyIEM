@@ -142,6 +142,8 @@ class MapPlot:
             twitter (bool): Set an image resolution that is favorable to
               posting to Twitter. Default: False.
             apctx (dict,optional): dict of autoplot content
+            axes_position (list,optional): list of
+              [left, bottom, width, height] for the main axes.
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
@@ -164,7 +166,8 @@ class MapPlot:
         if self.sector == "iowa":
             self.sector = "state"
             self.state = "IA"
-        sector_setter(self, MAIN_AX_BOUNDS, **kwargs)
+        axes_position = kwargs.pop("axes_position", MAIN_AX_BOUNDS)
+        sector_setter(self, axes_position, **kwargs)
 
         for gp in self.panels:
             # legacy usage of axisbg here
@@ -459,12 +462,13 @@ class MapPlot:
 
         title = kwargs.get("title")
         if title:
+            pos = self.panels[0].ax.get_position()
             self.panels[0].ax.set_position(
                 [
-                    MAIN_AX_BOUNDS[0],
-                    MAIN_AX_BOUNDS[1],
-                    MAIN_AX_BOUNDS[2] - 0.03,
-                    MAIN_AX_BOUNDS[3],
+                    pos.x0,
+                    pos.y0,
+                    pos.width - 0.03,
+                    pos.height,
                 ]
             )
             cb2.ax.text(
@@ -856,6 +860,7 @@ class MapPlot:
           vals (list): Data values for the points to use for colormapping
           clevs (list): Levels to use for ramp
           **kwargs: additional options
+            draw_colorbar (bool, optional): Draw a colorbar, default True.
         """
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
@@ -872,10 +877,15 @@ class MapPlot:
             zorder=Z_OVERLAY,
         )
         kwargs.pop("cmap", None)
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        if kwargs.pop("draw_colorbar", True):
+            self.draw_colorbar(clevs, cmap, norm, **kwargs)
 
     def hexbin(self, lons, lats, vals, clevs, **kwargs):
-        """hexbin wrapper"""
+        """hexbin wrapper.
+
+        Args:
+            draw_colorbar (bool,optional): Draw colorbar default True.
+        """
         cmap = kwargs.pop("cmap", None)
         cmap = stretch_cmap(cmap, clevs, extend=kwargs.get("extend"))
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -888,7 +898,8 @@ class MapPlot:
             cmap=cmap,
             zorder=Z_FILL,
         )
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        if kwargs.pop("draw_colorbar", True):
+            self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return _hex
 
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
@@ -898,6 +909,9 @@ class MapPlot:
         tack on an extra row and column to make matplotlib happy. If you do
         not want this, then pass your own lons + lats that is 1 column and 1
         row greater than vals.
+
+        Args:
+            draw_colorbar (bool,optional): Draw colorbar default True.
         """
         cmap = stretch_cmap(
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
@@ -927,7 +941,8 @@ class MapPlot:
         if kwargs.get("clip_on", True):
             self.draw_mask()
         kwargs.pop("cmap", None)
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        if kwargs.pop("draw_colorbar", True):
+            self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return res
 
     def draw_mask(self, sector=None):
@@ -981,6 +996,7 @@ class MapPlot:
           ilabel (boolean,optional): Should we label contours
           iline (boolean,optional): should we draw contour lines
           lblformat (str,optional): Format string for labeling contours, %.0f.
+            draw_colorbar (bool,optional): Draw colorbar default True.
 
         Returns:
           vals (np.array): The values used for plotting, maybe after gridding
@@ -1046,7 +1062,8 @@ class MapPlot:
         if kwargs.get("clip_on", True):
             self.draw_mask()
         kwargs.pop("cmap", None)
-        self.draw_colorbar(clevs, cmap, norm, **kwargs)
+        if kwargs.pop("draw_colorbar", True):
+            self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return vals
 
     def fill_climdiv(self, data, **kwargs):
@@ -1070,8 +1087,8 @@ class MapPlot:
           color(dict, optional): Hard code what each UGC should display as
             for color.
           is_firewx(bool, optional): Are we plotting fire weather zones?
-          nocbar (bool, optional): Should a color bar be generated, default is
-            `True`.
+          draw_colorbar (bool, optional): Should a color bar be generated,
+            default is `True`.
           plotmissing(bool, optional): Should missing UGC data be plotted?
           labels(dict, optional): UGC indexed dictionary to use for labeling.
           lblformat(str, optional): Format string for labels, default %s.

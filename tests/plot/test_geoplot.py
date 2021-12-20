@@ -45,6 +45,17 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_axes_position():
+    """Test control of the main axes position."""
+    mp = MapPlot(
+        nocaption=True,
+        title="Small Axes",
+        axes_position=[0.3, 0.3, 0.3, 0.3],
+    )
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_ugcs_year_label():
     """Test that we can control the format of the label shown."""
     mp = MapPlot(
@@ -355,7 +366,7 @@ def test_fill_ugcs_color():
     data = {"IAC001": 10, "IAC003": 20, "IAC135": 30}
     fc = {"IAC001": "#FF0000", "IAC003": "black"}
     ec = {}
-    mp.fill_ugcs(data, fc=fc, ec=ec, nocbar=True)
+    mp.fill_ugcs(data, fc=fc, ec=ec, draw_colorbar=False)
     return mp.fig
 
 
