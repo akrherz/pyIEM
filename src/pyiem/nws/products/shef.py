@@ -611,13 +611,15 @@ def parse_A(prod):
         if line.startswith(".AR ") or line.startswith(".A "):
             messages.append(strip_comments(line))
             continue
+        if not messages:
+            continue
         if line.startswith(".A"):  # continuation
             # Accounts for a line with no data, just comments
             meat = strip_comments(line).split(maxsplit=1)
             if len(meat) == 2:
                 messages[-1] += f"/{meat[1]}"
         # Look for comments coming after the first message
-        if messages and line.startswith(":"):
+        if line.startswith(":"):
             narrative += line[1:].strip() + " "
 
     process_messages(process_message_a, prod, messages)

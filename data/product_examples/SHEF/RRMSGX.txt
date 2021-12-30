@@ -1,0 +1,396 @@
+492
+SRUS46 KSGX 302015
+RRMSGX
+
+PRECIPITATION SUMMARY....PRELIMINARY
+NATIONAL WEATHER SERVICE SAN DIEGO
+1145 AM PST THURSDAY DEC 30 2021
+
+   24 HOUR PRECIPITATION TOTALS AS OF 1145 AM THURSDAY
+
+.TOP RAINFALL AMOUNTS FROM ALL ZONES...
+
+        STATION                 PRECIP(IN)   ELEVATION(FT)
+
+     1. LYTLE CREEK RAWS          4.99         2790
+     2. MIDDLE FK LYTLE CREE      4.50         3740
+     3. CRESTLINE                 3.25         5100
+     4. DEER CREEK DAM            2.83         2917
+     5. PANORAMA POINT            2.60         3887
+     6. MT BALDY                  2.36         4300
+     7. MORMON ROCK RAWS          2.35         3300
+     8. GLEN HELEN REG PARK       2.28         2000
+     9. SAN ANTONIO HEIGHTS       2.20         2335
+    10. MT BALDY VILLAGE          2.18         4230
+
+-------------------------------------------------------------
+
+
+.SNOWFALL REPORTS...
+       
+LOCATION                SNOW(IN)     ELEV (FT)   DATE/TIME
+
+END OF MT. BALDY         14           6300      12/30 700 AM
+MOUNTAIN HIGH            12-18        8200      12/30 700 AM
+SNOW VALLEY              10-12        7500      12/30 700 AM
+WRIGHTWOOD               10           5900      12/30 700 AM
+GREEN VLY LAKE           7            6873      12/30 700 AM
+ARROWBEAR LAKE           6            6190      12/30 700 AM
+RUNNING SPRINGS          6            6225      12/29 800 PM
+LAKE ARROWHEAD           6            5174      12/30 1215 AM
+CRESTLINE YARD           3            4850      12/30 700 AM
+BIG BEAR YARD            1            6815      12/30 700 AM
+ANGELUS OAKS             1            5780      12/30 700 AM
+BARTON FLATS             1            6867      12/30 700 AM
+SNOW SUMMIT              1-2          7000      12/30 700 AM     
+
+-------------------------------------------------------------
+
+.SAN DIEGO COUNTY COASTAL AREAS...        
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+SOFC1   SAN ONOFRE                0.38          162
+L13     POINT LOMA                0.26          364
+FBZC1   CPEN FALLBROOK RAWS       0.25          876
+SDLJS   LA JOLLA                  0.23          275
+ENCC1   ENCINITAS                 0.19          242
+NZY     NORTH ISLAND NAS          0.19           23
+NAC1    NATIONAL CITY             0.18           82
+SDOCH   DEL MAR                   0.17          295
+SAN     SAN DIEGO INTL AIRPORT    0.16           42
+OCNC1   OCEANSIDE                 0.14           30
+ECMC1   EL CAMINO DEL NORTE       0.14           50
+PLMC1   CARLSBAD                  0.13          305
+KEAC1   KEARNY MESA               0.13          455
+FSNC1   FASHION VALLEY            0.13           20
+CRQ     CARLSBAD AIRPORT          0.11          357
+CVA1    CHULA VISTA               0.10           68
+MYF     MONTGOMERY FIELD          0.10          423
+SDSWD   SAN DIEGO SEA WORLD       0.08           15
+SDSDU   SD UNIVERSITY HEIGHTS     0.08          345
+NKX     MIRAMAR                   0.08          477
+NMLC1   SAN MARCOS LANDFILL       0.07          766
+LSFC1   LAS FLORES RAWS           0.07          100
+SDM     BROWN FIELD               0.05          524
+TJEC1   TIJUANA ESTUARY           0.04           20
+UGGC1   SMUGGLERS GULCH           0.04           74
+
+.SAN DIEGO COUNTY VALLEYS...        
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+CTGC1   CAMP TRGT RANGE RAWS      0.46          917
+RAIC1   RAINBOW CAMP              0.33         1553
+ESOC1   ESCONDIDO                 0.26          640
+FLBC1   FALLBROOK                 0.25          675
+DRGC1   DEER SPRINGS              0.17         1000
+RNBC1   RANCHO BERNARDO           0.15          690
+VALC1   VALLEY CENTER             0.14         1295
+OFLC1   LOWER OAT FLATS           0.13         2239
+MMRC1   MIRAMAR LAKE              0.13          720
+SKLC1   SKYLINE RANCH             0.13          562
+WHLC1   LAKE WOHLFORD             0.13         1490
+RMAC1   MT. WOODSON               0.13         1720
+SDSGX   RANCHO BERNARDO           0.11          690
+PWYC1   POWAY                     0.10          440
+VLCC1   VALLEY CENTER RAWS        0.10         1370
+MUYC1   LAKE MURRAY               0.08          530
+BOSC1   BONSALL CRS               0.07          185
+OUSC1   COUSER CANYON             0.06          285
+OTYC1   OTAY MOUNTAIN RAWS        0.06         3283
+SDEFF   ELFIN FOREST              0.05          625
+SDLMG   LEMON GROVE               0.05          427
+RMNC1   RAMONA                    0.05         1420
+LMSC1   LA MESA                   0.04          530
+MIGC1   SAN MIGUEL RAWS           0.04          425
+SDSNN   SANTEE NORTH              0.03          505
+RINC1   RINCON SPRINGS            0.03          970
+RNM     RAMONA AIRPORT            0.03         1400
+DULC1   DULZURA SUMMIT            0.03         1512
+GOSC1   GOOSE VALLEY RAWS         0.03         1530
+BNAC1   BARONA                    0.02         1280
+OLEC1   COLE GRADE RD             0.02          750
+ANEC1   ALPINE RAWS               0.02         2041
+SDALP   ALPINE                    0.01         1700
+SDELJ   EL CAJON                  0.01          493
+FLYC1   FLINN SPRINGS             0.01          880
+LCKC1   LOS COCHES CREEK          0.01          560
+
+.SAN DIEGO COUNTY MOUNTAINS...  
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+PRMC1   PALOMAR OBSERVATORY       1.42         5560
+PMMC1   PALOMAR CRS               1.36         5387
+PAMC1   PALOMAR MOUNTAIN RAWS     0.92         5530
+IRCC1   BIRCH HILL                0.89         5645
+VCNC1   VOLCAN MOUNTAIN           0.68         5410
+MEGC1   MESA GRANDE               0.37         3204
+LGMC1   MT LAGUNA                 0.36         6000
+SDCYC   LAKE CUYAMACA MESONET     0.25         4635
+HAWC1   HENSHAW DAM               0.25         2750
+MLGC1   MOUNT LAGUNA RAWS         0.23         5760
+ETKC1   LA JOLLA ERN TANKS        0.16         3000
+SYSC1   SANTA YSABEL              0.14         2990
+CMFC1   CAMPO 1N                  0.13         2610
+TRRC1   TIERRA DEL SOL            0.13         4000
+JLNC1   JULIAN                    0.12         4230
+PHIC1   PINE HILLS FS             0.10         3645
+JULC1   JULIAN RAWS               0.09         4240
+PIHC1   PINE HILLS RAWS           0.09         3600
+CMNC1   CAMERON RAWS              0.08         3443
+WSGC1   WARNER SPRINGS            0.07         3040
+RCHC1   RANCHITA RAWS             0.06         4180
+CYDC1   LAKE CUYAMACA             0.05         4560
+DSCC1   DESCANSO RS               0.05         3650
+DENC1   DESCANSO RAWS             0.04         3480
+OGVC1   OAK GROVE RAWS            0.04         2770
+SDPLC   PUERTA LA CRUZ            0.03         2970
+SDTSR   DESCANSO                  0.03         3329
+RTAC1   RANCHITA                  0.03         4008
+SDPSW   PALOMAR MTN. PALA         0.02         3080
+ECDC1   ECHO DELL                 0.01         3060
+PNVC1   PINE VALLEY               0.01         3730
+
+.SAN DIEGO COUNTY DESERTS...    
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+BGOC1   BORREGO SPRINGS           0.02          500
+
+.ORANGE COUNTY COASTAL AREAS...        
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+OCUC1   ORANGE CO RESERVOIR       1.42          700
+BIRC1   BREA 2W                   1.26          340
+BRIC1   BREA OLINDA               1.14          750
+CBGC1   CARBON CYN GILMAN         1.10         1624
+CBDC1   CARBON CANYON DAM         0.96          403
+FLDC1   FULLERTON DAM             0.95          261
+FUL     FULLERTON AIRPORT         0.91           96
+SDCSF   FULLERTON CSU             0.80          240
+CRBC1   GILBERT RETARDING BSN     0.79          100
+CTDC1   COTO DE CAZA              0.79          730
+GDNC1   GARDEN GROVE              0.74           80
+GDGC1   E GARDEN GVE/WNTRSBRG     0.74          120
+FLCC1   FULLERTON CREEK           0.67           95
+YBRC1   YORBA RESERVOIR           0.67          300
+HUNC1   HUNTINGTON BEACH          0.67           20
+ABBC1   ANAHEIM BARBER CITY       0.63            5
+YBAC1   YORBA PARK                0.63          305
+SDYBL   YORBA LINDA               0.61          370
+WMRC1   WESTMINSTER CHANNEL       0.61           40
+ALAC1   ALAMEDA STORM CHANNEL     0.59          339
+SDLGH   LAGUNA HILLS              0.58          400
+MLBC1   MILLER BASIN              0.55          220
+OCVC1   OCEANVIEW                 0.55           43
+MLTC1   MOULTON PEAK REPEATER     0.55          888
+SDSTA   SANTA ANA FIRE            0.53          112
+CAPC1   BELL CANYON               0.51          700
+SGCC1   SANTIAGO CREEK            0.47          120
+UOCC1   UPPER OSO CREEK           0.44          420
+CYNC1   LAGUNA AUDUBON            0.43          314
+GUNC1   LAGUNA CYN REPEATER       0.40          530
+VLLC1   VILLA PARK DAM            0.40          560
+ELAC1   EL MODENA-IRVINE          0.40           70
+ANMC1   ANAHEIM HILLS             0.39         1231
+SEGC1   SEGUNDA DESHECHA          0.37           85
+SDFRH   LAKE FOREST               0.36          970
+UACC1   UPPER ALISO CREEK         0.36          560
+SJNC1   SAN JUAN CAPISTRANO       0.36           75
+CDMC1   CORONA DEL MAR            0.35          300
+CTMC1   COSTA MESA                0.35           47
+LWOC1   LOWER OSO CREEK           0.35          220
+PTSC1   PETERS CANYON WASH        0.35           40
+SVAC1   LOWER SILVERADO CYN       0.35         1100
+SNA     JOHN WAYNE AIRPORT        0.33           50
+VLPC1   VILLA PARK RESERVOIR      0.33          490
+LCIC1   LANE CHANNEL              0.32           34
+SDKC1   SAN DIEGO CK @ CULVER     0.31           70
+SAIC1   SANTA ANA DELHI CHNL      0.31           24
+LUGC1   LAGUNA BCH @ WOODLAND     0.31           47
+SANC1   SAN DIEGO CK @ CAMPUS     0.28           20
+SDLBE   LAGUNA BEACH              0.25            5
+BEEC1   BEE CANYON                0.15          755
+
+.SANTA ANA MOUNTAINS...   
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+HTFC1   HORSETHIEF/RICE CYN       1.69         4054
+SDOC1   UPPER SILVERADO CYN       1.38         2880
+INZC1   INDIAN CANYON             1.18         4256
+LDYC1   LEACH/DICKEY CANYON       1.10         2705
+HYJC1   HOLY JIM CANYON           1.06         1793
+UHCC1   UPPER HARDING CYN         1.02         4254
+MVIC1   MCVICKER CANYON           0.82         4250
+ELOC1   EL CARISO                 0.79         2600
+CCVC1   COLDWATER CANYON          0.79         3871
+SYLC1   SYLVAN MEADOWS            0.69         1892
+SNPC1   SANTIAGO PEAK             0.67         5660
+ECSC1   EL CARISO RAWS            0.64         2660
+SDSIE   SIERRA PEAK               0.51         3040
+SRUC1   SANTA ROSA PLATEAU        0.46         1980
+MSTC1   SANTIAGO CREEK            0.41         1210
+FRCC1   FREMONT CANYON RAWS       0.41         1781
+IVMC1   SILVERADO MOTORWAY        0.39         3969
+MJAC1   MODJESKA CANYON           0.24         1260
+
+.SAN BERNARDINO COUNTY VALLEYS-THE INLAND EMPIRE... 
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+GLHC1   GLEN HELEN REG PARK       2.28         2000
+TNOC1   SAN ANTONIO HEIGHTS       2.20         2335
+LRAC1   LARSON RANCH              2.17         2121
+CUOC1   CUCAMONGA CANYON          2.09         1766
+DVEC1   DEVORE FIRE STATION       2.09         2080
+LTYC1   LYTLE CREEK CANYON        1.97         3060
+DACC1   DAY CANYON                1.65         1880
+HBAC1   HEMLOCK BURN              1.57         2280
+SSSC1   SAN SEVAINE SPRDG GRD     1.46         1938
+DCDC1   DEMENS CK DEBRIS BSN      1.45         1900
+LTOC1   LITTLE CHINO CK           1.42          646
+CSBC1   CAL ST SAN BERNARDINO     1.41         1556
+CUGC1   CUCAMONGA BASIN           1.18         1551
+ONFC1   ONTARIO FS #4             0.95         1081
+RLOC1   RIALTO AIRPORT            0.90         1418
+ELYC1   ELY BASIN                 0.71          832
+ONT     ONTARIO AIRPORT           0.66          922
+DLYC1   DALEY SPUR                0.63         2680
+RIAC1   RIALTO CHANNEL            0.35         1018
+GSPC1   GILBERT ST NR SBD         0.35         1120
+SBO1    SAN BERNARDINO            0.25         1030
+SDMC1   SMALL CANYON DAM          0.24         1810
+SDCHL   CORONA LUISENO            0.22         1395
+SBYC1   SAN BERNARDINO CO YRD     0.16         1033
+RAFC1   CRAFTON RESERVOIR         0.15         2000
+STTC1   SAN TIMOTEO LANDFILL      0.12         1766
+WSOC1   WILSON CREEK              0.12         2235
+YCPC1   YUCAIPA REGIONAL          0.12         2620
+RECC1   RECHE CANYON              0.08         1021
+ERGC1   ELDER GULCH               0.08         2933
+ELDC1   ELDER CREEK               0.04         1649
+HPLC1   HIGHLAND PLUNGE CREEK     0.04         1911
+
+.RIVERSIDE COUNTY VALLEYS-THE INLAND EMPIRE... 
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+NELC1   NORTH ELSINORE            0.40         1578
+PDMC1   PRADO DAM                 0.39          460
+TFGC1   TEMESCAL FS GUARD STN     0.35         1115
+SDMEA   MURRIETA                  0.31         1250
+MURC1   MURRIETA CK AT TENAJA     0.28         1100
+BUMC1   BEAUMONT                  0.23         2624
+BNTC1   BEAUMONT RAWS             0.23         2680
+NNCC1   NORCO                     0.16          650
+RRCC1   RAILROAD CANYON DAM       0.12         1420
+TEMC1   TEMECULA                  0.12         1180
+RIV     RIVERSIDE - MARCH ARB     0.10         1535
+MHEC1   LAKE MATTHEWS RAWS        0.10         1522
+PRVC1   PERRIS CDF                0.08          924
+FVAC1   FRENCH VALLEY AIRPORT     0.08          909
+PEOC1   POTRERO CANYON            0.08         2220
+MREC1   MORENO-CLARK              0.08         1810
+PDGC1   PIGEON PASS DAM           0.08         1700
+SJTC1   SAN JACINTO NORTH         0.08         1511
+CLHC1   CLARK RAWS                0.08         1718
+RVRC1   RIVERSIDE SOUTH           0.04          875
+RAL     RIVERSIDE AIRPORT         0.04          847
+CNSC1   CRANSTON RAWS             0.04         1950
+BAZC1   CABAZON RAWS              0.04         2155
+SDHET   HEMET VALLE VISTA         0.03         2050
+SDFRV   FRENCH VALLEY             0.03         1425
+LKMC1   LAKE MATTHEWS             0.03         1450
+SKNC1   SKINNER LAKE              0.03         1700
+
+.RIVERSIDE COUNTY MOUNTAINS...  
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+VTGC1   VISTA GRANDE              0.87         4939
+ALNC1   ALLANDALE                 0.28         5800
+KNWC1   KEENWILD RAWS             0.27         4920
+SDIDY   IDYLLWILD                 0.24         5370
+BNBC1   BANNING BENCH             0.19         3619
+AGLC1   ANGELES HILL              0.16         3920
+VGRC1   VISTA GRANDE RAWS         0.16         4700
+SDPCD   PINE COVE DUTCH FLAT      0.15         5763
+POPC1   POPPET FLAT RAWS          0.15         3830
+BEUC1   BEAUMONT 4NNE             0.12         3040
+LYMC1   TICK RIDGE                0.12         4236
+MSJC1   MOUNT SAN JACINTO         0.08*        8616
+SDPCW   PINE COVE WEST            0.07*        6250
+HMMC1   SAGE RAWS                 0.07         2560
+THNC1   THOMAS MOUNTAIN           0.03*        6815
+SDPCR   PINE COVE ROCKY POINT     0.02*        6550
+
+.COACHELLA VALLEY...  
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+MSKC1   MORONGO VALLEY 4SSW       0.08         2400
+WWTC1   WHITEWATER TROUT FARM     0.04         2200
+
+.SAN BERNARDINO COUNTY MOUNTAINS...  
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+LTLC1   LYTLE CREEK RAWS          4.99         2790
+MFLC1   MIDDLE FK LYTLE CREEK     4.50         3740
+SDCRT   CRESTLINE                 3.25         5100
+DECC1   DEER CREEK DAM            2.83         2917
+PPOC1   PANORAMA POINT            2.60         3887
+MTBC1   MT BALDY                  2.36         4300
+MNCC1   MORMON ROCK RAWS          2.35         3300
+SDBDY   MT BALDY VILLAGE          2.18         4230
+SWYC1   STRAWBERRY CREEK          1.57         2986
+CGLC1   CEDAR GLEN                1.26         5317
+OAGC1   OAK GLEN WATERSHED        1.22         4923
+CKCC1   CITY CREEK RANGER STA     0.99         2647
+CRQC1   CREST PARK                0.94*        5624
+MZTC1   MANZANITA FLATS           0.87         3920
+SDSWP   SNOW PEAK                 0.71*        7865
+EEPC1   DEEP CREEK                0.67         4839
+CRR1    PAIVIKA RIDGE             0.56         5298
+OFRC1   OAK GLEN FIRE             0.32         4664
+NYNC1   CABLE CANYON              0.27*        5516
+PHEC1   PHELAN LANDFILL           0.26         4099
+WRWC1   WRIGHTWOOD FS             0.23*        6038
+OKKC1   OAK CREEK CANYON          0.20         3676
+BPFC1   BIG PINE FLAT RAWS        0.20*        6908
+CVEC1   CONVERSE RAWS             0.16         5200
+WWCC1   WILDWOOD CANYON           0.15         2946
+SDANW   LAKE ARROWHEAD NW         0.11         5450
+FWSC1   FAWNSKIN RAWS             0.10*        6903
+UDCC1   UPPER DAY CANYON          0.08*        5768
+SSVC1   SAN SEVAINE               0.04*        5651
+BBLC1   BIG BEAR LAKE             0.04*        6768
+WRT1    WRIGHTWOOD                0.01*        5950
+
+.APPLE AND LUCERNE VALLEYS...  
+
+ID      STATION                PRECIP(IN)    ELEVATION(FT)
+
+MVDC1   MOJAVE FORKS DAM          0.45         2449
+ANWC1   ANTELOPE CREEK WASH       0.25         3103
+HES1    HESPERIA                  0.20         3055
+SDVSW   VICTORVILLE SOUTHWEST     0.19         3170
+OGDC1   ORO GRANDE                0.09         2798
+ADTC1   ADELANTO                  0.08         2896
+APLC1   APPLE VALLEY              0.04         2762
+VLFC1   VICTORVILLE LANDFILL      0.03         2959
+GNTC1   GRANITE MOUNTAIN RAWS     0.01         4720
+
+&&
+
+NOTICE...THIS REPORT CONTAINS PROVISIONAL DATA FROM AUTOMATED
+GAUGES. THE ACCURACY OF THIS DATA HAS NOT BE VERIFIED.
+
+*STATIONS ABOVE THE FREEZING LEVEL MAY NOT SHOW ACCURATE
+ACCUMULATING PRECIPITATION.
+
+$$

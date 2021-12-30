@@ -21,6 +21,12 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
+def test_211230_rrmsgx():
+    """Test that no exception happens with a non SHEF containing RRM."""
+    prod = parser(get_test_file("SHEF/RRMSGX.txt"))
+    assert not prod.data
+
+
 def test_211025_rr3mkx():
     """Test that we do not take some of the bad data here."""
     utcnow = utc(2021, 10, 25)
