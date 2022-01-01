@@ -458,6 +458,8 @@ class VTECProduct(TextProduct):
                         % (vtec.phenomena, vtec.significance, str(ugc))
                     )
                     channels.append(str(ugc))
+                # Careful, db_year is a default
+                linkyear = vtec.year if vtec.year is not None else self.db_year
                 xtra = {
                     "product_id": self.get_product_id(),
                     "channels": ",".join(channels),
@@ -468,7 +470,7 @@ class VTECProduct(TextProduct):
                     "twitter_media": (
                         "https://mesonet.agron.iastate.edu/plotting/auto/plot/"
                         f"208/network:WFO::wfo:{wfo4}::"
-                        f"year:{self.db_year}::phenomenav:{vtec.phenomena}::"
+                        f"year:{linkyear}::phenomenav:{vtec.phenomena}::"
                         f"significancev:{vtec.significance}::"
                         f"etn:{vtec.etn}::valid:"
                     ),
@@ -505,7 +507,7 @@ class VTECProduct(TextProduct):
                     "svr_special": segment.special_tags_to_text(),
                     "svs_special": "",
                     "svs_special_html": "",
-                    "year": self.db_year,
+                    "year": linkyear,
                     "phenomena": vtec.phenomena,
                     "eventid": vtec.etn,
                     "significance": vtec.significance,
