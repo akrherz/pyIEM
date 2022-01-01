@@ -18,7 +18,8 @@ def which_year(txn, prod, segment, vtec):
         # Lets piggyback a check to see if this ETN has been reused?
         # Can this realiably be done?
         txn.execute(
-            f"SELECT max(updated) from warnings_{prod.db_year} WHERE wfo = %s "
+            f"SELECT max(updated) from warnings_{prod.valid.year} "
+            "WHERE wfo = %s "
             "and eventid = %s and significance = %s and phenomena = %s",
             (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
         )
@@ -28,11 +29,11 @@ def which_year(txn, prod, segment, vtec):
                 prod.warnings.append(
                     "Possible Duplicated ETN\n"
                     f"  max(updated) is {row['max']}, "
-                    f"prod.valid is {prod.valid}\n year is {prod.db_year}\n"
+                    f"prod.valid is {prod.valid}\n"
                     f"  VTEC: {str(vtec)}\n  "
                     f"product_id: {prod.get_product_id()}"
                 )
-        return prod.db_year
+        return prod.valid.year
     # Lets query the database to look for any matching entries within
     # the past 3, 10, 31 days, to find with the product_issue was,
     # which guides the table that the data is stored within
@@ -90,14 +91,14 @@ def which_year(txn, prod, segment, vtec):
 
     # Give up
     if not prod.is_correction():
-        table = f"warnings_{prod.db_year}"
+        table = f"warnings_{prod.valid.year}"
         prod.warnings.append(
             "Failed to find year of product issuance:\n"
             f"  VTEC:{str(vtec)}\n  PRODUCT: {prod.get_product_id()}\n"
-            f"  defaulting to use year: {prod.db_year}\n"
+            f"  defaulting to use year: {prod.valid.year}\n"
             f"  {list_rows(txn, table, vtec)}"
         )
-    return prod.db_year
+    return prod.valid.year
 
 
 def _associate_vtec_year(prod, txn):

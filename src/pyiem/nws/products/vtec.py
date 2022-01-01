@@ -37,9 +37,6 @@ class VTECProduct(TextProduct):
         text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
 
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        # Which time partitioned table does this product belong to
-        # defaults to current UTC valid
-        self.db_year = self.valid.year
         self.skip_con = self.get_skip_con()
         # If there was no/bad MND header, a backwards way to know is that the
         # product time zone will be None, add a warning
@@ -458,13 +455,14 @@ class VTECProduct(TextProduct):
                         % (vtec.phenomena, vtec.significance, str(ugc))
                     )
                     channels.append(str(ugc))
-                # Careful, db_year is a default
-                linkyear = vtec.year if vtec.year is not None else self.db_year
+                linkyear = (
+                    vtec.year if vtec.year is not None else self.valid.year
+                )
                 xtra = {
                     "product_id": self.get_product_id(),
                     "channels": ",".join(channels),
                     "status": vtec.status,
-                    "vtec": vtec.get_id(self.db_year),
+                    "vtec": vtec.get_id(self.valid.year),
                     "ptype": vtec.phenomena,
                     "twitter": "",
                     "twitter_media": (
@@ -511,7 +509,7 @@ class VTECProduct(TextProduct):
                     "phenomena": vtec.phenomena,
                     "eventid": vtec.etn,
                     "significance": vtec.significance,
-                    "url": "%s%s" % (uri, vtec.url(self.db_year)),
+                    "url": "%s%s" % (uri, vtec.url(self.valid.year)),
                 }
                 if segment.hvtec and segment.hvtec[0].nwsli.id != "00000":
                     jmsg_dict["county"] = segment.hvtec[0].nwsli.get_name()
@@ -663,7 +661,7 @@ class VTECProduct(TextProduct):
                 "url": "%s%s_%s"
                 % (
                     uri,
-                    vtec.url(self.db_year),
+                    vtec.url(self.valid.year),
                     stamp.strftime("%Y-%m-%dT%H:%MZ"),
                 ),
             }

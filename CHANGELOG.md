@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - For `pyiem.plot.geoplot.fill_ugcs` changed `nocbar` kwarg to `draw_colorbar`.
+- Remove confusing `pyiem.nws.product.VTECProduct.db_year` attribute (#534).
 
 ### New Features
 
