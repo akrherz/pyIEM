@@ -37,9 +37,6 @@ class VTECProduct(TextProduct):
         text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
 
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        # Which time partitioned table does this product belong to
-        # defaults to current UTC valid
-        self.db_year = self.valid.year
         self.skip_con = self.get_skip_con()
         # If there was no/bad MND header, a backwards way to know is that the
         # product time zone will be None, add a warning
@@ -210,7 +207,7 @@ class VTECProduct(TextProduct):
                     self.warnings.append(
                         f"{vtec.s3()} adding polygon from issuance to product"
                     )
-                    segment.giswkt = "SRID=4326;%s" % (txn.fetchone()[2],)
+                    segment.giswkt = f"SRID=4326;{txn.fetchone()[2]}"
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
                     f"{vtec.s3()} is a SBW duplicate! {txn.rowcount} "
@@ -404,8 +401,9 @@ class VTECProduct(TextProduct):
             xtra = {
                 "product_id": self.get_product_id(),
                 "channels": ",".join(self.get_affected_wfos()) + ",FLS" + wfo,
-                "twitter": ("%s issues updated FLS product %s?wfo=%s")
-                % (wfo, river_uri, wfo),
+                "twitter": (
+                    f"{wfo} issues updated FLS product {river_uri}?wfo={wfo}"
+                ),
             }
             text = (
                 f"{wfo} has sent an updated FLS product (continued products "
@@ -413,11 +411,11 @@ class VTECProduct(TextProduct):
                 f"details. {river_uri}?wfo={wfo}"
             )
             html = (
-                "<p>%s has sent an updated FLS product "
+                f"<p>{wfo} has sent an updated FLS product "
                 "(continued products were not reported here).  Consult "
-                '<a href="%s?wfo=%s">this website</a> for more '
+                f'<a href="{river_uri}?wfo={wfo}">this website</a> for more '
                 "details.</p>"
-            ) % (wfo, river_uri, wfo)
+            )
             return [(text, html, xtra)]
         msgs = []
 
@@ -433,42 +431,41 @@ class VTECProduct(TextProduct):
                 # reference below and is subsequently overwritten otherwise!
                 if self.afos[:3] in ["MWW", "RFW"]:
                     channels = [
-                        "%s%s" % (self.afos[:3], s)
-                        for s in self.get_affected_wfos()
+                        f"{self.afos[:3]}{s}" for s in self.get_affected_wfos()
                     ]
                 else:
                     channels = self.get_affected_wfos()
                 channels.append(vtec.s2())
                 channels.append(self.afos)
-                channels.append("%s..." % (self.afos[:3],))
+                channels.append(f"{self.afos[:3]}...")
                 channels.append(
                     f"{vtec.phenomena}.{vtec.significance}.{vtec.office}"
                 )
                 for ugc in segment.ugcs:
                     # per state channels
-                    candidate = "%s.%s.%s" % (
-                        vtec.phenomena,
-                        vtec.significance,
-                        ugc.state,
+                    candidate = (
+                        f"{vtec.phenomena}.{vtec.significance}.{ugc.state}"
                     )
                     if candidate not in channels:
                         channels.append(candidate)
                     channels.append(
-                        "%s.%s.%s"
-                        % (vtec.phenomena, vtec.significance, str(ugc))
+                        f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
                     )
                     channels.append(str(ugc))
+                linkyear = (
+                    vtec.year if vtec.year is not None else self.valid.year
+                )
                 xtra = {
                     "product_id": self.get_product_id(),
                     "channels": ",".join(channels),
                     "status": vtec.status,
-                    "vtec": vtec.get_id(self.db_year),
+                    "vtec": vtec.get_id(self.valid.year),
                     "ptype": vtec.phenomena,
                     "twitter": "",
                     "twitter_media": (
                         "https://mesonet.agron.iastate.edu/plotting/auto/plot/"
                         f"208/network:WFO::wfo:{wfo4}::"
-                        f"year:{self.db_year}::phenomenav:{vtec.phenomena}::"
+                        f"year:{linkyear}::phenomenav:{vtec.phenomena}::"
                         f"significancev:{vtec.significance}::"
                         f"etn:{vtec.etn}::valid:"
                     ),
@@ -478,16 +475,13 @@ class VTECProduct(TextProduct):
                     f"{vtec.get_action_string()} {ugcs_to_text(segment.ugcs)}"
                 )
                 html_long_actions.append(
-                    ("<span style='font-weight: bold;'>" "%s</span> %s")
-                    % (vtec.get_action_string(), ugcs_to_text(segment.ugcs))
+                    "<span style='font-weight: bold;'>"
+                    f"{vtec.get_action_string()}</span> "
+                    f"{ugcs_to_text(segment.ugcs)}"
                 )
                 actions.append(
-                    "%s %s area%s"
-                    % (
-                        vtec.get_action_string(),
-                        len(segment.ugcs),
-                        "s" if len(segment.ugcs) > 1 else "",
-                    )
+                    f"{vtec.get_action_string()} {len(segment.ugcs)} area"
+                    f"{'s' if len(segment.ugcs) > 1 else ''}"
                 )
 
                 if segment.giswkt is not None:
@@ -505,29 +499,23 @@ class VTECProduct(TextProduct):
                     "svr_special": segment.special_tags_to_text(),
                     "svs_special": "",
                     "svs_special_html": "",
-                    "year": self.db_year,
+                    "year": linkyear,
                     "phenomena": vtec.phenomena,
                     "eventid": vtec.etn,
                     "significance": vtec.significance,
-                    "url": "%s%s" % (uri, vtec.url(self.db_year)),
+                    "url": f"{uri}{vtec.url(self.valid.year)}",
                 }
                 if segment.hvtec and segment.hvtec[0].nwsli.id != "00000":
                     jmsg_dict["county"] = segment.hvtec[0].nwsli.get_name()
                 if vtec.begints is not None:
-                    jmsg_dict["url"] += "_%s" % (
-                        vtec.begints.strftime("%Y-%m-%dT%H:%MZ"),
-                    )
+                    jmsg_dict["url"] += f"_{vtec.begints:%Y-%m-%dT%H:%MZ}"
                     xtra["twitter_media"] += vtec.begints.strftime(
                         "%Y-%m-%d%%20%H%M"
                     )
                     if vtec.begints > (self.utcnow + timedelta(hours=1)):
-                        jmsg_dict["sts"] = " %s " % (
-                            vtec.get_begin_string(self),
-                        )
+                        jmsg_dict["sts"] = f" {vtec.get_begin_string(self)} "
                 else:
-                    jmsg_dict["url"] += "_%s" % (
-                        self.valid.strftime("%Y-%m-%dT%H:%MZ"),
-                    )
+                    jmsg_dict["url"] += f"_{self.valid:%Y-%m-%dT%H:%MZ}"
                     xtra["twitter_media"] += self.valid.strftime(
                         "%Y-%m-%d%%20%H%M"
                     )
@@ -543,7 +531,7 @@ class VTECProduct(TextProduct):
                 if segment.is_pds:
                     jmsg_dict["product"] += " (PDS)"
                     channels.append(f"{vtec.phenomena}.PDS")
-                    xtra["channels"] += ",%s" % (channels[-1],)
+                    xtra["channels"] += f",{channels[-1]}"
 
                 # Emergencies
                 if segment.is_emergency:
@@ -553,7 +541,7 @@ class VTECProduct(TextProduct):
                         .replace(" (PDS)", "")
                     )
                     channels.append(f"{vtec.phenomena}.EMERGENCY")
-                    xtra["channels"] += ",%s" % (channels[-1],)
+                    xtra["channels"] += f",{channels[-1]}"
                     _btext = segment.svs_search()
                     if vtec.phenomena == "FF":
                         jmsg_dict["svs_special"] = _btext
@@ -615,15 +603,14 @@ class VTECProduct(TextProduct):
                 segment = self.segments[0]
             if self.afos[:3] in ["MWW", "RFW"]:
                 channels = [
-                    "%s%s" % (self.afos[:3], s)
-                    for s in self.get_affected_wfos()
+                    f"{self.afos[:3]}{s}" for s in self.get_affected_wfos()
                 ]
             else:
                 channels = self.get_affected_wfos()
             channels.append(vtec.s2())
             channels.append(self.afos)
             channels.append(
-                "%s.%s.%s" % (vtec.phenomena, vtec.significance, vtec.office)
+                f"{vtec.phenomena}.{vtec.significance}.{vtec.office}"
             )
             # Need to figure out a timestamp to associate with this
             # consolidated message.  Default to utcnow
@@ -638,8 +625,7 @@ class VTECProduct(TextProduct):
                         stamp = v.begints
                 for ugc in seg.ugcs:
                     channels.append(
-                        "%s.%s.%s"
-                        % (vtec.phenomena, vtec.significance, str(ugc))
+                        f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
                     )
                     channels.append(str(ugc))
             if any(seg.is_emergency for seg in self.segments):
@@ -658,11 +644,8 @@ class VTECProduct(TextProduct):
                 "sts": "",
                 "action": self.get_action(),
                 "product": vtec.get_ps_string(),
-                "url": "%s%s_%s"
-                % (
-                    uri,
-                    vtec.url(self.db_year),
-                    stamp.strftime("%Y-%m-%dT%H:%MZ"),
+                "url": (
+                    f"{uri}{vtec.url(self.valid.year)}_{stamp:%Y-%m-%dT%H:%MZ}"
                 ),
             }
             # Include the special bulletin for Tornado Warnings
@@ -671,7 +654,7 @@ class VTECProduct(TextProduct):
             if vtec.begints is not None and vtec.begints > (
                 self.utcnow + timedelta(hours=1)
             ):
-                jdict["sts"] = " %s " % (vtec.get_begin_string(self),)
+                jdict["sts"] = f" {vtec.get_begin_string(self)} "
 
             plain = (
                 "%(wfo)s %(action)s %(product)s%(svr_special)s"

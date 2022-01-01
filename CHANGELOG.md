@@ -8,11 +8,16 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - For `pyiem.plot.geoplot.fill_ugcs` changed `nocbar` kwarg to `draw_colorbar`.
+- Remove confusing `pyiem.nws.product.VTECProduct.db_year` attribute (#534).
 
 ### New Features
 
 - Add `pyiem.plot.geoplot.MapPlot` kwarg of `axes_position` to control where
 the main axes is placed on the figure.
+
+### Bug Fixes
+
+- Correct logic for VTEC year referenced in links (#534).
 
 ## **1.9.0** (13 Dec 2021)
 

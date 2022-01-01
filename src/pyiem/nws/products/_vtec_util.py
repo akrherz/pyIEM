@@ -18,7 +18,8 @@ def which_year(txn, prod, segment, vtec):
         # Lets piggyback a check to see if this ETN has been reused?
         # Can this realiably be done?
         txn.execute(
-            f"SELECT max(updated) from warnings_{prod.db_year} WHERE wfo = %s "
+            f"SELECT max(updated) from warnings_{prod.valid.year} "
+            "WHERE wfo = %s "
             "and eventid = %s and significance = %s and phenomena = %s",
             (vtec.office, vtec.etn, vtec.significance, vtec.phenomena),
         )
@@ -28,11 +29,11 @@ def which_year(txn, prod, segment, vtec):
                 prod.warnings.append(
                     "Possible Duplicated ETN\n"
                     f"  max(updated) is {row['max']}, "
-                    f"prod.valid is {prod.valid}\n year is {prod.db_year}\n"
+                    f"prod.valid is {prod.valid}\n"
                     f"  VTEC: {str(vtec)}\n  "
                     f"product_id: {prod.get_product_id()}"
                 )
-        return prod.db_year
+        return prod.valid.year
     # Lets query the database to look for any matching entries within
     # the past 3, 10, 31 days, to find with the product_issue was,
     # which guides the table that the data is stored within
@@ -68,11 +69,9 @@ def which_year(txn, prod, segment, vtec):
                         return int(row["tablename"].replace("warnings_", ""))
 
             prod.warnings.append(
-                (
-                    "VTEC %s product: %s returned %s rows when "
-                    "searching for current table"
-                )
-                % (str(vtec), prod.get_product_id(), txn.rowcount)
+                f"VTEC {vtec} product: {prod.get_product_id()} "
+                f"returned {txn.rowcount} rows when searching "
+                "for current table"
             )
         row = rows[0]
         if row["min"] is not None:
@@ -90,14 +89,14 @@ def which_year(txn, prod, segment, vtec):
 
     # Give up
     if not prod.is_correction():
-        table = f"warnings_{prod.db_year}"
+        table = f"warnings_{prod.valid.year}"
         prod.warnings.append(
             "Failed to find year of product issuance:\n"
             f"  VTEC:{str(vtec)}\n  PRODUCT: {prod.get_product_id()}\n"
-            f"  defaulting to use year: {prod.db_year}\n"
+            f"  defaulting to use year: {prod.valid.year}\n"
             f"  {list_rows(txn, table, vtec)}"
         )
-    return prod.db_year
+    return prod.valid.year
 
 
 def _associate_vtec_year(prod, txn):
@@ -176,10 +175,10 @@ def check_dup_ps(segment):
         )
         val.append([thisvtec.begints, endts])
 
-    for key in combos:
-        if len(combos[key]) == 1:
+    for _key, combo in combos.items():
+        if len(combo) == 1:
             continue
-        for one, two in itertools.permutations(combos[key], 2):
+        for one, two in itertools.permutations(combo, 2):
             # We check for overlap
             if one[0] >= two[0] and one[0] < two[1]:
                 return True
@@ -264,7 +263,7 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
 
     def myfmt(val):
         """Be more careful"""
-        default = "%-16s" % ("((NULL))",)
+        default = f"{'((NULL))':>16}"
         return default if val is None else val.strftime("%Y-%m-%d %H:%M")
 
     for row in txn.fetchall():
@@ -436,7 +435,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     # An EXT action could change the issuance time, gasp
     issuesql = ""
     if vtec.action == "EXT" and vtec.begints is not None:
-        issuesql = " issue = '%s', " % (vtec.begints,)
+        issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
         f"UPDATE {warning_table} SET {issuesql} expire = %s, "
         "status = %s, updated = %s, "
