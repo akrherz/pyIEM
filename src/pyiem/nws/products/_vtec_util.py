@@ -69,11 +69,9 @@ def which_year(txn, prod, segment, vtec):
                         return int(row["tablename"].replace("warnings_", ""))
 
             prod.warnings.append(
-                (
-                    "VTEC %s product: %s returned %s rows when "
-                    "searching for current table"
-                )
-                % (str(vtec), prod.get_product_id(), txn.rowcount)
+                f"VTEC {vtec} product: {prod.get_product_id()} "
+                f"returned {txn.rowcount} rows when searching "
+                "for current table"
             )
         row = rows[0]
         if row["min"] is not None:
@@ -177,10 +175,10 @@ def check_dup_ps(segment):
         )
         val.append([thisvtec.begints, endts])
 
-    for key in combos:
-        if len(combos[key]) == 1:
+    for _key, combo in combos.items():
+        if len(combo) == 1:
             continue
-        for one, two in itertools.permutations(combos[key], 2):
+        for one, two in itertools.permutations(combo, 2):
             # We check for overlap
             if one[0] >= two[0] and one[0] < two[1]:
                 return True
@@ -265,7 +263,7 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
 
     def myfmt(val):
         """Be more careful"""
-        default = "%-16s" % ("((NULL))",)
+        default = f"{'((NULL))':>16}"
         return default if val is None else val.strftime("%Y-%m-%d %H:%M")
 
     for row in txn.fetchall():
@@ -437,7 +435,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     # An EXT action could change the issuance time, gasp
     issuesql = ""
     if vtec.action == "EXT" and vtec.begints is not None:
-        issuesql = " issue = '%s', " % (vtec.begints,)
+        issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
         f"UPDATE {warning_table} SET {issuesql} expire = %s, "
         "status = %s, updated = %s, "
