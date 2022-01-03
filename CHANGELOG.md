@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 
 - Add `pyiem.plot.geoplot.MapPlot` kwarg of `axes_position` to control where
 the main axes is placed on the figure.
+- Python versions 3.8 through 3.10 are now actively tested and supported.
 
 ### Bug Fixes
 
