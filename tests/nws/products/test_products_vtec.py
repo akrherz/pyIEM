@@ -38,6 +38,16 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh533_dualing_events(dbcursor):
+    """Test redundant ETNs that crossed the new years."""
+    for i in range(0, 3):
+        data = get_test_file(f"NPWLCH/{i:02d}.txt")
+        prod = vtecparser(data)
+        prod.sql(dbcursor)
+        assert not filter_warnings(prod.warnings)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_211115_bullets(dbcursor):
     """Test that we can get the bullets for riverpro."""
     data = get_test_file("FLS/FLSSEW_bullets.txt")

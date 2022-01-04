@@ -1,6 +1,6 @@
 """Off-loaded private stuff from `vtec.py`."""
 # pylint: disable=too-many-arguments
-from datetime import timedelta
+from datetime import timedelta, timezone
 import itertools
 
 import pandas as pd
@@ -14,6 +14,7 @@ DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
 
 def which_year(txn, prod, segment, vtec):
     """Figure out which table we should work against"""
+    # The case of a NEW event always goes into the current UTC year of prod
     if vtec.action in ["NEW"]:
         # Lets piggyback a check to see if this ETN has been reused?
         # Can this realiably be done?
@@ -41,7 +42,8 @@ def which_year(txn, prod, segment, vtec):
         txn.execute(
             "SELECT tableoid::regclass as tablename, hvtec_nwsli, "
             "min(product_issue at time zone 'UTC'), "
-            "max(product_issue at time zone 'UTC') from warnings "
+            "max(product_issue at time zone 'UTC'), "
+            "min(issue at time zone 'UTC') as min_issue from warnings "
             "WHERE wfo = %s and eventid = %s and significance = %s and "
             "phenomena = %s and ((updated > %s and updated <= %s) "
             "or expire > %s) and status not in ('UPG', 'CAN') "
@@ -60,6 +62,13 @@ def which_year(txn, prod, segment, vtec):
         if not rows:
             continue
         if len(rows) > 1:
+            # We could have an ambiguious situation around the new year, so
+            # we attempt to use the issue to resolve this.
+            if vtec.begints is not None:
+                for row in rows:
+                    mi = row["min_issue"].replace(tzinfo=timezone.utc)
+                    if mi == vtec.begints:
+                        return int(row["tablename"].replace("warnings_", ""))
             # We likely have a flood warning and can use the HVTEC NWSLI
             # to resolve ambiguity
             hvtec_nwsli = segment.get_hvtec_nwsli()
