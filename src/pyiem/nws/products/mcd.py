@@ -23,7 +23,7 @@ WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
 )
 VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?", re.I)
-CONCERNING = re.compile(r"CONCERNING\s?\.\.\.(.*?)\.\.\.", re.I)
+CONCERNING = re.compile(r"CONCERNING\s?\.\.\.(.*?)\n\n", re.I)
 
 
 class MCDProduct(TextProduct):
@@ -180,10 +180,10 @@ class MCDProduct(TextProduct):
 
     def parse_concerning(self):
         """Figure out the concerning text, if it exists."""
-        tokens = CONCERNING.findall(self.unixtext.replace("\n", ""))
+        tokens = CONCERNING.findall(self.unixtext)
         if not tokens:
             return None
-        return tokens[0]
+        return tokens[0].strip().rstrip("...")
 
     def parse_attn_rfc(self):
         """Figure out which RFCs this product is seeking attention"""

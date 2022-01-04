@@ -21,6 +21,7 @@ the main axes is placed on the figure.
 - Correct logic for VTEC year referenced in links (#534).
 - Fix ambiguous situation around the New Year's that could have two VTEC
 ETNs active at the same time (#533).
+- Improve logic for "concerning" headline parsing from MCD/MPDs (#528).
 
 ## **1.9.0** (13 Dec 2021)
 
