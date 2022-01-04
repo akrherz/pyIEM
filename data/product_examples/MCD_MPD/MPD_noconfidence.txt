@@ -1,0 +1,71 @@
+045 
+AWUS01 KWNH 030953
+FFGMPD
+CAZ000-ORZ000-032100-
+
+Mesoscale Precipitation Discussion 0011
+NWS Weather Prediction Center College Park MD
+452 AM EST Mon Jan 03 2022
+
+Areas affected...western/southwestern OR into northwestern CA
+
+Concerning...Heavy rainfall
+
+Valid 030951Z - 032100Z
+
+Summary...Heavy rain will impact the Coastal Ranges of western and
+southwestern OR into northwestern CA through 21Z. Localized 12
+hour totals of 3 to just over 4 inches can be expected, with the
+probability of higher rates lowering as a cold front reaches CA
+later today.
+
+Discussion...GOES West water vapor imagery through 09Z showed a
+large closed low in the Gulf of Alaska slowly working south. At
+the surface, a well defined cold front was analyzed just past
+Astoria, OR, draping southwestward into the eastern Pacific.
+Strong low level flow was estimated just ahead of the cold front
+with RAP analysis data showing south-southwesterly winds at 850 mb
+between 80-85 kt along the central to southwestern OR coast, just
+ahead of the cold front. While precipitable water values were a
+modest 0.6 to 0.8 inches within the moisture plume that was in
+place ahead of the cold front, strong low level flow was allowing
+for a small but potent plume of IVT near 700 kg/m/s. The locally
+increased IVT values within the prefrontal moisture plume were
+combined with weak instability (up to 250 J/kg), which has helped
+to support observed rainfall rates between 0.7 and 0.9 in/hr in
+northwestern OR earlier in the night.
+
+Short term forecasts from the RAP and GFS take the cold front
+steadily southward along the West Coast through 21Z. However, the
+magnitude of IVT is likely near peak at the current time (09-10Z)
+with forecasts showing weakening of the 850 mb flow through 12Z
+along the southwestern OR coast. As the southeastern fringes of
+the closed low edge closer to the coast, cooling in the 900-600 mb
+layer will support shallow CAPE profiles up to 250 J/kg to as far
+south as northern Curry County through 18Z. While low level winds
+will weaken from their present values, 850 mb winds are still
+forecast to be in the 40-50 kt range along the northwestern CA
+coast along with some veering toward the WSW by 21Z.
+
+The takeaway message will be the continued potential for 0.5 to
+1.0 in/hr rainfall rates translating southward along the OR coast
+early this morning, with the potential for 0.5+ in/hr rates
+continuing into northwestern CA by early afternoon. Lower snow
+levels inland will keep the threat for heavy rain focused to the
+Coastal Ranges where 12 hour rainfall potential of 3 to 4 inches
+will exist, although a localized 5 inch total cannot be completely
+ruled out through 21Z. Localized flooding may result from the
+intense rainfall.
+
+Otto
+
+...Please see www.wpc.ncep.noaa.gov for graphic product...
+
+ATTN...WFO...EKA...MFR...PQR...
+
+ATTN...RFC...CNRFC...NWRFC...NWC...
+
+LAT...LON   44712396 44642355 44342350 43702373 43152370 
+            42732372 42272356 41702341 41102353 40632351 
+            40072401 39902436 40422466 41262456 42872488 
+            43822458 44592437 

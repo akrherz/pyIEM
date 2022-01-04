@@ -6,6 +6,13 @@ from pyiem.nws.products import parser
 from pyiem.util import utc, get_test_file
 
 
+def test_gh528_concerning():
+    """Test how we deal with the MPD concerning field."""
+    orig = get_test_file("MCD_MPD/MPD_noconfidence.txt")
+    prod = parser(orig)
+    assert prod.concerning == "Heavy rainfall"
+
+
 def test_exceptions():
     """Test that various things lead to exceptions."""
     orig = get_test_file("MCD_MPD/SWOMCD.txt")
@@ -57,9 +64,7 @@ def test_170926_nodbinsert(dbcursor):
     prod = parser(get_test_file("MCD_MPD/SWOMCD_2010.txt"))
     prod.database_save(dbcursor)
     dbcursor.execute(
-        """
-        SELECT * from mcd where product_id = %s
-    """,
+        "SELECT * from mcd where product_id = %s",
         (prod.get_product_id(),),
     )
     assert dbcursor.rowcount == 1
@@ -73,7 +78,8 @@ def test_mpd_mcdparser(dbcursor):
     assert prod.attn_wfo == ["PHI", "AKQ", "CTP", "LWX"]
     assert prod.attn_rfc == ["MARFC"]
     ans = (
-        "#WPC issues MPD 98 concerning HEAVY RAINFALL: NRN VA...D.C"
+        "#WPC issues MPD 98 concerning "
+        "HEAVY RAINFALL...FLASH FLOODING POSSIBLE: NRN VA...D.C"
         "....CENTRAL MD INTO SERN PA "
         "https://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&yr=2013"
@@ -82,6 +88,7 @@ def test_mpd_mcdparser(dbcursor):
     ans = (
         "Weather Prediction Center issues "
         "Mesoscale Precipitation Discussion #98 concerning HEAVY RAINFALL"
+        "...FLASH FLOODING POSSIBLE"
         " https://www.wpc.ncep.noaa.gov/metwatch/metwatch_mpd_multi.php"
         "?md=98&amp;yr=2013"
     )
@@ -109,14 +116,16 @@ def test_mcdparser(dbcursor):
         "<p>Storm Prediction Center issues "
         '<a href="https://www.spc.noaa.gov/'
         'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
-        "concerning SEVERE POTENTIAL [watch probability: 20%] "
+        "concerning SEVERE POTENTIAL...WATCH UNLIKELY "
+        "[watch probability: 20%] "
         '(<a href="http://localhost'
         '?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)</p>'
     )
     assert jmsg[0][1] == ans
     ans = (
         "Storm Prediction Center issues Mesoscale Discussion #1678 "
-        "concerning SEVERE POTENTIAL [watch probability: 20%] "
+        "concerning SEVERE POTENTIAL...WATCH UNLIKELY "
+        "[watch probability: 20%] "
         "https://www.spc.noaa.gov/products/md/2013/md1678.html"
     )
     assert jmsg[0][0] == ans
