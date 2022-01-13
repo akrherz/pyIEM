@@ -24,6 +24,7 @@ the main axes is placed on the figure.
 - Fix ambiguous situation around the New Year's that could have two VTEC
 ETNs active at the same time (#533).
 - Improve logic for "concerning" headline parsing from MCD/MPDs (#528).
+- Added missing NWS VTEC color for Flood Watch FA.A.
 
 ## **1.9.0** (13 Dec 2021)
 
