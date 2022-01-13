@@ -63,7 +63,7 @@ class SHEFElement(BaseModel):
         ename = shef_english_units.get(self.physical_element)
         sname = shef_standard_units.get(self.physical_element)
         if ename is None or sname is None:
-            LOG.info("Unknown unit conv %s", self.physical_element)
+            LOG.warning("Unknown unit conv %s", self.physical_element)
             return self.num_value
         return (units(sname) * self.num_value).to(units(ename)).m
 

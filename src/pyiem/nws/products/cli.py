@@ -117,7 +117,7 @@ def update_iemaccess(txn, entry):
     if not logmsg:
         return True
     res = ob.save(txn, skip_current=True)
-    LOG.info(
+    LOG.warning(
         "%s (%s) %s ob.save: %s",
         entry["access_station"],
         entry["cli_valid"].strftime("%y%m%d"),
@@ -163,7 +163,7 @@ def get_number(text):
             else:
                 retval = int(number[0])
         else:
-            LOG.info("get_number() failed for |%s|", text)
+            LOG.warning("get_number() failed for |%s|", text)
             retval = None
     return retval
 
@@ -180,7 +180,7 @@ def convert_key(text):
         return "month"
     if text.startswith("SINCE "):
         return text.replace("SINCE ", "").replace(" ", "").lower()
-    LOG.info("convert_key() failed for |%s|", text)
+    LOG.warning("convert_key() failed for |%s|", text)
     return "fail"
 
 
@@ -482,7 +482,7 @@ class CLIProduct(TextProduct):
         # Sometimes, we get products that are not really in CLI format but
         # are RER (record event reports) with a CLI AWIPS ID
         if self.wmo[:2] != "CD":
-            LOG.info(
+            LOG.warning(
                 "Product %s skipped due to wrong header", self.get_product_id()
             )
             return

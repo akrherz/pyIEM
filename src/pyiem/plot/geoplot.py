@@ -93,7 +93,7 @@ def load_bounds(filebase):
     """
     fn = os.path.join(DATADIR, f"{filebase}.npy")
     if not os.path.isfile(fn):
-        LOG.info("load_bounds(%s) is missing!", fn)
+        LOG.warning("load_bounds(%s) is missing!", fn)
         return None
     return np.load(fn)
 
@@ -749,7 +749,7 @@ class MapPlot:
                 # If we have more than 15 pixels of overlap, don't plot this!
                 if _cnt > 15 and labelbuffer > 0:
                     if self.debug:
-                        LOG.info(
+                        LOG.warning(
                             "culling |%s| due to overlap, %s",
                             repr(mystr),
                             _cnt,
@@ -766,7 +766,7 @@ class MapPlot:
                     self.fig.patches.append(rec)
                 # Useful for debugging this algo
                 if self.debug:
-                    LOG.info(
+                    LOG.warning(
                         (
                             "label: %s imgx: %s/%s-%s imgy: %s/%s-%s "
                             "x:%s-%s y:%s-%s _cnt:%s"

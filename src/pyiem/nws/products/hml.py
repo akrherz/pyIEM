@@ -172,7 +172,7 @@ class HML(product.TextProduct):
                     "%s) RETURNING id",
                     (key,),
                 )
-                LOG.info("Created key %s for %s", cursor.fetchone()[0], key)
+                LOG.warning("Created key %s for %s", cursor.fetchone()[0], key)
 
     def do_sql_forecast(self, cursor, _hml):
         """Process the forecast portion of the dataset"""

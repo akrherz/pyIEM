@@ -83,7 +83,7 @@ def cleanvalue(val):
     if val.find("<") > -1:
         return "< %s" % (val.replace("<", "").strip(),)
     if val not in CLEANVALUE_COMPLAINED:
-        LOG.info(
+        LOG.warning(
             "cscap_utils.cleanvalue(%s) is unaccounted for, return None",
             repr(val),
         )
@@ -177,7 +177,7 @@ def get_folders(drive):
         folder_list = folder_list + folders["items"]
         i += 1
         if i > 10:
-            LOG.info("get_folders iterator reached 10, aborting")
+            LOG.warning("get_folders iterator reached 10, aborting")
             break
 
     for _, item in enumerate(folder_list):
@@ -191,7 +191,7 @@ def get_folders(drive):
             continue
         parentfolder = f[thisfolder]["parents"][0]
         if parentfolder not in f:
-            LOG.info("ERROR: parentfolder: %s not in f", parentfolder)
+            LOG.warning("ERROR: parentfolder: %s not in f", parentfolder)
             continue
         while parentfolder in f and len(f[parentfolder]["parents"]) > 0:
             parentfolder = f[parentfolder]["parents"][0]

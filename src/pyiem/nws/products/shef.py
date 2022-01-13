@@ -589,7 +589,7 @@ def process_messages(func, prod, messages) -> int:
             # Swallow these generally, but let no station slide
             if str(exp).find("3.2") != 0:
                 errors += 1
-            LOG.info("%s for '%s' %s", exp, message, prod.get_product_id())
+            LOG.warning("%s for '%s' %s", exp, message, prod.get_product_id())
         except Exception as exp:
             errors += 1
             cstr = StringIO()
@@ -720,7 +720,7 @@ def compute_num_value(element) -> bool:
     try:
         element.num_value = float(element.str_value)
     except ValueError:
-        LOG.info("ValueError: '%s' to float failed", element.str_value)
+        LOG.warning("ValueError: '%s' to float failed", element.str_value)
         return False
     # 5.1.2 Precip is assumed to be in 0.01 inches if an integer is provided
     if (

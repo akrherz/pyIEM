@@ -1295,13 +1295,13 @@ def process_metar(mstr, now):
                 for token in tokens[0].split():
                     mstr = mstr.replace(" %s" % (token,), "")
                 if orig_mstr == mstr:
-                    LOG.info("Can't fix badly formatted metar: %s", mstr)
+                    LOG.warning("Can't fix badly formatted metar: %s", mstr)
                     return None
             else:
-                LOG.info("MetarParserError: %s", msg)
+                LOG.warning("MetarParserError: %s", msg)
                 return None
         except Exception as exp:
-            LOG.info("Double Fail: %s %s", mstr, exp)
+            LOG.warning("Double Fail: %s %s", mstr, exp)
             return None
     if mtr is None or mtr.time is None:
         return None
@@ -1467,8 +1467,8 @@ def sql(txn, stid, data):
     try:
         txn.execute(_sql, args)
     except Exception:
-        LOG.info(metar)
-        LOG.info(args)
+        LOG.warning(metar)
+        LOG.warning(args)
         raise
     return txn.rowcount
 
@@ -1678,7 +1678,7 @@ def parser(msg, call_id, add_metar=False):
         try:
             gen_metar(data)
         except Exception:
-            LOG.info(
+            LOG.warning(
                 json.dumps(data, indent=True, sort_keys=True, default=str)
             )
             raise

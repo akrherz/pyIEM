@@ -189,7 +189,7 @@ def logger(name="pyiem", level=None):
     Args:
       name (str): The name of the logger to get, default pyiem
       level (logging.LEVEL): The log level for this pyiem logget, default is
-        INFO for non interactive sessions, DEBUG otherwise
+        WARNING for non interactive sessions, INFO otherwise
 
     Returns:
       logger instance
@@ -199,8 +199,8 @@ def logger(name="pyiem", level=None):
     log = logging.getLogger(name)
     log.addHandler(ch)
     if level is None and sys.stdout.isatty():
-        level = logging.DEBUG
-    log.setLevel(level if level is not None else logging.INFO)
+        level = logging.INFO
+    log.setLevel(level if level is not None else logging.WARNING)
     return log
 
 

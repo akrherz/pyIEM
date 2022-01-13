@@ -86,7 +86,7 @@ def which_year(txn, prod, segment, vtec):
         if row["min"] is not None:
             year = row["min"].year
             if row["max"].year != year:
-                LOG.info(
+                LOG.warning(
                     "VTEC Product appears to cross 1 Jan UTC "
                     "minyear: %s maxyear: %s VTEC: %s productid: %s",
                     year,
@@ -298,7 +298,9 @@ def _resent_match(prod, txn, warning_table, vtec):
     )
     maxtime = txn.fetchone()["maxtime"]
     if maxtime is not None and maxtime == prod.valid:
-        LOG.info("RESENT Match, skipping SQL for %s!", prod.get_product_id())
+        LOG.warning(
+            "RESENT Match, skipping SQL for %s!", prod.get_product_id()
+        )
         return True
     return False
 

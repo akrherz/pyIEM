@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 - For `pyiem.plot.geoplot.fill_ugcs` changed `nocbar` kwarg to `draw_colorbar`.
 - Remove confusing `pyiem.nws.product.VTECProduct.db_year` attribute (#534).
+- Change the default log level to `WARNING` for non-interactive shells and to
+`INFO` for interactive shells (#541).
 
 ### New Features
 
