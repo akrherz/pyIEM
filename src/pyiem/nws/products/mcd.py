@@ -227,7 +227,7 @@ class MCDProduct(TextProduct):
         sql = f"DELETE from {table} where product_id = %s and num = %s"
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
         if txn.rowcount > 0:
-            LOG.info(
+            LOG.warning(
                 "mcd.database_save %s %s removed %s entries",
                 self.get_product_id(),
                 self.discussion_num,

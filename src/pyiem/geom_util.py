@@ -42,7 +42,7 @@ def rhs_split(poly, splitter):
             [geo for geo in geomcollect.geoms if geo.area > 0.1]
         )
         if len(geomcollect.geoms) > 2:
-            LOG.info("intersection found more than 2 polys, failing")
+            LOG.warning("intersection found more than 2 polys, failing")
             return None
     if len(geomcollect.geoms) == 1:
         return geomcollect.geoms[0]

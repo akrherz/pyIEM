@@ -264,7 +264,7 @@ def compute_wfos(outlook_collections):
         for outlook in collect.outlooks:
             df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
             outlook.wfos = df2.index.to_list()
-            LOG.info(
+            LOG.warning(
                 "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
                 day,
                 outlook.category,
@@ -289,7 +289,7 @@ class ERO(TextProduct):
           nwsli_provider (dict, optional): unused in this class
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        LOG.info("==== ERO Processing: %s", self.get_product_id())
+        LOG.warning("==== ERO Processing: %s", self.get_product_id())
         load_conus_data()
         self.issue = None
         self.expire = None
@@ -346,7 +346,7 @@ class ERO(TextProduct):
                     f"{tempfile.gettempdir()}/{day}_{self.issue:%Y%m%d%H%M}_"
                     f"{outlook.category}_{outlook.threshold}.png"
                 ).replace(" ", "_")
-                LOG.info(":: creating plot %s", fn)
+                LOG.warning(":: creating plot %s", fn)
                 fig.savefig(fn)
                 plt.close()
 

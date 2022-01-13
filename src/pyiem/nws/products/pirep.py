@@ -180,7 +180,7 @@ class Pirep(product.TextProduct):
             # First token is always priority
             if i == 0:
                 if len(token) > 10:
-                    LOG.info("Aborting as not-PIREP? |%s|", report)
+                    LOG.warning("Aborting as not-PIREP? |%s|", report)
                     return None
                 if token.find(" UUA") > 0:
                     _pr.priority = Priority.UUA

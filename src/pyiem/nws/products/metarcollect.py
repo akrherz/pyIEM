@@ -115,10 +115,10 @@ def to_metar(textprod, text):
     if mtr is not None:
         # Attempt to figure out more things
         if mtr.station_id is None:
-            LOG.info("Aborting due to station_id being None |%s|", text)
+            LOG.warning("Aborting due to station_id being None |%s|", text)
             return None
         if mtr.time is None:
-            LOG.info("Aborting due to time being None |%s|", text)
+            LOG.warning("Aborting due to time being None |%s|", text)
             return None
         # don't allow data more than an hour into the future
         ceiling = (textprod.utcnow + timedelta(hours=1)).replace(tzinfo=None)
@@ -130,7 +130,7 @@ def to_metar(textprod, text):
                     year=prevmonth.year, month=prevmonth.month
                 )
             else:
-                LOG.info(
+                LOG.warning(
                     "Aborting due to time in the future "
                     "ceiling: %s mtr.time: %s",
                     ceiling,
@@ -300,7 +300,7 @@ class METARReport(Metar):
             alti = self.press.value("MB")
             mslp = self.press_sea_level.value("MB")
             if abs(alti - mslp) > 25:
-                LOG.info(
+                LOG.warning(
                     "PRESSURE ERROR %s %s ALTI: %s MSLP: %s",
                     iem.data["station"],
                     iem.data["valid"],
@@ -384,7 +384,7 @@ class METARCollective(TextProduct):
                 row = self.nwsli_provider.get(mtr.iemid, {})
                 wfo = row.get("wfo")
                 if wfo is None or wfo == "":
-                    LOG.info(
+                    LOG.warning(
                         "Unknown WFO for id: %s, skipping alert", mtr.iemid
                     )
                     continue

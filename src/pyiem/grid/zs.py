@@ -34,10 +34,7 @@ class CachingZonalStats:
         """
         if geometries is None:
             LOG.warning(
-                (
-                    "Cowardly refusing to compute gridnav "
-                    "with None geometries"
-                )
+                "Cowardly refusing to compute gridnav with None geometries"
             )
             return
         # TODO: check nodata usage here

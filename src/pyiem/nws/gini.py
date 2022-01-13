@@ -188,7 +188,7 @@ class GINIZFile:
             except Exception:
                 chunk += b"x\xda"
         if totsz != 0:
-            LOG.info("Totalsize left: %s", totsz)
+            LOG.warning("Totalsize left: %s", totsz)
 
         self.data = np.reshape(
             np.fromstring(sdata, np.int8),
@@ -284,7 +284,7 @@ class GINIZFile:
         (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[
             "proj"
         ](self.metadata["x0"], self.metadata["y1"], inverse=True)
-        LOG.info(
+        LOG.warning(
             (
                 "lat1: %.5f y0: %5.f y1: %.5f lat_ul: %.3f "
                 "lat_ur: %.3f lon_ur: %.3f alpha: %.5f dy: %.3f"
@@ -330,7 +330,7 @@ class GINIZFile:
             "proj"
         ](self.metadata["x0"], self.metadata["y1"], inverse=True)
 
-        LOG.info(
+        LOG.warning(
             (
                 "latin: %.2f lat_ul: %.3f lon_ul: %.3f "
                 "y0: %5.f y1: %.5f dx: %.3f dy: %.3f"
@@ -370,7 +370,7 @@ class GINIZFile:
             "proj"
         ](x0, self.metadata["y1"], inverse=True)
 
-        LOG.info(
+        LOG.warning(
             (
                 "lon_ul: %.2f lat_ul: %.2f "
                 "lon_ll: %.2f lat_ll: %.2f "
@@ -402,7 +402,9 @@ class GINIZFile:
         elif self.metadata["map_projection"] == 5:
             self.init_stereo()
         else:
-            LOG.info("Unknown Projection: %s", self.metadata["map_projection"])
+            LOG.warning(
+                "Unknown Projection: %s", self.metadata["map_projection"]
+            )
 
     def read_header(self, hdata):
         """read the header!"""

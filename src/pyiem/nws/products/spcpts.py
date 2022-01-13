@@ -114,7 +114,7 @@ def str2multipolygon(s):
     for i, polygon in enumerate(polygons):
         if polygon.is_valid:
             continue
-        LOG.info("     polygon %s is invalid, buffer(0)", i)
+        LOG.warning("     polygon %s is invalid, buffer(0)", i)
         polygons[i] = polygon.buffer(0)
     return MultiPolygon(polygons)
 
@@ -208,7 +208,7 @@ class SPCPTS(TextProduct):
           nwsli_provider (dict, optional): unused in this class
         """
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-        LOG.info("==== SPCPTS Processing: %s", self.get_product_id())
+        LOG.warning("==== SPCPTS Processing: %s", self.get_product_id())
         load_conus_data(self.valid)
         self.issue = None
         self.expire = None
@@ -272,7 +272,7 @@ class SPCPTS(TextProduct):
                         outlook.threshold,
                     )
                 ).replace(" ", "_")
-                LOG.info(":: creating plot %s", fn)
+                LOG.warning(":: creating plot %s", fn)
                 fig.savefig(fn)
                 plt.close()
 
@@ -356,7 +356,7 @@ class SPCPTS(TextProduct):
                     if data.get("day2") is not None:
                         day1 = int(data["day1"])
                         day2 = int(data["day2"])
-                        LOG.info("Duplicating threshold %s-%s", day1, day2)
+                        LOG.warning("Duplicating threshold %s-%s", day1, day2)
                         for i in range(day1, day2 + 1):
                             key = "D%s" % (i,)
                             point_data[key] = point_data[threshold]
@@ -366,7 +366,7 @@ class SPCPTS(TextProduct):
                 if match:
                     day = int(match.groupdict()["day1"])
                     collect = self.get_outlookcollection(day)
-                LOG.info(
+                LOG.warning(
                     "--> Start Day: %s Category: '%s' Threshold: '%s' =====",
                     day,
                     category,
@@ -375,7 +375,7 @@ class SPCPTS(TextProduct):
                 mp = str2multipolygon(text)
                 if DMATCH.match(threshold):
                     threshold = "0.15"
-                LOG.info("----> End threshold is: %s", threshold)
+                LOG.warning("----> End threshold is: %s", threshold)
                 collect.outlooks.append(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, _txn=None):
@@ -386,7 +386,7 @@ class SPCPTS(TextProduct):
             for outlook in collect.outlooks:
                 df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
                 outlook.wfos = df2.index.to_list()
-                LOG.info(
+                LOG.warning(
                     "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
                     day,
                     outlook.category,
