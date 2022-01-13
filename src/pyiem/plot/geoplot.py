@@ -168,7 +168,6 @@ class MapPlot:
             self.state = "IA"
         axes_position = kwargs.pop("axes_position", MAIN_AX_BOUNDS)
         sector_setter(self, axes_position, **kwargs)
-
         for gp in self.panels:
             # legacy usage of axisbg here
             _c = kwargs.get(
@@ -1190,14 +1189,18 @@ class MapPlot:
         """
         geodf = load_geodf("ugcs_county")
         for gp in self.panels:
-            geodf.to_crs(self.panels[0].crs).plot(
-                ax=gp.ax,
-                aspect=None,
-                facecolor="None",
-                edgecolor=color,
-                lw=0.4,
-                zorder=Z_POLITICAL,
-            )
+            df = geodf.to_crs(gp.crs).cx[
+                slice(*gp.get_xlim()), slice(*gp.get_ylim())
+            ]
+            if not df.empty:
+                df.plot(
+                    ax=gp.ax,
+                    aspect=None,
+                    facecolor="None",
+                    edgecolor=color,
+                    lw=0.4,
+                    zorder=Z_POLITICAL,
+                )
 
     def postprocess(self, **kwargs):
         """Postprocessing.
