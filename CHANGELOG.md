@@ -26,6 +26,9 @@ ETNs active at the same time (#533).
 - Improve logic for "concerning" headline parsing from MCD/MPDs (#528).
 - Cross checked IEM VTEC database and created missing `NWS_COLORS` entries,
 which cross references VTEC codes to NWS WaWA map colors.
+- The NWS has an ongoing issue (2017-present) with disseminating truncated
+Tsuanmi products.  These truncated products are dups to non-truncated ones.
+Special code was added to abort processing of these when found.
 
 ## **1.9.0** (13 Dec 2021)
 

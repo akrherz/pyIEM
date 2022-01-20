@@ -1095,10 +1095,17 @@ def test_141208_upgrade(dbcursor):
     assert dbcursor.fetchone()[0] == datetime.datetime(2014, 12, 7, 19, 13)
 
 
+def test_truncated_tsu():
+    """Test that we raise an error with a truncated TSU."""
+    text = get_test_file("TSU/TSUWCA.txt")
+    with pytest.raises(ValueError):
+        vtecparser(text[:-60])
+
+
 def test_141016_tsuwca():
     """TSUWCA Got a null vtec timestamp with this product"""
     utcnow = utc(2014, 10, 16, 17, 10)
-    prod = vtecparser(get_test_file("TSUWCA.txt"), utcnow=utcnow)
+    prod = vtecparser(get_test_file("TSU/TSUWCA.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     assert not j
 
