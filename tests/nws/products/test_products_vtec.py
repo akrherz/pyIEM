@@ -330,14 +330,14 @@ def test_200306_issue210(dbcursor):
     }
     for i in range(7):
         prod = vtecparser(
-            get_test_file("FLWCHS/2019_%s.txt" % (i,)),
+            get_test_file(f"FLWCHS/2019_{i}.txt"),
             nwsli_provider=nwsli_provider,
         )
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
     for i in range(2):
         prod = vtecparser(
-            get_test_file("FLWCHS/2020_%s.txt" % (i,)),
+            get_test_file(f"FLWCHS/2020_{i}.txt"),
             nwsli_provider=nwsli_provider,
         )
         prod.sql(dbcursor)
@@ -348,7 +348,7 @@ def test_200306_issue210(dbcursor):
 def test_200302_issue203(dbcursor):
     """Test that we warn when a polygon goes missing."""
     for i in range(2):
-        prod = vtecparser(get_test_file("FLWCAE/%s.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"FLWCAE/{i}.txt"))
         prod.sql(dbcursor)
         if i == 0:
             assert prod.segments[0].sbw
@@ -371,7 +371,7 @@ def test_200224_urls():
     """Test that we are generating the right URLs."""
     ans = "2020-02-25T06:00Z"
     for i in range(3):
-        prod = vtecparser(get_test_file("WSWDVN/%s.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"WSWDVN/{i}.txt"))
         j = prod.get_jabbers("http://localhost")
         url = j[0][0].strip().split()[-1].split("_")[1]
         assert url == ans
@@ -470,14 +470,13 @@ def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
         print(f"processing {i}")
-        prod = vtecparser(get_test_file("WSWAFG/%s.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"WSWAFG/{i}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
     dbcursor.execute(
-        """
-        SELECT count(*) from warnings_2018 where wfo = 'AFG' and eventid = 127
-        and phenomena = 'WW' and significance = 'Y' and ugc = 'AKZ209'
-    """
+        "SELECT count(*) from warnings_2018 where wfo = 'AFG' and "
+        "eventid = 127 and phenomena = 'WW' and significance = 'Y' "
+        "and ugc = 'AKZ209'"
     )
     assert dbcursor.fetchone()["count"] == 2
 
@@ -562,7 +561,7 @@ def test_180202_issue54(dbcursor):
 
     expirets = utc(2018, 2, 2, 9)
     for i in range(3):
-        prod = vtecparser(get_test_file("vtec/WSWLWX_%s.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"vtec/WSWLWX_{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -725,8 +724,8 @@ def test_170303_ccwpoly():
 def test_170115_table_failure(dbcursor):
     """Test WSW series for issues"""
     for i in range(12):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("WSWAMA/WSWAMA_%02i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"WSWAMA/WSWAMA_{i:02d}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
 
@@ -735,7 +734,7 @@ def test_170115_table_failure(dbcursor):
 def test_160912_missing(dbcursor):
     """see why this series failed in production"""
     for i in range(4):
-        prod = vtecparser(get_test_file("RFWVEF/RFW_%02i.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"RFWVEF/RFW_{i:02d}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -834,8 +833,8 @@ def test_150915_noexpire(dbcursor):
 def test_150820_exb(dbcursor):
     """Found a bug with setting of issuance for EXB case!"""
     for i in range(3):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("CFWLWX/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"CFWLWX/{i}.txt"))
         prod.sql(dbcursor)
     # Make sure the issuance time is correct for MDZ014
     dbcursor.execute(
@@ -897,8 +896,8 @@ def test_150304_testtor():
 def test_150203_exp_does_not_end(dbcursor):
     """MWWCAR a VTEC EXP action should not terminate it"""
     for i in range(23):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("MWWCAR/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"MWWCAR/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "VTEC Product appears to c")
@@ -909,15 +908,14 @@ def test_150203_exp_does_not_end(dbcursor):
 def test_150203_null_issue(dbcursor):
     """WSWOKX had null issue times, bad!"""
     for i in range(18):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("WSWOKX/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"WSWOKX/{i}.txt"))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute(
-            """SELECT count(*) from warnings_2015
-        where wfo = 'OKX' and eventid = 6
-        and phenomena = 'WW' and significance = 'Y'
-        and issue is null"""
+            "SELECT count(*) from warnings_2015 where wfo = 'OKX' and "
+            "eventid = 6 and phenomena = 'WW' and significance = 'Y' "
+            "and issue is null"
         )
         assert dbcursor.fetchone()[0] == 0
 
@@ -956,8 +954,8 @@ def test_150105_considerable_tag():
 def test_150105_sbw(dbcursor):
     """FLSLBF SBW that spans two years!"""
     for i in range(7):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("FLSLBF/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"FLSLBF/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -967,8 +965,8 @@ def test_150105_sbw(dbcursor):
 def test_150105_manycors(dbcursor):
     """WSWGRR We had some issues with this series, lets test it"""
     for i in range(15):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("WSWGRR/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"WSWGRR/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -978,8 +976,8 @@ def test_150105_manycors(dbcursor):
 def test_150102_multiyear2(dbcursor):
     """WSWSTO See how well we span multiple years"""
     for i in range(17):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("NPWSTO/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"NPWSTO/{i}.txt"))
         prod.sql(dbcursor)
         # side test for expiration message
         if i == 3:
@@ -999,26 +997,21 @@ def test_150102_multiyear(dbcursor):
     """WSWOUN See how well we span multiple years"""
     for i in range(13):
         print(datetime.datetime.utcnow())
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("WSWOUN/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"WSWOUN/{i}.txt"))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute(
-            """
-            SELECT count(*) from warnings_2014
-            where wfo = 'OUN' and eventid = 16
-            and phenomena = 'WW' and significance = 'Y'
-            and issue is null
-        """
+            "SELECT count(*) from warnings_2014 where wfo = 'OUN' and "
+            "eventid = 16 and phenomena = 'WW' and significance = 'Y' "
+            "and issue is null"
         )
         assert dbcursor.fetchone()[0] == 0
         if i == 5:
             dbcursor.execute(
-                """
-                SELECT issue from warnings_2014
-                WHERE ugc = 'OKZ036' and wfo = 'OUN' and eventid = 16
-                and phenomena = 'WW' and significance = 'Y'
-            """
+                "SELECT issue from warnings_2014 WHERE ugc = 'OKZ036' and "
+                "wfo = 'OUN' and eventid = 16 and phenomena = 'WW' and "
+                "significance = 'Y'"
             )
             row = dbcursor.fetchone()
             assert row[0] == utc(2015, 1, 1, 6, 0)
@@ -1038,8 +1031,8 @@ def test_141226_correction():
 def test_141215_correction(dbcursor):
     """I have a feeling we are not doing the right thing for COR"""
     for i in range(6):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("NPWMAF/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"NPWMAF/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -1049,8 +1042,8 @@ def test_141215_correction(dbcursor):
 def test_141212_mqt(dbcursor):
     """Updated four rows instead of three, better check on it"""
     for i in range(4):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("MWWMQT/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"MWWMQT/{i}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
 
@@ -1059,8 +1052,8 @@ def test_141212_mqt(dbcursor):
 def test_141211_null_expire(dbcursor):
     """Figure out why the database has a null expiration for this FL.W"""
     for i in range(0, 13):
-        print("Parsing Product: %s.txt" % (i,))
-        prod = vtecparser(get_test_file("FLSIND/%i.txt" % (i,)))
+        print(f"Parsing Product: {i}.txt")
+        prod = vtecparser(get_test_file(f"FLSIND/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not filter_warnings(warnings, "LAT...LON")
@@ -1070,7 +1063,7 @@ def test_141211_null_expire(dbcursor):
 def test_141210_continues(dbcursor):
     """See that we handle CON with infinite time A-OK"""
     for i in range(0, 2):
-        prod = vtecparser(get_test_file("FFAEKA/%i.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"FFAEKA/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not warnings
@@ -1081,7 +1074,7 @@ def test_141208_upgrade(dbcursor):
     """See that we can handle the EXB case"""
     for i in range(0, 18):
         print(f"Processing {i}")
-        prod = vtecparser(get_test_file("MWWLWX/%02i.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"MWWLWX/{i:02d}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "Segment has duplicated")
@@ -1095,10 +1088,17 @@ def test_141208_upgrade(dbcursor):
     assert dbcursor.fetchone()[0] == datetime.datetime(2014, 12, 7, 19, 13)
 
 
+def test_truncated_tsu():
+    """Test that we raise an error with a truncated TSU."""
+    text = get_test_file("TSU/TSUWCA.txt")
+    with pytest.raises(ValueError):
+        vtecparser(text[:-60])
+
+
 def test_141016_tsuwca():
     """TSUWCA Got a null vtec timestamp with this product"""
     utcnow = utc(2014, 10, 16, 17, 10)
-    prod = vtecparser(get_test_file("TSUWCA.txt"), utcnow=utcnow)
+    prod = vtecparser(get_test_file("TSU/TSUWCA.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     assert not j
 
@@ -1108,8 +1108,8 @@ def test_140731_badugclabel():
     ugc_provider = {}
     for u in range(530, 550, 1):
         n = "a" * min((u + 1 / 2), 80)
-        ugc_provider["ANZ%03i" % (u,)] = UGC(
-            "AN", "Z", "%03i" % (u,), name=n, wfos=["DMX"]
+        ugc_provider[f"ANZ{u:03d}"] = UGC(
+            "AN", "Z", f"{u:03d}", name=n, wfos=["DMX"]
         )
 
     utcnow = utc(2014, 7, 31, 17, 35)
@@ -1181,8 +1181,8 @@ def test_wcn_updates():
     for u in range(1, 201, 2):
         n = "a" * int(min((u + 1 / 2), 40))
         for st in ["AR", "MS", "TN", "MO"]:
-            ugc_provider["%sC%03i" % (st, u)] = UGC(
-                st, "C", "%03i" % (u,), name=n, wfos=["DMX"]
+            ugc_provider[f"{st}C{u:03d}"] = UGC(
+                st, "C", f"{u:03d}", name=n, wfos=["DMX"]
             )
     prod = _vtecparser(
         get_test_file("WCNMEG.txt"), utcnow=utcnow, ugc_provider=ugc_provider
@@ -1295,56 +1295,29 @@ def test_140609_ext_backwards(dbcursor):
     and eventid = 2 and phenomena = 'FL' and significance = 'W' """
     )
     dbcursor.execute(
-        """DELETE from sbw_2014 where wfo = 'LBF'
-    and eventid = 2 and phenomena = 'FL' and significance = 'W' """
+        "DELETE from sbw_2014 where wfo = 'LBF' and eventid = 2 and "
+        "phenomena = 'FL' and significance = 'W'"
     )
     for i in range(1, 6):
         prod = vtecparser(
-            get_test_file("FLWLBF/FLWLBF_%s.txt" % (i,)), utcnow=utcnow
+            get_test_file(f"FLWLBF/FLWLBF_{i}.txt"), utcnow=utcnow
         )
         prod.sql(dbcursor)
 
     dbcursor.execute("""SET TIME ZONE 'UTC'""")
 
     dbcursor.execute(
-        """SELECT max(length(svs)) from warnings_2014 WHERE
-    eventid = 2 and phenomena = 'FL' and significance = 'W' and wfo = 'LBF'
-    """
+        "SELECT max(length(svs)) from warnings_2014 WHERE eventid = 2 and "
+        "phenomena = 'FL' and significance = 'W' and wfo = 'LBF'"
     )
-    row = dbcursor.fetchone()
+    dbcursor.fetchone()
 
     dbcursor.execute(
-        """
-    select status, updated, issue, expire, init_expire, polygon_begin,
-    polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and
-    significance = 'W' and wfo = 'LBF' ORDER by updated ASC
-    """
+        "select status, updated, issue, expire, init_expire, polygon_begin, "
+        "polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and "
+        "significance = 'W' and wfo = 'LBF' ORDER by updated ASC"
     )
-    print("sta update issue  expire init_e p_begi p_end")
-    rows = []
-
-    def safe(val):
-        """safe"""
-        if val is None:
-            return "(null)"
-        return val.strftime("%d%H%M")
-
-    for row in dbcursor:
-        rows.append(row)
-        print(
-            ("%s %s %s %s %s %s %s")
-            % (
-                row[0],
-                safe(row[1]),
-                safe(row[2]),
-                safe(row[3]),
-                safe(row[4]),
-                safe(row[5]),
-                safe(row[6]),
-            )
-        )
-
-    assert rows[0][6] == utc(2014, 6, 7, 2, 15)
+    assert dbcursor.fetchone()[6] == utc(2014, 6, 7, 2, 15)
 
 
 def test_svs_search():
@@ -1393,8 +1366,8 @@ def test_wcn():
     ugc_provider = {}
     for u in range(1, 201, 2):
         n = "a" * int(min((u + 1 / 2), 40))
-        ugc_provider["IAC%03i" % (u,)] = UGC(
-            "IA", "C", "%03i" % (u,), name=n, wfos=["DMX"]
+        ugc_provider[f"IAC{u:03d}"] = UGC(
+            "IA", "C", f"{u:03d}", name=n, wfos=["DMX"]
         )
 
     prod = _vtecparser(
@@ -1448,23 +1421,20 @@ def test_140604_sbwupdate(dbcursor):
     utcnow = utc(2014, 6, 4)
 
     dbcursor.execute(
-        """DELETE from sbw_2014 where
-    wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
-    significance = 'W' """
+        "DELETE from sbw_2014 where wfo = 'LMK' and eventid = 95 and "
+        "phenomena = 'SV' and significance = 'W'"
     )
     dbcursor.execute(
-        """DELETE from warnings_2014 where
-    wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
-    significance = 'W' """
+        "DELETE from warnings_2014 where wfo = 'LMK' and eventid = 95 and "
+        "phenomena = 'SV' and significance = 'W'"
     )
 
     prod = vtecparser(get_test_file("SVRLMK_1.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
 
     dbcursor.execute(
-        """SELECT expire from sbw_2014 WHERE
-    wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
-    significance = 'W' """
+        "SELECT expire from sbw_2014 WHERE wfo = 'LMK' and eventid = 95 and "
+        "phenomena = 'SV' and significance = 'W'"
     )
     assert dbcursor.rowcount == 1
 
@@ -1545,7 +1515,7 @@ def test_affected_wfos():
 def test_141023_upgrade(dbcursor):
     """See that we can handle the upgrade and downgrade dance"""
     for i in range(1, 8):
-        prod = vtecparser(get_test_file("NPWBOX/NPW_%02i.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"NPWBOX/NPW_{i:02d}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
@@ -1555,8 +1525,8 @@ def test_141023_upgrade(dbcursor):
 def test_141205_vtec_series(dbcursor):
     """Make sure we don't get any warnings processing this series"""
     for i in range(9):
-        print("Processing product: %s" % (i,))
-        fn = "WSWOTX/WSW_%02i.txt" % (i,)
+        print(f"Processing product: {i}")
+        fn = f"WSWOTX/WSW_{i:02d}.txt"
         prod = vtecparser(get_test_file(fn))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1572,12 +1542,9 @@ def test_vtec_series(dbcursor):
 
     # Did Marshall County IAZ049 get a ZR.Y
     dbcursor.execute(
-        """
-        SELECT issue from warnings_2013 WHERE
-        wfo = 'DMX' and eventid = 1 and phenomena = 'ZR' and
-        significance = 'Y' and status = 'EXB'
-        and ugc = 'IAZ049'
-    """
+        "SELECT issue from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "and phenomena = 'ZR' and significance = 'Y' and status = 'EXB' "
+        "and ugc = 'IAZ049'"
     )
     assert dbcursor.rowcount == 1
 
@@ -1588,10 +1555,9 @@ def test_vtec_series(dbcursor):
     # Is IAZ006 in CON status with proper end time
     answer = utc(2013, 1, 28, 6)
     dbcursor.execute(
-        """SELECT expire from warnings_2013 WHERE
-    wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and
-    significance = 'W' and status = 'CON'
-    and ugc = 'IAZ006' """
+        "SELECT expire from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "and phenomena = 'WS' and significance = 'W' and status = 'CON' "
+        "and ugc = 'IAZ006'"
     )
 
     assert dbcursor.rowcount == 1
@@ -1600,7 +1566,7 @@ def test_vtec_series(dbcursor):
 
     # No change
     for i in range(2, 9):
-        prod = vtecparser(get_test_file("WSWDMX/WSW_%02i.txt" % (i,)))
+        prod = vtecparser(get_test_file(f"WSWDMX/WSW_{i:02d}.txt"))
         assert prod.afos == "WSWDMX"
         prod.sql(dbcursor)
 
@@ -1611,10 +1577,9 @@ def test_vtec_series(dbcursor):
     # IAZ006 should be cancelled
     answer = utc(2013, 1, 28, 5, 38)
     dbcursor.execute(
-        """SELECT expire from warnings_2013 WHERE
-    wfo = 'DMX' and eventid = 1 and phenomena = 'WS' and
-    significance = 'W' and status = 'CAN'
-    and ugc = 'IAZ006' """
+        "SELECT expire from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "and phenomena = 'WS' and significance = 'W' and status = 'CAN' "
+        "and ugc = 'IAZ006'"
     )
 
     assert dbcursor.rowcount == 1
@@ -1627,11 +1592,8 @@ def test_vtec(dbcursor):
     """Simple test of VTEC parser"""
     # Remove cruft first
     dbcursor.execute(
-        """
-        DELETE from warnings_2005 WHERE
-        wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
-        significance = 'W'
-    """
+        "DELETE from warnings_2005 WHERE wfo = 'JAN' and eventid = 130 and "
+        "phenomena = 'TO' and significance = 'W'"
     )
     dbcursor.execute(
         """
@@ -1664,11 +1626,8 @@ def test_vtec(dbcursor):
     assert dbcursor.rowcount == 3
 
     dbcursor.execute(
-        """
-        SELECT issue from sbw_2005 WHERE
-        wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
-        significance = 'W' and status = 'NEW'
-    """
+        "SELECT issue from sbw_2005 WHERE wfo = 'JAN' and eventid = 130 and "
+        "phenomena = 'TO' and significance = 'W' and status = 'NEW'"
     )
     assert dbcursor.rowcount == 1
 

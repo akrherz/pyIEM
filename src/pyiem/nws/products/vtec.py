@@ -42,6 +42,13 @@ class VTECProduct(TextProduct):
         # product time zone will be None, add a warning
         if self.z is None:
             self.warnings.append("Could not find local timezone in text.")
+        # Special check for truncated TSUs
+        if (
+            self.afos is not None
+            and self.afos.startswith("TSU")
+            and self.unixtext.find("$$") == -1
+        ):
+            raise ValueError("Aborting processing of TSU without $$")
 
     def sql(self, txn):
         """Persist to the database
