@@ -126,13 +126,6 @@ def test_get_dbconn_failover():
             util.get_dbconn("mesosite", host="b")
 
 
-def test_get_dbconn_bad_argument():
-    """Test that we raise for a bad kwarg"""
-    with pytest.warns(UserWarning, match="database connection failure"):
-        with pytest.raises(psycopg2.ProgrammingError):
-            util.get_dbconn("mesosite", daryl="daryl")
-
-
 def test_escape():
     """Does escaping work?"""
     res = util.html_escape("Hello THERE!</p>")

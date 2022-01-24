@@ -3,10 +3,10 @@ import datetime
 import re
 
 import pandas as pd
-from pandas.io.sql import read_sql
+from pandas import read_sql
 import numpy as np
 from scipy.interpolate import interp1d
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconnstr
 
 # The bounds of the climate files we store on disk and processing
 # SOUTH is approx OKC and EAST is approx NYC
@@ -41,11 +41,11 @@ RAMPS = {
 
 def load_scenarios():
     """Build a dataframe of DEP scenarios."""
-    pgconn = get_dbconn("idep")
     df = read_sql(
-        "SELECT * from scenarios ORDER by id ASC", pgconn, index_col="id"
+        "SELECT * from scenarios ORDER by id ASC",
+        get_dbconnstr("idep"),
+        index_col="id",
     )
-    pgconn.close()
     return df
 
 

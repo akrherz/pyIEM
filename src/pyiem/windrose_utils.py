@@ -8,11 +8,11 @@ except ImportError:
 
 import numpy as np
 import pandas as pd
-from pandas.io.sql import read_sql
+from pandas import read_sql
 from metpy.units import units as mpunits
 from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import histogram, plot, WindrosePlot
-from pyiem.util import get_dbconn
+from pyiem.util import get_dbconnstr
 from pyiem.network import Table as NetworkTable
 
 WINDUNITS = {
@@ -93,7 +93,7 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
       pandas.DataFrame of the data
     """
     # Query observations
-    db = get_dbconn(database, user="nobody")
+    db = get_dbconnstr(database, user="nobody")
     rlimiter = ""
     if database == "asos":
         rlimiter = " and report_type = 2 "
@@ -104,7 +104,7 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
         f"{hourinfo['sqltext']} {rlimiter}"
     )
     if level is not None:  # HACK!
-        db = get_dbconn("raob")
+        db = get_dbconnstr("raob")
         # here comes another hack, stations with starting with _ are virtual
         stations = [station, "ZZZZ"]
         if station.startswith("_"):

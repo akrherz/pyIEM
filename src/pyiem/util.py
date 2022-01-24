@@ -52,13 +52,11 @@ class CustomFormatter(logging.Formatter):
 
     def format(self, record):
         """Return a string!"""
-        return "[%s %6.3f %s:%s %s] %s" % (
-            time.strftime("%H:%M:%S", time.localtime(record.created)),
-            record.relativeCreated / 1000.0,
-            record.filename,
-            record.lineno,
-            record.funcName,
-            record.getMessage(),
+        return (
+            f"[{time.strftime('%H:%M:%S', time.localtime(record.created))} "
+            f"{(record.relativeCreated / 1000.0):6.3f} "
+            f"{record.filename}:{record.lineno} {record.funcName}] "
+            f"{record.getMessage()}"
         )
 
 
@@ -273,7 +271,7 @@ def ncopen(ncfn, mode="r", timeout=60):
     import netCDF4
 
     if mode != "w" and not os.path.isfile(ncfn):
-        raise IOError("No such file %s" % (ncfn,))
+        raise IOError(f"No such file {ncfn}")
     sts = datetime.utcnow()
     nc = None
     while (datetime.utcnow() - sts).total_seconds() < timeout:
@@ -302,6 +300,42 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     ).replace(tzinfo=timezone.utc)
 
 
+def get_dbconnstr(name, **kwargs) -> str:
+    """Create a database connection string/URI.
+
+    Args:
+      name (str): the database name to connect to.
+      **kwargs: any additional arguments to pass to psycopg2.connect
+        user (str): the database user to connect as
+        host (str): the database host to connect to
+        port (int): the database port to connect to
+    Returns:
+      str
+    """
+    user = kwargs.get("user")
+    if user is None:
+        user = getpass.getuser()
+        # We hard code the apache user back to nobody, www-data is travis-ci
+        if user in ["apache", "www-data"]:
+            user = "nobody"
+        elif user == "akrherz":  # HACK for daryl's development, sigh
+            user = "mesonet"
+        elif user == "meteor_ldm":  # Another HACK
+            user = "ldm"
+    host = kwargs.get("host")
+    if host is None:
+        host = f"iemdb-{name}.local"
+    port = kwargs.get("port")
+    if port is None:
+        port = 5432
+
+    return (
+        f"postgresql://{user}@{host}:{port}/{name}?"
+        f"connect_timeout={kwargs.get('connect_timeout', 15)}&"
+        f"gssencmode={kwargs.get('gssencmode', 'disable')}&"
+    )
+
+
 def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     """Helper function with business logic to get a database connection
 
@@ -321,41 +355,14 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     Returns:
       psycopg2 database connection
     """
-
-    if user is None:
-        user = getpass.getuser()
-        # We hard code the apache user back to nobody, www-data is travis-ci
-        if user in ["apache", "www-data"]:
-            user = "nobody"
-        elif user == "akrherz":  # HACK for daryl's development, sigh
-            user = "mesonet"
-        elif user == "meteor_ldm":  # Another HACK
-            user = "ldm"
-    if host is None:
-        host = "iemdb-%s.local" % (database,)
-    conn_kwargs = {
-        "database": database,
-        "host": host,
-        "user": user,
-        "password": kwargs.get("password"),
-        "port": port,
-        "connect_timeout": kwargs.get("connect_timeout", 15),
-        "gssencmode": kwargs.get("gssencmode", "disable"),
-    }
-    conn_kwargs.update(kwargs)
+    dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
     attempt = 0
     while attempt < 3:
         attempt += 1
         try:
-            return psycopg2.connect(**conn_kwargs)
+            return psycopg2.connect(dsn)
         except psycopg2.ProgrammingError as exp:
-            # Likely gssencmode is not permitted
-            if "gssencmode" in conn_kwargs:
-                conn_kwargs.pop("gssencmode")
-            else:
-                warnings.warn(
-                    f"database connection failure: {exp}", stacklevel=2
-                )
+            warnings.warn(f"database connection failure: {exp}", stacklevel=2)
             if attempt == 3:
                 raise exp
         except psycopg2.OperationalError as exp:
@@ -441,16 +448,13 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
             continue
         if typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
-            netname = "network%s" % (
-                name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else "",
-            )
+            _n = name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else ""
+            netname = f"network{_n}"
             # The network variable tags along and within a non-PHP context,
             # this variable is unset, so we do some more hackery here
             ctx[netname] = fdict.get(netname, opt.get("network"))
             # Convience we load up the network metadata
-            ntname = "_nt%s" % (
-                name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else "",
-            )
+            ntname = f"_nt{_n}"
             from pyiem.network import Table as NetworkTable
             from pyiem.exceptions import NoDataFound
 
@@ -551,10 +555,10 @@ def exponential_backoff(func, *args, **kwargs):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
-            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, serr))
+            msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
         except Exception as exp:
-            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, exp))
+            msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))

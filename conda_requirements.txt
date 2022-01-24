@@ -41,5 +41,7 @@ requests
 # interpolation
 scipy
 shapely
+# pandas 1.4.0 wants this now
+sqlalchemy
 # iemre
 xarray

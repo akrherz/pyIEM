@@ -8,10 +8,10 @@ from collections import OrderedDict
 
 # third party
 import pandas as pd
-from pandas.io.sql import read_sql
+from pandas import read_sql
 
 # local
-from pyiem.util import utc, get_dbconn
+from pyiem.util import utc, get_dbconnstr
 from pyiem.exceptions import UGCParseException
 
 UGC_RE = re.compile(
@@ -152,7 +152,7 @@ def _load_from_database(pgconn=None, valid=None):
         pgconn (database engine): something pandas can query
         valid (timestamp, optional): timestamp version of database to use.
     """
-    pgconn = pgconn if pgconn is not None else get_dbconn("postgis")
+    pgconn = pgconn if pgconn is not None else get_dbconnstr("postgis")
     valid = valid if valid is not None else utc()
     return read_sql(
         "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
