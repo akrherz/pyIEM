@@ -29,6 +29,7 @@ which cross references VTEC codes to NWS WaWA map colors.
 - The NWS has an ongoing issue (2017-present) with disseminating truncated
 Tsuanmi products.  These truncated products are dups to non-truncated ones.
 Special code was added to abort processing of these when found.
+- A pandas 1.4.0 API problem was fixed.
 
 ## **1.9.0** (13 Dec 2021)
 

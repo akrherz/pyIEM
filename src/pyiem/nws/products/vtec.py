@@ -100,7 +100,7 @@ class VTECProduct(TextProduct):
                 if dbdf.empty:
                     continue
                 for ugc in segment.ugcs:
-                    dbdf.at[
+                    dbdf.loc[
                         (dbdf["ugc"] == str(ugc))
                         & (dbdf["phenomena"] == vtec.phenomena)
                         & (dbdf["significance"] == vtec.significance)
