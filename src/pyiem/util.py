@@ -300,6 +300,42 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     ).replace(tzinfo=timezone.utc)
 
 
+def get_dbconnstr(name, **kwargs) -> str:
+    """Create a database connection string/URI.
+
+    Args:
+      name (str): the database name to connect to.
+      **kwargs: any additional arguments to pass to psycopg2.connect
+        user (str): the database user to connect as
+        host (str): the database host to connect to
+        port (int): the database port to connect to
+    Returns:
+      str
+    """
+    user = kwargs.get("user")
+    if user is None:
+        user = getpass.getuser()
+        # We hard code the apache user back to nobody, www-data is travis-ci
+        if user in ["apache", "www-data"]:
+            user = "nobody"
+        elif user == "akrherz":  # HACK for daryl's development, sigh
+            user = "mesonet"
+        elif user == "meteor_ldm":  # Another HACK
+            user = "ldm"
+    host = kwargs.get("host")
+    if host is None:
+        host = f"iemdb-{name}.local"
+    port = kwargs.get("port")
+    if port is None:
+        port = 5432
+
+    return (
+        f"postgresql://{user}@{host}:{port}/{name}?"
+        f"connect_timeout={kwargs.get('connect_timeout', 15)}&"
+        f"gssencmode={kwargs.get('gssencmode', 'disable')}&"
+    )
+
+
 def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     """Helper function with business logic to get a database connection
 
@@ -319,41 +355,14 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     Returns:
       psycopg2 database connection
     """
-
-    if user is None:
-        user = getpass.getuser()
-        # We hard code the apache user back to nobody, www-data is travis-ci
-        if user in ["apache", "www-data"]:
-            user = "nobody"
-        elif user == "akrherz":  # HACK for daryl's development, sigh
-            user = "mesonet"
-        elif user == "meteor_ldm":  # Another HACK
-            user = "ldm"
-    if host is None:
-        host = f"iemdb-{database}.local"
-    conn_kwargs = {
-        "database": database,
-        "host": host,
-        "user": user,
-        "password": kwargs.get("password"),
-        "port": port,
-        "connect_timeout": kwargs.get("connect_timeout", 15),
-        "gssencmode": kwargs.get("gssencmode", "disable"),
-    }
-    conn_kwargs.update(kwargs)
+    dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
     attempt = 0
     while attempt < 3:
         attempt += 1
         try:
-            return psycopg2.connect(**conn_kwargs)
+            return psycopg2.connect(dsn)
         except psycopg2.ProgrammingError as exp:
-            # Likely gssencmode is not permitted
-            if "gssencmode" in conn_kwargs:
-                conn_kwargs.pop("gssencmode")
-            else:
-                warnings.warn(
-                    f"database connection failure: {exp}", stacklevel=2
-                )
+            warnings.warn(f"database connection failure: {exp}", stacklevel=2)
             if attempt == 3:
                 raise exp
         except psycopg2.OperationalError as exp:
