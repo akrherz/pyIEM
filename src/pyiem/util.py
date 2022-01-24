@@ -52,13 +52,11 @@ class CustomFormatter(logging.Formatter):
 
     def format(self, record):
         """Return a string!"""
-        return "[%s %6.3f %s:%s %s] %s" % (
-            time.strftime("%H:%M:%S", time.localtime(record.created)),
-            record.relativeCreated / 1000.0,
-            record.filename,
-            record.lineno,
-            record.funcName,
-            record.getMessage(),
+        return (
+            f"[{time.strftime('%H:%M:%S', time.localtime(record.created))} "
+            f"{(record.relativeCreated / 1000.0):6.3f} "
+            f"{record.filename}:{record.lineno} {record.funcName}] "
+            f"{record.getMessage()}"
         )
 
 
@@ -273,7 +271,7 @@ def ncopen(ncfn, mode="r", timeout=60):
     import netCDF4
 
     if mode != "w" and not os.path.isfile(ncfn):
-        raise IOError("No such file %s" % (ncfn,))
+        raise IOError(f"No such file {ncfn}")
     sts = datetime.utcnow()
     nc = None
     while (datetime.utcnow() - sts).total_seconds() < timeout:
@@ -332,7 +330,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         elif user == "meteor_ldm":  # Another HACK
             user = "ldm"
     if host is None:
-        host = "iemdb-%s.local" % (database,)
+        host = f"iemdb-{database}.local"
     conn_kwargs = {
         "database": database,
         "host": host,
@@ -441,16 +439,13 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
             continue
         if typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
-            netname = "network%s" % (
-                name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else "",
-            )
+            _n = name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else ""
+            netname = f"network{_n}"
             # The network variable tags along and within a non-PHP context,
             # this variable is unset, so we do some more hackery here
             ctx[netname] = fdict.get(netname, opt.get("network"))
             # Convience we load up the network metadata
-            ntname = "_nt%s" % (
-                name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else "",
-            )
+            ntname = f"_nt{_n}"
             from pyiem.network import Table as NetworkTable
             from pyiem.exceptions import NoDataFound
 
@@ -551,10 +546,10 @@ def exponential_backoff(func, *args, **kwargs):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
-            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, serr))
+            msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
         except Exception as exp:
-            msgs.append("%s/5 %s traceback: %s" % (i + 1, func.__name__, exp))
+            msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
             time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))
