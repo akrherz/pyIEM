@@ -321,8 +321,13 @@ def process_modifiers(text, diction, basevalid):
             "Y": "years",
         }
         if val in reps:
-            replace = {reps[val]: int(text[3:])}
-            diction.dv_interval = timedelta(**replace)
+            # Ensure this is an integer
+            _text = text[3:].strip()
+            if _text.isdigit():
+                replace = {reps[val]: int(_text)}
+                diction.dv_interval = timedelta(**replace)
+            else:
+                LOG.warning("DV with non-numeric value '%s'", _text)
         else:
             raise ValueError(f"Unsupported DV code {text}")
     elif text.startswith("DR"):

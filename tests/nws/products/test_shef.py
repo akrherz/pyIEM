@@ -21,6 +21,14 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
+def test_220125_dv():
+    """Test various combinations of DV that DTX came up with."""
+    prod = parser(get_test_file("SHEF/DV.txt"), utcnow=utc(2022, 1, 25, 18))
+    assert prod.data[0].dv_interval == timedelta(hours=24)
+    assert prod.data[1].dv_interval is None
+    assert prod.data[2].dv_interval is None
+
+
 def test_211230_rrmsgx():
     """Test that no exception happens with a non SHEF containing RRM."""
     prod = parser(get_test_file("SHEF/RRMSGX.txt"))
