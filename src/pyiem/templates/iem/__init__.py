@@ -22,7 +22,8 @@ def get_template(filename):
     tpl.globals["footer_year"] = datetime.date.today().year
     tpl.globals["navbardata"] = []
     if os.path.isfile(NAVBAR_JSON_FN):
-        tpl.globals["navbardata"] = json.load(open(NAVBAR_JSON_FN))["tabs"]
+        with open(NAVBAR_JSON_FN, "r", encoding="utf8") as fh:
+            tpl.globals["navbardata"] = json.load(fh)["tabs"]
     return tpl
 
 
