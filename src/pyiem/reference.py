@@ -758,11 +758,12 @@ class Wrapper:
     def _reader(self, name):
         """read dictionary."""
         res = {}
-        for line in open("%s/%s.txt" % (DATADIR, name)):
-            if line.strip() == "" or line.startswith("#"):
-                continue
-            tokens = line.strip().split(" ", 1)
-            res[tokens[0]] = tokens[1]
+        with open(os.path.join(DATADIR, f"{name}.txt"), encoding="utf8") as fh:
+            for line in fh:
+                if line.strip() == "" or line.startswith("#"):
+                    continue
+                tokens = line.strip().split(" ", 1)
+                res[tokens[0]] = tokens[1]
         return res
 
     def __getattr__(self, name):

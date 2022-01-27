@@ -9,7 +9,7 @@ import sys
 import time
 import random
 import logging
-from datetime import timezone, datetime
+from datetime import timezone, datetime, date, timedelta
 import re
 import warnings
 import getpass
@@ -405,7 +405,25 @@ def noaaport_text(text):
     return "\r\r\n".join(lines)
 
 
-def get_autoplot_context(fdict, cfg, enforce_optional=False):
+def handle_date_err(exp, value, fmt):
+    """Attempt to fix up a date string, when possible."""
+    if str(exp).find("day is out of range") == -1:
+        raise exp
+    tokens = value.split(" ")
+    datepart = tokens[0]
+    (yyyy, mm, _dd) = datepart.split("-")
+    # construct a new month date and then substract one day
+    lastday = (date(int(yyyy), int(mm), 15) + timedelta(days=20)).replace(
+        day=1
+    ) - timedelta(days=1)
+    # Reconstruct the date string
+    res = lastday.strftime("%Y-%m-%d")
+    if len(tokens) > 1:
+        res += " " + tokens[1]
+    return datetime.strptime(res, fmt)
+
+
+def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
     """Get the variables out of a dict of strings
 
     This helper for IEM autoplot gets values out of a dictionary of strings,
@@ -418,6 +436,8 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
       fdict (dictionary): what was likely provided by `cgi.FieldStorage()`
       cfg (dictionary): autoplot value of get_description
       enforce_optional (bool,optional): Should the `optional` flag be enforced
+      rectify_dates (bool,optional): Attempt to fix common date errors like
+        June 31.  Default `false`.
 
     Returns:
       dictionary of variable names and values, with proper types!
@@ -502,7 +522,17 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
             if value is not None:
                 if value.find(" ") == -1:
                     value += " 0000"
-                value = datetime.strptime(value, "%Y-%m-%d %H%M")
+                _dtfmt = "%Y-%m-%d %H%M"
+                try:
+                    value = datetime.strptime(value, "%Y-%m-%d %H%M")
+                except ValueError as exp:
+                    if kwargs.get("rectify_dates", False):
+                        value = handle_date_err(exp, value, _dtfmt)
+                    else:
+                        # If we are not rectifying dates, we just raise the
+                        # exception
+                        raise
+
         elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
@@ -512,7 +542,15 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False):
             if maxval is not None:
                 maxval = datetime.strptime(maxval, "%Y/%m/%d").date()
             if value is not None:
-                value = datetime.strptime(value, "%Y-%m-%d").date()
+                try:
+                    value = datetime.strptime(value, "%Y-%m-%d").date()
+                except ValueError as exp:
+                    if kwargs.get("rectify_dates", False):
+                        value = handle_date_err(exp, value, "%Y-%m-%d").date()
+                    else:
+                        # If we are not rectifying dates, we just raise the
+                        # exception
+                        raise
         elif typ == "vtec_ps":
             # VTEC phenomena and significance
             defaults = {}

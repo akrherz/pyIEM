@@ -219,6 +219,41 @@ def test_get_autoplot_context_network():
         util.get_autoplot_context(form, cfg)
 
 
+def test_get_autoplot_context_dates():
+    """Test how we deal with all kinds of date cruft."""
+    form = {
+        "d": "2016-06-31",
+        "d2": "2016-09-31 1314",
+    }
+    opts = dict(
+        arguments=[
+            dict(
+                type="date",
+                name="d",
+                default="2011/11/12",
+                maxval="2022/01/01",
+            ),
+            dict(type="datetime", name="d2", default="2011/11/12 1213"),
+        ]
+    )
+    ctx = util.get_autoplot_context(form, opts, rectify_dates=True)
+    assert ctx["d"] == datetime.date(2016, 6, 30)
+    assert ctx["d2"] == datetime.datetime(2016, 9, 30, 13, 14)
+    form["d"] = "2016-06-30"
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=False)
+
+    form["d"] = "2016-06-31"
+    form["d2"] = "2016-09-30"  # triggers appending 0000
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=False)
+
+    form["d"] = "2016-06-30"
+    form["d2"] = "2016-09-30 2414"
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=False)
+
+
 def test_get_autoplot_context_optional():
     """Test that we require the optional flag nomenclature."""
     form = dict(year=2011)
