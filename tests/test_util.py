@@ -227,7 +227,12 @@ def test_get_autoplot_context_dates():
     }
     opts = dict(
         arguments=[
-            dict(type="date", name="d", default="2011/11/12"),
+            dict(
+                type="date",
+                name="d",
+                default="2011/11/12",
+                maxval="2022/01/01",
+            ),
             dict(type="datetime", name="d2", default="2011/11/12 1213"),
         ]
     )
@@ -237,8 +242,14 @@ def test_get_autoplot_context_dates():
     form["d"] = "2016-06-30"
     with pytest.raises(ValueError):
         util.get_autoplot_context(form, opts, rectify_dates=False)
+
     form["d"] = "2016-06-31"
-    form["d2"] = "2016-09-30 1314"
+    form["d2"] = "2016-09-30"  # triggers appending 0000
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=False)
+
+    form["d"] = "2016-06-30"
+    form["d2"] = "2016-09-30 2414"
     with pytest.raises(ValueError):
         util.get_autoplot_context(form, opts, rectify_dates=False)
 
