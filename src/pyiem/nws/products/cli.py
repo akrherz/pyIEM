@@ -87,31 +87,31 @@ def update_iemaccess(txn, entry):
     if data.get("temperature_maximum") is not None:
         climax = int(data["temperature_maximum"])
         if climax != current["max_tmpf"]:
-            logmsg.append("MaxT O:%s N:%s" % (current["max_tmpf"], climax))
+            logmsg.append(f"MaxT O:{current['max_tmpf']} N:{climax}")
             current["max_tmpf"] = climax
 
     if data.get("temperature_minimum") is not None:
         climin = int(data["temperature_minimum"])
         if climin != current["min_tmpf"]:
-            logmsg.append("MinT O:%s N:%s" % (current["min_tmpf"], climin))
+            logmsg.append(f"MinT O:{current['min_tmpf']} N:{climin}")
             current["min_tmpf"] = climin
 
     if data.get("precip_month") is not None:
         val = data["precip_month"]
         if val != current["pmonth"]:
-            logmsg.append("PMonth O:%s N:%s" % (current["pmonth"], val))
+            logmsg.append(f"PMonth O:{current['pmonth']} N:{val}")
             current["pmonth"] = val
 
     if data.get("precip_today") is not None:
         val = data["precip_today"]
         if val != current["pday"]:
-            logmsg.append("PDay O:%s N:%s" % (current["pday"], val))
+            logmsg.append(f"PDay O:{current['pday']} N:{val}")
             current["pday"] = val
 
     if data.get("snow_today") is not None:
         val = data["snow_today"]
         if current["snow"] is None or val != current["snow"]:
-            logmsg.append("Snow O:%s N:%s" % (current["snow"], val))
+            logmsg.append(f"Snow O:{current['snow']} N:{val}")
             current["snow"] = val
 
     if not logmsg:
@@ -551,34 +551,28 @@ class CLIProduct(TextProduct):
             "product_id": self.get_product_id(),
         }
         for data in self.data:
-            msg = "High: %s Low: %s Precip: %s Snow: %s" % (
-                data["data"].get("temperature_maximum", "M"),
-                data["data"].get("temperature_minimum", "M"),
-                trace_r(data["data"].get("precip_today", "M")),
-                trace_r(data["data"].get("snow_today", "M")),
+            msg = (
+                f"High: {data['data'].get('temperature_maximum', 'M')} "
+                f"Low: {data['data'].get('temperature_minimum', 'M')} "
+                f"Precip: {trace_r(data['data'].get('precip_today','M'))} "
+                f"Snow: {trace_r(data['data'].get('snow_today', 'M'))}"
             )
-            mess = ("%s %s Climate Report: %s %s") % (
-                data["cli_station"],
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
-                url,
+            mess = (
+                f"{data['cli_station']} {data['cli_valid']:%b %-d} "
+                f"Climate Report: {msg} {url}"
             )
-            htmlmess = ('%s <a href="%s">%s Climate Report</a>: %s') % (
-                data["cli_station"],
-                url,
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
+            htmlmess = (
+                f'{data["cli_station"]} <a href="{url}">'
+                f'{data["cli_valid"]:%b %-d} Climate Report</a>: {msg}'
             )
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
                 f"network:NWSCLI::station:{data['db_station']}::"
                 f"date:{data['cli_valid'].strftime('%Y-%m-%d')}.png"
             )
-            xtra["twitter"] = ("%s %s Climate: %s %s") % (
-                data["cli_station"],
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
-                url,
+            xtra["twitter"] = (
+                f"{data['cli_station']} {data['cli_valid']:%b %-d} "
+                f"Climate: {msg} {url}"
             )
             res.append(
                 [
@@ -629,12 +623,8 @@ class CLIProduct(TextProduct):
             sql_data(self, cursor, entry)
             if not update_iemaccess(cursor, entry):
                 self.warnings.append(
-                    "IEMAccess Update failed %s %s %s"
-                    % (
-                        entry["access_network"],
-                        entry["access_station"],
-                        entry["cli_valid"],
-                    )
+                    f"IEMAccess Update failed {entry['access_network']} "
+                    f"{entry['access_station']} {entry['cli_valid']}"
                 )
 
 
