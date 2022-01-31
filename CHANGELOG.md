@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Parse `snow depth` from CLI products (#15).
+
 ### Bug Fixes
 
 - Improve robustness of `DV` SHEF encoding parsing.

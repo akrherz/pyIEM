@@ -87,32 +87,33 @@ def update_iemaccess(txn, entry):
     if data.get("temperature_maximum") is not None:
         climax = int(data["temperature_maximum"])
         if climax != current["max_tmpf"]:
-            logmsg.append("MaxT O:%s N:%s" % (current["max_tmpf"], climax))
+            logmsg.append(f"MaxT O:{current['max_tmpf']} N:{climax}")
             current["max_tmpf"] = climax
 
     if data.get("temperature_minimum") is not None:
         climin = int(data["temperature_minimum"])
         if climin != current["min_tmpf"]:
-            logmsg.append("MinT O:%s N:%s" % (current["min_tmpf"], climin))
+            logmsg.append(f"MinT O:{current['min_tmpf']} N:{climin}")
             current["min_tmpf"] = climin
 
     if data.get("precip_month") is not None:
         val = data["precip_month"]
         if val != current["pmonth"]:
-            logmsg.append("PMonth O:%s N:%s" % (current["pmonth"], val))
+            logmsg.append(f"PMonth O:{current['pmonth']} N:{val}")
             current["pmonth"] = val
 
     if data.get("precip_today") is not None:
         val = data["precip_today"]
         if val != current["pday"]:
-            logmsg.append("PDay O:%s N:%s" % (current["pday"], val))
+            logmsg.append(f"PDay O:{current['pday']} N:{val}")
             current["pday"] = val
 
-    if data.get("snow_today") is not None:
-        val = data["snow_today"]
-        if current["snow"] is None or val != current["snow"]:
-            logmsg.append("Snow O:%s N:%s" % (current["snow"], val))
-            current["snow"] = val
+    for dkey, ikey in {"snow_today": "snow", "snowdepth": "snowd"}.items():
+        if data.get(dkey) is not None:
+            val = data[dkey]
+            if current[ikey] is None or val != current[ikey]:
+                logmsg.append(f"{ikey} O:{current[ikey]} N:{val}")
+                current[ikey] = val
 
     if not logmsg:
         return True
@@ -211,7 +212,8 @@ def parse_snowfall(regime, lines, data):
             continue
         tokens = make_tokens(regime, line)
         key = tokens[0].strip()
-        if key == "SNOW DEPTH":
+        if key.startswith("SNOW DEPTH"):
+            data["snowdepth"] = get_number(tokens[1])
             continue
         key = convert_key(key)
         data[f"snow_{key}"] = get_number(tokens[1])
@@ -410,10 +412,11 @@ def sql_data(prod, cursor, data):
         snow_jul1_normal, snow_dec1_normal, snow_month_normal, precip_jun1,
         precip_jun1_normal, average_sky_cover, resultant_wind_speed,
         resultant_wind_direction, highest_wind_speed, highest_wind_direction,
-        highest_gust_speed, highest_gust_direction, average_wind_speed)
+        highest_gust_speed, highest_gust_direction, average_wind_speed,
+        snowdepth)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """,
         (
             data["db_station"],
@@ -462,6 +465,7 @@ def sql_data(prod, cursor, data):
             dd.get("highest_gust_speed"),
             dd.get("highest_gust_direction"),
             dd.get("average_wind_speed"),
+            dd.get("snowdepth"),
         ),
     )
 
@@ -551,34 +555,31 @@ class CLIProduct(TextProduct):
             "product_id": self.get_product_id(),
         }
         for data in self.data:
-            msg = "High: %s Low: %s Precip: %s Snow: %s" % (
-                data["data"].get("temperature_maximum", "M"),
-                data["data"].get("temperature_minimum", "M"),
-                trace_r(data["data"].get("precip_today", "M")),
-                trace_r(data["data"].get("snow_today", "M")),
+            msg = (
+                f"High: {data['data'].get('temperature_maximum', 'M')} "
+                f"Low: {data['data'].get('temperature_minimum', 'M')} "
+                f"Precip: {trace_r(data['data'].get('precip_today','M'))} "
+                f"Snow: {trace_r(data['data'].get('snow_today', 'M'))}"
             )
-            mess = ("%s %s Climate Report: %s %s") % (
-                data["cli_station"],
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
-                url,
+            sd = data["data"].get("snowdepth")
+            if sd is not None:
+                msg += f" Snow Depth: {sd}"
+            mess = (
+                f"{data['cli_station']} {data['cli_valid']:%b %-d} "
+                f"Climate Report: {msg} {url}"
             )
-            htmlmess = ('%s <a href="%s">%s Climate Report</a>: %s') % (
-                data["cli_station"],
-                url,
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
+            htmlmess = (
+                f'{data["cli_station"]} <a href="{url}">'
+                f'{data["cli_valid"]:%b %-d} Climate Report</a>: {msg}'
             )
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
                 f"network:NWSCLI::station:{data['db_station']}::"
                 f"date:{data['cli_valid'].strftime('%Y-%m-%d')}.png"
             )
-            xtra["twitter"] = ("%s %s Climate: %s %s") % (
-                data["cli_station"],
-                data["cli_valid"].strftime("%b %-d"),
-                msg,
-                url,
+            xtra["twitter"] = (
+                f"{data['cli_station']} {data['cli_valid']:%b %-d} "
+                f"Climate: {msg} {url}"
             )
             res.append(
                 [
@@ -629,12 +630,8 @@ class CLIProduct(TextProduct):
             sql_data(self, cursor, entry)
             if not update_iemaccess(cursor, entry):
                 self.warnings.append(
-                    "IEMAccess Update failed %s %s %s"
-                    % (
-                        entry["access_network"],
-                        entry["access_station"],
-                        entry["cli_valid"],
-                    )
+                    f"IEMAccess Update failed {entry['access_network']} "
+                    f"{entry['access_station']} {entry['cli_valid']}"
                 )
 
 
