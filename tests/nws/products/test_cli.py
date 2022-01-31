@@ -82,10 +82,12 @@ def test_issue396_snow_normal(dbcursor):
     prod = cliparser(get_test_file("CLI/CLICVG_colon.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT snow_normal from cli_data where station = 'KCVG' and "
-        "valid = '2021-02-04'"
+        "SELECT snow_normal, snowdepth from cli_data where "
+        "station = 'KCVG' and valid = '2021-02-04'"
     )
-    assert abs(dbcursor.fetchone()[0] - 0.2) < 0.01
+    row = dbcursor.fetchone()
+    assert abs(row[0] - 0.2) < 0.01
+    assert abs(row[1] - 1) < 0.01
 
 
 def test_210206_colon():
@@ -401,7 +403,7 @@ def test_141013_tracetweet():
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         "DES MOINES IA Oct 12 Climate: High: 56 "
-        "Low: 43 Precip: Trace Snow: 0.0"
+        "Low: 43 Precip: Trace Snow: 0.0 Snow Depth: 0"
         " http://localhost?pid=201410122226-KDMX-CDUS43-CLIDSM"
     )
     assert j[0][2]["twitter"] == ans
@@ -418,6 +420,7 @@ def test_141003_alaska():
     prod = factory("CLI/CLIBET.txt")
     assert prod.data[0]["data"]["temperature_maximum"] == 17
     assert prod.data[0]["data"]["snow_jul1"] == 14.4
+    assert prod.data[0]["data"]["snowdepth"] == 3
 
 
 def test_140930_negative_temps():
@@ -464,6 +467,7 @@ def test_cli2():
     assert prod.data[0]["cli_valid"] == datetime.date(2013, 8, 1)
     assert prod.data[0]["data"]["temperature_maximum"] == 89
     assert prod.data[0]["data"]["snow_month"] == 0
+    assert prod.data[0]["data"]["snowdepth"] == 0
     assert prod.data[0]["data"]["temperature_minimum_record_years"][0] == 1898
     assert prod.data[0]["data"]["snow_today"] == 0
     assert prod.data[0]["data"]["precip_jun1"] == 4.25

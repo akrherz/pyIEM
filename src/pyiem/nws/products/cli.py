@@ -108,11 +108,12 @@ def update_iemaccess(txn, entry):
             logmsg.append(f"PDay O:{current['pday']} N:{val}")
             current["pday"] = val
 
-    if data.get("snow_today") is not None:
-        val = data["snow_today"]
-        if current["snow"] is None or val != current["snow"]:
-            logmsg.append(f"Snow O:{current['snow']} N:{val}")
-            current["snow"] = val
+    for dkey, ikey in {"snow_today": "snow", "snowdepth": "snowd"}.items():
+        if data.get(dkey) is not None:
+            val = data[dkey]
+            if current[ikey] is None or val != current[ikey]:
+                logmsg.append(f"{ikey} O:{current[ikey]} N:{val}")
+                current[ikey] = val
 
     if not logmsg:
         return True
@@ -211,7 +212,8 @@ def parse_snowfall(regime, lines, data):
             continue
         tokens = make_tokens(regime, line)
         key = tokens[0].strip()
-        if key == "SNOW DEPTH":
+        if key.startswith("SNOW DEPTH"):
+            data["snowdepth"] = get_number(tokens[1])
             continue
         key = convert_key(key)
         data[f"snow_{key}"] = get_number(tokens[1])
@@ -410,10 +412,11 @@ def sql_data(prod, cursor, data):
         snow_jul1_normal, snow_dec1_normal, snow_month_normal, precip_jun1,
         precip_jun1_normal, average_sky_cover, resultant_wind_speed,
         resultant_wind_direction, highest_wind_speed, highest_wind_direction,
-        highest_gust_speed, highest_gust_direction, average_wind_speed)
+        highest_gust_speed, highest_gust_direction, average_wind_speed,
+        snowdepth)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """,
         (
             data["db_station"],
@@ -462,6 +465,7 @@ def sql_data(prod, cursor, data):
             dd.get("highest_gust_speed"),
             dd.get("highest_gust_direction"),
             dd.get("average_wind_speed"),
+            dd.get("snowdepth"),
         ),
     )
 
@@ -557,6 +561,9 @@ class CLIProduct(TextProduct):
                 f"Precip: {trace_r(data['data'].get('precip_today','M'))} "
                 f"Snow: {trace_r(data['data'].get('snow_today', 'M'))}"
             )
+            sd = data["data"].get("snowdepth")
+            if sd is not None:
+                msg += f" Snow Depth: {sd}"
             mess = (
                 f"{data['cli_station']} {data['cli_valid']:%b %-d} "
                 f"Climate Report: {msg} {url}"
