@@ -21,6 +21,19 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
+def test_dy():
+    """Test support for the DY time variable."""
+    msg = (
+        ".BR GAMMA 220202 /SAIRF/SWIRF\n"
+        "IA111  DY220202 / 100 / 2.2 : 1.8, 27 AM 210927 , 27  \n"
+        "IA112  DY2202021112 / 100 / 2.2 : 1.8, 27 AM 210927 , 27  \n"
+        ".END"
+    )
+    res = process_message_b(msg)
+    assert res[0].valid == utc(2022, 2, 2, 12)
+    assert res[2].valid == utc(2022, 2, 2, 11, 12)
+
+
 def test_220125_dv():
     """Test various combinations of DV that DTX came up with."""
     prod = parser(get_test_file("SHEF/DV.txt"), utcnow=utc(2022, 1, 25, 18))

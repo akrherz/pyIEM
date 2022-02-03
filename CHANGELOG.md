@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Improve robustness of `DV` SHEF encoding parsing.
+- Support parsing `DY` SHEF time encoding.
 
 ## **1.10.0** (24 Jan 2022)
 
