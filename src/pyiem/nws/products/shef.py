@@ -31,7 +31,7 @@ TODO List
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 from datetime import date, timezone, datetime, timedelta
 from io import StringIO
 import traceback
@@ -123,6 +123,28 @@ def parse_dc(text, basevalid):
             replacements["year"] = 2000 + int(text[:2])
         if len(text) == 12:
             replacements["year"] = int(text[:4])
+
+    return datetime24(basevalid, replacements)
+
+
+def parse_dy(text, basevalid):
+    """Convert the DY element into a timestamp."""
+    text = text.strip()
+    replacements = {}
+    # always YY
+    yy = int(text[:2])
+    replacements["year"] = (1900 if yy > 80 else 2000) + yy
+    if len(text) >= 4:
+        replacements["month"] = int(text[2:4])
+    if len(text) >= 6:
+        replacements["day"] = int(text[4:6])
+    if len(text) >= 8:
+        replacements["hour"] = int(text[6:8])
+        if len(text) >= 10:
+            replacements["minute"] = int(text[8:10])
+    else:
+        # default to 12z
+        replacements["hour"] = 12
 
     return datetime24(basevalid, replacements)
 
@@ -299,6 +321,8 @@ def process_modifiers(text, diction, basevalid):
         diction.data_created = parse_dc(text[2:], diction.valid)
     elif text.startswith("DD"):
         diction.valid = parse_dd(text[2:], diction.valid)
+    elif text.startswith("DY"):
+        diction.valid = parse_dy(text[2:], diction.valid)
     elif text.startswith("DH"):
         diction.valid = parse_dh(text[2:], diction.valid)
     elif text.startswith("DM"):
