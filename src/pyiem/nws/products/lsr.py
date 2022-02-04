@@ -56,12 +56,7 @@ class LSRProduct(TextProduct):
         """Get the URL of this product"""
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
-        return "%s#%s/%s/%s" % (
-            baseuri,
-            wfo,
-            min_time.strftime("%Y%m%d%H%M"),
-            max_time.strftime("%Y%m%d%H%M"),
-        )
+        return f"{baseuri}#{wfo}/{min_time:%Y%m%d%H%M}/{max_time:%Y%m%d%H%M}"
 
     def get_jabbers(self, uri, _uri2=None):
         """return a text and html variant for Jabber stuff"""
@@ -80,23 +75,21 @@ class LSRProduct(TextProduct):
             extra_text = ""
             if self.duplicates > 0:
                 extra_text = (
-                    ", %s out of %s reports were previously "
-                    "sent and not repeated here."
-                ) % (self.duplicates, len(self.lsrs))
-            text = "%s: %s issues Summary Local Storm Report %s %s" % (
-                wfo,
-                wfo,
-                extra_text,
-                url,
+                    f", {self.duplicates} out of {len(self.lsrs)} reports "
+                    "were previously sent and not repeated here."
+                )
+            text = (
+                f"{wfo}: {wfo} issues Summary Local Storm Report "
+                f"{extra_text} {url}"
             )
 
             html = (
-                "<p>%s issues "
-                "<a href='%s'>Summary Local Storm Report</a>%s</p>"
-            ) % (wfo, url, extra_text)
+                f"<p>{wfo} issues <a href='{url}'>"
+                f"Summary Local Storm Report</a>{extra_text}</p>"
+            )
             xtra = {
                 "product_id": self.get_product_id(),
-                "channels": "LSR%s" % (wfo,),
+                "channels": f"LSR{wfo}",
             }
             res.append([text, html, xtra])
         return res
@@ -149,7 +142,7 @@ def parse_lsr(prod, text):
     h12 = tokens[0][:-2]
     mm = tokens[0][-2:]
     ampm = tokens[1]
-    dstr = "%s:%s %s %s" % (h12, mm, ampm, lines[1][:10])
+    dstr = f"{h12}:{mm} {ampm} {lines[1][:10]}"
     lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
     lsr.assign_timezone(prod.tz, prod.z)
     # Check that we are within bounds
@@ -157,12 +150,9 @@ def parse_lsr(prod, text):
         utc() + FUTURE_THRESHOLD
     ):
         prod.warnings.append(
-            (
-                "LSR is from the future!\n"
-                "prod.valid: %s lsr.valid: %s\n"
-                "%s\n"
-            )
-            % (prod.valid, lsr.valid, text)
+            "LSR is from the future!\n"
+            f"prod.valid: {prod.valid} lsr.valid: {lsr.valid}\n"
+            f"{text}\n"
         )
         return None
 
@@ -170,9 +160,7 @@ def parse_lsr(prod, text):
 
     lsr.typetext = lines[0][12:29].strip()
     if lsr.typetext.upper() not in reference.lsr_events:
-        prod.warnings.append(
-            ("Unknown lsr.typetext |%s|\n%s") % (lsr.typetext, text)
-        )
+        prod.warnings.append(f"Unknown lsr.typetext |{lsr.typetext}|\n{text}")
         return None
 
     lsr.city = lines[0][29:53].strip()
@@ -181,15 +169,13 @@ def parse_lsr(prod, text):
     lat = float(tokens[0][:-1])
     lon = 0 - float(tokens[1][:-1])
     if lon <= -180 or lon >= 180 or lat >= 90 or lat <= -90:
-        prod.warnings.append(
-            ("Invalid Geometry Lat: %s Lon: %s\n%s") % (lat, lon, text)
-        )
+        prod.warnings.append(f"Invalid Geometry Lat: {lat} Lon: {lon}\n{text}")
         return None
     lsr.geometry = ShapelyPoint((lon, lat))
 
     lsr.consume_magnitude(lines[1][12:29].strip())
     if lsr.magnitude_f is not None and math.isnan(lsr.magnitude_f):
-        prod.warnings.append("LSR has NAN magnitude\n%s" % (text,))
+        prod.warnings.append(f"LSR has NAN magnitude\n{text}")
         return None
     lsr.county = lines[1][29:48].strip()
     if lsr.county == "":

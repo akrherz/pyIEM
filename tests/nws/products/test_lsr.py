@@ -5,6 +5,14 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
+def test_220204_bad_ice_totals():
+    """Test we don't get false positives here."""
+    prod = parser(get_test_file("LSR/LSRPAH_ice.txt"))
+    assert prod.lsrs[0].magnitude_f == 0.25
+    prod = parser(get_test_file("LSR/LSRPAH_ice2.txt"))
+    assert prod.lsrs[0].magnitude_f is None
+
+
 def test_issue406_empty():
     """Test that we emit warnings for missing counties/states."""
     text = get_test_file("LSR/LSRAJK.txt")
