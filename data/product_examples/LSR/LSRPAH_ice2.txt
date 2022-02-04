@@ -1,0 +1,22 @@
+886 
+NWUS53 KPAH 032342
+LSRPAH
+
+PRELIMINARY LOCAL STORM REPORT
+NATIONAL WEATHER SERVICE PADUCAH KY
+542 PM CST THU FEB 3 2022
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0525 PM     ICE STORM        WALTONVILLE             38.21N 89.04W
+02/03/2022                   JEFFERSON          IL   CO-OP OBSERVER   
+
+            3.8 INCHES OF SNOWFALL, SNOW DEPTH IS 3 
+            INCHES. 
+
+
+&&
+
+$$

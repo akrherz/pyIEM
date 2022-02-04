@@ -13,6 +13,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Correct for some edge cases found with parsing `ICE STORM` LSR remarks.
 - Improve robustness of `DV` SHEF encoding parsing.
 - Support parsing `DY` SHEF time encoding.
 

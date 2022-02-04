@@ -8,7 +8,7 @@ from pyiem.util import html_escape
 
 ICE_ACCUM_V0 = re.compile(r"(\d+)/(\d+)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
 ICE_ACCUM_V1 = re.compile(
-    r"(0\.\d|\.\d|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
+    r"(0\.\d|\.\d+|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
 )
 ICE_ACCUM_V2 = re.compile(
     r"(THREE QUARTERS|ONE QUARTER|ONE HALF|HALF|ONE THIRD|QUARTER|ONE|"
@@ -39,7 +39,7 @@ DELAYED_THRESHOLD = timedelta(hours=12)
 
 def _icestorm_remark(remark):
     """Glean a magnitude from an ICE STORM event."""
-    if remark is None:
+    if remark is None or remark.find("SNOW DEPTH") > -1:
         return None
     # Remove things that confuse logic
     replaces = [
@@ -62,6 +62,7 @@ def _icestorm_remark(remark):
         return min(mags)
 
     tokens = ICE_ACCUM_V1.findall(remark)
+    print(tokens)
     mags = []
     for _m, _t, _u in tokens:
         if _t.startswith("TENTH"):
