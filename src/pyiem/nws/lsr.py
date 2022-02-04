@@ -229,15 +229,10 @@ class LSR:
             prefix = "[Delayed Report] "
             timefmt = "On %b %-d, at %-I:%M %p"
         magstr = self.mag_string()
-        tweet = ("%s%s %s, %s [%s Co, %s] %s reports %s") % (
-            prefix,
-            self.valid.strftime(timefmt),
-            self.z,
-            _mylowercase(self.city),
-            self.county.title(),
-            self.state,
-            self.source,
-            magstr,
+        tweet = (
+            f"{prefix}{self.valid.strftime(timefmt)} {self.z}, "
+            f"{_mylowercase(self.city)} [{self.county.title()} Co, "
+            f"{self.state}] {self.source} reports {magstr}"
         )
         remark = ""
         if self.remark is not None:
@@ -256,41 +251,26 @@ class LSR:
         xtra = dict(
             product_id=self.product.get_product_id(),
             channels=_generate_channels(self),
-            geometry="POINT(%s %s)" % (self.get_lon(), self.get_lat()),
+            geometry=f"POINT({self.get_lon()} {self.get_lat()})",
             ptype=self.get_dbtype(),
             valid=self.utcvalid.strftime("%Y%m%dT%H:%M:00"),
             category="LSR",
-            twitter="%s %s" % (tweet, url),
+            twitter=f"{tweet} {url}",
             lat=str(self.get_lat()),
             long=str(self.get_lon()),
         )
         html = (
-            '<p>%s%s [%s Co, %s] %s <a href="%s">reports %s</a> at '
-            "%s %s -- %s</p>"
-        ) % (
-            prefix,
-            _mylowercase(self.city),
-            self.county.title(),
-            self.state,
-            self.source,
-            url,
-            magstr,
-            self.valid.strftime(time_fmt),
-            self.z,
-            html_escape(remark),
+            f"<p>{prefix}{_mylowercase(self.city)} [{self.county.title()} Co, "
+            f'{self.state}] {self.source} <a href="{url}">reports {magstr}'
+            f"</a> at {self.valid.strftime(time_fmt)} {self.z} -- "
+            f"{html_escape(remark)}</p>"
         )
 
-        plain = "%s%s [%s Co, %s] %s reports %s at %s %s -- %s %s" % (
-            prefix,
-            _mylowercase(self.city),
-            self.county.title(),
-            self.state,
-            self.source,
-            magstr,
-            self.valid.strftime(time_fmt),
-            self.z,
-            html_escape(remark),
-            url,
+        plain = (
+            f"{prefix}{_mylowercase(self.city)} [{self.county.title()} Co, "
+            f"{self.state}] {self.source} reports {magstr} at "
+            f"{self.valid.strftime(time_fmt)} {self.z} -- "
+            f"{html_escape(remark)} {url}"
         )
         return [plain, html, xtra]
 
@@ -309,34 +289,27 @@ class LSR:
         """Return a string representing the magnitude and units"""
         mag_long = str(self.typetext)
         if self.magnitude_units == "MPH":
-            mag_long = "%s of %s%.0f %s" % (
-                mag_long,
-                self.magnitude_qualifier,
-                self.magnitude_f,
-                self.magnitude_units,
+            mag_long = (
+                f"{mag_long} of {self.magnitude_qualifier}"
+                f"{self.magnitude_f:.0f} {self.magnitude_units}"
             )
         elif (
             self.typetext == "HAIL"
             and self.magnitude_f is not None
-            and ("%.2f" % (self.magnitude_f,)) in reference.hailsize
+            and f"{self.magnitude_f:.2f}" in reference.hailsize
         ):
-            haildesc = reference.hailsize["%.2f" % (self.magnitude_f,)]
-            mag_long = "%s of %s size (%s%.2f %s)" % (
-                mag_long,
-                haildesc,
-                self.magnitude_qualifier,
-                self.magnitude_f,
-                self.magnitude_units,
+            haildesc = reference.hailsize[f"{self.magnitude_f:.2f}"]
+            mag_long = (
+                f"{mag_long} of {haildesc} size ({self.magnitude_qualifier}"
+                f"{self.magnitude_f:.2f} {self.magnitude_units})"
             )
         elif self.magnitude_units == "F":
             # Report Tornados as EF scale and not F
-            mag_long = "%s of E%s" % (mag_long, self.magnitude_str)
+            mag_long = f"{mag_long} of E{self.magnitude_str}"
         elif self.magnitude_f:
-            mag_long = "%s of %.2f %s" % (
-                mag_long,
-                self.magnitude_f,
-                self.magnitude_units,
+            mag_long = (
+                f"{mag_long} of {self.magnitude_f:.2f} {self.magnitude_units}"
             )
         elif self.magnitude_str:
-            mag_long = "%s of %s" % (mag_long, self.magnitude_str)
+            mag_long = f"{mag_long} of {self.magnitude_str}"
         return mag_long
