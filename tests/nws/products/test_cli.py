@@ -227,7 +227,7 @@ def test_180208_issue56_tweetmissing():
     prod = factory("CLI/CLIFFC.txt")
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "PEACHTREE CITY Oct 3 Climate: High: 79 Low: 67 Precip: 0.87 "
+        'PEACHTREE CITY Oct 3 Climate: High: 79 Low: 67 Precip: 0.87" '
         "Snow: Missing "
         "http://localhost?pid=201410032032-KFFC-CDUS42-CLIFFC"
     )
@@ -403,7 +403,7 @@ def test_141013_tracetweet():
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         "DES MOINES IA Oct 12 Climate: High: 56 "
-        "Low: 43 Precip: Trace Snow: 0.0 Snow Depth: 0"
+        'Low: 43 Precip: Trace Snow: 0.0" Snow Depth: 0"'
         " http://localhost?pid=201410122226-KDMX-CDUS43-CLIDSM"
     )
     assert j[0][2]["twitter"] == ans
@@ -455,7 +455,7 @@ def test_cli():
     j = prod.get_jabbers("http://localhost")
     ans = (
         "JUNEAU Jun 30 Climate Report: High: 75 "
-        "Low: 52 Precip: Trace Snow: M "
+        "Low: 52 Precip: Trace Snow: Missing "
         "http://localhost?pid=201307010036-PAJK-CDAK47-CLIJNU"
     )
     assert j[0][0] == ans
