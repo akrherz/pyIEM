@@ -130,11 +130,11 @@ def update_iemaccess(txn, entry):
 
 def trace_r(val):
     """Convert our value back into meaningful string"""
-    if val is None:
+    if val is None or val == "M":
         return "Missing"
     if val == TRACE_VALUE:
         return "Trace"
-    return val
+    return f'{val}"'
 
 
 def get_number_year(text):
@@ -563,7 +563,7 @@ class CLIProduct(TextProduct):
             )
             sd = data["data"].get("snowdepth")
             if sd is not None:
-                msg += f" Snow Depth: {sd}"
+                msg += f" Snow Depth: {trace_r(sd)}"
             mess = (
                 f"{data['cli_station']} {data['cli_valid']:%b %-d} "
                 f"Climate Report: {msg} {url}"
