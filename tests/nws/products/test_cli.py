@@ -27,6 +27,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_clippg3():
+    """Test another format from PPG."""
+    prod = cliparser(get_test_file("CLI/CLIPPG3.txt"))
+    assert prod.data[0]["data"]["temperature_maximum_record_years"][0] == 2009
+    assert prod.data[0]["data"]["temperature_maximum_time"] == "0150 PM"
+
+
 def test_mintempyear_failure():
     """Test that we can handle some GIGO here."""
     text = get_test_file("CLI/CLISAD.txt")
