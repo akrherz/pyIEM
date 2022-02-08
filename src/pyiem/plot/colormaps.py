@@ -28,15 +28,10 @@ def _register_cmap(cmap):
 
 def _load_local_cmap_colors(name):
     """Return list of colors for this cmap from local file."""
-    return (
-        open(
-            os.path.join(DATADIR, "..", "cmap", f"{name}.txt"),
-            encoding="utf8",
-        )
-        .read()
-        .strip()
-        .split("\n")
-    )
+    fn = os.path.join(DATADIR, "..", "cmap", f"{name}.txt")
+    with open(fn, encoding="utf8") as fh:
+        res = fh.read().strip().split("\n")
+    return res
 
 
 def get_cmap(name, *args, **kwargs):
