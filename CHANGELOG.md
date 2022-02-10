@@ -15,6 +15,7 @@ All notable changes to this library are documented in this file.
 
 - Correct for some edge cases found with parsing `ICE STORM` LSR remarks.
 - Improve robustness of `DV` SHEF encoding parsing.
+- Remove some abiquity with how the `windrose` plot legend specifies ranges.
 - Support parsing `DY` SHEF time encoding.
 
 ## **1.10.0** (24 Jan 2022)

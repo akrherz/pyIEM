@@ -53,7 +53,7 @@ class WindrosePlot:
         norm = mpcolors.BoundaryNorm(np.arange(len(bins.m) + 1), cmap.N)
         for col in range(self.table.shape[1]):
             if col < (bins.m.shape[0] - 1):
-                label = f"{bins.m[col]} - {bins.m[col + 1]}"
+                label = f"{bins.m[col]} - {(bins.m[col + 1] - 0.1):.1f}"
             else:
                 label = f"{bins.m[col]}+"
             self.ax.bar(
