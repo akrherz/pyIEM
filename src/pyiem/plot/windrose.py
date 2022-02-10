@@ -1,4 +1,5 @@
 """A WindrosePlot."""
+# pylint: disable=not-callable
 import os
 
 import numpy as np
@@ -81,8 +82,10 @@ class WindrosePlot:
             columnspacing=0.9,
             handletextpad=0.75,
             # Ugly hack here due to aliasing in pint for mph
-            title="Wind Speed [%s]"
-            % ("mph" if bins.units == units("mph") else bins.units,),
+            title=(
+                "Wind Speed "
+                f"[{'mph' if bins.units == units('mph') else bins.units}]"
+            ),
         )
 
     def plot_calm(self):
@@ -94,7 +97,7 @@ class WindrosePlot:
         self.ax.text(
             0.5,
             0.5,
-            "Calm\n%.1f%%" % (self.calm_percent.m,),
+            f"Calm\n{self.calm_percent.m:.1f}%",
             ha="center",
             va="center",
             transform=self.ax.transAxes,
@@ -103,7 +106,7 @@ class WindrosePlot:
     def draw_logo(self):
         """Brand the plot."""
         datadir = os.sep.join([os.path.dirname(__file__), "..", "data"])
-        im = mpimage.imread("%s/%s" % (datadir, "logo.png"))
+        im = mpimage.imread(f"{datadir}/logo.png")
         plt.figimage(im, 10, 735)
 
     def draw_arrows(self):
