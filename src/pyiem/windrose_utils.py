@@ -1,10 +1,11 @@
 """util script to call `windrose` package"""
+from calendar import month_abbr
 from datetime import datetime, timezone
 
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 
 import numpy as np
 import pandas as pd
@@ -12,7 +13,7 @@ from pandas import read_sql
 from metpy.units import units as mpunits
 from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import histogram, plot, WindrosePlot
-from pyiem.util import get_dbconnstr
+from pyiem.util import get_dbconnstr, utc
 from pyiem.network import Table as NetworkTable
 
 WINDUNITS = {
@@ -59,19 +60,13 @@ def _get_timeinfo(arr, datepart, fullsize, tzname):
     """
     sql = ""
     lbl = "All included"
+    te = "" if tzname is None else f" at time zone '{tzname}'"
     if len(arr) == 1:
-        sql = " and extract(%s from valid%s) = %s " % (
-            datepart,
-            "" if tzname is None else " at time zone '%s'" % (tzname,),
-            arr[0],
-        )
+        sql = f" and extract({datepart} from valid{te}) = {arr[0]} "
         lbl = str(tuple(arr))
     elif len(arr) < fullsize:
-        sql = (" and extract(%s from valid%s) in %s ") % (
-            datepart,
-            "" if tzname is None else " at time zone '%s'" % (tzname,),
-            (str(tuple(arr))).replace("'", ""),
-        )
+        ta = str(tuple(arr)).replace("'", "")
+        sql = f" and extract({datepart} from valid{te}) in {ta} "
         lbl = str(tuple(arr))
     return dict(sqltext=sql, labeltext=lbl)
 
@@ -116,21 +111,14 @@ def _get_data(station, database, sts, ets, monthinfo, hourinfo, level):
                 .strip()
                 .split(" ")
             )
-        sql = """SELECT p.smps * 1.94384 as sknt, p.drct,
+        sql = f"""SELECT p.smps * 1.94384 as sknt, p.drct,
         f.valid at time zone 'UTC' as valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
-        f.station in %s and p.pressure = %s and p.smps is not null
-        and p.drct is not null and valid >= '%s' and valid < '%s'
-        %s
-        %s
-        """ % (
-            str(tuple(stations)),
-            level,
-            sts,
-            ets,
-            monthinfo["sqltext"],
-            hourinfo["sqltext"],
-        )
+        f.station in {str(tuple(stations))} and p.pressure = {level} and
+        p.smps is not null
+        and p.drct is not null and valid >= '{sts}' and valid < '{ets}'
+        {monthinfo['sqltext']} {hourinfo['sqltext']}
+        """
     df = read_sql(sql, db, index_col=None)
     if not df.empty:
         # Make valid column timezone aware
@@ -184,23 +172,23 @@ def _make_textresult(
     calm_percent, dir_centers, table = histogram(
         speed, direction, bins, nsector
     )
-    res = ("# Windrose Data Table (Percent Frequency) " "for %s (%s)\n") % (
-        sname if sname is not None else "((%s))" % (station,),
-        station,
+    sn = sname if sname is not None else f"(({station}))"
+    res = (
+        "# Windrose Data Table (Percent Frequency) " f"for {sn} ({station})\n"
     )
-    res += ("# Observations Used/Missing/Total: %s/%s/%s\n") % (
-        len(df2.index),
-        len(df.index) - len(df2.index),
-        len(df.index),
+    res += (
+        f"# Observations Used/Missing/Total: {len(df2.index)}/"
+        f"{len(df.index) - len(df2.index)}/{len(df.index)}\n"
     )
     res += f"# {_time_domain_string(df, tzname)}\n"
-    res += "# Hour Limiter: %s\n" % (hourinfo["labeltext"],)
-    res += "# Month Limiter: %s\n" % (monthinfo["labeltext"],)
-    res += "# Wind Speed Units: %s\n" % (wu["label"],)
+    res += f"# Hour Limiter: {hourinfo['labeltext']}\n"
+    res += f"# Month Limiter: {monthinfo['labeltext']}\n"
+    res += f"# Wind Speed Units: {wu['label']}\n"
     if level is not None:
-        res += "# RAOB Pressure (hPa) Level: %s\n" % (level,)
-    res += ("# Generated %s UTC, contact: akrherz@iastate.edu\n") % (
-        datetime.utcnow().strftime("%d %b %Y %H:%M"),
+        res += f"# RAOB Pressure (hPa) Level: {level}\n"
+    res += (
+        f"# Generated {utc():%d %b %Y %H:%M} UTC, "
+        "contact: akrherz@iastate.edu\n"
     )
     res += "# First value in table is CALM\n"
     cols = ["Direction", "Calm"]
@@ -209,24 +197,21 @@ def _make_textresult(
         maxval = (
             "+"
             if i == bins.m.shape[0] - 1
-            else " %4.1f" % (bins.m[i + 1] - 0.1,)
+            else f" {(bins.m[i + 1] - 0.1):4.1f}"
         )
-        cols.append("%4.1f%s" % (val, maxval))
+        cols.append(f"{val:4.1f}{maxval}")
 
     delta = dir_centers.m[1] - dir_centers.m[0]
-    res += ",".join(["%9s" % (c,) for c in cols]) + "\n"
+    res += ",".join([f"{c:9s}" for c in cols]) + "\n"
     for i, val in enumerate(dir_centers.m):
         minval = val - delta / 2.0
         if minval < 0:
             minval += 360.0
         maxval = np.min([360, val + delta / 2.0 - 1])
-        res += "%03i-%03i  ,%9s," % (
-            minval,
-            maxval,
-            np.round(calm_percent.m, 2) if i == 0 else "",
-        )
+        ll = np.round(calm_percent.m, 2) if i == 0 else ""
+        res += f"{minval:03.0f}-{maxval:03.0f}  ,{str(ll):9s},"
         res += ",".join(
-            ["%9.3f" % (table.m[i, j],) for j in range(bins.m.shape[0])]
+            [f"{table.m[i, j]:9.3f}" for j in range(bins.m.shape[0])]
         )
         res += "\n"
     return res
@@ -242,10 +227,9 @@ def _time_domain_string(df, tzname):
         ets = ets.astimezone(ZoneInfo(tzname))
     if tzname == "UTC":
         timeformat = "%d %b %Y %H:%M"
-    return "%s - %s %s" % (
-        sts.strftime(timeformat),
-        ets.strftime(timeformat),
-        "" if tzname is None else tzname,
+    return (
+        f"{sts.strftime(timeformat)} - {ets.strftime(timeformat)} "
+        f"{'' if tzname is None else tzname}"
     )
 
 
@@ -320,45 +304,45 @@ def _make_plot(
         tlimit = ""
     if len(hours) < 24:
         if len(hours) > 4:
-            tlimit += "%s-%s" % (
-                datetime(2000, 1, 1, hours[0]).strftime("%-I %p"),
-                datetime(2000, 1, 1, hours[-1]).strftime("%-I %p"),
+            tlimit += (
+                f"{datetime(2000, 1, 1, hours[0]):%-I %p}-"
+                f"{datetime(2000, 1, 1, hours[-1]):%-I %p}"
             )
         else:
             for h in hours:
-                tlimit += "%s," % (datetime(2000, 1, 1, h).strftime("%-I %p"),)
+                tlimit += f"{datetime(2000, 1, 1, h):%-I %p},"
     if len(months) < 12:
         for h in months:
-            tlimit += "%s," % (datetime(2000, h, 1).strftime("%b"),)
+            tlimit += f"{month_abbr[h]},"
     if tlimit != "":
         tlimit += "]"
-    label = ("[%s] %s%s\n" "Windrose Plot %s\n" "Time Bounds: %s") % (
-        station,
-        sname if sname is not None else "((%s))" % (station,),
-        "" if level is None else " @%s hPa" % (level,),
-        tlimit,
-        _time_domain_string(df, tzname),
+    sn = sname if sname is not None else f"(({station}))"
+    sl = "" if level is None else f" @{level} hPa"
+    label = (
+        f"[{station}] {sn}{sl}\n"
+        f"Windrose Plot {tlimit}\n"
+        f"Time Bounds: {_time_domain_string(df, tzname)}"
     )
     fitbox(wp.fig, label, 0.14, 0.99, 0.92, 0.99, ha="left")
-    label = ("Summary\nobs count: %s\nMissing: %s\nAvg Speed: %.1f %s") % (
-        len(df.index),
-        len(df.index) - len(df2.index),
-        speed.m.mean(),
-        units,
+    label = (
+        "Summary\n"
+        f"obs count: {len(df.index)}\n"
+        f"Missing: {len(df.index) - len(df2.index)}\n"
+        f"Avg Speed: {speed.m.mean():.1f} {units}"
     )
     wp.fig.text(0.96, 0.11, label, ha="right", fontsize=14)
     if not kwargs.get("nogenerated", False):
         wp.fig.text(
             0.02,
             0.1,
-            "Generated: %s" % (datetime.now().strftime("%d %b %Y"),),
+            f"Generated: {utc():%d %b %Y}",
             verticalalignment="bottom",
             fontsize=14,
         )
     # Denote the direction blowing from
-    lbl = ("Calm values are < %.1f %s\nArrows indicate wind direction.") % (
-        bins.m[0],
-        units,
+    lbl = (
+        f"Calm values are < {bins.m[0]:.1f} {units}\n"
+        "Arrows indicate wind direction."
     )
     wp.fig.text(0.02, 0.125, lbl, va="bottom")
 

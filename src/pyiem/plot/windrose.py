@@ -1,14 +1,15 @@
 """A WindrosePlot."""
-import os
+# pylint: disable=not-callable
 
 import numpy as np
 from metpy.units import units
-import matplotlib.image as mpimage
 import matplotlib.colors as mpcolors
 from matplotlib.ticker import FormatStrFormatter
-from matplotlib.projections.polar import PolarAxes
-from pyiem.plot.use_agg import plt
-from pyiem.reference import Z_OVERLAY2
+
+# Local
+from ..reference import Z_OVERLAY2
+from .layouts import figure
+from .util import update_kwargs_apctx
 
 LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 COLORS = ["#012cff", "#00d5f7", "#7cfd7f", "#fde801", "#ff4503", "#7e0100"]
@@ -17,21 +18,44 @@ COLORS = ["#012cff", "#00d5f7", "#7cfd7f", "#fde801", "#ff4503", "#7e0100"]
 class WindrosePlot:
     """A plot that has a single windrose on it."""
 
+    @update_kwargs_apctx
     def __init__(self, **kwargs):
-        """Construct a WindrosePlot."""
-        self.fig = plt.figure(
-            figsize=(8, 8), dpi=100, facecolor="w", edgecolor="w"
-        )
-        rect = [0.12, 0.12, 0.76, 0.76]
-        self.ax = PolarAxes(
-            self.fig, rect, theta_offset=np.pi / 2.0, theta_direction=-1
+        """Construct a WindrosePlot.
+
+        Note that `matplotlib` hard codes a `C` anchor for the axes, so the
+        axes needs to be moved later, if necessary.  If you pass a `figsize`
+        that is square, the legend will be placed at the bottom of the image.
+        Everything else will place it in the top left corner.
+
+        Args:
+            figsize (float, float): Image figure size in inches.
+            rect ([x,y,width,height]): NDC axes rectangle.
+            rmax (float): Maximum radius of the windrose.
+        """
+        rect = kwargs.pop("rect", None)
+        figsize = kwargs.pop("figsize", [8, 8])
+        self.legend_anchor = "S"
+        if figsize[0] != figsize[1]:
+            if rect is None:
+                rect = [0.1, 0.07, 0.5, 0.79]  # slide to the left
+            # Non-square, place legend in top right
+            self.legend_anchor = "NW"
+        if rect is None:
+            rect = [0, 0.12, 1, 0.76]
+        self.rmax = kwargs.pop("rmax", None)
+        self.fig = figure(figsize=figsize, **kwargs)
+        # The vertical is the limiting factor here, since we need room for
+        # the title and legend at the bottom.
+        self.ax = self.fig.add_axes(
+            rect,
+            projection="polar",
+            theta_offset=np.pi / 2.0,
+            theta_direction=-1,
         )
         self.ax.set_xticks(np.arange(0, 2.0 * np.pi - 0.01, 2.0 * np.pi / 8.0))
         self.ax.set_xticklabels(LABELS)
-        self.fig.add_axes(self.ax)
         self.table = None
         self.calm_percent = None
-        self.rmax = kwargs.get("rmax")
 
     def barplot(self, direction, speed, bins, nsector, **kwargs):
         """Do the bar plotting work.
@@ -52,7 +76,7 @@ class WindrosePlot:
         norm = mpcolors.BoundaryNorm(np.arange(len(bins.m) + 1), cmap.N)
         for col in range(self.table.shape[1]):
             if col < (bins.m.shape[0] - 1):
-                label = f"{bins.m[col]} - {bins.m[col + 1]}"
+                label = f"{bins.m[col]} - {(bins.m[col + 1] - 0.1):.1f}"
             else:
                 label = f"{bins.m[col]}+"
             self.ax.bar(
@@ -72,17 +96,22 @@ class WindrosePlot:
         # Append a % on the label
         self.ax.yaxis.set_major_formatter(FormatStrFormatter("%.1f%%"))
         # Draw Legend
+        anchor = [0.5, -0.10]
+        if self.legend_anchor == "NW":
+            anchor = [-0.09, 0.9]
         self.ax.legend(
-            bbox_to_anchor=(0.01, -0.15, 0.98, 0.09),
+            bbox_to_anchor=anchor,
             loc="center",
-            ncol=6,
+            ncol=1 if self.legend_anchor == "NW" else 6,
             fontsize=10,
             mode=None,
-            columnspacing=0.9,
-            handletextpad=0.75,
+            columnspacing=0.8,
+            handletextpad=0.65,
             # Ugly hack here due to aliasing in pint for mph
-            title="Wind Speed [%s]"
-            % ("mph" if bins.units == units("mph") else bins.units,),
+            title=(
+                f"{'' if self.legend_anchor == 'NW' else 'Wind '}Speed "
+                f"[{'mph' if bins.units == units('mph') else bins.units}]"
+            ),
         )
 
     def plot_calm(self):
@@ -94,7 +123,7 @@ class WindrosePlot:
         self.ax.text(
             0.5,
             0.5,
-            "Calm\n%.1f%%" % (self.calm_percent.m,),
+            f"Calm\n{self.calm_percent.m:.1f}%",
             ha="center",
             va="center",
             transform=self.ax.transAxes,
@@ -102,9 +131,10 @@ class WindrosePlot:
 
     def draw_logo(self):
         """Brand the plot."""
-        datadir = os.sep.join([os.path.dirname(__file__), "..", "data"])
-        im = mpimage.imread("%s/%s" % (datadir, "logo.png"))
-        plt.figimage(im, 10, 735)
+        raise DeprecationWarning(
+            "This API is no longer used, pass logo={iem,dep,None} to the "
+            "constructor instead."
+        )
 
     def draw_arrows(self):
         """Place arrows on the border."""
@@ -172,6 +202,7 @@ def histogram(speed, direction, bins, nsector):
     return calm_percent, dir_centers * units("degree"), table
 
 
+@update_kwargs_apctx
 def plot(direction, speed, **kwargs):
     """Create a WindrosePlot, add bars and other standard things.
 
@@ -187,13 +218,14 @@ def plot(direction, speed, **kwargs):
     Returns:
         WindrosePlot
     """
-    wp = WindrosePlot(**kwargs)
-    bins = kwargs.get("bins")
+    bins = kwargs.pop("bins", None)
     if bins is None:
         bins = np.array([2, 5, 10, 20]) * units("mph")
-    nsector = kwargs.get("nsector", 8)
-    wp.barplot(direction, speed, bins, nsector, cmap=kwargs.get("cmap"))
+    nsector = kwargs.pop("nsector", 8)
+    cmap = kwargs.pop("cmap", None)
+    # kwargs gets passed verbatim to `pyiem.plot.layouts.figure`
+    wp = WindrosePlot(**kwargs)
+    wp.barplot(direction, speed, bins, nsector, cmap=cmap)
     wp.plot_calm()
     wp.draw_arrows()
-    wp.draw_logo()
     return wp
