@@ -44,7 +44,7 @@ def test_220125_dv():
 
 def test_211230_rrmsgx():
     """Test that no exception happens with a non SHEF containing RRM."""
-    prod = parser(get_test_file("SHEF/RRMSGX.txt"))
+    prod = parser(get_test_file("SHEF/RRMSGX.txt"), utcnow=utc(2021, 12, 30))
     assert not prod.data
 
 
