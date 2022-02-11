@@ -7,6 +7,9 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Deprecate windrose plot `draw_logo` as the constructor can now handle this
+within the standardized `figure` constructor.
+
 ### New Features
 
 - Parse `snow depth` from CLI products (#15).
