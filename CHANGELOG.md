@@ -12,6 +12,7 @@ within the standardized `figure` constructor.
 
 ### New Features
 
+- Add `util.get_sqlalchemy_conn` helper to reduce IEM biolerplate.
 - Parse `snow depth` from CLI products (#15).
 
 ### Bug Fixes
