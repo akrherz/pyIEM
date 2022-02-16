@@ -4,6 +4,7 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
+from contextlib import contextmanager
 import os
 import sys
 import time
@@ -23,6 +24,7 @@ from psycopg2.extensions import register_adapter, AsIs
 import numpy as np
 from metpy.units import units, masked_array
 import requests
+from sqlalchemy import create_engine
 
 # NB: some third party stuff is expensive to import, so let us be lazy
 
@@ -372,6 +374,26 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
                 f"database connection failure: {exp}, trying again",
                 stacklevel=2,
             )
+
+
+@contextmanager
+def get_sqlalchemy_conn(text, **kwargs):
+    """An auto-disposing sqlalchemy context-manager helper.
+
+    This is used for when we really do not want to manage having pools of
+    database connections open.  So this isn't something that is fast!
+
+    Args:
+        text (str): the database to connect to, passed to get_dbconnstr
+        **kwargs: any additional arguments to pass to get_dbconnstr
+    """
+    engine = create_engine(get_dbconnstr(text, **kwargs))
+    try:
+        # Unsure if this is trouble or not.
+        with engine.connect() as conn:
+            yield conn
+    finally:
+        engine.dispose()
 
 
 def noaaport_text(text):

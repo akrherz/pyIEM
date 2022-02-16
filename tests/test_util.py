@@ -23,6 +23,12 @@ def cursor():
     return util.get_dbconn("mesosite").cursor()
 
 
+def test_get_sqlalchemy():
+    """Test that we can do a contextmanager with this API."""
+    with util.get_sqlalchemy_conn("coop") as conn:
+        assert conn is not None
+
+
 def test_insert_nan(cursor):
     """Test that we properly insert NaN values as nulls."""
     vals = np.array([0, np.nan, 10], dtype=np.float64)
