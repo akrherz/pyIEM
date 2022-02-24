@@ -27,6 +27,7 @@ class SHEFElement(BaseModel):
     """A PEDTSEP Element."""
 
     station: str = Field(...)
+    basevalid: datetime = Field(...)  # Prevent multiple DH24 from trouble
     valid: datetime = Field(...)
     dv_interval: timedelta = Field(None)  # DV
     physical_element: str = Field(None)  # PE

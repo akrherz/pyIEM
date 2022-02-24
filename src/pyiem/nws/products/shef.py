@@ -192,7 +192,7 @@ def parse_station_valid(text, utcnow):
       utcnow (datetime): The default time.
 
     Returns:
-      str, datetime, list
+      str, datetime, datetime, list
     """
     tokens = text.split()
     station = tokens[1]
@@ -202,7 +202,7 @@ def parse_station_valid(text, utcnow):
     if all(x.isalpha() for x in timestamp):
         raise InvalidSHEFEncoding(f"3.2 No timestamp in '{text}'")
     # Ensure that the timestamp is all numbers
-    valid = make_date(timestamp, utcnow)
+    basevalid = make_date(timestamp, utcnow)
     # 4.1.4 Timezone is optional, default to Z
     if len(tokens) >= 4 and tokens[3] in TIMEZONES:
         tzinfo = ZoneInfo(TIMEZONES[tokens[3]])
@@ -210,22 +210,23 @@ def parse_station_valid(text, utcnow):
     else:
         tzinfo = timezone.utc
         startidx = 3
-    valid = datetime24(valid, {"tzinfo": tzinfo})
+    basevalid = datetime24(basevalid, {"tzinfo": tzinfo})
     extra = []
     # Look to see what we have here, saving off extra things we can not parse
     if len(tokens) == startidx:
         replacements = {"hour": 12 if tzinfo == timezone.utc else 0}
-        valid = datetime24(valid, replacements)
-        return station, valid, extra
+        basevalid = datetime24(basevalid, replacements)
+        return station, basevalid, basevalid, extra
     workdone = False
+    valid = basevalid
     for token in tokens[startidx:]:
         pe = token[:2]
         # Default replacement from above
         if pe.startswith("DH"):
-            valid = parse_dh(token[2:], valid)
+            valid = parse_dh(token[2:], basevalid)
             workdone = True
         elif pe.startswith("DM"):
-            valid = parse_dm(token[2:], valid)
+            valid = parse_dm(token[2:], basevalid)
             workdone = True
         else:
             extra.append(token)
@@ -234,7 +235,8 @@ def parse_station_valid(text, utcnow):
         replacements = {"tzinfo": tzinfo}
         replacements["hour"] = 12 if tzinfo == timezone.utc else 0
         valid = datetime24(valid, replacements)
-    return station, valid, extra
+        basevalid = valid
+    return station, basevalid, valid, extra
 
 
 def process_di(text):
@@ -321,16 +323,21 @@ def process_modifiers(text, diction, basevalid):
         diction.data_created = parse_dc(text[2:], diction.valid)
     elif text.startswith("DD"):
         diction.valid = parse_dd(text[2:], diction.valid)
+        diction.basevalid = diction.valid
     elif text.startswith("DY"):
         diction.valid = parse_dy(text[2:], diction.valid)
+        diction.basevalid = diction.valid
     elif text.startswith("DH"):
-        diction.valid = parse_dh(text[2:], diction.valid)
+        # Careful here, want DH to modify the basevalid and not current valid
+        diction.valid = parse_dh(text[2:], diction.basevalid)
     elif text.startswith("DM"):
         diction.valid = parse_dm(text[2:], diction.valid)
+        diction.basevalid = diction.valid
     elif text.startswith("DQ"):
         diction.qualifier = text[2]
     elif text.startswith("DT"):
         diction.valid = parse_dt(text[2:], diction.valid)
+        diction.basevalid = diction.valid
     elif text.startswith("DU"):
         diction.unit_convention = text[2]
     elif text.startswith("DV"):
@@ -377,7 +384,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     tokens = message.split("/")
     # In the first token, we should find some information about the station
     # and timing.  Otherstuff could be here as well
-    station, valid, extra = parse_station_valid(tokens[0], utcnow)
+    station, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
@@ -388,7 +395,7 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     # Iterate through the next tokens and hopefully find DI
     interval = timedelta(seconds=0)
     # Create element object to track as we parse through the message
-    diction = SHEFElement(station=station, valid=valid)
+    diction = SHEFElement(station=station, basevalid=basevalid, valid=valid)
     for token in tokens:
         token = token.lstrip()
         if process_modifiers(token, diction, valid):
@@ -454,14 +461,16 @@ def process_message_b(message, utcnow=None) -> List[SHEFElement]:
     lines = message.split("\n")
     headerline = clean_b_headerline(lines[0])
     tokens = headerline.split("/")
-    _center, valid, extra = parse_station_valid(tokens[0], utcnow)
+    _center, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
         tokens = extra
     # Keep track of our dictions.
     dictions = []
-    current_diction = SHEFElement(station="NA", valid=valid)
+    current_diction = SHEFElement(
+        station="NA", basevalid=basevalid, valid=valid
+    )
     for token in tokens:
         token = token.strip()
         if token == "":
@@ -571,7 +580,7 @@ def process_message_a(message, utcnow=None) -> List[SHEFElement]:
     if len(tokens) == 1:
         return []
     # First tokens should have some mandatory stuff
-    station, valid, extra = parse_station_valid(tokens[0], utcnow)
+    station, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
     if valid is None:
         # This is an empty message
         return []
@@ -580,7 +589,7 @@ def process_message_a(message, utcnow=None) -> List[SHEFElement]:
         extra.extend(tokens)
         tokens = extra
     elements = []
-    diction = SHEFElement(station=station, valid=valid)
+    diction = SHEFElement(station=station, basevalid=basevalid, valid=valid)
     for text in tokens:
         text = text.strip()
         if text == "":

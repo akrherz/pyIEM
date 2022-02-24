@@ -9,7 +9,7 @@ from pyiem.util import utc
 @pytest.fixture
 def elem() -> SHEFElement:
     """Return an empty SHEFElement."""
-    return SHEFElement(station="NA", valid=utc())
+    return SHEFElement(station="NA", basevalid=utc(), valid=utc())
 
 
 def test_simple(elem):
