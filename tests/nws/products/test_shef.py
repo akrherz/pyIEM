@@ -21,6 +21,12 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc, get_test_file
 
 
+def test_220224_redundant_dh():
+    """Test that a product with redundant DH values does not fool us."""
+    prod = parser(get_test_file("SHEF/RR3GJT.txt"), utcnow=utc(2022, 2, 25))
+    assert prod.data[4].valid == utc(2022, 2, 24, 7)
+
+
 def test_dy():
     """Test support for the DY time variable."""
     msg = (
@@ -367,7 +373,7 @@ def test_qualifier():
 
 def test_parse_station_valid():
     """Test handling of odd things."""
-    station, _valid, res = parse_station_valid(".A DMX 0919", utc())
+    station, _base, _valid, res = parse_station_valid(".A DMX 0919", utc())
     assert station == "DMX"
     assert not res
 

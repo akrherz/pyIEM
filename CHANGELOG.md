@@ -21,6 +21,7 @@ within the standardized `figure` constructor.
 - Improve robustness of `DV` SHEF encoding parsing.
 - Remove some abiquity with how the `windrose` plot legend specifies ranges.
 - Support parsing `DY` SHEF time encoding.
+- [SHEF] Workaround multiple `DH2400` values in a message.
 
 ## **1.10.0** (24 Jan 2022)
 
