@@ -6,7 +6,7 @@ import re
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 
 from shapely.geometry import Polygon, MultiPolygon
 from shapely.wkt import dumps
@@ -170,13 +170,10 @@ def date_tokens2datetime(tokens):
         # this is a hack to ensure this is PM when we are in UTC
         tokens[1] = "PM"
         hh = int(hh) - 12
-    dstr = "%s:%s %s %s %s %s" % (
-        hh if int(hh) > 0 else 12,
-        mi,
-        tokens[1] if tokens[1] != "" else "AM",
-        tokens[4],
-        tokens[5],
-        tokens[6],
+    dstr = (
+        f"{hh if int(hh) > 0 else 12}:{mi} "
+        f"{tokens[1] if tokens[1] != '' else 'AM'} "
+        f"{tokens[4]} {tokens[5]} {tokens[6]}"
     )
     # Careful here, need to go to UTC time first then come back!
     now = datetime.strptime(dstr, "%I:%M %p %b %d %Y")
@@ -409,35 +406,24 @@ class TextProductSegment:
 
         parts = []
         if self.tornadotag is not None:
-            parts.append("tornado: %s" % (self.tornadotag))
+            parts.append(f"tornado: {self.tornadotag}")
         if self.waterspouttag is not None:
-            parts.append("waterspout: %s" % (self.waterspouttag))
+            parts.append(f"waterspout: {self.waterspouttag}")
         if self.landspouttag is not None:
-            parts.append("landspout: %s" % (self.landspouttag))
+            parts.append(f"landspout: {self.landspouttag}")
         if self.damagetag is not None:
-            parts.append("damage threat: %s" % (self.damagetag))
+            parts.append(f"damage threat: {self.damagetag}")
         if self.windtag is not None:
-            parts.append(
-                "wind: %s%s %s%s"
-                % (
-                    self.winddirtag.replace(">", "&gt;").replace("<", "&lt;"),
-                    self.windtag,
-                    self.windtagunits,
-                    "" if self.windthreat is None else f" ({self.windthreat})",
-                )
-            )
+            _p1 = self.winddirtag.replace(">", "&gt;").replace("<", "&lt;")
+            _p2 = "" if self.windthreat is None else f" ({self.windthreat})"
+            parts.append(f"wind: {_p1}{self.windtag} {self.windtagunits}{_p2}")
         if self.hailtag is not None:
-            parts.append(
-                "hail: %s%s IN%s"
-                % (
-                    self.haildirtag.replace(">", "&gt;").replace("<", "&lt;"),
-                    self.hailtag,
-                    "" if self.hailthreat is None else f" ({self.hailthreat})",
-                )
-            )
+            _p1 = self.haildirtag.replace(">", "&gt;").replace("<", "&lt;")
+            _p2 = "" if self.hailthreat is None else f" ({self.hailthreat})"
+            parts.append(f"hail: {_p1}{self.hailtag} IN{_p2}")
         for k, v in self.flood_tags.items():
-            parts.append("%s: %s" % (k.lower(), v.lower()))
-        return " [" + ", ".join(parts) + "] "
+            parts.append(f"{k.lower()}: {v.lower()}")
+        return f" [{', '.join(parts)}] "
 
     def process_latlon(self):
         """Parse the segment looking for the 'standard' LAT...LON encoding"""
@@ -490,8 +476,8 @@ class TextProductSegment:
             poly = Polygon(
                 zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1])
             )
-        self.giswkt = "SRID=4326;%s" % (
-            dumps(MultiPolygon([poly]), rounding_precision=6),
+        self.giswkt = (
+            f"SRID=4326;{dumps(MultiPolygon([poly]), rounding_precision=6)}"
         )
         return poly
 
@@ -535,12 +521,12 @@ class TextProductSegment:
             lons.append(0 - float(tokens[i + 1]) / 100.0)
 
         if len(lats) == 1:
-            self.tml_giswkt = "SRID=4326;POINT(%s %s)" % (lons[0], lats[0])
+            self.tml_giswkt = f"SRID=4326;POINT({lons[0]} {lats[0]})"
         else:
             pairs = []
             for lat, lon in zip(lats, lons):
                 pairs.append(f"{lon} {lat}")
-            self.tml_giswkt = "SRID=4326;LINESTRING(%s)" % (",".join(pairs),)
+            self.tml_giswkt = f"SRID=4326;LINESTRING({','.join(pairs)})"
         self.tml_sknt = int(gdict["sknt"])
         self.tml_dir = int(gdict["dir"])
 
@@ -769,9 +755,9 @@ class TextProduct:
                     self.warnings.append(f"product timezone '{z}' unknown")
             except ValueError as exp:
                 msg = (
-                    "Invalid timestamp [%s] found in product "
-                    "[%s %s %s] header"
-                ) % (" ".join(tokens[0]), self.wmo, self.source, self.afos)
+                    f"Invalid timestamp [{' '.join(tokens[0])}] found in "
+                    f"product [{self.wmo} {self.source} {self.afos}] header"
+                )
                 raise TextProductException(self.source[1:], msg) from exp
 
             # Set the utcnow based on what we found by looking at the header
