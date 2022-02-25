@@ -59,6 +59,8 @@ def test_sps_ibw1(dbcursor):
     assert prod.segments[0].hailtag == "0.88"
     assert prod.segments[0].landspouttag == "POSSIBLE"
     assert prod.segments[0].waterspouttag is None
+    res = prod.get_jabbers("")
+    assert res[0][0].find("landspout: POSSIBLE") > 0
 
 
 def test_sps_ibw2():
