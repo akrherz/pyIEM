@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+### New Features
+
+- Added VTEC product check for uniqueness of UGCs (#540).
+
+### Bug Fixes
+
 ## **1.11.0** (25 Feb 2022)
 
 ### API Changes
