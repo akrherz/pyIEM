@@ -7,6 +7,7 @@ from pyiem.nws.ugc import ugcs_to_text
 from pyiem.reference import TWEET_CHARS
 from pyiem.nws.products._vtec_util import (
     _associate_vtec_year,
+    _check_unique_ugc,
     _resent_match,
     _do_sql_vtec_new,
     _do_sql_vtec_cor,
@@ -49,6 +50,8 @@ class VTECProduct(TextProduct):
             and self.unixtext.find("$$") == -1
         ):
             raise ValueError("Aborting processing of TSU without $$")
+        # Arb checks
+        _check_unique_ugc(self)
 
     def sql(self, txn):
         """Persist to the database

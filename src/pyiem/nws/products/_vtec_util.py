@@ -108,6 +108,35 @@ def which_year(txn, prod, segment, vtec):
     return prod.valid.year
 
 
+def _check_unique_ugc(prod) -> bool:
+    """Quality Control check that a given product uniquely uses UGCS.
+
+    Discussions with AWIPS developer expressed interesting in knowing that
+    this was being enforced.  It adds a warning message and returns a bool
+    on if this was a problem.
+
+    Args:
+        prod: Product object to check.
+
+    Returns:
+        True if UGCS are unique, False if not.
+    """
+    domain = []
+    for seg in prod.segments:
+        # HVTEC products are an exception to this rule.
+        if seg.hvtec:
+            continue
+        domain.extend([str(u) for u in seg.ugcs])
+    ugcs = pd.Series(domain, dtype=str)
+    if ugcs.duplicated().any():
+        vals = ugcs[ugcs.duplicated()].values
+        prod.warnings.append(
+            f"Duplicated UGCs Found (10.1701 3.9.1): {','.join(vals)}"
+        )
+        return False
+    return True
+
+
 def _associate_vtec_year(prod, txn):
     """Figure out to which year each VTEC in the product belongs.
 

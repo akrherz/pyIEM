@@ -37,6 +37,13 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh540_duplicated_ugcs():
+    """Test that we get a warning from a duplicated UGCs."""
+    data = get_test_file("NPWFFC.txt").replace("GAZ001>003", "GAZ004")
+    prod = vtecparser(data)
+    assert any(a.startswith("Duplicated UGCs") for a in prod.warnings)
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_gh533_dualing_events(dbcursor):
     """Test redundant ETNs that crossed the new years."""
