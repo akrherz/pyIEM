@@ -341,6 +341,14 @@ def sector_setter(mp, axbounds, **kwargs):
                 aspect,
                 is_geoextent=True,
             )
+            mp.fig.text(
+                0.78,
+                0.155,
+                "Puerto Rico",
+                ha="left",
+                color="white",
+                bbox=dict(boxstyle="round,pad=0", color="k"),
+            )
             mp.panels.append(gp)
             # Create AK
             gp = make_panel(
@@ -355,6 +363,29 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.EPSG[3467],
                 aspect,
                 is_geoextent=True,
+            )
+            mp.panels.append(gp)
+            # Guam
+            gp = make_panel(
+                [0.015, 0.29, 0.075, 0.11],
+                mp.fig,
+                [
+                    reference.state_bounds["GU"][0],
+                    reference.state_bounds["GU"][2],
+                    reference.state_bounds["GU"][1],
+                    reference.state_bounds["GU"][3],
+                ],
+                reference.LATLON,
+                aspect,
+                is_geoextent=True,
+            )
+            mp.fig.text(
+                0.015,
+                0.4,
+                "Guam",
+                ha="left",
+                color="white",
+                bbox=dict(boxstyle="round,pad=0", color="k"),
             )
             mp.panels.append(gp)
             # Create HI via a glorious hack for now

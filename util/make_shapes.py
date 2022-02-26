@@ -5,6 +5,7 @@ import sys
 
 import geopandas as gpd
 from geopandas import read_postgis
+from pyiem.reference import state_bounds
 from pyiem.util import get_dbconn
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
@@ -82,6 +83,9 @@ def dump_cwa(fn):
         index_col="wfo",
         geom_col="geom",
     )
+    # lon, lat is used for labelling and Guam is a special case
+    df.at["GUM", "lon"] = (state_bounds["GU"][0] + state_bounds["GU"][2]) / 2.0
+    df.at["GUM", "lat"] = (state_bounds["GU"][1] + state_bounds["GU"][3]) / 2.0
 
     df.to_parquet(fn)
 

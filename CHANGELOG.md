@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add Guam to NWS WFO centric `pyiem.plot.geoplot.MapPlot`.
 - Added VTEC product check for uniqueness of UGCs (#540).
 
 ### Bug Fixes

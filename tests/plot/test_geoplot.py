@@ -29,7 +29,8 @@ def test_exercise_usdm():
     mp = MapPlot()
     mp.draw_usdm()
     mp.draw_usdm(utc())
-    assert mp.draw_usdm("qqq") is None
+    with pytest.warns(UserWarning) as _:
+        assert mp.draw_usdm("qqq") is None
     assert mp.draw_usdm(utc(1980, 1, 1)) is None
 
 
@@ -932,7 +933,7 @@ def test_plot2():
     """Exercise NWS plot API"""
     mp = MapPlot(sector="nws", continentalcolor="white", nocaption=True)
     mp.fill_cwas(
-        {"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40, "HFO": 50},
+        {"DMX": 80, "MKX": 5, "SJU": 30, "AJK": 40, "HFO": 50, "GUM": 67},
         units="NWS Something or Another",
         ilabel=True,
         lblformat="%.0f",
