@@ -18,16 +18,22 @@ def figure(logo="iem", title=None, subtitle=None, **kwargs):
       title (str): Title to place on the figure.
       subtitle (str): SubTitle to place on the figure.
       apctx (dict, optional): autoplot context.
+      fig (matplotlib.figure.Figure): Figure passed in for modification for
+        figsize only currently.
     """
     kwargs.pop("apctx", None)
     kwargs["figsize"] = kwargs.get("figsize", TWITTER_RESOLUTION_INCH)
-    fig = plt.figure(**kwargs)
+    fig = kwargs.pop("fig", None)
+    if fig is None:
+        fig = plt.figure(**kwargs)
+    else:
+        fig.set_size_inches(kwargs["figsize"])
     draw_logo(fig, logo)
-    titlebounds = [0.1, 0.9, 0.91, 0.98]
+    titlebounds = [0.1, 0.98, 0.91, 0.98]
     if subtitle is not None:
         titlebounds[2] = 0.94
     fitbox(fig, title, *titlebounds)
-    fitbox(fig, subtitle, 0.1, 0.9, 0.91, 0.935)
+    fitbox(fig, subtitle, 0.1, 0.98, 0.91, 0.935)
     return fig
 
 
