@@ -14,6 +14,9 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Allow provision of already created `matplotlib.Figure` instance into the
+standardized layout generator.
+
 ## **1.11.0** (25 Feb 2022)
 
 ### API Changes
