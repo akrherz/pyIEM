@@ -73,8 +73,11 @@ def test_161010_missingtime():
         "ALB": {"lat": 44.26, "lon": -88.52},
     }
     prod = pirepparser(
-        get_test_file("PIREPS/PRCUS.txt"), nwsli_provider=nwsli_provider
+        get_test_file("PIREPS/PRCUS.txt"),
+        nwsli_provider=nwsli_provider,
+        utcnow=utc(2016, 10, 1, 1, 35),
     )
+    assert prod.reports[0].valid == utc(2016, 9, 30, 19, 25)
     j = prod.get_jabbers("unused")
     assert j[0][2]["channels"] == "UA.None,UA.PIREP"
 

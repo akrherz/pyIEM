@@ -215,6 +215,16 @@ def test_get_autoplot_context_internal():
     assert "_r" in ctx
 
 
+def test_get_autoplot_context_name():
+    """Test the helper provides a nice name for us."""
+    form = dict(station="_ZZZ", network="ZZ_ASOS")
+    cfg = dict(
+        arguments=[dict(type="station", name="station", default="_ZZZ")]
+    )
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["_sname"] == "[_ZZZ] ((_ZZZ))"
+
+
 def test_get_autoplot_context_network():
     """Do we handle network issues OK."""
     form = dict(station="ZZZ", network="ZZ_ASOS")

@@ -506,6 +506,11 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = default
             if not value.startswith("_") and value not in ctx[ntname].sts:
                 raise NoDataFound("Station metadata unavailable.")
+            # A helper to remove downstream boilerplate
+            sname = ctx[ntname].sts.get(value, {"name": f"(({value}))"})[
+                "name"
+            ]
+            ctx[f"_sname{_n}"] = f"[{value}] {sname}"
 
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
