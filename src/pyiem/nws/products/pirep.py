@@ -118,14 +118,10 @@ def _parse_lonlat(text):
         lon = int(d["lon"])
     else:
         # We have Degrees and minutes
-        lat = float(
-            "%s.%i"
-            % (d["lat"][:-2], int(float(d["lat"][-2:]) / 60.0 * 10000.0))
-        )
-        lon = float(
-            "%s.%i"
-            % (d["lon"][:-2], int(float(d["lon"][-2:]) / 60.0 * 10000.0))
-        )
+        _d = int(float(d["lat"][-2:]) / 60.0 * 10000.0)
+        lat = float(f"{d['lat'][:-2]}.{_d:.0f}")
+        _d = int(float(d["lon"][-2:]) / 60.0 * 10000.0)
+        lon = float(f"{d['lon'][:-2]}.{_d:.0f}")
     if d["latsign"] == "S":
         lat *= -1
     if d["lonsign"] == "W":
@@ -378,10 +374,9 @@ class Pirep(product.TextProduct):
                 "valid": report.valid.strftime("%Y%m%dT%H:%M:00"),
             }
             if report.latitude is not None:
-                xtra["geometry"] = "POINT(%s %s)" % (
-                    report.longitude,
-                    report.latitude,
-                )
+                xtra[
+                    "geometry"
+                ] = f"POINT({report.longitude} {report.latitude})"
             res.append([plain, html, xtra])
         return res
 
