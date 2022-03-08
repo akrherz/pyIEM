@@ -18,6 +18,7 @@ NUM_RE = re.compile(
 REPLACES_RE = re.compile("REPLACES WW ([0-9]*)")
 DBTYPES = ["TOR", "SVR"]
 TYPE2STRING = ["Tornado", "Severe Thunderstorm"]
+SPCURL = "https://www.spc.noaa.gov/products/watch"
 
 
 class SAWProduct(TextProduct):
@@ -226,15 +227,13 @@ class SAWProduct(TextProduct):
           uri (str): un-used in this context
         """
         res = []
-        url = ("https://www.spc.noaa.gov/products/watch/%s/ww%04i.html") % (
-            self.valid.year,
-            self.ww_num,
-        )
+        url = f"{SPCURL}/{self.valid.year}/ww{self.ww_num:04.0f}.html"
         spc_channels = f"SPC,SPC.{DBTYPES[self.ww_type]}WATCH"
         if self.action == self.CANCELS:
             plain = (
-                "Storm Prediction Center cancels Weather Watch Number %s %s"
-            ) % (self.ww_num, url)
+                "Storm Prediction Center cancels Weather Watch Number "
+                f"{self.ww_num} {url}"
+            )
             html = (
                 f'<p>Storm Prediction Center cancels <a href="{url}">'
                 f"Weather Watch Number {self.ww_num}</a></p>"
@@ -244,33 +243,29 @@ class SAWProduct(TextProduct):
             )
             # Now create templates
             plain = (
-                "Storm Prediction Center cancels Weather Watch Number %s "
-                "for portions of %%s %s"
-            ) % (self.ww_num, url)
+                "Storm Prediction Center cancels Weather Watch Number "
+                f"{self.ww_num} for portions of %s {url}"
+            )
             html = (
-                '<p>Storm Prediction Center cancels <a href="%s">'
-                "Weather Watch Number %s</a> for portions of %%s</p>"
-            ) % (url, self.ww_num)
+                f'<p>Storm Prediction Center cancels <a href="{url}">'
+                f"Weather Watch Number {self.ww_num}</a> "
+                "for portions of %s</p>"
+            )
         elif self.action == self.ISSUES:
-            plain = ("SPC issues %s Watch %s till %sZ") % (
-                TYPE2STRING[self.ww_type],
-                self.ww_num,
-                self.ets.strftime("%-H:%M"),
+            plain = (
+                f"SPC issues {TYPE2STRING[self.ww_type]} Watch {self.ww_num} "
+                f"till {self.ets:%-H:%M}Z"
             )
             html = (
                 "<p>Storm Prediction Center issues "
                 '<a href="https://www.spc.noaa.gov/products/watch/'
-                'ww%04i.html">%s Watch %s</a> '
-                "till %s UTC"
-            ) % (
-                int(self.ww_num),
-                TYPE2STRING[self.ww_type],
-                self.ww_num,
-                self.ets.strftime("%-H:%M"),
+                f'ww{self.ww_num:04.0f}.html">{TYPE2STRING[self.ww_type]} '
+                f"Watch {self.ww_num}</a> "
+                "till {self.ets:%-H:%M} UTC"
             )
             if REPLACES_RE.findall(self.unixtext):
-                rtext = ("WW %s ") % (
-                    REPLACES_RE.findall(self.unixtext)[0][0].strip(),
+                rtext = (
+                    f"WW {REPLACES_RE.findall(self.unixtext)[0][0].strip()} "
                 )
                 plain += ", new watch replaces " + rtext
                 html += ", new watch replaces " + rtext
@@ -278,18 +273,20 @@ class SAWProduct(TextProduct):
             plain2 = f"{plain} {url}"
             plain2 = " ".join(plain2.split())
             html2 = html + (
-                ' (<a href="%s?year=%s&amp;num=%s">Watch ' "Quickview</a>)</p>"
-            ) % (uri, self.sts.year, self.ww_num)
+                f' (<a href="{uri}?year={self.sts.year}&amp;num={self.ww_num}"'
+                ">Watch "
+                "Quickview</a>)</p>"
+            )
             res.append(
                 [plain2, html2, dict(channels=spc_channels, twitter=plain2)]
             )
             # Now create templates
             plain += f" for portions of %s {url}"
             html += (
-                " for portions of %%s "
-                '(<a href="%s?year=%s&amp;num=%s">Watch '
-                "Quickview</a>)</p>"
-            ) % (uri, self.sts.year, self.ww_num)
+                " for portions of %s "
+                f'(<a href="{uri}?year={self.sts.year}&amp;num={self.ww_num}"'
+                ">Watch Quickview</a>)</p>"
+            )
 
         plain = " ".join(plain.split())
         for wfo in self.affected_wfos:

@@ -5,6 +5,30 @@ from pyiem.nws.products.saw import parser as sawparser
 from pyiem.util import utc, get_test_file
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_220308_jan1_saw(dbcursor):
+    """Test that expiration time we get for these SAWs."""
+    utcnow = utc(2022, 1, 1, 16, 48)
+    prod = sawparser(get_test_file("SAW/SAW3_jan1.txt"), utcnow=utcnow)
+    assert prod.ets == utc(2022, 1, 2, 0, 0)
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "select expired from watches where num = 3 and "
+        "extract(year from expired) = 2022"
+    )
+    assert dbcursor.fetchone()[0] == utc(2022, 1, 2, 0, 0)
+
+    utcnow = utc(2022, 1, 2, 0, 3)
+    prod = sawparser(get_test_file("SAW/SAW3_jan1_can.txt"), utcnow=utcnow)
+    assert prod.valid == utcnow
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "select expired from watches where num = 3 and "
+        "extract(year from expired) = 2022"
+    )
+    assert dbcursor.fetchone()[0] == utcnow
+
+
 def test_181231_linkisok():
     """The plain text tweet should have a space."""
     utcnow = utc(2014, 3, 10, 3, 29)
