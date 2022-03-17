@@ -145,18 +145,15 @@ def _gen(name, cpool):
 
 def dep_erosion():
     """DEP Erosion ramp yelllow to brown (jump at 5T) `cool`"""
+    # NB: dep.RAMPS wants just 8 colors, so don't define more than that here
     cpool = [
         "#FFFF80",
         "#FCDD60",
-        "#F7BE43",
         "#E69729",
         "#B35915",
         "#822507",
         "#00ffff",
-        "#2ad5ff",
         "#55aaff",
-        "#807fff",
-        "#aa55ff",
         "#d52aff",
     ]
     return _gen("dep_erosion", cpool)
