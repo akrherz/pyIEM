@@ -11,9 +11,11 @@ from shapely.geometry import Polygon
 
 # Local
 from pyiem import plot
+from pyiem.dep import RAMPS
 from pyiem.plot import (
     MapPlot,
     centered_bins,
+    dep_erosion,
     pretty_bins,
     load_bounds,
     mask_outside_geom,
@@ -375,6 +377,9 @@ def test_fill_ugcs_color():
 def test_dep():
     """Produce a plot with the DEP logo on it."""
     mp = MapPlot(sector="state", state="IA", nocaption=True, logo="dep")
+    cmap = dep_erosion()
+    norm = mpcolors.BoundaryNorm(RAMPS["english"][1], cmap.N)
+    mp.draw_colorbar(RAMPS["english"][1], dep_erosion(), norm)
     return mp.fig
 
 
