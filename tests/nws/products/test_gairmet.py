@@ -28,10 +28,12 @@ def test_surface():
     assert prod.data.airmets[32].weather_conditions[0] == ans
 
 
-def test_ice():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_ice(dbcursor):
     """Test the parsing of Ice information."""
     utcnow = utc(2022, 3, 17, 17, 0)
     prod = parser(get_test_file("GAIRMET/LWIE00.txt"), utcnow=utcnow)
+    prod.sql(dbcursor)
     assert len(prod.data.airmets) == 25
     assert len(prod.data.freezing_levels) == 25
 
@@ -39,8 +41,12 @@ def test_ice():
 def test_exception():
     """Test that we handle an exception cleanly."""
     utcnow = utc(2022, 3, 17, 17, 0)
-    data = get_test_file("GAIRMET/LWGE86.txt").replace(
-        "2022-03-17T21:00:00Z", "2022-03-17TZZ:00:00"
+    data = (
+        get_test_file("GAIRMET/LWGE86.txt")
+        .replace("2022-03-17T21:00:00Z", "2022-03-17TZZ:00:00")
+        .replace("true", "false")
     )
     prod = parser(data, utcnow=utcnow)
     assert prod.warnings
+    with pytest.raises(Exception):
+        prod = parser(data.replace("G-AIRMET", "BOOO"), utcnow=utcnow)

@@ -167,7 +167,7 @@ class GAIRMET(product.TextProduct):
                 """
                 INSERT into airmet_freezing_levels (
                 gml_id, product_id, valid_at, level, geom)
-                VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326))
+                VALUES (%s, %s, %s, %s, ST_GeomFromText(%s, 4326))
                 """,
                 (
                     fzlvl.gml_id,
