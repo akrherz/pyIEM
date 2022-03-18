@@ -67,6 +67,7 @@ def process_airmet(prod, airmet):
         if not found:
             prod.data.freezing_levels.append(
                 FreezingLevelRecord(
+                    gml_id=gml_id,
                     level=ul,
                     valid_at=valid_at,
                     geom=MultiLineString([ls]),
@@ -106,6 +107,7 @@ def process_airmet(prod, airmet):
 
     prod.data.airmets.append(
         AIRMETRecord(
+            gml_id=gml_id,
             label=label,
             status=status,
             hazard_type=hazardtype,
@@ -142,12 +144,13 @@ class GAIRMET(product.TextProduct):
             cursor.execute(
                 """
                 INSERT into airmets (
-                    label, product_id, valid_from, valid_to, valid_at,
+                    gml_id, label, product_id, valid_from, valid_to, valid_at,
                     status, hazard_type, weather_conditions, geom)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s,
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,
                     ST_GeomFromText(%s, 4326))
                 """,
                 (
+                    airmet.gml_id,
                     airmet.label,
                     self.get_product_id(),
                     self.data.valid_from,
@@ -163,10 +166,11 @@ class GAIRMET(product.TextProduct):
             cursor.execute(
                 """
                 INSERT into airmet_freezing_levels (
-                product_id, valid_at, level, geom)
+                gml_id, product_id, valid_at, level, geom)
                 VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326))
                 """,
                 (
+                    fzlvl.gml_id,
                     self.get_product_id(),
                     fzlvl.valid_at,
                     fzlvl.level,
