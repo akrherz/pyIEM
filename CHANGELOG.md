@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Bring bundled NWS zones database to 22 March 2022 release (#531).
+
 ### New Features
 
 - Add Guam to NWS WFO centric `pyiem.plot.geoplot.MapPlot`.

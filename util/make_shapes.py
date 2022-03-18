@@ -6,7 +6,7 @@ import sys
 import geopandas as gpd
 from geopandas import read_postgis
 from pyiem.reference import state_bounds
-from pyiem.util import get_dbconn
+from pyiem.util import get_sqlalchemy_conn
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 
@@ -17,72 +17,68 @@ print("Be sure to run this against Mesonet database and not laptop! DOIT!")
 
 def dump_conus(fn):
     """states."""
-    pgconn = get_dbconn("postgis", user="nobody")
-
-    df = read_postgis(
-        """SELECT
-            ST_Transform(
-                ST_Simplify(
-                    ST_Union(ST_Transform(the_geom,2163)),
-                    500.),
-                4326) as geom from states
-        WHERE state_abbr not in ('HI', 'AK', 'PR', 'AS', 'GU', 'MP', 'VI')
-        """,
-        pgconn,
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            """SELECT
+                ST_Transform(
+                    ST_Simplify(
+                        ST_Union(ST_Transform(the_geom,2163)),
+                        500.),
+                    4326) as geom from states
+            WHERE state_abbr not in ('HI', 'AK', 'PR', 'AS', 'GU', 'MP', 'VI')
+            """,
+            conn,
+            geom_col="geom",
+        )
     df.to_parquet(fn)
 
 
 def dump_states(fn):
     """states."""
-    pgconn = get_dbconn("postgis", user="nobody")
-
-    df = read_postgis(
-        """
-        SELECT state_abbr, ST_Simplify(the_geom, 0.01) as geom,
-        ST_x(ST_Centroid(the_geom)) as lon,
-        ST_Y(ST_Centroid(the_geom)) as lat from states
-        """,
-        pgconn,
-        index_col="state_abbr",
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            """
+            SELECT state_abbr, ST_Simplify(the_geom, 0.01) as geom,
+            ST_x(ST_Centroid(the_geom)) as lon,
+            ST_Y(ST_Centroid(the_geom)) as lat from states
+            """,
+            conn,
+            index_col="state_abbr",
+            geom_col="geom",
+        )
     df.to_parquet(fn)
 
 
 def dump_climdiv(fn):
     """climate divisions."""
-    pgconn = get_dbconn("postgis", user="nobody")
-
-    df = read_postgis(
-        """
-        SELECT iemid, geom,
-        ST_x(ST_Centroid(geom)) as lon,
-        ST_Y(ST_Centroid(geom)) as lat
-        from climdiv""",
-        pgconn,
-        index_col="iemid",
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            """
+            SELECT iemid, geom,
+            ST_x(ST_Centroid(geom)) as lon,
+            ST_Y(ST_Centroid(geom)) as lat
+            from climdiv""",
+            conn,
+            index_col="iemid",
+            geom_col="geom",
+        )
     df.to_parquet(fn)
 
 
 def dump_cwa(fn):
     """WFOs."""
-    pgconn = get_dbconn("postgis", user="nobody")
-
-    df = read_postgis(
-        """
-        SELECT wfo,
-        ST_Multi(ST_Buffer(ST_Simplify(the_geom, 0.01), 0)) as geom,
-        ST_x(ST_Centroid(the_geom)) as lon,
-        ST_Y(ST_Centroid(the_geom)) as lat, region
-        from cwa""",
-        pgconn,
-        index_col="wfo",
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            """
+            SELECT wfo,
+            ST_Multi(ST_Buffer(ST_Simplify(the_geom, 0.01), 0)) as geom,
+            ST_x(ST_Centroid(the_geom)) as lon,
+            ST_Y(ST_Centroid(the_geom)) as lat, region
+            from cwa""",
+            conn,
+            index_col="wfo",
+            geom_col="geom",
+        )
     # lon, lat is used for labelling and Guam is a special case
     df.at["GUM", "lon"] = (state_bounds["GU"][0] + state_bounds["GU"][2]) / 2.0
     df.at["GUM", "lat"] = (state_bounds["GU"][1] + state_bounds["GU"][3]) / 2.0
@@ -92,38 +88,36 @@ def dump_cwa(fn):
 
 def dump_iowawfo(fn):
     """A region with the Iowa WFOs"""
-    pgconn = get_dbconn("postgis", user="nobody")
-
-    df = read_postgis(
-        """ SELECT ST_Simplify(ST_Union(the_geom), 0.01) as geom
-        from cwa
-        WHERE wfo in ('DMX', 'ARX', 'DVN', 'OAX', 'FSD')""",
-        pgconn,
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            """ SELECT ST_Simplify(ST_Union(the_geom), 0.01) as geom
+            from cwa
+            WHERE wfo in ('DMX', 'ARX', 'DVN', 'OAX', 'FSD')""",
+            conn,
+            geom_col="geom",
+        )
     df.to_parquet(fn)
 
 
 def dump_ugc(gtype, fn, is_firewx=False):
     """UGCS."""
-    pgconn = get_dbconn("postgis", user="nobody")
-
     source_limiter = "source != 'fz'"
     if is_firewx:
         source_limiter = "source = 'fz'"
 
     # We want UGCs valid for the time of running this script
-    df = read_postgis(
-        "SELECT ugc, wfo as cwa, simple_geom as geom, ST_x(centroid) as lon, "
-        "ST_Y(centroid) as lat "
-        "from ugcs WHERE begin_ts < now() and "
-        "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s "
-        f"and {source_limiter}",
-        pgconn,
-        params=(gtype,),
-        index_col="ugc",
-        geom_col="geom",
-    )
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = read_postgis(
+            "SELECT ugc, wfo as cwa, simple_geom as geom, "
+            "ST_x(centroid) as lon, ST_Y(centroid) as lat "
+            "from ugcs WHERE begin_ts < now() and "
+            "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s "
+            f"and {source_limiter}",
+            conn,
+            params=(gtype,),
+            index_col="ugc",
+            geom_col="geom",
+        )
     df.to_parquet(fn)
 
 
