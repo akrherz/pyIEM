@@ -13,6 +13,7 @@ All notable changes to this library are documented in this file.
 
 - Add Guam to NWS WFO centric `pyiem.plot.geoplot.MapPlot`.
 - Added VTEC product check for uniqueness of UGCs (#540).
+- Introduce a Graphical AIRMET (G-AIRMET) decoder (#566).
 
 ### Bug Fixes
 
