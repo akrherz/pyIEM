@@ -145,8 +145,8 @@ class GAIRMET(product.TextProduct):
                 """
                 INSERT into airmets (
                     gml_id, label, product_id, valid_from, valid_to, valid_at,
-                    status, hazard_type, weather_conditions, geom)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    status, hazard_type, weather_conditions, issuetime, geom)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                     ST_GeomFromText(%s, 4326))
                 """,
                 (
@@ -159,6 +159,7 @@ class GAIRMET(product.TextProduct):
                     airmet.status,
                     airmet.hazard_type,
                     airmet.weather_conditions,
+                    self.data.issuetime,
                     airmet.geom.wkt,
                 ),
             )
@@ -188,10 +189,13 @@ class GAIRMET(product.TextProduct):
         valid_from = parseUTC(e.find("gml:timePosition", NS).text)
         e = root.find(".//gml:TimeInstant[@gml:id='G-AIRMETVALIDTO']", NS)
         valid_to = parseUTC(e.find("gml:timePosition", NS).text)
+        e = root.find(".//gml:TimeInstant[@gml:id='G-AIRMETISSUETIME']", NS)
+        issuetime = parseUTC(e.find("gml:timePosition", NS).text)
 
         self.data = GAIRMETModel(
             valid_from=valid_from,
             valid_to=valid_to,
+            issuetime=issuetime,
         )
 
         for airmet in root.findall(".//US-AIRMETRecord", NS):

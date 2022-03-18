@@ -44,5 +44,6 @@ class GAIRMETModel(BaseModel):
 
     valid_from: datetime
     valid_to: datetime
+    issuetime: datetime
     airmets: List[AIRMETRecord] = []
     freezing_levels: List[FreezingLevelRecord] = []
