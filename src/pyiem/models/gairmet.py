@@ -11,6 +11,7 @@ from pydantic import BaseModel
 class AIRMETRecord(BaseModel):
     """A single AIRMET Record."""
 
+    gml_id: str
     label: str
     status: str
     hazard_type: str
@@ -27,6 +28,7 @@ class AIRMETRecord(BaseModel):
 class FreezingLevelRecord(BaseModel):
     """A single FreezingLevel Record."""
 
+    gml_id: str
     valid_at: datetime
     geom: MultiLineString
     level: int
