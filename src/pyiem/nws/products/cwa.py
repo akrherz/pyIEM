@@ -227,7 +227,7 @@ class CWAProduct(TextProduct):
             f'<p>{data.center} issues <a href="{texturl}">CWA {data.num}</a>'
             f" till {till}<br/>{data.narrative}</p>"
         )
-        channels = [f"CWA{data.center}"]
+        channels = ["CWA...", f"CWA{data.center}"]
         xtra = {
             "channels": ",".join(channels),
             "twitter": text,
