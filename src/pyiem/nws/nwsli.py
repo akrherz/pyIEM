@@ -32,3 +32,11 @@ class NWSLI:
         if self.name is None:
             return f"(({self.id}))"
         return self.name
+
+    def __getitem__(self, key):
+        """Overload __getitem__ to return the value of the attribute"""
+        if key == "lat":
+            return self.geometry.y
+        if key == "lon":
+            return self.geometry.x
+        return getattr(self, key)

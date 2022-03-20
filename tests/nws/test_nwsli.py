@@ -8,4 +8,7 @@ def test_simple():
     nwsli = NWSLI("AMWI4", "Iowa All", ["DMX"], -99, 44)
     assert nwsli.id == "AMWI4"
 
-    assert nwsli.get_name() == "Iowa All"
+    assert nwsli.get_name() == nwsli["name"]
+
+    assert nwsli["lat"] == 44
+    assert nwsli["lon"] == -99
