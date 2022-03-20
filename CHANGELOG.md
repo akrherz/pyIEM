@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add parsing support for CWSU Center Weather Advisory (#573).
+
 ### Bug Fixes
 
 ## **1.12.0** (18 Mar 2022)
