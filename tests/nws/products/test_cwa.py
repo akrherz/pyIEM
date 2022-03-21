@@ -122,4 +122,10 @@ def test_twoline():
         utcnow=utcnow,
         nwsli_provider=LOCS,
     )
-    assert not prod.warnings
+    jmsgs = prod.get_jabbers("")
+    ans = (
+        "ZAB issues CWA 101 till 10 Mar 1746Z ... AREA OCNL LIFR CONDS CIG "
+        "BLW 005 IN BR . NM TX https://mesonet.agron.iastate.edu/p.php?"
+        "pid=202203101546-KZAB-FAUS21-CWAZAB"
+    )
+    assert jmsgs[0][2]["twitter"] == ans
