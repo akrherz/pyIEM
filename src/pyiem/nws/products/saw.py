@@ -261,7 +261,7 @@ class SAWProduct(TextProduct):
                 '<a href="https://www.spc.noaa.gov/products/watch/'
                 f'ww{self.ww_num:04.0f}.html">{TYPE2STRING[self.ww_type]} '
                 f"Watch {self.ww_num}</a> "
-                "till {self.ets:%-H:%M} UTC"
+                f"till {self.ets:%-H:%M} UTC"
             )
             if REPLACES_RE.findall(self.unixtext):
                 rtext = (

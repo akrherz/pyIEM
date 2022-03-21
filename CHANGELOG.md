@@ -14,6 +14,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Fixed f-string formatting issue in SAW jabber message generator.
+
 ## **1.12.0** (18 Mar 2022)
 
 ### API Changes
