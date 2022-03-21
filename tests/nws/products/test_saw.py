@@ -5,6 +5,21 @@ from pyiem.nws.products.saw import parser as sawparser
 from pyiem.util import utc, get_test_file
 
 
+def test_220321_jabber():
+    """Test that we can generate a jabber message for this."""
+    utcnow = utc(2022, 3, 21, 19)
+    prod = sawparser(get_test_file("SAW/SAW3_jabber.txt"), utcnow=utcnow)
+    prod.affected_wfos = ["FWD", "SJT"]
+    jmsg = prod.get_jabbers("")
+    ans = (
+        '<p>Storm Prediction Center issues <a href="https://www.spc.noaa.gov'
+        '/products/watch/ww0053.html">Severe Thunderstorm Watch 53</a> till '
+        '2:00 UTC for portions of FWD (<a href="?year=2022&amp;num=53">'
+        "Watch Quickview</a>)</p>"
+    )
+    assert jmsg[1][1] == ans
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_220308_jan1_saw(dbcursor):
     """Test that expiration time we get for these SAWs."""
