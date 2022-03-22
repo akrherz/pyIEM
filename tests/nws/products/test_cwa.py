@@ -23,6 +23,14 @@ LOCS = {
 }
 
 
+def test_theoretical():
+    """Test something that I suspect could happen."""
+    utcnow = utc(2022, 3, 22)
+    data = get_test_file("CWA/CWAZAN_line.txt").replace("CDV", "aaa")
+    with pytest.raises(AssertionError):
+        parser(data, utcnow=utcnow, nwsli_provider=LOCS)
+
+
 def test_220321_zan():
     """Test parsing problematic CWA"""
     utcnow = utc(2022, 3, 22)
