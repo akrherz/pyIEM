@@ -29,7 +29,7 @@ FROM_RE = re.compile(
 )
 NM_WIDE = re.compile(r"(\s|\.)(?P<width>\d+)NM WIDE")
 DIAMETER = re.compile(r"DIAM (?P<diameter>\d+)NM")
-CANCEL_LINE = re.compile("(CNL |CANCEL|ERROR)")
+CANCEL_LINE = re.compile("(CANCEL|ERROR)")
 
 
 dirs = {
@@ -89,8 +89,8 @@ def go2lonlat(lon0, lat0, direction, displacement):
 
 def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     """Figure out what the polygon is!"""
-    # condition
-    line = line.replace("FROM ", "").replace("=", "")
+    # condition, and yes, le sigh
+    line = line.replace("FFROM ", "").replace("FROM ", "").replace("=", "")
     # Condense multiple spaces
     tokens = (" ".join(line.strip().split())).split("-")
     pts = []
@@ -122,9 +122,11 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
         else:
             narrative = "-".join(tokens[i:])
             break
-    if len(pts) == 2:
-        # We have a line, uh oh
-        res = NM_WIDE.search(prod.unixtext).groupdict()
+    m = NM_WIDE.search(prod.unixtext)
+    if not pts:
+        return None, narrative
+    if len(pts) == 2 or m is not None:
+        res = m.groupdict()
         # approx
         width_deg = float(res["width"]) * KM_NM / 111.0
         line = LineString(pts)
@@ -148,7 +150,8 @@ def parse_product(prod: TextProduct) -> CWAModel:
     lines = prod.unixtext.replace("\001\n", "").split("\n")
     # This is not tenable at the moment
     for ln in [4, 5]:
-        if CANCEL_LINE.match(lines[ln]):
+        m = CANCEL_LINE.findall(lines[ln])
+        if m:
             return None
     # Could fail, but this is a requirement anyway
     res3 = LINE3.match(lines[2]).groupdict()
@@ -158,6 +161,9 @@ def parse_product(prod: TextProduct) -> CWAModel:
     expire = str2time(res4["ddhhmi"], prod.valid)
     # line work is not straight foward and could span multiple lines, sigh
     poly, narrative = parse_polygon(prod, " ".join(lines[4:]))
+    if poly is None:
+        prod.warnings.append("CWA: No points found in polygon")
+        return None
     return CWAModel(
         center=res4["loc"],
         issue=issue,
