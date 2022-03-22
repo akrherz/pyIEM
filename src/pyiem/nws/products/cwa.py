@@ -2,6 +2,7 @@
 # Stdlib imports
 import re
 import math
+from typing import Tuple
 
 # Third Party
 from shapely.geometry import Polygon, LineString, Point
@@ -20,9 +21,9 @@ LINE4 = re.compile(
 
 FROM_RE = re.compile(
     r"""
-(?P<offset>[0-9]+)?
-(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s?
-(?P<loc>[A-Z0-9]{3})
+^(?P<offset>[0-9]+)?
+(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s*
+(?P<loc>[A-Z0-9]{3})\s*(?P<leftover>.*)$
 """,
     re.VERBOSE,
 )
@@ -86,12 +87,16 @@ def go2lonlat(lon0, lat0, direction, displacement):
     return lon2, lat2
 
 
-def parse_polygon(prod: TextProduct, line: str) -> Polygon:
+def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     """Figure out what the polygon is!"""
-    tokens = line.replace("FROM ", "").split("-")
+    # condition
+    line = line.replace("FROM ", "").replace("=", "")
+    # Condense multiple spaces
+    tokens = (" ".join(line.strip().split())).split("-")
     pts = []
-    for token in tokens:
-        s = FROM_RE.search(token)
+    narrative = None
+    for i, token in enumerate(tokens):
+        s = FROM_RE.match(token.strip())
         if s:
             d = s.groupdict()
             if d["offset"] is not None:
@@ -107,6 +112,16 @@ def parse_polygon(prod: TextProduct, line: str) -> Polygon:
                     prod.nwsli_provider[d["loc"]]["lat"],
                 )
             pts.append((lon1, lat1))
+            if d["leftover"]:
+                # Could have a stray dash in here, so need to do some tricks
+                lookfor = d["loc"]
+                if d["offset"] is not None:
+                    lookfor = f"{d['offset']}{d['drct']} {lookfor}"
+                narrative = "-".join(tokens[i:]).replace(lookfor, "").strip()
+                break
+        else:
+            narrative = "-".join(tokens[i:])
+            break
     if len(pts) == 2:
         # We have a line, uh oh
         res = NM_WIDE.search(prod.unixtext).groupdict()
@@ -125,7 +140,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Polygon:
     else:
         poly = Polygon(pts)
     assert poly.is_valid and not poly.is_empty
-    return poly
+    return poly, narrative
 
 
 def parse_product(prod: TextProduct) -> CWAModel:
@@ -141,16 +156,8 @@ def parse_product(prod: TextProduct) -> CWAModel:
     # Could fail, but this is a requirement anyway
     res4 = LINE4.match(lines[3]).groupdict()
     expire = str2time(res4["ddhhmi"], prod.valid)
-    # parse the polygon, perhaps lines[5] has more points for the polygon :/
-    test = lines[5].split()[0]
-    # if length of test is 3 or starts with a number
-    nrstart = 5
-    content = lines[4]
-    if len(test) == 3 or test[3] == "-" or test[0].isdigit():
-        content = " ".join(lines[4:6])
-        nrstart = 6
-    poly = parse_polygon(prod, content)
-    narrative = " ".join(lines[nrstart:]).replace("=", "").strip()
+    # line work is not straight foward and could span multiple lines, sigh
+    poly, narrative = parse_polygon(prod, " ".join(lines[4:]))
     return CWAModel(
         center=res4["loc"],
         issue=issue,

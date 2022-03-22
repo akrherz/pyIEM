@@ -10,13 +10,47 @@ from pyiem.util import utc, get_test_file
 LOCS = {
     "AMG": {"lon": -82.51, "lat": 31.54},
     "BNA": {"lon": -86.68, "lat": 36.14},
+    "CDV": {"lon": -145.40, "lat": 60.35},
     "CLT": {"lon": -80.93, "lat": 35.22},
     "HRV": {"lon": -90.00, "lat": 28.85},
     "MCI": {"lon": -94.74, "lat": 39.29},
     "PSK": {"lon": -80.71, "lat": 37.09},
+    "RSK": {"lon": -108.10, "lat": 36.75},
     "SJI": {"lon": -88.36, "lat": 30.73},
+    "SJN": {"lon": -109.14, "lat": 34.42},
     "SZW": {"lon": -84.37, "lat": 30.56},
+    "YAK": {"lon": -139.67, "lat": 59.50},
 }
+
+
+def test_220321_zan():
+    """Test parsing problematic CWA"""
+    utcnow = utc(2022, 3, 22)
+    prod = parser(
+        get_test_file("CWA/CWAZAN_line.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    ans = (
+        "50NM WIDE...AREA LLWS +/- 10-15 KT. RPRT BY ACFT. "
+        "CONDS CONTG BYD 220155Z. AK. PTK MAR 2022 CWSU"
+    )
+    assert prod.data.narrative == ans
+
+
+def test_220321_badlocation():
+    """Test handling of quasi-invalid location details :/"""
+    utcnow = utc(2022, 3, 22)
+    prod = parser(
+        get_test_file("CWA/CWAZAB_bad.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    ans = (
+        "AREA OCNL IFR CONDS 30NM WIDE. VIS AS LOW AS 2.5SM IN HZ DU. "
+        "VISIBLE ON SATELLITE. CONDS IMPRV AFT 22/0300Z. NM"
+    )
+    assert prod.data.narrative == ans
 
 
 def test_jax():
