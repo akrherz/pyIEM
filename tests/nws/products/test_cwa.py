@@ -13,6 +13,8 @@ LOCS = {
     "CDV": {"lon": -145.40, "lat": 60.35},
     "CLT": {"lon": -80.93, "lat": 35.22},
     "HRV": {"lon": -90.00, "lat": 28.85},
+    "IAH": {"lon": -95.35, "lat": 29.96},
+    "LCH": {"lon": -93.11, "lat": 30.14},
     "MCI": {"lon": -94.74, "lat": 39.29},
     "PSK": {"lon": -80.71, "lat": 37.09},
     "RSK": {"lon": -108.10, "lat": 36.75},
@@ -23,12 +25,45 @@ LOCS = {
 }
 
 
+def test_220322_ffrom():
+    """Test a seemingly common typo."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZTL.txt").replace("FROM ", "FFROM "),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert not prod.warnings
+
+
+def test_220322_fourpt_line():
+    """Test that a line longer than two points can be made into a polygon."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZHU_line.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert abs(prod.data.geom.area - 1.2695) < 0.001
+
+
+def test_220322_cancels():
+    """Test that we gracefully handle a product that is in tough shape."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZHU_cancel2.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert prod.data is None
+
+
 def test_theoretical():
     """Test something that I suspect could happen."""
     utcnow = utc(2022, 3, 22)
     data = get_test_file("CWA/CWAZAN_line.txt").replace("CDV", "aaa")
-    with pytest.raises(AssertionError):
-        parser(data, utcnow=utcnow, nwsli_provider=LOCS)
+    prod = parser(data, utcnow=utcnow, nwsli_provider=LOCS)
+    assert prod.warnings and prod.data is None
 
 
 def test_220321_zan():
