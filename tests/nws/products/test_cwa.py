@@ -61,7 +61,7 @@ def test_jax():
         utcnow=utcnow,
         nwsli_provider=LOCS,
     )
-    assert abs(prod.data.geom.area - 1.5584) < 0.1
+    assert abs(prod.data.geom.area - 1.882) < 0.01
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -100,7 +100,7 @@ def test_line():
         utcnow=utcnow,
         nwsli_provider=LOCS,
     )
-    assert abs(prod.data.geom.area - 0.1411) < 0.01
+    assert abs(prod.data.geom.area - 0.4841) < 0.01
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -144,7 +144,7 @@ def test_circle2(dbcursor):
         nwsli_provider=LOCS,
     )
     assert isinstance(prod.data.geom, Polygon)
-    assert abs(prod.data.geom.area - 0.0098) < 0.01
+    assert abs(prod.data.geom.area - 0.0873) < 0.01
     prod.sql(dbcursor)
 
 

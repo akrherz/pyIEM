@@ -52,7 +52,7 @@ dirs = {
     "": 0,
 }
 
-KM_SM = 1.609347
+KM_NM = 1.852
 
 
 def go2lonlat(lon0, lat0, direction, displacement):
@@ -64,7 +64,7 @@ def go2lonlat(lon0, lat0, direction, displacement):
         direction = dirs.get(direction, 0)
     brng = math.radians(direction)
     # Distance in km
-    d = displacement * KM_SM
+    d = displacement * KM_NM
 
     # Current lat point converted to radians
     lat1 = math.radians(lat0)
@@ -126,7 +126,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
         # We have a line, uh oh
         res = NM_WIDE.search(prod.unixtext).groupdict()
         # approx
-        width_deg = float(res["width"]) / KM_SM / 111.0
+        width_deg = float(res["width"]) * KM_NM / 111.0
         line = LineString(pts)
         right = line.parallel_offset(width_deg / 2, "right", join_style=2)
         left = line.parallel_offset(width_deg / 2, "left", join_style=2)
@@ -135,7 +135,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
         # We have a point
         res = DIAMETER.search(prod.unixtext).groupdict()
         # approx
-        diameter_deg = float(res["diameter"]) / KM_SM / 111.0
+        diameter_deg = float(res["diameter"]) * KM_NM / 111.0
         poly = Point(*pts[0]).buffer(diameter_deg / 2)
     else:
         poly = Polygon(pts)
