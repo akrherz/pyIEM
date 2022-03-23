@@ -20,7 +20,7 @@ class NLDNProduct:
         if self.df is None:
             return
         for _, row in self.df.iterrows():
-            table = "nldn%s" % (row["valid"].strftime("%Y_%m"),)
+            table = f"nldn{row['valid']:%Y_%m}"
             cursor.execute(
                 f"INSERT into {table} (valid, geom, signal, multiplicity, "
                 "axis, eccentricity, ellipse, chisqr) VALUES (%s, "

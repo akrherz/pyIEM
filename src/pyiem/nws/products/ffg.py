@@ -100,7 +100,7 @@ class FFGProduct(TextProduct):
         if self.data is None:
             self.warnings.append("sql() was called with no data parsed!")
             return
-        table = "ffg_%s" % (self.issue.year,)
+        table = f"ffg_{self.issue.year}"
         for _, row in self.data.iterrows():
             txn.execute(
                 f"INSERT into {table} (ugc, valid, hour01, hour03, hour06, "
