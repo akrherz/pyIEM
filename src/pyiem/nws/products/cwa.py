@@ -11,6 +11,7 @@ from shapely.geometry import Polygon, LineString, Point
 from pyiem.models.cwa import CWAModel
 from pyiem.nws.ugc import str2time
 from pyiem.nws.product import TextProduct
+from pyiem.util import LOG
 
 LINE3 = re.compile(
     r"(?P<loc>[A-Z1-9]{4}) CWA (?P<ddhhmi>[0-9]{6})\s?(?P<cor>COR)?"
@@ -21,9 +22,9 @@ LINE4 = re.compile(
 
 FROM_RE = re.compile(
     r"""
-^(?P<offset>[0-9]+)?
-(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s*
-(?P<loc>[A-Z0-9]{3})\s*(?P<leftover>.*)$
+^(?P<offset>[0-9]+)?\s?
+(?P<drct>N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s?
+(?P<loc>[A-Z0-9]{3})\s?(?P<leftover>.*)$
 """,
     re.VERBOSE,
 )
@@ -95,6 +96,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     tokens = (" ".join(line.strip().split())).split("-")
     pts = []
     narrative = None
+    workdone = []
     for i, token in enumerate(tokens):
         s = FROM_RE.match(token.strip())
         if s:
@@ -111,6 +113,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
                     prod.nwsli_provider[d["loc"]]["lon"],
                     prod.nwsli_provider[d["loc"]]["lat"],
                 )
+            workdone.append(f"{token} -> {lon1:.2f}, {lat1:.2f}")
             pts.append((lon1, lat1))
             if d["leftover"]:
                 # Could have a stray dash in here, so need to do some tricks
@@ -125,7 +128,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     m = NM_WIDE.search(prod.unixtext)
     if not pts:
         return None, narrative
-    if len(pts) == 2 or m is not None:
+    if len(pts) >= 2 and m is not None:
         res = m.groupdict()
         # approx
         width_deg = float(res["width"]) * KM_NM / 111.0
@@ -141,7 +144,17 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
         poly = Point(*pts[0]).buffer(diameter_deg / 2)
     else:
         poly = Polygon(pts)
-    assert poly.is_valid and not poly.is_empty
+    if not poly.is_valid:
+        poly = poly.buffer(0)
+        msg = "\n".join(workdone)
+        if any(
+            [not isinstance(poly, Polygon), not poly.is_valid, poly.is_empty]
+        ):
+            prod.warnings.append(f"Polygon is not valid\n{msg}")
+            return None, narrative
+        msg = f"Polygon is not valid, but buffer(0) fixed it...\n{msg}"
+        LOG.warning(msg)
+        prod.warnings.append(msg)
     return poly, narrative
 
 
