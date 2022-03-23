@@ -10,19 +10,71 @@ from pyiem.util import utc, get_test_file
 LOCS = {
     "AMG": {"lon": -82.51, "lat": 31.54},
     "BNA": {"lon": -86.68, "lat": 36.14},
+    "BOS": {"lon": -70.99, "lat": 42.36},
     "CDV": {"lon": -145.40, "lat": 60.35},
     "CLT": {"lon": -80.93, "lat": 35.22},
+    "CON": {"lon": -71.58, "lat": 43.22},
+    "ENE": {"lon": -70.61, "lat": 43.43},
     "HRV": {"lon": -90.00, "lat": 28.85},
     "IAH": {"lon": -95.35, "lat": 29.96},
     "LCH": {"lon": -93.11, "lat": 30.14},
     "MCI": {"lon": -94.74, "lat": 39.29},
+    "MCN": {"lon": -83.65, "lat": 32.69},
+    "MSS": {"lon": -74.72, "lat": 44.91},
+    "MGM": {"lon": -86.32, "lat": 32.22},
+    "ODF": {"lon": -83.3, "lat": 34.7},
     "PSK": {"lon": -80.71, "lat": 37.09},
     "RSK": {"lon": -108.10, "lat": 36.75},
     "SJI": {"lon": -88.36, "lat": 30.73},
     "SJN": {"lon": -109.14, "lat": 34.42},
     "SZW": {"lon": -84.37, "lat": 30.56},
     "YAK": {"lon": -139.67, "lat": 59.50},
+    "YSC": {"lon": -71.68, "lat": 45.43},
 }
+
+
+def test_220323_both():
+    """Test product with duplicate DIAM WIDE verbiage."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZBW_both.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert abs(prod.data.geom.area - 0.0491) < 0.001
+
+
+def test_220323_buffer0_not_fix():
+    """Goose this very badly."""
+    utcnow = utc(2022, 1, 20)
+    data = get_test_file("CWA/CWAZBW_buffer0.txt")
+    before = "30E YSC-55ENE ENE-15WNW BOS-55E MSS-39E YSC"
+    after = "30E YSC-30E YSC-30E YSC"
+    data = data.replace(before, after)
+    prod = parser(data, utcnow=utcnow, nwsli_provider=LOCS)
+    assert prod.warnings
+
+
+def test_220323_buffer0():
+    """Test product fixed by a buffer(0) operation."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZBW_buffer0.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert prod.warnings
+
+
+def test_220323_geom():
+    """Test handling edge case with a space."""
+    utcnow = utc(2022, 1, 20)
+    prod = parser(
+        get_test_file("CWA/CWAZTL_geom.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert not prod.warnings
 
 
 def test_220322_ffrom():
