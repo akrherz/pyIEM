@@ -28,8 +28,8 @@ FROM_RE = re.compile(
 """,
     re.VERBOSE,
 )
-NM_WIDE = re.compile(r"(\s|\.)(?P<width>\d+)NM WIDE")
-DIAMETER = re.compile(r"DIAM (?P<diameter>\d+)NM")
+NM_WIDE = re.compile(r"(\s|\.)(?P<width>\d+)\s?NM WIDE")
+DIAMETER = re.compile(r"DIAM (?P<diameter>\d+)\s?NM")
 CANCEL_LINE = re.compile("(CANCEL|ERROR)")
 
 
