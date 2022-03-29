@@ -42,6 +42,17 @@ def test_vectorized2():
     assert abs(hdx.value("F")[0] - 83.93) < 0.01
 
 
+def test_undefined_apparent_temp():
+    """Test that an undefined apparent temperature scalar is ok."""
+    tmpf = units("degF") * 60
+    dwpf = units("degF") * 50
+    smps = units("meter per second") * 10
+    feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=True)
+    assert np.ma.is_masked(feels.m)
+    feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=False)
+    assert feels.m == tmpf.m
+
+
 def test_vectorized3():
     """See that heatindex and windchill can do lists"""
     tmpf = units("degF") * np.array([80.0, 90.0])

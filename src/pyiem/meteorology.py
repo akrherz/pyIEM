@@ -98,25 +98,31 @@ def uv(speed, direction):
     return (dt.speed(u, speed.get_units()), dt.speed(v, speed.get_units()))
 
 
-def mcalc_feelslike(tmpf, dwpf, smps):
+def mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=False):
     """Compute a feels like temperature
 
     Args:
       temperature (temperature): The dry bulb temperature
       dewpoint (temperature): The dew point temperature
       speed (speed): the wind speed
+      mask_undefined (bool): If True, mask values where feels like is undef.
 
     Returns:
       temperature (temperature): The feels like temperature
     """
     is_not_scalar = isinstance(tmpf.m, (list, tuple, np.ndarray))
-    rh = mcalc.relative_humidity_from_dewpoint(tmpf, dwpf)
-    # NB: update this once metpy 0.11 is released
-    app = mcalc.apparent_temperature(tmpf, rh, smps)
+    app = mcalc.apparent_temperature(
+        tmpf,
+        mcalc.relative_humidity_from_dewpoint(tmpf, dwpf),
+        smps,
+        mask_undefined=mask_undefined,
+    )
     if hasattr(app, "mask"):
         if is_not_scalar:
             app[app.mask] = tmpf[app.mask]
         else:
+            if mask_undefined:
+                return app[0]
             app = tmpf
 
     return app

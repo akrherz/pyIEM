@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add parsing support for CWSU Center Weather Advisory (#573).
+- Add option to `mcalc_feelslike` to support `mask_undefined`.
 - Allow `pyiem.nws.nwsli` instance to be subscriptable for iterop.
 
 ### Bug Fixes

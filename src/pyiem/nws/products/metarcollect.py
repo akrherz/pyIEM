@@ -5,7 +5,7 @@ from datetime import timezone, timedelta
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
@@ -104,7 +104,7 @@ def to_metar(textprod, text):
                 # So tokens contains a series of groups that needs updated
                 newtext = text
                 for token in tokens[0].split():
-                    newtext = newtext.replace(" %s" % (token,), "")
+                    newtext = newtext.replace(f" {token}", "")
                 if newtext != text:
                     text = newtext
             if str(inst).find("day is out of range for month") > -1:
@@ -208,11 +208,10 @@ class METARReport(Metar):
             return None
         WIND_ALERTS[key] = 1
         speed = datatypes.speed(sknt, "KT")
-        return ("gust of %.0f knots (%.1f mph) from %s @ %s") % (
-            speed.value("KT"),
-            speed.value("MPH"),
-            drct2text(drct),
-            time.strftime("%H%MZ"),
+        return (
+            f"gust of {speed.value('KT'):.0f} knots "
+            f"({speed.value('MPH'):.1f} mph) from {drct2text(drct)} "
+            f"@ {time:%H%M}Z"
         )
 
     def over_wind_threshold(self):
@@ -312,11 +311,10 @@ class METARReport(Metar):
                 else:
                     iem.data["mslp"] -= 100.0
         # Do something with sky coverage
-        for i in range(len(self.sky)):
-            (cov, hgh, _) = self.sky[i]
-            iem.data["skyc%s" % (i + 1)] = cov
+        for i, (cov, hgh, _) in enumerate(self.sky, start=1):
+            iem.data[f"skyc{i}"] = cov
             if hgh is not None:
-                iem.data["skyl%s" % (i + 1)] = hgh.value("FT")
+                iem.data[f"skyl{i}"] = hgh.value("FT")
 
         # Presentwx
         if self.weather:
@@ -330,7 +328,7 @@ class METARReport(Metar):
 
         # Ice Accretion
         for hr in [1, 3, 6]:
-            key = "ice_accretion_%shr" % (hr,)
+            key = f"ice_accretion_{hr}hr"
             iem.data[key] = trace(getattr(self, key))
         return iem, iem.save(txn, force_current_log, skip_current)
 
@@ -373,10 +371,10 @@ class METARCollective(TextProduct):
                 # suck
                 if JABBER_SITES[mtr.station_id] != mtr.time:
                     JABBER_SITES[mtr.station_id] = mtr.time
-                    channels = ["METAR.%s" % (mtr.station_id,)]
+                    channels = [f"METAR.{mtr.station_id}"]
                     if mtr.type == "SPECI":
-                        channels.append("SPECI.%s" % (mtr.station_id,))
-                    mstr = "%s %s" % (mtr.type, mtr.code)
+                        channels.append(f"SPECI.{mtr.station_id}")
+                    mstr = f"{mtr.type} {mtr.code}"
                     jmsgs.append(
                         [mstr, mstr, dict(channels=",".join(channels))]
                     )
@@ -388,9 +386,9 @@ class METARCollective(TextProduct):
                         "Unknown WFO for id: %s, skipping alert", mtr.iemid
                     )
                     continue
-                channels = ["METAR.%s" % (mtr.station_id,)]
+                channels = [f"METAR.{mtr.station_id}"]
                 if mtr.type == "SPECI":
-                    channels.append("SPECI.%s" % (mtr.station_id,))
+                    channels.append(f"SPECI.{mtr.station_id}")
                 channels.append(wfo)
                 st = row.get("state")
                 nm = row.get("name")
@@ -398,15 +396,10 @@ class METARCollective(TextProduct):
                 extra = ""
                 if mtr.code.find("$") > 0:
                     extra = "(Caution: Maintenance Check Indicator)"
-                url = ("%s%s") % (uri, mtr.network)
-                jtxt = ("%s,%s (%s) ASOS %s reports %s\n%s %s") % (
-                    nm,
-                    st,
-                    mtr.iemid,
-                    extra,
-                    msg,
-                    mtr.code,
-                    url,
+                url = f"{uri}{mtr.network}"
+                jtxt = (
+                    f"{nm},{st} ({mtr.iemid}) ASOS {extra} reports {msg}\n"
+                    f"{mtr.code} {url}"
                 )
                 jhtml = (
                     f'<p><a href="{url}">{nm},{st}</a> ({mtr.iemid}) ASOS '
@@ -419,8 +412,8 @@ class METARCollective(TextProduct):
                     "long": str(row.get("lon")),
                 }
                 xtra["twitter"] = (
-                    ("%s,%s (%s) ASOS reports %s -- %s")
-                    % (nm, st, mtr.iemid, msg, mtr.code)
+                    f"{nm},{st} ({mtr.iemid}) ASOS reports {msg} "
+                    f"-- {mtr.code}"
                 )[:TWEET_CHARS]
                 jmsgs.append([jtxt, jhtml, xtra])
 
@@ -436,7 +429,7 @@ class METARCollective(TextProduct):
             content = "\n".join(lines[2:])
         else:
             self.warnings.append(
-                ("WMO header split_and_parse fail: %s") % (self.unixtext,)
+                f"WMO header split_and_parse fail: {self.unixtext}"
             )
             content = "\n".join(lines)
         # Tokenize on the '=', which splits a product with METARs
