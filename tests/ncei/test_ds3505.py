@@ -5,15 +5,7 @@ import pytest
 import numpy as np
 from pyiem.ncei import ds3505
 from pyiem import util
-from pyiem.util import get_dbconn, utc, get_test_file
-
-
-@pytest.fixture()
-def dbcursor():
-    """Get a database cursor."""
-    pgconn = get_dbconn("asos")
-    yield pgconn.cursor()
-    pgconn.close()
+from pyiem.util import utc, get_test_file
 
 
 def test_issue298_precip():
@@ -126,6 +118,7 @@ def test_altimeter():
     assert data["metar"] == ans
 
 
+@pytest.mark.parametrize("database", ["asos"])
 def test_6hour_temp(dbcursor):
     """6 hour high/low"""
     # 2016-08-12 23:53:00
