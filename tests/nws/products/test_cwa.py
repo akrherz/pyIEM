@@ -33,6 +33,17 @@ LOCS = {
 }
 
 
+def test_220330_rom():
+    """Test accounting for somewhat common typo of ROM vs FROM."""
+    utcnow = utc(2022, 3, 17, 12, 19)
+    prod = parser(
+        get_test_file("CWA/CWAZTL_cor.txt").replace("FROM ", "ROM "),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert not prod.warnings
+
+
 def test_220323_both():
     """Test product with duplicate DIAM WIDE verbiage."""
     utcnow = utc(2022, 1, 20)
