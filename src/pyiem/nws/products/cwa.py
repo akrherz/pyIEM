@@ -91,9 +91,17 @@ def go2lonlat(lon0, lat0, direction, displacement):
 def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     """Figure out what the polygon is!"""
     # condition, and yes, le sigh
-    line = line.replace("FFROM ", "").replace("FROM ", "").replace("=", "")
+    line = (
+        line.replace("FFROM ", "")
+        .replace("FROM ", "")
+        .replace("=", "")
+        .strip()
+    )
+    # Account for quasi common FROM typo
+    if line.startswith("ROM "):
+        line = line[4:]
     # Condense multiple spaces
-    tokens = (" ".join(line.strip().split())).split("-")
+    tokens = (" ".join(line.split())).split("-")
     pts = []
     narrative = None
     workdone = []
