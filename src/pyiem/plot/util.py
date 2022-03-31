@@ -19,7 +19,7 @@ from ._mpl import GeoPanel
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
-LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png"}
+LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png", "nwa": "nwalogo.png"}
 
 
 def update_kwargs_apctx(func):
