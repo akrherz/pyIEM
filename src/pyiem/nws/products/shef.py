@@ -79,6 +79,7 @@ TIMEZONES = {
 }
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
 RETAINED_COMMENT_RE = re.compile(r"['\"](.*)['\"]")
+NUMBER_RE = re.compile(r"^[+-]?\d+\.?\d*$")
 MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG"]
 
 
@@ -600,6 +601,14 @@ def process_message_a(prod, message) -> List[SHEFElement]:
         text = text.strip()
         if text == "":
             continue
+        # A dangling value on the wrong side of a slash
+        if elements and elements[-1].str_value == "":
+            if NUMBER_RE.match(text):
+                elements[-1].str_value = text
+                compute_num_value(elements[-1])
+                continue
+            if text in MISSING_VALUES:
+                continue
         if process_modifiers(text, diction, valid):
             continue
         parts = text.split(maxsplit=1)

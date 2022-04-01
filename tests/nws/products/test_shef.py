@@ -32,6 +32,14 @@ def prod():
     return res
 
 
+def test_220401_rr1tar():
+    """Test handling invalid A message that SHEFIT handles somehow."""
+    utcnow = utc(2022, 4, 1)
+    prod = parser(get_test_file("SHEF/RR1TAR.txt"), utcnow=utcnow)
+    assert len(prod.data) == 10
+    assert abs(prod.data[0].num_value - 529.52) < 0.01
+
+
 def test_220401_onechar_skip():
     """Test that we just emit warnings when attempting to parse such things."""
     utcnow = utc(2022, 4, 1)
