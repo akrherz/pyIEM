@@ -371,12 +371,12 @@ def process_modifiers(text, diction, basevalid):
     return True
 
 
-def process_message_e(message, utcnow=None) -> List[SHEFElement]:
+def process_message_e(prod, message) -> List[SHEFElement]:
     """Process a text string in E SHEF format.
 
     Args:
+      prod (SHEFProduct): the product we are working on.
       message (str): The string to parse.
-      utcnow (datetime): The best guess (product.utcnow) at current timestamp.
 
     Returns:
       List[SHEFElement]
@@ -384,7 +384,9 @@ def process_message_e(message, utcnow=None) -> List[SHEFElement]:
     tokens = message.split("/")
     # In the first token, we should find some information about the station
     # and timing.  Otherstuff could be here as well
-    station, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
+    station, basevalid, valid, extra = parse_station_valid(
+        tokens[0], prod.utcnow
+    )
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
@@ -455,13 +457,15 @@ def clean_b_headerline(text):
     return "/".join(tokens)
 
 
-def process_message_b(message, utcnow=None) -> List[SHEFElement]:
+def process_message_b(prod, message) -> List[SHEFElement]:
     """Convert the message into an object."""
     # line one has the magic
     lines = message.split("\n")
     headerline = clean_b_headerline(lines[0])
     tokens = headerline.split("/")
-    _center, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
+    _center, basevalid, valid, extra = parse_station_valid(
+        tokens[0], prod.utcnow
+    )
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
@@ -572,7 +576,7 @@ def slash_tokenize(message):
     return tokens
 
 
-def process_message_a(message, utcnow=None) -> List[SHEFElement]:
+def process_message_a(prod, message) -> List[SHEFElement]:
     """Convert the message into an object."""
     # Reading by char appears to be necessary pain until something better
     tokens = slash_tokenize(message)
@@ -580,7 +584,9 @@ def process_message_a(message, utcnow=None) -> List[SHEFElement]:
     if len(tokens) == 1:
         return []
     # First tokens should have some mandatory stuff
-    station, basevalid, valid, extra = parse_station_valid(tokens[0], utcnow)
+    station, basevalid, valid, extra = parse_station_valid(
+        tokens[0], prod.utcnow
+    )
     if valid is None:
         # This is an empty message
         return []
@@ -598,7 +604,11 @@ def process_message_a(message, utcnow=None) -> List[SHEFElement]:
             continue
         parts = text.split(maxsplit=1)
         elem = diction.copy()
-        elem.consume_code(text)
+        try:
+            elem.consume_code(text)
+        except InvalidSHEFEncoding as exp:
+            prod.warnings.append(exp)
+            continue
         elem.str_value = "" if len(parts) == 1 else parts[1]
         elem.raw = message
         if compute_num_value(elem):
@@ -620,7 +630,7 @@ def process_messages(func, prod, messages) -> int:
             prod.warnings.append("Aborting processing with too many errors")
             break
         try:
-            res = func(message, prod.utcnow)
+            res = func(prod, message)
             if res:
                 prod.data.extend(res)
         except InvalidSHEFEncoding as exp:
