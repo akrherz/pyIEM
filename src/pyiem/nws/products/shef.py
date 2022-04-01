@@ -616,7 +616,7 @@ def process_message_a(prod, message) -> List[SHEFElement]:
         try:
             elem.consume_code(text)
         except InvalidSHEFEncoding as exp:
-            prod.warnings.append(exp)
+            prod.warnings.append(f"{text} -> {exp}")
             continue
         elem.str_value = "" if len(parts) == 1 else parts[1]
         elem.raw = message
