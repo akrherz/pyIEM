@@ -6,9 +6,16 @@ from pyiem.nws.products.spcpts import (
     str2multipolygon,
     load_conus_data,
     SPCPTS,
+    THRESHOLD_ORDER,
 )
 from pyiem.nws.products._outlook_util import debug_draw
 from pyiem.util import utc, get_test_file
+
+
+def test_220404_threshold_order():
+    """Test that two terms are not missing from the lookup :("""
+    assert "ENH" in THRESHOLD_ORDER
+    assert "MDT" in THRESHOLD_ORDER
 
 
 def test_invalid_awipsid():

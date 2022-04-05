@@ -20,6 +20,7 @@ form of `process_messages_{a,b,e}` is now `TextProduct,str`.
 ### Bug Fixes
 
 - Fixed f-string formatting issue in SAW jabber message generator.
+- Fixed missing `ENH` and `MDT` from `spcpts.THRESHOLD_ORDER`.
 
 ## **1.12.0** (18 Mar 2022)
 
