@@ -30,7 +30,7 @@ DAYRE = re.compile(
 )
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 THRESHOLD_ORDER = (
-    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH"
+    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH "
     "MDT HIGH IDRT SDRT ELEV CRIT EXTM"
 ).split()
 
