@@ -13,6 +13,13 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_frwoun_jabber():
+    """Test that we get a special twitter media out of this."""
+    prod = productparser(get_test_file("FRW/FRWOUN.txt"))
+    res = prod.get_jabbers("http://localhost")
+    assert res[0][2]["twitter_media"].find("227") > -1
+
+
 def test_kawn():
     """Test that a bogus KAWN METAR header doesn't cause trouble."""
     data = get_test_file("METAR/kawn.txt")

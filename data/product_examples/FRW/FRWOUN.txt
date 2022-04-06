@@ -1,0 +1,38 @@
+252 
+WOUS44 KOUN 300114
+FRWOUN
+OKZ009-014-300215-
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Fire Warning
+REQUESTED BY OKLAHOMA FORESTRY SERVICES
+Relayed by National Weather Service Norman OK
+810 PM CDT Tue Mar 29 2022
+
+The National Weather Service in Norman has issued a
+Fire Warning at the request of Oklahoma Forestry Services for
+northwestern Roger Mills and southwestern Ellis Counties.
+
+* AT 808 PM CDT, a dangerous wildfire was located near and northeast 
+  of Durham, moving rapidly east-northeast at 3 to 5 mph.
+
+* Areas impacted... Durham and areas northeast including the 
+  Antelope Hills area near the Canadian River.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Be prepared to evacuate quickly if requested and follow all safety
+instructions from local emergency management officials. Do not drive
+into smoke.
+
+Firefighters and incident responders should anticipate extreme fire
+behavior including a wind-driven and torching fire.
+
+&&
+
+ LAT...LON 3579 9996 3586 10000 3598 9985 3598 9971
+      3582 9972 
+
+$$
+
+Maxwell
