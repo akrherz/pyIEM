@@ -8,6 +8,7 @@ from pyiem.nws.product import (
     date_tokens2datetime,
     checker,
     str2polygon,
+    TextProduct,
 )
 from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
@@ -18,6 +19,10 @@ def test_frwoun_jabber():
     prod = productparser(get_test_file("FRW/FRWOUN.txt"))
     res = prod.get_jabbers("http://localhost")
     assert res[0][2]["twitter_media"].find("227") > -1
+
+    prod = TextProduct(get_test_file("FRW/FRWOUN.txt"), parse_segments=False)
+    res = prod.get_jabbers("http://localhost")
+    assert "twitter_media" not in res[0][2]
 
 
 def test_kawn():
