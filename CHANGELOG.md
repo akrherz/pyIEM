@@ -15,6 +15,7 @@ form of `process_messages_{a,b,e}` is now `TextProduct,str`.
 
 - Add parsing support for CWSU Center Weather Advisory (#573).
 - Add option to `mcalc_feelslike` to support `mask_undefined`.
+- Add `twitter_media` link for generic text products that have a polygon (#586).
 - Allow `pyiem.nws.nwsli` instance to be subscriptable for iterop.
 
 ### Bug Fixes

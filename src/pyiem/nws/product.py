@@ -710,6 +710,12 @@ class TextProduct:
             "product_id": self.get_product_id(),
             "twitter": tweet,
         }
+        if self.segments[0].sbw:
+            # Generic product has a polygon, so we add special twitter message
+            xtra["twitter_media"] = (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/227/"
+                f"pid:{self.get_product_id()}::segnum:0.png"
+            )
         res.append((plain, html, xtra))
         return res
 
