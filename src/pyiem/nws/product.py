@@ -683,7 +683,7 @@ class TextProduct:
             "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s%(headline)s ",
             "%(source)s issues %(name)s (%(aaa)s) at %(stamp)s ",
         ]
-        aaa = self.afos[:3]
+        aaa = "" if self.afos is None else self.afos[:3]
         hdl = self.get_main_headline()
         data = {
             "headline": f" ...{hdl}..." if hdl != "" else "",
@@ -710,7 +710,7 @@ class TextProduct:
             "product_id": self.get_product_id(),
             "twitter": tweet,
         }
-        if self.segments[0].sbw:
+        if self.segments and self.segments[0].sbw:
             # Generic product has a polygon, so we add special twitter message
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/227/"
