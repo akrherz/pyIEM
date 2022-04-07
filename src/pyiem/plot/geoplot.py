@@ -996,6 +996,7 @@ class MapPlot:
           iline (boolean,optional): should we draw contour lines
           lblformat (str,optional): Format string for labeling contours, %.0f.
             draw_colorbar (bool,optional): Draw colorbar default True.
+          linewidths (float,optional): Line width(s) for contour lines
 
         Returns:
           vals (np.array): The values used for plotting, maybe after gridding
@@ -1026,7 +1027,6 @@ class MapPlot:
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
         )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        # vals = maskoceans(lons, lats, vals, resolution='h')
         self.panels[0].contourf(
             xi,
             yi,
@@ -1047,6 +1047,7 @@ class MapPlot:
                 colors="w",
                 zorder=Z_FILL_LABEL,
                 crs=self.panels[0].crs,
+                linewidths=kwargs.pop("linewidths", 1),
             )
             if kwargs.get("ilabel", False):
                 # Legacy non-standardized kwarg

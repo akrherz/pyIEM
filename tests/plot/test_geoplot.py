@@ -257,6 +257,7 @@ def test_conus_contour():
         np.arange(25),
         np.arange(25),
         clip_on=False,
+        linewidths=3,
     )
     mp.draw_mask(sector="conus")
     return mp.fig
