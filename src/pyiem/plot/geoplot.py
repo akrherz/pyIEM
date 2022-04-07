@@ -1235,10 +1235,7 @@ class MapPlot:
         im2.save(tmpfd, format="PNG")
         tmpfd.close()
         if kwargs.get("pqstr") is not None:
-            subprocess.call(
-                f"pqinsert -p '{kwargs.get('pqstr')}' {tmpfd.name}",
-                shell=True,
-            )
+            subprocess.call(["pqinsert", "-p", kwargs["pqstr"], tmpfd.name])
         if kwargs.get("filename") is not None:
             shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)
