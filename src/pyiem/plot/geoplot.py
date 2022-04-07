@@ -491,7 +491,6 @@ class MapPlot:
         (x0, x1) = self.panels[0].ax.set_xlim()
         # size to use for circles
         circlesz = (x1 - x0) / 180.0
-        # (y0, y1) = self.panels[0].ax.set_ylim()
         offsets = {
             1: [-4, 4, "right", "bottom"],
             2: [0, 4, "center", "bottom"],
@@ -1169,8 +1168,6 @@ class MapPlot:
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
         df2 = gdf.cx[west:east, south:north].query(f"pop_2010 > {minpop}")
-        # debug option to test an individual point on the plot
-        # df2 = df[(df['name'] == 'Sioux City')]
         # hack around a API break
         tsz = kwargs.pop("textsize", 16)
         self.plot_values(
