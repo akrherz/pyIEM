@@ -491,7 +491,6 @@ class MapPlot:
         (x0, x1) = self.panels[0].ax.set_xlim()
         # size to use for circles
         circlesz = (x1 - x0) / 180.0
-        # (y0, y1) = self.panels[0].ax.set_ylim()
         offsets = {
             1: [-4, 4, "right", "bottom"],
             2: [0, 4, "center", "bottom"],
@@ -996,6 +995,7 @@ class MapPlot:
           iline (boolean,optional): should we draw contour lines
           lblformat (str,optional): Format string for labeling contours, %.0f.
             draw_colorbar (bool,optional): Draw colorbar default True.
+          linewidths (float,optional): Line width(s) for contour lines
 
         Returns:
           vals (np.array): The values used for plotting, maybe after gridding
@@ -1026,7 +1026,6 @@ class MapPlot:
             kwargs.get("cmap"), clevs, extend=kwargs.get("extend")
         )
         norm = mpcolors.BoundaryNorm(clevs, cmap.N)
-        # vals = maskoceans(lons, lats, vals, resolution='h')
         self.panels[0].contourf(
             xi,
             yi,
@@ -1047,6 +1046,7 @@ class MapPlot:
                 colors="w",
                 zorder=Z_FILL_LABEL,
                 crs=self.panels[0].crs,
+                linewidths=kwargs.pop("linewidths", 1),
             )
             if kwargs.get("ilabel", False):
                 # Legacy non-standardized kwarg
@@ -1168,8 +1168,6 @@ class MapPlot:
             "minpop", 50000.0 if self.sector in ["nws", "conus"] else 5000.0
         )
         df2 = gdf.cx[west:east, south:north].query(f"pop_2010 > {minpop}")
-        # debug option to test an individual point on the plot
-        # df2 = df[(df['name'] == 'Sioux City')]
         # hack around a API break
         tsz = kwargs.pop("textsize", 16)
         self.plot_values(
@@ -1237,10 +1235,7 @@ class MapPlot:
         im2.save(tmpfd, format="PNG")
         tmpfd.close()
         if kwargs.get("pqstr") is not None:
-            subprocess.call(
-                f"pqinsert -p '{kwargs.get('pqstr')}' {tmpfd.name}",
-                shell=True,
-            )
+            subprocess.call(["pqinsert", "-p", kwargs["pqstr"], tmpfd.name])
         if kwargs.get("filename") is not None:
             shutil.copyfile(tmpfd.name, kwargs.get("filename"))
         os.unlink(tmpfd.name)

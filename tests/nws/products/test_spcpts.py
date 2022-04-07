@@ -34,7 +34,6 @@ def test_get_invalid_outlook_day():
 def test_100606_closed():
     """Test that we can accurately close off an unclosed polygon."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_closed.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 572.878) < 0.01
 
@@ -43,7 +42,6 @@ def test_130607_larger_than_conus():
     """Test that we do not yield a multipolygon larger than the CONUS."""
     # /products/outlook/archive/2013/day1otlk_20130607_1630.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_conus.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 4.719) < 0.01
 
@@ -58,7 +56,6 @@ def test_issue246():
 def test_880324_largerslight():
     """Test that we discard a polygon that is larger than TSTM."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_larger.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 340.537) < 0.01
 
@@ -67,7 +64,6 @@ def test_210501_multipolygon():
     """Test that we handle a polygon that gets clipped into two chunks."""
     # /products/outlook/archive/2021/day1otlk_20210501_1300.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_multipoly.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 238.516) < 0.01
 
@@ -96,7 +92,6 @@ def test_210703_topoerror():
     """Test that we do not get an exception for this."""
     # /products/outlook/archive/2021/day1otlk_20210703_2000.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_topo2.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 452.077) < 0.01
 
@@ -105,7 +100,6 @@ def test_210601_hole():
     """Test that we properly get a hole with the TSTM."""
     # /products/outlook/archive/2021/day1otlk_20210601_1300.html
     prod = parser(get_test_file("SPCPTS/PTSDY1_hole.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 315.286) < 0.01
 
@@ -127,7 +121,6 @@ def test_210519_singlepoint():
 def test_890526_multi():
     """Test that we can process this PTS."""
     prod = parser(get_test_file("SPCPTS/PTSDY1_multi.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 111.132) < 0.01
 
@@ -250,7 +243,6 @@ def test_170619_maine():
     """Test that we don't light up all of Main for the slight."""
     # https://.../products/outlook/archive/2017/day1otlk_20170619_1200.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_maine.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 49.058) < 0.01
 
@@ -272,7 +264,6 @@ def test_200602_unpack():
     """Workaround a full failure, but this still fails :("""
     # https://.../products/outlook/archive/2020/day2otlk_20200602_1730.html
     spc = parser(get_test_file("SPCPTS/PTSDY2_unpack.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 78.7056) < 0.01
 
@@ -281,7 +272,6 @@ def test_200109_nogeoms():
     """Failed to parse some tricky line work south of New Orleans."""
     # https://.../products/outlook/archive/2020/day2otlk_20200109_1730.html
     spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom3.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "ENH", 2)
     assert abs(outlook.geometry.area - 33.785) < 0.01
 
@@ -290,7 +280,6 @@ def test_190907_invalid():
     """Product hit geos issue."""
     # /products/outlook/archive/2019/day1otlk_20190907_1300.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_190907.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 314.761) < 0.01
 
@@ -298,7 +287,6 @@ def test_190907_invalid():
 def test_190905_invalid():
     """Product hit geos issue."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_geos.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 263.61) < 0.01
 
@@ -306,7 +294,6 @@ def test_190905_invalid():
 def test_190903_invalid():
     """Product hit invalid geometry error."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_invalid2.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 2)
     assert abs(outlook.geometry.area - 343.74) < 0.01
 
@@ -314,7 +301,6 @@ def test_190903_invalid():
 def test_190801_shapely():
     """Product hit shapely assertion error."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_shapelyerror.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 333.678) < 0.01
 
@@ -322,7 +308,6 @@ def test_190801_shapely():
 def test_190625_nogeom2():
     """This hit some error that we need to debug."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom2.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 11.59) < 0.01
 
@@ -331,7 +316,6 @@ def test_190527_canada():
     """SPC Updated marine bounds."""
     # https://.../products/outlook/archive/2019/day1otlk_20190528_0100.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_canada.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
     assert abs(outlook.geometry.area - 118.229) < 0.01
 
@@ -346,7 +330,6 @@ def test_190515_issue117_month():
 def test_190509_marinebounds():
     """SPC Updated marine bounds."""
     spc = parser(get_test_file("SPCPTS/PTSDY1_marine.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("HAIL", "0.15", 1)
     assert abs(outlook.geometry.area - 17.82) < 0.01
 
@@ -373,7 +356,6 @@ def test_180807_idx1_idx2():
 def test_170926_largeenh(dbcursor):
     """This Day1 generated a massive ENH"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_bigenh.txt"))
-    # spc.draw_outlooks()
     spc.sql(dbcursor)
     # Do twice to force a deletion
     spc.sql(dbcursor)
@@ -398,7 +380,6 @@ def test_170703_badday3link():
 def test_170612_nullgeom(dbcursor):
     """See why this has an error with null geom reported"""
     spc = parser(get_test_file("SPCPTS/PTSD48_nullgeom.txt"))
-    # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("ANY SEVERE", "0.15", 4)
     assert abs(outlook.geometry.area - 56.84) < 0.01
@@ -407,7 +388,6 @@ def test_170612_nullgeom(dbcursor):
 def test_170522_nogeom():
     """See why this has an error with no-geom reported"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_nogeom2.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("TORNADO", "0.02", 1)
     assert abs(outlook.geometry.area - 2.90) < 0.01
 
@@ -425,7 +405,6 @@ def test_170428_large(dbcursor):
     """PTSDY1 has a large 10 tor"""
     # /products/outlook/archive/2006/day1otlk_20060510_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_largetor10.txt"))
-    # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("TORNADO", "0.10", 1)
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
@@ -436,7 +415,6 @@ def test_170428_large(dbcursor):
 def test_170417_empty(dbcursor):
     """An empty PTSD48 was causing an exception in get_jabbers"""
     spc = parser(get_test_file("SPCPTS/PTSD48_empty.txt"))
-    # spc.draw_outlooks()
     spc.sql(dbcursor)
     jabber = spc.get_jabbers("")
     ans = (
@@ -458,7 +436,6 @@ def test_170417_empty(dbcursor):
 def test_051128_invalid(dbcursor):
     """Make sure that the SIG wind threshold does not eat the US"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom2.txt"))
-    # spc.draw_outlooks()
     spc.sql(dbcursor)
     outlook = spc.get_outlook("WIND", "0.05", 1)
     assert outlook.geometry.is_empty
@@ -469,7 +446,6 @@ def test_051128_invalid(dbcursor):
 def test_080731_invalid():
     """Make sure that the SIG wind threshold does not eat the US"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_biggeom.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("WIND", "SIGN", 1)
     assert abs(outlook.geometry.area - 15.823) < 0.01
 
@@ -490,7 +466,6 @@ def test_170411_jabber_error():
 def test_170406_day48_pre2015(dbcursor):
     """Can we parse a pre2015 days 4-8"""
     spc = parser(get_test_file("SPCPTS/PTSD48_pre2015.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("ANY SEVERE", "0.15", 4)
     assert abs(outlook.geometry.area - 73.116) < 0.01
     outlook = spc.get_outlook("ANY SEVERE", "0.15", 5)
@@ -502,7 +477,6 @@ def test_170406_day48_pre2015(dbcursor):
 def test_170406_day48(dbcursor):
     """Can we parse a present day days 4-8"""
     spc = parser(get_test_file("SPCPTS/PTSD48.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("ANY SEVERE", "0.15", 4)
     assert abs(outlook.geometry.area - 40.05) < 0.01
     spc.sql(dbcursor)
@@ -522,7 +496,6 @@ def test_170404_nogeom():
 def test_170404_2002():
     """Can we parse something from 2002?"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_2002.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 38.614) < 0.01
 
@@ -530,7 +503,6 @@ def test_170404_2002():
 def test_170329_notimp():
     """Exception was raised parsing this guy"""
     spc = parser(get_test_file("SPCPTS/PTSDY2_notimp.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 2)
     assert abs(outlook.geometry.area - 110.24) < 0.01
 
@@ -538,7 +510,6 @@ def test_170329_notimp():
 def test_170215_gh23():
     """A marginal for the entire country :/"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_gh23.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "MRGL", 1)
     assert abs(outlook.geometry.area - 19.63) < 0.01
 
@@ -546,7 +517,6 @@ def test_170215_gh23():
 def test_150622_ptsdy1_topo():
     """PTSDY1_topo.txt"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_topo.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 1)
     assert abs(outlook.geometry.area - 91.91) < 0.01
 
@@ -554,7 +524,6 @@ def test_150622_ptsdy1_topo():
 def test_150622_ptsdy2():
     """PTSDY2_invalid.txt parsed ok."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_invalid.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 78.14) < 0.01
 
@@ -595,7 +564,6 @@ def test_140709_nogeoms():
 def test_140710_nogeom():
     """Can we parse holes."""
     spc = parser(get_test_file("SPCPTS/PTSDY2_nogeom.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry.area - 43.02) < 0.01
 
@@ -613,7 +581,6 @@ def test_140707_general():
     """Had a problem with General Thunder, lets test this"""
     # /products/outlook/archive/2014/day1otlk_20140707_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_complex.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 606.333) < 0.01
 
@@ -628,7 +595,6 @@ def test_complex():
 def test_bug_140601_pfwf38():
     """Encounted issue with Fire Outlook Day 3-8"""
     spc = parser(get_test_file("SPCPTS/PFWF38.txt"))
-    # spc.draw_outlooks()
     collect = spc.get_outlookcollection(3)
     assert len(collect.outlooks) == 1
 
@@ -636,7 +602,6 @@ def test_bug_140601_pfwf38():
 def test_bug_140507_day1():
     """Bug found in production with GEOS Topology Exception"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_topoexp.txt"))
-    # spc.draw_outlooks()
     collect = spc.get_outlookcollection(1)
     assert len(collect.outlooks) == 14
 
@@ -644,7 +609,6 @@ def test_bug_140507_day1():
 def test_bug_140506_day2():
     """Bug found in production"""
     spc = parser(get_test_file("SPCPTS/PTSDY2.txt"))
-    # spc.draw_outlooks()
     collect = spc.get_outlookcollection(2)
     assert len(collect.outlooks) == 6
     j = spc.get_jabbers("localhost", "localhost")
@@ -667,7 +631,6 @@ def test_bug_140518_day2():
     """18 May 2014 tripped error with no exterior polygon found"""
     # /products/outlook/archive/2014/day2otlk_20140518_0600.html
     spc = parser(get_test_file("SPCPTS/PTSDY2_interior.txt"))
-    # spc.draw_outlooks()
     collect = spc.get_outlookcollection(2)
     assert len(collect.outlooks) == 1
 
@@ -675,7 +638,6 @@ def test_bug_140518_day2():
 def test_bug_140519_day1():
     """19 May 2014 tripped error with no exterior polygon found"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_interior.txt"))
-    # spc.draw_outlooks()
     collect = spc.get_outlookcollection(1)
     assert len(collect.outlooks) == 7
 
@@ -690,7 +652,6 @@ def test_bug():
 def test_complex_2():
     """Test our processing"""
     spc = parser(get_test_file("SPCPTS/PTSDY1.txt"))
-    # spc.draw_outlooks()
     outlook = spc.get_outlook("HAIL", "0.05", 1)
     assert abs(outlook.geometry.area - 47.65) < 0.01
 
@@ -699,7 +660,6 @@ def test_complex_2():
 def test_str1(dbcursor):
     """check spcpts parsing"""
     spc = parser(get_test_file("SPCPTS/SPCPTS.txt"))
-    # spc.draw_outlooks()
     assert spc.valid == utc(2013, 7, 19, 19, 52)
     assert spc.issue == utc(2013, 7, 19, 20, 0)
     assert spc.expire == utc(2013, 7, 20, 12, 0)
