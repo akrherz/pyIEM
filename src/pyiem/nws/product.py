@@ -84,7 +84,7 @@ FLOOD_TAGS = re.compile(
     r".*(?P<key>FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|"
     r"DAM FAILURE|LEVEE FAILURE)\.\.\.(?P<value>.*?)\n"
 )
-TORNADO = re.compile(r"^AT |^\* AT")
+TORNADO = re.compile(r"^AT |^\* AT", re.I)
 RESENT = re.compile(r"\.\.\.(RESENT|RETRANSMITTED|CORRECTED)")
 EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
 PDS_RE = re.compile(

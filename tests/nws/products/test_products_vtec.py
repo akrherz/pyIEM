@@ -395,16 +395,16 @@ def test_issue120_ffwtags(dbcursor):
         "flash flood damage threat: catastrophic, dam failure: imminent, "
         "expected rainfall: 2-3 inches in 60 minutes] "
         "for ((GUC100)), ((GUC110)), ((GUC120)) [GU] till Oct 25, 9:15 AM "
-        "CHST http://localhost2018-O-NEW-PGUM-FF-W-0014_2018-10-24T20:23Z"
+        "CHST * At 612 AM ChST, satellite estimates indicated heavy rain "
+        "across the warned area. Up to three inches of rain have already "
+        "fallen. Flash flooding is expected to begin shortly. "
+        "http://localhost2018-O-NEW-PGUM-FF-W-0014_2018-10-24T20:23Z"
     )
     assert j[0][0] == ans
     prod.sql(dbcursor)
     dbcursor.execute(
-        """
-        SELECT * from sbw_2018 WHERE
-        wfo = 'GUM' and eventid = 14 and phenomena = 'FF' and
-        significance = 'W'
-    """
+        "SELECT * from sbw_2018 WHERE wfo = 'GUM' and eventid = 14 and "
+        "phenomena = 'FF' and significance = 'W'"
     )
     row = dbcursor.fetchone()
     assert row["floodtag_damage"] == "CATASTROPHIC"
