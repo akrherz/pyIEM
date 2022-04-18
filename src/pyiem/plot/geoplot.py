@@ -1075,10 +1075,14 @@ class MapPlot:
         polygon_fill(self, geodf, data, **kwargs)
 
     def fill_ugcs(self, data, **kwargs):
-        """Overlay filled UGC geometries
+        """Overlay filled UGC geometries using bundled geometries.
 
         Note the importance of the `is_firewx` flag.  This determines which
         UGC database to look at in the face of ambiquity.
+
+        Note that this will fail when provided a `data` dictionary that has
+        both zones and counties.  It is recommended to plot from application
+        logic with your own geometries in this instance.
 
         Args:
           data(dict): A dictionary of 6 char UGC code keys and values
