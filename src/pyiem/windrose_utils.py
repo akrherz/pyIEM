@@ -65,7 +65,7 @@ def _make_timelimit_string(kwargs):
         d2 = ets.strftime("%b %-d")
         if sts.strftime("%m%d") > ets.strftime("%m%d"):
             d1, d2 = d2, d1
-        tlimit += f"{d1} - {d2}"
+        tlimit += f"{d1} - {d2}, "
     elif months is not None and len(months) < 12:
         for h in months:
             tlimit += f"{month_abbr[h]},"
