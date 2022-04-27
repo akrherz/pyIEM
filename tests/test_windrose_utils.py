@@ -96,6 +96,8 @@ def test_windrose_month_limiter():
         drct=drct,
         valid=valid,
         months=[4, 5, 6],
+        limit_by_doy=True,
+        hours=list(range(5, 12)),
         nogenerated=True,
     )
     return fig
