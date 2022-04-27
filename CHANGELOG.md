@@ -10,12 +10,14 @@ All notable changes to this library are documented in this file.
 - Refactor internal SHEF decoding such that `TextProduct` instance has a seat
 at the table when some acceptable parsing failures can happen.  The functional
 form of `process_messages_{a,b,e}` is now `TextProduct,str`.
+- Refactor `windrose_utils` and remove the positional argument cruft.
 
 ### New Features
 
 - Add parsing support for CWSU Center Weather Advisory (#573).
 - Add option to `mcalc_feelslike` to support `mask_undefined`.
 - Add `twitter_media` link for generic text products that have a polygon (#586).
+- Add `limit_by_doy` option to `windrose_utils` to allow a day of year limit.
 - Allow `pyiem.nws.nwsli` instance to be subscriptable for iterop.
 - Support passing `linewidths` to `MapPlot.contourf`.
 

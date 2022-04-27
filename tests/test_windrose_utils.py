@@ -5,7 +5,7 @@ from io import BytesIO
 import pytest
 from pandas import read_csv
 from metpy.units import units
-from pyiem.windrose_utils import windrose, _get_timeinfo
+from pyiem.windrose_utils import windrose
 from pyiem.util import utc
 
 
@@ -30,14 +30,6 @@ def test_database():
     wr = windrose("AMW2", hours=[1, 2])
 
 
-def test_timeinfo():
-    """Exercise the _get_timeinfo method"""
-    res = _get_timeinfo(range(1, 10), "hour", 24, None)
-    assert res["labeltext"] == "(1, 2, 3, 4, 5, 6, 7, 8, 9)"
-    res = _get_timeinfo([1], "month", 1, None)
-    assert res["sqltext"] == " and extract(month from valid) = 1 "
-
-
 def test_windrose_without_units():
     """Ensure that we can deal with provided bins."""
     valid, sknt, drct = faux_data()
@@ -56,7 +48,7 @@ def test_windrose_without_units():
     sio.seek(0)
     df = read_csv(
         sio,
-        skiprows=range(0, 8),
+        comment="#",
         index_col="Direction",
         delimiter=" *, *",
         engine="python",
@@ -64,6 +56,19 @@ def test_windrose_without_units():
     assert df.index.values[0] == "355-004"
     assert len(df.columns) == 4
     assert abs(df.sum(axis=0).sum() - 100.0) < 0.1
+
+
+def test_windrose_doy_limiter():
+    """Test the day of year limiter logic."""
+    for (sm, em) in [(1, 10), (10, 1)]:
+        res = windrose(
+            "AMW2",
+            sts=datetime.datetime(2014, sm, 1),
+            ets=datetime.datetime(2016, em, 2),
+            justdata=True,
+            limit_by_doy=True,
+        )
+        assert " Oct " in res
 
 
 def test_windrose_with_units():
@@ -147,7 +152,13 @@ def test_windrose_upperair_text():
 @pytest.mark.mpl_image_compare(tolerance=0.1)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
-    fig = windrose("_XXX", level=500)
+    fig = windrose(
+        "_XXX",
+        level=500,
+        months=[
+            1,
+        ],
+    )
     return fig
 
 
