@@ -71,17 +71,24 @@ class SAWProduct(TextProduct):
           (psycopg2.transaction): a database transaction
         """
         if self.action == self.ISSUES:
-            # Delete any current entries
+            # Ensure we have a watch to update
             txn.execute(
-                "DELETE from watches WHERE num = %s and "
-                "extract(year from issued) = %s",
+                "select 1 from watches WHERE num = %s and "
+                "extract(year from issued at time zone 'UTC') = %s",
                 (self.ww_num, self.sts.year),
             )
+            if txn.rowcount == 0:
+                txn.execute(
+                    "INSERT into watches (num, issued) VALUES (%s, %s)",
+                    (self.ww_num, self.sts),
+                )
             # Insert into the main watches table
             giswkt = f"SRID=4326;{MultiPolygon([self.geometry]).wkt}"
             sql = (
-                "INSERT into watches (sel, issued, expired, type, report, "
-                "geom, num) VALUES(%s,%s,%s,%s,%s,%s,%s)"
+                "UPDATE watches SET sel = %s, issued = %s, expired = %s, "
+                "type = %s, report = %s, geom = %s, product_id_saw = %s "
+                "WHERE num = %s and "
+                "extract(year from issued at time zone 'UTC') = %s"
             )
             args = (
                 f"SEL{self.saw}",
@@ -90,7 +97,9 @@ class SAWProduct(TextProduct):
                 DBTYPES[self.ww_type],
                 self.unixtext,
                 giswkt,
+                self.get_product_id(),
                 self.ww_num,
+                self.sts.year,
             )
             txn.execute(sql, args)
             # Update the watches_current table
