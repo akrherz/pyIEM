@@ -8,6 +8,19 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_can(dbcursor):
+    """Test database updates for a cancels SEL."""
+    prod = parser(get_test_file("SEL/SEL_CAN.txt"))
+    assert prod.data.num == 5700
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT * from watches where num = 5700 "
+        "and extract(year from issued) = 2015"
+    )
+    assert dbcursor.rowcount == 0
+
+
 def test_sel():
     """Test that we can handle test WWP products"""
     prod = parser(get_test_file("SEL/SEL9.txt"))
