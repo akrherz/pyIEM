@@ -226,18 +226,35 @@ class SAWProduct(TextProduct):
             pts.append((lon, lat))
         return ShapelyPolygon(pts)
 
-    def get_jabbers(self, uri, _uri2=None):
-        """Generate the jabber messages for this Product
+    def get_jabbers(self, uri, _uri2=None, **kwargs):
+        """Generate the jabber messages for this product.
 
         NOTE: In the past, the messages generated here have tripped twitter's
         spam logic, so we are careful to craft unique messages
 
+        NOTE: Since interesting watch information comes within three products
+        from SPC, there is some magic in pyWWA/watch_parser.py that awaits
+        the arrival of all three.
+
         Args:
-          uri (str): un-used in this context
+          uri (str): link to IEM Watch Overview page.
+          _uri2 (str): unused in this context.
+          wwpprod (WWPProduct): the WWPProduct object.
+          selprod (SELProduct): the SELProduct object.
         """
+        selprod = kwargs.get("selprod")
+        wwpprod = kwargs.get("wwpprod")
         res = []
         url = f"{SPCURL}/{self.valid.year}/ww{self.ww_num:04.0f}.html"
         spc_channels = f"SPC,SPC.{DBTYPES[self.ww_type]}WATCH"
+        pds = False
+        if wwpprod is not None:
+            pds = wwpprod.data.is_pds
+        if pds:
+            spc_channels += f",{DBTYPES[self.ww_type][:2]}.PDS"
+        product_id = self.get_product_id()
+        if selprod is not None:  # SEL is prettier
+            product_id = selprod.get_product_id()
         if self.action == self.CANCELS:
             plain = (
                 "Storm Prediction Center cancels Weather Watch Number "
@@ -261,15 +278,16 @@ class SAWProduct(TextProduct):
                 "for portions of %s</p>"
             )
         elif self.action == self.ISSUES:
+            pds_extra = " (Particularly Dangerous Situation) " if pds else ""
             plain = (
                 f"SPC issues {TYPE2STRING[self.ww_type]} Watch {self.ww_num} "
-                f"till {self.ets:%-H:%M}Z"
+                f"{pds_extra}till {self.ets:%-H:%M}Z"
             )
             html = (
                 "<p>Storm Prediction Center issues "
                 '<a href="https://www.spc.noaa.gov/products/watch/'
                 f'ww{self.ww_num:04.0f}.html">{TYPE2STRING[self.ww_type]} '
-                f"Watch {self.ww_num}</a> "
+                f"Watch {self.ww_num}</a> {pds_extra}"
                 f"till {self.ets:%-H:%M} UTC"
             )
             if REPLACES_RE.findall(self.unixtext):
@@ -281,14 +299,17 @@ class SAWProduct(TextProduct):
 
             plain2 = f"{plain} {url}"
             plain2 = " ".join(plain2.split())
+            xtra = {
+                "channels": spc_channels,
+                "twitter": plain2,
+                "product_id": product_id,
+            }
             html2 = html + (
                 f' (<a href="{uri}?year={self.sts.year}&amp;num={self.ww_num}"'
                 ">Watch "
                 "Quickview</a>)</p>"
             )
-            res.append(
-                [plain2, html2, dict(channels=spc_channels, twitter=plain2)]
-            )
+            res.append([plain2, html2, xtra])
             # Now create templates
             plain += f" for portions of %s {url}"
             html += (
@@ -299,13 +320,12 @@ class SAWProduct(TextProduct):
 
         plain = " ".join(plain.split())
         for wfo in self.affected_wfos:
-            res.append(
-                [
-                    plain % (wfo,),
-                    html % (wfo,),
-                    dict(channels=wfo, twitter=(plain % (wfo,))),
-                ]
-            )
+            xtra = {
+                "channels": f"{wfo}",
+                "twitter": plain % (wfo,),
+                "product_id": product_id,
+            }
+            res.append([plain % (wfo,), html % (wfo,), xtra])
         return res
 
 
