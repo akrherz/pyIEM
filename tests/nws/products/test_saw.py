@@ -1,8 +1,26 @@
 """Can we process the SAW"""
 
 import pytest
+from pyiem.nws.products import parser
 from pyiem.nws.products.saw import parser as sawparser
 from pyiem.util import utc, get_test_file
+
+
+def test_220502_jabber():
+    """Test that we can generate fancy messages."""
+    utcnow = utc(2021, 7, 29, 0)
+    sawprod = parser(get_test_file("SAW/SAW9_PDS.txt"), utcnow=utcnow)
+    selprod = parser(get_test_file("SEL/SEL9_PDS.txt"), utcnow=utcnow)
+    wwpprod = parser(get_test_file("WWP/WWP9_PDS.txt"), utcnow=utcnow)
+    jmsg = sawprod.get_jabbers("", selprod=selprod, wwpprod=wwpprod)
+    ans = (
+        "SPC issues Severe Thunderstorm Watch 399 (Particularly Dangerous "
+        "Situation) till 7:00Z "
+        "https://www.spc.noaa.gov/products/watch/2021/ww0399.html"
+    )
+    assert jmsg[0][0] == ans
+    assert "SV.PDS" in jmsg[0][2]["channels"].split(",")
+    assert jmsg[0][2]["product_id"]
 
 
 def test_220321_jabber():
