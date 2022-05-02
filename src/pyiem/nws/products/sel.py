@@ -8,15 +8,15 @@ from pyiem.nws.product import TextProduct
 # The product format has been remarkably consistent over 16+ years!
 WATCH_RE = re.compile(
     r"(?P<typ>SEVERE THUNDERSTORM|TORNADO)\s+WATCH\s+NUMBER\s+"
-    r"(?P<num>\d\d\d*)",
+    r"(?P<num>\d\d\d\d|\d\d\d|\d\d|\d)",
     re.I,
 )
 
 
 def _parse_data(tp):
     """Fill out the data model."""
-    # Only look in top 10 lines for the watch details
-    meat = " ".join(tp.unixtext.split("\n")[:10])
+    # Only look in top 15 lines for the watch details
+    meat = (" ".join(tp.unixtext.split("\n")[:15])).replace(" -", "")
     ws = WATCH_RE.search(meat).groupdict()
     return SELModel(
         typ="TOR" if ws["typ"].startswith("T") else "SVR",
@@ -46,6 +46,9 @@ class SELProduct(TextProduct):
         Args:
           (psycopg2.transaction): a database transaction
         """
+        # Don't do anything if this is not an issuance
+        if self.unixtext.find("HAS ISSUED A") < 0:
+            return
         # First, check to see if we already have this num
         txn.execute(
             "SELECT num from watches where "
