@@ -19,6 +19,7 @@ form of `process_messages_{a,b,e}` is now `TextProduct,str`.
 - Add `twitter_media` link for generic text products that have a polygon (#586).
 - Add `limit_by_doy` option to `windrose_utils` to allow a day of year limit.
 - Add parser for SPC Watch Probabilities (WWP) product (#595).
+- Add basic parser for SPC SEL Product.
 - Allow `pyiem.nws.nwsli` instance to be subscriptable for iterop.
 - Support passing `linewidths` to `MapPlot.contourf`.
 
