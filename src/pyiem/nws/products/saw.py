@@ -309,7 +309,7 @@ class SAWProduct(TextProduct):
         return res
 
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, _ugc_provider=None, _nwsli_provider=None):
     """parser of raw SPC SAW Text
 
     Args:

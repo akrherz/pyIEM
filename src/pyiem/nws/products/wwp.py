@@ -135,7 +135,7 @@ class WWPProduct(TextProduct):
         )
 
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, _ugc_provider=None, _nwsli_provider=None):
     """Parse SPC WWP Product.
 
     Args:
