@@ -1,16 +1,39 @@
 """A generalized parser frontend."""
 from __future__ import absolute_import
 from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
-from . import spacewx
-from . import cli
-from . import hwo
-from . import lsr
-from . import mcd
-from . import nhc
-from . import spcpts
-from . import sps
-from . import taf
-from . import ero
+from . import (
+    spacewx,
+    cli,
+    hwo,
+    lsr,
+    mcd,
+    nhc,
+    spcpts,
+    sps,
+    taf,
+    ero,
+    saw,
+    sel,
+    wwp,
+)
+
+XREF = {
+    "CLI": cli.parser,
+    "FFG": mcd.parser,
+    "HWO": hwo.parser,
+    "LSR": lsr.parser,
+    "NHC": nhc.parser,
+    "PFW": spcpts.parser,
+    "PTS": spcpts.parser,
+    "RBG": ero.parser,
+    "SAW": saw.parser,
+    "SEL": sel.parser,
+    "SPS": sps.parser,
+    "SWO": mcd.parser,
+    "TAF": taf.parser,
+    "TCP": nhc.parser,
+    "WWP": wwp.parser,
+}
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
@@ -36,7 +59,6 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
       TextProduct: A TextProduct instance
 
     """
-
     tmp = text[:100].replace("\r\r\n", "\n")
     m = WMO_RE.search(tmp)
     if m is not None:
@@ -48,23 +70,5 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     if not tokens:
         raise TextProductException("Could not locate AFOS Identifier")
     afos = tokens[0]
-    if afos[:3] == "CLI":
-        return cli.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "TCP":
-        return nhc.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "HWO":
-        return hwo.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos in ["SWOMCD", "FFGMPD"]:
-        return mcd.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "LSR":
-        return lsr.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] in ["PTS", "PFW"]:
-        return spcpts.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "RBG":
-        return ero.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "TAF":
-        return taf.parser(text, utcnow, ugc_provider, nwsli_provider)
-    elif afos[:3] == "SPS":
-        return sps.parser(text, utcnow, ugc_provider, nwsli_provider)
-
-    return TextProduct(text, utcnow, ugc_provider, nwsli_provider)
+    func = XREF.get(afos[:3], TextProduct)
+    return func(text, utcnow, ugc_provider, nwsli_provider)
