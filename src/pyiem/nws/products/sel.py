@@ -47,7 +47,7 @@ class SELProduct(TextProduct):
           (psycopg2.transaction): a database transaction
         """
         # Don't do anything if this is not an issuance
-        if self.unixtext.find("HAS ISSUED A") < 0:
+        if self.unixtext.upper().find("HAS ISSUED A") < 0:
             return
         # First, check to see if we already have this num
         txn.execute(

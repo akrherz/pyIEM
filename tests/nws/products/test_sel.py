@@ -21,10 +21,17 @@ def test_can(dbcursor):
     assert dbcursor.rowcount == 0
 
 
-def test_sel():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_sel(dbcursor):
     """Test that we can handle test WWP products"""
     prod = parser(get_test_file("SEL/SEL9.txt"))
     assert not prod.is_test()
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT product_id_sel from watches where num = 169 "
+        "and extract(year from issued) = 2022"
+    )
+    assert dbcursor.fetchone()[0] == prod.get_product_id()
 
 
 @pytest.mark.parametrize("database", ["postgis"])
