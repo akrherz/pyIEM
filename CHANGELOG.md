@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- `pyiem.nws.products.saw` no longer writes un-used SAW text to database.
 - Refactor internal SHEF decoding such that `TextProduct` instance has a seat
 at the table when some acceptable parsing failures can happen.  The functional
 form of `process_messages_{a,b,e}` is now `TextProduct,str`.
