@@ -86,7 +86,7 @@ class SAWProduct(TextProduct):
             giswkt = f"SRID=4326;{MultiPolygon([self.geometry]).wkt}"
             sql = (
                 "UPDATE watches SET sel = %s, issued = %s, expired = %s, "
-                "type = %s, report = %s, geom = %s, product_id_saw = %s "
+                "type = %s, geom = %s, product_id_saw = %s "
                 "WHERE num = %s and "
                 "extract(year from issued at time zone 'UTC') = %s"
             )
@@ -95,7 +95,6 @@ class SAWProduct(TextProduct):
                 self.sts,
                 self.ets,
                 DBTYPES[self.ww_type],
-                self.unixtext,
                 giswkt,
                 self.get_product_id(),
                 self.ww_num,
@@ -105,13 +104,12 @@ class SAWProduct(TextProduct):
             # Update the watches_current table
             sql = (
                 "UPDATE watches_current SET issued = %s, expired = %s, "
-                "type = %s, report = %s, geom = %s, num = %s WHERE sel = %s"
+                "type = %s, geom = %s, num = %s WHERE sel = %s"
             )
             args = (
                 self.sts,
                 self.ets,
                 DBTYPES[self.ww_type],
-                self.unixtext,
                 giswkt,
                 self.ww_num,
                 f"SEL{self.saw}",
