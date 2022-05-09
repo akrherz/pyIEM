@@ -5,6 +5,20 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
+def test_220427_lsr_length():
+    """Test the length of the tweet message is correct."""
+    prod = parser(get_test_file("LSR/LSRKEY.txt"))
+    j = prod.get_jabbers("http://localhost/")
+    ans = (
+        "At 6:58 AM EDT, 6 S Boca Chica [Gmz044 Co, FL] NWS EMPLOYEE reports "
+        "WATER SPOUT. AN NWS EMPLOYEE REPRTED A WATERSPOUT THAT WAS VISIBLE "
+        "FROM KEY WEST AROUND 7 AM EDT. IT LASTED AROUND 5 MINUTES.IT WAS "
+        "REPORTED TO EXTEND HALFWAY DOWN FROM THE CLOUD TO... "
+        "http://localhost/#KEY/202204271058/202204271058"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
 def test_220204_bad_ice_totals():
     """Test we don't get false positives here."""
     prod = parser(get_test_file("LSR/LSRPAH_ice.txt"))
@@ -30,7 +44,7 @@ def test_tweetlen():
         "At 12:45 AM CST, RIO Grande City [Starr Co, TX] DEPT OF HIGHWAYS "
         "reports FREEZING RAIN of U0.00 INCH. MULTIPLE REPORTS RECEIVED VIA "
         "DRIVETEXAS.ORG OF ICE AND SNOW ACCUMLATION OCCURRING ON BRIDGES AND "
-        "OVERPASSES ON HIGHWAY 83, FM1017, FM2686, FM2294, F... "
+        "OVERPASSES ON HIGHWAY 83, FM1017, FM2686, FM2294,... "
         "#BRO/202102150645/202102150645"
     )
     assert j[0][2]["twitter"] == ans

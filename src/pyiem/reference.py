@@ -36,7 +36,9 @@ import pyproj
 
 TAF_VIS_OVER_6SM = 6.01
 TRACE_VALUE = 0.0001
+# https://github.com/twitter/twitter-text/tree/master/config
 TWEET_CHARS = 280
+TWEET_URL_CHARS = 23
 TWITTER_RESOLUTION_INCH = (12.0, 6.75)
 
 # Standized sizes for various plots generated
