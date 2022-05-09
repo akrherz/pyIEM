@@ -62,7 +62,6 @@ def _icestorm_remark(remark):
         return min(mags)
 
     tokens = ICE_ACCUM_V1.findall(remark)
-    print(tokens)
     mags = []
     for _m, _t, _u in tokens:
         if _t.startswith("TENTH"):
@@ -239,12 +238,15 @@ class LSR:
         if self.remark is not None:
             remark = self.remark.replace("DELAYED REPORT.", "")
             tweet = f"{tweet}. {remark}"
-            # https://github.com/twitter/twitter-text/tree/master/config
-            # says that transformedURLLength is 23
-            size = reference.TWEET_CHARS - 24 - len(tweet)
+            size = (
+                reference.TWEET_CHARS
+                - reference.TWEET_URL_CHARS
+                - len(tweet)
+                - 2  # extra careful
+            )
             if size <= 0:
-                # We need to truncate
-                tweet = tweet[: (size - 5)] + "..."
+                # We need to truncate and try to be cute to get a whole word
+                tweet = tweet[: (size - 5)].rsplit(" ", 1)[0] + "..."
 
         # rectify
         tweet = " ".join(tweet.split())

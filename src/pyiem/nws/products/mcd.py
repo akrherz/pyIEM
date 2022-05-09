@@ -8,7 +8,7 @@ from datetime import timezone, timedelta
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyiem.nws.product import TextProduct
 from pyiem.exceptions import MCDException
-from pyiem.reference import TWEET_CHARS
+from pyiem.reference import TWEET_CHARS, TWEET_URL_CHARS
 from pyiem.util import html_escape, LOG
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
@@ -81,7 +81,7 @@ class MCDProduct(TextProduct):
 
     def tweet(self):
         """Return twitter message"""
-        charsleft = TWEET_CHARS - 24  # default safe 24 for t.co shortening
+        charsleft = TWEET_CHARS - TWEET_URL_CHARS - 1
         if self.afos == "SWOMCD":
             center = "SPC"
         else:
