@@ -14,6 +14,7 @@ from pyiem.nws.products._vtec_util import (
     _do_sql_vtec_can,
     _do_sql_vtec_con,
     DEFAULT_EXPIRE_DELTA,
+    build_channels,
     check_dup_ps,
     do_sql_hvtec,
     _load_database_status,
@@ -437,37 +438,12 @@ class VTECProduct(TextProduct):
             for vtec in segment.vtec:
                 if vtec.action == "ROU" or vtec.status == "T":
                     continue
-                # CRITICAL: redefine this for each loop as it gets passed by
-                # reference below and is subsequently overwritten otherwise!
-                if self.afos[:3] in ["MWW", "RFW"]:
-                    channels = [
-                        f"{self.afos[:3]}{s}" for s in self.get_affected_wfos()
-                    ]
-                else:
-                    channels = self.get_affected_wfos()
-                channels.append(vtec.s2())
-                channels.append(self.afos)
-                channels.append(f"{self.afos[:3]}...")
-                channels.append(
-                    f"{vtec.phenomena}.{vtec.significance}.{vtec.office}"
-                )
-                for ugc in segment.ugcs:
-                    # per state channels
-                    candidate = (
-                        f"{vtec.phenomena}.{vtec.significance}.{ugc.state}"
-                    )
-                    if candidate not in channels:
-                        channels.append(candidate)
-                    channels.append(
-                        f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
-                    )
-                    channels.append(str(ugc))
                 linkyear = (
                     vtec.year if vtec.year is not None else self.valid.year
                 )
                 xtra = {
                     "product_id": self.get_product_id(),
-                    "channels": ",".join(channels),
+                    "channels": ",".join(build_channels(self, segment, vtec)),
                     "status": vtec.status,
                     "vtec": vtec.get_id(self.valid.year),
                     "ptype": vtec.phenomena,
@@ -540,8 +516,7 @@ class VTECProduct(TextProduct):
                 # PDS
                 if segment.is_pds:
                     jmsg_dict["product"] += " (PDS)"
-                    channels.append(f"{vtec.phenomena}.PDS")
-                    xtra["channels"] += f",{channels[-1]}"
+                    xtra["channels"] += f",{vtec.phenomena}.PDS"
 
                 # Emergencies
                 if segment.is_emergency:
@@ -550,8 +525,7 @@ class VTECProduct(TextProduct):
                         .replace("Warning", "Emergency")
                         .replace(" (PDS)", "")
                     )
-                    channels.append(f"{vtec.phenomena}.EMERGENCY")
-                    xtra["channels"] += f",{channels[-1]}"
+                    xtra["channels"] += f",{vtec.phenomena}.EMERGENCY"
                     _btext = segment.svs_search()
                     if vtec.phenomena == "FF":
                         jmsg_dict["svs_special"] = _btext
@@ -611,17 +585,7 @@ class VTECProduct(TextProduct):
             segment = self.get_first_non_cancel_segment()
             if segment is None:
                 segment = self.segments[0]
-            if self.afos[:3] in ["MWW", "RFW"]:
-                channels = [
-                    f"{self.afos[:3]}{s}" for s in self.get_affected_wfos()
-                ]
-            else:
-                channels = self.get_affected_wfos()
-            channels.append(vtec.s2())
-            channels.append(self.afos)
-            channels.append(
-                f"{vtec.phenomena}.{vtec.significance}.{vtec.office}"
-            )
+            channels = build_channels(self, segment, vtec)
             # Need to figure out a timestamp to associate with this
             # consolidated message.  Default to utcnow
             stamp = self.utcnow
@@ -633,11 +597,12 @@ class VTECProduct(TextProduct):
                         and v.status not in ["CAN", "EXP"]
                     ):
                         stamp = v.begints
-                for ugc in seg.ugcs:
-                    channels.append(
-                        f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
-                    )
-                    channels.append(str(ugc))
+                if seg != segment:
+                    for ugc in seg.ugcs:
+                        channels.append(
+                            f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
+                        )
+                        channels.append(str(ugc))
             if any(seg.is_emergency for seg in self.segments):
                 channels.append(f"{vtec.phenomena}.EMERGENCY")
             if any(seg.is_pds for seg in self.segments):

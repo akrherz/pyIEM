@@ -2,7 +2,10 @@
 # pylint: disable=too-many-lines
 import datetime
 
+import pandas as pd
 import pytest
+
+# Local
 from pyiem.util import utc, get_test_file
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
@@ -78,11 +81,31 @@ def test_issue461_firewx_ugcs():
             "NVZ461": UGC("NV", "Z", 461, name="A", wfos=["XXX"]),
         }
     )
-    ugc_provider.df = ugc_provider.df.append(
+    ugc_provider.df = pd.concat(
         [
-            {"ugc": "AZZ101", "wfo": "QQQ", "name": "A", "source": "fz"},
-            {"ugc": "NVZ466", "wfo": "AAA", "name": "A", "source": "fz"},
-            {"ugc": "NVZ466", "wfo": "AAA", "name": "A", "source": "fz"},
+            ugc_provider.df,
+            pd.DataFrame(
+                [
+                    {
+                        "ugc": "AZZ101",
+                        "wfo": "QQQ",
+                        "name": "A",
+                        "source": "fz",
+                    },
+                    {
+                        "ugc": "NVZ466",
+                        "wfo": "AAA",
+                        "name": "A",
+                        "source": "fz",
+                    },
+                    {
+                        "ugc": "NVZ466",
+                        "wfo": "AAA",
+                        "name": "A",
+                        "source": "fz",
+                    },
+                ]
+            ),
         ],
         ignore_index=True,
     )
@@ -794,6 +817,9 @@ def test_160415_mixedcase():
         "[CO] till Apr 15, 7:00 PM MDT "
         "http://localhost2016-O-CON-KGLD-FF-W-0001_2016-04-15T23:41Z"
     )
+    channels = j[0][2]["channels"].split(",")
+    assert "FF.W" not in channels
+    assert "FF.W-CON" in channels
     assert j[0][0] == ans
 
 

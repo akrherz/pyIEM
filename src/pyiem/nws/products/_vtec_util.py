@@ -12,6 +12,33 @@ from pyiem.util import LOG
 DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
 
 
+def build_channels(prod, segment, vtec) -> list:
+    """Build a list of channels for the given segment/vtec."""
+    channels = []
+    if prod.afos[:3] in ["MWW", "RFW"]:
+        channels = [f"{prod.afos[:3]}{s}" for s in prod.get_affected_wfos()]
+    else:
+        channels = prod.get_affected_wfos()
+    # GH604 - Append a -ACTION for CON, EXP, CAN actions
+    suffix = f"-{vtec.action}" if vtec.action in ["CON", "EXP", "CAN"] else ""
+    channels.append(f"{vtec.s2()}{suffix}")
+    channels.append(prod.afos)
+    channels.append(f"{prod.afos[:3]}...")
+    channels.append(
+        f"{vtec.phenomena}.{vtec.significance}.{vtec.office}{suffix}"
+    )
+    for ugc in segment.ugcs:
+        # per state channels
+        candidate = f"{vtec.phenomena}.{vtec.significance}.{ugc.state}{suffix}"
+        if candidate not in channels:
+            channels.append(candidate)
+        channels.append(
+            f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}{suffix}"
+        )
+        channels.append(str(ugc))
+    return channels
+
+
 def which_year(txn, prod, segment, vtec):
     """Figure out which table we should work against"""
     # The case of a NEW event always goes into the current UTC year of prod
