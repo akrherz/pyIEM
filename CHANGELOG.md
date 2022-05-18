@@ -13,6 +13,10 @@ All notable changes to this library are documented in this file.
 at the table when some acceptable parsing failures can happen.  The functional
 form of `process_messages_{a,b,e}` is now `TextProduct,str`.
 - Refactor `windrose_utils` and remove the positional argument cruft.
+- The XMPP channels assigned to VTEC products that are CONtinues, EXPires, or
+CANcels was modified to append a `-ACT`ion to the channel in the case of the
+channels prefixed by the `phenomena.significance`.  This will cut down on
+the social media posts for products that are more mudane (#604).
 
 ### New Features
 
