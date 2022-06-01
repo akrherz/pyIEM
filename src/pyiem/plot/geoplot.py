@@ -1220,7 +1220,8 @@ class MapPlot:
         self.fig.savefig(ram, format="png")
         ram.seek(0)
         im = Image.open(ram)
-        im2 = im.convert("RGB").convert("P", palette=Image.ADAPTIVE)
+        im2 = im.convert("RGB").convert("P", palette=Image.Palette.ADAPTIVE)
+        im.close()
         if kwargs.get("memcache") and kwargs.get("memcachekey"):
             ram = BytesIO()
             im2.save(ram, format="png")
@@ -1234,9 +1235,11 @@ class MapPlot:
         if kwargs.get("web", False):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
+            im2.close()
             return
         tmpfd = tempfile.NamedTemporaryFile(delete=False)
         im2.save(tmpfd, format="PNG")
+        im2.close()
         tmpfd.close()
         if kwargs.get("pqstr") is not None:
             subprocess.call(["pqinsert", "-p", kwargs["pqstr"], tmpfd.name])
@@ -1340,7 +1343,8 @@ class MapPlot:
         ]
         bio = BytesIO(req_png.content)
         bio.seek(0)
-        im = np.asarray(Image.open(bio))
+        with Image.open(bio) as pilimg:
+            im = np.asarray(pilimg)
         # Use rasterio to reproject this grid into the crs of axes
         with rasterio.Env():
             src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
