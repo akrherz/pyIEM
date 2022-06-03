@@ -33,6 +33,8 @@ the social media posts for products that are more mudane (#604).
 
 - Fixed f-string formatting issue in SAW jabber message generator.
 - Fixed missing `ENH` and `MDT` from `spcpts.THRESHOLD_ORDER`.
+- Improved logic behind `pyiem.plot.util.pretty_bins`, it no longer exactly
+returns the specified number of bins, but tries to do the right thing!
 - Increase remark trimming for LSR tweets for more length safety.
 
 ## **1.12.0** (18 Mar 2022)

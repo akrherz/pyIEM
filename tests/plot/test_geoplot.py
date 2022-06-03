@@ -14,9 +14,7 @@ from pyiem import plot
 from pyiem.dep import RAMPS
 from pyiem.plot import (
     MapPlot,
-    centered_bins,
     dep_erosion,
-    pretty_bins,
     load_bounds,
     mask_outside_geom,
 )
@@ -442,30 +440,6 @@ def test_pcolormesh():
     lons, lats = np.meshgrid(lons, lats)
     mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
     return mp.fig
-
-
-def test_pretty_bins():
-    """Test that we get nice pretty bins!"""
-    a = pretty_bins(-1, 10)
-    assert abs(a[-1] - 10.5) < 0.01
-
-
-def test_centered_bins():
-    """See that we can compute some nice centered bins"""
-    a = centered_bins(10)
-    assert a[0] == -10
-    a = centered_bins(55)
-    assert a[0] == -56
-    a = centered_bins(99)
-    assert a[0] == -100
-    a = centered_bins(99, bins=9)
-    assert a[0] == -99
-    a = centered_bins(100, on=100)
-    assert a[0] == 0
-    a = centered_bins(0.9)
-    assert abs(a[-1] - 1.2) < 0.001
-    a = centered_bins(1.2888)
-    assert abs(a[-1] - 1.6) < 0.001
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
