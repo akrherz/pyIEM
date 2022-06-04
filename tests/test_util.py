@@ -215,6 +215,22 @@ def test_get_autoplot_context_internal():
     assert "_r" in ctx
 
 
+def test_get_apctx_sday():
+    """Test the sday type."""
+    form = {"sdate": "2000-04-05", "edate": "0504"}
+    cfg = {
+        "arguments": [
+            {"type": "sday", "name": "sdate", "max": "1001"},
+            {"type": "sday", "name": "edate", "min": "0201"},
+            {"type": "sday", "name": "odate", "default": "0210"},
+        ]
+    }
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["sdate"] == datetime.date(2000, 4, 5)
+    assert ctx["edate"] == datetime.date(2000, 5, 4)
+    assert ctx["odate"] == datetime.date(2000, 2, 10)
+
+
 def test_get_autoplot_context_name():
     """Test the helper provides a nice name for us."""
     form = dict(station="_ZZZ", network="ZZ_ASOS")

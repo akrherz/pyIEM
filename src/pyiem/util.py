@@ -560,6 +560,20 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                         # exception
                         raise
 
+        elif typ == "sday":
+            # supports legacy uris with yyyy-mm-dd, before migration to sday
+            if default is not None:
+                default = datetime.strptime(f"2000{default}", "%Y%m%d").date()
+            if minval is not None:
+                minval = datetime.strptime(f"2000{minval}", "%Y%m%d").date()
+            if maxval is not None:
+                maxval = datetime.strptime(f"2000{maxval}", "%Y%m%d").date()
+            if value is not None:
+                if value.find("-") > -1:
+                    value = datetime.strptime(value, "%Y-%m-%d").date()
+                else:
+                    value = datetime.strptime(f"2000{value}", "%Y%m%d").date()
+
         elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
@@ -621,10 +635,10 @@ def exponential_backoff(func, *args, **kwargs):
             return func(*args, **kwargs)
         except socket_error as serr:
             msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
-            time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
+            time.sleep((ebfactor**i) + (random.randint(0, 1000) / 1000))
         except Exception as exp:
             msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
-            time.sleep((ebfactor ** i) + (random.randint(0, 1000) / 1000))
+            time.sleep((ebfactor**i) + (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))
     return None
