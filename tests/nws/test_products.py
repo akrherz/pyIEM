@@ -231,7 +231,7 @@ def test_140820_badtimestamp():
 
 def test_160904_resent():
     """Is this product a correction?"""
-    prod = parser(get_test_file("TCVAKQ.txt"))
+    prod = parser(get_test_file("TCV/TCVAKQ.txt"))
     jmsgs = prod.get_jabbers("http://localhost")
     ans = (
         "AKQ issues Tropical Watch/Warning Local Statement (TCV) "

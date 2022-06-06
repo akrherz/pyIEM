@@ -40,6 +40,19 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_220605_bad_tweet():
+    """Test that a multi-segment cancels does not make lots of messages."""
+    prod = vtecparser(get_test_file("TCV/TCVMLB.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "MLB cancels Tropical Storm Warning (cancels ((FLZ154)), ((FLZ159)), "
+        "((FLZ164)), ((FLZ247)), ((FLZ254)), ((FLZ259)), ((FLZ264)), "
+        "((FLZ347)), ((FLZ447)), ((FLZ547)), ((FLZ647)), ((FLZ747)) [FL])  "
+        "2022-O-CAN-KMLB-TR-W-1001_2022-06-04T20:44Z"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
 def test_gh540_duplicated_ugcs():
     """Test that we get a warning from a duplicated UGCs."""
     data = get_test_file("NPWFFC.txt").replace("GAZ001>003", "GAZ004")
@@ -772,7 +785,7 @@ def test_160912_missing(dbcursor):
 
 def test_160904_resent():
     """Is this product a correction?"""
-    prod = vtecparser(get_test_file("TCVAKQ.txt"))
+    prod = vtecparser(get_test_file("TCV/TCVAKQ.txt"))
     assert prod.is_correction()
 
 
@@ -1267,8 +1280,8 @@ def test_140714_segmented_watch():
         "((NJC019)), ((NJC021)), ((NJC023)), ((NJC025)), ((NJC027)), "
         "((NJC029)), ((NJC033)), ((NJC035)), ((NJC037)), ((NJC041)) [NJ] "
         "and ((PAC011)), ((PAC017)), ((PAC025)), ((PAC029)), ((PAC045)), "
-        "((PAC077)), ((PAC089)), ((PAC091)), ((PAC095)), ((PAC101)) [PA], "
-        "issues ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
+        "((PAC077)), ((PAC089)), ((PAC091)), ((PAC095)), ((PAC101)) [PA] "
+        "and ((ANZ430)), ((ANZ431)), ((ANZ450)), ((ANZ451)), "
         "((ANZ452)), ((ANZ453)), ((ANZ454)), ((ANZ455)) [AN]) "
         "till Jul 14, 8:00 PM EDT. "
         "http://localhost2014-O-NEW-KPHI-SV-A-0418_2014-07-14T17:25Z"

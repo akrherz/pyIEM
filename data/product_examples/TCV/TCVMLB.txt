@@ -1,0 +1,920 @@
+293
+WTUS82 KMLB 042044
+TCVMLB
+
+URGENT - IMMEDIATE BROADCAST REQUESTED
+One Local Watch/Warning Statement/Advisory Number 9
+National Weather Service Melbourne FL  AL012022
+444 PM EDT Sat Jun 4 2022
+
+FLZ447-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Northern Brevard Barrier Islands-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Merritt Island Wildlife Refuge
+    - Playalinda Beach
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 30 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: Additional around 1 inch
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ347-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Mainland Northern Brevard-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Titusville
+    - Port Saint John
+    - Mims
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 30 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ259-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Inland Saint Lucie-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Tradition
+    - Saint Lucie West
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 20 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ247-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Inland Northern Brevard-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Canaveral Groves
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 30 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ159-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Coastal Saint Lucie-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Port Saint Lucie
+    - Fort Pierce
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 25 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ747-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Southern Brevard Barrier Islands-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Cocoa Beach
+    - Satellite Beach
+    - Melbourne Beach
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 30 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ647-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Mainland Southern Brevard-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Cocoa
+    - Rockledge
+    - Melbourne
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 30 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ547-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Inland Southern Brevard-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Palm Bay west of I 95
+    - Viera West
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-20 mph with gusts to 25 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Little or no
+      potential for flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: There is little or no potential for flooding rain.
+        - PREPARE: Little to no preparations are needed to protect
+          against flooding rain at this time.
+        - ACT: Monitor for changes to the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from flooding rain.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ164-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Coastal Martin-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Stuart
+    - Hobe Sound
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 25 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+$$
+FLZ254-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Inland Indian River-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Fellsmere
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 25 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ154-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Coastal Indian River-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Vero Beach
+    - Sebastian
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 25 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+* FOR MORE INFORMATION:
+    - Family emergency plans: Federal Emergency Management Agency
+        - https://www.ready.gov
+    - Local weather conditions and forecasts
+        - http://www.weather.gov/mlb
+
+$$
+
+FLZ264-042145-
+/O.CAN.KMLB.TR.W.1001.000000T0000Z-000000T0000Z/
+Inland Martin-
+444 PM EDT Sat Jun 4 2022
+
+...TROPICAL STORM WARNING IS CANCELLED...
+
+* LOCATIONS AFFECTED
+    - Indiantown
+
+* WIND
+    - LATEST LOCAL FORECAST: Below tropical storm force wind
+        - Peak Wind Forecast: 10-15 mph with gusts to 15 mph
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Wind less than 39 mph
+        - The wind threat has decreased from the previous assessment.
+        - PLAN: The sustained wind should remain less than tropical
+          storm force. Conditions may still be gusty.
+        - PREPARE: Listen for any instructions from local officials.
+        - ACT: Ensure emergency readiness should the forecast change.
+
+    - REALIZED IMPACTS: Being Assessed
+        - Little to no additional wind impacts expected. Community
+          officials are now assessing the extent of actual wind
+          impacts accordingly.
+
+* FLOODING RAIN
+    - LATEST LOCAL FORECAST:
+        - Peak Rainfall Amounts: No additional significant rainfall
+          forecast
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Potential for
+      localized flooding rain
+        - The flooding rain threat has decreased from the previous
+          assessment.
+        - PLAN: Emergency plans should include the potential for
+          localized flooding from heavy rain.
+        - PREPARE: Consider protective actions if you are in an area
+          vulnerable to flooding.
+        - ACT: Heed any flood watches and warnings.
+
+    - POTENTIAL IMPACTS: Limited
+        - Localized rainfall flooding may prompt a few evacuations.
+        - Rivers and tributaries may quickly rise with swifter
+          currents. Small streams, creeks, canals, and ditches may
+          become swollen and overflow in spots.
+        - Flood waters can enter a few structures, especially in
+          usually vulnerable spots. A few places where rapid ponding
+          of water occurs at underpasses, low-lying spots, and poor
+          drainage areas. Several storm drains and retention ponds
+          become near-full and begin to overflow. Some brief road and
+          bridge closures.
+
+* TORNADO
+    - LATEST LOCAL FORECAST:
+        - Situation is unfavorable for tornadoes
+
+    - THREAT TO LIFE AND PROPERTY THAT INCLUDES TYPICAL FORECAST
+      UNCERTAINTY IN TRACK, SIZE AND INTENSITY: Tornadoes not expected
+        - The tornado threat has remained nearly steady from the
+          previous assessment.
+        - PLAN: Tornadoes are not expected. Showers and thunderstorms
+          with gusty winds may still occur.
+        - PREPARE: Little to no preparations needed to protect
+          against tornadoes at this time. Keep informed of the latest
+          tornado situation.
+        - ACT: Listen for changes in the forecast.
+
+    - POTENTIAL IMPACTS: Little to None
+        - Little to no potential impacts from tornadoes.
+
+$$
