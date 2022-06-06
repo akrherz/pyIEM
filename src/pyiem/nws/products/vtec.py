@@ -4,6 +4,7 @@ from datetime import timedelta
 
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.ugc import ugcs_to_text
+from pyiem.nws.vtec import get_action_string
 from pyiem.reference import TWEET_CHARS
 from pyiem.nws.products._vtec_util import (
     _associate_vtec_year,
@@ -430,9 +431,7 @@ class VTECProduct(TextProduct):
             return [(text, html, xtra)]
         msgs = []
 
-        actions = []
-        long_actions = []
-        html_long_actions = []
+        actions = {}  # {action: [segments]}
 
         for segment in self.segments:
             for vtec in segment.vtec:
@@ -456,20 +455,8 @@ class VTECProduct(TextProduct):
                         f"etn:{vtec.etn}::valid:"
                     ),
                 }
-
-                long_actions.append(
-                    f"{vtec.get_action_string()} {ugcs_to_text(segment.ugcs)}"
-                )
-                html_long_actions.append(
-                    "<span style='font-weight: bold;'>"
-                    f"{vtec.get_action_string()}</span> "
-                    f"{ugcs_to_text(segment.ugcs)}"
-                )
-                actions.append(
-                    f"{vtec.get_action_string()} {len(segment.ugcs)} area"
-                    f"{'s' if len(segment.ugcs) > 1 else ''}"
-                )
-
+                # collect up ugcs against VTEC actions
+                (actions.setdefault(vtec.action, []).extend(segment.ugcs))
                 if segment.giswkt is not None:
                     xtra["category"] = "SBW"
                     xtra["geometry"] = segment.giswkt.replace("SRID=4326;", "")
@@ -608,6 +595,23 @@ class VTECProduct(TextProduct):
             if any(seg.is_pds for seg in self.segments):
                 channels.append(f"{vtec.phenomena}.PDS")
             xtra["channels"] = ",".join(channels)
+            short_actions = []
+            long_actions = []
+            html_long_actions = []
+            for va, ugcs in actions.items():
+                long_actions.append(
+                    f"{get_action_string(va)} {ugcs_to_text(ugcs)}"
+                )
+                html_long_actions.append(
+                    "<span style='font-weight: bold;'>"
+                    f"{get_action_string(va)}</span> "
+                    f"{ugcs_to_text(ugcs)}"
+                )
+                short_actions.append(
+                    f"{get_action_string(va)} {len(ugcs)} area"
+                    f"{'s' if len(ugcs) > 1 else ''}"
+                )
+
             jdict = {
                 "as": ", ".join(actions),
                 "asl": ", ".join(long_actions),
