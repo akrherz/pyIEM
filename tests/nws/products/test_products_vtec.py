@@ -40,6 +40,18 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_220608_bad_tweet():
+    """Test what is emitted from a shortened tweet message."""
+    prod = vtecparser(get_test_file("WCN/WCNTSA.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "TSA updates Severe Thunderstorm Watch (expands area to include 9 "
+        "areas, continues 8 areas) till Jun 8, 5:00 PM CDT "
+        "2022-O-EXA-KTSA-SV-A-0332_2022-06-08T16:59Z"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
 def test_220605_bad_tweet():
     """Test that a multi-segment cancels does not make lots of messages."""
     prod = vtecparser(get_test_file("TCV/TCVMLB.txt"))
@@ -1231,7 +1243,9 @@ def test_wcn_updates():
                 st, "C", f"{u:03d}", name=n, wfos=["DMX"]
             )
     prod = _vtecparser(
-        get_test_file("WCNMEG.txt"), utcnow=utcnow, ugc_provider=ugc_provider
+        get_test_file("WCN/WCNMEG.txt"),
+        utcnow=utcnow,
+        ugc_provider=ugc_provider,
     )
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
@@ -1270,7 +1284,7 @@ def test_140715_condensed():
 def test_140714_segmented_watch():
     """Two segmented watch text formatting stinks"""
     utcnow = utc(2014, 7, 14, 17, 25)
-    prod = vtecparser(get_test_file("WCNPHI.txt"), utcnow=utcnow)
+    prod = vtecparser(get_test_file("WCN/WCNPHI.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
         "PHI issues Severe Thunderstorm Watch (issues ((DEC001)), "
@@ -1437,7 +1451,7 @@ def test_wcn():
     assert j[0][2]["twitter_media"] == ans
 
     prod = _vtecparser(
-        get_test_file("WCN.txt"), utcnow=utcnow, ugc_provider=ugc_provider
+        get_test_file("WCN/WCN.txt"), utcnow=utcnow, ugc_provider=ugc_provider
     )
     j = prod.get_jabbers("http://localhost/", "http://localhost/")
     assert prod.is_homogeneous()

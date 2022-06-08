@@ -613,7 +613,7 @@ class VTECProduct(TextProduct):
                 )
 
             jdict = {
-                "as": ", ".join(actions),
+                "as": ", ".join(short_actions),
                 "asl": ", ".join(long_actions),
                 "hasl": ", ".join(html_long_actions),
                 "wfo": vtec.office,
