@@ -31,6 +31,7 @@ the social media posts for products that are more mudane (#604).
 
 ### Bug Fixes
 
+- [SHEF] Catch invalid nan values.
 - Fixed f-string formatting issue in SAW jabber message generator.
 - Fixed missing `ENH` and `MDT` from `spcpts.THRESHOLD_ORDER`.
 - Fixed jabber/twitter message generation for a VTEC product with multiple
