@@ -80,7 +80,8 @@ TIMEZONES = {
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
 RETAINED_COMMENT_RE = re.compile(r"['\"](.*)['\"]")
 NUMBER_RE = re.compile(r"^[+-]?\d+\.?\d*$")
-MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG"]
+MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG", "nan"]
+MISSING_VALUES.extend(["NaN", "NAN"])
 
 
 def make_date(text, now=None):

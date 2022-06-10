@@ -32,6 +32,13 @@ def prod():
     return res
 
 
+def test_220610_nan():
+    """Test handling of nan value."""
+    utcnow = utc(2022, 6, 10)
+    prod = parser(get_test_file("SHEF/RRSCHS.txt"), utcnow=utcnow)
+    assert len(prod.data) == 14
+
+
 def test_220401_rr1tar():
     """Test handling invalid A message that SHEFIT handles somehow."""
     utcnow = utc(2022, 4, 1)
