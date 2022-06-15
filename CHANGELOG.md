@@ -20,6 +20,7 @@ the social media posts for products that are more mudane (#604).
 
 ### New Features
 
+- Add database storage of `purge_time` for VTEC products (#616).
 - Add parsing support for CWSU Center Weather Advisory (#573).
 - Add option to `mcalc_feelslike` to support `mask_undefined`.
 - Add `twitter_media` link for generic text products that have a polygon (#586).

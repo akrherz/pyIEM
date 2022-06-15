@@ -426,9 +426,9 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
             "wfo, eventid, status, fcster, report, ugc, phenomena, "
             "significance, gid, init_expire, product_issue, "
             "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
-            "is_emergency, is_pds) "
+            "is_emergency, is_pds, purge_time) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s) "
+            "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s) "
             "RETURNING gid",
             (
                 bts,
@@ -453,6 +453,7 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 segment.get_hvtec_record(),
                 segment.is_emergency,
                 segment.is_pds,
+                segment.ugcexpire,
             ),
         )
         # For unit tests, these mostly get filtered out
@@ -469,12 +470,13 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     txn.execute(
         f"UPDATE {warning_table} SET "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__', updated = %s WHERE wfo = %s and "
+        "|| %s || '__', updated = %s, purge_time = %s WHERE wfo = %s and "
         f"eventid = %s and ugc in %s and significance = %s "
         "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
         (
             prod.unixtext,
             prod.valid,
+            segment.ugcexpire,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_tuple(),
@@ -505,7 +507,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
         issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
         f"UPDATE {warning_table} SET {issuesql} expire = %s, "
-        "status = %s, updated = %s, "
+        "status = %s, updated = %s, purge_time = %s, "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
         "|| %s || '__' WHERE wfo = %s and eventid = %s and ugc in "
         f"%s and significance = %s and phenomena = %s "
@@ -515,6 +517,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             ets,
             vtec.action,
             prod.valid,
+            segment.ugcexpire,
             prod.unixtext,
             vtec.office,
             vtec.etn,
@@ -542,7 +545,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
     txn.execute(
         f"UPDATE {warning_table} SET status = %s, updated = %s, "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__' , expire = %s, "
+        "|| %s || '__' , expire = %s, purge_time = %s, "
         "is_emergency = (case when %s then true else is_emergency end), "
         "is_pds = (case when %s then true else is_pds end) "
         f"WHERE wfo = %s and eventid = %s and ugc in %s "
@@ -554,6 +557,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
             prod.valid,
             prod.unixtext,
             ets,
+            segment.ugcexpire,
             segment.is_emergency,
             segment.is_pds,
             vtec.office,
