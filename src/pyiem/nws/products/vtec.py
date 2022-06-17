@@ -1,11 +1,7 @@
 """A NWS TextProduct that contains VTEC information."""
-# Standard Library Imports
-from datetime import timedelta
 
 from pyiem.nws.product import TextProduct, TextProductException
-from pyiem.nws.ugc import ugcs_to_text
-from pyiem.nws.vtec import get_action_string
-from pyiem.reference import TWEET_CHARS
+from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
     _associate_vtec_year,
     _check_unique_ugc,
@@ -15,7 +11,6 @@ from pyiem.nws.products._vtec_util import (
     _do_sql_vtec_can,
     _do_sql_vtec_con,
     DEFAULT_EXPIRE_DELTA,
-    build_channels,
     check_dup_ps,
     do_sql_hvtec,
     _load_database_status,
@@ -28,6 +23,8 @@ class VTECProductException(TextProductException):
 
 class VTECProduct(TextProduct):
     """A TextProduct that contains VTEC information."""
+
+    get_jabbers = _get_jabbers
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
@@ -361,26 +358,17 @@ class VTECProduct(TextProduct):
                 keys.append(vtec.action)
         return len(keys) == 1
 
-    def get_action(self):
-        """How to describe the action of this product"""
-        keys = []
-        for segment in self.segments:
-            for vtec in segment.vtec:
-                if vtec.action not in keys:
-                    keys.append(vtec.action)
-        if len(keys) == 1:
-            return self.segments[0].vtec[0].get_action_string()
-        return "updates"
-
     def is_homogeneous(self):
         """Test to see if this product contains just one VTEC event"""
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
+                # Upgrades do not count in this calculation
+                if vtec.action == "UPG":
+                    continue
                 key = vtec.s3()
                 if key not in keys:
                     keys.append(key)
-
         return len(keys) == 1
 
     def get_first_non_cancel_vtec(self):
@@ -397,271 +385,6 @@ class VTECProduct(TextProduct):
             if segment.vtec and segment.vtec[0].action != "CAN":
                 return segment
         return None
-
-    def get_jabbers(self, uri, river_uri=None):
-        """Return a list of triples representing how this goes to social
-        Arguments:
-        uri -- The URL for the VTEC Browser
-        river_uri -- The URL of the River App
-
-        Returns:
-        [[plain, html, xtra]] -- A list of triples of plain text, html, xtra
-        """
-        wfo = self.source[1:]
-        wfo4 = wfo if self.source.startswith("K") else self.source
-        if self.skip_con:
-            xtra = {
-                "product_id": self.get_product_id(),
-                "channels": ",".join(self.get_affected_wfos()) + ",FLS" + wfo,
-                "twitter": (
-                    f"{wfo} issues updated FLS product {river_uri}?wfo={wfo}"
-                ),
-            }
-            text = (
-                f"{wfo} has sent an updated FLS product (continued products "
-                "were not reported here).  Consult this website for more "
-                f"details. {river_uri}?wfo={wfo}"
-            )
-            html = (
-                f"<p>{wfo} has sent an updated FLS product "
-                "(continued products were not reported here).  Consult "
-                f'<a href="{river_uri}?wfo={wfo}">this website</a> for more '
-                "details.</p>"
-            )
-            return [(text, html, xtra)]
-        msgs = []
-
-        actions = {}  # {action: [segments]}
-
-        for segment in self.segments:
-            for vtec in segment.vtec:
-                if vtec.action == "ROU" or vtec.status == "T":
-                    continue
-                linkyear = (
-                    vtec.year if vtec.year is not None else self.valid.year
-                )
-                xtra = {
-                    "product_id": self.get_product_id(),
-                    "channels": ",".join(build_channels(self, segment, vtec)),
-                    "status": vtec.status,
-                    "vtec": vtec.get_id(self.valid.year),
-                    "ptype": vtec.phenomena,
-                    "twitter": "",
-                    "twitter_media": (
-                        "https://mesonet.agron.iastate.edu/plotting/auto/plot/"
-                        f"208/network:WFO::wfo:{wfo4}::"
-                        f"year:{linkyear}::phenomenav:{vtec.phenomena}::"
-                        f"significancev:{vtec.significance}::"
-                        f"etn:{vtec.etn}::valid:"
-                    ),
-                }
-                # collect up ugcs against VTEC actions
-                (actions.setdefault(vtec.action, []).extend(segment.ugcs))
-                if segment.giswkt is not None:
-                    xtra["category"] = "SBW"
-                    xtra["geometry"] = segment.giswkt.replace("SRID=4326;", "")
-                if vtec.endts is not None:
-                    xtra["expire"] = vtec.endts.strftime("%Y%m%dT%H:%M:00")
-                # Set up Jabber Dict for stuff to fill in
-                jmsg_dict = {
-                    "wfo": vtec.office,
-                    "product": vtec.product_string(),
-                    "county": ugcs_to_text(segment.ugcs),
-                    "sts": " ",
-                    "ets": " ",
-                    "svr_special": segment.special_tags_to_text(),
-                    "svs_special": "",
-                    "svs_special_html": "",
-                    "year": linkyear,
-                    "phenomena": vtec.phenomena,
-                    "eventid": vtec.etn,
-                    "significance": vtec.significance,
-                    "url": f"{uri}{vtec.url(self.valid.year)}",
-                }
-                if segment.hvtec and segment.hvtec[0].nwsli.id != "00000":
-                    jmsg_dict["county"] = segment.hvtec[0].nwsli.get_name()
-                if vtec.begints is not None:
-                    jmsg_dict["url"] += f"_{vtec.begints:%Y-%m-%dT%H:%MZ}"
-                    xtra["twitter_media"] += vtec.begints.strftime(
-                        "%Y-%m-%d%%20%H%M"
-                    )
-                    if vtec.begints > (self.utcnow + timedelta(hours=1)):
-                        jmsg_dict["sts"] = f" {vtec.get_begin_string(self)} "
-                else:
-                    jmsg_dict["url"] += f"_{self.valid:%Y-%m-%dT%H:%MZ}"
-                    xtra["twitter_media"] += self.valid.strftime(
-                        "%Y-%m-%d%%20%H%M"
-                    )
-                xtra["twitter_media"] += ".png"
-                jmsg_dict["ets"] = vtec.get_end_string(self)
-
-                # Include the special bulletin for Tornado Warnings
-                if vtec.phenomena == "TO" and vtec.significance == "W":
-                    jmsg_dict["svs_special"] = segment.svs_search()
-                    jmsg_dict["svs_special_html"] = segment.svs_search()
-
-                # PDS
-                if segment.is_pds:
-                    jmsg_dict["product"] += " (PDS)"
-                    xtra["channels"] += f",{vtec.phenomena}.PDS"
-
-                # Emergencies
-                if segment.is_emergency:
-                    jmsg_dict["product"] = (
-                        jmsg_dict["product"]
-                        .replace("Warning", "Emergency")
-                        .replace(" (PDS)", "")
-                    )
-                    xtra["channels"] += f",{vtec.phenomena}.EMERGENCY"
-                    _btext = segment.svs_search()
-                    if vtec.phenomena == "FF":
-                        jmsg_dict["svs_special"] = _btext
-                        jmsg_dict["svs_special_html"] = _btext.replace(
-                            "FLASH FLOOD EMERGENCY",
-                            (
-                                '<span style="color: #FF0000;">'
-                                "FLASH FLOOD EMERGENCY</span>"
-                            ),
-                        )
-                    elif vtec.phenomena == "TO":
-                        jmsg_dict["svs_special_html"] = _btext.replace(
-                            "TORNADO EMERGENCY",
-                            (
-                                '<span style="color: #FF0000;">'
-                                "TORNADO EMERGENCY</span>"
-                            ),
-                        )
-                    else:
-                        self.warnings.append(
-                            "Segment is_emergency, but not TO,FF phenomena?"
-                        )
-
-                plain = (
-                    "%(wfo)s %(product)s %(svr_special)s%(sts)s for "
-                    "%(county)s %(ets)s %(svs_special)s "
-                    "%(url)s"
-                ) % jmsg_dict
-                html = (
-                    '<p>%(wfo)s <a href="%(url)s">%(product)s</a> '
-                    "%(svr_special)s%(sts)s for %(county)s "
-                    "%(ets)s %(svs_special_html)s</p>"
-                ) % jmsg_dict
-                xtra["twitter"] = (
-                    "%(wfo)s %(product)s%(svr_special)s%(sts)sfor %(county)s "
-                    "%(ets)s %(url)s"
-                ) % jmsg_dict
-                # brute force removal of duplicate spaces
-                xtra["twitter"] = " ".join(xtra["twitter"].split())
-                hvtec_nwsli = segment.get_hvtec_nwsli()
-                if hvtec_nwsli is not None and hvtec_nwsli != "00000":
-                    xtra["twitter_media"] = (
-                        "https://water.weather.gov/resources/hydrographs/"
-                        f"{hvtec_nwsli.lower()}_hg.png"
-                    )
-                msgs.append(
-                    [" ".join(plain.split()), " ".join(html.split()), xtra]
-                )
-
-        # If we have a homogeneous product and we have more than one
-        # message, lets try to condense it down, some of the xtra settings
-        # from above will be used here, this is probably bad design
-        if self.is_homogeneous() and len(msgs) > 1:
-            vtec = self.get_first_non_cancel_vtec()
-            if vtec is None:
-                vtec = self.segments[0].vtec[0]
-            segment = self.get_first_non_cancel_segment()
-            if segment is None:
-                segment = self.segments[0]
-            channels = build_channels(self, segment, vtec)
-            # Need to figure out a timestamp to associate with this
-            # consolidated message.  Default to utcnow
-            stamp = self.utcnow
-            for seg in self.segments:
-                for v in seg.vtec:
-                    if (
-                        v.begints is not None
-                        and v.begints > stamp
-                        and v.status not in ["CAN", "EXP"]
-                    ):
-                        stamp = v.begints
-                if seg != segment:
-                    for ugc in seg.ugcs:
-                        channels.append(
-                            f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}"
-                        )
-                        channels.append(str(ugc))
-            if any(seg.is_emergency for seg in self.segments):
-                channels.append(f"{vtec.phenomena}.EMERGENCY")
-            if any(seg.is_pds for seg in self.segments):
-                channels.append(f"{vtec.phenomena}.PDS")
-            xtra["channels"] = ",".join(channels)
-            short_actions = []
-            long_actions = []
-            html_long_actions = []
-            for va, ugcs in actions.items():
-                long_actions.append(
-                    f"{get_action_string(va)} {ugcs_to_text(ugcs)}"
-                )
-                html_long_actions.append(
-                    "<span style='font-weight: bold;'>"
-                    f"{get_action_string(va)}</span> "
-                    f"{ugcs_to_text(ugcs)}"
-                )
-                short_actions.append(
-                    f"{get_action_string(va)} {len(ugcs)} area"
-                    f"{'s' if len(ugcs) > 1 else ''}"
-                )
-
-            jdict = {
-                "as": ", ".join(short_actions),
-                "asl": ", ".join(long_actions),
-                "hasl": ", ".join(html_long_actions),
-                "wfo": vtec.office,
-                "ets": vtec.get_end_string(self),
-                "svr_special": segment.special_tags_to_text(),
-                "svs_special": "",
-                "sts": "",
-                "action": self.get_action(),
-                "product": vtec.get_ps_string(),
-                "url": (
-                    f"{uri}{vtec.url(self.valid.year)}_{stamp:%Y-%m-%dT%H:%MZ}"
-                ),
-            }
-            # Include the special bulletin for Tornado Warnings
-            if vtec.phenomena in ["TO"] and vtec.significance == "W":
-                jdict["svs_special"] = segment.svs_search()
-            if vtec.begints is not None and vtec.begints > (
-                self.utcnow + timedelta(hours=1)
-            ):
-                jdict["sts"] = f" {vtec.get_begin_string(self)} "
-
-            plain = (
-                "%(wfo)s %(action)s %(product)s%(svr_special)s"
-                "%(sts)s (%(asl)s) %(ets)s. %(svs_special)s %(url)s"
-            ) % jdict
-            xtra["twitter"] = (
-                "%(wfo)s %(action)s %(product)s"
-                "%(svr_special)s%(sts)s (%(asl)s) "
-                "%(ets)s"
-            ) % jdict
-            # 25 is an aggressive reservation for URLs, which may not be needed
-            if len(xtra["twitter"]) > (TWEET_CHARS - 25):
-                xtra["twitter"] = (
-                    "%(wfo)s %(action)s %(product)s%(sts)s " "(%(as)s) %(ets)s"
-                ) % jdict
-                if len(xtra["twitter"]) > (TWEET_CHARS - 25):
-                    xtra["twitter"] = (
-                        "%(wfo)s %(action)s %(product)s%(sts)s " "%(ets)s"
-                    ) % jdict
-            xtra["twitter"] += " %(url)s" % jdict
-            html = (
-                '<p>%(wfo)s <a href="%(url)s">%(action)s %(product)s</a>'
-                "%(svr_special)s%(sts)s "
-                "(%(hasl)s) %(ets)s. %(svs_special)s</p>"
-            ) % jdict
-            return [(" ".join(plain.split()), " ".join(html.split()), xtra)]
-
-        return msgs
 
     def get_skip_con(self):
         """Should this product be skipped from generating jabber messages"""

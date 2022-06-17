@@ -1,0 +1,111 @@
+524 
+WWUS73 KDMX 131948
+NPWDMX
+
+URGENT - WEATHER MESSAGE
+National Weather Service Des Moines IA
+248 PM CDT Mon Jun 13 2022
+
+IAZ004>006-015-016-023>025-033>039-044>050-057>062-070>075-
+081>086-092>097-140400-
+/O.CON.KDMX.HT.Y.0001.000000T0000Z-220615T0000Z/
+Emmet-Kossuth-Winnebago-Palo Alto-Hancock-Pocahontas-Humboldt-
+Wright-Sac-Calhoun-Webster-Hamilton-Hardin-Grundy-Black Hawk-
+Crawford-Carroll-Greene-Boone-Story-Marshall-Tama-Audubon-Guthrie-
+Dallas-Polk-Jasper-Poweshiek-Cass-Adair-Madison-Warren-Marion-
+Mahaska-Adams-Union-Clarke-Lucas-Monroe-Wapello-Taylor-Ringgold-
+Decatur-Wayne-Appanoose-Davis-
+Including the cities of Estherville, Algona, Forest City, 
+Lake Mills, Emmetsburg, Garner, Britt, Kanawha, Pocahontas, 
+Laurens, Rolfe, Fonda, Gilmore City, Humboldt, Eagle Grove, 
+Clarion, Belmond, Sac City, Lake View, Odebolt, Wall Lake, 
+Schaller, Early, Rockwell City, Manson, Lake City, Pomeroy, 
+Fort Dodge, Webster City, Iowa Falls, Eldora, Ackley, 
+Grundy Center, Reinbeck, Conrad, Dike, Wellsburg, Waterloo, 
+Cedar Falls, Denison, Carroll, Jefferson, Boone, Ames, 
+Marshalltown, Tama, Toledo, Traer, Dysart, Gladbrook, Audubon, 
+Exira, Guthrie Center, Panora, Bayard, Casey, Perry, Waukee, 
+Adel, Des Moines, Newton, Grinnell, Atlantic, Greenfield, Stuart,
+Adair, Fontanelle, Winterset, Earlham, Indianola, Norwalk, 
+Carlisle, Pella, Knoxville, Oskaloosa, Corning, Creston, Osceola,
+Chariton, Albia, Ottumwa, Bedford, Lenox, New Market, Mount Ayr, 
+Lamoni, Leon, Corydon, Seymour, Allerton, Humeston, Centerville, 
+and Bloomfield
+248 PM CDT Mon Jun 13 2022
+
+...HEAT ADVISORY REMAINS IN EFFECT UNTIL 7 PM CDT TUESDAY...
+
+* WHAT...Heat index values up to around 105 degrees expected.
+
+* WHERE...Central and southern Iowa, generally from Highway 20 
+  southward.
+
+* WHEN...From noon Monday to 7 PM CDT Tuesday.
+
+* IMPACTS...Hot temperatures and high humidity may cause heat 
+  illnesses to occur.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Drink plenty of fluids, stay in an air-conditioned room, stay out
+of the sun, and check up on relatives and neighbors. Young
+children and pets should never be left unattended in vehicles
+under any circumstances.
+
+Take extra precautions if you work or spend time outside. When
+possible reschedule strenuous activities to early morning or
+evening. Know the signs and symptoms of heat exhaustion and heat
+stroke. Wear lightweight and loose fitting clothing when
+possible. To reduce risk during outdoor work, the Occupational
+Safety and Health Administration recommends scheduling frequent
+rest breaks in shaded or air conditioned environments. Anyone
+overcome by heat should be moved to a cool and shaded location.
+Heat stroke is an emergency! Call 9 1 1.
+
+&&
+
+$$
+
+IAZ007-017-026>028-140400-
+/O.CON.KDMX.HT.Y.0001.220614T1600Z-220615T0000Z/
+Worth-Cerro Gordo-Franklin-Butler-Bremer-
+Including the cities of Northwood, Manly, Mason City, Clear Lake,
+Hampton, Parkersburg, Clarksville, Shell Rock, Greene, Aplington,
+Allison, Dumont, and Waverly
+248 PM CDT Mon Jun 13 2022
+
+...HEAT ADVISORY REMAINS IN EFFECT FROM 11 AM TO 7 PM CDT
+TUESDAY...
+
+* WHAT...Heat index values up to 100 expected.
+
+* WHERE...Portions of Northeast Iowa.
+
+* WHEN...From 11 AM to 7 PM CDT Tuesday.
+
+* IMPACTS...Hot temperatures and high humidity may cause heat 
+  illnesses to occur.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Drink plenty of fluids, stay in an air-conditioned room, stay out
+of the sun, and check up on relatives and neighbors. Young
+children and pets should never be left unattended in vehicles
+under any circumstances.
+
+Take extra precautions if you work or spend time outside. When
+possible reschedule strenuous activities to early morning or
+evening. Know the signs and symptoms of heat exhaustion and heat
+stroke. Wear lightweight and loose fitting clothing when
+possible. To reduce risk during outdoor work, the Occupational
+Safety and Health Administration recommends scheduling frequent
+rest breaks in shaded or air conditioned environments. Anyone
+overcome by heat should be moved to a cool and shaded location.
+Heat stroke is an emergency! Call 9 1 1.
+
+&&
+
+$$
+
+For more information from the National Weather Service visit
+https://weather.gov/desmoines
