@@ -40,13 +40,27 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_220617_parishes():
+    """Test that the word parishes appears as we wish."""
+    prov = {
+        "LAC005": UGC("LA", "C", "005", name="*" * 300, wfos=["LIX"]),
+    }
+    prod = _vtecparser(get_test_file("WCN/WCNLIX.txt"), ugc_provider=prov)
+    j = prod.get_jabbers("")
+    ans = (
+        "LIX cancels Severe Thunderstorm Watch for 6 parishes in [LA] "
+        "2022-O-CAN-KLIX-SV-A-0344_2022-06-10T22:46Z"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
 def test_220608_bad_tweet():
     """Test what is emitted from a shortened tweet message."""
     prod = vtecparser(get_test_file("WCN/WCNTSA.txt"))
     j = prod.get_jabbers("")
     ans = (
         "TSA updates Severe Thunderstorm Watch (expands area to include 9 "
-        "areas, continues 8 areas) till Jun 8, 5:00 PM CDT "
+        "counties, continues 8 counties) till Jun 8, 5:00 PM CDT "
         "2022-O-EXA-KTSA-SV-A-0332_2022-06-08T16:59Z"
     )
     assert j[0][2]["twitter"] == ans
@@ -57,7 +71,7 @@ def test_220605_bad_tweet():
     prod = vtecparser(get_test_file("TCV/TCVMLB.txt"))
     j = prod.get_jabbers("")
     ans = (
-        "MLB cancels Tropical Storm Warning (cancels ((FLZ154)), ((FLZ159)), "
+        "MLB cancels Tropical Storm Warning (((FLZ154)), ((FLZ159)), "
         "((FLZ164)), ((FLZ247)), ((FLZ254)), ((FLZ259)), ((FLZ264)), "
         "((FLZ347)), ((FLZ447)), ((FLZ547)), ((FLZ647)), ((FLZ747)) [FL])  "
         "2022-O-CAN-KMLB-TR-W-1001_2022-06-04T20:44Z"
@@ -67,7 +81,7 @@ def test_220605_bad_tweet():
 
 def test_gh540_duplicated_ugcs():
     """Test that we get a warning from a duplicated UGCs."""
-    data = get_test_file("NPWFFC.txt").replace("GAZ001>003", "GAZ004")
+    data = get_test_file("NPW/NPWFFC.txt").replace("GAZ001>003", "GAZ004")
     prod = vtecparser(data)
     assert any(a.startswith("Duplicated UGCs") for a in prod.warnings)
 
@@ -689,7 +703,7 @@ def test_170523_dupfail(dbcursor):
 @pytest.mark.parametrize("database", ["postgis"])
 def test_170504_falsepositive(dbcursor):
     """This alert for overlapping VTEC is a false positive"""
-    prod = vtecparser(get_test_file("NPWFFC.txt"))
+    prod = vtecparser(get_test_file("NPW/NPWFFC.txt"))
     prod.sql(dbcursor)
     res = [x.find("duplicated VTEC") > 0 for x in prod.warnings]
     assert not any(res)
@@ -793,6 +807,31 @@ def test_160912_missing(dbcursor):
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings
+
+
+def test_gh614_npwdmx():
+    """Test that we don't get confusing messages for timing."""
+    prod = vtecparser(get_test_file("NPW/NPWDMX.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "DMX continues Heat Advisory (51 forecast zones in [IA])  "
+        "2022-O-CON-KDMX-HT-Y-0001_2022-06-14T16:00Z"
+    )
+    assert len(j) == 1
+    assert j[0][2]["twitter"] == ans
+
+
+def test_gh614_messages():
+    """Test the jabber messages generated from this many segment prod."""
+    prod = vtecparser(get_test_file("TCV/TCVAKQ.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "AKQ updates Tropical Storm Warning (issues 36 zones, "
+        "issues upgrade to 26 zones)  "
+        "2016-O-NEW-KAKQ-TR-W-1009_2016-09-02T15:55Z"
+    )
+    assert len(j) == 1
+    assert j[0][2]["twitter"] == ans
 
 
 def test_160904_resent():
@@ -1287,7 +1326,7 @@ def test_140714_segmented_watch():
     prod = vtecparser(get_test_file("WCN/WCNPHI.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://localhost", "http://localhost")
     ans = (
-        "PHI issues Severe Thunderstorm Watch (issues ((DEC001)), "
+        "PHI issues Severe Thunderstorm Watch (((DEC001)), "
         "((DEC003)), ((DEC005)) [DE] and ((MDC011)), ((MDC015)), "
         "((MDC029)), ((MDC035)), ((MDC041)) [MD] and ((NJC001)), "
         "((NJC005)), ((NJC007)), ((NJC009)), ((NJC011)), ((NJC015)), "

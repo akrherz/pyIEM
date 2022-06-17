@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 - Refactor internal SHEF decoding such that `TextProduct` instance has a seat
 at the table when some acceptable parsing failures can happen.  The functional
 form of `process_messages_{a,b,e}` is now `TextProduct,str`.
+- Refactor internal VTEC API for creating jabber messages.
 - Refactor `windrose_utils` and remove the positional argument cruft.
 - The XMPP channels assigned to VTEC products that are CONtinues, EXPires, or
 CANcels was modified to append a `-ACT`ion to the channel in the case of the
