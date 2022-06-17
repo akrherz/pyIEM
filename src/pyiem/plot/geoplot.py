@@ -253,7 +253,7 @@ class MapPlot:
         """Close the figure in the case of batch processing"""
         plt.close()
 
-    def draw_usdm(self, valid=None, filled=True, hatched=False):
+    def draw_usdm(self, valid=None, filled=True, hatched=False, **kwargs):
         """Overlay the US Drought Monitor
 
         This utilizes a GeoJSON web service provided by the IEM.  The provided
@@ -265,6 +265,7 @@ class MapPlot:
           valid (str or datetime.date): The valid time to plot this USDM
           filled (boolean): Should we draw lines or filled polygons
           hatched (boolean): Should we use hatch filling
+          alpha (float): Alpha value for the polygons, default 0.5.
 
         Return:
           date that the USDM is valid for
@@ -286,6 +287,7 @@ class MapPlot:
             return None
         lw = 1 if filled else 4.0
         usdm_valid = None
+        alpha = kwargs.pop("alpha", 0.5)
         for _, row in df.iterrows():
             color = colors[row["dm"]]
             geom = shape(row["geometry"])
@@ -305,7 +307,7 @@ class MapPlot:
                     [geom],
                     LATLON,
                     facecolor=fc,
-                    alpha=0.5,
+                    alpha=alpha,
                     edgecolor="None",
                     zorder=Z_OVERLAY,
                 )
@@ -1201,7 +1203,7 @@ class MapPlot:
                     facecolor="None",
                     edgecolor=color,
                     lw=0.4,
-                    zorder=Z_POLITICAL,
+                    zorder=Z_OVERLAY2 + 2,
                 )
 
     def postprocess(self, **kwargs):
