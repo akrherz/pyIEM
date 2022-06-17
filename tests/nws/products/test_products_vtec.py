@@ -48,7 +48,7 @@ def test_220617_parishes():
     prod = _vtecparser(get_test_file("WCN/WCNLIX.txt"), ugc_provider=prov)
     j = prod.get_jabbers("")
     ans = (
-        "LIX cancels Severe Thunderstorm Watch for 6 parishes in [LA] "
+        "LIX cancels Severe Thunderstorm Watch (9 parishes in [LA])  "
         "2022-O-CAN-KLIX-SV-A-0344_2022-06-10T22:46Z"
     )
     assert j[0][2]["twitter"] == ans

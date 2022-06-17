@@ -249,7 +249,6 @@ def _get_jabbers(prod, uri, river_uri=None):
             msgs.append(
                 [" ".join(plain.split()), " ".join(html.split()), xtra]
             )
-
     # We only want to consolidate in the case of a homogeneous product
     if prod.is_homogeneous() and len(msgs) > 1:
         vtec = prod.get_first_non_cancel_vtec()
