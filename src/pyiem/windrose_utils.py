@@ -63,8 +63,6 @@ def _make_timelimit_string(kwargs):
         ets = kwargs.get("ets")
         d1 = sts.strftime("%b %-d")
         d2 = ets.strftime("%b %-d")
-        if sts.strftime("%m%d") > ets.strftime("%m%d"):
-            d1, d2 = d2, d1
         tlimit += f"{d1} - {d2}, "
     elif months is not None and len(months) < 12:
         for h in months:
@@ -113,8 +111,8 @@ def _get_data(station, **kwargs):
         )
         if sts.strftime("%m%d") > ets.strftime("%m%d"):
             tlimit = (
-                f"and (to_char(valid, 'mmdd') >= '{ets:%m%d}' or "
-                f"to_char(valid, 'mmdd') < '{sts:%m%d}') "
+                f"and (to_char(valid, 'mmdd') >= '{sts:%m%d}' or "
+                f"to_char(valid, 'mmdd') < '{ets:%m%d}') "
             )
     elif kwargs.get("months") is not None and len(kwargs["months"]) < 12:
         sqlargs["months"] = tuple(kwargs["months"])
