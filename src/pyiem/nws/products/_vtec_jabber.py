@@ -14,10 +14,11 @@ from pyiem.reference import TWEET_CHARS
 def build_channels(prod, segment, vtec) -> list:
     """Build a list of channels for the given segment/vtec."""
     channels = []
+    # Two noisey products that don't default to the main WFO channel
     if prod.afos[:3] in ["MWW", "RFW"]:
-        channels = [f"{prod.afos[:3]}{s}" for s in prod.get_affected_wfos()]
+        channels.append(f"{prod.afos[:3]}{prod.source[1:]}")
     else:
-        channels = prod.get_affected_wfos()
+        channels.append(prod.source[1:])
     # GH604 - Append a -ACTION for CON, EXP, CAN actions
     suffix = f"-{vtec.action}" if vtec.action in ["CON", "EXP", "CAN"] else ""
     channels.append(f"{vtec.s2()}{suffix}")

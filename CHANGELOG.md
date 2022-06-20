@@ -44,6 +44,8 @@ segments with the same vtec action (read tropical products).
 - Improved logic behind `pyiem.plot.util.pretty_bins`, it no longer exactly
 returns the specified number of bins, but tries to do the right thing!
 - Increase remark trimming for LSR tweets for more length safety.
+- Stopped back-computing affected WFOs based on the UGCs found in a VTEC
+product.  This was causing more confusion than good (#615).
 
 ## **1.12.0** (18 Mar 2022)
 
