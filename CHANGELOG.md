@@ -35,6 +35,8 @@ the social media posts for products that are more mudane (#604).
 ### Bug Fixes
 
 - [SHEF] Catch invalid nan values.
+- [windrose] Fixed logic bug when `limit_by_doy` was set and dates crossed
+1 January.
 - Fixed f-string formatting issue in SAW jabber message generator.
 - Fixed missing `ENH` and `MDT` from `spcpts.THRESHOLD_ORDER`.
 - Fixed jabber/twitter message generation for a VTEC product with multiple
