@@ -42,6 +42,7 @@ the social media posts for products that are more mudane (#604).
 - Fixed missing `ENH` and `MDT` from `spcpts.THRESHOLD_ORDER`.
 - Fixed jabber/twitter message generation for a VTEC product with multiple
 segments with the same vtec action (read tropical products).
+- Heat index is now computed without the presence of wind info (#623).
 - Improved logic behind `pyiem.plot.util.pretty_bins`, it no longer exactly
 returns the specified number of bins, but tries to do the right thing!
 - Increase remark trimming for LSR tweets for more length safety.
