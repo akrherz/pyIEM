@@ -19,7 +19,7 @@ from pyiem.plot import (
     mask_outside_geom,
 )
 from pyiem.reference import TWITTER_RESOLUTION_INCH
-from pyiem.util import utc
+from pyiem.util import utc, load_geodf
 
 PAIN = 1.3  # how much do we care, sigh.
 
@@ -43,6 +43,22 @@ def test_close():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_wfoplot_labels():
+    """Test functionality that moves WFO labels around when contested."""
+    mp = MapPlot(
+        sector="nws",
+        nocaption=True,
+        title="WFO 999",
+    )
+    wfos = load_geodf("cwa").index.values
+    data = {}
+    for wfo in wfos:
+        data[wfo] = 999
+    mp.fill_cwas(data, ilabel=True, labelbuffer=0)
+    return mp.fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)

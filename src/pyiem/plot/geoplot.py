@@ -703,7 +703,7 @@ class MapPlot:
             for _idx, row in df.iterrows():
                 ha = "center"
                 mystr = fmt % (row["val"],)
-                max_mystr_len = max([len(s) for s in mystr.split("\n")])
+                max_mystr_len = max(len(s) for s in mystr.split("\n"))
                 mystr_lines = len(mystr.split("\n"))
                 (x, y) = row["geometry"].x, row["geometry"].y
                 (imgx, imgy) = gp.ax.transData.transform([x, y])
@@ -1150,12 +1150,24 @@ class MapPlot:
           data (dict): Dictionary of values with keys representing the 3 char
             or 4 char idenitifer for the WFO.  This assumes the 3 char sites
             are the K ones.
+          ilabel (bool): Should we label?
         """
         geodf = load_geodf("cwa")
         # Painfull.  San Juan's WFO identifier is SJU, but VTEC uses JSJ, our
         # plotting here uses SJU
         if "JSJ" in data:
             data["SJU"] = data["JSJ"]
+        # Goose some points to improve readability
+        if self.sector in ["nws", "conus"]:
+            geodf.loc["MLB", "lat"] = geodf.loc["MLB", "lat"] + 0.2
+            geodf.loc["TBW", "lat"] = geodf.loc["TBW", "lat"] - 0.1
+            geodf.loc["BUF", "lat"] = geodf.loc["BUF", "lat"] + 0.2
+            geodf.loc["BGM", "lat"] = geodf.loc["BGM", "lat"] - 0.1
+            geodf.loc["DTX", "lat"] = geodf.loc["DTX", "lat"] + 0.3
+            geodf.loc["GRR", "lat"] = geodf.loc["GRR", "lat"] - 0.3
+
+            geodf.loc["MHX", "lon"] = geodf.loc["MHX", "lon"] + 0.2
+            geodf.loc["RAH", "lon"] = geodf.loc["RAH", "lon"] - 0.2
         polygon_fill(self, geodf, data, **kwargs)
 
     def drawcities(self, **kwargs):
