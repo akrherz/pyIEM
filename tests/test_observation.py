@@ -88,6 +88,21 @@ def test_calc():
     assert (ob.data["relh"] - 53.6) < 0.1
 
 
+def test_gh623_feelslike_without_wind():
+    """Test that we can compute feelslike without wind speed."""
+    ts = utc(2018)
+    ob = observation.Observation("FAKE", "FAKE", ts)
+    ob.data["tmpf"] = 89.0
+    ob.data["dwpf"] = 70.0
+    ob.calc()
+    assert (ob.data["feel"] - 94.3) < 0.1
+    ob = observation.Observation("FAKE", "FAKE", ts)
+    ob.data["tmpf"] = -19.0
+    ob.data["dwpf"] = -22.0
+    ob.calc()
+    assert ob.data["feel"] is None
+
+
 @pytest.fixture
 def iemob():
     """Database."""

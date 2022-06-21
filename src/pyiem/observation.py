@@ -8,7 +8,7 @@ import math
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 
 import numpy as np
 import pandas as pd
@@ -245,13 +245,14 @@ class Observation:
         if self.data["feel"] is None and None not in [
             self.data["tmpf"],
             self.data["relh"],
-            self.data["sknt"],
         ]:
+            # sknt is not a hard requirement
+            sk = self.data["sknt"] if self.data["sknt"] is not None else np.nan
             self.data["feel"] = bounded(
                 mcalc.apparent_temperature(
                     self.data["tmpf"] * munits.degF,
                     self.data["relh"] * munits.percent,
-                    self.data["sknt"] * munits.knots,
+                    sk * munits.knots,
                     mask_undefined=False,  # less confusion this way
                 )
                 .to(munits.degF)
