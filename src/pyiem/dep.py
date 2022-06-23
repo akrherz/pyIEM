@@ -6,14 +6,11 @@ import pandas as pd
 from pandas import read_sql
 import numpy as np
 from scipy.interpolate import interp1d
-from pyiem.util import get_dbconnstr
 
-# The bounds of the climate files we store on disk and processing
-# SOUTH is approx OKC and EAST is approx NYC
-SOUTH = 35.0
-WEST = -104.0
-NORTH = 49.0
-EAST = -74.0
+# Local
+# pylint: disable=unused-import
+from pyiem.iemre import SOUTH, WEST, NORTH, EAST  # noqa
+from pyiem.util import get_dbconnstr
 
 YLD_CROPTYPE = re.compile(r"Crop Type #\s+(?P<num>\d+)\s+is (?P<name>[^\s]+)")
 YLD_DATA = re.compile(
