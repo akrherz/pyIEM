@@ -1,0 +1,41 @@
+888
+FPPQ62 PGUM 240602
+SFTPQ2
+PWZ001-FMZ037-023-242000-
+
+Tabular State Forecast for Western Micronesia
+National Weather Service Tiyan GU
+302 PM PWT Fri Jun 24 2022 /402 PM CHUT Fri Jun 24 2022/
+
+ROWS INCLUDE...
+   Daily predominant daytime weather 6AM-6PM
+   Forecast temperatures...early morning low/daytime high
+         Probability of precipitation nighttime 6PM-6AM/daytime 6AM-6PM
+          - indicates temperatures below zero
+         MM indicates missing data
+
+
+   FCST     FCST     FCST     FCST     FCST     FCST     FCST    
+   Sat      Sun      Mon      Tue      Wed      Thu      Fri     
+   Jun 25   Jun 26   Jun 27   Jun 28   Jun 29   Jun 30   Jul 01  
+
+...REPUBLIC OF PALAU...
+   Koror
+   Ptcldy   Ptcldy   Ptsunny  Ptsunny  Ptsunny  Ptsunny  Mocldy  
+   78/86    78/86    78/86    78/86    78/86    78/85    82/85   
+    40/40    50/40    50/30    40/30    30/30    30/30    60/30  
+
+...FEDERATED STATES OF MICRONESIA...
+   Yap Airport
+   Ptcldy   Ptcldy   Shwrs    Ptsunny  Ptsunny  Ptsunny  Ptsunny 
+   78/87    78/87    78/87    78/87    78/87    78/84    83/84   
+    40/40    30/20    30/50    50/40    40/40    40/40    30/20  
+
+   Chuuk Airport
+   Ptcldy   Ptcldy   Shwrs    Ptsunny  Ptsunny  Ptsunny  Shwrs   
+   77/87    77/87    77/87    77/87    77/87    77/84    82/84   
+    20/20    40/40    50/50    50/20    20/20    20/20   100/60  
+
+
+$$
+

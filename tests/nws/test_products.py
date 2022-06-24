@@ -14,6 +14,12 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_220624_micronesia_tz():
+    """Test that we understand a timestamp from Micronesia."""
+    prod = parser(get_test_file("SFTPQ2.txt"))
+    assert prod.valid == utc(2022, 6, 24, 6, 2)
+
+
 def test_201124_tab_in_afos():
     """Test that we can deal with a tab in the AFOS ID."""
     data = get_test_file("FFW/FFWGUM.txt").replace("FFWGUM", "FFWGUM\t")
