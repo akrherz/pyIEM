@@ -3,7 +3,7 @@
 
 All notable changes to this library are documented in this file.
 
-## Unreleased Version
+## **1.13.0** (24 Jun 2022)
 
 ### API Changes
 
