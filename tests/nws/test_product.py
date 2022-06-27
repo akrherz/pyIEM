@@ -14,6 +14,12 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_220627_timestamp():
+    """Test that the right timestamp is parsed."""
+    prod = productparser(get_test_file("TPTLAT.txt"))
+    assert prod.valid == utc(2022, 6, 27, 12)
+
+
 def test_frwoun_jabber():
     """Test that we get a special twitter media out of this."""
     prod = productparser(get_test_file("FRW/FRWOUN.txt"))
