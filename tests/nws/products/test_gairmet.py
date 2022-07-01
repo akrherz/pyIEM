@@ -34,7 +34,7 @@ def test_ice(dbcursor):
     utcnow = utc(2022, 3, 17, 17, 0)
     prod = parser(get_test_file("GAIRMET/LWIE00.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
-    assert len(prod.data.airmets) == 25
+    assert len(prod.data.airmets) == 20
     assert len(prod.data.freezing_levels) == 25
 
 

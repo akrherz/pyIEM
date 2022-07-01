@@ -3,7 +3,7 @@
 Break-up the XML G-AIRMET into atomic pieces.
 """
 from datetime import timezone, datetime
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 from shapely.geometry import Polygon, MultiLineString, LineString
@@ -53,9 +53,10 @@ def process_airmet(prod, airmet):
     elem = airmet.find("hazardType", NS)
     hazardtype = elem.attrib["{http://www.w3.org/1999/xlink}title"]
     xy = [(float(x), float(y)) for x, y in zip(pts[1::2], pts[::2])]
-    if gml_id.startswith("FZLVL"):
+    if gml_id.startswith("FZLVL") or gml_id.startswith("M_FZLVL"):
         ls = LineString(xy)
         ul = int(airmet.find(".//aixm:upperLimit", NS).text)
+        ll = int(airmet.find(".//aixm:lowerLimit", NS).text)
         # Need to search for previous records to see if we have
         # a dupe
         found = False
@@ -68,7 +69,9 @@ def process_airmet(prod, airmet):
             prod.data.freezing_levels.append(
                 FreezingLevelRecord(
                     gml_id=gml_id,
-                    level=ul,
+                    level=None if ul != ll else ll,
+                    lower_level=ll,
+                    upper_level=ul,
                     valid_at=valid_at,
                     geom=MultiLineString([ls]),
                 )
@@ -92,8 +95,9 @@ def process_airmet(prod, airmet):
     # LLWS
     elem = airmet.find(".//lowlevelWindshear", NS)
     if elem is not None and elem.text == "true":
-        phenomena.append("Low Level Wind Shear")
+        phenomena.append("Low Level Wind Shear below 2000")
 
+    # Turbulence
     elem = airmet.find(".//turbulence", NS)
     if elem is not None:
         vol = elem.find(".//aixm:AirspaceVolume", NS)
@@ -104,6 +108,18 @@ def process_airmet(prod, airmet):
             if tr is not None:
                 tt = tr.attrib["{http://www.w3.org/1999/xlink}title"]
                 phenomena.append(f"Turbulence {tt} from {ll} to {ul}")
+
+    # Icing
+    elem = airmet.find(".//icing", NS)
+    if elem is not None:
+        vol = elem.find(".//aixm:AirspaceVolume", NS)
+        if vol is not None:
+            ul = vol.find(".//aixm:upperLimit", NS).text
+            ll = vol.find(".//aixm:lowerLimit", NS).text
+            tr = elem.find(".//icingRangeStart", NS)
+            if tr is not None:
+                tt = tr.attrib["{http://www.w3.org/1999/xlink}title"]
+                phenomena.append(f"Icing {tt} from {ll} to {ul}")
 
     prod.data.airmets.append(
         AIRMETRecord(
@@ -166,15 +182,17 @@ class GAIRMET(product.TextProduct):
         for fzlvl in self.data.freezing_levels:
             cursor.execute(
                 """
-                INSERT into airmet_freezing_levels (
-                gml_id, product_id, valid_at, level, geom)
-                VALUES (%s, %s, %s, %s, ST_GeomFromText(%s, 4326))
+                INSERT into airmet_freezing_levels (gml_id, product_id,
+                valid_at, level, lower_level, upper_level, geom)
+                VALUES (%s, %s, %s, %s, %s, %s, ST_GeomFromText(%s, 4326))
                 """,
                 (
                     fzlvl.gml_id,
                     self.get_product_id(),
                     fzlvl.valid_at,
                     fzlvl.level,
+                    fzlvl.lower_level,
+                    fzlvl.upper_level,
                     fzlvl.geom.wkt,
                 ),
             )
