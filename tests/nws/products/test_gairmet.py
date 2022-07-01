@@ -1,11 +1,22 @@
 """GAIRMET"""
+# stdlib
+import xml.etree.ElementTree as ET
 
 # Third Party
+import mock
 import pytest
 
 # Local
-from pyiem.nws.products.gairmet import parser
+from pyiem.nws.products.gairmet import parser, process_airmet, GAIRMET
 from pyiem.util import get_test_file, utc
+
+
+def test_220701_gmtice():
+    """Test a failure in prod."""
+    prod = mock.Mock()
+    airmet = ET.fromstring(get_test_file("GAIRMET/airmet.xml"))
+    process_airmet(prod, airmet)
+    assert prod.data.airmets
 
 
 @pytest.mark.parametrize("database", ["postgis"])

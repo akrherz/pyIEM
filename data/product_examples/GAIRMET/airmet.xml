@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<ns0:US-AIRMETRecord xmlns:ns0="http://nws.weather.gov/schemas/USWX/1.0" xmlns:ns1="http://www.opengis.net/gml/3.2" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.aixm.aero/schema/5.1.1" ns1:id="ICING-TAG-1C-R6">
+  <ns0:airmetRecordStatus ns2:href="http://codes.nws.noaa.gov/NWSI-10-811/ProductStatus/Normal" ns2:title="Normal"/>
+  <ns0:hazardType ns2:href="http://codes.nws.noaa.gov/NWSI-10-811/HazardTypes/Icing" ns2:title="Icing"/>
+  <ns0:isOutlook>false</ns0:isOutlook>
+  <ns0:recordValidTime>
+    <ns1:TimeInstant ns1:id="ICING-TAG-1C-R6-VT">
+      <ns1:timePosition>2022-07-01T15:00:00Z</ns1:timePosition>
+    </ns1:TimeInstant>
+  </ns0:recordValidTime>
+  <ns0:areaOfInterest axisLabels="Lat Long" ns1:id="ICING-TAG-1C-R6-AOI" srsDimension="2" srsName="http://www.opengis.net/def/crs/EPSG/0/4326" uomLabels="deg deg">
+    <ns1:exterior>
+      <ns1:LinearRing>
+        <ns1:posList count="12">43.4620 -92.4723 42.3821 -98.5986 40.3365 -100.3257 39.4770 -102.1039 37.8470 -101.9994 38.0771 -97.8293 38.6553 -95.0714 39.8613 -92.7501 40.6523 -87.3414 41.8314 -85.0761 41.7678 -90.5300 43.4620 -92.4723 </ns1:posList>
+      </ns1:LinearRing>
+    </ns1:exterior>
+  </ns0:areaOfInterest>
+  <ns0:icing>
+    <ns0:AirmetIcing ns1:id="ICING-TAG-1C-R6-DETAILS">
+      <ns0:geometry>
+        <ns3:AirspaceVolume ns1:id="ICING-TAG-1C-R6-AIRSPACE">
+          <ns3:upperLimit>26000</ns3:upperLimit>
+          <ns3:upperLimitReference>MSL</ns3:upperLimitReference>
+        </ns3:AirspaceVolume>
+      </ns0:geometry>
+      <ns0:icingRangeStart ns2:href="http://codes.wmo.int/bufr4/codeflag/0-11-030/10" ns2:title="MODERATE"/>
+      <ns0:freezingLevelRange>
+        <ns0:VerticalLevel ns1:id="ICING-TAG-1C-R6-FZLVL1">
+          <ns0:verticalLevelReference>MSL</ns0:verticalLevelReference>
+          <ns0:verticalLevel uom="FEET">14000</ns0:verticalLevel>
+        </ns0:VerticalLevel>
+      </ns0:freezingLevelRange>
+      <ns0:freezingLevelRange>
+        <ns0:VerticalLevel ns1:id="ICING-TAG-1C-R6-FZLVL2">
+          <ns0:verticalLevelReference>MSL</ns0:verticalLevelReference>
+          <ns0:verticalLevel uom="FEET">12000</ns0:verticalLevel>
+        </ns0:VerticalLevel>
+      </ns0:freezingLevelRange>
+      <ns0:freezingLevelUpperLimit>true</ns0:freezingLevelUpperLimit>
+      <ns0:freezingLevelLowerLimit>true</ns0:freezingLevelLowerLimit>
+    </ns0:AirmetIcing>
+  </ns0:icing>
+</ns0:US-AIRMETRecord>
