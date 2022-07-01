@@ -115,7 +115,10 @@ def process_airmet(prod, airmet):
         vol = elem.find(".//aixm:AirspaceVolume", NS)
         if vol is not None:
             ul = vol.find(".//aixm:upperLimit", NS).text
-            ll = vol.find(".//aixm:lowerLimit", NS).text
+            ll = "--"
+            llelem = airmet.find(".//aixm:lowerLimit", NS)
+            if llelem is not None:
+                ll = int(llelem.text)
             tr = elem.find(".//icingRangeStart", NS)
             if tr is not None:
                 tt = tr.attrib["{http://www.w3.org/1999/xlink}title"]
