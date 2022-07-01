@@ -32,6 +32,8 @@ class FreezingLevelRecord(BaseModel):
     valid_at: datetime
     geom: MultiLineString
     level: int
+    lower_level: int
+    upper_level: int
 
     class Config:
         """Pydantic config."""
