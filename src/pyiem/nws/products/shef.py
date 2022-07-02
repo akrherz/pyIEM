@@ -614,11 +614,7 @@ def process_message_a(prod, message) -> List[SHEFElement]:
             continue
         parts = text.split(maxsplit=1)
         elem = diction.copy()
-        try:
-            elem.consume_code(text)
-        except InvalidSHEFEncoding as exp:
-            prod.warnings.append(f"{text} -> {exp}")
-            continue
+        elem.consume_code(text)
         elem.str_value = "" if len(parts) == 1 else parts[1]
         elem.raw = message
         if compute_num_value(elem):

@@ -48,11 +48,11 @@ def test_220401_rr1tar():
 
 
 def test_220401_onechar_skip():
-    """Test that we just emit warnings when attempting to parse such things."""
+    """Test that we consume 1 char SHEF codes."""
     utcnow = utc(2022, 4, 1)
     prod = parser(get_test_file("SHEF/RR3OKX.txt"), utcnow=utcnow)
-    assert prod.warnings
-    assert len(prod.data) == 11
+    assert not prod.warnings
+    assert len(prod.data) == 12
 
 
 def test_220224_redundant_dh():
@@ -92,8 +92,8 @@ def test_211025_rr3mkx():
     """Test that we do not take some of the bad data here."""
     utcnow = utc(2021, 10, 25)
     prod = parser(get_test_file("SHEF/RR3MKX.txt"), utcnow=utcnow)
-    assert prod.warnings
-    assert len(prod.data) == 5
+    assert not prod.warnings
+    assert len(prod.data) == 6
 
 
 def test_a_format():

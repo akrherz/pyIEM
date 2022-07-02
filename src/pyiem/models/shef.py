@@ -9,7 +9,6 @@ from pydantic import BaseModel, Field
 from metpy.units import units
 
 # Local
-from pyiem.exceptions import InvalidSHEFEncoding
 from pyiem.reference import (
     shef_send_codes,
     shef_table7,
@@ -86,7 +85,8 @@ class SHEFElement(BaseModel):
             # Reserved per 3.3.1
             raise ValueError(f"Cowardly refusing to set D {text}")
         if len(text) < 2:
-            raise InvalidSHEFEncoding(f"SHEF variable '{text}' not 2+ chars")
+            # Invalid, but after 9 months, I gave up, just consume it.
+            text = f"{text}_"
         # Table 2: Override for some special codes
         text = shef_send_codes.get(text, text)
         length = len(text)
