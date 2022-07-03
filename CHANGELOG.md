@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- [SHEF] Permit one character SHEF physical codes (daryl gave up).
+
 ### New Features
 
 - Enhance G-AIRMET processing to better define icing and not create airmet
