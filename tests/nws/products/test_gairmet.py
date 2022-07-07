@@ -7,8 +7,17 @@ import mock
 import pytest
 
 # Local
-from pyiem.nws.products.gairmet import parser, process_airmet, GAIRMET
+from pyiem.nws.products.gairmet import parser, process_airmet
 from pyiem.util import get_test_file, utc
+
+
+def test_220707_freezing():
+    """Test a failure in prod."""
+    prod = mock.Mock()
+    prod.data.freezing_levels = []
+    airmet = ET.fromstring(get_test_file("GAIRMET/freezing.xml"))
+    process_airmet(prod, airmet)
+    assert prod.data.airmets
 
 
 def test_220701_gmtice():
@@ -46,7 +55,7 @@ def test_ice(dbcursor):
     prod = parser(get_test_file("GAIRMET/LWIE00.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
     assert len(prod.data.airmets) == 20
-    assert len(prod.data.freezing_levels) == 25
+    assert len(prod.data.freezing_levels) == 30
 
 
 def test_exception():

@@ -5,7 +5,7 @@ from datetime import datetime
 
 # third party
 from shapely.geometry import Polygon, MultiLineString
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class AIRMETRecord(BaseModel):
@@ -31,7 +31,7 @@ class FreezingLevelRecord(BaseModel):
     gml_id: str
     valid_at: datetime
     geom: MultiLineString
-    level: int
+    level: int = Field(None, description="Set for single level records.")
     lower_level: int
     upper_level: int
 
