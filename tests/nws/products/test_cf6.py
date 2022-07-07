@@ -8,6 +8,25 @@ from pyiem.reference import TRACE_VALUE
 
 
 @pytest.mark.parametrize("database", ["iem"])
+def test_220707_nofloat(dbcursor):
+    """Ensure that wxcodes goes to the database verbatim."""
+    prod = parser(get_test_file("CF6/CF6DSM.txt"))
+    assert len(prod.df.index) == 22
+    assert prod.df.iloc[0]["wx"] == "1"
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT wxcodes from cf6_data_2020 where station = 'KDSM' and "
+        "valid = '2020-02-01'"
+    )
+    assert dbcursor.fetchone()[0] == "1"
+    dbcursor.execute(
+        "SELECT wxcodes from cf6_data_2020 where station = 'KDSM' and "
+        "valid = '2020-02-02'"
+    )
+    assert dbcursor.fetchone()[0] is None
+
+
+@pytest.mark.parametrize("database", ["iem"])
 def test_201226_bad_date(dbcursor):
     """Test that no error is emitted for a CF6 with a 'Bad Date'."""
     prod = parser(get_test_file("CF6/CF6WYS_error.txt"))

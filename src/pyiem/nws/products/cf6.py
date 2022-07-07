@@ -4,9 +4,9 @@ import calendar
 from io import StringIO
 import datetime
 
+import pandas as pd
 from pyiem.nws.product import TextProduct
 from pyiem.reference import TRACE_VALUE
-import pandas as pd
 
 MONTH_RE = re.compile(r"^MONTH:\s+(?P<month>[A-Z]+)$", re.I)
 MONTH_RE_NUM = re.compile(r"^MONTH:\s+(?P<month>[0-9]+)$", re.I)
@@ -46,7 +46,7 @@ class CF6Product(TextProduct):
         """constructor"""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
-        self.station = "%s%s" % (self.source[0], self.afos[3:])
+        self.station = f"{self.source[0]}{self.afos[3:]}"
         self.df = None
         self.parser()
 
@@ -77,7 +77,7 @@ class CF6Product(TextProduct):
         if year is None or month is None:
             raise ValueError("Failed to find required month and year values")
         day1 = datetime.datetime.strptime(
-            "%s %s 1" % (year, month),
+            f"{year} {month} 1",
             "%Y %B %d" if len(month) > 3 else "%Y %b %d",
         )
         headercount = 0
@@ -87,12 +87,16 @@ class CF6Product(TextProduct):
                 headercount += 1
             if headercount != 2:
                 continue
-            if len(line) > 70:
+            if len(line.strip()) > 70 and line.strip()[0].isdigit():
                 sio.write(line + "\n")
         sio.seek(0)
-        df = pd.read_fwf(sio, widths=COL_WIDTHS)
+        df = pd.read_fwf(
+            sio,
+            widths=COL_WIDTHS,
+            names=COL_NAMES,
+            dtype={"wx": str},
+        )
         df = df.replace("T", TRACE_VALUE)
-        df.columns = COL_NAMES
         for col in df.columns:
             if col == "wx":
                 continue
