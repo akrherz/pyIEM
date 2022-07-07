@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<ns0:US-AIRMETRecord xmlns:ns0="http://nws.weather.gov/schemas/USWX/1.0" xmlns:ns1="http://www.opengis.net/gml/3.2" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns3="http://www.aixm.aero/schema/5.1.1" ns1:id="M_FZLVL-TAG-2C-R52">
+  <ns0:airmetRecordStatus ns2:href="http://codes.nws.noaa.gov/NWSI-10-811/ProductStatus/Normal" ns2:title="Normal"/>
+  <ns0:hazardType ns2:href="http://codes.nws.noaa.gov/NWSI-10-811/HazardTypes/MultipleFreezingLevels" ns2:title="MultipleFreezingLevels"/>
+  <ns0:isOutlook>false</ns0:isOutlook>
+  <ns0:recordValidTime>
+    <ns1:TimeInstant ns1:id="M_FZLVL-TAG-2C-R52-VT">
+      <ns1:timePosition>2022-07-07T18:00:00Z</ns1:timePosition>
+    </ns1:TimeInstant>
+  </ns0:recordValidTime>
+  <ns0:freezingLevel>
+    <ns0:FreezingLevel ns1:id="M_FZLVL-TAG-2C-R52-DETAILS">
+      <ns0:geometry>
+        <ns3:AirspaceVolume ns1:id="M_FZLVL-TAG-2C-R52-AIRSPACE">
+          <ns3:upperLimit>13000</ns3:upperLimit>
+          <ns3:upperLimitReference>MSL</ns3:upperLimitReference>
+          <ns3:lowerLimit>11000</ns3:lowerLimit>
+          <ns3:lowerLimitReference>MSL</ns3:lowerLimitReference>
+        </ns3:AirspaceVolume>
+      </ns0:geometry>
+      <ns0:multipleLevels>true</ns0:multipleLevels>
+      <ns0:closedBoundary axisLabels="Lat Long" ns1:id="M_FZLVL-TAG-2C-R52-COORDS" srsDimension="2" srsName="http://www.opengis.net/def/crs/EPSG/0/4326" uomLabels="deg deg">
+        <ns1:exterior>
+          <ns1:LinearRing>
+            <ns1:posList count="9">45.6244 -70.3734 45.0483 -71.4828 44.9294 -72.1518 44.2731 -70.0341 44.3424 -67.1050 44.8133 -67.0014 45.3954 -68.2686 45.4461 -69.2321 45.6244 -70.3734 </ns1:posList>
+          </ns1:LinearRing>
+        </ns1:exterior>
+      </ns0:closedBoundary>
+    </ns0:FreezingLevel>
+  </ns0:freezingLevel>
+</ns0:US-AIRMETRecord>

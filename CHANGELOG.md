@@ -17,6 +17,7 @@ entries for multiple-level freezing airmets (#628).
 ### Bug Fixes
 
 - Correct decoding of 12 UTC timestamp in MND header.
+- Fix G-AIRMET decoding of multiple freezing levels airmet.
 
 ## **1.13.0** (24 Jun 2022)
 
