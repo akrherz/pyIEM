@@ -935,7 +935,7 @@ class MapPlot:
             norm=norm,
             cmap=cmap,
             zorder=Z_FILL,
-            crs=LATLON,
+            crs=kwargs.pop("crs", LATLON),
         )
 
         if kwargs.get("clip_on", True):
