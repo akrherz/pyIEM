@@ -241,7 +241,8 @@ def test_180208_issue56_tweetmissing():
     assert j[0][2]["twitter"] == ans
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
-        "network:NWSCLI::station:KFFC::date:2014-10-03.png"
+        "network:NWSCLI::station:KFFC::date:2014-10-03::"
+        "_:201410032032-KFFC-CDUS42-CLIFFC.png"
     )
     assert j[0][2]["twitter_media"] == ans
 
