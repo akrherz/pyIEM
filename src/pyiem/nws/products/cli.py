@@ -580,7 +580,8 @@ class CLIProduct(TextProduct):
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"
                 f"network:NWSCLI::station:{data['db_station']}::"
-                f"date:{data['cli_valid'].strftime('%Y-%m-%d')}.png"
+                f"date:{data['cli_valid'].strftime('%Y-%m-%d')}::"
+                f"_:{self.get_product_id()}.png"
             )
             xtra["twitter"] = (
                 f"{data['cli_station']} {data['cli_valid']:%b %-d} "
