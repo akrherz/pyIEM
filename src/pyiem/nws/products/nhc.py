@@ -20,15 +20,9 @@ class NHCProduct(TextProduct):
     Represents a NHC
     """
 
-    def __init__(
-        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
-    ):
-        """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
-
     def get_jabbers(self, uri, _uri2=None):
         """Get the jabber variant of this message"""
-        myurl = "%s?pid=%s" % (uri, self.get_product_id())
+        myurl = f"{uri}?pid={self.get_product_id()}"
 
         tokens = re.findall(TITLE, self.unixtext.upper().replace("\n", " "))
         if not tokens:
@@ -77,7 +71,7 @@ class NHCProduct(TextProduct):
         if self.segments[0].headlines:
             headline = self.segments[0].headlines[0]
             headline = headline.lower().replace(
-                name.lower(), "#%s" % (twitter_name,)
+                name.lower(), f"#{twitter_name}"
             )
             headline = headline[0].upper() + headline[1:] + "."
             if (TWEET_CHARS - len(tformat % tdict)) > len(headline):
@@ -94,8 +88,7 @@ class NHCProduct(TextProduct):
                 mess.replace("#", "") % tdict,
                 htmlmess.replace("#", "") % tdict,
                 {
-                    "channels": "NHC,%s,%s,%s"
-                    % (self.afos[:5], name, self.afos),
+                    "channels": f"NHC,{self.afos[:5]},{name},{self.afos}",
                     "product_id": self.get_product_id(),
                     "twitter": " ".join(tweet.split()),
                 },

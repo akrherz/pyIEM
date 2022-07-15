@@ -10,18 +10,6 @@ class HWOProduct(TextProduct):
     Represents a HWO
     """
 
-    def __init__(
-        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
-    ):
-        """constructor"""
-        TextProduct.__init__(
-            self,
-            text,
-            utcnow=utcnow,
-            ugc_provider=ugc_provider,
-            nwsli_provider=nwsli_provider,
-        )
-
     def get_channels(self):
         """overridden TextProduct#get_channels"""
         no_storms_day1 = True

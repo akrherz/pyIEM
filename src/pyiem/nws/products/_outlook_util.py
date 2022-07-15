@@ -33,13 +33,13 @@ THRESHOLD2TEXT = {
 def load_conus_data(valid=None):
     """Load up the conus datafile for our perusal"""
     valid = utc() if valid is None else valid
-    fn = "%s/../../data/conus_marine_bnds%s.txt" % (
-        os.path.dirname(__file__),
-        "_pre190509" if valid < CONUS_BASETIME else "",
+    fn = (
+        f"{os.path.dirname(__file__)}/../../data/conus_marine_bnds"
+        f"{'_pre190509' if valid < CONUS_BASETIME else ''}.txt"
     )
     lons = []
     lats = []
-    with open(fn) as fh:
+    with open(fn, encoding="utf-8") as fh:
         for line in fh:
             tokens = line.split(",")
             lons.append(float(tokens[0]))
@@ -149,6 +149,7 @@ def condition_segment(segment):
     if isinstance(res, LineString):
         return [ls.coords]
     # We got multiple linestrings
+    # pylint: disable=no-member
     res = [r for r in res.geoms if r.length > 0.2]
     if len(res) == 1:
         LOG.warning("    was able to filter out very short lines")
@@ -289,7 +290,7 @@ def sql_day_collect(prod, txn, day, collect):
                 outlook_id,
                 outlook.threshold,
                 outlook.category,
-                "SRID=4326;%s" % (outlook.geometry.wkt,),
+                f"SRID=4326;{outlook.geometry.wkt}",
             ),
         )
 

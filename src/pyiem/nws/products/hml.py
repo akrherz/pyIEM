@@ -5,7 +5,7 @@ Attempt to break up the HML product into atomic data
 """
 import re
 from datetime import timezone, datetime
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 
 import pandas as pd
 import pyiem.nws.product as product
@@ -129,7 +129,7 @@ class HML(product.TextProduct):
         for col in ["primary", "secondary"]:
             if ob[col + "Name"] is None:
                 continue
-            key = "%s[%s]" % (ob[col + "Name"], ob[col + "Units"])
+            key = "%s[%s]" % (ob[f"{col}Name"], ob[f"{col}Units"])
             # Check that we have some non-null data
             df2 = df[pd.notnull(df[col])]
             if df2.empty:
@@ -149,12 +149,9 @@ class HML(product.TextProduct):
                 if val is None:
                     continue
                 cursor.execute(
-                    (
-                        "INSERT into hml_observed_data "
-                        "(station, valid, key, value) "
-                        "VALUES (%s, %s, get_hml_observed_key(%s), %s) "
-                        "RETURNING key"
-                    ),
+                    "INSERT into hml_observed_data (station, valid, key, "
+                    "value) VALUES (%s, %s, get_hml_observed_key(%s), %s) "
+                    "RETURNING key",
                     (_hml.station, row["valid"], key, val),
                 )
                 if cursor.fetchone()[0] is not None:
@@ -207,7 +204,7 @@ class HML(product.TextProduct):
         )
         fid = cursor.fetchone()[0]
         # Table partitioning is done by issued time
-        table = "hml_forecast_data_%s" % (fx["issued"].year,)
+        table = f"hml_forecast_data_{fx['issued'].year}"
         for _, row in fx["dataframe"].iterrows():
             cursor.execute(
                 f"INSERT into {table} (hml_forecast_id, valid, primary_value, "
@@ -232,17 +229,17 @@ class HML(product.TextProduct):
                 self.data.append(parse_xml(content))
             except Exception as exp:
                 self.warnings.append(
-                    ("Parsing %s resulted in %s\n%s")
-                    % (self.get_product_id(), exp, content)
+                    f"Parsing {self.get_product_id()} resulted in {exp}\n"
+                    f"{content}"
                 )
 
     def __str__(self):
         """string representation"""
-        s = "HML %s\n" % (self.get_product_id(),)
+        s = f"HML {self.get_product_id()}\n"
         for _hml in self.data:
-            s += "  + SID: %s generationTime: %s\n" % (
-                _hml.station,
-                _hml.generationtime,
+            s += (
+                f"  + SID: {_hml.station} "
+                f"generationTime: {_hml.generationtime}\n"
             )
         return s
 
