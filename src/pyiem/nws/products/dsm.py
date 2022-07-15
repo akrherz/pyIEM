@@ -164,7 +164,7 @@ class DSMProduct:
 
         if not cols:
             return False
-        cs = ", ".join(["%s = %%s" % (c,) for c in cols])
+        cs = ", ".join([f"{c} = %s" for c in cols])
         slicer = slice(0, 4) if self.station[0] != "K" else slice(1, 4)
         args.extend([self.station[slicer], self.date])
         txn.execute(
