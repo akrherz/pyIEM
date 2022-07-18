@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Attempt to resolve a NWS UGC code when storing a LSR to the database (#637).
 - Enhance G-AIRMET processing to better define icing and not create airmet
 entries for multiple-level freezing airmets (#628).
 
