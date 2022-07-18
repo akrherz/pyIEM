@@ -6,6 +6,7 @@ from datetime import timezone, timedelta
 from pyiem import reference
 from pyiem.util import html_escape
 
+UGC_MATCH = re.compile(r"^[A-Z][A-Z][CZ][0-9][0-9][0-9]$")
 ICE_ACCUM_V0 = re.compile(r"(\d+)/(\d+)\"?T?H?S? O?F?\s*A?N?\s*(INCHES|INCH)")
 ICE_ACCUM_V1 = re.compile(
     r"(0\.\d|\.\d+|\d\.?\d?\d?)\"? (TENTHS?)?\s?O?F?\s*A?N?\s*(INCHES|INCH)"
@@ -183,13 +184,20 @@ class LSR:
     def sql(self, txn):
         """Provided a database transaction object, persist this LSR"""
         wkt = f"SRID=4326;{self.geometry.wkt}"
+        # Different mapping to UGCs
+        if self.county is not None and UGC_MATCH.match(self.county):
+            fargs = (self.county, self.valid)
+            func = "get_gid"
+        else:
+            fargs = (self.county, self.state)
+            func = "get_gid_by_name_state"
         # Newer schema supports range partitioning, so can direct insert
         sql = (
             "INSERT into lsrs (valid, type, magnitude, city, county, "
             "state, source, remark, geom, wfo, typetext, product_id, updated, "
             "unit, qualifier, gid) values "
             "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "get_gid_by_name_state(%s, %s))"
+            f"{func}(%s, %s))"
         )
         args = (
             self.utcvalid,
@@ -207,8 +215,7 @@ class LSR:
             self.product.valid,
             self.magnitude_units,
             self.magnitude_qualifier,
-            self.county,
-            self.state,
+            *fargs,
         )
         txn.execute(sql, args)
 

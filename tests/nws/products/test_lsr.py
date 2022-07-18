@@ -5,7 +5,8 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
-def test_220427_lsr_length():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_220427_lsr_length(dbcursor):
     """Test the length of the tweet message is correct."""
     prod = parser(get_test_file("LSR/LSRKEY.txt"))
     j = prod.get_jabbers("http://localhost/")
@@ -17,6 +18,7 @@ def test_220427_lsr_length():
         "http://localhost/#KEY/202204271058/202204271058"
     )
     assert j[0][2]["twitter"] == ans
+    prod.lsrs[0].sql(dbcursor)
 
 
 def test_220204_bad_ice_totals():
