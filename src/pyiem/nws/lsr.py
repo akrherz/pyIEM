@@ -187,8 +187,9 @@ class LSR:
         sql = (
             "INSERT into lsrs (valid, type, magnitude, city, county, "
             "state, source, remark, geom, wfo, typetext, product_id, updated, "
-            "unit, qualifier) values "
-            "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            "unit, qualifier, gid) values "
+            "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+            "get_gid_by_name_state(%s, %s))"
         )
         args = (
             self.utcvalid,
@@ -206,6 +207,8 @@ class LSR:
             self.product.valid,
             self.magnitude_units,
             self.magnitude_qualifier,
+            self.county,
+            self.state,
         )
         txn.execute(sql, args)
 
