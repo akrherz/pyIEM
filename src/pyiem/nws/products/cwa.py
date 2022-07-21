@@ -19,6 +19,10 @@ LINE3 = re.compile(
 LINE4 = re.compile(
     r"(?P<loc>[A-Z1-9]{3,4}) CWA (?P<num>\d+) VALID UNTIL (?P<ddhhmi>[0-9]{6})"
 )
+LALO_RE = re.compile(
+    r"^(?P<d1>[NEWS])\s?(?P<v1>[\d]{4,5})\s*(?P<d2>[NEWS])\s?(?P<v2>[\d]{4,5})"
+    r"(?P<leftover>.*)$"
+)
 
 FROM_RE = re.compile(
     r"""
@@ -106,6 +110,22 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
     narrative = None
     workdone = []
     for i, token in enumerate(tokens):
+        s = LALO_RE.match(token.strip())
+        if s:
+            d = s.groupdict()
+            v1 = float(d["v1"]) / 100.0
+            v1 = v1 if d["d1"] not in ["S", "W"] else v1 * -1
+            v2 = float(d["v2"]) / 100.0
+            v2 = v2 if d["d2"] not in ["S", "W"] else v2 * -1
+            pts.append(
+                [
+                    v2 if d["d2"] in ["E", "W"] else v1,
+                    v1 if d["d1"] in ["S", "N"] else v2,
+                ]
+            )
+            if d["leftover"]:
+                narrative = d["leftover"].strip()
+            continue
         s = FROM_RE.match(token.strip())
         if s:
             d = s.groupdict()
