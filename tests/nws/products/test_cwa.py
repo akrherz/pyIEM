@@ -33,6 +33,18 @@ LOCS = {
 }
 
 
+def test_220721_lalo():
+    """Test handling of CWA with lat/lon points."""
+    utcnow = utc(2022, 7, 21, 14, 54)
+    prod = parser(
+        get_test_file("CWA/CWAZAN_lalo.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert not prod.warnings
+    assert prod.data.narrative.startswith("AREA OF ISOL EMBD TSRA.")
+
+
 def test_220330_rom():
     """Test accounting for somewhat common typo of ROM vs FROM."""
     utcnow = utc(2022, 3, 17, 12, 19)
