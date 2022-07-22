@@ -101,7 +101,7 @@ def _get_data(station, **kwargs):
     ets = kwargs.get("ets")
     database = kwargs.get("database", "asos")
     if database == "asos":
-        rlimiter = " and report_type = 2 "
+        rlimiter = " and report_type = 3 "
     tlimit = ""
     sqlargs = {}
     if kwargs.get("limit_by_doy", False):
