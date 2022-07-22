@@ -16,7 +16,7 @@ def asos():
         drct = s
         cursor.execute(
             f"INSERT into t{valid.year} (station, valid, sknt, drct, "
-            "report_type) VALUES ('AMW2', %s, %s, %s, 2)",
+            "report_type) VALUES ('AMW2', %s, %s, %s, 3)",
             (valid, sknt, drct),
         )
     cursor.close()

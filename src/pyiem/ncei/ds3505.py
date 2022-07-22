@@ -1426,7 +1426,7 @@ def sql(txn, stid, data):
         wxcodes, p03i, p06i, p24i, max_tmpf_6hr, max_tmpf_24hr,
         min_tmpf_6hr, min_tmpf_24hr, report_type, relh, feel)
         values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 2, %s, %s)
+        %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, 3, %s, %s)
         RETURNING valid
             """
     args = (
