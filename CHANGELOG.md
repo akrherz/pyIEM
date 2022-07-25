@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - [SHEF] Permit one character SHEF physical codes (daryl gave up).
+- [DS3505] Removed hacky metar/sql round trip code in NCEI ISH processor.
 
 ### New Features
 
