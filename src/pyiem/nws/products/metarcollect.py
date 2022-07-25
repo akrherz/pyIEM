@@ -88,7 +88,7 @@ def to_metar(textprod, text):
     # Do some cleaning and whitespace trimming
     text = sanitize(text)
     if len(text) < 14:  # arb
-        return
+        return None
     attempt = 1
     mtr = None
     original_text = text
@@ -100,7 +100,7 @@ def to_metar(textprod, text):
             tokens = ERROR_RE.findall(str(inst))
             if tokens:
                 if tokens[0] == text or text.startswith(tokens[0]):
-                    return
+                    return None
                 # So tokens contains a series of groups that needs updated
                 newtext = text
                 for token in tokens[0].split():
@@ -247,12 +247,12 @@ class METARReport(Metar):
             if self.temp:
                 val = self.temp.value("F")
                 # Place reasonable bounds on the temperature before saving it!
-                if val > -90 and val < 150:
+                if -90 < val < 150:
                     iem.data["tmpf"] = round(val, 1)
             if self.dewpt:
                 val = self.dewpt.value("F")
                 # Place reasonable bounds on the temperature before saving it!
-                if val > -150 and val < 100:
+                if -150 < val < 100:
                     iem.data["dwpf"] = round(val, 1)
             # Database only allows len 254
             iem.data["raw"] = self.code[:254]
@@ -321,7 +321,7 @@ class METARReport(Metar):
             pwx = []
             for wx in self.weather:
                 val = "".join([a for a in wx if a is not None])
-                if val == "" or val == len(val) * "/":
+                if val in ["", len(val) * "/"]:
                     continue
                 pwx.append(val)
             iem.data["wxcodes"] = pwx

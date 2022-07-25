@@ -1,10 +1,8 @@
 """Tests for the DS3505 format."""
 # pylint: disable=redefined-outer-name
 
-import pytest
 import numpy as np
 from pyiem.ncei import ds3505
-from pyiem import util
 from pyiem.util import utc, get_test_file
 
 
@@ -27,33 +25,6 @@ def test_vsby_format():
     """Test our conversion to fractions."""
     for i in np.arange(0, 3, 0.1):
         assert ds3505.vsbyfmt(i) is not None
-
-
-def test_process_metar_bad():
-    """Test that we can deal with an invalid formatted METAR."""
-    metar = (
-        "QQQQ 012153Z 23016G25KT 10TSM TSGRRA FEW025 SCT055 17/04 A2982 RMK "
-        "P0000 AO2 SLP104 T01720044 10106 20072 53018="
-    )
-    now = util.utc(2017, 11, 1)
-    ob = ds3505.process_metar(metar, now)
-    assert abs(ob.mslp - 1010.4) < 0.1
-
-
-def test_process_really_bad_metar():
-    """Test what happens with very bad metar garbage."""
-    metar = "QQQQ 012453Z"
-    now = util.utc(2017, 11, 1)
-    ob = ds3505.process_metar(metar, now)
-    assert ob is None
-
-
-def test_process_metar():
-    """Exercise some deamons from that function"""
-    metar = "KALO 011300Z AUTO 0SM 02/02 RMK T00220017 IEM_DS3505"
-    now = util.utc(2017, 11, 1)
-    ob = ds3505.process_metar(metar, now)
-    assert ob.vsby == 0
 
 
 def test_200519():
@@ -118,8 +89,7 @@ def test_altimeter():
     assert data["metar"] == ans
 
 
-@pytest.mark.parametrize("database", ["asos"])
-def test_6hour_temp(dbcursor):
+def test_6hour_temp():
     """6 hour high/low"""
     # 2016-08-12 23:53:00
     # KAMW 122353Z AUTO 35014G23KT 10SM CLR 25/21 A2983 RMK AO2 SLP092
@@ -141,8 +111,6 @@ def test_6hour_temp(dbcursor):
         "RMK 60000 SLP092 T02500211 10272 20250 55001 IEM_DS3505"
     )
     assert data["metar"] == ans
-
-    assert ds3505.sql(dbcursor, "AMW", data) == 1
 
 
 def test_precip_6group():
