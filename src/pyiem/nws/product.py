@@ -163,6 +163,13 @@ def date_tokens2datetime(tokens):
     else:
         hh = hhmi[:-2]
         mi = hhmi[-2:]
+    # Workaround another 24 hour clock issue
+    if (
+        tokens[2] in ["UTC", "GMT"]
+        and tokens[1].upper() == "AM"
+        and int(hh) == 12
+    ):
+        hh = 0
     # Workaround 24 hour clock abuse
     if int(hh) >= 12 and (
         tokens[1].upper() == "PM" or tokens[2] in ["UTC", "GMT"]

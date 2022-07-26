@@ -1,0 +1,61 @@
+475
+WGMY80 PGUM 260049
+FLSGUM
+
+Flood Advisory
+National Weather Service Tiyan GU
+1249 AM UTC Tue Jul 26 2022
+
+MPC120-260215-
+/O.NEW.PGUM.FA.Y.0010.220726T0049Z-220726T0215Z/
+/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+ MP-
+1249 AM UTC Tue Jul 26 2022
+
+...FLOOD ADVISORY IN EFFECT UNTIL 1215 PM CHST...
+
+* WHAT...Urban and small stream flooding caused by excessive
+  rainfall is expected.
+
+* WHEN...Until 1215 PM CHST.
+
+* IMPACTS...Minor flooding in low-lying and poor drainage areas.
+  Water over roadways. Overflowing poor drainage areas.
+
+* ADDITIONAL DETAILS...
+  - At 1246 AM UTC, Satellite imagery shows heavy rain
+    approaching Tinian Island from the south. This will cause
+    urban and small stream flooding. Overflowing poor drainage
+    areas will cause minor flooding in Tinian Island.
+  - Rainfall amounts of 2 to 3 inches are expected over the area.
+    This rain will result in minor flooding.
+  - Some locations that will experience flooding include...
+    San Jose (Tinian Municipality), Marpo Heights, Carolinas
+    Heights, Eastern Tinian (Marpo Valley), Carolinas, Western
+    Tinian and Northern Tinian.
+  - http://www.weather.gov/safety/flood
+Flood Safety Tips and Resources - National Weather Service
+Flooding is a coast-to-coast threat to some part of the United States and its territories nearly every day of the year. This site is designed to teach you how to stay safe in a flood event.
+www.weather.gov
+
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+Be aware of your surroundings and do not drive on flooded roads.
+
+
+
+&&
+
+LAT...LON 1501 14555 1507 14558 1512 14565 1504 14569
+      1503 14567 1499 14570 1490 14564 1492 14561
+      1496 14560
+
+
+$$
+
+BYH
+
