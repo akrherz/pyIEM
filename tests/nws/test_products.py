@@ -14,6 +14,13 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_220726_utc():
+    """Test problem with AM/PM with 12 UTC."""
+    utcnow = utc(2022, 7, 26, 0, 49)
+    prod = parser(get_test_file("FLS/FLSGUM_timestamp.txt"))
+    assert prod.valid == utcnow
+
+
 def test_220624_micronesia_tz():
     """Test that we understand a timestamp from Micronesia."""
     prod = parser(get_test_file("SFTPQ2.txt"))
