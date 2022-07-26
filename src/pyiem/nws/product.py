@@ -66,7 +66,7 @@ WINDTAG = re.compile(
     "(?P<windunits>MPH|KTS)"
 )
 TORNADOTAG = re.compile(
-    r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|" "OBSERVED|POSSIBLE)"
+    r".*TORNADO\.\.\.(?P<tornado>RADAR INDICATED|OBSERVED|POSSIBLE)"
 )
 SPOUTTAG = re.compile(
     r".*(?P<species>LAND|WATER)SPOUT\.\.\."
@@ -276,7 +276,7 @@ class TextProductSegment:
 
     def get_ugcs_tuple(self):
         """Helper to return a tuple useful for SQL."""
-        return tuple([str(u) for u in self.ugcs])
+        return tuple(str(u) for u in self.ugcs)
 
     def get_hvtec_nwsli(self):
         """Return the first hvtec NWSLI entry, if it exists"""
