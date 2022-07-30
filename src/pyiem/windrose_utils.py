@@ -52,32 +52,32 @@ RAOB_BINS = {
 
 def _make_timelimit_string(kwargs):
     """Generate a string for the time limiters"""
-    hours = kwargs.get("hours")
-    months = kwargs.get("months")
-    limit_by_doy = kwargs.get("limit_by_doy")
-    if hours is None and months is None and limit_by_doy is None:
+    hours = kwargs.get("hours", range(24))
+    months = kwargs.get("months", range(1, 13))
+    limit_by_doy = kwargs.get("limit_by_doy", False)
+    if len(hours) == 24 and len(months) == 12 and not limit_by_doy:
         return ""
-    tlimit = "[Time Domain: "
-    if limit_by_doy is not None:
+    parts = ["[Time Domain: "]
+    if limit_by_doy:
         sts = kwargs.get("sts")
         ets = kwargs.get("ets")
         d1 = sts.strftime("%b %-d")
         d2 = ets.strftime("%b %-d")
-        tlimit += f"{d1} - {d2}, "
+        parts.append(f"{d1} - {d2}, ")
     elif months is not None and len(months) < 12:
         for h in months:
-            tlimit += f"{month_abbr[h]},"
-    if hours is not None:
+            parts.append(f"{month_abbr[h]},")
+    if hours is not None and len(hours) != 24:
         if len(hours) > 4:
-            tlimit += (
+            parts.append(
                 f"{datetime(2000, 1, 1, hours[0]):%-I %p}-"
                 f"{datetime(2000, 1, 1, hours[-1]):%-I %p}"
             )
         else:
             for h in hours:
-                tlimit += f"{datetime(2000, 1, 1, h):%-I %p},"
-    tlimit += "]"
-    return tlimit
+                parts.append(f"{datetime(2000, 1, 1, h):%-I %p},")
+    parts.append("]")
+    return "".join(parts)
 
 
 def _get_data(station, **kwargs):
@@ -312,20 +312,19 @@ def _make_plot(station, df, **kwargs):
     )
 
     # Now we put some fancy debugging info on the plot
-    tlimit = _make_timelimit_string(kwargs)
     sn = kwargs.get("sname", f"(({station}))")
     level = kwargs.get("level")
     sl = "" if level is None else f" @{level} hPa"
-    label = (
-        f"[{station}] {sn}{sl}\n"
-        f"Windrose Plot {tlimit}\n"
-        f"Time Bounds: {_time_domain_string(df, kwargs.get('tzname'))}"
-    )
-    fitbox(wp.fig, label, 0.14, 0.99, 0.92, 0.99, ha="left")
+    label = f"Windrose Plot for [{station}] {sn}{sl}\n"
+    label += f"Obs Between: {_time_domain_string(df, kwargs.get('tzname'))}\n"
+    tlimit = _make_timelimit_string(kwargs)
+    if tlimit != "":
+        label += f"{tlimit}"
+    fitbox(wp.fig, label, 0.1, 0.99, 0.92, 0.99, ha="left")
     label = (
         "Summary\n"
-        f"obs count: {len(df.index)}\n"
-        f"Missing: {len(df.index) - len(df2.index)}\n"
+        f"Obs Used: {len(df.index)}\n"
+        f"Obs Without Wind: {len(df.index) - len(df2.index)}\n"
         f"Avg Speed: {speed.m.mean():.1f} {kwargs.get('units', 'mph')}"
     )
     wp.fig.text(0.96, 0.11, label, ha="right", fontsize=14)
