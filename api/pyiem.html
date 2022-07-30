@@ -4,8 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+g78ebb6d documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+g4129d38 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     
@@ -35,7 +36,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g78ebb6d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4129d38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -46,16 +47,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyiem-package">
+  <section id="pyiem-package">
 <h1>pyiem Package<a class="headerlink" href="#pyiem-package" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="id1">
+<section id="id1">
 <h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyiem</span></code> Package<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <span class="target" id="module-pyiem.__init__"></span><p>Python Utilities developed for/by Iowa Environmental Mesonet</p>
 <p>Python is an important part of the Iowa Environmental Mesonet (IEM).  This
 package is used by many parts of the IEM codebase and hopefully somewhat
 useful to others!?!?</p>
-</div>
-<div class="section" id="module-pyiem.datatypes">
+</section>
+<section id="module-pyiem.datatypes">
 <span id="datatypes-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">datatypes</span></code> Module<a class="headerlink" href="#module-pyiem.datatypes" title="Permalink to this heading">¶</a></h2>
 <p>Classes Representing various variables</p>
 <dl class="py class">
@@ -68,10 +69,10 @@ useful to others!?!?</p>
 <span class="sig-name descname"><span class="pre">get_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.datatypes.basetype.get_units" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the units for this current datatype</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the unit of this datatype</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>(str)</p>
 </dd>
 </dl>
@@ -223,8 +224,8 @@ useful to others!?!?</p>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.iemre">
+</section>
+<section id="module-pyiem.iemre">
 <span id="iemre-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">iemre</span></code> Module<a class="headerlink" href="#module-pyiem.iemre" title="Permalink to this heading">¶</a></h2>
 <p>Support library for the IEM Reanalysis code</p>
 <dl class="py data">
@@ -280,7 +281,7 @@ useful to others!?!?</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.get_grids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch grid(s) from the database, returning xarray.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>valid</strong> (<em>datetime</em><em> or </em><em>date</em>) – If datetime, load hourly, if date, load daily</p></li>
 <li><p><strong>varnames</strong> (<em>str</em><em> or </em><em>list</em><em>,</em><em>optional</em>) – Which variables to fetch from database,
@@ -290,7 +291,7 @@ defaults to all available</p></li>
 case of forecast data.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></p>
 </dd>
 </dl>
@@ -307,10 +308,10 @@ case of forecast data.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure out which table should be used for given valid.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>valid</strong> (<em>datetime</em><em> or </em><em>date</em>) – which time is of interest</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>str tablename</p>
 </dd>
 </dl>
@@ -321,10 +322,10 @@ case of forecast data.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">hourly_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.hourly_offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return time index for given timestamp</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dtobj</strong> (<em>datetime</em>) – datetime, if no tzinfo, we assume it is UTC</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>int time index in the netcdf file</p>
 </dd>
 </dl>
@@ -335,7 +336,7 @@ case of forecast data.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.set_grids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the database with a given <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>valid</strong> (<em>datetime</em><em> or </em><em>date</em>) – If datetime, save hourly, if date, save daily</p></li>
 <li><p><strong>ds</strong> (<em>xarray.Dataset</em>) – The xarray dataset to save</p></li>
@@ -347,8 +348,8 @@ on.  Usually dynamically computed.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.meteorology">
+</section>
+<section id="module-pyiem.meteorology">
 <span id="meteorology-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">meteorology</span></code> Module<a class="headerlink" href="#module-pyiem.meteorology" title="Permalink to this heading">¶</a></h2>
 <p>We do meteorological things, when necessary</p>
 <dl class="py function">
@@ -356,13 +357,13 @@ on.  Usually dynamically computed.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">clearsky_shortwave_irradiance_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.clearsky_shortwave_irradiance_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>lat</strong> (<em>float</em>) – latitude</p></li>
 <li><p><strong>elevation</strong> (<em>float</em>) – location elevation in meters</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>irradiance (list)</p>
 </dd>
 </dl>
@@ -385,13 +386,13 @@ on.  Usually dynamically computed.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">drct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.drct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the wind direction given a u and v wind speed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> (<em>dt.speed</em>) – u component wind speed</p></li>
 <li><p><strong>v</strong> (<em>dt.speed</em>) – v component wind speed</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dt.direction value</p>
 </dd>
 </dl>
@@ -402,7 +403,7 @@ on.  Usually dynamically computed.</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">gdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ceiling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.gdd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Growing Degree Days</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>high</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em>, or </em><em>metpy.units</em>) – High Temperature</p></li>
 <li><p><strong>low</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em> or </em><em>metpy.units</em>) – Low Temperature</p></li>
@@ -410,7 +411,7 @@ on.  Usually dynamically computed.</p></li>
 <li><p><strong>ceiling</strong> (<em>int</em>) – Ceiling to use in GDD Computation (F)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>float value for GDDs</p>
 </dd>
 </dl>
@@ -432,7 +433,7 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">mcalc_feelslike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmpf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dwpf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_undefined</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.mcalc_feelslike" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a feels like temperature</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>temperature</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dry bulb temperature</p></li>
 <li><p><strong>dewpoint</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dew point temperature</p></li>
@@ -440,10 +441,10 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <li><p><strong>mask_undefined</strong> (<em>bool</em>) – If True, mask values where feels like is undef.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The feels like temperature</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
 </dd>
 </dl>
@@ -454,10 +455,10 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">mixing_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.mixing_ratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the mixing ratio</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dewpoint</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – Dew Point temperature</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>mixing ratio</p>
 </dd>
 </dl>
@@ -484,23 +485,23 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <dd><p>Compute the wind chill temperature</p>
 <p><a class="reference external" href="http://www.ofcm.gov/publications/reports2.htm">http://www.ofcm.gov/publications/reports2.htm</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>temperature</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The Air Temperature</p></li>
 <li><p><strong>speed</strong> (<a class="reference internal" href="#pyiem.datatypes.speed" title="pyiem.datatypes.speed"><em>speed</em></a>) – The Wind Speed</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Wind Chill Temperature</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.mrms">
+</section>
+<section id="module-pyiem.mrms">
 <span id="mrms-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">mrms</span></code> Module<a class="headerlink" href="#module-pyiem.mrms" title="Permalink to this heading">¶</a></h2>
 <p>Multi-RADAR Multi-Sensor (MRMS) Helper Functions</p>
 <p>Hopefully useful functions to help with the processing of MRMS data</p>
@@ -517,7 +518,7 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>product</strong> (<em>str</em>) – MRMS product type</p></li>
 <li><p><strong>valid</strong> (<em>datetime</em>) – Datetime object for desired timestamp</p></li>
@@ -556,14 +557,14 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.mrms.</span></span><span class="sig-name descname"><span class="pre">write_worldfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.write_worldfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a worldfile to the given filename</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – filename to write the world file information to</p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.network">
+</section>
+<section id="module-pyiem.network">
 <span id="network-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module<a class="headerlink" href="#module-pyiem.network" title="Permalink to this heading">¶</a></h2>
 <p>Network Table.</p>
 <dl class="py class">
@@ -576,13 +577,13 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <span class="sig-name descname"><span class="pre">get_id_by_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyiem.network.Table.get_id_by_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a station id by a given attribute = value.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – attribute to lookup.</p></li>
 <li><p><strong>value</strong> (<em>mixed</em>) – value to compare against</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>station_id</p>
 </dd>
 </dl>
@@ -595,7 +596,7 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <p>Lookup what the threaded station identifier is based on this given
 timestamp/date.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sid</strong> (<em>str</em>) – station identifier to check threading for.</p></li>
 <li><p><strong>valid</strong> (<em>datetime.date</em>) – lookup for comparison.</p></li>
@@ -606,8 +607,8 @@ timestamp/date.</p>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.observation">
+</section>
+<section id="module-pyiem.observation">
 <span id="observation-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">observation</span></code> Module<a class="headerlink" href="#module-pyiem.observation" title="Permalink to this heading">¶</a></h2>
 <p>A class representing an observation stored in the IEM database</p>
 <dl class="py class">
@@ -668,10 +669,10 @@ table.  This is useful for partial obs
 <span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">get_summary_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.observation.get_summary_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize the summary table we potentially use.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>valid</strong> (<em>datetime with time zone</em>) – Datetime</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>str table to query</p>
 </dd>
 </dl>
@@ -682,31 +683,31 @@ table.  This is useful for partial obs
 <span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">summary_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.observation.summary_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the summary table and returns affected rows.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>txn</strong> (<em>psycopg2.transaction</em>) – </p></li>
 <li><p><strong>data</strong> (<em>dict</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>affected rows count</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.plot">
+</section>
+<section id="module-pyiem.plot">
 <span id="plot-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code> Module<a class="headerlink" href="#module-pyiem.plot" title="Permalink to this heading">¶</a></h2>
 <p>Plotting</p>
-</div>
-<div class="section" id="module-pyiem.reference">
+</section>
+<section id="module-pyiem.reference">
 <span id="reference-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">reference</span></code> Module<a class="headerlink" href="#module-pyiem.reference" title="Permalink to this heading">¶</a></h2>
 <p>Some Magic Here.</p>
-</div>
-<div class="section" id="module-pyiem.tracker">
+</section>
+<section id="module-pyiem.tracker">
 <span id="tracker-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">tracker</span></code> Module<a class="headerlink" href="#module-pyiem.tracker" title="Permalink to this heading">¶</a></h2>
 <p>IEM Tracker Related Stuff.</p>
 <dl class="py class">
@@ -719,7 +720,7 @@ table.  This is useful for partial obs
 <span class="sig-name descname"><span class="pre">offline_logic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnetwork</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.offline_logic" title="Permalink to this definition">¶</a></dt>
 <dd><p>offline logic</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sid</strong> (<em>str</em>) – site identifier</p></li>
 <li><p><strong>ob</strong> (<em>dict</em>) – observation dictionary</p></li>
@@ -735,7 +736,7 @@ table.  This is useful for partial obs
 <span class="sig-name descname"><span class="pre">online_logic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offline</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnetwork</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.online_logic" title="Permalink to this definition">¶</a></dt>
 <dd><p>online logic</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sid</strong> (<em>str</em>) – site identifier</p></li>
 <li><p><strong>offline</strong> (<em>dict</em>) – dictionary of offline metadata</p></li>
@@ -752,7 +753,7 @@ table.  This is useful for partial obs
 <span class="sig-name descname"><span class="pre">process_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pnetwork</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.TrackerEngine.process_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a list of dicts representing the network’s observations</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>obs</strong> (<em>list</em>) – list of dicts representing the network obs</p></li>
 <li><p><strong>pnetwork</strong> (<em>str</em>) – the identifier of this network used in Portfolio DB</p></li>
@@ -777,7 +778,7 @@ the minimum time a site is considered to be ‘online’ within</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.tracker.</span></span><span class="sig-name descname"><span class="pre">loadqc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.tracker.loadqc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the current IEM Tracker QC’d variables</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cursor</strong> (<em>cursor</em><em>,</em><em>optional</em>) – Optionally provided database cursor</p></li>
 <li><p><strong>date</strong> (<em>date</em><em>,</em><em>optional</em>) – Defaults to today, which tickets are valid for now</p></li>
@@ -786,8 +787,8 @@ the minimum time a site is considered to be ‘online’ within</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.twistedpg">
+</section>
+<section id="module-pyiem.twistedpg">
 <span id="twistedpg-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">twistedpg</span></code> Module<a class="headerlink" href="#module-pyiem.twistedpg" title="Permalink to this heading">¶</a></h2>
 <p>module twistedpg.py
 Author: Federico Di Gregorio
@@ -812,7 +813,7 @@ create non-standard cursors by passing a class different from the
 default. Note that the new class <em>should</em> be a sub-class of
 <cite>extensions.cursor</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><cite>extensions.cursor</cite></p>
 </dd>
 </dl>
@@ -820,8 +821,8 @@ default. Note that the new class <em>should</em> be a sub-class of
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.util">
+</section>
+<section id="module-pyiem.util">
 <span id="util-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">util</span></code> Module<a class="headerlink" href="#module-pyiem.util" title="Permalink to this heading">¶</a></h2>
 <p>Utility functions for pyIEM package</p>
 <p>This module contains utility functions used by various parts of the codebase.</p>
@@ -843,13 +844,13 @@ default. Note that the new class <em>should</em> be a sub-class of
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">c2f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.c2f" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper to return magnitude of Celcius to Fahrenheit conversion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> (<em>mixed</em>) – something with values in C</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>something with values in F</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>val</p>
 </dd>
 </dl>
@@ -860,17 +861,17 @@ default. Note that the new class <em>should</em> be a sub-class of
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">convert_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.convert_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>DRY Helper to return magnitude of a metpy unit conversion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>val</strong> (<em>mixed</em>) – something with values.</p></li>
 <li><p><strong>units_in</strong> (<em>str</em>) – What units those values have.</p></li>
 <li><p><strong>units_out</strong> (<em>str</em>) – What values we want with given magnitude.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>magnitude of val with unit conversion applied</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>mixed</p>
 </dd>
 </dl>
@@ -881,13 +882,13 @@ default. Note that the new class <em>should</em> be a sub-class of
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">drct2text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.drct2text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert an degree value to text representation of direction.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>drct</strong> (<em>int</em><em> or </em><em>float</em>) – Value in degrees to convert to text</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>String representation of the direction, could be <cite>None</cite></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -898,7 +899,7 @@ default. Note that the new class <em>should</em> be a sub-class of
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">exponential_backoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.exponential_backoff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exponentially backoff some function until it stops erroring</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>_ebfactor</strong> (<em>int</em><em>,</em><em>optional</em>) – Optional scale factor, allowing for faster test</p>
 </dd>
 </dl>
@@ -921,7 +922,7 @@ and so on.  The typical way this is called</p>
 <div><p>ctx = iemutils.get_context(fdict, get_description())</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fdict</strong> (<em>dictionary</em>) – what was likely provided by <cite>cgi.FieldStorage()</cite></p></li>
 <li><p><strong>cfg</strong> (<em>dictionary</em>) – autoplot value of get_description</p></li>
@@ -930,7 +931,7 @@ and so on.  The typical way this is called</p>
 June 31.  Default <cite>false</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dictionary of variable names and values, with proper types!</p>
 </dd>
 </dl>
@@ -943,7 +944,7 @@ June 31.  Default <cite>false</cite>.</p></li>
 <p>Note that this helper could return a read-only database connection if the
 connection to the primary server fails.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>database</strong> (<em>str</em><em>,</em><em>optional</em>) – the database name to connect to.
 default: mesosite</p></li>
@@ -955,7 +956,7 @@ defaults to 5432</p></li>
 <li><p><strong>password</strong> (<em>str</em><em>,</em><em>optional</em>) – the password to use.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>psycopg2 database connection</p>
 </dd>
 </dl>
@@ -966,7 +967,7 @@ defaults to 5432</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_dbconnstr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyiem.util.get_dbconnstr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a database connection string/URI.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – the database name to connect to.</p></li>
 <li><p><strong>**kwargs</strong> – any additional arguments to pass to psycopg2.connect
@@ -975,7 +976,7 @@ host (str): the database host to connect to
 port (int): the database port to connect to</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -986,10 +987,10 @@ port (int): the database port to connect to</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_properties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the properties set</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a dictionary of property names and values (both str)</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
 </dd>
 </dl>
@@ -1002,7 +1003,7 @@ port (int): the database port to connect to</p></li>
 <p>This is used for when we really do not want to manage having pools of
 database connections open.  So this isn’t something that is fast!</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<em>str</em>) – the database to connect to, passed to get_dbconnstr</p></li>
 <li><p><strong>**kwargs</strong> – any additional arguments to pass to get_dbconnstr</p></li>
@@ -1022,7 +1023,7 @@ database connections open.  So this isn’t something that is fast!</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_twitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_twitter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide an authorized Twitter API Client</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>screen_name</strong> (<em>str</em>) – The twitter user we are fetching creds for</p>
 </dd>
 </dl>
@@ -1033,14 +1034,14 @@ database connections open.  So this isn’t something that is fast!</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">grid_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.grid_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure out indices that we can truncate big grid</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>lons</strong> (<em>np.array</em>) – grid lons</p></li>
 <li><p><strong>lats</strong> (<em>np.array</em>) – grid lats</p></li>
 <li><p><strong>bounds</strong> (<em>list</em>) – [x0, y0, x1, y1]</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[x0, y0, x1, y1]</p>
 </dd>
 </dl>
@@ -1063,10 +1064,10 @@ database connections open.  So this isn’t something that is fast!</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">load_geodf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.load_geodf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a given bundled GeoDataFrame.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dataname</strong> (<em>str</em>) – The name of the dataset name to load.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>GeoDataFrame</p>
 </dd>
 </dl>
@@ -1077,14 +1078,14 @@ database connections open.  So this isn’t something that is fast!</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pyiem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get pyiem’s logger with a stream handler attached.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – The name of the logger to get, default pyiem</p></li>
 <li><p><strong>level</strong> (<em>logging.LEVEL</em>) – The log level for this pyiem logget, default is
 WARNING for non interactive sessions, INFO otherwise</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>logger instance</p>
 </dd>
 </dl>
@@ -1095,13 +1096,13 @@ WARNING for non interactive sessions, INFO otherwise</p></li>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">mm2inch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.mm2inch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper to return magnitude of milimeters to inch conversion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> (<em>mixed</em>) – something with values in mm</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>something with values in inch</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>val</p>
 </dd>
 </dl>
@@ -1118,14 +1119,14 @@ given NetCDF file.
 <p>The netcdf is being accessed over NFS and perhaps local disk, so writing
 lock files is problematic.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ncfn</strong> (<em>str</em>) – The netCDF filename</p></li>
 <li><p><strong>mode</strong> (<em>str</em><em>,</em><em>optional</em>) – The netCDF4.Dataset open mode, default ‘r’</p></li>
 <li><p><strong>timeout</strong> (<em>int</em>) – The total time in seconds to attempt a read, default 60</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><cite>netCDF4.Dataset</cite> or <cite>None</cite></p>
 </dd>
 </dl>
@@ -1136,10 +1137,10 @@ lock files is problematic.</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">noaaport_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.noaaport_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make whatever text look like it is NOAAPort Pristine</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>text</strong> (<em>string</em>) – the inbound text</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>text that looks noaaportish</p>
 </dd>
 </dl>
@@ -1150,7 +1151,7 @@ lock files is problematic.</p>
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">ssw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mixedobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.ssw" title="Permalink to this definition">¶</a></dt>
 <dd><p>python23 wrapper for sys.stdout.write</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mixedobj</strong> (<em>str</em><em> or </em><em>bytes</em>) – what content we want to send</p>
 </dd>
 </dl>
@@ -1162,7 +1163,7 @@ lock files is problematic.</p>
 <dd><p>Create a datetime instance with tzinfo=timezone.utc</p>
 <p>When no arguments are provided, returns <cite>datetime.utcnow()</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>datetime with tzinfo set</p>
 </dd>
 </dl>
@@ -1175,7 +1176,7 @@ lock files is problematic.</p>
 <p>Implements a common IEM workflow whereby a web resource is downloaded,
 saved to a temporary file, and then inserted into LDM.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>url</strong> (<em>str</em>) – Web resource to download.</p></li>
 <li><p><strong>ldm_product_name</strong> (<em>str</em>) – LDM product ID to use when inserting.</p></li>
@@ -1184,14 +1185,14 @@ to compute the MD5 value from the product name instead of data bytes.</p></li>
 <li><p><strong>pqinsert</strong> (<em>str</em>) – pqinsert command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool - success of this workflow.</p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-pyiem.wellknowntext">
+</section>
+<section id="module-pyiem.wellknowntext">
 <span id="wellknowntext-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module<a class="headerlink" href="#module-pyiem.wellknowntext" title="Permalink to this heading">¶</a></h2>
 <p>Convert Well-Known Text format to python objects</p>
 <p>Main entry point is the convert_well_known_text function which takes a
@@ -1250,8 +1251,8 @@ text format.</p>
 <dd><p>Return the POLYGON geometry in wkt as a list of float pairs</p>
 </dd></dl>
 
-</div>
-<div class="section" id="subpackages">
+</section>
+<section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -1283,8 +1284,8 @@ text format.</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -1362,14 +1363,14 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g78ebb6d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4129d38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015-2022, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>
