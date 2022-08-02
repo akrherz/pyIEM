@@ -60,13 +60,13 @@ class Table:
             self.sts[row["id"]]["attributes"] = dict(
                 zip(row["attrs"] or [], row["attr_values"] or [])
             )
-            td = self.sts[row["id"]].setdefault("threading", {})
+            td = self.sts[row["id"]].setdefault("threading", [])
             for i, s, e in zip(
                 row["threading_sources"] or [],
                 row["threading_begin_dates"] or [],
                 row["threading_end_dates"] or [],
             ):
-                td[i] = {"begin_date": s, "end_date": e}
+                td.append({"iemid": i, "begin_date": s, "end_date": e})
 
     def get_threading_id(self, sid, valid) -> str:
         """Return a station identifier (not iemid) based on threading.
@@ -81,11 +81,10 @@ class Table:
         entry = self.sts.get(sid)
         if entry is None or not entry["threading"]:
             return None
-        for tid in entry["threading"]:
-            q = entry["threading"][tid]
-            if valid < q["begin_date"] or valid >= q["end_date"]:
+        for tinfo in entry["threading"]:
+            if valid < tinfo["begin_date"] or valid >= tinfo["end_date"]:
                 continue
-            return self.get_id_by_key("iemid", tid)
+            return self.get_id_by_key("iemid", tinfo["iemid"])
         return None
 
     def get_id_by_key(self, key, value) -> str:
