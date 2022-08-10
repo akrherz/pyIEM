@@ -196,9 +196,17 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_e_set():
+    """Ensure that _e gets set."""
+    form = {"_e": "apdiv"}
+    cfg = {"arguments": []}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["_e"] == form["_e"]
+
+
 def test_get_autoplot_context_no_r_set():
     """Ensure that _r gets set when not provided by the form."""
-    form = {}
+    form = {"dpi": 100}
     cfg = {"arguments": [], "defaults": {"_r": "88"}}
     ctx = util.get_autoplot_context(form, cfg)
     assert ctx["_r"] == "88"

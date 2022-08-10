@@ -223,7 +223,7 @@ def compute_esol(pts, distance):
     deltax = pts[1][0] - pts[0][0]
     deltay = pts[1][1] - pts[0][1]
     # Compute unit vector
-    linedistance = (deltax ** 2 + deltay ** 2) ** 0.5
+    linedistance = (deltax**2 + deltay**2) ** 0.5
     deltax = deltax / linedistance
     deltay = deltay / linedistance
     N = distance / 111.0  # approx

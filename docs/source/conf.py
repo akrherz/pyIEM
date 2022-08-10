@@ -185,7 +185,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "pyIEM.tex", u"pyIEM Documentation", u"daryl herzmann", "manual")
+    ("index", "pyIEM.tex", "pyIEM Documentation", "daryl herzmann", "manual")
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,9 +213,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ("index", "pyiem", u"pyIEM Documentation", [u"daryl herzmann"], 1)
-]
+man_pages = [("index", "pyiem", "pyIEM Documentation", ["daryl herzmann"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -230,8 +228,8 @@ texinfo_documents = [
     (
         "index",
         "pyIEM",
-        u"pyIEM Documentation",
-        u"daryl herzmann",
+        "pyIEM Documentation",
+        "daryl herzmann",
         "pyIEM",
         "One line description of project.",
         "Miscellaneous",

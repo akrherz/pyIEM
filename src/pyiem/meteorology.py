@@ -54,8 +54,8 @@ def clearsky_shortwave_irradiance_year(lat, elevation):
             if theta >= 90:
                 continue
             m = pa / (101.3 * math.cos(np.radians(theta)))
-            direct = spo * tau ** m * math.cos(np.radians(theta))
-            diffuse = 0.3 * (1 - tau ** m) * spo * math.cos(np.radians(theta))
+            direct = spo * tau**m * math.cos(np.radians(theta))
+            diffuse = 0.3 * (1 - tau**m) * spo * math.cos(np.radians(theta))
             running += (5.0 * 60) * (direct + diffuse)
         data.append((running * 2.0) / 1000000.0)
     return data
@@ -172,10 +172,10 @@ def heatindex(temperature, polyarg):
         polyarg = relh(temperature, polyarg)
     rh = polyarg.value("%")
     t = temperature.value("F")
-    t2 = t ** 2
-    t3 = t ** 3
-    rh2 = rh ** 2
-    rh3 = rh ** 3
+    t2 = t**2
+    t3 = t**3
+    rh2 = rh**2
+    rh3 = rh**3
     hdx = (
         16.923
         + ((1.85212e-1) * t)
