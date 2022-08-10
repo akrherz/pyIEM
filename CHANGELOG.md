@@ -17,6 +17,7 @@ threading information (#645).
 - Attempt to resolve a NWS UGC code when storing a LSR to the database (#637).
 - Enhance G-AIRMET processing to better define icing and not create airmet
 entries for multiple-level freezing airmets (#628).
+- Generalize autoplot context parsing for params starting with `_`.
 - Support Center Weather Advisory (CWA) that uses lat/lon points.
 
 ### Bug Fixes
