@@ -206,7 +206,7 @@ def test_get_autoplot_context_e_set():
 
 def test_get_autoplot_context_no_r_set():
     """Ensure that _r gets set when not provided by the form."""
-    form = {}
+    form = {"dpi": 100}
     cfg = {"arguments": [], "defaults": {"_r": "88"}}
     ctx = util.get_autoplot_context(form, cfg)
     assert ctx["_r"] == "88"
