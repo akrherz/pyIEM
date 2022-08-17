@@ -1,4 +1,5 @@
 """Make sure our METAR parsing works!"""
+from unittest import mock
 
 import pytest
 from pyiem.reference import TRACE_VALUE
@@ -9,7 +10,7 @@ PARSER = metarcollect.parser
 NWSLI_PROVIDER = {
     "CYYE": dict(network="CA_BC_ASOS"),
     "QQQQ": dict(network="FAKE", tzname="America/Chicago"),
-    "ZZZZ": dict(network="FAKE", tzname="Nowhere'sVille"),
+    "ZZZZ": dict(network="FAKE", tzname="Nowhere'sVille", iemid=-1),
     "SPS": dict(wfo="OUN"),
     "MIA": dict(wfo="MIA"),
     "ALO": dict(wfo="DSM"),
@@ -34,6 +35,11 @@ def create_entries(cursor):
     )
 
 
+def test_normid():
+    """Test normalization."""
+    assert metarcollect.normid("KDSM") == "DSM"
+
+
 def test_future_crosses():
     """Test some hairy logic with METARs from the future."""
     utcnow = utc(2015, 9, 15, 23)
@@ -55,29 +61,37 @@ def test_corrected(dbcursor):
     """Test that the COR does not get dropped from the raw METAR."""
     create_entries(dbcursor)
     code = (
-        "QQQQ 121751Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
-        "T03220194 10328 20228 58011 $="
+        "QQQQ 131551Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP760 "
+        "T03220194 10328 20228 58011 402500072 60010 70010 $="
     )
-    mtr = metarcollect.METARReport(code, year=2020, month=10)
-    iemob, _ = mtr.to_iemaccess(dbcursor)
+    prod = mock.Mock()
+    prod.valid = utc(2020, 10, 13, 15)
+    prod.utcnow = prod.valid
+    mtr = metarcollect.to_metar(prod, code)
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert mtr.code == iemob.data["raw"]
+    assert iemob.data["mslp"] == 1076  # sick
 
 
 @pytest.mark.parametrize("database", ["iem"])
 def test_bad_tzname(dbcursor):
     """Test what happens with a bad tzname."""
+    create_entries(dbcursor)
     utcnow = utc(2015, 9, 1, 23)
     data = "\r\r\n".join(
         [
             "000 ",
             "SAUS44 KISU 011200",
             "METAR ",
-            "ZZZZ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
-            "AO2 SLP104 T01720044 10178 20122 56014=",
+            "ZZZZ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2782 RMK ",
+            "AO2 SLP076 T01720044 10178 20122 56014=",
         ]
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    prod.metars[0].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
+    assert abs(iemob.data["mslp"] - 907.6) < 0.01  # sick
 
 
 @pytest.mark.parametrize("database", ["iem"])
@@ -92,7 +106,9 @@ def test_issue92_6hour(dbcursor):
         "AO2 SLP104 T01720044=\r\r\n"
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
     iemob.load(dbcursor)
     assert iemob.data["max_tmpf"] == 63
     # 5 PM temp is 61, but has 6 hour low of 54, high of 64
@@ -101,7 +117,9 @@ def test_issue92_6hour(dbcursor):
         "SLP105 T01610050 10178 20122 56014=\r\r\n"
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
     iemob.load(dbcursor)
     assert iemob.data["max_tmpf"] == 64
     assert iemob.data["min_tmpf"] == 54
@@ -119,7 +137,9 @@ def test_issue92_6hour_nouse(dbcursor):
         "AO2 SLP104 T01720044=\r\r\n"
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
     iemob.load(dbcursor)
     assert iemob.data["max_tmpf"] == 63
     # 2 AM temp is 61, but has 6 hour low of 54, high of 64
@@ -128,7 +148,9 @@ def test_issue92_6hour_nouse(dbcursor):
         "SLP105 T01610050 10178 20122 56014=\r\r\n"
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    iemob, _ = prod.metars[0].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
     iemob.load(dbcursor)
     assert iemob.data["max_tmpf"] == 63
     assert iemob.data["min_tmpf"] == 61
@@ -142,8 +164,11 @@ def test_issue89_peakwind(dbcursor):
         "KALO 010001Z AUTO 17027G37KT 10SM FEW030 SCT110 19/16 A2979 RMK AO2 "
         "PK WND 18049/2025 RAE48 SLP088 P0005 60014 T01890156 58046"
     )
-    mtr = metarcollect.METARReport(code, year=2017, month=1)
-    iemob, _ = mtr.to_iemaccess(dbcursor)
+    prod = mock.Mock()
+    prod.valid = utc(2017, 1)
+    prod.utcnow = utc(2017, 1)
+    mtr = metarcollect.to_metar(prod, code)
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert iemob.data["peak_wind_time"] == utc(2016, 12, 31, 20, 25)
 
 
@@ -151,14 +176,18 @@ def test_issue89_peakwind(dbcursor):
 def test_190118_ice(dbcursor):
     """Process a ICE Report."""
     create_entries(dbcursor)
-    mtr = metarcollect.METARReport(
+    prod = mock.Mock()
+    prod.valid = utc()
+    prod.utcnow = utc()
+    mtr = metarcollect.to_metar(
+        prod,
         (
             "KABI 031752Z 30010KT 6SM BR FEW009 OVC036 02/01 A3003 RMK AO2 "
             "SLP176 60001 I1000 T00170006 10017 21006 56017"
-        )
+        ),
     )
     assert mtr.ice_accretion_1hr is not None
-    iemob, _ = mtr.to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert iemob.data["ice_accretion_1hr"] == TRACE_VALUE
 
 
@@ -189,7 +218,7 @@ def test_180201_unparsed(dbcursor):
         nwsli_provider=NWSLI_PROVIDER,
     )
     for metar in prod.metars:
-        metar.to_iemaccess(dbcursor)
+        metarcollect.to_iemaccess(dbcursor, metar, -1, "America/Chicago")
     assert len(prod.metars) == 35
     assert prod.metars[0].time.month == 1
 
@@ -221,20 +250,22 @@ def test_metarreport(dbcursor):
     """Can we do things with the METARReport"""
     create_entries(dbcursor)
     utcnow = utc(2013, 8, 8, 12, 53)
-    mtr = metarcollect.METARReport(
+    prod = mock.Mock()
+    prod.valid = utcnow
+    prod.utcnow = utcnow
+    mtr = metarcollect.to_metar(
+        prod,
         (
             "SPECI CYYE 081253Z 01060KT 1/4SM FG SKC 10/10 A3006 RMK P0000 "
             "FG6 SLP188="
-        )
+        ),
     )
     assert mtr.wind_gust is None
     mtr.time = utcnow
-    mtr.iemid = "CYYE"
-    mtr.network = "CA_BC_ASOS"
-    iemob, _ = mtr.to_iemaccess(dbcursor)
-    assert iemob.data["station"] == "CYYE"
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert iemob.data["phour"] == TRACE_VALUE
-    assert mtr.wind_message() == "gust of 0 knots (0.0 mph) from N @ 1253Z"
+    ans = "gust of 0 knots (0.0 mph) from N @ 1253Z"
+    assert metarcollect.wind_message(mtr) == ans
     # can we round trip the gust
     iemob.load(dbcursor)
     assert iemob.data["gust"] is None
@@ -261,7 +292,9 @@ def test_basic(dbcursor):
     )
     assert jmsgs[0][2]["twitter"] == ans
 
-    iemob, _ = prod.metars[1].to_iemaccess(dbcursor)
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[1], -1, "America/Chicago"
+    )
     assert abs(iemob.data["phour"] - 0.46) < 0.01
 
     # Run twice to trigger skip

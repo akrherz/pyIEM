@@ -157,12 +157,20 @@ def summary_update(txn, data):
 class Observation:
     """my observation object"""
 
-    def __init__(self, station, network, valid):
+    # NB: Keep positional argment order to limit API breakage
+    def __init__(
+        self, station=None, network=None, valid=None, iemid=None, tzname=None
+    ):
         """
-        Constructor for the Observation
-        @param station is a string of the station ID
-        @param network is a string of the network for this station
-        @param valid is a datetime object with tzinfo set or date.
+        Constructor for the Observation.  Note you need to provide either
+        a iemid + tzname or a station + network.
+
+        Args:
+          station (str): Station identifier
+          network (str): Network identifier
+          valid (datetime): Datetime object with tzinfo set or date.
+          iemid (int): IEM internal identifier
+          tzname (str): time zone string
         """
         # This is somewhat hacky to ensure that we *only* get date objects
         # to trigger the isdaily logic
@@ -176,6 +184,8 @@ class Observation:
             {
                 "station": station,
                 "network": network,
+                "iemid": iemid,
+                "tzname": tzname,
                 "valid": valid,
                 "localdate": valid if isdaily else None,
                 "_isdaily": isdaily,
@@ -263,7 +273,8 @@ class Observation:
 
     def compute_iemid(self, txn):
         """Load in what our metadata is to save future queries"""
-        if "iemid" in self.data:
+        # Require iemid and tzname be set
+        if None not in [self.data["iemid"], self.data["tzname"]]:
             return True
         txn.execute(
             """

@@ -9,8 +9,12 @@ All notable changes to this library are documented in this file.
 
 - [SHEF] Permit one character SHEF physical codes (daryl gave up).
 - [DS3505] Removed hacky metar/sql round trip code in NCEI ISH processor.
+- [metarcollect] Break the internal API and storage for `iemid` and how
+iemaccess gets updated to allow for downstream changes.
 - [NetworkTable] Change internal data structure from dict to list for station
 threading information (#645).
+- [observation] Adjusted the constructor to allow some things to be optional
+and allow manual provision of `iemid` and `tzname`.
 
 ### New Features
 

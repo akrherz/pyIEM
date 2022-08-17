@@ -29,21 +29,28 @@ WIND_ALERTS = {}
 WIND_ALERT_THRESHOLD_KTS = 50.0
 
 
-def wind_logic(iem, this):
+def normid(station_id: str) -> str:
+    """Normalize a station identifer."""
+    if len(station_id) == 4 and station_id.startswith("K"):
+        return station_id[1:]
+    return station_id
+
+
+def wind_logic(iem, mtr: Metar):
     """Hairy logic for now we handle winds."""
     # Explicit storages
-    if this.wind_speed:
-        iem.data["sknt"] = this.wind_speed.value("KT")
-    if this.wind_gust:
-        iem.data["gust"] = this.wind_gust.value("KT")
-    if this.wind_dir:
-        iem.data["drct"] = float(this.wind_dir.value())
-    if this.wind_speed_peak:
-        iem.data["peak_wind_gust"] = this.wind_speed_peak.value("KT")
-    if this.wind_dir_peak:
-        iem.data["peak_wind_drct"] = this.wind_dir_peak.value()
-    if this.peak_wind_time:
-        iem.data["peak_wind_time"] = this.peak_wind_time.replace(
+    if mtr.wind_speed:
+        iem.data["sknt"] = mtr.wind_speed.value("KT")
+    if mtr.wind_gust:
+        iem.data["gust"] = mtr.wind_gust.value("KT")
+    if mtr.wind_dir:
+        iem.data["drct"] = float(mtr.wind_dir.value())
+    if mtr.wind_speed_peak:
+        iem.data["peak_wind_gust"] = mtr.wind_speed_peak.value("KT")
+    if mtr.wind_dir_peak:
+        iem.data["peak_wind_drct"] = mtr.wind_dir_peak.value()
+    if mtr.peak_wind_time:
+        iem.data["peak_wind_time"] = mtr.peak_wind_time.replace(
             tzinfo=timezone.utc
         )
 
@@ -60,16 +67,16 @@ def wind_logic(iem, this):
     # if our PK WND is greater than all yall, use PK WND
     # TODO: PK WND potentially could be from last hour / thus yesterday?
     if (
-        this.wind_speed_peak
-        and this.wind_dir_peak
-        and this.wind_speed_peak.value("KT") > old_max_wind
-        and this.wind_speed_peak.value("KT") > new_max_wind
+        mtr.wind_speed_peak
+        and mtr.wind_dir_peak
+        and mtr.wind_speed_peak.value("KT") > old_max_wind
+        and mtr.wind_speed_peak.value("KT") > new_max_wind
     ):
-        iem.data["max_drct"] = this.wind_dir_peak.value()
-        iem.data["max_gust_ts"] = this.peak_wind_time.replace(
+        iem.data["max_drct"] = mtr.wind_dir_peak.value()
+        iem.data["max_gust_ts"] = mtr.peak_wind_time.replace(
             tzinfo=timezone.utc
         )
-        iem.data["max_gust"] = this.wind_speed_peak.value("KT")
+        iem.data["max_gust"] = mtr.wind_speed_peak.value("KT")
 
 
 def trace(pobj):
@@ -83,7 +90,7 @@ def trace(pobj):
     return val
 
 
-def to_metar(textprod, text):
+def to_metar(textprod, text) -> Metar:
     """Create a METAR object, if possible"""
     # Do some cleaning and whitespace trimming
     text = sanitize(text)
@@ -95,7 +102,7 @@ def to_metar(textprod, text):
     valid = textprod.valid
     while attempt < 6 and mtr is None:
         try:
-            mtr = METARReport(text, month=valid.month, year=valid.year)
+            mtr = Metar(text, month=valid.month, year=valid.year)
         except MetarParserError as inst:
             tokens = ERROR_RE.findall(str(inst))
             if tokens:
@@ -138,11 +145,6 @@ def to_metar(textprod, text):
                 )
                 return None
         mtr.code = original_text
-        mtr.iemid = (
-            mtr.station_id[-3:] if mtr.station_id[0] == "K" else mtr.station_id
-        )
-        mtr.network = textprod.nwsli_provider.get(mtr.iemid, {}).get("network")
-        mtr.tzname = textprod.nwsli_provider.get(mtr.iemid, {}).get("tzname")
     return mtr
 
 
@@ -176,161 +178,159 @@ def _is_same_day(valid, tzname, hours=6):
     return lts.day == (lts - timedelta(hours=hours)).day
 
 
-class METARReport(Metar):
-    """Provide some additional functionality over baseline METAR"""
+def wind_message(mtr: Metar) -> str:
+    """Convert this into a Jabber style message"""
+    drct = 0
+    sknt = 0
+    time = mtr.time.replace(tzinfo=timezone.utc)
+    if mtr.wind_gust:
+        sknt = mtr.wind_gust.value("KT")
+        if mtr.wind_dir:
+            drct = mtr.wind_dir.value()
+    if mtr.wind_speed_peak:
+        v1 = mtr.wind_speed_peak.value("KT")
+        d1 = mtr.wind_dir_peak.value()
+        t1 = mtr.peak_wind_time.replace(tzinfo=timezone.utc)
+        if v1 > sknt:
+            sknt = v1
+            drct = d1
+            time = t1
+    key = f"{mtr.station_id};{sknt};{time}"
+    if key in WIND_ALERTS:
+        return None
+    WIND_ALERTS[key] = 1
+    speed = datatypes.speed(sknt, "KT")
+    return (
+        f"gust of {speed.value('KT'):.0f} knots "
+        f"({speed.value('MPH'):.1f} mph) from {drct2text(drct)} @ {time:%H%M}Z"
+    )
 
-    def __init__(self, text, **kwargs):
-        """Wrapper"""
-        Metar.__init__(self, text, **kwargs)
-        self.iemid = None
-        self.network = None
-        self.tzname = None
 
-    def wind_message(self):
-        """Convert this into a Jabber style message"""
-        drct = 0
-        sknt = 0
-        time = self.time.replace(tzinfo=timezone.utc)
-        if self.wind_gust:
-            sknt = self.wind_gust.value("KT")
-            if self.wind_dir:
-                drct = self.wind_dir.value()
-        if self.wind_speed_peak:
-            v1 = self.wind_speed_peak.value("KT")
-            d1 = self.wind_dir_peak.value()
-            t1 = self.peak_wind_time.replace(tzinfo=timezone.utc)
-            if v1 > sknt:
-                sknt = v1
-                drct = d1
-                time = t1
-        key = f"{self.station_id};{sknt};{time}"
-        if key in WIND_ALERTS:
-            return None
-        WIND_ALERTS[key] = 1
-        speed = datatypes.speed(sknt, "KT")
-        return (
-            f"gust of {speed.value('KT'):.0f} knots "
-            f"({speed.value('MPH'):.1f} mph) from {drct2text(drct)} "
-            f"@ {time:%H%M}Z"
-        )
+def over_wind_threshold(mtr: Metar) -> bool:
+    """Is this METAR over the wind threshold for alerting"""
+    if mtr.wind_gust and mtr.wind_gust.value("KT") >= WIND_ALERT_THRESHOLD_KTS:
+        return True
+    if (
+        mtr.wind_speed_peak
+        and mtr.wind_speed_peak.value("KT") >= WIND_ALERT_THRESHOLD_KTS
+    ):
+        return True
+    return False
 
-    def over_wind_threshold(self):
-        """Is this METAR over the wind threshold for alerting"""
-        if (
-            self.wind_gust
-            and self.wind_gust.value("KT") >= WIND_ALERT_THRESHOLD_KTS
-        ):
-            return True
-        if (
-            self.wind_speed_peak
-            and self.wind_speed_peak.value("KT") >= WIND_ALERT_THRESHOLD_KTS
-        ):
-            return True
-        return False
 
-    def to_iemaccess(self, txn, force_current_log=False, skip_current=False):
-        """Persist parsed data to IEMAccess Database.
+def to_iemaccess(
+    txn,
+    mtr: Metar,
+    iemid: int,
+    tzname: str,
+    force_current_log=False,
+    skip_current=False,
+):
+    """Persist parsed data to IEMAccess Database.
 
-        Args:
-          txn (psycopg2.cursor): database cursor / transaction
-          force_current_log (boolean): should this ob always go to current_log
-          skip_current (boolean): should this ob always skip current table
-        """
-        gts = self.time.replace(tzinfo=timezone.utc)
-        iem = Observation(self.iemid, self.network, gts)
-        # Load the observation from the database, if the same time exists!
-        iem.load(txn)
+    Args:
+        txn (psycopg2.cursor): database cursor / transaction
+        mtr (Metar): Metar instance
+        iemid: The iem station identifier
+        tzname (str): Local timezone of station.
+        force_current_log (boolean): should this ob always go to current_log
+        skip_current (boolean): should this ob always skip current table
+    """
+    gts = mtr.time.replace(tzinfo=timezone.utc)
+    iem = Observation(valid=gts, iemid=iemid, tzname=tzname)
+    # Load the observation from the database, if the same time exists!
+    iem.load(txn)
 
-        # Need to figure out if we have a duplicate ob, if so, check
-        # the length of the raw data, if greater, take the temps
-        if iem.data["raw"] is None or len(iem.data["raw"]) < len(self.code):
-            if self.temp:
-                val = self.temp.value("F")
-                # Place reasonable bounds on the temperature before saving it!
-                if -90 < val < 150:
-                    iem.data["tmpf"] = round(val, 1)
-            if self.dewpt:
-                val = self.dewpt.value("F")
-                # Place reasonable bounds on the temperature before saving it!
-                if -150 < val < 100:
-                    iem.data["dwpf"] = round(val, 1)
-            # Database only allows len 254
-            iem.data["raw"] = self.code[:254]
-        # Always take a COR
-        if self.code.find(" COR ") > -1:
-            iem.data["raw"] = self.code[:254]
+    # Need to figure out if we have a duplicate ob, if so, check
+    # the length of the raw data, if greater, take the temps
+    if iem.data["raw"] is None or len(iem.data["raw"]) < len(mtr.code):
+        if mtr.temp:
+            val = mtr.temp.value("F")
+            # Place reasonable bounds on the temperature before saving it!
+            if -90 < val < 150:
+                iem.data["tmpf"] = round(val, 1)
+        if mtr.dewpt:
+            val = mtr.dewpt.value("F")
+            # Place reasonable bounds on the temperature before saving it!
+            if -150 < val < 100:
+                iem.data["dwpf"] = round(val, 1)
+        # Database only allows len 254
+        iem.data["raw"] = mtr.code[:254]
+    # Always take a COR
+    if mtr.code.find(" COR ") > -1:
+        iem.data["raw"] = mtr.code[:254]
 
-        wind_logic(iem, self)
+    wind_logic(iem, mtr)
 
-        if self.max_temp_6hr:
-            iem.data["max_tmpf_6hr"] = round(self.max_temp_6hr.value("F"), 1)
-            if self.tzname and _is_same_day(iem.data["valid"], self.tzname):
-                iem.data["max_tmpf_cond"] = iem.data["max_tmpf_6hr"]
-        if self.min_temp_6hr:
-            iem.data["min_tmpf_6hr"] = round(self.min_temp_6hr.value("F"), 1)
-            if self.tzname and _is_same_day(iem.data["valid"], self.tzname):
-                iem.data["min_tmpf_cond"] = iem.data["min_tmpf_6hr"]
-        if self.max_temp_24hr:
-            iem.data["max_tmpf_24hr"] = round(self.max_temp_24hr.value("F"), 1)
-        if self.min_temp_24hr:
-            iem.data["min_tmpf_24hr"] = round(self.min_temp_24hr.value("F"), 1)
-        if self.precip_3hr:
-            iem.data["p03i"] = trace(self.precip_3hr)
-        if self.precip_6hr:
-            iem.data["p06i"] = trace(self.precip_6hr)
-        if self.precip_24hr:
-            iem.data["p24i"] = trace(self.precip_24hr)
-        # We assume the value is zero, sad!
-        iem.data["phour"] = 0
-        if self.precip_1hr:
-            iem.data["phour"] = trace(self.precip_1hr)
+    if mtr.max_temp_6hr:
+        iem.data["max_tmpf_6hr"] = round(mtr.max_temp_6hr.value("F"), 1)
+        if tzname and _is_same_day(iem.data["valid"], tzname):
+            iem.data["max_tmpf_cond"] = iem.data["max_tmpf_6hr"]
+    if mtr.min_temp_6hr:
+        iem.data["min_tmpf_6hr"] = round(mtr.min_temp_6hr.value("F"), 1)
+        if tzname and _is_same_day(iem.data["valid"], tzname):
+            iem.data["min_tmpf_cond"] = iem.data["min_tmpf_6hr"]
+    if mtr.max_temp_24hr:
+        iem.data["max_tmpf_24hr"] = round(mtr.max_temp_24hr.value("F"), 1)
+    if mtr.min_temp_24hr:
+        iem.data["min_tmpf_24hr"] = round(mtr.min_temp_24hr.value("F"), 1)
+    if mtr.precip_3hr:
+        iem.data["p03i"] = trace(mtr.precip_3hr)
+    if mtr.precip_6hr:
+        iem.data["p06i"] = trace(mtr.precip_6hr)
+    if mtr.precip_24hr:
+        iem.data["p24i"] = trace(mtr.precip_24hr)
+    # We assume the value is zero, sad!
+    iem.data["phour"] = 0
+    if mtr.precip_1hr:
+        iem.data["phour"] = trace(mtr.precip_1hr)
 
-        if self.snowdepth:
-            # NOTE snowd is a summary variable that wants to be daily, this
-            # METAR value is more instantaneous, so goes to current table
-            iem.data["snowdepth"] = self.snowdepth.value("IN")
-        if self.vis:
-            iem.data["vsby"] = self.vis.value("SM")
-        if self.press:
-            iem.data["alti"] = self.press.value("IN")
-        if self.press_sea_level:
-            iem.data["mslp"] = self.press_sea_level.value("MB")
-        if self.press_sea_level and self.press:
-            alti = self.press.value("MB")
-            mslp = self.press_sea_level.value("MB")
-            if abs(alti - mslp) > 25:
-                LOG.warning(
-                    "PRESSURE ERROR %s %s ALTI: %s MSLP: %s",
-                    iem.data["station"],
-                    iem.data["valid"],
-                    alti,
-                    mslp,
-                )
-                if alti > mslp:
-                    iem.data["mslp"] += 100.0
-                else:
-                    iem.data["mslp"] -= 100.0
-        # Do something with sky coverage
-        for i, (cov, hgh, _) in enumerate(self.sky, start=1):
-            iem.data[f"skyc{i}"] = cov
-            if hgh is not None:
-                iem.data[f"skyl{i}"] = hgh.value("FT")
+    if mtr.snowdepth:
+        # NOTE snowd is a summary variable that wants to be daily, this
+        # METAR value is more instantaneous, so goes to current table
+        iem.data["snowdepth"] = mtr.snowdepth.value("IN")
+    if mtr.vis:
+        iem.data["vsby"] = mtr.vis.value("SM")
+    if mtr.press:
+        iem.data["alti"] = mtr.press.value("IN")
+    if mtr.press_sea_level:
+        iem.data["mslp"] = mtr.press_sea_level.value("MB")
+    if mtr.press_sea_level and mtr.press:
+        alti = mtr.press.value("MB")
+        mslp = mtr.press_sea_level.value("MB")
+        if abs(alti - mslp) > 25:
+            LOG.warning(
+                "PRESSURE ERROR %s %s ALTI: %s MSLP: %s",
+                mtr.station_id,
+                iem.data["valid"],
+                alti,
+                mslp,
+            )
+            if alti > mslp:
+                iem.data["mslp"] += 100.0
+            else:
+                iem.data["mslp"] -= 100.0
+    # Do something with sky coverage
+    for i, (cov, hgh, _) in enumerate(mtr.sky, start=1):
+        iem.data[f"skyc{i}"] = cov
+        if hgh is not None:
+            iem.data[f"skyl{i}"] = hgh.value("FT")
 
-        # Presentwx
-        if self.weather:
-            pwx = []
-            for wx in self.weather:
-                val = "".join([a for a in wx if a is not None])
-                if val in ["", len(val) * "/"]:
-                    continue
-                pwx.append(val)
-            iem.data["wxcodes"] = pwx
+    # Presentwx
+    if mtr.weather:
+        pwx = []
+        for wx in mtr.weather:
+            val = "".join([a for a in wx if a is not None])
+            if val in ["", len(val) * "/"]:
+                continue
+            pwx.append(val)
+        iem.data["wxcodes"] = pwx
 
-        # Ice Accretion
-        for hr in [1, 3, 6]:
-            key = f"ice_accretion_{hr}hr"
-            iem.data[key] = trace(getattr(self, key))
-        return iem, iem.save(txn, force_current_log, skip_current)
+    # Ice Accretion
+    for hr in [1, 3, 6]:
+        key = f"ice_accretion_{hr}hr"
+        iem.data[key] = trace(getattr(mtr, key))
+    return iem, iem.save(txn, force_current_log, skip_current)
 
 
 class METARCollective(TextProduct):
@@ -363,8 +363,8 @@ class METARCollective(TextProduct):
             elif FUNNEL_RE.findall(mtr.code):
                 msg = "Funnel Cloud"
             # Search for Peak wind gust info....
-            elif mtr.over_wind_threshold():
-                _msg = mtr.wind_message()
+            elif over_wind_threshold(mtr):
+                _msg = wind_message(mtr)
                 if _msg:
                     msg = _msg
             elif mtr.station_id in JABBER_SITES:
@@ -379,11 +379,12 @@ class METARCollective(TextProduct):
                         [mstr, mstr, dict(channels=",".join(channels))]
                     )
             if msg:
-                row = self.nwsli_provider.get(mtr.iemid, {})
+                sid = normid(mtr.station_id)
+                row = self.nwsli_provider.get(sid, {})
                 wfo = row.get("wfo")
                 if wfo is None or wfo == "":
                     LOG.warning(
-                        "Unknown WFO for id: %s, skipping alert", mtr.iemid
+                        "Unknown WFO for %s, skipping alert", mtr.station_id
                     )
                     continue
                 channels = [f"METAR.{mtr.station_id}"]
@@ -396,13 +397,13 @@ class METARCollective(TextProduct):
                 extra = ""
                 if mtr.code.find("$") > 0:
                     extra = "(Caution: Maintenance Check Indicator)"
-                url = f"{uri}{mtr.network}"
+                url = f"{uri}{row.get('network')}"
                 jtxt = (
-                    f"{nm},{st} ({mtr.iemid}) ASOS {extra} reports {msg}\n"
+                    f"{nm},{st} ({sid}) ASOS {extra} reports {msg}\n"
                     f"{mtr.code} {url}"
                 )
                 jhtml = (
-                    f'<p><a href="{url}">{nm},{st}</a> ({mtr.iemid}) ASOS '
+                    f'<p><a href="{url}">{nm},{st}</a> ({sid}) ASOS '
                     f"{extra} reports <strong>{msg}</strong>"
                     f"<br/>{mtr.code}</p>"
                 )
@@ -412,8 +413,7 @@ class METARCollective(TextProduct):
                     "long": str(row.get("lon")),
                 }
                 xtra["twitter"] = (
-                    f"{nm},{st} ({mtr.iemid}) ASOS reports {msg} "
-                    f"-- {mtr.code}"
+                    f"{nm},{st} ({sid}) ASOS reports {msg} -- {mtr.code}"
                 )[:TWEET_CHARS]
                 jmsgs.append([jtxt, jhtml, xtra])
 
