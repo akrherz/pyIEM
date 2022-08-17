@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 - [DS3505] Removed hacky metar/sql round trip code in NCEI ISH processor.
 - [NetworkTable] Change internal data structure from dict to list for station
 threading information (#645).
+- [observation] Adjusted the constructor to allow some things to be optional
+and allow manual provision of `iemid` and `tzname`.
 
 ### New Features
 
