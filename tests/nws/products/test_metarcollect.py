@@ -61,7 +61,7 @@ def test_corrected(dbcursor):
     """Test that the COR does not get dropped from the raw METAR."""
     create_entries(dbcursor)
     code = (
-        "QQQQ 131551Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP144 "
+        "QQQQ 131551Z COR VRB03KT 10SM SCT043 32/19 A3002 RMK AO2 SLP760 "
         "T03220194 10328 20228 58011 402500072 60010 70010 $="
     )
     prod = mock.Mock()
@@ -70,6 +70,7 @@ def test_corrected(dbcursor):
     mtr = metarcollect.to_metar(prod, code)
     iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert mtr.code == iemob.data["raw"]
+    assert iemob.data["mslp"] == 1076  # sick
 
 
 @pytest.mark.parametrize("database", ["iem"])
@@ -82,12 +83,15 @@ def test_bad_tzname(dbcursor):
             "000 ",
             "SAUS44 KISU 011200",
             "METAR ",
-            "ZZZZ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
-            "AO2 SLP104 T01720044 10178 20122 56014=",
+            "ZZZZ 012153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2782 RMK ",
+            "AO2 SLP076 T01720044 10178 20122 56014=",
         ]
     )
     prod = PARSER(data, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
-    metarcollect.to_iemaccess(dbcursor, prod.metars[0], -1, "America/Chicago")
+    iemob, _ = metarcollect.to_iemaccess(
+        dbcursor, prod.metars[0], -1, "America/Chicago"
+    )
+    assert abs(iemob.data["mslp"] - 907.6) < 0.01  # sick
 
 
 @pytest.mark.parametrize("database", ["iem"])

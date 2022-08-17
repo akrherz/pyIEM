@@ -301,7 +301,7 @@ def to_iemaccess(
         if abs(alti - mslp) > 25:
             LOG.warning(
                 "PRESSURE ERROR %s %s ALTI: %s MSLP: %s",
-                iem.data["station"],
+                mtr.station_id,
                 iem.data["valid"],
                 alti,
                 mslp,
