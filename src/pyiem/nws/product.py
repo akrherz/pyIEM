@@ -90,6 +90,12 @@ EMERGENCY_RE = re.compile(r"(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY", re.I)
 PDS_RE = re.compile(
     r"THIS\s+IS\s+A\s+PARTICULARLY\s+DANGEROUS\s+SITUATION", re.I
 )
+SQUALLTAG = re.compile(
+    r".*SNOW\s?SQUALL\.\.\.(?P<tag>RADAR INDICATED|OBSERVED)"
+)
+SQUALLIMPACTTAG = re.compile(
+    r".*SNOW\s?SQUALL IMPACT\.\.\.(?P<tag>SIGNIFICANT|GENERAL)"
+)
 
 KNOWN_BAD_TTAAII = ["KAWN"]
 
@@ -266,6 +272,7 @@ class TextProductSegment:
         self.waterspouttag = None
         self.landspouttag = None
         self.damagetag = None
+        self.squalltag = None
         # allows for deterministic testing of results
         self.flood_tags = OrderedDict()
         self.is_emergency = False
@@ -383,6 +390,15 @@ class TextProductSegment:
             elif species == "WIND":
                 self.windthreat = tag
 
+        match = SQUALLTAG.match(nolf)
+        if match:
+            gdict = match.groupdict()
+            self.squalltag = gdict["tag"]
+            match = SQUALLIMPACTTAG.match(nolf)
+            if match:
+                gdict = match.groupdict()
+                self.damagetag = gdict["tag"]
+
         match = SPOUTTAG.match(nolf)
         if match:
             gdict = match.groupdict()
@@ -406,12 +422,15 @@ class TextProductSegment:
                 self.damagetag is None,
                 self.waterspouttag is None,
                 self.landspouttag is None,
+                self.squalltag is None,
                 not self.flood_tags,
             ]
         ):
             return ""
 
         parts = []
+        if self.squalltag is not None:
+            parts.append(f"snow squall: {self.squalltag}")
         if self.tornadotag is not None:
             parts.append(f"tornado: {self.tornadotag}")
         if self.waterspouttag is not None:

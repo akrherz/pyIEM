@@ -40,6 +40,34 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh493_sqwtags():
+    """Test the processing of snow squall warning tags!"""
+    prod = _vtecparser(get_test_file("SQW/SQWBTV.txt"))
+    j = prod.get_jabbers("")
+    ans = (
+        "BTV issues Snow Squall Warning [snow squall: RADAR INDICATED] for "
+        "((VTC021)), ((VTC027)) [VT] till 6:30 PM EST "
+        "2022-O-NEW-KBTV-SQ-W-0016_2022-02-27T22:44Z"
+    )
+    assert j[0][2]["twitter"] == ans
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_gh493_sqwtags_db(dbcursor):
+    """Test the processing of snow squall warning tags!"""
+    prod = _vtecparser(get_test_file("SQW/SQWDVN.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT damagetag, squalltag from sbw_2022 where wfo = 'DVN' and "
+        "phenomena = 'SQ' and significance = 'W' and eventid = 6 and "
+        "status = 'CON'"
+    )
+    print(dbcursor.rowcount)
+    (dt, st) = dbcursor.fetchone()
+    assert dt == "SIGNIFICANT"
+    assert st == "OBSERVED"
+
+
 def test_220617_parishes():
     """Test that the word parishes appears as we wish."""
     prov = {

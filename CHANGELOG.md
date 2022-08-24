@@ -18,6 +18,7 @@ and allow manual provision of `iemid` and `tzname`.
 
 ### New Features
 
+- Add support for upcoming Snow Squall Warning impact tags (#493).
 - Attempt to resolve a NWS UGC code when storing a LSR to the database (#637).
 - Enhance G-AIRMET processing to better define icing and not create airmet
 entries for multiple-level freezing airmets (#628).

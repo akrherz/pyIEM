@@ -1,0 +1,65 @@
+819 
+WWUS51 KBTV 272244
+SQWBTV
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Snow Squall Warning
+National Weather Service Burlington VT
+544 PM EST Sun Feb 27 2022
+
+VTC021-027-272330-
+/O.NEW.KBTV.SQ.W.0016.220227T2244Z-220227T2330Z/
+Rutland VT-Windsor VT-
+544 PM EST Sun Feb 27 2022
+
+The National Weather Service in Burlington has issued a
+
+* Snow Squall Warning for...
+  Southeastern Rutland County in southern Vermont...
+  Southern Windsor County in southern Vermont...
+
+* Until 630 PM EST.
+
+* At 542 PM EST, a dangerous snow squall was located along a line
+  extending from 11 miles southeast of East Thetford to near West
+  Pawlet, moving southeast at 35 mph.
+
+  HAZARD...Whiteout conditions. Zero visibility in heavy snow and 
+           blowing snow. Wind gusts in excess of 35 mph.
+
+  SOURCE...Radar and webcams. Multiple videos have confirmed 
+           whiteout conditions within this snow squall. Observed 
+           wind gusts of up to 40 MPH have been reported by ASOS and 
+           mesonet. 
+
+  IMPACT...Dangerous life-threatening travel.
+
+* This includes the following highways...
+   Interstate 89 between mile markers 1 and 2.
+   Interstate 91 between mile markers 39 and 72.
+
+Locations impacted include...
+Woodstock, Chester, White River Junction, Hartland Four Corners,
+Cavendish, Ludlow Village, Perkinsville Village, Wallingford, Mt.
+Holly, Mt. Tabor, Plymouth, Hartland, Wells, Windsor, Pawlet, Mount
+Holly, Ludlow, Andover, Mount Tabor and Weston.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Slow Down! Rapid changes in visibility and road conditions are
+expected with this dangerous snow squall. Be alert for sudden
+whiteout conditions.
+
+&&
+
+LAT...LON 4325 7282 4330 7282 4330 7297 4329 7299
+      4330 7298 4331 7326 4342 7325 4367 7231
+      4360 7234 4357 7238 4351 7240 4348 7238
+      4337 7242 4336 7239 4333 7241 4331 7240
+      4323 7243 4322 7269
+TIME...MOT...LOC 2242Z 334DEG 32KT 4374 7198 4337 7332 
+SNOW SQUALL...RADAR INDICATED
+
+$$
+
+Kutikoff

@@ -1,0 +1,88 @@
+758 
+WWUS53 KDVN 190356
+SQWDVN
+
+Snow Squall Warning
+National Weather Service Quad Cities IA/IL
+956 PM CST Fri Feb 18 2022
+
+ILC161-190406-
+/O.CAN.KDVN.SQ.W.0006.000000T0000Z-220219T0430Z/
+Rock Island IL-
+956 PM CST Fri Feb 18 2022
+
+...THE SNOW SQUALL WARNING FOR SOUTH CENTRAL ROCK ISLAND COUNTY IS
+CANCELLED...
+
+The snow squall which prompted the warning has moved out of the 
+warned area. Therefore, the snow squall warning has been cancelled.
+
+LAT...LON 4115 8948 4115 8964 4123 8964 4124 8983
+      4123 8987 4115 8987 4115 9051 4118 9062
+      4129 9071 4133 9044 4142 9018 4146 8997
+      4167 8964 4159 8963 4158 8917 4126 8916
+TIME...MOT...LOC 0356Z 314DEG 33KT 4159 8924 4123 9050 
+
+$$
+
+ILC011-073-131-155-195-190430-
+/O.CON.KDVN.SQ.W.0006.000000T0000Z-220219T0430Z/
+Putnam IL-Mercer IL-Whiteside IL-Henry IL-Bureau IL-
+956 PM CST Fri Feb 18 2022
+
+...A SNOW SQUALL WARNING REMAINS IN EFFECT UNTIL 1030 PM CST FOR
+NORTHERN PUTNAM...NORTHEASTERN MERCER...SOUTHEASTERN WHITESIDE...
+HENRY AND BUREAU COUNTIES...
+
+At 956 PM CST, a dangerous snow squall was located along a line
+extending from near La Moille to near New Windsor, moving southeast
+at 40 mph.
+
+HAZARD...Poor visibility in snow and blowing snow. Wind gusts 
+         greater than 30 mph.
+
+SOURCE...Radar indicated.
+
+IMPACT...Dangerous life-threatening travel.
+
+This includes the following highways...
+ Interstate 80 in Illinois between mile markers 20 and 72.
+ Interstate 74 in Illinois between mile markers 19 and 33.
+ Interstate 180 between mile markers 1 and 13.
+
+Locations impacted include...
+Kewanee, Princeton, Cambridge, Hennepin, Geneseo, Spring Valley,
+Galva, Orion, DePue, Granville, Walnut, Ladd, Wyanet, Atkinson,
+Viola, Sheffield, Annawan, Tiskilwa, Woodhull and La Moille.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+If traveling on a highway, find the nearest exit or rest area and
+park safely away from traffic. Allow snow squalls to pass before
+attempting to resume travel.
+
+Serious injuries and deaths may result from people exiting their
+vehicles during a snow squall. Drivers may not be able to see you or
+to stop! If stopped on the roadway or involved in an accident,
+quickly exit your vehicle move as far away from the roadway as
+possible ONLY when it is safe to do so. Do not stand along or near
+the roadway, since approaching vehicles may be unable to maintain
+control.
+
+Wet roadways will quickly freeze. Black ice will cause roads, bridges
+and overpasses to become slick and dangerous. Slow down and be
+prepared for sudden loss of traction.
+
+&&
+
+LAT...LON 4115 8948 4115 8964 4123 8964 4124 8983
+      4123 8987 4115 8987 4115 9051 4118 9062
+      4129 9071 4133 9044 4142 9018 4146 8997
+      4167 8964 4159 8963 4158 8917 4126 8916
+TIME...MOT...LOC 0356Z 314DEG 33KT 4159 8924 4123 9050 
+SNOW SQUALL...OBSERVED
+SNOW SQUALL IMPACT...SIGNIFICANT
+
+$$
+
+Gibbs
