@@ -24,6 +24,7 @@ and allow manual provision of `iemid` and `tzname`.
 entries for multiple-level freezing airmets (#628).
 - Generalize autoplot context parsing for params starting with `_`.
 - Support Center Weather Advisory (CWA) that uses lat/lon points.
+- Update bundled NWS Counties/Zones to circa 13 Sep 2022 (#648).
 
 ### Bug Fixes
 
