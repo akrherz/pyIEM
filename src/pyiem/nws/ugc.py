@@ -84,11 +84,6 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
     tokens = UGC_RE.findall(text)
     if not tokens:
         return ugcs, expire
-    # TODO: perhaps we should be more kind when we find products with this
-    #       formatting error, but we can recover.  Note that typically the
-    #       UGC codes are the same, but the product expiration time may be off
-    # if len(tokens) == 2 and tokens[0] == tokens[1]:
-    #    pass
     if len(tokens) > 1:
         raise UGCParseException(
             f"More than 1 UGC encoding in text:\n{tokens}\n"
@@ -112,9 +107,7 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
             ugcs.append(_construct(this_part))
         elif len(this_part) == 3:  # We have an individual Section
             ugcs.append(
-                _construct(
-                    "%s%s%s" % (state_code[:2], state_code[2], this_part)
-                )
+                _construct(f"{state_code[:2]}{state_code[2]}{this_part}")
             )
         elif len(this_part) > 6:  # We must have a > in there somewhere
             new_parts = re.split(">", this_part)
@@ -126,20 +119,18 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
             last_val = int(second_part)
             if ugc_type == "C":
                 for j in range(0, last_val + 2 - first_val, 2):
-                    str_code = "%03i" % (first_val + j,)
+                    str_code = f"{(first_val + j):03.0f}"
                     ugcs.append(
                         _construct(
-                            "%s%s%s"
-                            % (state_code[:2], state_code[2], str_code)
+                            f"{state_code[:2]}{state_code[2]}{str_code}"
                         )
                     )
             else:
                 for j in range(first_val, last_val + 1):
-                    str_code = "%03i" % (j,)
+                    str_code = f"{j:03.0f}"
                     ugcs.append(
                         _construct(
-                            "%s%s%s"
-                            % (state_code[:2], state_code[2], str_code)
+                            f"{state_code[:2]}{state_code[2]}{str_code}"
                         )
                     )
     return ugcs, expire
@@ -240,11 +231,11 @@ class UGC:
 
     def __str__(self):
         """Override str()"""
-        return "%s%s%03i" % (self.state, self.geoclass, self.number)
+        return f"{self.state}{self.geoclass}{self.number:03.0f}"
 
     def __repr__(self):
         """Override repr()"""
-        return "%s%s%03i" % (self.state, self.geoclass, self.number)
+        return f"{self.state}{self.geoclass}{self.number:03.0f}"
 
     def __eq__(self, other):
         """Compare this UGC with another"""
