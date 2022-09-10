@@ -1,0 +1,26 @@
+977 
+WWUS85 KTFX 092134
+AWWBZN
+MTZ055-092245- 
+
+Airport Weather Warning
+National Weather Service Great Falls MT
+334 PM MDT Fri Sep 9 2022
+
+...AIRPORT WEATHER WARNING...
+
+The National Weather Service in Great Falls has issued an Airport
+Weather Warning for...
+
+Bozeman Yellowstone International Airport /BZN/
+
+The following weather hazards are expected:
+
+Cloud to ground lightning within 5 nm of the airport.
+
+Until 445 PM MDT.
+
+LAT...LON 4576 11117 4579 11117 4579 11113 4576 11113
+$$
+
+SC

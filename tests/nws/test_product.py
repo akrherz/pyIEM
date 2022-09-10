@@ -14,6 +14,13 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_gh652_trailingspace():
+    """Test a trailing space in UGC line does not trip us up!"""
+    data = get_test_file("AWW/AWWBZN.txt")
+    prod = productparser(data)
+    assert prod.segments[0].ugcexpire == utc(2022, 9, 9, 22, 45)
+
+
 def test_220627_timestamp():
     """Test that the right timestamp is parsed."""
     prod = productparser(get_test_file("TPTLAT.txt"))
