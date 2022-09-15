@@ -13,25 +13,22 @@ class SpaceWxProduct(product.TextProduct):
         product.TextProduct.__init__(
             self, text, utcnow, ugc_provider, nwsli_provider
         )
-        self.title = "Unknown (AWIPSID: %s)" % (self.afos,)
+        self.title = f"Unknown (AWIPSID: {self.afos})"
         if len(self.sections) >= 2:
             self.title = self.sections[2].split("\n")[0]
 
     def get_jabbers(self, uri, _uri2=None):
         """Custom Implementation of the TextProduct#get_jabbers"""
-        url = "%s?pid=%s" % (uri, self.get_product_id())
+        url = f"{uri}?pid={self.get_product_id()}"
         xtra = {
-            "channels": "WNP,%s" % (self.afos,),
-            "twitter": "SWPC issues %s %s" % (self.title, url),
+            "channels": f"WNP,{self.afos}",
+            "twitter": f"SWPC issues {self.title} {url}",
         }
-        plain = ("Space Weather Prediction Center issues %s %s") % (
-            self.title,
-            url,
-        )
+        plain = f"Space Weather Prediction Center issues {self.title} {url}"
         html = (
             "<p>Space Weather Prediction Center "
-            '<a href="%s">issues %s</a></p>'
-        ) % (url, self.title)
+            f'<a href="{url}">issues {self.title}</a></p>'
+        )
         return [(plain, html, xtra)]
 
 

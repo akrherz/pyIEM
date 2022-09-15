@@ -104,8 +104,8 @@ def test_sps(dbcursor):
     assert len(prod.segments) == 2
     assert len(jmsgs) == 1
     expected = (
-        "<p>BMX issues <a href='http://localhost?pid=201805292152-"
-        "KBMX-WWUS84-SPSBMX'>SIGNIFICANT WEATHER ADVISORY FOR "
+        '<p>BMX issues <a href="http://localhost?pid=201805292152-'
+        'KBMX-WWUS84-SPSBMX">SIGNIFICANT WEATHER ADVISORY FOR '
         "SOUTHWESTERN MARENGO COUNTY UNTIL 515 PM CDT</a></p>"
     )
     assert jmsgs[0][1] == expected

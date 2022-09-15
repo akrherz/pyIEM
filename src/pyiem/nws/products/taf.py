@@ -205,21 +205,14 @@ class TAFProduct(TextProduct):
         url = f"{uri}?pid={self.get_product_id()}"
         aaa = "TAF"
         nicedate = self.get_nicedate()
-        plain = "%s issues %s (%s) at %s for %s %s" % (
-            self.source[1:],
-            reference.prodDefinitions.get(aaa, aaa),
-            aaa,
-            nicedate,
-            self.data.station[1:],
-            url,
+        label = reference.prodDefinitions.get(aaa, aaa)
+        plain = (
+            f"{self.source[1:]} issues {label} ({aaa}) at {nicedate} for "
+            f"{self.data.station[1:]} {url}"
         )
-        html = '<p>%s issues <a href="%s">%s (%s)</a> at %s for %s</p>' % (
-            self.source[1:],
-            url,
-            reference.prodDefinitions.get(aaa, aaa),
-            aaa,
-            nicedate,
-            self.data.station[1:],
+        html = (
+            f'<p>{self.source[1:]} issues <a href="{url}">{label} ({aaa})</a> '
+            f"at {nicedate} for {self.data.station[1:]}</p>"
         )
         xtra = {
             "channels": ",".join(self.get_channels()),
