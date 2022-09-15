@@ -123,51 +123,29 @@ class SPSProduct(TextProduct):
                 headline = (seg.headlines[0]).replace("\n", " ")
             elif SPECIAL_WX_STATEMENT.search(seg.unixtext):
                 headline = "Special Weather Statement"
-            counties = " for %s" % (ugcs_to_text(seg.ugcs),)
+            counties = f" for {ugcs_to_text(seg.ugcs)}"
             expire = ""
             if seg.ugcexpire is not None:
-                expire = " till %s %s" % (
-                    (
-                        seg.ugcexpire
-                        - datetime.timedelta(
-                            hours=reference.offsets.get(self.z, 0)
-                        )
-                    ).strftime("%-I:%M %p"),
-                    self.z,
+                _d = seg.ugcexpire - datetime.timedelta(
+                    hours=reference.offsets.get(self.z, 0)
                 )
+                expire = f" till {_d:%-I:%M %p} {self.z}"
             counties, expire = dedup_headline(
                 headline, seg.ugcs, counties, expire
             )
             xtra["channels"] = self._get_channels(seg)
             tags = seg.special_tags_to_text()
-            mess = ("%s issues %s%s%s%s %s?pid=%s") % (
-                self.source[1:],
-                headline,
-                tags,
-                counties,
-                expire,
-                uri,
-                xtra["product_id"],
+            _u = f"{uri}?pid={xtra['product_id']}"
+            mess = (
+                f"{self.source[1:]} issues {headline}{tags}{counties}{expire} "
+                f"{_u}"
             )
             htmlmess = (
-                "<p>%s issues <a href='%s?pid=%s'>%s</a>%s%s%s</p>"
-            ) % (
-                self.source[1:],
-                uri,
-                xtra["product_id"],
-                headline,
-                tags,
-                counties,
-                expire,
+                f'<p>{self.source[1:]} issues <a href="{uri}?pid='
+                f'{xtra["product_id"]}">{headline}</a>{tags}{counties}'
+                f"{expire}</p>"
             )
-            xtra["twitter"] = "%s%s%s%s %s?pid=%s" % (
-                headline,
-                tags,
-                counties,
-                expire,
-                uri,
-                xtra["product_id"],
-            )
+            xtra["twitter"] = f"{headline}{tags}{counties}{expire} {_u}"
             # Check our length
             remaining = (
                 reference.TWEET_CHARS
@@ -175,13 +153,9 @@ class SPSProduct(TextProduct):
                 - 25
             )
             if remaining <= 0:
-                xtra["twitter"] = "%s%s%s%s %s?pid=%s" % (
-                    headline,
-                    tags,
-                    counties[: (remaining - 5)] + "... ",
-                    expire,
-                    uri,
-                    xtra["product_id"],
+                xtra["twitter"] = (
+                    f"{headline}{tags}{counties[: (remaining - 5)] + '... '}"
+                    f"{expire} {_u}"
                 )
             res.append([mess, htmlmess, xtra])
 
