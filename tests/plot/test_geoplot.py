@@ -46,6 +46,23 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_gh655_antimeridian():
+    """Test a plot that crosses the antimeridian."""
+    mp = MapPlot(
+        sector="custom",
+        west=178.78,
+        north=62.15,
+        east=-179.15,
+        south=51.22,
+        nocaption=True,
+        title="AKZ195",
+    )
+    data = {"AKZ195": 10}
+    mp.fill_ugcs(data, ilabel=True, labelbuffer=0)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_wfoplot_labels():
     """Test functionality that moves WFO labels around when contested."""
     mp = MapPlot(
