@@ -297,6 +297,10 @@ def sector_setter(mp, axbounds, **kwargs):
         )
         mp.panels.append(gp)
     elif mp.sector == "custom":
+        # Crude check if we are crossing the anti-meridian
+        if kwargs["west"] > 90 and kwargs["east"] < -90:
+            # Convert to 0 to 360 longitude?
+            kwargs["east"] += 360
         gp = make_panel(
             axbounds,
             mp.fig,
