@@ -502,8 +502,9 @@ class TextProductSegment:
             poly = Polygon(
                 zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1])
             )
+        # NB: the encoding parsed above should always have just two decimals
         self.giswkt = (
-            f"SRID=4326;{dumps(MultiPolygon([poly]), rounding_precision=6)}"
+            f"SRID=4326;{dumps(MultiPolygon([poly]), rounding_precision=2)}"
         )
         return poly
 

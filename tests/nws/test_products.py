@@ -37,7 +37,7 @@ def test_201124_tab_in_afos():
 def test_181207_issue74_guam():
     """Guam's longitudes are east, not west like code assumes."""
     prod = parser(get_test_file("FFW/FFWGUM.txt"))
-    ans = "SRID=4326;MULTIPOLYGON (((145.800000 15.160000, 145.740000"
+    ans = "SRID=4326;MULTIPOLYGON (((145.80 15.16, 145.74"
     assert prod.segments[0].giswkt.startswith(ans)
 
 

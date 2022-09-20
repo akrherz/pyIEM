@@ -768,17 +768,11 @@ def test_170403_mixedlatlon(dbcursor):
     prod = vtecparser(get_test_file("mIxEd_CaSe/FLWLCH.txt"))
     prod.sql(dbcursor)
     ans = (
-        "SRID=4326;MULTIPOLYGON (((-93.290000 30.300000, "
-        "-93.140000 30.380000, -93.030000 30.310000, "
-        "-93.080000 30.250000, -93.210000 30.190000, "
-        "-93.290000 30.300000)))"
+        "SRID=4326;MULTIPOLYGON (((-93.29 30.30, -93.14 30.38, "
+        "-93.03 30.31, -93.08 30.25, -93.21 30.19, -93.29 30.30)))"
     )
     assert prod.segments[0].giswkt == ans
-    dbcursor.execute(
-        """
-    SELECT impact_text from riverpro where nwsli = 'OTBL1'
-    """
-    )
+    dbcursor.execute("SELECT impact_text from riverpro where nwsli = 'OTBL1'")
     assert dbcursor.rowcount == 1
     row = dbcursor.fetchone()
     ans = (
@@ -996,10 +990,8 @@ def test_150429_flswithsign():
     prod = vtecparser(get_test_file("FLSMKX.txt"))
     ans = (
         "SRID=4326;MULTIPOLYGON "
-        "(((-88.320000 42.620000, -88.130000 42.620000, "
-        "-88.120000 42.520000, -88.100000 42.450000, "
-        "-88.270000 42.450000, -88.250000 42.550000, "
-        "-88.320000 42.620000)))"
+        "(((-88.32 42.62, -88.13 42.62, -88.12 42.52, -88.10 42.45, "
+        "-88.27 42.45, -88.25 42.55, -88.32 42.62)))"
     )
     assert prod.segments[0].giswkt == ans
 
@@ -1583,10 +1575,8 @@ def test_140321_invalidgeom():
     prod = vtecparser(get_test_file("FLW_badgeom.txt"))
     ans = (
         "SRID=4326;MULTIPOLYGON ((("
-        "-85.680000 41.860000, -85.640000 41.970000, "
-        "-85.540000 41.970000, -85.540000 41.960000, "
-        "-85.610000 41.930000, -85.660000 41.840000, "
-        "-85.680000 41.860000)))"
+        "-85.68 41.86, -85.64 41.97, -85.54 41.97, -85.54 41.96, "
+        "-85.61 41.93, -85.66 41.84, -85.68 41.86)))"
     )
     assert prod.segments[0].giswkt == ans
 
