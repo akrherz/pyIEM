@@ -1409,6 +1409,8 @@ class MapPlot:
             drawedges=False,
             ticklocation="top",
         )
+        # Needed with matplotlib 3.6.0
+        cax.minorticks_on()
         # pylint: disable=no-member,consider-using-f-string
         cb.set_ticklabels(
             [
