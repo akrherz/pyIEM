@@ -9,6 +9,9 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Generate a TextProduct.warning message for a VTEC product that should contain
+a polygon, but does not (#660).
+
 ### Bug Fixes
 
 - Account for `MapPlot` custom domain that crosses anti-meridian (#655).

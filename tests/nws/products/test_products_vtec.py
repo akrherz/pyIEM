@@ -40,6 +40,14 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh660_no_polygon_warnings():
+    """Test that warnings are emitted for a product without a polygon."""
+    text = get_test_file("SQW/SQWBTV.txt").replace("LAT...LON", "")
+    prod = _vtecparser(text)
+    ans = "Segment 1 missing required polygon for VTEC: SQ.W"
+    assert ans in prod.warnings
+
+
 def test_gh493_sqwtags():
     """Test the processing of snow squall warning tags!"""
     prod = _vtecparser(get_test_file("SQW/SQWBTV.txt"))

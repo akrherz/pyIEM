@@ -5,6 +5,7 @@ from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
     _associate_vtec_year,
     _check_unique_ugc,
+    _check_vtec_polygon,
     _resent_match,
     _do_sql_vtec_new,
     _do_sql_vtec_cor,
@@ -51,6 +52,7 @@ class VTECProduct(TextProduct):
             raise ValueError("Aborting processing of TSU without $$")
         # Arb checks
         _check_unique_ugc(self)
+        _check_vtec_polygon(self)
 
     def sql(self, txn):
         """Persist to the database

@@ -14,6 +14,7 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
+from datetime import date
 import os
 import sys
 
@@ -146,6 +147,23 @@ hailsize = {
     "3.00": "teacup",
     "4.00": "grapefruit",
     "4.50": "softball",
+}
+
+# Lookup table for implementation dates of VTEC polygons
+VTEC_POLYGON_DATES = {
+    "DS.W": date(2018, 7, 5),
+    "DS.Y": date(2018, 7, 5),
+    "EW.W": date(2022, 1, 1),  # tbd
+    "FA.W": date(2007, 10, 1),
+    "FA.Y": date(2007, 10, 1),
+    "FF.W": date(2007, 10, 1),
+    "FL.A": date(2022, 1, 1),  # tbd
+    "FL.W": date(2022, 1, 1),  # lolz
+    "FL.Y": date(2022, 1, 1),  # lolz
+    "MA.W": date(2007, 10, 1),
+    "SQ.W": date(2022, 1, 1),  # tbd
+    "SV.W": date(2007, 10, 1),
+    "TO.W": date(2007, 10, 1),
 }
 
 # A dictionary mapping LSR textual types found in the raw LSR reports to a
