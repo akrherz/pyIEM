@@ -4,12 +4,27 @@ from datetime import timedelta, timezone
 import itertools
 
 import pandas as pd
+from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
 
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
 # seems to be enough time to ensure a WFO issues some followup statement.
 DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
+
+
+def _check_vtec_polygon(prod):
+    """Emit warnings for segments that should have a polygon."""
+    for i, seg in enumerate(prod.segments, start=1):
+        if seg.sbw is not None:
+            continue
+        for vtec in seg.vtec:
+            basedate = VTEC_POLYGON_DATES.get(vtec.s2())
+            if basedate is None or prod.valid.date() < basedate:
+                continue
+            prod.warnings.append(
+                f"Segment {i} missing required polygon for VTEC: {vtec.s2()}"
+            )
 
 
 def which_year(txn, prod, segment, vtec):
