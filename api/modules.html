@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pyiem &#8212; pyIEM 0.0.post1+g6c4d561 documentation</title>
+    <title>pyiem &#8212; pyIEM 0.0.post1+ga627a37 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     
@@ -15,6 +15,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,7 +37,7 @@
         <li class="right" >
           <a href="../index.html" title="Welcome to pyIEM’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6c4d561 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ga627a37 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem</a></li> 
       </ul>
     </div>  
@@ -52,18 +53,175 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.html">pyiem Package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.html#id1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyiem</span></code> Package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.datatypes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datatypes</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.iemre"><code class="xref py py-mod docutils literal notranslate"><span class="pre">iemre</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.meteorology"><code class="xref py py-mod docutils literal notranslate"><span class="pre">meteorology</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.mrms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mrms</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.observation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observation</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.datatypes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datatypes</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.basetype"><code class="docutils literal notranslate"><span class="pre">basetype</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.basetype.get_units"><code class="docutils literal notranslate"><span class="pre">basetype.get_units()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.direction"><code class="docutils literal notranslate"><span class="pre">direction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.direction.known_units"><code class="docutils literal notranslate"><span class="pre">direction.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.direction.value"><code class="docutils literal notranslate"><span class="pre">direction.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.distance"><code class="docutils literal notranslate"><span class="pre">distance</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.distance.known_units"><code class="docutils literal notranslate"><span class="pre">distance.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.distance.value"><code class="docutils literal notranslate"><span class="pre">distance.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.humidity"><code class="docutils literal notranslate"><span class="pre">humidity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.humidity.known_units"><code class="docutils literal notranslate"><span class="pre">humidity.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.humidity.value"><code class="docutils literal notranslate"><span class="pre">humidity.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.mixingratio"><code class="docutils literal notranslate"><span class="pre">mixingratio</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.mixingratio.known_units"><code class="docutils literal notranslate"><span class="pre">mixingratio.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.mixingratio.value"><code class="docutils literal notranslate"><span class="pre">mixingratio.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.precipitation"><code class="docutils literal notranslate"><span class="pre">precipitation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.precipitation.known_units"><code class="docutils literal notranslate"><span class="pre">precipitation.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.precipitation.value"><code class="docutils literal notranslate"><span class="pre">precipitation.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.pressure"><code class="docutils literal notranslate"><span class="pre">pressure</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.pressure.known_units"><code class="docutils literal notranslate"><span class="pre">pressure.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.pressure.value"><code class="docutils literal notranslate"><span class="pre">pressure.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.speed"><code class="docutils literal notranslate"><span class="pre">speed</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.speed.known_units"><code class="docutils literal notranslate"><span class="pre">speed.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.speed.value"><code class="docutils literal notranslate"><span class="pre">speed.value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.datatypes.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.temperature.known_units"><code class="docutils literal notranslate"><span class="pre">temperature.known_units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.datatypes.temperature.value"><code class="docutils literal notranslate"><span class="pre">temperature.value()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.iemre"><code class="xref py py-mod docutils literal notranslate"><span class="pre">iemre</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.SOUTH"><code class="docutils literal notranslate"><span class="pre">SOUTH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.daily_offset"><code class="docutils literal notranslate"><span class="pre">daily_offset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.find_ij"><code class="docutils literal notranslate"><span class="pre">find_ij()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_daily_mrms_ncname"><code class="docutils literal notranslate"><span class="pre">get_daily_mrms_ncname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_daily_ncname"><code class="docutils literal notranslate"><span class="pre">get_daily_ncname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_dailyc_mrms_ncname"><code class="docutils literal notranslate"><span class="pre">get_dailyc_mrms_ncname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_dailyc_ncname"><code class="docutils literal notranslate"><span class="pre">get_dailyc_ncname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_gid"><code class="docutils literal notranslate"><span class="pre">get_gid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_grids"><code class="docutils literal notranslate"><span class="pre">get_grids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_hourly_ncname"><code class="docutils literal notranslate"><span class="pre">get_hourly_ncname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.hourly_offset"><code class="docutils literal notranslate"><span class="pre">hourly_offset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.iemre.set_grids"><code class="docutils literal notranslate"><span class="pre">set_grids()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.meteorology"><code class="xref py py-mod docutils literal notranslate"><span class="pre">meteorology</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.clearsky_shortwave_irradiance_year"><code class="docutils literal notranslate"><span class="pre">clearsky_shortwave_irradiance_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.dewpoint"><code class="docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.dewpoint_from_pq"><code class="docutils literal notranslate"><span class="pre">dewpoint_from_pq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.drct"><code class="docutils literal notranslate"><span class="pre">drct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.gdd"><code class="docutils literal notranslate"><span class="pre">gdd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.heatindex"><code class="docutils literal notranslate"><span class="pre">heatindex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.mcalc_feelslike"><code class="docutils literal notranslate"><span class="pre">mcalc_feelslike()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.mixing_ratio"><code class="docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.relh"><code class="docutils literal notranslate"><span class="pre">relh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.uv"><code class="docutils literal notranslate"><span class="pre">uv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.meteorology.windchill"><code class="docutils literal notranslate"><span class="pre">windchill()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.mrms"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mrms</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.fetch"><code class="docutils literal notranslate"><span class="pre">fetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.get_url"><code class="docutils literal notranslate"><span class="pre">get_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.is_gzipped"><code class="docutils literal notranslate"><span class="pre">is_gzipped()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.make_colorramp"><code class="docutils literal notranslate"><span class="pre">make_colorramp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.reader"><code class="docutils literal notranslate"><span class="pre">reader()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.mrms.write_worldfile"><code class="docutils literal notranslate"><span class="pre">write_worldfile()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.network.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.network.Table.get_id_by_key"><code class="docutils literal notranslate"><span class="pre">Table.get_id_by_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.network.Table.get_threading_id"><code class="docutils literal notranslate"><span class="pre">Table.get_threading_id()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.observation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observation</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.observation.ObDict"><code class="docutils literal notranslate"><span class="pre">ObDict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.observation.Observation"><code class="docutils literal notranslate"><span class="pre">Observation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.observation.Observation.calc"><code class="docutils literal notranslate"><span class="pre">Observation.calc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.observation.Observation.compute_iemid"><code class="docutils literal notranslate"><span class="pre">Observation.compute_iemid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.observation.Observation.load"><code class="docutils literal notranslate"><span class="pre">Observation.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.observation.Observation.save"><code class="docutils literal notranslate"><span class="pre">Observation.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.observation.bounded"><code class="docutils literal notranslate"><span class="pre">bounded()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.observation.get_summary_table"><code class="docutils literal notranslate"><span class="pre">get_summary_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.observation.summary_update"><code class="docutils literal notranslate"><span class="pre">summary_update()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">plot</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.reference"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reference</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.tracker"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tracker</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.twistedpg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">twistedpg</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.util"><code class="xref py py-mod docutils literal notranslate"><span class="pre">util</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.wellknowntext"><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.tracker"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tracker</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.tracker.TrackerEngine"><code class="docutils literal notranslate"><span class="pre">TrackerEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.tracker.TrackerEngine.offline_logic"><code class="docutils literal notranslate"><span class="pre">TrackerEngine.offline_logic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.tracker.TrackerEngine.online_logic"><code class="docutils literal notranslate"><span class="pre">TrackerEngine.online_logic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.tracker.TrackerEngine.process_network"><code class="docutils literal notranslate"><span class="pre">TrackerEngine.process_network()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.tracker.TrackerEngine.send_emails"><code class="docutils literal notranslate"><span class="pre">TrackerEngine.send_emails()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.tracker.loadqc"><code class="docutils literal notranslate"><span class="pre">loadqc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.twistedpg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">twistedpg</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.twistedpg.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.twistedpg.connection"><code class="docutils literal notranslate"><span class="pre">connection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.twistedpg.connection.cursor"><code class="docutils literal notranslate"><span class="pre">connection.cursor()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.util"><code class="xref py py-mod docutils literal notranslate"><span class="pre">util</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.CustomFormatter"><code class="docutils literal notranslate"><span class="pre">CustomFormatter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.html#pyiem.util.CustomFormatter.format"><code class="docutils literal notranslate"><span class="pre">CustomFormatter.format()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.c2f"><code class="docutils literal notranslate"><span class="pre">c2f()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.convert_value"><code class="docutils literal notranslate"><span class="pre">convert_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.drct2text"><code class="docutils literal notranslate"><span class="pre">drct2text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.exponential_backoff"><code class="docutils literal notranslate"><span class="pre">exponential_backoff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.find_ij"><code class="docutils literal notranslate"><span class="pre">find_ij()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_autoplot_context"><code class="docutils literal notranslate"><span class="pre">get_autoplot_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_dbconn"><code class="docutils literal notranslate"><span class="pre">get_dbconn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_dbconnstr"><code class="docutils literal notranslate"><span class="pre">get_dbconnstr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_sqlalchemy_conn"><code class="docutils literal notranslate"><span class="pre">get_sqlalchemy_conn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_test_file"><code class="docutils literal notranslate"><span class="pre">get_test_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.get_twitter"><code class="docutils literal notranslate"><span class="pre">get_twitter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.grid_bounds"><code class="docutils literal notranslate"><span class="pre">grid_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.handle_date_err"><code class="docutils literal notranslate"><span class="pre">handle_date_err()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.html_escape"><code class="docutils literal notranslate"><span class="pre">html_escape()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.load_geodf"><code class="docutils literal notranslate"><span class="pre">load_geodf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.logger"><code class="docutils literal notranslate"><span class="pre">logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.mm2inch"><code class="docutils literal notranslate"><span class="pre">mm2inch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.ncopen"><code class="docutils literal notranslate"><span class="pre">ncopen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.noaaport_text"><code class="docutils literal notranslate"><span class="pre">noaaport_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.ssw"><code class="docutils literal notranslate"><span class="pre">ssw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.utc"><code class="docutils literal notranslate"><span class="pre">utc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.util.web2ldm"><code class="docutils literal notranslate"><span class="pre">web2ldm()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.html#module-pyiem.wellknowntext"><code class="xref py py-mod docutils literal notranslate"><span class="pre">wellknowntext</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.convert_well_known_text"><code class="docutils literal notranslate"><span class="pre">convert_well_known_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_coordinate_lists"><code class="docutils literal notranslate"><span class="pre">parse_coordinate_lists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_linestring"><code class="docutils literal notranslate"><span class="pre">parse_linestring()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_multilinestring"><code class="docutils literal notranslate"><span class="pre">parse_multilinestring()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_multipolygon"><code class="docutils literal notranslate"><span class="pre">parse_multipolygon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_point"><code class="docutils literal notranslate"><span class="pre">parse_point()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.html#pyiem.wellknowntext.parse_polygon"><code class="docutils literal notranslate"><span class="pre">parse_polygon()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="pyiem.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.html">nws Package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#module-pyiem.nws.gini"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a></li>
@@ -137,13 +295,13 @@
         <li class="right" >
           <a href="../index.html" title="Welcome to pyIEM’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g6c4d561 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+ga627a37 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015-2022, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3.
     </div>
   </body>
 </html>
