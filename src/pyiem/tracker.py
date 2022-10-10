@@ -273,7 +273,7 @@ def loadqc(cursor=None, date=None):
         date = datetime.date.today()
     qdict = {}
     if cursor is None:
-        portfolio = get_dbconn("portfolio", user="nobody")
+        portfolio = get_dbconn("portfolio")
         cursor = portfolio.cursor()
 
     cursor.execute(
