@@ -23,7 +23,7 @@ class Table:
             return
 
         if cursor is None:
-            dbconn = get_dbconn("mesosite", user="nobody")
+            dbconn = get_dbconn("mesosite")
             cursor = dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         if isinstance(network, str):
             network = [network]

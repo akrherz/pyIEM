@@ -654,7 +654,7 @@ def get_properties(cursor=None):
       dict: a dictionary of property names and values (both str)
     """
     if cursor is None:
-        pgconn = get_dbconn("mesosite", user="nobody")
+        pgconn = get_dbconn("mesosite")
         cursor = pgconn.cursor()
     cursor.execute("SELECT propname, propvalue from properties")
     res = {}
