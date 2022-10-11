@@ -57,16 +57,12 @@ def _make_timelimit_string(kwargs):
     limit_by_doy = kwargs.get("limit_by_doy", False)
     if len(hours) == 24 and len(months) == 12 and not limit_by_doy:
         return ""
-    parts = ["[Time Domain: "]
+    parts = []
     if limit_by_doy:
-        sts = kwargs.get("sts")
-        ets = kwargs.get("ets")
-        d1 = sts.strftime("%b %-d")
-        d2 = ets.strftime("%b %-d")
-        parts.append(f"{d1} - {d2}, ")
+        parts.append(f"{kwargs['sts']:%b %-d} - {kwargs['ets']:%b %-d}")
     elif months is not None and len(months) < 12:
         for h in months:
-            parts.append(f"{month_abbr[h]},")
+            parts.append(f"{month_abbr[h]}")
     if hours is not None and len(hours) != 24:
         if len(hours) > 4:
             parts.append(
@@ -75,9 +71,8 @@ def _make_timelimit_string(kwargs):
             )
         else:
             for h in hours:
-                parts.append(f"{datetime(2000, 1, 1, h):%-I %p},")
-    parts.append("]")
-    return "".join(parts)
+                parts.append(f"{datetime(2000, 1, 1, h):%-I %p}")
+    return f" ↳ constraints: {', '.join(parts)}"
 
 
 def _get_data(station, **kwargs):
@@ -104,25 +99,25 @@ def _get_data(station, **kwargs):
         rlimiter = " and report_type = 3 "
     tlimit = ""
     sqlargs = {}
+    tzname = kwargs.get("tzname")
+    te = "" if tzname is None else f" at time zone '{tzname}'"
     if kwargs.get("limit_by_doy", False):
         tlimit = (
-            f"and to_char(valid, 'mmdd') >= '{sts:%m%d}' and "
-            f"to_char(valid, 'mmdd') < '{ets:%m%d}' "
+            f"and to_char(valid{te}, 'mmdd') >= '{sts:%m%d}' and "
+            f"to_char(valid{te}, 'mmdd') < '{ets:%m%d}' "
         )
         if sts.strftime("%m%d") > ets.strftime("%m%d"):
             tlimit = (
-                f"and (to_char(valid, 'mmdd') >= '{sts:%m%d}' or "
-                f"to_char(valid, 'mmdd') < '{ets:%m%d}') "
+                f"and (to_char(valid{te}, 'mmdd') >= '{sts:%m%d}' or "
+                f"to_char(valid{te}, 'mmdd') < '{ets:%m%d}') "
             )
     elif kwargs.get("months") is not None and len(kwargs["months"]) < 12:
         sqlargs["months"] = tuple(kwargs["months"])
-        tlimit += " and extract(month from valid) in :months "
-    if kwargs.get("hours") is not None:  # can combo with the above
-        tzname = kwargs.get("tzname")
-        te = "" if tzname is None else f" at time zone '{tzname}'"
-        if len(kwargs["hours"]) < 24:
-            sqlargs["hours"] = tuple(kwargs["hours"])
-            tlimit += f" and extract(hour from valid{te}) in :hours "
+        tlimit += f" and extract(month from valid{te}) in :months "
+    # allowed combination with the above
+    if kwargs.get("hours") is not None and len(kwargs["hours"]) < 24:
+        sqlargs["hours"] = tuple(kwargs["hours"])
+        tlimit += f" and extract(hour from valid{te}) in :hours "
     sql = text(
         "SELECT sknt, drct, valid at time zone 'UTC' as valid "
         "from alldata WHERE station = :station "
@@ -207,7 +202,7 @@ def _make_textresult(station, df, **kwargs):
         f"{len(df.index) - len(df2.index)}/{len(df.index)}\n"
     )
     res += f"# {_time_domain_string(df, kwargs.get('tzname'))}\n"
-    res += f"# Time Limiter: {_make_timelimit_string(kwargs)}\n"
+    res += f"# {_make_timelimit_string(kwargs).replace('↳', '')}\n"
     res += f"# Wind Speed Units: {wu['label']}\n"
     if kwargs.get("level") is not None:
         res += f"# RAOB Pressure (hPa) Level: {kwargs['level']}\n"
@@ -383,10 +378,7 @@ def windrose(station, **kwargs):
     sknt = kwargs.get("sknt")
     drct = kwargs.get("drct")
     if sknt is None or drct is None:
-        df = _get_data(
-            station,
-            **kwargs,
-        )
+        df = _get_data(station, **kwargs)
     else:
         df = pd.DataFrame(
             {"sknt": sknt, "drct": drct, "valid": kwargs.get("valid")}

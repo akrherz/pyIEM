@@ -8,14 +8,16 @@ from metpy.units import units
 from pyiem.windrose_utils import windrose
 from pyiem.util import utc
 
+PAIN = 0.1
+
 
 def faux_data():
     """Generate some data for plotting."""
-    basevalid = utc(2015, 1, 1, 6)
+    basevalid = utc(2014, 12, 30, 6)
     valid = [basevalid]
     sknt = [None]
     drct = [None]
-    for s in range(360):
+    for s in range(400):
         valid.append(basevalid + datetime.timedelta(days=s, hours=1))
         # Keep the max speed at ~24kts
         sknt.append(s / 13.0)
@@ -86,7 +88,7 @@ def test_windrose_with_units():
     assert res
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_month_limiter():
     """Test that we can filter by month."""
     valid, sknt, drct = faux_data()
@@ -96,14 +98,12 @@ def test_windrose_month_limiter():
         drct=drct,
         valid=valid,
         months=[4, 5, 6],
-        limit_by_doy=True,
-        hours=list(range(5, 12)),
         nogenerated=True,
     )
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_hour_limiter():
     """Test that we can filter by hour."""
     valid, sknt, drct = faux_data()
@@ -118,8 +118,7 @@ def test_windrose_hour_limiter():
     return fig
 
 
-# Troubles here with python2.7 that I punted on.
-@pytest.mark.mpl_image_compare(tolerance=20.0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
@@ -151,7 +150,22 @@ def test_windrose_upperair_text():
     assert res
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_windrose_hads_wind():
+    """Test the database filtering with actual database data."""
+    # Faked from iem-database repo store_test_data
+    fig = windrose(
+        "XXXX",
+        database="hads",
+        months=[4, 5, 6],
+        sts=utc(2020, 1, 5),
+        ets=utc(2020, 9, 5),
+        tzname="America/Chicago",
+    )
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
     fig = windrose(
@@ -170,7 +184,7 @@ def test_windrose_upperair_nodata_text():
     assert res
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.1)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose():
     """Exercise the windrose code"""
     valid, sknt, drct = faux_data()
