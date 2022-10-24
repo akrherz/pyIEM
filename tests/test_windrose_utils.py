@@ -8,7 +8,7 @@ from metpy.units import units
 from pyiem.windrose_utils import windrose
 from pyiem.util import utc
 
-PAIN = 0.1
+PAIN = 4.1
 
 
 def faux_data():
