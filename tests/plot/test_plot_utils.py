@@ -1,6 +1,20 @@
 """Test pyiem.plot.utils."""
 
+import pytest
 from pyiem.plot.util import fitbox, draw_logo, centered_bins, pretty_bins
+
+
+def test_pretty_bins_large_value():
+    """Test a value larger than we can support."""
+    with pytest.raises(ValueError) as exc_info:
+        pretty_bins(-1e9, 1e9)
+    assert exc_info.match("^step:")
+
+
+def test_gh665_pretty_bins_index_error():
+    """Test that this works."""
+    a = pretty_bins(21.5, 9886.5)
+    assert abs(a[0] - 0) < 0.01
 
 
 def test_pretty_bins():
