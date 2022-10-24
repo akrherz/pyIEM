@@ -21,7 +21,8 @@ from pyiem.plot import (
 from pyiem.reference import TWITTER_RESOLUTION_INCH
 from pyiem.util import utc, load_geodf
 
-PAIN = 1.3  # how much do we care, sigh.
+# Increased threshold with matplotlib 3.6 tweaks
+PAIN = 4.0
 
 
 def test_exercise_usdm():
