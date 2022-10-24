@@ -60,8 +60,11 @@ def draw_features_from_shapefile(gp, name, **kwargs):
     # Life choices: which resolution to use?
     threshold = 25 if gp.crs.is_geographic else 3e12
     resolution = "50m" if boundpoly.area > threshold else "10m"
+    # Forward support cartopy_offlinedata variables (0.2 vs 0.20)
     shpfn = os.path.join(
-        os.environ["CARTOPY_OFFLINE_SHARED"],
+        os.environ.get(
+            "CARTOPY_OFFLINE_SHARED", os.environ.get("CARTOPY_DATA_DIR")
+        ),
         "shapefiles",
         "natural_earth",
         "physical" if name != "borders" else "cultural",

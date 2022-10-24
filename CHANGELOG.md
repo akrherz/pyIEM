@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
+- Support `cartopy_offlinedata` version 0.20+.
 
 ### Bug Fixes
 
