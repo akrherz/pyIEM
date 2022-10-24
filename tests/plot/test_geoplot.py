@@ -21,7 +21,8 @@ from pyiem.plot import (
 from pyiem.reference import TWITTER_RESOLUTION_INCH
 from pyiem.util import utc, load_geodf
 
-PAIN = 1.3  # how much do we care, sigh.
+# Increased threshold with matplotlib 3.6 tweaks
+PAIN = 4.1
 
 
 def test_exercise_usdm():
@@ -122,7 +123,7 @@ def test_china():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=2)  # unknown python3.7 diff
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nws_sector_twitter_res():
     """Test that Hawaii does not overlap Florida for Twitter Res."""
     mp = MapPlot(
@@ -415,7 +416,7 @@ def test_dep():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.7)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_usdm():
     """Can we plot the current USDM"""
     mp = MapPlot(sector="conus", nocaption=True)
@@ -605,7 +606,7 @@ def test_drawcounties_iailin():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=1.0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_climdiv():
     """Run tests agains the fill_climdiv"""
     mp = MapPlot(sector="conus", title="Climate Divisions", nocaption=True)
@@ -673,7 +674,7 @@ def test_colorbar3():
 
 
 # as of writing, python2.7 failure tolerance of 1.45
-@pytest.mark.mpl_image_compare(tolerance=1.6)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawugcs():
     """test drawing of UGCS"""
     mp = MapPlot(
@@ -683,7 +684,7 @@ def test_drawugcs():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=1.0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_drawugcs2():
     """3 filled zones"""
     mp = MapPlot(
@@ -834,7 +835,7 @@ def test_colorramps():
     assert c.N == 11
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlap():
     """Do some checking of our overlaps logic"""
     mp = MapPlot(sector="midwest", continentalcolor="white", nocaption=True)
@@ -932,7 +933,7 @@ def test_textplot2():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=1.0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plot():
     """Exercise the API"""
     mp = MapPlot(sector="midwest", nocaption=True)
@@ -941,7 +942,7 @@ def test_plot():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=1.0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_plot2():
     """Exercise NWS plot API"""
     mp = MapPlot(sector="nws", continentalcolor="white", nocaption=True)

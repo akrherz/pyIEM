@@ -9,7 +9,9 @@ from pyiem.plot.windrose import WindrosePlot, histogram, plot
 BINS = np.array([2, 5, 7, 10, 15, 20]) * units("mph")
 SPEED = np.arange(0, 60, 0.1) * units("meter / second")
 DIRECTION = SPEED.m * 6.0 * units("degree")
-TOLERANCE = 0.1
+
+# Increased due to matplotlib 3.6 changes
+TOLERANCE = 4.0
 
 
 @pytest.mark.mpl_image_compare(tolerance=TOLERANCE)

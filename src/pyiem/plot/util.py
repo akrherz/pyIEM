@@ -60,8 +60,11 @@ def draw_features_from_shapefile(gp, name, **kwargs):
     # Life choices: which resolution to use?
     threshold = 25 if gp.crs.is_geographic else 3e12
     resolution = "50m" if boundpoly.area > threshold else "10m"
+    # Forward support cartopy_offlinedata variables (0.2 vs 0.20)
     shpfn = os.path.join(
-        os.environ["CARTOPY_OFFLINE_SHARED"],
+        os.environ.get(
+            "CARTOPY_OFFLINE_SHARED", os.environ.get("CARTOPY_DATA_DIR")
+        ),
         "shapefiles",
         "natural_earth",
         "physical" if name != "borders" else "cultural",
@@ -122,7 +125,9 @@ def centered_bins(absmax, on=0, bins=8):
     vrange = maxval - minval
     step = vrange / float(bins)
     avail = [0.001, 0.005, 0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 25, 50]
-    avail.extend([100, 150, 200, 250, 500, 750, 1000])
+    avail.extend([100, 150, 200, 250, 500, 750, 1000, 1e4, 1e5, 1e6])
+    if step >= avail[-1]:
+        raise ValueError(f"step: {step} too large to handle")
     # compute a new and round step value
     step = avail[np.digitize(step, avail)]
     # Create new min and max values

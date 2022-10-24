@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
+- Support `cartopy_offlinedata` version 0.20+.
 
 ### Bug Fixes
 
@@ -18,6 +19,8 @@ a polygon, but does not (#660).
 - Cleanup and improve windrose title / time filtering logic (#663).
 - Reduce needless lat/lon precision with Jabber messages (#656).
 - Remove hard coded `nobody` database user for some internal API calls.
+- Support increased range and emit ValueError for too large range for
+`pyiem.plot.pretty_bins` (#665).
 
 ## **1.14.0** (15 Sep 2022)
 
