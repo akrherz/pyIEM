@@ -144,6 +144,8 @@ class MapPlot:
             apctx (dict,optional): dict of autoplot content
             axes_position (list,optional): list of
               [left, bottom, width, height] for the main axes.
+            stateborderwidth (float,optional): how wide to make the
+              state borders (default: 1.).
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
@@ -210,10 +212,10 @@ class MapPlot:
                     _df.plot(
                         ax=gp.ax,
                         aspect=None,
-                        lw=1.0,
+                        lw=kwargs.get("stateborderwidth", 1.0),
                         edgecolor=kwargs.get("statebordercolor", "k"),
                         facecolor="None",
-                        zorder=Z_POLITICAL,
+                        zorder=Z_OVERLAY + 2,
                     )
                 gp.ax.set_xlim(xlim)
                 gp.ax.set_ylim(ylim)
