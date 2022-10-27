@@ -427,6 +427,27 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.ax = mp.panels[0].ax
 
 
+def _mask_with_path(gp, path):
+    """Internal API helper."""
+    # Removes any external data
+    patch = mpatches.PathPatch(
+        path,
+        facecolor="white",
+        edgecolor="none",
+        zorder=reference.Z_CLIP,
+    )
+    gp.ax.add_patch(patch)
+    # Then gives a nice semitransparent look
+    patch = mpatches.PathPatch(
+        path,
+        facecolor="black",
+        edgecolor="none",
+        zorder=reference.Z_CLIP2,
+        alpha=0.65,
+    )
+    gp.ax.add_patch(patch)
+
+
 def mask_outside_polygon(poly_verts, gp):
     """
     We produce a polygon that lies between the plot border and some interior
@@ -462,17 +483,11 @@ def mask_outside_polygon(poly_verts, gp):
     path = mpath.Path(
         np.concatenate([bound_verts, poly_verts]), bound_codes + poly_codes
     )
-    # remove data
-    patch = mpatches.PathPatch(
-        path, facecolor="white", edgecolor="none", zorder=reference.Z_CLIP
-    )
-    patch = gp.ax.add_patch(patch)
+    _mask_with_path(gp, path)
 
     # Reset the plot limits to their original extents
     gp.ax.set_xlim(xlim)
     gp.ax.set_ylim(ylim)
-
-    return patch
 
 
 def polygon_fill(mymap, geodf, data, **kwargs):
@@ -623,20 +638,7 @@ def mask_outside_geom(gp, geom):
         )
 
     path = mpath.Path(verts, codes)
-    # Removes any external data
-    patch = mpatches.PathPatch(
-        path,
-        facecolor="white",
-        edgecolor="none",
-        zorder=reference.Z_CLIP,
-    )
-    gp.ax.add_patch(patch)
-    # Then gives a nice semitransparent look
-    patch = mpatches.PathPatch(
-        path,
-        facecolor="black",
-        edgecolor="none",
-        zorder=reference.Z_CLIP2,
-        alpha=0.65,
-    )
-    gp.ax.add_patch(patch)
+    _mask_with_path(gp, path)
+    # Reset the plot limits to their original extents
+    gp.ax.set_xlim(xlim)
+    gp.ax.set_ylim(ylim)
