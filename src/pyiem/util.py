@@ -311,6 +311,7 @@ def get_dbconnstr(name, **kwargs) -> str:
         user (str): the database user to connect as
         host (str): the database host to connect to
         port (int): the database port to connect to
+        connect_timeout (int): Connection timeout in seconds, default 30.
     Returns:
       str
     """
@@ -331,9 +332,10 @@ def get_dbconnstr(name, **kwargs) -> str:
     if port is None:
         port = 5432
 
+    # 15 seconds found to be a bit tight for local ISU congestion
     return (
         f"postgresql://{user}@{host}:{port}/{name}?"
-        f"connect_timeout={kwargs.get('connect_timeout', 15)}&"
+        f"connect_timeout={kwargs.get('connect_timeout', 30)}&"
         f"gssencmode={kwargs.get('gssencmode', 'disable')}&"
     )
 

@@ -19,6 +19,7 @@ a polygon, but does not (#660).
 - Account for `MapPlot` custom domain that crosses anti-meridian (#655).
 - Cleanup and improve windrose title / time filtering logic (#663).
 - Draw mask on all known sectored plots.
+- Increased default `pyiem.util.get_dbconn` connect timeout to 30 seconds.
 - Reduce needless lat/lon precision with Jabber messages (#656).
 - Remove hard coded `nobody` database user for some internal API calls.
 - Support increased range and emit ValueError for too large range for
