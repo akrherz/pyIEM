@@ -123,7 +123,7 @@ def test_200731_cvt():
     tp = productparser(get_test_file("TCDAT5_CVT.txt"))
     res = tp.get_jabbers("http://localhost")
     ans = (
-        "NHC issues TCDAT5 (TCD) at Jul 31, 8:00 PM CVT "
+        "NHC issues Tropical Cyclone Discussion (TCD) at Jul 31, 8:00 PM CVT "
         "http://localhost?pid=202007312100-KNHC-WTNT45-TCDAT5"
     )
     assert res[0][0] == ans
@@ -136,7 +136,7 @@ def test_200731_bogus_timezone():
     )
     res = tp.get_jabbers("http://localhost")
     ans = (
-        "NHC issues TCDAT5 (TCD) at Jul 31, 8:00 PM ZZT "
+        "NHC issues Tropical Cyclone Discussion (TCD) at Jul 31, 8:00 PM ZZT "
         "http://localhost?pid=202007312000-KNHC-WTNT45-TCDAT5"
     )
     assert res[0][0] == ans

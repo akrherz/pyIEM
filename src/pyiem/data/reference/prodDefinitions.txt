@@ -1,62 +1,161 @@
 # http://forecast.weather.gov/product_types.php?site=NWS
+AAG AAG
+ABV ABV
 ADA Administrative Message
 ADM Administrative Message
 ADR Administrative Message
+ADV ADV
 AFD Area Forecast Discussion
+AFM Area Forecast Matrices
+AFP AFP
+AFW AFW
+AGO AGO
+AHD AHD
+AIR AIR
+ALG ALG
+ALT ALT
 AQA Air Quality Alert
 AQI Ground Level Ozone Forecast
 AVA Avalanche Watch
 AVW Avalanche Warning
 AWU Area Weather Update
+AVD AVD
+AVG AVG
+AWO AWO
 AWW Airport Weather Warning
 BLU Blue Alert
+BOY BOY
+BRT BRT
 CAE Child Abduction Emergency
 CDW Civil Danger Warning
 CEM Civil Emergency Message
+CF6 CF6
+CFP CFP
 CFW Coastal Hazzard Message
 CGR Coastal Weather Observations
 CLI Daily Climate Report
 CLM Monthly Climate Report
+CLS CLS
+CMM CMM
+COD COD
 CRF Contingency River Forecast
+CRN CRN
+CUR CUR
 CWA Center Weather Advisory
+CWD CWD
 CWF Coastal Waters Forecast
+CWS CWS
+DAY DAY
+DDO DDO
 DGT Drought Information
+DMO DMO
 DSA Tropical Disturbance Statement
+DSM DSM
 DSW Dust Storm Warning
+ECD ECD
+EFP EFP
+EOL EOL
+EOM EOM
 EQI Earthquake Information
 # Proposed termination in SCN/TIN 17-29
 EQR Earthquake Report
 EQW Earthquake Warning
 ESF Hydrologic Outlook
+ESG ESG
+ESP ESP
+ESS ESS
+ETT ETT
 EVI Evacuation Immediate
 EWW Extreme Wind Warning
+FA0 FA0
+FA7 FA7
+FA8 FA8
+FA9 FA9
+FD0 FD0
+FD1 FD1
+FD3 FD3
+FD5 FD5
+FD8 FD8
+FD9 FD9
+FDI FDI
 FFA Flood Watch
+FFG FFG
+FFH FFH
+FFP FFP
 FFS Flash Flood Statement
 FFW Flash Flood Warning
+FLR FLR
 FLS Flood Advisory
 FLW Flood Warning
+FOP FOP
+FRH FRH
 FRW Fire Warning
+FSH FSH
 FTM Free Text Message
+FTP FTP
 FWA Fire Weather Administrative Message
+FWD FWD
 FWF Fire Weather Planning Forecast
+FWL FWL
+FWM FWM
+FWN FWN
+FWO FWO
 FWS Fire Weather Spot Forecast
+FZL FZL
+GEN GEN
 GLF Open Lake Forecast
+GMT GMT
 HCM Hydromet Coordination Message
+HD0 HD0
+HD2 HD2
+HD3 HD3
+HD4 HD4
+HD6 HD6
+HD8 HD8
 HLS Hurricane Local Statement
 HMD Rainfall and Flood Outlook Product
+HML HML
+HMT HMT
 HMW Hazardous Materials Warning
 HPA High Pollution Advisory
+HP2 HP2
+HRR HRR
 HSF High Seas Forecast
 HWO Hazardous Weather Outlook
+HWR HWR
 HYD Supplementary Temp and Precip
+HYM HYM
 ICE Ice Outlook
+ICO ICO
+IDM IDM
 LAE Local Area Emergency
+LAK LAK
 LCO Local Cooperative Observation
+LEV LEV
 LEW Law Enforcement Warning
+LLL LLL
 LSR Local Storm Report
+MAN MAN
+MAP MAP
+MAR MAR
+MAV MAV
 MCD Mesoscale Convective Discussion
+MCG MCG
+MCX MCX
+MET MET
+MEX MEX
+MFM MFM
+MFP MFP
+MHF MHF
 MIS Meteorological Impact Statement
+MME MME
+MMG MMG
 MPD Mesoscale Precipitation Discussion
+MRP MRP
+MSM MSM
+MTR MTR
+MTT MTT
+MVF MVF
 MWS Marine Weather Statement
 MWW Marine Weather Warning
 NMN Network Message Notification
@@ -64,11 +163,20 @@ NOW Short-term Forecast
 NPW Non Convective Advisory
 NSH Nearshore Marine Forecast
 NUW Nuclear Power Plant Warning
+NWR NWR
 OAV Other Aviation Report
 OEP TAF Collaboration Product
+OFA OFA
 OFF Offshore Waters Forecast
 OMR Other Marine Reports
+OPU OPU
+OPW OPW
+OSB OSB
+OSO OSO
 PFM Point Forecast Matrices
+PFW PFW
+PLS PLS
+PMD PMD
 PMDAK Alaska Discussion
 PMDCA Tropical Discussion
 PMDEPD Extended Forecast Discussion
@@ -77,51 +185,148 @@ PMDHMD Model Diagnostic Discussion
 PMDSA South America Forecast Discussion
 PMDSPD Short Range Forecast Discussion
 PNS Public Information Statement
+POE POE
+PRB PRB
 PSH Post Tropical Event Report
+PTS PTS
 PWO Public Severe Weather Outlook
-QPS Quantitative Precipitation Forecast
+PWS PWS
+QPF QPF
 QPFERD Excessive Rainfall Discussion
 QPFHSD Heavy Snow Discussion
+QPG QPG
+QPS Quantitative Precipitation Forecast
+RBG RBG
 REC Recreational Forecast
+REP REP
 RER Record Event Report
 RFD Grassland Fire Danger
+RFM RFM
+RFR RFR
 RFW Red Flag Warning
 RHW Radiological Hazard Warning
+RR1 RR1
+RR2 RR2
+RR3 RR3
+RR4 RR4
+RR5 RR5
+RR6 RR6
+RR7 RR7
+RR8 RR8
+RR9 RR9
+RRA RRA
 RRM Rainfall Storm Total
+RRS RRS
+RRY RRY
+RRZ RRZ
 RTP Regional Temperature and Precipitation
 RVA Hydrologic Summary
+RVC RVC
 RVD River and Lake Summary
 RVF River Forecast
+RVG RVG
+RVK RVK
+RVM RVM
+RVO RVO
+RVR RVR
 RVS Hydrologic Statement
+RVU RVU
+RWR RWR
 RWS Regional Weather Summary
+SAF SAF
+SAG SAG
+SAT SAT
+SAW SAW
 SCC Storm Summary
+SCN SCN
+SCP SCP
+SCS SCS
+SCV SCV
+SEL SEL
+SFP SFP
 SFT State Forecast Tabular Product
+SGL SGL
 SIG Convective Sigment
 SMF Smoke Management Weather Forecast
 SMW Special Marine Warning
+SPE SPE
+SPN SPN
 SPS Special Weather Statement
 SPW Shelter In Place Warning
+SQW Snow Squall Warning
 SRF Surf Zone Forecast
+SRG SRG
+SSM SSM
+STA STA
 STF Tabular State Forecast
 STQ Spot Forecast Request
-SQW Snow Squall Warning
+SUM SUM
 SVR Severe Thunderstorm Warning
 SVS Severe Weather Statement
+SWE SWE
+SWO SWO
+SYN SYN
 TAF Terminal Aerodrome Forecast
+TAP TAP
+TCA TCA
+TCD Tropical Cyclone Discussion
 TCE Tropical Cyclone Position Estimate
 TCM Tropical Storm Forecast
+TCP TCP
+TCS TCS
 TCU Tropical Cyclone Update
 TCV Tropical Watch/Warning Local Statement
 TIB Tsunami Information Statement
 TID Tide Data
+TMA Tsunami Message Acknowledgement
 TOE Telephone Outage Emergency
 TOR Tornado Warning
-TMA Tsunami Message Acknowledgement
+TPT TPT
+TST TST
+TSU TSU
+TUV TUV
+TVL TVL
+TWD TWD
 TWO Tropical Weather Outlook
+TWS TWS
+TXT TXT
+UVI UVI
 VAA Volcanic Ash Advisory
+VFT VFT
 VOW Volcano Warning
+WA0 WA0
+WA1 WA1
+WA2 WA2
+WA3 WA3
+WA4 WA4
+WA5 WA5
+WA6 WA6
+WA7 WA7
+WA8 WA8
+WA9 WA9
+WAR WAR
+WAT WAT
+WCL WCL
 WCN Watch County Notification
+WEE WEE
+WEK WEK
+WOU WOU
 WRK Work Product
+WRM WRM
+WS1 WS1
+WS2 WS2
+WS3 WS3
+WS4 WS4
+WS5 WS5
+WS6 WS6
+WSC WSC
+WST WST
 WSV Volcanic Ash Sigmet
 WSW Winter Weather Message
+WTA WTA
+WWA WWA
+WWP WWP
+XF0 XF0
+XOB XOB
+XTE XTE
 ZFP Zone Forecast Package

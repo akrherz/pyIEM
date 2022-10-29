@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS
+database has.
 - Fix state border zorder and allow `stateborderwidth` kwarg.
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).

@@ -717,7 +717,7 @@ class TextProduct:
             "source": self.source[1:],
             "aaa": aaa,
             "name": reference.prodDefinitions.get(
-                aaa, reference.prodDefinitions.get(self.afos, self.afos)
+                self.afos, reference.prodDefinitions.get(aaa, self.afos)
             ),
             "stamp": self.get_nicedate(),
             "url": f"{uri}?pid={self.get_product_id()}",
