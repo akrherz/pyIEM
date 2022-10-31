@@ -32,6 +32,13 @@ def prod():
     return res
 
 
+def test_221031_bad_hour():
+    """Test the handling of this product that yielded a hour range error."""
+    utcnow = utc(2022, 10, 31, 12)
+    prod = parser(get_test_file("SHEF/RTPBOU.txt"), utcnow=utcnow)
+    assert len(prod.data) == 20
+
+
 def test_220610_nan():
     """Test handling of nan value."""
     utcnow = utc(2022, 6, 10)
