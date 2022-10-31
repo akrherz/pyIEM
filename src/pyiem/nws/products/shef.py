@@ -156,9 +156,12 @@ def datetime24(dt, replacements):
     # dt could be a date
     if dt.__class__.__name__ == "date":
         dt = datetime(dt.year, dt.month, dt.day)
-    if int(replacements.get("hour", 0)) == 24:
+    rhour = int(replacements.get("hour", 0))
+    if rhour == 24:
         dt = dt + timedelta(days=1)
         replacements["hour"] = 0
+    if rhour > 24:
+        raise ValueError(f"Hour>24 dt: {dt} replace: {repr(replacements)}")
     return datetime(
         replacements.get("year", dt.year),
         replacements.get("month", dt.month),
@@ -434,6 +437,9 @@ def process_message_e(prod, message) -> List[SHEFElement]:
 
 def strip_comments(line):
     """Remove comments."""
+    # Forgiving a headline that should have been a comment
+    if line.startswith("..."):
+        return ""
     # Cull inline comments using ON/OFF nomenclature
     pos = line.find(":")
     while pos > -1:

@@ -1,0 +1,97 @@
+289
+ASUS65 KBOU 311531
+RTPBOU
+
+MAX/MIN TEMPERATURE AND PRECIPITATION TABLE FOR
+NORTHEAST AND NORTH CENTRAL COLORADO
+NATIONAL WEATHER SERVICE DENVER CO
+931 AM MDT MON OCT 31 2022
+
+AIRPORT LOCATIONS...VALUES ARE HIGHS YESTERDAY...
+LOWS FOR THE LAST 12 HOURS AND PRECIPITATION FOR THE LAST 24 HOURS.
+
+.BR BOU 1031 M DH01/TAIRZX/DH05/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ
+
+:      STATION                  ELEV  DAY/                   SNOW SNOW
+:      NAME                     FEET  HOUR  HIGH  LOW  PCPN  FALL DEPTH
+
+APA  : CENTENNIAL AIRPORT ::          3106:  58 / 30 /    0 /   M /  M
+DEN  : DENVER INTL AIRPORT::          3106:  61 / 37 /    0 /   M /  M
+LIC  : LIMON AIRPORT      ::          3106:  61 / 21 /    0 /   M /  M
+AKO  : AKRON              ::          3106:  61 / 35 /    0 /   M /  M
+.END
+
+DATA FROM COOPERATIVE AND AMATEUR RADIO OBSERVERS.
+REPORTS ARE FOR THE 24 HOURS ENDING AT OBSERVATION TIME.
+
+.BR BOU 1031 M DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDDRZZ
+
+:      STATION                  ELEV  DAY/                   SNOW SNOW
+:      NAME                     FEET  HOUR  HIGH  LOW  PCPN  FALL DEPTH
+
+...NORTHERN COLORADO FRONT RANGE...
+
+EAGC2: AURORA/EAGLECREST  ::        :DH3107/  61 / 34 /    0 /   0 /  0
+DUAC2: DENVER STAPLETON   ::        :DH3106/   M /  M /    0 /   0 /  0
+WUDC2: ENGLEWOOD 2SSE     ::        :DH3107/  64 / 26 /    0 /   0 /  0
+ENLC2: ENGLEWOOD 1SSE     ::        :DH3107/  58 / 24 /    0 /   0 /  0
+NRTC2: NORTHGLENN         ::        :DH3107/  64 / 28 /    0 /   M /  M
+ELAC2: ELIZABETH 3NW      ::   6594 :DH3107/  59 / 35 /    0 /   0 /  0
+ELZC2: ELIZABETH 2E       ::   6617 :DH3107/  60 / 33 /    0 /   0 /  0
+BOUC2: BOULDER            ::        :DH3017/  61 /  M /    0 /   0 /  0
+BDU  : BOULDER AIRPORT    ::        :DH3109/  61 / 36 /    M /   M /  M
+KSLC2: KASSLER            ::        :DH3106/  60 / 35 /    0 /   0 /  0
+LAFC2: LAFAYETTE          ::        :DH3107/  62 / 37 /    0 /   0 /  0
+LKWC2: LAKEWOOD           ::        :DH3107/  59 / 29 /    0 /   0 /  0
+THUC2: LYONS 7S           ::        :DH3107/  60 / 40 /    0 /   0 /  0
+GDNC2: RALSTON RESERVOIR  ::        :DH3108/  60 / 37 /    0 /   0 /  0
+BJC  : ROCKY MTN METRO AP ::        :DH3109/  59 / 39 /    M /   M /  M
+FORC2: FORT COLLINS CSU   ::        :DH3019/  62 /  M /    0 /   0 /  0
+FNL  : FT COLLINS/LOVELAND::        :DH3106/  63 / 33 /    0 /   M /  M
+LVDC2: LOVELAND 2N        ::        :DH3106/  63 / 24 /    0 /   0 /  0
+
+...NORTHEAST COLORADO...
+
+EIK  : ERIE               ::        :DH3109/  61 / 27 /    M /   M /  M
+FSNC2: FIRESTONE          ::        :DH3107/  62 / 30 /    0 /   0 /  0
+GXY  : GREELEY AIRPORT    ::        :DH3106/  63 / 22 /    0 /   M /  M
+FMM  : FORT MORGAN AIRPORT::        :DH3109/  61 / 25 /    M /   M /  M
+GEAC2: GENOA HAMNET       ::        :DH3107/  60 / 32 /    0 /   0 /  0
+LMOC2: LIMON HASS RANCH   ::        :DH3106/   M /  M /    0 /   M /  M
+KRVC2: KARVAL             ::        :DH3106/  63 / 32 /    0 /   M /  M
+STK  : STERLING AIRPORT   ::        :DH3109/  64 / 27 /    M /   M /  M
+HOLC2: HOLYOKE            ::        :DH3107/  65 / 26 /    0 /   0 /  0
+HEQ  : HOLYOKE AIRPORT    ::        :DH3109/  66 / 32 /    M /   M /  M
+
+...NORTH CENTRAL COLORADO...
+
+WLDC2: WALDEN             ::   8100 :DH3109/  48 / 14 /    0 /   0 /  0
+ 33V : WALDEN AIRPORT     ::   8100 :DH3109/  48 / 18 /    M /   M /  M
+FRZC2: FRASER             ::   8600 :DH3016/  44 /  M /    0 /   0 /  0
+GRNBY: GRANBY             ::   8207 :DH3109/  46 / 18 /    M /   M /  M
+GLKC2: GRAND LAKE 1NW     ::   8700 :DH3016/  47 /  M /    0 /   0 /  T
+ 20V : KREMMLING AIRPORT  ::   7400 :DH3109/  50 / 18 /    M /   M /  M
+WIFC2: WILLIAMS FORK DAM  ::   7650 :DH3108/  48 / 16 /    0 /   0 /  0
+CSFC2: GOULD 4SE          ::   9200 :DH3109/  45 / 14 /    0 /   0 /  0
+GCRC2: CABIN CREEK        ::  10000 :DH3106/  44 / 21 /    0 /   0 /  0
+C99  : DAKOTA HILL        ::  10938 :DH3109/  34 / 23 /    M /   M /  M
+BUC  : BUCKHORN MTN 1E    ::   7400 :DH3105/  56 / 34 /    0 /   0 /  0
+VDAC2: VIRGINIA DALE 7ENE ::   7000 :DH3107/  54 / 36 /    0 /   0 /  0
+ASIC2: ASPEN SPRINGS      ::   9000 :DH3107/  48 / 26 /    0 /   0 /  0
+CHEC2: CHEESMAN           ::   6800 :DH3107/  58 / 25 /    0 /   0 /  0
+EVGC2: EVERGREEN          ::   7000 :DH3106/  55 / 21 /    0 /   M /  M
+SSDC2: STRONTIA SPGS DAM  ::   5800 :DH3107/  57 / 30 /    0 /   0 /  0
+LGEC2: LAKE GEORGE        ::   8000 :DH3107/  50 / 14 /    T /   0 /  0
+
+:EXTREMES FOR NORTHEAST AND NORTH CENTRAL COLORADO
+
+:HIGH...   HOLYOKE AIRPORT        66  LOW...    GOULD 4SE              14
+
+:PRECIP... LAKE GEORGE               T
+
+.END
+
+THESE DATA ARE PRELIMINARY AND HAVE NOT UNDERGONE FINAL QUALITY
+CONTROL BY THE NATIONAL CLIMATIC DATA CENTER /NCDC/.  THEREFORE...
+THESE DATA ARE SUBJECT TO REVISION.  FINAL AND CERTIFIED CLIMATE DATA
+CAN BE ACCESSED AT WWW.NCDC.NOAA.GOV.
