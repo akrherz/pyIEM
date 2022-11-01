@@ -161,6 +161,7 @@ def test_windrose_hads_wind():
         sts=utc(2020, 1, 5),
         ets=utc(2020, 9, 5),
         tzname="America/Chicago",
+        nogenerated=True,
     )
     return fig
 
@@ -174,6 +175,7 @@ def test_windrose_upperair_nodata():
         months=[
             1,
         ],
+        nogenerated=True,
     )
     return fig
 

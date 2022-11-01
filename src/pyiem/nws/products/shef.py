@@ -646,8 +646,9 @@ def process_messages(func, prod, messages) -> int:
             if res:
                 prod.data.extend(res)
         except InvalidSHEFEncoding as exp:
+            emsg = str(exp)
             # Swallow these generally, but let no station slide
-            if str(exp).find("3.2") != 0:
+            if not emsg.startswith("3.2") and not emsg.startswith("4.1.2"):
                 errors += 1
             LOG.warning("%s for '%s' %s", exp, message, prod.get_product_id())
         except Exception as exp:

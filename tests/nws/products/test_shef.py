@@ -32,6 +32,13 @@ def prod():
     return res
 
 
+def test_221101_too_many_failures():
+    """Test that this product does not eventually make an email."""
+    utcnow = utc(2022, 11, 1, 12)
+    prod = parser(get_test_file("SHEF/RR9GYX.txt"), utcnow=utcnow)
+    assert len(prod.data) == 234
+
+
 def test_221031_bad_hour():
     """Test the handling of this product that yielded a hour range error."""
     utcnow = utc(2022, 10, 31, 12)

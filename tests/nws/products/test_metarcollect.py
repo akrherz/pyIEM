@@ -177,8 +177,8 @@ def test_190118_ice(dbcursor):
     """Process a ICE Report."""
     create_entries(dbcursor)
     prod = mock.Mock()
-    prod.valid = utc()
-    prod.utcnow = utc()
+    prod.valid = utc(2022, 10, 3, 17)
+    prod.utcnow = utc(2022, 10, 3, 17)
     mtr = metarcollect.to_metar(
         prod,
         (
