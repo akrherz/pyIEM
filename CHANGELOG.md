@@ -26,6 +26,7 @@ a polygon, but does not (#660).
 headlines.
 - Reduce needless lat/lon precision with Jabber messages (#656).
 - Remove hard coded `nobody` database user for some internal API calls.
+- [SHEF] Make station ids longer than 8 chars non-fatal.
 - Support increased range and emit ValueError for too large range for
 `pyiem.plot.pretty_bins` (#665).
 
