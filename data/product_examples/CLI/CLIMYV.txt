@@ -1,0 +1,71 @@
+733 
+CDUS46 KSTO 130905
+CLIMYV
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE SACRAMENTO
+105 AM PST SUN NOV 13 2022
+
+...................................
+
+...THE MARYSVILLE CLIMATE SUMMARY FOR NOVEMBER 12 2022...
+
+CLIMATE NORMAL PERIOD: 2000 TO 2020
+CLIMATE RECORD PERIOD: 2000 TO 2022
+
+
+WEATHER ITEM   OBSERVED     LAST                                      
+                VALUE       YEAR                                      
+..................................
+TEMPERATURE (F)                                                          
+ YESTERDAY                                                           
+  MAXIMUM         60       63                                         
+  MINIMUM         41       45                                         
+  AVERAGE         51                                               
+
+PRECIPITATION (IN)                                                    
+  YESTERDAY        0.00     0.00                                      
+  MONTH TO DATE    0.24     0.49                                      
+  SINCE OCT 1      0.24     0.58                                      
+  SINCE JAN 1      3.31     5.52                                      
+
+DEGREE DAYS                                                           
+ HEATING                                                              
+  YESTERDAY       14       11                                         
+  MONTH TO DATE  164       96                                         
+  SINCE JUL 1    217      179                                         
+
+ COOLING                                                              
+  YESTERDAY        0        0                                         
+  MONTH TO DATE    0        0                                         
+  SINCE JAN 1   1990     1861                                         
+..................................
+
+
+WIND (MPH)                                                            
+  RESULTANT WIND SPEED   3   RESULTANT WIND DIRECTION   N (340)       
+  HIGHEST WIND SPEED    10   HIGHEST WIND DIRECTION     N (340)       
+  AVERAGE WIND SPEED     3.7                                        
+
+
+WEATHER CONDITIONS                                                    
+THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                         
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                                  
+
+
+RELATIVE HUMIDITY (PERCENT)
+ HIGHEST    89          12:00 AM                                      
+ LOWEST     47           2:00 PM                                      
+ AVERAGE    68                                                        
+
+
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD WAS SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE AMOUNT.
+
+
+
+
+$$
