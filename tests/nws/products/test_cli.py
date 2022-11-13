@@ -19,6 +19,7 @@ NWSLI_PROVIDER = {
     "PBET": dict(name="BETHEL", access_network="AK_ASOS"),
     "PCBD": dict(name="COLD BAY", accesss_network="AK_ASOS"),
     "POME": dict(name="NOME WSO AP", access_network="AK_ASOS"),
+    "KMYV": dict(name="MARYSVILLE", access_network="CA_ASOS"),
 }
 
 
@@ -227,6 +228,12 @@ def test_issue15_wind(dbcursor):
     assert abs(prod.data[0]["data"]["average_wind_speed"] - 7.7) < 0.01
     prod.sql(dbcursor)
     assert prod.data[0]["db_station"] == "KCVG"
+
+
+def test_climyv():
+    """Test a new diction."""
+    prod = factory("CLI/CLIMYV.txt")
+    assert prod.data[0]["data"]["temperature_maximum"] == 60
 
 
 def test_180208_issue56_tweetmissing():

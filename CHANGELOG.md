@@ -15,6 +15,7 @@ database has.
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
 - Support `cartopy_offlinedata` version 0.20+.
+- Support new CLI format diction from NWS Sacramento.
 
 ### Bug Fixes
 

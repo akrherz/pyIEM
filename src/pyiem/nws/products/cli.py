@@ -49,6 +49,7 @@ REGIMES = [
         "WEATHER ITEM  OBSERVED    TIME      RECORD    YEAR    NORMAL   "
         "DEPARTURE   LAST"
     ),
+    "WEATHER ITEM   OBSERVED     LAST",
 ]
 # label, value, time, record, year, normal, departure, last
 COLS = [
@@ -73,6 +74,7 @@ COLS = [
     [16, 23, 34, 40, 50, 58, 67, 80],
     [16, 23, None, 30, 35, None, None, 44],
     [16, 23, 33, 40, 51, 59, 69, 79],
+    [16, 23, None, None, None, None, None, 33],
 ]
 # Allow manual provision of IDS
 HARDCODED = {}
