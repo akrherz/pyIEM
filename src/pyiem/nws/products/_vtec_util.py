@@ -480,7 +480,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
 
 
 def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
-    """A Product Correction."""
+    """Database work for EXT, UPG, CAN actions."""
     ets = vtec.endts
     # These are terminate actions, so we act accordingly
     if vtec.action in ["CAN", "UPG"]:
@@ -494,18 +494,21 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     if vtec.action == "EXT" and vtec.begints is not None:
         issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
-        f"UPDATE {warning_table} SET {issuesql} expire = %s, "
-        "status = %s, updated = %s, purge_time = %s, "
-        "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__' WHERE wfo = %s and eventid = %s and ugc in "
-        f"%s and significance = %s and phenomena = %s "
-        "and status not in ('CAN', 'UPG') and "
-        "(expire + '1 hour'::interval) >= %s",
+        f"""UPDATE {warning_table} SET {issuesql} expire = %s,
+        status = %s, updated = %s, purge_time = %s,
+        is_emergency = (case when %s then true else is_emergency end),
+        svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
+        || %s || '__' WHERE wfo = %s and eventid = %s and ugc in
+        %s and significance = %s and phenomena = %s
+        and status not in ('CAN', 'UPG') and
+        (expire + '1 hour'::interval) >= %s
+        """,
         (
             ets,
             vtec.action,
             prod.valid,
             segment.ugcexpire,
+            segment.is_emergency,
             prod.unixtext,
             vtec.office,
             vtec.etn,

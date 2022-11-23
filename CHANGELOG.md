@@ -21,6 +21,7 @@ a polygon, but does not (#660).
 
 - Account for `MapPlot` custom domain that crosses anti-meridian (#655).
 - Cleanup and improve windrose title / time filtering logic (#663).
+- Correct VTEC database accounting issue for emergencies (#676). 
 - Draw mask on all known sectored plots.
 - Increased default `pyiem.util.get_dbconn` connect timeout to 30 seconds.
 - Polish SHEF parsing some with better error message and account for `...`

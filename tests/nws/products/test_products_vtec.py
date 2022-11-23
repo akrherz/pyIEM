@@ -40,6 +40,19 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_gh676_emergency(dbcursor):
+    """Test that the database flags this as an emergency."""
+    for i in range(2):
+        prod = _vtecparser(get_test_file(f"FFW/FFWFFC_{i}.txt"))
+        prod.sql(dbcursor)
+    dbcursor.execute(
+        "SELECT is_emergency from warnings_2022 where wfo = 'FFC' and "
+        "phenomena = 'FF' and significance = 'W' and eventid = 32"
+    )
+    assert dbcursor.fetchone()[0]
+
+
 def test_gh660_no_polygon_warnings():
     """Test that warnings are emitted for a product without a polygon."""
     text = get_test_file("SQW/SQWBTV.txt").replace("LAT...LON", "")
