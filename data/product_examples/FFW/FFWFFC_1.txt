@@ -1,0 +1,69 @@
+308
+WGUS52 KFFC 041406
+FFWFFC
+GAC055-041700-
+/O.EXT.KFFC.FF.W.0032.000000T0000Z-220904T1700Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service Peachtree City GA
+1006 AM EDT Sun Sep 4 2022
+
+...FLASH FLOOD EMERGENCY FOR SUMMERVILLE, LYERLY, AND JAMES H FLOYD
+STATE PARK...
+
+The National Weather Service in Peachtree City has extended the
+
+* Flash Flood Warning for...
+  Western Chattooga County in northwestern Georgia...
+
+* Until 100 PM EDT.
+
+* At 1006 AM EDT, emergency management reported thunderstorms
+  producing heavy rain across the warned area. Between 6 and 10
+  inches of rain have fallen. The expected rainfall rate is 0.5 to 1
+  inch in 1 hour. Additional rainfall amounts of 0.5 to 1 inch are
+  possible in the warned area. Flash flooding is already occurring.
+
+  This is a FLASH FLOOD EMERGENCY for Summerville, Lyerly, and James
+  H Floyd State Park. This is a PARTICULARLY DANGEROUS SITUATION.
+  SEEK HIGHER GROUND NOW!
+
+  HAZARD...Life threatening flash flooding. Thunderstorms
+           producing flash flooding.
+
+  SOURCE...Emergency management reported.
+
+  IMPACT...This is a PARTICULARLY DANGEROUS SITUATION. SEEK
+           HIGHER GROUND NOW! Life threatening flash flooding of
+           low water crossings, small creeks and streams, urban
+           areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+  Summerville, Trion, Lyerly, Menlo, Berryton, James H. Floyd State
+  Park, Cloudland and Chattoogaville.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Move to higher ground now! This is an extremely dangerous and
+life-threatening situation. Do not attempt to travel unless you are
+fleeing an area subject to flooding or under an evacuation order.
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+Please report observed flooding to local emergency services or law
+enforcement and request they pass this information to the National
+Weather Service when you can do so safely.
+
+&&
+
+LAT...LON 3455 8552 3458 8535 3456 8529 3451 8529
+      3441 8536 3432 8544 3430 8547
+
+FLASH FLOOD...OBSERVED
+FLASH FLOOD DAMAGE THREAT...CATASTROPHIC
+EXPECTED RAINFALL RATE...0.5-1 INCH IN 1 HOUR
+
+$$

@@ -1,0 +1,53 @@
+351
+WGUS52 KFFC 040858
+FFWFFC
+GAC055-041500-
+/O.NEW.KFFC.FF.W.0032.220904T0858Z-220904T1500Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service Peachtree City GA
+458 AM EDT Sun Sep 4 2022
+
+The National Weather Service in Peachtree City has issued a
+
+* Flash Flood Warning for...
+  Western Chattooga County in northwestern Georgia...
+
+* Until 1100 AM EDT Sunday.
+
+* At 458 AM EDT, Doppler radar indicated thunderstorms producing
+  heavy rain across the warned area. Between 2 and 4 inches of rain
+  have fallen. Additional rainfall amounts of 1 to 2 inches are
+  possible in the warned area. Flash flooding is ongoing or expected
+  to begin shortly.
+
+  HAZARD...Flash flooding caused by thunderstorms.
+
+  SOURCE...Radar.
+
+  IMPACT...Flash flooding of small creeks and streams, urban
+           areas, highways, streets and underpasses as well as
+           other poor drainage and low-lying areas.
+
+* Some locations that will experience flash flooding include...
+  Summerville, Trion, Lyerly, Menlo, Berryton, James H. Floyd State
+  Park, Cloudland and Chattoogaville.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+Be especially cautious at night when it is harder to recognize the
+dangers of flooding.
+
+&&
+
+LAT...LON 3455 8552 3458 8535 3456 8529 3451 8529
+      3441 8536 3432 8544 3430 8547
+
+FLASH FLOOD...RADAR INDICATED
+
+$$
