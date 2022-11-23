@@ -3,7 +3,7 @@
 
 import numpy as np
 from pyiem.ncei import ds3505
-from pyiem.util import utc, get_test_file
+from pyiem.util import utc, get_test_filepath
 
 
 def test_issue298_precip():
@@ -223,10 +223,13 @@ def test_basic():
 
 def test_read():
     """Can we process an entire file?"""
-    for line in get_test_file("NCEI/DS3505.txt", fponly=True):
-        data = ds3505.parser(line.decode("ascii").strip(), "ENJA")
-        assert data is not None
-
-    for line in get_test_file("NCEI/DS3505_KAMW_2016.txt", fponly=True):
-        data = ds3505.parser(line.decode("ascii").strip(), "KAMW")
-        assert data is not None
+    fn = get_test_filepath("NCEI/DS3505.txt")
+    with open(fn, "rb") as fh:
+        for line in fh:
+            data = ds3505.parser(line.decode("ascii").strip(), "ENJA")
+            assert data is not None
+    fn = get_test_filepath("NCEI/DS3505_KAMW_2016.txt")
+    with open(fn, "rb") as fh:
+        for line in fh:
+            data = ds3505.parser(line.decode("ascii").strip(), "KAMW")
+            assert data is not None

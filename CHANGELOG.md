@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Refactor internal testing `util.get_file_name` helper.
+
 ### New Features
 
 - Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS

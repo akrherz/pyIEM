@@ -171,16 +171,17 @@ def html_escape(val):
     return escape(val)
 
 
-def get_test_file(name, fponly=False, fnonly=False):
-    """Helper to get data for test usage."""
+def get_test_filepath(name: str) -> str:
+    """Helper to get a testing filename, full path."""
     basedir = os.path.dirname(__file__)
-    fn = f"{basedir}/../../data/product_examples/{name}"
-    if fnonly:
-        return fn
-    fp = open(fn, "rb")
-    if fponly:
-        return fp
-    return fp.read().decode("utf-8")
+    return f"{basedir}/../../data/product_examples/{name}"
+
+
+def get_test_file(name):
+    """Helper to get data for test usage."""
+    with open(get_test_filepath(name), "rb") as fp:
+        content = fp.read().decode("utf-8")
+    return content
 
 
 def logger(name="pyiem", level=None):

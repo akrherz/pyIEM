@@ -6,7 +6,7 @@ from io import StringIO
 import pytest
 
 # Local
-from pyiem.util import get_test_file
+from pyiem.util import get_test_filepath
 from pyiem.nws.bufkit import read_bufkit
 
 
@@ -15,17 +15,15 @@ from pyiem.nws.bufkit import read_bufkit
 )
 def test_reader(model):
     """Test reading a GFS file."""
-    sndf, stndf = read_bufkit(
-        get_test_file(f"BUFKIT/{model}_kdsm.buf", fnonly=True)
-    )
+    fp = get_test_filepath(f"BUFKIT/{model}_kdsm.buf")
+    sndf, stndf = read_bufkit(fp)
     assert sndf["STIM"].max() == stndf.index.values[-1]
 
 
 def test_values():
     """Test that we get values we expect."""
-    sndf, stndf = read_bufkit(
-        get_test_file("BUFKIT/namm_kdsm.buf", fnonly=True)
-    )
+    fp = get_test_filepath("BUFKIT/namm_kdsm.buf")
+    sndf, stndf = read_bufkit(fp)
     row = sndf[(sndf["STIM"] == 0) & (sndf["PRES"] == 7.60)]
     assert abs(float(row["HGHT"]) - 33326.51) < 0.01
     row = stndf.loc[84]
@@ -34,9 +32,10 @@ def test_values():
 
 def test_stringio():
     """Can we read a stringIO object."""
-    fn = get_test_file("BUFKIT/namm_kdsm.buf", fnonly=True)
+    fp = get_test_filepath("BUFKIT/namm_kdsm.buf")
     sio = StringIO()
-    sio.write(open(fn).read())
+    with open(fp, encoding="utf-8") as fh:
+        sio.write(fh.read())
     sndf, stndf = read_bufkit(sio)
     assert sndf is not None
     assert stndf is not None
