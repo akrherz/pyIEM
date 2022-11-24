@@ -88,12 +88,12 @@ def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     if md5_from_name:
         args.insert(1, "-i")
     try:
-        proc = subprocess.Popen(
+        with subprocess.Popen(
             args,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        )
-        stderr = proc.stderr.read()
+        ) as proc:
+            stderr = proc.stderr.read()
         res = True
         if stderr != b"":
             LOG.info("pqinsert stderr result %s", stderr)

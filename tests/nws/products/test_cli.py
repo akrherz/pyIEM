@@ -448,7 +448,7 @@ def test_140930_negative_temps():
     assert prod.data[0]["data"].get("snow_today_last") == 0.0
     assert prod.data[0]["data"].get("snow_month_last") == TRACE_VALUE
     assert prod.data[0]["data"].get("snow_jul1_last") == 11.3
-    assert prod.data[0]["data"].get("average_sky_cover") is None
+    assert prod.data[0]["data"].get("average_sky_cover") == 0.4
 
 
 def test_140930_mm_precip():

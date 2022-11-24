@@ -406,7 +406,7 @@ def test_170428_large(dbcursor):
     # /products/outlook/archive/2006/day1otlk_20060510_1630.html
     spc = parser(get_test_file("SPCPTS/PTSDY1_largetor10.txt"))
     spc.sql(dbcursor)
-    outlook = spc.get_outlook("TORNADO", "0.10", 1)
+    spc.get_outlook("TORNADO", "0.10", 1)
     outlook = spc.get_outlook("CATEGORICAL", "TSTM", 1)
     assert abs(outlook.geometry.area - 428.00) < 0.01
 

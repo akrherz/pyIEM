@@ -323,11 +323,13 @@ def parse_sky_coverage(lines, data):
     """Turn section into data."""
     asc = "AVERAGE SKY COVER"
     for line in lines:
-        if line.strip().startswith(asc):
-            try:
-                data["average_sky_cover"] = float(line.replace(asc, ""))
-            except ValueError:
-                pass
+        pos = line.find(asc)
+        if pos < 0:
+            continue
+        try:
+            data["average_sky_cover"] = float(line[pos:].replace(asc, ""))
+        except ValueError:
+            LOG.debug("Convert '%s' to float failed", line)
 
 
 def parse_headline(section):
