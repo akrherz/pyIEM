@@ -3,11 +3,11 @@ import copy
 import os
 
 import numpy as np
-import matplotlib.cm as cm
-import matplotlib.colors as mpcolors
+from matplotlib import cm, colors as mpcolors
 
 # Local
 from pyiem.reference import DATADIR
+from pyiem.util import LOG
 
 
 def _register_cmap(cmap):
@@ -20,7 +20,7 @@ def _register_cmap(cmap):
         cm.get_cmap(cmap.name)
         hascmap = True
     except ValueError:
-        pass
+        LOG.debug("Failed to get cmap: %s", cmap.name)
     if not hascmap:
         cm.register_cmap(cmap=cmap)
     return hascmap
@@ -84,24 +84,10 @@ def nwsprecip():
      - added two light brown colors at the low end to allow for more levels
      - removed perhaps a bad orange color and remove top white color
     """
-    cpool = [
-        "#cbcb97",
-        "#989865",
-        "#00ebe7",
-        "#00a0f5",
-        "#000df5",
-        "#00ff00",
-        "#00c600",
-        "#008e00",
-        "#fef700",
-        "#e5bc00",
-        "#ff8500",
-        "#ff0000",
-        "#af0000",
-        "#640000",
-        "#ff00fe",
-        "#a152bc",
-    ]
+    cpool = (
+        "#cbcb97 #989865 #00ebe7 #00a0f5 #000df5 #00ff00 #00c600 #008e00 "
+        "#fef700 #e5bc00 #ff8500 #ff0000 #af0000 #640000 #ff00fe #a152bc"
+    ).split()
     cmap = mpcolors.ListedColormap(cpool, "nwsprecip")
     cmap.set_over("#FFFFFF")
     cmap.set_under("#FFFFFF")

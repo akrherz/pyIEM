@@ -13,7 +13,7 @@ from pyiem.exceptions import SAWException
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(
-    r"WW ([0-9]*) (TEST)?\s?" "(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)"
+    r"WW ([0-9]*) (TEST)?\s?(SEVERE TSTM|TORNADO|SEVERE THUNDERSTORM)"
 )
 REPLACES_RE = re.compile("REPLACES WW ([0-9]*)")
 DBTYPES = ["TOR", "SVR"]
@@ -211,7 +211,7 @@ class SAWProduct(TextProduct):
           (str): Well Known Text (WKT) representation
         """
         if self.action == self.CANCELS:
-            return
+            return None
         tokens = LATLON.findall(self.unixtext.replace("\n", " "))
         if not tokens:
             raise SAWException("Could not parse LAT...LON geometry")
@@ -253,6 +253,8 @@ class SAWProduct(TextProduct):
         product_id = self.get_product_id()
         if selprod is not None:  # SEL is prettier
             product_id = selprod.get_product_id()
+        html = "%s"
+        plain = "%s"
         if self.action == self.CANCELS:
             plain = (
                 "Storm Prediction Center cancels Weather Watch Number "

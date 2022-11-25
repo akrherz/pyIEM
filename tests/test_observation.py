@@ -215,7 +215,7 @@ def test_null(iemob):
     assert response
     assert iemob.ob.data["dwpf"] is None
     iemob.ob.data["relh"] = 0
-    response = iemob.ob.save(iemob.cursor)
+    iemob.ob.save(iemob.cursor)
     assert iemob.ob.data["dwpf"] is None
     iemob.ob.data["relh"] = 50
     response = iemob.ob.save(iemob.cursor)

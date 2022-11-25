@@ -61,8 +61,7 @@ WIND (MPH)
 
                                                                      
 SKY COVER                                                            
-  POSSIBLE SUNSHINE  MM                                              
-  AVERAGE SKY COVER  MM
+  POSSIBLE SUNSHINE  MM   AVERAGE SKY COVER  0.4
 
                                                                      
 WEATHER CONDITIONS                                                  
