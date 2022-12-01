@@ -4,7 +4,12 @@ import pytest
 import numpy as np
 from metpy.units import units
 from pyiem.plot import get_cmap
-from pyiem.plot.windrose import WindrosePlot, histogram, plot
+from pyiem.plot.windrose import (
+    PLOT_CONVENTION_TO,
+    WindrosePlot,
+    histogram,
+    plot,
+)
 
 BINS = np.array([2, 5, 7, 10, 15, 20]) * units("mph")
 SPEED = np.arange(0, 60, 0.1) * units("meter / second")
@@ -44,6 +49,15 @@ def test_draw_logo_deprecation():
 def test_windrose_basic():
     """Can we crawl."""
     wr = WindrosePlot()
+    return wr.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=TOLERANCE)
+def test_windrose_plot_convention():
+    """Test convention of blowing toward."""
+    sped = np.array([2, 4, 6, 18]) * units("meter / second")
+    drct = np.array([45, 90, 135, 180]) * units("degree")
+    wr = plot(drct, sped, rmax=10, plot_convention=PLOT_CONVENTION_TO)
     return wr.fig
 
 

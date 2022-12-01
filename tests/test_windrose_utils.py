@@ -5,6 +5,7 @@ from io import BytesIO
 import pytest
 from pandas import read_csv
 from metpy.units import units
+from pyiem.plot.windrose import PLOT_CONVENTION_TO
 from pyiem.windrose_utils import windrose
 from pyiem.util import utc
 
@@ -86,6 +87,22 @@ def test_windrose_with_units():
         justdata=True,
     )
     assert res
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_windrose_plot_convention():
+    """Test the plotting convention option."""
+    valid, sknt, drct = faux_data()
+    fig = windrose(
+        "AMW2",
+        sknt=sknt,
+        drct=drct,
+        valid=valid,
+        months=[4, 5, 6],
+        nogenerated=True,
+        plot_convention=PLOT_CONVENTION_TO,
+    )
+    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)

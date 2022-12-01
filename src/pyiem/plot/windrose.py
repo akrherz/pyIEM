@@ -1,6 +1,8 @@
 """A WindrosePlot."""
 # pylint: disable=not-callable
+import math
 
+# Third Party
 import numpy as np
 from metpy.units import units
 import matplotlib.colors as mpcolors
@@ -13,6 +15,8 @@ from .util import update_kwargs_apctx
 
 LABELS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 COLORS = ["#012cff", "#00d5f7", "#7cfd7f", "#fde801", "#ff4503", "#7e0100"]
+PLOT_CONVENTION_FROM = "from"
+PLOT_CONVENTION_TO = "to"
 
 
 class WindrosePlot:
@@ -31,9 +35,14 @@ class WindrosePlot:
             figsize (float, float): Image figure size in inches.
             rect ([x,y,width,height]): NDC axes rectangle.
             rmax (float): Maximum radius of the windrose.
+            plot_convention (str): Either `from` (default) or `to`.
         """
         rect = kwargs.pop("rect", None)
         figsize = kwargs.pop("figsize", [8, 8])
+        self.plot_convention = kwargs.pop(
+            "plot_convention",
+            PLOT_CONVENTION_FROM,
+        )
         self.legend_anchor = "S"
         if figsize[0] != figsize[1]:
             if rect is None:
@@ -68,6 +77,9 @@ class WindrosePlot:
             speed, direction, bins, nsector
         )
         theta = dir_centers.to(units("radian")).m
+        if self.plot_convention == PLOT_CONVENTION_TO:
+            # Invert theta
+            theta -= math.pi
         base = np.zeros(dir_centers.m.shape[0])
         width = (theta[1] - theta[0]) * 0.8
         cmap = kwargs.get("cmap")
@@ -140,11 +152,15 @@ class WindrosePlot:
         """Place arrows on the border."""
         rmin, rmax = self.ax.get_ylim()
         for x in self.ax.get_xticks():
+            xy = (x + 0.001, rmax - (rmax - rmin) * 0.12)
+            xytext = (x + 0.001, rmax + (rmax - rmin) * 0.02)
+            if self.plot_convention == PLOT_CONVENTION_TO:
+                xy, xytext = xytext, xy
             # https://github.com/matplotlib/matplotlib/issues/5344
             self.ax.annotate(
                 "",
-                xy=(x + 0.001, rmax - (rmax - rmin) * 0.12),
-                xytext=(x + 0.001, rmax + (rmax - rmin) * 0.02),
+                xy=xy,
+                xytext=xytext,
                 arrowprops=dict(
                     facecolor="None",
                     edgecolor="k",
@@ -155,6 +171,7 @@ class WindrosePlot:
                 ha="center",
                 va="center",
                 zorder=Z_OVERLAY2,
+                annotation_clip=False,
             )
 
 
@@ -209,11 +226,12 @@ def plot(direction, speed, **kwargs):
     Args:
         direction (pint.Quantity): wind direction from North.
         speed (pint.Quantity): wind speeds with units attached.
-        **bins (pint.Quantity): wind speed bins to produce the histogram for.
-        **nsector (int): The number of directional centers to divide the wind
+        bins (pint.Quantity): wind speed bins to produce the histogram for.
+        nsector (int): The number of directional centers to divide the wind
           rose into.  The first sector is centered on north.
-        **rmax (float): Hard codes the max radius value for the polar plot.
-        **cmap (colormap): Matplotlib colormap to use.
+        rmax (float): Hard codes the max radius value for the polar plot.
+        cmap (colormap): Matplotlib colormap to use.
+        plot_convention (str): Either `from` (default) or `to`.
 
     Returns:
         WindrosePlot
@@ -225,7 +243,13 @@ def plot(direction, speed, **kwargs):
     cmap = kwargs.pop("cmap", None)
     # kwargs gets passed verbatim to `pyiem.plot.layouts.figure`
     wp = WindrosePlot(**kwargs)
-    wp.barplot(direction, speed, bins, nsector, cmap=cmap)
+    wp.barplot(
+        direction,
+        speed,
+        bins,
+        nsector,
+        cmap=cmap,
+    )
     wp.plot_calm()
     wp.draw_arrows()
     return wp

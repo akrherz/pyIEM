@@ -15,7 +15,12 @@ from sqlalchemy import text
 
 # Local
 from pyiem.plot.util import fitbox
-from pyiem.plot.windrose import histogram, plot, WindrosePlot
+from pyiem.plot.windrose import (
+    PLOT_CONVENTION_FROM,
+    histogram,
+    plot,
+    WindrosePlot,
+)
 from pyiem.util import get_sqlalchemy_conn, utc
 from pyiem.network import Table as NetworkTable
 
@@ -270,6 +275,7 @@ def _make_plot(station, df, **kwargs):
       bins (list): values for binning the wind speeds
       tzname (str): Time zone this plot is produced in.
       cmap (colormap): Matplotlib colormap to use.
+      plot_convention (str): Either `from` or `to`.
 
     Returns:
       matplotlib.Figure
@@ -297,6 +303,7 @@ def _make_plot(station, df, **kwargs):
             transform=wp.ax.transAxes,
         )
         return wp.fig
+    pc = kwargs.get("plot_convention", PLOT_CONVENTION_FROM)
     wp = plot(
         direction,
         speed,
@@ -304,6 +311,7 @@ def _make_plot(station, df, **kwargs):
         nsector=kwargs.get("nsector", 36),
         rmax=kwargs.get("rmax"),
         cmap=kwargs.get("cmap"),
+        plot_convention=pc,
     )
 
     # Now we put some fancy debugging info on the plot
@@ -332,11 +340,13 @@ def _make_plot(station, df, **kwargs):
             fontsize=14,
         )
     # Denote the direction blowing from
+    con = "Meteorology" if pc == PLOT_CONVENTION_FROM else "Engineering"
     lbl = (
         f"Calm values are < {bins.m[0]:.1f} {kwargs.get('units', 'mph')}\n"
-        "Arrows indicate wind direction."
+        f"Bar Convention: {con}\n"
+        "Flow arrows relative to plot center."
     )
-    wp.fig.text(0.02, 0.125, lbl, va="bottom")
+    wp.fig.text(0.02, 0.1, lbl, va="bottom")
 
     return wp.fig
 
@@ -366,6 +376,9 @@ def windrose(station, **kwargs):
       cmap (cmap,optional): Matplotlib colormap to pass to barplot.
       limit_by_doy (bool,optional): Use the `sts` and `ets` to define a period
         of days each year to limit the data by. Default `false`.
+      plot_convention (str): How to orient the bars. The default is the
+        meteorological convention of `from`, the other option is `to`. This
+        only impacts the plot, the provided data should still follow `from`.
 
     Returns:
       matplotlib.Figure instance or textdata

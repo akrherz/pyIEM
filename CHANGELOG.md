@@ -11,6 +11,9 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add flag (`plot_convention`) for windrose plots to change orientation of the
+bars.  Engineers generally want bars oriented toward the direction the wind
+is blowing toward, not from (#680).
 - Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS
 database has.
 - Fix state border zorder and allow `stateborderwidth` kwarg.
