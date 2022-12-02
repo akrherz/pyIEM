@@ -99,7 +99,7 @@ def test_windrose_plot_convention():
         drct=drct,
         valid=valid,
         months=[4, 5, 6],
-        nogenerated=True,
+        generated_string="Generated @ Forever",
         plot_convention=PLOT_CONVENTION_TO,
     )
     return fig

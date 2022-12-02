@@ -276,6 +276,8 @@ def _make_plot(station, df, **kwargs):
       tzname (str): Time zone this plot is produced in.
       cmap (colormap): Matplotlib colormap to use.
       plot_convention (str): Either `from` or `to`.
+      nogenerated (bool): Disable plotting of Generated: string.
+      generated_string (str): Hard code this field.
 
     Returns:
       matplotlib.Figure
@@ -334,9 +336,9 @@ def _make_plot(station, df, **kwargs):
     if not kwargs.get("nogenerated", False):
         wp.fig.text(
             0.02,
-            0.1,
-            f"Generated: {utc():%d %b %Y}",
-            verticalalignment="bottom",
+            0.075,
+            kwargs.get("generated_string", f"Generated: {utc():%d %b %Y}"),
+            va="bottom",
             fontsize=14,
         )
     # Denote the direction blowing from
