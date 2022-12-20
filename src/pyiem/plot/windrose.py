@@ -203,7 +203,7 @@ def histogram(speed, direction, bins, nsector):
     speed_bins.append(np.inf)
     # Compute!
     table = np.histogram2d(
-        x=dirvals, y=speedvals, bins=[dir_bins, speed_bins], normed=False
+        x=dirvals, y=speedvals, bins=[dir_bins, speed_bins], density=False
     )[0]
     # Convert to percentage
     table = table * 100.0 / table.sum()
