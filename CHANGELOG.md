@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Quasi internal `MetarCollective.wind_message` was modified to also return the
+wind speed in knots.
 - Refactor internal testing `util.get_file_name` helper.
 
 ### New Features
@@ -17,6 +19,7 @@ is blowing toward, not from (#680).
 - Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS
 database has.
 - Fix state border zorder and allow `stateborderwidth` kwarg.
+- Jabber channels for METAR wind gust alerts were enhanced (#683).
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
 - Support `cartopy_offlinedata` version 0.20+.

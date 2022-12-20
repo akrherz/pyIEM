@@ -1,6 +1,7 @@
 """Encapsulates a text product holding METARs."""
-import re
 from datetime import timezone, timedelta
+import re
+from typing import Tuple
 
 try:
     from zoneinfo import ZoneInfo  # type: ignore
@@ -27,6 +28,8 @@ JABBER_SITES = {}
 WIND_ALERTS = {}
 # Wind speed threshold in kts for alerting
 WIND_ALERT_THRESHOLD_KTS = 50.0
+# Per site thresholds to govern mapping to channels
+WIND_ALERT_THRESHOLD_KTS_BY_ICAO = {}
 
 
 def normid(station_id: str) -> str:
@@ -178,7 +181,7 @@ def _is_same_day(valid, tzname, hours=6):
     return lts.day == (lts - timedelta(hours=hours)).day
 
 
-def wind_message(mtr: Metar) -> str:
+def wind_message(mtr: Metar) -> Tuple[str, int]:
     """Convert this into a Jabber style message"""
     drct = 0
     sknt = 0
@@ -197,13 +200,14 @@ def wind_message(mtr: Metar) -> str:
             time = t1
     key = f"{mtr.station_id};{sknt};{time}"
     if key in WIND_ALERTS:
-        return None
+        return None, None
     WIND_ALERTS[key] = 1
     speed = datatypes.speed(sknt, "KT")
-    return (
+    msg = (
         f"gust of {speed.value('KT'):.0f} knots "
         f"({speed.value('MPH'):.1f} mph) from {drct2text(drct)} @ {time:%H%M}Z"
     )
+    return msg, int(speed.value("KT"))
 
 
 def over_wind_threshold(mtr: Metar) -> bool:
@@ -354,6 +358,7 @@ class METARCollective(TextProduct):
         jmsgs = []
         for mtr in self.metars:
             msg = None
+            sknt = 0
             for weatheri in mtr.weather:
                 for wx in weatheri:
                     if wx is not None and "GR" in wx:
@@ -364,20 +369,18 @@ class METARCollective(TextProduct):
                 msg = "Funnel Cloud"
             # Search for Peak wind gust info....
             elif over_wind_threshold(mtr):
-                _msg = wind_message(mtr)
-                if _msg:
-                    msg = _msg
-            elif mtr.station_id in JABBER_SITES:
-                # suck
-                if JABBER_SITES[mtr.station_id] != mtr.time:
-                    JABBER_SITES[mtr.station_id] = mtr.time
-                    channels = [f"METAR.{mtr.station_id}"]
-                    if mtr.type == "SPECI":
-                        channels.append(f"SPECI.{mtr.station_id}")
-                    mstr = f"{mtr.type} {mtr.code}"
-                    jmsgs.append(
-                        [mstr, mstr, dict(channels=",".join(channels))]
-                    )
+                msg, sknt = wind_message(mtr)
+            # Sites set to always route to Jabber.
+            if (
+                mtr.station_id in JABBER_SITES
+                and JABBER_SITES[mtr.station_id] != mtr.time
+            ):
+                JABBER_SITES[mtr.station_id] = mtr.time
+                channels = [f"METAR.{mtr.station_id}"]
+                if mtr.type == "SPECI":
+                    channels.append(f"SPECI.{mtr.station_id}")
+                mstr = f"{mtr.type} {mtr.code}"
+                jmsgs.append([mstr, mstr, dict(channels=",".join(channels))])
             if msg is None:
                 continue
             sid = normid(mtr.station_id)
@@ -391,7 +394,19 @@ class METARCollective(TextProduct):
             channels = [f"METAR.{mtr.station_id}"]
             if mtr.type == "SPECI":
                 channels.append(f"SPECI.{mtr.station_id}")
-            channels.append(wfo)
+            if sknt > 0:
+                # Custom stuff for how this wind reports maps to channels
+                if sknt >= WIND_ALERT_THRESHOLD_KTS_BY_ICAO.get(
+                    mtr.station_id, WIND_ALERT_THRESHOLD_KTS
+                ):
+                    channels.append(wfo)
+                # Thresholded channels
+                for _sknt in range(
+                    int(WIND_ALERT_THRESHOLD_KTS), sknt + 1, 10
+                ):
+                    channels.append(f"METAR.{mtr.station_id}.WIND{_sknt:.0f}")
+            else:
+                channels.append(wfo)
             st = row.get("state")
             nm = row.get("name")
 

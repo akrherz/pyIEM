@@ -15,8 +15,10 @@ NWSLI_PROVIDER = {
     "MIA": dict(wfo="MIA"),
     "ALO": dict(wfo="DSM"),
     "EST": dict(wfo="EST"),
+    "MWN": dict(wfo="DMX"),
 }
 metarcollect.JABBER_SITES = {"KALO": None}
+metarcollect.WIND_ALERT_THRESHOLD_KTS_BY_ICAO["KMWN"] = 70
 
 
 def create_entries(cursor):
@@ -33,6 +35,19 @@ def create_entries(cursor):
     cursor.execute(
         "INSERT into summary_2015(iemid, day) VALUES (-1, '2015-09-01')"
     )
+
+
+def test_gh683_wind_gust_channels():
+    """Test that we don't get a default channel used for this alert."""
+    utcnow = utc(2022, 12, 20, 4)
+    text = get_test_file("METAR/kmwn.txt")
+    prod = PARSER(text, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    j = prod.get_jabbers("")
+    assert "DMX" not in j[0][2]["channels"].split(",")
+    text = text.replace("G65KT", "G100KT")
+    prod = PARSER(text, utcnow=utcnow, nwsli_provider=NWSLI_PROVIDER)
+    j = prod.get_jabbers("")
+    assert "DMX" in j[0][2]["channels"].split(",")
 
 
 def test_normid():
@@ -265,7 +280,7 @@ def test_metarreport(dbcursor):
     iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     assert iemob.data["phour"] == TRACE_VALUE
     ans = "gust of 0 knots (0.0 mph) from N @ 1253Z"
-    assert metarcollect.wind_message(mtr) == ans
+    assert metarcollect.wind_message(mtr)[0] == ans
     # can we round trip the gust
     iemob.load(dbcursor)
     assert iemob.data["gust"] is None
