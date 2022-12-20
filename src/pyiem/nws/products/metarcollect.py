@@ -427,10 +427,10 @@ class METARCollective(TextProduct):
                 "channels": ",".join(channels),
                 "lat": str(row.get("lat")),
                 "long": str(row.get("lon")),
+                "twitter": (
+                    f"{nm},{st} ({sid}) ASOS reports {msg} -- {mtr.code}"
+                )[:TWEET_CHARS],
             }
-            xtra["twitter"] = (
-                f"{nm},{st} ({sid}) ASOS reports {msg} -- {mtr.code}"
-            )[:TWEET_CHARS]
             jmsgs.append([jtxt, jhtml, xtra])
 
         return jmsgs
