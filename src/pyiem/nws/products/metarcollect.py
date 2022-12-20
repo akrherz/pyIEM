@@ -378,44 +378,45 @@ class METARCollective(TextProduct):
                     jmsgs.append(
                         [mstr, mstr, dict(channels=",".join(channels))]
                     )
-            if msg:
-                sid = normid(mtr.station_id)
-                row = self.nwsli_provider.get(sid, {})
-                wfo = row.get("wfo")
-                if wfo is None or wfo == "":
-                    LOG.warning(
-                        "Unknown WFO for %s, skipping alert", mtr.station_id
-                    )
-                    continue
-                channels = [f"METAR.{mtr.station_id}"]
-                if mtr.type == "SPECI":
-                    channels.append(f"SPECI.{mtr.station_id}")
-                channels.append(wfo)
-                st = row.get("state")
-                nm = row.get("name")
+            if msg is None:
+                continue
+            sid = normid(mtr.station_id)
+            row = self.nwsli_provider.get(sid, {})
+            wfo = row.get("wfo")
+            if wfo is None or wfo == "":
+                LOG.warning(
+                    "Unknown WFO for %s, skipping alert", mtr.station_id
+                )
+                continue
+            channels = [f"METAR.{mtr.station_id}"]
+            if mtr.type == "SPECI":
+                channels.append(f"SPECI.{mtr.station_id}")
+            channels.append(wfo)
+            st = row.get("state")
+            nm = row.get("name")
 
-                extra = ""
-                if mtr.code.find("$") > 0:
-                    extra = "(Caution: Maintenance Check Indicator)"
-                url = f"{uri}{row.get('network')}"
-                jtxt = (
-                    f"{nm},{st} ({sid}) ASOS {extra} reports {msg}\n"
-                    f"{mtr.code} {url}"
-                )
-                jhtml = (
-                    f'<p><a href="{url}">{nm},{st}</a> ({sid}) ASOS '
-                    f"{extra} reports <strong>{msg}</strong>"
-                    f"<br/>{mtr.code}</p>"
-                )
-                xtra = {
-                    "channels": ",".join(channels),
-                    "lat": str(row.get("lat")),
-                    "long": str(row.get("lon")),
-                }
-                xtra["twitter"] = (
-                    f"{nm},{st} ({sid}) ASOS reports {msg} -- {mtr.code}"
-                )[:TWEET_CHARS]
-                jmsgs.append([jtxt, jhtml, xtra])
+            extra = ""
+            if mtr.code.find("$") > 0:
+                extra = "(Caution: Maintenance Check Indicator)"
+            url = f"{uri}{row.get('network')}"
+            jtxt = (
+                f"{nm},{st} ({sid}) ASOS {extra} reports {msg}\n"
+                f"{mtr.code} {url}"
+            )
+            jhtml = (
+                f'<p><a href="{url}">{nm},{st}</a> ({sid}) ASOS '
+                f"{extra} reports <strong>{msg}</strong>"
+                f"<br/>{mtr.code}</p>"
+            )
+            xtra = {
+                "channels": ",".join(channels),
+                "lat": str(row.get("lat")),
+                "long": str(row.get("lon")),
+            }
+            xtra["twitter"] = (
+                f"{nm},{st} ({sid}) ASOS reports {msg} -- {mtr.code}"
+            )[:TWEET_CHARS]
+            jmsgs.append([jtxt, jhtml, xtra])
 
         return jmsgs
 
