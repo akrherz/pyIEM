@@ -3,9 +3,9 @@
 Break-up the XML G-AIRMET into atomic pieces.
 """
 from datetime import timezone, datetime
-import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+import defusedxml.ElementTree as ET
 from shapely.geometry import Polygon, MultiLineString, LineString
 from pyiem.models.gairmet import (
     GAIRMETModel,

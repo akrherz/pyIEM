@@ -5,10 +5,10 @@ Attempt to break up the HML product into atomic data
 """
 import re
 from datetime import timezone, datetime
-import xml.etree.ElementTree as ET
 
+import defusedxml.ElementTree as ET
 import pandas as pd
-import pyiem.nws.product as product
+from pyiem.nws import product
 from pyiem.util import LOG
 
 DELIMITER = r"""\<\?xml version="1.0" standalone="yes"\?\>"""

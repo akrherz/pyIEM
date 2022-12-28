@@ -1,8 +1,7 @@
 """GAIRMET"""
-# stdlib
-import xml.etree.ElementTree as ET
 
 # Third Party
+import defusedxml.ElementTree as ET
 import mock
 import pytest
 

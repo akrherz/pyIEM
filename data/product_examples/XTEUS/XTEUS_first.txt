@@ -1,0 +1,58 @@
+899 
+RXUS30 KWNH 010051
+XTEUS
+<?xml version="1.0"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://www.nws.noaa.gov/forecasts/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="tabular-digital" operational-mode="test">
+      <title>US High/Low Temperature Extremes</title>
+      <field>meteorological</field>
+      <category>observations</category>
+      <creation-date refresh-frequency="PT6H">2008-07-01T00:26:29Z</creation-date>
+    </product>
+    <source>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+      <production-center>National Centers For Environmental Prediction
+        <sub-center>Hydrometeorological Prediction Center</sub-center>
+      </production-center>
+      <disclaimer>http://www.nws.noaa.gov/disclaimer.html</disclaimer>
+      <credit>http://www.weather.gov/</credit>
+      <credit-logo>http://www.weather.gov/images/xml_logo.gif</credit-logo>
+      <feedback>http://www.weather.gov/survey/nws-survey.php?code=tpex</feedback>
+    </source>
+  </head>
+<data>
+  <location>
+    <location-key>STN1</location-key>
+    <city state="CA" summarization="conus">Death Valley</city>
+  </location>
+  <location>
+    <location-key>STN2</location-key>
+    <city state="WY" summarization="conus">Pahaska</city>
+  </location>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p9h-n1-1</layout-key>
+    <start-valid-time>2008-06-30T15:00:00</start-valid-time>
+    <end-valid-time>2008-07-01T00:00:00</end-valid-time>
+  </time-layout>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p13h-n1-1</layout-key>
+    <start-valid-time>2008-06-30T02:00:00</start-valid-time>
+    <end-valid-time>2008-06-30T15:00:00</end-valid-time>
+  </time-layout>
+  <parameters applicable-location="STN1">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p9h-n1-1">
+      <name>National High Temperature</name>
+      <value>121</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="STN2">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>36</value>
+    </temperature>
+  </parameters>
+</data>
+</dwml>

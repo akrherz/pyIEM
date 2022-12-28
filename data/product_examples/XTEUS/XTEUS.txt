@@ -1,0 +1,78 @@
+238 
+RXUS30 KWNH 280041
+XTEUS 
+<?xml version="1.0"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://www.nws.noaa.gov/forecasts/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="tabular-digital" operational-mode="operational">
+      <title>US High/Low Temperature Extremes</title>
+      <field>meteorological</field>
+      <category>observations</category>
+      <creation-date refresh-frequency="PT6H">2022-12-28T00:26:29Z</creation-date>
+    </product>
+    <source>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+      <production-center>National Centers For Environmental Prediction
+        <sub-center>Hydrometeorological Prediction Center</sub-center>
+      </production-center>
+      <disclaimer>http://www.nws.noaa.gov/disclaimer.html</disclaimer>
+      <credit>http://www.weather.gov/</credit>
+      <credit-logo>http://www.weather.gov/images/xml_logo.gif</credit-logo>
+      <feedback>http://www.weather.gov/survey/nws-survey.php?code=tpex</feedback>
+    </source>
+  </head>
+<data>
+  <location>
+    <location-key>~QSGA3</location-key>
+    <city state="AZ" summarization="conus">6 miles east of Catalina Foothills</city>
+  </location>
+  <location>
+    <location-key>~FYTI4</location-key>
+    <city state="IA" summarization="conus">1 mile northwest of Fayette</city>
+  </location>
+  <location>
+    <location-key>~NHPI4</location-key>
+    <city state="IA" summarization="conus">New Hampton</city>
+  </location>
+  <location>
+    <location-key>~SNYI4</location-key>
+    <city state="IA" summarization="conus">Stanley</city>
+  </location>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p10h-n1-1</layout-key>
+    <start-valid-time>2022-12-27T14:00:00</start-valid-time>
+    <end-valid-time>2022-12-28T00:00:00</end-valid-time>
+  </time-layout>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p13h-n1-1</layout-key>
+    <start-valid-time>2022-12-27T01:00:00</start-valid-time>
+    <end-valid-time>2022-12-27T14:00:00</end-valid-time>
+  </time-layout>
+  <parameters applicable-location="~QSGA3">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p10h-n1-1">
+      <name>National High Temperature</name>
+      <value>81</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~FYTI4">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>-13</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~NHPI4">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>-13</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="~SNYI4">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>-13</value>
+    </temperature>
+  </parameters>
+</data>
+</dwml>

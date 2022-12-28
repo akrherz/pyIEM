@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Depend on package `defusedxml` for XML parsing.
 - Quasi internal `MetarCollective.wind_message` was modified to also return the
 wind speed in knots.
 - Refactor internal testing `util.get_file_name` helper.
@@ -16,6 +17,7 @@ wind speed in knots.
 - Add flag (`plot_convention`) for windrose plots to change orientation of the
 bars.  Engineers generally want bars oriented toward the direction the wind
 is blowing toward, not from (#680).
+- Add WPC XTEUS (national max/min temp) parser `pyiem.nws.products.xteus`.
 - Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS
 database has.
 - Fix state border zorder and allow `stateborderwidth` kwarg.
