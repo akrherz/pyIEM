@@ -1,7 +1,7 @@
 """WPC's XTEUS Nationwide High/Low."""
 from datetime import datetime, timezone
-import xml.etree.ElementTree as ET
 
+import defusedxml.ElementTree as ET
 import pandas as pd
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG

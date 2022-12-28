@@ -3,6 +3,7 @@
 affine
 cartopy_offlinedata
 cython
+defusedxml
 fiona
 # need to pin for comparables
 freetype>=2.10
