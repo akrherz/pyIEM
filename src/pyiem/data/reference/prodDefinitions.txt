@@ -328,5 +328,5 @@ WWA WWA
 WWP WWP
 XF0 XF0
 XOB XOB
-XTE XTE
+XTEUS WPC Contiguous US Daily Max/Min Temps
 ZFP Zone Forecast Package
