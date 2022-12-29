@@ -30,16 +30,32 @@ def _parse_xml(textprod: TextProduct) -> pd.DataFrame:
             computed_date = sts.date()
         timelayout[key] = {"date": computed_date, "sts": sts, "ets": ets}
     xref = {}
+    suffix = "-"
     for location in root.findall("data/location"):
         key = location.find("location-key").text
+        if key in xref:
+            textprod.warnings.append(
+                "Found duplicated location-key... attempting workaround."
+            )
+            key = f"{key}{suffix}"
+            suffix += "-"
         xref[key] = {
             "state": location.find("city").attrib["state"][:2],
             "name": location.find("city").text,
         }
 
+    used = []
+    suffix = "-"
     for param in root.findall("data/parameters"):
         for child in param:
             key = param.attrib["applicable-location"]
+            if key in used:
+                textprod.warnings.append(
+                    "Found uplicated applicable-location, working around."
+                )
+                key = f"{key}{suffix}"
+                suffix += "-"
+            used.append(key)
             tkey = child.attrib["time-layout"]
             rows.append(
                 {

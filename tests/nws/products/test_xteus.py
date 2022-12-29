@@ -7,6 +7,16 @@ from pyiem.nws.products.xteus import parser
 from pyiem.util import get_test_file, utc
 
 
+def test_221228_duplicated_location():
+    """Test that we can make assumptions about this duplicated location."""
+    data = get_test_file("XTEUS/XTEUS_double.txt")
+    utcnow = utc(2015, 3, 29, 18, 38)
+    prod = parser(data, utcnow=utcnow)
+    assert prod.warnings
+    df = prod.data[prod.data["name"] == "Big Black River"]
+    assert df.iloc[0]["value"] == -9
+
+
 @pytest.mark.parametrize("database", ["iem"])
 def test_nowrite(dbcursor):
     """Test database insert."""
