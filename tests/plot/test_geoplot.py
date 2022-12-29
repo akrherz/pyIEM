@@ -562,14 +562,15 @@ def test_contourf_grid():
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fillstates():
     """Can we fill states"""
-    data = {"AK": 10, "HI": 30, "IA": 40, "NY": 80}
+    data = {"AK": 10, "HI": 30, "IA": 40, "NY": 80, "CT": 100, "RI": 100}
+    data.update({"MA": 100, "DE": 100, "MD": 100})
     mp = MapPlot(
         sector="nws",
-        title="Fill AK, HI, IA, NY States",
+        title="Fill States & Test Some Readability",
         subtitle="test_fillstates",
         nocaption=True,
     )
-    mp.fill_states(data, lblformat="%.0f", ilabel=True)
+    mp.fill_states(data, lblformat="%.0f", ilabel=True, labelbuffer=0)
     return mp.fig
 
 
