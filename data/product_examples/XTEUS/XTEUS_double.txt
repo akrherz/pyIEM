@@ -1,0 +1,68 @@
+237 
+RXUS30 KWNH 291838
+XTEUS 
+<?xml version="1.0"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://www.nws.noaa.gov/forecasts/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="tabular-digital" operational-mode="operational">
+      <title>US High/Low Temperature Extremes</title>
+      <field>meteorological</field>
+      <category>observations</category>
+      <creation-date refresh-frequency="PT6H">2015-03-29T18:26:31Z</creation-date>
+    </product>
+    <source>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+      <production-center>National Centers For Environmental Prediction
+        <sub-center>Hydrometeorological Prediction Center</sub-center>
+      </production-center>
+      <disclaimer>http://www.nws.noaa.gov/disclaimer.html</disclaimer>
+      <credit>http://www.weather.gov/</credit>
+      <credit-logo>http://www.weather.gov/images/xml_logo.gif</credit-logo>
+      <feedback>http://www.weather.gov/survey/nws-survey.php?code=tpex</feedback>
+    </source>
+  </head>
+<data>
+  <location>
+    <location-key>STN1</location-key>
+    <city state="CA" summarization="conus">Death Valley</city>
+  </location>
+  <location>
+    <location-key>STN1</location-key>
+    <city state="ME" summarization="conus">Big Black River</city>
+  </location>
+  <location>
+    <location-key>KSLK</location-key>
+    <city state="NY" summarization="conus">Saranac Lake</city>
+  </location>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p12h-n1-1</layout-key>
+    <start-valid-time>2015-03-28T15:00:00</start-valid-time>
+    <end-valid-time>2015-03-29T03:00:00</end-valid-time>
+  </time-layout>
+  <time-layout time-coordinate="UTC">
+    <layout-key>k-p13h-n1-1</layout-key>
+    <start-valid-time>2015-03-29T00:00:00</start-valid-time>
+    <end-valid-time>2015-03-29T13:00:00</end-valid-time>
+  </time-layout>
+  <parameters applicable-location="STN1">
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p12h-n1-1">
+      <name>National High Temperature</name>
+      <value>102</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="STN1">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>-9</value>
+    </temperature>
+  </parameters>
+  <parameters applicable-location="KSLK">
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p13h-n1-1">
+      <name>National Low Temperature</name>
+      <value>-9</value>
+    </temperature>
+  </parameters>
+</data>
+</dwml>
