@@ -9,8 +9,7 @@ fiona
 freetype>=2.10
 gdal
 geopandas
-# Await resolving unknown bugs
-geos<3.11.0
+geos
 # talk to google
 google-api-python-client
 # templating
