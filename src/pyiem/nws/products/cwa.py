@@ -163,7 +163,9 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
         line = LineString(pts)
         right = line.parallel_offset(width_deg / 2, "right", join_style=2)
         left = line.parallel_offset(width_deg / 2, "left", join_style=2)
-        poly = Polygon(list(left.coords) + list(right.coords))
+        # NB This may be brittle to GEOS library version
+        poly = Polygon(list(left.coords) + list(right.coords[::-1]))
+
     elif len(pts) == 1:
         # We have a point
         res = DIAMETER.search(prod.unixtext).groupdict()
