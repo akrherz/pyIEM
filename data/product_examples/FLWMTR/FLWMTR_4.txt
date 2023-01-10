@@ -1,0 +1,67 @@
+114 
+WGUS46 KMTR 010240
+FLWMTR
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service San Francisco CA
+640 PM PST Sat Dec 31 2022
+
+CAC081-085-010545-
+/O.NEW.KMTR.FA.W.0004.230101T0240Z-230101T0545Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+San Mateo CA-Santa Clara CA-
+640 PM PST Sat Dec 31 2022
+
+...FLOOD WARNING IN EFFECT UNTIL 945 PM PST THIS EVENING...
+
+* WHAT...Flooding caused by excessive rainfall is expected.
+
+* WHERE...A portion of northern California, including the following 
+  counties, San Mateo and Santa Clara.
+
+* WHEN...Until 945 PM PST.
+
+* IMPACTS...Flooding of rivers, creeks, streams, and other low-lying 
+  and flood-prone locations is imminent or occurring. Numerous roads 
+  remain closed due to flooding. Streams continue to rise due to 
+  excess runoff from earlier rainfall. Low-water crossings are 
+  inundated with water and may not be passable. Expect many areas of 
+  slow moving or standing water. It will take several hours for all 
+  the water from these storms to work through local drainage systems 
+  in urban areas.
+
+* ADDITIONAL DETAILS...
+  - At 640 PM PST, Doppler radar and automated rain gauges
+    indicated heavy rain. Flooding is ongoing or expected to
+    begin shortly in the warned area. Between 2 and 6 inches of
+    rain have fallen.
+  - Additional rainfall amounts of 0.2 to 1 inch are possible in
+    the warned area.
+  - Some locations that will experience flooding include...
+    San Mateo, Redwood City, Palo Alto, Burlingame, San Carlos,
+    Belmont, Half Moon Bay, Hillsborough, Woodside, Highlands-
+    Baywood Park, El Granada, Portola Valley, Emerald Lake Hills
+    and Highlands.
+  - http://www.weather.gov/safety/flood
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood 
+deaths occur in vehicles.
+
+Be especially cautious at night when it is harder to recognize the 
+dangers of flooding.
+
+Stay away or be swept away. River banks and culverts can become 
+unstable and unsafe.
+
+&&
+
+LAT...LON 3726 12215 3722 12238 3726 12239 3728 12240
+      3736 12239 3751 12247 3759 12237 3741 12223
+
+
+$$
+
+RWW

@@ -55,14 +55,17 @@ def which_year(txn, prod, segment, vtec):
     # which guides the table that the data is stored within
     for offset in [3, 10, 31]:
         txn.execute(
-            "SELECT tableoid::regclass as tablename, hvtec_nwsli, "
-            "min(product_issue at time zone 'UTC'), "
-            "max(product_issue at time zone 'UTC'), "
-            "min(issue at time zone 'UTC') as min_issue from warnings "
-            "WHERE wfo = %s and eventid = %s and significance = %s and "
-            "phenomena = %s and ((updated > %s and updated <= %s) "
-            "or expire > %s) and status not in ('UPG', 'CAN') "
-            "GROUP by tablename, hvtec_nwsli ORDER by tablename DESC ",
+            """
+            SELECT tableoid::regclass as tablename, hvtec_nwsli,
+            min(product_issue at time zone 'UTC'),
+            max(product_issue at time zone 'UTC'),
+            array_agg(ugc) as database_ugcs,
+            min(issue at time zone 'UTC') as min_issue from warnings
+            WHERE wfo = %s and eventid = %s and significance = %s and
+            phenomena = %s and ((updated > %s and updated <= %s)
+            or expire > %s) and status not in ('UPG', 'CAN')
+            GROUP by tablename, hvtec_nwsli ORDER by tablename DESC
+            """,
             (
                 vtec.office,
                 vtec.etn,
@@ -87,10 +90,16 @@ def which_year(txn, prod, segment, vtec):
             # We likely have a flood warning and can use the HVTEC NWSLI
             # to resolve ambiguity
             hvtec_nwsli = segment.get_hvtec_nwsli()
-            if hvtec_nwsli:
+            if hvtec_nwsli and hvtec_nwsli != "00000":
                 for row in rows:
                     if hvtec_nwsli == row["hvtec_nwsli"]:
                         return int(row["tablename"].replace("warnings_", ""))
+            # Attempt to resolve by comparing UGCs
+            segugcs = [str(u) for u in segment.ugcs]
+            for row in rows:
+                if all(x in segugcs for x in row["database_ugcs"]):
+                    LOG.warning("Resolved ambuquity via UGC check")
+                    return int(row["tablename"].replace("warnings_", ""))
 
             prod.warnings.append(
                 f"VTEC {vtec} product: {prod.get_product_id()} "
