@@ -41,6 +41,18 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_flwmtr_dueling_etns(dbcursor):
+    """Test that we can properly juggle dueling ETNs over 1 Jan."""
+    # 4. New FA.W issued for 2023
+    # 5. Is a CON for the 2022 event and where the bug is...
+    for i in range(9):
+        prod = _vtecparser(get_test_file(f"FLWMTR/FLWMTR_{i}.txt"))
+        prod.sql(dbcursor)
+        print(i)
+        assert not filter_warnings(prod.warnings)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_gh676_emergency(dbcursor):
     """Test that the database flags this as an emergency."""
     for i in range(2):

@@ -1,0 +1,31 @@
+828 
+WGUS86 KMTR 010542
+FLSMTR
+
+Flood Statement
+National Weather Service San Francisco CA
+942 PM PST Sat Dec 31 2022
+
+CAC081-085-010552-
+/O.EXP.KMTR.FA.W.0004.000000T0000Z-230101T0545Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+San Mateo CA-Santa Clara CA-
+942 PM PST Sat Dec 31 2022
+
+...FLOOD WARNING WILL EXPIRE AT 945 PM PST THIS EVENING...
+
+The Flood Warning will expire at 945 PM PST this evening for a 
+portion of northern California, including the following counties, 
+San Mateo and Santa Clara.
+
+Flood waters have receded. The heavy rain has ended. Flooding is no 
+longer expected to pose a threat. Please continue to heed remaining 
+road closures.
+
+LAT...LON 3726 12215 3722 12238 3726 12239 3728 12240
+      3736 12239 3751 12247 3759 12237 3741 12223
+
+
+$$
+
+JBB

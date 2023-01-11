@@ -1,0 +1,58 @@
+038 
+WGUS46 KMTR 311700
+FLWMTR
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service San Francisco CA
+900 AM PST Sat Dec 31 2022
+
+CAC001-312200-
+/O.NEW.KMTR.FA.W.0004.221231T1700Z-221231T2200Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+Alameda CA-
+900 AM PST Sat Dec 31 2022
+
+...FLOOD WARNING IN EFFECT UNTIL 2 PM PST THIS AFTERNOON FOR ALAMEDA 
+CREEK ABOVE DIV DAM NEAR SUNOL...
+
+* WHAT...Urban area and small stream flooding caused by excessive 
+  rainfall is expected.
+
+* WHERE...A portion of northern California, including the following 
+  county, Alameda.
+
+* WHEN...Until 200 PM PST.
+
+* IMPACTS...Flooding of rivers, creeks, streams, and other low-lying 
+  and flood-prone locations is imminent or occurring. Streams 
+  continue to rise due to excess runoff from earlier rainfall. 
+  Low-water crossings are inundated with water and may not be 
+  passable.
+
+* ADDITIONAL DETAILS...
+  - At 859 AM PST, Doppler radar and automated rain gauges
+    indicated heavy rain due to thunderstorms. Flooding is
+    already occurring in the warned area.
+  - Some locations that will experience flooding include...
+    Fremont and Sunol.
+  - http://www.weather.gov/safety/flood
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood 
+deaths occur in vehicles.
+
+Stay away or be swept away. River banks and culverts can become 
+unstable and unsafe.
+
+&&
+
+LAT...LON 3755 12193 3756 12188 3754 12180 3753 12171
+      3751 12169 3749 12172 3749 12184 3749 12192
+      3751 12193
+
+
+$$
+
+Palmer
