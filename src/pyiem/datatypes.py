@@ -45,6 +45,7 @@ class mixingratio(basetype):
             )
         if units.upper() == self._units:
             return self._value
+        return None
 
 
 class distance(basetype):
@@ -243,9 +244,8 @@ class temperature(basetype):
             return self._value
 
         # Convert to Celsius first
-        if self._units == "C":
-            celsius_value = self._value
-        elif self._units == "F":
+        celsius_value = self._value
+        if self._units == "F":
             celsius_value = (self._value - 32.0) / 1.8
         elif self._units == "K":
             celsius_value = self._value - 273.15

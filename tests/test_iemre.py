@@ -4,9 +4,8 @@ import datetime
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type: ignore
 
-import numpy as np
 from pyiem.util import utc, get_dbconn
 from pyiem import iemre
 

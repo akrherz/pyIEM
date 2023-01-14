@@ -9,7 +9,6 @@ except ImportError:
 
 import numpy as np
 import pandas as pd
-from pandas import read_sql
 from metpy.units import units as mpunits
 from sqlalchemy import text
 
@@ -155,7 +154,7 @@ def _get_data(station, **kwargs):
         )
         sqlargs["level"] = kwargs["level"]
     with get_sqlalchemy_conn(database) as conn:
-        df = read_sql(sql, conn, params=sqlargs, index_col=None)
+        df = pd.read_sql(sql, conn, params=sqlargs, index_col=None)
     if not df.empty:
         # Make valid column timezone aware
         df["valid"] = df["valid"].dt.tz_localize(timezone.utc)

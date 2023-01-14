@@ -63,7 +63,8 @@ def set_grids(valid, ds, cursor=None, table=None):
     """
     table = table if table is not None else get_table(valid)
     commit = cursor is None
-    if cursor is None:
+    pgconn = None
+    if commit:
         pgconn = get_dbconn("iemre")
         cursor = pgconn.cursor()
     # see that we have database entries, otherwise create them

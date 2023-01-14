@@ -12,8 +12,8 @@ def test_unitserror():
                 a.value("ZZzZZ")
             for unit in cls.known_units:
                 a = cls(10, unit)
-                for unit in cls.known_units:
-                    assert a.value(unit) is not None
+                for unitt in cls.known_units:
+                    assert a.value(unitt) is not None
 
 
 def test_mixingratio():

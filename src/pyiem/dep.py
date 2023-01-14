@@ -3,7 +3,6 @@ import datetime
 import re
 
 import pandas as pd
-from pandas import read_sql
 import numpy as np
 from scipy.interpolate import interp1d
 
@@ -38,7 +37,7 @@ RAMPS = {
 
 def load_scenarios():
     """Build a dataframe of DEP scenarios."""
-    df = read_sql(
+    df = pd.read_sql(
         "SELECT * from scenarios ORDER by id ASC",
         get_dbconnstr("idep"),
         index_col="id",
