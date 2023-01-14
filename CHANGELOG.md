@@ -41,6 +41,7 @@ a polygon, but does not (#660).
 headlines.
 - Reduce needless lat/lon precision with Jabber messages (#656).
 - Remove hard coded `nobody` database user for some internal API calls.
+- Remove matplotlib colormap shim and require matplotlib>=3.5.
 - [SHEF] Make station ids longer than 8 chars non-fatal.
 - Support geos 3.11 (#633).
 - Support increased range and emit ValueError for too large range for
