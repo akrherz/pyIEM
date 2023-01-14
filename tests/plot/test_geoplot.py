@@ -1,4 +1,5 @@
 """Test plots made by pyiem.plot.geoplot"""
+# pylint disable=too-many-lines
 import datetime
 import tempfile
 import os
@@ -18,7 +19,7 @@ from pyiem.plot import (
     load_bounds,
     mask_outside_geom,
 )
-from pyiem.reference import TWITTER_RESOLUTION_INCH
+from pyiem.reference import TWITTER_RESOLUTION_INCH, LATLON
 from pyiem.util import utc, load_geodf
 
 # Increased threshold with matplotlib 3.6 tweaks
@@ -44,6 +45,27 @@ def test_close():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_force_cities():
+    """Test that we can force cities underneath some data."""
+    mp = MapPlot(sector="cwa", cwa="UNR", nocaption=True)
+    mp.drawcities(
+        isolated=True, color="tan", outlinecolor="tan", textoutlinewidth=0
+    )
+    # Make some fake data
+    (west, east, south, north) = mp.panels[0].get_extent(crs=LATLON)
+    x = []
+    y = []
+    z = []
+    for lon in np.arange(west, east, 0.25):
+        for lat in np.arange(south, north, 0.25):
+            x.append(lon)
+            y.append(lat)
+            z.append(0.25)
+    mp.plot_values(x, y, z)
+    return mp.fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)

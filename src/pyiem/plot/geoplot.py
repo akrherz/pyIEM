@@ -646,7 +646,10 @@ class MapPlot:
             disables the label culling logic.
           outlinecolor (color): color to use for text outlines
           zorder (int or list, optional): zorder to use for plotting.
-          textoutlinewidth (int): width of the font outline, default 3.
+          textoutlinewidth (int): width of the font outline, default 3. A value
+            <= 0 disables text outlines.
+          isolated (bool): Only compute label collision against labels within
+            this plot_values call. Default `false`
         """
         if valmask is None:
             valmask = [True] * len(lons)
@@ -673,6 +676,10 @@ class MapPlot:
         if self.textmask is None:
             # zorder is used to track plotting priorities
             self.textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
+        # Either use ongoing textmask or a local one
+        _textmask = self.textmask
+        if kwargs.get("isolated", False):
+            _textmask = np.zeros((int(figwidth), int(figheight)), np.int8)
         # Create a geodataframe to use for clipping
         gdf = gpd.GeoDataFrame(
             {"geometry": gpd.points_from_xy(lons, lats, crs=LATLON)}
@@ -694,7 +701,7 @@ class MapPlot:
         bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
         xpixels_per_char = bbox.width / 10.0
         ypixels = bbox.height
-
+        text_outline_width = kwargs.get("textoutlinewidth", 3)
         for gp in self.panels:
             # See if we have any data to plot, clip is trouble
             df = gdf.to_crs(gp.crs).cx[
@@ -742,9 +749,7 @@ class MapPlot:
                     ]
                 )
                 overlap = (
-                    self.textmask[
-                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                    ]
+                    _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
                     >= row["zorder"]
                 )
                 _cnt = np.sum(overlap)
@@ -786,15 +791,13 @@ class MapPlot:
                         imgy1,
                         _cnt,
                     )
-                self.textmask[
+                _textmask[
                     int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
                 ] = np.where(
-                    self.textmask[
-                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                    ]
+                    _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
                     < row["zorder"],
                     row["zorder"],
-                    self.textmask[
+                    _textmask[
                         int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
                     ],
                 )
@@ -829,15 +832,16 @@ class MapPlot:
                         crs=gp.crs,
                     )
                 t0.set_clip_on(True)
-                t0.set_path_effects(
-                    [
-                        PathEffects.Stroke(
-                            linewidth=kwargs.get("textoutlinewidth", 3),
-                            foreground=outlinecolor,
-                        ),
-                        PathEffects.Normal(),
-                    ]
-                )
+                if text_outline_width > 0:
+                    t0.set_path_effects(
+                        [
+                            PathEffects.Stroke(
+                                linewidth=text_outline_width,
+                                foreground=outlinecolor,
+                            ),
+                            PathEffects.Normal(),
+                        ]
+                    )
 
                 if row["label"] and row["label"] != "":
                     gp.ax.annotate(
@@ -1186,6 +1190,8 @@ class MapPlot:
           textsize (int): size of the text
           color (str): color to plot the text with
           outlinecolor (str): color to outline the text with
+          isolated (bool): Cause `plot_values` to do label collision against
+            only labels from drawing cities. Default False.
         """
         gdf = load_geodf("cities")
         (west, east, south, north) = self.panels[0].get_extent(crs=LATLON)
