@@ -282,8 +282,8 @@ def ncopen(ncfn, mode="r", timeout=60):
             nc = netCDF4.Dataset(ncfn, mode)
             nc.set_auto_scale(True)
             break
-        except (OSError, IOError):
-            pass
+        except (OSError, IOError) as exp:
+            LOG.debug(exp)
         time.sleep(5)
     return nc
 

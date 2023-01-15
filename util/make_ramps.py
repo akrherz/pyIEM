@@ -3,7 +3,7 @@
 We use a pickled protocol=2, which is compat binary.
 """
 
-from pandas import read_sql
+import pandas as pd
 from pyiem.util import get_dbconnstr
 
 PATH = "../src/pyiem/data/ramps/"
@@ -13,7 +13,7 @@ print("Be sure to run this against Mesonet database and not laptop!")
 
 def do(ramp):
     """states."""
-    df = read_sql(
+    df = pd.read_sql(
         "SELECT l.coloridx, l.value, l.r, l.g, l.b from iemrasters_lookup l "
         "JOIN iemrasters r ON (l.iemraster_id = r.id) WHERE r.name = %s and "
         "value is not null "

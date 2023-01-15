@@ -63,7 +63,7 @@ def test_future_crosses():
             "000 ",
             "SAUS44 KISU 152300",
             "METAR "
-            "QQQQ 172153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
+            + "QQQQ 172153Z 23016G25KT 10SM FEW025 SCT055 17/04 A2982 RMK ",
             "AO2 SLP104 T01720044=",
         ]
     )

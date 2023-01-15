@@ -1,9 +1,8 @@
 """Definition of colormaps"""
-import copy
 import os
 
 import numpy as np
-from matplotlib import cm, colors as mpcolors
+from matplotlib import colormaps, colors as mpcolors
 
 # Local
 from pyiem.reference import DATADIR
@@ -17,12 +16,12 @@ def _register_cmap(cmap):
     """
     hascmap = False
     try:
-        cm.get_cmap(cmap.name)
+        get_cmap(cmap.name)
         hascmap = True
-    except ValueError:
+    except KeyError:
         LOG.debug("Failed to get cmap: %s", cmap.name)
     if not hascmap:
-        cm.register_cmap(cmap=cmap)
+        colormaps.register(cmap)
     return hascmap
 
 
@@ -34,9 +33,9 @@ def _load_local_cmap_colors(name):
     return res
 
 
-def get_cmap(name, *args, **kwargs):
-    """Matplotlib `get_cmap()` proxy to deal with API complexity."""
-    return copy.copy(cm.get_cmap(name, *args, **kwargs))
+def get_cmap(name):
+    """Helper to workaround matplotlib complexity."""
+    return colormaps[name]
 
 
 def stretch_cmap(cmap, bins, extend="both"):
@@ -58,7 +57,7 @@ def stretch_cmap(cmap, bins, extend="both"):
     if cmap is None:
         cmap = maue()
     if isinstance(cmap, str):
-        cmap = cm.get_cmap(cmap)
+        cmap = get_cmap(cmap)
     if extend not in ["both", "neither", "min", "max"]:
         extend = "both"
 
@@ -132,54 +131,27 @@ def _gen(name, cpool):
 def dep_erosion():
     """DEP Erosion ramp yelllow to brown (jump at 5T) `cool`"""
     # NB: dep.RAMPS wants just 8 colors, so don't define more than that here
-    cpool = [
-        "#FFFF80",
-        "#FCDD60",
-        "#E69729",
-        "#B35915",
-        "#822507",
-        "#00ffff",
-        "#55aaff",
-        "#d52aff",
-    ]
+    cpool = (
+        "#FFFF80 #FCDD60 #E69729 #B35915 #822507 #00ffff #55aaff #d52aff"
+    ).split()
     return _gen("dep_erosion", cpool)
 
 
 def james2():
     """David James suggested color ramp Yellow to Brown"""
-    cpool = [
-        "#FFFF80",
-        "#FFEE70",
-        "#FCDD60",
-        "#FACD52",
-        "#F7BE43",
-        "#F5AF36",
-        "#E69729",
-        "#CC781F",
-        "#B35915",
-        "#9C400E",
-        "#822507",
-        "#6B0000",
-    ]
+    cpool = (
+        "#FFFF80 #FFEE70 #FCDD60 #FACD52 #F7BE43 #F5AF36 #E69729 #CC781F "
+        "#B35915 #9C400E #822507 #6B0000"
+    ).split()
     return _gen("james2", cpool)
 
 
 def james():
     """David James suggested color ramp Yellow to Blue"""
-    cpool = [
-        "#FFFF80",
-        "#CDFA64",
-        "#98F046",
-        "#61E827",
-        "#3BD923",
-        "#3FC453",
-        "#37AD7A",
-        "#26989E",
-        "#217AA3",
-        "#215394",
-        "#1B3187",
-        "#0C1078",
-    ]
+    cpool = (
+        "#FFFF80 #CDFA64 #98F046 #61E827 #3BD923 #3FC453 #37AD7A #26989E "
+        "#217AA3 #215394 #1B3187 #0C1078"
+    ).split()
     return _gen("james", cpool)
 
 

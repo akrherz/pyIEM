@@ -8,7 +8,6 @@ from collections import OrderedDict
 
 # third party
 import pandas as pd
-from pandas import read_sql
 
 # local
 from pyiem.util import utc, get_dbconnstr
@@ -145,7 +144,7 @@ def _load_from_database(pgconn=None, valid=None):
     """
     pgconn = pgconn if pgconn is not None else get_dbconnstr("postgis")
     valid = valid if valid is not None else utc()
-    return read_sql(
+    return pd.read_sql(
         "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
         "from ugcs WHERE begin_ts <= %s and "
         "(end_ts is null or end_ts > %s)",

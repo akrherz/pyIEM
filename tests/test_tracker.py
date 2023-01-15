@@ -1,7 +1,6 @@
 """Test pyiem.tracker."""
 # pylint: disable=redefined-outer-name
-import datetime
-from datetime import timezone
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 from pyiem.tracker import TrackerEngine, loadqc
@@ -35,7 +34,7 @@ def test_loadqc(pcursor):
         ('BOGUS', 'tmpf', 'OPEN', '2019-03-27')
     """
     )
-    q = loadqc(cursor=pcursor, date=datetime.date(2019, 3, 27))
+    q = loadqc(cursor=pcursor, date=date(2019, 3, 27))
     assert q
 
 
@@ -51,12 +50,12 @@ def test_workflow(pcursor, icursor):
     nt.sts[sid2] = dict(
         name="YYY Site Name", network="IA_XXXX", tzname="America/Chicago"
     )
-    valid = datetime.datetime.utcnow()
+    valid = datetime.utcnow()
     valid = valid.replace(tzinfo=timezone.utc)
-    threshold = valid - datetime.timedelta(hours=3)
+    threshold = valid - timedelta(hours=3)
     obs = {
         sid1: {"valid": valid},
-        sid2: {"valid": valid - datetime.timedelta(hours=6)},
+        sid2: {"valid": valid - timedelta(hours=6)},
     }
     # Create dummy iem_site_contacts
     pcursor.execute(
@@ -94,14 +93,14 @@ def test_workflow(pcursor, icursor):
     assert len(tracker.emails) == 1
 
     tracker.emails = {}
-    obs[sid1]["valid"] = valid - datetime.timedelta(hours=6)
+    obs[sid1]["valid"] = valid - timedelta(hours=6)
     obs[sid2]["valid"] = valid
     tracker.process_network(obs, pnetwork, nt, threshold)
     tracker.send_emails(really_send=False)
     assert len(tracker.emails) == 2
 
     tracker.emails = {}
-    obs[sid1]["valid"] = valid - datetime.timedelta(hours=6)
+    obs[sid1]["valid"] = valid - timedelta(hours=6)
     obs[sid2]["valid"] = valid
     tracker.process_network(obs, pnetwork, nt, threshold)
     tracker.send_emails(really_send=False)

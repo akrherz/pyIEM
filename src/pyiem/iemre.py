@@ -43,9 +43,7 @@ def get_table(valid):
     """
     # careful here, a datetime is not an instance of date
     if isinstance(valid, datetime):
-        table = "iemre_hourly_%s" % (
-            valid.astimezone(timezone.utc).strftime("%Y%m"),
-        )
+        table = f"iemre_hourly_{valid.astimezone(timezone.utc):%Y%m}"
     else:
         table = f"iemre_daily_{valid.year}"
     return table
@@ -63,7 +61,8 @@ def set_grids(valid, ds, cursor=None, table=None):
     """
     table = table if table is not None else get_table(valid)
     commit = cursor is None
-    if cursor is None:
+    pgconn = None
+    if commit:
         pgconn = get_dbconn("iemre")
         cursor = pgconn.cursor()
     # see that we have database entries, otherwise create them
@@ -75,10 +74,8 @@ def set_grids(valid, ds, cursor=None, table=None):
         # Update mode, we do some massive tricks :/
         temptable = "".join(random.choices(string.ascii_uppercase, k=24))
         insertmode = False
-        update_cols = ", ".join(
-            ["%s = $%i" % (v, i + 1) for i, v in enumerate(ds)]
-        )
-        arg = "$%i" % (len(ds) + 1,)
+        update_cols = ", ".join([f"{v} = ${i + 1}" for i, v in enumerate(ds)])
+        arg = f"${len(ds) + 1}"
         # approximate table size is 10 MB
         cursor.execute("SET temp_buffers = '100MB'")
         cursor.execute(
@@ -94,13 +91,14 @@ def set_grids(valid, ds, cursor=None, table=None):
         )
     else:
         # Insert mode
-        insert_cols = ", ".join(["%s" % (v,) for v in ds])
-        percents = ", ".join(["$%i" % (i + 2,) for i in range(len(ds))])
+        insert_cols = ", ".join([f"{v}" for v in ds])
+        percents = ", ".join([f"${i + 2}" for i in range(len(ds))])
         cursor.execute(
             f"PREPARE pyiem_iemre_plan as INSERT into {table} "
             f"(gid, valid, {insert_cols}) VALUES($1, '{valid}', {percents})"
         )
-    sql = "execute pyiem_iemre_plan (%s)" % (",".join(["%s"] * (len(ds) + 1)),)
+    ss = ",".join(["%s"] * (len(ds) + 1))
+    sql = f"execute pyiem_iemre_plan ({ss})"
 
     def _n(val):
         """Prevent nan"""
