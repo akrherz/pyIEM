@@ -2,6 +2,7 @@
 import os
 import datetime
 
+import pytest
 from pyiem import dep
 
 
@@ -22,6 +23,14 @@ def test_scenarios():
     df = dep.load_scenarios()
     assert not df.empty
     assert 0 in df.index
+
+
+def test_cli_fname_raises():
+    """Test out of bounds requests."""
+    with pytest.raises(ValueError):
+        dep.get_cli_fname(dep.WEST - 1, dep.SOUTH + 1)
+    with pytest.raises(ValueError):
+        dep.get_cli_fname(dep.WEST + 1, dep.SOUTH - 1)
 
 
 def test_cli_fname():
