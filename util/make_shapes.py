@@ -130,8 +130,8 @@ def check_file(fn):
             print("Invalid Geom Found?")
             sys.exit()
     print(
-        "runtime: %.5fs, entries: %s, fn: %s"
-        % ((ets - sts).total_seconds(), len(df.index), fn)
+        f"runtime: {(ets - sts).total_seconds():.5f}s, "
+        + f"entries: {len(df.index)}, fn: {fn}"
     )
 
 

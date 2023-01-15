@@ -43,9 +43,7 @@ class mixingratio(basetype):
                 f"unrecognized mixingratio unit: {units} "
                 f"known: {mixingratio.known_units}"
             )
-        if units.upper() == self._units:
-            return self._value
-        return None
+        return self._value
 
 
 class distance(basetype):

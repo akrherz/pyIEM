@@ -1,15 +1,17 @@
 """Utilities for the Daily Erosion Project"""
 import datetime
+import math
 import re
 
 import pandas as pd
 import numpy as np
 from scipy.interpolate import interp1d
+from sqlalchemy import text
 
 # Local
 # pylint: disable=unused-import
 from pyiem.iemre import SOUTH, WEST, NORTH, EAST  # noqa
-from pyiem.util import get_dbconnstr
+from pyiem.util import get_sqlalchemy_conn
 
 YLD_CROPTYPE = re.compile(r"Crop Type #\s+(?P<num>\d+)\s+is (?P<name>[^\s]+)")
 YLD_DATA = re.compile(
@@ -37,11 +39,12 @@ RAMPS = {
 
 def load_scenarios():
     """Build a dataframe of DEP scenarios."""
-    df = pd.read_sql(
-        "SELECT * from scenarios ORDER by id ASC",
-        get_dbconnstr("idep"),
-        index_col="id",
-    )
+    with get_sqlalchemy_conn("idep") as conn:
+        df = pd.read_sql(
+            text("SELECT * from scenarios ORDER by id ASC"),
+            conn,
+            index_col="id",
+        )
     return df
 
 
@@ -51,12 +54,9 @@ def get_cli_fname(lon, lat, scenario=0):
     # truncate
     lon = round(lon, 2)
     lat = round(lat, 2)
-    return "/i/%s/cli/%03ix%03i/%06.2fx%06.2f.cli" % (
-        scenario,
-        0 - lon,
-        lat,
-        0 - lon,
-        lat,
+    return (
+        f"/i/{scenario}/cli/{math.floor(0 - lon):03.0f}x"
+        f"{math.floor(lat):03.0f}/{(0 - lon):06.2f}x{lat:06.2f}.cli"
     )
 
 
@@ -69,7 +69,8 @@ def read_yld(filename):
     Returns:
       pandas.DataFrame
     """
-    data = open(filename, encoding="utf8").read()
+    with open(filename, encoding="utf8") as fh:
+        data = fh.read()
     xref = {}
     for (cropcode, label) in YLD_CROPTYPE.findall(data):
         xref[cropcode] = label
@@ -99,7 +100,8 @@ def read_slp(filename):
     Returns:
       list of slope profiles
     """
-    lines = [a[: a.find("#")].strip() for a in open(filename, encoding="utf8")]
+    with open(filename, encoding="utf8") as fh:
+        lines = [a[: a.find("#")].strip() for a in fh]
     segments = int(lines[5])
     res = [None] * segments
     xpos = 0
@@ -179,7 +181,8 @@ def read_man(filename):
     """
     res = {}
     # Step one make a array of any data
-    lines = [a[: a.find("#")].strip() for a in open(filename)]
+    with open(filename, encoding="ascii") as fh:
+        lines = [a[: a.find("#")].strip() for a in fh]
     res["manver"] = lines[0]
     res["iofe"] = int(lines[6])
     res["inyr"] = int(lines[7])
@@ -418,7 +421,8 @@ def read_cli(filename, compute_rfactor=False, return_rfactor_metric=True):
     """
     rows = []
     dates = []
-    lines = open(filename).readlines()
+    with open(filename, encoding="ascii") as fh:
+        lines = fh.readlines()
     linenum = 15
     while linenum < len(lines):
         (da, mo, year, breakpoints, tmax, tmin, rad, wvl, wdir, tdew) = lines[

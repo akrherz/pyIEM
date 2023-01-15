@@ -8,14 +8,13 @@ from pyiem import dep
 def get_path(name):
     """helper"""
     basedir = os.path.dirname(__file__)
-    return "%s/../data/wepp/%s" % (basedir, name)
+    return f"{basedir}/../data/wepp/{name}"
 
 
 def test_ramps():
     """Ramps should be of length 11"""
-    for q in dep.RAMPS:
-        for val in dep.RAMPS[q]:
-            assert len(val) == 9
+    for _q, vals in dep.RAMPS.items():
+        assert all(len(val) == 9 for val in vals)
 
 
 def test_scenarios():
