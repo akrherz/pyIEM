@@ -34,17 +34,34 @@ def test_get_table():
 def test_get_gid():
     """Can we get a gid?"""
     assert iemre.get_gid(-96, 44) is not None
+    assert iemre.get_gid(-960, 440) is None
+
+
+def test_writing_grids():
+    """Test letting the API write data from the future."""
+    pgconn = get_dbconn("iemre")
+    cursor = pgconn.cursor()
+    valid = datetime.date.today() + datetime.timedelta(days=120)
+    ds = iemre.get_grids(valid, varnames=["high_tmpk"])
+    iemre.set_grids(valid, ds)
+    ds = iemre.get_grids(valid, varnames=["high_tmpk"])
+    assert ds["high_tmpk"].lat[0] > 0
+    # Cleanup after ourself
+    cursor.execute(
+        f"DELETE from iemre_daily_{valid:%Y} WHERE valid = %s",
+        (valid,),
+    )
+    cursor.close()
+    pgconn.commit()
 
 
 def test_forecast_grids():
     """Test getting and setting grids from the future."""
     pgconn = get_dbconn("iemre")
     cursor = pgconn.cursor()
-    valid = datetime.date(2029, 12, 1)
+    valid = datetime.date.today() + datetime.timedelta(days=120)
     cursor.execute(
-        """
-        DELETE from iemre_daily_forecast WHERE valid = %s
-    """,
+        "DELETE from iemre_daily_forecast WHERE valid = %s",
         (valid,),
     )
     cursor.execute(

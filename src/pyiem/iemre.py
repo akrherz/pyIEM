@@ -43,9 +43,7 @@ def get_table(valid):
     """
     # careful here, a datetime is not an instance of date
     if isinstance(valid, datetime):
-        table = "iemre_hourly_%s" % (
-            valid.astimezone(timezone.utc).strftime("%Y%m"),
-        )
+        table = f"iemre_hourly_{valid.astimezone(timezone.utc):%Y%m}"
     else:
         table = f"iemre_daily_{valid.year}"
     return table
