@@ -145,6 +145,7 @@ def test_ncopen_conflict():
         nc.title = "hello"
         nc.close()
         nc = util.ncopen(tmp.name, "r")
+        assert nc is not None
         nc2 = util.ncopen(tmp.name, "w", timeout=5)
         assert nc2 is None
 

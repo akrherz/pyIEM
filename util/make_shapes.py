@@ -4,7 +4,6 @@ import warnings
 import sys
 
 import geopandas as gpd
-from geopandas import read_postgis
 from pyiem.reference import state_bounds
 from pyiem.util import get_sqlalchemy_conn
 
@@ -18,7 +17,7 @@ print("Be sure to run this against Mesonet database and not laptop! DOIT!")
 def dump_conus(fn):
     """states."""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             """SELECT
                 ST_Transform(
                     ST_Simplify(
@@ -36,7 +35,7 @@ def dump_conus(fn):
 def dump_states(fn):
     """states."""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             """
             SELECT state_abbr, ST_Simplify(the_geom, 0.01) as geom,
             ST_x(ST_Centroid(the_geom)) as lon,
@@ -52,7 +51,7 @@ def dump_states(fn):
 def dump_climdiv(fn):
     """climate divisions."""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             """
             SELECT iemid, geom,
             ST_x(ST_Centroid(geom)) as lon,
@@ -68,7 +67,7 @@ def dump_climdiv(fn):
 def dump_cwa(fn):
     """WFOs."""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             """
             SELECT wfo,
             ST_Multi(ST_Buffer(ST_Simplify(the_geom, 0.01), 0)) as geom,
@@ -89,7 +88,7 @@ def dump_cwa(fn):
 def dump_iowawfo(fn):
     """A region with the Iowa WFOs"""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             """ SELECT ST_Simplify(ST_Union(the_geom), 0.01) as geom
             from cwa
             WHERE wfo in ('DMX', 'ARX', 'DVN', 'OAX', 'FSD')""",
@@ -107,7 +106,7 @@ def dump_ugc(gtype, fn, is_firewx=False):
 
     # We want UGCs valid for the time of running this script
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
-        df = read_postgis(
+        df = gpd.read_postgis(
             "SELECT ugc, wfo as cwa, simple_geom as geom, "
             "ST_x(centroid) as lon, ST_Y(centroid) as lat "
             "from ugcs WHERE begin_ts < now() and "
