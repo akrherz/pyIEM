@@ -21,6 +21,33 @@ def cursor():
     return database.get_dbconn("mesosite").cursor()
 
 
+def test_get_twitter():
+    """Test get_twitter functionality."""
+    screen_name = "Zzz__Qqq"
+    # No user
+    assert util.get_twitter(screen_name) is None
+    # Create an entry
+    with database.get_dbconn("mesosite") as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT into iembot_twitter_oauth (screen_name, user_id)
+            VALUES (%s, %s)
+            """,
+            (screen_name, -1),
+        )
+        cursor.close()
+        conn.commit()
+        assert util.get_twitter(screen_name) is not None
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE from iembot_twitter_oauth where screen_name = %s",
+            (screen_name,),
+        )
+        cursor.close()
+        conn.commit()
+
+
 def test_insert_nan(cursor):
     """Test that we properly insert NaN values as nulls."""
     vals = np.array([0, np.nan, 10], dtype=np.float64)

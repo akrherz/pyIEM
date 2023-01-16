@@ -1,9 +1,21 @@
 """Testing of pyiem.database"""
+# pylint: disable=cell-var-from-loop
 
 # third party
 import pytest
 import psycopg2
 from pyiem import database
+
+
+def test_get_dbconn_for_user(monkeypatch):
+    """Test this works."""
+    for ins, outs in zip(
+        ["apache", "akrherz", "mesonet_ldm", "xyz"],
+        ["nobody", "mesonet", "ldm", "xyz"],
+    ):
+        monkeypatch.setattr("getpass.getuser", lambda: ins)
+        res = database.get_dbconnstr("bogus")
+        assert res.find(outs) > 0
 
 
 def test_get_sqlalchemy():

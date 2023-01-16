@@ -219,17 +219,18 @@ def get_twitter(screen_name):
     Args:
       screen_name (str): The twitter user we are fetching creds for
     """
-    conn = get_dbconn("mesosite")
-    cursor = conn.cursor()
-    props = get_properties(cursor)
-    # fetch the oauth saved creds
-    cursor.execute(
-        "select access_token, access_token_secret from iembot_twitter_oauth "
-        "WHERE screen_name = %s",
-        (screen_name,),
-    )
-    row = cursor.fetchone()
-    conn.close()
+    with get_dbconn("mesosite") as conn:
+        cursor = conn.cursor()
+        props = get_properties(cursor)
+        # fetch the oauth saved creds
+        cursor.execute(
+            "select access_token, access_token_secret from "
+            "iembot_twitter_oauth WHERE screen_name = %s",
+            (screen_name,),
+        )
+        if cursor.rowcount == 0:
+            return None
+        row = cursor.fetchone()
     return twython.Twython(
         props["bot.twitter.consumerkey"],
         props["bot.twitter.consumersecret"],

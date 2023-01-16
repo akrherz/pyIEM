@@ -10,6 +10,14 @@ from sqlalchemy import create_engine
 
 # NB: Careful of cyclic imports here...
 
+# Map system users back to something supported by akrherz/iem-database repo
+USERNAME_MAPPER = {
+    "apache": "nobody",
+    "www-data": "nobody",
+    "akrherz": "mesonet",
+    "meteor_ldm": "ldm",
+}
+
 
 def get_dbconnstr(name, **kwargs) -> str:
     """Create a database connection string/URI.
@@ -26,14 +34,7 @@ def get_dbconnstr(name, **kwargs) -> str:
     """
     user = kwargs.get("user")
     if user is None:
-        user = getpass.getuser()
-        # We hard code the apache user back to nobody, www-data is travis-ci
-        if user in ["apache", "www-data"]:
-            user = "nobody"
-        elif user == "akrherz":  # HACK for daryl's development, sigh
-            user = "mesonet"
-        elif user == "meteor_ldm":  # Another HACK
-            user = "ldm"
+        user = USERNAME_MAPPER.get(getpass.getuser(), getpass.getuser())
     host = kwargs.get("host")
     if host is None:
         host = f"iemdb-{name}.local"
