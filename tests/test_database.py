@@ -21,13 +21,15 @@ def test_get_dbconn(dbname):  # noqa
 
 def test_get_dbconn_bad():
     """Test that we raise a warning."""
-    with pytest.warns(UserWarning, match="database connection failure"):
-        with pytest.raises(psycopg2.OperationalError):
-            database.get_dbconn("bogus")
+    with pytest.warns(
+        UserWarning, match="database connection failure"
+    ), pytest.raises(psycopg2.OperationalError):
+        database.get_dbconn("bogus")
 
 
 def test_get_dbconn_failover():
     """See if failover works?"""
-    with pytest.warns(UserWarning, match="database connection failure"):
-        with pytest.raises(psycopg2.OperationalError):
-            database.get_dbconn("mesosite", host="b")
+    with pytest.warns(
+        UserWarning, match="database connection failure"
+    ), pytest.raises(psycopg2.OperationalError):
+        database.get_dbconn("mesosite", host="b")

@@ -85,6 +85,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
                 f"database connection failure: {exp}, trying again",
                 stacklevel=2,
             )
+    return None
 
 
 @contextmanager
