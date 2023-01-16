@@ -28,9 +28,9 @@ def faux_data():
 
 def test_database():
     """Test that we can read data from the database."""
-    wr = windrose("AMW2", justdata=True, hours=[1, 2])
-    assert wr
+    windrose("AMW2", justdata=True, hours=[1, 2])
     wr = windrose("AMW2", hours=[1, 2])
+    assert wr
 
 
 def test_windrose_without_units():

@@ -3,7 +3,7 @@ https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020
 """
 import datetime
 from geopandas import read_postgis, read_parquet
-from pyiem.util import get_dbconn
+from pyiem.database import get_dbconn
 
 FILENAME = "../src/pyiem/data/geodf/cities.parquet"
 

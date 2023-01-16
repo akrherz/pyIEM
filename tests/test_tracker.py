@@ -3,9 +3,9 @@
 from datetime import date, datetime, timedelta, timezone
 
 import pytest
-from pyiem.tracker import TrackerEngine, loadqc
+from pyiem.database import get_dbconn
 from pyiem.network import Table as NetworkTable
-from pyiem.util import get_dbconn
+from pyiem.tracker import TrackerEngine, loadqc
 
 
 @pytest.fixture

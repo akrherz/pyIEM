@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 - Quasi internal `MetarCollective.wind_message` was modified to also return the
 wind speed in knots.
 - Refactor internal testing `util.get_file_name` helper.
+- Refactor `pyiem.util` database methods to `pyiem.database`.
 
 ### New Features
 

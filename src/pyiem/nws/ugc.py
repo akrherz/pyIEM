@@ -10,8 +10,9 @@ from collections import OrderedDict
 import pandas as pd
 
 # local
-from pyiem.util import utc, get_dbconnstr
+from pyiem.database import get_dbconnstr
 from pyiem.exceptions import UGCParseException
+from pyiem.util import utc
 
 UGC_RE = re.compile(
     r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-\s*$", re.M

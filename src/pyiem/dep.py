@@ -9,8 +9,8 @@ from scipy.interpolate import interp1d
 from sqlalchemy import text
 
 # Local
+from pyiem.database import get_sqlalchemy_conn
 from pyiem.iemre import SOUTH, WEST, NORTH, EAST
-from pyiem.util import get_sqlalchemy_conn
 
 YLD_CROPTYPE = re.compile(r"Crop Type #\s+(?P<num>\d+)\s+is (?P<name>[^\s]+)")
 YLD_DATA = re.compile(

@@ -145,11 +145,12 @@ def int24(data):
 
 def get_ir_ramp():
     """Return a np 256x3 array of colors to use for IR"""
-    fn = "%s/gini_ir_ramp.txt" % (DATADIR,)
+    fn = os.path.join(DATADIR, "gini_ir_ramp.txt")
     data = np.zeros((256, 3), np.uint8)
-    for i, line in enumerate(open(fn)):
-        tokens = line.split()
-        data[i, :] = [int(tokens[0]), int(tokens[1]), int(tokens[2])]
+    with open(fn, encoding="ascii") as fh:
+        for i, line in enumerate(fh):
+            tokens = line.split()
+            data[i, :] = [int(tokens[0]), int(tokens[1]), int(tokens[2])]
     return data
 
 
@@ -191,16 +192,15 @@ class GINIZFile:
             LOG.warning("Totalsize left: %s", totsz)
 
         self.data = np.reshape(
-            np.fromstring(sdata, np.int8),
+            np.frombuffer(sdata, np.int8),
             (self.metadata["numlines"] + 1, self.metadata["linesize"]),
         )
 
     def __str__(self):
         """return a string representation"""
-        text = "%s Line Size: %s Num Lines: %s" % (
-            self.wmo,
-            self.metadata["linesize"],
-            self.metadata["numlines"],
+        text = (
+            f"{self.wmo} Line Size: {self.metadata['linesize']} "
+            f"Num Lines: {self.metadata['numlines']}"
         )
         return text
 
@@ -218,10 +218,10 @@ class GINIZFile:
         Return a filename for this product, we'll use the format
         {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png
         """
-        return "%s_%s_%s.png" % (
-            LABELS[self.metadata["creating_entity"]],
-            SECTORS[self.metadata["sector"]],
-            CHANNELS[self.metadata["channel"]],
+        return (
+            f"{LABELS[self.metadata['creating_entity']]}_"
+            f"{SECTORS[self.metadata['sector']]}_"
+            f"{CHANNELS[self.metadata['channel']]}.png"
         )
 
     def get_bird(self):
@@ -243,11 +243,11 @@ class GINIZFile:
         Return a filename for this product, we'll use the format
         {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png
         """
-        return ("%s_%s_%s_%s.png") % (
-            LABELS[self.metadata["creating_entity"]],
-            SECTORS[self.metadata["sector"]],
-            CHANNELS[self.metadata["channel"]],
-            self.metadata["valid"].strftime("%Y%m%d%H%M"),
+        return (
+            f"{LABELS[self.metadata['creating_entity']]}_"
+            f"{SECTORS[self.metadata['sector']]}_"
+            f"{CHANNELS[self.metadata['channel']]}_"
+            f"{self.metadata['valid']:%Y%m%d%H%M}.png"
         )
 
     def init_llc(self):
@@ -264,12 +264,8 @@ class GINIZFile:
             b=6371200.0,
         )
 
-        # s = 1.0
-        # if self.metadata['proj_center_flag'] != 0:
-        #    s = -1.0
         psi = M_PI_2 - abs(math.radians(self.metadata["latin"]))
         cos_psi = math.cos(psi)
-        # r_E = RE_METERS / cos_psi
         alpha = math.pow(math.tan(psi / 2.0), cos_psi) / math.sin(psi)
 
         x0, y0 = self.metadata["proj"](
@@ -277,8 +273,6 @@ class GINIZFile:
         )
         self.metadata["x0"] = x0
         self.metadata["y0"] = y0
-        # self.metadata['dx'] *= alpha
-        # self.metadata['dy'] *= alpha
         self.metadata["y1"] = y0 + (self.metadata["dy"] * self.metadata["ny"])
 
         (self.metadata["lon_ul"], self.metadata["lat_ul"]) = self.metadata[

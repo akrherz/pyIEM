@@ -5,7 +5,7 @@ import pytest
 from psycopg2.extras import DictCursor
 
 # This repo
-from pyiem.util import get_dbconn
+from pyiem.database import get_dbconn
 
 
 @pytest.fixture()

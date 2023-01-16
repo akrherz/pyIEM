@@ -80,7 +80,7 @@ def test_dbinsert(dbcursor):
     prod = tafparser(text.replace("200931 AAS", "200932 AAS"), utcnow=utcnow)
     prod.sql(dbcursor)
     # bad TEMPO
-    prod = tafparser(text.replace("2011/2012", "Q011/Q012"), utcnow=utcnow)
+    tafparser(text.replace("2011/2012", "Q011/Q012"), utcnow=utcnow)
 
 
 def test_datamodel():

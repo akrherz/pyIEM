@@ -6,9 +6,9 @@ from email.mime.text import MIMEText
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
-    from backports.zoneinfo import ZoneInfo
+    from backports.zoneinfo import ZoneInfo  # type:ignore
 
-from pyiem.util import get_dbconn
+from pyiem.database import get_dbconn
 
 
 class TrackerEngine:
@@ -42,10 +42,10 @@ class TrackerEngine:
             return
         s = smtplib.SMTP()
         s.connect()
-        for email in self.emails:
-            msg = MIMEText(self.emails[email]["body"])
+        for email, entry in self.emails.items():
+            msg = MIMEText(entry["body"])
             msg["From"] = "akrherz@iastate.edu"
-            msg["Subject"] = self.emails[email]["subject"]
+            msg["Subject"] = entry["subject"]
             s.sendmail(msg["From"], email, msg.as_string())
         s.close()
 
@@ -67,11 +67,8 @@ class TrackerEngine:
             (pnetwork, sid),
         )
         for row in self.pcursor:
-            open_tickets += (" %-6s %16s     %s\n" "") % (
-                row[0],
-                row[1].strftime("%Y-%m-%d %I %p"),
-                row[2],
-            )
+            dstr = row[1].strftime("%Y-%m-%d %I %p")
+            open_tickets += f" {row[0]:-6s} {dstr:16s}     {row[2]}\n"
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
         self.pcursor.execute(
@@ -80,11 +77,8 @@ class TrackerEngine:
             (pnetwork, sid),
         )
         for row in self.pcursor:
-            closed_tickets += (" %-6s %16s     %s\n" "") % (
-                row[0],
-                row[1].strftime("%Y-%m-%d %I %p"),
-                row[2],
-            )
+            dstr = row[1].strftime("%Y-%m-%d %I %p")
+            closed_tickets += f" {row[0]:-6s} {dstr:16s}     {row[2]}\n"
         if closed_tickets == "":
             closed_tickets = " --None-- "
         if open_tickets == "":
@@ -98,7 +92,7 @@ class TrackerEngine:
         trackerid = self.pcursor.fetchone()[0]
         # Create a tt_log entry
         lts = ob["valid"].astimezone(ZoneInfo(nt.sts[sid]["tzname"]))
-        msg = "Site Offline since %s" % (lts.strftime("%d %b %Y %H:%M %Z"),)
+        msg = f"Site Offline since {lts:%d %b %Y %H:%M %Z}"
         self.pcursor.execute(
             "INSERT into tt_log (portfolio, s_mid, author, status_c, "
             "comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -160,9 +154,7 @@ class TrackerEngine:
         """
         trackerid = offline[sid]["trackerid"]
         # Create Log Entry
-        cmt = ("Site Back Online at: %s" "") % (
-            ob["valid"].strftime("%Y-%m-%d %H:%M:%S"),
-        )
+        cmt = f"Site Back Online at: {ob['valid']:%Y-%m-%d %H:%M:%S}"
         self.pcursor.execute(
             "INSERT into tt_log (portfolio, s_mid, author, status_c, "
             "comments, tt_id) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -184,7 +176,7 @@ class TrackerEngine:
         days = delta.days
         hours = delta.seconds / 3600.0
         minutes = (delta.seconds % 3600) / 60.0
-        duration = "%.0f days %.0f hours %.0f minutes" % (days, hours, minutes)
+        duration = f"{days:.0f} days {hours:.0f} hours {minutes:.0f} minutes"
         mailstr = f"""
    ---------------------------------
    |  *** IEM TRACKER REPORT ***   |
@@ -215,7 +207,7 @@ IEM Tracker Action:  This trouble ticket has been marked
         for row in self.pcursor:
             email = row[0].lower()
             if email not in self.emails:
-                subject = ("[IEM] %s Online" "") % (nt.sts[sid]["name"],)
+                subject = f"[IEM] {nt.sts[sid]['name']} Online"
                 self.emails[email] = {"subject": subject, "body": mailstr}
             else:
                 subject = "[IEM] Multiple Sites"

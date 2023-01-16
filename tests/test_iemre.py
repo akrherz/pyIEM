@@ -6,8 +6,8 @@ try:
 except ImportError:
     from backports.zoneinfo import ZoneInfo  # type: ignore
 
-from pyiem.util import utc, get_dbconn
-from pyiem import iemre
+from pyiem import database, iemre
+from pyiem.util import utc
 
 
 def test_api():
@@ -39,7 +39,7 @@ def test_get_gid():
 
 def test_writing_grids():
     """Test letting the API write data from the future."""
-    pgconn = get_dbconn("iemre")
+    pgconn = database.get_dbconn("iemre")
     cursor = pgconn.cursor()
     valid = datetime.date.today() + datetime.timedelta(days=120)
     ds = iemre.get_grids(valid, varnames=["high_tmpk"])
@@ -57,7 +57,7 @@ def test_writing_grids():
 
 def test_forecast_grids():
     """Test getting and setting grids from the future."""
-    pgconn = get_dbconn("iemre")
+    pgconn = database.get_dbconn("iemre")
     cursor = pgconn.cursor()
     valid = datetime.date.today() + datetime.timedelta(days=120)
     cursor.execute(

@@ -3,8 +3,8 @@
 from shapely.wkb import loads
 from shapely.geometry import MultiPolygon
 import numpy as np
+from pyiem.database import get_dbconn
 from pyiem.plot import MapPlot
-from pyiem.util import get_dbconn
 
 
 def main():

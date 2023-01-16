@@ -68,4 +68,4 @@ def test_exception():
     prod = parser(data, utcnow=utcnow)
     assert prod.warnings
     with pytest.raises(Exception):
-        prod = parser(data.replace("G-AIRMET", "BOOO"), utcnow=utcnow)
+        parser(data.replace("G-AIRMET", "BOOO"), utcnow=utcnow)
