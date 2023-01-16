@@ -9,6 +9,7 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo  # type:ignore
 
 from pyiem.database import get_dbconn
+from pyiem.util import LOG
 
 
 class TrackerEngine:
@@ -33,21 +34,24 @@ class TrackerEngine:
         self.action_count = 0
         self.emails = {}
 
-    def send_emails(self, really_send=True):
+    def send_emails(self):
         """Send out those SPAM emails!"""
         # Don't do anything if we have exceeded maxoffline
         if self.action_count >= self.maxactions and self.maxactions > 0:
             return
-        if not really_send:
-            return
-        s = smtplib.SMTP()
-        s.connect()
-        for email, entry in self.emails.items():
-            msg = MIMEText(entry["body"])
-            msg["From"] = "akrherz@iastate.edu"
-            msg["Subject"] = entry["subject"]
-            s.sendmail(msg["From"], email, msg.as_string())
-        s.close()
+        with smtplib.SMTP() as s:
+            try:
+                s.connect()
+            except Exception as exp:
+                LOG.warning("smtp connection failed with %s", exp)
+            for email, entry in self.emails.items():
+                msg = MIMEText(entry["body"])
+                msg["From"] = "akrherz@iastate.edu"
+                msg["Subject"] = entry["subject"]
+                try:
+                    s.sendmail(msg["From"], email, msg.as_string())
+                except Exception as exp:
+                    LOG.warning("smtp sendmail failed with %s", exp)
 
     def offline_logic(self, sid, ob, pnetwork, nt):
         """offline logic
