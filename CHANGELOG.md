@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Depend on package `defusedxml` for XML parsing.
+- Depend on package `twython`.
 - Quasi internal `MetarCollective.wind_message` was modified to also return the
 wind speed in knots.
 - Refactor internal testing `util.get_file_name` helper.

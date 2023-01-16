@@ -44,5 +44,6 @@ scipy
 shapely
 # pandas 1.4.0 wants this now
 sqlalchemy
+twython
 # iemre
 xarray
