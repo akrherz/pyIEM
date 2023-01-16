@@ -232,8 +232,8 @@ def get_twitter(screen_name):
             return None
         row = cursor.fetchone()
     return twython.Twython(
-        props["bot.twitter.consumerkey"],
-        props["bot.twitter.consumersecret"],
+        props.get("bot.twitter.consumerkey"),
+        props.get("bot.twitter.consumersecret"),
         row[0],
         row[1],
     )

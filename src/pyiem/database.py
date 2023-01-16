@@ -71,22 +71,19 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     """
     dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
     attempt = 0
+    conn = None
     while attempt < 3:
         attempt += 1
         try:
-            return psycopg2.connect(dsn)
-        except psycopg2.ProgrammingError as exp:
-            warnings.warn(f"database connection failure: {exp}", stacklevel=2)
-            if attempt == 3:
-                raise exp
-        except psycopg2.OperationalError as exp:
+            conn = psycopg2.connect(dsn)
+        except (psycopg2.ProgrammingError, psycopg2.OperationalError) as exp:
             if attempt == 3:
                 raise exp
             warnings.warn(
                 f"database connection failure: {exp}, trying again",
                 stacklevel=2,
             )
-    return None
+    return conn
 
 
 @contextmanager
