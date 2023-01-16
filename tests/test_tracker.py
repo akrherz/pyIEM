@@ -3,9 +3,9 @@
 from datetime import date, datetime, timedelta, timezone
 
 import pytest
-from pyiem.tracker import TrackerEngine, loadqc
+from pyiem.database import get_dbconn
 from pyiem.network import Table as NetworkTable
-from pyiem.util import get_dbconn
+from pyiem.tracker import TrackerEngine, loadqc
 
 
 @pytest.fixture
@@ -72,6 +72,13 @@ def test_workflow(pcursor, icursor):
     """,
         (pnetwork, sid2, "root@localhost"),
     )
+    pcursor.execute(
+        """
+        INSERT into iem_site_contacts
+        (portfolio, s_mid, email) VALUES (%s, %s, %s)
+    """,
+        (pnetwork, sid2, "akrherz@localhost"),
+    )
     # Create some dummy tickets
     pcursor.execute(
         """
@@ -89,19 +96,17 @@ def test_workflow(pcursor, icursor):
     )
     tracker = TrackerEngine(icursor, pcursor)
     tracker.process_network(obs, pnetwork, nt, threshold)
-    tracker.send_emails(really_send=False)
-    assert len(tracker.emails) == 1
-
-    tracker.emails = {}
-    obs[sid1]["valid"] = valid - timedelta(hours=6)
-    obs[sid2]["valid"] = valid
-    tracker.process_network(obs, pnetwork, nt, threshold)
-    tracker.send_emails(really_send=False)
+    tracker.send_emails()
     assert len(tracker.emails) == 2
 
     tracker.emails = {}
     obs[sid1]["valid"] = valid - timedelta(hours=6)
     obs[sid2]["valid"] = valid
     tracker.process_network(obs, pnetwork, nt, threshold)
-    tracker.send_emails(really_send=False)
+    assert len(tracker.emails) == 2
+
+    tracker.emails = {}
+    obs[sid1]["valid"] = valid - timedelta(hours=6)
+    obs[sid2]["valid"] = valid
+    tracker.process_network(obs, pnetwork, nt, threshold)
     assert not tracker.emails

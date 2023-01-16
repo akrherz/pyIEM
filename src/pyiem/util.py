@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=import-outside-toplevel,unbalanced-tuple-unpacking
+# pylint: disable=unbalanced-tuple-unpacking
 """Utility functions for pyIEM package
 
 This module contains utility functions used by various parts of the codebase.
 """
-from contextlib import contextmanager
+from html import escape
 import os
 import sys
 import time
@@ -12,24 +12,28 @@ import random
 import logging
 from datetime import timezone, datetime, date, timedelta
 import re
-import warnings
-import getpass
 from socket import error as socket_error
 import subprocess
 import tempfile
 
 # third party
-import psycopg2
+import netCDF4
+import geopandas as gpd
 from psycopg2.extensions import register_adapter, AsIs
 import numpy as np
 from metpy.units import units, masked_array
 import requests
-from sqlalchemy import create_engine
+import twython
 
-# NB: some third party stuff is expensive to import, so let us be lazy
+# NB: careful with circular imports!
+from pyiem import database
+from pyiem.exceptions import NoDataFound
+from pyiem.network import Table as NetworkTable
 
-# NB: We shall not be importing other parts of pyIEM here as we then get
-# circular references.
+# API compat
+get_dbconn = database.get_dbconn
+get_dbconnstr = database.get_dbconnstr
+get_sqlalchemy_conn = database.get_sqlalchemy_conn
 
 SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 # Setup a default logging instance for this module
@@ -115,7 +119,6 @@ def load_geodf(dataname):
     Returns:
       GeoDataFrame
     """
-    import geopandas as gpd
 
     datadir = os.sep.join([os.path.dirname(__file__), "data"])
     fn = f"{datadir}/geodf/{dataname}.parquet"
@@ -166,8 +169,6 @@ def mm2inch(val):
 
 def html_escape(val):
     """Wrapper around cgi.escape deprecation."""
-    from html import escape
-
     return escape(val)
 
 
@@ -218,22 +219,21 @@ def get_twitter(screen_name):
     Args:
       screen_name (str): The twitter user we are fetching creds for
     """
-    import twython
-
-    dbconn = get_dbconn("mesosite")
-    cursor = dbconn.cursor()
-    props = get_properties(cursor)
-    # fetch the oauth saved creds
-    cursor.execute(
-        "select access_token, access_token_secret from iembot_twitter_oauth "
-        "WHERE screen_name = %s",
-        (screen_name,),
-    )
-    row = cursor.fetchone()
-    dbconn.close()
+    with get_dbconn("mesosite") as conn:
+        cursor = conn.cursor()
+        props = get_properties(cursor)
+        # fetch the oauth saved creds
+        cursor.execute(
+            "select access_token, access_token_secret from "
+            "iembot_twitter_oauth WHERE screen_name = %s",
+            (screen_name,),
+        )
+        if cursor.rowcount == 0:
+            return None
+        row = cursor.fetchone()
     return twython.Twython(
-        props["bot.twitter.consumerkey"],
-        props["bot.twitter.consumersecret"],
+        props.get("bot.twitter.consumerkey"),
+        props.get("bot.twitter.consumersecret"),
         row[0],
         row[1],
     )
@@ -271,8 +271,6 @@ def ncopen(ncfn, mode="r", timeout=60):
     Returns:
       `netCDF4.Dataset` or `None`
     """
-    import netCDF4
-
     if mode != "w" and not os.path.isfile(ncfn):
         raise IOError(f"No such file {ncfn}")
     sts = datetime.utcnow()
@@ -301,102 +299,6 @@ def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     return datetime(
         year, month, day, hour, minute, second, microsecond
     ).replace(tzinfo=timezone.utc)
-
-
-def get_dbconnstr(name, **kwargs) -> str:
-    """Create a database connection string/URI.
-
-    Args:
-      name (str): the database name to connect to.
-      **kwargs: any additional arguments to pass to psycopg2.connect
-        user (str): the database user to connect as
-        host (str): the database host to connect to
-        port (int): the database port to connect to
-        connect_timeout (int): Connection timeout in seconds, default 30.
-    Returns:
-      str
-    """
-    user = kwargs.get("user")
-    if user is None:
-        user = getpass.getuser()
-        # We hard code the apache user back to nobody, www-data is travis-ci
-        if user in ["apache", "www-data"]:
-            user = "nobody"
-        elif user == "akrherz":  # HACK for daryl's development, sigh
-            user = "mesonet"
-        elif user == "meteor_ldm":  # Another HACK
-            user = "ldm"
-    host = kwargs.get("host")
-    if host is None:
-        host = f"iemdb-{name}.local"
-    port = kwargs.get("port")
-    if port is None:
-        port = 5432
-
-    # 15 seconds found to be a bit tight for local ISU congestion
-    return (
-        f"postgresql://{user}@{host}:{port}/{name}?"
-        f"connect_timeout={kwargs.get('connect_timeout', 30)}&"
-        f"gssencmode={kwargs.get('gssencmode', 'disable')}&"
-    )
-
-
-def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
-    """Helper function with business logic to get a database connection
-
-    Note that this helper could return a read-only database connection if the
-    connection to the primary server fails.
-
-    Args:
-      database (str,optional): the database name to connect to.
-        default: mesosite
-      user (str,optional): hard coded user to connect as, default: current user
-      host (str,optional): hard coded hostname to connect as,
-        default: iemdb.local
-      port (int,optional): the TCP port that PostgreSQL is listening
-        defaults to 5432
-      password (str,optional): the password to use.
-
-    Returns:
-      psycopg2 database connection
-    """
-    dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
-    attempt = 0
-    while attempt < 3:
-        attempt += 1
-        try:
-            return psycopg2.connect(dsn)
-        except psycopg2.ProgrammingError as exp:
-            warnings.warn(f"database connection failure: {exp}", stacklevel=2)
-            if attempt == 3:
-                raise exp
-        except psycopg2.OperationalError as exp:
-            if attempt == 3:
-                raise exp
-            warnings.warn(
-                f"database connection failure: {exp}, trying again",
-                stacklevel=2,
-            )
-
-
-@contextmanager
-def get_sqlalchemy_conn(text, **kwargs):
-    """An auto-disposing sqlalchemy context-manager helper.
-
-    This is used for when we really do not want to manage having pools of
-    database connections open.  So this isn't something that is fast!
-
-    Args:
-        text (str): the database to connect to, passed to get_dbconnstr
-        **kwargs: any additional arguments to pass to get_dbconnstr
-    """
-    engine = create_engine(get_dbconnstr(text, **kwargs))
-    try:
-        # Unsure if this is trouble or not.
-        with engine.connect() as conn:
-            yield conn
-    finally:
-        engine.dispose()
 
 
 def noaaport_text(text):
@@ -503,8 +405,6 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
             ctx[netname] = fdict.get(netname, opt.get("network"))
             # Convience we load up the network metadata
             ntname = f"_nt{_n}"
-            from pyiem.network import Table as NetworkTable
-            from pyiem.exceptions import NoDataFound
 
             ctx[ntname] = NetworkTable(ctx[netname], only_online=False)
             # stations starting with _ are virtual and should not error

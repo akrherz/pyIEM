@@ -1,7 +1,6 @@
 """Testing of util."""
 # pylint: disable=redefined-outer-name
-import datetime
-from datetime import timezone
+from datetime import date, datetime, timezone
 import string
 import random
 import tempfile
@@ -12,21 +11,41 @@ import mock
 # third party
 import pytest
 import numpy as np
-import psycopg2
-from pyiem import util
+from pyiem import util, database
 from pyiem.exceptions import NoDataFound
 
 
 @pytest.fixture
 def cursor():
     """Return a database cursor."""
-    return util.get_dbconn("mesosite").cursor()
+    return database.get_dbconn("mesosite").cursor()
 
 
-def test_get_sqlalchemy():
-    """Test that we can do a contextmanager with this API."""
-    with util.get_sqlalchemy_conn("coop") as conn:
-        assert conn is not None
+def test_get_twitter():
+    """Test get_twitter functionality."""
+    screen_name = "Zzz__Qqq"
+    # No user
+    assert util.get_twitter(screen_name) is None
+    # Create an entry
+    with database.get_dbconn("mesosite") as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT into iembot_twitter_oauth (screen_name, user_id)
+            VALUES (%s, %s)
+            """,
+            (screen_name, -1),
+        )
+        cursor.close()
+        conn.commit()
+        assert util.get_twitter(screen_name) is not None
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE from iembot_twitter_oauth where screen_name = %s",
+            (screen_name,),
+        )
+        cursor.close()
+        conn.commit()
 
 
 def test_insert_nan(cursor):
@@ -88,13 +107,6 @@ def test_invalid_file():
     assert util.load_geodf("this shall not work").empty
 
 
-@pytest.mark.parametrize("dbname", ["mos", "hads", "iemre", "postgis"])
-def test_get_dbconn(dbname):  # noqa
-    """Does our code work for various database names."""
-    pgconn = util.get_dbconn(dbname)
-    assert pgconn is not None
-
-
 def test_c2f_singleton():
     """Test that we get back a singleton when providing one."""
     assert abs(util.c2f(0) - 32) < 0.01
@@ -116,20 +128,6 @@ def test_c2f_masked_array():
 def test_mm2inch():
     """Test conversion of mm value to inch."""
     assert abs(util.mm2inch(25.4) - 1) < 0.01
-
-
-def test_get_dbconn_bad():
-    """Test that we raise a warning."""
-    with pytest.warns(UserWarning, match="database connection failure"):
-        with pytest.raises(psycopg2.OperationalError):
-            util.get_dbconn("bogus")
-
-
-def test_get_dbconn_failover():
-    """See if failover works?"""
-    with pytest.warns(UserWarning, match="database connection failure"):
-        with pytest.raises(psycopg2.OperationalError):
-            util.get_dbconn("mesosite", host="b")
 
 
 def test_escape():
@@ -190,10 +188,10 @@ def test_ssw():
 
 def test_utc():
     """Does the utc() function work as expected."""
-    answer = datetime.datetime(2017, 2, 1, 2, 20).replace(tzinfo=timezone.utc)
+    answer = datetime(2017, 2, 1, 2, 20).replace(tzinfo=timezone.utc)
     res = util.utc(2017, 2, 1, 2, 20)
     assert answer == res
-    answer = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
+    answer = datetime.utcnow().replace(tzinfo=timezone.utc)
     assert answer.year == util.utc().year
 
 
@@ -235,9 +233,9 @@ def test_get_apctx_sday():
         ]
     }
     ctx = util.get_autoplot_context(form, cfg)
-    assert ctx["sdate"] == datetime.date(2000, 4, 5)
-    assert ctx["edate"] == datetime.date(2000, 5, 4)
-    assert ctx["odate"] == datetime.date(2000, 2, 10)
+    assert ctx["sdate"] == date(2000, 4, 5)
+    assert ctx["edate"] == date(2000, 5, 4)
+    assert ctx["odate"] == date(2000, 2, 10)
 
 
 def test_get_autoplot_context_name():
@@ -278,8 +276,8 @@ def test_get_autoplot_context_dates():
         ]
     )
     ctx = util.get_autoplot_context(form, opts, rectify_dates=True)
-    assert ctx["d"] == datetime.date(2016, 6, 30)
-    assert ctx["d2"] == datetime.datetime(2016, 9, 30, 13, 14)
+    assert ctx["d"] == date(2016, 6, 30)
+    assert ctx["d2"] == datetime(2016, 9, 30, 13, 14)
     form["d"] = "2016-06-30"
     with pytest.raises(ValueError):
         util.get_autoplot_context(form, opts, rectify_dates=False)
@@ -365,8 +363,8 @@ def test_get_autoplot_context():
     assert ctx["type2"] == "max-high"
     assert isinstance(ctx["f"], float)
     assert ctx["t"] == 9
-    assert ctx["d"] == datetime.date(2011, 11, 12)
-    assert ctx["d2"] == datetime.datetime(2011, 11, 12)
+    assert ctx["d"] == date(2011, 11, 12)
+    assert ctx["d2"] == datetime(2011, 11, 12)
     assert "year" not in ctx
     assert "bogus" not in ctx["type3"]
     assert "type4" not in ctx

@@ -11,14 +11,14 @@ _re = (
     r"([0-9TZ]+)\.([0-9TZ]+)\.([A-Z]{2})/)"
 )
 
-_statusDict = {
-    "00": "is not applicable",
+HVTEC_RECORD = {
+    "OO": "is not applicable",
     "NO": "is not expected",
     "NR": "may be expected",
     "UU": "is not available",
 }
 
-_causeDict = {
+HVTEC_CAUSE = {
     "ER": "Excessive Rainfall",
     "SM": "Snowmelt",
     "RS": "Rain and Snowmelt",
@@ -36,7 +36,7 @@ _causeDict = {
     "UU": "Unknown",
 }
 
-_severityDict = {
+HVTEC_SEVERITY = {
     "N": "None",
     "0": "None",
     "1": "Minor",
@@ -106,3 +106,11 @@ class HVTEC:
     def __str__(self):
         """string representation of this HVTEC"""
         return self.line
+
+    def __repr__(self) -> str:
+        """Return a representation."""
+        return (
+            f"cause: {HVTEC_CAUSE[self.cause]}"
+            + f"severity: {HVTEC_SEVERITY[self.severity]}"
+            + f"record: {HVTEC_RECORD[self.record]}"
+        )

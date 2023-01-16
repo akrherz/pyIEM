@@ -1,7 +1,8 @@
 """Create some data for the scripts to chomp on."""
 import datetime
 
-from pyiem.util import get_dbconn, utc
+from pyiem.database import get_dbconn
+from pyiem.util import utc
 
 
 def asos():

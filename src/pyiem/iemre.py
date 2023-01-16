@@ -13,7 +13,7 @@ from datetime import timezone, datetime
 from affine import Affine
 import numpy as np
 import xarray as xr
-from pyiem.util import get_dbconn
+from pyiem.database import get_dbconn
 
 # 1/8 degree grid, grid cell is the lower left corner
 SOUTH = 23.0

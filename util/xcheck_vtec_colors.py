@@ -1,7 +1,7 @@
 """See which colors we don't have covered."""
 
+from pyiem.database import get_dbconn
 from pyiem.nws.vtec import NWS_COLORS, get_ps_string
-from pyiem.util import get_dbconn
 
 
 def main():

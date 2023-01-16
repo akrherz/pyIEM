@@ -2,7 +2,7 @@
 from collections import OrderedDict
 
 import psycopg2.extras
-from pyiem.util import get_dbconn
+from pyiem.database import get_dbconn
 
 
 class Table:

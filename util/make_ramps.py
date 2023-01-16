@@ -4,7 +4,7 @@ We use a pickled protocol=2, which is compat binary.
 """
 
 import pandas as pd
-from pyiem.util import get_dbconnstr
+from pyiem.database import get_dbconnstr
 
 PATH = "../src/pyiem/data/ramps/"
 # Be annoying

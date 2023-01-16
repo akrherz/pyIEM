@@ -5,7 +5,7 @@ import sys
 
 import geopandas as gpd
 from pyiem.reference import state_bounds
-from pyiem.util import get_sqlalchemy_conn
+from pyiem.database import get_sqlalchemy_conn
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 

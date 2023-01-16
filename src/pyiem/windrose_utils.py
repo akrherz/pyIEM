@@ -13,6 +13,7 @@ from metpy.units import units as mpunits
 from sqlalchemy import text
 
 # Local
+from pyiem.database import get_sqlalchemy_conn
 from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import (
     PLOT_CONVENTION_FROM,
@@ -20,7 +21,7 @@ from pyiem.plot.windrose import (
     plot,
     WindrosePlot,
 )
-from pyiem.util import get_sqlalchemy_conn, utc
+from pyiem.util import utc
 from pyiem.network import Table as NetworkTable
 
 

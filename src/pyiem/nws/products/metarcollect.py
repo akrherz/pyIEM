@@ -457,9 +457,6 @@ class METARCollective(TextProduct):
                 continue
             if token.find("METAR") > -1:
                 token = token[(token.find("METAR") + 5) :]
-            # unsure why this LWIS existed
-            # elif token.find("LWIS ") > -1:
-            #    token = token[token.find("LWIS ")+5:]
             elif token.find("SPECI") > -1:
                 token = token[(token.find("SPECI") + 5) :]
                 prefix = "SPECI"

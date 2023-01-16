@@ -20,3 +20,5 @@ def test_empty2():
     v = hvtec.parse(initial)
     assert v[0].nwsli.id == "NWYI3"
     assert str(v[0]) == initial
+    # We did a placeholder text for now
+    assert isinstance(repr(v[0]), str)

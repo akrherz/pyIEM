@@ -9,7 +9,8 @@ import numpy as np
 import pytest
 import pandas as pd
 from pyiem import observation
-from pyiem.util import get_dbconn, utc
+from pyiem.database import get_dbconn
+from pyiem.util import utc
 
 
 class blah:
@@ -218,7 +219,7 @@ def test_null(iemob):
     iemob.ob.save(iemob.cursor)
     assert iemob.ob.data["dwpf"] is None
     iemob.ob.data["relh"] = 50
-    response = iemob.ob.save(iemob.cursor)
+    iemob.ob.save(iemob.cursor)
     assert abs(iemob.ob.data["dwpf"] - 36.71) < 0.2
     iemob.cursor.execute(
         """SELECT max_tmpf from summary_2015
