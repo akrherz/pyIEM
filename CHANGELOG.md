@@ -30,6 +30,7 @@ database has.
 a polygon, but does not (#660).
 - Support `cartopy_offlinedata` version 0.20+.
 - Support new CLI format diction from NWS Sacramento.
+- Workaround autoplot context fun with mixed 3-4 character WFOs.
 
 ### Bug Fixes
 

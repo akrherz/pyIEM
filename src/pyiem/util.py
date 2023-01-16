@@ -39,6 +39,7 @@ SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 # Setup a default logging instance for this module
 LOG = logging.getLogger("pyiem")
 LOG.addHandler(logging.NullHandler())
+WFO_FOURCHAR = ["AFG", "GUM", "AFG", "HFO", "AFC", "AJK"]
 
 
 def _addapt_num(val):
@@ -411,7 +412,13 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
             if value is None:
                 value = default
             if not value.startswith("_") and value not in ctx[ntname].sts:
-                raise NoDataFound("Station metadata unavailable.")
+                # HACK for three/four char ugliness
+                if ctx[netname] == "WFO" and value in WFO_FOURCHAR:
+                    value = f"P{value}"
+                elif ctx[netname] == "WFO" and value in ["JSJ", "SJU"]:
+                    value = "TJSJ"
+                else:
+                    raise NoDataFound("Station metadata unavailable.")
             # A helper to remove downstream boilerplate
             sname = ctx[ntname].sts.get(value, {"name": f"(({value}))"})[
                 "name"

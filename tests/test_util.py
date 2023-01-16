@@ -238,6 +238,22 @@ def test_get_apctx_sday():
     assert ctx["odate"] == date(2000, 2, 10)
 
 
+def test_get_autoplot_wfo():
+    """Test the rectification of WFO network troubles."""
+    cfg = dict(
+        arguments=[dict(type="networkselect", name="cwa", default="DMX")]
+    )
+    form = dict(cwa="AFG", network="WFO")
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["cwa"] == "PAFG"
+    form = dict(cwa="SJU", network="WFO")
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["cwa"] == "TJSJ"
+    form = dict(cwa="XXX", network="WFO")
+    with pytest.raises(NoDataFound):
+        util.get_autoplot_context(form, cfg)
+
+
 def test_get_autoplot_context_name():
     """Test the helper provides a nice name for us."""
     form = dict(station="_ZZZ", network="ZZ_ASOS")
