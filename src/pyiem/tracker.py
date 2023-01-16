@@ -68,7 +68,7 @@ class TrackerEngine:
         )
         for row in self.pcursor:
             dstr = row[1].strftime("%Y-%m-%d %I %p")
-            open_tickets += f" {row[0]:-6s} {dstr:16s}     {row[2]}\n"
+            open_tickets += f" {row[0]:6.0f} {dstr:16s}     {row[2]}\n"
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
         self.pcursor.execute(
@@ -78,7 +78,7 @@ class TrackerEngine:
         )
         for row in self.pcursor:
             dstr = row[1].strftime("%Y-%m-%d %I %p")
-            closed_tickets += f" {row[0]:-6s} {dstr:16s}     {row[2]}\n"
+            closed_tickets += f" {row[0]:6.0f} {dstr:16s}     {row[2]}\n"
         if closed_tickets == "":
             closed_tickets = " --None-- "
         if open_tickets == "":

@@ -12,7 +12,7 @@ _re = (
 )
 
 HVTEC_RECORD = {
-    "00": "is not applicable",
+    "OO": "is not applicable",
     "NO": "is not expected",
     "NR": "may be expected",
     "UU": "is not available",
