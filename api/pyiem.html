@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+gddb4285 documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+g69c38ad documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gddb4285 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g69c38ad documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -936,52 +936,6 @@ June 31.  Default <cite>false</cite>.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyiem.util.get_dbconn">
-<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_dbconn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mesosite'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5432</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_dbconn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper function with business logic to get a database connection</p>
-<p>Note that this helper could return a read-only database connection if the
-connection to the primary server fails.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>database</strong> (<em>str</em><em>,</em><em>optional</em>) – the database name to connect to.
-default: mesosite</p></li>
-<li><p><strong>user</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded user to connect as, default: current user</p></li>
-<li><p><strong>host</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded hostname to connect as,
-default: iemdb.local</p></li>
-<li><p><strong>port</strong> (<em>int</em><em>,</em><em>optional</em>) – the TCP port that PostgreSQL is listening
-defaults to 5432</p></li>
-<li><p><strong>password</strong> (<em>str</em><em>,</em><em>optional</em>) – the password to use.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>psycopg2 database connection</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.util.get_dbconnstr">
-<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_dbconnstr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyiem.util.get_dbconnstr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a database connection string/URI.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – the database name to connect to.</p></li>
-<li><p><strong>**kwargs</strong> – any additional arguments to pass to psycopg2.connect
-user (str): the database user to connect as
-host (str): the database host to connect to
-port (int): the database port to connect to
-connect_timeout (int): Connection timeout in seconds, default 30.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.util.get_properties">
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_properties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the properties set</p>
@@ -991,22 +945,6 @@ connect_timeout (int): Connection timeout in seconds, default 30.</p></li>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.util.get_sqlalchemy_conn">
-<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">get_sqlalchemy_conn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.get_sqlalchemy_conn" title="Permalink to this definition">¶</a></dt>
-<dd><p>An auto-disposing sqlalchemy context-manager helper.</p>
-<p>This is used for when we really do not want to manage having pools of
-database connections open.  So this isn’t something that is fast!</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>str</em>) – the database to connect to, passed to get_dbconnstr</p></li>
-<li><p><strong>**kwargs</strong> – any additional arguments to pass to get_dbconnstr</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1693,10 +1631,7 @@ text format.</p>
 <li><a class="reference internal" href="#pyiem.util.exponential_backoff"><code class="docutils literal notranslate"><span class="pre">exponential_backoff()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.find_ij"><code class="docutils literal notranslate"><span class="pre">find_ij()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.get_autoplot_context"><code class="docutils literal notranslate"><span class="pre">get_autoplot_context()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.util.get_dbconn"><code class="docutils literal notranslate"><span class="pre">get_dbconn()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.util.get_dbconnstr"><code class="docutils literal notranslate"><span class="pre">get_dbconnstr()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.util.get_sqlalchemy_conn"><code class="docutils literal notranslate"><span class="pre">get_sqlalchemy_conn()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.get_test_file"><code class="docutils literal notranslate"><span class="pre">get_test_file()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.get_test_filepath"><code class="docutils literal notranslate"><span class="pre">get_test_filepath()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.get_twitter"><code class="docutils literal notranslate"><span class="pre">get_twitter()</span></code></a></li>
@@ -1775,7 +1710,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gddb4285 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g69c38ad documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
