@@ -79,7 +79,8 @@ FD8 FD8
 FD9 FD9
 FDI FDI
 FFA Flood Watch
-FFG FFG
+FFG Flash Flood Guidance
+FFGMPD Mesoscale Precipitation Discussion
 FFH FFH
 FFP FFP
 FFS Flash Flood Statement
@@ -139,7 +140,6 @@ MAN MAN
 MAP MAP
 MAR MAR
 MAV MAV
-MCD Mesoscale Convective Discussion
 MCG MCG
 MCX MCX
 MET MET
@@ -150,7 +150,6 @@ MHF MHF
 MIS Meteorological Impact Statement
 MME MME
 MMG MMG
-MPD Mesoscale Precipitation Discussion
 MRP MRP
 MSM MSM
 MTR MTR
@@ -264,7 +263,7 @@ SUM SUM
 SVR Severe Thunderstorm Warning
 SVS Severe Weather Statement
 SWE SWE
-SWO SWO
+SWOMCD Mesoscale Convective Discussion
 SYN SYN
 TAF Terminal Aerodrome Forecast
 TAP TAP
