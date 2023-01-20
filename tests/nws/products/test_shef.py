@@ -32,6 +32,12 @@ def prod():
     return res
 
 
+def test_230120_rtpgrb():
+    """Test that MSG is handled in RTPGRB."""
+    prod = parser(get_test_file("SHEF/RTPGRB.txt"))
+    assert not prod.warnings
+
+
 def test_221101_too_many_failures():
     """Test that this product does not eventually make an email."""
     utcnow = utc(2022, 11, 1, 12)

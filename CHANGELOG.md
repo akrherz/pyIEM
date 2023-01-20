@@ -35,6 +35,7 @@ a polygon, but does not (#660).
 ### Bug Fixes
 
 - Account for `MapPlot` custom domain that crosses anti-meridian (#655).
+- Allow non-conforming `DHMSG` within SHEF.
 - Cleanup and improve windrose title / time filtering logic (#663).
 - Correct VTEC database accounting issue for emergencies (#676). 
 - Correct VTEC database partitioning for difficult event spanning years.
