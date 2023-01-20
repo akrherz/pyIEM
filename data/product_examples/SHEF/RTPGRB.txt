@@ -1,0 +1,211 @@
+963
+ASUS63 KGRB 201521
+RTPGRB
+Morning Temperature and Precipitation Summary
+National Weather Service Green Bay WI
+921 AM CST Fri Jan 20 2023
+
+High temperatures are for the previous 24 hours ending at midnight
+last night. Low temperatures are for the previous 12 hours ending at
+6 AM. Precipitation and new snow are for the previous 24 hours ending
+at 6 AM. Snow on the ground is as of 6 AM.
+
+.BR GRB 0120 C DH00/TAIRZX/DH06/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ
+:                         Max   Min           Snow   Snow
+:ID       Location        Temp  Temp   Pcpn   Fall   Depth
+GRB : Green Bay ASOS    :  34 /  30 /  0.06 /  0.5 /    3
+AUW : Wausau ASOS/WSAW  :  31 /  26 /  0.01 /    M /    M
+RHI : Rhinelander ASOS  :  28 /  21 /  0.12 /    M /    M
+OSH : Oshkosh ASOS      :  35 /  30 /  0.03 /    M /    M
+ISW : Wis. Rapids ASOS  :  33 /  25 /    T  /    M /    M
+MFI : Marshfield ASOS   :  31 /  23 /    T  /    M /    M
+EGV : Eagle River AWOS  :  28 /  20 /     M /      /
+ARV : Arbor Vitae AWOS  :  28 /  20 /     M /      /
+LNL : Land O Lakes AWOS :  29 /  20 /     M /      /
+D25 : Manitowish Waters :  28 /  19 /     M /      /
+TKV : Tomahawk AWOS     :  29 /  23 /     M /      /
+RRL : Merrill AWOS      :  29 /  24 /     M /      /
+AIG : Antigo AWOS       :  28 /  22 /     M /      /
+CWA : Mosinee AWOS      :  30 /  25 /     M /      /
+STE : Stevens Point AWOS:  33 /  27 /     M /      /
+CLI : Clintonville AWOS :  33 /  27 /     M /      /
+EZS : Shawano AWOS      :  34 /  30 /     M /      /
+PCZ : Waupaca AWOS      :  35 /  30 /     M /      /
+Y50 : Wautoma AWSS      :  35 /  27 /     M /      /
+OCQ : Oconto AWOS       :  33 /  28 /     M /      /
+ATW : Appleton AWOS     :  34 /  28 /     M /      /
+SUE : Sturgeon Bay AWOS :  35 /  28 /     M /      /
+3D2 : Ephraim AWOS      :  32 /  27 /     M /      /
+MTW : Manitowoc AWOS    :  38 /  29 /     M /      /
+2P2 : Washington Island :  33 /  26 /     M /      /
+:                                            
+.END
+:  
+.BR GRB 0120 C DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:.......Cooperative observations.......
+:
+: Data is for the 24 hours ending around 7 am. In some weather
+: situations...reported low temperatures may reflect conditions
+: from the previous day.
+:
+:   ...North Central Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+MQRW3: Minocqua             : DH0630/  27 /  18 / 0.25 / 2.0 /  17
+RHIW3: Rhinelander          : DH0730/  29 /  19 / 0.11 / 2.0 /  12
+RHLW3: Rhinelander 4NE      : DHM   /   M /   M /    M /   M /   M
+WILW3: Willow Reservoir     : DH0600/  27 /  21 / 0.11 / 1.4 /  13
+FLNW3: Florence Utility     : DHM   /   M /   M /    M /   M /   M
+TAKW3: Tomahawk-Rice Res.   : DH0700/  27 /  21 / 0.17 / 1.7 /  13
+RRLW3: Merrill WWTP         : DH0800/  28 /  22 / 0.02 / 0.2 /  13
+STGW3: St Germain           : DH0700/     /     / 0.31 / 4.4 /  23
+LVDW3: Phelps-L Vieux Deser : DH0806/     /     / 0.48 / 4.5 /  26
+PHEW3: Phelps WWTP          : DHM   /     /     /    M /   M /   M
+EARW3: Eagle River WWTP     : DHM   /     /     /    M /   M /   M
+RLKW3: Rest Lake            : DH0700/     /     / 0.07 / 1.0 /  21
+AGNW3: Argonne 2NW          : DH0748/     /     / 0.09 / 1.1 /  15
+SULW3: Summit Lake          : DH0500/     /     / 0.05 / 0.6 /   9
+ANTW3: Antigo COOP          : DH0800/     /     / 0.02 /   T /   9
+WLKW3: White Lake 1SE       : DHM   /     /     /    M /   M /   M
+:    
+:   ...Northeast Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+MRIW3: Marinette            : DH0730/  32 /  27 / 0.03 / 0.5 /   4
+PSHW3: Peshtigo WWTP        : DH0730/  33 /  27 / 0.15 / 1.5 /   6
+CRVW3: Crivitz High Falls   : DH0700/  32 /  25 / 0.22 / 2.8 /   8
+BREW3: Suring WWTP          : DHM   /   M /   M /    M /   M /   M
+WSKW3: Wausaukee DNR        : DH0800/  31 /  26 / 0.07 / 1.2 /   6
+OCNW3: Oconto Radio WOCO    : DHM   /   M /   M /    M /   M /   M
+:    
+:   ...Central Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+RSTW3: Rosholt              : DH0750/  34 /  24 / 0.04 / 0.2 /   M
+MFDW3: Marshfield Exp Farm  : DH0730/  29 /  20 / 0.02 / 0.2 /   6
+BOWW3: Stockbridge-Munsee   : DH0730/  29 /  22 / 0.02 / 0.6 /  11
+SHHW3: Shawano COOP         : DH0800/  32 /  25 / 0.03 / 0.3 /   5
+CNTW3: Clintonville WWTP    : DH0700/  34 /  27 / 0.02 / 0.2 /   5
+WWWW3: Waupaca WDUX RADIO   : DH0600/  34 /  26 / 0.03 / 0.2 /   4
+HANW3: Hancock EXP. Farm    : DHM   /   M /   M /    M /   M /   M
+STPW3: Stevens Point WWTP   : DH0730/  32 /  24 / 0.02 / 0.2 /   6
+BBCW3: Babcock              : DHM   /     /     /    M /   M /   M
+WIRW3: Wisconsin Rapids     : DH0700/     /     / 0.00 /   T /   7
+STRW3: Stratford            : DH0553/     /     /    T /   T /   6
+WAOW3: Wautoma-Silver Lk Sa : DH0630/     /     / 0.02 / 0.2 /   4
+EPTW3: Eau Pleine COOP      : DH0500/     /     / 0.05 / 0.3 /   7
+:
+:   ...East Central Wisconsin including the Lakeshore...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+SHIW3: Shiocton             : DH0730/     /     / 0.00 / 0.0 /   5
+PULW3: Pulaski WWTP         : DH0600/     /     / 0.03 / 0.2 /   5
+APPW3: Appleton COOP        : DH0500/  35 /  28 / 0.04 / 0.2 /   4
+NONW3: New London COOP      : DH0630/  34 /  27 / 0.04 / 0.1 /   4
+OKHW3: Oshkosh WWTP         : DH0700/  37 /  28 / 0.01 /   T /   3
+BGGW3: Green Bay Bot. Garde : DHM   /   M /   M /    M /   M /   M
+DENW3: Denmark WWTP         : DH0800/  35 /  27 / 0.08 / 1.0 /   4
+BRLW3: Brillion WWTP        : DH0730/  35 /  27 / 0.01 / 0.1 /   2
+CHIW3: Chilton WWTP         : DH0700/  35 /  29 / 0.02 / 0.1 /   1
+TWOW3: Two Rivers           : DH0700/  36 /  29 / 0.03 / 0.3 /   2
+EPMW3: Ephraim 1NE WWTP     : DHM   /   M /   M /    M /   M /   M
+FORW3: Forestville 4NE      : DH0700/  34 /  28 / 0.11 / 2.0 /   4
+SBEW3: Sturgeon Bay EXP Far : DH0730/  33 /  26 / 0.22 / 0.4 /   2
+WASW3: Washington Island    : DH0700/  31 /  24 / 0.53 / 5.3 /  11
+KKKW3: Kewaunee WWTP COOP   : DH0700/  35 /  28 / 0.02 / 0.2 /   2
+.END
+:
+These data are preliminary and have not undergone final quality
+control by the National Centers for Environmental Information /NCEI/.
+Therefore, these data are subject to revision. Final and certified
+climate data can be accessed at www.ncdc.noaa.gov.
+&&  
+:  
+:.......Other observations.......
+:
+.BR GRB 0120 C DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ
+:   ...North Central Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+LNOW3: Land O lakes-12W     : DH0700/  27 /  19 / 0.42 / 4.3 /  22
+EVRW3: Eagle River-4E       : DH0624/  29 /  21 / 0.34 / 4.6 /  20
+SUAW3: Presque Isle         : DH0600/     /     /      / 3.0 /  25
+MLLW3: Merrill 8W           : DH0600/     /     / 0.09 / 1.3 /  12
+:   
+:   ...Northeast Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+ASTW3: Athelstane 2E        : DH0600/  29 /  24 / 0.36 / 4.0 /   7
+CVZW3: Crivitz WPS          : DH0604/     /     / 0.14 / 2.3 /   4
+:    
+:   ...Central Wisconsin...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+PLOW3: Plover south         : DH0700/  35 /  27 / 0.00 / 0.0 /   6
+WUNW3: Wausau Northeast     : DH0550/     /     / 0.05 / 0.5 /   8
+SPCW3: Spencer WWTP         : DH0730/     /     /    T /   T /  11
+WIPW3: Wisconsin Rapids SE  : DH0630/     /     /    T /   T /   5
+AMHW3: Amherst 3SE          : DH0700/     /     / 0.03 / 0.2 /   7
+NLDW3: New London WWTP      : DH0700/     /     / 0.01 /   T /   5
+BFSW3: Big Falls 5NW        : DH0700/     /     / 0.03 / 0.3 /   7
+:
+:   ...East Central Wisconsin including the lakeshore...
+:                             Obs     Max   Min         Snow   Snow
+:ID      Location             Time    Temp  Temp  Pcpn  Fall  Depth
+APLW3: Appleton Radio WHBY  : DH0800/  36 /  28 /    T /   T /   3
+FISW3: Fish Creek 1E WWTP   : DH0416/  33 /  28 / 0.55 / 5.5 /   4
+KANW3: Kewaunee southwest   : DH0735/  35 /  28 / 0.05 / 0.2 /   2
+ZITW3: Fremont -6SE Zittau  : DH0600/     /     /    T /   T /   3
+OMWW3: Omro 2SW             : DH0700/     /     / 0.03 / 0.2 /   2
+OSNW3: Oshkosh north        : DH0700/     /     / 0.01 /   T /   1
+.END
+:  
+:.......CoCoRaHS Network observations.......
+:
+.BR GRB 0120 C DH07/PPDRZZ/SFDRZZ/SDIRZZ
+:
+: Data are for the 24 hours ending around 7 am. These data values
+: are not official and are supplemental to local cooperative
+: and official observations. MSG stands for missing.
+:
+:                                            Obs           Snow Snow
+:ID      County    Location                  Time    Pcpn  Fall Depth
+WIBN22: Brown     Wrightstown 0.4 ENE      : DH0700/ 0.02 / 0.5 /   2
+WIDR05: Door      Ellison Bay 2.2 E        : DH0700/ 0.52 / 3.0 /   8
+WIDR06: Door      Sister Bay 1.3 NNE       : DH0700/ 0.32 / 1.0 /   4
+WIDR09: Door      Brussels 3.3 N           : DH0700/ 0.09 / MSG / MSG
+WIDR16: Door      Egg Harbor 3.7 SSE       : DH0800/ 0.18 / 1.0 / MSG
+WIFL04: Florence  Florence 5.6 ESE         : DH0700/ 0.50 / 6.0 /  16
+WILN02: Lincoln   Merrill 7.0 W            : DH0600/ 0.09 / 1.3 /  12
+WILN06: Lincoln   Tomahawk 4.6 N           : DHMSG /  MSG / 1.0 / MSG
+WILN07: Lincoln   Tomahawk 1.2 SSW         : DH0700/ 0.09 / 1.0 / MSG
+WILN08: Lincoln   Merrill 14.1 W           : DH0700/ 0.03 / MSG / MSG
+WIMC04: Manitowoc Two Rivers 1.4 N         : DH0527/    T / MSG /   1
+WIMC05: Manitowoc Elkhart Lake 6.8 NE      : DH0700/ 0.03 / 0.3 / MSG
+WIMC20: Manitowoc Manitowoc 1.4 NW         : DH0700/ 0.01 / 0.3 /   T
+WIMT04: Marathon  Wausau 1.7 ENE           : DH0700/    T /   T / MSG
+WIMT19: Marathon  Evergreen 1.5 WSW        : DH0700/ 0.04 / 0.2 / MSG
+WIMT21: Marathon  Athens 0.6 SSW           : DH0700/    T / MSG / MSG
+WIOC08: Oconto    Mountain 0.9 E           : DH0700/ 0.08 / 1.2 / MSG
+WION06: Oneida    Rhinelander 5.2 N        : DH0645/ 0.10 / 1.1 /  16
+WION08: Oneida    Hazelhurst 2.1 SSE       : DH0700/ 0.31 / 3.2 /  22
+WION14: Oneida    Rhinelander 5.5 NW       : DH0345/ 0.08 / 1.0 /  18
+WIPT08: Portage   Rudolph 2.1 NNE          : DH0500/ 0.02 / 0.3 /   7
+WIPT19: Portage   Amherst 2.6 SSE          : DH0700/ 0.03 / 0.2 /   7
+WISW05: Shawano   Pulaski 3.7 W            : DH0718/ 0.03 / 0.4 / MSG
+WISW06: Shawano   Bonduel 3.3 NW           : DH0700/ 0.02 / MSG / MSG
+WIVL09: Vilas     Land O' Lakes 11.7 W     : DH0700/ 0.50 / 4.3 /  22
+WIVL14: Vilas     Boulder Junction 1.4 NE  : DH0700/ 0.31 / 4.0 /  20
+WIWD02: Wood      Wisconsin Rapids 4.6 SSE : DH0700/ 0.02 / 0.2 /   6
+WIWD20: Wood      Rudolph 2.1 W            : DH0700/ 0.05 / MSG / MSG
+WIWD21: Wood      Marshfield 5.6 SSW       : DH0700/ 0.03 / MSG / MSG
+WIWH07: Waushara  Wild Rose 0.5 E          : DH0600/    T /   T /   4
+WIWN07: Winnebago Omro 2.3 WSW             : DH0700/ 0.03 / 0.2 /   2
+WIWN09: Winnebago Neenah 1.1 ENE           : DH0700/ 0.03 / 0.7 /   2
+WIWN19: Winnebago Oshkosh 1.6 ESE          : DH0700/ 0.01 /   T /   1
+WIWN28: Winnebago Oshkosh 0.8 NW           : DH0735/ 0.01 /   T /   2
+WIWP11: Waupaca   Iola 0.4 SSW             : DH0500/ 0.04 / 0.5 / MSG
+:
+.END
+$$
+

@@ -177,7 +177,7 @@ def datetime24(dt, replacements):
 def parse_dh(text, valid):
     """Account for the craziness of the DH value."""
     # This is a bit of an not-specified, but used in the wild.
-    if text.strip() in ["", "M"]:
+    if text.strip() in ["", "M", "MSG"]:
         return None
     replacements = {}
     if len(text) >= 2:
