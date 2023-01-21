@@ -35,9 +35,10 @@ a polygon, but does not (#660).
 ### Bug Fixes
 
 - Account for `MapPlot` custom domain that crosses anti-meridian (#655).
+- Add GU "Guam" to pyiem.reference.state_names.
 - Allow non-conforming `DHMSG` within SHEF.
 - Cleanup and improve windrose title / time filtering logic (#663).
-- Correct VTEC database accounting issue for emergencies (#676). 
+- Correct VTEC database accounting issue for emergencies (#676).
 - Correct VTEC database partitioning for difficult event spanning years.
 - Draw mask on all known sectored plots.
 - Increased default `pyiem.util.get_dbconn` connect timeout to 30 seconds.
@@ -84,7 +85,6 @@ entries for multiple-level freezing airmets (#628).
 - Workaround a specified 12 AM UTC timestamp in NWS text products.
 
 ## **1.13.0** (24 Jun 2022)
-
 
 ### API Changes
 
