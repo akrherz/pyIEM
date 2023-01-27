@@ -146,6 +146,8 @@ class MapPlot:
               [left, bottom, width, height] for the main axes.
             stateborderwidth (float,optional): how wide to make the
               state borders (default: 1.).
+            background (str,optional): Background imagery to use `ne2` is the
+              only option currently.
         """
         self.debug = kwargs.get("debug", False)
         self.fig = kwargs.get("fig")
@@ -170,12 +172,16 @@ class MapPlot:
             self.state = "IA"
         axes_position = kwargs.pop("axes_position", MAIN_AX_BOUNDS)
         sector_setter(self, axes_position, **kwargs)
+        has_background = kwargs.get("background") is not None
         for gp in self.panels:
             # legacy usage of axisbg here
             _c = kwargs.get(
                 "axisbg", kwargs.get("continentalcolor", "#EEEEEE")
             )
-            draw_features_from_shapefile(gp, "land", facecolor=_c, zorder=Z_CF)
+            if not has_background:
+                draw_features_from_shapefile(
+                    gp, "land", facecolor=_c, zorder=Z_CF
+                )
             # NB we neeed both borders (lines between countries) and
             # coastlines (lines between land and water)
             draw_features_from_shapefile(
@@ -192,13 +198,14 @@ class MapPlot:
                 ec="k",
                 zorder=Z_POLITICAL,
             )
-            draw_features_from_shapefile(
-                gp,
-                "lakes",
-                edgecolor=(0.4471, 0.6235, 0.8117),
-                facecolor=(0.4471, 0.6235, 0.8117),
-                zorder=Z_CF,
-            )
+            if not has_background:
+                draw_features_from_shapefile(
+                    gp,
+                    "lakes",
+                    edgecolor=(0.4471, 0.6235, 0.8117),
+                    facecolor=(0.4471, 0.6235, 0.8117),
+                    zorder=Z_CF,
+                )
             if "nostates" not in kwargs:
                 xlim = gp.ax.get_xlim()
                 ylim = gp.ax.get_ylim()

@@ -1,13 +1,77 @@
 """A custom axes implementation."""
 # pylint: disable=unsubscriptable-object,unpacking-non-sequence
+import os
 
 # Third party libraries
+import numpy as np
 from shapely.geometry import Polygon
 import geopandas as gpd
 from pyproj import Transformer
+import rasterio
+from rasterio.warp import reproject, Resampling
 
 # Local imports
 from pyiem.reference import LATLON
+
+
+def draw_background(panel, background):
+    """Draw the background for this plot!"""
+    if background is None:
+        return
+    datadirs = [
+        os.sep.join(
+            [
+                os.path.dirname(__file__),
+                "..",
+                "data",
+                "backgrounds",
+                background,
+            ]
+        ),
+        f"/opt/miniconda3/pyiem_data/backgrounds/{background}",
+    ]
+    src_epsg = str(panel.crs)
+    rasterfn = f"{panel.get_sector_label()}_{src_epsg.split(':')[1]}.png"
+    full = os.sep.join([datadirs[0], rasterfn])
+    if not os.path.isfile(full):
+        full = os.sep.join([datadirs[1], rasterfn])
+        if not os.path.isfile(full):
+            rasterfn = "default_4326.png"
+            full = os.sep.join([datadirs[0], rasterfn])
+            src_epsg = "EPSG:4326"
+    worldfn = f"{full[:-4]}.wld"
+    with open(worldfn, encoding="ascii") as fh:
+        (dx, _, _, dy, west, north) = [float(x) for x in fh]
+    src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
+    src_crs = {"init": src_epsg}
+    (px0, px1, py0, py1) = panel.get_extent()
+    pbbox = panel.ax.get_window_extent()
+    pdx = (px1 - px0) / pbbox.width
+    pdy = (py1 - py0) / pbbox.height
+    dest_aff = rasterio.Affine(pdx, 0, px0, 0, pdy, py0)
+    res = np.zeros((int(pbbox.height), int(pbbox.width), 3), dtype=np.uint8)
+    band = np.zeros((int(pbbox.height), int(pbbox.width)), dtype=np.uint8)
+    with rasterio.open(full) as src:
+        data = src.read()
+        for i in range(3):
+            reproject(
+                data[i, :, :],
+                band,
+                src_transform=src_aff,
+                src_crs=src_crs,
+                src_nodata=0,
+                dst_transform=dest_aff,
+                dst_crs={"init": str(panel.crs)},
+                resampling=Resampling.nearest,
+            )
+            res[:, :, i] = band
+    panel.ax.imshow(
+        res / 255.0,
+        interpolation="nearest",  # prevents artifacts
+        extent=(px0, px1, py0, py1),
+        origin="lower",
+        zorder=-1,
+    ).set_rasterized(True)
 
 
 class GeoPanel:
@@ -19,9 +83,16 @@ class GeoPanel:
         """
         Initialize the axes.
         """
+        self.sector_label = kwargs.pop("sector_label", "")
         self.figure = fig
         self.ax = self.figure.add_axes(rect, **kwargs)
         self.crs = crs
+
+    draw_background = draw_background
+
+    def get_sector_label(self) -> str:
+        """Return the property"""
+        return self.sector_label
 
     def get_bounds_polygon(self):
         """Return the axes extent as a shapely polygon bounds."""

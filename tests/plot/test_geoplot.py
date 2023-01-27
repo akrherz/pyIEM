@@ -1,5 +1,5 @@
 """Test plots made by pyiem.plot.geoplot"""
-# pylint disable=too-many-lines
+# pylint: disable=too-many-lines
 import datetime
 import tempfile
 import os
@@ -45,6 +45,31 @@ def test_close():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_conus_background():
+    """Test that a conus sector plot with a background!"""
+    mp = MapPlot(
+        nocaption=True, sector="conus", background="ne2", twitter=True
+    )
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_custom_background():
+    """Test we get a background when a custom sector is picked"""
+    mp = MapPlot(
+        sector="custom",
+        background="ne2",
+        twitter=True,
+        north=34,
+        east=-84,
+        south=28,
+        west=-90,
+        nocaption=True,
+    )
+    return mp.fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
