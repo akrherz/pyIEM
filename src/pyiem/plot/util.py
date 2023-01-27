@@ -218,7 +218,7 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
 
 
 def make_panel(
-    ndc_axbounds, fig, extent, crs, aspect, is_geoextent=False
+    ndc_axbounds, fig, extent, crs, aspect, is_geoextent=False, **kwargs
 ) -> GeoPanel:
     """Factory for making a GeoPanel.
 
@@ -229,6 +229,8 @@ def make_panel(
       crs (pyproj.CRS): the crs of the axes
       aspect (str): matplotlib's aspect of axes
       is_geoextent(bool): is the passed extent Geodetic?
+      sector_label (bool): A Label that tracks what this is called
+      background (str): background to use.
 
     Returns:
         GeoPanel: the panel
@@ -244,6 +246,7 @@ def make_panel(
         facecolor=(0.4471, 0.6235, 0.8117),
         xticks=[],
         yticks=[],
+        sector_label=kwargs.get("sector_label", ""),
     )
     # Get the frame at the proper zorder
     for _k, spine in gp.ax.spines.items():
@@ -252,6 +255,7 @@ def make_panel(
     gp.ax.autoscale(False)
     # Set the extent
     gp.set_extent(extent, crs=None if is_geoextent else crs)
+    gp.draw_background(kwargs.get("background"))
     return gp
 
 
@@ -273,6 +277,8 @@ def sector_setter(mp, axbounds, **kwargs):
             reference.EPSG[3857],
             aspect,
             is_geoextent=True,
+            sector_label=f"cwa_{mp.cwa}",
+            **kwargs,
         )
         mp.panels.append(gp)
     elif mp.sector == "state":
@@ -289,6 +295,8 @@ def sector_setter(mp, axbounds, **kwargs):
             reference.EPSG[3857 if mp.state != "AK" else 3467],
             aspect,
             is_geoextent=True,
+            sector_label=f"state_{mp.state}",
+            **kwargs,
         )
         mp.panels.append(gp)
     elif mp.sector == "iowawfo":
@@ -299,6 +307,8 @@ def sector_setter(mp, axbounds, **kwargs):
             reference.EPSG[3857],
             aspect,
             is_geoextent=True,
+            sector_label=mp.sector,
+            **kwargs,
         )
         mp.panels.append(gp)
     elif mp.sector == "custom":
@@ -313,6 +323,8 @@ def sector_setter(mp, axbounds, **kwargs):
             kwargs.get("projection", reference.LATLON),
             aspect,
             is_geoextent="projection" not in kwargs,
+            sector_label=mp.sector,
+            **kwargs,
         )
         mp.panels.append(gp)
 
@@ -323,6 +335,8 @@ def sector_setter(mp, axbounds, **kwargs):
             [-4.5e6, 4.3e6, -3.9e6, 3.8e6],
             reference.EPSG[2163],
             "auto",
+            sector_label=mp.sector,
+            **kwargs,
         )
         mp.panels.append(gp)
 
@@ -333,6 +347,8 @@ def sector_setter(mp, axbounds, **kwargs):
             [-2400000, 2300000, 27600, 3173000],
             reference.EPSG[5070],
             aspect,
+            sector_label=mp.sector,
+            **kwargs,
         )
         mp.panels.append(gp)
 
@@ -345,6 +361,8 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.LATLON,
                 aspect,
                 is_geoextent=True,
+                sector_label="state_PR",
+                **kwargs,
             )
             mp.fig.text(
                 0.78,
@@ -368,6 +386,8 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.EPSG[3467],
                 aspect,
                 is_geoextent=True,
+                sector_label="state_AK",
+                **kwargs,
             )
             mp.panels.append(gp)
             # Guam
@@ -383,6 +403,8 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.LATLON,
                 aspect,
                 is_geoextent=True,
+                sector_label="state_GU",
+                **kwargs,
             )
             mp.fig.text(
                 0.015,
@@ -409,6 +431,8 @@ def sector_setter(mp, axbounds, **kwargs):
                 reference.LATLON,
                 aspect,
                 is_geoextent=True,
+                sector_label="state_HI",
+                **kwargs,
             )
             mp.panels.append(gp)
     # Do last in case of name overlaps above
@@ -420,6 +444,8 @@ def sector_setter(mp, axbounds, **kwargs):
             reference.EPSG[3857],
             aspect,
             is_geoextent=True,
+            sector_label=mp.sector,
+            **kwargs,
         )
         mp.panels.append(gp)
     # Kindof a hack for now
@@ -529,7 +555,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
     # Merge data into the data frame
     geodf["val"] = pd.Series(data)
     if not plotmissing:
-        geodf = geodf[~pd.isna(geodf["val"])].copy()
+        geodf = geodf[pd.notna(geodf["val"])].copy()
     for gp in mymap.panels:
         # Reproject data into plot native, found out that clip() sometimes
         # returns a GeometryCollection, which geopandas hates to plot

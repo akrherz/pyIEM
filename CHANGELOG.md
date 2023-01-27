@@ -28,6 +28,7 @@ database has.
 - Jabber channels for METAR wind gust alerts were enhanced (#683).
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
+- Introduce a natural earth background option for MapPlot (#304).
 - Support `cartopy_offlinedata` version 0.20+.
 - Support new CLI format diction from NWS Sacramento.
 - Workaround autoplot context fun with mixed 3-4 character WFOs.
