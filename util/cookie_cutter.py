@@ -26,8 +26,35 @@ def mpgen():
     yield mp
 
 
+def run_warp(crs, xmin, ymin, xmax, ymax, infn, outfn, width=1280, hgt=1024):
+    """Go run warp."""
+    cmd = [
+        "gdalwarp",
+        "-t_srs",
+        f"{crs}",
+        "-te",
+        f"{xmin}",
+        f"{ymin}",
+        f"{xmax}",
+        f"{ymax}",
+        "-ts",
+        f"{width}",
+        f"{hgt}",
+        "-co",
+        "WORLDFILE=ON",
+        "-overwrite",
+        infn,
+        outfn,
+    ]
+    subprocess.call(cmd)
+    os.unlink(f"{outfn}.aux.xml")
+
+
 def main(argv):
     """Go Main Go."""
+    fn = f"/opt/miniconda3/pyiem_data/backgrounds/{argv[2]}/custom_4326.png"
+    run_warp("EPSG:4326", -120, 23, -60, 50, argv[1], fn, width=3600, hgt=1700)
+
     for mp in mpgen():
         xmin, xmax, ymin, ymax = mp.panels[0].get_extent()
         epsg = str(mp.panels[0].crs).split(":")[1]
@@ -35,30 +62,18 @@ def main(argv):
         basedir = "/opt/miniconda3/pyiem_data/backgrounds"
         if label in ["conus", "default"]:
             basedir = "../src/pyiem/data/backgrounds"
-        fnbase = f"{basedir}/{argv[2]}/" f"{label}_{epsg}"
         # buffer 10%
         xbuf = (xmax - xmin) * 0.05
         ybuf = (ymax - ymin) * 0.05
-        cmd = [
-            "gdalwarp",
-            "-t_srs",
-            f"{mp.panels[0].crs}",
-            "-te",
-            f"{xmin - xbuf}",
-            f"{ymin - ybuf}",
-            f"{xmax + xbuf}",
-            f"{ymax + ybuf}",
-            "-ts",
-            "1280",
-            "1024",
-            "-co",
-            "WORLDFILE=ON",
-            "-overwrite",
+        run_warp(
+            mp.panels[0].crs,
+            xmin - xbuf,
+            ymin - ybuf,
+            xmax + xbuf,
+            ymax + ybuf,
             argv[1],
-            f"{fnbase}.png",
-        ]
-        subprocess.call(cmd)
-        os.unlink(f"{fnbase}.png.aux.xml")
+            f"{basedir}/{argv[2]}/{label}_{epsg}.png",
+        )
         mp.close()
 
 
