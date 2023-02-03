@@ -24,6 +24,7 @@ jobs:
         git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
         . .ci_tooling/postgres.sh
         . .ci_tooling/miniconda.sh
+        . .ci_tooling/memcached.sh
         pip install codecov requests-mock
         python -m pip install . --upgrade
         export PATH="/usr/lib/postgresql/14/bin:$PATH"
