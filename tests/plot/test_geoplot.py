@@ -47,6 +47,15 @@ def test_invalid_file():
     assert load_bounds("this shall not work") is None
 
 
+# Will likely need to boost the tolerance here as upstream makes changes
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_spherical_mercator():
+    """Test that a conus sector plot with a background!"""
+    kwargs = {"west": -100, "east": -80, "south": 32, "north": 42}
+    mp = MapPlot(nocaption=True, sector="spherical_mercator", **kwargs)
+    return mp.fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_conus_background():
     """Test that a conus sector plot with a background!"""

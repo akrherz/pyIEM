@@ -15,7 +15,7 @@ import matplotlib.colors as mpcolors
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
 from pyiem.reference import LATLON, FIGSIZES
-from ._mpl import GeoPanel
+from ._mpl import GeoPanel, SphericalMercatorPanel
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])
 LOGO_BOUNDS = (0.005, 0.91, 0.08, 0.086)
@@ -237,7 +237,10 @@ def make_panel(
     """
     # https://jdhao.github.io/2017/06/03/change-aspect-ratio-in-mpl/
     # aspect is data ratio divided by axes ratio
-    gp = GeoPanel(
+    sector_label = kwargs.get("sector_label", "")
+    hacky = "spherical_mercator"
+    cls = SphericalMercatorPanel if sector_label == hacky else GeoPanel
+    gp = cls(
         fig,
         ndc_axbounds,
         crs,
@@ -246,7 +249,7 @@ def make_panel(
         facecolor=(0.4471, 0.6235, 0.8117),
         xticks=[],
         yticks=[],
-        sector_label=kwargs.get("sector_label", ""),
+        sector_label=sector_label,
     )
     # Get the frame at the proper zorder
     for _k, spine in gp.ax.spines.items():
@@ -327,7 +330,23 @@ def sector_setter(mp, axbounds, **kwargs):
             **kwargs,
         )
         mp.panels.append(gp)
-
+    elif mp.sector == "spherical_mercator":
+        # Crude check if we are crossing the anti-meridian
+        if kwargs["west"] > 90 and kwargs["east"] < -90:
+            # Convert to 0 to 360 longitude?
+            kwargs["east"] += 360
+        gp = make_panel(
+            axbounds,
+            mp.fig,
+            [kwargs["west"], kwargs["east"], kwargs["south"], kwargs["north"]],
+            reference.EPSG[3857],
+            "auto",
+            is_geoextent="projection" not in kwargs,
+            sector_label=mp.sector,
+            background=kwargs.pop("background", "World_Street_Map"),
+            **kwargs,
+        )
+        mp.panels.append(gp)
     elif mp.sector == "north_america":
         gp = make_panel(
             axbounds,
