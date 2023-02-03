@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 - Depend on package `defusedxml` for XML parsing.
 - Depend on package `twython`.
+- Depend on package `pymemcache` to support my hackish use of memcached.
 - Quasi internal `MetarCollective.wind_message` was modified to also return the
 wind speed in knots.
 - Refactor internal testing `util.get_file_name` helper.
@@ -29,6 +30,8 @@ database has.
 - Generate a TextProduct.warning message for a VTEC product that should contain
 a polygon, but does not (#660).
 - Introduce a natural earth background option for MapPlot (#304).
+- Introduce hacky `sector="spherical_mercator"` that brings in ESRI basemaps
+for the background.  My implementation stinks and will change (#304).
 - Support `cartopy_offlinedata` version 0.20+.
 - Support new CLI format diction from NWS Sacramento.
 - Workaround autoplot context fun with mixed 3-4 character WFOs.
