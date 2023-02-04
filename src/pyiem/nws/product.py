@@ -384,7 +384,7 @@ class TextProductSegment:
             gdict = match.groupdict()
             self.damagetag = gdict["damage"]
 
-        for (species, tag) in THREATTAG.findall(nolf):
+        for species, tag in THREATTAG.findall(nolf):
             if species == "HAIL":
                 self.hailthreat = tag
             elif species == "WIND":

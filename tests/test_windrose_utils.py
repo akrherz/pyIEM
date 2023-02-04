@@ -63,7 +63,7 @@ def test_windrose_without_units():
 
 def test_windrose_doy_limiter():
     """Test the day of year limiter logic."""
-    for (sm, em) in [(1, 10), (10, 1)]:
+    for sm, em in [(1, 10), (10, 1)]:
         res = windrose(
             "AMW2",
             sts=datetime.datetime(2014, sm, 1),

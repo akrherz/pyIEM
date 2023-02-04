@@ -502,7 +502,6 @@ class SPCPTS(TextProduct):
             ".png"
         ).replace(" ", "%%20")
         for day, collect in self.outlook_collections.items():
-
             wfos = {
                 "TSTM": [],
                 "EXTM": [],
