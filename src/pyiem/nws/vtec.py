@@ -61,6 +61,7 @@ VTEC_PHENOMENA = {
     "FR": "Frost",
     "FW": "Red Flag",
     "FZ": "Freeze",
+    "UP": "Freezing Spray",
     "GL": "Gale",
     "HF": "Hurricane Force Wind",
     "HI": "Inland Hurricane",
@@ -100,14 +101,12 @@ VTEC_PHENOMENA = {
     "TR": "Tropical Storm",
     "TS": "Tsunami",
     "TY": "Typhoon",
-    "UP": "Ice Accretion",
     "WC": "Wind Chill",
     "WI": "Wind",
     "WS": "Winter Storm",
     "WW": "Winter Weather",
     "ZF": "Freezing Fog",
     "ZR": "Freezing Rain",
-    "ZY": "Freezing Spray",
 }
 
 # Taken from http://www.weather.gov/help-map
