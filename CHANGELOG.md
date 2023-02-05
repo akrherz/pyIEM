@@ -55,6 +55,7 @@ headlines.
 - Support geos 3.11 (#633).
 - Support increased range and emit ValueError for too large range for
 `pyiem.plot.pretty_bins` (#665).
+- Update `UP` VTEC phenomena label to "Freezing Spray", remove `ZY`.
 
 ## **1.14.0** (15 Sep 2022)
 

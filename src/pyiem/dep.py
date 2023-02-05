@@ -75,10 +75,10 @@ def read_yld(filename):
     with open(filename, encoding="utf8") as fh:
         data = fh.read()
     xref = {}
-    for (cropcode, label) in YLD_CROPTYPE.findall(data):
+    for cropcode, label in YLD_CROPTYPE.findall(data):
         xref[cropcode] = label
     rows = []
-    for (cropcode, doy, ofe, yld, year) in YLD_DATA.findall(data):
+    for cropcode, doy, ofe, yld, year in YLD_DATA.findall(data):
         date = datetime.date(int(year), 1, 1) + datetime.timedelta(
             days=(int(doy) - 1)
         )

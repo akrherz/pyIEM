@@ -177,7 +177,6 @@ def jabber_messages(valid, outlook_collections) -> list:
         ".png"
     ).replace(" ", "%%20")
     for day, collect in outlook_collections.items():
-
         wfos = {
             "MRGL": [],
             "SLGT": [],

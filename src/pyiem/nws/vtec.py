@@ -61,6 +61,7 @@ VTEC_PHENOMENA = {
     "FR": "Frost",
     "FW": "Red Flag",
     "FZ": "Freeze",
+    "UP": "Freezing Spray",
     "GL": "Gale",
     "HF": "Hurricane Force Wind",
     "HI": "Inland Hurricane",
@@ -100,14 +101,12 @@ VTEC_PHENOMENA = {
     "TR": "Tropical Storm",
     "TS": "Tsunami",
     "TY": "Typhoon",
-    "UP": "Ice Accretion",
     "WC": "Wind Chill",
     "WI": "Wind",
     "WS": "Winter Storm",
     "WW": "Winter Weather",
     "ZF": "Freezing Fog",
     "ZR": "Freezing Rain",
-    "ZY": "Freezing Spray",
 }
 
 # Taken from http://www.weather.gov/help-map
@@ -300,10 +299,8 @@ class VTEC:
         # A bit of complexity as offices may not implement daylight saving
         if prod.z is not None and prod.z.endswith("ST") and localts.dst():
             localts -= timedelta(hours=1)
-        return "till %s %s" % (
-            localts.strftime(fmt),
-            prod.z if prod.z is not None else "UTC",
-        )
+        tt = prod.z if prod.z is not None else "UTC"
+        return f"till {localts.strftime(fmt)} {tt}"
 
     def get_begin_string(self, prod):
         """Return an appropriate beginning string for this VTEC"""
@@ -316,18 +313,14 @@ class VTEC:
         # A bit of complexity as offices may not implement daylight saving
         if prod.z.endswith("ST") and localts.dst():
             localts -= timedelta(hours=1)
-        return "valid at %s %s" % (localts.strftime(fmt), prod.z)
+        return f"valid at {localts.strftime(fmt)} {prod.z}"
 
     def url(self, year):
         """Generate a VTEC url string needed"""
-        return ("%s-%s-%s-%s-%s-%s-%04i") % (
-            year if self.year is None else self.year,
-            self.status,
-            self.action,
-            self.office4,
-            self.phenomena,
-            self.significance,
-            self.etn,
+        tt = year if self.year is None else self.year
+        return (
+            f"{tt}-{self.status}-{self.action}-{self.office4}-"
+            f"{self.phenomena}-{self.significance}-{self.etn:04.0f}"
         )
 
     def get_id(self, year):
@@ -335,12 +328,10 @@ class VTEC:
 
         This is used by the Live client
         """
-        return "%s-%s-%s-%s-%04i" % (
-            year if self.year is None else self.year,
-            self.office4,
-            self.phenomena,
-            self.significance,
-            self.etn,
+        tt = year if self.year is None else self.year
+        return (
+            f"{tt}-{self.office4}-{self.phenomena}-{self.significance}-"
+            f"{self.etn:04.0f}"
         )
 
     def __str__(self):
@@ -357,4 +348,4 @@ class VTEC:
 
     def product_string(self):
         """Return the combination of action and phenomena+significance"""
-        return "%s %s" % (self.get_action_string(), self.get_ps_string())
+        return f"{self.get_action_string()} {self.get_ps_string()}"

@@ -258,19 +258,13 @@ class SPCPTS(TextProduct):
                         color="r",
                     )
                 ax.set_title(
-                    ("Day %s Category %s Threshold %s")
-                    % (day, outlook.category, outlook.threshold)
+                    f"Day {day} Category {outlook.category} "
+                    f"Threshold {outlook.threshold}"
                 )
                 ax.legend(loc=3)
                 fn = (
-                    ("%s/%s_%s_%s_%s.png")
-                    % (
-                        tempfile.gettempdir(),
-                        day,
-                        self.issue.strftime("%Y%m%d%H%M"),
-                        outlook.category,
-                        outlook.threshold,
-                    )
+                    f"{tempfile.gettempdir()}/{day}_{self.issue:%Y%m%d%H%M}_"
+                    f"{outlook.category}_{outlook.threshold}.png"
                 ).replace(" ", "_")
                 LOG.warning(":: creating plot %s", fn)
                 fig.savefig(fn)
@@ -358,8 +352,7 @@ class SPCPTS(TextProduct):
                         day2 = int(data["day2"])
                         LOG.warning("Duplicating threshold %s-%s", day1, day2)
                         for i in range(day1, day2 + 1):
-                            key = "D%s" % (i,)
-                            point_data[key] = point_data[threshold]
+                            point_data[f"D{i}"] = point_data[threshold]
                         del point_data[threshold]
             for threshold, text in point_data.items():
                 match = DMATCH.match(threshold)
@@ -406,41 +399,41 @@ class SPCPTS(TextProduct):
 
     def get_descript_and_url(self):
         """Helper to convert awips id into strings"""
-        product_descript = "((%s))" % (self.afos,)
+        product_descript = f"(({self.afos}))"
         url = "https://www.spc.noaa.gov"
-        day = "((%s))" % (self.afos,)
+        day = product_descript
 
         if self.afos == "PTSDY1":
             day = "Day 1"
             product_descript = "Convective"
             url = (
                 "https://www.spc.noaa.gov/products/outlook/archive/"
-                "%s/day1otlk_%s.html"
-            ) % (self.valid.year, self.issue.strftime("%Y%m%d_%H%M"))
+                f"{self.valid.year}/day1otlk_{self.issue:%Y%m%d_%H%M}.html"
+            )
         elif self.afos == "PTSDY2":
             day = "Day 2"
             product_descript = "Convective"
             hhmm = "1730" if self.valid.hour > 11 else "0600"
             url = (
                 "https://www.spc.noaa.gov/products/outlook/archive/"
-                "%s/day2otlk_%s_%s.html"
-            ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
+                f"{self.valid.year}/day2otlk_{self.valid:%Y%m%d}_{hhmm}.html"
+            )
         elif self.afos == "PTSDY3":
             # 0730 when in CDT, 0830 when in CST
             hhmm = "0730" if self.z == "CDT" else "0830"
             day = "Day 3"
             product_descript = "Convective"
             url = (
-                "https://www.spc.noaa.gov/products/outlook/archive/%s/"
-                "day3otlk_%s_%s.html"
-            ) % (self.valid.year, self.valid.strftime("%Y%m%d"), hhmm)
+                "https://www.spc.noaa.gov/products/outlook/archive/"
+                f"{self.valid.year}/day3otlk_{self.valid:%Y%m%d}_{hhmm}.html"
+            )
         elif self.afos == "PTSD48":
             day = "Days 4-8"
             product_descript = "Convective"
             url = (
-                "https://www.spc.noaa.gov/products/exper/day4-8/archive/%s/"
-                "day4-8_%s.html"
-            ) % (self.valid.year, self.valid.strftime("%Y%m%d"))
+                "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
+                f"{self.valid.year}/day4-8_{self.valid:%Y%m%d}.html"
+            )
         elif self.afos == "PFWFD1":
             day = "Day 1"
             product_descript = "Fire Weather"
@@ -502,7 +495,6 @@ class SPCPTS(TextProduct):
             ".png"
         ).replace(" ", "%%20")
         for day, collect in self.outlook_collections.items():
-
             wfos = {
                 "TSTM": [],
                 "EXTM": [],
@@ -537,10 +529,9 @@ class SPCPTS(TextProduct):
                 "IDRT",
                 "SDRT",
             ]:
-                jdict["ttext"] = "%s %s Risk" % (
-                    THRESHOLD2TEXT[cat],
-                    product_descript,
-                )
+                jdict[
+                    "ttext"
+                ] = f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
                 for wfo in wfos[cat]:
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [
@@ -558,8 +549,8 @@ class SPCPTS(TextProduct):
                         {
                             "channels": [
                                 wfo,
-                                "%s.SPC%s" % (wfo, self.afos[3:]),
-                                "%s.SPC%s.%s" % (wfo, self.afos[3:], cat),
+                                f"{wfo}.SPC{self.afos[3:]}",
+                                f"{wfo}.SPC{self.afos[3:]}.{cat}",
                             ],
                             "product_id": self.get_product_id(),
                             "twitter_media": twmedia % jdict,
@@ -593,7 +584,7 @@ class SPCPTS(TextProduct):
                 )
                 % jdict,
                 {
-                    "channels": ["SPC", "SPC%s" % (self.afos[3:],)],
+                    "channels": ["SPC", f"SPC{self.afos[3:]}"],
                     "product_id": self.get_product_id(),
                     "twitter_media": twmedia % jdict,
                     "twitter": (
