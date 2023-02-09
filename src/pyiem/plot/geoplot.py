@@ -1172,6 +1172,8 @@ class MapPlot:
         Data is dictionary-ish.
         """
         geodf = load_geodf("cwsu")
+        # Fix troublesome points
+        geodf.loc["ZAN", "lat"] = 64.5
         polygon_fill(self, geodf, data, **kwargs)
 
     def fill_cwas(self, data, **kwargs):
