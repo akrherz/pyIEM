@@ -22,6 +22,7 @@ bars.  Engineers generally want bars oriented toward the direction the wind
 is blowing toward, not from (#680).
 - Add `isolated` parameter to `geoplot.plot_values` to allow label collision
 to only be done against the plotted data in that iteration and not all data.
+- Add `fill_{rfc,cwsu}` as available `MapPlot` methods.
 - Add WPC XTEUS (national max/min temp) parser `pyiem.nws.products.xteus`.
 - Fill out `pyiem.data.reference.prodDefinitions` based on what the IEM AFOS
 database has.

@@ -1157,6 +1157,23 @@ class MapPlot:
                 **kwargs,
             )
 
+    def fill_rfc(self, data, **kwargs):
+        """Add overlay of filled polygons for NWS RFCs.
+
+        Data is dictionary-ish.  Note that the ids used here are the WMO
+        center IDs (ie TAR) and not basin ids (ie NERFC)
+        """
+        geodf = load_geodf("rfc")
+        polygon_fill(self, geodf, data, **kwargs)
+
+    def fill_cwsu(self, data, **kwargs):
+        """Add overlay of filled polygons for NWS CWSUs.
+
+        Data is dictionary-ish.
+        """
+        geodf = load_geodf("cwsu")
+        polygon_fill(self, geodf, data, **kwargs)
+
     def fill_cwas(self, data, **kwargs):
         """Add overlay of filled polygons for NWS Forecast Offices.
 
@@ -1342,7 +1359,7 @@ class MapPlot:
         if product not in ["N0R", "N0Q"]:
             raise ValueError("nexrad `product` not in {N0R,N0Q}")
         # Rectify to modulus 5 minutes
-        valid -= datetime.timedelta(minutes=(valid.minute % 5))
+        valid -= datetime.timedelta(minutes=valid.minute % 5)
         compsector = "us"
         if self.sector == "state" and self.state in ["AK", "HI", "PR"]:
             compsector = self.state.lower()
