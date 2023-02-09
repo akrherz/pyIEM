@@ -47,6 +47,22 @@ def test_invalid_file():
     assert load_bounds("this shall not work") is None
 
 
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fill_cwsu():
+    """Test a filled plot of CWSU data."""
+    mp = MapPlot(nocaption=True, sector="conus")
+    mp.fill_cwsu({"ZMA": 10, "ZME": 80}, ilabel=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fill_rfc():
+    """Test a filled plot of RFC data."""
+    mp = MapPlot(nocaption=True, sector="conus")
+    mp.fill_rfc({"TAR": 10, "TIR": 80}, ilabel=True)
+    return mp.fig
+
+
 # Will likely need to boost the tolerance here as upstream makes changes
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_spherical_mercator():
