@@ -50,8 +50,8 @@ def test_invalid_file():
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_cwsu():
     """Test a filled plot of CWSU data."""
-    mp = MapPlot(nocaption=True, sector="conus")
-    mp.fill_cwsu({"ZMA": 10, "ZME": 80}, ilabel=True)
+    mp = MapPlot(nocaption=True, sector="nws")
+    mp.fill_cwsu({"ZMA": 10, "ZME": 80, "ZAN": 50}, ilabel=True)
     return mp.fig
 
 
