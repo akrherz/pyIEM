@@ -315,12 +315,20 @@ class Pirep(product.TextProduct):
                 continue
             if report.longitude is None:
                 geom = "POINT EMPTY"
+                artcc = "null"
             else:
                 geom = f"SRID=4326;POINT({report.longitude} {report.latitude})"
+                artcc = (
+                    "(select ident from airspaces where st_dwithin(geom, "
+                    f"ST_MakePoint({report.longitude}, {report.latitude}), 0) "
+                    "and type_code = 'ARTCC' LIMIT 1)"
+                )
             txn.execute(
-                "INSERT into pireps(valid, geom, is_urgent, "
-                "aircraft_type, report) VALUES (%s, "
-                "ST_GeographyFromText(%s), %s, %s, %s)",
+                f"""
+                INSERT into pireps(valid, geom, is_urgent, aircraft_type,
+                report, artcc) VALUES (%s,
+                ST_GeographyFromText(%s), %s, %s, %s, {artcc})
+                """,
                 (
                     report.valid,
                     geom,
