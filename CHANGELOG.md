@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Correct VTEC `is_emergency` false positive spotted by Kyle Noël.
+
 ## **1.15.0** (13 Feb 2023)
 
 ### API Changes

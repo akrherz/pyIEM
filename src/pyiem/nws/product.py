@@ -346,9 +346,16 @@ class TextProductSegment:
         """Find various tags in this segment"""
         nolf = self.unixtext.replace("\n", " ")
         res = EMERGENCY_RE.findall(nolf)
-        if res:
+        if res and self.vtec:
+            # Ensure that the emergency RE matches the segment phenomena
             # We later double check this based on the found tags
-            self.is_emergency = True
+            if (
+                res[0].upper() == "FLASH FLOOD"
+                and self.vtec[0].phenomena == "FF"
+            ):
+                self.is_emergency = True
+            if res[0].upper() == "TORNADO" and self.vtec[0].phenomena == "TO":
+                self.is_emergency = True
         res = PDS_RE.findall(nolf)
         if res:
             self.is_pds = True
