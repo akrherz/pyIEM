@@ -1,0 +1,52 @@
+968
+WFUS54 KHGX 191141
+TORHGX
+TXC071-191215-
+/O.NEW.KHGX.TO.W.0044.190919T1141Z-190919T1215Z/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Tornado Warning
+National Weather Service Houston/Galveston TX
+641 AM CDT Thu Sep 19 2019
+
+The National Weather Service in League City has issued a
+
+* Tornado Warning for...
+  Northeastern Chambers County in southeastern Texas...
+
+* Until 715 AM CDT.
+
+* At 639 AM CDT, a severe thunderstorm capable of producing a tornado
+  was located near Winnie, or 9 miles west of Hamshire, moving
+  northeast at 15 mph. The main threat remains flash flooding, as
+  this area is in a flash flood emergency.
+
+  HAZARD...Tornado.
+
+  SOURCE...Radar indicated rotation.
+
+  IMPACT...Flying debris will be dangerous to those caught without
+           shelter. Mobile homes will be damaged or destroyed.
+           Damage to roofs, windows, and vehicles will occur.  Tree
+           damage is likely.
+
+* This dangerous storm will be near...
+  Winnie around 655 AM CDT.
+  Stowell around 700 AM CDT.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+TAKE COVER NOW! If you are outdoors, in a mobile home, or in a
+vehicle, move to the closest substantial shelter and protect
+yourself from flying debris.
+
+&&
+
+LAT...LON 2976 9448 2984 9452 2989 9442 2989 9436
+      2978 9436
+TIME...MOT...LOC 1139Z 237DEG 14KT 2981 9446
+
+TORNADO...RADAR INDICATED
+HAIL...<.75IN
+
+$$
