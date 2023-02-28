@@ -5,6 +5,12 @@ from pyiem.util import get_test_file
 from pyiem.nws.products.lsr import parser, parse_lsr
 
 
+def test_gh707_mixedcase():
+    """Test that we properly handle mixed case LSR."""
+    prod = parser(get_test_file("LSR/LSRICT_mixed.txt"))
+    assert not prod.warnings
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_220427_lsr_length(dbcursor):
     """Test the length of the tweet message is correct."""
