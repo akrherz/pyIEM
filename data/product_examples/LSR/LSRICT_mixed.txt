@@ -1,0 +1,23 @@
+000 
+NWUS53 KICT 270002
+LSRICT
+
+Preliminary Local Storm Report
+National Weather Service Wichita, KS
+702 PM CDT Sat May 26 2012
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0945 PM     Tornado          Russell                 38.89N 98.85W
+05/25/2012                   Russell            KS   Trained Spotter
+
+            *** 1 INJ *** Trained spotter reported damage from the
+            rope tornado which destroyed one modular home on the
+            south side of Russell. The occupant had a few cuts and was
+            later transported to the hospital for a broken collar
+            bone. Houses on either side of the home received minor
+            damage.
+
+$$

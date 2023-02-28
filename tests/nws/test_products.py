@@ -276,9 +276,9 @@ def test_spacewx():
 
 
 def test_140522_blowingdust():
-    """Make sure we can deal with invalid LSR type"""
+    """This LSR type is now valid."""
     prod = parser(get_test_file("LSR/LSRTWC.txt"))
-    assert not prod.lsrs
+    assert prod.lsrs
 
 
 def test_01():
