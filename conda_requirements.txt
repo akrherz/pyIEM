@@ -11,8 +11,6 @@ freetype>=2.10
 gdal
 geopandas
 geos
-# talk to google
-google-api-python-client
 # templating
 jinja2
 matplotlib-base

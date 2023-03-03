@@ -2,5 +2,3 @@
 backports.zoneinfo;python_version<"3.9"
 # needed for docs
 sphinxcontrib-napoleon
-# cscap_utils stuff, fixes Python3.10 issue
-git+https://github.com/RCoff/smartsheet-python-sdk.git
