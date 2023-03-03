@@ -175,8 +175,7 @@ def html_escape(val):
 
 def get_test_filepath(name: str) -> str:
     """Helper to get a testing filename, full path."""
-    basedir = os.path.dirname(__file__)
-    return f"{basedir}/../../data/product_examples/{name}"
+    return f"{os.getcwd()}/data/product_examples/{name}"
 
 
 def get_test_file(name):

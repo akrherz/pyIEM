@@ -34,7 +34,7 @@ jobs:
         psql -f data/postgis/cwsu.db -U mesonet postgis
         cd ..
         python util/insert_testing_data.py
-        pytest --mpl --cov=./ --cov-report xml
+        pytest --mpl --cov=./src --cov-report xml
         conda install sphinx
         cd docs
         make html
