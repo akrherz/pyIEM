@@ -26,7 +26,7 @@ jobs:
         . .ci_tooling/miniconda.sh
         . .ci_tooling/memcached.sh
         pip install requests-mock
-        python -m pip install . --upgrade
+        python -m pip install . --upgrade --no-deps
         export PATH="/usr/lib/postgresql/14/bin:$PATH"
         cd database; sh bootstrap.sh
         python schema_manager.py
@@ -34,7 +34,8 @@ jobs:
         psql -f data/postgis/cwsu.db -U mesonet postgis
         cd ..
         python util/insert_testing_data.py
-        pytest --mpl --cov=./src --cov-report xml
+        coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
+        coverage xml
         conda install sphinx
         cd docs
         make html
