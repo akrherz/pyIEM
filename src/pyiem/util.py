@@ -424,7 +424,12 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 "name"
             ]
             ctx[f"_sname{_n}"] = f"[{value}] {sname}"
+        elif typ == "cmap":
+            # pylint: disable=import-outside-toplevel
+            from pyiem.plot.use_agg import plt
 
+            if value not in plt.colormaps:
+                value = default
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
                 value = int(value)

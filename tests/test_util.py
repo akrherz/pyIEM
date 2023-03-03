@@ -195,6 +195,22 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_gh709_get_autoplot_context_cmap():
+    """Test that we handle invalid cmaps."""
+    form = {"c": "bah"}
+    cfg = {"arguments": [{"type": "cmap", "name": "c", "default": "jet"}]}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["c"] == "jet"
+
+
+def test_gh709_get_autoplot_context_cmap_valid():
+    """Test that we handle invalid cmaps."""
+    form = {"c": "viridis_r"}
+    cfg = {"arguments": [{"type": "cmap", "name": "c", "default": "jet"}]}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["c"] == form["c"]
+
+
 def test_get_autoplot_context_e_set():
     """Ensure that _e gets set."""
     form = {"_e": "apdiv"}
