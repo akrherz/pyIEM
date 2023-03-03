@@ -2,6 +2,7 @@
 # installing these
 affine
 cartopy_offlinedata
+coverage
 cython
 defusedxml
 fiona
@@ -33,6 +34,7 @@ pydantic
 pymemcache
 pyproj
 pytest
+pytest-cov
 pytest-mpl
 pytest-runner
 rasterstats

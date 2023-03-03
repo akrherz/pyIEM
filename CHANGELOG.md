@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Validate `type=cmap` for `util.get_autoplot_context` (#709).
+
 ### Bug Fixes
 
 - Correct VTEC `is_emergency` false positive spotted by Kyle Noël.

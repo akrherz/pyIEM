@@ -175,8 +175,7 @@ def html_escape(val):
 
 def get_test_filepath(name: str) -> str:
     """Helper to get a testing filename, full path."""
-    basedir = os.path.dirname(__file__)
-    return f"{basedir}/../../data/product_examples/{name}"
+    return f"{os.getcwd()}/data/product_examples/{name}"
 
 
 def get_test_file(name):
@@ -424,7 +423,12 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 "name"
             ]
             ctx[f"_sname{_n}"] = f"[{value}] {sname}"
+        elif typ == "cmap":
+            # pylint: disable=import-outside-toplevel
+            from pyiem.plot.use_agg import plt
 
+            if value not in plt.colormaps:
+                value = default
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
                 value = int(value)

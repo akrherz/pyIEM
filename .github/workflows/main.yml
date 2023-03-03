@@ -25,8 +25,8 @@ jobs:
         . .ci_tooling/postgres.sh
         . .ci_tooling/miniconda.sh
         . .ci_tooling/memcached.sh
-        pip install codecov requests-mock
-        python -m pip install . --upgrade
+        pip install requests-mock
+        python -m pip install . --upgrade --no-deps
         export PATH="/usr/lib/postgresql/14/bin:$PATH"
         cd database; sh bootstrap.sh
         python schema_manager.py
@@ -35,15 +35,20 @@ jobs:
         cd ..
         python util/insert_testing_data.py
         coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
-        if [[ ${{ matrix.PYTHON_VERSION }} == '3.8' ]]; then
-          codecov
-        fi
+        coverage xml
         conda install sphinx
         cd docs
         make html
         touch build/html/.nojekyll
         cd ..
-      
+
+    - name: Code coverage
+      if: ${{ matrix.PYTHON_VERSION == '3.8' }}
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage.xml
+
     - name: Build and Deploy
       if: ${{ matrix.PYTHON_VERSION == '3.8' }}
       uses: JamesIves/github-pages-deploy-action@releases/v3
