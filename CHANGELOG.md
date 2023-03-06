@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Removed `pyiem.cscap_utils` as it was not maintained.
+- Removed `pyiem.twistedpg` as it was a glorious hack and no longer needed.
 
 ### New Features
 
