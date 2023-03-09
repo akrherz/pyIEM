@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add parser for Wind/Temps Aloft Forecast product (AWIPSID: FD) (#713).
 - Validate `type=cmap` for `util.get_autoplot_context` (#709).
 
 ### Bug Fixes
