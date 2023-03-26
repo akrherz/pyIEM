@@ -14,6 +14,34 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import utc, get_test_file
 
 
+def test_damage_pns():
+    """Test the result we get from a damage PNS statement."""
+    data = get_test_file("PNS/PNS_damage.txt")
+    prod = productparser(data)
+    res = prod.get_jabbers("")
+    ans = (
+        "SHV issues Damage Survey PNS (Max: EF2) at Dec 14, 8:51 PM CST "
+        "...NWS Damage Survey for 12/13/22 Tornado Event - Update #1... "
+        "?pid=202212150251-KSHV-NOUS44-PNSSHV"
+    )
+    assert res[0][0] == ans
+    assert res[0][2]["twitter"] == ans
+
+
+def test_damage_pns_multi():
+    """Test the result we get from a damage PNS statement."""
+    data = get_test_file("PNS/PNS_damage_multi.txt")
+    prod = productparser(data.replace("EF1", "EF6"))
+    res = prod.get_jabbers("")
+    ans = (
+        "FWD issues Public Information Statement (PNS) at Mar 17, 7:02 PM CDT "
+        "...NWS Damage Survey for 03/16/23 Tornado Event... "
+        "?pid=202303180002-KFWD-NOUS44-PNSFWD"
+    )
+    assert res[0][0] == ans
+    assert prod.warnings
+
+
 def test_gh652_trailingspace():
     """Test a trailing space in UGC line does not trip us up!"""
     data = get_test_file("AWW/AWWBZN.txt")

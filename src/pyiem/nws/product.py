@@ -96,8 +96,34 @@ SQUALLTAG = re.compile(
 SQUALLIMPACTTAG = re.compile(
     r".*SNOW\s?SQUALL IMPACT\.\.\.(?P<tag>SIGNIFICANT|GENERAL)"
 )
-
+EF_RE = re.compile(r"^Rating:\s*EF\s?\-?(?P<num>\d)\s*$", re.M | re.I)
 KNOWN_BAD_TTAAII = ["KAWN"]
+
+
+def damage_survey_pns(prod, data):
+    """Glean out things, hopefully."""
+    ffs = {}
+    for token in EF_RE.findall(prod.unixtext):
+        entry = ffs.setdefault(int(token), [])
+        entry.append(1)
+    data["maxf"] = ""
+    if ffs:
+        maxf = max(ffs.keys())
+        # More for testing than anything
+        if maxf > 5:
+            raise ValueError(f"Bad EF of {maxf} found")
+        data["maxf"] = f" (Max: EF{maxf}) "
+    # approx and headline has starting space already :/
+    hdl = " " if len(data["headline"]) > 90 else f"{data['headline']} "
+    plain = (
+        f"{data['source']} issues Damage Survey PNS{data['maxf']}at "
+        f"{data['stamp']}{hdl}{data['url']}"
+    )
+    html = (
+        f'<p>{data["source"]} issues <a href="{data["url"]}">Damage Survey PNS'
+        f"</a>{data['maxf']} at {data['stamp']}{hdl}</p>"
+    )
+    return plain, html
 
 
 def checker(lon, lat, strdata):
@@ -729,7 +755,6 @@ class TextProduct:
             "stamp": self.get_nicedate(),
             "url": f"{uri}?pid={self.get_product_id()}",
         }
-        res = []
         plain = (templates[0] + "%(url)s") % data
         html = (
             '<p>%(source)s issues <a href="%(url)s">%(name)s (%(aaa)s)</a>'
@@ -750,8 +775,18 @@ class TextProduct:
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/227/"
                 f"pid:{self.get_product_id()}::segnum:0.png"
             )
-        res.append((plain, html, xtra))
-        return res
+        if (
+            self.afos is not None
+            and self.afos[:3] == "PNS"
+            and self.unixtext.upper().find("DAMAGE SURVEY") > -1
+        ):
+            try:
+                plain, html = damage_survey_pns(self, data)
+                xtra["twitter"] = plain
+                xtra["channels"] += ",DAMAGEPNS"
+            except Exception as exp:
+                self.warnings.append(f"Hit exception {exp} in damage_survey")
+        return [(plain, html, xtra)]
 
     def get_signature(self):
         """Find the signature at the bottom of the page"""
