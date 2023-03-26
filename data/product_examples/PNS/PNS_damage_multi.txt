@@ -1,0 +1,153 @@
+
+312 
+NOUS44 KFWD 180002
+PNSFWD
+TXZ091>095-100>107-115>123-129>135-141>148-156>162-174-175-181215-
+
+Public Information Statement
+National Weather Service Fort Worth TX
+702 PM CDT Fri Mar 17 2023
+
+
+...NWS Damage Survey for 03/16/23 Tornado Event...
+
+.Overview...
+Severe thunderstorms moved across North Texas during the late afternoon
+and evening of March 16, 2023, producing wind and tornado damage at
+multiple locations. A National Weather Service Fort Worth storm survey team
+assessed damage in 3 general areas today, and confirmed 3 EF-1 tornadoes - 2 in
+Dallas County near Grand Prairie and Irving, and one in Navarro County near
+Corsicana.  In addition, a small area of damage was assessed in the City of
+Garland in eastern Dallas County.  This damage was determined to be due to
+straight-line winds associated with a brief thunderstorm downburst event.
+Additional data will be assessed in the coming days, and updates will be
+issued as necessary.
+
+
+.Dallas County Tornado # 1...
+
+Rating:                 EF1
+Estimated Peak Wind:    105 mph
+Path Length /statute/:  6.3654 miles
+Path Width /maximum/:   100.0 yards
+Fatalities:             0
+Injuries:               0
+
+Start Date:             03/16/2023
+Start Time:             04:47 PM CDT
+Start Location:         4 SE Euless / Dallas County / TX
+Start Lat/Lon:          32.8066 / -97.0338
+
+End Date:               03/16/2023
+End Time:               04:55 PM CDT
+End Location:           4 SSE Irving / Dallas County / TX
+End Lat/Lon:            32.8095 / -96.9329
+
+Survey Summary:
+A tornado formed in the extreme northern portions of the City of Grand
+Prairie, in a distribution facility area near West Trinity Boulevard and
+Trinity Ridge Drive.  A section of roofing was peeled off of a warehouse in
+this area, and scattered tree damage was evident due to EF-0 winds of
+65-80 mph.  The tornado moved southeast, then east and entered the southern
+portion of the City of Irving, where an apartment building was impacted along
+Shady Grove Road just east of Beltline Road.  Roof damage at this apartment
+complex was consistent with maximum EF-1 windspeeds of 105 mph. The tornado
+continued east, roughly paralleling Shady Grove Road and producing tree
+and light shingle damage consistent with EF-0 windspeeds.  The track continued
+eastward through Irving neighborhoods, crossing MacArthur Boulevard,
+with intermittent tree damage.  The tornado produced some light
+structural damage to a discount store and adjacent city building
+near Nursery Road and East 6th Street, then dissipated shortly
+thereafter.
+
+
+.Dallas County Tornado # 2...
+
+Rating:                 EF1
+Estimated Peak Wind:    105 mph
+Path Length /statute/:  0.7108 miles
+Path Width /maximum/:   100.0 yards
+Fatalities:             0
+Injuries:               0
+
+Start Date:             03/16/2023
+Start Time:             04:52 PM CDT
+Start Location:         1 SSE Irving / Dallas County / TX
+Start Lat/Lon:          32.8375 / -96.9593
+
+End Date:               03/16/2023
+End Time:               04:56 PM CDT
+End Location:           1 SE Irving / Dallas County / TX
+End Lat/Lon:            32.845 / -96.9511
+
+Survey Summary:
+A brief tornado formed in the central portion of the City of
+Irving, near the intersection of MacArthur Boulevard and State
+Highway 183.  Near this formation point, an auto dealership
+sustained damage to the roof and front facade of the main
+showroom building. An adjacent power pole was also pushed over.
+Damage at this dealership was consistent with low end EF-1 intensity
+windspeeds of approximately 105 mph. The tornado moved northeast
+through adjacent apartment complexes and residential areas, producing
+tree damage and occasional roof damage consistent with 65-80 mph winds.
+The tornado dissipated near the intersection of Rochelle Road and
+O'Conner Road.
+
+
+.Navarro County Tornado...
+
+Rating:                 EF1
+Estimated Peak Wind:    95 mph
+Path Length /statute/:  2.7723 miles
+Path Width /maximum/:   50.0 yards
+Fatalities:             0
+Injuries:               2
+
+Start Date:             03/16/2023
+Start Time:             07:58 PM CDT
+Start Location:         4 NNW Corsicana / Navarro County / TX
+Start Lat/Lon:          32.1319 / -96.495
+
+End Date:               03/16/2023
+End Time:               08:04 PM CDT
+End Location:           2 NNE Corsicana / Navarro County / TX
+End Lat/Lon:            32.1185 / -96.4531
+
+Survey Summary:
+A tornado formed on the northern outskirts of Corsicana in
+Navarro County, west of the intersection of County Road 0010 and
+County Road 0018.  After producing tree damage in an open field,
+the tornado moved southeast and significantly damaged a single
+family residence near the intersection of County Road 0010 and
+County Road 0017 in far northern Corsicana.  Sections of shingles
+and some wood roof sheathing were removed or damaged, and tree
+damage was substantial. Damage here was consistent with EF-1 winds
+of 95-100 mph.  On an adjacent plot of land, a large trailer was
+rolled twice, resulting in the serious injury of two adult occupants.
+The track continued southeast, producing intermittent EF-0 intensity
+tree damage of 65-75 mph in north Corsicana. In its latter stages, the
+tornado veered east, crossing Business 45 and producing more significant
+tree damage before dissipating shortly before reaching Interstate 45.
+
+
+&&
+
+EF Scale: The Enhanced Fujita Scale classifies tornadoes into the
+following categories:
+
+EF0...Weak......65 to 85 mph
+EF1...Weak......86 to 110 mph
+EF2...Strong....111 to 135 mph
+EF3...Strong....136 to 165 mph
+EF4...Violent...166 to 200 mph
+EF5...Violent...>200 mph
+
+NOTE:
+The information in this statement is preliminary and subject to
+change pending final review of the events and publication in NWS
+Storm Data.
+
+$$
+
+Bradshaw
+

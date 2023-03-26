@@ -1,0 +1,80 @@
+992 
+NOUS44 KSHV 150251
+PNSSHV
+ARZ050-051-059>061-070>073-LAZ001>006-010>014-017>022-OKZ077-
+TXZ096-097-108>112-124>126-136>138-149>153-165>167-151500-
+
+Public Information Statement
+National Weather Service Shreveport LA
+851 PM CST Wed Dec 14 2022
+
+...NWS Damage Survey for 12/13/22 Tornado Event - Update #1...
+
+.Update...This update includes survey information for the Union 
+Parish tornado. 
+
+.Overview...A strong cold front moved through East Texas,
+Southeast Oklahoma, Southwest Arkansas, and Northwest Louisiana
+during the afternoon and evening hours. As a result, severe 
+thunderstorms developed along the front and in the warm sector 
+ahead of the front. There were numerous tornado warnings issued 
+during the event with at least 3 confirmed tornadoes.
+
+.Tornado #1...Panola/Harrison County, TX
+
+Rating:                 EF2
+Estimated Peak Wind:    115 mph
+Path Length /statute/:  9.1611 miles
+Path Width /maximum/:   460.0 yards
+Fatalities:             0
+Injuries:               0
+
+Start Date:             12/13/2022
+Start Time:             03:38 PM CST
+Start Location:         13 SW Waskom / Panola County / TX
+Start Lat/Lon:          32.3323 / -94.2154
+
+End Date:               12/13/2022
+End Time:               03:52 PM CST
+End Location:           4 SSW Waskom / Harrison County / TX
+End Lat/Lon:            32.4211 / -94.0992
+
+Summary: The tornado initially touched down in a forested area in
+Panola County off of CR-3123. There, approximately 200 softwood
+trees were snapped and uprooted across an area around 460 yards
+wide. The tornado damage swath narrowed as it continued to do
+roof damage to a single family home off of CR-312 and CR-3123.
+The tornado continued to snap and uproot trees as it continues to
+cross FM-31 and crossed into Harrison County. The tornado then
+crossed Old Town Road (CR-1202) and FM-451, as it continued to
+uproot trees and down large branches. The tornado then paralleled
+CR-1214 as it continue to do tree damage. It finally crossed FM-
+9 and hit a two story home, removing large portions of the roof
+before it lifted shortly after. 
+
+A special thanks goes out to the Texas Division of Emergency 
+Management (TDEM) and the Panola County and Harrison County 
+Emergency Management teams for their assistance in locating 
+damage during the survey. 
+
+&&
+
+EF Scale: The Enhanced Fujita Scale classifies tornadoes into the
+following categories:
+
+EF0...Weak......65 to 85 mph
+EF1...Weak......86 to 110 mph
+EF2...Strong....111 to 135 mph
+EF3...Strong....136 to 165 mph
+EF4...Violent...166 to 200 mph
+EF5...Violent...>200 mph
+
+NOTE:
+The information in this statement is preliminary and subject to
+change pending final review of the event and publication in
+NWS Storm Data.
+
+
+$$
+
+BT/CW/BB/AC
