@@ -1,5 +1,6 @@
 AK Alaska
 AL Alabama
+AS American Somoa
 AR Arkansas
 AZ Arizona
 CA California
