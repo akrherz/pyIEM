@@ -48,6 +48,7 @@ VTEC_PHENOMENA = {
     "BW": "Brisk Wind",
     "BZ": "Blizzard",
     "CF": "Coastal Flood",
+    "CW": "Cold Weather",
     "DF": "Debris Flow",
     "DS": "Dust Storm",
     "DU": "Blowing Dust",
