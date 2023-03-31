@@ -28,6 +28,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_clippg4():
+    """Test another format from PPG."""
+    prod = cliparser(get_test_file("CLI/CLIPPG4.txt"))
+    assert prod.data[0]["data"]["temperature_maximum_record_years"][0] == 1999
+    assert abs(prod.data[0]["data"]["precip_today"] - 0.02) < 0.01
+
+
 def test_clippg3():
     """Test another format from PPG."""
     prod = cliparser(get_test_file("CLI/CLIPPG3.txt"))

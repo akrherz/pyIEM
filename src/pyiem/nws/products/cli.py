@@ -13,7 +13,7 @@ AMPM_COLON = re.compile(r"\s\d?\d:\d\d\s[AP]M")
 HEADLINE_RE = re.compile(
     (
         r"\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) "
-        r"CLIMATE SUMMARY FOR\s+"
+        r"CLIMATE SUMMARY (FOR|FROM)\s+"
         r"([A-Z]+\s[0-9]+\s+[0-9]{4})( CORRECTION)?\.\.\."
     )
 )
@@ -50,6 +50,10 @@ REGIMES = [
         "DEPARTURE   LAST"
     ),
     "WEATHER ITEM   OBSERVED     LAST",
+    (
+        "WEATHER ITEM  OBSERVED   TIME   RECORD   YEAR   NORMAL   "
+        "DEPARTURE   LAST"
+    ),
 ]
 # label, value, time, record, year, normal, departure, last
 COLS = [
@@ -75,6 +79,7 @@ COLS = [
     [16, 23, None, 30, 35, None, None, 44],
     [16, 23, 33, 40, 51, 59, 69, 79],
     [16, 23, None, None, None, None, None, 33],
+    [16, 23, 31, 37, 46, 52, 61, 72],
 ]
 # Allow manual provision of IDS
 HARDCODED = {}
@@ -335,8 +340,8 @@ def parse_sky_coverage(lines, data):
 def parse_headline(section):
     """Figure out when this product is valid for"""
     tokens = HEADLINE_RE.findall(section.replace("\n", " "))
-    myfmt = "%b %d %Y" if len(tokens[0][1].split()[0]) == 3 else "%B %d %Y"
-    cli_valid = datetime.datetime.strptime(tokens[0][1], myfmt).date()
+    myfmt = "%b %d %Y" if len(tokens[0][2].split()[0]) == 3 else "%B %d %Y"
+    cli_valid = datetime.datetime.strptime(tokens[0][2], myfmt).date()
     cli_station = (tokens[0][0]).strip().upper()
     return (cli_valid, cli_station)
 
@@ -617,16 +622,12 @@ class CLIProduct(TextProduct):
         sections = meat.split("\n\n")
         for _section in sections:
             lines = _section.split("\n")
-            if lines[0] in [
-                "TEMPERATURE (F)",
-                "TEMPERATURE",
-                "TEMPERATURE(F)",
-            ]:
-                parse_temperature(self, self.regime, lines, data)
-            elif lines[0] in ["PRECIPITATION (IN)", "PRECIPITATION"]:
-                parse_precipitation(self.regime, lines, data)
-            elif lines[0] in ["SNOWFALL (IN)", "SNOWFALL"]:
-                parse_snowfall(self.regime, lines, data)
+            if lines[0].startswith("TEMPERATURE"):
+                parse_temperature(self, self.regime, lines[1:], data)
+            elif lines[0].startswith("PRECIPITATION"):
+                parse_precipitation(self.regime, lines[1:], data)
+            elif lines[0].startswith("SNOWFALL"):
+                parse_snowfall(self.regime, lines[1:], data)
             elif lines[0] in ["SKY COVER"]:
                 parse_sky_coverage(lines, data)
             elif lines[0] in ["WIND (MPH)"] and len(lines) > 1:
