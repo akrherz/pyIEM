@@ -40,6 +40,13 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_230418_index_error(dbcursor):
+    """Test this product for not generating an index error."""
+    prod = _vtecparser(get_test_file("FLS/FLSTFX_indexerror.txt"))
+    prod.sql(dbcursor)
+
+
 def test_230217_tore_false_positive():
     """Test that this event is not an emergency."""
     prod = _vtecparser(get_test_file("TORE/TORHGX_false_positive.txt"))

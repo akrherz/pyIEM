@@ -1,0 +1,81 @@
+917
+WGUS85 KTFX 180153
+FLSTFX
+
+Flood Statement
+National Weather Service Great Falls MT
+753 PM MDT Mon Apr 17 2023
+
+...The Flood Warning continues for the following rivers in Montana...
+
+  Milk River near Harlem affecting Blaine County.
+
+.Snow melt and increased reservoir releases will cause the river
+flows to become high once again this week. Expect minor flooding
+downstream from Fresno Reservoir Dam.
+
+For the Milk River...including Harlem...Minor flooding is forecast.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+Motorists should not attempt to drive around barricades or drive
+cars through flooded areas.
+
+Additional information is available at www.weather.gov.
+
+The next statement will be issued Tuesday morning at 1100 AM MDT.
+
+&&
+
+MTC005-181700-
+/O.CON.KTFX.FL.W.0003.000000T0000Z-000000T0000Z/
+/HRLM8.1.SM.230411T0707Z.230412T1145Z.230423T1200Z.NO/
+753 PM MDT Mon Apr 17 2023
+
+...FLOOD WARNING FOR SNOWMELT REMAINS IN EFFECT UNTIL FURTHER
+NOTICE...
+
+* WHAT...Minor flooding is forecast.
+
+* WHERE...Milk River near Harlem.
+
+* WHEN...Until further notice.
+
+* IMPACTS...At 23.0 feet, Escape routes for livestock may be cut off.
+
+* ADDITIONAL DETAILS...
+  - At 6:30 PM MDT Monday the stage was 19.1 feet.
+  - Impacts from earlier flooding, including standing water in
+    fields, will persist, but additional flooding will likely
+    return for the mid to late week period.
+  - Forecast...The river will remain around 19.0 feet this
+    evening. It is then forecast to rise above flood stage
+    Tuesday night to 22.8 feet Thursday evening. It is forecast
+    to fall below flood stage early Sunday morning to around 20.0
+    feet by Monday evening.
+  - Flood stage is 21.0 feet.
+  - Flood History...This crest compares to a previous crest of
+    22.8 feet on 03/15/1994.
+  - http://www.weather.gov/safety/flood
+
+&&
+
+          Fld   Observed           Forecasts (6 pm MDT)
+Location  Stg   Stg   Day/Time     Tue   Wed   Thu
+
+Milk River
+Harlem    21.0  19.1  Mon 6 pm MDT 20.4  22.0  22.8
+
+
+&&
+
+LAT...LON 4855 10912 4863 10914 4850 10849 4838 10844
+
+
+$$
+
+SC
+
