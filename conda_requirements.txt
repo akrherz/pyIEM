@@ -21,7 +21,7 @@ mock
 ncurses
 netCDF4
 numpy
-pandas>=2
+pandas
 # geoplot usage
 pillow
 psycopg2
