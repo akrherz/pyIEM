@@ -43,8 +43,7 @@ requests
 # interpolation
 scipy
 shapely
-# pinned down due to pandas compat
-sqlalchemy<2
+sqlalchemy
 twython
 # iemre
 xarray

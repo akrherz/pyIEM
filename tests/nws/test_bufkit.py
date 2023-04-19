@@ -24,7 +24,7 @@ def test_values():
     """Test that we get values we expect."""
     fp = get_test_filepath("BUFKIT/namm_kdsm.buf")
     sndf, stndf = read_bufkit(fp)
-    row = sndf[(sndf["STIM"] == 0) & (sndf["PRES"] == 7.60)]
+    row = sndf[(sndf["STIM"] == 0) & (sndf["PRES"] == 7.60)].iloc[0]
     assert abs(float(row["HGHT"]) - 33326.51) < 0.01
     row = stndf.loc[84]
     assert abs(float(row["TD2M"]) - 15.79) < 0.01
