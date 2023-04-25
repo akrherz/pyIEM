@@ -353,14 +353,17 @@ def process_modifiers(text, diction, basevalid):
             "N": "minutes",
             "H": "hours",
             "D": "days",
-            "M": "months",
+            "M": None,  # timedelta does not support this, so we hack it
             "Y": "years",
         }
         if val in reps:
             # Ensure this is an integer
             _text = text[3:].strip()
             if _text.isdigit():
-                replace = {reps[val]: int(_text)}
+                if val == "M":
+                    replace = {"days": int(_text) * 30}  # close enough
+                else:
+                    replace = {reps[val]: int(_text)}
                 diction.dv_interval = timedelta(**replace)
             else:
                 LOG.warning("DV with non-numeric value '%s'", _text)

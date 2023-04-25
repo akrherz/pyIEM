@@ -22,6 +22,7 @@ All notable changes to this library are documented in this file.
 - Correct VTEC `is_emergency` false positive spotted by Kyle Noël.
 - Improve forgiveness of CLI parser some more.  Never ends.
 - Improve robustness of `FLS` impacts bullet search.
+- [SHEF] Workaround `DV` months offset, which is ill-defined anyway.
 
 ## **1.15.0** (13 Feb 2023)
 
