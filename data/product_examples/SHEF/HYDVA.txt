@@ -1,0 +1,19 @@
+324
+SXUS51 KTIR 251417
+HYDVA
+County Average Precipitation
+NWS Ohio River Forecast Center, Wilmington, OH
+10:02am EDT Tuesday, April 25, 2023
+
+This is a processed precipitation product from the Ohio River Forecast Center.
+
+.BR TIR 20230425 Z DH05/DC202304251402/PPDPM/PJDPM/PPMPM/PJMPM/DVM3/PPVPM/PJVPM/
+.B2 PPYPM/PJYPM
+:
+:                                 WFO RLX
+:County|               Precipitation & Departures               |  County
+:  ID  |  Yesterday     Past Month  Past 3 Months   Past Year   |   Name
+VAC027   0.00/ -0.12/  3.12/ -0.60/ 11.39/ +0.94/  59.01/+14.74 : Buchanan
+.END
+$$
+:...END of MESSAGE..

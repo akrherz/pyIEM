@@ -32,6 +32,12 @@ def prod():
     return res
 
 
+def test_230425_hydva_months():
+    """Test that month's replacement does not error :/"""
+    prod = parser(get_test_file("SHEF/HYDVA.txt"))
+    assert not prod.warnings
+
+
 def test_230120_rtpgrb():
     """Test that MSG is handled in RTPGRB."""
     prod = parser(get_test_file("SHEF/RTPGRB.txt"))
