@@ -1,7 +1,7 @@
 """Can we process the spacewx"""
 
 from pyiem.nws.products.spacewx import parser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 def test_spacewx():

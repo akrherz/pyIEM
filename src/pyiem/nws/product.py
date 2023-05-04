@@ -1,21 +1,20 @@
 """Base Class encapsulating a NWS Text Product"""
-from datetime import timezone, timedelta, datetime
-from collections import OrderedDict
 import re
+from collections import OrderedDict
+from datetime import datetime, timedelta, timezone
 
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo  # type: ignore
 
-from shapely.geometry import Polygon, MultiPolygon
+from shapely.geometry import MultiPolygon, Polygon
 from shapely.wkt import dumps
 
 from pyiem import reference
+from pyiem.exceptions import InvalidPolygon, TextProductException
+from pyiem.nws import hvtec, ugc, vtec
 from pyiem.util import LOG
-from pyiem.exceptions import TextProductException, InvalidPolygon
-from pyiem.nws import ugc, vtec, hvtec
-
 
 # The AWIPS Product Identifier is supposed to be 6chars as per directive,
 # but in practice it is sometimes something between 4 and 6 chars

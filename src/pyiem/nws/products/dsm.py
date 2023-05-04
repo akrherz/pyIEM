@@ -3,10 +3,10 @@ import re
 from datetime import datetime, timedelta
 
 from metpy.units import units
-from pyiem.nws.product import TextProduct
-from pyiem.util import utc
-from pyiem.reference import TRACE_VALUE
 
+from pyiem.nws.product import TextProduct
+from pyiem.reference import TRACE_VALUE
+from pyiem.util import utc
 
 PARSER_RE = re.compile(
     r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+

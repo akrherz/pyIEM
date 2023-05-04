@@ -7,8 +7,8 @@ import pytest
 
 # this
 from pyiem.exceptions import SIGMETException
-from pyiem.nws.products.sigmet import parser, compute_esol
-from pyiem.util import utc, get_test_file
+from pyiem.nws.products.sigmet import compute_esol, parser
+from pyiem.util import get_test_file, utc
 
 
 def mydict():

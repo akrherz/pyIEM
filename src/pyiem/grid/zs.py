@@ -3,6 +3,7 @@ from collections import namedtuple
 
 import numpy as np
 from rasterstats import zonal_stats
+
 from pyiem.util import LOG
 
 GRIDINFO = namedtuple("GridInfo", ["x0", "y0", "xsz", "ysz", "mask"])

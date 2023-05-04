@@ -1,7 +1,7 @@
 """Test GINI"""
 
-from pyiem.util import get_test_filepath
 from pyiem.nws import gini
+from pyiem.util import get_test_filepath
 
 
 def test_getirramp():

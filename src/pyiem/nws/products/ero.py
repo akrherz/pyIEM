@@ -3,28 +3,29 @@ Eh, I am able to parse the SPC PTS now, so why not add more pain.
 
 Weather Prediction Center Excessive Rainfall Outlook.
 """
-import re
 import datetime
-import tempfile
 import math
-
-from shapely.geometry import MultiPolygon
+import re
+import tempfile
 
 from metpy.units import units
+from shapely.geometry import MultiPolygon
+
+from pyiem.nws.product import TextProduct
 
 # Local
 from pyiem.reference import txt2drct
-from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, load_geodf
+
 from ._outlook_util import (
     CONUS,
+    THRESHOLD2TEXT,
     condition_segment,
     convert_segments,
-    winding_logic,
     load_conus_data,
-    THRESHOLD2TEXT,
-    sql_day_collect,
     quality_control,
+    sql_day_collect,
+    winding_logic,
 )
 
 RISK_RE = re.compile(

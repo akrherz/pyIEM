@@ -14,16 +14,15 @@ from sqlalchemy import text
 
 # Local
 from pyiem.database import get_sqlalchemy_conn
+from pyiem.network import Table as NetworkTable
 from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import (
     PLOT_CONVENTION_FROM,
+    WindrosePlot,
     histogram,
     plot,
-    WindrosePlot,
 )
 from pyiem.util import utc
-from pyiem.network import Table as NetworkTable
-
 
 WINDUNITS = {
     "mph": {

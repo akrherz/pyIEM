@@ -1,9 +1,9 @@
 """test lsr."""
 
 import pytest
-from pyiem.nws.products.lsr import _mylowercase
 from pyiem.nws.lsr import _icestorm_remark as ir
 from pyiem.nws.products import lsr
+from pyiem.nws.products.lsr import _mylowercase
 
 
 @pytest.mark.parametrize(

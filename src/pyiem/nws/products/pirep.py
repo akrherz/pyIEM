@@ -13,10 +13,10 @@ this data contains a bunch of formatting errors.
 
 """
 # stdlib
-from enum import Enum
 import datetime
-import re
 import math
+import re
+from enum import Enum
 
 # Third Party
 from metpy.units import units
@@ -24,7 +24,7 @@ from pydantic import BaseModel
 
 # Local
 import pyiem.nws.product as product
-from pyiem.util import html_escape, LOG
+from pyiem.util import LOG, html_escape
 
 OV_LATLON = re.compile(
     (

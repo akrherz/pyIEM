@@ -2,10 +2,10 @@
 import datetime
 
 import pytest
-from pyiem.reference import TRACE_VALUE
-from pyiem.util import utc, get_test_file
 from pyiem.nws.products import parser as cliparser
-from pyiem.nws.products.cli import get_number, CLIException
+from pyiem.nws.products.cli import CLIException, get_number
+from pyiem.reference import TRACE_VALUE
+from pyiem.util import get_test_file, utc
 
 NWSLI_PROVIDER = {
     "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),

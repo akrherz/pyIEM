@@ -1,10 +1,11 @@
 """Parser for the CF6 Product."""
-import re
 import calendar
-from io import StringIO
 import datetime
+import re
+from io import StringIO
 
 import pandas as pd
+
 from pyiem.nws.product import TextProduct
 from pyiem.reference import TRACE_VALUE
 

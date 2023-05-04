@@ -1,8 +1,8 @@
 """Database helpers."""
 # stdlib
-from contextlib import contextmanager
 import getpass
 import warnings
+from contextlib import contextmanager
 
 # third party
 import psycopg2

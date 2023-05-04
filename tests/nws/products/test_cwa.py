@@ -1,11 +1,11 @@
 """CWA"""
 # third party
 import pytest
-from shapely.geometry import Polygon
 
 # this
 from pyiem.nws.products.cwa import parser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
+from shapely.geometry import Polygon
 
 LOCS = {
     "AMG": {"lon": -82.51, "lat": 31.54},

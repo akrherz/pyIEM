@@ -3,6 +3,7 @@
 """
 # pylint: disable=no-member
 import numpy as np
+
 from pyiem.exceptions import UnitsError
 
 

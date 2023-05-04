@@ -5,7 +5,6 @@ import os
 
 from jinja2 import Environment, PackageLoader
 
-
 # Can not support auto_escape at this time as parts of the template are
 # being provided verbatim.
 TEMPLATE_ENV = Environment(loader=PackageLoader("pyiem", "templates/iem"))

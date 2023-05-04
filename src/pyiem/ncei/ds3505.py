@@ -3,17 +3,16 @@
     https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
 # pylint: disable=too-many-lines
+import json
 import re
 import warnings
-from datetime import timezone, datetime
-import json
+from datetime import datetime, timezone
 
 from metpy.units import units
 
 # Local
-from pyiem.datatypes import speed, pressure
+from pyiem.datatypes import pressure, speed
 from pyiem.util import LOG
-
 
 MISSING_RE = re.compile(r"^\+?\-?9+$")
 EQD_RE = re.compile(r"^[QPRCDN][0-9][0-9]$")

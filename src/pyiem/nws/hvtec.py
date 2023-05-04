@@ -1,9 +1,9 @@
 """Process HVTEC encoding."""
 import re
-from datetime import timezone, datetime
+from datetime import datetime, timezone
 
-from pyiem.util import LOG
 from pyiem.nws.nwsli import NWSLI
+from pyiem.util import LOG
 
 #         nwsli        sev         cause
 _re = (

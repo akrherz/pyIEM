@@ -4,16 +4,17 @@
 # stdlib
 from datetime import datetime, timedelta
 
+from metpy.units import units
+
 # third party
 from pydantic import BaseModel, Field
-from metpy.units import units
 
 # Local
 from pyiem.reference import (
-    shef_send_codes,
-    shef_table7,
     shef_english_units,
+    shef_send_codes,
     shef_standard_units,
+    shef_table7,
 )
 from pyiem.util import LOG
 

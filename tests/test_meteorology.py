@@ -1,10 +1,9 @@
 """Tests for the pyiem.meteorology library"""
 import warnings
 
-import pytest
 import numpy as np
-from metpy.units import units, masked_array
-
+import pytest
+from metpy.units import masked_array, units
 from pyiem import datatypes, meteorology
 from pyiem.exceptions import InvalidArguments
 

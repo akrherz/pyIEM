@@ -1,14 +1,15 @@
 """
 Processing of GINI formatted data found on NOAAPORT
 """
-import struct
 import math
-import zlib
-from datetime import timezone, datetime
 import os
+import struct
+import zlib
+from datetime import datetime, timezone
 
-import pyproj
 import numpy as np
+import pyproj
+
 from pyiem.util import LOG
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "../data"])

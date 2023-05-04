@@ -1,8 +1,8 @@
 """tests"""
 
 import pytest
-from shapely.geometry import Point, Polygon, LineString
 from pyiem import wellknowntext
+from shapely.geometry import LineString, Point, Polygon
 
 
 def test_parsecoordinate_lists():

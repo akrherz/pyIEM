@@ -2,15 +2,16 @@
 
 Break-up the XML G-AIRMET into atomic pieces.
 """
-from datetime import timezone, datetime
+from datetime import datetime, timezone
 from xml.dom import minidom
 
 import defusedxml.ElementTree as ET
-from shapely.geometry import Polygon, MultiLineString, LineString
+from shapely.geometry import LineString, MultiLineString, Polygon
+
 from pyiem.models.gairmet import (
-    GAIRMETModel,
     AIRMETRecord,
     FreezingLevelRecord,
+    GAIRMETModel,
 )
 from pyiem.nws import product
 

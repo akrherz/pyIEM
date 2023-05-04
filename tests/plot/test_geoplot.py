@@ -1,14 +1,13 @@
 """Test plots made by pyiem.plot.geoplot"""
 # pylint: disable=too-many-lines
-import datetime
-import tempfile
-import os
 import copy
+import datetime
+import os
+import tempfile
 
-import pytest
 import matplotlib.colors as mpcolors
 import numpy as np
-from shapely.geometry import Polygon
+import pytest
 
 # Local
 from pyiem import plot
@@ -19,8 +18,9 @@ from pyiem.plot import (
     load_bounds,
     mask_outside_geom,
 )
-from pyiem.reference import TWITTER_RESOLUTION_INCH, LATLON
-from pyiem.util import utc, load_geodf
+from pyiem.reference import LATLON, TWITTER_RESOLUTION_INCH
+from pyiem.util import load_geodf, utc
+from shapely.geometry import Polygon
 
 # Increased threshold with matplotlib 3.6 tweaks
 PAIN = 4.1

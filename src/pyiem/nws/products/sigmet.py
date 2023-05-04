@@ -1,11 +1,11 @@
 """ Parse SIGMETs """
 # Stdlib imports
-import re
 import datetime
 import math
+import re
 
 # Third Party
-from shapely.geometry import Polygon, Point
+from shapely.geometry import Point, Polygon
 
 # Local stuff
 from pyiem.exceptions import SIGMETException

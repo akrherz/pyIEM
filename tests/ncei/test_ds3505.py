@@ -3,7 +3,7 @@
 
 import numpy as np
 from pyiem.ncei import ds3505
-from pyiem.util import utc, get_test_filepath
+from pyiem.util import get_test_filepath, utc
 
 
 def test_issue298_precip():

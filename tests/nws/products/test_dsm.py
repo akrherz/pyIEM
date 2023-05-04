@@ -7,8 +7,8 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo
 
 import pytest
-from pyiem.util import utc, get_test_file
-from pyiem.nws.products.dsm import process, parser, compute_time
+from pyiem.nws.products.dsm import compute_time, parser, process
+from pyiem.util import get_test_file, utc
 
 
 def create_entries(cursor):

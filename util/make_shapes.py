@@ -1,11 +1,11 @@
 """Serialization of geometries for use in pyIEM.plot mapping."""
 import datetime
-import warnings
 import sys
+import warnings
 
 import geopandas as gpd
-from pyiem.reference import state_bounds
 from pyiem.database import get_sqlalchemy_conn
+from pyiem.reference import state_bounds
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 

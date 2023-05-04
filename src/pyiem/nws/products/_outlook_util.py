@@ -7,12 +7,12 @@ import tempfile
 import numpy as np
 import pandas as pd
 from shapely.affinity import translate
+from shapely.geometry import LineString, MultiPolygon, Point, Polygon
 from shapely.geometry.polygon import LinearRing
-from shapely.geometry import Polygon, Point, LineString, MultiPolygon
 
 # local
 from pyiem.geom_util import rhs_split
-from pyiem.util import utc, LOG
+from pyiem.util import LOG, utc
 
 CONUS_BASETIME = utc(2019, 5, 9, 16)
 CONUS = {"line": None, "poly": None}

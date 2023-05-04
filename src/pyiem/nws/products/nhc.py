@@ -2,8 +2,8 @@
 
 import re
 
-from pyiem.nws.product import TextProduct
 from pyiem.exceptions import NHCException
+from pyiem.nws.product import TextProduct
 from pyiem.reference import TWEET_CHARS
 
 TITLE = (

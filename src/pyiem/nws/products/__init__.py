@@ -1,19 +1,21 @@
 """A generalized parser frontend."""
 from __future__ import absolute_import
-from pyiem.nws.product import TextProduct, TextProductException, WMO_RE, AFOSRE
+
+from pyiem.nws.product import AFOSRE, WMO_RE, TextProduct, TextProductException
+
 from . import (
-    spacewx,
     cli,
+    ero,
     hwo,
     lsr,
     mcd,
     nhc,
+    saw,
+    sel,
+    spacewx,
     spcpts,
     sps,
     taf,
-    ero,
-    saw,
-    sel,
     wwp,
 )
 

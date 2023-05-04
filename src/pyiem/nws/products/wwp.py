@@ -4,7 +4,6 @@ import re
 from pyiem.models.wwp import WWPModel
 from pyiem.nws.product import TextProduct
 
-
 # The product format has been remarkably consistent over 16+ years!
 WS_RE = re.compile(r"W(?P<typ>[ST])\s+(?P<num>\d\d\d\d)\s*P?D?S?\n")
 PROB_RE = re.compile(

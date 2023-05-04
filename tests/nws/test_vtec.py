@@ -1,7 +1,7 @@
 """Unit tests for pyiem.nws.vtec"""
 
-from pyiem.util import utc
 from pyiem.nws import vtec
+from pyiem.util import utc
 
 EX1 = "/O.NEW.KJAN.TO.W.0130.050829T1651Z-050829T1815Z/"
 

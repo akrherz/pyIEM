@@ -1,8 +1,8 @@
 """Test Local Storm Report parsing."""
 
 import pytest
+from pyiem.nws.products.lsr import parse_lsr, parser
 from pyiem.util import get_test_file
-from pyiem.nws.products.lsr import parser, parse_lsr
 
 
 def test_gh707_mixedcase():

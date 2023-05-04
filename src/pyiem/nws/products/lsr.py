@@ -1,14 +1,14 @@
 """NWS Local Storm Report (LSR) Parsing."""
 import datetime
-import re
 import math
-
+import re
 
 from shapely.geometry import Point as ShapelyPoint
-from pyiem.nws.product import TextProduct, TextProductException
-from pyiem.nws.lsr import LSR, _icestorm_remark
-from pyiem.util import utc
+
 from pyiem import reference
+from pyiem.nws.lsr import LSR, _icestorm_remark
+from pyiem.nws.product import TextProduct, TextProductException
+from pyiem.util import utc
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time

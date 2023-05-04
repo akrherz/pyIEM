@@ -1,16 +1,16 @@
 """Center Weather Advisories (CWA)"""
 # Stdlib imports
-import re
 import math
+import re
 from typing import Tuple
 
 # Third Party
-from shapely.geometry import Polygon, LineString, Point
+from shapely.geometry import LineString, Point, Polygon
 
 # Local stuff
 from pyiem.models.cwa import CWAModel
-from pyiem.nws.ugc import str2time
 from pyiem.nws.product import TextProduct
+from pyiem.nws.ugc import str2time
 from pyiem.util import LOG
 
 LINE3 = re.compile(

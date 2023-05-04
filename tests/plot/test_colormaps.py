@@ -1,5 +1,5 @@
 """test our colormaps.py"""
-from pyiem.plot.colormaps import stretch_cmap, dep_erosion, get_cmap, nwsprecip
+from pyiem.plot.colormaps import dep_erosion, get_cmap, nwsprecip, stretch_cmap
 
 
 def test_get_cmap():

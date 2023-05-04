@@ -1,6 +1,6 @@
 """Encapsulates a text product holding METARs."""
-from datetime import timezone, timedelta
 import re
+from datetime import timedelta, timezone
 from typing import Tuple
 
 try:
@@ -10,11 +10,12 @@ except ImportError:
 
 from metar.Metar import Metar
 from metar.Metar import ParserError as MetarParserError
+
+from pyiem import datatypes
 from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
 from pyiem.reference import TRACE_VALUE, TWEET_CHARS
-from pyiem import datatypes
-from pyiem.util import drct2text, LOG
+from pyiem.util import LOG, drct2text
 
 NIL_RE = re.compile(r"[\s\n]NIL")
 ERROR_RE = re.compile("Unparsed groups in body '(?P<msg>.*)' while processing")

@@ -1,8 +1,8 @@
 """
 http://www.unidata.ucar.edu/data/lightning/nldn.html
 """
-from datetime import timezone, datetime, timedelta
 import struct
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
