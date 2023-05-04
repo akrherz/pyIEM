@@ -4,9 +4,10 @@ NWS Discontinued 30 Sep 2018
 https://www.weather.gov/media/notification/pdfs/pns18-13disc_county_ffg.pdf
 """
 import re
-from datetime import timezone, datetime
+from datetime import datetime, timezone
 
 import pandas as pd
+
 from pyiem.nws.product import TextProduct
 
 SHEFRE = re.compile(

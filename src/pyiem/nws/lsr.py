@@ -1,7 +1,7 @@
 """The Atomic Local Storm Report ... Report"""
 # pylint: disable=unsubscriptable-object
 import re
-from datetime import timezone, timedelta
+from datetime import timedelta, timezone
 
 from pyiem import reference
 from pyiem.util import html_escape

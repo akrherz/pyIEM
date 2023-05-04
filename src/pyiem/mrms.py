@@ -2,13 +2,13 @@
 
 Hopefully useful functions to help with the processing of MRMS data
 """
-import struct
-from datetime import timezone, datetime
 import gzip
 import os
+import struct
+from datetime import datetime, timezone
 
-import requests
 import numpy as np
+import requests
 
 WEST = -130.0
 EAST = -60.0

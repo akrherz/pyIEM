@@ -2,14 +2,15 @@
 
 This does not process the legacy SAW products that did not have LAT...LON
 """
-import re
 import datetime
+import re
 
-from shapely.geometry import Polygon as ShapelyPolygon
 from shapely.geometry import MultiPolygon
+from shapely.geometry import Polygon as ShapelyPolygon
+
+from pyiem.exceptions import SAWException
 from pyiem.nws.product import TextProduct
 from pyiem.util import utc
-from pyiem.exceptions import SAWException
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(

@@ -2,12 +2,12 @@
 
 # Third Party
 import pytest
+from pyiem.nws.products import parser as tafparser
+from pyiem.nws.products.taf import parser as real_tafparser
+from pyiem.reference import TAF_VIS_OVER_6SM
 
 # Local
 from pyiem.util import get_test_file, utc
-from pyiem.reference import TAF_VIS_OVER_6SM
-from pyiem.nws.products import parser as tafparser
-from pyiem.nws.products.taf import parser as real_tafparser
 
 
 def test_210525_badtimestamp():

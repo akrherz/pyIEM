@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 from pyiem.plot import MapPlot
-from pyiem.reference import state_names, SECTORS, wfo_bounds
+from pyiem.reference import SECTORS, state_names, wfo_bounds
 
 
 def mpgen():

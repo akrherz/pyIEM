@@ -2,10 +2,10 @@
 
 # third party
 import pytest
+from pyiem.plot.layouts import figure, figure_axes
 
 # local
 from pyiem.plot.use_agg import plt
-from pyiem.plot.layouts import figure_axes, figure
 
 
 def test_provided_fig():

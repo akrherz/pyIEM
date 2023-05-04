@@ -3,9 +3,10 @@
 """
 import math
 
-import numpy as np
 import metpy.calc as mcalc
+import numpy as np
 from metpy.units import units
+
 import pyiem.datatypes as dt
 from pyiem.exceptions import InvalidArguments
 

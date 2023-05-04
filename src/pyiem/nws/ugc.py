@@ -2,8 +2,8 @@
  Something to store UGC information!
 """
 # stdlib
-import re
 import datetime
+import re
 from collections import OrderedDict
 
 # third party

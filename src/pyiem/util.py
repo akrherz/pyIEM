@@ -4,26 +4,27 @@
 
 This module contains utility functions used by various parts of the codebase.
 """
-from html import escape
-import os
-import sys
-import time
-import random
 import logging
-from datetime import timezone, datetime, date, timedelta
+import os
+import random
 import re
-from socket import error as socket_error
 import subprocess
+import sys
 import tempfile
+import time
+from datetime import date, datetime, timedelta, timezone
+from html import escape
+from socket import error as socket_error
+
+import geopandas as gpd
 
 # third party
 import netCDF4
-import geopandas as gpd
-from psycopg2.extensions import register_adapter, AsIs
 import numpy as np
-from metpy.units import units, masked_array
 import requests
 import twython
+from metpy.units import masked_array, units
+from psycopg2.extensions import AsIs, register_adapter
 
 # NB: careful with circular imports!
 from pyiem import database

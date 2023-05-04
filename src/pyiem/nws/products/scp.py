@@ -1,7 +1,7 @@
 """Parsing NESDIS Satellite Cloud Product (SCP)."""
 import re
-from datetime import timedelta
 from collections import namedtuple
+from datetime import timedelta
 
 from pyiem.nws.product import TextProduct
 

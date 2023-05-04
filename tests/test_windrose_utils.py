@@ -3,11 +3,11 @@ import datetime
 from io import BytesIO
 
 import pytest
-from pandas import read_csv
 from metpy.units import units
+from pandas import read_csv
 from pyiem.plot.windrose import PLOT_CONVENTION_TO
-from pyiem.windrose_utils import windrose
 from pyiem.util import utc
+from pyiem.windrose_utils import windrose
 
 PAIN = 4.1
 

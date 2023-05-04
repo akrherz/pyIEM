@@ -1,11 +1,12 @@
 """Data Model for GAIRMET."""
 # pylint: disable=too-few-public-methods
-from typing import List
 from datetime import datetime
+from typing import List
+
+from pydantic import BaseModel, Field
 
 # third party
-from shapely.geometry import Polygon, MultiLineString
-from pydantic import BaseModel, Field
+from shapely.geometry import MultiLineString, Polygon
 
 
 class AIRMETRecord(BaseModel):

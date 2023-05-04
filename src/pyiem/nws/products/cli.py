@@ -1,13 +1,13 @@
 """Parser and object storage of information within NWS CLI Product.
 """
-import re
 import datetime
+import re
 
-from pyiem.reference import TRACE_VALUE
-from pyiem.nws.product import TextProduct
-from pyiem.util import LOG
-from pyiem.observation import Observation
 from pyiem.exceptions import CLIException
+from pyiem.nws.product import TextProduct
+from pyiem.observation import Observation
+from pyiem.reference import TRACE_VALUE
+from pyiem.util import LOG
 
 AMPM_COLON = re.compile(r"\s\d?\d:\d\d\s[AP]M")
 HEADLINE_RE = re.compile(

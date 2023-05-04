@@ -3,18 +3,18 @@
 from pyiem.nws.product import TextProduct, TextProductException
 from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
+    DEFAULT_EXPIRE_DELTA,
     _associate_vtec_year,
     _check_unique_ugc,
     _check_vtec_polygon,
-    _resent_match,
-    _do_sql_vtec_new,
-    _do_sql_vtec_cor,
     _do_sql_vtec_can,
     _do_sql_vtec_con,
-    DEFAULT_EXPIRE_DELTA,
+    _do_sql_vtec_cor,
+    _do_sql_vtec_new,
+    _load_database_status,
+    _resent_match,
     check_dup_ps,
     do_sql_hvtec,
-    _load_database_status,
 )
 
 

@@ -1,6 +1,6 @@
 """Support NWS VTEC encoding"""
 import re
-from datetime import timezone, timedelta, datetime
+from datetime import datetime, timedelta, timezone
 
 from pyiem.util import LOG
 

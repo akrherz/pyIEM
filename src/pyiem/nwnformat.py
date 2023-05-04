@@ -2,9 +2,9 @@
 
 Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 """
-from datetime import timezone, datetime
-import re
 import math
+import re
+from datetime import datetime, timezone
 
 try:
     from zoneinfo import ZoneInfo

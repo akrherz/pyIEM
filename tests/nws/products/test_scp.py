@@ -2,7 +2,7 @@
 
 import pytest
 from pyiem.nws.products.scp import parser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 @pytest.mark.parametrize("database", ["asos"])

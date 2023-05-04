@@ -4,14 +4,14 @@ import datetime
 
 import pandas as pd
 import pytest
-
-# Local
-from pyiem.util import utc, get_test_file
+from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
-from pyiem.nws.nwsli import NWSLI
-from pyiem.nws.ugc import UGCParseException, UGC, UGCProvider
+from pyiem.nws.ugc import UGC, UGCParseException, UGCProvider
 from pyiem.nws.vtec import parse
+
+# Local
+from pyiem.util import get_test_file, utc
 
 CUGC = "Product failed to cover all UGC"
 

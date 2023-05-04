@@ -1,10 +1,10 @@
 """SPS Parsing"""
 
 import pytest
+from pyiem.nws.products import parser as spsparser
+from pyiem.nws.ugc import UGC
 from pyiem.reference import TWEET_CHARS
 from pyiem.util import get_test_file, utc
-from pyiem.nws.ugc import UGC
-from pyiem.nws.products import parser as spsparser
 
 
 @pytest.mark.parametrize("database", ["postgis"])

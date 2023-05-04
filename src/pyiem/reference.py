@@ -14,9 +14,9 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
-from datetime import date
 import os
 import sys
+from datetime import date
 
 import pyproj
 

@@ -1,9 +1,9 @@
 """Standardized layouts."""
 
 # local
-from pyiem.reference import TWITTER_RESOLUTION_INCH
 from pyiem.plot.use_agg import plt
 from pyiem.plot.util import draw_logo, fitbox, update_kwargs_apctx
+from pyiem.reference import TWITTER_RESOLUTION_INCH
 
 
 @update_kwargs_apctx

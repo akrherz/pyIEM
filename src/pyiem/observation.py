@@ -1,18 +1,18 @@
 """A class representing an observation stored in the IEM database"""
 # pylint: disable=no-member
-from collections import UserDict
-import warnings
-from datetime import timezone, date, timedelta
 import math
+import warnings
+from collections import UserDict
+from datetime import date, timedelta, timezone
 
 try:
     from zoneinfo import ZoneInfo  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo  # type: ignore
 
+import metpy.calc as mcalc
 import numpy as np
 import pandas as pd
-import metpy.calc as mcalc
 from metpy.units import units as munits
 
 # A nonsense default that is not None/SQL-null

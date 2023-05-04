@@ -1,9 +1,10 @@
 """Parser for the FD (Temp Wind Aloft Forecasts)."""
-import re
 import datetime
+import re
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 from pyiem.nws.product import TextProduct
 
 BASED_ON_RE = re.compile("^DATA BASED ON ([0-9]{6})Z", re.M)

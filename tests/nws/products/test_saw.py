@@ -3,7 +3,7 @@
 import pytest
 from pyiem.nws.products import parser
 from pyiem.nws.products.saw import parser as sawparser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 def test_220502_jabber():

@@ -6,8 +6,8 @@ Example:
 # pylint: disable=unused-import,wrong-import-position
 import os
 
-from pandas.plotting import register_matplotlib_converters
 import matplotlib
+from pandas.plotting import register_matplotlib_converters
 
 matplotlib.use("agg")
 import matplotlib.pyplot as plt  # noqa

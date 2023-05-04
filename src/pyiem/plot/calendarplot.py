@@ -1,24 +1,25 @@
 """Calendar Plot."""
+import calendar
+import datetime
 import os
 from collections import OrderedDict
-import datetime
-import calendar
 
-import numpy as np
 import matplotlib.colors as mpcolors
+import numpy as np
 from matplotlib.patches import Rectangle
-from pyiem.plot.use_agg import plt
+
 from pyiem.plot.colormaps import get_cmap
-from pyiem.plot.util import fitbox, fontscale, update_kwargs_apctx
 from pyiem.plot.layouts import figure
+from pyiem.plot.use_agg import plt
+from pyiem.plot.util import fitbox, fontscale, update_kwargs_apctx
 from pyiem.reference import (
     TWITTER_RESOLUTION_INCH,
     Z_FILL,
     Z_FRAME,
     Z_OVERLAY,
     Z_OVERLAY2,
-    Z_OVERLAY_LABEL,
     Z_OVERLAY2_LABEL,
+    Z_OVERLAY_LABEL,
 )
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])

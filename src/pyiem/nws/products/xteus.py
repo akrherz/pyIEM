@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 import defusedxml.ElementTree as ET
 import pandas as pd
+
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
 

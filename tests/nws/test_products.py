@@ -2,7 +2,7 @@
 
 import pytest
 from pyiem.nws.products import parser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 def filter_warnings(ar, startswith="get_gid"):

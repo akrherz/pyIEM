@@ -3,18 +3,20 @@
 import functools
 import os
 
+import geopandas as gpd
+import matplotlib.colors as mpcolors
+import matplotlib.image as mpimage
+import matplotlib.patches as mpatches
+import matplotlib.path as mpath
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 from pyproj import Transformer
-from shapely.geometry import Polygon, MultiPolygon
-import matplotlib.path as mpath
-import matplotlib.patches as mpatches
-import matplotlib.image as mpimage
-import matplotlib.colors as mpcolors
+from shapely.geometry import MultiPolygon, Polygon
+
 from pyiem import reference
 from pyiem.plot.colormaps import stretch_cmap
-from pyiem.reference import LATLON, FIGSIZES
+from pyiem.reference import FIGSIZES, LATLON
+
 from ._mpl import GeoPanel, SphericalMercatorPanel
 
 DATADIR = os.sep.join([os.path.dirname(__file__), "..", "data"])

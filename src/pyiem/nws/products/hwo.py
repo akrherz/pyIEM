@@ -1,8 +1,8 @@
 """Hazardous Weather Outlook."""
 import re
 
-from pyiem.nws.product import TextProduct
 from pyiem.exceptions import HWOException
+from pyiem.nws.product import TextProduct
 
 
 class HWOProduct(TextProduct):

@@ -1,9 +1,10 @@
 """Off-loaded private stuff from `vtec.py`."""
 # pylint: disable=too-many-arguments
-from datetime import timedelta, timezone
 import itertools
+from datetime import timedelta, timezone
 
 import pandas as pd
+
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
 

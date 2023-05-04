@@ -6,13 +6,14 @@
 
 
 """
-import string
 import random
-from datetime import timezone, datetime
+import string
+from datetime import datetime, timezone
 
-from affine import Affine
 import numpy as np
 import xarray as xr
+from affine import Affine
+
 from pyiem.database import get_dbconn
 
 # 1/8 degree grid, grid cell is the lower left corner

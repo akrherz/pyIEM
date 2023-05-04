@@ -2,8 +2,8 @@
 
 import pytest
 from pyiem.exceptions import UGCParseException
-from pyiem.util import utc
 from pyiem.nws import ugc
+from pyiem.util import utc
 
 STR1 = "DCZ001-170200-"
 STR2 = "DCZ001-MDZ004>007-009>011-013-014-016>018-VAZ036>042-050>057-170200-"

@@ -3,13 +3,14 @@
  parsing of Weather Prediction Center's MPD
 """
 import re
-from datetime import timezone, timedelta
+from datetime import timedelta, timezone
 
 from shapely.geometry import Polygon as ShapelyPolygon
-from pyiem.nws.product import TextProduct
+
 from pyiem.exceptions import MCDException
+from pyiem.nws.product import TextProduct
 from pyiem.reference import TWEET_CHARS, TWEET_URL_CHARS
-from pyiem.util import html_escape, LOG
+from pyiem.util import LOG, html_escape
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(

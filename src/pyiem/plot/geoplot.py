@@ -17,61 +17,63 @@ Example:
 
 """
 # stdlib
-from io import BytesIO
-import tempfile
-import os
-import sys
-import subprocess
-import shutil
 import datetime
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
 import warnings
+from io import BytesIO
+
+import geopandas as gpd
+import matplotlib.cm as mpcm
+import matplotlib.colors as mpcolors
+import matplotlib.patheffects as PathEffects
+import numpy as np
 
 # third party
 import rasterio
-from rasterio.warp import reproject, Resampling
 import requests
+from matplotlib.patches import Wedge
 from metpy.calc import wind_components
 from metpy.units import units
-import numpy as np
-import geopandas as gpd
-from shapely.geometry import shape
-from scipy.signal import convolve2d
-from scipy.interpolate import NearestNDInterpolator
 from PIL import Image
-import matplotlib.colors as mpcolors
-import matplotlib.cm as mpcm
-from matplotlib.patches import Wedge
-import matplotlib.patheffects as PathEffects
+from rasterio.warp import Resampling, reproject
+from scipy.interpolate import NearestNDInterpolator
+from scipy.signal import convolve2d
+from shapely.geometry import shape
+
+from pyiem.plot.colormaps import stretch_cmap
 
 # local
 from pyiem.plot.use_agg import plt
 from pyiem.plot.util import (
-    sector_setter,
+    draw_features_from_shapefile,
+    draw_logo,
+    fitbox,
+    mask_outside_geom,
     mask_outside_polygon,
     polygon_fill,
-    mask_outside_geom,
-    draw_logo,
-    draw_features_from_shapefile,
-    fitbox,
     ramp2df,
+    sector_setter,
     update_kwargs_apctx,
 )
 from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
     FIGSIZES,
     LATLON,
+    TWITTER_RESOLUTION_INCH,
     Z_CF,
-    Z_FILL,
-    Z_FILL_LABEL,
     Z_CLIP,
     Z_CLIP2,
-    Z_POLITICAL,
+    Z_FILL,
+    Z_FILL_LABEL,
+    Z_FRAME,
     Z_OVERLAY,
     Z_OVERLAY2,
-    Z_FRAME,
-    TWITTER_RESOLUTION_INCH,
+    Z_POLITICAL,
 )
-from pyiem.util import ssw, LOG, utc, exponential_backoff, load_geodf
-from pyiem.plot.colormaps import stretch_cmap
+from pyiem.util import LOG, exponential_backoff, load_geodf, ssw, utc
 
 # geopandas currently emits this as parquet is unstable.
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")

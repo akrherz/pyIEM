@@ -2,10 +2,10 @@
 
 # third party
 from shapely.geometry import (
+    GeometryCollection,
+    MultiLineString,
     MultiPolygon,
     Point,
-    MultiLineString,
-    GeometryCollection,
 )
 from shapely.ops import split
 

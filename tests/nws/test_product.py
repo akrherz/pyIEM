@@ -4,14 +4,14 @@ import pytest
 from pyiem.nws import product, ugc
 from pyiem.nws.product import (
     WMO_RE,
-    TextProductException,
-    date_tokens2datetime,
-    checker,
-    str2polygon,
     TextProduct,
+    TextProductException,
+    checker,
+    date_tokens2datetime,
+    str2polygon,
 )
 from pyiem.nws.products import parser as productparser
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 def test_damage_pns():

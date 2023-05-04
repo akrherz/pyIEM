@@ -4,19 +4,20 @@ import math
 import os
 from io import BytesIO
 
+import geopandas as gpd
+
 # Third party libraries
 import numpy as np
-from PIL import Image
-from shapely.geometry import Polygon
-import geopandas as gpd
-from pymemcache.client import Client
-from pyproj import Transformer
 import rasterio
 import requests
-from rasterio.warp import reproject, Resampling
+from PIL import Image
+from pymemcache.client import Client
+from pyproj import Transformer
+from rasterio.warp import Resampling, reproject
+from shapely.geometry import Polygon
 
 # Local imports
-from pyiem.reference import LATLON, EPSG, Z_FILL
+from pyiem.reference import EPSG, LATLON, Z_FILL
 from pyiem.util import LOG, load_geodf
 
 # Zoom 0 through 24

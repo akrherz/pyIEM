@@ -4,10 +4,11 @@ Attempt to break up the HML product into atomic data
 
 """
 import re
-from datetime import timezone, datetime
+from datetime import datetime, timezone
 
 import defusedxml.ElementTree as ET
 import pandas as pd
+
 from pyiem.nws import product
 from pyiem.util import LOG
 

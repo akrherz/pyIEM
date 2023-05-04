@@ -2,9 +2,10 @@
 # pylint: disable=too-few-public-methods
 from datetime import datetime
 
+from pydantic import BaseModel
+
 # third party
 from shapely.geometry import Polygon
-from pydantic import BaseModel
 
 
 class CWAModel(BaseModel):

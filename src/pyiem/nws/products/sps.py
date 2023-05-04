@@ -1,6 +1,6 @@
 """Special Weather Statement"""
-import re
 import datetime
+import re
 
 from pyiem import reference
 from pyiem.nws.product import TextProduct

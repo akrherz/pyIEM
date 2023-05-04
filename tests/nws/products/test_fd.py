@@ -1,8 +1,8 @@
 """Test FD."""
 
 import pytest
-from pyiem.nws.products.fd import parser, parse_encoding
-from pyiem.util import utc, get_test_file
+from pyiem.nws.products.fd import parse_encoding, parser
+from pyiem.util import get_test_file, utc
 
 
 def test_encoding():

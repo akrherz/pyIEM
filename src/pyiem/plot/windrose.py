@@ -2,11 +2,12 @@
 # pylint: disable=not-callable
 import math
 
+import matplotlib.colors as mpcolors
+
 # Third Party
 import numpy as np
-from metpy.units import units
-import matplotlib.colors as mpcolors
 from matplotlib.ticker import FormatStrFormatter
+from metpy.units import units
 
 # Local
 from ..reference import Z_OVERLAY2

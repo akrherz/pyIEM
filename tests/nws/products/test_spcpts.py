@@ -2,14 +2,14 @@
 
 import pytest
 from pyiem.nws.products import parser
+from pyiem.nws.products._outlook_util import debug_draw
 from pyiem.nws.products.spcpts import (
-    str2multipolygon,
-    load_conus_data,
     SPCPTS,
     THRESHOLD_ORDER,
+    load_conus_data,
+    str2multipolygon,
 )
-from pyiem.nws.products._outlook_util import debug_draw
-from pyiem.util import utc, get_test_file
+from pyiem.util import get_test_file, utc
 
 
 def test_220404_threshold_order():

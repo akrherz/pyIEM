@@ -2,7 +2,8 @@
 import os
 
 import numpy as np
-from matplotlib import colormaps, colors as mpcolors
+from matplotlib import colormaps
+from matplotlib import colors as mpcolors
 
 # Local
 from pyiem.reference import DATADIR

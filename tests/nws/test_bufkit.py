@@ -4,10 +4,10 @@ from io import StringIO
 
 # third party
 import pytest
+from pyiem.nws.bufkit import read_bufkit
 
 # Local
 from pyiem.util import get_test_filepath
-from pyiem.nws.bufkit import read_bufkit
 
 
 @pytest.mark.parametrize(

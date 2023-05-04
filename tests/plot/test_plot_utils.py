@@ -1,7 +1,7 @@
 """Test pyiem.plot.utils."""
 
 import pytest
-from pyiem.plot.util import fitbox, draw_logo, centered_bins, pretty_bins
+from pyiem.plot.util import centered_bins, draw_logo, fitbox, pretty_bins
 
 
 def test_pretty_bins_large_value():

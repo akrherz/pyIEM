@@ -2,27 +2,28 @@
  Something to deal with SPC PTS Product
  My life was not supposed to end like this, what a brutal format
 """
-import re
 import datetime
+import re
 import tempfile
 
 from shapely.geometry import (
-    Polygon,
     MultiPolygon,
+    Polygon,
 )
 
 # Local
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, load_geodf
+
 from ._outlook_util import (
-    load_conus_data,
     CONUS,
-    convert_segments,
-    winding_logic,
-    condition_segment,
     THRESHOLD2TEXT,
-    sql_day_collect,
+    condition_segment,
+    convert_segments,
+    load_conus_data,
     quality_control,
+    sql_day_collect,
+    winding_logic,
 )
 
 DAYRE = re.compile(

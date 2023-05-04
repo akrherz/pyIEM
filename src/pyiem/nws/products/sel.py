@@ -4,7 +4,6 @@ import re
 from pyiem.models.sel import SELModel
 from pyiem.nws.product import TextProduct
 
-
 # The product format has been remarkably consistent over 16+ years!
 WATCH_RE = re.compile(
     r"(?P<typ>SEVERE THUNDERSTORM|TORNADO)\s+WATCH\s+NUMBER\s+"

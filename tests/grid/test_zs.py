@@ -1,10 +1,10 @@
 """Test our caching zonal_stats"""
 
 import numpy as np
-from geopandas import GeoSeries
-from shapely.geometry import Polygon
 from affine import Affine
+from geopandas import GeoSeries
 from pyiem.grid import zs
+from shapely.geometry import Polygon
 
 
 def test_gen_stats():

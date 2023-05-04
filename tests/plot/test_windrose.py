@@ -1,7 +1,7 @@
 """Can we make windrose plots?"""
 
-import pytest
 import numpy as np
+import pytest
 from metpy.units import units
 from pyiem.plot import get_cmap
 from pyiem.plot.windrose import (

@@ -1,13 +1,13 @@
 """Test Observation"""
 # pylint: disable=redefined-outer-name
-import string
 import datetime
 import random
+import string
 
-import psycopg2.extras
 import numpy as np
-import pytest
 import pandas as pd
+import psycopg2.extras
+import pytest
 from pyiem import observation
 from pyiem.database import get_dbconn
 from pyiem.util import utc

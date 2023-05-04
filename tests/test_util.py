@@ -1,17 +1,18 @@
 """Testing of util."""
 # pylint: disable=redefined-outer-name
-from datetime import date, datetime, timezone
-import string
 import random
+import string
 import tempfile
-from io import BytesIO
 from collections import OrderedDict
+from datetime import date, datetime, timezone
+from io import BytesIO
+
 import mock
+import numpy as np
 
 # third party
 import pytest
-import numpy as np
-from pyiem import util, database
+from pyiem import database, util
 from pyiem.exceptions import NoDataFound
 
 

@@ -1,11 +1,11 @@
 """
  Supports parsing of Textual Model Output Statistics files
 """
-import re
 import datetime
+import re
 
-from pyiem.util import utc
 from pyiem.nws.product import TextProduct
+from pyiem.util import utc
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
 

@@ -1,12 +1,13 @@
 """TAF Parsing"""
 # stdlib
-from datetime import timedelta
 import re
+from datetime import timedelta
+
+from pyiem import reference
+from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
 
 # local
 from pyiem.nws.product import TextProduct
-from pyiem import reference
-from pyiem.models.taf import TAFForecast, TAFReport, SkyCondition, WindShear
 
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
 STID_VALID = re.compile(r"(?P<station>[A-Z0-9]{4}) (?P<ddhhmi>\d{6})Z")

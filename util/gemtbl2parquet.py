@@ -2,9 +2,10 @@
 # stdlib
 import datetime
 
+import geopandas as gpd
+
 # third party
 import pandas as pd
-import geopandas as gpd
 
 # Local
 from pyiem.util import logger

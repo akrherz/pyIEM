@@ -2,8 +2,8 @@
 # pylint: disable=cell-var-from-loop
 
 # third party
-import pytest
 import psycopg2
+import pytest
 from pyiem import database
 
 
