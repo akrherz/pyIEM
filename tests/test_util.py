@@ -196,6 +196,14 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_lowercase_state():
+    """A lowercase state should not be permitted!"""
+    form = {"state": "Qq"}
+    cfg = {"arguments": [{"type": "state", "name": "state", "default": "MN"}]}
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["state"] == "MN"
+
+
 def test_gh709_get_autoplot_context_cmap():
     """Test that we handle invalid cmaps."""
     form = {"c": "bah"}

@@ -15,6 +15,7 @@ All notable changes to this library are documented in this file.
 
 - Add bling to jabber messages generated from PNS Damage Surveys.
 - Add parser for Wind/Temps Aloft Forecast product (AWIPSID: FD) (#713).
+- Support `type="state"` for autoplot context.
 - Validate `type=cmap` for `util.get_autoplot_context` (#709).
 
 ### Bug Fixes

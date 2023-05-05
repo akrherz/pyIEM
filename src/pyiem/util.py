@@ -30,6 +30,7 @@ from psycopg2.extensions import AsIs, register_adapter
 from pyiem import database
 from pyiem.exceptions import NoDataFound
 from pyiem.network import Table as NetworkTable
+from pyiem.reference import state_names
 
 # API compat
 get_dbconn = database.get_dbconn
@@ -440,6 +441,11 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = float(value)
             if default is not None:
                 default = float(default)
+        elif typ == "state":
+            if value is not None:
+                value = value.upper()
+            if value not in state_names and default is not None:
+                value = default
         elif typ == "select":
             options = opt.get("options", {})
             # in case of multi, value could be a list
