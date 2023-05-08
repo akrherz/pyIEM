@@ -281,17 +281,21 @@ class LSR:
         # rectify
         tweet = " ".join(tweet.split())
 
-        xtra = dict(
-            product_id=self.product.get_product_id(),
-            channels=_generate_channels(self),
-            geometry=f"POINT({self.get_lon()} {self.get_lat()})",
-            ptype=self.get_dbtype(),
-            valid=self.utcvalid.strftime("%Y%m%dT%H:%M:00"),
-            category="LSR",
-            twitter=f"{tweet} {url}",
-            lat=str(self.get_lat()),
-            long=str(self.get_lon()),
-        )
+        xtra = {
+            "product_id": self.product.get_product_id(),
+            "channels": _generate_channels(self),
+            "geometry": f"POINT({self.get_lon()} {self.get_lat()})",
+            "ptype": self.get_dbtype(),
+            "valid": self.utcvalid.strftime("%Y%m%dT%H:%M:00"),
+            "category": "LSR",
+            "twitter": f"{tweet} {url}",
+            "lat": str(self.get_lat()),
+            "long": str(self.get_lon()),
+            "twitter_media": (
+                "https://mesonet.agron.iastate.edu/plotting/auto/plot/242/"
+                f"pid:{self.product.get_product_id()}.png"
+            ),
+        }
         html = (
             f"<p>{prefix}{_mylowercase(self.city)} [{self.county.title()} Co, "
             f'{self.state}] {self.source} <a href="{url}">reports {magstr}'
