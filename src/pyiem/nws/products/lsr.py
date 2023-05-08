@@ -90,6 +90,10 @@ class LSRProduct(TextProduct):
             xtra = {
                 "product_id": self.get_product_id(),
                 "channels": f"LSR{wfo}",
+                "twitter_media": (
+                    "https://mesonet.agron.iastate.edu/plotting/auto/plot/242/"
+                    f"pid:{self.get_product_id()}.png"
+                ),
             }
             res.append([text, html, xtra])
         return res
