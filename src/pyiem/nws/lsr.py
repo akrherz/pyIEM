@@ -191,7 +191,7 @@ class LSR:
                 """
                 UPDATE lsrs SET product_id_summary = %s, updated = %s
                 WHERE valid = %s
-                and type = %s and wfo = %s and geom = %s
+                and typetext = %s and wfo = %s and geom = %s
                 """,
                 (
                     prod.get_product_id(),
