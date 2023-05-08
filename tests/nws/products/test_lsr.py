@@ -5,6 +5,25 @@ from pyiem.nws.products.lsr import parse_lsr, parser
 from pyiem.util import get_test_file
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_230508_summary_sql(dbcursor):
+    """Test the new logic for inserting LSRs into the database."""
+    prod = parser(get_test_file("LSR/LSR.txt"))
+    assert prod.is_summary()
+    # Should insert a new entry
+    prod.lsrs[0].sql(dbcursor)
+    # Mark it as duplicated
+    prod.lsrs[0].duplicate = True
+    # Should now insert to product_id_summary column
+    prod.lsrs[0].sql(dbcursor)
+    dbcursor.execute(
+        """SELECT product_id_summary from lsrs WHERE
+        valid = '2013-07-22 20:01+00' and wfo = 'DMX' and typetext = 'HAIL'
+        """
+    )
+    assert dbcursor.fetchone()[0] == prod.get_product_id()
+
+
 def test_gh707_mixedcase():
     """Test that we properly handle mixed case LSR."""
     prod = parser(get_test_file("LSR/LSRICT_mixed.txt"))
