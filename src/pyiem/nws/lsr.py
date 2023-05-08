@@ -184,6 +184,25 @@ class LSR:
     def sql(self, txn):
         """Provided a database transaction object, persist this LSR"""
         wkt = f"SRID=4326;{self.geometry.wkt}"
+        prod = self.product
+        # akrherz/pyWWA#150, if a duplicate, just update the product_id_summary
+        if self.duplicate and self.product.is_summary():
+            txn.execute(
+                """
+                UPDATE lsrs SET product_id_summary = %s, updated = %s
+                WHERE valid = %s
+                and type = %s and wfo = %s and geom = %s
+                """,
+                (
+                    prod.get_product_id(),
+                    prod.valid,
+                    self.utcvalid,
+                    self.typetext,
+                    self.wfo,
+                    wkt,
+                ),
+            )
+            return
         # Different mapping to UGCs
         if self.county is not None and UGC_MATCH.match(self.county):
             fargs = (self.county, self.valid)
@@ -195,9 +214,9 @@ class LSR:
         sql = (
             "INSERT into lsrs (valid, type, magnitude, city, county, "
             "state, source, remark, geom, wfo, typetext, product_id, updated, "
-            "unit, qualifier, gid) values "
+            "unit, qualifier, gid, product_id_summary) values "
             "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            f"{func}(%s, %s))"
+            f"{func}(%s, %s), %s)"
         )
         args = (
             self.utcvalid,
@@ -211,11 +230,12 @@ class LSR:
             wkt,
             self.wfo,
             self.typetext,
-            self.product.get_product_id(),
-            self.product.valid,
+            prod.get_product_id(),
+            prod.valid,
             self.magnitude_units,
             self.magnitude_qualifier,
             *fargs,
+            prod.get_product_id() if prod.is_summary() else None,
         )
         txn.execute(sql, args)
 
