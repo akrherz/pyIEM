@@ -1365,7 +1365,7 @@ class MapPlot:
         # Rectify to modulus 5 minutes
         valid -= datetime.timedelta(minutes=valid.minute % 5)
         compsector = "us"
-        if self.sector == "state" and self.state in ["AK", "HI", "PR"]:
+        if self.sector == "state" and self.state in ["AK", "HI", "PR", "GU"]:
             compsector = self.state.lower()
         elif self.sector == "cwa" and self.cwa in ["AFG", "AJK", "AFC"]:
             compsector = "ak"
@@ -1377,6 +1377,10 @@ class MapPlot:
             "SJU",
         ]:
             compsector = "pr"
+        elif self.sector == "cwa" and self.cwa in [
+            "GUM",
+        ]:
+            compsector = "gu"
         baseurl = valid.strftime(
             "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/"
             f"GIS/{compsector}comp/{product.lower()}_%Y%m%d%H%M."
