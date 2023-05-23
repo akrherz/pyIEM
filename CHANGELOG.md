@@ -18,6 +18,7 @@ All notable changes to this library are documented in this file.
 - Add `twitter_media` for LSR jabber messages.
 - Persist Summary LSR product identifier to database (akrherz/pyWWA#150).
 - Support `type="state"` for autoplot context.
+- Support Guam for NEXRAD overlays.
 - Validate `type=cmap` for `util.get_autoplot_context` (#709).
 
 ### Bug Fixes

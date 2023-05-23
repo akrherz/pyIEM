@@ -312,6 +312,20 @@ def test_overlay_nexrad():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_overlay_nexrad_guam():
+    """Test that we can plot nexrad over Guam."""
+    mp = MapPlot(
+        nocaption=True,
+        sector="cwa",
+        cwa="GUM",
+        title="A long and long title that has no purpose but to test things",
+    )
+    caxpos = [0.05, 0.05, 0.35, 0.015]
+    mp.overlay_nexrad(utc(2023, 5, 23, 16), caxpos=caxpos)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_overlay_nexrad_hawaii():
     """Test that we can plot nexrad over Hawaii."""
     mp = MapPlot(
