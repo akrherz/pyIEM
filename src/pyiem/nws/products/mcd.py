@@ -16,10 +16,6 @@ LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
     r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE
 )
-ATTN_WFO = re.compile(
-    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)"
-)
-ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 WATCH_PROB = re.compile(
     r"PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT", re.IGNORECASE
 )
@@ -40,6 +36,8 @@ class MCDProduct(TextProduct):
         self.geometry = self.parse_geometry()
         self.discussion_num = self.parse_discussion_num()
         self.attn_wfo = self.parse_attn_wfo()
+        if not self.attn_wfo:
+            raise MCDException("Could not parse attention WFOs")
         self.attn_rfc = self.parse_attn_rfc()
         self.areas_affected = self.parse_areas_affected()
         self.concerning = self.parse_concerning()
@@ -185,20 +183,6 @@ class MCDProduct(TextProduct):
         if not tokens:
             return None
         return tokens[0].strip().rstrip("...")
-
-    def parse_attn_rfc(self):
-        """Figure out which RFCs this product is seeking attention"""
-        tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
-        if not tokens:
-            return []
-        return re.findall("([A-Z]{5})", tokens[0])
-
-    def parse_attn_wfo(self):
-        """Figure out which WFOs this product is seeking attention"""
-        tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
-        if not tokens:
-            raise MCDException("Could not parse attention WFOs")
-        return re.findall("([A-Z]{3})", tokens[0])
 
     def parse_discussion_num(self):
         """Figure out what discussion number this is"""

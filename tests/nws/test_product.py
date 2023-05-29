@@ -14,6 +14,20 @@ from pyiem.nws.products import parser as productparser
 from pyiem.util import get_test_file, utc
 
 
+def test_ahdnwc():
+    """Test the jabber result we get from this product."""
+    data = get_test_file("AHD/AHDNWC.txt")
+    prod = productparser(data)
+    res = prod.get_jabbers("")
+    ans = (
+        "WCO issues Area Hydrological Discussion (AHD) at May 27, 5:54 PM CDT "
+        "?pid=202305272254-KWCO-AGUS74-AHDNWC"
+    )
+    assert res[0][0] == ans
+    assert "CYS" in res[0][2]["channels"].split(",")
+    assert "KRF" in res[0][2]["channels"].split(",")
+
+
 def test_damage_pns():
     """Test the result we get from a damage PNS statement."""
     data = get_test_file("PNS/PNS_damage.txt")
