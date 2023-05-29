@@ -97,6 +97,10 @@ SQUALLIMPACTTAG = re.compile(
 )
 EF_RE = re.compile(r"^Rating:\s*EF\s?\-?(?P<num>\d)\s*$", re.M | re.I)
 KNOWN_BAD_TTAAII = ["KAWN"]
+ATTN_WFO = re.compile(
+    r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)"
+)
+ATTN_RFC = re.compile(r"ATTN\.\.\.RFC\.\.\.([\.A-Z]*)")
 
 
 def damage_survey_pns(prod, data):
@@ -701,11 +705,35 @@ class TextProduct:
             return True
         return False
 
+    def parse_attn_rfc(self):
+        """Figure out which RFCs this product is seeking attention"""
+        tokens = ATTN_RFC.findall(self.unixtext.replace("\n", ""))
+        if not tokens:
+            return []
+        rfcs = re.findall("([A-Z]{3,5})", tokens[0])
+        # le sigh
+        if "LAT" in rfcs:
+            rfcs = rfcs[: rfcs.index("LAT")]
+        return rfcs
+
+    def parse_attn_wfo(self):
+        """Figure out which WFOs this product is seeking attention"""
+        tokens = ATTN_WFO.findall(self.unixtext.replace("\n", ""))
+        if not tokens:
+            return []
+        return re.findall("([A-Z]{3})", tokens[0])
+
     def get_channels(self):
         """Return a list of channels"""
         res = [self.afos, f"{self.afos[:3]}..."]
         if self.afos[:3] in ["TCU", "TCD", "TCM", "TCP", "TWO"]:
             res.append(self.afos[:5])
+        elif self.afos == "AHDNWC":
+            # Get the ATTN
+            for wfo in self.parse_attn_wfo():
+                res.append(wfo)
+            for wfo in self.parse_attn_rfc():
+                res.append(wfo)
         return res
 
     def get_nicedate(self):

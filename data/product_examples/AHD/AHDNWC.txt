@@ -1,0 +1,42 @@
+898 
+AGUS74 KWCO 272259
+AHDNWC
+
+Area Hydrological Discussion #120 - EXPERIMENTAL
+NWS National Water Center - Tuscaloosa, AL
+5:54 PM CDT Sat May 27 2023
+
+WHAT: Localized flash and small stream flooding
+WHERE: Portions of western SD, northeast WY, and southeast MT
+WHEN: Through late Saturday evening
+
+DISCUSSION...
+Heavy rain from scattered thunderstorms could lead to flash and small
+stream flooding impacts in the area of concern through this evening.
+Antecedent conditions are favorable for runoff as soils are
+relatively moist throughout the area (NWM). Snowmelt and previous
+rainfall has streamflows running remarkably high, over the 90th
+annual percentile (USGS), indicating little additional runoff is
+needed before flood impacts will begin. Any areas that receive heavy
+or persistent rainfall are especially at risk for flash and small
+stream flooding.
+
+The NWM SRF is signaling rapid-onset flooding (ROF) probabilities of
+25 - 50% with scattered pockets of 50 - 75%. The High Flow Magnitude
+(HFM) forecast is signaling widespread annual exceedance
+probabilities (AEPs) of 50% and isolated stream reaches with AEPs of
+20 - 10%. The highest ROF signals and the lowest (most extreme) AEP
+values are found between the SD/WY border and Rapid City, SD. These
+signals indicate the threat for isolated significant flash and small
+stream flooding impacts within the area of concern.
+
+GRAPHICAL REPRESENTATION weather.gov/owp/operations-ahd
+
+Additional National Water Center products are available at
+weather.gov/owp/operations
+
+
+//Bliss
+
+ATTN...WFO...UNR...BYZ...CYS
+ATTN...RFC...KRF...WPC
