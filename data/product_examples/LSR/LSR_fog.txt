@@ -1,0 +1,23 @@
+488
+NWUS53 KGLD 051215
+LSRGLD
+
+Preliminary Local Storm Report
+National Weather Service Goodland KS
+615 AM MDT Mon Jun 5 2023
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0614 AM     Fog              4 NE Idalia             39.75N 102.26W
+06/05/2023  E0.25 mi         Yuma               CO   Dept of Highways
+
+            via webcam.
+
+
+&&
+
+$$
+
+JTL
