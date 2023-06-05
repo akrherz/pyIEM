@@ -6,6 +6,19 @@ from pyiem.util import get_test_file
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_230605_fog(dbcursor):
+    """Test support for fog LSRs with mile units."""
+    prod = parser(get_test_file("LSR/LSR_fog.txt"))
+    prod.lsrs[0].sql(dbcursor)
+    dbcursor.execute(
+        """SELECT product_id from lsrs_2023 WHERE
+        valid = '2023-06-05 12:14+00' and wfo = 'GLD' and typetext = 'Fog'
+        """
+    )
+    assert dbcursor.fetchone()[0] == prod.get_product_id()
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_230508_summary_sql(dbcursor):
     """Test the new logic for inserting LSRs into the database."""
     prod = parser(get_test_file("LSR/LSR.txt"))
