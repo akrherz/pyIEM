@@ -197,7 +197,7 @@ class LSR:
                     prod.get_product_id(),
                     prod.valid,
                     self.utcvalid,
-                    self.typetext,
+                    self.typetext.upper(),
                     self.wfo,
                     wkt,
                 ),
@@ -229,7 +229,7 @@ class LSR:
             self.remark,
             wkt,
             self.wfo,
-            self.typetext,
+            self.typetext.upper(),
             prod.get_product_id(),
             prod.valid,
             self.magnitude_units,
@@ -331,7 +331,7 @@ class LSR:
                 f"{self.magnitude_f:.0f} {self.magnitude_units}"
             )
         elif (
-            self.typetext == "HAIL"
+            self.typetext.upper() == "HAIL"
             and self.magnitude_f is not None
             and f"{self.magnitude_f:.2f}" in reference.hailsize
         ):

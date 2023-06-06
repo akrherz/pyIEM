@@ -29,6 +29,7 @@ All notable changes to this library are documented in this file.
 - Improve robustness of `FLS` impacts bullet search.
 - [SHEF] Workaround `DV` months offset, which is ill-defined anyway.
 - Support LSRs with mile units.
+- Fix LSR `typetext` comparisons and ensure database uppercase entries.
 
 ## **1.15.0** (13 Feb 2023)
 

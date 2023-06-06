@@ -12,7 +12,7 @@ def test_230605_fog(dbcursor):
     prod.lsrs[0].sql(dbcursor)
     dbcursor.execute(
         """SELECT product_id from lsrs_2023 WHERE
-        valid = '2023-06-05 12:14+00' and wfo = 'GLD' and typetext = 'Fog'
+        valid = '2023-06-05 12:14+00' and wfo = 'GLD' and typetext = 'FOG'
         """
     )
     assert dbcursor.fetchone()[0] == prod.get_product_id()
