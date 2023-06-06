@@ -125,9 +125,9 @@ def check_file(fn):
     sts = datetime.datetime.now()
     df = gpd.read_parquet(fn)
     ets = datetime.datetime.now()
-    for geom in df["geom"]:
-        if not geom.is_valid:
-            print("Invalid Geom Found?")
+    for idx, row in df.iterrows():
+        if not row["geom"].is_valid:
+            print(f"{fn} Abort, invalid geom found @{idx} {row}")
             sys.exit()
     print(
         f"runtime: {(ets - sts).total_seconds():.5f}s, "
