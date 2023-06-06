@@ -194,7 +194,7 @@ def parse_lsr(prod, text):
         meat = " ".join(lines[2:]).strip()
         if meat.strip() != "":
             lsr.remark = " ".join(meat.split())
-    if lsr.typetext == "ICE STORM" and lsr.magnitude_f is None:
+    if lsr.typetext.upper() == "ICE STORM" and lsr.magnitude_f is None:
         val = _icestorm_remark(lsr.remark)
         if val is not None:
             lsr.magnitude_f = val
