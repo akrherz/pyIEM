@@ -179,7 +179,13 @@ class LSR:
 
     def get_dbtype(self):
         """Return the typecode used in the database for this event type"""
-        return reference.lsr_events.get(self.typetext.upper(), None)
+        val = self.typetext.upper()
+        # Hack for Marine LSRs akrherz/pyIEM#729
+        if val == "TSTM WND GST" and UGC_MATCH.match(self.county):
+            return "M"
+        if val == "HAIL" and UGC_MATCH.match(self.county):
+            return "h"
+        return reference.lsr_events.get(val, None)
 
     def sql(self, txn):
         """Provided a database transaction object, persist this LSR"""

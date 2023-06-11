@@ -6,6 +6,34 @@ from pyiem.util import get_test_file
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh729_marine_wind(dbcursor):
+    """Test support for mapping this type to marine wind gust."""
+    prod = parser(get_test_file("LSR/LSRHGX_marine.txt"))
+    prod.lsrs[0].sql(dbcursor)
+    dbcursor.execute(
+        """SELECT type from lsrs_2023 WHERE
+        valid = '2023-06-11 04:09+00' and wfo = 'HGX'
+        and typetext = 'TSTM WND GST'
+        """
+    )
+    assert dbcursor.fetchone()[0] == "M"
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_gh729_marine_hail(dbcursor):
+    """Test support for mapping this type to marine wind gust."""
+    prod = parser(get_test_file("LSR/LSRJAX_marinehail.txt"))
+    prod.lsrs[0].sql(dbcursor)
+    dbcursor.execute(
+        """SELECT type from lsrs_2022 WHERE
+        valid = '2022-04-02 18:50+00' and wfo = 'JAX'
+        and typetext = 'HAIL'
+        """
+    )
+    assert dbcursor.fetchone()[0] == "h"
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_230605_fog(dbcursor):
     """Test support for fog LSRs with mile units."""
     prod = parser(get_test_file("LSR/LSR_fog.txt"))
