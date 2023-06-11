@@ -1,0 +1,22 @@
+024 
+NWUS54 KHGX 110422
+LSRHGX
+
+Preliminary Local Storm Report
+National Weather Service Houston/Galveston TX
+1122 PM CDT Sat Jun 10 2023
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+1109 PM     Tstm Wnd Gst     1 E Quintana            28.93N 95.29W
+06/10/2023  M50 MPH          GMZ355             TX   Mesonet          
+
+            Wind gust was at the Surfside Beach 
+            WeatherFlow site. 
+
+
+&&
+
+$$
