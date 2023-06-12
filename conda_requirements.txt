@@ -6,8 +6,6 @@ coverage
 cython
 defusedxml
 fiona
-# need to pin for comparables
-freetype>=2.10
 gdal
 geopandas
 geos
@@ -17,8 +15,6 @@ matplotlib-base
 metpy
 metar>=1.7.0
 mock
-# needed for fiona?
-ncurses
 netCDF4
 numpy
 pandas
