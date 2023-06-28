@@ -13,6 +13,7 @@ from pyiem.reference import TWEET_CHARS
 
 def build_channels(prod, segment, vtec) -> list:
     """Build a list of channels for the given segment/vtec."""
+    ps = f"{vtec.phenomena}.{vtec.significance}"
     channels = []
     # Two noisey products that don't default to the main WFO channel
     if prod.afos[:3] in ["MWW", "RFW"]:
@@ -21,20 +22,18 @@ def build_channels(prod, segment, vtec) -> list:
         channels.append(prod.source[1:])
     # GH604 - Append a -ACTION for CON, EXP, CAN actions
     suffix = f"-{vtec.action}" if vtec.action in ["CON", "EXP", "CAN"] else ""
+    if vtec.action not in ["EXP", "CAN"] and segment.damagetag is not None:
+        channels.append(f"{ps}.{segment.damagetag}")
     channels.append(f"{vtec.s2()}{suffix}")
     channels.append(prod.afos)
     channels.append(f"{prod.afos[:3]}...")
-    channels.append(
-        f"{vtec.phenomena}.{vtec.significance}.{vtec.office}{suffix}"
-    )
+    channels.append(f"{ps}.{vtec.office}{suffix}")
     for ugc in segment.ugcs:
         # per state channels
-        candidate = f"{vtec.phenomena}.{vtec.significance}.{ugc.state}{suffix}"
+        candidate = f"{ps}.{ugc.state}{suffix}"
         if candidate not in channels:
             channels.append(candidate)
-        channels.append(
-            f"{vtec.phenomena}.{vtec.significance}.{str(ugc)}{suffix}"
-        )
+        channels.append(f"{ps}.{str(ugc)}{suffix}")
         channels.append(str(ugc))
     return channels
 

@@ -15,6 +15,8 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add bling to jabber messages generated from PNS Damage Surveys.
+- Add Impact Based Warning tags to jabber channels in the form of
+`<phenomena>.<significance>.<tag>` (#11).
 - Add parser for Wind/Temps Aloft Forecast product (AWIPSID: FD) (#713).
 - Add `twitter_media` for LSR jabber messages.
 - Persist Summary LSR product identifier to database (akrherz/pyWWA#150).

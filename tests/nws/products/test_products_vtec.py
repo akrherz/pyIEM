@@ -40,6 +40,14 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_230628_ibwthunderstorm():
+    """Test the tags created with this SVR."""
+    data = get_test_file("SVR/SVRPSR_IBW1.txt")
+    prod = vtecparser(data.replace("CONSIDERABLE", "DESTRUCTIVE"))
+    j = prod.get_jabbers("")
+    assert j[0][2]["channels"].find("SV.W.DESTRUCTIVE") > -1
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_230418_index_error(dbcursor):
     """Test this product for not generating an index error."""
