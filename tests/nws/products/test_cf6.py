@@ -4,7 +4,16 @@ import datetime
 import pytest
 from pyiem.nws.products.cf6 import parser
 from pyiem.reference import TRACE_VALUE
-from pyiem.util import get_test_file
+from pyiem.util import get_test_file, utc
+
+
+def test_230628_future():
+    """Test the exclusion of data from the future!"""
+    # Data from the 27th is taken as it is tricky to get this perfect
+    utcnow = utc(2023, 6, 26, 16, 26)
+    prod = parser(get_test_file("CF6/CF6ANC.txt"), utcnow=utcnow)
+    assert prod.warnings
+    assert len(prod.df.index) == 27
 
 
 @pytest.mark.parametrize("database", ["iem"])
