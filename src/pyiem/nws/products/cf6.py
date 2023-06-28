@@ -105,6 +105,12 @@ class CF6Product(TextProduct):
         df["valid"] = df["dy"].apply(
             lambda x: datetime.date(day1.year, day1.month, int(x))
         )
+        # Ensure we don't have data from utcnow + 1 day
+        ceiling = (self.utcnow + datetime.timedelta(days=1)).date()
+        indicies = pd.to_datetime(df["valid"]) > pd.Timestamp(ceiling)
+        if indicies.any():
+            self.warnings.append(f"{indicies.sum()} rows from the future")
+            df = df.loc[~indicies]
         self.df = df.set_index("valid")
 
     def sql(self, cursor):

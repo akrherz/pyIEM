@@ -28,6 +28,7 @@ All notable changes to this library are documented in this file.
 - Correct VTEC `is_emergency` false positive spotted by Kyle Noël.
 - Improve forgiveness of CLI parser some more.  Never ends.
 - Improve robustness of `FLS` impacts bullet search.
+- Prevent CF6 data from the future.
 - [SHEF] Workaround `DV` months offset, which is ill-defined anyway.
 - Support LSRs with mile units.
 - Fix LSR `typetext` comparisons and ensure database uppercase entries.
