@@ -1403,7 +1403,10 @@ class MapPlot:
         bio = BytesIO(req_png.content)
         bio.seek(0)
         with Image.open(bio) as pilimg:
-            im = np.asarray(pilimg)
+            # Horrid hack, the IEM archive added a placeholder file that was
+            # RGB instead of mode=P
+            _zeros = np.zeros((100, 100))
+            im = np.asarray(pilimg) if pilimg.size != (100, 100) else _zeros
         # Use rasterio to reproject this grid into the crs of axes
         with rasterio.Env():
             src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)

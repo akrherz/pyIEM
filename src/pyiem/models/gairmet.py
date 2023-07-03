@@ -1,9 +1,9 @@
 """Data Model for GAIRMET."""
 # pylint: disable=too-few-public-methods
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 # third party
 from shapely.geometry import MultiLineString, Polygon
@@ -32,7 +32,7 @@ class FreezingLevelRecord(BaseModel):
     gml_id: str
     valid_at: datetime
     geom: MultiLineString
-    level: int = Field(None, description="Set for single level records.")
+    level: Optional[int] = None
     lower_level: int
     upper_level: int
 
