@@ -50,7 +50,7 @@ class LSRProduct(TextProduct):
 
     def is_summary(self):
         """Returns is this LSR is a summary or not"""
-        return self.unixtext.find("...SUMMARY") > 0
+        return self.unixtext.upper().find("...SUMMARY") > 0
 
     def get_url(self, baseuri):
         """Get the URL of this product"""
