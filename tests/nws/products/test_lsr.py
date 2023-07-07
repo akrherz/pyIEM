@@ -49,7 +49,8 @@ def test_230605_fog(dbcursor):
 @pytest.mark.parametrize("database", ["postgis"])
 def test_230508_summary_sql(dbcursor):
     """Test the new logic for inserting LSRs into the database."""
-    prod = parser(get_test_file("LSR/LSR.txt"))
+    data = get_test_file("LSR/LSR.txt")
+    prod = parser(data.replace("SUMMARY", "Summary"))
     assert prod.is_summary()
     # Should insert a new entry
     prod.lsrs[0].sql(dbcursor)
