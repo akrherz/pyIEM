@@ -214,8 +214,6 @@ class SPCOutlookCollection:
             outlooks = list(filter(lambda x: x.category == cat, self.outlooks))
             for idx in range(0, len(outlooks) - 1):
                 larger = outlooks[idx]
-                if larger.category != cat:
-                    continue
                 smaller = outlooks[idx + 1]
                 if larger.level is None or smaller.level is None:
                     larger.geometry = larger.geometry_layers

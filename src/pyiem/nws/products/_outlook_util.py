@@ -282,6 +282,9 @@ def sql_day_collect(prod, txn, day, collect):
         _sql_cycle_canonical(prod, txn, day, collect, outlook_id)
     for outlook in collect.outlooks:
         if outlook.geometry.is_empty:
+            prod.warnings.append(
+                f"No Outlook.geometry {outlook.category} {outlook.threshold}"
+            )
             continue
         txn.execute(
             """
