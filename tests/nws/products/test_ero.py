@@ -17,7 +17,7 @@ def test_211024_calif():
     """Test that we get the right geometries."""
     prod = parser(get_test_file("ERO/RBG94E_calif.txt"))
     outlook = prod.get_outlook("CATEGORICAL", "MDT", 1)
-    assert abs(outlook.geometry.area - 10.62) < 0.01
+    assert abs(outlook.geometry_layers.area - 10.62) < 0.01
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -31,14 +31,14 @@ def test_210716_4f4():
     """Test our updated station table."""
     prod = parser(get_test_file("ERO/RBG94E_4F4.txt"))
     outlook = prod.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 127.07999) < 0.01
+    assert abs(outlook.geometry_layers.area - 127.07999) < 0.01
 
 
 def test_210714_duplicate():
     """Test that we do not have duplicate sfstns entries causing grief."""
     prod = parser(get_test_file("ERO/RBG98E_dup.txt"))
     outlook = prod.get_outlook("CATEGORICAL", "MRGL", 2)
-    assert abs(outlook.geometry.area - 96.5306) < 0.01
+    assert abs(outlook.geometry_layers.area - 96.5306) < 0.01
 
 
 def test_get_jabbers():
@@ -100,6 +100,5 @@ def test_basic(dbcursor):
     prod = parser(data)
     prod.sql(dbcursor)
     prod.get_jabbers("")
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "MRGL", 1)
-    assert abs(outlook.geometry.area - 188.754) < 0.01
+    assert abs(outlook.geometry_layers.area - 188.754) < 0.01

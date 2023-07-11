@@ -338,8 +338,8 @@ def compute_layers(prod):
     """Compute the differenced geomtries."""
     # 1. Do polygons overlap for the same outlook
     LOG.warning("==== Running Geometry differences")
-    for collect in prod.outlook_collections:
-        collect.difference_geometries()
+    for day in prod.outlook_collections:
+        prod.outlook_collections[day].difference_geometries()
 
 
 def quality_control(prod):
