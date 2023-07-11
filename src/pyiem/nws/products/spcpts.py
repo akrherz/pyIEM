@@ -195,28 +195,40 @@ class SPCOutlookCollection:
             if self.outlooks[idx].level is None:
                 continue
             if outlook.level > self.outlooks[idx].level:
-                self.outlooks.insert(idx, outlook)
+                self.outlooks.insert(idx + 1, outlook)
                 return
         self.outlooks.insert(0, outlook)
+
+    def get_categories(self):
+        """Return list of categories covered in this outlook."""
+        arr = []
+        for ol in self.outlooks:
+            if ol.category not in arr:
+                arr.append(ol.category)
+        return arr
 
     def difference_geometries(self):
         """Do the difference work to figure out actual geometries."""
         # Our outlooks are ordered, so hopefully this works
-        for idx in range(0, len(self.outlooks) - 1):
-            larger = self.outlooks[idx]
-            smaller = self.outlooks[idx + 1]
-            if larger.level is None or smaller.level is None:
-                larger.geometry = larger.geometry_layers
-                continue
-            larger.geometry = larger.geometry_layers.difference(
-                smaller.geometry_layers
-            )
-            # Ensure multipolygon
-            if not isinstance(larger.geometry, MultiPolygon):
-                larger.geometry = MultiPolygon([larger.geometry])
-        # Last polygon needs duplicated
-        if self.outlooks:
-            self.outlooks[-1].geometry = self.outlooks[-1].geometry_layers
+        for cat in self.get_categories():
+            outlooks = list(filter(lambda x: x.category == cat, self.outlooks))
+            for idx in range(0, len(outlooks) - 1):
+                larger = outlooks[idx]
+                if larger.category != cat:
+                    continue
+                smaller = outlooks[idx + 1]
+                if larger.level is None or smaller.level is None:
+                    larger.geometry = larger.geometry_layers
+                    continue
+                larger.geometry = larger.geometry_layers.difference(
+                    smaller.geometry_layers
+                )
+                # Ensure multipolygon
+                if not isinstance(larger.geometry, MultiPolygon):
+                    larger.geometry = MultiPolygon([larger.geometry])
+            # Last polygon needs duplicated
+            if outlooks:
+                outlooks[-1].geometry = outlooks[-1].geometry_layers
 
 
 class SPCOutlook:
