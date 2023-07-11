@@ -215,7 +215,11 @@ class SPCOutlookCollection:
             for idx in range(0, len(outlooks) - 1):
                 larger = outlooks[idx]
                 smaller = outlooks[idx + 1]
-                if larger.level is None or smaller.level is None:
+                if (
+                    larger.level is None
+                    or smaller.level is None
+                    or larger.threshold in ["SDRT", "IDRT"]  # One Off
+                ):
                     larger.geometry = larger.geometry_layers
                     continue
                 larger.geometry = larger.geometry_layers.difference(
