@@ -11,6 +11,9 @@ All notable changes to this library are documented in this file.
 - Dropped python=3.8 support/testing as xarray has moved on.
 - Removed `pyiem.cscap_utils` as it was not maintained.
 - Removed `pyiem.twistedpg` as it was a glorious hack and no longer needed.
+- SPC/WPC outlook geometry is now the actual threshold specific geometry. A
+corresponding `geometry_layers` multipolygon now exists to hold the non cookie
+cutted polygon (#738).
 
 ### New Features
 

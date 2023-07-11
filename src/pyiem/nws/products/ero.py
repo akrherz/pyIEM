@@ -12,6 +12,8 @@ from metpy.units import units
 from shapely.geometry import MultiPolygon
 
 from pyiem.nws.product import TextProduct
+from pyiem.nws.products.spcpts import SPCOutlook as Outlook
+from pyiem.nws.products.spcpts import SPCOutlookCollection as OutlookCollection
 
 # Local
 from pyiem.reference import txt2drct
@@ -20,6 +22,7 @@ from pyiem.util import LOG, load_geodf
 from ._outlook_util import (
     CONUS,
     THRESHOLD2TEXT,
+    compute_layers,
     condition_segment,
     convert_segments,
     load_conus_data,
@@ -118,34 +121,6 @@ def meat2segment(meat):
         pts.append([row[gc].x, row[gc].y])
         i += 1
     return pts
-
-
-class OutlookCollection:
-    """A collection of outlooks for a single 'day'"""
-
-    def __init__(self, issue, expire, day):
-        """Constructor"""
-        self.issue = issue
-        self.expire = expire
-        self.day = day
-        self.outlooks = []
-
-
-class Outlook:
-    """A class holding what we store for a single outlook."""
-
-    def __init__(self, category, threshold, multipoly):
-        """Constructor.
-
-        Args:
-          category (str): the label of this category
-          threshold (str): the threshold associated with the category
-          multipoly (MultiPolygon): the geometry
-        """
-        self.category = category
-        self.threshold = threshold
-        self.geometry = multipoly
-        self.wfos = []
 
 
 def jabber_messages(valid, outlook_collections) -> list:
@@ -262,7 +237,7 @@ def compute_wfos(outlook_collections):
     geodf = load_geodf("cwa")
     for day, collect in outlook_collections.items():
         for outlook in collect.outlooks:
-            df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
+            df2 = geodf[geodf["geom"].intersects(outlook.geometry_layers)]
             outlook.wfos = df2.index.to_list()
             LOG.info(
                 "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
@@ -298,6 +273,7 @@ class ERO(TextProduct):
         self.day, self.outlook_collections = init_days(self)
         self.find_outlooks()
         quality_control(self)
+        compute_layers(self)
         compute_wfos(self.outlook_collections)
         self.cycle = _compute_cycle(self)
 
@@ -330,7 +306,7 @@ class ERO(TextProduct):
                     color="b",
                     label="Conus",
                 )
-                for poly in outlook.geometry.geoms:
+                for poly in outlook.geometry_layers.geoms:
                     ax.plot(
                         poly.exterior.xy[0],
                         poly.exterior.xy[1],
