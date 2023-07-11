@@ -284,13 +284,16 @@ def sql_day_collect(prod, txn, day, collect):
         if outlook.geometry.is_empty:
             continue
         txn.execute(
-            "INSERT into spc_outlook_geometries(spc_outlook_id, "
-            "threshold, category, geom) VALUES (%s, %s, %s, %s)",
+            """
+            INSERT into spc_outlook_geometries(spc_outlook_id, threshold,
+            category, geom, geom_layers) VALUES (%s, %s, %s, %s, %s)
+            """,
             (
                 outlook_id,
                 outlook.threshold,
                 outlook.category,
                 f"SRID=4326;{outlook.geometry.wkt}",
+                f"SRID=4326;{outlook.geometry_layers.wkt}",
             ),
         )
 
@@ -331,6 +334,14 @@ def _sql_cycle_canonical(prod, txn, day, collect, outlook_id):
         _sql_set_cycle(txn, outlook_id, prod.cycle)
 
 
+def compute_layers(prod):
+    """Compute the differenced geomtries."""
+    # 1. Do polygons overlap for the same outlook
+    LOG.warning("==== Running Geometry differences")
+    for collect in prod.outlook_collections:
+        collect.difference_geometries()
+
+
 def quality_control(prod):
     """Do Quality Control work."""
     # 1. Do polygons overlap for the same outlook
@@ -338,15 +349,15 @@ def quality_control(prod):
     for day, collect in prod.outlook_collections.items():
         # Everything should be smaller than General Thunder, for conv
         tstm = prod.get_outlook("CATEGORICAL", "TSTM", day)
-        for outlook in collect.outlooks:
+        for outlook in collect.outlooks[::-1]:
             good_polys = []
-            for poly in outlook.geometry.geoms:
-                if tstm and poly.area > tstm.geometry.area:
+            for poly in outlook.geometry_layers.geoms:
+                if tstm and poly.area > tstm.geometry_layers.area:
                     msg = (
                         "Discarding polygon as it is larger than TSTM: "
                         f"{outlook.category} {outlook.threshold} "
-                        f"Area: {outlook.geometry.area:.2f} "
-                        f"TSTM Area: {tstm.geometry.area:.2f}"
+                        f"Area: {outlook.geometry_layers.area:.2f} "
+                        f"TSTM Area: {tstm.geometry_layers.area:.2f}"
                     )
                     LOG.warning(msg)
                     prod.warnings.append(msg)
@@ -366,14 +377,14 @@ def quality_control(prod):
                         good_polys.append(p)
                 elif isinstance(intersect, Polygon):
                     good_polys.append(intersect)
-            outlook.geometry = MultiPolygon(good_polys)
+            outlook.geometry_layers = MultiPolygon(good_polys)
 
             # All geometries in the outlook shall not overlap with any
             # other one, if so, cull it!
             good_polys = []
-            for i, poly in enumerate(outlook.geometry.geoms):
+            for i, poly in enumerate(outlook.geometry_layers.geoms):
                 passes_check = True
-                for i2, poly2 in enumerate(outlook.geometry.geoms):
+                for i2, poly2 in enumerate(outlook.geometry_layers.geoms):
                     if i == i2:
                         continue
                     intersection = poly.intersection(poly2)
@@ -392,4 +403,4 @@ def quality_control(prod):
                     break
                 if passes_check:
                     good_polys.append(poly)
-            outlook.geometry = MultiPolygon(good_polys)
+            outlook.geometry_layers = MultiPolygon(good_polys)

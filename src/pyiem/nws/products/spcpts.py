@@ -18,6 +18,7 @@ from pyiem.util import LOG, load_geodf
 from ._outlook_util import (
     CONUS,
     THRESHOLD2TEXT,
+    compute_layers,
     condition_segment,
     convert_segments,
     load_conus_data,
@@ -176,6 +177,47 @@ class SPCOutlookCollection:
         self.day = day
         self.outlooks = []
 
+    def add_outlook(self, outlook):
+        """We insert an outlook in an ordered manner."""
+        # no choice
+        if not self.outlooks or outlook.level is None:
+            self.outlooks.append(outlook)
+            return
+        # Perf
+        if (
+            self.outlooks[-1].level is not None
+            and outlook.level > self.outlooks[-1].level
+        ):
+            self.outlooks.append(outlook)
+            return
+        # Uh oh
+        for idx in range(-1, -1 - len(self.outlooks), -1):
+            if self.outlooks[idx].level is None:
+                continue
+            if outlook.level > self.outlooks[idx].level:
+                self.outlooks.insert(idx, outlook)
+                return
+        self.outlooks.insert(0, outlook)
+
+    def difference_geometries(self):
+        """Do the difference work to figure out actual geometries."""
+        # Our outlooks are ordered, so hopefully this works
+        for idx in range(0, len(self.outlooks) - 1):
+            larger = self.outlooks[idx]
+            smaller = self.outlooks[idx + 1]
+            if larger.level is None or smaller.level is None:
+                larger.geometry = larger.geometry_layers
+                continue
+            larger.geometry = larger.geometry_layers.difference(
+                smaller.geometry_layers
+            )
+            # Ensure multipolygon
+            if not isinstance(larger.geometry, MultiPolygon):
+                larger.geometry = MultiPolygon([larger.geometry])
+        # Last polygon needs duplicated
+        if self.outlooks:
+            self.outlooks[-1].geometry = self.outlooks[-1].geometry_layers
+
 
 class SPCOutlook:
     """A class holding what we store for a single outlook."""
@@ -190,7 +232,13 @@ class SPCOutlook:
         """
         self.category = category
         self.threshold = threshold
-        self.geometry = multipoly
+        self.level = (
+            None
+            if threshold not in THRESHOLD_ORDER
+            else THRESHOLD_ORDER.index(threshold)
+        )
+        self.geometry_layers = multipoly
+        self.geometry = None  # Computed later
         self.wfos = []
 
 
@@ -219,6 +267,7 @@ class SPCPTS(TextProduct):
         self.outlook_collections = init_days(self)
         self.find_outlooks()
         quality_control(self)
+        compute_layers(self)
         self.compute_wfos()
         self.cycle = _compute_cycle(self)
 
@@ -251,13 +300,22 @@ class SPCPTS(TextProduct):
                     color="b",
                     label="Conus",
                 )
-                for poly in outlook.geometry.geoms:
+                for poly in outlook.geometry_layers.geoms:
                     ax.plot(
                         poly.exterior.xy[0],
                         poly.exterior.xy[1],
                         lw=2,
                         color="r",
                     )
+                for poly in outlook.geometry.geoms:
+                    for interior in poly.interiors:
+                        ax.plot(
+                            interior.xy[0],
+                            interior.xy[1],
+                            lw=2,
+                            linestyle=":",
+                            color="g",
+                        )
                 ax.set_title(
                     f"Day {day} Category {outlook.category} "
                     f"Threshold {outlook.threshold}"
@@ -370,7 +428,7 @@ class SPCPTS(TextProduct):
                 if DMATCH.match(threshold):
                     threshold = "0.15"
                 LOG.warning("----> End threshold is: %s", threshold)
-                collect.outlooks.append(SPCOutlook(category, threshold, mp))
+                collect.add_outlook(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon"""
@@ -378,7 +436,7 @@ class SPCPTS(TextProduct):
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
-                df2 = geodf[geodf["geom"].intersects(outlook.geometry)]
+                df2 = geodf[geodf["geom"].intersects(outlook.geometry_layers)]
                 outlook.wfos = df2.index.to_list()
                 LOG.warning(
                     "Day: %s Category: %s Threshold: %s #WFOS: %s %s",
