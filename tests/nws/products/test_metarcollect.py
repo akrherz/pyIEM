@@ -37,6 +37,14 @@ def create_entries(cursor):
     )
 
 
+def test_gh740_rounding():
+    """Test our rounding logic."""
+    for x in [31.9, 32.1]:
+        assert metarcollect.normalize_temp(x) == 32
+    assert abs(metarcollect.normalize_temp(32.2) - 32.2) < 0.01
+    assert abs(metarcollect.normalize_temp(31.8) - 31.8) < 0.01
+
+
 def test_gh683_wind_gust_channels():
     """Test that we don't get a default channel used for this alert."""
     utcnow = utc(2022, 12, 20, 4)

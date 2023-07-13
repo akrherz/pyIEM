@@ -33,6 +33,12 @@ WIND_ALERT_THRESHOLD_KTS = 50.0
 WIND_ALERT_THRESHOLD_KTS_BY_ICAO = {}
 
 
+def normalize_temp(val):
+    """When temperatures are close to an int, return that int!"""
+    rounded = round(val, 0)
+    return int(rounded) if abs(val - rounded) < 0.199 else round(val, 1)
+
+
 def normid(station_id: str) -> str:
     """Normalize a station identifer."""
     if len(station_id) == 4 and station_id.startswith("K"):
@@ -253,12 +259,12 @@ def to_iemaccess(
             val = mtr.temp.value("F")
             # Place reasonable bounds on the temperature before saving it!
             if -90 < val < 150:
-                iem.data["tmpf"] = round(val, 1)
+                iem.data["tmpf"] = normalize_temp(val)
         if mtr.dewpt:
             val = mtr.dewpt.value("F")
             # Place reasonable bounds on the temperature before saving it!
             if -150 < val < 100:
-                iem.data["dwpf"] = round(val, 1)
+                iem.data["dwpf"] = normalize_temp(val)
         # Database only allows len 254
         iem.data["raw"] = mtr.code[:254]
     # Always take a COR
@@ -268,17 +274,21 @@ def to_iemaccess(
     wind_logic(iem, mtr)
 
     if mtr.max_temp_6hr:
-        iem.data["max_tmpf_6hr"] = round(mtr.max_temp_6hr.value("F"), 1)
+        iem.data["max_tmpf_6hr"] = normalize_temp(mtr.max_temp_6hr.value("F"))
         if tzname and _is_same_day(iem.data["valid"], tzname):
             iem.data["max_tmpf_cond"] = iem.data["max_tmpf_6hr"]
     if mtr.min_temp_6hr:
-        iem.data["min_tmpf_6hr"] = round(mtr.min_temp_6hr.value("F"), 1)
+        iem.data["min_tmpf_6hr"] = normalize_temp(mtr.min_temp_6hr.value("F"))
         if tzname and _is_same_day(iem.data["valid"], tzname):
             iem.data["min_tmpf_cond"] = iem.data["min_tmpf_6hr"]
     if mtr.max_temp_24hr:
-        iem.data["max_tmpf_24hr"] = round(mtr.max_temp_24hr.value("F"), 1)
+        iem.data["max_tmpf_24hr"] = normalize_temp(
+            mtr.max_temp_24hr.value("F")
+        )
     if mtr.min_temp_24hr:
-        iem.data["min_tmpf_24hr"] = round(mtr.min_temp_24hr.value("F"), 1)
+        iem.data["min_tmpf_24hr"] = normalize_temp(
+            mtr.min_temp_24hr.value("F")
+        )
     if mtr.precip_3hr:
         iem.data["p03i"] = trace(mtr.precip_3hr)
     if mtr.precip_6hr:

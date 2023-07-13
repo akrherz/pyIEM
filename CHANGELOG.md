@@ -22,6 +22,7 @@ cutted polygon (#738).
 `<phenomena>.<significance>.<tag>` (#11).
 - Add parser for Wind/Temps Aloft Forecast product (AWIPSID: FD) (#713).
 - Add `twitter_media` for LSR jabber messages.
+- Improve METAR parsing to better preserve integer `degF`` temperatures (#740).
 - Persist Summary LSR product identifier to database (akrherz/pyWWA#150).
 - Support `type="state"` for autoplot context.
 - Support Guam for NEXRAD overlays.
