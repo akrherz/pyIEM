@@ -84,9 +84,9 @@ def _generate_channels(lsrobj):
     res = [
         f"LSR{lsrobj.wfo}",
         "LSR.ALL",
-        f"LSR.{cleantype}",
+        f"LSR.{cleantype.upper()}",
         f"LSR.{lsrobj.state}",
-        f"LSR.{lsrobj.state}.{cleantype}",
+        f"LSR.{lsrobj.state}.{cleantype.upper()}",
     ]
     return ",".join(res)
 

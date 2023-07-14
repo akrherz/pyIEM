@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Upper case LSR `typetext` in Jabber channel usage.
+
 ## **1.16.0** (14 Jul 2023)
 
 ### API Changes
