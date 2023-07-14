@@ -70,6 +70,8 @@ def test_gh707_mixedcase():
     """Test that we properly handle mixed case LSR."""
     prod = parser(get_test_file("LSR/LSRICT_mixed.txt"))
     assert not prod.warnings
+    j = prod.get_jabbers("")
+    assert j[0][2]["channels"].index("LSR.TORNADO") > -1
 
 
 @pytest.mark.parametrize("database", ["postgis"])
