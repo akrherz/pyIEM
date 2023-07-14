@@ -2,11 +2,7 @@
 import datetime
 import smtplib
 from email.mime.text import MIMEText
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type:ignore
+from zoneinfo import ZoneInfo
 
 from pyiem.database import get_dbconn
 from pyiem.util import LOG

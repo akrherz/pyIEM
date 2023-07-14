@@ -1,10 +1,6 @@
 """test IEMRE stuff"""
 import datetime
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type: ignore
+from zoneinfo import ZoneInfo
 
 from pyiem import database, iemre
 from pyiem.util import utc

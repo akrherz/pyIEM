@@ -16,7 +16,8 @@ Current release info
 Dependencies
 ------------
 
-Python releases 3.9 through 3.11 are actively tested and supported within this repository.
+Python 3.9+ is required. Python releases 3.9 through 3.11 are actively tested
+and supported within this repository.
 
 The codebase currently makes direct database calls with hardcoded assumptions
 of the hostname `iemdb.local` and database names.  Someday, I'll use a proper ORM

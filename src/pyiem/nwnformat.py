@@ -5,11 +5,7 @@ Which is a format used by the Texas Weather Sensors KCCI-TV Operates
 import math
 import re
 from datetime import datetime, timezone
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo
 
 import pyiem.reference as reference
 import pyiem.util as util
