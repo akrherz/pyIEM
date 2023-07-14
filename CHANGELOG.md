@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+- Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.
+
+### New Features
+
+### Bug Fixes
+
 ## **1.16.0** (14 Jul 2023)
 
 ### API Changes

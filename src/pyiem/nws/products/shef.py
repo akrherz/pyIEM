@@ -28,15 +28,12 @@ TODO List
  - Handle UQ variable SSS.SDDD
  - Handle UR (tens of degrees)
 """
-try:
-    from zoneinfo import ZoneInfo  # type: ignore
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type: ignore
 import re
 import traceback
 from datetime import date, datetime, timedelta, timezone
 from io import StringIO
 from typing import List
+from zoneinfo import ZoneInfo
 
 from pyiem.exceptions import InvalidSHEFEncoding, InvalidSHEFValue
 from pyiem.models.shef import SHEFElement

@@ -2,11 +2,7 @@
 import re
 from collections import OrderedDict
 from datetime import datetime, timedelta, timezone
-
-try:
-    from zoneinfo import ZoneInfo  # type: ignore
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type: ignore
+from zoneinfo import ZoneInfo
 
 from shapely.geometry import MultiPolygon, Polygon
 from shapely.wkt import dumps

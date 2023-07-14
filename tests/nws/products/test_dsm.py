@@ -1,10 +1,6 @@
 """Test our DSM Parsing."""
 import datetime
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo
 
 import pytest
 from pyiem.nws.products.dsm import compute_time, parser, process

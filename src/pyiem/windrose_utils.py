@@ -1,11 +1,7 @@
 """util script to call `windrose` package"""
 from calendar import month_abbr
 from datetime import datetime, timezone
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type: ignore
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd

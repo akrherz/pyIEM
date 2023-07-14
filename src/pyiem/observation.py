@@ -4,11 +4,7 @@ import math
 import warnings
 from collections import UserDict
 from datetime import date, timedelta, timezone
-
-try:
-    from zoneinfo import ZoneInfo  # type: ignore
-except ImportError:
-    from backports.zoneinfo import ZoneInfo  # type: ignore
+from zoneinfo import ZoneInfo
 
 import metpy.calc as mcalc
 import numpy as np

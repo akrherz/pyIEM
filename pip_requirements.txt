@@ -1,4 +1,2 @@
-# workaround pytz shortcomings
-backports.zoneinfo;python_version<"3.9"
 # needed for docs
 sphinxcontrib-napoleon
