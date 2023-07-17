@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Require IBW tag confirmation before declaring a TOR,FFW product as an
+emergency, for products 2023 and onward.
 - Upper case LSR `typetext` in Jabber channel usage.
 
 ## **1.16.0** (14 Jul 2023)
