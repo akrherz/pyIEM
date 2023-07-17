@@ -1,0 +1,59 @@
+017
+WGUS51 KOKX 091611
+FFWOKX
+NJC003-031-NYC087-091915-
+/O.NEW.KOKX.FF.W.0009.230709T1611Z-230709T1915Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service New York NY
+1211 PM EDT Sun Jul 9 2023
+
+The National Weather Service in Upton has issued a
+
+* Flash Flood Warning for...
+  Northwestern Bergen County in northeastern New Jersey...
+  Central Passaic County in northeastern New Jersey...
+  Rockland County in southeastern New York...
+
+* Until 315 PM EDT.
+
+* At 1211 PM EDT, Doppler radar indicated thunderstorms producing
+  heavy rain across the warned area. Between 1 and 2 inches of rain
+  have fallen. The expected rainfall rate is 1 to 1.5 inches in 1
+  hour. Flash flooding is ongoing or expected to begin shortly.
+
+  HAZARD...Flash flooding caused by thunderstorms.
+
+  SOURCE...Radar.
+
+  IMPACT...Flash flooding of small creeks and streams, urban
+           areas, highways, streets and underpasses as well as
+           other poor drainage and low-lying areas.
+
+* Some locations that will experience flash flooding include...
+  New City, Monsey, Nanuet, Ramsey, Ringwood, Haverstraw, Pompton
+  Lakes, Suffern, Sloatsburg, Bloomingdale, Pomona, Upper Nyack,
+  Spring Valley, Stony Point, Oakland, Wanaque, Franklin Lakes, West
+  Haverstraw, Valley Cottage and Airmont.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+&&
+
+LAT...LON 4102 7443 4115 7425 4114 7423 4126 7408
+      4131 7397 4127 7396 4125 7397 4122 7395
+      4111 7391 4096 7428 4098 7428 4098 7430
+      4099 7429 4100 7430 4100 7431 4100 7435
+      4101 7436
+
+FLASH FLOOD...RADAR INDICATED
+EXPECTED RAINFALL RATE...1-1.5 INCHES IN 1 HOUR
+
+$$
+
+JM

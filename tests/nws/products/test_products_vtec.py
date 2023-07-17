@@ -40,6 +40,15 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_230717_ffw_emergency():
+    """Test that this series does not generate an emergency."""
+    for i in range(1, 7):
+        prod = vtecparser(get_test_file(f"FFWOKX/{i}.txt"))
+        if i in [4, 5]:
+            assert prod.warnings
+        assert not prod.segments[0].is_emergency
+
+
 def test_230628_ibwthunderstorm():
     """Test the tags created with this SVR."""
     data = get_test_file("SVR/SVRPSR_IBW1.txt")

@@ -1,0 +1,67 @@
+979
+WGUS51 KOKX 091941
+FFWOKX
+NJC003-031-NYC087-092145-
+/O.EXT.KOKX.FF.W.0009.000000T0000Z-230709T2145Z/
+/00000.0.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Flash Flood Warning
+National Weather Service New York NY
+341 PM EDT Sun Jul 9 2023
+
+The National Weather Service in Upton has extended the
+
+* Flash Flood Warning for...
+  Northwestern Bergen County in northeastern New Jersey...
+  Central Passaic County in northeastern New Jersey...
+  Rockland County in southeastern New York...
+
+* Until 545 PM EDT.
+
+* At 341 PM EDT, local law enforcement reported thunderstorms
+  producing heavy rain across the warned area. Between 2 and 4
+  inches of rain have fallen. The expected rainfall rate is 1 to 2
+  inches in 1 hour. Flash flooding is already occurring.
+
+  HAZARD...Life threatening flash flooding. Thunderstorms
+           producing flash flooding.
+
+  SOURCE...Law enforcement reported.
+
+  IMPACT...Life threatening flash flooding of creeks and streams,
+           urban areas, highways, streets and underpasses.
+
+* Some locations that will experience flash flooding include...
+  New City, Monsey, Nanuet, Ramsey, Ringwood, Haverstraw, Pompton
+  Lakes, Suffern, Sloatsburg, Bloomingdale, Pomona, Upper Nyack,
+  Spring Valley, Stony Point, Oakland, Wanaque, Franklin Lakes, West
+  Haverstraw, Valley Cottage and Airmont.
+
+The Mahwah River at Suffern has hit minor flood stage at 5.5 feet,
+and may reach moderate flood stage of 7.0 feet.
+
+The heaviest rainfall has impacted Rockland county thus far.
+However, heavy rain will likely impact Passaic county through 430 PM
+EDT.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Turn around, don't drown when encountering flooded roads. Most flood
+deaths occur in vehicles.
+
+&&
+
+LAT...LON 4102 7443 4115 7425 4114 7423 4126 7408
+      4131 7397 4127 7396 4125 7397 4122 7395
+      4111 7391 4096 7428 4098 7428 4098 7430
+      4099 7429 4100 7430 4100 7431 4100 7435
+      4101 7436
+
+FLASH FLOOD...OBSERVED
+FLASH FLOOD DAMAGE THREAT...CONSIDERABLE
+EXPECTED RAINFALL RATE...1-2 INCHES IN 1 HOUR
+
+$$
+
+JMC

@@ -234,6 +234,14 @@ def qc_is_emergency(seg):
     if tag_confirms:
         seg.is_emergency = True
         return
+    # It is 2023, we need to be tag confirmed.
+    if seg.is_emergency and not tag_confirms and seg.tp.valid.year >= 2023:
+        seg.tp.warnings.append(
+            "Segment indicated emergency, but tags did not confirm and "
+            "product is >= 2023, so setting no emergency."
+        )
+        seg.is_emergency = False
+        return
     # Oh, we have work to do
     has_tags = seg.damagetag is not None or ffdt is not None
     # tags do not confirm the emergency
