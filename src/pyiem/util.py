@@ -22,7 +22,6 @@ import geopandas as gpd
 import netCDF4
 import numpy as np
 import requests
-import twython
 from metpy.units import masked_array, units
 from psycopg2.extensions import AsIs, register_adapter
 
@@ -213,32 +212,6 @@ def find_ij(lons, lats, lon, lat):
     dist = ((lons - lon) ** 2 + (lats - lat) ** 2) ** 0.5
     (xidx, yidx) = np.unravel_index(dist.argmin(), dist.shape)
     return xidx, yidx
-
-
-def get_twitter(screen_name):
-    """Provide an authorized Twitter API Client
-
-    Args:
-      screen_name (str): The twitter user we are fetching creds for
-    """
-    with get_dbconn("mesosite") as conn:
-        cursor = conn.cursor()
-        props = get_properties(cursor)
-        # fetch the oauth saved creds
-        cursor.execute(
-            "select access_token, access_token_secret from "
-            "iembot_twitter_oauth WHERE screen_name = %s",
-            (screen_name,),
-        )
-        if cursor.rowcount == 0:
-            return None
-        row = cursor.fetchone()
-    return twython.Twython(
-        props.get("bot.twitter.consumerkey"),
-        props.get("bot.twitter.consumersecret"),
-        row[0],
-        row[1],
-    )
 
 
 def ssw(mixedobj):

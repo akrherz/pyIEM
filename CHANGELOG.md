@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Drop `twython` and remove `pyiem.util.get_twitter` as both are defunct after
+Twitter v1.1 removal.
 - Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.
 
 ### New Features
