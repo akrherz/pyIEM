@@ -40,6 +40,5 @@ requests
 scipy
 shapely
 sqlalchemy
-twython
 # iemre
 xarray
