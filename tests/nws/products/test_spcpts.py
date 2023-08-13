@@ -478,6 +478,13 @@ def test_170406_day48_pre2015(dbcursor):
     spc.sql(dbcursor)
 
 
+def test_jabber_day48():
+    """Test that we get a day 4-8 jabber message."""
+    spc = parser(get_test_file("SPCPTS/PTSD48.txt"))
+    j = spc.get_jabbers("")
+    assert len(j) == 16
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_170406_day48(dbcursor):
     """Can we parse a present day days 4-8"""

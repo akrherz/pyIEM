@@ -27,6 +27,8 @@ THRESHOLD2TEXT = {
     "ELEV": "Elevated",
     "CRIT": "Critical",
     "EXTM": "Extreme",
+    "0.15": "15% Any Severe",
+    "0.30": "30% Any Severe",
 }
 
 
