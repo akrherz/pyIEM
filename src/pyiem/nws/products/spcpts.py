@@ -567,6 +567,7 @@ class SPCPTS(TextProduct):
             f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
             ".png"
         ).replace(" ", "%%20")
+        res = []
         for day, collect in self.outlook_collections.items():
             wfos = {
                 "TSTM": [],
@@ -580,6 +581,8 @@ class SPCPTS(TextProduct):
                 "ELEV": [],
                 "IDRT": [],
                 "SDRT": [],
+                "0.15": [],
+                "0.30": [],
             }
 
             for outlook in collect.outlooks:
@@ -601,7 +604,12 @@ class SPCPTS(TextProduct):
                 "EXTM",
                 "IDRT",
                 "SDRT",
+                "0.15",
+                "0.30",
             ]:
+                # hack
+                if cat in ["0.15", "0.30"] and day < 4:
+                    continue
                 jdict[
                     "ttext"
                 ] = f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
@@ -636,7 +644,6 @@ class SPCPTS(TextProduct):
                     ]
             keys = list(wfomsgs.keys())
             keys.sort()
-            res = []
             for wfo in keys:
                 res.append(wfomsgs[wfo])
 
