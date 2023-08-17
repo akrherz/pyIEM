@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>nws Package &#8212; pyIEM 0.0.post1+gea3a1f6 documentation</title>
+    <title>nws Package &#8212; pyIEM 0.0.post1+g3e14655 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=89b800e6" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=dd6fad5d"></script>
+    <script src="../_static/documentation_options.js?v=ee85d006"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gea3a1f6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g3e14655 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
@@ -46,80 +46,80 @@
           <div class="body" role="main">
             
   <section id="nws-package">
-<h1>nws Package<a class="headerlink" href="#nws-package" title="Permalink to this heading">¶</a></h1>
-<section id="module-pyiem.nws.gini">
-<span id="gini-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#module-pyiem.nws.gini" title="Permalink to this heading">¶</a></h2>
-<p>Processing of GINI formatted data found on NOAAPORT</p>
+<h1>nws Package<a class="headerlink" href="#nws-package" title="Link to this heading">¶</a></h1>
+<section id="gini-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#gini-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.gini">Processing of GINI formatted data found on NOAAPORT</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">GINIZFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">GINIZFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Deal with compressed GINI files, which are the standard on NOAAPORT</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.archive_filename">
-<span class="sig-name descname"><span class="pre">archive_filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.archive_filename" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">archive_filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.archive_filename" title="Link to this definition">¶</a></dt>
 <dd><p>Return a filename for this product, we’ll use the format
 {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.awips_grid">
-<span class="sig-name descname"><span class="pre">awips_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.awips_grid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">awips_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.awips_grid" title="Link to this definition">¶</a></dt>
 <dd><p>Return the awips grid number based on the WMO header</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.current_filename">
-<span class="sig-name descname"><span class="pre">current_filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.current_filename" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">current_filename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.current_filename" title="Link to this definition">¶</a></dt>
 <dd><p>Return a filename for this product, we’ll use the format
 {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.get_bird">
-<span class="sig-name descname"><span class="pre">get_bird</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_bird" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_bird</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_bird" title="Link to this definition">¶</a></dt>
 <dd><p>Return a string label for this satellite</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.get_channel">
-<span class="sig-name descname"><span class="pre">get_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_channel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_channel" title="Link to this definition">¶</a></dt>
 <dd><p>Return the channel.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.get_sector">
-<span class="sig-name descname"><span class="pre">get_sector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_sector" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_sector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.get_sector" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sector.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.init_llc">
-<span class="sig-name descname"><span class="pre">init_llc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_llc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">init_llc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_llc" title="Link to this definition">¶</a></dt>
 <dd><p>Initialize Lambert Conic Comformal</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.init_mercator">
-<span class="sig-name descname"><span class="pre">init_mercator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_mercator" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">init_mercator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_mercator" title="Link to this definition">¶</a></dt>
 <dd><p>Compute mercator projection stuff</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.init_projection">
-<span class="sig-name descname"><span class="pre">init_projection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_projection" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">init_projection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_projection" title="Link to this definition">¶</a></dt>
 <dd><p>Setup Grid and projection details</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.init_stereo">
-<span class="sig-name descname"><span class="pre">init_stereo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_stereo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">init_stereo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.init_stereo" title="Link to this definition">¶</a></dt>
 <dd><p>Compute Polar Stereographic</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile.read_header">
-<span class="sig-name descname"><span class="pre">read_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.read_header" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">read_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.GINIZFile.read_header" title="Link to this definition">¶</a></dt>
 <dd><p>read the header!</p>
 </dd></dl>
 
@@ -127,42 +127,42 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.gini.get_ir_ramp">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">get_ir_ramp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.get_ir_ramp" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">get_ir_ramp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.get_ir_ramp" title="Link to this definition">¶</a></dt>
 <dd><p>Return a np 256x3 array of colors to use for IR</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.gini.int24">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">int24</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.int24" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">int24</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.int24" title="Link to this definition">¶</a></dt>
 <dd><p>Convert to int.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.gini.uint24">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">uint24</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.uint24" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.gini.</span></span><span class="sig-name descname"><span class="pre">uint24</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.gini.uint24" title="Link to this definition">¶</a></dt>
 <dd><p>convert three byte data that represents an unsigned int</p>
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.hvtec">
-<span id="hvtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.hvtec" title="Permalink to this heading">¶</a></h2>
-<p>Process HVTEC encoding.</p>
+<section id="hvtec-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#hvtec-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.hvtec">Process HVTEC encoding.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.hvtec.HVTEC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">HVTEC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.HVTEC" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">HVTEC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.HVTEC" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Hydro VTEC.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.hvtec.contime">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">contime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.contime" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">contime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.contime" title="Link to this definition">¶</a></dt>
 <dd><p>Process a string into time.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.hvtec.parse">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.parse" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.hvtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.hvtec.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Return list of HVTEC entries found within text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -179,77 +179,77 @@
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.lsr">
-<span id="lsr-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module<a class="headerlink" href="#module-pyiem.nws.lsr" title="Permalink to this heading">¶</a></h2>
-<p>The Atomic Local Storm Report … Report</p>
+<section id="lsr-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module<a class="headerlink" href="#lsr-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.lsr">The Atomic Local Storm Report … Report</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.lsr.</span></span><span class="sig-name descname"><span class="pre">LSR</span></span><a class="headerlink" href="#pyiem.nws.lsr.LSR" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.lsr.</span></span><span class="sig-name descname"><span class="pre">LSR</span></span><a class="headerlink" href="#pyiem.nws.lsr.LSR" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents a single Local Storm Report within the LSRProduct</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.assign_timezone">
-<span class="sig-name descname"><span class="pre">assign_timezone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.assign_timezone" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">assign_timezone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.assign_timezone" title="Link to this definition">¶</a></dt>
 <dd><p>retroactive assignment of timezone, so to improve attrs</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.consume_magnitude">
-<span class="sig-name descname"><span class="pre">consume_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.consume_magnitude" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">consume_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.consume_magnitude" title="Link to this definition">¶</a></dt>
 <dd><p>Convert LSR magnitude text into something atomic</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.get_dbtype">
-<span class="sig-name descname"><span class="pre">get_dbtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_dbtype" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_dbtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_dbtype" title="Link to this definition">¶</a></dt>
 <dd><p>Return the typecode used in the database for this event type</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.get_jabbers">
-<span class="sig-name descname"><span class="pre">get_jabbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_jabbers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_jabbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_jabbers" title="Link to this definition">¶</a></dt>
 <dd><p>Return a Jabber formatted message tuple.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.get_lat">
-<span class="sig-name descname"><span class="pre">get_lat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_lat" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_lat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_lat" title="Link to this definition">¶</a></dt>
 <dd><p>Return the LSR latitude.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.get_lon">
-<span class="sig-name descname"><span class="pre">get_lon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_lon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_lon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.get_lon" title="Link to this definition">¶</a></dt>
 <dd><p>Return the LSR longitude.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.mag_string">
-<span class="sig-name descname"><span class="pre">mag_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.mag_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mag_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.mag_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return a string representing the magnitude and units</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR.sql">
-<span class="sig-name descname"><span class="pre">sql</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.sql" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sql</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.lsr.LSR.sql" title="Link to this definition">¶</a></dt>
 <dd><p>Provided a database transaction object, persist this LSR</p>
 </dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.nwsli">
-<span id="nwsli-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module<a class="headerlink" href="#module-pyiem.nws.nwsli" title="Permalink to this heading">¶</a></h2>
-<p>National Weather Service Location Idenitifiers (NWSLI)</p>
+<section id="nwsli-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module<a class="headerlink" href="#nwsli-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.nwsli">National Weather Service Location Idenitifiers (NWSLI)</p>
 <p>A class to store metadata associated with a NWSLI entry.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.nwsli.NWSLI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.nwsli.</span></span><span class="sig-name descname"><span class="pre">NWSLI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.nwsli.</span></span><span class="sig-name descname"><span class="pre">NWSLI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>National Weather Service Location Idenitifiers (NWSLI)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.nwsli.NWSLI.get_name">
-<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI.get_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.nwsli.NWSLI.get_name" title="Link to this definition">¶</a></dt>
 <dd><p>Return the name of this NWSLI, uses <cite>self.id</cite> if name is unset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -264,30 +264,30 @@
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.product">
-<span id="product-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module<a class="headerlink" href="#module-pyiem.nws.product" title="Permalink to this heading">¶</a></h2>
-<p>Base Class encapsulating a NWS Text Product</p>
+<section id="product-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module<a class="headerlink" href="#product-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.product">Base Class encapsulating a NWS Text Product</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">TextProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">TextProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>class representing a NWS Text Product</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_affected_wfos">
-<span class="sig-name descname"><span class="pre">get_affected_wfos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_affected_wfos" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_affected_wfos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_affected_wfos" title="Link to this definition">¶</a></dt>
 <dd><p>Based on the ugc_provider, figure out which WFOs are impacted by
 this product</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_channels">
-<span class="sig-name descname"><span class="pre">get_channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_channels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_channels" title="Link to this definition">¶</a></dt>
 <dd><p>Return a list of channels</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_jabbers">
-<span class="sig-name descname"><span class="pre">get_jabbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_uri2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_jabbers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_jabbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_uri2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_jabbers" title="Link to this definition">¶</a></dt>
 <dd><p>Return a tuple of jabber messages [(plain, html, xtra_dict)]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -301,31 +301,31 @@ this product</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_main_headline">
-<span class="sig-name descname"><span class="pre">get_main_headline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_main_headline" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_main_headline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_main_headline" title="Link to this definition">¶</a></dt>
 <dd><p>Return a string for the main headline, if it exists</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_nicedate">
-<span class="sig-name descname"><span class="pre">get_nicedate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_nicedate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_nicedate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_nicedate" title="Link to this definition">¶</a></dt>
 <dd><p>Nicely format the issuance time of this product</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_product_id">
-<span class="sig-name descname"><span class="pre">get_product_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_product_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_product_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_product_id" title="Link to this definition">¶</a></dt>
 <dd><p>Get an identifier of this product used by the IEM</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_signature">
-<span class="sig-name descname"><span class="pre">get_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_signature" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_signature" title="Link to this definition">¶</a></dt>
 <dd><p>Find the signature at the bottom of the page</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.is_correction">
-<span class="sig-name descname"><span class="pre">is_correction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.is_correction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_correction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.is_correction" title="Link to this definition">¶</a></dt>
 <dd><p>Is this product a correction?</p>
 <p>Sadly, this is not as easy as it should be.  It turns out that some
 products do not have a proper correction mechanism, so offices will
@@ -343,43 +343,43 @@ some further checking…</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.is_resent">
-<span class="sig-name descname"><span class="pre">is_resent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.is_resent" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_resent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.is_resent" title="Link to this definition">¶</a></dt>
 <dd><p>Check to see if this product is a …RESENT product</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_afos">
-<span class="sig-name descname"><span class="pre">parse_afos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_afos" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_afos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_afos" title="Link to this definition">¶</a></dt>
 <dd><p>Figure out what the AFOS PIL is</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_attn_rfc">
-<span class="sig-name descname"><span class="pre">parse_attn_rfc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_attn_rfc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_attn_rfc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_attn_rfc" title="Link to this definition">¶</a></dt>
 <dd><p>Figure out which RFCs this product is seeking attention</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_attn_wfo">
-<span class="sig-name descname"><span class="pre">parse_attn_wfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_attn_wfo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_attn_wfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_attn_wfo" title="Link to this definition">¶</a></dt>
 <dd><p>Figure out which WFOs this product is seeking attention</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_segments">
-<span class="sig-name descname"><span class="pre">parse_segments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_segments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_segments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_segments" title="Link to this definition">¶</a></dt>
 <dd><p>Split the product by its $$</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_wmo">
-<span class="sig-name descname"><span class="pre">parse_wmo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_wmo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_wmo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_wmo" title="Link to this definition">¶</a></dt>
 <dd><p>Parse things related to the WMO header</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.suv_iter">
-<span class="sig-name descname"><span class="pre">suv_iter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.suv_iter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">suv_iter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.suv_iter" title="Link to this definition">¶</a></dt>
 <dd><p>Yield [(segment, ugcs, vtec)] combos found in product.</p>
 </dd></dl>
 
@@ -387,85 +387,85 @@ some further checking…</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">TextProductSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">TextProductSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A segment of a Text Product</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_affected_wfos">
-<span class="sig-name descname"><span class="pre">get_affected_wfos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_affected_wfos" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_affected_wfos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_affected_wfos" title="Link to this definition">¶</a></dt>
 <dd><p>Based on the ugc_provider, figure out which WFOs are impacted by
 this product segment</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_hvtec_cause">
-<span class="sig-name descname"><span class="pre">get_hvtec_cause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_cause" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_hvtec_cause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_cause" title="Link to this definition">¶</a></dt>
 <dd><p>Return the first hvtec cause entry, if it exists</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_hvtec_nwsli">
-<span class="sig-name descname"><span class="pre">get_hvtec_nwsli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_nwsli" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_hvtec_nwsli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_nwsli" title="Link to this definition">¶</a></dt>
 <dd><p>Return the first hvtec NWSLI entry, if it exists</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_hvtec_record">
-<span class="sig-name descname"><span class="pre">get_hvtec_record</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_record" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_hvtec_record</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_record" title="Link to this definition">¶</a></dt>
 <dd><p>Return the first hvtec record entry, if it exists</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_hvtec_severity">
-<span class="sig-name descname"><span class="pre">get_hvtec_severity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_severity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_hvtec_severity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_hvtec_severity" title="Link to this definition">¶</a></dt>
 <dd><p>Return the first hvtec severity entry, if it exists</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.get_ugcs_tuple">
-<span class="sig-name descname"><span class="pre">get_ugcs_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_ugcs_tuple" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_ugcs_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.get_ugcs_tuple" title="Link to this definition">¶</a></dt>
 <dd><p>Helper to return a tuple useful for SQL.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.parse_headlines">
-<span class="sig-name descname"><span class="pre">parse_headlines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.parse_headlines" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_headlines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.parse_headlines" title="Link to this definition">¶</a></dt>
 <dd><p>Find headlines in this segment</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.process_bullets">
-<span class="sig-name descname"><span class="pre">process_bullets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_bullets" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process_bullets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_bullets" title="Link to this definition">¶</a></dt>
 <dd><p>Figure out the bulleted segments</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.process_latlon">
-<span class="sig-name descname"><span class="pre">process_latlon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_latlon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process_latlon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_latlon" title="Link to this definition">¶</a></dt>
 <dd><p>Parse the segment looking for the ‘standard’ LAT…LON encoding</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.process_tags">
-<span class="sig-name descname"><span class="pre">process_tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_tags" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process_tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_tags" title="Link to this definition">¶</a></dt>
 <dd><p>Find various tags in this segment</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.process_time_mot_loc">
-<span class="sig-name descname"><span class="pre">process_time_mot_loc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_time_mot_loc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process_time_mot_loc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.process_time_mot_loc" title="Link to this definition">¶</a></dt>
 <dd><p>Try to parse the TIME…MOT…LOC</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.special_tags_to_text">
-<span class="sig-name descname"><span class="pre">special_tags_to_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.special_tags_to_text" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">special_tags_to_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.special_tags_to_text" title="Link to this definition">¶</a></dt>
 <dd><p>Convert the special tags into a nice text</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProductSegment.svs_search">
-<span class="sig-name descname"><span class="pre">svs_search</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.svs_search" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">svs_search</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProductSegment.svs_search" title="Link to this definition">¶</a></dt>
 <dd><p>Special search the product for special text</p>
 </dd></dl>
 
@@ -473,19 +473,19 @@ this product segment</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.product.checker">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.checker" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">checker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.checker" title="Link to this definition">¶</a></dt>
 <dd><p>make sure our values are within physical bounds</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.product.damage_survey_pns">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">damage_survey_pns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.damage_survey_pns" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">damage_survey_pns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.damage_survey_pns" title="Link to this definition">¶</a></dt>
 <dd><p>Glean out things, hopefully.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.product.date_tokens2datetime">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">date_tokens2datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.date_tokens2datetime" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">date_tokens2datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.date_tokens2datetime" title="Link to this definition">¶</a></dt>
 <dd><p>Convert tokens from MND regex to a valid time, if possible.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -501,35 +501,35 @@ utcvalid (datetimetz): of this product</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.product.qc_is_emergency">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">qc_is_emergency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.qc_is_emergency" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">qc_is_emergency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.qc_is_emergency" title="Link to this definition">¶</a></dt>
 <dd><p>Belt + Suspenders check that this segment is an emergency.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.product.str2polygon">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">str2polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.str2polygon" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">str2polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strdata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.str2polygon" title="Link to this definition">¶</a></dt>
 <dd><p>Convert some string data into a polygon</p>
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.ugc">
-<span id="ugc-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module<a class="headerlink" href="#module-pyiem.nws.ugc" title="Permalink to this heading">¶</a></h2>
-<p>Something to store UGC information!</p>
+<section id="ugc-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module<a class="headerlink" href="#ugc-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.ugc">Something to store UGC information!</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.UGC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">UGC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoclass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGC" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">UGC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoclass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGC" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Representation of a single UGC</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.UGCProvider">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">UGCProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legacy_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pgconn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">UGCProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legacy_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pgconn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Wrapper around dataframe to provide UGC information.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.UGCProvider.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider.get" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.UGCProvider.get" title="Link to this definition">¶</a></dt>
 <dd><p>Return a UGC instance.</p>
 </dd></dl>
 
@@ -537,7 +537,7 @@ utcvalid (datetimetz): of this product</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.parse">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.parse" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_firewx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Return UGC list and expiration time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -553,7 +553,7 @@ utcvalid (datetimetz): of this product</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.str2time">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">str2time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.str2time" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">str2time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.str2time" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a string that is the UGC product expiration to a valid
 datetime
 &#64;param text string to convert
@@ -562,71 +562,71 @@ datetime
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.ugcs_to_text">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">ugcs_to_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ugcs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.ugcs_to_text" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.ugc.</span></span><span class="sig-name descname"><span class="pre">ugcs_to_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ugcs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.ugc.ugcs_to_text" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a list of UGC objects to a textual string</p>
 </dd></dl>
 
 </section>
-<section id="module-pyiem.nws.vtec">
-<span id="vtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.vtec" title="Permalink to this heading">¶</a></h2>
-<p>Support NWS VTEC encoding</p>
+<section id="vtec-module">
+<h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module<a class="headerlink" href="#vtec-module" title="Link to this heading">¶</a></h2>
+<p id="module-pyiem.nws.vtec">Support NWS VTEC encoding</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">VTEC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">VTEC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A single VTEC encoding instance</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.get_action_string">
-<span class="sig-name descname"><span class="pre">get_action_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_action_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_action_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_action_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return the action string</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.get_begin_string">
-<span class="sig-name descname"><span class="pre">get_begin_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_begin_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_begin_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_begin_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return an appropriate beginning string for this VTEC</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.get_end_string">
-<span class="sig-name descname"><span class="pre">get_end_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_end_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_end_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_end_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return an appropriate end string for this VTEC</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.get_id">
-<span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_id" title="Link to this definition">¶</a></dt>
 <dd><p>Return a custom string identifier for this VTEC product</p>
 <p>This is used by the Live client</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.get_ps_string">
-<span class="sig-name descname"><span class="pre">get_ps_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_ps_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_ps_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.get_ps_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return the combination of Phenomena + Significance as string</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.product_string">
-<span class="sig-name descname"><span class="pre">product_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.product_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">product_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.product_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return the combination of action and phenomena+significance</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.s2">
-<span class="sig-name descname"><span class="pre">s2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.s2" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">s2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.s2" title="Link to this definition">¶</a></dt>
 <dd><p>Return a commonly used string representation.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.s3">
-<span class="sig-name descname"><span class="pre">s3</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.s3" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">s3</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.s3" title="Link to this definition">¶</a></dt>
 <dd><p>Return a commonly used string representation.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC.url">
-<span class="sig-name descname"><span class="pre">url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.url" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.VTEC.url" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a VTEC url string needed</p>
 </dd></dl>
 
@@ -634,31 +634,31 @@ datetime
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.contime">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">contime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.contime" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">contime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.contime" title="Link to this definition">¶</a></dt>
 <dd><p>Convert text into a UTC datetime.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.get_action_string">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">get_action_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_action_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">get_action_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_action_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return the action string</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.get_ps_string">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">get_ps_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenomena</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_ps_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">get_ps_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phenomena</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.get_ps_string" title="Link to this definition">¶</a></dt>
 <dd><p>Return the combination of Phenomena + Significance as string</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.parse">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.parse" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.parse" title="Link to this definition">¶</a></dt>
 <dd><p>I look for and return vtec objects as I find them</p>
 </dd></dl>
 
 </section>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pyiem.nws.products.html">products Package</a><ul>
@@ -666,7 +666,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cli</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#cli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cli</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct"><code class="docutils literal notranslate"><span class="pre">CLIProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.compute_diction"><code class="docutils literal notranslate"><span class="pre">CLIProduct.compute_diction()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.find_sections"><code class="docutils literal notranslate"><span class="pre">CLIProduct.find_sections()</span></code></a></li>
@@ -691,7 +691,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.update_iemaccess"><code class="docutils literal notranslate"><span class="pre">update_iemaccess()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.hwo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hwo</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#hwo-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hwo</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct"><code class="docutils literal notranslate"><span class="pre">HWOProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">HWOProduct.get_channels()</span></code></a></li>
 </ul>
@@ -699,7 +699,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.lsr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct"><code class="docutils literal notranslate"><span class="pre">LSRProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_jabbers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_temporal_domain"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_temporal_domain()</span></code></a></li>
@@ -712,7 +712,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.mcd"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mcd</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#mcd-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mcd</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct"><code class="docutils literal notranslate"><span class="pre">MCDProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.database_save"><code class="docutils literal notranslate"><span class="pre">MCDProduct.database_save()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.find_valid_times"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_valid_times()</span></code></a></li>
@@ -729,7 +729,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.nhc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nhc</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#nhc-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nhc</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct"><code class="docutils literal notranslate"><span class="pre">NHCProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">NHCProduct.get_jabbers()</span></code></a></li>
 </ul>
@@ -737,7 +737,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.pirep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pirep</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#pirep-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pirep</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport"><code class="docutils literal notranslate"><span class="pre">PilotReport</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.aircraft_type"><code class="docutils literal notranslate"><span class="pre">PilotReport.aircraft_type</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.base_loc"><code class="docutils literal notranslate"><span class="pre">PilotReport.base_loc</span></code></a></li>
@@ -770,7 +770,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.sigmet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sigmet</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#sigmet-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sigmet</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMET"><code class="docutils literal notranslate"><span class="pre">SIGMET</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.compute_time"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.compute_time()</span></code></a></li>
@@ -787,7 +787,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.spacewx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spacewx</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#spacewx-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spacewx</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct.get_jabbers()</span></code></a></li>
 </ul>
@@ -795,7 +795,7 @@ datetime
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#vtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct"><code class="docutils literal notranslate"><span class="pre">VTECProduct</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sbw_geometry()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sql_vtec()</span></code></a></li>
@@ -830,7 +830,7 @@ datetime
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">nws Package</a><ul>
-<li><a class="reference internal" href="#module-pyiem.nws.gini"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a><ul>
+<li><a class="reference internal" href="#gini-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile"><code class="docutils literal notranslate"><span class="pre">GINIZFile</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile.archive_filename"><code class="docutils literal notranslate"><span class="pre">GINIZFile.archive_filename()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile.awips_grid"><code class="docutils literal notranslate"><span class="pre">GINIZFile.awips_grid()</span></code></a></li>
@@ -850,13 +850,13 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.gini.uint24"><code class="docutils literal notranslate"><span class="pre">uint24()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.hvtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a><ul>
+<li><a class="reference internal" href="#hvtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.HVTEC"><code class="docutils literal notranslate"><span class="pre">HVTEC</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.contime"><code class="docutils literal notranslate"><span class="pre">contime()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.lsr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
+<li><a class="reference internal" href="#lsr-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR"><code class="docutils literal notranslate"><span class="pre">LSR</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR.assign_timezone"><code class="docutils literal notranslate"><span class="pre">LSR.assign_timezone()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR.consume_magnitude"><code class="docutils literal notranslate"><span class="pre">LSR.consume_magnitude()</span></code></a></li>
@@ -870,14 +870,14 @@ datetime
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.nwsli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a><ul>
+<li><a class="reference internal" href="#nwsli-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.nwsli.NWSLI"><code class="docutils literal notranslate"><span class="pre">NWSLI</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.nwsli.NWSLI.get_name"><code class="docutils literal notranslate"><span class="pre">NWSLI.get_name()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.product"><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module</a><ul>
+<li><a class="reference internal" href="#product-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct"><code class="docutils literal notranslate"><span class="pre">TextProduct</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_affected_wfos"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_affected_wfos()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_channels()</span></code></a></li>
@@ -919,7 +919,7 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.product.str2polygon"><code class="docutils literal notranslate"><span class="pre">str2polygon()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.ugc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module</a><ul>
+<li><a class="reference internal" href="#ugc-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGC"><code class="docutils literal notranslate"><span class="pre">UGC</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGCProvider"><code class="docutils literal notranslate"><span class="pre">UGCProvider</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGCProvider.get"><code class="docutils literal notranslate"><span class="pre">UGCProvider.get()</span></code></a></li>
@@ -930,7 +930,7 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.ugc.ugcs_to_text"><code class="docutils literal notranslate"><span class="pre">ugcs_to_text()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
+<li><a class="reference internal" href="#vtec-module"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC"><code class="docutils literal notranslate"><span class="pre">VTEC</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC.get_action_string"><code class="docutils literal notranslate"><span class="pre">VTEC.get_action_string()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC.get_begin_string"><code class="docutils literal notranslate"><span class="pre">VTEC.get_begin_string()</span></code></a></li>
@@ -1001,7 +1001,7 @@ datetime
         <li class="right" >
           <a href="pyiem.html" title="pyiem Package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gea3a1f6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g3e14655 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
@@ -1009,7 +1009,7 @@ datetime
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2015-2023, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.0.
     </div>
   </body>
 </html>
