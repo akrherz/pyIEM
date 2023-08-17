@@ -197,6 +197,8 @@ def parse_station_valid(text, utcnow):
       str, datetime, datetime, list
     """
     tokens = text.split()
+    if len(tokens) < 3:
+        raise InvalidSHEFEncoding(f"Station/valid string incomplete '{text}")
     station = tokens[1]
     if len(station) > 8:
         raise InvalidSHEFEncoding(f"4.1.2 Station ID len>8 '{station}'")

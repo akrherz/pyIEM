@@ -18,6 +18,7 @@ Twitter v1.1 removal.
 - Fix Jabber message generation for SPC Day4-8 Convective Outlooks.
 - Require IBW tag confirmation before declaring a TOR,FFW product as an
 emergency, for products 2023 and onward.
+- [SHEF] Account for corrupted timestamp generating a traceback.
 - Upper case LSR `typetext` in Jabber channel usage.
 
 ## **1.16.0** (14 Jul 2023)
