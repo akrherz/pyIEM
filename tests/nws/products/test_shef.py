@@ -32,6 +32,12 @@ def prod():
     return res
 
 
+def test_230817_rr6bcr():
+    """Test that we can quell a GIGO traceback."""
+    prod = parser(get_test_file("SHEF/RR6BCR.txt"))
+    assert not prod.warnings
+
+
 def test_230425_hydva_months():
     """Test that month's replacement does not error :/"""
     prod = parser(get_test_file("SHEF/HYDVA.txt"))
