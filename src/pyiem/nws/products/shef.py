@@ -421,7 +421,7 @@ def process_message_e(prod, message) -> List[SHEFElement]:
         if not res:
             res = [""]
         for tokens2 in res:
-            elem = diction.copy()
+            elem = diction.model_copy()
             elem.str_value = tokens2
             elem.raw = message
             if not compute_num_value(elem):
@@ -494,7 +494,7 @@ def process_message_b(prod, message) -> List[SHEFElement]:
         # Else, we have a new diction!
         current_diction.consume_code(token)
         # Set it into our dictions
-        dictions.append(current_diction.copy())
+        dictions.append(current_diction.model_copy())
     elements = []
     for line in lines[1:]:
         line = strip_comments(line)
@@ -531,7 +531,7 @@ def process_message_b(prod, message) -> List[SHEFElement]:
                     # Do we have two data parts here
                     parts = text.split(maxsplit=1)
                     # Uh oh, local diction modifier, sigh
-                    diction = diction.copy()
+                    diction = diction.model_copy()
                     process_modifiers(parts[0], diction, valid)
                     # If diction.valid is modified, update everybody else
                     if diction.valid is None or diction.valid != valid:
@@ -541,7 +541,7 @@ def process_message_b(prod, message) -> List[SHEFElement]:
                         dictioni -= 1
                         continue
                     text = parts[1]
-                elem = diction.copy()
+                elem = diction.model_copy()
                 elem.station = station
                 elem.str_value = text.strip()
                 elem.raw = headerline + "\n" + section
@@ -552,7 +552,7 @@ def process_message_b(prod, message) -> List[SHEFElement]:
             # Fill out any fields not provided
             while (dictioni + 1) < len(dictions):
                 dictioni += 1
-                elem = dictions[dictioni].copy()
+                elem = dictions[dictioni].model_copy()
                 if elem.valid is not None:
                     provisional.append(elem)
         if not flagged and provisional:
@@ -621,7 +621,7 @@ def process_message_a(prod, message) -> List[SHEFElement]:
         if process_modifiers(text, diction, valid):
             continue
         parts = text.split(maxsplit=1)
-        elem = diction.copy()
+        elem = diction.model_copy()
         elem.consume_code(text)
         elem.str_value = "" if len(parts) == 1 else parts[1]
         elem.raw = message
