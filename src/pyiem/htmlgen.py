@@ -3,7 +3,9 @@
 from pyiem.network import Table as NetworkTable
 
 
-def station_select(network, selected, name, select_all=False) -> str:
+def station_select(
+    network, selected, name, select_all=False, only_online=False
+) -> str:
     """Select a station from a given network.
 
     Args:
@@ -11,14 +13,19 @@ def station_select(network, selected, name, select_all=False) -> str:
       selected (str): The option value to flag as selected.
       name (str): The HTML select name attribute.
       select_all (bool): Add an option with key of `_ALL`.
+      only_online (bool): Include stations in the network that are online only,
+        default is `False`.
 
     Returns:
       html_string
     """
-    nt = NetworkTable(network)
+    nt = NetworkTable(network, only_online=only_online)
     ar = {}
     for sid in nt.sts:
-        ar[sid] = nt.sts[sid]["name"]
+        meta = nt.sts[sid]
+        ab = "" if meta["archive_begin"] is None else meta["archive_begin"]
+        ae = "now" if meta["archive_end"] is None else meta["archive_end"]
+        ar[sid] = f"{meta['name']} [{ab} till {ae}]"
     if select_all:
         ar["_ALL"] = " -- All Sites --"
     return make_select(name, selected, ar, cssclass="iemselect2")
