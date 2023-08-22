@@ -13,6 +13,8 @@ Twitter v1.1 removal.
 
 ### New Features
 
+- `htmlgen/station_select` was updated to include offline stations by default.
+
 ### Bug Fixes
 
 - Fix Jabber message generation for SPC Day4-8 Convective Outlooks.
