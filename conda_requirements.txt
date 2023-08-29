@@ -11,6 +11,8 @@ geopandas
 geos
 # templating
 jinja2
+# tempory pin down to get away from bad conda-forge env
+libnetcdf<4.9.2
 matplotlib-base
 metpy
 metar>=1.7.0

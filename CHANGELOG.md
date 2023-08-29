@@ -14,6 +14,7 @@ Twitter v1.1 removal.
 ### New Features
 
 - `htmlgen/station_select` was updated to include offline stations by default.
+- Updated bundled NWS GIS to 19 Sep 2023 release (#734).
 
 ### Bug Fixes
 
