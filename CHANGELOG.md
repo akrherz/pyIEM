@@ -19,6 +19,7 @@ Twitter v1.1 removal.
 ### Bug Fixes
 
 - Fix Jabber message generation for SPC Day4-8 Convective Outlooks.
+- Misc improvements to NWS CLI product parsing.
 - Require IBW tag confirmation before declaring a TOR,FFW product as an
 emergency, for products 2023 and onward.
 - [SHEF] Account for corrupted timestamp generating a traceback.

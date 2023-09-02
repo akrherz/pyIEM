@@ -29,6 +29,13 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+@pytest.mark.parametrize("database", ["iem"])
+def test_230902_cliome_2(dbcursor):
+    """Test a database failure that happened parsing this product."""
+    prod = cliparser(get_test_file("CLI/CLIOME_2.txt"))
+    prod.sql(dbcursor)
+
+
 def test_hardcoded():
     """Test that HARDCODED logic works."""
     cli.HARDCODED["NASHVILLE"] = "KDSM"

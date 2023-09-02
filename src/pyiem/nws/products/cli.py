@@ -296,7 +296,7 @@ def parse_temperature(prod, regime, lines, data):
         if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
             continue
         data[f"temperature_{key}"] = get_number(tokens[1])
-        if tokens[2] is not None:
+        if tokens[2] is not None and len(tokens[2]) < 8:
             data[f"temperature_{key}_time"] = tokens[2]
         if tokens[3] is not None:
             data[f"temperature_{key}_record"] = get_number(tokens[3])
