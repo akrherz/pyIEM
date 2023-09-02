@@ -296,7 +296,7 @@ def parse_temperature(prod, regime, lines, data):
         if key.upper() not in ["MAXIMUM", "MINIMUM", "AVERAGE"]:
             continue
         data[f"temperature_{key}"] = get_number(tokens[1])
-        if tokens[2] is not None:
+        if tokens[2] is not None and len(tokens[2]) < 8:
             data[f"temperature_{key}_time"] = tokens[2]
         if tokens[3] is not None:
             data[f"temperature_{key}_record"] = get_number(tokens[3])
@@ -361,8 +361,11 @@ def parse_wind(lines, data):
 
 def _compute_station_ids(prod, cli_station_name, is_multi):
     """Compute needed station IDs."""
+    # Consult the HARDCODED list
+    if cli_station_name in HARDCODED:
+        station = HARDCODED[cli_station_name]
     # Can't always use the AFOS as the station ID :(
-    if is_multi:
+    elif is_multi:
         station = None
         for st in prod.nwsli_provider:
             if prod.nwsli_provider[st]["name"].upper() == cli_station_name:

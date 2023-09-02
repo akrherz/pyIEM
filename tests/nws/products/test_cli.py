@@ -2,6 +2,7 @@
 import datetime
 
 import pytest
+from pyiem.nws.products import cli
 from pyiem.nws.products import parser as cliparser
 from pyiem.nws.products.cli import CLIException, get_number
 from pyiem.reference import TRACE_VALUE
@@ -26,6 +27,20 @@ NWSLI_PROVIDER = {
 def factory(fn):
     """Common cliparser logic."""
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
+
+
+@pytest.mark.parametrize("database", ["iem"])
+def test_230902_cliome_2(dbcursor):
+    """Test a database failure that happened parsing this product."""
+    prod = cliparser(get_test_file("CLI/CLIOME_2.txt"))
+    prod.sql(dbcursor)
+
+
+def test_hardcoded():
+    """Test that HARDCODED logic works."""
+    cli.HARDCODED["NASHVILLE"] = "KDSM"
+    prod = cliparser(get_test_file("CLI/CLIBNA.txt"))
+    assert prod.data[0]["db_station"] == "KDSM"
 
 
 def test_clippg4():

@@ -1,0 +1,98 @@
+000 
+CDAK49 PAOM 090951
+CLIOME
+
+CLIMATE REPORT 
+NATIONAL WEATHER SERVICE NOME, AK
+1251 AM AST THU NOV 9 2006
+
+...................................
+...THE NOME AIRPORT CLIMATE SUMMARY FOR NOV 8 2006... 
+
+CLIMATE NORMAL PERIOD  1971 TO  2000 
+CLIMATE RECORD PERIOD  1906 TO  2006 
+
+WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST 
+               VALUE    (LST)   VALUE       VALUE  FROM      YEAR 
+                                                   NORMAL 
+................................................................... 
+TEMPERATURE 
+YESTERDAY 
+  MAXIMUM            29  0432 PM    49  1926     25       4     15 
+ MINIMUM            19  0420 AM   -13  1975     14       5      2 
+ AVERAGE            24                          19       5      9 
+
+PRECIPITATION 
+(INCHES) 
+ YESTERDAY           T           0.92  1915   0.05   -0.05   0.00 
+ MONTH TO DATE    0.09                        0.40   -0.31   0.17 
+ SINCE 1 SEP      6.90                        4.49    2.41   6.63 
+ SINCE 1 JAN     16.73                       14.67    2.06  15.49 
+
+SNOWFALL 
+(INCHES) 
+ YESTERDAY         0.1           10.0  1915    0.4    -0.3    0.0 
+ MONTH TO DATE     0.2                                        2.7 
+ SINCE 1 SEP       2.7                                        7.6 
+ SINCE 1 JUL       2.7                                        7.6 
+ SNOW DEPTH (IN)     T                                          4 
+
+DEGREE DAYS 
+ HEATING 
+ YESTERDAY          41                          46      -5     56 
+ MONTH TO DATE     293                         355     -62    410 
+ SINCE 1 SEP      1768                        2153    -385   2099 
+ SINCE 1 JUL      2738                        2986    -248   2863 
+
+ COOLING 
+ YESTERDAY           0                           0       0      0 
+ MONTH TO DATE       0                           0       0      0 
+ SINCE 1 SEP         0                           0       0      0 
+ SINCE 1 JAN         0                           2      -2     10 
+................................................................... 
+
+WIND (MPH) 
+ HIGHEST WIND SPEED    23     HIGHEST WIND DIRECTION    280      
+ HIGHEST GUST SPEED    28     HIGHEST GUST DIRECTION    290 
+ AVERAGE WIND SPEED   8.0 
+
+SKY COVER
+  POSSIBLE SUNSHINE  MM            AVERAGE SKY COVER MM
+ 
+WEATHER CONDITIONS 
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY. 
+  FOG
+  SNOW
+ 
+
+RELATIVE HUMIDITY
+ HIGHEST RH     MM PERCENT       MM
+ LOWEST  RH     MM PERCENT       MM
+ AVERAGE RH     MM PERCENT       MM
+................................................................... 
+
+THE NOME AIRPORT CLIMATE NORMALS FOR TODAY 
+                        NORMAL    RECORD   YEAR 
+ MAXIMUM TEMPERATURE      25        49     1926 
+ MINIMUM TEMPERATURE      13       -17     1975 
+
+SUNRISE AND SUNSET 
+ 9 NOV 2006..........SUNRISE 10:15 AM    SUNSET  5:16 PM 
+ 10 NOV 2006..........SUNRISE 10:18 AM    SUNSET  5:13 PM 
+
+-  INDICATES NEGATIVE NUMBERS.
+R  INDICATES RECORD HAS BEEN SET OR TIED.
+MM INDICATES DATA IS MISSING.
+T  INDICATES TRACE OF PRECIPITATION.
+
+&&
+-------------------------------------------------------------------
+
+AMOUNT OF DAYLIGHT TODAY  (HOUR:MIN)........7 HOURS 1 MINUTE
+GAIN/LOSS SINCE YESTERDAY (HOUR:MIN:SEC)....-0:06:30
+
+TIDES     6:15 AM HIGH
+          1:36 PM LOW
+          8:44 PM HIGH  
+
+$$
