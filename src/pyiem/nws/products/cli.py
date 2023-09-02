@@ -361,8 +361,11 @@ def parse_wind(lines, data):
 
 def _compute_station_ids(prod, cli_station_name, is_multi):
     """Compute needed station IDs."""
+    # Consult the HARDCODED list
+    if cli_station_name in HARDCODED:
+        station = HARDCODED[cli_station_name]
     # Can't always use the AFOS as the station ID :(
-    if is_multi:
+    elif is_multi:
         station = None
         for st in prod.nwsli_provider:
             if prod.nwsli_provider[st]["name"].upper() == cli_station_name:
