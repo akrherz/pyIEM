@@ -173,7 +173,7 @@ class TAFProduct(TextProduct):
             "RETURNING id",
             (taf.station, taf.valid, self.get_product_id()),
         )
-        taf_id = txn.fetchone()[0]
+        taf_id = txn.fetchone()["id"]
         # Insert obs / forecast
         for entry in [taf.observation, *taf.forecasts]:
             txn.execute(

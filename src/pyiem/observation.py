@@ -282,8 +282,8 @@ class Observation:
         if txn.rowcount == 0:
             return False
         row = txn.fetchone()
-        self.data["iemid"] = row[0]
-        self.data["tzname"] = row[1]
+        self.data["iemid"] = row["iemid"]
+        self.data["tzname"] = row["tzname"]
         return True
 
     def save(self, txn, force_current_log=False, skip_current=False):

@@ -116,8 +116,8 @@ def test_issue396_snow_normal(dbcursor):
         "station = 'KCVG' and valid = '2021-02-04'"
     )
     row = dbcursor.fetchone()
-    assert abs(row[0] - 0.2) < 0.01
-    assert abs(row[1] - 1) < 0.01
+    assert abs(row["snow_normal"] - 0.2) < 0.01
+    assert abs(row["snowdepth"] - 1) < 0.01
 
 
 def test_210206_colon():

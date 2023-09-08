@@ -2,7 +2,7 @@
 
 # third party
 import pytest
-from psycopg2.extras import DictCursor
+from psycopg2.extras import RealDictCursor
 
 # This repo
 from pyiem.database import get_dbconn
@@ -12,5 +12,5 @@ from pyiem.database import get_dbconn
 def dbcursor(database):
     """Yield a cursor for the given database."""
     dbconn = get_dbconn(database)
-    yield dbconn.cursor(cursor_factory=DictCursor)
+    yield dbconn.cursor(cursor_factory=RealDictCursor)
     dbconn.close()

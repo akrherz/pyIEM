@@ -198,14 +198,14 @@ def _load_database_status(txn, prod):
         )
         for row in txn.fetchall():
             entry = {
-                "ugc": row[0],
-                "status": row[1],
+                "ugc": row["ugc"],
+                "status": row["status"],
                 "year": vtec.year,
                 "phenomena": vtec.phenomena,
                 "significance": vtec.significance,
                 "etn": vtec.etn,
-                "updated": row[2],
-                "expire": row[3],
+                "updated": row["utc_updated"],
+                "expire": row["utc_expire"],
             }
             rows.append(entry)
     return pd.DataFrame(rows)

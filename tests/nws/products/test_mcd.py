@@ -48,14 +48,14 @@ def test_issue163(dbcursor):
         (prod.get_product_id(),),
     )
     ans = "Severe Thunderstorm Watch 60"
-    assert dbcursor.fetchone()[0] == ans
+    assert dbcursor.fetchone()["concerning"] == ans
     # Exercise that the remove worked.
     prod.database_save(dbcursor)
     dbcursor.execute(
         "SELECT count(*) from mcd where product_id = %s",
         (prod.get_product_id(),),
     )
-    assert dbcursor.fetchone()[0] == 1
+    assert dbcursor.fetchone()["count"] == 1
 
 
 @pytest.mark.parametrize("database", ["postgis"])

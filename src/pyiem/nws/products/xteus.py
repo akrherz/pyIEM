@@ -101,7 +101,7 @@ class XTEUSProduct(TextProduct):
             if cursor.rowcount == 0:
                 types_to_take.append(typ)
                 continue
-            dbprod = cursor.fetchone()[0]
+            dbprod = cursor.fetchone()["product_id"]
             if dbprod > product_id:
                 LOG.warning("Database has newer %s [%s]", typ, dbprod)
                 continue
