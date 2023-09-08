@@ -11,6 +11,8 @@ AFP AFP
 AFW AFW
 AGO AGO
 AHD Area Hydrological Discussion
+AHONT1 High Density Observations (USAF/NOAA)
+AHOPN1 High Density Observations (USAF/NOAA)
 AIR AIR
 ALG ALG
 ALT ALT
@@ -198,6 +200,17 @@ QPS Quantitative Precipitation Forecast
 RBG RBG
 REC Recreational Forecast
 REP REP
+REPNT0 RECCO Observations (non-tropical cyclone)
+REPNT1 RECCO Observations (tropical cyclone)
+REPNT2 Vortex Data Message
+REPNTS Supplementary Vortex Data Message
+REPNT3 Dropsonde Observations
+REPPN0 RECCO Observations (non-tropical cyclone)
+REPPN1 RECCO Observations (tropical cyclone)
+REPPN2 Vortex Data Message
+REPPNS Supplementary Vortex Data Message
+REPPN3 Dropsonde Observations
+REPRPD Weather Reconnaissance Flights
 RER Record Event Report
 RFD Grassland Fire Danger
 RFM RFM
