@@ -184,5 +184,5 @@ def test_nbm(dbcursor):
         (utcnow,),
     )
     row = dbcursor.fetchone()
-    assert row[0] == 21
-    assert row[1] == utc(2018, 11, 10, 9)
+    assert row["count"] == 21
+    assert row["max"] == utc(2018, 11, 10, 9)

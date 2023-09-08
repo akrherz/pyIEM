@@ -18,7 +18,7 @@ def create_entries(cursor):
         """,
             (station,),
         )
-        iemid[station] = cursor.fetchone()[0]
+        iemid[station] = cursor.fetchone()["iemid"]
     cursor.execute(
         """
         INSERT into station_attributes(iemid, attr, value)

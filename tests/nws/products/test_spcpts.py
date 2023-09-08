@@ -228,7 +228,7 @@ def test_cycle(dbcursor):
         "day = 1 and outlook_type = 'C' and expire = '2002-12-20 12:00+00'"
     )
     assert dbcursor.rowcount == 1
-    assert dbcursor.fetchone()[0] == ans
+    assert dbcursor.fetchone()["product_id"] == ans
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -241,7 +241,7 @@ def test_product_id_roundtrip(dbcursor):
         "product_issue = '2017-06-19 05:56+00' and outlook_type = 'C'"
     )
     assert dbcursor.rowcount == 9
-    assert dbcursor.fetchone()[0] == spc.get_product_id()
+    assert dbcursor.fetchone()["product_id"] == spc.get_product_id()
 
 
 def test_170619_maine():

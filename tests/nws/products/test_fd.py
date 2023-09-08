@@ -27,7 +27,7 @@ def test_basic_insert(dbcursor):
         (prod.obtime, prod.ftime),
     )
     row = dbcursor.fetchone()
-    assert row[0] is None
+    assert row["tmpc6000"] is None
 
 
 def test_ascii_control():

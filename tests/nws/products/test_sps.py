@@ -18,7 +18,7 @@ def test_issue399_multisegment(dbcursor):
             "SELECT ugcs from sps where product_id = %s and segmentnum = %s",
             (prod.get_product_id(), segnum),
         )
-        assert dbcursor.fetchone()[0] == ans
+        assert dbcursor.fetchone()["ugcs"] == ans
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -30,7 +30,7 @@ def test_210314_sps_without_polygon(dbcursor):
         "SELECT expire from sps where product_id = %s and ST_isempty(geom)",
         (prod.get_product_id(),),
     )
-    assert dbcursor.fetchone()[0] == utc(2021, 3, 15, 8)
+    assert dbcursor.fetchone()["expire"] == utc(2021, 3, 15, 8)
 
 
 def test_issue393_tweet_length():
@@ -88,11 +88,11 @@ def test_sps_ibw3(dbcursor):
         (prod.get_product_id(),),
     )
     row = dbcursor.fetchone()
-    assert row[0] is not None
-    assert row[1] == 23
-    assert row[2] is not None
-    assert row[3] is None
-    assert len(row[4]) == 2
+    assert row["tml_valid"] is not None
+    assert row["tml_sknt"] == 23
+    assert row["tml_geom"] is not None
+    assert row["tml_geom_line"] is None
+    assert len(row["ugcs"]) == 2
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -120,4 +120,4 @@ def test_sps(dbcursor):
         "SELECT count(*) from sps where product_id = %s",
         (prod.get_product_id(),),
     )
-    assert dbcursor.fetchall()[0]["count"] > 0
+    assert dbcursor.fetchone()["count"] > 0

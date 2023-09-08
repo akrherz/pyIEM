@@ -218,7 +218,7 @@ class VTECProduct(TextProduct):
                     self.warnings.append(
                         f"{vtec.s3()} adding polygon from issuance to product"
                     )
-                    segment.giswkt = f"SRID=4326;{txn.fetchone()[2]}"
+                    segment.giswkt = f"SRID=4326;{txn.fetchone()['giswkt']}"
             if vtec.action == "NEW":  # Uh-oh, we have a duplicate
                 self.warnings.append(
                     f"{vtec.s3()} is a SBW duplicate! {txn.rowcount} "

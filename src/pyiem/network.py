@@ -25,7 +25,9 @@ class Table:
 
         if cursor is None:
             dbconn = get_dbconn("mesosite")
-            cursor = dbconn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor = dbconn.cursor(
+                cursor_factory=psycopg2.extras.RealDictCursor
+            )
         if isinstance(network, str):
             network = [network]
         online_extra = " and online " if only_online else ""

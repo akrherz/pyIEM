@@ -49,7 +49,7 @@ def test_220308_jan1_saw(dbcursor):
         "select expired from watches where num = 3 and "
         "extract(year from expired) = 2022"
     )
-    assert dbcursor.fetchone()[0] == utc(2022, 1, 2, 0, 0)
+    assert dbcursor.fetchone()["expired"] == utc(2022, 1, 2, 0, 0)
 
     utcnow = utc(2022, 1, 2, 0, 3)
     prod = sawparser(get_test_file("SAW/SAW3_jan1_can.txt"), utcnow=utcnow)
@@ -59,7 +59,7 @@ def test_220308_jan1_saw(dbcursor):
         "select expired from watches where num = 3 and "
         "extract(year from expired) = 2022"
     )
-    assert dbcursor.fetchone()[0] == utcnow
+    assert dbcursor.fetchone()["expired"] == utcnow
 
 
 def test_181231_linkisok():

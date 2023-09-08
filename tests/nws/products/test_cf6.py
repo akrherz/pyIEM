@@ -27,12 +27,12 @@ def test_220707_nofloat(dbcursor):
         "SELECT wxcodes from cf6_data_2020 where station = 'KDSM' and "
         "valid = '2020-02-01'"
     )
-    assert dbcursor.fetchone()[0] == "1"
+    assert dbcursor.fetchone()["wxcodes"] == "1"
     dbcursor.execute(
         "SELECT wxcodes from cf6_data_2020 where station = 'KDSM' and "
         "valid = '2020-02-02'"
     )
-    assert dbcursor.fetchone()[0] is None
+    assert dbcursor.fetchone()["wxcodes"] is None
 
 
 @pytest.mark.parametrize("database", ["iem"])
@@ -53,7 +53,7 @@ def test_200421_nan(dbcursor):
         "SELECT wxcodes from cf6_data_2020 where station = 'PMKK' and "
         "valid = '2020-04-18'"
     )
-    assert dbcursor.fetchone()[0] == "X"
+    assert dbcursor.fetchone()["wxcodes"] == "X"
 
 
 def test_200302_regex_error():
@@ -102,4 +102,4 @@ def test_trace(dbcursor):
         "SELECT possible_sunshine from cf6_data_2020 where station = 'KSEA' "
         "and valid = '2020-02-01'"
     )
-    assert dbcursor.fetchone()[0] is None
+    assert dbcursor.fetchone()["possible_sunshine"] is None

@@ -35,7 +35,7 @@ def test_210108_emptygeom(dbcursor):
         "ST_IsEmpty(geom::geometry)",
         (utcnow,),
     )
-    assert dbcursor.fetchone()[0] >= 1
+    assert dbcursor.fetchone()["count"] >= 1
 
 
 @pytest.mark.parametrize("database", ["postgis"])

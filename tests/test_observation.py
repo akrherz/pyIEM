@@ -115,7 +115,7 @@ def iemob():
     res.iemid = 0 - random.randint(0, 1000)
     res.ob = observation.Observation(sid, "FAKE", ts)
     res.conn = get_dbconn("iem")
-    res.cursor = res.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    res.cursor = res.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     # Create fake station, so we can create fake entry in summary
     # and current tables
     res.cursor.execute(
@@ -163,7 +163,7 @@ def test_hardcoded_maxtmpf(iemob):
     """,
         (iemob.iemid,),
     )
-    assert iemob.cursor.fetchone()[0] == 55
+    assert iemob.cursor.fetchone()["max_tmpf"] == 55
     # setting max_tmpf to 54 should update it too
     iemob.ob.data["max_tmpf"] = 54
     assert iemob.ob.save(iemob.cursor)
@@ -174,7 +174,7 @@ def test_hardcoded_maxtmpf(iemob):
     """,
         (iemob.iemid,),
     )
-    assert iemob.cursor.fetchone()[0] == 54
+    assert iemob.cursor.fetchone()["max_tmpf"] == 54
 
 
 def test_settting_null(iemob):
@@ -186,7 +186,7 @@ def test_settting_null(iemob):
     WHERE day = '2015-09-01' and iemid = %s""",
         (iemob.iemid,),
     )
-    assert iemob.cursor.fetchone()[0] == 55
+    assert iemob.cursor.fetchone()["max_tmpf"] == 55
     iemob.ob.data["null_max_tmpf"] = None
     iemob.ob.save(iemob.cursor)
     iemob.cursor.execute(
@@ -194,7 +194,7 @@ def test_settting_null(iemob):
     WHERE day = '2015-09-01' and iemid = %s""",
         (iemob.iemid,),
     )
-    assert iemob.cursor.fetchone()[0] is None
+    assert iemob.cursor.fetchone()["max_tmpf"] is None
 
 
 def test_newdate(iemob):
@@ -227,7 +227,7 @@ def test_null(iemob):
         (iemob.iemid,),
     )
     assert iemob.cursor.rowcount == 1
-    assert iemob.cursor.fetchone()[0] == 55
+    assert iemob.cursor.fetchone()["max_tmpf"] == 55
 
 
 def test_update(iemob):

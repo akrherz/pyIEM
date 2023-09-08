@@ -16,7 +16,7 @@ def test_gh729_marine_wind(dbcursor):
         and typetext = 'TSTM WND GST'
         """
     )
-    assert dbcursor.fetchone()[0] == "M"
+    assert dbcursor.fetchone()["type"] == "M"
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -30,7 +30,7 @@ def test_gh729_marine_hail(dbcursor):
         and typetext = 'HAIL'
         """
     )
-    assert dbcursor.fetchone()[0] == "h"
+    assert dbcursor.fetchone()["type"] == "h"
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -43,7 +43,7 @@ def test_230605_fog(dbcursor):
         valid = '2023-06-05 12:14+00' and wfo = 'GLD' and typetext = 'FOG'
         """
     )
-    assert dbcursor.fetchone()[0] == prod.get_product_id()
+    assert dbcursor.fetchone()["product_id"] == prod.get_product_id()
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -63,7 +63,7 @@ def test_230508_summary_sql(dbcursor):
         valid = '2013-07-22 20:01+00' and wfo = 'DMX' and typetext = 'HAIL'
         """
     )
-    assert dbcursor.fetchone()[0] == prod.get_product_id()
+    assert dbcursor.fetchone()["product_id_summary"] == prod.get_product_id()
 
 
 def test_gh707_mixedcase():

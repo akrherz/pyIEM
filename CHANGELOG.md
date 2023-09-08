@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Begin migration to psycopg 3 by switching to the usage of `RealDictCursor` as
+the default cursor used in code and testing (#754).
 - Drop `twython` and remove `pyiem.util.get_twitter` as both are defunct after
 Twitter v1.1 removal.
 - Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.

@@ -92,7 +92,7 @@ def test_gh676_emergency(dbcursor):
         "SELECT is_emergency from warnings_2022 where wfo = 'FFC' and "
         "phenomena = 'FF' and significance = 'W' and eventid = 32"
     )
-    assert dbcursor.fetchone()[0]
+    assert dbcursor.fetchone()["is_emergency"]
 
 
 def test_gh660_no_polygon_warnings():
@@ -125,10 +125,9 @@ def test_gh493_sqwtags_db(dbcursor):
         "phenomena = 'SQ' and significance = 'W' and eventid = 6 and "
         "status = 'CON'"
     )
-    print(dbcursor.rowcount)
-    (dt, st) = dbcursor.fetchone()
-    assert dt == "SIGNIFICANT"
-    assert st == "OBSERVED"
+    row = dbcursor.fetchone()
+    assert row["damagetag"] == "SIGNIFICANT"
+    assert row["squalltag"] == "OBSERVED"
 
 
 def test_220617_parishes():
@@ -270,7 +269,7 @@ def test_issue253_ibwthunderstorm(dbcursor):
         "select damagetag from sbw_2020 where wfo = 'PSR' "
         "and eventid = 43 and phenomena = 'SV' and significance = 'W' "
     )
-    assert dbcursor.fetchone()[0] == "CONSIDERABLE"
+    assert dbcursor.fetchone()["damagetag"] == "CONSIDERABLE"
     j = prod.get_jabbers("")
     ans = (
         "PSR issues Severe Thunderstorm Warning [tornado: POSSIBLE, "
@@ -579,7 +578,7 @@ def test_TORE_series(dbcursor):
             significance = 'W' and ugc = 'IAC127'
         """
         )
-        return dbcursor.fetchone()[0]
+        return dbcursor.fetchone()["is_emergency"]
 
     def getval2():
         dbcursor.execute(
@@ -589,7 +588,7 @@ def test_TORE_series(dbcursor):
             significance = 'W' and status != 'CAN' ORDER by updated DESC
         """
         )
-        return dbcursor.fetchone()[0]
+        return dbcursor.fetchone()["is_emergency"]
 
     def getval3():
         dbcursor.execute(
@@ -684,7 +683,7 @@ def test_180411_can_expiration(dbcursor):
             (status,),
         )
         row = dbcursor.fetchone()
-        assert row[0] == utcnow
+        assert row["expire"] == utcnow
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -717,7 +716,7 @@ def test_180202_issue54(dbcursor):
             "and eventid = 6 and phenomena = 'WW' and significance = 'Y'"
         )
         assert dbcursor.rowcount == 1
-        return dbcursor.fetchone()[0]
+        return dbcursor.fetchone()[colname]
 
     expirets = utc(2018, 2, 2, 9)
     for i in range(3):
@@ -1007,8 +1006,8 @@ def test_150915_noexpire(dbcursor):
     """
     )
     row = dbcursor.fetchone()
-    assert row[0] is not None
-    assert row[1] is not None
+    assert row["init_expire"] is not None
+    assert row["expire"] is not None
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1020,12 +1019,12 @@ def test_150820_exb(dbcursor):
         prod.sql(dbcursor)
     # Make sure the issuance time is correct for MDZ014
     dbcursor.execute(
-        """SELECT issue at time zone 'UTC' from warnings_2015
+        """SELECT issue at time zone 'UTC' as ii from warnings_2015
     where wfo = 'LWX' and eventid = 30
     and phenomena = 'CF' and significance = 'Y'
     and ugc = 'MDZ014'"""
     )
-    assert dbcursor.fetchone()[0] == datetime.datetime(2015, 8, 11, 13)
+    assert dbcursor.fetchone()["ii"] == datetime.datetime(2015, 8, 11, 13)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1039,7 +1038,7 @@ def test_150814_init_expire(dbcursor):
         and phenomena = 'FL' and significance = 'W'
         and init_expire is null"""
     )
-    assert dbcursor.fetchone()[0] == 0
+    assert dbcursor.fetchone()["count"] == 0
 
 
 def test_150507_notcor():
@@ -1097,7 +1096,7 @@ def test_150203_null_issue(dbcursor):
             "eventid = 6 and phenomena = 'WW' and significance = 'Y' "
             "and issue is null"
         )
-        assert dbcursor.fetchone()[0] == 0
+        assert dbcursor.fetchone()["count"] == 0
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1186,7 +1185,7 @@ def test_150102_multiyear(dbcursor):
             "eventid = 16 and phenomena = 'WW' and significance = 'Y' "
             "and issue is null"
         )
-        assert dbcursor.fetchone()[0] == 0
+        assert dbcursor.fetchone()["count"] == 0
         if i == 5:
             dbcursor.execute(
                 "SELECT issue from warnings_2014 WHERE ugc = 'OKZ036' and "
@@ -1194,7 +1193,7 @@ def test_150102_multiyear(dbcursor):
                 "significance = 'Y'"
             )
             row = dbcursor.fetchone()
-            assert row[0] == utc(2015, 1, 1, 6, 0)
+            assert row["issue"] == utc(2015, 1, 1, 6, 0)
         warnings = filter_warnings(prod.warnings)
         warnings = filter_warnings(warnings, "Segment has duplicated")
         warnings = filter_warnings(warnings, "VTEC Product appears to c")
@@ -1261,11 +1260,13 @@ def test_141208_upgrade(dbcursor):
         assert not filter_warnings(warnings, CUGC)
     # ANZ532 gets too entries from the above check the issuance time of first
     dbcursor.execute(
-        "SELECT issue at time zone 'UTC' from warnings_2014 where wfo = 'LWX' "
-        "and eventid = 221 and phenomena = 'SC' and significance = 'Y' "
-        "and ugc = 'ANZ532' and status != 'UPG'"
+        """
+        SELECT issue at time zone 'UTC' as ii from warnings_2014 
+        where wfo = 'LWX' and eventid = 221 and phenomena = 'SC' and
+        significance = 'Y' and ugc = 'ANZ532' and status != 'UPG'
+        """
     )
-    assert dbcursor.fetchone()[0] == datetime.datetime(2014, 12, 7, 19, 13)
+    assert dbcursor.fetchone()["ii"] == datetime.datetime(2014, 12, 7, 19, 13)
 
 
 def test_truncated_tsu():
@@ -1499,7 +1500,7 @@ def test_140609_ext_backwards(dbcursor):
         "polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and "
         "significance = 'W' and wfo = 'LBF' ORDER by updated ASC"
     )
-    assert dbcursor.fetchone()[6] == utc(2014, 6, 7, 2, 15)
+    assert dbcursor.fetchone()["polygon_end"] == utc(2014, 6, 7, 2, 15)
 
 
 def test_svs_search():
@@ -1742,7 +1743,7 @@ def test_vtec_series(dbcursor):
 
     assert dbcursor.rowcount == 1
     row = dbcursor.fetchone()
-    assert row[0] == answer
+    assert row["expire"] == answer
 
     # No change
     for i in range(2, 9):
@@ -1764,7 +1765,7 @@ def test_vtec_series(dbcursor):
 
     assert dbcursor.rowcount == 1
     row = dbcursor.fetchone()
-    assert row[0] == answer
+    assert row["expire"] == answer
 
 
 @pytest.mark.parametrize("database", ["postgis"])

@@ -249,7 +249,7 @@ def sql_day_collect(prod, txn, day, collect):
         (prod.valid, day, prod.outlook_type),
     )
     if txn.rowcount > 0:
-        outlook_id = txn.fetchone()[0]
+        outlook_id = txn.fetchone()["id"]
         # Do some deleting
         txn.execute(
             "DELETE from spc_outlook_geometries where spc_outlook_id = %s",
@@ -278,7 +278,7 @@ def sql_day_collect(prod, txn, day, collect):
                 -1 if prod.cycle < 0 else -2,  # Placeholder, if necessary
             ),
         )
-        outlook_id = txn.fetchone()[0]
+        outlook_id = txn.fetchone()["id"]
     # Now, are we the canonical outlook for this cycle?
     if prod.cycle > -1:
         _sql_cycle_canonical(prod, txn, day, collect, outlook_id)

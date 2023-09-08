@@ -31,7 +31,7 @@ def test_sel(dbcursor):
         "SELECT product_id_sel from watches where num = 169 "
         "and extract(year from issued) = 2022"
     )
-    assert dbcursor.fetchone()[0] == prod.get_product_id()
+    assert dbcursor.fetchone()["product_id_sel"] == prod.get_product_id()
 
 
 @pytest.mark.parametrize("database", ["postgis"])

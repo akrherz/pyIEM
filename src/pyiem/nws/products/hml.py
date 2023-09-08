@@ -155,7 +155,7 @@ class HML(product.TextProduct):
                     "RETURNING key",
                     (_hml.station, row["valid"], key, val),
                 )
-                if cursor.fetchone()[0] is not None:
+                if cursor.fetchone()["key"] is not None:
                     continue
                 # Delete the bad row
                 cursor.execute(
@@ -170,7 +170,9 @@ class HML(product.TextProduct):
                     "%s) RETURNING id",
                     (key,),
                 )
-                LOG.warning("Created key %s for %s", cursor.fetchone()[0], key)
+                LOG.warning(
+                    "Created key %s for %s", cursor.fetchone()["id"], key
+                )
 
     def do_sql_forecast(self, cursor, _hml):
         """Process the forecast portion of the dataset"""
@@ -203,7 +205,7 @@ class HML(product.TextProduct):
                 df["valid"].max(),
             ),
         )
-        fid = cursor.fetchone()[0]
+        fid = cursor.fetchone()["id"]
         # Table partitioning is done by issued time
         table = f"hml_forecast_data_{fx['issued'].year}"
         for _, row in fx["dataframe"].iterrows():

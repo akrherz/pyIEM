@@ -59,4 +59,4 @@ def test_sql(dbcursor):
     dbcursor.execute(
         "SELECT count(*) from wpc_national_high_low where date = '2022-12-27'"
     )
-    assert dbcursor.fetchone()[0] == 4
+    assert dbcursor.fetchone()["count"] == 4
