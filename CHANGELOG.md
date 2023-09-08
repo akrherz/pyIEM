@@ -12,6 +12,8 @@ the default cursor used in code and testing (#754).
 - Drop `twython` and remove `pyiem.util.get_twitter` as both are defunct after
 Twitter v1.1 removal.
 - Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.
+- Migrate from `psycopg2` to `psycopg`.  The important change is that the
+default row cursor is a pure dictionary and not a hybrid (#754).
 
 ### New Features
 

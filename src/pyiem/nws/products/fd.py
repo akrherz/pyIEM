@@ -109,7 +109,7 @@ class FDProduct(TextProduct):
             return
         # Prevent NaN numbers from going to the database.
         sql = ", ".join([f"{c} = %s" for c in self.df.columns])
-        for row in self.df.replace({np.nan: None}).itertuples(index=True):
+        for row in self.df.itertuples(index=True):
             # Need upsert as data is split over products
             cursor.execute(
                 "SELECT station from alldata_tempwind_aloft "
@@ -122,13 +122,21 @@ class FDProduct(TextProduct):
                     "(ftime, station, obtime) VALUES (%s, %s, %s)",
                     (self.ftime, row[0], self.obtime),
                 )
+
+            # np.nan + float64 columns + psycopg life is fun here
+            def _fint(val):
+                """Force an int."""
+                if np.isnan(val):
+                    return None
+                return int(val)
+
             cursor.execute(
                 f"""
                 UPDATE alldata_tempwind_aloft SET {sql}
                 WHERE ftime = %s and station = %s and obtime = %s
                 """,
                 (
-                    *row[1:],
+                    *[_fint(x) for x in row[1:]],
                     self.ftime,
                     row[0],
                     self.obtime,

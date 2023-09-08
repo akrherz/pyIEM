@@ -14,12 +14,12 @@ class TrackerEngine:
     def __init__(self, icursor, pcursor, maxactions=0):
         """Constructor of TrackerEngine object
 
-        We need to be provided with psycopg2 cursors to both the `iem` database
+        We need to be provided with psycopg cursors to both the `iem` database
         and the `portfolio` database as we have business logic in both places
 
         Args:
-          icursor (cursor): psycopg2 cursor to the iem database
-          pcursor (cursor): psycopg2 cursor to the portfolio database
+          icursor (cursor): psycopg cursor to the iem database
+          pcursor (cursor): psycopg cursor to the portfolio database
           maxactions (int, optional): threshold for now many email actions we
             allow before we don't wish to spam our users.  0 implies no limit
 

@@ -4,6 +4,7 @@ import itertools
 from datetime import timedelta, timezone
 
 import pandas as pd
+from psycopg.sql import SQL, Identifier
 
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
@@ -312,12 +313,12 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
         "expire at time zone 'UTC' as utc_expire, "
         "updated at time zone 'UTC' as utc_updated, "
         f"status from {warning_table} WHERE wfo = %s and eventid = %s and "
-        "ugc in %s and significance = %s and phenomena = %s "
+        "ugc = any(%s) and significance = %s and phenomena = %s "
         "ORDER by ugc ASC, issue ASC",
         (
             vtec.office,
             vtec.etn,
-            segment.get_ugcs_tuple(),
+            segment.get_ugcs_list(),
             vtec.significance,
             vtec.phenomena,
         ),
@@ -469,7 +470,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
         f"UPDATE {warning_table} SET "
         "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
         "|| %s || '__', updated = %s, purge_time = %s WHERE wfo = %s and "
-        f"eventid = %s and ugc in %s and significance = %s "
+        f"eventid = %s and ugc = any(%s) and significance = %s "
         "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
         (
             prod.unixtext,
@@ -477,7 +478,7 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
             segment.ugcexpire,
             vtec.office,
             vtec.etn,
-            segment.get_ugcs_tuple(),
+            segment.get_ugcs_list(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,
@@ -504,15 +505,17 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     if vtec.action == "EXT" and vtec.begints is not None:
         issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
-        f"""UPDATE {warning_table} SET {issuesql} expire = %s,
+        SQL(
+            """UPDATE {} SET {} expire = %s,
         status = %s, updated = %s, purge_time = %s,
         is_emergency = (case when %s then true else is_emergency end),
         svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-        || %s || '__' WHERE wfo = %s and eventid = %s and ugc in
-        %s and significance = %s and phenomena = %s
+        || %s || '__' WHERE wfo = %s and eventid = %s and ugc =
+        ANY(%s) and significance = %s and phenomena = %s
         and status not in ('CAN', 'UPG') and
         (expire + '1 hour'::interval) >= %s
-        """,
+        """
+        ).format(Identifier(warning_table), SQL(issuesql)),
         (
             ets,
             vtec.action,
@@ -522,7 +525,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             prod.unixtext,
             vtec.office,
             vtec.etn,
-            segment.get_ugcs_tuple(),
+            segment.get_ugcs_list(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,
@@ -549,7 +552,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
         "|| %s || '__' , expire = %s, purge_time = %s, "
         "is_emergency = (case when %s then true else is_emergency end), "
         "is_pds = (case when %s then true else is_pds end) "
-        f"WHERE wfo = %s and eventid = %s and ugc in %s "
+        f"WHERE wfo = %s and eventid = %s and ugc = any(%s) "
         "and significance = %s and phenomena = %s and "
         "status not in ('CAN', 'UPG') and "
         "(expire + '1 hour'::interval) >= %s",
@@ -563,7 +566,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
             segment.is_pds,
             vtec.office,
             vtec.etn,
-            segment.get_ugcs_tuple(),
+            segment.get_ugcs_list(),
             vtec.significance,
             vtec.phenomena,
             prod.valid,

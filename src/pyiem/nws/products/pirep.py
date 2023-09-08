@@ -343,10 +343,11 @@ class Pirep(product.TextProduct):
         for report in self.reports:
             if report.latitude is None:
                 continue
+            giswkt = f"SRID=4326;POINT({report.longitude} {report.latitude})"
             txn.execute(
                 "select id from cwsu WHERE "
-                "st_contains(geom, geomFromEWKT('SRID=4326;POINT(%s %s)'))",
-                (report.longitude, report.latitude),
+                "st_contains(geom, geomFromEWKT(%s))",
+                (giswkt,),
             )
             if txn.rowcount > 0:
                 report.cwsu = txn.fetchone()["id"]

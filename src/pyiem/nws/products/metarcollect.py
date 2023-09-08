@@ -236,7 +236,7 @@ def to_iemaccess(
     """Persist parsed data to IEMAccess Database.
 
     Args:
-        txn (psycopg2.cursor): database cursor / transaction
+        txn (psycopg.cursor): database cursor / transaction
         mtr (Metar): Metar instance
         iemid: The iem station identifier
         tzname (str): Local timezone of station.
@@ -325,7 +325,7 @@ def to_iemaccess(
     for i, (cov, hgh, _) in enumerate(mtr.sky, start=1):
         iem.data[f"skyc{i}"] = cov
         if hgh is not None:
-            iem.data[f"skyl{i}"] = hgh.value("FT")
+            iem.data[f"skyl{i}"] = int(hgh.value("FT"))
 
     # Presentwx
     if mtr.weather:

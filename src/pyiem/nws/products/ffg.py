@@ -96,7 +96,7 @@ class FFGProduct(TextProduct):
         """Do the necessary database work
 
         Args:
-          (psycopg2.transaction): a database transaction
+          (psycopg.transaction): a database transaction
         """
         if self.data is None:
             self.warnings.append("sql() was called with no data parsed!")

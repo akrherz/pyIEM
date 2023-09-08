@@ -23,7 +23,6 @@ import netCDF4
 import numpy as np
 import requests
 from metpy.units import masked_array, units
-from psycopg2.extensions import AsIs, register_adapter
 
 # NB: careful with circular imports!
 from pyiem import database
@@ -42,18 +41,6 @@ SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 LOG = logging.getLogger("pyiem")
 LOG.addHandler(logging.NullHandler())
 WFO_FOURCHAR = ["AFG", "GUM", "AFG", "HFO", "AFC", "AJK"]
-
-
-def _addapt_num(val):
-    """Take the value verbatim."""
-    if not np.isnan(val):
-        return AsIs(val)
-    return AsIs("NULL")
-
-
-register_adapter(np.float64, _addapt_num)
-register_adapter(np.int64, _addapt_num)
-register_adapter(float, _addapt_num)
 
 
 class CustomFormatter(logging.Formatter):

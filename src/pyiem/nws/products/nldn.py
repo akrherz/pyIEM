@@ -21,14 +21,14 @@ class NLDNProduct:
             return
         for _, row in self.df.iterrows():
             table = f"nldn{row['valid']:%Y_%m}"
+            giswkt = f"SRID=4326;POINT({row['longitude']} {row['latitude']})"
             cursor.execute(
                 f"INSERT into {table} (valid, geom, signal, multiplicity, "
                 "axis, eccentricity, ellipse, chisqr) VALUES (%s, "
-                "'SRID=4326;POINT(%s %s)', %s, %s, %s, %s, %s, %s)",
+                "%s, %s, %s, %s, %s, %s, %s)",
                 (
                     row["valid"],
-                    row["longitude"],
-                    row["latitude"],
+                    giswkt,
                     row["signal"],
                     row["multiplicity"],
                     row["axis"],

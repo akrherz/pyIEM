@@ -2,7 +2,7 @@
 # pylint: disable=cell-var-from-loop
 
 # third party
-import psycopg2
+import psycopg
 import pytest
 from pyiem import database
 
@@ -35,7 +35,7 @@ def test_get_dbconn_bad():
     """Test that we raise a warning."""
     with pytest.warns(
         UserWarning, match="database connection failure"
-    ), pytest.raises(psycopg2.OperationalError):
+    ), pytest.raises(psycopg.OperationalError):
         database.get_dbconn("bogus")
 
 
@@ -43,5 +43,5 @@ def test_get_dbconn_failover():
     """See if failover works?"""
     with pytest.warns(
         UserWarning, match="database connection failure"
-    ), pytest.raises(psycopg2.OperationalError):
+    ), pytest.raises(psycopg.OperationalError):
         database.get_dbconn("mesosite", host="b")

@@ -318,6 +318,10 @@ class TextProductSegment:
         """Helper to return a tuple useful for SQL."""
         return tuple(str(u) for u in self.ugcs)
 
+    def get_ugcs_list(self):
+        """Helper to return a list useful for SQL."""
+        return [str(u) for u in self.ugcs]
+
     def get_hvtec_nwsli(self):
         """Return the first hvtec NWSLI entry, if it exists"""
         if not self.hvtec:

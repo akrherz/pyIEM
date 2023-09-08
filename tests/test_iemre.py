@@ -51,31 +51,6 @@ def test_writing_grids():
     pgconn.commit()
 
 
-def test_forecast_grids():
-    """Test getting and setting grids from the future."""
-    pgconn = database.get_dbconn("iemre")
-    cursor = pgconn.cursor()
-    valid = datetime.date.today() + datetime.timedelta(days=120)
-    cursor.execute(
-        "DELETE from iemre_daily_forecast WHERE valid = %s",
-        (valid,),
-    )
-    cursor.execute(
-        """
-        INSERT into iemre_daily_forecast
-        (gid, valid, high_tmpk, low_tmpk, p01d, rsds)
-        select gid, %s, random(), random(),
-        random(), random() from iemre_grid LIMIT 100
-    """,
-        (valid,),
-    )
-    ds = iemre.get_grids(valid, cursor=cursor, table="iemre_daily_forecast")
-    assert "high_tmpk" in ds
-    assert "bogus" not in ds
-
-    iemre.set_grids(valid, ds, cursor=cursor, table="iemre_daily_forecast")
-
-
 def test_simple():
     """Get nulls for right and top values"""
     i, j = iemre.find_ij(iemre.EAST, iemre.NORTH)

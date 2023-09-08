@@ -383,7 +383,7 @@ class ERO(TextProduct):
         """Do database work
 
         Args:
-          txn (psycopg2.cursor): database cursor
+          txn (psycopg.cursor): database cursor
         """
         for day, collect in self.outlook_collections.items():
             sql_day_collect(self, txn, day, collect)

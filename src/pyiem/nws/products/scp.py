@@ -18,7 +18,7 @@ def _to_str(val):
     return val.strip()
 
 
-def _to_int(val, multi=100.0):
+def _to_int(val, multi=100):
     """Safe conversion."""
     if val.strip() == "":
         return None
@@ -73,7 +73,7 @@ class SCPProduct(TextProduct):
         """Do the necessary database work
 
         Args:
-          (psycopg2.transaction): a database transaction
+          (psycopg.transaction): a database transaction
         """
         inserts = 0
         for ob in self.data:

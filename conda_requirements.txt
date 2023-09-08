@@ -20,7 +20,7 @@ numpy
 pandas
 # geoplot usage
 pillow
-psycopg2
+psycopg
 # parquet format support in geopandas
 pyarrow
 # Models
