@@ -12,6 +12,7 @@ AFW AFW
 AGO AGO
 AHD Area Hydrological Discussion
 AHONT1 High Density Observations (USAF/NOAA)
+AHOPA1 High Density Observations (USAF/NOAA) West-Pac
 AHOPN1 High Density Observations (USAF/NOAA)
 AIR AIR
 ALG ALG
@@ -210,6 +211,11 @@ REPPN1 RECCO Observations (tropical cyclone)
 REPPN2 Vortex Data Message
 REPPNS Supplementary Vortex Data Message
 REPPN3 Dropsonde Observations
+REPPA0 RECCO Observations West-Pac (non-tropical cyclone)
+REPPA1 RECCO Observations West-Pac (tropical cyclone)
+REPPA2 Vortex Data Message West-Pac
+REPPAS Supplementary Vortex Data Message West-Pac
+REPPA3 Dropsonde Observations West-Pac
 REPRPD Weather Reconnaissance Flights
 RER Record Event Report
 RFD Grassland Fire Danger
