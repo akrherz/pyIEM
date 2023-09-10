@@ -33,6 +33,7 @@ from pyiem.reference import state_names
 
 # API compat
 get_dbconn = database.get_dbconn
+get_dbconnc = database.get_dbconnc
 get_dbconnstr = database.get_dbconnstr
 get_sqlalchemy_conn = database.get_sqlalchemy_conn
 
