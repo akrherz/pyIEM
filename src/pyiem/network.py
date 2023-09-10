@@ -22,12 +22,16 @@ class Table:
             return
 
         if cursor is None:
-            dbconn, cursor = get_dbconnc("mesosite")
+            dbconn, _cursor = get_dbconnc("mesosite")
+        else:
+            dbconn, _cursor = None, cursor
         if isinstance(network, str):
             network = [network]
+        if isinstance(network, tuple):
+            network = list(network)
         online_extra = " and online " if only_online else ""
 
-        cursor.execute(
+        _cursor.execute(
             f"""
             WITH myattrs as (
                 SELECT a.iemid, array_agg(attr) as attrs,
@@ -53,7 +57,7 @@ class Table:
             """,
             (network, network, network),
         )
-        for row in cursor:
+        for row in _cursor:
             self.sts[row["id"]] = dict(row)
             self.sts[row["id"]]["attributes"] = dict(
                 zip(row["attrs"] or [], row["attr_values"] or [])
@@ -65,6 +69,8 @@ class Table:
                 row["threading_end_dates"] or [],
             ):
                 td.append({"iemid": i, "begin_date": s, "end_date": e})
+        if cursor is None:
+            dbconn.close()
 
     def get_threading_id(self, sid, valid) -> str:
         """Return a station identifier (not iemid) based on threading.

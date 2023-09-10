@@ -50,7 +50,7 @@ def test_basic(dbcursor):
     nt = network.Table("BOGUS", cursor=dbcursor)
     assert len(nt.sts.keys()) == 3
 
-    nt = network.Table(["BOGUS", "BOGUS2"], cursor=dbcursor)
+    nt = network.Table(("BOGUS", "BOGUS2"), cursor=dbcursor)
     assert len(nt.sts.keys()) == 3
 
     nt = network.Table(["BOGUS", "BOGUS2"], cursor=dbcursor, only_online=False)
