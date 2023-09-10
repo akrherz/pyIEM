@@ -6,6 +6,7 @@ from contextlib import contextmanager
 
 # third party
 import psycopg2
+from psycopg2.extras import RealDictCursor
 from sqlalchemy import create_engine
 
 # NB: Careful of cyclic imports here...
@@ -84,6 +85,31 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
                 stacklevel=2,
             )
     return conn
+
+
+def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
+    """Helper function to get a database connection + RealDictCursor.
+
+    Note that this helper could return a read-only database connection if the
+    connection to the primary server fails.
+
+    Args:
+      database (str,optional): the database name to connect to.
+        default: mesosite
+      user (str,optional): hard coded user to connect as, default: current user
+      host (str,optional): hard coded hostname to connect as,
+        default: iemdb.local
+      port (int,optional): the TCP port that PostgreSQL is listening
+        defaults to 5432
+      password (str,optional): the password to use.
+
+    Returns:
+      psycopg2 database connection
+      psycopg2 database cursor
+    """
+    conn = get_dbconn(database, user=user, host=host, **kwargs)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    return conn, cursor
 
 
 @contextmanager

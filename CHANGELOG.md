@@ -15,6 +15,7 @@ Twitter v1.1 removal.
 
 ### New Features
 
+- Add `pyiem.util.get_dbconnc` helper to return a connection + cursor.
 - Add some AFOS product definitions for various NHC recon products.
 - `htmlgen/station_select` was updated to include offline stations by default.
 - Updated bundled NWS GIS to 19 Sep 2023 release (#734).

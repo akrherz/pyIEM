@@ -2,7 +2,7 @@
 # pylint: disable=no-member
 import math
 import warnings
-from collections import UserDict
+from collections import defaultdict
 from datetime import date, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -10,23 +10,6 @@ import metpy.calc as mcalc
 import numpy as np
 import pandas as pd
 from metpy.units import units as munits
-
-# A nonsense default that is not None/SQL-null
-SENTINEL = 99999
-
-
-class ObDict(UserDict):  # pylint: disable=too-many-ancestors
-    """Custom dictionary implementation.
-
-    If the key starts with ``null_`` and is not defined, we return a sentinel.
-    If the key is not defined, we return None.
-    """
-
-    def __getitem__(self, key):
-        """Overriding a builtin."""
-        if key.startswith("null_") and key not in self.data:
-            return SENTINEL
-        return self.data.get(key)
 
 
 def get_summary_table(valid):
@@ -77,76 +60,62 @@ def summary_update(txn, data):
         else " date(%(valid)s at time zone %(tzname)s) "
     )
     sql = f"""UPDATE {table} s SET
-    max_water_tmpf = case when %(null_max_water_tmpf)s is null then null
-        else coalesce(%(max_water_tmpf)s,
-            greatest(max_water_tmpf, %(water_tmpf)s)) end,
-    min_water_tmpf = case when %(null_min_water_tmpf)s is null then null
-        else coalesce(%(min_water_tmpf)s,
-            least( min_water_tmpf, %(water_tmpf)s)) end,
-    max_tmpf = case when %(null_max_tmpf)s is null then null
-        else coalesce(%(max_tmpf)s,
-            greatest(max_tmpf, %(max_tmpf_cond)s, %(tmpf)s)) end,
-    max_dwpf = case when %(null_max_dwpf)s is null then null
-        else coalesce(%(max_dwpf)s,
-            greatest(max_dwpf, %(dwpf)s)) end,
-    min_tmpf = case when %(null_min_tmpf)s is null then null
-        else coalesce(%(min_tmpf)s,
-            least(min_tmpf, %(min_tmpf_cond)s, %(tmpf)s)) end,
-    min_dwpf = case when %(null_min_dwpf)s is null then null
-        else coalesce(%(min_dwpf)s, least(min_dwpf, %(dwpf)s)) end,
-    min_feel = case when %(null_min_feel)s is null then null
-        else coalesce(%(min_feel)s, least(min_feel, %(feel)s)) end,
-    max_feel = case when %(null_max_feel)s is null then null
-        else coalesce(%(max_feel)s, greatest(max_feel, %(feel)s)) end,
-    max_sknt = case when %(null_max_sknt)s is null then null
-        else greatest(%(max_sknt)s, max_sknt, %(sknt)s) end,
-    max_gust = case when %(null_max_gust)s is null then null
-        else greatest(%(max_gust)s, max_gust, %(gust)s) end,
-    max_sknt_ts = case when %(null_max_sknt_ts)s is null then null
-        else (CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
+    max_water_tmpf = coalesce(%(max_water_tmpf)s,
+        greatest(max_water_tmpf, %(water_tmpf)s)),
+    min_water_tmpf = coalesce(%(min_water_tmpf)s,
+        least(min_water_tmpf, %(water_tmpf)s)),
+    max_tmpf = coalesce(%(max_tmpf)s,
+        greatest(max_tmpf, %(max_tmpf_cond)s, %(tmpf)s)),
+    max_dwpf = coalesce(%(max_dwpf)s,
+        greatest(max_dwpf, %(dwpf)s)),
+    min_tmpf = coalesce(%(min_tmpf)s,
+        least(min_tmpf, %(min_tmpf_cond)s, %(tmpf)s)),
+    min_dwpf = coalesce(%(min_dwpf)s, least(min_dwpf, %(dwpf)s)),
+    min_feel = coalesce(%(min_feel)s, least(min_feel, %(feel)s)),
+    max_feel = coalesce(%(max_feel)s, greatest(max_feel, %(feel)s)),
+    max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),
+    max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),
+    max_sknt_ts = CASE WHEN %(sknt)s > max_sknt or %(max_sknt)s > max_sknt
             or (max_sknt is null and %(sknt)s > 0)
             THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz
-            ELSE max_sknt_ts END) end,
-    max_gust_ts = case when %(null_max_gust_ts)s is null then null
-        else (CASE WHEN %(gust)s > max_gust or %(max_gust)s > max_gust
+            ELSE max_sknt_ts END,
+    max_gust_ts = CASE WHEN %(gust)s > max_gust or %(max_gust)s > max_gust
             or (max_gust is null and %(gust)s > 0)
             THEN coalesce(%(max_gust_ts)s, %(valid)s)::timestamptz
-            ELSE max_gust_ts END) end,
-    pday = case when %(null_pday)s is null then null
-        else coalesce(%(pday)s, pday) end,
-    pmonth = case when %(null_pmonth)s is null then null
-        else coalesce(%(pmonth)s, pmonth) end,
-    snow = case when %(null_snow)s is null then null
-        else coalesce(%(snow)s, snow) end,
-    snowd = case when %(null_snowd)s is null then null
-        else coalesce(%(snowd)s, snowd) end,
-    snoww = case when %(null_snoww)s is null then null
-        else coalesce(%(snoww)s, snoww) end,
-    max_drct = case when %(null_max_drct)s is null then null
-        else coalesce(%(max_drct)s, max_drct) end,
-    max_srad = case when %(null_max_srad)s is null then null
-        else coalesce(%(max_srad)s, max_srad) end,
-    coop_tmpf = case when %(null_coop_tmpf)s is null then null
-        else coalesce(%(coop_tmpf)s, coop_tmpf) end,
+            ELSE max_gust_ts END,
+    pday = coalesce(%(pday)s, pday),
+    pmonth = coalesce(%(pmonth)s, pmonth),
+    snow = coalesce(%(snow)s, snow),
+    snowd = coalesce(%(snowd)s, snowd),
+    snoww = coalesce(%(snoww)s, snoww),
+    max_drct = coalesce(%(max_drct)s, max_drct),
+    max_srad = coalesce(%(max_srad)s, max_srad),
+    coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
     coop_valid = %(coop_valid)s,
     et_inch = %(et_inch)s,
     report = coalesce(%(report)s, report),
-    max_rh = case when %(null_max_rh)s is null then null
-        else greatest(%(max_rh)s, %(relh)s, max_rh) end,
-    min_rh = case when %(null_min_rh)s is null then null
-        else least(%(min_rh)s, %(relh)s, min_rh) end,
-    max_rstage = case when %(null_max_rstage)s is null then null
-        else greatest(%(max_rstage)s, %(rstage)s, max_rstage) end,
-    min_rstage = case when %(null_min_rstage)s is null then null
-        else least(%(min_rstage)s, %(rstage)s, min_rstage) end,
+    max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
+    min_rh = least(%(min_rh)s, %(relh)s, min_rh),
+    max_rstage = greatest(%(max_rstage)s, %(rstage)s, max_rstage),
+    min_rstage = least(%(min_rstage)s, %(rstage)s, min_rstage),
     srad_mj = %(srad_mj)s,
-    avg_sknt = case when %(null_avg_sknt)s is null then null
-        else coalesce(%(avg_sknt)s, avg_sknt) end,
-    vector_avg_drct = case when %(null_vector_avg_drct)s is null then null
-        else coalesce(%(vector_avg_drct)s, vector_avg_drct) end
+    avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),
+    vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)
     WHERE s.iemid = %(iemid)s and s.day = {dateconst}
     """
     txn.execute(sql, data)
+    # Check to see if we have any hard coded nulls
+    updates = []
+    for col in data:
+        if col.startswith("null_"):
+            updates.append(f"{col[5:]} = null")
+    if updates:
+        txn.execute(
+            f"UPDATE {table} s SET {', '.join(updates)} "
+            f"WHERE s.iemid = %(iemid)s and s.day = {dateconst}",
+            data,
+        )
+
     return txn.rowcount
 
 
@@ -176,7 +145,8 @@ class Observation:
             if isinstance(valid, np.datetime64):
                 valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)
-        self.data = ObDict(
+        self.data = defaultdict(lambda: None)
+        self.data.update(
             {
                 "station": station,
                 "network": network,
