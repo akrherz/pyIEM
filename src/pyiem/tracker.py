@@ -272,18 +272,22 @@ def loadqc(cursor=None, date=None):
         date = datetime.date.today()
     qdict = {}
     if cursor is None:
-        _portfolio, cursor = get_dbconnc("portfolio")
+        portfolio, _cursor = get_dbconnc("portfolio")
+    else:
+        portfolio, _cursor = None, cursor
 
-    cursor.execute(
+    _cursor.execute(
         "select s_mid, sensor, status from tt_base WHERE sensor is not null "
         "and date(entered) <= %s and (status != 'CLOSED' or closed > %s) "
         "and s_mid is not null",
         (date, date),
     )
-    for row in cursor:
+    for row in _cursor:
         sid = row["s_mid"]
         if sid not in qdict:
             qdict[sid] = {}
         for vname in row["sensor"].split(","):
             qdict[sid][vname.strip()] = True
+    if cursor is None:
+        portfolio.close()
     return qdict

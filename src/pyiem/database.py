@@ -127,7 +127,8 @@ def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
       psycopg2 database cursor
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
-    cursor = conn.cursor(row_factory=dict_row)
+    conn.row_factory = dict_row
+    cursor = conn.cursor()
     return conn, cursor
 
 
