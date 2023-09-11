@@ -3,7 +3,7 @@
 from datetime import date, datetime, timedelta, timezone
 
 import pytest
-from pyiem.database import get_dbconn
+from pyiem.database import get_dbconnc
 from pyiem.network import Table as NetworkTable
 from pyiem.tracker import TrackerEngine, loadqc
 
@@ -11,15 +11,15 @@ from pyiem.tracker import TrackerEngine, loadqc
 @pytest.fixture
 def pcursor():
     """Database cursor."""
-    dbconn = get_dbconn("portfolio")
-    return dbconn.cursor()
+    dbconn, cursor = get_dbconnc("portfolio")
+    return cursor
 
 
 @pytest.fixture
 def icursor():
     """Database cursor."""
-    dbconn = get_dbconn("iem")
-    return dbconn.cursor()
+    dbconn, cursor = get_dbconnc("iem")
+    return cursor
 
 
 def test_loadqc(pcursor):

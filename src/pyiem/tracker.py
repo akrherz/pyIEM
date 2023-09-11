@@ -4,7 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 from zoneinfo import ZoneInfo
 
-from pyiem.database import get_dbconn
+from pyiem.database import get_dbconnc
 from pyiem.util import LOG
 
 
@@ -67,8 +67,10 @@ class TrackerEngine:
             (pnetwork, sid),
         )
         for row in self.pcursor:
-            dstr = row[1].strftime("%Y-%m-%d %I %p")
-            open_tickets += f" {row[0]:6.0f} {dstr:16s}     {row[2]}\n"
+            dstr = row["entered"].strftime("%Y-%m-%d %I %p")
+            open_tickets += (
+                f" {row['id']:6.0f} {dstr:16s}     {row['subject']}\n"
+            )
         # Get a listing of past 4 closed tickets
         closed_tickets = ""
         self.pcursor.execute(
@@ -77,8 +79,10 @@ class TrackerEngine:
             (pnetwork, sid),
         )
         for row in self.pcursor:
-            dstr = row[1].strftime("%Y-%m-%d %I %p")
-            closed_tickets += f" {row[0]:6.0f} {dstr:16s}     {row[2]}\n"
+            dstr = row["entered"].strftime("%Y-%m-%d %I %p")
+            closed_tickets += (
+                f" {row['id']:6.0f} {dstr:16s}     {row['subject']}\n"
+            )
         if closed_tickets == "":
             closed_tickets = " --None-- "
         if open_tickets == "":
@@ -89,7 +93,7 @@ class TrackerEngine:
             "status, author) VALUES (%s, %s, %s, %s, %s) RETURNING id",
             (pnetwork, sid, "Site Offline", "OPEN", "mesonet"),
         )
-        trackerid = self.pcursor.fetchone()[0]
+        trackerid = self.pcursor.fetchone()["id"]
         # Create a tt_log entry
         lts = ob["valid"].astimezone(ZoneInfo(nt.sts[sid]["tzname"]))
         msg = f"Site Offline since {lts:%d %b %Y %H:%M %Z}"
@@ -131,7 +135,7 @@ class TrackerEngine:
             (sid,),
         )
         for row in self.pcursor:
-            email = row[0].lower()
+            email = row["email"].lower()
             if email not in self.emails:
                 subject = f"[IEM] {nt.sts[sid]['name']} Offline"
                 self.emails[email] = {"subject": subject, "body": mailstr}
@@ -205,7 +209,7 @@ IEM Tracker Action:  This trouble ticket has been marked
             (sid,),
         )
         for row in self.pcursor:
-            email = row[0].lower()
+            email = row["email"].lower()
             if email not in self.emails:
                 subject = f"[IEM] {nt.sts[sid]['name']} Online"
                 self.emails[email] = {"subject": subject, "body": mailstr}
@@ -233,7 +237,10 @@ IEM Tracker Action:  This trouble ticket has been marked
         )
         offline = {}
         for row in self.icursor:
-            offline[row[0]] = {"trackerid": row[1], "valid": row[2]}
+            offline[row["station"]] = {
+                "trackerid": row["trackerid"],
+                "valid": row["valid"],
+            }
 
         for sid in obs:
             ob = obs[sid]
@@ -265,8 +272,7 @@ def loadqc(cursor=None, date=None):
         date = datetime.date.today()
     qdict = {}
     if cursor is None:
-        portfolio = get_dbconn("portfolio")
-        cursor = portfolio.cursor()
+        _portfolio, cursor = get_dbconnc("portfolio")
 
     cursor.execute(
         "select s_mid, sensor, status from tt_base WHERE sensor is not null "
@@ -275,9 +281,9 @@ def loadqc(cursor=None, date=None):
         (date, date),
     )
     for row in cursor:
-        sid = row[0]
-        if row[0] not in qdict:
+        sid = row["s_mid"]
+        if sid not in qdict:
             qdict[sid] = {}
-        for vname in row[1].split(","):
+        for vname in row["sensor"].split(","):
             qdict[sid][vname.strip()] = True
     return qdict
