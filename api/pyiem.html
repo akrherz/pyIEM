@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+g63d375f documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+gc25d609 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=e0281cf2"></script>
+    <script src="../_static/documentation_options.js?v=2c9bea78"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g63d375f documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc25d609 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -330,14 +330,13 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.set_grids">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">¶</a></dt>
 <dd><p>Update the database with a given <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>valid</strong> (<em>datetime</em><em> or </em><em>date</em>) – If datetime, save hourly, if date, save daily</p></li>
 <li><p><strong>ds</strong> (<em>xarray.Dataset</em>) – The xarray dataset to save</p></li>
-<li><p><strong>cursor</strong> (<em>database cursor</em><em>, </em><em>optional</em>) – cursor to use for queries</p></li>
 <li><p><strong>table</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded database table to use to set the data
 on.  Usually dynamically computed.</p></li>
 </ul>
@@ -634,8 +633,8 @@ timestamp/date.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.observation.Observation.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_current_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.observation.Observation.save" title="Link to this definition">¶</a></dt>
-<dd><p>Save this observation to the database via a psycopg2 transaction
-&#64;param txn is a psycopg2 transaction
+<dd><p>Save this observation to the database via a psycopg transaction
+&#64;param txn is a psycopg transaction
 &#64;param force_current_log boolean - make sure this observation goes to
 the current_log table in the case that it is old, this allows
 reprocessing by the METAR ingestor et al
@@ -673,7 +672,7 @@ table.  This is useful for partial obs
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>txn</strong> (<em>psycopg2.transaction</em>) – </p></li>
+<li><p><strong>txn</strong> (<em>psycopg.transaction</em>) – </p></li>
 <li><p><strong>data</strong> (<em>dict</em>) – </p></li>
 </ul>
 </dd>
@@ -1219,6 +1218,7 @@ text format.</p>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.get_hvtec_nwsli"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.get_hvtec_nwsli()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.get_hvtec_record"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.get_hvtec_record()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.get_hvtec_severity"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.get_hvtec_severity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.get_ugcs_list"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.get_ugcs_list()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.get_ugcs_tuple"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.get_ugcs_tuple()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.parse_headlines"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.parse_headlines()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProductSegment.process_bullets"><code class="docutils literal notranslate"><span class="pre">TextProductSegment.process_bullets()</span></code></a></li>
@@ -1577,7 +1577,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g63d375f documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc25d609 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
