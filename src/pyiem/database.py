@@ -144,7 +144,12 @@ def get_sqlalchemy_conn(text, **kwargs):
         text (str): the database to connect to, passed to get_dbconnstr
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
-    engine = create_engine(get_dbconnstr(text, **kwargs))
+    # Le Sigh
+    connstr = get_dbconnstr(text, **kwargs).replace(
+        "postgresql",
+        "postgresql+psycopg",
+    )
+    engine = create_engine(connstr)
     try:
         # Unsure if this is trouble or not.
         with engine.connect() as conn:

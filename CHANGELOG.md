@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 `get_dbconnc` to return a connection and dict_row cursor.  Currently,
 `get_dbconn` will continue to return a default cursor, this may change in
 the future (#754).
+- Default to psycopg 3 for sqlalchemy connections.
 - Drop `twython` and remove `pyiem.util.get_twitter` as both are defunct after
 Twitter v1.1 removal.
 - Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.
