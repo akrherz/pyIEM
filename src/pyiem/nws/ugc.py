@@ -143,7 +143,13 @@ def _load_from_database(pgconn=None, valid=None):
         pgconn (database engine): something pandas can query
         valid (timestamp, optional): timestamp version of database to use.
     """
-    pgconn = pgconn if pgconn is not None else get_dbconnstr("postgis")
+    pgconn = (
+        pgconn
+        if pgconn is not None
+        else get_dbconnstr("postgis").replace(
+            "postgresql", "postgresql+psycopg"
+        )
+    )
     valid = valid if valid is not None else utc()
     return pd.read_sql(
         "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "

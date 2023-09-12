@@ -43,7 +43,7 @@ class SELProduct(TextProduct):
         """Do the necessary database work
 
         Args:
-          (psycopg2.transaction): a database transaction
+          (psycopg.transaction): a database transaction
         """
         # Don't do anything if this is not an issuance
         if self.unixtext.upper().find("HAS ISSUED A") < 0:

@@ -112,12 +112,12 @@ def _get_data(station, **kwargs):
                 f"to_char(valid{te}, 'mmdd') < '{ets:%m%d}') "
             )
     elif kwargs.get("months") is not None and len(kwargs["months"]) < 12:
-        sqlargs["months"] = tuple(kwargs["months"])
-        tlimit += f" and extract(month from valid{te}) in :months "
+        sqlargs["months"] = kwargs["months"]
+        tlimit += f" and extract(month from valid{te}) = ANY(:months) "
     # allowed combination with the above
     if kwargs.get("hours") is not None and len(kwargs["hours"]) < 24:
-        sqlargs["hours"] = tuple(kwargs["hours"])
-        tlimit += f" and extract(hour from valid{te}) in :hours "
+        sqlargs["hours"] = kwargs["hours"]
+        tlimit += f" and extract(hour from valid{te}) = ANY(:hours) "
     sql = text(
         "SELECT sknt, drct, valid at time zone 'UTC' as valid "
         "from alldata WHERE station = :station "
@@ -132,7 +132,7 @@ def _get_data(station, **kwargs):
         sqlargs["stations"] = [station, "ZZZZ"]
         if station.startswith("_"):
             nt = NetworkTable("RAOB")
-            sqlargs["stations"] = tuple(
+            sqlargs["stations"] = (
                 nt.sts.get(station, {})
                 .get("name", "X--YYY ZZZ")
                 .split("--")[1]
@@ -143,7 +143,7 @@ def _get_data(station, **kwargs):
             f"""SELECT p.smps * 1.94384 as sknt, p.drct,
         f.valid at time zone 'UTC' as valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
-        f.station in :stations and p.pressure = :level and
+        f.station = ANY(:stations) and p.pressure = :level and
         p.smps is not null
         and p.drct is not null and valid >= :sts and valid < :ets
         {tlimit}"""

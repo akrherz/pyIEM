@@ -58,7 +58,7 @@ class VTECProduct(TextProduct):
         """Persist to the database
 
         Args:
-          txn (psycopg2.transaction): A database transaction object that we can
+          txn (psycopg.transaction): A database transaction object that we can
             exec() database calls against.
 
         """
@@ -126,7 +126,7 @@ class VTECProduct(TextProduct):
         """Persist the non-SBW stuff to the database
 
         Arguments:
-        txn -- A pyscopg2 transaction
+        txn -- A psycopg transaction
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
@@ -159,7 +159,7 @@ class VTECProduct(TextProduct):
         The IEM uses a seperate table for the Storm Based Warning geometries.
 
         Args:
-          txn (psycopg2): Database transaction/cursor
+          txn (psycopg): Database transaction/cursor
           segment (TextProduct.TextProductSegment): Segment
           vtec (pyiem.vtec.VTEC): VTEC instance
         """

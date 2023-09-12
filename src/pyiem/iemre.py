@@ -6,13 +6,12 @@
 
 
 """
-import random
-import string
 from datetime import datetime, timezone
 
 import numpy as np
 import xarray as xr
 from affine import Affine
+from psycopg.sql import SQL, Identifier
 
 from pyiem.database import get_dbconn
 
@@ -50,83 +49,58 @@ def get_table(valid):
     return table
 
 
-def set_grids(valid, ds, cursor=None, table=None):
+def set_grids(valid, ds, table=None):
     """Update the database with a given ``xarray.Dataset``.
 
     Args:
       valid (datetime or date): If datetime, save hourly, if date, save daily
       ds (xarray.Dataset): The xarray dataset to save
-      cursor (database cursor, optional): cursor to use for queries
       table (str,optional): hard coded database table to use to set the data
         on.  Usually dynamically computed.
     """
-    table = table if table is not None else get_table(valid)
-    commit = cursor is None
-    pgconn = None
-    if commit:
-        pgconn = get_dbconn("iemre")
-        cursor = pgconn.cursor()
-    # see that we have database entries, otherwise create them
+    table = Identifier(table if table is not None else get_table(valid))
+    pgconn = get_dbconn("iemre")
+    cursor = pgconn.cursor()
+    # Do we currently have database entries?
     cursor.execute(
-        f"SELECT valid from {table} WHERE valid = %s LIMIT 1", (valid,)
+        SQL("SELECT valid from {} WHERE valid = %s LIMIT 1").format(table),
+        (valid,),
     )
-    insertmode = True
-    if cursor.rowcount == 1:
-        # Update mode, we do some massive tricks :/
-        temptable = "".join(random.choices(string.ascii_uppercase, k=24))
-        insertmode = False
-        update_cols = ", ".join([f"{v} = ${i + 1}" for i, v in enumerate(ds)])
-        arg = f"${len(ds) + 1}"
-        # approximate table size is 10 MB
-        cursor.execute("SET temp_buffers = '100MB'")
+    if cursor.rowcount == 0:
+        # Create entries
         cursor.execute(
-            f"CREATE UNLOGGED TABLE {temptable} AS SELECT * from {table} "
-            f"WHERE valid = '{valid}'"
+            SQL(
+                "insert into {}(gid, valid) select gid, %s from iemre_grid"
+            ).format(table),
+            (valid,),
         )
-        cursor.execute(f"CREATE INDEX on {temptable}(gid)")
-        cursor.execute(
-            (
-                f"PREPARE pyiem_iemre_plan as UPDATE {temptable} "
-                f"SET {update_cols} WHERE gid = {arg}"
-            )
-        )
-    else:
-        # Insert mode
-        insert_cols = ", ".join([f"{v}" for v in ds])
-        percents = ", ".join([f"${i + 2}" for i in range(len(ds))])
-        cursor.execute(
-            f"PREPARE pyiem_iemre_plan as INSERT into {table} "
-            f"(gid, valid, {insert_cols}) VALUES($1, '{valid}', {percents})"
-        )
-    ss = ",".join(["%s"] * (len(ds) + 1))
-    sql = f"execute pyiem_iemre_plan ({ss})"
-
-    def _n(val):
-        """Prevent nan"""
-        return None if np.isnan(val) else float(val)
-
-    # Implementation notes: xarray iteration was ~25 secs, loading into memory
-    # instead is a few seconds :/
-    pig = {v: ds[v].values for v in ds}
-    for y in range(ds.dims["y"]):
-        for x in range(ds.dims["x"]):
-            arr = [_n(pig[v][y, x]) for v in ds]
-            if insertmode:
-                arr.insert(0, y * NX + x)
-            else:
-                arr.append(y * NX + x)
-            cursor.execute(sql, arr)
-    if not insertmode:
-        # Undo our hackery above
-        cursor.execute(f"DELETE from {table} WHERE valid = '{valid}'")
-        cursor.execute(f"INSERT into {table} SELECT * from {temptable}")
-        cursor.execute(f"DROP TABLE {temptable}")
-    # If we generate a cursor, we should save it
-    if commit:
         cursor.close()
         pgconn.commit()
-    else:
-        cursor.execute("""DEALLOCATE pyiem_iemre_plan""")
+        cursor = pgconn.cursor()
+    # Now we do our update.
+    query = SQL("update {} set {} where valid = %s and gid = %s").format(
+        table,
+        SQL(",".join(f"{col} = %s" for col in ds)),
+    )
+    # Implementation notes: xarray iteration was ~25 secs, loading into memory
+    # instead is a few seconds :/
+
+    pig = {v: ds[v].values for v in ds}
+    updated = 0
+    for y in range(ds.dims["y"]):
+        for x in range(ds.dims["x"]):
+            arr = [pig[v][y, x] for v in ds]
+            arr.extend([valid, y * NX + x])
+            cursor.execute(query, arr)
+            updated += 1
+            if updated % 500 == 0:
+                cursor.close()
+                pgconn.commit()
+                cursor = pgconn.cursor()
+
+    # If we generate a cursor, we should save it
+    cursor.close()
+    pgconn.commit()
 
 
 def get_grids(valid, varnames=None, cursor=None, table=None):

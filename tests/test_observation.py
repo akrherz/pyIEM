@@ -6,10 +6,9 @@ import string
 
 import numpy as np
 import pandas as pd
-import psycopg2.extras
 import pytest
 from pyiem import observation
-from pyiem.database import get_dbconn
+from pyiem.database import get_dbconnc
 from pyiem.util import utc
 
 
@@ -114,8 +113,7 @@ def iemob():
     )
     res.iemid = 0 - random.randint(0, 1000)
     res.ob = observation.Observation(sid, "FAKE", ts)
-    res.conn = get_dbconn("iem")
-    res.cursor = res.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    res.conn, res.cursor = get_dbconnc("iem")
     # Create fake station, so we can create fake entry in summary
     # and current tables
     res.cursor.execute(

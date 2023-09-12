@@ -14,12 +14,12 @@ class TrackerEngine:
     def __init__(self, icursor, pcursor, maxactions=0):
         """Constructor of TrackerEngine object
 
-        We need to be provided with psycopg2 cursors to both the `iem` database
+        We need to be provided with psycopg cursors to both the `iem` database
         and the `portfolio` database as we have business logic in both places
 
         Args:
-          icursor (cursor): psycopg2 cursor to the iem database
-          pcursor (cursor): psycopg2 cursor to the portfolio database
+          icursor (cursor): psycopg cursor to the iem database
+          pcursor (cursor): psycopg cursor to the portfolio database
           maxactions (int, optional): threshold for now many email actions we
             allow before we don't wish to spam our users.  0 implies no limit
 
@@ -272,18 +272,22 @@ def loadqc(cursor=None, date=None):
         date = datetime.date.today()
     qdict = {}
     if cursor is None:
-        _portfolio, cursor = get_dbconnc("portfolio")
+        portfolio, _cursor = get_dbconnc("portfolio")
+    else:
+        portfolio, _cursor = None, cursor
 
-    cursor.execute(
+    _cursor.execute(
         "select s_mid, sensor, status from tt_base WHERE sensor is not null "
         "and date(entered) <= %s and (status != 'CLOSED' or closed > %s) "
         "and s_mid is not null",
         (date, date),
     )
-    for row in cursor:
+    for row in _cursor:
         sid = row["s_mid"]
         if sid not in qdict:
             qdict[sid] = {}
         for vname in row["sensor"].split(","):
             qdict[sid][vname.strip()] = True
+    if cursor is None:
+        portfolio.close()
     return qdict

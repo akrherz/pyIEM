@@ -5,8 +5,10 @@ import warnings
 from contextlib import contextmanager
 
 # third party
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import numpy as np
+import psycopg
+from psycopg.adapt import Dumper
+from psycopg.rows import dict_row
 from sqlalchemy import create_engine
 
 # NB: Careful of cyclic imports here...
@@ -20,12 +22,28 @@ USERNAME_MAPPER = {
 }
 
 
+class _FloatDumper(Dumper):
+    """Prevent NaN from reaching the database."""
+
+    def dump(self, obj):
+        """Opinionated dumper."""
+        if np.isnan(obj):
+            return None
+        return str(obj).encode()
+
+
+# Adapters for Python to PostgreSQL
+psycopg.adapters.register_dumper(float, _FloatDumper)
+psycopg.adapters.register_dumper(np.float64, _FloatDumper)
+psycopg.adapters.register_dumper(np.int64, _FloatDumper)
+
+
 def get_dbconnstr(name, **kwargs) -> str:
     """Create a database connection string/URI.
 
     Args:
       name (str): the database name to connect to.
-      **kwargs: any additional arguments to pass to psycopg2.connect
+      **kwargs: any additional arguments to pass to psycopg.connect
         user (str): the database user to connect as
         host (str): the database host to connect to
         port (int): the database port to connect to
@@ -68,7 +86,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
       password (str,optional): the password to use.
 
     Returns:
-      psycopg2 database connection
+      psycopg database connection
     """
     dsn = get_dbconnstr(database, user=user, host=host, port=port, **kwargs)
     attempt = 0
@@ -76,9 +94,11 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     while attempt < 3:
         attempt += 1
         try:
-            conn = psycopg2.connect(dsn)
+            conn = psycopg.connect(dsn)
+            # FIXME make this opinionated to return a default row_factory
+            # conn.row_factory = dict_row
             break
-        except (psycopg2.ProgrammingError, psycopg2.OperationalError) as exp:
+        except (psycopg.ProgrammingError, psycopg.OperationalError) as exp:
             if attempt == 3:
                 raise exp
             warnings.warn(
@@ -89,7 +109,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
 
 
 def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
-    """Helper function to get a database connection + RealDictCursor.
+    """Helper function to get a database connection + dict_row cursor.
 
     Note that this helper could return a read-only database connection if the
     connection to the primary server fails.
@@ -109,9 +129,8 @@ def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
       psycopg2 database cursor
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
-    conn.cursor_factory = RealDictCursor
-    cursor = conn.cursor()
-    return conn, cursor
+    conn.row_factory = dict_row
+    return conn, conn.cursor()
 
 
 @contextmanager
@@ -125,7 +144,12 @@ def get_sqlalchemy_conn(text, **kwargs):
         text (str): the database to connect to, passed to get_dbconnstr
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
-    engine = create_engine(get_dbconnstr(text, **kwargs))
+    # Le Sigh
+    connstr = get_dbconnstr(text, **kwargs).replace(
+        "postgresql",
+        "postgresql+psycopg",
+    )
+    engine = create_engine(connstr)
     try:
         # Unsure if this is trouble or not.
         with engine.connect() as conn:

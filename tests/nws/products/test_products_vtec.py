@@ -1261,10 +1261,10 @@ def test_141208_upgrade(dbcursor):
     # ANZ532 gets too entries from the above check the issuance time of first
     dbcursor.execute(
         """
-        SELECT issue at time zone 'UTC' as ii from warnings_2014 
-        where wfo = 'LWX' and eventid = 221 and phenomena = 'SC' and
-        significance = 'Y' and ugc = 'ANZ532' and status != 'UPG'
-        """
+        SELECT issue at time zone 'UTC' as ii from warnings_2014
+        where wfo = 'LWX'
+        and eventid = 221 and phenomena = 'SC' and significance = 'Y'
+        and ugc = 'ANZ532' and status != 'UPG'"""
     )
     assert dbcursor.fetchone()["ii"] == datetime.datetime(2014, 12, 7, 19, 13)
 

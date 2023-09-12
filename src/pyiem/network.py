@@ -1,9 +1,7 @@
 """Network Table."""
 from collections import OrderedDict
 
-import psycopg2.extras
-
-from pyiem.database import get_dbconn
+from pyiem.database import get_dbconnc
 
 
 class Table:
@@ -24,21 +22,22 @@ class Table:
             return
 
         if cursor is None:
-            dbconn = get_dbconn("mesosite")
-            cursor = dbconn.cursor(
-                cursor_factory=psycopg2.extras.RealDictCursor
-            )
+            dbconn, _cursor = get_dbconnc("mesosite")
+        else:
+            dbconn, _cursor = None, cursor
         if isinstance(network, str):
             network = [network]
+        if isinstance(network, tuple):
+            network = list(network)
         online_extra = " and online " if only_online else ""
 
-        cursor.execute(
+        _cursor.execute(
             f"""
             WITH myattrs as (
                 SELECT a.iemid, array_agg(attr) as attrs,
                 array_agg(value) as attr_values from stations s JOIN
                 station_attributes a on (s.iemid = a.iemid) WHERE
-                s.network in %s GROUP by a.iemid
+                s.network = any(%s) GROUP by a.iemid
             ), mythreading as (
                 SELECT a.iemid, array_agg(source_iemid) as threading_sources,
                 array_agg(begin_date) as threading_begin_dates,
@@ -46,7 +45,7 @@ class Table:
                   as threading_end_dates
                 from stations s JOIN
                 station_threading a on (s.iemid = a.iemid) WHERE
-                s.network in %s GROUP by a.iemid
+                s.network = any(%s) GROUP by a.iemid
             )
             SELECT s.*, ST_x(geom) as lon, ST_y(geom) as lat,
             a.attrs, a.attr_values, m.threading_sources,
@@ -54,11 +53,11 @@ class Table:
             from stations s
             LEFT JOIN myattrs a on (s.iemid = a.iemid)
             LEFT JOIN mythreading m on (s.iemid = m.iemid)
-            WHERE network in %s {online_extra} ORDER by name ASC
+            WHERE network = any(%s) {online_extra} ORDER by name ASC
             """,
-            (tuple(network), tuple(network), tuple(network)),
+            (network, network, network),
         )
-        for row in cursor:
+        for row in _cursor:
             self.sts[row["id"]] = dict(row)
             self.sts[row["id"]]["attributes"] = dict(
                 zip(row["attrs"] or [], row["attr_values"] or [])
@@ -70,6 +69,8 @@ class Table:
                 row["threading_end_dates"] or [],
             ):
                 td.append({"iemid": i, "begin_date": s, "end_date": e})
+        if cursor is None:
+            dbconn.close()
 
     def get_threading_id(self, sid, valid) -> str:
         """Return a station identifier (not iemid) based on threading.

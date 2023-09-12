@@ -45,7 +45,7 @@ def summary_update(txn, data):
     """Updates the summary table and returns affected rows.
 
     Args:
-      txn (psycopg2.transaction)
+      txn (psycopg.transaction)
       data (dict)
 
     Returns:
@@ -258,8 +258,8 @@ class Observation:
 
     def save(self, txn, force_current_log=False, skip_current=False):
         """
-        Save this observation to the database via a psycopg2 transaction
-        @param txn is a psycopg2 transaction
+        Save this observation to the database via a psycopg transaction
+        @param txn is a psycopg transaction
         @param force_current_log boolean - make sure this observation goes to
         the current_log table in the case that it is old, this allows
         reprocessing by the METAR ingestor et al

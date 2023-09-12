@@ -79,7 +79,7 @@ class WWPProduct(TextProduct):
         """Do the necessary database work
 
         Args:
-          (psycopg2.transaction): a database transaction
+          (psycopg.transaction): a database transaction
         """
         # First, check to see if we already have this num
         txn.execute(
