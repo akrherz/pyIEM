@@ -7,13 +7,13 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
-- Begin migration to psycopg 3 by switching to the usage of `RealDictCursor` as
-the default cursor used in code and testing (#754).
+- **MAJOR** Migration of database connections to psycopg 3, introduce
+`get_dbconnc` to return a connection and dict_row cursor.  Currently,
+`get_dbconn` will continue to return a default cursor, this may change in
+the future (#754).
 - Drop `twython` and remove `pyiem.util.get_twitter` as both are defunct after
 Twitter v1.1 removal.
 - Fully drop `backports.zoneinfo` usage as we now require Python 3.9+.
-- Migrate from `psycopg2` to `psycopg`.  The important change is that the
-default row cursor is a pure dictionary and not a hybrid (#754).
 
 ### New Features
 

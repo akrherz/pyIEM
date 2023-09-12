@@ -95,6 +95,8 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         attempt += 1
         try:
             conn = psycopg.connect(dsn)
+            # FIXME make this opinionated to return a default row_factory
+            # conn.row_factory = dict_row
             break
         except (psycopg.ProgrammingError, psycopg.OperationalError) as exp:
             if attempt == 3:
@@ -107,7 +109,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
 
 
 def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
-    """Helper function to get a database connection + RealDictCursor.
+    """Helper function to get a database connection + dict_row cursor.
 
     Note that this helper could return a read-only database connection if the
     connection to the primary server fails.
@@ -128,8 +130,7 @@ def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
     conn.row_factory = dict_row
-    cursor = conn.cursor()
-    return conn, cursor
+    return conn, conn.cursor()
 
 
 @contextmanager
