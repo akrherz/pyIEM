@@ -84,11 +84,10 @@ def set_grids(valid, ds, table=None):
     )
     # Implementation notes: xarray iteration was ~25 secs, loading into memory
     # instead is a few seconds :/
-    from tqdm import tqdm
 
     pig = {v: ds[v].values for v in ds}
     updated = 0
-    for y in tqdm(range(ds.dims["y"])):
+    for y in range(ds.dims["y"]):
         for x in range(ds.dims["x"]):
             arr = [pig[v][y, x] for v in ds]
             arr.extend([valid, y * NX + x])
