@@ -12,25 +12,20 @@ import numpy as np
 
 # third party
 import pytest
-from pyiem import database, util
+from pyiem import util
 from pyiem.exceptions import NoDataFound
 
 
-@pytest.fixture
-def cursor():
-    """Return a database cursor."""
-    return database.get_dbconn("mesosite").cursor()
-
-
-def test_insert_nan(cursor):
+@pytest.mark.parametrize("database", ["mesosite"])
+def test_insert_nan(dbcursor):
     """Test that we properly insert NaN values as nulls."""
     vals = np.array([0, np.nan, 10], dtype=np.float64)
-    cursor.execute(
+    dbcursor.execute(
         "INSERT into stations(iemid, remote_id) VALUES (%s, %s) "
         "RETURNING remote_id",
         (-100, vals[1]),
     )
-    assert cursor.fetchone()[0] is None
+    assert dbcursor.fetchone()["remote_id"] is None
 
 
 def test_web2ldm():
@@ -118,8 +113,9 @@ def test_ncopen_conflict():
         nc.close()
         nc = util.ncopen(tmp.name, "r")
         assert nc is not None
-        nc2 = util.ncopen(tmp.name, "w", timeout=5)
+        nc2 = util.ncopen(tmp.name, "w", timeout=0.1, _sleep=0.11)
         assert nc2 is None
+        nc.close()
 
 
 def test_ncopen():
@@ -501,7 +497,8 @@ def test_properties_nocursor():
     assert isinstance(props, dict)
 
 
-def test_properties(cursor):
+@pytest.mark.parametrize("database", ["mesosite"])
+def test_properties(dbcursor):
     """Try the properties function"""
     tmpname = "".join(
         random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
@@ -509,11 +506,11 @@ def test_properties(cursor):
     tmpval = "".join(
         random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
     )
-    cursor.execute(
+    dbcursor.execute(
         "INSERT into properties(propname, propvalue) VALUES (%s, %s)",
         (tmpname, tmpval),
     )
-    prop = util.get_properties(cursor)
+    prop = util.get_properties(dbcursor)
     assert isinstance(prop, dict)
     assert prop[tmpname] == tmpval
 

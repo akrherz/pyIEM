@@ -19,6 +19,7 @@ from socket import error as socket_error
 import geopandas as gpd
 
 # third party
+import matplotlib
 import netCDF4
 import numpy as np
 import requests
@@ -215,7 +216,7 @@ def ssw(mixedobj):
         stdout.write(mixedobj)
 
 
-def ncopen(ncfn, mode="r", timeout=60):
+def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
     """Safely open netcdf files
 
     The issue here is that we can only have the following situation for a
@@ -245,7 +246,7 @@ def ncopen(ncfn, mode="r", timeout=60):
             break
         except (OSError, IOError) as exp:
             LOG.debug(exp)
-        time.sleep(5)
+        time.sleep(_sleep)
     return nc
 
 
@@ -387,10 +388,8 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
             ]
             ctx[f"_sname{_n}"] = f"[{value}] {sname}"
         elif typ == "cmap":
-            # pylint: disable=import-outside-toplevel
-            from pyiem.plot.use_agg import plt
-
-            if value not in plt.colormaps:
+            # Ensure that our value is a valid colormap known to matplotlib
+            if value not in matplotlib.colormaps:
                 value = default
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
@@ -513,17 +512,17 @@ def exponential_backoff(func, *args, **kwargs):
     Args:
       _ebfactor (int,optional): Optional scale factor, allowing for faster test
     """
-    ebfactor = float(kwargs.pop("_ebfactor", 2))
+    ebfactor = float(kwargs.pop("_ebfactor", 5))
     msgs = []
     for i in range(5):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
             msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
-            time.sleep((ebfactor**i) + (random.randint(0, 1000) / 1000))
+            time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
         except Exception as exp:
             msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
-            time.sleep((ebfactor**i) + (random.randint(0, 1000) / 1000))
+            time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))
     return None
