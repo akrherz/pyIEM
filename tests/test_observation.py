@@ -175,7 +175,7 @@ def test_hardcoded_maxtmpf(iemob):
     assert iemob.cursor.fetchone()["max_tmpf"] == 54
 
 
-def test_settting_null(iemob):
+def test_setting_null(iemob):
     """Test setting a null value into the database after a real value."""
     iemob.ob.data["max_tmpf"] = 55
     iemob.ob.save(iemob.cursor)
@@ -186,6 +186,8 @@ def test_settting_null(iemob):
     )
     assert iemob.cursor.fetchone()["max_tmpf"] == 55
     iemob.ob.data["null_max_tmpf"] = None
+    # bogus value that should not trip up the summary table update
+    iemob.ob.data["null_drct"] = None
     iemob.ob.save(iemob.cursor)
     iemob.cursor.execute(
         """SELECT max_tmpf from summary_2015

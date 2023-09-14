@@ -11,6 +11,15 @@ import numpy as np
 import pandas as pd
 from metpy.units import units as munits
 
+# Track which columns are in the summary table for the null_ check below
+SUMMARY_COLS = (
+    "max_tmpf min_tmpf max_sknt max_gust max_sknt_ts max_gust_ts max_dwpf "
+    "min_dwpf pday pmonth snow snowd max_tmpf_qc min_tmpf_qc pday_qc snow_qc "
+    "snoww max_drct max_srad coop_tmpf coop_valid et_inch srad_mj avg_sknt "
+    "vector_avg_drct avg_rh min_rh max_rh max_water_tmpf min_water_tmpf "
+    "max_feel avg_feel min_feel min_rstage max_rstage report"
+).split()
+
 
 def get_summary_table(valid):
     """Optimize the summary table we potentially use.
@@ -107,7 +116,7 @@ def summary_update(txn, data):
     # Check to see if we have any hard coded nulls
     updates = []
     for col in data:
-        if col.startswith("null_"):
+        if col.startswith("null_") and col[5:] in SUMMARY_COLS:
             updates.append(f"{col[5:]} = null")
     if updates:
         txn.execute(
