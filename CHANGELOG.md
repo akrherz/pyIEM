@@ -7,6 +7,16 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+### New Features
+
+- Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
+
+### Bug Fixes
+
+## **1.17.0** (18 Sep 2023)
+
+### API Changes
+
 - **MAJOR** Migration of database connections to psycopg 3, introduce
 `get_dbconnc` to return a connection and dict_row cursor.  Currently,
 `get_dbconn` will continue to return a default cursor, this may change in

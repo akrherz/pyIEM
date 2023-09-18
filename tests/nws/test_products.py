@@ -50,7 +50,7 @@ def test_180917_issue63_tweet_length():
         "At 6:45 AM CDT, 2 NNE Odem [San Patricio Co, TX] DEPT OF HIGHWAYS "
         "reports FLOOD. ROAD CLOSURE FM 1944 BETWEEN U.S. HIGHWAY 77 AND "
         "SODVILLE ROAD (TEXAS DEPARTMENT OF TRANSPORATION. DRIVETEXAS.ORG.) "
-        "LATITUDE/LONGITUDE MARKS APPROXIMATE POSITION OF FM... "
+        "LATITUDE/LONGITUDE MARKS APPROXIMATE POSITION... #txwx "
         "http://iem.local/#CRP/201809151145/201809151145"
     )
 
@@ -62,7 +62,7 @@ def test_170116_mixedlsr():
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "At 11:00 AM MST, Akron [Washington Co, CO] ASOS reports "
-        "High Wind of M63 MPH "
+        "High Wind of M63 MPH #cowx "
         "http://iem.local/#BOU/201611291800/201611291800"
     )
 
@@ -75,7 +75,7 @@ def test_180710_issue58():
     ans = (
         "At 3:57 PM MST, 5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER "
         "reports FLASH FLOOD. STREET FLOODING WITH WATER OVER THE CURBS "
-        "IN THE MERRILL RANCH DEVELOPMENT OF FLORENCE. "
+        "IN THE MERRILL RANCH DEVELOPMENT OF FLORENCE. #azwx "
         "http://iem.local/#PSR/201807092257/201807092257"
     )
     assert j[0][2]["twitter"] == ans
@@ -97,8 +97,8 @@ def test_180705_iembot_issue9():
         "At 1:30 PM CDT, 1 WNW Lake Mills [Winnebago Co, IA] TRAINED SPOTTER "
         "reports TSTM WND GST of E61 MPH. SPOTTER MEASURED 61 MPH WIND GUST. "
         "HIS CAR DOOR WAS ALSO CAUGHT BY THE WIND WHEN HE WAS OPENING "
-        "THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS"
-        "... http://iem.local/#DMX/201807041830/201807041830"
+        "THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS... #iawx "
+        "http://iem.local/#DMX/201807041830/201807041830"
     )
 
 
@@ -109,7 +109,7 @@ def test_171026_mixedlsr():
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "[Delayed Report] On Oct 26, at 1:00 AM MDT, 3 SSW Luther "
-        "[Carbon Co, MT] Mesonet reports Snow of 1.00 inch "
+        "[Carbon Co, MT] Mesonet reports Snow of 1.00 inch #mtwx "
         "http://iem.local/#BYZ/201710260700/201710260700"
     )
 
@@ -192,7 +192,7 @@ def test_150422_tornadomag():
         "4 W Bruce [Walton Co, FL] NWS EMPLOYEE reports "
         "TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL "
         "POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. "
-        "DAMAGE LIKELY CONFINED TO TREES.... "
+        "DAMAGE LIKELY CONFINED TO TREES.... #flwx "
         "http://iem.local/#TAE/201504191322/201504191322"
     )
 

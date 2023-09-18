@@ -278,14 +278,14 @@ class LSR:
                 reference.TWEET_CHARS
                 - reference.TWEET_URL_CHARS
                 - len(tweet)
-                - 2  # extra careful
+                - 7  # extra careful and support hash tag
             )
             if size <= 0:
                 # We need to truncate and try to be cute to get a whole word
                 tweet = tweet[: (size - 5)].rsplit(" ", 1)[0] + "..."
 
         # rectify
-        tweet = " ".join(tweet.split())
+        tweet = " ".join(tweet.split()) + f" #{self.state.lower()}wx"
 
         xtra = {
             "product_id": self.product.get_product_id(),
