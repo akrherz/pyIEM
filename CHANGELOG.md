@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
+
 ### Bug Fixes
 
 ## **1.17.0** (18 Sep 2023)

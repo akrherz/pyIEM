@@ -83,7 +83,7 @@ def test_220427_lsr_length(dbcursor):
         "At 6:58 AM EDT, 6 S Boca Chica [Gmz044 Co, FL] NWS EMPLOYEE reports "
         "WATER SPOUT. AN NWS EMPLOYEE REPRTED A WATERSPOUT THAT WAS VISIBLE "
         "FROM KEY WEST AROUND 7 AM EDT. IT LASTED AROUND 5 MINUTES.IT WAS "
-        "REPORTED TO EXTEND HALFWAY DOWN FROM THE CLOUD TO... "
+        "REPORTED TO EXTEND HALFWAY DOWN FROM THE... #flwx "
         "http://localhost/#KEY/202204271058/202204271058"
     )
     assert j[0][2]["twitter"] == ans
@@ -115,7 +115,7 @@ def test_tweetlen():
         "At 12:45 AM CST, RIO Grande City [Starr Co, TX] DEPT OF HIGHWAYS "
         "reports FREEZING RAIN of U0.00 INCH. MULTIPLE REPORTS RECEIVED VIA "
         "DRIVETEXAS.ORG OF ICE AND SNOW ACCUMLATION OCCURRING ON BRIDGES AND "
-        "OVERPASSES ON HIGHWAY 83, FM1017, FM2686, FM2294,... "
+        "OVERPASSES ON HIGHWAY 83, FM1017, FM2686,... #txwx "
         "#BRO/202102150645/202102150645"
     )
     assert j[0][2]["twitter"] == ans
@@ -147,7 +147,7 @@ def test_unknown_units():
     j = prod.get_jabbers("")
     ans = (
         "At 11:37 AM CST, Yokena [Warren Co, MS] AMATEUR RADIO reports "
-        "HAIL of 40 C. FAKED LSR FOR TESTING PURPOSES. "
+        "HAIL of 40 C. FAKED LSR FOR TESTING PURPOSES. #mswx "
         "#JAN/201912161737/201912161737"
     )
     assert j[0][2]["twitter"] == ans
@@ -215,7 +215,7 @@ def test_issue277_oldlsr():
         "[Delayed Report] On Aug 10, at 12:28 PM CDT, 3 WSW Cedar Rapids "
         "[Linn Co, IA] PUBLIC reports "
         "TSTM WND GST of E130 MPH. ROOF REMOVED FROM SMALL "
-        "STRIP MALL. SOME EXTERIOR WALLS COLLAPSED. "
+        "STRIP MALL. SOME EXTERIOR WALLS COLLAPSED. #iawx "
         "#DVN/202008101728/202008101728"
     )
     assert j[0][2]["twitter"] == ans
