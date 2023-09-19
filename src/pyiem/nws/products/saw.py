@@ -62,8 +62,8 @@ class SAWProduct(TextProduct):
             "ST_Contains(%s, geom) and end_ts is null",
             (f"SRID=4326;{self.geometry.wkt}",),
         )
-        for row in txn.fetchall():
-            self.affected_wfos.append(row[0])
+        for row in txn:
+            self.affected_wfos.append(row["wfo"])
 
     def sql(self, txn):
         """Do the necessary database work

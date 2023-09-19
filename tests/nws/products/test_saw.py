@@ -94,7 +94,8 @@ def test_replacement(dbcursor):
     assert "twitter" in jmsgs[0][2]
 
 
-def test_saw3():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_saw3(dbcursor):
     """SAW3"""
     utcnow = utc(2014, 3, 10, 3, 29)
     sts = utcnow.replace(hour=3, minute=35)
@@ -107,6 +108,7 @@ def test_saw3():
     assert prod.ets == ets
     assert prod.ww_type == prod.SEVERE_THUNDERSTORM
     assert prod.action == prod.ISSUES
+    prod.compute_wfos(dbcursor)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
