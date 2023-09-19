@@ -94,8 +94,7 @@ def test_replacement(dbcursor):
     assert "twitter" in jmsgs[0][2]
 
 
-@pytest.mark.parametrize("database", ["postgis"])
-def test_saw3(dbcursor):
+def test_saw3():
     """SAW3"""
     utcnow = utc(2014, 3, 10, 3, 29)
     sts = utcnow.replace(hour=3, minute=35)
@@ -108,7 +107,8 @@ def test_saw3(dbcursor):
     assert prod.ets == ets
     assert prod.ww_type == prod.SEVERE_THUNDERSTORM
     assert prod.action == prod.ISSUES
-    prod.compute_wfos(dbcursor)
+    prod.compute_wfos()
+    assert "ABR" in prod.affected_wfos
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -124,4 +124,4 @@ def test_cancelled(dbcursor):
     )
     assert j[0][0] == ans
     prod.sql(dbcursor)
-    prod.compute_wfos(dbcursor)
+    prod.compute_wfos()
