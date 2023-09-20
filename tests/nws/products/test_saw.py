@@ -70,10 +70,10 @@ def test_181231_linkisok():
     assert prod.ets.microsecond == 0
     jmsgs = prod.get_jabbers("")
     ans = (
-        "SPC issues Severe Thunderstorm Watch 503 till 9:00Z "
+        "#SPC issues Severe Thunderstorm Watch 503 till 9:00Z "
         "https://www.spc.noaa.gov/products/watch/2014/ww0503.html"
     )
-    assert jmsgs[0][0] == ans
+    assert jmsgs[0][2]["twitter"] == ans
     assert jmsgs[0][2]["channels"] == "SPC,SPC.SVRWATCH"
 
 

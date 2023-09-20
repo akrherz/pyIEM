@@ -802,7 +802,7 @@ class TextProduct:
         xtra = {
             "channels": ",".join(self.get_channels()),
             "product_id": self.get_product_id(),
-            "twitter": tweet,
+            "twitter": f"#{tweet}",
         }
         if self.segments and self.segments[0].sbw:
             # Generic product has a polygon, so we add special twitter message
