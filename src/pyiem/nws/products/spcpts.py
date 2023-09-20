@@ -636,7 +636,7 @@ class SPCPTS(TextProduct):
                             "product_id": self.get_product_id(),
                             "twitter_media": twmedia % jdict,
                             "twitter": (
-                                "SPC issues Day %(day)s %(ttext)s "
+                                "#SPC issues Day %(day)s %(ttext)s "
                                 "at %(tstamp)s for %(wfo)s %(url)s"
                             )
                             % jdict,

@@ -247,7 +247,7 @@ def test_160904_resent():
     prod = parser(get_test_file("TCV/TCVAKQ.txt"))
     jmsgs = prod.get_jabbers("http://localhost")
     ans = (
-        "AKQ issues Tropical Watch/Warning Local Statement (TCV) "
+        "#AKQ issues Tropical Watch/Warning Local Statement (TCV) "
         "at Sep 2, 11:55 AM EDT ...TROPICAL STORM WARNING IN EFFECT... "
         "http://localhost?pid=201609021555-KAKQ-WTUS81-TCVAKQ"
     )

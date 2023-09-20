@@ -298,7 +298,7 @@ class SAWProduct(TextProduct):
             plain2 = " ".join(plain2.split())
             xtra = {
                 "channels": spc_channels,
-                "twitter": plain2,
+                "twitter": f"#{plain2}",
                 "product_id": product_id,
             }
             html2 = html + (
