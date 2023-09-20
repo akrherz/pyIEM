@@ -10,7 +10,7 @@ from shapely.geometry import Polygon as ShapelyPolygon
 
 from pyiem.exceptions import SAWException
 from pyiem.nws.product import TextProduct
-from pyiem.util import utc
+from pyiem.util import load_geodf, utc
 
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 NUM_RE = re.compile(
@@ -53,17 +53,13 @@ class SAWProduct(TextProduct):
             return self.CANCELS
         return self.ISSUES
 
-    def compute_wfos(self, txn):
+    def compute_wfos(self, _txn=None):
         """Figure out who is impacted by this watch"""
         if self.geometry is None:
             return
-        txn.execute(
-            "SELECT distinct wfo from ugcs WHERE "
-            "ST_Contains(%s, geom) and end_ts is null",
-            (f"SRID=4326;{self.geometry.wkt}",),
-        )
-        for row in txn.fetchall():
-            self.affected_wfos.append(row[0])
+        gdf = load_geodf("cwa")
+        gdf = gdf[gdf.intersects(self.geometry)]
+        self.affected_wfos.extend(gdf.index.to_list())
 
     def sql(self, txn):
         """Do the necessary database work

@@ -107,6 +107,8 @@ def test_saw3():
     assert prod.ets == ets
     assert prod.ww_type == prod.SEVERE_THUNDERSTORM
     assert prod.action == prod.ISSUES
+    prod.compute_wfos()
+    assert "ABR" in prod.affected_wfos
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -122,4 +124,4 @@ def test_cancelled(dbcursor):
     )
     assert j[0][0] == ans
     prod.sql(dbcursor)
-    prod.compute_wfos(dbcursor)
+    prod.compute_wfos()

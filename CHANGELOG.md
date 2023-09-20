@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Fix `compute_wfos` method for SAW processor.
+
 ## **1.17.0** (18 Sep 2023)
 
 ### API Changes
