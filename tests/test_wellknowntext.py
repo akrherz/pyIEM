@@ -5,6 +5,12 @@ from pyiem import wellknowntext
 from shapely.geometry import LineString, Point, Polygon
 
 
+def test_bad_well_known_text():
+    """This should fail!"""
+    with pytest.raises(ValueError):
+        wellknowntext.convert_well_known_text("")
+
+
 def test_parsecoordinate_lists():
     """Parse!"""
     with pytest.raises(ValueError):

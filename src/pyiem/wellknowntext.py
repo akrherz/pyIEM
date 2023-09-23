@@ -101,10 +101,7 @@ def convert_well_known_text(wkt):
     The string wkt may contain an SRID specification in addition to the
     actual geometry. This SRID is ignored.
     """
-    parts = wkt.split(";")
-    if not parts:
-        raise ValueError("No recognized geometry in WKT string")
-    for part in parts:
+    for part in wkt.split(";"):
         part = part.strip()
         if part.startswith("SRID"):
             # ignore SRIDs
@@ -112,4 +109,4 @@ def convert_well_known_text(wkt):
         for geotype, function in _function_map:
             if part.startswith(geotype):
                 return function(part[len(geotype) :])
-        raise ValueError("Unsupported WKT-part %s" % repr(part[:20]))
+        raise ValueError(f"Unsupported WKT-part {repr(part[:20])}")

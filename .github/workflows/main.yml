@@ -61,6 +61,7 @@ jobs:
 
     - name: Install pyiem
       run: |
+        set -e
         python -m pip install . --upgrade --no-deps
         python util/insert_testing_data.py
         coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
