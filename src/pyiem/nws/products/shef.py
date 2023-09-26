@@ -175,7 +175,7 @@ def parse_dh(text, valid):
     """Account for the craziness of the DH value."""
     # This is a bit of an not-specified, but used in the wild.
     if text.strip() in ["", "M", "MSG"]:
-        return None
+        raise InvalidSHEFEncoding("DH with no value")
     replacements = {}
     if len(text) >= 2:
         replacements["hour"] = int(text[:2])
@@ -260,7 +260,7 @@ def process_di(text):
 def parse_dm(text, valid):
     """Handle the DM one."""
     if text.strip() in ["", "M"]:
-        return None
+        raise InvalidSHEFEncoding("DM with no value")
     # Updating the timestamp as we go here
     replacements = {
         "month": int(text[:2]),
@@ -276,7 +276,7 @@ def parse_dm(text, valid):
 def parse_dd(text, valid):
     """Handle the DD one."""
     if text.strip() in ["", "M"]:
-        return None
+        raise InvalidSHEFEncoding("DD with no value")
     # Updating the timestamp as we go here
     replacements = {
         "day": int(text[:2]),
@@ -291,7 +291,7 @@ def parse_dd(text, valid):
 def parse_dt(text, valid):
     """Handle the DD one."""
     if text.strip() in ["", "M"]:
-        return None
+        raise InvalidSHEFEncoding("DT with no value")
     # Updating the timestamp as we go here
     replacements = {
         "year": int(text[:4]),
@@ -500,10 +500,6 @@ def process_message_b(prod, message) -> List[SHEFElement]:
         line = strip_comments(line)
         if line.strip() == "" or line.startswith(".END"):
             continue
-        # Recheck in case diction valid got set to None
-        for diction in dictions:
-            if diction.valid is None:
-                diction.valid = valid
         provisional = []
         flagged = False
         # packed B format, LE SIGH
@@ -534,7 +530,7 @@ def process_message_b(prod, message) -> List[SHEFElement]:
                     diction = diction.model_copy()
                     process_modifiers(parts[0], diction, valid)
                     # If diction.valid is modified, update everybody else
-                    if diction.valid is None or diction.valid != valid:
+                    if diction.valid != valid:
                         for d in dictions:
                             d.valid = diction.valid
                     if len(parts) == 1:
@@ -597,9 +593,6 @@ def process_message_a(prod, message) -> List[SHEFElement]:
     station, basevalid, valid, extra = parse_station_valid(
         tokens[0], prod.utcnow
     )
-    if valid is None:
-        # This is an empty message
-        return []
     tokens = tokens[1:]
     if extra:
         extra.extend(tokens)
@@ -639,6 +632,7 @@ def process_message_a(prod, message) -> List[SHEFElement]:
 def process_messages(func, prod, messages) -> int:
     """Safe frontend to do message processing."""
     errors = 0
+    found = 0
     for message in messages:
         if errors > 5:
             prod.warnings.append("Aborting processing with too many errors")
@@ -646,6 +640,7 @@ def process_messages(func, prod, messages) -> int:
         try:
             res = func(prod, message)
             if res:
+                found += len(res)
                 prod.data.extend(res)
         except InvalidSHEFEncoding as exp:
             emsg = str(exp)
@@ -661,10 +656,10 @@ def process_messages(func, prod, messages) -> int:
             LOG.error(exp)
             cstr.seek(0)
             prod.warnings.append(cstr.getvalue())
-    return len(prod.data)
+    return found
 
 
-def parse_A(prod):
+def parse_A(prod) -> int:
     """Parse A format SHEF data."""
     # Line by Line collecting up what we find!
     messages = []
@@ -685,13 +680,14 @@ def parse_A(prod):
         if line.startswith(":"):
             narrative += line[1:].strip() + " "
 
-    process_messages(process_message_a, prod, messages)
+    res = process_messages(process_message_a, prod, messages)
     if len(messages) == 1 and narrative.strip() not in ["", "END OF REPORT"]:
         for data in prod.data:
             data.narrative = f"{messages[0]}\n{narrative.strip()}"
+    return res
 
 
-def parse_B(prod):
+def parse_B(prod) -> int:
     """Parse B format SHEF data."""
     # Messages here are a bit special as it starts with .B and ends with .END
     messages = []
@@ -718,10 +714,18 @@ def parse_B(prod):
         if inmessage:
             messages[-1] += "\n" + line
 
-    process_messages(process_message_b, prod, messages)
+    # The above should have rectified messages to be one header line and
+    # then messages, so we can goose these to glean more data, maybe
+    res = 0
+    for msg in messages:
+        lines = msg.split("\n")
+        for i in range(1, len(lines)):
+            payload = f"{lines[0]}\n{lines[i]}"
+            res += process_messages(process_message_b, prod, [payload])
+    return res
 
 
-def parse_E(prod):
+def parse_E(prod) -> int:
     """Parse E format SHEF data."""
     messages = []
     for line in prod.unixtext.split("\n"):
@@ -737,7 +741,7 @@ def parse_E(prod):
                 continue
             messages[-1] += f"/{tokens[1]}"
 
-    process_messages(process_message_e, prod, messages)
+    return process_messages(process_message_e, prod, messages)
 
 
 def compute_num_value(element) -> bool:

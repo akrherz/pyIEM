@@ -8,6 +8,9 @@ import pytest
 from pyiem.exceptions import InvalidSHEFEncoding, InvalidSHEFValue
 from pyiem.nws.products.shef import (
     make_date,
+    parse_A,
+    parse_B,
+    parse_E,
     parse_station_valid,
     parser,
     process_di,
@@ -30,6 +33,19 @@ def prod():
     res.data = []
     res.warnings = []
     return res
+
+
+def test_230926_invalid_depth(prod):
+    """This should not pass muster."""
+    prod.unixtext = (
+        ".E SHMW4 230926 Z DH1000/MVIRZ/DIH1\n"
+        ".E1 -4340282346638999992606825777226317824.0000\n"
+        ".E1 -4340282346638999992606825777226317824.0000\n"
+        ".E1 -4340282346638999992606825777226317824.0000\n"
+    )
+    msg_count = parse_E(prod)
+    assert msg_count == 0
+    assert prod.warnings
 
 
 def test_230817_rr6bcr():
@@ -295,7 +311,7 @@ def test_packed_b(prod):
 
 def test_doubleslash(prod):
     """Test we can handle the tricky doubleslash stuff."""
-    msg = (
+    prod.unixtext = (
         ".B LCH 0920 C DH0110/HGIRZ/HPIRZ\n"
         ":\n"
         ": TOLEDO BEND RES\n"
@@ -303,8 +319,7 @@ def test_doubleslash(prod):
         ".END"
     )
     prod.utcnow = utc(2021, 9, 20)
-    res = process_message_b(prod, msg)
-    assert not res
+    assert parse_B(prod) == 0
 
 
 def test_invalid(prod):
@@ -501,13 +516,13 @@ def test_a_extra_tokens(prod):
 
 def test_dv(prod):
     """Test that we can handle the ugliness of DV codes."""
-    msg = (
+    prod.unixtext = (
         ".AR MRJA1 210920 C DH0700/TX 81/TN 72/TA 74/DVD04/PPV 2.49"
         "/TQ 99/DC2109211054"
     )
-    res = process_message_a(prod, msg)
-    assert res[3].dv_interval == timedelta(days=4)
-    assert res[4].dv_interval is None
+    assert parse_A(prod) == 5
+    assert prod.data[3].dv_interval == timedelta(days=4)
+    assert prod.data[4].dv_interval is None
 
 
 def test_missing_a(prod):
@@ -519,23 +534,24 @@ def test_missing_a(prod):
 
 def test_bad_paired_element(prod):
     """Test that we can handle a paired element without value."""
-    msg = ".AR HBRA2 210921 Z DH1600/DC2109211600/HGIRZZ 22.65/HQIRZZ 539/"
-    res = process_message_a(prod, msg)
-    assert res[1].depth == 539
+    prod.unixtext = (
+        ".AR HBRA2 210921 Z DH1600/DC2109211600/HGIRZZ 22.65/HQIRZZ 539/"
+    )
+    parse_A(prod)
+    assert prod.data[1].depth == 539
 
 
 def test_b_datetime(prod):
     """Test that we get a datetime in the face of massive ambiguity."""
-    msg = (
+    prod.unixtext = (
         ".BR BRO 210921 /HP/TW/QT\n"
         "MADT2  103.85 / 85.10 / 0.88 :ANZALDUAS DAM - RELEASE IN 1000S\n"
         "XXXT2  DHM / 103.85 / 85.10 / 0.88\n"
         ".END"
     )
-    res = process_message_b(prod, msg)
-    assert res[0].valid == utc(2021, 9, 21, 12)
-    assert res[2].str_value == "0.88"
-    assert len(res) == 3
+    assert parse_B(prod) == 3
+    assert prod.data[0].valid == utc(2021, 9, 21, 12)
+    assert prod.data[2].str_value == "0.88"
 
 
 def test_a_dh_problem(prod):
@@ -631,13 +647,13 @@ def test_210922_rr3fgf():
 
 def test_b_missing(prod):
     """Test some trickiness with missing values."""
-    msg = (
+    prod.unixtext = (
         ".BR MFR 0923 P DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ\n"
         "ASHO3 :Ashland      1750 :           M /    M /    M /    M /    M\n"
         "GLYO3 :Glide COOP    742 : DH0800    M /    M / 0.00 /    M /    M"
     )
-    res = process_message_b(prod, msg)
-    assert res[7].str_value == "0.00"
+    assert parse_B(prod) == 10
+    assert prod.data[7].str_value == "0.00"
 
 
 def test_210923_rr2aly():
@@ -648,9 +664,8 @@ def test_210923_rr2aly():
 
 def test_a_empty(prod):
     """Test that we do not error on an empty A message."""
-    msg = ".A MMRN6 20210923 Z DH/QTIRZ"
-    res = process_message_a(prod, msg)
-    assert not res
+    prod.unixtext = ".A MMRN6 20210923 Z DH/QTIRZ"
+    assert parse_A(prod) == 0
 
 
 def test_a_comment_with_slash(prod):
@@ -678,37 +693,36 @@ def test_rr3_comment():
 
 def test_ddm(prod):
     """Test that DDM is handled properly."""
-    msg = (
+    prod.unixtext = (
         ".BR ALY 0926 E DH00/TAIRZX/DH08/TAIRZP/PPDRZZ/SFDRZZ/SDIRZZ\n"
-        "AQW :North Adams     MA: DDM     /      /   53 /   0.00 /   M /   M"
+        "AQW :North Adams     MA: DDM     /      /   53 /   0.00 /   M /   M\n"
     )
-    res = process_message_b(prod, msg)
-    assert not res
+    assert parse_B(prod) == 0
 
 
 def test_missing_mmm(prod):
     """Test another missing combo used in the wind."""
-    msg = (
+    prod.unixtext = (
         ".BR ATL 0926 ES DH00/TAIRZX/DH07/TAIRZP/PPDRZZ\n"
         ":Cartersville   :VPC        M /    M / M.MM"
     )
-    res = process_message_b(prod, msg)
-    assert res[2].num_value is None
+    assert parse_B(prod) == 3
+    assert prod.data[2].num_value is None
 
 
 def test_missing_sequence(prod):
     """Test what happens when we have a missing in a sequence."""
-    msg = (
+    prod.unixtext = (
         ".BR PSR 0926 MS DH07/TAIRZX/TAIRZN/PPDRZZ/SFDRZZ/SDIRZZ\n"
         "ACYA3 :Arizona City    1525: DHM   /     M /   M /     M/    M/  M\n"
         "FHLA3 :Fountain Hills  1575: DHM   /     M /   M /     M/    M/  M\n"
         "GLEA3 :Globe           3660: DH0900/    83 /  59 /  0.20/    M/  M\n"
         "ROOA3 :Roosevelt 1WNW  2205: DHM   /     M /   M /     M/    M/  M\n"
+        ".END\n"
     )
     prod.utcnow = utc(2021, 9, 26)
-    res = process_message_b(prod, msg)
-    assert len(res) == 5
-    assert res[0].valid == utc(2021, 9, 26, 16)
+    assert parse_B(prod) == 5
+    assert prod.data[0].valid == utc(2021, 9, 26, 16)
 
 
 def test_unfilled_out_fields(prod):
@@ -778,5 +792,5 @@ def test_211006_dt(prod):
     res = process_message_b(prod, msg)
     assert res[0].valid == utc(2021, 10, 6, 11, 55)
 
-    res = process_message_b(prod, msg.replace("DT202110061155", "DTM"))
-    assert not res
+    with pytest.raises(InvalidSHEFEncoding):
+        process_message_b(prod, msg.replace("DT202110061155", "DTM"))
