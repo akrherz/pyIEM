@@ -3,11 +3,12 @@
 
 # stdlib
 from datetime import datetime, timedelta
+from typing import Optional
 
 from metpy.units import units
 
 # third party
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # Local
 from pyiem.reference import (
@@ -27,10 +28,12 @@ units.define("DEG10 = 10 * degree")  # UH, UR
 class SHEFElement(BaseModel):
     """A PEDTSEP Element."""
 
+    model_config = ConfigDict(validate_assignment=True)
+
     station: str = Field(...)
     basevalid: datetime = Field(...)  # Prevent multiple DH24 from trouble
     valid: datetime = Field(...)
-    dv_interval: timedelta = Field(None)  # DV
+    dv_interval: Optional[timedelta] = Field(None)  # DV
     physical_element: str = Field(None)  # PE
     duration: str = Field(None)
     type: str = Field("R")  # Table 7
@@ -40,7 +43,7 @@ class SHEFElement(BaseModel):
     str_value: str = Field("")
     num_value: float = Field(None)
     data_created: datetime = Field(None)
-    depth: int = Field(None)
+    depth: int = Field(default=None, ge=0, le=32767)  # database as smallint
     unit_convention: str = Field("E")  # DU
     qualifier: str = Field(None)  # DQ
     comment: str = Field(None)  # This is found after the value

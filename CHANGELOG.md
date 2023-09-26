@@ -14,6 +14,8 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Fix `compute_wfos` method for SAW processor.
+- Refactor SHEF parsing such to better handle situations with time modifiers
+being missing and enforce `SHEFElement` pydantic validation.
 
 ## **1.17.0** (18 Sep 2023)
 
