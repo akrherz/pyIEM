@@ -34,6 +34,7 @@ class _FloatDumper(Dumper):
 
 # Adapters for Python to PostgreSQL
 psycopg.adapters.register_dumper(float, _FloatDumper)
+psycopg.adapters.register_dumper(np.float32, _FloatDumper)
 psycopg.adapters.register_dumper(np.float64, _FloatDumper)
 psycopg.adapters.register_dumper(np.int64, _FloatDumper)
 
