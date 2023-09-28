@@ -2,9 +2,21 @@
 # pylint: disable=cell-var-from-loop
 
 # third party
+import numpy as np
 import psycopg
 import pytest
 from pyiem import database
+
+
+@pytest.mark.parametrize("database", ["coop"])
+def test_dumper_float32(dbcursor):
+    """Test that we can write a float32 to the database."""
+    dbcursor.execute(
+        "insert into alldata_ia(station, merra_srad) values (%s, %s) "
+        "returning merra_srad",
+        ("IA0000", np.float32(1.0)),
+    )
+    assert dbcursor.fetchone()["merra_srad"] == 1.0
 
 
 def test_get_dbconn_for_user(monkeypatch):
