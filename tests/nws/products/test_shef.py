@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231002_dhmmmm():
+    """Test the handling of DHMMMM ."""
+    payload = get_test_file("SHEF/RTPGRB.txt")
+    prod = parser(payload.replace("DHM   ", "DHMMMM"))
+    assert not prod.warnings
+
+
 def test_230926_invalid_depth(prod):
     """This should not pass muster."""
     prod.unixtext = (

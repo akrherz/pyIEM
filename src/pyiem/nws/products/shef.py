@@ -81,6 +81,20 @@ MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG", "nan"]
 MISSING_VALUES.extend(["NaN", "NAN"])
 
 
+def parse_d_wrapper(func):
+    """Wrapper to catch exceptions."""
+
+    def wrapped(text, valid):
+        """Inner"""
+        text = text.strip()
+        print(text)
+        if text == "" or text.startswith("M"):
+            raise InvalidSHEFEncoding(f"{func.__name__} with no value")
+        return func(text, valid)
+
+    return wrapped
+
+
 def make_date(text, now=None):
     """Make the text date unambiguous!"""
     if now is None:
@@ -171,11 +185,9 @@ def datetime24(dt, replacements):
     )
 
 
+@parse_d_wrapper
 def parse_dh(text, valid):
     """Account for the craziness of the DH value."""
-    # This is a bit of an not-specified, but used in the wild.
-    if text.strip() in ["", "M", "MSG"]:
-        raise InvalidSHEFEncoding("DH with no value")
     replacements = {}
     if len(text) >= 2:
         replacements["hour"] = int(text[:2])
@@ -257,10 +269,9 @@ def process_di(text):
     return timedelta(**args)
 
 
+@parse_d_wrapper
 def parse_dm(text, valid):
     """Handle the DM one."""
-    if text.strip() in ["", "M"]:
-        raise InvalidSHEFEncoding("DM with no value")
     # Updating the timestamp as we go here
     replacements = {
         "month": int(text[:2]),
@@ -273,10 +284,9 @@ def parse_dm(text, valid):
     return datetime24(valid, replacements)
 
 
+@parse_d_wrapper
 def parse_dd(text, valid):
     """Handle the DD one."""
-    if text.strip() in ["", "M"]:
-        raise InvalidSHEFEncoding("DD with no value")
     # Updating the timestamp as we go here
     replacements = {
         "day": int(text[:2]),
@@ -288,10 +298,9 @@ def parse_dd(text, valid):
     return datetime24(valid, replacements)
 
 
+@parse_d_wrapper
 def parse_dt(text, valid):
     """Handle the DD one."""
-    if text.strip() in ["", "M"]:
-        raise InvalidSHEFEncoding("DT with no value")
     # Updating the timestamp as we go here
     replacements = {
         "year": int(text[:4]),
