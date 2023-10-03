@@ -87,7 +87,6 @@ def parse_d_wrapper(func):
     def wrapped(text, valid):
         """Inner"""
         text = text.strip()
-        print(text)
         if text == "" or text.startswith("M"):
             raise InvalidSHEFEncoding(f"{func.__name__} with no value")
         return func(text, valid)
