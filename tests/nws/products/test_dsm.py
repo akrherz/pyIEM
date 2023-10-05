@@ -20,6 +20,17 @@ def create_entries(cursor):
     )
 
 
+def test_231005_kjef():
+    """Test something found in the wild."""
+    text = (
+        "KJEF DS 04/10 7714436/-326960014// 77/ 66//9901719/-10/00/00/00/00/"
+        "00/00/00/04/03/01/00/00/-51199/00/00/00/00/00/00/00/00/00/00/00/M/"
+        "-3260141304/20-2414027/1/NN/N/N/NN/ET EP EW="
+    )
+    dsm = process(text)
+    assert dsm is None
+
+
 def test_none_compute_time():
     """Test we can handle a none."""
     assert compute_time(datetime.date(2000, 1, 1), None) is None
@@ -78,6 +89,16 @@ def test_collective(dbcursor):
     res = prod.sql(dbcursor)
     # first database insert should work from above
     assert res[0]
+
+
+@pytest.mark.parametrize("database", ["iem"])
+def test_allmissing(dbcursor):
+    """Test that we hit some code."""
+    now = utc(2015, 11, 27, 7)
+    prod = parser(get_test_file("DSM/DSM_allmissing.txt"), now)
+    tzprovider = {"KHKS": ZoneInfo("America/New_York")}
+    prod.tzlocalize(tzprovider)
+    assert prod.sql(dbcursor)[0] is False
 
 
 def test_200824_refail():
