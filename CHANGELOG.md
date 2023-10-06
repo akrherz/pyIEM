@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not
+properly computing magnitude for encoded float values.
 - Fix `compute_wfos` method for SAW processor.
 - Refactor SHEF parsing such to better handle situations with time modifiers
 being missing and enforce `SHEFElement` pydantic validation.
