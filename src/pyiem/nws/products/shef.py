@@ -782,14 +782,19 @@ def compute_num_value(element) -> bool:
             element.depth = int(tokens[0])
             return True
         # <depth>.<value>
-        value = int(tokens[1])
+        # where value is hundreds place, tens, ones, tenths, hundredths
+        if len(tokens[1]) < 3:
+            return False
+        value = int(tokens[1][:3])
+        if len(tokens[1]) > 3:
+            value = float(f"{value}.{tokens[1][3:]}")
         depth = int(tokens[0])
         if depth < 0:
             value *= -1
             depth *= -1
         element.depth = depth
-        # Missing is -9999
-        if value > -9998:
+        # Missing is when tokens[1] is any number of 9s
+        if tokens[1].count("9") != len(tokens[1]):
             element.num_value = value
         return True
     try:

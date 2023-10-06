@@ -35,6 +35,27 @@ def prod():
     return res
 
 
+def test_231006_paired_value_units(prod):
+    """Test that we can do the right thing with paired values."""
+    prod.unixtext = (
+        ".E ATRS2 231006 Z DH0600/MVIRZ/DIH1\n"
+        ".E1 4.0266/ 4.026612/ 4.0266/ 4.0266/ 4.0264/ 4.0264/ 4.0264"
+    )
+    assert parse_E(prod) == 7
+    assert abs(prod.data[0].num_value - 26.6) < 0.01
+    assert abs(prod.data[1].num_value - 26.612) < 0.001
+
+
+def test_231006_paired_value_invalid(prod):
+    """Test that we can do the right thing with paired values."""
+    prod.unixtext = (
+        ".E ATRS2 231006 Z DH0600/MVIRZ/DIH1\n"
+        ".E1 4.0266/ 4.026612/ 4.0266/ 4.0266/ 4.0264/ 4.0264/ 4.02"
+    )
+    # last value above is invalid
+    assert parse_E(prod) == 0
+
+
 def test_231002_dhmmmm():
     """Test the handling of DHMMMM ."""
     payload = get_test_file("SHEF/RTPGRB.txt")
