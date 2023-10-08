@@ -1,5 +1,6 @@
 """Testing of util."""
 # pylint: disable=redefined-outer-name
+import logging
 import random
 import string
 import tempfile
@@ -14,6 +15,14 @@ import numpy as np
 import pytest
 from pyiem import util
 from pyiem.exceptions import NoDataFound
+
+
+def test_logger_level():
+    """That that we get the right logger level when running a tty."""
+    # Mock sys.stdout.isatty
+    with mock.patch("sys.stdout.isatty", return_value=True):
+        log = util.logger()
+        assert log.level == logging.INFO
 
 
 @pytest.mark.parametrize("database", ["mesosite"])
@@ -289,6 +298,10 @@ def test_get_autoplot_context_dates():
     assert ctx["d"] == date(2016, 6, 30)
     assert ctx["d2"] == datetime(2016, 9, 30, 13, 14)
     form["d"] = "2016-06-30"
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=False)
+
+    form["d"] = "2016-06-XX"
     with pytest.raises(ValueError):
         util.get_autoplot_context(form, opts, rectify_dates=False)
 
