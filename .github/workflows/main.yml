@@ -64,7 +64,7 @@ jobs:
         set -e
         python -m pip install . --upgrade --no-deps
         python util/insert_testing_data.py
-        coverage run --source=pyiem setup.py test --addopts "--mpl --mpl-results-path=mplresults"
+        coverage run --source=pyiem setup.py test --addopts "-n 4 --mpl --mpl-results-path=mplresults"
         coverage xml
 
     - name: Code coverage
