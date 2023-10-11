@@ -40,6 +40,7 @@ dependencies:
   - requests
   # interpolation
   - scipy
+  - setuptools_scm
   - shapely
   - sqlalchemy
   # iemre
