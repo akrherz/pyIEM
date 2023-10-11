@@ -32,6 +32,7 @@ dependencies:
   - pytest-cov
   - pytest-mpl
   - pytest-runner
+  - pytest-xdist
   - rasterstats
   # grid reprojection
   - rasterio
