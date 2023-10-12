@@ -4,7 +4,6 @@ import logging
 import random
 import string
 import tempfile
-from collections import OrderedDict
 from datetime import date, datetime, timezone
 from io import BytesIO
 
@@ -330,16 +329,16 @@ def test_get_autoplot_context_optional():
 
 def test_get_autoplot_context():
     """See that we can do things."""
-    form = dict(type2="bogus", t=15, type3=["max-high", "bogus", "min-high"])
-    form["type"] = "max-low"
-    pdict = OrderedDict(
-        [
-            ("max-high", "Maximum High"),
-            ("avg-high", "Average High"),
-            ("min-high", "Minimum High"),
-            ("max-low", "Maximum Low"),
-        ]
+    form = dict(
+        type2="bogus", t="15.0", type3=["max-high", "bogus", "min-high"]
     )
+    form["type"] = "max-low"
+    pdict = {
+        "max-high": "Maximum High",
+        "avg-high": "Average High",
+        "min-high": "Minimum High",
+        "max-low": "Maximum Low",
+    }
     cfg = dict(
         arguments=[
             dict(
@@ -366,7 +365,7 @@ def test_get_autoplot_context():
             dict(
                 type="select", name="type5", default="max-high", options=pdict
             ),
-            dict(type="int", name="threshold", default=-99),
+            dict(type="int", name="threshold", default="-99.0"),
             dict(type="int", name="t", default=9, min=0, max=10),
             dict(type="date", name="d", default="2011/11/12"),
             dict(

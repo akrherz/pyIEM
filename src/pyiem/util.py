@@ -393,9 +393,9 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = default
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
-                value = int(value)
+                value = int(float(value))
             if default is not None:
-                default = int(default)
+                default = int(float(default))
         elif typ == "float":
             if value is not None:
                 value = float(value)
