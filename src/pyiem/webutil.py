@@ -38,10 +38,11 @@ def log_request(environ):
 
 def compute_ts(form, suffix):
     """Figure out the timestamp."""
+    # NB: form["tz"] should always be set by this point, but alas
     return datetime.datetime(
-        int(form.get(f"year{suffix}")),
-        int(form.get(f"month{suffix}")),
-        int(form.get(f"day{suffix}")),
+        int(form.get(f"year{suffix}", form.get("year"))),
+        int(form.get(f"month{suffix}", form.get("month"))),
+        int(form.get(f"day{suffix}", form.get("day"))),
         int(form.get(f"hour{suffix}", 0)),
         int(form.get(f"day{suffix}", 0)),
         tzinfo=ZoneInfo(form.get("tz", "America/Chicago")),
@@ -57,10 +58,10 @@ def add_to_environ(environ, form):
             # We should only have either lists or strings
             if isinstance(val, list):
                 for va in val:
-                    if nh3.clean_text(va) != va:
+                    if nh3.clean(va) != va:
                         raise BadWebRequest(f"XSS Key: {key} Value: {va}")
             else:
-                if nh3.clean_text(val) != val:
+                if nh3.clean(val) != val:
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
             environ[key] = form[key]
         else:
@@ -74,9 +75,12 @@ def add_to_environ(environ, form):
         environ["ets"] = compute_ts(form, "2")
 
 
-def iemapp():
+def iemapp(**kwargs):
     """
     Attempts to do all kinds of nice things for the user and the developer.
+
+    kwargs:
+        - default_tz: The default timezone to use for timestamps
 
     Example usage:
         @iemapp()
@@ -127,6 +131,8 @@ def iemapp():
             try:
                 # mixed convers this to a regular dict
                 form = parse_formvars(environ).mixed()
+                if "tz" not in form:
+                    form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 add_to_environ(environ, form)
                 res = func(environ, start_response)
             except BadWebRequest as exp:
