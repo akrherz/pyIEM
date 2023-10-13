@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Add dependencies on `nh3` and `paste`.
 - Raise `NewDatabaseConnectionFailure` from `pyiem.database.get_dbconn` for
 all failures and stop emitting `UserWarning`.
 
