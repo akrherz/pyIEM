@@ -54,8 +54,14 @@ def add_to_environ(environ, form):
         if key not in environ:
             # check for XSS and other naughty things
             val = form[key]
-            if nh3.clean_text(val) != val:
-                raise BadWebRequest(f"XSS Key: {key} Value: {val}")
+            # We should only have either lists or strings
+            if isinstance(val, list):
+                for va in val:
+                    if nh3.clean_text(va) != va:
+                        raise BadWebRequest(f"XSS Key: {key} Value: {va}")
+            else:
+                if nh3.clean_text(val) != val:
+                    raise BadWebRequest(f"XSS Key: {key} Value: {val}")
             environ[key] = form[key]
         else:
             warnings.warn(

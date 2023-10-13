@@ -26,6 +26,7 @@ def test_add_to_environ():
         "year1": "2021",
         "hour1": "12",
         "minute1": "30",
+        "blah": ["one", "two"],
     }
     for key in list(form):
         form[key.replace("1", "2")] = form[key]
