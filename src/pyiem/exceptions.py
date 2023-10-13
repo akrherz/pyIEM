@@ -1,6 +1,10 @@
 """Custom Exceptions."""
 
 
+class NewDatabaseConnectionFailure(Exception):
+    """Exception for when a new database connection fails."""
+
+
 class NoDataFound(Exception):
     """Exception for when no data was found for request."""
 

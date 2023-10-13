@@ -7,6 +7,9 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Raise `NewDatabaseConnectionFailure` from `pyiem.database.get_dbconn` for
+all failures and stop emitting `UserWarning`.
+
 ### New Features
 
 - Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
