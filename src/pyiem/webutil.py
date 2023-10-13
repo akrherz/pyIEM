@@ -36,6 +36,22 @@ def log_request(environ):
     pgconn.close()
 
 
+def compute_ts_from_string(form, key):
+    """Convert a string to a timestamp."""
+    # Support various ISO9660 formats
+    tstr = form[key].replace("T", " ")
+    tz = ZoneInfo(form.get("tz", "America/Chicago"))
+    if tstr.endswith("Z"):
+        tz = ZoneInfo("UTC")
+        tstr = tstr[:-1]
+    fmt = "%Y-%m-%d %H:%M:%S"
+    if "." in tstr:
+        fmt += ".%f"
+    if len(tstr.split(":")) == 2:
+        fmt = "%Y-%m-%d %H:%M"
+    return datetime.datetime.strptime(tstr, fmt).replace(tzinfo=tz)
+
+
 def compute_ts(form, suffix):
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
@@ -69,9 +85,13 @@ def add_to_environ(environ, form):
                 f"Refusing to over-write environ key {key}",
                 UserWarning,
             )
-    if "day1" in form:
+    if "sts" in form:
+        environ["sts"] = compute_ts_from_string(form, "sts")
+    if "ets" in form:
+        environ["ets"] = compute_ts_from_string(form, "ets")
+    if "day1" in form and "sts" not in form:
         environ["sts"] = compute_ts(form, "1")
-    if "day2" in form:
+    if "day2" in form and "ets" not in form:
         environ["ets"] = compute_ts(form, "2")
 
 

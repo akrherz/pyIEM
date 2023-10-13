@@ -1,4 +1,5 @@
 """Tests for webutil.py"""
+from zoneinfo import ZoneInfo
 
 import mock
 import pytest
@@ -16,6 +17,27 @@ def test_badrequest_raises():
     form = {"a": "<script>"}
     with pytest.raises(BadWebRequest):
         add_to_environ({}, form)
+
+
+def test_badrequest_raises_list():
+    """Test that this hits the XSS."""
+    form = {"a": ["<script>", "b"]}
+    with pytest.raises(BadWebRequest):
+        add_to_environ({}, form)
+
+
+def test_add_to_environ_tstrings():
+    """Test strings in various formats."""
+    form = {
+        "sts": "2023-10-13T12:30:00.000Z",
+        "ets": "2023-10-13 12:30",
+    }
+    environ = {}
+    add_to_environ(environ, form)
+    assert environ["sts"].year == 2023
+    assert environ["sts"].tzinfo == ZoneInfo("UTC")
+    assert environ["ets"].year == 2023
+    assert environ["ets"].tzinfo == ZoneInfo("America/Chicago")
 
 
 def test_add_to_environ():
