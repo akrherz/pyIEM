@@ -1,0 +1,76 @@
+"""Tests for webutil.py"""
+
+import mock
+import pytest
+from pyiem.database import get_dbconn
+from pyiem.exceptions import BadWebRequest
+from pyiem.webutil import add_to_environ, iemapp
+
+
+def test_add_to_environ():
+    """Test adding things to the context."""
+    form = {
+        "day1": "2",
+        "month1": "2",
+        "year1": "2021",
+        "hour1": "12",
+        "minute1": "30",
+    }
+    environ = {"day1": None}
+    with pytest.warns(UserWarning):
+        add_to_environ(environ, form)
+    assert environ["sts"].year == 2021
+
+
+def test_xss():
+    """Test that the XSS runs."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        raise BadWebRequest("This is a test")
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+
+
+def test_iemapp_decorator():
+    """Try the API."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {"wsgi.input": mock.MagicMock()}
+    assert application(env, None) == [b"Content-type: text/plain\n\nHello!"]
+
+
+def test_iemapp_raises_newdatabaseconnectionfailure():
+    """This should nicely catch a raised exception."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        get_dbconn("this will fail")
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    # mock a start_response function
+    sr = mock.MagicMock()
+    assert application({}, sr)[0].decode("ascii").find("akrherz") > -1
+
+
+def test_iemapp_catches_vanilla_exception():
+    """This should nicely catch a raised exception."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        raise Exception("This is a test")
+
+    # mock a start_response function
+    sr = mock.MagicMock()
+    assert application({}, sr)[0].decode("ascii").find("akrherz") > -1

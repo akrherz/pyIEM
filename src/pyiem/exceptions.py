@@ -1,6 +1,10 @@
 """Custom Exceptions."""
 
 
+class BadWebRequest(Exception):
+    """Raised when a bad web request is made."""
+
+
 class NewDatabaseConnectionFailure(Exception):
     """Exception for when a new database connection fails."""
 

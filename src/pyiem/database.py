@@ -101,7 +101,7 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             break
         except Exception as exp:
             if attempt == 3:
-                raise NewDatabaseConnectionFailure from exp
+                raise NewDatabaseConnectionFailure(str(exp)) from exp
     return conn
 
 
