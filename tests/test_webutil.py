@@ -3,8 +3,19 @@
 import mock
 import pytest
 from pyiem.database import get_dbconn
-from pyiem.exceptions import BadWebRequest
+from pyiem.exceptions import (
+    BadWebRequest,
+    NewDatabaseConnectionFailure,
+    NoDataFound,
+)
 from pyiem.webutil import add_to_environ, iemapp
+
+
+def test_badrequest_raises():
+    """Test that this hits the XSS."""
+    form = {"a": "<script>"}
+    with pytest.raises(BadWebRequest):
+        add_to_environ({}, form)
 
 
 def test_add_to_environ():
@@ -16,10 +27,44 @@ def test_add_to_environ():
         "hour1": "12",
         "minute1": "30",
     }
+    for key in list(form):
+        form[key.replace("1", "2")] = form[key]
     environ = {"day1": None}
     with pytest.warns(UserWarning):
         add_to_environ(environ, form)
     assert environ["sts"].year == 2021
+    assert environ["ets"].year == 2021
+
+
+def test_newdatabase():
+    """Test that the NewDatabaseConnectionError runs."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        raise NewDatabaseConnectionFailure()
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+
+
+def test_nodatafound():
+    """Test that the NoDataFound runs."""
+    res = "Magic"
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        raise NoDataFound(res)
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii") == res
 
 
 def test_xss():
