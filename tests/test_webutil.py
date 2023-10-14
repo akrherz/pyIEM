@@ -117,6 +117,21 @@ def test_iemapp_decorator():
     assert application(env, None) == [b"Content-type: text/plain\n\nHello!"]
 
 
+def test_typoed_tz():
+    """Test that we handle when a tz gets commonly typoed."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
+    }
+    assert application(env, None) == [b"Content-type: text/plain\n\nHello!"]
+
+
 def test_iemapp_raises_newdatabaseconnectionfailure():
     """This should nicely catch a raised exception."""
 
