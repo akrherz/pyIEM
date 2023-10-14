@@ -3,9 +3,9 @@
 
 # third party
 import numpy as np
-import psycopg
 import pytest
 from pyiem import database
+from pyiem.exceptions import NewDatabaseConnectionFailure
 
 
 @pytest.mark.parametrize("database", ["coop"])
@@ -45,15 +45,11 @@ def test_get_dbconn(dbname):  # noqa
 
 def test_get_dbconn_bad():
     """Test that we raise a warning."""
-    with pytest.warns(
-        UserWarning, match="database connection failure"
-    ), pytest.raises(psycopg.OperationalError):
+    with pytest.raises(NewDatabaseConnectionFailure):
         database.get_dbconn("bogus")
 
 
 def test_get_dbconn_failover():
     """See if failover works?"""
-    with pytest.warns(
-        UserWarning, match="database connection failure"
-    ), pytest.raises(psycopg.OperationalError):
+    with pytest.raises(NewDatabaseConnectionFailure):
         database.get_dbconn("mesosite", host="b")

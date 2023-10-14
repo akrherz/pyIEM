@@ -7,9 +7,15 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Add dependencies on `nh3` and `paste`.
+- Raise `NewDatabaseConnectionFailure` from `pyiem.database.get_dbconn` for
+all failures and stop emitting `UserWarning`.
+
 ### New Features
 
 - Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
+- Introduce `pyiem.webutil.iemapp` decorator to do fancy things for IEM
+mod_wsgi apps and remove downstream boilerplate.
 
 ### Bug Fixes
 

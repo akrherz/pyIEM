@@ -1,7 +1,6 @@
 """Database helpers."""
 # stdlib
 import getpass
-import warnings
 from contextlib import contextmanager
 
 # third party
@@ -12,6 +11,7 @@ from psycopg.rows import dict_row
 from sqlalchemy import create_engine
 
 # NB: Careful of cyclic imports here...
+from pyiem.exceptions import NewDatabaseConnectionFailure
 
 # Map system users back to something supported by akrherz/iem-database repo
 USERNAME_MAPPER = {
@@ -99,13 +99,9 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
             # FIXME make this opinionated to return a default row_factory
             # conn.row_factory = dict_row
             break
-        except (psycopg.ProgrammingError, psycopg.OperationalError) as exp:
+        except Exception as exp:
             if attempt == 3:
-                raise exp
-            warnings.warn(
-                f"database connection failure: {exp}, trying again",
-                stacklevel=2,
-            )
+                raise NewDatabaseConnectionFailure(str(exp)) from exp
     return conn
 
 
