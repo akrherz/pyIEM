@@ -17,6 +17,23 @@ from pyiem.exceptions import (
 )
 from pyiem.util import get_dbconnc
 
+# Forgive some typos
+TZ_TYPOS = {
+    "CST": "America/Chicago",
+    "CDT": "America/Chicago",
+    "MST": "America/Denver",
+    "MDT": "America/Denver",
+    "PST": "America/Los_Angeles",
+    "PDT": "America/Los_Angeles",
+    "AKST": "America/Anchorage",
+    "AKDT": "America/Anchorage",
+    "HST": "Pacific/Honolulu",
+    "HDT": "Pacific/Honolulu",
+    "GMT": "UTC",
+    "UT": "UTC",
+    "etc/utc": "UTC",
+}
+
 
 def log_request(environ):
     """Log the request to database for future processing."""
@@ -153,6 +170,7 @@ def iemapp(**kwargs):
                 form = parse_formvars(environ).mixed()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
+                form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form)
                 res = func(environ, start_response)
             except BadWebRequest as exp:
