@@ -12,6 +12,22 @@ from pyiem.exceptions import (
 from pyiem.webutil import add_to_environ, iemapp
 
 
+def test_forgive_bad_day_of_month():
+    """Test forgiveness of specifying a bad day of month."""
+    form = {
+        "day1": "30",
+        "month1": "2",
+        "year1": "2021",
+        "day2": "31",
+        "month2": "6",
+        "year2": "2021",
+    }
+    environ = {}
+    add_to_environ(environ, form)
+    assert environ["sts"].day == 28
+    assert environ["ets"].day == 30
+
+
 def test_badrequest_raises():
     """Test that this hits the XSS."""
     form = {"a": "<script>"}
