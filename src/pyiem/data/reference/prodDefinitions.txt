@@ -304,7 +304,7 @@ TST TST
 TSU TSU
 TUV TUV
 TVL TVL
-TWD TWD
+TWD Tropical Weather Discussion
 TWO Tropical Weather Outlook
 TWS TWS
 TXT TXT
