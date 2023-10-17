@@ -20,6 +20,7 @@ from pyiem.util import get_dbconnc
 
 # Forgive some typos
 TZ_TYPOS = {
+    "central": "America/Chicago",
     "CST": "America/Chicago",
     "CDT": "America/Chicago",
     "MST": "America/Denver",
@@ -33,6 +34,7 @@ TZ_TYPOS = {
     "GMT": "UTC",
     "UT": "UTC",
     "etc/utc": "UTC",
+    "utc": "UTC",
 }
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
