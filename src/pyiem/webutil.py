@@ -35,6 +35,13 @@ TZ_TYPOS = {
 }
 
 
+def clean_form(form):
+    """Opinionated cleaning of form data."""
+    if "tz" in form and isinstance(form["tz"], list):
+        raise NoDataFound("GET variable tz specified twice, please fix.")
+    return form
+
+
 def log_request(environ):
     """Log the request to database for future processing."""
     pgconn, cursor = get_dbconnc("mesosite")
@@ -175,7 +182,7 @@ def iemapp(**kwargs):
 
             try:
                 # mixed convers this to a regular dict
-                form = parse_formvars(environ).mixed()
+                form = clean_form(parse_formvars(environ).mixed())
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])

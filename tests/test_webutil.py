@@ -12,6 +12,22 @@ from pyiem.exceptions import (
 from pyiem.webutil import add_to_environ, iemapp
 
 
+def test_duplicated_tz_in_form():
+    """Test that this is handled."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "tz=etc/utc&tz=etc/UTC",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("twice") > -1
+
+
 def test_forgive_bad_day_of_month():
     """Test forgiveness of specifying a bad day of month."""
     form = {
