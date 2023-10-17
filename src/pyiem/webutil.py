@@ -85,7 +85,7 @@ def compute_ts(form, suffix):
         month,
         day,
         int(form.get(f"hour{suffix}", 0)),
-        int(form.get(f"day{suffix}", 0)),
+        int(form.get(f"minute{suffix}", 0)),
         tzinfo=ZoneInfo(form.get("tz", "America/Chicago")),
     )
 

@@ -72,6 +72,8 @@ def test_add_to_environ():
     with pytest.warns(UserWarning):
         add_to_environ(environ, form)
     assert environ["sts"].year == 2021
+    assert environ["sts"].hour == 12
+    assert environ["sts"].minute == 30
     assert environ["ets"].year == 2021
 
 
