@@ -38,6 +38,15 @@ TZ_TYPOS = {
 YEAR_RE = re.compile(r"^\d{4}")
 
 
+def ensure_list(environ, key) -> list:
+    """Ensure that we get something that is at least an empty list."""
+    if key not in environ:
+        return []
+    if isinstance(environ[key], list):
+        return environ[key]
+    return [environ[key]]
+
+
 def clean_form(form):
     """Opinionated cleaning of form data."""
     if "tz" in form and isinstance(form["tz"], list):

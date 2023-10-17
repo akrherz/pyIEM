@@ -9,7 +9,14 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.webutil import add_to_environ, iemapp
+from pyiem.webutil import add_to_environ, ensure_list, iemapp
+
+
+def test_ensure_list():
+    """Test that we get lists!"""
+    assert ensure_list({}, "a") == []
+    assert ensure_list({"a": "b"}, "a") == ["b"]
+    assert ensure_list({"a": ["b"]}, "a") == ["b"]
 
 
 def test_duplicated_tz_in_form():
