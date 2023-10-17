@@ -1,6 +1,7 @@
 """Utility functions for iemwebfarm applications."""
 import datetime
 import random
+import re
 import string
 import sys
 import traceback
@@ -33,6 +34,8 @@ TZ_TYPOS = {
     "UT": "UTC",
     "etc/utc": "UTC",
 }
+# Match something that looks like a four digit year
+YEAR_RE = re.compile(r"^\d{4}")
 
 
 def clean_form(form):
@@ -117,9 +120,11 @@ def add_to_environ(environ, form):
                 f"Refusing to over-write environ key {key}",
                 UserWarning,
             )
-    if "sts" in form:
+    # Le Sigh, darly lamely used sts for stations in the past, so ensure
+    # that sts starts with something that looks like a year
+    if "sts" in form and YEAR_RE.match(form["sts"]):
         environ["sts"] = compute_ts_from_string(form, "sts")
-    if "ets" in form:
+    if "ets" in form and YEAR_RE.match(form["ets"]):
         environ["ets"] = compute_ts_from_string(form, "ets")
     if "day1" in form and "sts" not in form:
         environ["sts"] = compute_ts(form, "1")

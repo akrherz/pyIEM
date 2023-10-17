@@ -58,6 +58,18 @@ def test_badrequest_raises_list():
         add_to_environ({}, form)
 
 
+def test_sts_not_a_timestamp():
+    """Test that we ignore sts and ets when not a datetime."""
+    form = {
+        "sts": "2023-10-13T12:30:00.000Z",
+        "ets": "AMSI4",
+    }
+    environ = {}
+    add_to_environ(environ, form)
+    assert environ["sts"].year == 2023
+    assert environ["ets"] == form["ets"]
+
+
 def test_add_to_environ_tstrings():
     """Test strings in various formats."""
     form = {
