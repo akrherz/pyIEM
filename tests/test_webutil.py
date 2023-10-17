@@ -6,6 +6,7 @@ import pytest
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
     BadWebRequest,
+    IncompleteWebRequest,
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
@@ -110,6 +111,22 @@ def test_add_to_environ():
     assert environ["sts"].hour == 12
     assert environ["sts"].minute == 30
     assert environ["ets"].year == 2021
+
+
+def test_incomplete():
+    """Test that the IncompleteWebRequest runs."""
+    msg = "HELLO WORLD"
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        raise IncompleteWebRequest(msg)
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find(msg) > -1
 
 
 def test_newdatabase():
