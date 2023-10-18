@@ -10,7 +10,26 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.webutil import add_to_environ, ensure_list, iemapp
+from pyiem.webutil import (
+    TELEMETRY,
+    _add_to_queue,
+    add_to_environ,
+    ensure_list,
+    iemapp,
+)
+
+
+def test_add_telemetry():
+    """Test adding something to the queue."""
+    _add_to_queue(
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr="",
+            app="test",
+            request_uri="",
+        )
+    )
 
 
 def test_ensure_list():
