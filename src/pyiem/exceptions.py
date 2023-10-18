@@ -5,6 +5,10 @@ class BadWebRequest(Exception):
     """Raised when a bad web request is made."""
 
 
+class IncompleteWebRequest(Exception):
+    """Raised for a HTTP GET request without required params (422)."""
+
+
 class NewDatabaseConnectionFailure(Exception):
     """Exception for when a new database connection fails."""
 

@@ -6,6 +6,7 @@ import string
 import sys
 import traceback
 import warnings
+from http import HTTPStatus
 from zoneinfo import ZoneInfo
 
 import nh3
@@ -13,6 +14,7 @@ from paste.request import parse_formvars
 
 from pyiem.exceptions import (
     BadWebRequest,
+    IncompleteWebRequest,
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
@@ -169,7 +171,7 @@ def iemapp(**kwargs):
         def _wrapped(environ, start_response):
             """Decorated function."""
 
-            def _handle_exp(errormsg, routine=False):
+            def _handle_exp(errormsg, routine=False, code=500):
                 # generate a random string so we can track this request
                 uid = "".join(
                     random.choice(string.ascii_uppercase + string.digits)
@@ -191,7 +193,7 @@ def iemapp(**kwargs):
                 else:
                     msg = errormsg
                 start_response(
-                    "500 Internal Server Error",
+                    f"{code} {HTTPStatus(code).phrase}",
                     [("Content-type", "text/plain")],
                 )
                 return [msg.encode("ascii")]
@@ -204,6 +206,8 @@ def iemapp(**kwargs):
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form)
                 res = func(environ, start_response)
+            except IncompleteWebRequest as exp:
+                res = _handle_exp(str(exp), routine=True, code=422)
             except BadWebRequest as exp:
                 log_request(environ)
                 res = _handle_exp(str(exp))
