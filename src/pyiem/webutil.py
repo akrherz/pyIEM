@@ -1,24 +1,27 @@
 """Utility functions for iemwebfarm applications."""
 import datetime
+import queue
 import random
 import re
 import string
 import sys
+import threading
 import traceback
 import warnings
+from collections import namedtuple
 from http import HTTPStatus
 from zoneinfo import ZoneInfo
 
 import nh3
 from paste.request import parse_formvars
 
+from pyiem.database import get_dbconnc
 from pyiem.exceptions import (
     BadWebRequest,
     IncompleteWebRequest,
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
-from pyiem.util import get_dbconnc
 
 # Forgive some typos
 TZ_TYPOS = {
@@ -40,6 +43,56 @@ TZ_TYPOS = {
 }
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
+# Queue for writing telemetry data to database
+TELEMETRY_QUEUE = queue.Queue()
+TELEMETRY_QUEUE_THREAD = {"worker": None}
+TELEMETRY = namedtuple(
+    "TELEMETRY",
+    ["timing", "status_code", "client_addr", "app", "request_uri"],
+)
+
+
+def _writer_thread():
+    """Runs for ever and writes telemetry data to the database."""
+    while True:
+        data = TELEMETRY_QUEUE.get()
+
+        def _writer():
+            """Actually write the data."""
+            pgconn, cursor = get_dbconnc("mesosite")
+            cursor.execute(
+                """
+                insert into website_telemetry(timing, status_code, client_addr,
+                app, request_uri) values (%s, %s, %s, %s, %s)
+                """,
+                (
+                    data.timing,
+                    data.status_code,
+                    data.client_addr,
+                    data.app,
+                    data.request_uri,
+                ),
+            )
+            cursor.close()
+            pgconn.commit()
+            pgconn.close()
+
+        try:
+            _writer()
+        except Exception as exp:
+            print(exp)
+
+
+def _add_to_queue(data):
+    """Adds data to queue, ensures a thread is running to process."""
+    if TELEMETRY_QUEUE_THREAD["worker"] is None:
+        TELEMETRY_QUEUE_THREAD["worker"] = threading.Thread(
+            target=_writer_thread,
+            name="telemetry",
+            daemon=True,
+        )
+        TELEMETRY_QUEUE_THREAD["worker"].start()
+    TELEMETRY_QUEUE.put(data)
 
 
 def ensure_list(environ, key) -> list:
@@ -151,6 +204,7 @@ def iemapp(**kwargs):
 
     kwargs:
         - default_tz: The default timezone to use for timestamps
+        - enable_telemetry: Enable telemetry logging, default ``True``.
 
     Example usage:
         @iemapp()
@@ -198,6 +252,8 @@ def iemapp(**kwargs):
                 )
                 return [msg.encode("ascii")]
 
+            start_time = datetime.datetime.utcnow()
+            status_code = 500
             try:
                 # mixed convers this to a regular dict
                 form = clean_form(parse_formvars(environ).mixed())
@@ -206,8 +262,11 @@ def iemapp(**kwargs):
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form)
                 res = func(environ, start_response)
+                # you know what assumptions do
+                status_code = 200
             except IncompleteWebRequest as exp:
-                res = _handle_exp(str(exp), routine=True, code=422)
+                status_code = 422
+                res = _handle_exp(str(exp), routine=True, code=status_code)
             except BadWebRequest as exp:
                 log_request(environ)
                 res = _handle_exp(str(exp))
@@ -217,6 +276,17 @@ def iemapp(**kwargs):
                 res = _handle_exp(f"get_dbconn() failed with `{exp}`")
             except Exception:
                 res = _handle_exp(traceback.format_exc())
+            end_time = datetime.datetime.utcnow()
+            if kwargs.get("enable_telemetry", True):
+                _add_to_queue(
+                    TELEMETRY(
+                        (end_time - start_time).total_seconds(),
+                        status_code,
+                        environ.get("REMOTE_ADDR"),
+                        environ.get("SCRIPT_NAME"),
+                        environ.get("REQUEST_URI"),
+                    )
+                )
             return res
 
         return _wrapped
