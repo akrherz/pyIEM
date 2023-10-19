@@ -49,6 +49,23 @@ def test_ensure_list():
     assert ensure_list({"a": ["b"]}, "a") == ["b"]
 
 
+def test_duplicated_year_in_form():
+    """Test the forgiveness."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
+    }
+    sr = mock.MagicMock()
+    application(env, sr)
+    assert env["sts"].year == 2021
+
+
 def test_duplicated_tz_in_form():
     """Test that this is handled."""
 
