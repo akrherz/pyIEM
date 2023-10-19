@@ -19,6 +19,16 @@ from pyiem.webutil import (
 )
 
 
+def test_disable_parse_times():
+    """Test that we can disable parsing times."""
+    form = {
+        "sts": "2023-09-11 1212",
+    }
+    environ = {}
+    add_to_environ(environ, form, parse_times=False)
+    assert environ["sts"] == form["sts"]
+
+
 def test_add_telemetry():
     """Test adding something to the queue."""
     _add_to_queue(
