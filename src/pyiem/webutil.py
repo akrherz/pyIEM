@@ -155,9 +155,13 @@ def compute_ts(form, suffix):
         day = 30
     if month == 2 and day > 29:
         day = 28
+    # Forgive specification of two years
+    yearval = form.get(f"year{suffix}", form.get("year"))
+    if isinstance(yearval, list) and len(set(yearval)) == 1:
+        yearval = yearval[0]
 
     return datetime.datetime(
-        int(form.get(f"year{suffix}", form.get("year"))),
+        int(yearval),
         month,
         day,
         int(form.get(f"hour{suffix}", 0)),
