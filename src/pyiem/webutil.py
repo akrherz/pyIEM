@@ -188,9 +188,9 @@ def add_to_environ(environ, form):
             )
     # Le Sigh, darly lamely used sts for stations in the past, so ensure
     # that sts starts with something that looks like a year
-    if "sts" in form and YEAR_RE.match(form["sts"]):
+    if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
         environ["sts"] = compute_ts_from_string(form, "sts")
-    if "ets" in form and YEAR_RE.match(form["ets"]):
+    if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
         environ["ets"] = compute_ts_from_string(form, "ets")
     if "day1" in form and "sts" not in form:
         environ["sts"] = compute_ts(form, "1")
