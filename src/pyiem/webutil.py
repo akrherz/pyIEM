@@ -166,7 +166,7 @@ def compute_ts(form, suffix):
     )
 
 
-def add_to_environ(environ, form):
+def add_to_environ(environ, form, **kwargs):
     """Build out some things auto-parsed from the request."""
     for key in form:
         if key not in environ:
@@ -186,16 +186,17 @@ def add_to_environ(environ, form):
                 f"Refusing to over-write environ key {key}",
                 UserWarning,
             )
-    # Le Sigh, darly lamely used sts for stations in the past, so ensure
-    # that sts starts with something that looks like a year
-    if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
-        environ["sts"] = compute_ts_from_string(form, "sts")
-    if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
-        environ["ets"] = compute_ts_from_string(form, "ets")
-    if "day1" in form and "sts" not in form:
-        environ["sts"] = compute_ts(form, "1")
-    if "day2" in form and "ets" not in form:
-        environ["ets"] = compute_ts(form, "2")
+    if kwargs.get("parse_times", True):
+        # Le Sigh, darly lamely used sts for stations in the past, so ensure
+        # that sts starts with something that looks like a year
+        if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
+            environ["sts"] = compute_ts_from_string(form, "sts")
+        if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
+            environ["ets"] = compute_ts_from_string(form, "ets")
+        if "day1" in form and "sts" not in form:
+            environ["sts"] = compute_ts(form, "1")
+        if "day2" in form and "ets" not in form:
+            environ["ets"] = compute_ts(form, "2")
 
 
 def iemapp(**kwargs):
@@ -205,6 +206,7 @@ def iemapp(**kwargs):
     kwargs:
         - default_tz: The default timezone to use for timestamps
         - enable_telemetry: Enable telemetry logging, default ``True``.
+        - parse_times: Parse the form for timestamps, default ``True``.
 
     Example usage:
         @iemapp()
@@ -260,7 +262,7 @@ def iemapp(**kwargs):
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
-                add_to_environ(environ, form)
+                add_to_environ(environ, form, **kwargs)
                 res = func(environ, start_response)
                 # you know what assumptions do
                 status_code = 200
