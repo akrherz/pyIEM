@@ -66,6 +66,22 @@ def test_duplicated_year_in_form():
     assert env["sts"].year == 2021
 
 
+def test_forgive_duplicate_tz():
+    """Test the forgiveness of this combo."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "tz=etc/utc&tz=etc/utc",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello!") > -1
+
+
 def test_duplicated_tz_in_form():
     """Test that this is handled."""
 
