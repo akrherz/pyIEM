@@ -107,7 +107,10 @@ def ensure_list(environ, key) -> list:
 def clean_form(form):
     """Opinionated cleaning of form data."""
     if "tz" in form and isinstance(form["tz"], list):
-        raise NoDataFound("GET variable tz specified twice, please fix.")
+        if len(set(form["tz"])) == 1:
+            form["tz"] = form["tz"][0]
+        else:
+            raise NoDataFound("GET variable tz specified twice, please fix.")
     return form
 
 
