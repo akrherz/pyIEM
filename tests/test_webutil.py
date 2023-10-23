@@ -98,6 +98,22 @@ def test_duplicated_tz_in_form():
     assert application(env, sr)[0].decode("ascii").find("twice") > -1
 
 
+def test_forgive_feb29():
+    """Test that this is not rectified."""
+    form = {
+        "day1": "30",
+        "month1": "2",
+        "year1": "2020",
+        "day2": "31",
+        "month2": "2",
+        "year2": "2021",
+    }
+    environ = {}
+    add_to_environ(environ, form)
+    assert environ["sts"].day == 29
+    assert environ["ets"].day == 28
+
+
 def test_forgive_bad_day_of_month():
     """Test forgiveness of specifying a bad day of month."""
     form = {

@@ -156,12 +156,17 @@ def compute_ts(form, suffix):
     # Forgive bad day of the month combinations
     if month in [4, 6, 9, 11] and day == 31:
         day = 30
-    if month == 2 and day > 29:
-        day = 28
     # Forgive specification of two years
     yearval = form.get(f"year{suffix}", form.get("year"))
     if isinstance(yearval, list) and len(set(yearval)) == 1:
         yearval = yearval[0]
+    # Forgive February 29ths on non-leap years
+    if month == 2 and day > 28:
+        # Check for leap year, close enough
+        if int(yearval) % 4 == 0 and yearval not in [1800, 1900]:
+            day = min(day, 29)
+        else:
+            day = 28
 
     return datetime.datetime(
         int(yearval),
