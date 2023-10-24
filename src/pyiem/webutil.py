@@ -282,8 +282,9 @@ def iemapp(**kwargs):
                 status_code = 422
                 res = _handle_exp(str(exp), routine=True, code=status_code)
             except BadWebRequest as exp:
+                status_code = 422
                 log_request(environ)
-                res = _handle_exp(str(exp))
+                res = _handle_exp(str(exp), code=status_code)
             except NoDataFound as exp:
                 res = _handle_exp(str(exp), routine=True)
             except NewDatabaseConnectionFailure as exp:
