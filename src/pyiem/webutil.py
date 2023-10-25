@@ -286,9 +286,14 @@ def iemapp(**kwargs):
                 log_request(environ)
                 res = _handle_exp(str(exp), code=status_code)
             except NoDataFound as exp:
-                res = _handle_exp(str(exp), routine=True)
+                status_code = 200
+                res = _handle_exp(str(exp), routine=True, code=status_code)
             except NewDatabaseConnectionFailure as exp:
-                res = _handle_exp(f"get_dbconn() failed with `{exp}`")
+                status_code = 503
+                res = _handle_exp(
+                    f"get_dbconn() failed with `{exp}`",
+                    code=status_code,
+                )
             except Exception:
                 res = _handle_exp(traceback.format_exc())
             end_time = datetime.datetime.utcnow()
