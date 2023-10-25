@@ -29,6 +29,12 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_231025_tabs():
+    """Test that a line with tabs gets ignored (best we can do)."""
+    prod = cliparser(get_test_file("CLI/CLICVG_tab.txt"))
+    assert abs(prod.data[0]["data"]["average_sky_cover"] - 0.8) < 0.01
+
+
 @pytest.mark.parametrize("database", ["iem"])
 def test_230902_cliome_2(dbcursor):
     """Test a database failure that happened parsing this product."""

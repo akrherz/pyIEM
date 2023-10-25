@@ -624,7 +624,7 @@ class CLIProduct(TextProduct):
         meat = re.sub(r"\n{2,}", "\n\n", meat)
         sections = meat.split("\n\n")
         for _section in sections:
-            lines = _section.split("\n")
+            lines = [ll for ll in _section.split("\n") if ll.find("\t") < 0]
             if lines[0].startswith("TEMPERATURE"):
                 parse_temperature(self, self.regime, lines[1:], data)
             elif lines[0].startswith("PRECIPITATION"):

@@ -1,0 +1,101 @@
+620 
+CDUS41 KILN 100541
+CLICVG
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE WILMINGTON OH                               
+140 AM EDT FRI MAY 10 2013
+
+
+................................... 
+
+...THE CINCINNATI OH CLIMATE SUMMARY FOR MAY 9 2013...
+
+CLIMATE NORMAL PERIOD 1981 TO 2010
+CLIMATE RECORD PERIOD 1869 TO 2013
+
+
+WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         81    202 PM  91    1896  72      9       71       
+  MINIMUM         57    523 AM  30    1947  51      6       52       
+  AVERAGE         69                        62      7       62      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        T             1.67 1900   0.16  -0.16     0.01    
+  MONTH TO DATE    2.74                      1.41   1.33     1.54    
+  SINCE MAR 1      9.80                      9.26   0.54     7.97    
+  SINCE JAN 1     15.40                     15.07   0.33    14.90    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0           	     0.0    0.0      0.0     
+  MONTH TO DATE    0.0                       0.0    0.0      0.0     
+  SINCE MAR 1      8.8                       3.5    5.3      1.5     
+  SINCE JUL 1     25.2                      22.1    3.1      5.6     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         5     -5        3       
+  MONTH TO DATE   20                        53    -33        4       
+  SINCE MAR 1   1198                      1060    138      656       
+  SINCE JUL 1   4908                      4887     21     3981       
+                                                                     
+ COOLING                                                             
+  YESTERDAY        4                         2      2        0       
+  MONTH TO DATE   13                        10      3       52       
+  SINCE MAR 1     36                        28      8       96       
+  SINCE JAN 1     36                        28      8       96       
+..................................................................
+
+
+WIND (MPH)                                                           
+  RESULTANT WIND SPEED   4   RESULTANT WIND DIRECTION  SW (230)      
+  HIGHEST WIND SPEED    14   HIGHEST WIND DIRECTION    SW (220)      
+  HIGHEST GUST SPEED    21   HIGHEST GUST DIRECTION    SW (210)      
+  AVERAGE WIND SPEED     5.2                                         
+
+                                                                     
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.8                                              
+
+                                                                     
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  LIGHT RAIN                                                         
+
+                                                                     
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST   100           200 AM                                     
+ LOWEST     39           100 PM                                     
+ AVERAGE    70                                                       
+
+..........................................................
+
+                                                                     
+THE CINCINNATI OH CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   72        92      1896                    
+ MINIMUM TEMPERATURE (F)   51        28      1966                    
+
+                                                                     
+SUNRISE AND SUNSET                                                   
+MAY 10 2013...........SUNRISE   630 AM EDT   SUNSET   840 PM EDT   
+MAY 11 2013...........SUNRISE   629 AM EDT   SUNSET   841 PM EDT   
+
+                                                                    
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+
+
+
+$$
