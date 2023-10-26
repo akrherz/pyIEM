@@ -152,7 +152,7 @@ def compute_ts(form, suffix):
     """Figure out the timestamp."""
     # NB: form["tz"] should always be set by this point, but alas
     month = int(form.get(f"month{suffix}", form.get("month")))
-    day = int(form.get(f"day{suffix}", form.get("day")))
+    day = min(int(form.get(f"day{suffix}", form.get("day"))), 31)
     # Forgive bad day of the month combinations
     if month in [4, 6, 9, 11] and day == 31:
         day = 30
