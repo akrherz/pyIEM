@@ -104,7 +104,7 @@ def test_forgive_feb29():
         "day1": "30",
         "month1": "2",
         "year1": "2020",
-        "day2": "31",
+        "day2": "32",
         "month2": "2",
         "year2": "2021",
     }
