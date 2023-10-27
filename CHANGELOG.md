@@ -19,6 +19,7 @@ mod_wsgi apps and remove downstream boilerplate.
 
 ### Bug Fixes
 
+- [SHEF] Ensure E message elements have a physical_element set.
 - [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not
 properly computing magnitude for encoded float values.
 - Fix `compute_wfos` method for SAW processor.

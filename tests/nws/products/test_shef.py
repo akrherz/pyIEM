@@ -35,6 +35,12 @@ def prod():
     return res
 
 
+def test_231027_e_nodata(prod):
+    """This should have no data."""
+    prod.unixtext = ".E SOMW3 1019 C DH0900/DIN05/5.06/5.07/5.07"
+    assert parse_E(prod) == 0
+
+
 def test_231006_paired_value_units(prod):
     """Test that we can do the right thing with paired values."""
     prod.unixtext = (
