@@ -2,6 +2,7 @@
 line-length = 79
 
 [tool.ruff]
+line-length = 79
 select = ["E", "F", "I"]
 target-version = "py39"
 

@@ -442,7 +442,7 @@ def process_message_e(prod, message) -> List[SHEFElement]:
                     provisional = []
                 elements.append(elem)
             diction.valid += interval
-    return elements
+    return [e for e in elements if e.physical_element is not None]
 
 
 def strip_comments(line):
