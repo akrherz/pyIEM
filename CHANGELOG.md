@@ -22,6 +22,7 @@ mod_wsgi apps and remove downstream boilerplate.
 - [SHEF] Ensure E message elements have a physical_element set.
 - [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not
 properly computing magnitude for encoded float values.
+- Allow for calm percentage plotting space in windrose with rmax set (#798).
 - Fix `compute_wfos` method for SAW processor.
 - Make presence of tabs in CLI products more forgiving.
 - Refactor SHEF parsing such to better handle situations with time modifiers

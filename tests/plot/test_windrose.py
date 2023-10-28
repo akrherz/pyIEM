@@ -53,6 +53,15 @@ def test_windrose_basic():
 
 
 @pytest.mark.mpl_image_compare(tolerance=TOLERANCE)
+def test_gh798_rmax_100():
+    """Test convention of blowing toward."""
+    sped = np.array([2, 4, 6, 18]) * units("meter / second")
+    drct = np.array([45, 90, 135, 180]) * units("degree")
+    wr = plot(drct, sped, rmax=100, plot_convention=PLOT_CONVENTION_TO)
+    return wr.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=TOLERANCE)
 def test_windrose_plot_convention():
     """Test convention of blowing toward."""
     sped = np.array([2, 4, 6, 18]) * units("meter / second")
