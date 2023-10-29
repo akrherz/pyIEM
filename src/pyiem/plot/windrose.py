@@ -129,9 +129,11 @@ class WindrosePlot:
 
     def plot_calm(self):
         """Clear out the center and plot the calm value."""
-        maxval = np.max(np.sum(self.table, axis=1))
+        maxval = np.max(np.sum(self.table, axis=1)).m
+        if self.rmax is not None:
+            maxval = self.rmax
         # Clear out the center for plotting the calm percentage
-        self.ax.set_rorigin(0 - maxval.m * 0.2)
+        self.ax.set_rorigin(0 - maxval * 0.2)
         # Place Calm Percent in the middle
         self.ax.text(
             0.5,
