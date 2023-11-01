@@ -1,0 +1,14 @@
+204
+ASUS63 KMPX 011243
+RTPMPX
+
+Max/min Temperature And Precipitation Table For MPX Area
+National Weather Service Twin Cities/Chanhassen MN
+743 AM CDT Wed Nov 1 2023
+
+.BR MSP 1101 C DH0742/DC2311010742/GDIRVZ/GTIRVZ
+
+: ...Frost Depth...
+ROBW3    : Roberts                 : DD310800/    0 /    0
+
+.End
