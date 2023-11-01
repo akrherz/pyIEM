@@ -20,6 +20,7 @@ mod_wsgi apps and remove downstream boilerplate.
 ### Bug Fixes
 
 - [SHEF] Ensure E message elements have a physical_element set.
+- [SHEF] Fix `DD` modifier when we are crossing a month.
 - [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not
 properly computing magnitude for encoded float values.
 - Allow for calm percentage plotting space in windrose with rmax set (#798).

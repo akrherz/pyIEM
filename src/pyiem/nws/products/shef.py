@@ -286,10 +286,14 @@ def parse_dm(text, valid):
 @parse_d_wrapper
 def parse_dd(text, valid):
     """Handle the DD one."""
+    day = int(text[:2])
+    replacements = {"day": day}
+    # Handle crossing the month via arbitrary life choices
+    if day > 25 and valid.day < 10:
+        lastmonth = valid.replace(day=1) - timedelta(days=2)
+        replacements["month"] = lastmonth.month
+        replacements["year"] = lastmonth.year
     # Updating the timestamp as we go here
-    replacements = {
-        "day": int(text[:2]),
-    }
     if len(text) >= 4:
         replacements["hour"] = int(text[2:4])
     if len(text) >= 6:

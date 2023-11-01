@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231101_rtpmpx_oct31():
+    """Test that we get this previous month date correct."""
+    utcnow = utc(2023, 11, 1, 13)
+    prod = parser(get_test_file("SHEF/RTPMPX.txt"), utcnow=utcnow)
+    assert prod.data[0].valid == utc(2023, 10, 31, 13)
+
+
 def test_231027_e_nodata(prod):
     """This should have no data."""
     prod.unixtext = ".E SOMW3 1019 C DH0900/DIN05/5.06/5.07/5.07"
@@ -302,9 +309,7 @@ def test_5_4_2(prod):
     assert res[0].valid == utc(2021, 8, 7, 12, 23)
 
 
-def test_7_4_7(
-    prod,
-):
+def test_7_4_7(prod):
     """Test an evolving time series."""
     msg = (
         ".A COMT2 850327 C DH07/HG 1.89/DH1422/HG 2.44/DH1635/HG 8.71/"
