@@ -772,7 +772,7 @@ def compute_num_value(element) -> bool:
     if all(x in ["*", "-", "M"] for x in element.str_value):
         return True
     # Can trace
-    if element.str_value == "T":
+    if element.str_value in ["T", "0.001"]:
         element.num_value = TRACE_VALUE
         return True
     # 4.4.7 Data Elements
