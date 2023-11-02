@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231102_hydmsr_trace():
+    """Test that SHEF encoded trace of 0.001 translates back to IEM trace."""
+    utcnow = utc(2023, 11, 2, 15, 50)
+    prod = parser(get_test_file("SHEF/HYDMSR.txt"), utcnow=utcnow)
+    assert prod.data[0].num_value == TRACE_VALUE
+
+
 def test_231101_rtpmpx_oct31():
     """Test that we get this previous month date correct."""
     utcnow = utc(2023, 11, 1, 13)
