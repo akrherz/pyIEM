@@ -634,6 +634,20 @@ def test_e_spaced_din():
     assert res[0].valid == utc(2021, 9, 22, 1)
 
 
+def test_trace_exception(prod):
+    """This shouldn't be allowed."""
+    prod.unixtext = ".A DVT 0921 MS DH0800 DVH13 /TAVRZN T"
+    parse_A(prod)
+    assert not prod.data
+
+
+def test_0001(prod):
+    """This shouldn't be a trace value."""
+    prod.unixtext = ".A DVT 0921 MS DH0800 DVH13 /TAVRZN 0.001"
+    parse_A(prod)
+    assert abs(prod.data[0].num_value - 0.001) < 0.0001
+
+
 def test_trace():
     """Test that Trace values are handled."""
     prod = mock.Mock()
