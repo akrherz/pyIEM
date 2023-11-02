@@ -75,6 +75,7 @@ TIMEZONES = {
     "Z": "Etc/UTC",
 }
 PAIRED_PHYSICAL_CODES = "HQ MD MN MS MV NO ST TB TE TV".split()
+TRACE_PHYSICAL_CODES = "PP PC PY SD SF SW".split()
 RETAINED_COMMENT_RE = re.compile(r"['\"](.*)['\"]")
 NUMBER_RE = re.compile(r"^[+-]?\d+\.?\d*$")
 MISSING_VALUES = ["-9999", "X", "M", "", "+", "-", ".", "M.MM", "MSG", "nan"]
@@ -773,8 +774,11 @@ def compute_num_value(element) -> bool:
         return True
     # Can trace
     if element.str_value in ["T", "0.001"]:
-        element.num_value = TRACE_VALUE
-        return True
+        if element.physical_element in TRACE_PHYSICAL_CODES:
+            element.num_value = TRACE_VALUE
+            return True
+        if element.str_value == "T":
+            raise InvalidSHEFEncoding("T used with non-TRACE physical code")
     # 4.4.7 Data Elements
     if element.str_value[-1].isalpha():
         element.qualifier = element.str_value[-1]
