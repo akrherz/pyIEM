@@ -156,6 +156,26 @@ def test_sts_not_a_timestamp():
     assert environ["ets"] == form["ets"]
 
 
+def test_add_to_environ_badtimes():
+    """Test the handling of these problems."""
+    form = {
+        "tz": "Rolly/Polley",
+        "year1": "2023",
+        "month1": "2",
+        "day1": "30",
+        "hour1": "12",
+        "minute1": "30",
+    }
+    environ = {}
+    with pytest.raises(IncompleteWebRequest):
+        add_to_environ(environ, form)
+    environ = {}
+    form["tz"] = "America/Chicago"
+    form["day1"] = "sknt31"
+    with pytest.raises(IncompleteWebRequest):
+        add_to_environ(environ, form)
+
+
 def test_add_to_environ_tstrings():
     """Test strings in various formats."""
     form = {

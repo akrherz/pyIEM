@@ -10,7 +10,7 @@ import traceback
 import warnings
 from collections import namedtuple
 from http import HTTPStatus
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import nh3
 from paste.request import parse_formvars
@@ -199,16 +199,21 @@ def add_to_environ(environ, form, **kwargs):
                 UserWarning,
             )
     if kwargs.get("parse_times", True):
-        # Le Sigh, darly lamely used sts for stations in the past, so ensure
-        # that sts starts with something that looks like a year
-        if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
-            environ["sts"] = compute_ts_from_string(form, "sts")
-        if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
-            environ["ets"] = compute_ts_from_string(form, "ets")
-        if "day1" in form and "sts" not in form:
-            environ["sts"] = compute_ts(form, "1")
-        if "day2" in form and "ets" not in form:
-            environ["ets"] = compute_ts(form, "2")
+        try:
+            # Le Sigh, darly used sts for stations in the past, so ensure
+            # that sts starts with something that looks like a year
+            if isinstance(form.get("sts"), str) and YEAR_RE.match(form["sts"]):
+                environ["sts"] = compute_ts_from_string(form, "sts")
+            if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
+                environ["ets"] = compute_ts_from_string(form, "ets")
+            if "day1" in form and "sts" not in form:
+                environ["sts"] = compute_ts(form, "1")
+            if "day2" in form and "ets" not in form:
+                environ["ets"] = compute_ts(form, "2")
+        except (TypeError, ValueError):
+            raise IncompleteWebRequest("Invalid timestamp specified")
+        except ZoneInfoNotFoundError:
+            raise IncompleteWebRequest("Invalid timezone specified")
 
 
 def iemapp(**kwargs):
