@@ -29,7 +29,7 @@ def test_insert_nan(dbcursor):
     """Test that we properly insert NaN values as nulls."""
     vals = np.array([0, np.nan, 10], dtype=np.float64)
     dbcursor.execute(
-        "INSERT into stations(iemid, remote_id) VALUES (%s, %s) "
+        "INSERT into stations(iemid, remote_id, online) VALUES (%s, %s, 't') "
         "RETURNING remote_id",
         (-100, vals[1]),
     )
