@@ -35,6 +35,16 @@ def prod():
     return res
 
 
+def test_231107_rr8arx():
+    """Test that we get valid station IDs from this product."""
+    utcnow = utc(2023, 11, 7, 15, 50)
+    prod = parser(get_test_file("SHEF/RR8ARX.txt"), utcnow=utcnow)
+    for data in prod.data:
+        assert len(data.station) == 5
+    assert prod.data[2].physical_element == "QT"
+    assert abs(prod.data[2].num_value - 0.52) < 0.001
+
+
 def test_231102_hydmsr_trace():
     """Test that SHEF encoded trace of 0.001 translates back to IEM trace."""
     utcnow = utc(2023, 11, 2, 15, 50)
