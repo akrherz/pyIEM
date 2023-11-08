@@ -19,6 +19,7 @@ mod_wsgi apps and remove downstream boilerplate.
 
 ### Bug Fixes
 
+- [SHEF] Lines startig with ":" are double checked for slashes, before use.
 - [SHEF] Ensure E message elements have a physical_element set.
 - [SHEF] Fix `DD` modifier when we are crossing a month.
 - [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not

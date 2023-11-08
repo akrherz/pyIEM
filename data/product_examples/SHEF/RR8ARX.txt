@@ -1,0 +1,50 @@
+419 
+SRUS83 KARX 071410
+RR8ARX
+
+.B ARX 1107 DH1410/HPIRP/HTIRP/QTIRP
+:
+:WISC PUBLIC SERVICE HYDROELECTRIC PROJECT DATA
+:NATIONAL WEATHER SERVICE LA CROSSE WI
+:
+:WEB-BASED DATA PROVIDED BY WISC PUBLIC SERVICE IN GREEN BAY
+:DATA RETRIEVED HOURLY VIA AUTOMATED PROGRAM
+:WPS DATA TIMESTAMP IS 11/7/2023 8:00:20 AM
+:
+:      HEAD       TAIL       TOTAL                            
+:      WATER      WATER      FLOW                             
+:ID    ELEV       ELEV       KCFS       SITE NAME                      
+CRYM4             /          / 0.520    :PAINT R. - CRYSTAL FALLS               
+PETW3  923.61     / 881.75   / 4.232    :WISCONSIN R. - PETENWELL DAM           
+WUUW3  1188.20    / 1164.33  / 2.050    :WISCONSIN R. - WAUSAU DAM              
+TKDW3  1435.06    / 1421.54  / 1.409    :WISCONSIN R. - TOMAHAWK DAM            
+PTOW3  736.56     / 720.84   / 0.768    :PESHTIGO R.  - PESHTIGO DAM            
+CROW3  881.55     / 848.88   / 5.017    :WISCONSIN R. - CASTLE ROCK DAM         
+JOFW3  813.98     / 770.36   / 0.441    :PESHTIGO R.  - JOHNSON FALLS DAM       
+OTTW3  1616.41    / 1604.70  / 0.464    :WISCONSIN R. - OTTER RAPIDS DAM        
+ALXW3  1276.77    / 1254.66  / 1.377    :WISCONSIN R. - ALEXANDER DAM           
+GRRW3  664.85     / 634.16   / 2.168    :MENOMINEE R. - GRAND RAPIDS DAM        
+CAFW3  981.68     / 900.84   / 0.402    :PESHTIGO R.  - CALDRON FALLS DAM       
+PGOW3  621.76     / 604.09   / 0.802    :PESHTIGO R.  - POTATO RAPIDS DAM       
+SSDW3  723.92     / 679.90   / 0.463    :PESHTIGO R.  - SANDSTONE DAM           
+GRFW3  1396.62    / 1300.81  / 1.364    :WISCONSIN R. - GRANDFATHER DAM         
+CRIW3  897.27     / 814.50   / 0.359    :PESHTIGO R.  - HIGH FALLS DAM          
+HSDM4  1341.12    / 1196.96  / 0.110    :DEAD R.      - HOIST DAM               
+MCDM4  1196.16    /          / 0.114    :DEAD R.      - MC CLURE DAM            
+SILM4  1479.15    / 1457.19  / 0.015    :DEAD R.      - SILVER LAKE DAM         
+VCDM4  907.50     / 692.63   / 0.584    :ONTONAGON R. - VICTORIA DAM            
+PKDM4  768.17     / 714.26   / 0.447    :STURGEON R.  - PRICKETT DAM            
+BFMM4             /          / 0.096    :ONTONAGON R. - BOND MIDDLE BR          
+BFCM4             /          / 0.032    :ONTONAGON R. - BOND CANAL FLOW         
+BFDM4  1471.31    /          /          :ONTONAGON R. - BOND FALLS DAM          
+BNYM4  906.23     / 870.72   / 0.533    :ESCANABA R.  - BONEY FALLS DAM         
+DMTM4  604.12     / 578.97   / 0.535    :ESCANABA R.  - DAM1                    
+DMOM4  665.63     / 639.09   / 0.562    :ESCANABA R.  - DAM3                    
+WLKM4             /          / 0.210    :MICHIGAMME R. - WITCH LAKE             
+HRDW3  1522.12    /          / 0.567    :WISCONSIN R. - HAT RAPIDS DAM          
+JERW3  1450.02    / 1437.22  /          :TOMAHAWK R.  - JERSEY DAM              
+BGQW3  1034.12    / 942.43   / 1.998    :MENOMINEE R.  - BIG QUINNESEC          
+KFDM4  1066.53    / 1037.03  / 1.638    :MENOMINEE R.  - KINGSFORD              
+CLKW3  743.91     / 716.24   / 2.324    :MENOMINEE R.  - CHALK HILL             
+WRDW3  716.09     / 687.05   / 2.236    :MENOMINEE R.  - WHITE RAPIDS DAM       
+.END

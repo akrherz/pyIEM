@@ -455,6 +455,9 @@ def strip_comments(line):
     # Forgiving a headline that should have been a comment
     if line.startswith("..."):
         return ""
+    # If line starts with a comment, require even number of :, GIGO otherwise
+    if line.startswith(":") and line.count(":") % 2 != 0:
+        return ""
     # Cull inline comments using ON/OFF nomenclature
     pos = line.find(":")
     while pos > -1:
