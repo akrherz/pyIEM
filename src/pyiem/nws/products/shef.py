@@ -168,11 +168,11 @@ def datetime24(dt, replacements):
     if dt.__class__.__name__ == "date":
         dt = datetime(dt.year, dt.month, dt.day)
     rhour = int(replacements.get("hour", 0))
+    if not 0 <= rhour <= 24:
+        raise ValueError(f"Hour>24 dt: {dt} replace: {repr(replacements)}")
     if rhour == 24:
         dt = dt + timedelta(days=1)
         replacements["hour"] = 0
-    if rhour > 24:
-        raise ValueError(f"Hour>24 dt: {dt} replace: {repr(replacements)}")
     return datetime(
         replacements.get("year", dt.year),
         replacements.get("month", dt.month),
@@ -195,6 +195,8 @@ def parse_dh(text, valid):
         replacements["minute"] = int(text[2:4])
     if len(text) >= 6:
         replacements["second"] = int(text[4:6])
+    if len(text) > 6:
+        raise InvalidSHEFEncoding(f"DH with too many digits '{text}'")
     return datetime24(valid, replacements)
 
 

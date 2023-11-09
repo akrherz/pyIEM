@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231109_bad_dh(prod):
+    """This should not raise an exception."""
+    msg = ".A RRWT2 231109 Z DH-380329730 /PPHRR 254.25:"
+    with pytest.raises(InvalidSHEFEncoding):
+        process_message_a(prod, msg)
+
+
 def test_231107_rr8arx():
     """Test that we get valid station IDs from this product."""
     utcnow = utc(2023, 11, 7, 15, 50)
