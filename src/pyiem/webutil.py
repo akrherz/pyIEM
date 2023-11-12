@@ -212,7 +212,7 @@ def add_to_environ(environ, form, **kwargs):
                 environ["ets"] = compute_ts(form, "2")
         except (TypeError, ValueError):
             raise IncompleteWebRequest("Invalid timestamp specified")
-        except ZoneInfoNotFoundError:
+        except (IsADirectoryError, ZoneInfoNotFoundError):
             raise IncompleteWebRequest("Invalid timezone specified")
 
 
