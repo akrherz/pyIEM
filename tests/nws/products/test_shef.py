@@ -113,6 +113,15 @@ def test_230926_invalid_depth(prod):
     assert prod.warnings
 
 
+def test_231114_rr6bcr_2():
+    """Test that we don't squawk about this valid, cough, product."""
+    # This is actually specified as valid RR6 data in the ASOS manual.
+    utcnow = utc(2023, 11, 14, 13)
+    prod = parser(get_test_file("SHEF/RR6BCR_2.txt"), utcnow=utcnow)
+    assert not prod.warnings
+    assert len(prod.data) == 4
+
+
 def test_230817_rr6bcr():
     """Test that we can quell a GIGO traceback."""
     prod = parser(get_test_file("SHEF/RR6BCR.txt"))
