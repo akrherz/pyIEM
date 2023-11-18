@@ -14,6 +14,7 @@ all failures and stop emitting `UserWarning`.
 ### New Features
 
 - Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
+- Add `pyiem.iemre.reproject2iemre` helper to bring arbitrary grids onto IEMRE.
 - Introduce `pyiem.webutil.iemapp` decorator to do fancy things for IEM
 mod_wsgi apps and remove downstream boilerplate.
 

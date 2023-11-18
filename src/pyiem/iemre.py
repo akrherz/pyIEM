@@ -12,6 +12,7 @@ import numpy as np
 import xarray as xr
 from affine import Affine
 from psycopg.sql import SQL, Identifier
+from rasterio.warp import Resampling, reproject
 
 from pyiem.database import get_dbconn
 
@@ -29,6 +30,7 @@ NY = 216  # int((NORTH - SOUTH) / DY)
 XAXIS = np.arange(WEST, EAST, DX)
 YAXIS = np.arange(SOUTH, NORTH, DY)
 AFFINE = Affine(DX, 0.0, WEST, 0.0, 0 - DY, NORTH)
+AFFINE_NATIVE = Affine(DX, 0.0, WEST, 0.0, DY, SOUTH)
 MRMS_AFFINE = Affine(0.01, 0.0, WEST, 0.0, -0.01, NORTH)
 
 
@@ -222,3 +224,34 @@ def get_gid(lon, lat):
     if i is None:
         return None
     return j * NX + i
+
+
+def reproject2iemre(grid, affine_in, crs_in, resampling=None, dst_nodata=None):
+    """Reproject the given grid to IEMRE grid, returning S to N oriented grid.
+
+    Note: If the affine_in is dy > 0 then the grid is assumed to be S to N.
+
+    Args:
+        grid (numpy.array): 2D grid to reproject
+        affine_in (affine.Affine): affine transform of input grid
+        crs_in (pyproj.Proj): projection of input grid
+        resampling (rasterio.warp.Resampling,optional): defaults to nearest
+        dst_nodata (float,optional): defaults to np.nan
+
+    Returns:
+        numpy.array of reprojected grid oriented S to N like IEMRE
+    """
+    data = np.zeros((NY, NX), float)
+    reproject(
+        grid,
+        data,
+        src_transform=affine_in,
+        src_crs=crs_in,
+        dst_transform=AFFINE if affine_in.e < 0 else AFFINE_NATIVE,
+        dst_crs={"init": "EPSG:4326"},
+        dst_nodata=dst_nodata if dst_nodata is not None else np.nan,
+        resampling=(
+            resampling if resampling is not None else Resampling.nearest
+        ),
+    )
+    return data if affine_in.e > 0 else np.flipud(data)
