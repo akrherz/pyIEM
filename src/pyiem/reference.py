@@ -170,11 +170,10 @@ VTEC_POLYGON_DATES = {
 
 # A dictionary mapping LSR textual types found in the raw LSR reports to a
 # single character identifier.  This is done to simplify some backend stuff
-# done with IEM Cow and the database.  This is sort of lame, but alas
+# done with IEM Cow and the database.  This is very lame, but alas
 lsr_events = {
     "BLOWING SNOW": "a",
     "DRIFTING SNOW": "a",
-    "SNOW SQUALL": "a",
     "HIGH SUST WINDS": "A",
     "HIGH WIND": "A",
     "MRN HIGH WIND": "A",
@@ -231,8 +230,7 @@ lsr_events = {
     "HIGH SURF": "P",
     "MISC MRN/SRF HZD": "P",
     "TROPICAL STORM": "Q",
-    "MRN TROP DEPRSN": "q",
-    "MRN TROP STORM": "q",
+    "SNOW SQUALL": "q",
     "HEAVY RAIN": "R",
     "RAIN": "R",
     "SNOW": "S",

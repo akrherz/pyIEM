@@ -1,0 +1,21 @@
+037 
+NWUS51 KBGM 281521
+LSRBGM
+
+Preliminary Local Storm Report
+National Weather Service Binghamton NY
+1021 AM EST Tue Nov 28 2023
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+1015 AM     Snow Squall      NWS Binghamton          42.21N 75.99W
+11/28/2023                   Broome             NY   ASOS             
+
+            visibility 1/4 mile wind gust 23 mph. 
+
+
+&&
+
+$$

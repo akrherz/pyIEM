@@ -6,6 +6,21 @@ from pyiem.util import get_test_file
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_snow_squall(dbcursor):
+    """Test that snow squalls get ingested properly."""
+    prod = parser(get_test_file("LSR/LSRBGM_snowsquall.txt"))
+    assert len(prod.lsrs) == 1
+    prod.lsrs[0].sql(dbcursor)
+    dbcursor.execute(
+        """SELECT type from lsrs_2023 WHERE
+        valid = '2023-11-28 15:15+00' and wfo = 'BGM'
+        and typetext = 'SNOW SQUALL'
+        """
+    )
+    assert dbcursor.fetchone()["type"] == "q"
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_gh729_marine_wind(dbcursor):
     """Test support for mapping this type to marine wind gust."""
     prod = parser(get_test_file("LSR/LSRHGX_marine.txt"))
