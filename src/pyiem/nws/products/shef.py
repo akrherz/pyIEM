@@ -693,7 +693,9 @@ def parse_A(prod) -> int:
             # Accounts for a line with no data, just comments
             meat = strip_comments(line).split(maxsplit=1)
             if len(meat) == 2:
-                messages[-1] += f"/{meat[1]}"
+                # Only insert a slash if we have to
+                addslash = "" if messages[-1].endswith("/") else "/"
+                messages[-1] += f"{addslash}{meat[1]}"
         # Look for comments coming after the first message
         if line.startswith(":"):
             narrative += line[1:].strip() + " "
@@ -757,7 +759,8 @@ def parse_E(prod) -> int:
             # Empty line
             if len(tokens) == 1:
                 continue
-            messages[-1] += f"/{tokens[1]}"
+            addslash = "" if messages[-1].endswith("/") else "/"
+            messages[-1] += f"{addslash}{tokens[1]}"
 
     return process_messages(process_message_e, prod, messages)
 

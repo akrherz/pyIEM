@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231129_rr3dmx_twoslash():
+    """Test that we can rectify this without two slashes."""
+    utcnow = utc(2023, 11, 13, 16, 41)
+    prod = parser(get_test_file("SHEF/RR3DMX_twoslash.txt"), utcnow=utcnow)
+    assert prod.data[0].raw.find("//") == -1
+
+
 def test_231109_bad_dh(prod):
     """This should not raise an exception."""
     msg = ".A RRWT2 231109 Z DH-380329730 /PPHRR 254.25:"
@@ -144,7 +151,7 @@ def test_221101_too_many_failures():
     """Test that this product does not eventually make an email."""
     utcnow = utc(2022, 11, 1, 12)
     prod = parser(get_test_file("SHEF/RR9GYX.txt"), utcnow=utcnow)
-    assert len(prod.data) == 234
+    assert len(prod.data) == 216
 
 
 def test_221031_bad_hour():
