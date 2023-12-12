@@ -308,7 +308,11 @@ class Observation:
         peak_wind_gust = %(peak_wind_gust)s,
         peak_wind_drct = %(peak_wind_drct)s,
         peak_wind_time = %(peak_wind_time)s,
-        snowdepth = %(snowdepth)s,
+        snowdepth = %(snowdepth)s, srad_1h_j = %(srad_1h_j)s,
+        tsoil_4in_f = %(tsoil_4in_f)s, tsoil_8in_f = %(tsoil_8in_f)s,
+        tsoil_16in_f = %(tsoil_16in_f)s, tsoil_20in_f = %(tsoil_20in_f)s,
+        tsoil_32in_f = %(tsoil_32in_f)s, tsoil_40in_f = %(tsoil_40in_f)s,
+        tsoil_64in_f = %(tsoil_64in_f)s, tsoil_128in_f = %(tsoil_128in_f)s,
         updated = now()
         WHERE c.iemid = %(iemid)s and %(valid)s >= c.valid """
         if not self.data["_isdaily"] and not skip_current:
@@ -325,7 +329,9 @@ class Observation:
             max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,
             ice_accretion_1hr, ice_accretion_3hr, ice_accretion_6hr,
             water_tmpf, feel, peak_wind_gust, peak_wind_drct,
-            peak_wind_time, snowdepth) VALUES(
+            peak_wind_time, snowdepth, srad_1h_j, tsoil_4in_f, tsoil_8in_f,
+            tsoil_16in_f, tsoil_20in_f, tsoil_32in_f, tsoil_40in_f,
+            tsoil_64in_f, tsoil_128in_f) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
             %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
@@ -342,7 +348,10 @@ class Observation:
             %(ice_accretion_1hr)s, %(ice_accretion_3hr)s,
             %(ice_accretion_6hr)s,
             %(water_tmpf)s, %(feel)s, %(peak_wind_gust)s, %(peak_wind_drct)s,
-            %(peak_wind_time)s, %(snowdepth)s
+            %(peak_wind_time)s, %(snowdepth)s, %(srad_1h_j)s, %(tsoil_4in_f)s,
+            %(tsoil_8in_f)s, %(tsoil_16in_f)s, %(tsoil_20in_f)s,
+            %(tsoil_32in_f)s, %(tsoil_40in_f)s, %(tsoil_64in_f)s,
+            %(tsoil_128in_f)s
             )
             """
             if not self.data["_isdaily"]:
