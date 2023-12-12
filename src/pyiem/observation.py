@@ -282,7 +282,7 @@ class Observation:
         # Update current table
         sql = """UPDATE current c SET
         tmpf = %(tmpf)s,  dwpf = %(dwpf)s,  drct = %(drct)s,  sknt = %(sknt)s,
-        indoor_tmpf = %(indoor_tmpf)s,  tsf0 = %(tsf0)s,  tsf1 = %(tsf1)s,
+        tsf0 = %(tsf0)s, tsf1 = %(tsf1)s,
         tsf2 = %(tsf2)s,  tsf3 = %(tsf3)s,  rwis_subf = %(rwis_subf)s,
         scond0 = %(scond0)s,  scond1 = %(scond1)s,  scond2 = %(scond2)s,
         scond3 = %(scond3)s,  pday = %(pday)s,  c1smv = %(c1smv)s,
@@ -318,7 +318,7 @@ class Observation:
             txn.execute(sql, self.data)
         if skip_current or (force_current_log and txn.rowcount == 0):
             sql = """INSERT into current_log
-            (iemid, tmpf, dwpf, drct, sknt, indoor_tmpf,
+            (iemid, tmpf, dwpf, drct, sknt,
             tsf0, tsf1, tsf2, tsf3, rwis_subf, scond0, scond1, scond2, scond3,
             valid, pday, c1smv, c2smv, c3smv, c4smv, c5smv, c1tmpf, c2tmpf,
             c3tmpf, c4tmpf, c5tmpf, pres, relh, srad, vsby, phour, gust, raw,
@@ -332,7 +332,7 @@ class Observation:
             tsoil_16in_f, tsoil_20in_f, tsoil_32in_f, tsoil_40in_f,
             tsoil_64in_f, tsoil_128in_f) VALUES(
             %(iemid)s, %(tmpf)s, %(dwpf)s, %(drct)s, %(sknt)s,
-            %(indoor_tmpf)s, %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
+            %(tsf0)s, %(tsf1)s, %(tsf2)s, %(tsf3)s,
             %(rwis_subf)s, %(scond0)s, %(scond1)s, %(scond2)s, %(scond3)s,
             %(valid)s, %(pday)s, %(c1smv)s, %(c2smv)s, %(c3smv)s, %(c4smv)s,
             %(c5smv)s, %(c1tmpf)s, %(c2tmpf)s, %(c3tmpf)s, %(c4tmpf)s,
