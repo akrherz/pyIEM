@@ -10,6 +10,8 @@ All notable changes to this library are documented in this file.
 - Add dependencies on `nh3` and `paste`.
 - Raise `NewDatabaseConnectionFailure` from `pyiem.database.get_dbconn` for
 all failures and stop emitting `UserWarning`.
+- Raise `UnknownStationException` from `pyiem.util.get_autoplot_context` when
+an unknown station is provided.
 - Repurpose LSR type internal code `q` for `SNOW SQUALL`.
 
 ### New Features

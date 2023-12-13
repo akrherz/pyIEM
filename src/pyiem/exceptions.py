@@ -67,3 +67,7 @@ class UGCParseException(Exception):
 
 class UnitsError(Exception):
     """Exception for bad Units."""
+
+
+class UnknownStationException(Exception):
+    """Exception for unknown station."""
