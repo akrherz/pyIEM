@@ -13,7 +13,7 @@ import numpy as np
 # third party
 import pytest
 from pyiem import util
-from pyiem.exceptions import NoDataFound
+from pyiem.exceptions import UnknownStationException
 
 
 def test_logger_level():
@@ -252,7 +252,7 @@ def test_get_autoplot_wfo():
     ctx = util.get_autoplot_context(form, cfg)
     assert ctx["cwa"] == "TJSJ"
     form = dict(cwa="XXX", network="WFO")
-    with pytest.raises(NoDataFound):
+    with pytest.raises(UnknownStationException):
         util.get_autoplot_context(form, cfg)
 
 
@@ -272,7 +272,7 @@ def test_get_autoplot_context_network():
     cfg = dict(
         arguments=[dict(type="station", name="station", default="IA0000")]
     )
-    with pytest.raises(NoDataFound):
+    with pytest.raises(UnknownStationException):
         util.get_autoplot_context(form, cfg)
 
 

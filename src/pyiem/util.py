@@ -27,7 +27,7 @@ from metpy.units import masked_array, units
 
 # NB: careful with circular imports!
 from pyiem import database
-from pyiem.exceptions import NoDataFound
+from pyiem.exceptions import UnknownStationException
 from pyiem.network import Table as NetworkTable
 from pyiem.reference import state_names
 
@@ -381,7 +381,7 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 elif ctx[netname] == "WFO" and value in ["JSJ", "SJU"]:
                     value = "TJSJ"
                 else:
-                    raise NoDataFound("Station metadata unavailable.")
+                    raise UnknownStationException("Unknown station provided.")
             # A helper to remove downstream boilerplate
             sname = ctx[ntname].sts.get(value, {"name": f"(({value}))"})[
                 "name"
