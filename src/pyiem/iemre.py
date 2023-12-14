@@ -89,8 +89,8 @@ def set_grids(valid, ds, table=None):
 
     pig = {v: ds[v].values for v in ds}
     updated = 0
-    for y in range(ds.dims["y"]):
-        for x in range(ds.dims["x"]):
+    for y in range(ds.sizes["y"]):
+        for x in range(ds.sizes["x"]):
             arr = [pig[v][y, x] for v in ds]
             arr.extend([valid, y * NX + x])
             cursor.execute(query, arr)
