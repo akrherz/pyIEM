@@ -29,7 +29,7 @@ from metpy.units import masked_array, units
 from pyiem import database
 from pyiem.exceptions import UnknownStationException
 from pyiem.network import Table as NetworkTable
-from pyiem.reference import state_names
+from pyiem.reference import ISO8601, state_names
 
 # API compat
 get_dbconn = database.get_dbconn
@@ -528,6 +528,23 @@ def exponential_backoff(func, *args, **kwargs):
     return None
 
 
+def delete_property(name, cursor=None):
+    """Delete a property from the database.
+
+    Args:
+      name (str): The name of the property to delete
+      cursor (psycopg2.cursor): Optional database cursor to use
+    """
+    if cursor is None:
+        pgconn, _cursor = get_dbconnc("mesosite")
+    else:
+        _cursor = cursor
+    _cursor.execute("DELETE from properties WHERE propname = %s", (name,))
+    if cursor is None:
+        pgconn.commit()
+        pgconn.close()
+
+
 def get_properties(cursor=None):
     """Fetch the properties set
 
@@ -545,6 +562,36 @@ def get_properties(cursor=None):
     if cursor is None:
         pgconn.close()
     return res
+
+
+def set_property(name, value, cursor=None):
+    """
+    Set a property value in the database.
+
+    Args:
+      name (str): The name of the property to set
+      value (str,datetime): The value to set
+      cursor (psycopg2.cursor): Optional database cursor to use
+    """
+    if cursor is None:
+        pgconn, _cursor = get_dbconnc("mesosite")
+    else:
+        _cursor = cursor
+    # auto convert datetime to ISO8601 string
+    if isinstance(value, datetime):
+        value = value.strftime(ISO8601)
+    _cursor.execute(
+        "UPDATE properties SET propvalue = %s WHERE propname = %s",
+        (value, name),
+    )
+    if _cursor.rowcount == 0:
+        _cursor.execute(
+            "INSERT into properties (propname, propvalue) VALUES (%s, %s)",
+            (name, value),
+        )
+    if cursor is None:
+        pgconn.commit()
+        pgconn.close()
 
 
 def drct2text(drct):

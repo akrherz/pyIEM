@@ -35,6 +35,9 @@ import pyproj
     Z_FRAME,
 ] = range(2, 13)
 
+# IEM opinion on ISO 8601
+ISO8601 = "%Y-%m-%dT%H:%M:%SZ"
+
 TAF_VIS_OVER_6SM = 6.01
 TRACE_VALUE = 0.0001
 # https://github.com/twitter/twitter-text/tree/master/config

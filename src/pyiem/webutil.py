@@ -134,7 +134,7 @@ def log_request(environ):
 
 def compute_ts_from_string(form, key):
     """Convert a string to a timestamp."""
-    # Support various ISO9660 formats
+    # Support various ISO8601 formats
     tstr = form[key].replace("T", " ")
     tz = ZoneInfo(form.get("tz", "America/Chicago"))
     if tstr.endswith("Z"):
