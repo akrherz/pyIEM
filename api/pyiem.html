@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+gc4f20ea documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+g4d5de48 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=1d13d6a0"></script>
+    <script src="../_static/documentation_options.js?v=3a0c2010"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc4f20ea documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4d5de48 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -855,6 +855,20 @@ the minimum time a site is considered to be ‘online’ within</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.util.delete_property">
+<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">delete_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.delete_property" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a property from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property to delete</p></li>
+<li><p><strong>cursor</strong> (<em>psycopg2.cursor</em>) – Optional database cursor to use</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.util.drct2text">
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">drct2text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drct</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.drct2text" title="Link to this definition">¶</a></dt>
 <dd><p>Convert an degree value to text representation of direction.</p>
@@ -1053,6 +1067,21 @@ lock files is problematic.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>text that looks noaaportish</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.util.set_property">
+<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">set_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.set_property" title="Link to this definition">¶</a></dt>
+<dd><p>Set a property value in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property to set</p></li>
+<li><p><strong>value</strong> (<em>str</em><em>,</em><em>datetime</em>) – The value to set</p></li>
+<li><p><strong>cursor</strong> (<em>psycopg2.cursor</em>) – Optional database cursor to use</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1592,6 +1621,7 @@ text format.</p>
 </li>
 <li><a class="reference internal" href="#pyiem.util.c2f"><code class="docutils literal notranslate"><span class="pre">c2f()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.convert_value"><code class="docutils literal notranslate"><span class="pre">convert_value()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.util.delete_property"><code class="docutils literal notranslate"><span class="pre">delete_property()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.drct2text"><code class="docutils literal notranslate"><span class="pre">drct2text()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.exponential_backoff"><code class="docutils literal notranslate"><span class="pre">exponential_backoff()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.find_ij"><code class="docutils literal notranslate"><span class="pre">find_ij()</span></code></a></li>
@@ -1607,6 +1637,7 @@ text format.</p>
 <li><a class="reference internal" href="#pyiem.util.mm2inch"><code class="docutils literal notranslate"><span class="pre">mm2inch()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.ncopen"><code class="docutils literal notranslate"><span class="pre">ncopen()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.noaaport_text"><code class="docutils literal notranslate"><span class="pre">noaaport_text()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.util.set_property"><code class="docutils literal notranslate"><span class="pre">set_property()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.ssw"><code class="docutils literal notranslate"><span class="pre">ssw()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.utc"><code class="docutils literal notranslate"><span class="pre">utc()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.util.web2ldm"><code class="docutils literal notranslate"><span class="pre">web2ldm()</span></code></a></li>
@@ -1674,7 +1705,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc4f20ea documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g4d5de48 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
