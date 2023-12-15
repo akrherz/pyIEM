@@ -14,6 +14,7 @@ import numpy as np
 import pytest
 from pyiem import util
 from pyiem.exceptions import UnknownStationException
+from pyiem.reference import ISO8601
 
 
 def test_logger_level():
@@ -523,7 +524,7 @@ def test_property_datetime_roundtrip():
     value = util.utc()
     util.set_property("test", value)
     props = util.get_properties()
-    assert props["test"] == value.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert props["test"] == value.strftime(ISO8601)
 
 
 def test_property_lifecycle():

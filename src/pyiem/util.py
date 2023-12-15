@@ -29,7 +29,7 @@ from metpy.units import masked_array, units
 from pyiem import database
 from pyiem.exceptions import UnknownStationException
 from pyiem.network import Table as NetworkTable
-from pyiem.reference import state_names
+from pyiem.reference import ISO8601, state_names
 
 # API compat
 get_dbconn = database.get_dbconn
@@ -577,9 +577,9 @@ def set_property(name, value, cursor=None):
         pgconn, _cursor = get_dbconnc("mesosite")
     else:
         _cursor = cursor
-    # auto convert datetime to ISO9660 string
+    # auto convert datetime to ISO8601 string
     if isinstance(value, datetime):
-        value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
+        value = value.strftime(ISO8601)
     _cursor.execute(
         "UPDATE properties SET propvalue = %s WHERE propname = %s",
         (value, name),
