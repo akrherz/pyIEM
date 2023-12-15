@@ -503,6 +503,45 @@ def test_vtecps():
     assert ctx.get("phenomenav5") is None
 
 
+@pytest.mark.parametrize("database", ["mesosite"])
+def test_set_property(dbcursor):
+    """Test that we can set a property."""
+    util.set_property("test", "test", cursor=dbcursor)
+    dbcursor.execute(
+        "SELECT propvalue from properties where propname = 'test'"
+    )
+    assert dbcursor.fetchone()["propvalue"] == "test"
+    util.delete_property("test", cursor=dbcursor)
+    dbcursor.execute(
+        "SELECT propvalue from properties where propname = 'test'"
+    )
+    assert dbcursor.rowcount == 0
+
+
+def test_property_datetime_roundtrip():
+    """Test that we can roundtrip a datetime."""
+    value = util.utc()
+    util.set_property("test", value)
+    props = util.get_properties()
+    assert props["test"] == value.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def test_property_lifecycle():
+    """Allow code to create, update, list, and delete properties."""
+    rand_propname = "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
+    )
+    rand_propval = "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(7)
+    )
+    util.set_property(rand_propname, rand_propval)
+    props = util.get_properties()
+    assert props[rand_propname] == rand_propval
+    util.delete_property(rand_propname)
+    props = util.get_properties()
+    assert rand_propname not in props
+
+
 def test_properties_nocursor():
     """Test that a cursor is generated when necessary."""
     props = util.get_properties()
