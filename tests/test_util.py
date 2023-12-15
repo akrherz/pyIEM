@@ -525,6 +525,9 @@ def test_property_datetime_roundtrip():
     util.set_property("test", value)
     props = util.get_properties()
     assert props["test"] == value.strftime(ISO8601)
+    util.delete_property("test")
+    props = util.get_properties()
+    assert "test" not in props
 
 
 def test_property_lifecycle():
