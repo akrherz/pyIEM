@@ -29,6 +29,7 @@ mod_wsgi apps and remove downstream boilerplate.
 - [SHEF] Fix `DD` modifier when we are crossing a month.
 - [SHEF] Fix significant bug with Paired Values (ref SHEF Manual 7.4.6) not
 properly computing magnitude for encoded float values.
+- [SHEF] Forgive a random nan that keeps appearing in RRSRAH.
 - [SHEF] Prevent extraneous "/" added to contination .A and .E messages.
 - [SHEF] Support 0.001 encoding of Trace values.
 - Allow for calm percentage plotting space in windrose with rmax set (#798).

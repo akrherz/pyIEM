@@ -780,6 +780,8 @@ def compute_num_value(element) -> bool:
     # All stars/dashes appears in the wild and is supported by SHEFIT
     if all(x in ["*", "-", "M"] for x in element.str_value):
         return True
+    # Cull out nan
+    element.str_value = element.str_value.replace("nan", "")
     # Can trace
     if element.str_value in ["T", "0.001"]:
         if element.physical_element in TRACE_PHYSICAL_CODES:
