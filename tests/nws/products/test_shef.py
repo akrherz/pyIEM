@@ -35,6 +35,13 @@ def prod():
     return res
 
 
+def test_231220_random_nan():
+    """Test that a random nan can be handled."""
+    utcnow = utc(2023, 12, 20, 12)
+    prod = parser(get_test_file("SHEF/RRSRAH.txt"), utcnow=utcnow)
+    assert len(prod.data) == 1
+
+
 def test_231129_rr3dmx_twoslash():
     """Test that we can rectify this without two slashes."""
     utcnow = utc(2023, 11, 13, 16, 41)
