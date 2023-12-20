@@ -10,6 +10,7 @@ from pyiem.util import get_test_file, utc
 def test_200926_nokey(dbcursor):
     """Test that we add a new observation key, when necessary."""
     prod = hmlparser(get_test_file("HML/HMLMOB.txt"))
+    str(prod)
     prod.sql(dbcursor)
     dbcursor.execute(
         "SELECT key from hml_observed_data WHERE station = 'EFRA1' "
