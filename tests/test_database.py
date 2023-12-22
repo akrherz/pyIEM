@@ -8,6 +8,22 @@ from pyiem import database
 from pyiem.exceptions import NewDatabaseConnectionFailure
 
 
+def test_get_dbconnc_cursory_name():
+    """Test getting with a cursor name set."""
+    conn, cursor = database.get_dbconnc("mesosite", cursor_name="test")
+    cursor.execute("SELECT 1 as test")
+    assert cursor.rowcount == -1
+    conn.close()
+
+
+def test_get_dbconnc_cursory_noname():
+    """Test getting with a cursor name set."""
+    conn, cursor = database.get_dbconnc("mesosite")
+    cursor.execute("SELECT 1 as test")
+    assert cursor.rowcount == 1
+    conn.close()
+
+
 @pytest.mark.parametrize("database", ["coop"])
 def test_dumper_float32(dbcursor):
     """Test that we can write a float32 to the database."""

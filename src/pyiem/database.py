@@ -105,7 +105,9 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
     return conn
 
 
-def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
+def get_dbconnc(
+    database="mesosite", user=None, host=None, cursor_name=None, **kwargs
+):
     """Helper function to get a database connection + dict_row cursor.
 
     Note that this helper could return a read-only database connection if the
@@ -117,6 +119,7 @@ def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
       user (str,optional): hard coded user to connect as, default: current user
       host (str,optional): hard coded hostname to connect as,
         default: iemdb.local
+      cursor_name (str,optional): name of the cursor to create
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
@@ -127,7 +130,7 @@ def get_dbconnc(database="mesosite", user=None, host=None, **kwargs):
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
     conn.row_factory = dict_row
-    return conn, conn.cursor()
+    return conn, conn.cursor(cursor_name)
 
 
 @contextmanager

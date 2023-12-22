@@ -17,6 +17,7 @@ an unknown station is provided.
 ### New Features
 
 - Add `#{state}wx` hash tags to NWS Local Storm Report social media posts.
+- Add `cursor_name` option to `database.get_dbconnc`.
 - Add `pyiem.iemre.reproject2iemre` helper to bring arbitrary grids onto IEMRE.
 - Add `pyiem.util.{delete,set}_property` helpers.
 - Introduce `pyiem.webutil.iemapp` decorator to do fancy things for IEM
