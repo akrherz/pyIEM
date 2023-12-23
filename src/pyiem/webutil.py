@@ -327,6 +327,8 @@ def iemapp(**kwargs):
             # Ensure we close any database connections
             for key in environ:
                 if DBKEY_RE.match(key):
+                    if not environ[key.replace(".conn", ".cursor")].closed:
+                        environ[key.replace(".conn", ".cursor")].close()
                     environ[key].close()
             return res
 
