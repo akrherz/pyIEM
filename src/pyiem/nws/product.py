@@ -316,7 +316,7 @@ class TextProductSegment:
 
     def get_ugcs_tuple(self):
         """Helper to return a tuple useful for SQL."""
-        return tuple(str(u) for u in self.ugcs)
+        return tuple(self.get_ugcs_list())
 
     def get_ugcs_list(self):
         """Helper to return a list useful for SQL."""
@@ -526,11 +526,6 @@ class TextProductSegment:
             if isinstance(poly, MultiPolygon):
                 self.tp.warnings.append(
                     "LAT...LON buffer(0) returned multipolygon, culling."
-                )
-                return None
-            if not poly.is_valid:
-                self.tp.warnings.append(
-                    f"LAT...LON polygon is invalid twice!\n{poly.exterior.xy}"
                 )
                 return None
             self.tp.warnings.append(
