@@ -61,6 +61,7 @@ def test_gh652_trailingspace():
     data = get_test_file("AWW/AWWBZN.txt")
     prod = productparser(data)
     assert prod.segments[0].ugcexpire == utc(2022, 9, 9, 22, 45)
+    assert prod.segments[0].get_ugcs_tuple()
 
 
 def test_220627_timestamp():
