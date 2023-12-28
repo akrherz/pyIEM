@@ -50,14 +50,10 @@ def test_web2ldm():
 def test_web2ldm_dup():
     """Test that we fail when inserting a duplicate."""
     pqstr = str(util.utc())
-    util.web2ldm(
-        "http://mesonet.agron.iastate.edu/robots.txt",
-        pqstr,
-        md5_from_name=True,
-    )
     assert not util.web2ldm(
         "http://mesonet.agron.iastate.edu/robots.txt",
         pqstr,
+        pqinsert="Boghs",
         md5_from_name=True,
     )
 

@@ -285,9 +285,7 @@ class MapPlot:
         hatches = ["+", "/", "\\", "-", "x"]
         if valid is None:
             valid = ""
-        elif isinstance(valid, datetime.date):
-            valid = valid.strftime("%Y-%m-%d")
-        elif isinstance(valid, datetime.datetime):
+        elif isinstance(valid, (datetime.date, datetime.datetime)):
             valid = valid.strftime("%Y-%m-%d")
         url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
         try:

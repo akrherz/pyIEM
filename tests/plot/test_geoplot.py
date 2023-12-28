@@ -6,6 +6,7 @@ import os
 import tempfile
 
 import matplotlib.colors as mpcolors
+import mock
 import numpy as np
 import pytest
 
@@ -452,6 +453,25 @@ def test_issue98_labelbar():
     )
     mp.draw_colorbar(clevs, cmap, norm, spacing="proportional")
     return mp.fig
+
+
+def test_postprocess_memcache():
+    """Excercise the memcache logic."""
+    mp = MapPlot()
+    memcache = mock.Mock()
+    mp.postprocess(memcache=memcache, memcachekey="test")
+
+
+def test_postprocess_web():
+    """Excercise the web logic."""
+    mp = MapPlot()
+    mp.postprocess(web=True)
+
+
+def test_postprocess_pqstr():
+    """Excercise the web logic."""
+    mp = MapPlot()
+    mp.postprocess(pqstr="daryl")
 
 
 def test_savefile():
