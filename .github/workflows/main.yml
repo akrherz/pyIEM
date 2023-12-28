@@ -59,11 +59,13 @@ jobs:
         # mod_wsgi is here and needs apxs from above
         python -m pip install -r pip_requirements.txt
 
-    - name: Install pyiem
+    - name: Install and test pyiem
       run: |
         set -e
         python -m pip install . --upgrade --no-deps
         python util/insert_testing_data.py
+        # get pqinsert available as a dummy command
+        export PATH=$PATH:$(pwd)/tests/bin
         # xdist and coverage seems to necessitate this
         python -m pytest --cov=pyiem -n 4 --mpl --mpl-results-path=mplresults
         python -m coverage xml
