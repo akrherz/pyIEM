@@ -87,7 +87,7 @@ jobs:
 
     - name: Deploy Docs
       if: ${{ matrix.PYTHON_VERSION == '3.11' }}
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BASE_BRANCH: main # The branch the action should deploy from.
