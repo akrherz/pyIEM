@@ -111,22 +111,15 @@ def mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=False):
     Returns:
       temperature (temperature): The feels like temperature
     """
-    is_not_scalar = isinstance(tmpf.m, (list, tuple, np.ndarray))
+    is_scalar = not isinstance(tmpf.m, (list, tuple, np.ndarray))
     app = mcalc.apparent_temperature(
         tmpf,
         mcalc.relative_humidity_from_dewpoint(tmpf, dwpf),
         smps,
         mask_undefined=mask_undefined,
     )
-    if hasattr(app, "mask"):
-        if is_not_scalar:
-            app[app.mask] = tmpf[app.mask]
-        else:
-            if mask_undefined:
-                return app[0]
-            app = tmpf
-
-    return app
+    # Ensures we roundtrip a scalar
+    return app[0] if is_scalar else app
 
 
 def windchill(temperature, speed):

@@ -41,14 +41,25 @@ def test_vectorized2():
     assert abs(hdx.value("F")[0] - 83.93) < 0.01
 
 
+def test_mask_undefined_valid_apparent_temp():
+    """Test that we don't get back our temperature when this is valid."""
+    tmpf = units("degF") * 90
+    dwpf = units("degF") * 80
+    smps = units("meter per second") * 10
+    feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=True)
+    assert not hasattr(feels.m, "mask")
+    assert tmpf.m != feels.m
+
+
 def test_undefined_apparent_temp():
     """Test that an undefined apparent temperature scalar is ok."""
     tmpf = units("degF") * 60
     dwpf = units("degF") * 50
     smps = units("meter per second") * 10
     feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=True)
-    assert np.ma.is_masked(feels.m)
+    assert hasattr(feels.m, "mask")
     feels = meteorology.mcalc_feelslike(tmpf, dwpf, smps, mask_undefined=False)
+    assert not hasattr(feels.m, "mask")
     assert feels.m == tmpf.m
 
 

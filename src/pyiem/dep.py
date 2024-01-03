@@ -586,11 +586,8 @@ def _date_from_year_jday(df):
 def read_wb(filename):
     """Read a *custom* WEPP .wb file into Pandas Data Table"""
     df = pd.read_csv(filename, sep=r"\s+", na_values=["*******", "******"])
-    if df.empty:
-        df["date"] = None
-    else:
-        # Considerably faster than df.apply
-        _date_from_year_jday(df)
+    # Considerably faster than df.apply
+    _date_from_year_jday(df)
     return df
 
 
