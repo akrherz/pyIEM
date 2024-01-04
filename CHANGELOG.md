@@ -11,6 +11,9 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Fix `iemre.reproject2iemre` to return a masked_array and handle an input
+masked array.
+
 ## **1.18.0** (29 Dec 2023)
 
 ### API Changes

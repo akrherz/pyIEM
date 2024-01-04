@@ -8,6 +8,18 @@ from pyiem import database, iemre
 from pyiem.util import utc
 
 
+def test_reproject_masked_array():
+    """Test that we can handle an input masked array."""
+    # 30 km grid over Iowa 520km x 360km
+    affine_in = Affine(30000.0, 0.0, 202050.0, 0.0, 30000.0, 4470000.0)
+    crs_in = {"init": "epsg:26915"}
+    vals = np.ma.array(np.ones((12, 17)), mask=True)
+    res = iemre.reproject2iemre(vals, affine_in, crs_in)
+    # get value for Ames Iowa
+    i, j = iemre.find_ij(-93.62, 42.02)
+    assert res.mask[j, i]
+
+
 def test_reproject_epsg26915_iowa_to_iemre_sn():
     """Test that a bunch of ones over Iowa get reprojected to IEMRE."""
     # 30 km grid over Iowa 520km x 360km
@@ -19,10 +31,10 @@ def test_reproject_epsg26915_iowa_to_iemre_sn():
     assert res[j, i] == 1.0
     # get value for St Louis Missouri
     i, j = iemre.find_ij(-90.20, 38.63)
-    assert np.isnan(res[j, i])
+    assert res.mask[j, i]
     # get value for Minneapolis Minnesota
     i, j = iemre.find_ij(-93.26, 44.98)
-    assert np.isnan(res[j, i])
+    assert res.mask[j, i]
 
 
 def test_reproject_epsg26915_iowa_to_iemre():
@@ -36,7 +48,7 @@ def test_reproject_epsg26915_iowa_to_iemre():
     assert res[j, i] == 1.0
     # get value for St Louis Missouri
     i, j = iemre.find_ij(-90.20, 38.63)
-    assert np.isnan(res[j, i])
+    assert res.mask[j, i]
 
 
 def test_reproject():
