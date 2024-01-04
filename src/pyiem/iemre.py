@@ -226,7 +226,7 @@ def get_gid(lon, lat):
     return j * NX + i
 
 
-def reproject2iemre(grid, affine_in, crs_in, resampling=None, dst_nodata=None):
+def reproject2iemre(grid, affine_in, crs_in, resampling=None):
     """Reproject the given grid to IEMRE grid, returning S to N oriented grid.
 
     Note: If the affine_in is dy > 0 then the grid is assumed to be S to N.
@@ -236,12 +236,15 @@ def reproject2iemre(grid, affine_in, crs_in, resampling=None, dst_nodata=None):
         affine_in (affine.Affine): affine transform of input grid
         crs_in (pyproj.Proj): projection of input grid
         resampling (rasterio.warp.Resampling,optional): defaults to nearest
-        dst_nodata (float,optional): defaults to np.nan
 
     Returns:
-        numpy.array of reprojected grid oriented S to N like IEMRE
+        numpy.ma.array of reprojected grid oriented S to N like IEMRE
     """
     data = np.zeros((NY, NX), float)
+    # If source is a masked array, we need to fill it
+    src_is_masked = hasattr(grid, "mask")
+    if src_is_masked:
+        grid = grid.filled(np.nan)
     reproject(
         grid,
         data,
@@ -249,9 +252,10 @@ def reproject2iemre(grid, affine_in, crs_in, resampling=None, dst_nodata=None):
         src_crs=crs_in,
         dst_transform=AFFINE if affine_in.e < 0 else AFFINE_NATIVE,
         dst_crs={"init": "EPSG:4326"},
-        dst_nodata=dst_nodata if dst_nodata is not None else np.nan,
+        dst_nodata=np.nan,
         resampling=(
             resampling if resampling is not None else Resampling.nearest
         ),
     )
+    data = np.ma.array(data, mask=np.isnan(data))
     return data if affine_in.e > 0 else np.flipud(data)
