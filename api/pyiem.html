@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem Package &#8212; pyIEM 0.0.post1+g053d6a3 documentation</title>
+    <title>pyiem Package &#8212; pyIEM 0.0.post1+gc4a121a documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=70d4f335"></script>
+    <script src="../_static/documentation_options.js?v=bbf48cef"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g053d6a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc4a121a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
@@ -330,7 +330,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.reproject2iemre">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">reproject2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_nodata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.reproject2iemre" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">reproject2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.reproject2iemre" title="Link to this definition">¶</a></dt>
 <dd><p>Reproject the given grid to IEMRE grid, returning S to N oriented grid.</p>
 <p>Note: If the affine_in is dy &gt; 0 then the grid is assumed to be S to N.</p>
 <dl class="field-list simple">
@@ -340,11 +340,10 @@ case of forecast data.</p></li>
 <li><p><strong>affine_in</strong> (<em>affine.Affine</em>) – affine transform of input grid</p></li>
 <li><p><strong>crs_in</strong> (<em>pyproj.Proj</em>) – projection of input grid</p></li>
 <li><p><strong>resampling</strong> (<em>rasterio.warp.Resampling</em><em>,</em><em>optional</em>) – defaults to nearest</p></li>
-<li><p><strong>dst_nodata</strong> (<em>float</em><em>,</em><em>optional</em>) – defaults to np.nan</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>numpy.array of reprojected grid oriented S to N like IEMRE</p>
+<dd class="field-even"><p>numpy.ma.array of reprojected grid oriented S to N like IEMRE</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1705,7 +1704,7 @@ text format.</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+g053d6a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gc4a121a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem Package</a></li> 
       </ul>
