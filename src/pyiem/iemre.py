@@ -15,6 +15,7 @@ from psycopg.sql import SQL, Identifier
 from rasterio.warp import Resampling, reproject
 
 from pyiem.database import get_dbconn
+from pyiem.util import LOG, utc
 
 # 1/8 degree grid, grid cell is the lower left corner
 SOUTH = 23.0
@@ -84,25 +85,17 @@ def set_grids(valid, ds, table=None):
         table,
         SQL(",".join(f"{col} = %s" for col in ds)),
     )
-    # Implementation notes: xarray iteration was ~25 secs, loading into memory
-    # instead is a few seconds :/
 
-    pig = {v: ds[v].values for v in ds}
-    updated = 0
-    for y in range(ds.sizes["y"]):
-        for x in range(ds.sizes["x"]):
-            arr = [pig[v][y, x] for v in ds]
-            arr.extend([valid, y * NX + x])
-            cursor.execute(query, arr)
-            updated += 1
-            if updated % 500 == 0:
-                cursor.close()
-                pgconn.commit()
-                cursor = pgconn.cursor()
+    # Implementation notes: seems quite fast
+    pig = {v: ds[v].values.ravel().tolist() for v in ds}
+    pig["valid"] = [f"{valid:%Y-%m-%d}"] * (NX * NY)
+    pig["gid"] = list(range(NX * NY))
 
-    # If we generate a cursor, we should save it
+    sts = utc()
+    cursor.executemany(query, zip(*pig.values()))
     cursor.close()
     pgconn.commit()
+    LOG.info("timing %.2f/s", NX * NY / (utc() - sts).total_seconds())
 
 
 def get_grids(valid, varnames=None, cursor=None, table=None):
