@@ -38,7 +38,7 @@ class WMOProduct:
 
     def parse_wmo(self):
         """Parse things related to the WMO header"""
-        search = WMO_RE.search(self.unixtext[:100])
+        search = WMO_RE.search(self.text[:100])
         if search is None:
             raise TextProductException(
                 f"FATAL: Could not parse WMO header! '{self.text[:100]}'"

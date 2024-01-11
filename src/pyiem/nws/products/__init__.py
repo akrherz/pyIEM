@@ -27,10 +27,10 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """
     from pyiem.nws.product import (
         AFOSRE,
-        WMO_RE,
         TextProduct,
         TextProductException,
     )
+    from pyiem.wmo import WMO_RE
 
     from . import (
         cli,

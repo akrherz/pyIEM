@@ -3,7 +3,6 @@
 import pytest
 from pyiem.nws import product, ugc
 from pyiem.nws.product import (
-    WMO_RE,
     TextProduct,
     TextProductException,
     checker,
@@ -12,6 +11,7 @@ from pyiem.nws.product import (
 )
 from pyiem.nws.products import parser as productparser
 from pyiem.util import get_test_file, utc
+from pyiem.wmo import WMO_RE
 
 
 def test_ahdnwc():

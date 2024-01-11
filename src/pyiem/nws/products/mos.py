@@ -4,8 +4,8 @@
 import datetime
 import re
 
-from pyiem.nws.product import TextProduct
 from pyiem.util import utc
+from pyiem.wmo import WMOProduct
 
 REMAP_VARS = {"X_N": "N_X", "WND": "WSP", "WGS": "GST"}
 
@@ -106,7 +106,7 @@ def make_null(val):
     return val
 
 
-class MOSProduct(TextProduct):
+class MOSProduct(WMOProduct):
     """
     Represents a Model Output Statistics file
     """
@@ -115,7 +115,11 @@ class MOSProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(
+            text,
+            utcnow,
+        )
+        self.unixtext = self.text.replace("\r", "")
         self.data = []
         self.parse_data()
 

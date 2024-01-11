@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 from metpy.units import units
 
-from pyiem.nws.product import TextProduct
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import utc
+from pyiem.wmo import WMOProduct
 
 PARSER_RE = re.compile(
     r"""^(?P<station>[A-Z][A-Z0-9]{3})\s+
@@ -178,24 +178,20 @@ class DSMProduct:
         return txn.rowcount == 1
 
 
-class DSMCollective(TextProduct):
+class DSMCollective(WMOProduct):
     """A collective representing a NOAAPort Text Product with many DSMs."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        TextProduct.__init__(
-            self,
+        super().__init__(
             text,
             utcnow,
-            ugc_provider,
-            nwsli_provider,
-            parse_segments=False,
         )
         # hold our parsing results
         self.data = []
-        lines = self.unixtext.split("\n")
+        lines = self.text.replace("\r", "").split("\n")
         if len(lines) < 4:
             raise ValueError("Impossibly small DSM Text Product?")
         if len(lines[3]) < 10:
