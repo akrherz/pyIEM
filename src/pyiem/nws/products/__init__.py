@@ -1,42 +1,6 @@
 """A generalized parser frontend."""
 from __future__ import absolute_import
 
-from pyiem.nws.product import AFOSRE, WMO_RE, TextProduct, TextProductException
-
-from . import (
-    cli,
-    ero,
-    hwo,
-    lsr,
-    mcd,
-    nhc,
-    saw,
-    sel,
-    spacewx,
-    spcpts,
-    sps,
-    taf,
-    wwp,
-)
-
-XREF = {
-    "CLI": cli.parser,
-    "FFG": mcd.parser,
-    "HWO": hwo.parser,
-    "LSR": lsr.parser,
-    "NHC": nhc.parser,
-    "PFW": spcpts.parser,
-    "PTS": spcpts.parser,
-    "RBG": ero.parser,
-    "SAW": saw.parser,
-    "SEL": sel.parser,
-    "SPS": sps.parser,
-    "SWO": mcd.parser,
-    "TAF": taf.parser,
-    "TCP": nhc.parser,
-    "WWP": wwp.parser,
-}
-
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Omnibus parser of NWS Text Data
@@ -61,6 +25,46 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
       TextProduct: A TextProduct instance
 
     """
+    from pyiem.nws.product import (
+        AFOSRE,
+        TextProduct,
+        TextProductException,
+    )
+    from pyiem.wmo import WMO_RE
+
+    from . import (
+        cli,
+        ero,
+        hwo,
+        lsr,
+        mcd,
+        nhc,
+        saw,
+        sel,
+        spacewx,
+        spcpts,
+        sps,
+        taf,
+        wwp,
+    )
+
+    XREF = {
+        "CLI": cli.parser,
+        "FFG": mcd.parser,
+        "HWO": hwo.parser,
+        "LSR": lsr.parser,
+        "NHC": nhc.parser,
+        "PFW": spcpts.parser,
+        "PTS": spcpts.parser,
+        "RBG": ero.parser,
+        "SAW": saw.parser,
+        "SEL": sel.parser,
+        "SPS": sps.parser,
+        "SWO": mcd.parser,
+        "TAF": taf.parser,
+        "TCP": nhc.parser,
+        "WWP": wwp.parser,
+    }
     tmp = text[:100].replace("\r\r\n", "\n")
     m = WMO_RE.search(tmp)
     if m is not None:

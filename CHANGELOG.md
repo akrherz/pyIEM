@@ -7,6 +7,9 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Introduce `pyiem.wmo.WMOProduct` as a lightweight class for products that
+need little default processing.  `pyiem.nws.product.TextProduct` inherits.
+
 ### New Features
 
 ### Bug Fixes
