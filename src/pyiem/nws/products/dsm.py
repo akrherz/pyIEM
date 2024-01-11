@@ -189,6 +189,9 @@ class DSMCollective(WMOProduct):
             text,
             utcnow,
         )
+        # appease linter and keep ABI
+        self.ugc_provider = ugc_provider
+        self.nwsli_provider = nwsli_provider
         # hold our parsing results
         self.data = []
         lines = self.text.replace("\r", "").split("\n")

@@ -120,6 +120,8 @@ class MOSProduct(WMOProduct):
             utcnow,
         )
         self.unixtext = self.text.replace("\r", "")
+        self.ugc_provider = ugc_provider
+        self.nwsli_provider = nwsli_provider
         self.data = []
         self.parse_data()
 
