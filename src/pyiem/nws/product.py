@@ -11,6 +11,7 @@ from pyiem import reference
 from pyiem.exceptions import InvalidPolygon, TextProductException
 from pyiem.nws import hvtec, ugc, vtec
 from pyiem.util import LOG
+from pyiem.wmo import WMOProduct
 
 # The AWIPS Product Identifier is supposed to be 6chars as per directive,
 # but in practice it is sometimes something between 4 and 6 chars
@@ -32,13 +33,6 @@ TIME_EXT_RE = re.compile(
 # Without the line start and end requirement
 TIME_RE_ANYWHERE = re.compile(f"{TIME_FMT}", re.IGNORECASE)
 
-# Note that bbb of RTD is supported here, but does not appear to be allowed
-WMO_RE = re.compile(
-    "^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
-    r"(?P<ddhhmm>[0-3][0-9][0-2][0-9][0-5][0-9])\s*"
-    r"(?P<bbb>[ACR][ACMORT][A-Z])?\s*$",
-    re.M,
-)
 TIME_MOT_LOC = re.compile(
     r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
     r"(?P<dir>[0-9]{1,3})DEG\s+"
@@ -92,7 +86,6 @@ SQUALLIMPACTTAG = re.compile(
     r".*SNOW\s?SQUALL IMPACT\.\.\.(?P<tag>SIGNIFICANT|GENERAL)"
 )
 EF_RE = re.compile(r"^Rating:\s*EF\s?\-?(?P<num>\d)\s*$", re.M | re.I)
-KNOWN_BAD_TTAAII = ["KAWN"]
 ATTN_WFO = re.compile(
     r"ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)"
 )
@@ -619,7 +612,7 @@ class TextProductSegment:
         return affected_wfos
 
 
-class TextProduct:
+class TextProduct(WMOProduct):
     """class representing a NWS Text Product"""
 
     def __init__(
@@ -637,9 +630,8 @@ class TextProduct:
         @param ugc_provider a dictionary of UGC objects already setup
         @param parse_segments should the segments be parsed as well? True
         """
-        self.warnings = []
-
-        self.text = text
+        super().__init__(text, utcnow=utcnow)
+        self.afos = None
         if ugc_provider is None:
             ugc_provider = {}
         if nwsli_provider is None:
@@ -648,26 +640,13 @@ class TextProduct:
         self.nwsli_provider = nwsli_provider
         self.unixtext = text.replace("\r", "")
         self.sections = self.unixtext.split("\n\n")
-        self.afos = None
         # The "truth" timestamp
         self.valid = None
-        # The WMO header based timestamp
-        self.wmo_valid = None
-        self.source = None
-        self.wmo = None
-        self.ddhhmm = None
-        self.bbb = None
-        self.utcnow = utcnow
         self.segments = []
         self.z = None
         self.tz = None
         self.geometry = None
-        if utcnow is None:
-            self.utcnow = datetime.utcnow().replace(tzinfo=timezone.utc)
-        # make sure this is actualing in UTC
-        self.utcnow = self.utcnow.astimezone(timezone.utc)
 
-        self.parse_wmo()
         self.parse_afos()
         self._parse_valid(utcnow)
         if parse_segments:
@@ -897,30 +876,6 @@ class TextProduct:
         if not tokens:
             return
         self.z, self.tz, self.valid = date_tokens2datetime(tokens[0])
-
-    def parse_wmo(self):
-        """Parse things related to the WMO header"""
-        search = WMO_RE.search(self.unixtext[:100])
-        if search is None:
-            raise TextProductException(
-                f"FATAL: Could not parse WMO header! '{self.text[:100]}'"
-            )
-        gdict = search.groupdict()
-        self.wmo = gdict["ttaaii"]
-        self.source = gdict["cccc"]
-        self.ddhhmm = gdict["ddhhmm"]
-        self.bbb = gdict["bbb"]
-        if len(self.wmo) == 4:
-            # Don't whine about known problems
-            if (
-                self.source not in KNOWN_BAD_TTAAII
-                and not self.source.startswith("S")
-            ):
-                self.warnings.append(
-                    f"WMO ttaaii found four chars: {self.wmo} {self.source} "
-                    "adding 00"
-                )
-            self.wmo += "00"
 
     def get_affected_wfos(self):
         """Based on the ugc_provider, figure out which WFOs are impacted by
