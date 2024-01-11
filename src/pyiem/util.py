@@ -16,20 +16,15 @@ from datetime import date, datetime, timedelta, timezone
 from html import escape
 from socket import error as socket_error
 
-import geopandas as gpd
-
-# third party
-import matplotlib
-import netCDF4
-import numpy as np
-import requests
-from metpy.units import masked_array, units
+# !important
+# Lazy import everything possible here, since this module is imported by
+# most everything.
+import numpy as np  # used too many places
 
 # NB: careful with circular imports!
 from pyiem import database
 from pyiem.exceptions import UnknownStationException
 from pyiem.network import Table as NetworkTable
-from pyiem.reference import ISO8601, state_names
 
 # API compat
 get_dbconn = database.get_dbconn
@@ -73,6 +68,8 @@ def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     Returns:
       bool - success of this workflow.
     """
+    import requests
+
     req = requests.get(url, timeout=60)
     if req.status_code != 200:
         return False
@@ -110,6 +107,7 @@ def load_geodf(dataname):
     Returns:
       GeoDataFrame
     """
+    import geopandas as gpd
 
     datadir = os.sep.join([os.path.dirname(__file__), "data"])
     fn = f"{datadir}/geodf/{dataname}.parquet"
@@ -130,6 +128,8 @@ def convert_value(val, units_in, units_out):
     Returns:
       mixed: magnitude of val with unit conversion applied
     """
+    from metpy.units import masked_array, units
+
     fval = masked_array(val, units(units_in)).to(units(units_out)).m
     return fval
 
@@ -235,6 +235,8 @@ def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
     Returns:
       `netCDF4.Dataset` or `None`
     """
+    import netCDF4
+
     if mode != "w" and not os.path.isfile(ncfn):
         raise IOError(f"No such file {ncfn}")
     sts = datetime.utcnow()
@@ -333,6 +335,10 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
     Returns:
       dictionary of variable names and values, with proper types!
     """
+    import matplotlib
+
+    from pyiem.reference import state_names
+
     ctx = {}
     # Check for DPI setting
     val = fdict.get("dpi")
@@ -573,6 +579,8 @@ def set_property(name, value, cursor=None):
       value (str,datetime): The value to set
       cursor (psycopg2.cursor): Optional database cursor to use
     """
+    from pyiem.reference import ISO8601
+
     if cursor is None:
         pgconn, _cursor = get_dbconnc("mesosite")
     else:

@@ -8,7 +8,6 @@ import numpy as np
 import psycopg
 from psycopg.adapt import Dumper
 from psycopg.rows import dict_row
-from sqlalchemy import create_engine
 
 # NB: Careful of cyclic imports here...
 from pyiem.exceptions import NewDatabaseConnectionFailure
@@ -144,6 +143,8 @@ def get_sqlalchemy_conn(text, **kwargs):
         text (str): the database to connect to, passed to get_dbconnstr
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
+    from sqlalchemy import create_engine
+
     # Le Sigh
     connstr = get_dbconnstr(text, **kwargs).replace(
         "postgresql",
