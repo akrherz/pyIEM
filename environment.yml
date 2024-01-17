@@ -42,10 +42,14 @@ dependencies:
   - rasterio
   # Sometimes we download stuff
   - requests
+  # shrug
+  - requests-mock
   # interpolation
   - scipy
   - setuptools_scm
   - shapely
+  # shrug
+  - sphinxcontrib-napoleon
   - sqlalchemy
   # iemre
   - xarray
