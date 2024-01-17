@@ -3,8 +3,15 @@ requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyiem"
+description = "Collection of things that may help with processing weather data."
 dynamic = ["version"]
+keywords = ["meteorology"]
+license = {text = "Apache"}
+name = "pyIEM"
+readme = "README.md"
+
+[project.urls]
+"homepage" = "https://github.com/akrherz/pyIEM"
 
 [tool.pytest.ini_options]
 filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
