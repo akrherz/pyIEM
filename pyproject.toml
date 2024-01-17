@@ -3,6 +3,34 @@ requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
+dependencies = [
+    "affine",
+    "defusedxml",
+    "geopandas",
+    "jinja2",
+    "matplotlib>=3.5.0",
+    "metar",
+    "metpy",
+    "netCDF4",
+    "nh3",
+    "numpy",
+    "pandas",
+    "paste",
+    "pillow",
+    "pyarrow",
+    "pydantic",
+    "pymemcache",
+    "pyproj",
+    "psycopg",
+    "rasterio",
+    "rasterstats",
+    "requests",
+    "scipy",
+    "shapely",
+    # since psycopg 3 support requires it
+    "sqlalchemy>=2",
+    "xarray",
+]
 description = "Collection of things that may help with processing weather data."
 dynamic = ["version"]
 keywords = ["meteorology"]
