@@ -182,7 +182,7 @@ class MCDProduct(TextProduct):
         tokens = CONCERNING.findall(self.unixtext)
         if not tokens:
             return None
-        return tokens[0].strip().rstrip("...")
+        return tokens[0].strip().removesuffix("...")
 
     def parse_discussion_num(self):
         """Figure out what discussion number this is"""
