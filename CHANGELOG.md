@@ -16,6 +16,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 - Fix `iemre.reproject2iemre` to return a masked_array and handle an input
 masked array.
+- Improve `setuptools_scm` plumbing to avoid runtime import.
 
 ## **1.18.0** (29 Dec 2023)
 
