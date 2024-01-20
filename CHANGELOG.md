@@ -12,6 +12,8 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 ### New Features
 
+- Sync NWS VTEC colors per IEM database cross-check review.
+
 ### Bug Fixes
 
 - Fix `iemre.reproject2iemre` to return a masked_array and handle an input

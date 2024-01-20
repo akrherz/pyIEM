@@ -46,7 +46,7 @@ filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
 
 [tool.ruff]
 line-length = 79
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "T"]
 target-version = "py39"
 
 [tool.setuptools_scm]

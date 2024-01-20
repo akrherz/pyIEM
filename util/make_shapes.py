@@ -6,12 +6,14 @@ import warnings
 import geopandas as gpd
 from pyiem.database import get_sqlalchemy_conn
 from pyiem.reference import state_bounds
+from pyiem.util import logger
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 
+LOG = logger()
 PATH = "../src/pyiem/data/geodf"
 # Be annoying
-print("Be sure to run this against Mesonet database and not laptop! DOIT!")
+LOG.info("Be sure to run this against Mesonet database and not laptop! DOIT!")
 
 
 def dump_conus(fn):
@@ -127,9 +129,9 @@ def check_file(fn):
     ets = datetime.datetime.now()
     for idx, row in df.iterrows():
         if not row["geom"].is_valid:
-            print(f"{fn} Abort, invalid geom found @{idx} {row}")
+            LOG.info(f"{fn} Abort, invalid geom found @{idx} {row}")
             sys.exit()
-    print(
+    LOG.info(
         f"runtime: {(ets - sts).total_seconds():.5f}s, "
         + f"entries: {len(df.index)}, fn: {fn}"
     )

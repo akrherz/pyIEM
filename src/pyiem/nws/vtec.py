@@ -115,6 +115,7 @@ VTEC_PHENOMENA = {
 NWS_COLORS = {
     "AF.W": "#A9A9A9",
     "AF.Y": "#696969",
+    "AS.O": "#808080",
     "AS.Y": "#808080",
     "BH.S": "#40E0D0",
     "BW.Y": "#D8BFD8",
@@ -176,6 +177,8 @@ NWS_COLORS = {
     "MA.S": "#FFDAB9",
     "MA.W": "#FFA500",
     "MF.Y": "#708090",
+    "MH.Y": "#696969",
+    "MS.Y": "#F0E68C",
     "RB.Y": "#D8BFD8",
     "RP.S": "#40E0D0",
     "SC.Y": "#D8BFD8",

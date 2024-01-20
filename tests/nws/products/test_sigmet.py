@@ -78,7 +78,6 @@ def test_compute_esol():
     """Test our algo on either side of a line"""
     pts = [[0, 0], [5, 0]]
     pts = compute_esol(pts, 111)
-    print(pts)
     assert abs(pts[0][0] - 0.00) < 0.01
     assert abs(pts[0][1] - 1.00) < 0.01
     assert abs(pts[1][0] - 5.00) < 0.01

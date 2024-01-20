@@ -78,7 +78,6 @@ def test_flwmtr_dueling_etns(dbcursor):
     for i in range(9):
         prod = _vtecparser(get_test_file(f"FLWMTR/FLWMTR_{i}.txt"))
         prod.sql(dbcursor)
-        print(i)
         assert not filter_warnings(prod.warnings)
 
 
@@ -628,7 +627,6 @@ def test_TORE_series(dbcursor):
 def test_190102_exb_newyear(dbcursor):
     """See that we properly can find a complex EXB added in new year."""
     for i in range(4):
-        print(f"processing {i}")
         prod = vtecparser(get_test_file(f"WSWAFG/{i}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
@@ -877,7 +875,6 @@ def test_170303_ccwpoly():
 def test_170115_table_failure(dbcursor):
     """Test WSW series for issues"""
     for i in range(12):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"WSWAMA/WSWAMA_{i:02d}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
@@ -1014,7 +1011,6 @@ def test_150915_noexpire(dbcursor):
 def test_150820_exb(dbcursor):
     """Found a bug with setting of issuance for EXB case!"""
     for i in range(3):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"CFWLWX/{i}.txt"))
         prod.sql(dbcursor)
     # Make sure the issuance time is correct for MDZ014
@@ -1075,7 +1071,6 @@ def test_150304_testtor():
 def test_150203_exp_does_not_end(dbcursor):
     """MWWCAR a VTEC EXP action should not terminate it"""
     for i in range(23):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"MWWCAR/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1087,7 +1082,6 @@ def test_150203_exp_does_not_end(dbcursor):
 def test_150203_null_issue(dbcursor):
     """WSWOKX had null issue times, bad!"""
     for i in range(18):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"WSWOKX/{i}.txt"))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
@@ -1133,7 +1127,6 @@ def test_150105_considerable_tag():
 def test_150105_sbw(dbcursor):
     """FLSLBF SBW that spans two years!"""
     for i in range(7):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"FLSLBF/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1144,7 +1137,6 @@ def test_150105_sbw(dbcursor):
 def test_150105_manycors(dbcursor):
     """WSWGRR We had some issues with this series, lets test it"""
     for i in range(15):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"WSWGRR/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1155,7 +1147,6 @@ def test_150105_manycors(dbcursor):
 def test_150102_multiyear2(dbcursor):
     """WSWSTO See how well we span multiple years"""
     for i in range(17):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"NPWSTO/{i}.txt"))
         prod.sql(dbcursor)
         # side test for expiration message
@@ -1175,8 +1166,6 @@ def test_150102_multiyear2(dbcursor):
 def test_150102_multiyear(dbcursor):
     """WSWOUN See how well we span multiple years"""
     for i in range(13):
-        print(datetime.datetime.utcnow())
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"WSWOUN/{i}.txt"))
         prod.sql(dbcursor)
         # Make sure there are no null issue times
@@ -1210,7 +1199,6 @@ def test_141226_correction():
 def test_141215_correction(dbcursor):
     """I have a feeling we are not doing the right thing for COR"""
     for i in range(6):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"NPWMAF/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1221,7 +1209,6 @@ def test_141215_correction(dbcursor):
 def test_141212_mqt(dbcursor):
     """Updated four rows instead of three, better check on it"""
     for i in range(4):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"MWWMQT/{i}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
@@ -1231,7 +1218,6 @@ def test_141212_mqt(dbcursor):
 def test_141211_null_expire(dbcursor):
     """Figure out why the database has a null expiration for this FL.W"""
     for i in range(0, 13):
-        print(f"Parsing Product: {i}.txt")
         prod = vtecparser(get_test_file(f"FLSIND/{i}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
@@ -1252,7 +1238,6 @@ def test_141210_continues(dbcursor):
 def test_141208_upgrade(dbcursor):
     """See that we can handle the EXB case"""
     for i in range(0, 18):
-        print(f"Processing {i}")
         prod = vtecparser(get_test_file(f"MWWLWX/{i:02d}.txt"))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
@@ -1706,7 +1691,6 @@ def test_141023_upgrade(dbcursor):
 def test_141205_vtec_series(dbcursor):
     """Make sure we don't get any warnings processing this series"""
     for i in range(9):
-        print(f"Processing product: {i}")
         fn = f"WSWOTX/WSW_{i:02d}.txt"
         prod = vtecparser(get_test_file(fn))
         prod.sql(dbcursor)

@@ -444,7 +444,6 @@ def test_051128_invalid(dbcursor):
     spc.sql(dbcursor)
     outlook = spc.get_outlook("WIND", "0.05", 1)
     assert outlook.geometry_layers.is_empty
-    print("\n".join(spc.warnings))
     assert len(spc.warnings) == 4
 
 

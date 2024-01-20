@@ -38,7 +38,6 @@ def main():
             if geo.area < 1:
                 continue
             (lons, lats) = geo.exterior.xy
-            print(f"Masking with geo... {geo.area} {len(lons)}")
 
             ar = list(zip(lons, lats))
             ar.reverse()

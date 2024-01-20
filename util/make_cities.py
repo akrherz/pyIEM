@@ -1,7 +1,6 @@
 """Create the cities pandas dataframe serialization
 https://geodata.lib.berkeley.edu/catalog/stanford-bx729wr3020
 """
-import datetime
 
 from geopandas import read_parquet, read_postgis
 from pyiem.database import get_dbconn
@@ -22,12 +21,7 @@ def main():
         geom_col="geom",
     )
     df.to_parquet(FILENAME)
-    print(df.head(20))
-
-    sts = datetime.datetime.now()
     read_parquet(FILENAME)
-    ets = datetime.datetime.now()
-    print((ets - sts).total_seconds())
 
 
 if __name__ == "__main__":
