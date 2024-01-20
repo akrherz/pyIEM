@@ -4,6 +4,7 @@ import re
 from datetime import timedelta, timezone
 
 from pyiem import reference
+from pyiem.reference import TRACE_VALUE
 from pyiem.util import html_escape
 
 UGC_MATCH = re.compile(r"^[A-Z][A-Z][CZ][0-9][0-9][0-9]$")
@@ -174,7 +175,9 @@ class LSR:
         elif len(tokens) == 1:
             self.magnitude_units = tokens[0]
         val = MAG_UNITS.sub("", text).strip()
-        if val != "":
+        if val == "T":
+            self.magnitude_f = TRACE_VALUE
+        elif val != "":
             self.magnitude_f = float(val)
 
     def get_dbtype(self):
@@ -349,6 +352,8 @@ class LSR:
         elif self.magnitude_units == "F":
             # Report Tornados as EF scale and not F
             mag_long = f"{mag_long} of E{self.magnitude_str}"
+        elif self.magnitude_f is not None and 0 < self.magnitude_f < 0.001:
+            mag_long = f"Trace of {mag_long}"
         elif self.magnitude_f:
             mag_long = (
                 f"{mag_long} of {self.magnitude_f:.2f} {self.magnitude_units}"

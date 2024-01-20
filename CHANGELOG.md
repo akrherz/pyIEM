@@ -18,6 +18,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 masked array.
 - Fix invalid `rtrim()` usage with `removesuffix()`.
 - Improve `setuptools_scm` plumbing to avoid runtime import.
+- Support a variant `Trace` value specified in LSRs.
 
 ## **1.18.0** (29 Dec 2023)
 

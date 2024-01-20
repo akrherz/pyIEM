@@ -2,7 +2,31 @@
 
 import pytest
 from pyiem.nws.products.lsr import parse_lsr, parser
+from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_240120_trace_snow(dbcursor):
+    """Test that Trace snowfall reports can be round tripped."""
+    prod = parser(get_test_file("LSR/LSRREV_trace.txt"))
+    assert len(prod.lsrs) == 2
+    for lsr in prod.lsrs:
+        lsr.sql(dbcursor)
+    dbcursor.execute(
+        """SELECT magnitude from lsrs_2024 WHERE
+        valid = '2024-01-20 15:00+00' and wfo = 'REV' and typetext = 'SNOW'
+        and city = 'Mt. Rose Ski Base'
+        """
+    )
+    assert abs(float(dbcursor.fetchone()["magnitude"]) - TRACE_VALUE) < 0.001
+    jmgs = prod.get_jabbers("")
+    ans = (
+        "At 7:00 AM PST, Mt. Rose Ski Base [Washoe Co, NV] Public reports "
+        "Trace of Snow. Mt. Rose reported a trace of snowfall in the "
+        "past 24 hours. #nvwx #REV/202401201500/202401201500"
+    )
+    assert jmgs[1][2]["twitter"] == ans
 
 
 @pytest.mark.parametrize("database", ["postgis"])

@@ -1,0 +1,27 @@
+518
+NWUS55 KREV 201609
+LSRREV
+
+Preliminary Local Storm Report
+National Weather Service Reno NV
+809 AM PST Sat Jan 20 2024
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0700 AM     Snow             Mammoth Mountain Ski Ba 37.65N 119.04W
+01/20/2024  M5.0 inch        Mono               CA   Public          
+
+            Mammoth Mountain reported 5 inches of
+            snowfall in the past 24 hours.
+
+0700 AM     Snow             Mt. Rose Ski Base       39.32N 119.89W
+01/20/2024  M  T inch        Washoe             NV   Public          
+
+            Mt. Rose reported a trace of snowfall in the
+            past 24 hours.
+
+&&
+
+$$
