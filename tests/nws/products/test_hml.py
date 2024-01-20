@@ -52,5 +52,4 @@ def test_161010_timing():
         hmlparser(get_test_file("HML/HMLARX.txt"))
     ets = datetime.datetime.now()
     rate = (ets - sts).total_seconds() / 100.0
-    print("sec per parse %.4f" % (rate,))
     assert rate < 1.0

@@ -5,10 +5,12 @@ We use a pickled protocol=2, which is compat binary.
 
 import pandas as pd
 from pyiem.database import get_dbconnstr
+from pyiem.util import logger
 
+LOG = logger()
 PATH = "../src/pyiem/data/ramps/"
 # Be annoying
-print("Be sure to run this against Mesonet database and not laptop!")
+LOG.info("Be sure to run this against Mesonet database and not laptop!")
 
 
 def do(ramp):

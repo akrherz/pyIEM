@@ -1,6 +1,5 @@
 """Copy GEMPAK table into a parquet file for table usage."""
 # stdlib
-import datetime
 
 import geopandas as gpd
 
@@ -42,12 +41,7 @@ def process(gemtbl, outfn):
     df = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.lon, df.lat))
     df = df.drop(["lon", "lat"], axis=1)
     df.to_parquet(BASEDIR + outfn)
-    print(df.head(20))
-
-    sts = datetime.datetime.now()
     gpd.read_parquet(BASEDIR + outfn)
-    ets = datetime.datetime.now()
-    print((ets - sts).total_seconds())
 
 
 def main():

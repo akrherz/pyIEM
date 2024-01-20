@@ -22,6 +22,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.util import LOG
 
 # Forgive some typos
 TZ_TYPOS = {
@@ -82,7 +83,7 @@ def _writer_thread():
         try:
             _writer()
         except Exception as exp:
-            print(exp)
+            LOG.exception(exp)
 
 
 def _add_to_queue(data):

@@ -67,8 +67,7 @@ def test_valueerror():
     fn = "tempwind/FD1US1_controlchar.txt"
     data = get_test_file(fn).replace("090159", "190159")
     with pytest.raises(ValueError):
-        prod = parser(data, utcnow=utcnow)
-        print(prod.valid, prod.obtime, prod.ftime)
+        parser(data, utcnow=utcnow)
 
 
 @pytest.mark.parametrize("database", ["asos"])

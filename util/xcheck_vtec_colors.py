@@ -2,6 +2,9 @@
 
 from pyiem.database import get_dbconn
 from pyiem.nws.vtec import NWS_COLORS, get_ps_string
+from pyiem.util import logger
+
+LOG = logger()
 
 
 def main():
@@ -17,7 +20,7 @@ def main():
     for row in cursor:
         key = f"{row[0]}.{row[1]}"
         if key not in NWS_COLORS:
-            print(f"{get_ps_string(row[0], row[1])}({key}) count:{row[2]}")
+            LOG.info(f"{get_ps_string(row[0], row[1])}({key}) count:{row[2]}")
 
 
 if __name__ == "__main__":
