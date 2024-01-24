@@ -65,7 +65,7 @@ class CachingZonalStats:
                 mask = mask[:, abs(x0) :]
                 xsz -= abs(x0)
                 x0 = 0
-            if (x0 + xsz) >= gridxsz:
+            if (x0 + xsz) > gridxsz:
                 clipx = (x0 + xsz) - gridxsz
                 LOG.debug("clipping %s x points", clipx)
                 mask = mask[:, : (0 - clipx)]
@@ -74,7 +74,7 @@ class CachingZonalStats:
                 mask = mask[abs(y0) :, :]
                 ysz -= abs(y0)
                 y0 = 0
-            if (y0 + ysz) >= gridysz:
+            if (y0 + ysz) > gridysz:
                 clipy = (y0 + ysz) - gridysz
                 LOG.debug("clipping %s y points", clipy)
                 mask = mask[: (0 - clipy), :]
