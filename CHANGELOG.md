@@ -19,6 +19,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 - Fix `iemre.reproject2iemre` to return a masked_array and handle an input
 masked array.
 - Fix invalid `rtrim()` usage with `removesuffix()`.
+- Fix off-by-one when `grid.zs` hits a mask right at the border.
 - Improve `setuptools_scm` plumbing to avoid runtime import.
 - Support a variant `Trace` value specified in LSRs.
 
