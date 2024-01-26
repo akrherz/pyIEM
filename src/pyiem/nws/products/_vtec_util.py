@@ -65,7 +65,7 @@ def which_year(txn, prod, segment, vtec):
             min(issue at time zone 'UTC') as min_issue from warnings
             WHERE wfo = %s and eventid = %s and significance = %s and
             phenomena = %s and ((updated > %s and updated <= %s)
-            or expire > %s) and status not in ('UPG', 'CAN')
+            or (expire > %s and expire < %s)) and status not in ('UPG', 'CAN')
             GROUP by tablename, hvtec_nwsli ORDER by tablename DESC
             """,
             (
@@ -76,6 +76,7 @@ def which_year(txn, prod, segment, vtec):
                 prod.valid - timedelta(days=offset),
                 prod.valid,
                 prod.valid,
+                prod.valid + timedelta(days=31),  # life choices
             ),
         )
         rows = txn.fetchall()

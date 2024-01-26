@@ -16,6 +16,8 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 ### Bug Fixes
 
+- Constrain a VTEC database search for expiration times not infinitely into
+the future.
 - Fix `iemre.reproject2iemre` to return a masked_array and handle an input
 masked array.
 - Fix invalid `rtrim()` usage with `removesuffix()`.

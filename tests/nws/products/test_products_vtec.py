@@ -1701,6 +1701,10 @@ def test_141205_vtec_series(dbcursor):
 @pytest.mark.parametrize("database", ["postgis"])
 def test_vtec_series(dbcursor):
     """Test a lifecycle of WSW products"""
+    # This is from 2024, which will exercise an archive search
+    prod = vtecparser(get_test_file("WSWDMX/WSW_N1.txt"))
+    prod.sql(dbcursor)
+
     prod = vtecparser(get_test_file("WSWDMX/WSW_00.txt"))
     assert prod.afos == "WSWDMX"
     prod.sql(dbcursor)
