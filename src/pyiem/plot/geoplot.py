@@ -59,16 +59,16 @@ from pyiem.plot.util import (
     sector_setter,
     update_kwargs_apctx,
 )
-from pyiem.reference import (  # noqa: F401  # pylint: disable=unused-import
+from pyiem.reference import (
     FIGSIZES,
     LATLON,
     TWITTER_RESOLUTION_INCH,
     Z_CF,
-    Z_CLIP,
-    Z_CLIP2,
+    Z_CLIP,  # noqa
+    Z_CLIP2,  # noqa
     Z_FILL,
     Z_FILL_LABEL,
-    Z_FRAME,
+    Z_FRAME,  # noqa
     Z_OVERLAY,
     Z_OVERLAY2,
     Z_POLITICAL,

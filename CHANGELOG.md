@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 - Drop `pyiem.nwnformat` as it is no longer used.
 - Introduce `pyiem.wmo.WMOProduct` as a lightweight class for products that
 need little default processing.  `pyiem.nws.product.TextProduct` inherits.
+- Remove `import *` usage from `pyiem.plot`.  This was a bad daryl mistake.
 
 ### New Features
 

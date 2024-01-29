@@ -11,14 +11,17 @@ import numpy as np
 import pytest
 
 # Local
-from pyiem import plot
 from pyiem.dep import RAMPS
-from pyiem.plot import (
-    MapPlot,
+from pyiem.plot.colormaps import (
     dep_erosion,
-    load_bounds,
-    mask_outside_geom,
+    james,
+    james2,
+    maue,
+    nwssnow,
+    whitebluegreenyellowred,
 )
+from pyiem.plot.geoplot import MapPlot, load_bounds
+from pyiem.plot.util import mask_outside_geom
 from pyiem.reference import LATLON, TWITTER_RESOLUTION_INCH
 from pyiem.util import load_geodf, utc
 from shapely.geometry import Polygon
@@ -436,7 +439,7 @@ def test_issue98_labelbar():
         sector="iowa",
         nocaption=True,
     )
-    cmap = copy.copy(plot.maue())
+    cmap = copy.copy(maue())
     cmap.set_under("white")
     cmap.set_over("black")
     clevs = np.arange(0, 1.0, 0.1)
@@ -726,7 +729,7 @@ def test_climdiv():
 def test_colorbar():
     """Run tests against the colorbar algorithm"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = copy.copy(plot.maue())
+    cmap = copy.copy(maue())
     cmap.set_under("white")
     clevs = list(range(0, 101, 10))
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -739,7 +742,7 @@ def test_colorbar():
 def test_colorbar2():
     """draw a colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = plot.maue()
+    cmap = maue()
     clevs = list(range(0, 101, 10))
     clevlabels = [
         "One",
@@ -765,7 +768,7 @@ def test_colorbar2():
 def test_colorbar3():
     """draw another colorbar"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    cmap = copy.copy(plot.maue())
+    cmap = copy.copy(maue())
     cmap.set_over("black")
     clevs = [0, 100, 250, 500, 1000, 2000, 20000]
     norm = mpcolors.BoundaryNorm(clevs, cmap.N)
@@ -932,13 +935,13 @@ def test_cwa():
 
 def test_colorramps():
     """make sure our colorramps are happy"""
-    c = plot.james()
+    c = james()
     assert c.N == 12
-    c = plot.james2()
+    c = james2()
     assert c.N == 12
-    c = plot.whitebluegreenyellowred()
+    c = whitebluegreenyellowred()
     assert c.N == 236
-    c = plot.nwssnow()
+    c = nwssnow()
     assert c.N == 11
 
 
