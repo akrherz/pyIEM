@@ -2,7 +2,7 @@
 
 import numpy as np
 from pyiem.database import get_dbconn
-from pyiem.plot import MapPlot
+from pyiem.plot.geoplot import MapPlot
 from shapely.geometry import MultiPolygon
 from shapely.wkb import loads
 

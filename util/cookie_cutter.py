@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 
-from pyiem.plot import MapPlot
+from pyiem.plot.geoplot import MapPlot
 from pyiem.reference import SECTORS, state_names, wfo_bounds
 
 
