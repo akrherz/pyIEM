@@ -3,6 +3,7 @@
 import datetime
 import random
 import string
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -33,9 +34,9 @@ def test_numpy_datetime64():
 def test_date_isdaily():
     """Test that providing a date triggers the isdaily logic."""
     ts = datetime.date(2020, 12, 30)
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as w:
         ob = observation.Observation("XXX", "XXX", ts)
-    assert not record
+    assert not w
     assert ob.data["_isdaily"] is True
     assert ob.data["valid"] == ts
 
@@ -71,9 +72,9 @@ def test_pandas_timestamp_tz():
 )
 def test_bounded(val, expected):
     """Test that our bounded function works and does not raise Warnings."""
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as w:
         assert observation.bounded(val, 0, 100) == expected
-    assert not record.list
+    assert not w
 
 
 def test_calc():
