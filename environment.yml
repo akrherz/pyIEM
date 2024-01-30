@@ -3,6 +3,8 @@ dependencies:
   # installing these
   - affine
   - cartopy_offlinedata
+  # only a util requirement
+  - click
   - coverage
   - cython
   - defusedxml
