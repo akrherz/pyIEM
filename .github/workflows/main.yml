@@ -54,11 +54,21 @@ jobs:
       run: |
         . .ci_tooling/memcached.sh
 
-    - name: Install and test pyiem
+    - name: Install pyiem
       run: |
         set -e
         python -m pip install . --upgrade --no-deps
+
+    - name: Populate Data
+      run: |
+        set -e
+        sudo ln -s /home/runner/micromamba /opt/miniconda3
+        python util/create_transformed_parquet.py --justgeodf
         python util/insert_testing_data.py
+
+    - name: Run Tests
+      run: |
+        set -e
         # get pqinsert available as a dummy command
         export PATH=$PATH:$(pwd)/tests/bin
         # xdist and coverage seems to necessitate this

@@ -3,6 +3,8 @@ dependencies:
   # installing these
   - affine
   - cartopy_offlinedata
+  # only a util requirement
+  - click
   - coverage
   - cython
   - defusedxml
@@ -31,6 +33,8 @@ dependencies:
   # Models
   - pydantic
   - pymemcache
+  # Faster shapefile reading
+  - pyogrio
   - pyproj
   - pytest
   - pytest-cov

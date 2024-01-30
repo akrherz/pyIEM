@@ -72,12 +72,24 @@ def draw_features_from_shapefile(gp, name, **kwargs):
         "physical" if name != "borders" else "cultural",
         f"ne_{resolution}_{name2}.shp",
     )
-    # clip is trouble
-    df = (
-        gpd.read_file(shpfn)
-        .to_crs(gp.crs)
-        .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
+    fastfn = (
+        os.path.join(
+            "/opt/miniconda3/pyiem_data/parquet",
+            str(gp.crs.to_epsg()),
+            *shpfn.split(os.sep)[-3:],
+        ).removesuffix(".shp")
+        + ".parquet"
     )
+    if os.path.isfile(fastfn):
+        df = gpd.read_parquet(fastfn).cx[
+            slice(*gp.get_xlim()), slice(*gp.get_ylim())
+        ]
+    else:
+        df = (
+            gpd.read_file(shpfn, engine="pyogrio")
+            .to_crs(gp.crs)
+            .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
+        )
     if not df.empty:
         df.plot(ax=gp.ax, aspect=None, **kwargs)
 
