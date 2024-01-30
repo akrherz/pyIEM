@@ -33,6 +33,8 @@ dependencies:
   # Models
   - pydantic
   - pymemcache
+  # Faster shapefile reading
+  - pyogrio
   - pyproj
   - pytest
   - pytest-cov

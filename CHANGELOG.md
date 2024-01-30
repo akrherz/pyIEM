@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 - Introduce `pyiem.wmo.WMOProduct` as a lightweight class for products that
 need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 - Remove `import *` usage from `pyiem.plot`.  This was a bad daryl mistake.
+- Require `pyogrio` for faster geopandas shapefile reading.
 
 ### New Features
 

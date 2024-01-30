@@ -20,6 +20,7 @@ dependencies = [
     "pyarrow",
     "pydantic",
     "pymemcache",
+    "pyogrio",
     "pyproj",
     "psycopg",
     "rasterio",
