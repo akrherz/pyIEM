@@ -213,7 +213,7 @@ class MapPlot:
                 ylim = gp.ax.get_ylim()
                 # NB using clip here was trouble with geos
                 _df = (
-                    load_geodf("us_states")
+                    load_geodf("us_states", gp.crs.to_epsg())
                     .to_crs(gp.crs)
                     .cx[slice(*gp.get_xlim()), slice(*gp.get_ylim())]
                 )
@@ -1120,7 +1120,10 @@ class MapPlot:
                 counties = False
             break
         zonesfn = "firewx" if kwargs.get("is_firewx", False) else "zone"
-        geodf = load_geodf("ugcs_county" if counties else f"ugcs_{zonesfn}")
+        geodf = load_geodf(
+            "ugcs_county" if counties else f"ugcs_{zonesfn}",
+            self.panels[0].crs.to_epsg(),
+        )
         if self.sector == "state":
             geodf = geodf[geodf.index.str.slice(0, 2) == self.state]
         elif self.sector == "cwa":

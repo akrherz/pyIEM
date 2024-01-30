@@ -98,7 +98,7 @@ def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     return res
 
 
-def load_geodf(dataname):
+def load_geodf(dataname: str, epsg: int = 4326):
     """Load a given bundled GeoDataFrame.
 
     Args:
@@ -109,10 +109,15 @@ def load_geodf(dataname):
     """
     import geopandas as gpd
 
+    preproj = (
+        f"/opt/miniconda3/pyiem_data/parquet/{epsg}/geodf/{dataname}.parquet"
+    )
+    if os.path.isfile(preproj):
+        return gpd.read_parquet(preproj)
+
     datadir = os.sep.join([os.path.dirname(__file__), "data"])
     fn = f"{datadir}/geodf/{dataname}.parquet"
     if not os.path.isfile(fn):
-        LOG.info("load_geodf(%s) failed, file is missing!", fn)
         return gpd.GeoDataFrame()
     return gpd.read_parquet(fn)
 

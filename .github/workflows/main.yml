@@ -54,6 +54,12 @@ jobs:
       run: |
         . .ci_tooling/memcached.sh
 
+    - name: Populate /opt/miniconda3/pyiem_data
+      run: |
+        set -e
+        sudo ln -s /home/runner/miniconda3 /opt/miniconda3
+        python util/create_transformed_parquet.py --justgeodf
+
     - name: Install and test pyiem
       run: |
         set -e
