@@ -62,7 +62,7 @@ jobs:
     - name: Populate Data
       run: |
         set -e
-        sudo ln -s /home/runner/miniconda3 /opt/miniconda3
+        sudo ln -s /home/runner/micromamba /opt/miniconda3
         python util/create_transformed_parquet.py --justgeodf
         python util/insert_testing_data.py
 
