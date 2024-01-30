@@ -113,11 +113,13 @@ def load_geodf(dataname: str, epsg: int = 4326):
         f"/opt/miniconda3/pyiem_data/parquet/{epsg}/geodf/{dataname}.parquet"
     )
     if os.path.isfile(preproj):
-        return gpd.read_parquet(preproj)
-
-    datadir = os.sep.join([os.path.dirname(__file__), "data"])
-    fn = f"{datadir}/geodf/{dataname}.parquet"
+        fn = preproj
+    else:
+        fn = os.path.join(
+            os.path.dirname(__file__), "data", "geodf", f"{dataname}.parquet"
+        )
     if not os.path.isfile(fn):
+        LOG.info("load_geodf(%s) failed, file is missing!", fn)
         return gpd.GeoDataFrame()
     return gpd.read_parquet(fn)
 

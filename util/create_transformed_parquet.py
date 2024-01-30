@@ -30,11 +30,12 @@ def main(writepath, justgeodf):
             parquetfn = f"{writepath}/parquet/{epsg}/geodf/{filename}"
             os.makedirs(os.path.dirname(parquetfn), exist_ok=True)
             df.to_crs(crs).to_parquet(parquetfn)
-    if justgeodf:
-        return
     cartopy_shapefiles = f"{os.environ['CARTOPY_DATA_DIR']}/shapefiles/"
     for root, _dirnames, filenames in os.walk(cartopy_shapefiles):
         for shapefilefn in [s for s in filenames if s.endswith(".shp")]:
+            # HACK for CI to speed up, but have one file available
+            if justgeodf and shapefilefn != "ne_10m_land.shp":
+                continue
             ppath = root.replace(cartopy_shapefiles, "")
             LOG.info("%s/%s", root, shapefilefn)
             df = gpd.read_file(f"{root}/{shapefilefn}", engine="pyogrio")
