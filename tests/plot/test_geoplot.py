@@ -52,6 +52,15 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_nws_with_axes_position_set():
+    """Test that the inset axes work out."""
+    mp = MapPlot(
+        nocaption=True, sector="nws", axes_position=[0.2, 0.2, 0.7, 0.4]
+    )
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fill_cwsu():
     """Test a filled plot of CWSU data."""
     mp = MapPlot(nocaption=True, sector="nws")

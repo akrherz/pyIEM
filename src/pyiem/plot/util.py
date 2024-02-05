@@ -216,6 +216,7 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
         ha=kwargs.get("ha", "left"),
         va=kwargs.get("va", "bottom"),
         color=kwargs.get("color", "k"),
+        bbox=kwargs.get("bbox"),
     )
 
     def _fits(txt):
@@ -386,88 +387,133 @@ def sector_setter(mp, axbounds, **kwargs):
         mp.panels.append(gp)
 
         if mp.sector == "nws":
+            width, height = mp.fig.canvas.get_width_height()
             # Create PR
-            gp = make_panel(
-                [0.78, 0.055, 0.125, 0.1],
-                mp.fig,
-                [-68.0, -65.0, 17.5, 18.6],
-                reference.LATLON,
-                aspect,
-                is_geoextent=True,
-                sector_label="state_PR",
-                **kwargs,
-            )
-            mp.fig.text(
-                0.78,
-                0.155,
-                "Puerto Rico",
-                ha="left",
-                color="white",
-                bbox=dict(boxstyle="round,pad=0", color="k"),
-            )
-            mp.panels.append(gp)
-            # Create AK
-            gp = make_panel(
-                [0.015, 0.055, 0.28, 0.23],
-                mp.fig,
-                [
-                    reference.state_bounds["AK"][0],
-                    reference.state_bounds["AK"][2],
-                    reference.state_bounds["AK"][1],
-                    reference.state_bounds["AK"][3],
-                ],
-                reference.EPSG[3467],
-                aspect,
-                is_geoextent=True,
-                sector_label="state_AK",
-                **kwargs,
-            )
-            mp.panels.append(gp)
-            # Guam
-            gp = make_panel(
-                [0.015, 0.29, 0.075, 0.11],
-                mp.fig,
-                [
-                    reference.state_bounds["GU"][0],
-                    reference.state_bounds["GU"][2],
-                    reference.state_bounds["GU"][1],
-                    reference.state_bounds["GU"][3],
-                ],
-                reference.LATLON,
-                aspect,
-                is_geoextent=True,
-                sector_label="state_GU",
-                **kwargs,
-            )
-            mp.fig.text(
-                0.015,
-                0.4,
-                "Guam",
-                ha="left",
-                color="white",
-                bbox=dict(boxstyle="round,pad=0", color="k"),
-            )
-            mp.panels.append(gp)
-            # Create HI via a glorious hack for now
             ln = mp.panels[0].plot(
-                [-95.4, -85.24],
-                [23.3, 27.7],
+                [-80.5, -74.55],
+                [21.5, 22.8],
                 color="None",
             )[0]
             bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
-            width = mp.fig.canvas.get_width_height()[0]
-            axwidth = (bbox.x1 - bbox.x0) / width
-            gp = make_panel(
-                [bbox.x0 / width, 0.055, axwidth, 0.14],
-                mp.fig,
-                [-161.0, -154.0, 18.5, 22.5],
-                reference.LATLON,
-                aspect,
-                is_geoextent=True,
-                sector_label="state_HI",
-                **kwargs,
+            mp.panels.append(
+                make_panel(
+                    [
+                        bbox.x0 / width,
+                        bbox.y0 / height,
+                        (bbox.x1 - bbox.x0) / width,
+                        (bbox.y1 - bbox.y0) / height,
+                    ],
+                    mp.fig,
+                    [-68.0, -65.0, 17.5, 18.6],
+                    reference.LATLON,
+                    aspect,
+                    is_geoextent=True,
+                    sector_label="state_PR",
+                    **kwargs,
+                )
             )
-            mp.panels.append(gp)
+            fitbox(
+                mp.fig,
+                "Puerto Rico",
+                bbox.x0 / width,
+                bbox.x1 / width,
+                bbox.y1 / height,
+                bbox.y1 / height + 0.1,
+                color="white",
+                bbox=dict(boxstyle="round,pad=0", color="k"),
+            )
+            # Create AK
+            ln = mp.panels[0].plot(
+                [-118.0, -105.5],
+                [20.0, 30.25],
+                color="None",
+            )[0]
+            bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
+            mp.panels.append(
+                make_panel(
+                    [
+                        bbox.x0 / width,
+                        bbox.y0 / height,
+                        (bbox.x1 - bbox.x0) / width,
+                        (bbox.y1 - bbox.y0) / height,
+                    ],
+                    mp.fig,
+                    [
+                        reference.state_bounds["AK"][0],
+                        reference.state_bounds["AK"][2],
+                        reference.state_bounds["AK"][1],
+                        reference.state_bounds["AK"][3],
+                    ],
+                    reference.EPSG[3467],
+                    aspect,
+                    is_geoextent=True,
+                    sector_label="state_AK",
+                    **kwargs,
+                )
+            )
+            # Guam
+            ln = mp.panels[0].plot(
+                [-120.5, -117.5],
+                [28.3, 31.7],
+                color="None",
+            )[0]
+            bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
+            mp.panels.append(
+                make_panel(
+                    [
+                        bbox.x0 / width,
+                        bbox.y0 / height,
+                        (bbox.x1 - bbox.x0) / width,
+                        (bbox.y1 - bbox.y0) / height,
+                    ],
+                    mp.fig,
+                    [
+                        reference.state_bounds["GU"][0],
+                        reference.state_bounds["GU"][2],
+                        reference.state_bounds["GU"][1],
+                        reference.state_bounds["GU"][3],
+                    ],
+                    reference.LATLON,
+                    aspect,
+                    is_geoextent=True,
+                    sector_label="state_GU",
+                    **kwargs,
+                )
+            )
+            fitbox(
+                mp.fig,
+                "Guam",
+                bbox.x0 / width,
+                bbox.x1 / width,
+                bbox.y1 / height,
+                bbox.y1 / height + 0.1,
+                color="white",
+                bbox=dict(boxstyle="round,pad=0", color="k"),
+            )
+            # Hawaii
+            ln = mp.panels[0].plot(
+                [-95.8, -85.24],
+                [22.9, 27.7],
+                color="None",
+            )[0]
+            bbox = ln.get_window_extent(mp.fig.canvas.get_renderer())
+            mp.panels.append(
+                make_panel(
+                    [
+                        bbox.x0 / width,
+                        bbox.y0 / height,
+                        (bbox.x1 - bbox.x0) / width,
+                        (bbox.y1 - bbox.y0) / height,
+                    ],
+                    mp.fig,
+                    [-161.0, -154.0, 18.5, 22.5],
+                    reference.LATLON,
+                    aspect,
+                    is_geoextent=True,
+                    sector_label="state_HI",
+                    **kwargs,
+                )
+            )
     # Do last in case of name overlaps above
     elif mp.sector in reference.SECTORS:
         gp = make_panel(
