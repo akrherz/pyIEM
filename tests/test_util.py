@@ -273,6 +273,22 @@ def test_get_autoplot_context_network():
         util.get_autoplot_context(form, cfg)
 
 
+def test_apctx_datetime():
+    """Test some edge cases."""
+    form = {
+        "d": "2016-06-31",
+        "d2": "2016-09-A1 1314",
+    }
+    opts = {
+        "arguments": [
+            {"type": "datetime", "name": "d", "default": "2011/11/12 0000"},
+            {"type": "datetime", "name": "d2", "default": "2011/11/12 1213"},
+        ]
+    }
+    with pytest.raises(ValueError):
+        util.get_autoplot_context(form, opts, rectify_dates=True)
+
+
 def test_get_autoplot_context_dates():
     """Test how we deal with all kinds of date cruft."""
     form = {
