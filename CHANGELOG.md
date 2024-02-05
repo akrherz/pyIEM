@@ -25,6 +25,7 @@ the future.
 masked array.
 - Fix invalid `rtrim()` usage with `removesuffix()`.
 - Fix off-by-one when `grid.zs` hits a mask right at the border.
+- Fix placement of GU, AK, HI, PR inset axes for sector="nws" plot.
 - Improve `setuptools_scm` plumbing to avoid runtime import.
 - Support a variant `Trace` value specified in LSRs.
 
