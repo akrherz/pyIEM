@@ -18,6 +18,7 @@ Example:
 """
 # stdlib
 import datetime
+import gc
 import os
 import shutil
 import subprocess
@@ -262,7 +263,11 @@ class MapPlot:
 
     def close(self):
         """Close the figure in the case of batch processing"""
-        plt.close()
+        plt.close(self.fig)
+        # https://github.com/matplotlib/matplotlib/issues/25406
+        # this is ugly, but it seems effective
+        del self.fig
+        gc.collect()
 
     def draw_usdm(self, valid=None, filled=True, hatched=False, **kwargs):
         """Overlay the US Drought Monitor
@@ -1272,22 +1277,24 @@ class MapPlot:
             default is 300.
           pqstr (str): Do pqinsert with the following LDM product name.
         """
-        ram = BytesIO()
-        self.fig.savefig(ram, format="png")
-        ram.seek(0)
-        im = Image.open(ram)
-        im2 = im.convert("RGB").convert("P", palette=Image.Palette.ADAPTIVE)
-        im.close()
-        if kwargs.get("memcache") and kwargs.get("memcachekey"):
-            ram = BytesIO()
-            im2.save(ram, format="png")
+        with BytesIO() as ram:
+            self.fig.savefig(ram, format="png")
             ram.seek(0)
-            r = ram.read()
-            kwargs["memcache"].set(
-                kwargs["memcachekey"],
-                r,
-                time=kwargs.get("memcacheexpire", 300),
+            im = Image.open(ram)
+            im2 = im.convert("RGB").convert(
+                "P", palette=Image.Palette.ADAPTIVE
             )
+            im.close()
+            if kwargs.get("memcache") and kwargs.get("memcachekey"):
+                ram = BytesIO()
+                im2.save(ram, format="png")
+                ram.seek(0)
+                r = ram.read()
+                kwargs["memcache"].set(
+                    kwargs["memcachekey"],
+                    r,
+                    time=kwargs.get("memcacheexpire", 300),
+                )
         if kwargs.get("web", False):
             ssw("Content-Type: image/png\n\n")
             im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
