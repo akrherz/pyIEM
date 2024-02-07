@@ -19,6 +19,8 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 ### Bug Fixes
 
+- Add a hacky `gc.collect()` within `MapPlot#close` attempting to workaround
+some matplotlib memory leaking.
 - Constrain a VTEC database search for expiration times not infinitely into
 the future.
 - Fix `iemre.reproject2iemre` to return a masked_array and handle an input
