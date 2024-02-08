@@ -15,6 +15,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 ### New Features
 
+- Add `pyiem.iemre.grb2iemre` helper to reproject a grib message onto IEMRE.
 - Sync NWS VTEC colors per IEM database cross-check review.
 
 ### Bug Fixes
