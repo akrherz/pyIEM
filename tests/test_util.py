@@ -1,6 +1,7 @@
 """Testing of util."""
 # pylint: disable=redefined-outer-name
 import logging
+import os
 import random
 import string
 import tempfile
@@ -23,6 +24,27 @@ def test_logger_level():
     with mock.patch("sys.stdout.isatty", return_value=True):
         log = util.logger()
         assert log.level == logging.INFO
+
+
+def test_archive_fetch_localfile_exists():
+    """Test what happens when the local file does exist."""
+    with tempfile.NamedTemporaryFile() as tmp, util.archive_fetch(
+        tmp.name, localdir="/"
+    ) as ctx:
+        assert ctx == tmp.name
+
+
+def test_archive_fetch_invalid_remote():
+    """Test what happens when the remote file does not exist."""
+    with util.archive_fetch("pyiem_testing_doesnotexist") as ctx:
+        assert ctx is None
+
+
+def test_archive_fetch_remote_exists():
+    """Test what happens when the remote file does exist."""
+    with util.archive_fetch("2024/02/09/mesonet_1200.gif") as ctx:
+        assert ctx.endswith(".gif")
+    assert not os.path.isfile(ctx)
 
 
 @pytest.mark.parametrize("database", ["mesosite"])
