@@ -11,10 +11,12 @@ All notable changes to this library are documented in this file.
 - Introduce `pyiem.wmo.WMOProduct` as a lightweight class for products that
 need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 - Remove `import *` usage from `pyiem.plot`.  This was a bad daryl mistake.
+- Require `pygrib` as we add some grib processing.
 - Require `pyogrio` for faster geopandas shapefile reading.
 
 ### New Features
 
+- Add `pyiem.iemre.grb2iemre` helper to reproject a grib message onto IEMRE.
 - Sync NWS VTEC colors per IEM database cross-check review.
 
 ### Bug Fixes

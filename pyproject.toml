@@ -19,6 +19,7 @@ dependencies = [
     "pillow",
     "pyarrow",
     "pydantic",
+    "pygrib",
     "pymemcache",
     "pyogrio",
     "pyproj",

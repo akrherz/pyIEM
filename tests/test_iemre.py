@@ -3,9 +3,17 @@ import datetime
 from zoneinfo import ZoneInfo
 
 import numpy as np
+import pygrib
 from affine import Affine
 from pyiem import database, iemre
-from pyiem.util import utc
+from pyiem.util import get_test_filepath, utc
+
+
+def test_grb2iemre():
+    """Test that we can take a grib file and do magic."""
+    grbs = pygrib.open(get_test_filepath("grib/hrrr_srad.grib2"))
+    res = iemre.grb2iemre(grbs[1])
+    assert res.shape == (iemre.NY, iemre.NX)
 
 
 def test_reproject_masked_array():

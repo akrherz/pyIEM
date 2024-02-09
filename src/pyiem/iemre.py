@@ -9,6 +9,7 @@
 from datetime import datetime, timezone
 
 import numpy as np
+import pyproj
 import xarray as xr
 from affine import Affine
 from psycopg.sql import SQL, Identifier
@@ -219,7 +220,35 @@ def get_gid(lon, lat):
     return j * NX + i
 
 
-def reproject2iemre(grid, affine_in, crs_in, resampling=None):
+def grb2iemre(grb, resampling=None) -> np.ndarray:
+    """Reproject a grib message onto the IEMRE grid.
+
+    A helper frontend to ``reproject2iemre``.
+
+    Args:
+        grb (pygrib.gribmessage): single message to reproject
+        resampling (rasterio.warp.Resampling,optional): defaults to nearest
+
+    Returns:
+        numpy.ma.array of reprojected grid oriented S to N like IEMRE
+    """
+    pparams = grb.projparams
+    lat1 = grb["latitudeOfFirstGridPointInDegrees"]
+    lon1 = grb["longitudeOfFirstGridPointInDegrees"]
+    llx, lly = pyproj.Proj(pparams)(lon1, lat1)
+    # NB: likely making assumptions that will fail, sometimes
+    aff = Affine(
+        grb["DxInMetres"],
+        0.0,
+        llx,
+        0.0,
+        -grb["DyInMetres"],
+        lly + grb["DyInMetres"] * grb["Ny"],
+    )
+    return reproject2iemre(np.flipud(grb.values), aff, pparams, resampling)
+
+
+def reproject2iemre(grid, affine_in, crs_in: str, resampling=None):
     """Reproject the given grid to IEMRE grid, returning S to N oriented grid.
 
     Note: If the affine_in is dy > 0 then the grid is assumed to be S to N.

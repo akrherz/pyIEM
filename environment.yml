@@ -32,6 +32,7 @@ dependencies:
   - pyarrow
   # Models
   - pydantic
+  - pygrib
   - pymemcache
   # Faster shapefile reading
   - pyogrio
