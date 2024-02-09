@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 from html import escape
 from socket import error as socket_error
@@ -698,3 +699,45 @@ def grid_bounds(lons, lats, bounds):
         int(i)
         for i in [max([0, x0]), max([0, y0]), min([szx, x1]), min([szy, y1])]
     ]
+
+
+@contextmanager
+def archive_fetch(partialpath: str, localdir: str = "/mesonet/ARCHIVE/data"):
+    """
+    Helper to fetch a file from the archive, by first looking at the filesystem
+    and then going to the website.  This returns a filename.  If a temporary
+    file is created, it is deleted after the context manager exits.
+
+    Args:
+        partialpath (str): Typically a path that starts with /YYYY/mm/dd
+
+    Returns:
+        str: filename of the file found and available for use
+    """
+    # Ensure partialpath does not start with a /
+    if partialpath.startswith("/"):
+        partialpath = partialpath[1:]
+    localfn = os.path.join(localdir, partialpath)
+    if os.path.isfile(localfn):
+        yield localfn
+        return
+
+    url = f"http://mesonet.agron.iastate.edu/archive/data/{partialpath}"
+    import requests
+
+    tmp = None
+    suffix = "." + os.path.basename(partialpath).split(".")[-1]
+    try:
+        req = requests.get(url, timeout=30)
+        if req.status_code != 200:
+            raise ValueError(f"Got HTTP {req.status_code}")
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            tmp.write(req.content)
+        yield tmp.name
+        return
+    except Exception as exp:
+        LOG.info("archive_fetch(%s) failed: %s", url, exp)
+        yield None
+    finally:
+        if tmp is not None:
+            os.unlink(tmp.name)
