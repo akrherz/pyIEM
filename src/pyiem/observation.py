@@ -100,7 +100,7 @@ def summary_update(txn, data):
     max_drct = coalesce(%(max_drct)s, max_drct),
     max_srad = coalesce(%(max_srad)s, max_srad),
     coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
-    coop_valid = %(coop_valid)s,
+    coop_valid = coalesce(%(coop_valid)s, coop_valid),
     et_inch = %(et_inch)s,
     report = coalesce(%(report)s, report),
     max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),
