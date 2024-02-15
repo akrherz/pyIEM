@@ -1,4 +1,5 @@
 """Tests for webutil.py"""
+import time
 from zoneinfo import ZoneInfo
 
 import mock
@@ -12,6 +13,7 @@ from pyiem.exceptions import (
 )
 from pyiem.webutil import (
     TELEMETRY,
+    TELEMETRY_QUEUE_THREAD,
     _add_to_queue,
     add_to_environ,
     ensure_list,
@@ -29,8 +31,8 @@ def test_disable_parse_times():
     assert environ["sts"] == form["sts"]
 
 
-def test_add_telemetry():
-    """Test adding something to the queue."""
+def test_add_telemetry_bad():
+    """Test that an exception is caught."""
     _add_to_queue(
         TELEMETRY(
             timing=1,
@@ -38,8 +40,41 @@ def test_add_telemetry():
             client_addr="",
             app="test",
             request_uri="",
-        )
+        ),
+        0.1,
     )
+    # wait at most 5 seconds for the thread write counter to be -1
+    for _ in range(50):
+        if TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter == -1:
+            TELEMETRY_QUEUE_THREAD["worker"].keep_running = False
+            time.sleep(0.2)
+            break
+        time.sleep(0.1)
+    assert TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter == -1
+    TELEMETRY_QUEUE_THREAD["worker"] = None  # hacky
+
+
+def test_add_telemetry():
+    """Test adding something to the queue."""
+    _add_to_queue(
+        TELEMETRY(
+            timing=1,
+            status_code=200,
+            client_addr=None,
+            app="test",
+            request_uri="",
+        ),
+        0.1,
+    )
+    # wait at most 5 seconds for the thread write counter to be 1
+    for _ in range(50):
+        if TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter == 1:
+            TELEMETRY_QUEUE_THREAD["worker"].keep_running = False
+            time.sleep(0.2)
+            break
+        time.sleep(0.1)
+    assert TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter == 1
+    TELEMETRY_QUEUE_THREAD["worker"] = None  # hacky
 
 
 def test_ensure_list():

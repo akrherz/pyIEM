@@ -14,8 +14,9 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import nh3
 from paste.request import parse_formvars
+from sqlalchemy import text
 
-from pyiem.database import get_dbconnc
+from pyiem.database import get_dbconnc, get_sqlalchemy_conn
 from pyiem.exceptions import (
     BadWebRequest,
     IncompleteWebRequest,
@@ -55,45 +56,46 @@ TELEMETRY = namedtuple(
 )
 
 
-def _writer_thread():
+def _writer_thread(loop_interval: int = 120):
     """Runs for ever and writes telemetry data to the database."""
-    while True:
-        data = TELEMETRY_QUEUE.get()
-
-        def _writer():
-            """Actually write the data."""
-            pgconn, cursor = get_dbconnc("mesosite")
-            cursor.execute(
-                """
-                insert into website_telemetry(timing, status_code, client_addr,
-                app, request_uri) values (%s, %s, %s, %s, %s)
-                """,
-                (
-                    data.timing,
-                    data.status_code,
-                    data.client_addr,
-                    data.app,
-                    data.request_uri,
-                ),
-            )
-            cursor.close()
-            pgconn.commit()
-            pgconn.close()
-
+    _thr = threading.current_thread()
+    while _thr.keep_running:
         try:
-            _writer()
+            data = TELEMETRY_QUEUE.get(timeout=loop_interval)  # blocks
+        except queue.Empty:
+            continue
+        try:
+            with get_sqlalchemy_conn("mesosite") as conn:
+                conn.execute(
+                    text(
+                        """
+                    insert into website_telemetry(timing, status_code,
+                    client_addr, app, request_uri)
+                    values (:timing, :status_code, :client_addr,
+                    :app, :request_uri)
+                    """
+                    ),
+                    data._asdict(),
+                )
+                conn.commit()
+                # Increment a counter on the thread to denote success
+                _thr.dbwrite_counter += 1
         except Exception as exp:
             LOG.exception(exp)
+            # Lame attempt to see that this failure happened from pytest
+            _thr.dbwrite_counter = -1
 
 
-def _add_to_queue(data):
+def _add_to_queue(data, loop_interval: int = 120):
     """Adds data to queue, ensures a thread is running to process."""
     if TELEMETRY_QUEUE_THREAD["worker"] is None:
         TELEMETRY_QUEUE_THREAD["worker"] = threading.Thread(
             target=_writer_thread,
-            name="telemetry",
-            daemon=True,
+            args=(loop_interval,),
+            daemon=True,  # Forcibly kill this thread on exit
         )
+        TELEMETRY_QUEUE_THREAD["worker"].keep_running = True
+        TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter = 0
         TELEMETRY_QUEUE_THREAD["worker"].start()
     TELEMETRY_QUEUE.put(data)
 
@@ -119,20 +121,22 @@ def clean_form(form):
 
 def log_request(environ):
     """Log the request to database for future processing."""
-    pgconn, cursor = get_dbconnc("mesosite")
-    cursor.execute(
-        "INSERT into weblog(client_addr, uri, referer, http_status) "
-        "VALUES (%s, %s, %s, %s)",
-        (
-            environ.get("REMOTE_ADDR"),
-            environ.get("REQUEST_URI"),
-            environ.get("HTTP_REFERER"),
-            404,
-        ),
-    )
-    cursor.close()
-    pgconn.commit()
-    pgconn.close()
+    with get_sqlalchemy_conn("mesosite") as conn:
+        conn.execute(
+            text(
+                """
+            INSERT into weblog(client_addr, uri, referer, http_status)
+            VALUES (:client_addr, :uri, :referer, :http_status)
+            """
+            ),
+            dict(
+                client_addr=environ.get("REMOTE_ADDR"),
+                uri=environ.get("REQUEST_URI"),
+                referer=environ.get("HTTP_REFERER"),
+                http_status=404,
+            ),
+        )
+        conn.commit()
 
 
 def compute_ts_from_string(form, key):
