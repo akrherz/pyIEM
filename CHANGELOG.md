@@ -32,7 +32,7 @@ masked array.
 - Fix off-by-one when `grid.zs` hits a mask right at the border.
 - Fix placement of GU, AK, HI, PR inset axes for sector="nws" plot.
 - Improve `setuptools_scm` plumbing to avoid runtime import.
-- Prevent leaks in webutil telemetry logging.
+- Remove hackish website telemetry writing from a thread.
 - Support a variant `Trace` value specified in LSRs.
 
 ## **1.18.0** (29 Dec 2023)
