@@ -1,11 +1,9 @@
 """Utility functions for iemwebfarm applications."""
 import datetime
-import queue
 import random
 import re
 import string
 import sys
-import threading
 import traceback
 import warnings
 from collections import namedtuple
@@ -47,57 +45,33 @@ TZ_TYPOS = {
 DBKEY_RE = re.compile(r"^iemdb\.(.*)\.conn$")
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
-# Queue for writing telemetry data to database
-TELEMETRY_QUEUE = queue.Queue()
-TELEMETRY_QUEUE_THREAD = {"worker": None}
 TELEMETRY = namedtuple(
     "TELEMETRY",
     ["timing", "status_code", "client_addr", "app", "request_uri"],
 )
 
 
-def _writer_thread(loop_interval: int = 120):
-    """Runs for ever and writes telemetry data to the database."""
-    _thr = threading.current_thread()
-    while _thr.keep_running:
-        try:
-            data = TELEMETRY_QUEUE.get(timeout=loop_interval)  # blocks
-        except queue.Empty:
-            continue
-        try:
-            with get_sqlalchemy_conn("mesosite") as conn:
-                conn.execute(
-                    text(
-                        """
-                    insert into website_telemetry(timing, status_code,
-                    client_addr, app, request_uri)
-                    values (:timing, :status_code, :client_addr,
-                    :app, :request_uri)
+def write_telemetry(data: TELEMETRY) -> bool:
+    """Writes telemetry to the database."""
+    # Yes, this blocks, but if this database is not working, we are in trouble
+    try:
+        with get_sqlalchemy_conn("mesosite") as conn:
+            conn.execute(
+                text(
                     """
-                    ),
-                    data._asdict(),
-                )
-                conn.commit()
-                # Increment a counter on the thread to denote success
-                _thr.dbwrite_counter += 1
-        except Exception as exp:
-            LOG.exception(exp)
-            # Lame attempt to see that this failure happened from pytest
-            _thr.dbwrite_counter = -1
-
-
-def _add_to_queue(data, loop_interval: int = 120):
-    """Adds data to queue, ensures a thread is running to process."""
-    if TELEMETRY_QUEUE_THREAD["worker"] is None:
-        TELEMETRY_QUEUE_THREAD["worker"] = threading.Thread(
-            target=_writer_thread,
-            args=(loop_interval,),
-            daemon=True,  # Forcibly kill this thread on exit
-        )
-        TELEMETRY_QUEUE_THREAD["worker"].keep_running = True
-        TELEMETRY_QUEUE_THREAD["worker"].dbwrite_counter = 0
-        TELEMETRY_QUEUE_THREAD["worker"].start()
-    TELEMETRY_QUEUE.put(data)
+                insert into website_telemetry(timing, status_code,
+                client_addr, app, request_uri)
+                values (:timing, :status_code, :client_addr,
+                :app, :request_uri)
+                """
+                ),
+                data._asdict(),
+            )
+            conn.commit()
+        return True
+    except Exception as exp:
+        LOG.exception(exp)
+    return False
 
 
 def ensure_list(environ, key) -> list:
@@ -320,7 +294,7 @@ def iemapp(**kwargs):
                 res = _handle_exp(traceback.format_exc())
             end_time = datetime.datetime.utcnow()
             if kwargs.get("enable_telemetry", True):
-                _add_to_queue(
+                write_telemetry(
                     TELEMETRY(
                         (end_time - start_time).total_seconds(),
                         status_code,
