@@ -65,6 +65,8 @@ jobs:
         sudo ln -s /home/runner/micromamba /opt/miniconda3
         python util/create_transformed_parquet.py --justgeodf
         python util/insert_testing_data.py
+        sudo mkdir -p /opt/iem/config
+        sudo wget -q -O /opt/iem/config/navbar.json https://raw.githubusercontent.com/akrherz/iem/main/config/navbar.json
 
     - name: Run Tests
       run: |
