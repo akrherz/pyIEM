@@ -316,6 +316,7 @@ def test_get_autoplot_context_dates():
     form = {
         "d": "2016-06-31",
         "d2": "2016-09-31 1314",
+        "d3": "2016-09-301314",
     }
     opts = dict(
         arguments=[
@@ -326,11 +327,13 @@ def test_get_autoplot_context_dates():
                 maxval="2022/01/01",
             ),
             dict(type="datetime", name="d2", default="2011/11/12 1213"),
+            {"type": "datetime", "name": "d3", "default": "2011/11/12 1213"},
         ]
     )
     ctx = util.get_autoplot_context(form, opts, rectify_dates=True)
     assert ctx["d"] == date(2016, 6, 30)
     assert ctx["d2"] == datetime(2016, 9, 30, 13, 14)
+    assert ctx["d3"] == datetime(2016, 9, 30, 13, 14)
     form["d"] = "2016-06-30"
     with pytest.raises(ValueError):
         util.get_autoplot_context(form, opts, rectify_dates=False)
