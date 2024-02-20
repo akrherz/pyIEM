@@ -22,6 +22,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 ### Bug Fixes
 
+- Account for a common autoplot context timestamp typo.
 - Add a hacky `gc.collect()` within `MapPlot#close` attempting to workaround
 some matplotlib memory leaking.
 - Constrain a VTEC database search for expiration times not infinitely into

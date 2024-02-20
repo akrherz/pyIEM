@@ -445,8 +445,12 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
             if maxval is not None:
                 maxval = datetime.strptime(maxval, "%Y/%m/%d %H%M")
             if value is not None:
+                # A common problem is for the space to be missing
                 if value.find(" ") == -1:
-                    value += " 0000"
+                    if len(value) == 14:
+                        value = f"{value[:10]} {value[10:]}"
+                    else:
+                        value += " 0000"
                 _dtfmt = "%Y-%m-%d %H%M"
                 try:
                     value = datetime.strptime(value[:15], "%Y-%m-%d %H%M")
