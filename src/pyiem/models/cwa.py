@@ -2,7 +2,7 @@
 # pylint: disable=too-few-public-methods
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 # third party
 from shapely.geometry import Polygon
@@ -11,6 +11,8 @@ from shapely.geometry import Polygon
 class CWAModel(BaseModel):
     """A Center Weather Advisory."""
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     center: str
     expire: datetime
     geom: Polygon
@@ -18,8 +20,3 @@ class CWAModel(BaseModel):
     is_corrected: bool
     narrative: str
     num: int
-
-    class Config:
-        """Pydantic config."""
-
-        arbitrary_types_allowed = True
