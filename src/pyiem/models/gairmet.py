@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 # third party
 from shapely.geometry import MultiLineString, Polygon
@@ -11,6 +11,8 @@ from shapely.geometry import MultiLineString, Polygon
 
 class AIRMETRecord(BaseModel):
     """A single AIRMET Record."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     gml_id: str
     label: str
@@ -20,14 +22,11 @@ class AIRMETRecord(BaseModel):
     weather_conditions: List[str]
     geom: Polygon
 
-    class Config:
-        """Pydantic config."""
-
-        arbitrary_types_allowed = True
-
 
 class FreezingLevelRecord(BaseModel):
     """A single FreezingLevel Record."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     gml_id: str
     valid_at: datetime
@@ -35,11 +34,6 @@ class FreezingLevelRecord(BaseModel):
     level: Optional[int] = None
     lower_level: int
     upper_level: int
-
-    class Config:
-        """Pydantic config."""
-
-        arbitrary_types_allowed = True
 
 
 class GAIRMETModel(BaseModel):
