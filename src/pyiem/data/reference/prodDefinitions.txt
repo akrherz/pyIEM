@@ -23,7 +23,7 @@ AVA Avalanche Watch
 AVW Avalanche Warning
 AWU Area Weather Update
 AVD AVD
-AVG AVG
+AVG Avalanche Weather Guidance
 AWO AWO
 AWW Airport Weather Warning
 BLU Blue Alert
