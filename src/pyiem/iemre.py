@@ -80,7 +80,13 @@ def set_grids(valid, ds, table=None):
         )
         cursor.close()
         pgconn.commit()
+        # NB: whatever reason, postgresql is having a hard time with the query
+        # plan on these newly inserted rows, so we force a vacuum analyze
+        pgconn.autocommit = True
+        pgconn.execute(SQL("VACUUM ANALYZE {}").format(table))
+        pgconn.autocommit = False
         cursor = pgconn.cursor()
+
     # Now we do our update.
     query = SQL("update {} set {} where valid = %s and gid = %s").format(
         table,
