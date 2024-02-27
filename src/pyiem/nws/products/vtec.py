@@ -286,9 +286,9 @@ class VTECProduct(TextProduct):
             "waterspouttag, is_emergency, is_pds, floodtag_heavyrain, "
             "floodtag_flashflood, floodtag_damage, floodtag_leeve, "
             "floodtag_dam, hvtec_nwsli, hvtec_severity, hvtec_cause, "
-            "hvtec_record, windthreat, hailthreat, squalltag) "
+            "hvtec_record, windthreat, hailthreat, squalltag, product_id) "
             "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
             vtec.office,
@@ -327,6 +327,7 @@ class VTECProduct(TextProduct):
             segment.windthreat,
             segment.hailthreat,
             segment.squalltag,
+            self.get_product_id(),
         )
         txn.execute(sql, myargs)
 

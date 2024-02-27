@@ -18,6 +18,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 
 - Add `pyiem.iemre.grb2iemre` helper to reproject a grib message onto IEMRE.
 - Add `pyiem.util.archive_fetch` helper to get IEM archived resources.
+- Add VTEC storage of `product_ids` (#857).
 - Sync NWS VTEC colors per IEM database cross-check review.
 
 ### Bug Fixes
