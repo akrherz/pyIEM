@@ -12,7 +12,7 @@ from pyiem.util import LOG
 # When a VTEC product has an infinity time 000000T0000Z, we need some value
 # for the database to make things logically work.  We arb pick 21 days, which
 # seems to be enough time to ensure a WFO issues some followup statement.
-DEFAULT_EXPIRE_DELTA = timedelta(hours=(21 * 24))
+DEFAULT_EXPIRE_DELTA = timedelta(hours=21 * 24)
 
 
 def _check_vtec_polygon(prod):

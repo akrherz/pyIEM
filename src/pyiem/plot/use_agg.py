@@ -10,7 +10,7 @@ import matplotlib
 from pandas.plotting import register_matplotlib_converters
 
 matplotlib.use("agg")
-import matplotlib.pyplot as plt  # noqa
+import matplotlib.pyplot as plt  # noqa skipcq
 
 # Workaround a pandas dataframe to matplotlib issue
 register_matplotlib_converters()
