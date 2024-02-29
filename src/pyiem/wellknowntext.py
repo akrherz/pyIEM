@@ -10,6 +10,7 @@ Main entry point is the convert_well_known_text function which takes a
 geometry in Well-Known Text format and returns a python object with the
 geometry.
 """
+
 import re
 
 __version__ = "$Revision: 1.1 $"

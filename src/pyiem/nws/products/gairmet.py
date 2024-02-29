@@ -2,6 +2,7 @@
 
 Break-up the XML G-AIRMET into atomic pieces.
 """
+
 from datetime import datetime, timezone
 from xml.dom import minidom
 

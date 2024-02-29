@@ -1,4 +1,5 @@
 """Center Weather Advisories (CWA)"""
+
 # Stdlib imports
 import math
 import re

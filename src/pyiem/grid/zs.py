@@ -1,4 +1,5 @@
 """Utility class to help with fast zonal_stats work"""
+
 from collections import namedtuple
 
 import numpy as np

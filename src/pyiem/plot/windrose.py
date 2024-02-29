@@ -1,4 +1,5 @@
 """A WindrosePlot."""
+
 # pylint: disable=not-callable
 import math
 

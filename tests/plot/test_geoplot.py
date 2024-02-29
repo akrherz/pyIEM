@@ -1,4 +1,5 @@
 """Test plots made by pyiem.plot.geoplot"""
+
 # pylint: disable=too-many-lines
 import copy
 import datetime

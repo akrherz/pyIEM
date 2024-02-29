@@ -1,7 +1,8 @@
 """
- Supports parsing of Storm Prediction Center's MCD and
- parsing of Weather Prediction Center's MPD
+Supports parsing of Storm Prediction Center's MCD and
+parsing of Weather Prediction Center's MPD
 """
+
 import re
 from datetime import timedelta, timezone
 

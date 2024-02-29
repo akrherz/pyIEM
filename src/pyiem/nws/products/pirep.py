@@ -12,6 +12,7 @@ Unfortunately, there is not much documentation of this format and the feed of
 this data contains a bunch of formatting errors.
 
 """
+
 # stdlib
 import datetime
 import math
@@ -383,9 +384,9 @@ class Pirep(product.TextProduct):
                 "valid": report.valid.strftime("%Y%m%dT%H:%M:00"),
             }
             if report.latitude is not None:
-                xtra[
-                    "geometry"
-                ] = f"POINT({report.longitude} {report.latitude})"
+                xtra["geometry"] = (
+                    f"POINT({report.longitude} {report.latitude})"
+                )
             res.append([plain, html, xtra])
         return res
 

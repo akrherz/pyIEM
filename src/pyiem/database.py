@@ -1,4 +1,5 @@
 """Database helpers."""
+
 # stdlib
 import getpass
 from contextlib import contextmanager

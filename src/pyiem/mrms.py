@@ -2,6 +2,7 @@
 
 Hopefully useful functions to help with the processing of MRMS data
 """
+
 import gzip
 import os
 import struct

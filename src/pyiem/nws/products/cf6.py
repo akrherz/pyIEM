@@ -1,4 +1,5 @@
 """Parser for the CF6 Product."""
+
 import calendar
 import datetime
 import re

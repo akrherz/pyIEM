@@ -1,4 +1,5 @@
 """Make sure our METAR parsing works!"""
+
 from unittest import mock
 
 import pytest

@@ -1,4 +1,5 @@
 """See if we can do stuff with the network"""
+
 # stdlib
 from datetime import date
 

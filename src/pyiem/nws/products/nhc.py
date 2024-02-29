@@ -1,4 +1,4 @@
-""" Handle some of the fun things that come from the Hurricane Center """
+"""Handle some of the fun things that come from the Hurricane Center"""
 
 import re
 

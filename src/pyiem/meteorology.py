@@ -1,6 +1,7 @@
 """
- We do meteorological things, when necessary
+We do meteorological things, when necessary
 """
+
 import math
 
 import metpy.calc as mcalc

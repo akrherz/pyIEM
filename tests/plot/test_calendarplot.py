@@ -1,4 +1,5 @@
 """Can we make calendar plots, yes we can!"""
+
 import datetime
 
 import pytest

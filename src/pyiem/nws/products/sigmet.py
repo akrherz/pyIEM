@@ -1,4 +1,5 @@
-""" Parse SIGMETs """
+"""Parse SIGMETs"""
+
 # Stdlib imports
 import datetime
 import math

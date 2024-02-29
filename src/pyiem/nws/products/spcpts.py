@@ -1,7 +1,8 @@
 """
- Something to deal with SPC PTS Product
- My life was not supposed to end like this, what a brutal format
+Something to deal with SPC PTS Product
+My life was not supposed to end like this, what a brutal format
 """
+
 import datetime
 import re
 import tempfile
@@ -610,9 +611,9 @@ class SPCPTS(TextProduct):
                 # hack
                 if cat in ["0.15", "0.30"] and day < 4:
                     continue
-                jdict[
-                    "ttext"
-                ] = f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
+                jdict["ttext"] = (
+                    f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
+                )
                 for wfo in wfos[cat]:
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [

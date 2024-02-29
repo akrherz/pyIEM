@@ -1,4 +1,5 @@
 """Test BUFKIT"""
+
 # stdlib
 from io import StringIO
 

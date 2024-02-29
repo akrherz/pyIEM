@@ -1,4 +1,5 @@
 """The Atomic Local Storm Report ... Report"""
+
 # pylint: disable=unsubscriptable-object
 import re
 from datetime import timedelta, timezone

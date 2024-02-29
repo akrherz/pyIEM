@@ -14,6 +14,7 @@ No functional code found within this module, just a bunch of statics
     letter country code.  Some of these are sketchy.
 
 """
+
 import os
 import sys
 from datetime import date

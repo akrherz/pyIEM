@@ -1,4 +1,5 @@
 """Support NWS VTEC encoding"""
+
 import re
 from datetime import datetime, timedelta, timezone
 

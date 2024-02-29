@@ -1,4 +1,5 @@
 """Test pyiem.tracker."""
+
 # pylint: disable=redefined-outer-name
 from datetime import date, datetime, timedelta, timezone
 

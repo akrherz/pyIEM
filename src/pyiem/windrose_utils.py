@@ -1,4 +1,5 @@
 """util script to call `windrose` package"""
+
 from calendar import month_abbr
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo

@@ -1,4 +1,5 @@
 """Parser for the FD (Temp Wind Aloft Forecasts)."""
+
 import datetime
 import re
 

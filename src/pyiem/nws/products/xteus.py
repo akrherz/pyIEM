@@ -1,4 +1,5 @@
 """WPC's XTEUS Nationwide High/Low."""
+
 from datetime import datetime, timezone
 
 import defusedxml.ElementTree as ET

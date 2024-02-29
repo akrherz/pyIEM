@@ -1,4 +1,5 @@
 """NWS Local Storm Report (LSR) Parsing."""
+
 import datetime
 import math
 import re

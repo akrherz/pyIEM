@@ -1,4 +1,5 @@
 """Create some data for the scripts to chomp on."""
+
 import datetime
 
 from pyiem.database import get_dbconn

@@ -1,4 +1,5 @@
 """Tests for webutil.py"""
+
 from zoneinfo import ZoneInfo
 
 import mock

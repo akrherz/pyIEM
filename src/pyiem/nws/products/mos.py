@@ -1,6 +1,7 @@
 """
- Supports parsing of Textual Model Output Statistics files
+Supports parsing of Textual Model Output Statistics files
 """
+
 import datetime
 import re
 

@@ -1,4 +1,5 @@
 """tests for windrose_utils."""
+
 import datetime
 from io import BytesIO
 

@@ -1,4 +1,5 @@
 """Parser of the Daily Summary Message (DSM)."""
+
 import re
 from datetime import datetime, timedelta
 

@@ -1,6 +1,7 @@
 """
 Processing of GINI formatted data found on NOAAPORT
 """
+
 import math
 import os
 import struct

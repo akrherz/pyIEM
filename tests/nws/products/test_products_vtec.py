@@ -1,4 +1,5 @@
 """Test some of the atomic stuff in the VTEC module"""
+
 # pylint: disable=too-many-lines
 import datetime
 

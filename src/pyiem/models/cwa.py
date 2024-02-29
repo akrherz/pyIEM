@@ -1,4 +1,5 @@
 """Data Model for CWA."""
+
 # pylint: disable=too-few-public-methods
 from datetime import datetime
 

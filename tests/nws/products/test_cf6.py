@@ -1,4 +1,5 @@
 """Test our CF6 parsing."""
+
 import datetime
 
 import pytest

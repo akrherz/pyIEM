@@ -1,4 +1,5 @@
 """Serialization of geometries for use in pyIEM.plot mapping."""
+
 import datetime
 import sys
 import warnings

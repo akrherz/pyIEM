@@ -2,6 +2,7 @@
 
 A class to store metadata associated with a NWSLI entry.
 """
+
 from shapely.geometry import Point
 
 

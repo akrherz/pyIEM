@@ -1,4 +1,5 @@
 """Shared code between SPC PTS and WPC ERO parsers."""
+
 # stdlib
 import os
 import tempfile

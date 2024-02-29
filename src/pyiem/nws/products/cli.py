@@ -1,5 +1,5 @@
-"""Parser and object storage of information within NWS CLI Product.
-"""
+"""Parser and object storage of information within NWS CLI Product."""
+
 import datetime
 import re
 

@@ -1,4 +1,5 @@
 """Test CLI products"""
+
 import datetime
 
 import pytest
