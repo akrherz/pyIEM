@@ -1,4 +1,5 @@
 """Utilities for the Daily Erosion Project"""
+
 import datetime
 import math
 import re
@@ -161,7 +162,7 @@ def man2df(mandict: dict, year1: int = 1) -> pd.DataFrame:
                     doy = surfeff["mdate"]
                     plant_date = datetime.date(
                         year, 1, 1
-                    ) + datetime.timedelta(days=(doy - 1))
+                    ) + datetime.timedelta(days=doy - 1)
             rows.append(
                 {
                     "year": year,

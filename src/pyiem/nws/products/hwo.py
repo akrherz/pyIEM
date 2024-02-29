@@ -1,4 +1,5 @@
 """Hazardous Weather Outlook."""
+
 import re
 
 from pyiem.exceptions import HWOException

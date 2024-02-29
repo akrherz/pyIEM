@@ -3,6 +3,7 @@
 Example:
    from pyiem.plot.use_agg import plt
 """
+
 # pylint: disable=unused-import,wrong-import-position
 import os
 

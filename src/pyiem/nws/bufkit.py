@@ -1,4 +1,5 @@
 """A BUFKIT File Reader."""
+
 # stdlib
 import re
 from io import StringIO

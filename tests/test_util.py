@@ -1,4 +1,5 @@
 """Testing of util."""
+
 # pylint: disable=redefined-outer-name
 import logging
 import os
@@ -28,9 +29,10 @@ def test_logger_level():
 
 def test_archive_fetch_localfile_exists():
     """Test what happens when the local file does exist."""
-    with tempfile.NamedTemporaryFile() as tmp, util.archive_fetch(
-        tmp.name, localdir="/"
-    ) as ctx:
+    with (
+        tempfile.NamedTemporaryFile() as tmp,
+        util.archive_fetch(tmp.name, localdir="/") as ctx,
+    ):
         assert ctx == tmp.name
 
 

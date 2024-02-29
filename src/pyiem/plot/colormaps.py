@@ -1,4 +1,5 @@
 """Definition of colormaps"""
+
 import os
 
 import numpy as np

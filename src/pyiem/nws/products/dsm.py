@@ -1,4 +1,5 @@
 """Parser of the Daily Summary Message (DSM)."""
+
 import re
 from datetime import datetime, timedelta
 
@@ -105,7 +106,7 @@ class DSMProduct:
         )
         # Is this ob from 'last year'
         if ts.month == 12 and utcnow.month == 1:
-            ts = ts.replace(year=(ts.year - 1))
+            ts = ts.replace(year=ts.year - 1)
         self.date = datetime(ts.year, ts.month, ts.day).date()
         self.high_time = compute_time(
             self.date, self.groupdict.get("hightime")

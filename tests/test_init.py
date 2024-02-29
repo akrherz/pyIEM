@@ -1,4 +1,5 @@
 """Test pyiem module level stuff."""
+
 import importlib
 from importlib.metadata import PackageNotFoundError
 from unittest.mock import patch

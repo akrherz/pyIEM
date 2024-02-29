@@ -16,6 +16,7 @@ Example:
     >>> m.close()
 
 """
+
 # stdlib
 import datetime
 import gc
@@ -803,15 +804,17 @@ class MapPlot:
                         imgy1,
                         _cnt,
                     )
-                _textmask[
-                    int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                ] = np.where(
-                    _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)]
-                    < row["zorder"],
-                    row["zorder"],
-                    _textmask[
-                        int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
-                    ],
+                _textmask[int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)] = (
+                    np.where(
+                        _textmask[
+                            int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                        ]
+                        < row["zorder"],
+                        row["zorder"],
+                        _textmask[
+                            int(imgx0) : int(imgx1), int(imgy0) : int(imgy1)
+                        ],
+                    )
                 )
                 t0 = gp.text(
                     x,

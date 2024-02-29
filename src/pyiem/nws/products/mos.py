@@ -1,6 +1,7 @@
 """
- Supports parsing of Textual Model Output Statistics files
+Supports parsing of Textual Model Output Statistics files
 """
+
 import datetime
 import re
 
@@ -47,7 +48,7 @@ def section_parser(sect):
         if model == "LAV" and hrs[0] == "HR":
             ts = initts + datetime.timedelta(hours=int(hr))
         elif model == "LAV":
-            ts = initts + datetime.timedelta(hours=(i + 1))
+            ts = initts + datetime.timedelta(hours=i + 1)
             assert ts.hour == int(hr)
         elif model in ["MEX", "NBE", "NBS"]:
             ts = initts + datetime.timedelta(hours=int(hr))

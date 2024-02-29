@@ -1,4 +1,5 @@
 """Encapsulates a text product holding METARs."""
+
 import re
 from datetime import timedelta, timezone
 from typing import Tuple

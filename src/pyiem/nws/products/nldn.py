@@ -1,6 +1,7 @@
 """
 http://www.unidata.ucar.edu/data/lightning/nldn.html
 """
+
 import struct
 from datetime import datetime, timedelta, timezone
 

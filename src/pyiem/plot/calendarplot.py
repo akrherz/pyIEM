@@ -1,4 +1,5 @@
 """Calendar Plot."""
+
 import calendar
 import datetime
 import os

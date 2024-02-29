@@ -1,4 +1,5 @@
 """Process HVTEC encoding."""
+
 import re
 from datetime import datetime, timezone
 

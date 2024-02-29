@@ -1,4 +1,5 @@
 """pyiem.plot.util Plotting Utilities!"""
+
 # pylint: disable=import-outside-toplevel
 import functools
 import os

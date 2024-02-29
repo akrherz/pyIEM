@@ -1,4 +1,5 @@
 """A class representing an observation stored in the IEM database"""
+
 # pylint: disable=no-member
 import math
 import warnings

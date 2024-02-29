@@ -1,4 +1,5 @@
 """Parsing of Storm Prediction Center SEL Product."""
+
 import re
 
 from pyiem.models.sel import SELModel

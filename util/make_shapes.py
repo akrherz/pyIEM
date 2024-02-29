@@ -1,4 +1,5 @@
 """Serialization of geometries for use in pyIEM.plot mapping."""
+
 import datetime
 import sys
 import warnings
@@ -129,7 +130,7 @@ def check_file(fn):
     ets = datetime.datetime.now()
     for idx, row in df.iterrows():
         if not row["geom"].is_valid:
-            LOG.info(f"{fn} Abort, invalid geom found @{idx} {row}")
+            LOG.info("%s Abort, invalid geom found @%s %s", fn, idx, row)
             sys.exit()
     LOG.info(
         f"runtime: {(ets - sts).total_seconds():.5f}s, "

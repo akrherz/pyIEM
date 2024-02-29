@@ -1,4 +1,5 @@
 """Tests for the pyiem.meteorology library"""
+
 import warnings
 
 import numpy as np

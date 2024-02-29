@@ -1,4 +1,5 @@
 """Network Table."""
+
 from collections import OrderedDict
 
 from pyiem.database import get_dbconnc

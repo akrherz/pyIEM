@@ -2,6 +2,7 @@
 
 python cookie_cutter.py /tmp/NE2_HR_LC_SR_W_DR.tif ne2
 """
+
 import os
 import subprocess
 import sys

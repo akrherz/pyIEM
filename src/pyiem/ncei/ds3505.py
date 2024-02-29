@@ -1,7 +1,8 @@
 """Implementation of the NCEI DS3505 format
 
-    https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
+https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
+
 # pylint: disable=too-many-lines
 import json
 import re

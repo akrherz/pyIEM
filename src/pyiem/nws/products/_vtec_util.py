@@ -1,4 +1,5 @@
 """Off-loaded private stuff from `vtec.py`."""
+
 # pylint: disable=too-many-arguments
 import itertools
 from datetime import timedelta, timezone

@@ -1,4 +1,5 @@
 """Parsing NESDIS Satellite Cloud Product (SCP)."""
+
 import re
 from collections import namedtuple
 from datetime import timedelta

@@ -1,4 +1,5 @@
 """Base Class encapsulating a NWS Text Product"""
+
 import re
 from collections import OrderedDict
 from datetime import datetime, timedelta, timezone

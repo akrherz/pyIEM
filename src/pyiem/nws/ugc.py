@@ -1,6 +1,7 @@
 """
- Something to store UGC information!
+Something to store UGC information!
 """
+
 # stdlib
 import datetime
 import re

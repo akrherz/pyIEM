@@ -1,7 +1,8 @@
 """
- Something to deal with SPC PTS Product
- My life was not supposed to end like this, what a brutal format
+Something to deal with SPC PTS Product
+My life was not supposed to end like this, what a brutal format
 """
+
 import datetime
 import re
 import tempfile
@@ -50,7 +51,7 @@ def compute_times(afos, issue, expire, day):
     if afos not in ["PTSD48", "PFWF38"]:
         return issue, expire
     baseday = 3 if afos == "PFWF38" else 4
-    issue = issue + datetime.timedelta(days=(day - baseday))
+    issue = issue + datetime.timedelta(days=day - baseday)
     return issue, issue + datetime.timedelta(hours=24)
 
 
@@ -610,9 +611,9 @@ class SPCPTS(TextProduct):
                 # hack
                 if cat in ["0.15", "0.30"] and day < 4:
                     continue
-                jdict[
-                    "ttext"
-                ] = f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
+                jdict["ttext"] = (
+                    f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
+                )
                 for wfo in wfos[cat]:
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [

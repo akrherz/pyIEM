@@ -1,4 +1,5 @@
 """Consolidate VTEC to jabber logic."""
+
 # Standard Library Imports
 from datetime import timedelta
 
