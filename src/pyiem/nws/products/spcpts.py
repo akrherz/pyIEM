@@ -51,7 +51,7 @@ def compute_times(afos, issue, expire, day):
     if afos not in ["PTSD48", "PFWF38"]:
         return issue, expire
     baseday = 3 if afos == "PFWF38" else 4
-    issue = issue + datetime.timedelta(days=(day - baseday))
+    issue = issue + datetime.timedelta(days=day - baseday)
     return issue, issue + datetime.timedelta(hours=24)
 
 

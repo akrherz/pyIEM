@@ -60,7 +60,7 @@ class FFGProduct(TextProduct):
         self.issue = datetime.strptime(group["date"][-6:], "%y%m%d").replace(
             tzinfo=timezone.utc
         )
-        self.issue = self.issue.replace(hour=(int(group["hh"]) % 24))
+        self.issue = self.issue.replace(hour=int(group["hh"]) % 24)
         dc = datetime.strptime(group["valid"][-10:], "%y%m%d%H%M").replace(
             tzinfo=timezone.utc
         )

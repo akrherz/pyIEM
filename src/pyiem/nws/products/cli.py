@@ -575,7 +575,7 @@ class CLIProduct(TextProduct):
             msg = (
                 f"High: {data['data'].get('temperature_maximum', 'M')} "
                 f"Low: {data['data'].get('temperature_minimum', 'M')} "
-                f"Precip: {trace_r(data['data'].get('precip_today','M'))} "
+                f"Precip: {trace_r(data['data'].get('precip_today', 'M'))} "
                 f"Snow: {trace_r(data['data'].get('snow_today', 'M'))}"
             )
             sd = data["data"].get("snowdepth")
