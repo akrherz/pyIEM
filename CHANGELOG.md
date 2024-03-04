@@ -3,7 +3,7 @@
 
 All notable changes to this library are documented in this file.
 
-## Unreleased version
+## **1.19.0** (4 Mar 2024)
 
 ### API Changes
 
@@ -20,6 +20,7 @@ need little default processing.  `pyiem.nws.product.TextProduct` inherits.
 - Add `pyiem.util.archive_fetch` helper to get IEM archived resources.
 - Add VTEC storage of `product_ids` (#857).
 - Sync NWS VTEC colors per IEM database cross-check review.
+- Update bundled NWS zones database to 5 March 2024 release (#821).
 
 ### Bug Fixes
 
