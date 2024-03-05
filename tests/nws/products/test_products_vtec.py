@@ -1473,13 +1473,7 @@ def test_140609_ext_backwards(dbcursor):
         )
         prod.sql(dbcursor)
 
-    dbcursor.execute("""SET TIME ZONE 'UTC'""")
-
-    dbcursor.execute(
-        "SELECT max(length(svs)) from warnings_2014 WHERE eventid = 2 and "
-        "phenomena = 'FL' and significance = 'W' and wfo = 'LBF'"
-    )
-    dbcursor.fetchone()
+    dbcursor.execute("SET TIME ZONE 'UTC'")
 
     dbcursor.execute(
         "select status, updated, issue, expire, init_expire, polygon_begin, "
