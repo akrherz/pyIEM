@@ -3,6 +3,18 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased version
+
+### API Changes
+
+- The VTEC/SBW database storage of raw NWS product text was discontinued.
+Instead, raw ``product_id`` values are stored, which can be used against IEM
+web services to get the raw text. (#857)
+
+### New Features
+
+### Bug Fixes
+
 ## **1.19.0** (4 Mar 2024)
 
 ### API Changes

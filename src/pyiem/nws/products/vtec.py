@@ -280,7 +280,7 @@ class VTECProduct(TextProduct):
         sql = (
             f"INSERT into {sbw_table} (wfo, eventid, "
             "significance, phenomena, issue, expire, init_expire, "
-            "polygon_begin, polygon_end, geom, status, report, windtag, "
+            "polygon_begin, polygon_end, geom, status, windtag, "
             "hailtag, tornadotag, damagetag, "
             f"tml_valid, tml_direction, tml_sknt, {tml_column}, updated, "
             "waterspouttag, is_emergency, is_pds, floodtag_heavyrain, "
@@ -288,7 +288,7 @@ class VTECProduct(TextProduct):
             "floodtag_dam, hvtec_nwsli, hvtec_severity, hvtec_cause, "
             "hvtec_record, windthreat, hailthreat, squalltag, product_id) "
             "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
-            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
             vtec.office,
@@ -302,7 +302,6 @@ class VTECProduct(TextProduct):
             polygon_end,  # polygon_end
             segment.giswkt,
             vtec.action,
-            self.unixtext,
             segment.windtag,
             segment.hailtag,
             segment.tornadotag,

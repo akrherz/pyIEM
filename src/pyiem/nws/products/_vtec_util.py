@@ -424,11 +424,11 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
 
         txn.execute(
             f"INSERT into {warning_table} (issue, expire, updated, "
-            "wfo, eventid, status, fcster, report, ugc, phenomena, "
+            "wfo, eventid, status, fcster, ugc, phenomena, "
             "significance, gid, init_expire, product_issue, "
             "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
             "is_emergency, is_pds, purge_time, product_ids) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
             "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
             "RETURNING gid",
             (
@@ -439,7 +439,6 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 vtec.etn,
                 vtec.action,
                 fcster,
-                prod.unixtext,
                 str(ugc),
                 vtec.phenomena,
                 vtec.significance,
@@ -471,13 +470,11 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     # For corrections, we only update the SVS and updated
     txn.execute(
         f"UPDATE {warning_table} SET "
-        "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__', updated = %s, purge_time = %s, "
+        "updated = %s, purge_time = %s, "
         "product_ids = array_append(product_ids, %s) WHERE wfo = %s and "
         f"eventid = %s and ugc = any(%s) and significance = %s "
         "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
         (
-            prod.unixtext,
             prod.valid,
             segment.ugcexpire,
             prod.get_product_id(),
@@ -514,8 +511,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             """UPDATE {} SET {} expire = %s,
         status = %s, updated = %s, purge_time = %s,
         is_emergency = (case when %s then true else is_emergency end),
-        svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END)
-        || %s || '__', product_ids = array_append(product_ids, %s)
+        product_ids = array_append(product_ids, %s)
         WHERE wfo = %s and eventid = %s and ugc =
         ANY(%s) and significance = %s and phenomena = %s
         and status not in ('CAN', 'UPG') and
@@ -528,7 +524,6 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             prod.valid,
             segment.ugcexpire,
             segment.is_emergency,
-            prod.unixtext,
             prod.get_product_id(),
             vtec.office,
             vtec.etn,
@@ -555,8 +550,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
     # Offices have 1 hour to expire something :), actually 30 minutes
     txn.execute(
         f"UPDATE {warning_table} SET status = %s, updated = %s, "
-        "svs = (CASE WHEN (svs IS NULL) THEN '__' ELSE svs END) "
-        "|| %s || '__' , expire = %s, purge_time = %s, "
+        "expire = %s, purge_time = %s, "
         "is_emergency = (case when %s then true else is_emergency end), "
         "is_pds = (case when %s then true else is_pds end), "
         "product_ids = array_append(product_ids, %s) "
@@ -567,7 +561,6 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
         (
             vtec.action,
             prod.valid,
-            prod.unixtext,
             ets,
             segment.ugcexpire,
             segment.is_emergency,
