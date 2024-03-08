@@ -370,10 +370,6 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
     if vtec.endts is None:
         ets = bts + DEFAULT_EXPIRE_DELTA
 
-    fcster = prod.get_signature()
-    if fcster is not None:
-        fcster = fcster[:24]
-
     # For each UGC code in this segment, we create a database entry
     for ugc in segment.ugcs:
         # Check to see if we have entries already for this UGC
@@ -438,7 +434,7 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 vtec.office,
                 vtec.etn,
                 vtec.action,
-                fcster,
+                prod.get_signature(),
                 str(ugc),
                 vtec.phenomena,
                 vtec.significance,

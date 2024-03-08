@@ -799,10 +799,18 @@ class TextProduct(WMOProduct):
         return [(plain, html, xtra)]
 
     def get_signature(self):
-        """Find the signature at the bottom of the page"""
-        return " ".join(
-            self.segments[-1].unixtext.replace("\n", " ").strip().split()
-        )
+        """Return a signature that matches basic constraints (1 word)."""
+        lines = [x.strip() for x in self.unixtext.split("\n") if x.strip()]
+        res = None
+        for line in lines[::-1][:3]:
+            if line in ["$$", "&&", "$", "&"]:
+                continue
+            if line.find(" ") > -1 or line.find(".") > -1:
+                break
+            if 0 < len(line) < 25:
+                res = line
+                break
+        return res
 
     def parse_segments(self):
         """Split the product by its $$"""
