@@ -15,6 +15,9 @@ web services to get the raw text. (#857)
 
 ### Bug Fixes
 
+- Improve NWS Text Product signature logic so to more generally match what
+looks like a signature (#865).
+
 ## **1.19.0** (4 Mar 2024)
 
 ### API Changes

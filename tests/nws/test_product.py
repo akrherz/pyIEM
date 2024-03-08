@@ -14,6 +14,22 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_gh865_fcster_none():
+    """Test that we don't use the generic signature on this product."""
+    data = get_test_file("NPW/NPWDMX.txt")
+    prod = productparser(data)
+    assert prod.get_signature() is None
+
+
+def test_gh865_fcster_scenarios():
+    """Test that we handle all kinds of things."""
+    data = get_test_file("TORILX.txt")
+    prod = productparser(data)
+    assert prod.get_signature() == "MILLER"
+    prod = productparser(data.replace("MILLER", ""))
+    assert prod.get_signature() is None
+
+
 def test_ahdnwc():
     """Test the jabber result we get from this product."""
     data = get_test_file("AHD/AHDNWC.txt")
