@@ -5,7 +5,7 @@ import itertools
 from datetime import timedelta, timezone
 
 import pandas as pd
-from psycopg.sql import SQL, Identifier
+from psycopg.sql import SQL
 
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
@@ -30,7 +30,7 @@ def _check_vtec_polygon(prod):
             )
 
 
-def which_year(txn, prod, segment, vtec):
+def which_year(txn, prod, segment, vtec) -> int:
     """Figure out which table we should work against"""
     # The case of a NEW event always goes into the current UTC year of prod
     if vtec.action in ["NEW"]:
@@ -59,7 +59,7 @@ def which_year(txn, prod, segment, vtec):
     for offset in [3, 10, 31]:
         txn.execute(
             """
-            SELECT tableoid::regclass as tablename, hvtec_nwsli,
+            SELECT vtec_year, hvtec_nwsli,
             min(product_issue at time zone 'UTC'),
             max(product_issue at time zone 'UTC'),
             array_agg(ugc) as database_ugcs,
@@ -67,7 +67,7 @@ def which_year(txn, prod, segment, vtec):
             WHERE wfo = %s and eventid = %s and significance = %s and
             phenomena = %s and ((updated > %s and updated <= %s)
             or (expire > %s and expire < %s)) and status not in ('UPG', 'CAN')
-            GROUP by tablename, hvtec_nwsli ORDER by tablename DESC
+            GROUP by vtec_year, hvtec_nwsli ORDER by vtec_year DESC
             """,
             (
                 vtec.office,
@@ -90,20 +90,20 @@ def which_year(txn, prod, segment, vtec):
                 for row in rows:
                     mi = row["min_issue"].replace(tzinfo=timezone.utc)
                     if mi == vtec.begints:
-                        return int(row["tablename"].replace("warnings_", ""))
+                        return row["vtec_year"]
             # We likely have a flood warning and can use the HVTEC NWSLI
             # to resolve ambiguity
             hvtec_nwsli = segment.get_hvtec_nwsli()
             if hvtec_nwsli and hvtec_nwsli != "00000":
                 for row in rows:
                     if hvtec_nwsli == row["hvtec_nwsli"]:
-                        return int(row["tablename"].replace("warnings_", ""))
+                        return row["vtec_year"]
             # Attempt to resolve by comparing UGCs
             segugcs = [str(u) for u in segment.ugcs]
             for row in rows:
                 if all(x in segugcs for x in row["database_ugcs"]):
                     LOG.warning("Resolved ambuquity via UGC check")
-                    return int(row["tablename"].replace("warnings_", ""))
+                    return row["vtec_year"]
 
             prod.warnings.append(
                 f"VTEC {vtec} product: {prod.get_product_id()} "
@@ -122,7 +122,7 @@ def which_year(txn, prod, segment, vtec):
                     str(vtec),
                     prod.get_product_id(),
                 )
-            return int(row["tablename"].replace("warnings_", ""))
+            return row["vtec_year"]
 
     # Give up
     if not prod.is_correction():
@@ -307,17 +307,18 @@ def list_rows(txn, table, vtec):
     return res
 
 
-def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
+def _debug_warning(prod, txn, vtec, segment, ets):
     """Get a more useful warning message for this failure"""
     cnt = txn.rowcount
     txn.execute(
         "SELECT ugc, issue at time zone 'UTC' as utc_issue, "
         "expire at time zone 'UTC' as utc_expire, "
         "updated at time zone 'UTC' as utc_updated, "
-        f"status from {warning_table} WHERE wfo = %s and eventid = %s and "
-        "ugc = any(%s) and significance = %s and phenomena = %s "
-        "ORDER by ugc ASC, issue ASC",
+        "status from warnings WHERE vtec_year = %s and wfo = %s and "
+        "eventid = %s and ugc = any(%s) and significance = %s and "
+        "phenomena = %s ORDER by ugc ASC, issue ASC",
         (
+            vtec.year,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_list(),
@@ -338,20 +339,20 @@ def _debug_warning(prod, txn, warning_table, vtec, segment, ets):
             f"{myfmt(row['utc_expire'])} {myfmt(row['utc_updated'])}\n"
         )
     return (
-        f"Warning: {vtec.s3()} do_sql_vtec {warning_table} {vtec.action} "
+        f"Warning: {vtec.s3()} do_sql_vtec {vtec.year} {vtec.action} "
         f"updated {cnt} row, should {len(segment.ugcs)} rows\n"
         f"UGCS: {segment.ugcs}\n"
         f"valid: {prod.valid} expire: {ets}\n{debugmsg}"
     )
 
 
-def _resent_match(prod, txn, warning_table, vtec):
+def _resent_match(prod, txn, vtec):
     """Check if this is a resent match."""
     txn.execute(
-        f"SELECT max(updated) as maxtime from {warning_table} "
-        "WHERE eventid = %s and significance = %s and wfo = %s and "
-        "phenomena = %s",
-        (vtec.etn, vtec.significance, vtec.office, vtec.phenomena),
+        "SELECT max(updated) as maxtime from warnings "
+        "WHERE vtec_year = %s and eventid = %s and significance = %s and "
+        "wfo = %s and phenomena = %s",
+        (vtec.year, vtec.etn, vtec.significance, vtec.office, vtec.phenomena),
     )
     maxtime = txn.fetchone()["maxtime"]
     if maxtime is not None and maxtime == prod.valid:
@@ -362,7 +363,7 @@ def _resent_match(prod, txn, warning_table, vtec):
     return False
 
 
-def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
+def _do_sql_vtec_new(prod, txn, segment, vtec):
     """Do the NEW style actions."""
     bts = prod.valid if vtec.begints is None else vtec.begints
     # If this product has no expiration time, but db needs a value
@@ -376,11 +377,12 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
         # Some previous entries may not be in a terminated state, so
         # also check the expiration time
         txn.execute(
-            f"SELECT issue, expire, updated from {warning_table} "
-            "WHERE ugc = %s and eventid = %s and significance = %s "
-            "and wfo = %s and phenomena = %s and "
+            "SELECT issue, expire, updated from warnings "
+            "WHERE vtec_year = %s and ugc = %s and eventid = %s and "
+            "significance = %s and wfo = %s and phenomena = %s and "
             "status not in ('CAN', 'UPG') and expire > %s",
             (
+                vtec.year,
                 str(ugc),
                 vtec.etn,
                 vtec.significance,
@@ -393,11 +395,12 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
             if prod.is_correction():
                 # We'll delete old entries, gulp
                 txn.execute(
-                    f"DELETE from {warning_table} WHERE ugc = %s "
+                    "DELETE from warnings WHERE vtec_year = %s and ugc = %s "
                     "and eventid = %s and significance = %s and "
                     "wfo = %s and phenomena = %s and "
                     "status in ('NEW', 'EXB', 'EXA') ",
                     (
+                        vtec.year,
                         str(ugc),
                         vtec.etn,
                         vtec.significance,
@@ -419,15 +422,16 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
                 )
 
         txn.execute(
-            f"INSERT into {warning_table} (issue, expire, updated, "
+            "INSERT into warnings (vtec_year, issue, expire, updated, "
             "wfo, eventid, status, fcster, ugc, phenomena, "
             "significance, gid, init_expire, product_issue, "
             "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
             "is_emergency, is_pds, purge_time, product_ids) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
             "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
             "RETURNING gid",
             (
+                vtec.year,
                 bts,
                 ets,
                 prod.valid,
@@ -461,19 +465,20 @@ def _do_sql_vtec_new(prod, txn, warning_table, segment, vtec):
             )
 
 
-def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
+def _do_sql_vtec_cor(prod, txn, segment, vtec):
     """A Product Correction."""
     # For corrections, we only update the SVS and updated
     txn.execute(
-        f"UPDATE {warning_table} SET "
-        "updated = %s, purge_time = %s, "
-        "product_ids = array_append(product_ids, %s) WHERE wfo = %s and "
-        f"eventid = %s and ugc = any(%s) and significance = %s "
-        "and phenomena = %s and (expire + '1 hour'::interval) >= %s ",
+        "UPDATE warnings SET updated = %s, purge_time = %s, "
+        "product_ids = array_append(product_ids, %s) WHERE vtec_year = %s "
+        "and wfo = %s and eventid = %s and ugc = any(%s) and "
+        "significance = %s and phenomena = %s and "
+        "(expire + '1 hour'::interval) >= %s ",
         (
             prod.valid,
             segment.ugcexpire,
             prod.get_product_id(),
+            vtec.year,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_list(),
@@ -484,11 +489,11 @@ def _do_sql_vtec_cor(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         prod.warnings.append(
-            _debug_warning(prod, txn, warning_table, vtec, segment, vtec.endts)
+            _debug_warning(prod, txn, vtec, segment, vtec.endts)
         )
 
 
-def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
+def _do_sql_vtec_can(prod, txn, segment, vtec):
     """Database work for EXT, UPG, CAN actions."""
     ets = vtec.endts
     # These are terminate actions, so we act accordingly
@@ -504,16 +509,18 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
         issuesql = f" issue = '{vtec.begints}', "
     txn.execute(
         SQL(
-            """UPDATE {} SET {} expire = %s,
+            """UPDATE warnings SET {} expire = %s,
         status = %s, updated = %s, purge_time = %s,
         is_emergency = (case when %s then true else is_emergency end),
         product_ids = array_append(product_ids, %s)
-        WHERE wfo = %s and eventid = %s and ugc =
+        WHERE vtec_year = %s and wfo = %s and eventid = %s and ugc =
         ANY(%s) and significance = %s and phenomena = %s
         and status not in ('CAN', 'UPG') and
         (expire + '1 hour'::interval) >= %s
         """
-        ).format(Identifier(warning_table), SQL(issuesql)),
+        ).format(
+            SQL(issuesql),
+        ),
         (
             ets,
             vtec.action,
@@ -521,6 +528,7 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
             segment.ugcexpire,
             segment.is_emergency,
             prod.get_product_id(),
+            vtec.year,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_list(),
@@ -531,12 +539,10 @@ def _do_sql_vtec_can(prod, txn, warning_table, segment, vtec):
     )
     if txn.rowcount != len(segment.ugcs):
         if not prod.is_correction():
-            prod.warnings.append(
-                _debug_warning(prod, txn, warning_table, vtec, segment, ets)
-            )
+            prod.warnings.append(_debug_warning(prod, txn, vtec, segment, ets))
 
 
-def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
+def _do_sql_vtec_con(prod, txn, segment, vtec):
     """Continue."""
     # These are no-ops, just updates
     ets = vtec.endts
@@ -545,12 +551,12 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
 
     # Offices have 1 hour to expire something :), actually 30 minutes
     txn.execute(
-        f"UPDATE {warning_table} SET status = %s, updated = %s, "
+        "UPDATE warnings SET status = %s, updated = %s, "
         "expire = %s, purge_time = %s, "
         "is_emergency = (case when %s then true else is_emergency end), "
         "is_pds = (case when %s then true else is_pds end), "
         "product_ids = array_append(product_ids, %s) "
-        f"WHERE wfo = %s and eventid = %s and ugc = any(%s) "
+        "WHERE vtec_year = %s and wfo = %s and eventid = %s and ugc = any(%s) "
         "and significance = %s and phenomena = %s and "
         "status not in ('CAN', 'UPG') and "
         "(expire + '1 hour'::interval) >= %s",
@@ -562,6 +568,7 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
             segment.is_emergency,
             segment.is_pds,
             prod.get_product_id(),
+            vtec.year,
             vtec.office,
             vtec.etn,
             segment.get_ugcs_list(),
@@ -571,6 +578,4 @@ def _do_sql_vtec_con(prod, txn, warning_table, segment, vtec):
         ),
     )
     if txn.rowcount != len(segment.ugcs):
-        prod.warnings.append(
-            _debug_warning(prod, txn, warning_table, vtec, segment, ets)
-        )
+        prod.warnings.append(_debug_warning(prod, txn, vtec, segment, ets))
