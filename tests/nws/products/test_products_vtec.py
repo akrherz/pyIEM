@@ -41,6 +41,21 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_FLScrosses(dbcursor):
+    """Test theoretical overlap of FLS over the new year."""
+    # 2015
+    prod = _vtecparser(get_test_file("FLScrosses/FLW_0.txt"))
+    prod.sql(dbcursor)
+    # 2016
+    prod = _vtecparser(get_test_file("FLScrosses/FLW_1.txt"))
+    prod.sql(dbcursor)
+    # updates the 2015 one, but ambiguous
+    prod = _vtecparser(get_test_file("FLScrosses/FLS_0.txt"))
+    prod.sql(dbcursor)
+    assert prod.segments[0].vtec[0].year == 2015
+
+
 def test_230717_ffw_emergency():
     """Test that this series does not generate an emergency."""
     for i in range(1, 7):
@@ -368,10 +383,14 @@ def test_201120_unknown_vtec(dbcursor):
 def test_201120_resent(dbcursor):
     """Test that we can handle a resent product."""
     data = get_test_file("TOR.txt")
+    eas = "EAS ACTIVATION REQUESTED"
+    data2 = data.replace(eas, f"{eas}...RESENT")
+    # trigger a false initially
+    prod = vtecparser(data2)
+    prod.sql(dbcursor)
     prod = vtecparser(data)
     prod.sql(dbcursor)
-    eas = "EAS ACTIVATION REQUESTED"
-    prod = vtecparser(data.replace(eas, f"{eas}...RESENT"))
+    prod = vtecparser(data2)
     prod.sql(dbcursor)
 
 

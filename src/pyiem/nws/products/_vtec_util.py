@@ -105,11 +105,6 @@ def which_year(txn, prod, segment, vtec) -> int:
                     LOG.warning("Resolved ambuquity via UGC check")
                     return row["vtec_year"]
 
-            prod.warnings.append(
-                f"VTEC {vtec} product: {prod.get_product_id()} "
-                f"returned {txn.rowcount} rows when searching "
-                "for current table"
-            )
         row = rows[0]
         if row["min"] is not None:
             year = row["min"].year
