@@ -48,15 +48,26 @@ def test_gh862_longfuse_polygons(dbcursor):
     prod.sql(dbcursor)
     prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_0.txt"))
     prod.sql(dbcursor)
-    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
-    prod.sql(dbcursor)
     dbcursor.execute(
-        "select issue from sbw where vtec_year = 2024 and wfo = 'MEG' and "
+        "select issue, polygon_begin from sbw "
+        "where vtec_year = 2024 and wfo = 'MEG' and "
         "eventid = 12 and phenomena = 'FL' and significance = 'W' and "
         "product_id = %s",
         (prod.get_product_id(),),
     )
-    assert dbcursor.fetchone()["issue"] == utc(2024, 2, 12, 1, 20)
+    row = dbcursor.fetchone()
+    assert row["polygon_begin"] == utc(2024, 2, 11, 12, 36)
+    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "select issue, polygon_begin from sbw "
+        "where vtec_year = 2024 and wfo = 'MEG' and "
+        "eventid = 12 and phenomena = 'FL' and significance = 'W' and "
+        "product_id = %s",
+        (prod.get_product_id(),),
+    )
+    row = dbcursor.fetchone()
+    assert row["issue"] == utc(2024, 2, 12, 1, 20)
 
 
 @pytest.mark.parametrize("database", ["postgis"])

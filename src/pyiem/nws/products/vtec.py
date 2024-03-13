@@ -240,9 +240,9 @@ class VTECProduct(TextProduct):
 
         # Lets go find our current active polygon
         txn.execute(
-            "SELECT issue, polygon_end from sbw WHERE vtec_year = %s and "
-            "eventid = %s and wfo = %s and phenomena = %s and "
-            "significance = %s and polygon_begin != polygon_end "
+            "SELECT issue, polygon_begin, polygon_end from sbw WHERE "
+            "vtec_year = %s and eventid = %s and wfo = %s and phenomena = %s "
+            "and significance = %s and polygon_begin != polygon_end "
             "ORDER by updated DESC LIMIT 1",
             (
                 vtec.year,
@@ -263,15 +263,20 @@ class VTECProduct(TextProduct):
         # If ncessary, lets find the current active polygon and truncate it
         # to when our new polygon starts
         if vtec.action != "NEW" and current is not None:
+            # Long fuse polygon, we want to avoid having a polygon_begin
+            # that is after the truncation time of this polygon.  So we cull
+            # it back too
+            old_polygon_begin = min(current["polygon_begin"], polygon_begin)
             txn.execute(
                 (
-                    "UPDATE sbw SET polygon_end = %s WHERE "
-                    "vtec_year = %s and eventid = %s and wfo = %s and "
+                    "UPDATE sbw SET polygon_begin = %s, polygon_end = %s "
+                    "WHERE vtec_year = %s and eventid = %s and wfo = %s and "
                     "phenomena = %s and significance = %s and "
                     "polygon_end != polygon_begin "
                     "and polygon_end = %s and status != 'CAN'"
                 ),
                 (
+                    old_polygon_begin,
                     polygon_begin,
                     vtec.year,
                     vtec.etn,
