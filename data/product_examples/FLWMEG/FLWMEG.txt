@@ -1,0 +1,65 @@
+
+888 
+WGUS44 KMEG 110342
+FLWMEG
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Flood Warning
+National Weather Service Memphis TN
+942 PM CST Sat Feb 10 2024
+
+...The National Weather Service in Memphis TN has issued a Flood 
+Warning for the following rivers in Mississippi...
+
+  Buttahatchie River near Buttahatchie River near Aberdeen
+
+
+
+For the Buttahatchie River...including Buttahatchie River near 
+Aberdeen...Minor flooding is forecast.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Caution is urged when walking near riverbanks.
+
+Additional information is available at weather.gov/memphis.
+
+The next statement will be issued Monday morning at 945 AM CST.
+
+&&
+
+MSC087-095-121545-
+/O.NEW.KMEG.FL.W.0012.240212T1545Z-000000T0000Z/
+/ABDM6.1.ER.240212T1545Z.240215T0000Z.000000T0000Z.NO/
+942 PM CST Sat Feb 10 2024
+
+...FLOOD WARNING IN EFFECT FROM MONDAY MORNING UNTIL FURTHER 
+NOTICE...
+
+* WHAT...Minor flooding is forecast.
+
+* WHERE...Buttahatchie River near Buttahatchie River near Aberdeen.
+
+* WHEN...From Monday morning until further notice.
+
+* IMPACTS...At 13.0 feet, Lowland near the river is flooded.
+
+* ADDITIONAL DETAILS...
+  - At 8:30 PM CST Saturday the stage was 8.7 feet.
+  - Forecast...The river will rise above flood stage late Monday
+    morning to 13.4 feet early Tuesday morning. It will then fall
+    early Wednesday morning. It will rise to 13.5 feet early
+    Thursday morning. It will then fall again but remain above
+    flood stage.
+  - Flood stage is 13.0 feet.
+  - http://www.weather.gov/safety/flood
+
+&&
+
+LAT...LON 3409 8829 3409 8821 3373 8826 3365 8843
+      3370 8844 3375 8839
+
+
+$$
+
+DNM

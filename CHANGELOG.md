@@ -15,8 +15,10 @@ web services to get the raw text. (#857)
 
 ### Bug Fixes
 
+- Forward propagate sbw database storage of VTEC issuace (#862).
 - Improve NWS Text Product signature logic so to more generally match what
 looks like a signature (#865).
+- Prevent situation in sbw database having polygon_begin > polygon_end (#862).
 - Refactor VTEC/SBW storage logic to use `vtec_year` column and operate on the
 parent table (#863).
 

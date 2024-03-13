@@ -1,0 +1,64 @@
+
+604 
+WGUS84 KMEG 111236
+FLSMEG
+
+Flood Statement
+National Weather Service Memphis TN
+636 AM CST Sun Feb 11 2024
+
+...The Flood Warning is extended for the following rivers in 
+Mississippi...
+
+  Buttahatchie River near Buttahatchie River near Aberdeen
+
+
+
+For the Buttahatchie River...including Buttahatchie River near 
+Aberdeen...Minor flooding is forecast.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Caution is urged when walking near riverbanks.
+
+Additional information is available at weather.gov/memphis.
+
+The next statement will be issued Monday evening at 645 PM CST.
+
+&&
+
+MSC087-095-130045-
+/O.EXT.KMEG.FL.W.0012.240212T0120Z-000000T0000Z/
+/ABDM6.1.ER.240212T0120Z.240213T1200Z.000000T0000Z.NO/
+636 AM CST Sun Feb 11 2024
+
+...FLOOD WARNING NOW IN EFFECT FROM THIS EVENING UNTIL FURTHER 
+NOTICE...
+
+* WHAT...Minor flooding is forecast.
+
+* WHERE...Buttahatchie River near Buttahatchie River near Aberdeen.
+
+* WHEN...From this evening until further notice.
+
+* IMPACTS...At 15.0 feet, Water is covering a portion of Air Base 
+  Road located on the west bank of the river. Low-lying farmland is 
+  flooded.
+
+* ADDITIONAL DETAILS...
+  - At 5:30 AM CST Sunday the stage was 10.4 feet.
+  - Forecast...The river is expected to rise above flood stage
+    this evening and continue rising to a crest of 15.9 feet
+    Tuesday morning.
+  - Flood stage is 13.0 feet.
+  - http://www.weather.gov/safety/flood
+
+&&
+
+LAT...LON 3409 8829 3409 8821 3373 8826 3365 8843
+      3370 8844 3375 8839
+
+
+$$
+
+ARS
