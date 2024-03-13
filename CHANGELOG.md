@@ -17,6 +17,8 @@ web services to get the raw text. (#857)
 
 - Improve NWS Text Product signature logic so to more generally match what
 looks like a signature (#865).
+- Refactor VTEC/SBW storage logic to use `vtec_year` column and operate on the
+parent table (#863).
 
 ## **1.19.0** (4 Mar 2024)
 

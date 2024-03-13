@@ -41,6 +41,21 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_FLScrosses(dbcursor):
+    """Test theoretical overlap of FLS over the new year."""
+    # 2015
+    prod = _vtecparser(get_test_file("FLScrosses/FLW_0.txt"))
+    prod.sql(dbcursor)
+    # 2016
+    prod = _vtecparser(get_test_file("FLScrosses/FLW_1.txt"))
+    prod.sql(dbcursor)
+    # updates the 2015 one, but ambiguous
+    prod = _vtecparser(get_test_file("FLScrosses/FLS_0.txt"))
+    prod.sql(dbcursor)
+    assert prod.segments[0].vtec[0].year == 2015
+
+
 def test_230717_ffw_emergency():
     """Test that this series does not generate an emergency."""
     for i in range(1, 7):
@@ -89,7 +104,8 @@ def test_gh676_emergency(dbcursor):
         prod = _vtecparser(get_test_file(f"FFW/FFWFFC_{i}.txt"))
         prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT is_emergency from warnings_2022 where wfo = 'FFC' and "
+        "SELECT is_emergency from warnings where vtec_year = 2022 and "
+        "wfo = 'FFC' and "
         "phenomena = 'FF' and significance = 'W' and eventid = 32"
     )
     assert dbcursor.fetchone()["is_emergency"]
@@ -121,7 +137,8 @@ def test_gh493_sqwtags_db(dbcursor):
     prod = _vtecparser(get_test_file("SQW/SQWDVN.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT damagetag, squalltag from sbw_2022 where wfo = 'DVN' and "
+        "SELECT damagetag, squalltag from sbw where vtec_year = 2022 and "
+        "wfo = 'DVN' and "
         "phenomena = 'SQ' and significance = 'W' and eventid = 6 and "
         "status = 'CON'"
     )
@@ -266,7 +283,7 @@ def test_issue253_ibwthunderstorm(dbcursor):
     prod = vtecparser(data)
     prod.sql(dbcursor)
     dbcursor.execute(
-        "select damagetag from sbw_2020 where wfo = 'PSR' "
+        "select damagetag from sbw where vtec_year = 2020 and wfo = 'PSR' "
         "and eventid = 43 and phenomena = 'SV' and significance = 'W' "
     )
     assert dbcursor.fetchone()["damagetag"] == "CONSIDERABLE"
@@ -312,7 +329,8 @@ def test_210103_vtec_cor(dbcursor):
     prod = vtecparser(get_test_file("NPWGID/02.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT ugc from warnings_2021 where wfo = 'GID' and eventid = 2 and "
+        "SELECT ugc from warnings where vtec_year = 2021 and wfo = 'GID' and "
+        "eventid = 2 and "
         "phenomena = 'FG' and significance = 'Y' and status = 'CAN'"
     )
     assert dbcursor.rowcount == 4
@@ -365,10 +383,14 @@ def test_201120_unknown_vtec(dbcursor):
 def test_201120_resent(dbcursor):
     """Test that we can handle a resent product."""
     data = get_test_file("TOR.txt")
+    eas = "EAS ACTIVATION REQUESTED"
+    data2 = data.replace(eas, f"{eas}...RESENT")
+    # trigger a false initially
+    prod = vtecparser(data2)
+    prod.sql(dbcursor)
     prod = vtecparser(data)
     prod.sql(dbcursor)
-    eas = "EAS ACTIVATION REQUESTED"
-    prod = vtecparser(data.replace(eas, f"{eas}...RESENT"))
+    prod = vtecparser(data2)
     prod.sql(dbcursor)
 
 
@@ -518,7 +540,7 @@ def test_200302_issue203(dbcursor):
         assert len(prod.warnings) == 3
         dbcursor.execute(
             """
-            SELECT status from sbw_2020 WHERE wfo = 'CAE' and
+            SELECT status from sbw WHERE vtec_year = 2020 and wfo = 'CAE' and
             eventid = 24 and phenomena = 'FL' and significance = 'W'
             and status = 'CAN'
         """
@@ -555,7 +577,8 @@ def test_issue120_ffwtags(dbcursor):
     assert j[0][0] == ans
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT * from sbw_2018 WHERE wfo = 'GUM' and eventid = 14 and "
+        "SELECT * from sbw WHERE vtec_year = 2018 and wfo = 'GUM' and "
+        "eventid = 14 and "
         "phenomena = 'FF' and significance = 'W'"
     )
     row = dbcursor.fetchone()
@@ -573,7 +596,7 @@ def test_TORE_series(dbcursor):
     def getval():
         dbcursor.execute(
             """
-            SELECT is_emergency from warnings_2018 WHERE
+            SELECT is_emergency from warnings WHERE vtec_year = 2018 and
             wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
             significance = 'W' and ugc = 'IAC127'
         """
@@ -583,7 +606,7 @@ def test_TORE_series(dbcursor):
     def getval2():
         dbcursor.execute(
             """
-            SELECT is_emergency from sbw_2018 WHERE
+            SELECT is_emergency from sbw WHERE vtec_year = 2018 and
             wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
             significance = 'W' and status != 'CAN' ORDER by updated DESC
         """
@@ -593,7 +616,7 @@ def test_TORE_series(dbcursor):
     def getval3():
         dbcursor.execute(
             """
-            select is_emergency from sbw_2018 where
+            select is_emergency from sbw where vtec_year = 2018 and
             wfo = 'DMX' and eventid = 43 and phenomena = 'TO' and
             significance = 'W'
         """
@@ -632,7 +655,8 @@ def test_190102_exb_newyear(dbcursor):
         prod.sql(dbcursor)
         assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
     dbcursor.execute(
-        "SELECT count(*) from warnings_2018 where wfo = 'AFG' and "
+        "SELECT count(*) from warnings where vtec_year = 2018 and "
+        "wfo = 'AFG' and "
         "eventid = 127 and phenomena = 'WW' and significance = 'Y' "
         "and ugc = 'AKZ209'"
     )
@@ -651,7 +675,8 @@ def test_181228_issue76_sbwtable(dbcursor):
     )
     prod.sql(dbcursor)
     dbcursor.execute(
-        "SELECT * from sbw_2018 where wfo = 'MOB' and eventid = 57 "
+        "SELECT * from sbw where vtec_year = 2018 and wfo = 'MOB' and "
+        "eventid = 57 "
         "and phenomena = 'FL' and significance = 'W' and status = 'NEW'"
     )
     row = dbcursor.fetchone()
@@ -675,7 +700,7 @@ def test_180411_can_expiration(dbcursor):
     for status in ["NEW", "CAN"]:
         dbcursor.execute(
             """
-            SELECT expire from sbw_2018 where wfo = 'FWD' and
+            SELECT expire from sbw where vtec_year = 2018 and wfo = 'FWD' and
             phenomena = 'TO' and significance = 'W' and eventid = 6
             and status = %s
         """,
@@ -711,7 +736,8 @@ def test_180202_issue54(dbcursor):
     def get_expire(colname):
         """get expiration"""
         dbcursor.execute(
-            f"SELECT distinct {colname} from warnings_2018 WHERE wfo = 'LWX' "
+            f"SELECT distinct {colname} from warnings WHERE vtec_year = 2018 "
+            "and wfo = 'LWX' "
             "and eventid = 6 and phenomena = 'WW' and significance = 'Y'"
         )
         assert dbcursor.rowcount == 1
@@ -858,7 +884,7 @@ def test_170324_waterspout(dbcursor):
     assert j[0][0] == ans
     prod.sql(dbcursor)
     dbcursor.execute(
-        """SELECT * from sbw_2017 where wfo = 'MFL' and
+        """SELECT * from sbw where vtec_year = 2017 and wfo = 'MFL' and
     phenomena = 'MA' and significance = 'W' and eventid = 59
     and status = 'NEW' and waterspouttag = 'POSSIBLE'
     """
@@ -977,7 +1003,8 @@ def test_151225_extfuture(dbcursor):
     prod.sql(dbcursor)
     dbcursor.execute(
         """
-        SELECT ugc, issue, expire from warnings_2015 where wfo = 'PAH'
+        SELECT ugc, issue, expire from warnings where vtec_year = 2015 and
+        wfo = 'PAH'
         and phenomena = 'FL' and eventid = 93 and significance = 'W'
         and status = 'NEW'
     """
@@ -998,7 +1025,8 @@ def test_150915_noexpire(dbcursor):
     prod.sql(dbcursor)
     dbcursor.execute(
         """
-        SELECT init_expire, expire from sbw_2015 where wfo = 'GRB'
+        SELECT init_expire, expire from sbw where vtec_year = 2015 and
+        wfo = 'GRB'
         and phenomena = 'FL' and eventid = 3 and significance = 'W'
         and status = 'NEW'
     """
@@ -1016,8 +1044,8 @@ def test_150820_exb(dbcursor):
         prod.sql(dbcursor)
     # Make sure the issuance time is correct for MDZ014
     dbcursor.execute(
-        """SELECT issue at time zone 'UTC' as ii from warnings_2015
-    where wfo = 'LWX' and eventid = 30
+        """SELECT issue at time zone 'UTC' as ii from warnings
+    where vtec_year = 2015 and wfo = 'LWX' and eventid = 30
     and phenomena = 'CF' and significance = 'Y'
     and ugc = 'MDZ014'"""
     )
@@ -1030,8 +1058,8 @@ def test_150814_init_expire(dbcursor):
     prod = vtecparser(get_test_file("FLWLZK.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        """SELECT count(*) from warnings_2015
-        where wfo = 'LZK' and eventid = 18
+        """SELECT count(*) from warnings
+        where vtec_year = 2015 and wfo = 'LZK' and eventid = 18
         and phenomena = 'FL' and significance = 'W'
         and init_expire is null"""
     )
@@ -1087,7 +1115,8 @@ def test_150203_null_issue(dbcursor):
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute(
-            "SELECT count(*) from warnings_2015 where wfo = 'OKX' and "
+            "SELECT count(*) from warnings where vtec_year = 2015 and "
+            "wfo = 'OKX' and "
             "eventid = 6 and phenomena = 'WW' and significance = 'Y' "
             "and issue is null"
         )
@@ -1171,14 +1200,16 @@ def test_150102_multiyear(dbcursor):
         prod.sql(dbcursor)
         # Make sure there are no null issue times
         dbcursor.execute(
-            "SELECT count(*) from warnings_2014 where wfo = 'OUN' and "
+            "SELECT count(*) from warnings where vtec_year = 2014 and "
+            "wfo = 'OUN' and "
             "eventid = 16 and phenomena = 'WW' and significance = 'Y' "
             "and issue is null"
         )
         assert dbcursor.fetchone()["count"] == 0
         if i == 5:
             dbcursor.execute(
-                "SELECT issue from warnings_2014 WHERE ugc = 'OKZ036' and "
+                "SELECT issue from warnings WHERE vtec_year = 2014 and "
+                "ugc = 'OKZ036' and "
                 "wfo = 'OUN' and eventid = 16 and phenomena = 'WW' and "
                 "significance = 'Y'"
             )
@@ -1247,8 +1278,8 @@ def test_141208_upgrade(dbcursor):
     # ANZ532 gets too entries from the above check the issuance time of first
     dbcursor.execute(
         """
-        SELECT issue at time zone 'UTC' as ii from warnings_2014
-        where wfo = 'LWX'
+        SELECT issue at time zone 'UTC' as ii from warnings
+        where vtec_year = 2014 and wfo = 'LWX'
         and eventid = 221 and phenomena = 'SC' and significance = 'Y'
         and ugc = 'ANZ532' and status != 'UPG'"""
     )
@@ -1460,12 +1491,12 @@ def test_140609_ext_backwards(dbcursor):
     utcnow = utc(2014, 6, 6, 15, 40)
 
     dbcursor.execute(
-        """DELETE from warnings_2014 where wfo = 'LBF'
+        """DELETE from warnings where vtec_year = 2014 and wfo = 'LBF'
     and eventid = 2 and phenomena = 'FL' and significance = 'W' """
     )
     dbcursor.execute(
-        "DELETE from sbw_2014 where wfo = 'LBF' and eventid = 2 and "
-        "phenomena = 'FL' and significance = 'W'"
+        "DELETE from sbw where vtec_year = 2014 and wfo = 'LBF' and "
+        "eventid = 2 and phenomena = 'FL' and significance = 'W'"
     )
     for i in range(1, 6):
         prod = vtecparser(
@@ -1477,7 +1508,8 @@ def test_140609_ext_backwards(dbcursor):
 
     dbcursor.execute(
         "select status, updated, issue, expire, init_expire, polygon_begin, "
-        "polygon_end from sbw_2014 where eventid = 2 and phenomena = 'FL' and "
+        "polygon_end from sbw where vtec_year = 2014 and eventid = 2 and "
+        "phenomena = 'FL' and "
         "significance = 'W' and wfo = 'LBF' ORDER by updated ASC"
     )
     assert dbcursor.fetchone()["polygon_end"] == utc(2014, 6, 7, 2, 15)
@@ -1584,20 +1616,20 @@ def test_140604_sbwupdate(dbcursor):
     utcnow = utc(2014, 6, 4)
 
     dbcursor.execute(
-        "DELETE from sbw_2014 where wfo = 'LMK' and eventid = 95 and "
-        "phenomena = 'SV' and significance = 'W'"
+        "DELETE from sbw where vtec_year = 2014 and wfo = 'LMK' and "
+        "eventid = 95 and phenomena = 'SV' and significance = 'W'"
     )
     dbcursor.execute(
-        "DELETE from warnings_2014 where wfo = 'LMK' and eventid = 95 and "
-        "phenomena = 'SV' and significance = 'W'"
+        "DELETE from warnings where vtec_year = 2014 and wfo = 'LMK' and "
+        "eventid = 95 and phenomena = 'SV' and significance = 'W'"
     )
 
     prod = vtecparser(get_test_file("SVRLMK_1.txt"), utcnow=utcnow)
     prod.sql(dbcursor)
 
     dbcursor.execute(
-        "SELECT expire from sbw_2014 WHERE wfo = 'LMK' and eventid = 95 and "
-        "phenomena = 'SV' and significance = 'W'"
+        "SELECT expire from sbw WHERE vtec_year = 2014 and wfo = 'LMK' and "
+        "eventid = 95 and phenomena = 'SV' and significance = 'W'"
     )
     assert dbcursor.rowcount == 1
 
@@ -1605,7 +1637,7 @@ def test_140604_sbwupdate(dbcursor):
     prod.sql(dbcursor)
 
     dbcursor.execute(
-        """SELECT expire from sbw_2014 WHERE
+        """SELECT expire from sbw WHERE vtec_year = 2014 and
     wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
     significance = 'W' """
     )
@@ -1706,7 +1738,8 @@ def test_vtec_series(dbcursor):
 
     # Did Marshall County IAZ049 get a ZR.Y
     dbcursor.execute(
-        "SELECT issue from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "SELECT issue from warnings WHERE vtec_year = 2013 and wfo = 'DMX' "
+        "and eventid = 1 "
         "and phenomena = 'ZR' and significance = 'Y' and status = 'EXB' "
         "and ugc = 'IAZ049'"
     )
@@ -1719,7 +1752,8 @@ def test_vtec_series(dbcursor):
     # Is IAZ006 in CON status with proper end time
     answer = utc(2013, 1, 28, 6)
     dbcursor.execute(
-        "SELECT expire from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "SELECT expire from warnings WHERE vtec_year = 2013 and wfo = 'DMX' "
+        "and eventid = 1 "
         "and phenomena = 'WS' and significance = 'W' and status = 'CON' "
         "and ugc = 'IAZ006'"
     )
@@ -1741,7 +1775,8 @@ def test_vtec_series(dbcursor):
     # IAZ006 should be cancelled
     answer = utc(2013, 1, 28, 5, 38)
     dbcursor.execute(
-        "SELECT expire from warnings_2013 WHERE wfo = 'DMX' and eventid = 1 "
+        "SELECT expire from warnings WHERE vtec_year = 2013 and wfo = 'DMX' "
+        "and eventid = 1 "
         "and phenomena = 'WS' and significance = 'W' and status = 'CAN' "
         "and ugc = 'IAZ006'"
     )
@@ -1756,12 +1791,13 @@ def test_vtec(dbcursor):
     """Simple test of VTEC parser"""
     # Remove cruft first
     dbcursor.execute(
-        "DELETE from warnings_2005 WHERE wfo = 'JAN' and eventid = 130 and "
+        "DELETE from warnings WHERE vtec_year = 2005 and wfo = 'JAN' and "
+        "eventid = 130 and "
         "phenomena = 'TO' and significance = 'W'"
     )
     dbcursor.execute(
         """
-        DELETE from sbw_2005 WHERE
+        DELETE from sbw WHERE vtec_year = 2005 and
         wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
         significance = 'W' and status = 'NEW'
     """
@@ -1782,7 +1818,7 @@ def test_vtec(dbcursor):
     # See if we got it in the database!
     dbcursor.execute(
         """
-        SELECT issue from warnings_2005 WHERE
+        SELECT issue from warnings WHERE vtec_year = 2005 and
         wfo = 'JAN' and eventid = 130 and phenomena = 'TO' and
         significance = 'W' and status = 'NEW'
     """
@@ -1790,7 +1826,8 @@ def test_vtec(dbcursor):
     assert dbcursor.rowcount == 3
 
     dbcursor.execute(
-        "SELECT issue from sbw_2005 WHERE wfo = 'JAN' and eventid = 130 and "
+        "SELECT issue from sbw WHERE vtec_year = 2005 and wfo = 'JAN' and "
+        "eventid = 130 and "
         "phenomena = 'TO' and significance = 'W' and status = 'NEW'"
     )
     assert dbcursor.rowcount == 1

@@ -130,23 +130,22 @@ class VTECProduct(TextProduct):
         segment -- A TextProductSegment instance
         vtec -- A vtec instance
         """
-        warning_table = f"warnings_{vtec.year}"
         # If this product is ...RESENT, lets check to make sure we did not
         # already get it
-        if self.is_resent() and _resent_match(self, txn, warning_table, vtec):
+        if self.is_resent() and _resent_match(self, txn, vtec):
             return
 
         if vtec.action in ["NEW", "EXB", "EXA"]:
-            _do_sql_vtec_new(self, txn, warning_table, segment, vtec)
+            _do_sql_vtec_new(self, txn, segment, vtec)
 
         elif vtec.action in ["COR"]:
-            _do_sql_vtec_cor(self, txn, warning_table, segment, vtec)
+            _do_sql_vtec_cor(self, txn, segment, vtec)
 
         elif vtec.action in ["CAN", "UPG", "EXT"]:
-            _do_sql_vtec_can(self, txn, warning_table, segment, vtec)
+            _do_sql_vtec_can(self, txn, segment, vtec)
 
         elif vtec.action in ["CON", "EXP", "ROU"]:
-            _do_sql_vtec_con(self, txn, warning_table, segment, vtec)
+            _do_sql_vtec_con(self, txn, segment, vtec)
 
         else:
             self.warnings.append(
@@ -171,7 +170,6 @@ class VTECProduct(TextProduct):
         # polygon_end   - Time domain this polygon is valid for exclusive
         # updated       - Product time of this product
 
-        sbw_table = f"sbw_{vtec.year}"
         # Figure out when this polygon begins and ends
         polygon_begin = self.valid
         if vtec.action == "NEW" and vtec.begints is not None:
@@ -186,10 +184,16 @@ class VTECProduct(TextProduct):
         if segment.sbw and self.is_correction() and vtec.action == "NEW":
             # Go delete the previous NEW polygon
             txn.execute(
-                f"DELETE from {sbw_table} WHERE status = 'NEW' and "
+                "DELETE from sbw WHERE vtec_year = %s and status = 'NEW' and "
                 "eventid = %s and wfo = %s and phenomena = %s and "
                 "significance = %s",
-                (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
+                (
+                    vtec.year,
+                    vtec.etn,
+                    vtec.office,
+                    vtec.phenomena,
+                    vtec.significance,
+                ),
             )
             if txn.rowcount != 1:
                 self.warnings.append(
@@ -200,10 +204,16 @@ class VTECProduct(TextProduct):
         # Lets go find the initial warning (status == NEW)
         txn.execute(
             "SELECT issue, expire, st_astext(geom) as giswkt "
-            f"from {sbw_table} WHERE status = 'NEW' and "
+            "from sbw WHERE vtec_year = %s and status = 'NEW' and "
             "eventid = %s and wfo = %s and phenomena = %s "
             "and significance = %s",
-            (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
+            (
+                vtec.year,
+                vtec.etn,
+                vtec.office,
+                vtec.phenomena,
+                vtec.significance,
+            ),
         )
         if txn.rowcount > 0:
             if not segment.sbw:
@@ -230,15 +240,22 @@ class VTECProduct(TextProduct):
 
         # Lets go find our current active polygon
         txn.execute(
-            f"SELECT polygon_end from {sbw_table} WHERE eventid = %s and "
-            "wfo = %s and phenomena = %s and significance = %s and "
-            "polygon_begin != polygon_end ORDER by updated DESC LIMIT 1",
-            (vtec.etn, vtec.office, vtec.phenomena, vtec.significance),
+            "SELECT polygon_end from sbw WHERE vtec_year = %s and "
+            "eventid = %s and wfo = %s and phenomena = %s and "
+            "significance = %s and polygon_begin != polygon_end "
+            "ORDER by updated DESC LIMIT 1",
+            (
+                vtec.year,
+                vtec.etn,
+                vtec.office,
+                vtec.phenomena,
+                vtec.significance,
+            ),
         )
         current = None
         if txn.rowcount == 0 and vtec.action != "NEW":
             self.warnings.append(
-                f"{sbw_table} searched for {vtec.s3()} and no results found"
+                f"SBW {vtec.year} searched for {vtec.s3()} and no result found"
             )
         if txn.rowcount > 0:
             current = txn.fetchone()
@@ -248,13 +265,15 @@ class VTECProduct(TextProduct):
         if vtec.action != "NEW" and current is not None:
             txn.execute(
                 (
-                    f"UPDATE {sbw_table} SET polygon_end = %s WHERE "
-                    "eventid = %s and wfo = %s and phenomena = %s "
-                    "and significance = %s and polygon_end != polygon_begin "
+                    "UPDATE sbw SET polygon_end = %s WHERE "
+                    "vtec_year = %s and eventid = %s and wfo = %s and "
+                    "phenomena = %s and significance = %s and "
+                    "polygon_end != polygon_begin "
                     "and polygon_end = %s and status != 'CAN'"
                 ),
                 (
                     polygon_begin,
+                    vtec.year,
                     vtec.etn,
                     vtec.office,
                     vtec.phenomena,
@@ -278,7 +297,7 @@ class VTECProduct(TextProduct):
 
         # OK, ready to insert away!
         sql = (
-            f"INSERT into {sbw_table} (wfo, eventid, "
+            "INSERT into sbw (vtec_year, wfo, eventid, "
             "significance, phenomena, issue, expire, init_expire, "
             "polygon_begin, polygon_end, geom, status, windtag, "
             "hailtag, tornadotag, damagetag, "
@@ -287,10 +306,11 @@ class VTECProduct(TextProduct):
             "floodtag_flashflood, floodtag_damage, floodtag_leeve, "
             "floodtag_dam, hvtec_nwsli, hvtec_severity, hvtec_cause, "
             "hvtec_record, windthreat, hailthreat, squalltag, product_id) "
-            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"
             "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         )
         myargs = (
+            vtec.year,
             vtec.office,
             vtec.etn,
             vtec.significance,
@@ -334,12 +354,14 @@ class VTECProduct(TextProduct):
         if vtec.action in ["CAN", "UPG"] and self.is_single_action():
             txn.execute(
                 (
-                    f"UPDATE {sbw_table} SET expire = %s WHERE wfo = %s and "
+                    "UPDATE sbw SET expire = %s WHERE vtec_year = %s and "
+                    "wfo = %s and "
                     "phenomena = %s and significance = %s and eventid = %s "
                     "and expire >= %s "
                 ),
                 (
                     self.valid,
+                    vtec.year,
                     vtec.office,
                     vtec.phenomena,
                     vtec.significance,
