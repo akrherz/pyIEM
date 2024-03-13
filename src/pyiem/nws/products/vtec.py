@@ -240,7 +240,7 @@ class VTECProduct(TextProduct):
 
         # Lets go find our current active polygon
         txn.execute(
-            "SELECT polygon_end from sbw WHERE vtec_year = %s and "
+            "SELECT issue, polygon_end from sbw WHERE vtec_year = %s and "
             "eventid = %s and wfo = %s and phenomena = %s and "
             "significance = %s and polygon_begin != polygon_end "
             "ORDER by updated DESC LIMIT 1",
@@ -295,6 +295,9 @@ class VTECProduct(TextProduct):
         if segment.tml_valid:
             tml_valid = segment.tml_valid
 
+        issueval = vtec.begints
+        if issueval is None and current is not None:
+            issueval = current["issue"]
         # OK, ready to insert away!
         sql = (
             "INSERT into sbw (vtec_year, wfo, eventid, "
@@ -315,7 +318,7 @@ class VTECProduct(TextProduct):
             vtec.etn,
             vtec.significance,
             vtec.phenomena,
-            vtec.begints,
+            issueval,
             vtec.endts if vtec.endts is not None else polygon_end,
             vtec.endts if vtec.endts is not None else polygon_end,
             polygon_begin,  # polygon_begin

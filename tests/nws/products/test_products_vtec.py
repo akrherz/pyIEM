@@ -42,6 +42,24 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh862_longfuse_polygons(dbcursor):
+    """Test that we more sensibly handle polygon times."""
+    prod = _vtecparser(get_test_file("FLWMEG/FLWMEG.txt"))
+    prod.sql(dbcursor)
+    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_0.txt"))
+    prod.sql(dbcursor)
+    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
+    prod.sql(dbcursor)
+    dbcursor.execute(
+        "select issue from sbw where vtec_year = 2024 and wfo = 'MEG' and "
+        "eventid = 12 and phenomena = 'FL' and significance = 'W' and "
+        "product_id = %s",
+        (prod.get_product_id(),),
+    )
+    assert dbcursor.fetchone()["issue"] == utc(2024, 2, 12, 1, 20)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_FLScrosses(dbcursor):
     """Test theoretical overlap of FLS over the new year."""
     # 2015
