@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 dependencies = [
     "affine",
     "defusedxml",
+    "docutils",
     "geopandas",
     "jinja2",
     "matplotlib>=3.5.0",

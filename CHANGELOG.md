@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Depend on `docutils` for reStructedText to HTML conversion.
 - The VTEC/SBW database storage of raw NWS product text was discontinued.
 Instead, raw ``product_id`` values are stored, which can be used against IEM
 web services to get the raw text. (#857)

@@ -8,6 +8,7 @@ dependencies:
   - coverage
   - cython
   - defusedxml
+  - docutils
   - fiona
   - gdal
   - geopandas
