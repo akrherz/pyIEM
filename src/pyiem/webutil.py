@@ -211,6 +211,7 @@ def iemapp(**kwargs):
     kwargs:
         - default_tz: The default timezone to use for timestamps
         - enable_telemetry: Enable telemetry logging, default ``True``.
+        - help: Default help text, default ``Help not available``.
         - parse_times: Parse the form for timestamps, default ``True``.
         - iemdb: (str or list) The database(s) to connect to, these will be
           bundled into the environ with keys of `iemdb.<name>.conn` and
@@ -268,6 +269,17 @@ def iemapp(**kwargs):
             try:
                 # mixed convers this to a regular dict
                 form = clean_form(parse_formvars(environ).mixed())
+                if "help" in form:
+                    start_response("200 OK", [("Content-type", "text/html")])
+                    # return the module docstring for the func
+                    from docutils.core import publish_string
+
+                    return [
+                        publish_string(
+                            source=kwargs.get("help", "Help not available"),
+                            writer_name="html",
+                        )
+                    ]
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])

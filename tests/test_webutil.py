@@ -63,6 +63,22 @@ def test_ensure_list():
     assert ensure_list({"a": ["b"]}, "a") == ["b"]
 
 
+def test_iemapp_help():
+    """Test that help works."""
+
+    @iemapp(help="FINDME")
+    def application(environ, _start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "help",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("FINDME") > -1
+
+
 def test_iemapp_iemdb_cursor():
     """Test with a cursor set."""
 
