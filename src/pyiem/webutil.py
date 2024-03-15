@@ -75,13 +75,23 @@ def write_telemetry(data: TELEMETRY) -> bool:
     return False
 
 
-def ensure_list(environ, key) -> list:
-    """Ensure that we get something that is at least an empty list."""
+def ensure_list(environ, key, parse_commas=True) -> list:
+    """Ensure that we get something that is at least an empty list.
+
+    Args:
+        environ: the WSGI environ
+        key: the key to look for
+        parse_commas: split each found value based on commas, default True.
+    """
     if key not in environ:
         return []
     if isinstance(environ[key], list):
-        return environ[key]
-    return [environ[key]]
+        res = environ[key]
+    else:
+        res = [environ[key]]
+    if parse_commas:
+        res = [x.strip() for y in res for x in y.split(",")]
+    return res
 
 
 def clean_form(form):
