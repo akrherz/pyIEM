@@ -14,6 +14,9 @@ web services to get the raw text. (#857)
 
 ### New Features
 
+- Add `parse_commas` option to `webutil.ensure_list`, so to allow comma
+delimited CGI params by default.
+
 ### Bug Fixes
 
 - Forward propagate sbw database storage of VTEC issuace (#862).

@@ -61,6 +61,9 @@ def test_ensure_list():
     assert ensure_list({}, "a") == []
     assert ensure_list({"a": "b"}, "a") == ["b"]
     assert ensure_list({"a": ["b"]}, "a") == ["b"]
+    assert ensure_list({"a": ["b,a"]}, "a", parse_commas=False) == ["b,a"]
+    assert ensure_list({"a": "b,a"}, "a") == ["b", "a"]
+    assert ensure_list({"a": ["c", "b,a"]}, "a") == ["c", "b", "a"]
 
 
 def test_iemapp_help():
