@@ -148,7 +148,11 @@ def centered_bins(absmax, on=0, bins=8):
     # Create new min and max values
     minval = np.floor(minval / step) * step
     maxval = np.ceil(maxval / step) * step
-    return np.arange(minval, maxval + 0.001, step)
+    res = np.arange(minval, maxval + 0.001, step)
+    # Account for some numerical instability
+    if len(res) == bins + 1:
+        res[bins // 2] = on
+    return res
 
 
 def draw_logo(fig, logoname):
