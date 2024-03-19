@@ -4,6 +4,12 @@ import pytest
 from pyiem.plot.util import centered_bins, draw_logo, fitbox, pretty_bins
 
 
+def test_gh871_not_a_zero_in_middle():
+    """Test that the middle value is actually a zero."""
+    bins = centered_bins(0.049999997, bins=10)
+    assert bins[5] == 0.0
+
+
 def test_pretty_bins_large_value():
     """Test a value larger than we can support."""
     with pytest.raises(ValueError) as exc_info:
