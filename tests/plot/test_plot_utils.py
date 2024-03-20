@@ -10,6 +10,12 @@ def test_gh871_not_a_zero_in_middle():
     assert bins[5] == 0.0
 
 
+def test_240320_pretty_bins():
+    """Test that our middle value is nice."""
+    res = pretty_bins(0, 14.876)
+    assert abs(res[4] - 8) < 0.001
+
+
 def test_pretty_bins_large_value():
     """Test a value larger than we can support."""
     with pytest.raises(ValueError) as exc_info:
