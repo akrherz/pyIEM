@@ -150,7 +150,7 @@ def centered_bins(absmax, on=0, bins=8):
     maxval = np.ceil(maxval / step) * step
     res = np.arange(minval, maxval + 0.001, step)
     # Account for some numerical instability
-    if len(res) == bins + 1:
+    if len(res) == bins + 1 and abs(res[bins // 2] - on) < 0.001:
         res[bins // 2] = on
     return res
 
