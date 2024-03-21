@@ -197,9 +197,10 @@ def test_utc():
 def test_get_autoplot_context_bad_float():
     """Test that we handle bad floats."""
     form = {"thres": "Qq"}
-    cfg = {"arguments": [{"type": "int", "name": "thres", "default": 100}]}
-    with pytest.raises(IncompleteWebRequest):
-        util.get_autoplot_context(form, cfg)
+    for typ in ["int", "float"]:
+        cfg = {"arguments": [{"type": typ, "name": "thres", "default": 100}]}
+        with pytest.raises(IncompleteWebRequest):
+            util.get_autoplot_context(form, cfg)
 
 
 def test_get_autoplot_context_lowercase_state():
