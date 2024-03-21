@@ -25,7 +25,7 @@ import numpy as np  # used too many places
 
 # NB: careful with circular imports!
 from pyiem import database
-from pyiem.exceptions import UnknownStationException
+from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 from pyiem.network import Table as NetworkTable
 
 # API compat
@@ -348,6 +348,13 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
 
     from pyiem.reference import state_names
 
+    def _float(val):
+        """Convert string to float, if possible."""
+        try:
+            return float(val)
+        except ValueError:
+            raise IncompleteWebRequest(f"Invalid float value: {val}")
+
     ctx = {}
     # Check for DPI setting
     val = fdict.get("dpi")
@@ -408,14 +415,14 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = default
         elif typ in ["int", "month", "zhour", "hour", "day", "year"]:
             if value is not None:
-                value = int(float(value))
+                value = int(_float(value))
             if default is not None:
-                default = int(float(default))
+                default = int(_float(default))
         elif typ == "float":
             if value is not None:
-                value = float(value)
+                value = _float(value)
             if default is not None:
-                default = float(default)
+                default = _float(default)
         elif typ == "state":
             if value is not None:
                 value = value.upper()

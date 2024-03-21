@@ -15,7 +15,7 @@ import numpy as np
 # third party
 import pytest
 from pyiem import util
-from pyiem.exceptions import UnknownStationException
+from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 from pyiem.reference import ISO8601
 
 
@@ -192,6 +192,14 @@ def test_utc():
     assert answer == res
     answer = datetime.utcnow().replace(tzinfo=timezone.utc)
     assert answer.year == util.utc().year
+
+
+def test_get_autoplot_context_bad_float():
+    """Test that we handle bad floats."""
+    form = {"thres": "Qq"}
+    cfg = {"arguments": [{"type": "int", "name": "thres", "default": 100}]}
+    with pytest.raises(IncompleteWebRequest):
+        util.get_autoplot_context(form, cfg)
 
 
 def test_get_autoplot_context_lowercase_state():
