@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyiem.grid package &#8212; pyIEM 0.0.post1199+gb9d1f0e documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
+    
+    <script src="../_static/documentation_options.js?v=c75c2958"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyiem.models package" href="pyiem.models.html" />
+    <link rel="prev" title="pyiem package" href="pyiem.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.models.html" title="pyiem.models package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pyiem.html" title="pyiem package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyiem.grid package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pyiem-grid-package">
+<h1>pyiem.grid package<a class="headerlink" href="#pyiem-grid-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pyiem.grid.zs">
+<span id="pyiem-grid-zs-module"></span><h2>pyiem.grid.zs module<a class="headerlink" href="#module-pyiem.grid.zs" title="Link to this heading">¶</a></h2>
+<p>Utility class to help with fast zonal_stats work</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyiem.grid.zs.CachingZonalStats">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.grid.zs.</span></span><span class="sig-name descname"><span class="pre">CachingZonalStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">affine</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.grid.zs.CachingZonalStats" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements a cache to speed up zonal_stats computation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.grid.zs.CachingZonalStats.compute_gridnav">
+<span class="sig-name descname"><span class="pre">compute_gridnav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.grid.zs.CachingZonalStats.compute_gridnav" title="Link to this definition">¶</a></dt>
+<dd><p>Figure out how these geometries map to our grid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid</strong> (<em>numpy.ndarray</em>) – the array to sample values for</p></li>
+<li><p><strong>geometries</strong> (<em>geopandas.GeoSeries</em>) – geometries to compute over, this
+should not change over the lifetime of this object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.grid.zs.CachingZonalStats.gen_stats">
+<span class="sig-name descname"><span class="pre">gen_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometries=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stat=&lt;numpy.ma.core._frommethod</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.grid.zs.CachingZonalStats.gen_stats" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the zonal_stats for the provided geometries and grid</p>
+<p>Note: the passed <cite>grid</cite> should have (0,0) in upper-left, np.flipud()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid</strong> (<em>numpy.ndarray</em>) – the array to sample values for</p></li>
+<li><p><strong>geometries</strong> (<em>geopandas.GeoSeries</em>) – geometries to compute over, this
+should not change over the lifetime of this object</p></li>
+<li><p><strong>stat</strong> (<em>function</em>) – the function to compute over the masked grid</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the ordered results of our work</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.grid.zs.GRIDINFO">
+<span class="sig-prename descclassname"><span class="pre">pyiem.grid.zs.</span></span><span class="sig-name descname"><span class="pre">GRIDINFO</span></span><a class="headerlink" href="#pyiem.grid.zs.GRIDINFO" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GridInfo</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-pyiem.grid">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.grid" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">pyiem.grid package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyiem.grid.zs">pyiem.grid.zs module</a><ul>
+<li><a class="reference internal" href="#pyiem.grid.zs.CachingZonalStats"><code class="docutils literal notranslate"><span class="pre">CachingZonalStats</span></code></a><ul>
+<li><a class="reference internal" href="#pyiem.grid.zs.CachingZonalStats.compute_gridnav"><code class="docutils literal notranslate"><span class="pre">CachingZonalStats.compute_gridnav()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.grid.zs.CachingZonalStats.gen_stats"><code class="docutils literal notranslate"><span class="pre">CachingZonalStats.gen_stats()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyiem.grid.zs.GRIDINFO"><code class="docutils literal notranslate"><span class="pre">GRIDINFO</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyiem.grid">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="pyiem.html"
+                          title="previous chapter">pyiem package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="pyiem.models.html"
+                          title="next chapter">pyiem.models package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/pyiem.grid.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pyiem.models.html" title="pyiem.models package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pyiem.html" title="pyiem package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyiem.grid package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2015-2024, daryl herzmann.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

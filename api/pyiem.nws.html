@@ -5,18 +5,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>nws Package &#8212; pyIEM 0.0.post1+gffec240 documentation</title>
+    <title>pyiem.nws package &#8212; pyIEM 0.0.post1199+gb9d1f0e documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=6cf22053"></script>
+    <script src="../_static/documentation_options.js?v=c75c2958"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="products Package" href="pyiem.nws.products.html" />
-    <link rel="prev" title="pyiem Package" href="pyiem.html" /> 
+    <link rel="next" title="pyiem.nws.products package" href="pyiem.nws.products.html" />
+    <link rel="prev" title="pyiem.ncei package" href="pyiem.ncei.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,15 +28,15 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyiem.nws.products.html" title="products Package"
+          <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="pyiem.html" title="pyiem Package"
+          <a href="pyiem.ncei.html" title="pyiem.ncei package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gffec240 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem Package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
+          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
       </ul>
     </div>  
 
@@ -45,10 +45,488 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="nws-package">
-<h1>nws Package<a class="headerlink" href="#nws-package" title="Link to this heading">¶</a></h1>
+  <section id="pyiem-nws-package">
+<h1>pyiem.nws package<a class="headerlink" href="#pyiem-nws-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.products.html">pyiem.nws.products package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.cf6">pyiem.nws.products.cf6 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cf6.CF6Product"><code class="docutils literal notranslate"><span class="pre">CF6Product</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cf6.CF6Product.parser"><code class="docutils literal notranslate"><span class="pre">CF6Product.parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cf6.CF6Product.sql"><code class="docutils literal notranslate"><span class="pre">CF6Product.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cf6.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.cli">pyiem.nws.products.cli module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct"><code class="docutils literal notranslate"><span class="pre">CLIProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.compute_diction"><code class="docutils literal notranslate"><span class="pre">CLIProduct.compute_diction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.find_sections"><code class="docutils literal notranslate"><span class="pre">CLIProduct.find_sections()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">CLIProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.parse_data"><code class="docutils literal notranslate"><span class="pre">CLIProduct.parse_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.sql"><code class="docutils literal notranslate"><span class="pre">CLIProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.convert_key"><code class="docutils literal notranslate"><span class="pre">convert_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.get_number"><code class="docutils literal notranslate"><span class="pre">get_number()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.get_number_year"><code class="docutils literal notranslate"><span class="pre">get_number_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.make_tokens"><code class="docutils literal notranslate"><span class="pre">make_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_headline"><code class="docutils literal notranslate"><span class="pre">parse_headline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_precipitation"><code class="docutils literal notranslate"><span class="pre">parse_precipitation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_sky_coverage"><code class="docutils literal notranslate"><span class="pre">parse_sky_coverage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_snowfall"><code class="docutils literal notranslate"><span class="pre">parse_snowfall()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_temperature"><code class="docutils literal notranslate"><span class="pre">parse_temperature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_wind"><code class="docutils literal notranslate"><span class="pre">parse_wind()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.sql_data"><code class="docutils literal notranslate"><span class="pre">sql_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.trace_r"><code class="docutils literal notranslate"><span class="pre">trace_r()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.update_iemaccess"><code class="docutils literal notranslate"><span class="pre">update_iemaccess()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.cwa">pyiem.nws.products.cwa module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.CWAProduct"><code class="docutils literal notranslate"><span class="pre">CWAProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.CWAProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">CWAProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.CWAProduct.sql"><code class="docutils literal notranslate"><span class="pre">CWAProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.go2lonlat"><code class="docutils literal notranslate"><span class="pre">go2lonlat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.parse_polygon"><code class="docutils literal notranslate"><span class="pre">parse_polygon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.parse_product"><code class="docutils literal notranslate"><span class="pre">parse_product()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cwa.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.dsm">pyiem.nws.products.dsm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMCollective"><code class="docutils literal notranslate"><span class="pre">DSMCollective</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMCollective.sql"><code class="docutils literal notranslate"><span class="pre">DSMCollective.sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMCollective.tzlocalize"><code class="docutils literal notranslate"><span class="pre">DSMCollective.tzlocalize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMProduct"><code class="docutils literal notranslate"><span class="pre">DSMProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMProduct.compute_times"><code class="docutils literal notranslate"><span class="pre">DSMProduct.compute_times()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMProduct.sql"><code class="docutils literal notranslate"><span class="pre">DSMProduct.sql()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.DSMProduct.tzlocalize"><code class="docutils literal notranslate"><span class="pre">DSMProduct.tzlocalize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.compute_time"><code class="docutils literal notranslate"><span class="pre">compute_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.dsm.process"><code class="docutils literal notranslate"><span class="pre">process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.ero">pyiem.nws.products.ero module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO"><code class="docutils literal notranslate"><span class="pre">ERO</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.draw_outlooks"><code class="docutils literal notranslate"><span class="pre">ERO.draw_outlooks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.find_issue_expire"><code class="docutils literal notranslate"><span class="pre">ERO.find_issue_expire()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.find_outlooks"><code class="docutils literal notranslate"><span class="pre">ERO.find_outlooks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.get_jabbers"><code class="docutils literal notranslate"><span class="pre">ERO.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.get_outlook"><code class="docutils literal notranslate"><span class="pre">ERO.get_outlook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.get_outlookcollection"><code class="docutils literal notranslate"><span class="pre">ERO.get_outlookcollection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.ERO.sql"><code class="docutils literal notranslate"><span class="pre">ERO.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.compute_loc"><code class="docutils literal notranslate"><span class="pre">compute_loc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.compute_wfos"><code class="docutils literal notranslate"><span class="pre">compute_wfos()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.init_days"><code class="docutils literal notranslate"><span class="pre">init_days()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.jabber_messages"><code class="docutils literal notranslate"><span class="pre">jabber_messages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.meat2segment"><code class="docutils literal notranslate"><span class="pre">meat2segment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ero.sid_rectify"><code class="docutils literal notranslate"><span class="pre">sid_rectify()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.fd">pyiem.nws.products.fd module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.FDProduct"><code class="docutils literal notranslate"><span class="pre">FDProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.FDProduct.parser"><code class="docutils literal notranslate"><span class="pre">FDProduct.parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.FDProduct.sql"><code class="docutils literal notranslate"><span class="pre">FDProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.compute_time"><code class="docutils literal notranslate"><span class="pre">compute_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.make4"><code class="docutils literal notranslate"><span class="pre">make4()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.parse_encoding"><code class="docutils literal notranslate"><span class="pre">parse_encoding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.fd.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.ffg">pyiem.nws.products.ffg module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ffg.FFGProduct"><code class="docutils literal notranslate"><span class="pre">FFGProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ffg.FFGProduct.do_parsing"><code class="docutils literal notranslate"><span class="pre">FFGProduct.do_parsing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ffg.FFGProduct.sql"><code class="docutils literal notranslate"><span class="pre">FFGProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ffg.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.ffg.safe"><code class="docutils literal notranslate"><span class="pre">safe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.gairmet">pyiem.nws.products.gairmet module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.GAIRMET"><code class="docutils literal notranslate"><span class="pre">GAIRMET</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.GAIRMET.parsing"><code class="docutils literal notranslate"><span class="pre">GAIRMET.parsing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.GAIRMET.sql"><code class="docutils literal notranslate"><span class="pre">GAIRMET.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.parseUTC"><code class="docutils literal notranslate"><span class="pre">parseUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.prettify"><code class="docutils literal notranslate"><span class="pre">prettify()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.gairmet.process_airmet"><code class="docutils literal notranslate"><span class="pre">process_airmet()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.hml">pyiem.nws.products.hml module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HML"><code class="docutils literal notranslate"><span class="pre">HML</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HML.do_sql_forecast"><code class="docutils literal notranslate"><span class="pre">HML.do_sql_forecast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HML.do_sql_observed"><code class="docutils literal notranslate"><span class="pre">HML.do_sql_observed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HML.parsing"><code class="docutils literal notranslate"><span class="pre">HML.parsing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HML.sql"><code class="docutils literal notranslate"><span class="pre">HML.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.HMLData"><code class="docutils literal notranslate"><span class="pre">HMLData</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.no999"><code class="docutils literal notranslate"><span class="pre">no999()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.parseUTC"><code class="docutils literal notranslate"><span class="pre">parseUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.parse_xml"><code class="docutils literal notranslate"><span class="pre">parse_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hml.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.hwo">pyiem.nws.products.hwo module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct"><code class="docutils literal notranslate"><span class="pre">HWOProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">HWOProduct.get_channels()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.lsr">pyiem.nws.products.lsr module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct"><code class="docutils literal notranslate"><span class="pre">LSRProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_temporal_domain"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_temporal_domain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_url"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.is_summary"><code class="docutils literal notranslate"><span class="pre">LSRProduct.is_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProductException"><code class="docutils literal notranslate"><span class="pre">LSRProductException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.parse_lsr"><code class="docutils literal notranslate"><span class="pre">parse_lsr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.mcd">pyiem.nws.products.mcd module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct"><code class="docutils literal notranslate"><span class="pre">MCDProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.database_save"><code class="docutils literal notranslate"><span class="pre">MCDProduct.database_save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.find_valid_times"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_valid_times()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.find_watch_probability"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_watch_probability()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.get_url"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_areas_affected"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_areas_affected()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_concerning"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_concerning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_discussion_num"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_discussion_num()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_geometry"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_geometry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.tweet"><code class="docutils literal notranslate"><span class="pre">MCDProduct.tweet()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.metarcollect">pyiem.nws.products.metarcollect module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.METARCollective"><code class="docutils literal notranslate"><span class="pre">METARCollective</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.METARCollective.get_jabbers"><code class="docutils literal notranslate"><span class="pre">METARCollective.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.METARCollective.split_and_parse"><code class="docutils literal notranslate"><span class="pre">METARCollective.split_and_parse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.normalize_temp"><code class="docutils literal notranslate"><span class="pre">normalize_temp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.normid"><code class="docutils literal notranslate"><span class="pre">normid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.over_wind_threshold"><code class="docutils literal notranslate"><span class="pre">over_wind_threshold()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.sanitize"><code class="docutils literal notranslate"><span class="pre">sanitize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.to_iemaccess"><code class="docutils literal notranslate"><span class="pre">to_iemaccess()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.to_metar"><code class="docutils literal notranslate"><span class="pre">to_metar()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.trace"><code class="docutils literal notranslate"><span class="pre">trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.wind_logic"><code class="docutils literal notranslate"><span class="pre">wind_logic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.metarcollect.wind_message"><code class="docutils literal notranslate"><span class="pre">wind_message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.mos">pyiem.nws.products.mos module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.MOSProduct"><code class="docutils literal notranslate"><span class="pre">MOSProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.MOSProduct.parse_data"><code class="docutils literal notranslate"><span class="pre">MOSProduct.parse_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.MOSProduct.sql"><code class="docutils literal notranslate"><span class="pre">MOSProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.make_null"><code class="docutils literal notranslate"><span class="pre">make_null()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mos.section_parser"><code class="docutils literal notranslate"><span class="pre">section_parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.nhc">pyiem.nws.products.nhc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct"><code class="docutils literal notranslate"><span class="pre">NHCProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">NHCProduct.get_jabbers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.nldn">pyiem.nws.products.nldn module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nldn.NLDNProduct"><code class="docutils literal notranslate"><span class="pre">NLDNProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nldn.NLDNProduct.sql"><code class="docutils literal notranslate"><span class="pre">NLDNProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nldn.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.pirep">pyiem.nws.products.pirep module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport"><code class="docutils literal notranslate"><span class="pre">PilotReport</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.aircraft_type"><code class="docutils literal notranslate"><span class="pre">PilotReport.aircraft_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.base_loc"><code class="docutils literal notranslate"><span class="pre">PilotReport.base_loc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.cwsu"><code class="docutils literal notranslate"><span class="pre">PilotReport.cwsu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.is_duplicate"><code class="docutils literal notranslate"><span class="pre">PilotReport.is_duplicate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.latitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.latitude</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.longitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.longitude</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_computed_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_config"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.priority"><code class="docutils literal notranslate"><span class="pre">PilotReport.priority</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.text"><code class="docutils literal notranslate"><span class="pre">PilotReport.text</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.valid"><code class="docutils literal notranslate"><span class="pre">PilotReport.valid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep"><code class="docutils literal notranslate"><span class="pre">Pirep</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.assign_cwsu"><code class="docutils literal notranslate"><span class="pre">Pirep.assign_cwsu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.compute_loc"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_loc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.compute_pirep_valid"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_pirep_valid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.get_jabbers"><code class="docutils literal notranslate"><span class="pre">Pirep.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.parse_reports"><code class="docutils literal notranslate"><span class="pre">Pirep.parse_reports()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.process_pirep"><code class="docutils literal notranslate"><span class="pre">Pirep.process_pirep()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.sql"><code class="docutils literal notranslate"><span class="pre">Pirep.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority"><code class="docutils literal notranslate"><span class="pre">Priority</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority.UA"><code class="docutils literal notranslate"><span class="pre">Priority.UA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority.UUA"><code class="docutils literal notranslate"><span class="pre">Priority.UUA</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.saw">pyiem.nws.products.saw module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct"><code class="docutils literal notranslate"><span class="pre">SAWProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.CANCELS"><code class="docutils literal notranslate"><span class="pre">SAWProduct.CANCELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.ISSUES"><code class="docutils literal notranslate"><span class="pre">SAWProduct.ISSUES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.SEVERE_THUNDERSTORM"><code class="docutils literal notranslate"><span class="pre">SAWProduct.SEVERE_THUNDERSTORM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.TORNADO"><code class="docutils literal notranslate"><span class="pre">SAWProduct.TORNADO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.compute_wfos"><code class="docutils literal notranslate"><span class="pre">SAWProduct.compute_wfos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.find_action"><code class="docutils literal notranslate"><span class="pre">SAWProduct.find_action()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.find_polygon"><code class="docutils literal notranslate"><span class="pre">SAWProduct.find_polygon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.find_time"><code class="docutils literal notranslate"><span class="pre">SAWProduct.find_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.find_ww_num"><code class="docutils literal notranslate"><span class="pre">SAWProduct.find_ww_num()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.find_ww_type"><code class="docutils literal notranslate"><span class="pre">SAWProduct.find_ww_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SAWProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.is_test"><code class="docutils literal notranslate"><span class="pre">SAWProduct.is_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.SAWProduct.sql"><code class="docutils literal notranslate"><span class="pre">SAWProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.saw.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.scp">pyiem.nws.products.scp module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP"><code class="docutils literal notranslate"><span class="pre">SCP</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.cldtop1"><code class="docutils literal notranslate"><span class="pre">SCP.cldtop1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.cldtop2"><code class="docutils literal notranslate"><span class="pre">SCP.cldtop2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.eca"><code class="docutils literal notranslate"><span class="pre">SCP.eca</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.high"><code class="docutils literal notranslate"><span class="pre">SCP.high</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.mid"><code class="docutils literal notranslate"><span class="pre">SCP.mid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.station"><code class="docutils literal notranslate"><span class="pre">SCP.station</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCP.valid"><code class="docutils literal notranslate"><span class="pre">SCP.valid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCPProduct"><code class="docutils literal notranslate"><span class="pre">SCPProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.SCPProduct.sql"><code class="docutils literal notranslate"><span class="pre">SCPProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.scp.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.sel">pyiem.nws.products.sel module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sel.SELProduct"><code class="docutils literal notranslate"><span class="pre">SELProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sel.SELProduct.is_test"><code class="docutils literal notranslate"><span class="pre">SELProduct.is_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sel.SELProduct.sql"><code class="docutils literal notranslate"><span class="pre">SELProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sel.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.shef">pyiem.nws.products.shef module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#formats">Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#implementation-notes">Implementation Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#todo-list">TODO List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.SHEFProduct"><code class="docutils literal notranslate"><span class="pre">SHEFProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.clean_b_headerline"><code class="docutils literal notranslate"><span class="pre">clean_b_headerline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.compute_num_value"><code class="docutils literal notranslate"><span class="pre">compute_num_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.datetime24"><code class="docutils literal notranslate"><span class="pre">datetime24()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.make_date"><code class="docutils literal notranslate"><span class="pre">make_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_A"><code class="docutils literal notranslate"><span class="pre">parse_A()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_B"><code class="docutils literal notranslate"><span class="pre">parse_B()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_E"><code class="docutils literal notranslate"><span class="pre">parse_E()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_d_wrapper"><code class="docutils literal notranslate"><span class="pre">parse_d_wrapper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dc"><code class="docutils literal notranslate"><span class="pre">parse_dc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dd"><code class="docutils literal notranslate"><span class="pre">parse_dd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dh"><code class="docutils literal notranslate"><span class="pre">parse_dh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dm"><code class="docutils literal notranslate"><span class="pre">parse_dm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dt"><code class="docutils literal notranslate"><span class="pre">parse_dt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_dy"><code class="docutils literal notranslate"><span class="pre">parse_dy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parse_station_valid"><code class="docutils literal notranslate"><span class="pre">parse_station_valid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_di"><code class="docutils literal notranslate"><span class="pre">process_di()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_message_a"><code class="docutils literal notranslate"><span class="pre">process_message_a()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_message_b"><code class="docutils literal notranslate"><span class="pre">process_message_b()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_message_e"><code class="docutils literal notranslate"><span class="pre">process_message_e()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_messages"><code class="docutils literal notranslate"><span class="pre">process_messages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.process_modifiers"><code class="docutils literal notranslate"><span class="pre">process_modifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.slash_tokenize"><code class="docutils literal notranslate"><span class="pre">slash_tokenize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.shef.strip_comments"><code class="docutils literal notranslate"><span class="pre">strip_comments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.sigmet">pyiem.nws.products.sigmet module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMET"><code class="docutils literal notranslate"><span class="pre">SIGMET</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.compute_time"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.compute_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.process_SIGC"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.process_SIGC()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.process_ocean"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.process_ocean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.sql"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.compute_esol"><code class="docutils literal notranslate"><span class="pre">compute_esol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.figure_expire"><code class="docutils literal notranslate"><span class="pre">figure_expire()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.go2lonlat"><code class="docutils literal notranslate"><span class="pre">go2lonlat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.locs2lonslats"><code class="docutils literal notranslate"><span class="pre">locs2lonslats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.spacewx">pyiem.nws.products.spacewx module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct.get_jabbers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.spcpts">pyiem.nws.products.spcpts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCOutlook"><code class="docutils literal notranslate"><span class="pre">SPCOutlook</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCOutlookCollection"><code class="docutils literal notranslate"><span class="pre">SPCOutlookCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCOutlookCollection.add_outlook"><code class="docutils literal notranslate"><span class="pre">SPCOutlookCollection.add_outlook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCOutlookCollection.difference_geometries"><code class="docutils literal notranslate"><span class="pre">SPCOutlookCollection.difference_geometries()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCOutlookCollection.get_categories"><code class="docutils literal notranslate"><span class="pre">SPCOutlookCollection.get_categories()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS"><code class="docutils literal notranslate"><span class="pre">SPCPTS</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.compute_wfos"><code class="docutils literal notranslate"><span class="pre">SPCPTS.compute_wfos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.draw_outlooks"><code class="docutils literal notranslate"><span class="pre">SPCPTS.draw_outlooks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.find_issue_expire"><code class="docutils literal notranslate"><span class="pre">SPCPTS.find_issue_expire()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.find_outlooks"><code class="docutils literal notranslate"><span class="pre">SPCPTS.find_outlooks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.get_descript_and_url"><code class="docutils literal notranslate"><span class="pre">SPCPTS.get_descript_and_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SPCPTS.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.get_outlook"><code class="docutils literal notranslate"><span class="pre">SPCPTS.get_outlook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.get_outlookcollection"><code class="docutils literal notranslate"><span class="pre">SPCPTS.get_outlookcollection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.set_metadata"><code class="docutils literal notranslate"><span class="pre">SPCPTS.set_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.SPCPTS.sql"><code class="docutils literal notranslate"><span class="pre">SPCPTS.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.compute_times"><code class="docutils literal notranslate"><span class="pre">compute_times()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.get_day"><code class="docutils literal notranslate"><span class="pre">get_day()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.get_segments_from_text"><code class="docutils literal notranslate"><span class="pre">get_segments_from_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.init_days"><code class="docutils literal notranslate"><span class="pre">init_days()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spcpts.str2multipolygon"><code class="docutils literal notranslate"><span class="pre">str2multipolygon()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.sps">pyiem.nws.products.sps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sps.SPSProduct"><code class="docutils literal notranslate"><span class="pre">SPSProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sps.SPSProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SPSProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sps.SPSProduct.sql"><code class="docutils literal notranslate"><span class="pre">SPSProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sps.dedup_headline"><code class="docutils literal notranslate"><span class="pre">dedup_headline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sps.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.taf">pyiem.nws.products.taf module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.TAFProduct"><code class="docutils literal notranslate"><span class="pre">TAFProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.TAFProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">TAFProduct.get_channels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.TAFProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">TAFProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.TAFProduct.sql"><code class="docutils literal notranslate"><span class="pre">TAFProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.add_forecast_info"><code class="docutils literal notranslate"><span class="pre">add_forecast_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.ddhhmi2valid"><code class="docutils literal notranslate"><span class="pre">ddhhmi2valid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.make_forecast"><code class="docutils literal notranslate"><span class="pre">make_forecast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.make_tempo"><code class="docutils literal notranslate"><span class="pre">make_tempo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.parse_prod"><code class="docutils literal notranslate"><span class="pre">parse_prod()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.taf.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.vtec">pyiem.nws.products.vtec module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct"><code class="docutils literal notranslate"><span class="pre">VTECProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sbw_geometry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sql_vtec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_segment"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_segment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_vtec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_jabbers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_skip_con"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_skip_con()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_homogeneous"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_homogeneous()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_single_action"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_single_action()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.sql"><code class="docutils literal notranslate"><span class="pre">VTECProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProductException"><code class="docutils literal notranslate"><span class="pre">VTECProductException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.wwp">pyiem.nws.products.wwp module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.wwp.WWPProduct"><code class="docutils literal notranslate"><span class="pre">WWPProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.wwp.WWPProduct.is_test"><code class="docutils literal notranslate"><span class="pre">WWPProduct.is_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.wwp.WWPProduct.sql"><code class="docutils literal notranslate"><span class="pre">WWPProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.wwp.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.xteus">pyiem.nws.products.xteus module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.xteus.XTEUSProduct"><code class="docutils literal notranslate"><span class="pre">XTEUSProduct</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.xteus.XTEUSProduct.sql"><code class="docutils literal notranslate"><span class="pre">XTEUSProduct.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.xteus.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pyiem.nws.bufkit">
+<span id="pyiem-nws-bufkit-module"></span><h2>pyiem.nws.bufkit module<a class="headerlink" href="#module-pyiem.nws.bufkit" title="Link to this heading">¶</a></h2>
+<p>A BUFKIT File Reader.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.nws.bufkit.read_bufkit">
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.bufkit.</span></span><span class="sig-name descname"><span class="pre">read_bufkit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mixedobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.bufkit.read_bufkit" title="Link to this definition">¶</a></dt>
+<dd><p>Read a BUFKIT file and return two pandas dataframes.</p>
+<p>The first dataframe is the sounding values with a column called <cite>STIM</cite>,
+which can be joined against the index of the station_dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mixedobj</strong> (<em>str</em><em> or </em><em>filelike</em>) – What to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(profile_dataframe, station_dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-pyiem.nws.gini">
-<span id="gini-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module<a class="headerlink" href="#module-pyiem.nws.gini" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-gini-module"></span><h2>pyiem.nws.gini module<a class="headerlink" href="#module-pyiem.nws.gini" title="Link to this heading">¶</a></h2>
 <p>Processing of GINI formatted data found on NOAAPORT</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.gini.GINIZFile">
@@ -145,7 +623,7 @@
 
 </section>
 <section id="module-pyiem.nws.hvtec">
-<span id="hvtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.hvtec" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-hvtec-module"></span><h2>pyiem.nws.hvtec module<a class="headerlink" href="#module-pyiem.nws.hvtec" title="Link to this heading">¶</a></h2>
 <p>Process HVTEC encoding.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.hvtec.HVTEC">
@@ -180,7 +658,7 @@
 
 </section>
 <section id="module-pyiem.nws.lsr">
-<span id="lsr-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module<a class="headerlink" href="#module-pyiem.nws.lsr" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-lsr-module"></span><h2>pyiem.nws.lsr module<a class="headerlink" href="#module-pyiem.nws.lsr" title="Link to this heading">¶</a></h2>
 <p>The Atomic Local Storm Report … Report</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.lsr.LSR">
@@ -239,7 +717,7 @@
 
 </section>
 <section id="module-pyiem.nws.nwsli">
-<span id="nwsli-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module<a class="headerlink" href="#module-pyiem.nws.nwsli" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-nwsli-module"></span><h2>pyiem.nws.nwsli module<a class="headerlink" href="#module-pyiem.nws.nwsli" title="Link to this heading">¶</a></h2>
 <p>National Weather Service Location Idenitifiers (NWSLI)</p>
 <p>A class to store metadata associated with a NWSLI entry.</p>
 <dl class="py class">
@@ -265,12 +743,12 @@
 
 </section>
 <section id="module-pyiem.nws.product">
-<span id="product-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module<a class="headerlink" href="#module-pyiem.nws.product" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-product-module"></span><h2>pyiem.nws.product module<a class="headerlink" href="#module-pyiem.nws.product" title="Link to this heading">¶</a></h2>
 <p>Base Class encapsulating a NWS Text Product</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.product.</span></span><span class="sig-name descname"><span class="pre">TextProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WMOProduct</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="pyiem.html#pyiem.wmo.WMOProduct" title="pyiem.wmo.WMOProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">WMOProduct</span></code></a></p>
 <p>class representing a NWS Text Product</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_affected_wfos">
@@ -513,7 +991,7 @@ utcvalid (datetimetz): of this product</p>
 
 </section>
 <section id="module-pyiem.nws.ugc">
-<span id="ugc-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module<a class="headerlink" href="#module-pyiem.nws.ugc" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-ugc-module"></span><h2>pyiem.nws.ugc module<a class="headerlink" href="#module-pyiem.nws.ugc" title="Link to this heading">¶</a></h2>
 <p>Something to store UGC information!</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.ugc.UGC">
@@ -568,7 +1046,7 @@ datetime
 
 </section>
 <section id="module-pyiem.nws.vtec">
-<span id="vtec-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module<a class="headerlink" href="#module-pyiem.nws.vtec" title="Link to this heading">¶</a></h2>
+<span id="pyiem-nws-vtec-module"></span><h2>pyiem.nws.vtec module<a class="headerlink" href="#module-pyiem.nws.vtec" title="Link to this heading">¶</a></h2>
 <p>Support NWS VTEC encoding</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.VTEC">
@@ -657,166 +1135,11 @@ datetime
 </dd></dl>
 
 </section>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.products.html">products Package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#id1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">products</span></code> Package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cli</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct"><code class="docutils literal notranslate"><span class="pre">CLIProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.compute_diction"><code class="docutils literal notranslate"><span class="pre">CLIProduct.compute_diction()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.find_sections"><code class="docutils literal notranslate"><span class="pre">CLIProduct.find_sections()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">CLIProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.parse_data"><code class="docutils literal notranslate"><span class="pre">CLIProduct.parse_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.CLIProduct.sql"><code class="docutils literal notranslate"><span class="pre">CLIProduct.sql()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.convert_key"><code class="docutils literal notranslate"><span class="pre">convert_key()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.get_number"><code class="docutils literal notranslate"><span class="pre">get_number()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.get_number_year"><code class="docutils literal notranslate"><span class="pre">get_number_year()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.make_tokens"><code class="docutils literal notranslate"><span class="pre">make_tokens()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_headline"><code class="docutils literal notranslate"><span class="pre">parse_headline()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_precipitation"><code class="docutils literal notranslate"><span class="pre">parse_precipitation()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_sky_coverage"><code class="docutils literal notranslate"><span class="pre">parse_sky_coverage()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_snowfall"><code class="docutils literal notranslate"><span class="pre">parse_snowfall()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_temperature"><code class="docutils literal notranslate"><span class="pre">parse_temperature()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parse_wind"><code class="docutils literal notranslate"><span class="pre">parse_wind()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.sql_data"><code class="docutils literal notranslate"><span class="pre">sql_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.trace_r"><code class="docutils literal notranslate"><span class="pre">trace_r()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.cli.update_iemaccess"><code class="docutils literal notranslate"><span class="pre">update_iemaccess()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.hwo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hwo</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct"><code class="docutils literal notranslate"><span class="pre">HWOProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.HWOProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">HWOProduct.get_channels()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.hwo.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.lsr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct"><code class="docutils literal notranslate"><span class="pre">LSRProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_temporal_domain"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_temporal_domain()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.get_url"><code class="docutils literal notranslate"><span class="pre">LSRProduct.get_url()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProduct.is_summary"><code class="docutils literal notranslate"><span class="pre">LSRProduct.is_summary()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.LSRProductException"><code class="docutils literal notranslate"><span class="pre">LSRProductException</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.parse_lsr"><code class="docutils literal notranslate"><span class="pre">parse_lsr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.lsr.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.mcd"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mcd</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct"><code class="docutils literal notranslate"><span class="pre">MCDProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.database_save"><code class="docutils literal notranslate"><span class="pre">MCDProduct.database_save()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.find_valid_times"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_valid_times()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.find_watch_probability"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_watch_probability()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.get_url"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_url()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_areas_affected"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_areas_affected()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_concerning"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_concerning()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_discussion_num"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_discussion_num()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.parse_geometry"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_geometry()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.MCDProduct.tweet"><code class="docutils literal notranslate"><span class="pre">MCDProduct.tweet()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.mcd.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.nhc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nhc</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct"><code class="docutils literal notranslate"><span class="pre">NHCProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.NHCProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">NHCProduct.get_jabbers()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.nhc.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.pirep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pirep</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport"><code class="docutils literal notranslate"><span class="pre">PilotReport</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.aircraft_type"><code class="docutils literal notranslate"><span class="pre">PilotReport.aircraft_type</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.base_loc"><code class="docutils literal notranslate"><span class="pre">PilotReport.base_loc</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.cwsu"><code class="docutils literal notranslate"><span class="pre">PilotReport.cwsu</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.is_duplicate"><code class="docutils literal notranslate"><span class="pre">PilotReport.is_duplicate</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.latitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.latitude</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.longitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.longitude</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_computed_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_config"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_config</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.model_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_fields</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.priority"><code class="docutils literal notranslate"><span class="pre">PilotReport.priority</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.text"><code class="docutils literal notranslate"><span class="pre">PilotReport.text</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.PilotReport.valid"><code class="docutils literal notranslate"><span class="pre">PilotReport.valid</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep"><code class="docutils literal notranslate"><span class="pre">Pirep</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.assign_cwsu"><code class="docutils literal notranslate"><span class="pre">Pirep.assign_cwsu()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.compute_loc"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_loc()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.compute_pirep_valid"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_pirep_valid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.get_jabbers"><code class="docutils literal notranslate"><span class="pre">Pirep.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.parse_reports"><code class="docutils literal notranslate"><span class="pre">Pirep.parse_reports()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.process_pirep"><code class="docutils literal notranslate"><span class="pre">Pirep.process_pirep()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Pirep.sql"><code class="docutils literal notranslate"><span class="pre">Pirep.sql()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority"><code class="docutils literal notranslate"><span class="pre">Priority</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority.UA"><code class="docutils literal notranslate"><span class="pre">Priority.UA</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.Priority.UUA"><code class="docutils literal notranslate"><span class="pre">Priority.UUA</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.pirep.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.sigmet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sigmet</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMET"><code class="docutils literal notranslate"><span class="pre">SIGMET</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.compute_time"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.compute_time()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.process_SIGC"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.process_SIGC()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.process_ocean"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.process_ocean()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.SIGMETProduct.sql"><code class="docutils literal notranslate"><span class="pre">SIGMETProduct.sql()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.compute_esol"><code class="docutils literal notranslate"><span class="pre">compute_esol()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.figure_expire"><code class="docutils literal notranslate"><span class="pre">figure_expire()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.go2lonlat"><code class="docutils literal notranslate"><span class="pre">go2lonlat()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.locs2lonslats"><code class="docutils literal notranslate"><span class="pre">locs2lonslats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.sigmet.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.spacewx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spacewx</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.SpaceWxProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">SpaceWxProduct.get_jabbers()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.spacewx.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.html#module-pyiem.nws.products.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct"><code class="docutils literal notranslate"><span class="pre">VTECProduct</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sbw_geometry()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.do_sql_vtec()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_segment"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_segment()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_vtec()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_skip_con"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_skip_con()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_homogeneous"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_homogeneous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_single_action"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_single_action()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.sql"><code class="docutils literal notranslate"><span class="pre">VTECProduct.sql()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProductException"><code class="docutils literal notranslate"><span class="pre">VTECProductException</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+<section id="module-pyiem.nws">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.nws" title="Link to this heading">¶</a></h2>
+<p>NWS specific codes</p>
+<p>A collection of codes to support the processing of NWS products and NWS
+terminology.</p>
 </section>
 </section>
 
@@ -830,8 +1153,14 @@ datetime
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">nws Package</a><ul>
-<li><a class="reference internal" href="#module-pyiem.nws.gini"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gini</span></code> Module</a><ul>
+<li><a class="reference internal" href="#">pyiem.nws package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyiem.nws.bufkit">pyiem.nws.bufkit module</a><ul>
+<li><a class="reference internal" href="#pyiem.nws.bufkit.read_bufkit"><code class="docutils literal notranslate"><span class="pre">read_bufkit()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyiem.nws.gini">pyiem.nws.gini module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile"><code class="docutils literal notranslate"><span class="pre">GINIZFile</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile.archive_filename"><code class="docutils literal notranslate"><span class="pre">GINIZFile.archive_filename()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.gini.GINIZFile.awips_grid"><code class="docutils literal notranslate"><span class="pre">GINIZFile.awips_grid()</span></code></a></li>
@@ -851,13 +1180,13 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.gini.uint24"><code class="docutils literal notranslate"><span class="pre">uint24()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.hvtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hvtec</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.hvtec">pyiem.nws.hvtec module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.HVTEC"><code class="docutils literal notranslate"><span class="pre">HVTEC</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.contime"><code class="docutils literal notranslate"><span class="pre">contime()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.hvtec.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.lsr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lsr</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.lsr">pyiem.nws.lsr module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR"><code class="docutils literal notranslate"><span class="pre">LSR</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR.assign_timezone"><code class="docutils literal notranslate"><span class="pre">LSR.assign_timezone()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.lsr.LSR.consume_magnitude"><code class="docutils literal notranslate"><span class="pre">LSR.consume_magnitude()</span></code></a></li>
@@ -871,14 +1200,14 @@ datetime
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.nwsli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nwsli</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.nwsli">pyiem.nws.nwsli module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.nwsli.NWSLI"><code class="docutils literal notranslate"><span class="pre">NWSLI</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.nwsli.NWSLI.get_name"><code class="docutils literal notranslate"><span class="pre">NWSLI.get_name()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.product"><code class="xref py py-mod docutils literal notranslate"><span class="pre">product</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.product">pyiem.nws.product module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct"><code class="docutils literal notranslate"><span class="pre">TextProduct</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_affected_wfos"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_affected_wfos()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_channels"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_channels()</span></code></a></li>
@@ -920,7 +1249,7 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.product.str2polygon"><code class="docutils literal notranslate"><span class="pre">str2polygon()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.ugc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ugc</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.ugc">pyiem.nws.ugc module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGC"><code class="docutils literal notranslate"><span class="pre">UGC</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGCProvider"><code class="docutils literal notranslate"><span class="pre">UGCProvider</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.ugc.UGCProvider.get"><code class="docutils literal notranslate"><span class="pre">UGCProvider.get()</span></code></a></li>
@@ -931,7 +1260,7 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.ugc.ugcs_to_text"><code class="docutils literal notranslate"><span class="pre">ugcs_to_text()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-pyiem.nws.vtec"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vtec</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pyiem.nws.vtec">pyiem.nws.vtec module</a><ul>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC"><code class="docutils literal notranslate"><span class="pre">VTEC</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC.get_action_string"><code class="docutils literal notranslate"><span class="pre">VTEC.get_action_string()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.vtec.VTEC.get_begin_string"><code class="docutils literal notranslate"><span class="pre">VTEC.get_begin_string()</span></code></a></li>
@@ -950,7 +1279,7 @@ datetime
 <li><a class="reference internal" href="#pyiem.nws.vtec.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#module-pyiem.nws">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -958,13 +1287,13 @@ datetime
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="pyiem.html"
-                          title="previous chapter">pyiem Package</a></p>
+    <p class="topless"><a href="pyiem.ncei.html"
+                          title="previous chapter">pyiem.ncei package</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="pyiem.nws.products.html"
-                          title="next chapter">products Package</a></p>
+                          title="next chapter">pyiem.nws.products package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -997,15 +1326,15 @@ datetime
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyiem.nws.products.html" title="products Package"
+          <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              >next</a> |</li>
         <li class="right" >
-          <a href="pyiem.html" title="pyiem Package"
+          <a href="pyiem.ncei.html" title="pyiem.ncei package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1+gffec240 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem Package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">nws Package</a></li> 
+          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
