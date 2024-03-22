@@ -1,6 +1,6 @@
-"""
-Something to deal with SPC PTS Product
-My life was not supposed to end like this, what a brutal format
+"""Storm Prediction Center PTS Product Parser.
+
+My life was not supposed to end like this, what a brutal format.
 """
 
 import datetime
@@ -39,12 +39,13 @@ THRESHOLD_ORDER = (
 
 
 def compute_times(afos, issue, expire, day):
-    """compute actual issue, expire time.
+    """Compute actual issue, expire time.
 
     For the multi-day products, the text product contains a range of dates
     that need translated to an actual issue and expire time.
 
-    Returns:
+    Returns
+    -------
       issue (datetime)
       expire (datetime)
     """
@@ -56,7 +57,7 @@ def compute_times(afos, issue, expire, day):
 
 
 def get_day(prod, text):
-    """Figure out which day this is for"""
+    """Figure out which day this is for."""
     if prod.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PFWFD1", "PFWFD2"]:
         return int(prod.afos[5])
     search = DAYRE.search(text)
@@ -66,7 +67,7 @@ def get_day(prod, text):
 
 
 def get_segments_from_text(text):
-    """Return list of segments for this text"""
+    """Return list of segments for this text."""
     tokens = re.findall("([0-9]{8})", text.replace("\n", ""))
     # First we generate a list of segments, based on what we found
     segments = []
@@ -126,7 +127,7 @@ def init_days(prod):
     """Figure out which days this product should have based on the AFOS."""
 
     def f(day):
-        """generator."""
+        """Help."""
         issue, expire = compute_times(prod.afos, prod.issue, prod.expire, day)
 
         return SPCOutlookCollection(issue, expire, day)
@@ -169,10 +170,10 @@ def _compute_cycle(prod):
 
 
 class SPCOutlookCollection:
-    """A collection of outlooks for a single 'day'"""
+    """A collection of outlooks for a single 'day'."""
 
     def __init__(self, issue, expire, day):
-        """Constructor"""
+        """Construct."""
         self.issue = issue
         self.expire = expire
         self.day = day
@@ -238,7 +239,7 @@ class SPCOutlook:
     """A class holding what we store for a single outlook."""
 
     def __init__(self, category, threshold, multipoly):
-        """Constructor.
+        """Create a new outlook.
 
         Args:
           category (str): the label of this category
@@ -258,12 +259,12 @@ class SPCOutlook:
 
 
 class SPCPTS(TextProduct):
-    """A class representing the polygons and metadata in SPC PTS Product"""
+    """A class representing the polygons and metadata in SPC PTS Product."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """Constructor
+        """Create a new SPCPTS.
 
         Args:
           text (string): the raw PTS product that is to be parsed
@@ -287,11 +288,11 @@ class SPCPTS(TextProduct):
         self.cycle = _compute_cycle(self)
 
     def get_outlookcollection(self, day):
-        """Returns the SPCOutlookCollection for a given day"""
+        """Return the SPCOutlookCollection for a given day."""
         return self.outlook_collections.get(day)
 
     def get_outlook(self, category, threshold, day):
-        """Get an outlook by category and threshold"""
+        """Get an outlook by category and threshold."""
         if day not in self.outlook_collections:
             return None
         for outlook in self.outlook_collections[day].outlooks:
@@ -300,7 +301,7 @@ class SPCPTS(TextProduct):
         return None
 
     def draw_outlooks(self):
-        """For debugging, draw the outlooks on a simple map for inspection!"""
+        """For debugging, draw the outlooks on a simple map for inspection."""
         # pylint: disable=import-outside-toplevel
         import matplotlib.pyplot as plt
 
@@ -345,9 +346,7 @@ class SPCPTS(TextProduct):
                 plt.close()
 
     def set_metadata(self):
-        """
-        Set some metadata about this product
-        """
+        """Set some metadata about this product."""
         if self.afos in ["PTSDY1", "PTSDY2", "PTSDY3", "PTSD48"]:
             self.outlook_type = "C"
         elif self.afos in ["PFWFD1", "PFWFD2", "PFWF38"]:
@@ -356,9 +355,7 @@ class SPCPTS(TextProduct):
             raise ValueError(f"Unknown awipsid '{self.afos}' for metadata")
 
     def find_issue_expire(self):
-        """
-        Determine the period this product is valid for
-        """
+        """Determine the period this product is valid for."""
         tokens = re.findall("VALID TIME ([0-9]{6})Z - ([0-9]{6})Z", self.text)
         day1 = int(tokens[0][0][:2])
         hour1 = int(tokens[0][0][2:4])
@@ -379,7 +376,7 @@ class SPCPTS(TextProduct):
         self.expire = expire
 
     def find_outlooks(self):
-        """Find the outlook sections within the text product!"""
+        """Find the outlook sections within the text product."""
         if self.text.find("&&") == -1:
             self.text = self.text.replace("\n... ", "\n&&\n... ")
             self.text += "\n&& "
@@ -446,7 +443,7 @@ class SPCPTS(TextProduct):
                 collect.add_outlook(SPCOutlook(category, threshold, mp))
 
     def compute_wfos(self, _txn=None):
-        """Figure out which WFOs are impacted by this polygon"""
+        """Figure out which WFOs are impacted by this polygon."""
         # self.draw_outlooks()
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
@@ -463,7 +460,7 @@ class SPCPTS(TextProduct):
                 )
 
     def sql(self, txn):
-        """Do database work
+        """Do database work.
 
         Args:
           txn (psycopg.cursor): database cursor
@@ -472,7 +469,7 @@ class SPCPTS(TextProduct):
             sql_day_collect(self, txn, day, collect)
 
     def get_descript_and_url(self):
-        """Helper to convert awips id into strings"""
+        """Help to convert awips id into strings."""
         product_descript = f"(({self.afos}))"
         url = "https://www.spc.noaa.gov"
         day = product_descript
@@ -539,16 +536,7 @@ class SPCPTS(TextProduct):
         return product_descript, url, day
 
     def get_jabbers(self, uri, _uri2=None):
-        """Wordsmith the Jabber/Twitter Messaging
-
-        Examples
-        --------
-          The Storm Prediction Center issues Day 1 Convective Outlook
-            at 16z 6 April
-          The Storm Prediction Center issues Day 1 Moderate Risk at 16z 6 Apr
-            for portions of DMX
-          SPC issues Day 1 Moderate Risk at 16z 6 April for #DMX
-        """
+        """Wordsmith the Jabber/Twitter Messaging."""
         res = []
         product_descript, url, title = self.get_descript_and_url()
         jdict = {
@@ -680,5 +668,5 @@ class SPCPTS(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """Parse this text!"""
+    """Parse this text."""
     return SPCPTS(text, utcnow, ugc_provider, nwsli_provider)

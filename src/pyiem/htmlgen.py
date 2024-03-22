@@ -16,7 +16,8 @@ def station_select(
       only_online (bool): Include stations in the network that are online only,
         default is `False`.
 
-    Returns:
+    Returns
+    -------
       html_string
     """
     nt = NetworkTable(network, only_online=only_online)
@@ -40,21 +41,22 @@ def make_select(
     multiple=False,
     showvalue=True,
 ) -> str:
-    """Generate a HTML select.
+    """Generate a HTML select element.
 
-    The trick here is what `data` looks like.  The basic form is a dict.
+    The trick here is what `data` looks like.  The basic form is a ``dict``.
     You can get `optgroup`s by having the dictionary keys be additional
     lists or dicts.
 
     Args:
-      name (str): The select[name] to assign.
+      name (str): The select name attribute to assign.
       selected (mixed): The option value that should be set to selected.
       data (dict): The structure to build our select from.
       jscallback (str): javascript to place in the `onChange` attribute.
       cssclass (str): CSS class to assign to the select element.
-      showvalue (bool): Should option label be prepended by [key].
+      showvalue (bool): Should option label be prepended by key label.
 
-    Returns:
+    Returns
+    -------
       html_string
     """
     if not isinstance(selected, (list, tuple)):
