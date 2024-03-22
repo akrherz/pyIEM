@@ -91,13 +91,13 @@ jobs:
     - name: Build Docs
       if: ${{ matrix.PYTHON_VERSION == '3.12' }}
       run: |
-        conda install sphinx
+        set -e
         cd docs
         make html
         touch build/html/.nojekyll
 
     - name: Deploy Docs
-      if: ${{ matrix.PYTHON_VERSION == '3.12' }}
+      if: ${{ matrix.PYTHON_VERSION == '3.12' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages # The branch the action should deploy to.

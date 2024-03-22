@@ -54,7 +54,8 @@ dependencies:
   - scipy
   - setuptools_scm
   - shapely
-  # shrug
+  # lazy to do this right
+  - sphinx
   - sphinxcontrib-napoleon
   - sqlalchemy
   # iemre
