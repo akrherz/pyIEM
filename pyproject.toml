@@ -49,8 +49,17 @@ filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
 
 [tool.ruff]
 line-length = 79
-lint.select = ["E", "F", "I", "T"]
+lint.select = [
+    # "D",  # pydocstyle
+    "E",  # errors
+    "F",  # format
+    "I",  # imports
+    "T",  # types
+]
 target-version = "py39"
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.setuptools_scm]
 # can be empty if no extra settings are needed, presence enables setuptools_scm

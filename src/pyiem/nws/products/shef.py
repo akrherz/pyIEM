@@ -27,6 +27,7 @@ TODO List
  - 4.4.1 ugly time logic and DN support
  - Handle UQ variable SSS.SDDD
  - Handle UR (tens of degrees)
+
 """
 
 import re
@@ -84,10 +85,10 @@ MISSING_VALUES.extend(["NaN", "NAN"])
 
 
 def parse_d_wrapper(func):
-    """Wrapper to catch exceptions."""
+    """Catch exceptions."""
 
     def wrapped(text, valid):
-        """Inner"""
+        """Inner."""
         text = text.strip()
         if text == "" or text.startswith("M"):
             raise InvalidSHEFEncoding(f"{func.__name__} with no value")
@@ -97,7 +98,7 @@ def parse_d_wrapper(func):
 
 
 def make_date(text, now=None):
-    """Make the text date unambiguous!"""
+    """Make the text date unambiguous."""
     if now is None:
         now = date.today()
     if len(text) < 4:
@@ -208,7 +209,8 @@ def parse_station_valid(text, utcnow):
       text (str): the first part of the string
       utcnow (datetime): The default time.
 
-    Returns:
+    Returns
+    -------
       str, datetime, datetime, list
     """
     tokens = text.split()
@@ -331,7 +333,8 @@ def process_modifiers(text, diction, basevalid):
       diction (SHEFElement): our current elemenet definition
       basevalid (datetime): the base valid in case of relative time.
 
-    Returns:
+    Returns
+    -------
       bool for if this text was handled.
     """
     if text.startswith("DI"):
@@ -401,7 +404,8 @@ def process_message_e(prod, message) -> List[SHEFElement]:
       prod (SHEFProduct): the product we are working on.
       message (str): The string to parse.
 
-    Returns:
+    Returns
+    -------
       List[SHEFElement]
     """
     tokens = message.split("/")
@@ -848,7 +852,7 @@ class SHEFProduct(TextProduct):
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
-        """constructor"""
+        """Construct."""
         TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
         # Storage of SHEFElements (one variable, one time, one station).
         self.data = []
@@ -856,7 +860,7 @@ class SHEFProduct(TextProduct):
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
-    """The SPS Parser"""
+    """Parser."""
     return SHEFProduct(
         text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
     )

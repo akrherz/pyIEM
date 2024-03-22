@@ -1,4 +1,4 @@
-"""pyiem.plot.util Plotting Utilities!"""
+"""pyiem.plot.util Plotting Utilities."""
 
 # pylint: disable=import-outside-toplevel
 import functools
@@ -26,7 +26,7 @@ LOGOFILES = {"dep": "deplogo.png", "iem": "logo.png", "nwa": "nwalogo.png"}
 
 
 def update_kwargs_apctx(func):
-    """Decorator to update things provided by an autoplot context dict."""
+    """Decorate things provided by an autoplot context dict."""
 
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
@@ -96,12 +96,13 @@ def draw_features_from_shapefile(gp, name, **kwargs):
 
 
 def ramp2df(name) -> pd.DataFrame:
-    """Loads pyIEM color ramp into a Pandas DataFrame.
+    """Load pyIEM color ramp into a Pandas DataFrame.
 
     Args:
       name (str): the name of the bundled color ramp.
 
-    Returns:
+    Returns
+    -------
       pandas.DataFrame
     """
     return pd.read_csv(f"{DATADIR}/ramps/{name}.txt")
@@ -118,7 +119,8 @@ def pretty_bins(minval, maxval, bins=8):
       maxval (real): maximum value to enclose.
       bins (int): maximum number of bins to generate
     Returns:
-      ``np.array`` of bins"""
+    ``np.array`` of bins
+    """
     center = (maxval + minval) / 2.0
     return centered_bins(maxval - center, on=center, bins=bins)
 
@@ -134,7 +136,8 @@ def centered_bins(absmax, on=0, bins=8):
       on (real): where to center these bins.
       bins (int): number of bins to generate
     Returns:
-      ``np.array`` of bins"""
+    ``np.array`` of bins
+    """
     minval = on - absmax
     maxval = on + absmax
     vrange = maxval - minval
@@ -178,7 +181,8 @@ def fontscale(ratio, fig=None):
       ratio (float): value between 0 and 1
       fig (matplotlib.Figure,optional): The Figure of interest
 
-    Returns:
+    Returns
+    -------
       float: font size
     """
     if fig is None:
@@ -240,7 +244,7 @@ def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
 def make_panel(
     ndc_axbounds, fig, extent, crs, aspect, is_geoextent=False, **kwargs
 ) -> GeoPanel:
-    """Factory for making a GeoPanel.
+    """Make a GeoPanel.
 
     Args:
       ndc_axbounds (list): the NDC coordinates of axes to create
@@ -252,7 +256,8 @@ def make_panel(
       sector_label (bool): A Label that tracks what this is called
       background (str): background to use.
 
-    Returns:
+    Returns
+    -------
         GeoPanel: the panel
     """
     # https://jdhao.github.io/2017/06/03/change-aspect-ratio-in-mpl/
@@ -283,7 +288,7 @@ def make_panel(
 
 
 def sector_setter(mp, axbounds, **kwargs):
-    """use kwargs to set the MapPlot sector."""
+    """Use kwargs to set the MapPlot sector."""
     aspect = kwargs.get("aspect", "auto")  # !important
 
     if mp.sector == "cwa":
@@ -538,7 +543,7 @@ def sector_setter(mp, axbounds, **kwargs):
 
 
 def _mask_with_path(gp, path):
-    """Internal API helper."""
+    """Make a path."""
     # Removes any external data
     patch = mpatches.PathPatch(
         path,
@@ -559,9 +564,7 @@ def _mask_with_path(gp, path):
 
 
 def mask_outside_polygon(poly_verts, gp):
-    """
-    We produce a polygon that lies between the plot border and some interior
-    polygon.
+    """Make outside of a polygon.
 
     POLY_VERTS is in CCW order, as this is the interior of the polygon
     """
@@ -601,28 +604,28 @@ def mask_outside_polygon(poly_verts, gp):
 
 
 def polygon_fill(mymap, geodf, data, **kwargs):
-    """Generalized function for overlaying filled polygons on the map
+    """Generalize function for overlaying filled polygons on the map.
 
     Args:
       mymap (MapPlot): The MapPlot instance
       geodf (GeoDataFrame): A GeoDataFrame with a `geom` column.
       data (dict): The dictionary of keys and values used for picking colors
 
-    These are kwargs general to `polygon_fill`.
-    **kwargs (Optional): Other things needed for mapping
-    ilabel (Optional[bool]): should values be labelled? Defaults to `False`
-    lblfmt (str,optional): format string for labels. Defaults to %s.
-    plotmissing (bool): should geometries not included in the `data`
+    Keyword Args:
+      ilabel (Optional[bool]): should values be labelled? Defaults to `False`
+      lblfmt (str,optional): format string for labels. Defaults to %s.
+      plotmissing (bool): should geometries not included in the `data`
         be mapped? Defaults to `True`
-    color (str or dict): Providing an explicit color (used for both edge
+      color (str or dict): Providing an explicit color (used for both edge
         and fill).  Either provide one color or a dictionary to lookup a
         color by the mapping key.
-    fc (str or dict): Same as `color`, but controls the fill color.
+      fc (str or dict): Same as `color`, but controls the fill color.
         Providing this value will over-ride any `color` setting.
-    ec (str or dict): Same as `color`, but controls the edge color.
+      ec (str or dict): Same as `color`, but controls the edge color.
         Providing this value will over-ride any `color` setting.
-    zorder (int): The zorder to use for this layer, default `Z_FILL`
-    lw (float): polygon outline width
+      zorder (int): The zorder to use for this layer, default `Z_FILL`
+      lw (float): polygon outline width
+
     """
     bins = kwargs.get("bins", np.arange(0, 101, 10))
     cmap = stretch_cmap(kwargs.get("cmap"), bins, extend=kwargs.get("extend"))
@@ -712,7 +715,7 @@ def polygon_fill(mymap, geodf, data, **kwargs):
 
 
 def mask_outside_geom(gp, geom):
-    """Create a white patch over the plot for what we want to ask out
+    """Create a white patch over the plot for what we want to ask out.
 
     Args:
       gp (GeoPanel): The GeoPanel instance

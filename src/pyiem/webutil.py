@@ -53,7 +53,7 @@ TELEMETRY = namedtuple(
 
 
 def write_telemetry(data: TELEMETRY) -> bool:
-    """Writes telemetry to the database."""
+    """Write telemetry to the database."""
     # Yes, this blocks, but if this database is not working, we are in trouble
     try:
         with get_sqlalchemy_conn("mesosite") as conn:
@@ -215,8 +215,7 @@ def add_to_environ(environ, form, **kwargs):
 
 
 def iemapp(**kwargs):
-    """
-    Attempts to do all kinds of nice things for the user and the developer.
+    """Attempt to do all kinds of nice things for the user and the developer.
 
     kwargs:
         - default_tz: The default timezone to use for timestamps
@@ -228,24 +227,20 @@ def iemapp(**kwargs):
           `iemdb.<name>.cursor`.  No commit is performed. You can specify a
           single cursor name with `iemdb_cursorname=<name>`.
 
-    Example usage:
-        @iemapp()
-        def application(environ, start_response):
-            return [b"Content-type: text/plain\n\nHello World!"]
-
     What all this does:
-      1) Attempts to catch database connection errors and handle nicely
-      2) Updates `environ` with some auto-parsed values + form content.
+        1) Attempts to catch database connection errors and handle nicely
+        2) Updates `environ` with some auto-parsed values + form content.
 
-    Notes:
-      - raise `NoDataFound` to have a nice error message generated
+    Notes
+    -----
+        - raise `NoDataFound` to have a nice error message generated
     """
 
     def _decorator(func):
         """Decorate a function to catch exceptions and do nice things."""
 
         def _wrapped(environ, start_response):
-            """Decorated function."""
+            """Decorate function."""
 
             def _handle_exp(errormsg, routine=False, code=500):
                 # generate a random string so we can track this request

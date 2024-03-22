@@ -1,4 +1,4 @@
-"""Multi-RADAR Multi-Sensor (MRMS) Helper Functions
+"""Multi-RADAR Multi-Sensor (MRMS) Helper Functions.
 
 Hopefully useful functions to help with the processing of MRMS data
 """
@@ -20,7 +20,7 @@ YAXIS = np.arange(SOUTH, NORTH, 0.01)
 
 
 def is_gzipped(text):
-    """Check that we have gzipped content"""
+    """Check that we have gzipped content."""
     return text[:2] == b"\x1f\x8b"
 
 
@@ -43,7 +43,7 @@ def get_url(center, valid, product):
 
 
 def fetch(product, valid, tmpdir="/mesonet/tmp"):
-    """Get a desired MRMS product
+    """Get a desired MRMS product.
 
     Applies the following logic:
         - does the file exist in `tmpdir`?
@@ -90,9 +90,7 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
 
 
 def make_colorramp():
-    """
-    Make me a crude color ramp
-    """
+    """Make me a crude color ramp."""
     c = np.zeros((256, 3), int)
 
     # Ramp blue
@@ -127,7 +125,7 @@ def make_colorramp():
 
 
 def reader(fn):
-    """Return metadata and the data"""
+    """Return metadata and the data."""
     fp = gzip.open(fn, "rb")
     metadata = {}
     (
@@ -196,7 +194,7 @@ def reader(fn):
 
 
 def write_worldfile(filename):
-    """Write a worldfile to the given filename
+    """Write a worldfile to the given filename.
 
     Args:
       filename (str): filename to write the world file information to
