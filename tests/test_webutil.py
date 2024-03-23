@@ -1,9 +1,11 @@
 """Tests for webutil.py"""
 
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import mock
 import pytest
+from pydantic import Field
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
     BadWebRequest,
@@ -13,11 +15,50 @@ from pyiem.exceptions import (
 )
 from pyiem.webutil import (
     TELEMETRY,
+    CGIModel,
+    ListOrCSVType,
     add_to_environ,
     ensure_list,
     iemapp,
     write_telemetry,
 )
+
+
+def test_listorcsvtype():
+    """Test that we can handle this."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        foo: ListOrCSVType = Field(...)
+        foo2: ListOrCSVType = Field(...)
+        foo3: ListOrCSVType = Field(...)
+        valid: datetime = Field(None)
+
+    @iemapp(help="FINDME", schema=MyModel)
+    def application(environ, _start_response):
+        """Test."""
+        assert environ["foo"] == ["1", "2"]
+        assert environ["foo2"] == ["1", "2"]
+        assert environ["foo3"] == ["1"]
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "help",
+    }
+    assert application(env, sr)[0].decode("ascii").find("CGI") > -1
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&valid=Foo",
+    }
+    assert application(env, sr)[0].decode("ascii").find("datetime_from_d") > -1
 
 
 def test_disable_parse_times():

@@ -13,7 +13,16 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import nh3
 from paste.request import parse_formvars
+from pydantic import (
+    AfterValidator,
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    ValidationError,
+    WithJsonSchema,
+)
 from sqlalchemy import text
+from typing_extensions import Annotated
 
 from pyiem.database import get_dbconnc, get_sqlalchemy_conn
 from pyiem.exceptions import (
@@ -22,6 +31,7 @@ from pyiem.exceptions import (
     NewDatabaseConnectionFailure,
     NoDataFound,
 )
+from pyiem.templates.iem import TEMPLATE
 from pyiem.util import LOG
 
 # Forgive some typos
@@ -50,6 +60,77 @@ TELEMETRY = namedtuple(
     "TELEMETRY",
     ["timing", "status_code", "client_addr", "app", "request_uri"],
 )
+
+
+def _conv2list(mixed) -> list:
+    """Convert to a list."""
+    if isinstance(mixed, list):
+        return mixed
+    return mixed.split(",")
+
+
+def _ensure_all_strings(mixed) -> list:
+    """Ensure we have all strings."""
+    return [x for x in mixed if isinstance(x, str)]
+
+
+ListOrCSVType = Annotated[
+    list,
+    BeforeValidator(_conv2list),
+    AfterValidator(_ensure_all_strings),
+    WithJsonSchema({"type": "string"}, mode="serialization"),
+]
+
+
+# https://github.com/tiangolo/fastapi/discussions/8143#discussioncomment-5147698
+class CGIModel(BaseModel):
+    """A Pydantic model that parses CGI arguments."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def __init__(self, **kwargs):
+        try:
+            super().__init__(**kwargs)
+        except ValidationError as e:
+            errors = e.errors()
+            for error in errors:
+                error["loc"] = ("query",) + error["loc"]
+            raise IncompleteWebRequest(errors)
+
+
+def model_to_rst(model: BaseModel) -> str:
+    """Convert a Pydantic model to a reStructuredText table.
+
+    Args:
+        model: The Pydantic model to convert
+
+    Returns:
+        A reStructuredText table
+    """
+    rst = [
+        "CGI Arguments",
+        "-------------",
+        "",
+        "The following table lists the CGI arguments that are accepted by "
+        "this service.  A HTTP ``GET`` request is required.",
+        "",
+        ".. list-table::",
+        "   :header-rows: 1",
+        "   :widths: 15 15 70",
+        "",
+        "   * - Field",
+        "     - Type",
+        "     - Description",
+    ]
+    schema = model.model_json_schema()
+    for key, prop in schema["properties"].items():
+        required = " (required)" if key in schema.get("required", []) else ""
+        rst.append(
+            f"   * - {key}\n"
+            f"     - {prop['type']}{required}\n"
+            f"     - {prop.get('description', '')}"
+        )
+    return "\n".join(rst)
 
 
 def write_telemetry(data: TELEMETRY) -> bool:
@@ -187,7 +268,7 @@ def add_to_environ(environ, form, **kwargs):
                 for va in val:
                     if nh3.clean(va) != va:
                         raise BadWebRequest(f"XSS Key: {key} Value: {va}")
-            else:
+            elif isinstance(val, str):
                 if nh3.clean(val) != val:
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
             environ[key] = form[key]
@@ -214,6 +295,29 @@ def add_to_environ(environ, form, **kwargs):
             raise IncompleteWebRequest("Invalid timezone specified")
 
 
+def _handle_help(start_response, **kwargs):
+    """Handle the help request.
+
+    Args:
+        start_response: the WSGI start_response function
+        kwargs: the keyword arguments passed to the decorator
+
+    Returns:
+        The HTML response
+    """
+    start_response("200 OK", [("Content-type", "text/html")])
+    # return the module docstring for the func
+    from docutils.core import publish_string
+
+    sdoc = kwargs.get("help", "Help not available") + (
+        "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
+    )
+    html = publish_string(source=sdoc, writer_name="html").decode("utf-8")
+    # Get the content between the body tags
+    res = {"content": html.split("<body>")[1].split("</body>")[0]}
+    return [TEMPLATE.render(res).encode("utf-8")]
+
+
 def iemapp(**kwargs):
     """Attempt to do all kinds of nice things for the user and the developer.
 
@@ -226,6 +330,7 @@ def iemapp(**kwargs):
           bundled into the environ with keys of `iemdb.<name>.conn` and
           `iemdb.<name>.cursor`.  No commit is performed. You can specify a
           single cursor name with `iemdb_cursorname=<name>`.
+        - schema (BaseModel): A Pydantic model to parse the form with.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -275,16 +380,9 @@ def iemapp(**kwargs):
                 # mixed convers this to a regular dict
                 form = clean_form(parse_formvars(environ).mixed())
                 if "help" in form:
-                    start_response("200 OK", [("Content-type", "text/html")])
-                    # return the module docstring for the func
-                    from docutils.core import publish_string
-
-                    return [
-                        publish_string(
-                            source=kwargs.get("help", "Help not available"),
-                            writer_name="html",
-                        )
-                    ]
+                    return _handle_help(start_response, **kwargs)
+                if "schema" in kwargs:
+                    form = kwargs["schema"](**form).model_dump()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])

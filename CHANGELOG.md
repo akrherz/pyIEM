@@ -17,6 +17,7 @@ web services to get the raw text. (#857)
 
 - Add `parse_commas` option to `webutil.ensure_list`, so to allow comma
 delimited CGI params by default.
+- Introduce some pydantic based validators for web requests, experimental...
 
 ### Bug Fixes
 
