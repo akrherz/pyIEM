@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1199+gb9d1f0e documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1200+g585f81e documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=c75c2958"></script>
+    <script src="../_static/documentation_options.js?v=a170ba11"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1200+g585f81e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -2114,6 +2114,33 @@ to compute the MD5 value from the product name instead of data bytes.</p></li>
 <span id="pyiem-webutil-module"></span><h2>pyiem.webutil module<a class="headerlink" href="#module-pyiem.webutil" title="Link to this heading">¶</a></h2>
 <p>Utility functions for iemwebfarm applications.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="pyiem.webutil.CGIModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">CGIModel</span></span><a class="headerlink" href="#pyiem.webutil.CGIModel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
+<p>A Pydantic model that parses CGI arguments.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.webutil.CGIModel.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.webutil.CGIModel.model_computed_fields" title="Link to this definition">¶</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.webutil.CGIModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.webutil.CGIModel.model_config" title="Link to this definition">¶</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.webutil.CGIModel.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.webutil.CGIModel.model_fields" title="Link to this definition">¶</a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pyiem.webutil.TELEMETRY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">TELEMETRY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_uri</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.webutil.TELEMETRY" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
@@ -2202,6 +2229,7 @@ to compute the MD5 value from the product name instead of data bytes.</p></li>
 bundled into the environ with keys of <cite>iemdb.&lt;name&gt;.conn</cite> and
 <cite>iemdb.&lt;name&gt;.cursor</cite>.  No commit is performed. You can specify a
 single cursor name with <cite>iemdb_cursorname=&lt;name&gt;</cite>.</p></li>
+<li><p>schema (BaseModel): A Pydantic model to parse the form with.</p></li>
 </ul>
 </dd>
 <dt>What all this does:</dt><dd><ol class="arabic simple">
@@ -2220,6 +2248,18 @@ single cursor name with <cite>iemdb_cursorname=&lt;name&gt;</cite>.</p></li>
 <dt class="sig sig-object py" id="pyiem.webutil.log_request">
 <span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">log_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.webutil.log_request" title="Link to this definition">¶</a></dt>
 <dd><p>Log the request to database for future processing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.webutil.model_to_rst">
+<span class="sig-prename descclassname"><span class="pre">pyiem.webutil.</span></span><span class="sig-name descname"><span class="pre">model_to_rst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseModel</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pyiem.webutil.model_to_rst" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a Pydantic model to a reStructuredText table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – The Pydantic model to convert</p>
+</dd>
+</dl>
+<p>Returns: A reStructuredText table</p>
 </dd></dl>
 
 <dl class="py function">
@@ -2580,6 +2620,12 @@ useful to others!?!?</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-pyiem.webutil">pyiem.webutil module</a><ul>
+<li><a class="reference internal" href="#pyiem.webutil.CGIModel"><code class="docutils literal notranslate"><span class="pre">CGIModel</span></code></a><ul>
+<li><a class="reference internal" href="#pyiem.webutil.CGIModel.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">CGIModel.model_computed_fields</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.webutil.CGIModel.model_config"><code class="docutils literal notranslate"><span class="pre">CGIModel.model_config</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.webutil.CGIModel.model_fields"><code class="docutils literal notranslate"><span class="pre">CGIModel.model_fields</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#pyiem.webutil.TELEMETRY"><code class="docutils literal notranslate"><span class="pre">TELEMETRY</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.webutil.TELEMETRY.app"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.app</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.webutil.TELEMETRY.client_addr"><code class="docutils literal notranslate"><span class="pre">TELEMETRY.client_addr</span></code></a></li>
@@ -2595,6 +2641,7 @@ useful to others!?!?</p>
 <li><a class="reference internal" href="#pyiem.webutil.ensure_list"><code class="docutils literal notranslate"><span class="pre">ensure_list()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.webutil.iemapp"><code class="docutils literal notranslate"><span class="pre">iemapp()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.webutil.log_request"><code class="docutils literal notranslate"><span class="pre">log_request()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.webutil.model_to_rst"><code class="docutils literal notranslate"><span class="pre">model_to_rst()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.webutil.write_telemetry"><code class="docutils literal notranslate"><span class="pre">write_telemetry()</span></code></a></li>
 </ul>
 </li>
@@ -2671,7 +2718,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1199+gb9d1f0e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1200+g585f81e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
