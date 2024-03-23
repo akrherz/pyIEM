@@ -110,8 +110,10 @@ def model_to_rst(model: BaseModel) -> str:
         "CGI Arguments",
         "-------------",
         "",
-        "The following table lists the CGI arguments that are accepted by "
-        "this service.  A HTTP ``GET`` request is required.",
+        (
+            "The following table lists the CGI arguments that are accepted by "
+            "this service.  A HTTP ``GET`` request is required."
+        ),
         "",
         ".. list-table::",
         "   :header-rows: 1",
