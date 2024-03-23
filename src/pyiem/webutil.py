@@ -104,8 +104,7 @@ def model_to_rst(model: BaseModel) -> str:
     Args:
         model: The Pydantic model to convert
 
-    Returns:
-        A reStructuredText table
+    Returns: A reStructuredText table
     """
     rst = [
         "CGI Arguments",
@@ -302,8 +301,7 @@ def _handle_help(start_response, **kwargs):
         start_response: the WSGI start_response function
         kwargs: the keyword arguments passed to the decorator
 
-    Returns:
-        The HTML response
+    Returns The HTML response
     """
     start_response("200 OK", [("Content-type", "text/html")])
     # return the module docstring for the func
