@@ -10,6 +10,17 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+@pytest.mark.parametrize("database", ["asos"])
+def test_gh453_skc(dbcursor):
+    """Test that SKC gets encoded as clear and not present weather."""
+    utcnow = utc(2024, 3, 26, 6)
+    prod = real_tafparser(get_test_file("TAF/TAFOLF.txt"), utcnow=utcnow)
+    assert prod.data.observation.presentwx == []
+    assert prod.data.observation.sky[0].amount == "SKC"
+    assert prod.data.observation.sky[0].level is None
+    prod.sql(dbcursor)
+
+
 def test_210525_badtimestamp():
     """Test that we do not error out with this product."""
     utcnow = utc(2021, 5, 25, 16)

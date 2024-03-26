@@ -1,9 +1,8 @@
 """TAF Data Model."""
 # pylint: disable=too-few-public-methods
 
-# stdlib
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 # third party
 from pydantic import BaseModel, Field
@@ -21,7 +20,7 @@ class SkyCondition(BaseModel):
     """The Sky condition."""
 
     amount: str
-    level: int = Field(..., ge=0, le=100000)
+    level: Optional[int] = Field(None, ge=0, le=100000)
 
 
 class TAFForecast(BaseModel):
