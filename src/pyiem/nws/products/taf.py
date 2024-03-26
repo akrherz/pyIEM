@@ -38,10 +38,16 @@ def add_forecast_info(fx, text):
         if d["frac"] is not None:
             tokens = d["frac"].split("/")
             fx.visibility += float(tokens[0]) / float(tokens[1])
+    # This may be too clever and saying anything without a number is presentwx
     fx.presentwx = [x for x in text.split() if WX_RE.match(x)]
-
-    for token in CLOUD_RE.findall(text):
-        fx.sky.append(SkyCondition(amount=token[0], level=int(token[1]) * 100))
+    if "SKC" in fx.presentwx:
+        fx.presentwx.remove("SKC")
+        fx.sky.append(SkyCondition(amount="SKC", level=None))
+    else:
+        for token in CLOUD_RE.findall(text):
+            fx.sky.append(
+                SkyCondition(amount=token[0], level=int(token[1]) * 100)
+            )
 
     for token in SHEAR_RE.findall(text):
         fx.shear = WindShear(
