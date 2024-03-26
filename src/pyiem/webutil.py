@@ -20,6 +20,7 @@ from pydantic import (
     ConfigDict,
     ValidationError,
     WithJsonSchema,
+    field_validator,
 )
 from sqlalchemy import text
 from typing_extensions import Annotated
@@ -96,6 +97,12 @@ class CGIModel(BaseModel):
             for error in errors:
                 error["loc"] = ("query",) + error["loc"]
             raise IncompleteWebRequest(errors)
+
+    @field_validator("*", mode="before")
+    def xss_protect(cls, v):
+        if isinstance(v, str) and nh3.clean(v) != v:
+            raise ValueError("XSS detected")
+        return v
 
 
 def model_to_rst(model: BaseModel) -> str:

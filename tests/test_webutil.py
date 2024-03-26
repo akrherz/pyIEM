@@ -34,6 +34,7 @@ def test_listorcsvtype():
         foo2: ListOrCSVType = Field(...)
         foo3: ListOrCSVType = Field(...)
         valid: datetime = Field(None)
+        foo4: str = Field(None)
 
     @iemapp(help="FINDME", schema=MyModel)
     def application(environ, _start_response):
@@ -59,6 +60,12 @@ def test_listorcsvtype():
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&valid=Foo",
     }
     assert application(env, sr)[0].decode("ascii").find("datetime_from_d") > -1
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>",
+    }
+    assert application(env, sr)[0].decode("ascii").find("XSS detected") > -1
 
 
 def test_disable_parse_times():
