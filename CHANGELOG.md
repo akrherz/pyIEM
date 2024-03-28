@@ -29,6 +29,7 @@ looks like a signature (#865).
 - Prevent situation in sbw database having polygon_begin > polygon_end (#862).
 - Refactor VTEC/SBW storage logic to use `vtec_year` column and operate on the
 parent table (#863).
+- Update link to new NWPS website.
 
 ## **1.19.0** (4 Mar 2024)
 

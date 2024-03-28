@@ -1483,7 +1483,7 @@ def test_140610_tweet_spacing():
         "PM CDT http://localhost2014-O-NEW-KLCH-FL-W-0015_2014-06-10T14:48Z"
     )
     assert j[0][2]["twitter"] == ans
-    ans = "https://water.weather.gov/resources/hydrographs/vlsl1_hg.png"
+    ans = "https://water.noaa.gov/resources/hydrographs/vlsl1_hg.png"
     assert j[0][2]["twitter_media"] == ans
 
 

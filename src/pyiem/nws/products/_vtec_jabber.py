@@ -244,7 +244,7 @@ def _get_jabbers(prod, uri, river_uri=None):
             hvtec_nwsli = segment.get_hvtec_nwsli()
             if hvtec_nwsli is not None and hvtec_nwsli != "00000":
                 xtra["twitter_media"] = (
-                    "https://water.weather.gov/resources/hydrographs/"
+                    "https://water.noaa.gov/resources/hydrographs/"
                     f"{hvtec_nwsli.lower()}_hg.png"
                 )
             msgs.append(
