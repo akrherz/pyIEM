@@ -117,10 +117,13 @@ def model_to_rst(model: BaseModel) -> str:
         "CGI Arguments",
         "-------------",
         "",
-        (
-            "The following table lists the CGI arguments that are accepted by "
-            "this service.  A HTTP ``GET`` request is required."
-        ),
+        """
+The following table lists the CGI arguments that are accepted by this service.
+A HTTP ``GET`` request is required. Fields of type
+**Multi-Params or CSV value** can accept either a comma separated list or
+multiple parameter and value combinations.  For example, ``?foo=1&foo=2`` is
+equivalent to ``?foo=1,2``.
+        """,
         "",
         ".. list-table::",
         "   :header-rows: 1",
@@ -133,9 +136,12 @@ def model_to_rst(model: BaseModel) -> str:
     schema = model.model_json_schema()
     for key, prop in schema["properties"].items():
         required = " (required)" if key in schema.get("required", []) else ""
+        typetext = prop["type"]
+        if typetext == "array":
+            typetext = "Multi-Params or CSV value"
         rst.append(
             f"   * - {key}\n"
-            f"     - {prop['type']}{required}\n"
+            f"     - {typetext}{required}\n"
             f"     - {prop.get('description', '')}"
         )
     return "\n".join(rst)
