@@ -136,9 +136,12 @@ equivalent to ``?foo=1,2``.
     schema = model.model_json_schema()
     for key, prop in schema["properties"].items():
         required = " (required)" if key in schema.get("required", []) else ""
-        typetext = prop["type"]
-        if typetext == "array":
-            typetext = "Multi-Params or CSV value"
+        if "anyOf" in prop:
+            typetext = " or ".join([x["type"] for x in prop["anyOf"]])
+        else:
+            typetext = prop["type"]
+            if typetext == "array":
+                typetext = "Multi-Params or CSV value"
         rst.append(
             f"   * - {key}\n"
             f"     - {typetext}{required}\n"

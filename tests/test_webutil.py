@@ -1,6 +1,7 @@
 """Tests for webutil.py"""
 
 from datetime import datetime
+from typing import Optional, Union
 from zoneinfo import ZoneInfo
 
 import mock
@@ -35,6 +36,7 @@ def test_listorcsvtype():
         foo3: ListOrCSVType = Field(...)
         valid: datetime = Field(None)
         foo4: str = Field(None)
+        foo5: Optional[Union[None, datetime]] = Field(None)
 
     @iemapp(help="FINDME", schema=MyModel)
     def application(environ, _start_response):
