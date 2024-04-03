@@ -1,6 +1,7 @@
 """Massive omnibus of testing for pyiem.nws.products."""
 
 import pytest
+from pyiem.exceptions import HWOException, TextProductException
 from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
@@ -200,7 +201,7 @@ def test_150422_tornadomag():
 def test_150202_hwo():
     """HWORNK emitted a poorly worded error message"""
     prod = parser(get_test_file("HWO/HWORNK.txt"))
-    with pytest.raises(Exception):
+    with pytest.raises(HWOException):
         prod.get_jabbers("http://localhost", "http://localhost")
 
 
@@ -238,7 +239,7 @@ def test_tcp():
 
 def test_140820_badtimestamp():
     """Check our invalid timestamp exception and how it is written"""
-    with pytest.raises(Exception):
+    with pytest.raises(TextProductException):
         parser(get_test_file("RWSGTF_badtime.txt"))
 
 

@@ -1,5 +1,4 @@
 """Testing of pyiem.database"""
-# pylint: disable=cell-var-from-loop
 
 # third party
 import numpy as np
@@ -41,7 +40,7 @@ def test_get_dbconn_for_user(monkeypatch):
         ["apache", "akrherz", "mesonet_ldm", "xyz"],
         ["nobody", "mesonet", "ldm", "xyz"],
     ):
-        monkeypatch.setattr("getpass.getuser", lambda: ins)
+        monkeypatch.setattr("getpass.getuser", lambda i=ins: i)
         res = database.get_dbconnstr("bogus")
         assert res.find(outs) > 0
 

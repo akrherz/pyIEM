@@ -151,7 +151,9 @@ class Observation:
         # to trigger the isdaily logic
         isdaily = valid.__class__.__name__ == "date"
         if not isdaily and getattr(valid, "tzinfo", None) is None:
-            warnings.warn("tzinfo is not set on valid, defaulting to UTC")
+            warnings.warn(
+                "tzinfo is not set on valid, defaulting to UTC", stacklevel=1
+            )
             if isinstance(valid, np.datetime64):
                 valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)

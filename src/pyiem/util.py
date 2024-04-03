@@ -352,8 +352,8 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
         """Convert string to float, if possible."""
         try:
             return float(val)
-        except ValueError:
-            raise IncompleteWebRequest(f"Invalid float value: {val}")
+        except ValueError as exp:
+            raise IncompleteWebRequest(f"Invalid float value: {val}") from exp
 
     ctx = {}
     # Check for DPI setting

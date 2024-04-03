@@ -1397,7 +1397,7 @@ def test_tornado_emergency():
 def test_badtimestamp():
     """See what happens when the MND provides a bad timestamp"""
     utcnow = utc(2005, 8, 29, 16, 56)
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         vtecparser(get_test_file("TOR_badmnd_timestamp.txt"), utcnow=utcnow)
 
 
