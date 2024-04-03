@@ -45,7 +45,10 @@ readme = "README.md"
 "homepage" = "https://github.com/akrherz/pyIEM"
 
 [tool.pytest.ini_options]
-filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
+filterwarnings = [
+    "ignore:numpy.ndarray size changed:RuntimeWarning",
+    "ignore:'cgi' is deprecated and slated for removal:DeprecationWarning",
+]
 
 [tool.ruff]
 line-length = 79
