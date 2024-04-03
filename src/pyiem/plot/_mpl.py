@@ -296,7 +296,7 @@ class GeoPanel:
         Add a feature to the axes.
         """
         df = gpd.GeoDataFrame({"geometry": features}, crs=crs).to_crs(self.crs)
-        df.plot(ax=self.ax, aspect=None, *args, **kwargs)
+        df.plot(*args, ax=self.ax, aspect=None, **kwargs)
 
     def plot(self, x, y, **kwargs):
         """Proxy"""

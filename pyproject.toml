@@ -50,7 +50,8 @@ filterwarnings = ["ignore:numpy.ndarray size changed:RuntimeWarning"]
 [tool.ruff]
 line-length = 79
 lint.select = [
-    # "D",  # pydocstyle
+    "B",  # bugbear
+    #  "D",  # pydocstyle
     "E",  # errors
     "F",  # format
     "I",  # imports

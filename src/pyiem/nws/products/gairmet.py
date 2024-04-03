@@ -206,7 +206,7 @@ class GAIRMET(product.TextProduct):
         """Attempt to parse out what we have found"""
         pos = self.unixtext.find("<G-AIRMET")
         if pos == -1:
-            raise Exception("Product is not a G-AIRMET")
+            raise ValueError("Product is not a G-AIRMET")
         root = ET.fromstring(self.unixtext[pos:])
         e = root.find(".//gml:TimeInstant[@gml:id='G-AIRMETVALIDFROM']", NS)
         valid_from = parseUTC(e.find("gml:timePosition", NS).text)

@@ -298,7 +298,9 @@ class MapPlot:
             req = requests.get(url, timeout=30)
             df = gpd.GeoDataFrame().from_features(req.json())
         except Exception as exp:
-            warnings.warn(f"draw_usdm IEM USDM Webservice failed: {exp}")
+            warnings.warn(
+                f"draw_usdm IEM USDM Webservice failed: {exp}", stacklevel=1
+            )
             return None
         lw = 1 if filled else 4.0
         usdm_valid = None
@@ -1331,7 +1333,7 @@ class MapPlot:
         try:
             req = requests.get(url, params={"valid": tstamp}, timeout=30)
         except requests.ConnectionError as exp:
-            warnings.warn(f"overlay_roadcond failed: {exp}")
+            warnings.warn(f"overlay_roadcond failed: {exp}", stacklevel=1)
             return None
         df = gpd.GeoDataFrame().from_features(req.json())
         labels = []

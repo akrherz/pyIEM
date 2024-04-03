@@ -1356,7 +1356,7 @@ def gen_metar(data):
         elif hours == 1:
             prefix = "P"
         else:
-            warnings.warn(f"Unknown precip hours {hours}")
+            warnings.warn(f"Unknown precip hours {hours}", stacklevel=1)
             continue
         amount = (units("mm") * depth).to(units("inch")).m
         rmk.append(f"{prefix}{(amount * 100):04.0f}")
@@ -1389,7 +1389,9 @@ def gen_metar(data):
             group4[typ] = f"{_t}{(abs(tmpc) * 10):03.0f}"
             continue
         else:
-            warnings.warn(f"Unknown temperature hours {hours} typ: {typ}")
+            warnings.warn(
+                f"Unknown temperature hours {hours} typ: {typ}", stacklevel=1
+            )
             continue
         _t = "1" if tmpc < 0 else "0"
         rmk.append(f"{prefix}{_t}{(abs(tmpc) * 10):03.0f}")
