@@ -1,4 +1,4 @@
-"""Tests for webutil.py"""
+"""Tests for webutil."""
 
 from datetime import datetime
 from typing import Optional, Union
@@ -23,6 +23,33 @@ from pyiem.webutil import (
     iemapp,
     write_telemetry,
 )
+
+
+def test_schema_with_parse_times():
+    """Test that parse_times and schema can coexist."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        sts: Optional[datetime] = Field(None)
+        day1: Optional[int] = Field(None)
+        month1: Optional[int] = Field(None)
+        year1: Optional[int] = Field(None)
+
+    @iemapp(schema=MyModel, parse_times=True)
+    def application(environ, _start_response):
+        """Test."""
+        assert environ["sts"] == datetime(
+            2022, 2, 3, tzinfo=ZoneInfo("America/Chicago")
+        )
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "year1=2022&month1=2&day1=3",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
 
 
 def test_listorcsvtype():
@@ -107,7 +134,7 @@ def test_add_telemetry():
 
 
 def test_ensure_list():
-    """Test that we get lists!"""
+    """Test that we get lists."""
     assert ensure_list({}, "a") == []
     assert ensure_list({"a": "b"}, "a") == ["b"]
     assert ensure_list({"a": ["b"]}, "a") == ["b"]
@@ -426,7 +453,7 @@ def test_typoed_tz():
 
 
 def test_iemapp_raises_newdatabaseconnectionfailure():
-    """This should nicely catch a raised exception."""
+    """Test catch a raised exception."""
 
     @iemapp()
     def application(environ, start_response):
@@ -444,7 +471,7 @@ def test_iemapp_raises_newdatabaseconnectionfailure():
 
 
 def test_iemapp_catches_vanilla_exception():
-    """This should nicely catch a raised exception."""
+    """Test catch a raised exception."""
 
     @iemapp()
     def application(environ, start_response):

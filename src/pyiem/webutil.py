@@ -304,9 +304,11 @@ def add_to_environ(environ, form, **kwargs):
                 environ["sts"] = compute_ts_from_string(form, "sts")
             if isinstance(form.get("ets"), str) and YEAR_RE.match(form["ets"]):
                 environ["ets"] = compute_ts_from_string(form, "ets")
-            if "day1" in form and "sts" not in form:
+            # NB: The usage of a schema may have already parsed a sts or ets,
+            # but it will be None if it was not provided
+            if "day1" in form and form.get("sts") is None:
                 environ["sts"] = compute_ts(form, "1")
-            if "day2" in form and "ets" not in form:
+            if "day2" in form and form.get("ets") is None:
                 environ["ets"] = compute_ts(form, "2")
         except (TypeError, ValueError) as exp:
             raise IncompleteWebRequest("Invalid timestamp specified") from exp
@@ -340,7 +342,8 @@ def iemapp(**kwargs):
     """Attempt to do all kinds of nice things for the user and the developer.
 
     kwargs:
-        - default_tz: The default timezone to use for timestamps
+        - default_tz: The default timezone to use for timestamps, the default
+          is ``America/Chicago``.
         - enable_telemetry: Enable telemetry logging, default ``True``.
         - help: Default help text, default ``Help not available``.
         - parse_times: Parse the form for timestamps, default ``True``.
@@ -403,6 +406,7 @@ def iemapp(**kwargs):
                     form = kwargs["schema"](**form).model_dump()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
+                # Important this is set before calling add_to_environ
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form, **kwargs)
                 res = func(environ, start_response)
