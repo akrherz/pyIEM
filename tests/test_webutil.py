@@ -25,6 +25,28 @@ from pyiem.webutil import (
 )
 
 
+def test_iemapp_bracket_variable():
+    """Test that a bracked variable is handled within pydantic schema."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        wfo: ListOrCSVType = Field(None)
+
+    @iemapp(schema=MyModel)
+    def application(environ, _start_response):
+        """Test."""
+        assert environ["wfo"] == ["DMX"]
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "wfo[]=DMX",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+
+
 def test_schema_with_parse_times():
     """Test that parse_times and schema can coexist."""
 
