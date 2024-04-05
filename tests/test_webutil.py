@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 
 import mock
 import pytest
-from pydantic import Field
+from pydantic import AwareDatetime, Field
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
     BadWebRequest,
@@ -23,6 +23,30 @@ from pyiem.webutil import (
     iemapp,
     write_telemetry,
 )
+
+
+def test_iemapp_times_notime():
+    """Test handling when no times provided."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        sts: AwareDatetime = Field(None)
+        ets: AwareDatetime = Field(None)
+        day1: int = Field(None)
+        day2: int = Field(None)
+
+    @iemapp(schema=MyModel)
+    def application(environ, _start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "recent=yes",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
 
 
 def test_iemapp_bracket_variable():

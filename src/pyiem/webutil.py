@@ -306,9 +306,9 @@ def add_to_environ(environ, form, **kwargs):
                 environ["ets"] = compute_ts_from_string(form, "ets")
             # NB: The usage of a schema may have already parsed a sts or ets,
             # but it will be None if it was not provided
-            if "day1" in form and form.get("sts") is None:
+            if form.get("day1") is not None and form.get("sts") is None:
                 environ["sts"] = compute_ts(form, "1")
-            if "day2" in form and form.get("ets") is None:
+            if form.get("day2") is not None and form.get("ets") is None:
                 environ["ets"] = compute_ts(form, "2")
         except (TypeError, ValueError) as exp:
             raise IncompleteWebRequest("Invalid timestamp specified") from exp
