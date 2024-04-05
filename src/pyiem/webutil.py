@@ -59,7 +59,7 @@ DBKEY_RE = re.compile(r"^iemdb\.(.*)\.conn$")
 YEAR_RE = re.compile(r"^\d{4}")
 TELEMETRY = namedtuple(
     "TELEMETRY",
-    ["timing", "status_code", "client_addr", "app", "request_uri"],
+    ["timing", "status_code", "client_addr", "app", "request_uri", "vhost"],
 )
 
 
@@ -160,9 +160,9 @@ def write_telemetry(data: TELEMETRY) -> bool:
                 text(
                     """
                 insert into website_telemetry(timing, status_code,
-                client_addr, app, request_uri)
+                client_addr, app, request_uri, vhost)
                 values (:timing, :status_code, :client_addr,
-                :app, :request_uri)
+                :app, :request_uri, :vhost)
                 """
                 ),
                 data._asdict(),
@@ -450,6 +450,7 @@ def iemapp(**kwargs):
                         environ.get("REMOTE_ADDR"),
                         environ.get("SCRIPT_NAME"),
                         environ.get("REQUEST_URI"),
+                        environ.get("HTTP_HOST"),
                     )
                 )
             # Ensure we close any database connections

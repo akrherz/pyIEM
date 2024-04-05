@@ -162,6 +162,7 @@ def test_add_telemetry_bad():
             client_addr="",
             app="test",
             request_uri="",
+            vhost="",
         ),
     )
 
@@ -175,6 +176,7 @@ def test_add_telemetry():
             client_addr=None,
             app="test",
             request_uri="",
+            vhost="",
         ),
     )
 
