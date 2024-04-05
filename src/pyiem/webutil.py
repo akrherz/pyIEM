@@ -338,6 +338,17 @@ def _handle_help(start_response, **kwargs):
     return [TEMPLATE.render(res).encode("utf-8")]
 
 
+def _debracket(form):
+    """Remove brackets from form keys."""
+    res = {}
+    for key in form:
+        if key.endswith("[]"):
+            res[key[:-2]] = form[key]
+        else:
+            res[key] = form[key]
+    return res
+
+
 def iemapp(**kwargs):
     """Attempt to do all kinds of nice things for the user and the developer.
 
@@ -403,7 +414,7 @@ def iemapp(**kwargs):
                 if "help" in form:
                     return _handle_help(start_response, **kwargs)
                 if "schema" in kwargs:
-                    form = kwargs["schema"](**form).model_dump()
+                    form = kwargs["schema"](**_debracket(form)).model_dump()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 # Important this is set before calling add_to_environ
