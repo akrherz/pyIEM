@@ -1,0 +1,73 @@
+662 
+WWUS54 KMEG 082341
+SVSMEG
+
+Severe Weather Statement
+National Weather Service Memphis TN
+641 PM CDT Mon Apr 8 2024
+
+TNC017-079-082350-
+/O.CAN.KMEG.SV.W.0053.000000T0000Z-240409T0000Z/
+Carroll TN-Henry TN-
+641 PM CDT Mon Apr 8 2024
+
+...THE SEVERE THUNDERSTORM WARNING FOR NORTHEASTERN CARROLL AND
+EASTERN HENRY COUNTIES IS CANCELLED...
+
+The severe thunderstorm which prompted the warning has moved out of 
+the warned area. Therefore, the warning has been cancelled.
+
+&&
+
+LAT...LON 3613 8792 3605 8799 3600 8800 3597 8802
+      3594 8801 3593 8800 3591 8802 3599 8821
+      3630 8805 3634 8801 3635 8799 3631 8796
+      3627 8794 3622 8795 3616 8792
+TIME...MOT...LOC 2340Z 221DEG 34KT 3621 8793 
+
+$$
+
+TNC005-090000-
+/O.CON.KMEG.SV.W.0053.000000T0000Z-240409T0000Z/
+Benton TN-
+641 PM CDT Mon Apr 8 2024
+
+...A SEVERE THUNDERSTORM WARNING REMAINS IN EFFECT UNTIL 700 PM CDT
+FOR CENTRAL BENTON COUNTY...
+
+At 640 PM CDT, a severe thunderstorm was located 11 miles northwest
+of Waverly, moving northeast at 40 mph.
+
+HAZARD...Ping pong ball size hail and 60 mph wind gusts.
+
+SOURCE...Radar indicated.
+
+IMPACT...People and animals outdoors will be injured. Expect hail 
+         damage to roofs, siding, windows, and vehicles. Expect wind 
+         damage to roofs, siding, and trees.
+
+Locations impacted include...
+Camden, New Johnsonville, Big Sandy, and Nathan Bedford Forrest State
+Park.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+For your protection move to an interior room on the lowest floor of a
+building.
+
+&&
+
+LAT...LON 3613 8792 3605 8799 3600 8800 3597 8802
+      3594 8801 3593 8800 3591 8802 3599 8821
+      3630 8805 3634 8801 3635 8799 3631 8796
+      3627 8794 3622 8795 3616 8792
+TIME...MOT...LOC 2340Z 221DEG 34KT 3621 8793 
+
+HAIL THREAT...RADAR INDICATED
+MAX HAIL SIZE...1.50 IN
+WIND THREAT...RADAR INDICATED
+MAX WIND GUST...60 MPH
+
+$$
+
+JPR

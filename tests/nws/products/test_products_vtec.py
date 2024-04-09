@@ -42,6 +42,22 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh888_dont_store_can(dbcursor):
+    """Test that CAN polygons are not stored in case of two segment."""
+    for i in range(3):
+        prod = _vtecparser(get_test_file(f"SVRMEG/SVRMEG_{i}.txt"))
+        prod.sql(dbcursor)
+        dbcursor.execute(
+            "select count(*) from sbw where vtec_year = 2024 and wfo = 'MEG' "
+            "and eventid = 53 and phenomena = 'SV' and significance = 'W' and "
+            "product_id = %s",
+            (prod.get_product_id(),),
+        )
+        # the test here is for i=1, which has a CAN/CON combo, only want 1
+        assert dbcursor.fetchone()["count"] == 1
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_gh862_longfuse_polygons(dbcursor):
     """Test that we more sensibly handle polygon times."""
     prod = _vtecparser(get_test_file("FLWMEG/FLWMEG.txt"))
@@ -662,7 +678,7 @@ def test_TORE_series(dbcursor):
 
     prod = vtecparser(get_test_file("TORE/SVS_E.txt"))
     prod.sql(dbcursor)
-    assert getval3() == 3
+    assert getval3() == 2
     assert not prod.warnings
     jmsg = prod.get_jabbers("http://localhost")
     assert "TO.EMERGENCY" in jmsg[0][2]["channels"].split(",")
@@ -1670,7 +1686,7 @@ def test_140604_sbwupdate(dbcursor):
     wfo = 'LMK' and eventid = 95 and phenomena = 'SV' and
     significance = 'W' """
     )
-    assert dbcursor.rowcount == 3
+    assert dbcursor.rowcount == 2
     warnings = filter_warnings(prod.warnings)
     assert not warnings
 

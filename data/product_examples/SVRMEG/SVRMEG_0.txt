@@ -1,0 +1,60 @@
+493 
+WUUS54 KMEG 082321
+SVRMEG
+TNC005-017-079-090000-
+/O.NEW.KMEG.SV.W.0053.240408T2321Z-240409T0000Z/
+
+BULLETIN - IMMEDIATE BROADCAST REQUESTED
+Severe Thunderstorm Warning
+National Weather Service Memphis TN
+621 PM CDT Mon Apr 8 2024
+
+The National Weather Service in Memphis has issued a
+
+* Severe Thunderstorm Warning for...
+  Benton County in west Tennessee...
+  Northeastern Carroll County in west Tennessee...
+  Eastern Henry County in west Tennessee...
+
+* Until 700 PM CDT.
+
+* At 620 PM CDT, a severe thunderstorm was located near Camden,
+  moving northeast at 40 mph.
+
+  HAZARD...Ping pong ball size hail and 60 mph wind gusts.
+
+  SOURCE...Emergency management. At 620 PM, Emergency management 
+           reported half dollar sized hail near Camden.
+
+  IMPACT...People and animals outdoors will be injured. Expect hail 
+           damage to roofs, siding, windows, and vehicles. Expect 
+           wind damage to roofs, siding, and trees.
+
+* Locations impacted include...
+  Camden, Paris Landing State Park, New Johnsonville, Bruceton, Vale,
+  Springville, Hollow Rock, Big Sandy, Haigler Ridge, Manleyville,
+  Old Springville, Spring Creek, Crews Store, Ephesus, Nathan Bedford
+  Forrest State Park, and Big Sandy Unit Tennessee National Wildlife
+  Refuge.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+For your protection move to an interior room on the lowest floor of a
+building.
+
+&&
+
+LAT...LON 3613 8792 3605 8799 3600 8800 3597 8802
+      3594 8801 3594 8793 3592 8793 3589 8796
+      3604 8835 3650 8811 3650 8806 3644 8806
+      3631 8796 3627 8794 3622 8795 3616 8792
+TIME...MOT...LOC 2320Z 222DEG 33KT 3606 8810 
+
+HAIL THREAT...OBSERVED
+MAX HAIL SIZE...1.50 IN
+WIND THREAT...RADAR INDICATED
+MAX WIND GUST...60 MPH
+
+$$
+
+JPR

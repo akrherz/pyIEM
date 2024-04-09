@@ -170,6 +170,17 @@ class VTECProduct(TextProduct):
         # polygon_end   - Time domain this polygon is valid for exclusive
         # updated       - Product time of this product
 
+        # Life choice to drop the polygon if two segment and CAN/CON combo
+        if (
+            vtec.action == "CAN"
+            and self.is_homogeneous()
+            and not self.is_single_action()
+            and len(self.segments) > 1  # belt and suspenders
+            and self.segments[1].vtec  # belt and suspenders
+            and self.segments[1].vtec[0].action == "CON"
+        ):
+            return
+
         # Figure out when this polygon begins and ends
         polygon_begin = self.valid
         if vtec.action == "NEW" and vtec.begints is not None:

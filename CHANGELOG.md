@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Change storage logic of SBW to not include `CAN` polygons in the case of
+a CAN/CON combination update (#888).
 - Depend on `docutils` for reStructedText to HTML conversion.
 - `util.get_autoplot_context` can now raise `IncompleteWebRequest`.
 - The VTEC/SBW database storage of raw NWS product text was discontinued.
