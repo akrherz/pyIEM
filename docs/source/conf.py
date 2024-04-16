@@ -1,3 +1,4 @@
+# flake8: noqa: ERA001 E265
 """Sphinx configuration."""
 # -*- coding: utf-8 -*-
 #

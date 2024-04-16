@@ -350,7 +350,6 @@ def test_ugc_invalid_coding():
     """UGC code regression"""
     data = get_test_file("FLW_badugc.txt")
     tp = product.TextProduct(data)
-    # self.assertRaises(ugc.UGCParseException, product.TextProduct, data )
     assert not tp.segments[0].ugcs
 
 

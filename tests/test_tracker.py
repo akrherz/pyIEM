@@ -12,14 +12,14 @@ from pyiem.tracker import TrackerEngine, loadqc
 @pytest.fixture
 def pcursor():
     """Database cursor."""
-    dbconn, cursor = get_dbconnc("portfolio")
+    _dbconn, cursor = get_dbconnc("portfolio")
     return cursor
 
 
 @pytest.fixture
 def icursor():
     """Database cursor."""
-    dbconn, cursor = get_dbconnc("iem")
+    _dbconn, cursor = get_dbconnc("iem")
     return cursor
 
 

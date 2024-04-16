@@ -190,7 +190,6 @@ def test_badpoly():
 def test_nogeom4():
     """Test that we can get a slight risk from this."""
     prod = parser(get_test_file("SPCPTS/PTSDY2_nogeom4.txt"))
-    # prod.draw_outlooks()
     outlook = prod.get_outlook("CATEGORICAL", "SLGT", 2)
     assert abs(outlook.geometry_layers.area - 31.252) < 0.01
 

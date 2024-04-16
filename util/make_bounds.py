@@ -42,7 +42,6 @@ def main():
             ar = list(zip(lons, lats))
             ar.reverse()
             np.save("iailin_ccw.npy", ar)
-            # mask_outside_polygon(ar, ax=m.ax)
 
 
 if __name__ == "__main__":

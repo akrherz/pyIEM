@@ -16,7 +16,6 @@ import time
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 from html import escape
-from socket import error as socket_error
 
 # !important
 # Lazy import everything possible here, since this module is imported by
@@ -543,11 +542,8 @@ def exponential_backoff(func, *args, **kwargs):
     for i in range(5):
         try:
             return func(*args, **kwargs)
-        except socket_error as serr:
-            msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
-            time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
         except Exception as exp:
-            msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
+            msgs.append(f"{i + 1}/5 {func.__name__} traceback: {exp}")
             time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))

@@ -25,7 +25,8 @@ USERNAME_MAPPER = {
 class _FloatDumper(Dumper):
     """Prevent NaN from reaching the database."""
 
-    def dump(self, obj):
+    @staticmethod
+    def dump(obj):
         """Opinionated dumper."""
         if np.isnan(obj):
             return None
@@ -97,7 +98,6 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
         try:
             conn = psycopg.connect(dsn)
             # FIXME make this opinionated to return a default row_factory
-            # conn.row_factory = dict_row
             break
         except Exception as exp:
             if attempt == 3:

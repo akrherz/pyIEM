@@ -665,6 +665,8 @@ class MapPlot:
             <= 0 disables text outlines.
           isolated (bool): Only compute label collision against labels within
             this plot_values call. Default `false`
+          backgroundcolor (color): color to use for the background of the label
+            text, default is None.
         """
         if valmask is None:
             valmask = [True] * len(lons)
@@ -702,6 +704,7 @@ class MapPlot:
         gdf["val"] = vals
         gdf["valmask"] = valmask
         gdf["color"] = color
+        gdf["backgroundcolor"] = kwargs.get("backgroundcolor")
         gdf["label"] = labels
         gdf["zorder"] = zorder
         # Create a fake label, to test out our scaling
@@ -829,6 +832,8 @@ class MapPlot:
                     ha=ha,
                     crs=gp.crs,
                 )
+                if row["backgroundcolor"] is not None:
+                    t0.set_backgroundcolor(row["backgroundcolor"])
                 bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
                 if self.debug:
                     rec = plt.Rectangle(

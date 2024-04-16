@@ -444,7 +444,6 @@ class SPCPTS(TextProduct):
 
     def compute_wfos(self, _txn=None):
         """Figure out which WFOs are impacted by this polygon."""
-        # self.draw_outlooks()
         geodf = load_geodf("cwa")
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:

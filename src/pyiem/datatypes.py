@@ -152,7 +152,6 @@ class speed(basetype):
             mps_value = self._value * 0.447000
         else:
             mps_value = self._value
-        # return
         if units == "KMH":
             return mps_value * 3.6
         if units in ["KT", "KTS"]:

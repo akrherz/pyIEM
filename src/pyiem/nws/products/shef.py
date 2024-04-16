@@ -49,7 +49,6 @@ TIMEZONES = {
     "CD": "Etc/GMT+5",
     "CS": "Etc/GMT+6",
     "N": "Canada/Newfoundland",
-    # "NS": "Unsupported +2.5",
     "A": "Canada/Atlantic",
     "AD": "Etc/GMT+3",
     "AS": "Etc/GMT+4",
