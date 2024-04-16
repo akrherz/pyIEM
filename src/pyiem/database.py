@@ -25,7 +25,8 @@ USERNAME_MAPPER = {
 class _FloatDumper(Dumper):
     """Prevent NaN from reaching the database."""
 
-    def dump(self, obj):
+    @staticmethod
+    def dump(obj):
         """Opinionated dumper."""
         if np.isnan(obj):
             return None

@@ -544,10 +544,10 @@ def exponential_backoff(func, *args, **kwargs):
         try:
             return func(*args, **kwargs)
         except socket_error as serr:
-            msgs.append(f"{i+1}/5 {func.__name__} traceback: {serr}")
+            msgs.append(f"{i + 1}/5 {func.__name__} traceback: {serr}")
             time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
         except Exception as exp:
-            msgs.append(f"{i+1}/5 {func.__name__} traceback: {exp}")
+            msgs.append(f"{i + 1}/5 {func.__name__} traceback: {exp}")
             time.sleep(ebfactor * (random.randint(0, 1000) / 1000))
     logging.error("%s failure", func.__name__)
     logging.error("\n".join(msgs))

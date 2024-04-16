@@ -52,16 +52,20 @@ filterwarnings = [
 
 [tool.ruff]
 line-length = 79
-lint.select = [
+target-version = "py39"
+
+[tool.ruff.lint]
+preview = true
+select = [
     "B",  # bugbear
     #  "D",  # pydocstyle
     "E",  # errors
     "ERA",  # commented out code
     "F",  # format
     "I",  # imports
+    "PLR0203",  # staticmethod
     "T",  # types
 ]
-target-version = "py39"
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
