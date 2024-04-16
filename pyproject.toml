@@ -56,6 +56,7 @@ lint.select = [
     "B",  # bugbear
     #  "D",  # pydocstyle
     "E",  # errors
+    "ERA",  # commented out code
     "F",  # format
     "I",  # imports
     "T",  # types

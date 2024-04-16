@@ -234,7 +234,6 @@ def jabber_messages(valid, outlook_collections) -> list:
 
 def compute_wfos(outlook_collections):
     """Compute the WFOs affected for each outlook in collection."""
-    # self.draw_outlooks()
     geodf = load_geodf("cwa")
     for day, collect in outlook_collections.items():
         for outlook in collect.outlooks:

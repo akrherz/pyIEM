@@ -31,8 +31,6 @@ def clearsky_shortwave_irradiance_year(lat, elevation):
     # julian days
     j = np.arange(1, 366, 1)
     # solar declination
-    # delta = asind(0.39785.*sind((278.97+0.9856.*J+1.9165.
-    # *sind((356.6+0.9856.*J)))))
     _a = np.sin(np.radians(356.6 + 0.9856 * j))
     _b = np.sin(np.radians(278.97 + 0.9856 * j + 1.9165 * _a))
     delta = np.degrees(np.arcsin(0.39785 * _b))
@@ -40,8 +38,6 @@ def clearsky_shortwave_irradiance_year(lat, elevation):
     for jday in j:
         running = 0
         for t in np.arange(0, 12.001, 5.0 / 60.0):
-            # acosd((sind(gamma(l))*sind(delta(j))+cosd(gamma(l))*
-            # cosd(delta(j))*cosd(15*(t-12))))
             _a = math.cos(np.radians(15 * (t - 12)))
             _b = math.sin(np.radians(lat))
             _c = math.sin(np.radians(delta[jday - 1]))

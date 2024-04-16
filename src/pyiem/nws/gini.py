@@ -419,7 +419,6 @@ class GINIZFile:
         hh = struct.unpack("> B", hdata[11:12])[0]
         mi = struct.unpack("> B", hdata[12:13])[0]
         ss = struct.unpack("> B", hdata[13:14])[0]
-        # hs = struct.unpack("> B", hdata[14:15] )[0]
         meta["valid"] = datetime(yr, mo, dy, hh, mi, ss).replace(
             tzinfo=timezone.utc
         )
@@ -445,7 +444,6 @@ class GINIZFile:
             meta["lon2"] = int24(hdata[30:33])
             meta["lat_ur"] = int24(hdata[55:58])
             meta["lon_ur"] = int24(hdata[58:61])
-        # lambert == 3, polar == 5
         else:
             meta["lat1"] = int24(hdata[20:23])
             meta["lon1"] = int24(hdata[23:26])

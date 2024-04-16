@@ -704,7 +704,7 @@ class MapPlot:
         gdf["val"] = vals
         gdf["valmask"] = valmask
         gdf["color"] = color
-        gdf["backgroundcolor"] = kwargs.get("backgroundcolor", None)
+        gdf["backgroundcolor"] = kwargs.get("backgroundcolor")
         gdf["label"] = labels
         gdf["zorder"] = zorder
         # Create a fake label, to test out our scaling
