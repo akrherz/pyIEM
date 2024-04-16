@@ -1032,11 +1032,17 @@ def test_contourf():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=PAIN)
+@pytest.mark.mpl_image_compare(tolerance=0)
 def test_textplot():
     """Can we plot text and place labels on them"""
     mp = MapPlot(sector="iowa", nocaption=True)
-    mp.plot_values(np.arange(-99, -94), np.arange(40, 45), np.arange(5))
+    mp.plot_values(
+        np.arange(-96, -91),
+        np.arange(39, 44),
+        np.arange(5),
+        color="k",
+        backgroundcolor="r",
+    )
     return mp.fig
 
 

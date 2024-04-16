@@ -17,6 +17,7 @@ web services to get the raw text. (#857)
 
 ### New Features
 
+- Add `backgroundcolor` option to `MapPlot.plot_values`.
 - Add `parse_commas` option to `webutil.ensure_list`, so to allow comma
 delimited CGI params by default.
 - For pydantic schema based ``iemapp``, keys like `wfo[]` go to `wfo`.
