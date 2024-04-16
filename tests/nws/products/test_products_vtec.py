@@ -65,7 +65,7 @@ def test_gh862_longfuse_polygons(dbcursor):
     prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_0.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
-        "select issue, polygon_begin from sbw "
+        "select issue, polygon_begin, product_signature from sbw "
         "where vtec_year = 2024 and wfo = 'MEG' and "
         "eventid = 12 and phenomena = 'FL' and significance = 'W' and "
         "product_id = %s",
@@ -73,6 +73,7 @@ def test_gh862_longfuse_polygons(dbcursor):
     )
     row = dbcursor.fetchone()
     assert row["polygon_begin"] == utc(2024, 2, 11, 12, 36)
+    assert row["product_signature"] == "ARS"
     prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(

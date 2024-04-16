@@ -22,6 +22,7 @@ web services to get the raw text. (#857)
 delimited CGI params by default.
 - For pydantic schema based ``iemapp``, keys like `wfo[]` go to `wfo`.
 - Introduce some pydantic based validators for web requests, experimental...
+- Store `product_signature` in sbw table (requires iem-database schema update).
 
 ### Bug Fixes
 
