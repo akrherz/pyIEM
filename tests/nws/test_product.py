@@ -26,8 +26,6 @@ def test_gh865_fcster_scenarios():
     data = get_test_file("TORILX.txt")
     prod = productparser(data)
     assert prod.get_signature() == "MILLER"
-    prod = productparser(data.replace("MILLER", ""))
-    assert prod.get_signature() is None
 
 
 def test_ahdnwc():

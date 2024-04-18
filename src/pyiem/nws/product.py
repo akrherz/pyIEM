@@ -799,15 +799,14 @@ class TextProduct(WMOProduct):
         return [(plain, html, xtra)]
 
     def get_signature(self):
-        """Return a signature that matches basic constraints (1 word)."""
+        """Attempt to glean the free form text that is a signature."""
         lines = [x.strip() for x in self.unixtext.split("\n") if x.strip()]
         res = None
         for line in lines[::-1][:3]:
-            if line in ["$$", "&&", "$", "&"]:
-                continue
-            if line.find(" ") > -1 or line.find(".") > -1:
+            # We found something that should have come before the signature
+            if line in ["$$", "&&"] or len(line) > 25:
                 break
-            if 0 < len(line) < 25:
+            if line not in ["$", "&"]:
                 res = line
                 break
         return res
