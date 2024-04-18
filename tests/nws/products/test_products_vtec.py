@@ -392,6 +392,7 @@ def test_201120_tml_line(dbcursor):
     data = get_test_file("TORFSD.txt")
     prod = vtecparser(data.replace("4260 9567", "4260 9567 4160 8567"))
     prod.sql(dbcursor)
+    assert prod.get_signature() == "JEFF CHAPMAN & ./Test"
 
 
 @pytest.mark.parametrize("database", ["postgis"])
