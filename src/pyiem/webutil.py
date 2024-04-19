@@ -247,8 +247,8 @@ def compute_ts(form, suffix):
     # Forgive bad day of the month combinations
     if month in [4, 6, 9, 11] and day == 31:
         day = 30
-    # Forgive specification of two years
-    yearval = form.get(f"year{suffix}", form.get("year"))
+    # Forgive specification of two years, with pydantic, this could be NOne
+    yearval = form.get(f"year{suffix}") or form.get("year")
     if isinstance(yearval, list) and len(set(yearval)) == 1:
         yearval = yearval[0]
     # Forgive February 29ths on non-leap years

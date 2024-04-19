@@ -25,6 +25,30 @@ from pyiem.webutil import (
 )
 
 
+def test_iemapp_year_year1():
+    """Test that we can handle a legacy situation with DCP app."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        year: int = Field(None)
+        year1: int = Field(None)
+        month1: int = Field(None)
+        day1: int = Field(None)
+
+    @iemapp(schema=MyModel)
+    def application(environ, _start_response):
+        """Test."""
+        return [b"Content-type: text/plain\n\nHello!"]
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "year=2022&month1=2&day1=3",
+    }
+    sr = mock.MagicMock()
+    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+
+
 def test_iemapp_times_notime():
     """Test handling when no times provided."""
 
