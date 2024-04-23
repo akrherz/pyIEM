@@ -209,7 +209,7 @@ def jabber_messages(valid, outlook_collections) -> list:
         keys = list(wfomsgs.keys())
         keys.sort()
         for wfo in keys:
-            res.append(wfomsgs[wfo])
+            res.append(wfomsgs[wfo])  # noqa
 
     # Generic for WPC
     jdict["t220"] = "conus"

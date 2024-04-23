@@ -400,7 +400,7 @@ def test_170518_bad_dbtime():
     """This went into the database with an incorrect expiration time"""
     spc = parser(get_test_file("SPCPTS/PTSDY1_baddbtime.txt"))
     answer = utc(2017, 5, 1, 12, 0)
-    for _, outlook in spc.outlook_collections.items():
+    for outlook in spc.outlook_collections.values():
         assert outlook.expire == answer
 
 

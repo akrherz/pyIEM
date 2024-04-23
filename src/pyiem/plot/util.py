@@ -277,7 +277,7 @@ def make_panel(
         sector_label=sector_label,
     )
     # Get the frame at the proper zorder
-    for _k, spine in gp.ax.spines.items():
+    for spine in gp.ax.spines.values():
         spine.set_zorder(reference.Z_FRAME)
     # Turn off autoscale so that we can control the axis limits
     gp.ax.autoscale(False)

@@ -400,7 +400,7 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                keys.append(vtec.action)
+                keys.append(vtec.action)  # noqa
         return len(keys) == 1
 
     def is_homogeneous(self):

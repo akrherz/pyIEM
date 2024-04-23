@@ -63,8 +63,12 @@ select = [
     "ERA",  # commented out code
     "F",  # format
     "I",  # imports
+    "PERF",  # performance
     "PLR0203",  # staticmethod
     "T",  # types
+]
+ignore = [
+    "PERF203",  # try,catch in loop
 ]
 
 [tool.ruff.lint.pydocstyle]

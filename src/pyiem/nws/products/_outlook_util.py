@@ -379,8 +379,7 @@ def quality_control(prod):
                 intersect = CONUS["poly"].intersection(poly)
                 # Current belief is that we can only return a (multi)poly
                 if isinstance(intersect, MultiPolygon):
-                    for p in intersect.geoms:
-                        good_polys.append(p)
+                    good_polys.extend(list(intersect.geoms))
                 elif isinstance(intersect, Polygon):
                     good_polys.append(intersect)
             outlook.geometry_layers = MultiPolygon(good_polys)

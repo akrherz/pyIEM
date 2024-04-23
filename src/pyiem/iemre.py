@@ -136,7 +136,7 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
     use_columns = []
     for row in cursor:
         if not varnames or row[0] in varnames:
-            use_columns.append(row[0])
+            use_columns.append(row[0])  # noqa
     colsql = ",".join(use_columns)
     cursor.execute(
         f"SELECT (gid / %s)::int as y, gid %% %s as x, {colsql} "

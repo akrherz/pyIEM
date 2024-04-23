@@ -44,9 +44,7 @@ class LSRProduct(TextProduct):
         """Return the min and max timestamps of lsrs"""
         if not self.lsrs:
             return None, None
-        valids = []
-        for lsr in self.lsrs:
-            valids.append(lsr.valid)
+        valids = [lsr.valid for lsr in self.lsrs]
         return min(valids), max(valids)
 
     def is_summary(self):

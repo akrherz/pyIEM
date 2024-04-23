@@ -144,7 +144,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     axes.get_xaxis().set_visible(False)
     axes.get_yaxis().set_visible(False)
     # Update axes frame zorder to be on-top
-    for _, spine in axes.spines.items():
+    for spine in axes.spines.values():
         spine.set_zorder(Z_FRAME)
     pos = axes.get_position()
     ndcheight = pos.y1 - pos.y0
