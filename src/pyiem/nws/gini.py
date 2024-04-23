@@ -81,7 +81,7 @@ CHANNELS = [
     "WINDEX",
 ]
 for _u in range(22, 100):
-    CHANNELS.append(f"U{_u}")
+    CHANNELS.append(f"U{_u}")  # noqa
 SECTORS = [
     "NHCOMP",
     "EAST",

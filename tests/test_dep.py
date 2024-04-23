@@ -15,7 +15,7 @@ def get_path(name):
 
 def test_ramps():
     """Ramps should be of length 11"""
-    for _q, vals in dep.RAMPS.items():
+    for vals in dep.RAMPS.values():
         assert all(len(val) == 9 for val in vals)
 
 

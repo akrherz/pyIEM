@@ -224,11 +224,7 @@ NWS_COLORS = {
 
 def parse(text):
     """I look for and return vtec objects as I find them"""
-    vtec = []
-    tokens = re.findall(VTEC_RE, text)
-    for token in tokens:
-        vtec.append(VTEC(token))
-    return vtec
+    return [VTEC(token) for token in re.findall(VTEC_RE, text)]
 
 
 def contime(text):

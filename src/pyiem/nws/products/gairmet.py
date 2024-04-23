@@ -89,7 +89,7 @@ def process_airmet(prod, airmet):
         if elem.text == "true":
             phenomena.append("clouds")
     for elem in airmet.findall(".//weatherPhenomenon", NS):
-        phenomena.append(elem.attrib["{http://www.w3.org/1999/xlink}title"])
+        phenomena.append(elem.attrib["{http://www.w3.org/1999/xlink}title"])  # noqa
     # seems to be always hard coded.
     elem = airmet.find(".//windSpeedGreaterThan", NS)
     if elem is not None:

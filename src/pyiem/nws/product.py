@@ -528,7 +528,7 @@ class TextProductSegment:
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             # No longer a warning as it was too much noise
-            LOG.warning(
+            LOG.info(
                 "LAT...LON polygon exterior is CCW, reversing\n%s",
                 poly.exterior.xy,
             )
@@ -713,10 +713,8 @@ class TextProduct(WMOProduct):
             res.append(self.afos[:5])
         elif self.afos == "AHDNWC":
             # Get the ATTN
-            for wfo in self.parse_attn_wfo():
-                res.append(wfo)
-            for wfo in self.parse_attn_rfc():
-                res.append(wfo)
+            res.extend(self.parse_attn_wfo())
+            res.extend(self.parse_attn_rfc())
         return res
 
     def get_nicedate(self):

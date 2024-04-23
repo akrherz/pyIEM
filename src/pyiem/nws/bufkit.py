@@ -18,9 +18,9 @@ def _read_station(text):
     # Split on the last key above to get just numbers
     numbers = text.split(keys[-1])[1].split()
     assert len(numbers) % len(keys) == 0
-    rows = []
-    for i in range(0, len(numbers), len(keys)):
-        rows.append(numbers[i : (i + len(keys))])
+    rows = [
+        numbers[i : (i + len(keys))] for i in range(0, len(numbers), len(keys))
+    ]
     df = pd.DataFrame(rows, columns=keys)
     df["utc_valid"] = pd.to_datetime(
         df["YYMMDD/HHMM"],
@@ -56,7 +56,7 @@ def _read_sounding(text):
         # should be a multiple of snparm
         assert len(numbers) % len(snparm) == 0
         for i in range(0, len(numbers), len(snparm)):
-            rows.append([settings["STIM"], *numbers[i : (i + len(snparm))]])
+            rows.append([settings["STIM"], *numbers[i : (i + len(snparm))]])  # noqa
     cols = ["STIM", *snparm]
     stndf = pd.DataFrame(stnrows)
     stndf["utc_valid"] = pd.to_datetime(

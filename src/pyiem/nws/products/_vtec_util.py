@@ -236,7 +236,7 @@ def check_dup_ps(segment):
         )
         val.append([thisvtec.begints, endts])
 
-    for _key, combo in combos.items():
+    for combo in combos.values():
         if len(combo) == 1:
             continue
         for one, two in itertools.permutations(combo, 2):

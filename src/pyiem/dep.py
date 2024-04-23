@@ -77,7 +77,7 @@ def read_yld(filename):
         data = fh.read()
     xref = {}
     for cropcode, label in YLD_CROPTYPE.findall(data):
-        xref[cropcode] = label
+        xref[cropcode] = label  # noqa
     rows = []
     for cropcode, doy, ofe, yld, year in YLD_DATA.findall(data):
         date = datetime.date(int(year), 1, 1) + datetime.timedelta(

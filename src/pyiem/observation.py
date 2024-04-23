@@ -118,7 +118,7 @@ def summary_update(txn, data):
     updates = []
     for col in data:
         if col.startswith("null_") and col[5:] in SUMMARY_COLS:
-            updates.append(f"{col[5:]} = null")
+            updates.append(f"{col[5:]} = null")  # noqa
     if updates:
         txn.execute(
             f"UPDATE {table} s SET {', '.join(updates)} "

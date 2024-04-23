@@ -6,7 +6,7 @@ from pyiem import datatypes
 
 def test_unitserror():
     """Make sure that unknown units actually raise an error"""
-    for _, cls in datatypes.__dict__.items():
+    for cls in datatypes.__dict__.values():
         if isinstance(cls, type) and hasattr(cls, "known_units"):
             a = cls(10, cls.known_units[0])
             with pytest.raises(datatypes.UnitsError):

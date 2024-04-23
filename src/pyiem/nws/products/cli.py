@@ -546,7 +546,7 @@ class CLIProduct(TextProduct):
             # Uh oh, we need to do some manual splitting
             pos = []
             for match in re.finditer(HEADLINE_RE, section.replace("\n", " ")):
-                pos.append(match.start())
+                pos.append(match.start())  # noqa
             pos.append(len(section))
             for i, p in enumerate(pos[:-1]):
                 sections.append(section[max([0, p - 10]) : pos[i + 1]])

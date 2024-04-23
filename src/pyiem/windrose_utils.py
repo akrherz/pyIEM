@@ -63,7 +63,7 @@ def _make_timelimit_string(kwargs):
         parts.append(f"{kwargs['sts']:%b %-d} - {kwargs['ets']:%b %-d}")
     elif months is not None and len(months) < 12:
         for h in months:
-            parts.append(f"{month_abbr[h]}")
+            parts.append(f"{month_abbr[h]}")  # noqa
     if hours is not None and len(hours) != 24:
         if len(hours) > 4:
             parts.append(
@@ -72,7 +72,7 @@ def _make_timelimit_string(kwargs):
             )
         else:
             for h in hours:
-                parts.append(f"{datetime(2000, 1, 1, h):%-I %p}")
+                parts.append(f"{datetime(2000, 1, 1, h):%-I %p}")  # noqa
     return f" ↳ constraints: {', '.join(parts)}"
 
 

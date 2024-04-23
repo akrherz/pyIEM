@@ -438,11 +438,7 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 if opt.get("multiple"):
                     value = [value]
             else:
-                res = []
-                for subval in value:
-                    if subval in options:
-                        res.append(subval)
-                value = res
+                value = [subval for subval in value if subval in options]
         elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
