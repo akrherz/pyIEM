@@ -33,6 +33,7 @@ delimited CGI params by default.
 - Forward propagate sbw database storage of VTEC issuace (#862).
 - Improve NWS Text Product signature logic so to more generally match what
 looks like a signature (#865).
+- Improved NWS MND header logic for timestamp retrieval.
 - Make better life choices attempting to glean a NWS Text Product signature.
 - Prevent situation in sbw database having polygon_begin > polygon_end (#862).
 - Refactor VTEC/SBW storage logic to use `vtec_year` column and operate on the

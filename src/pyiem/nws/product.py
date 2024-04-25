@@ -33,6 +33,7 @@ TIME_EXT_RE = re.compile(
 )
 # Without the line start and end requirement
 TIME_RE_ANYWHERE = re.compile(f"{TIME_FMT}", re.IGNORECASE)
+TIME_STARTS_LINE = re.compile(r"^([0-9:]+) (AM|PM)")
 
 TIME_MOT_LOC = re.compile(
     r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
@@ -838,6 +839,15 @@ class TextProduct(WMOProduct):
                 tokens = TIME_RE_ANYWHERE.findall(self.unixtext)
                 if not tokens:
                     tokens = TIME_UTC_RE.findall(self.unixtext)
+                    if not tokens:
+                        # We are very desperate at this point, evasive action
+                        for line in self.unixtext.split("\n")[:15]:
+                            if TIME_STARTS_LINE.match(line):
+                                # Remove anything inside of () or //
+                                line = re.sub(r" \(.*?\)", "", line)
+                                line = re.sub(r" /.*?/", "", line)
+                                tokens = TIME_RE.findall(line)
+                                break
         if provided_utcnow is None and tokens:
             try:
                 z, _tz, valid = date_tokens2datetime(tokens[0])
