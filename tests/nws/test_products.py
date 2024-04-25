@@ -15,6 +15,12 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_240425_mnd_timestamp():
+    """Test parsing of this old timestamp variant."""
+    prod = parser(get_test_file("SVR/SVRILN_mnd_timestamp.txt"))
+    assert prod.valid == utc(1996, 6, 23, 0, 57)
+
+
 def test_220726_utc():
     """Test problem with AM/PM with 12 UTC."""
     utcnow = utc(2022, 7, 26, 0, 49)
