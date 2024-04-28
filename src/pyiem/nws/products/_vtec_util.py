@@ -415,7 +415,6 @@ def _do_sql_vtec_new(prod, txn, segment, vtec):
                     "Duplicate(s) WWA found, "
                     f"rowcount: {txn.rowcount} for UGC: {ugc}"
                 )
-        sig = prod.get_signature()
         txn.execute(
             "INSERT into warnings (vtec_year, issue, expire, updated, "
             "wfo, eventid, status, fcster, ugc, phenomena, "
@@ -433,7 +432,7 @@ def _do_sql_vtec_new(prod, txn, segment, vtec):
                 vtec.office,
                 vtec.etn,
                 vtec.action,
-                None if sig is None else sig[:24],
+                prod.get_signature(),
                 str(ugc),
                 vtec.phenomena,
                 vtec.significance,

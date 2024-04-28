@@ -3,6 +3,7 @@
 import re
 from collections import OrderedDict
 from datetime import datetime, timedelta, timezone
+from typing import Optional
 from zoneinfo import ZoneInfo
 
 from shapely.geometry import MultiPolygon, Polygon
@@ -797,13 +798,13 @@ class TextProduct(WMOProduct):
                 self.warnings.append(f"Hit exception {exp} in damage_survey")
         return [(plain, html, xtra)]
 
-    def get_signature(self):
+    def get_signature(self) -> Optional[str]:
         """Attempt to glean the free form text that is a signature."""
         lines = [x.strip() for x in self.unixtext.split("\n") if x.strip()]
         res = None
         for line in lines[::-1][:3]:
             # We found something that should have come before the signature
-            if line in ["$$", "&&"] or len(line) > 25:
+            if line in ["$$", "&&"] or len(line) > 24:
                 break
             if line not in ["$", "&"]:
                 res = line
