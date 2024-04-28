@@ -42,6 +42,13 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_240428_too_long_fcster(dbcursor):
+    """Test handling a too long signature"""
+    prod = _vtecparser(get_test_file("WSW/WSWDLH.txt"))
+    prod.sql(dbcursor)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_gh888_dont_store_can(dbcursor):
     """Test that CAN polygons are not stored in case of two segment."""
     for i in range(3):
