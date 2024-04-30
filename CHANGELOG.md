@@ -28,6 +28,7 @@ delimited CGI params by default.
 
 - Allow for pydantic field validation to work when there's legacy `year` vs
 `year1` present.
+- Correct handling of `is_emergency` when done within VTEC correction (#899).
 - Correct `SKC` parsing within TAFs, level is now `None` in this case (#453).
 - Fix numeric instability with `pyiem.plot.centered_bins` (#871).
 - Forward propagate sbw database storage of VTEC issuace (#862).

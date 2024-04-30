@@ -1,0 +1,72 @@
+635 
+WWUS53 KOAX 262218
+SVSOAX
+
+Severe Weather Statement
+National Weather Service Omaha/Valley Nebraska
+518 PM CDT Fri Apr 26 2024
+
+IAC129-262227-
+/O.CAN.KOAX.TO.W.0038.000000T0000Z-240426T2300Z/
+Mills IA-
+518 PM CDT Fri Apr 26 2024
+
+...THE TORNADO WARNING FOR NORTHWESTERN MILLS COUNTY IS CANCELLED...
+
+The tornadic thunderstorm which prompted the warning has moved out 
+of the warned area.  Therefore, the warning has been cancelled.
+
+A Tornado Watch remains in effect until 700 PM CDT for southwestern
+Iowa.
+
+&&
+
+LAT...LON 4117 9569 4118 9579 4151 9568 4150 9541
+TIME...MOT...LOC 2217Z 200DEG 39KT 4128 9568 
+
+$$
+
+IAC155-262300-
+/O.CON.KOAX.TO.W.0038.000000T0000Z-240426T2300Z/
+Pottawattamie IA-
+518 PM CDT Fri Apr 26 2024
+
+...A TORNADO WARNING REMAINS IN EFFECT UNTIL 600 PM CDT FOR CENTRAL
+POTTAWATTAMIE COUNTY...
+
+At 517 PM CDT, a confirmed tornado was located 4 miles east of
+Council Bluffs Airport, or 9 miles east of Council Bluffs, moving 
+northeast at 45 mph. A second area of rotation was located 7 miles 
+southwest of Treynor, also moving northeast at 45 mph.
+
+HAZARD...Damaging tornado and ping pong ball size hail.
+
+SOURCE...Weather spotters confirmed tornado.
+
+IMPACT...Flying debris will be dangerous to those caught without 
+         shelter. Mobile homes will be damaged or destroyed. Damage 
+         to roofs, windows, and vehicles will occur.  Tree damage is 
+         likely.
+
+Locations impacted include...
+  Underwood, Neola and Minden.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+To repeat, a tornado is on the ground. TAKE COVER NOW! Move to a
+basement or an interior room on the lowest floor of a sturdy
+building. Avoid windows. If you are outdoors, in a mobile home, or in
+a vehicle, move to the closest substantial shelter and protect
+yourself from flying debris.
+
+&&
+
+LAT...LON 4117 9569 4118 9579 4151 9568 4150 9541
+TIME...MOT...LOC 2217Z 200DEG 39KT 4128 9568 
+
+TORNADO...OBSERVED
+MAX HAIL SIZE...1.50 IN
+
+$$
+
+BLB

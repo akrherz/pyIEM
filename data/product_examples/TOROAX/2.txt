@@ -1,0 +1,58 @@
+454 
+WWUS53 KOAX 262243 CCA
+SVSOAX
+
+Severe Weather Statement
+National Weather Service Omaha/Valley Nebraska
+543 PM CDT Fri Apr 26 2024
+
+IAC155-262300-
+/O.COR.KOAX.TO.W.0038.000000T0000Z-240426T2300Z/
+Pottawattamie IA-
+543 PM CDT Fri Apr 26 2024
+
+...TORNADO EMERGENCY FOR MINDEN...
+
+...A TORNADO WARNING REMAINS IN EFFECT UNTIL 600 PM CDT FOR NORTH
+CENTRAL POTTAWATTAMIE COUNTY...
+
+At 543 PM CDT, a confirmed large and destructive tornado was located
+over Minden, or 17 miles southwest of Harlan, moving northeast at 35
+mph.
+
+TORNADO EMERGENCY for Minden. This is a PARTICULARLY DANGEROUS 
+SITUATION. TAKE COVER NOW!
+
+HAZARD...Deadly tornado.
+
+SOURCE...Weather spotters confirmed tornado.
+
+IMPACT...You are in a life-threatening situation. Flying debris may 
+         be deadly to those caught without shelter. Mobile homes 
+         will be destroyed. Considerable damage to homes, 
+         businesses, and vehicles is likely and complete destruction 
+         is possible.
+
+Locations impacted include...
+Neola, Shelby, Minden, and Arrowhead Park.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+To repeat, a large, extremely dangerous, and potentially deadly
+tornado is on the ground. To protect your life, TAKE COVER NOW! Move
+to an interior room on the lowest floor of a sturdy building. Avoid
+windows. If in a mobile home, a vehicle or outdoors, move to the
+closest substantial shelter and protect yourself from flying debris.
+
+&&
+
+LAT...LON 4135 9555 4136 9565 4151 9560 4150 9542
+TIME...MOT...LOC 2236Z 208DEG 32KT 4141 9558 
+
+TORNADO...OBSERVED
+TORNADO DAMAGE THREAT...CATASTROPHIC
+MAX HAIL SIZE...1.75 IN
+
+$$
+
+BLB

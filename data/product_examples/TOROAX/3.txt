@@ -1,0 +1,30 @@
+440 
+WWUS53 KOAX 262254
+SVSOAX
+
+Severe Weather Statement
+National Weather Service Omaha/Valley Nebraska
+554 PM CDT Fri Apr 26 2024
+
+IAC155-262304-
+/O.EXP.KOAX.TO.W.0038.000000T0000Z-240426T2300Z/
+Pottawattamie IA-
+554 PM CDT Fri Apr 26 2024
+
+...THE TORNADO WARNING FOR NORTH CENTRAL POTTAWATTAMIE COUNTY WILL
+EXPIRE AT 600 PM CDT...
+
+The storm which prompted the warning has moved out of the area.
+Therefore, the warning will be allowed to expire.
+
+A Tornado Watch remains in effect until 700 PM CDT for southwestern
+Iowa.
+
+&&
+
+LAT...LON 4135 9555 4136 9565 4151 9560 4150 9542
+TIME...MOT...LOC 2254Z 208DEG 32KT 4156 9548 
+
+$$
+
+BLB
