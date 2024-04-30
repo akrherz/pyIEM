@@ -42,6 +42,20 @@ def filter_warnings(ar, startswith="get_gid"):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh899_cor_emergency(dbcursor):
+    """Test that we can handle a COR product that is an emergency."""
+    for i in range(4):
+        prod = _vtecparser(get_test_file(f"TOROAX/{i}.txt"))
+        prod.sql(dbcursor)
+    dbcursor.execute(
+        "select is_emergency from warnings where vtec_year = 2024 and "
+        "wfo = 'OAX' and eventid = 38 and phenomena = 'TO' and "
+        "significance = 'W' and ugc = 'IAC155'"
+    )
+    assert dbcursor.fetchone()["is_emergency"]
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_240428_too_long_fcster(dbcursor):
     """Test handling a too long signature"""
     prod = _vtecparser(get_test_file("WSW/WSWDLH.txt"))

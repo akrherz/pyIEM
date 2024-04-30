@@ -1,0 +1,58 @@
+591 
+WFUS53 KOAX 262159 RRA
+TOROAX
+IAC129-155-262300-
+/O.NEW.KOAX.TO.W.0038.240426T2159Z-240426T2300Z/
+
+BULLETIN - EAS ACTIVATION REQUESTED
+Tornado Warning
+National Weather Service Omaha/Valley Nebraska
+459 PM CDT Fri Apr 26 2024
+
+The National Weather Service in Omaha has issued a
+
+* Tornado Warning for...
+  Northwestern Mills County in southwestern Iowa...
+  Central Pottawattamie County in southwestern Iowa...
+
+* Until 600 PM CDT.
+
+* At 458 PM CDT, a confirmed tornado was located 3 miles northwest 
+  of Glenwood, or 7 miles southeast of Offutt AFB, near I-29, moving 
+  north at 45 mph.
+
+  HAZARD...Damaging tornado and ping pong ball size hail.
+
+  SOURCE...Weather spotters confirmed tornado.
+
+  IMPACT...Flying debris will be dangerous to those caught without 
+           shelter. Mobile homes will be damaged or destroyed. 
+           Damage to roofs, windows, and vehicles will occur.  Tree 
+           damage is likely.
+
+* The tornado will be near...
+  East Council Bluffs Airport around 510 PM CDT.
+  Treynor around 515 PM CDT.
+
+Other locations in the path of this tornadic thunderstorm include
+Underwood, Neola and Minden.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+To repeat, a tornado is on the ground. TAKE COVER NOW! Move to a
+basement or an interior room on the lowest floor of a sturdy
+building. Avoid windows. If you are outdoors, in a mobile home, or in
+a vehicle, move to the closest substantial shelter and protect
+yourself from flying debris.
+
+&&
+
+LAT...LON 4100 9578 4105 9585 4151 9568 4150 9541
+TIME...MOT...LOC 2158Z 201DEG 38KT 4107 9579 
+
+TORNADO...OBSERVED
+MAX HAIL SIZE...1.50 IN
+
+$$
+
+BLB

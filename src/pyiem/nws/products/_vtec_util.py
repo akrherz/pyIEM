@@ -464,6 +464,7 @@ def _do_sql_vtec_cor(prod, txn, segment, vtec):
     # For corrections, we only update the SVS and updated
     txn.execute(
         "UPDATE warnings SET updated = %s, purge_time = %s, "
+        "is_emergency = (case when %s then true else is_emergency end), "
         "product_ids = array_append(product_ids, %s) WHERE vtec_year = %s "
         "and wfo = %s and eventid = %s and ugc = any(%s) and "
         "significance = %s and phenomena = %s and "
@@ -471,6 +472,7 @@ def _do_sql_vtec_cor(prod, txn, segment, vtec):
         (
             prod.valid,
             segment.ugcexpire,
+            segment.is_emergency,
             prod.get_product_id(),
             vtec.year,
             vtec.office,
