@@ -18,6 +18,7 @@ web services to get the raw text. (#857)
 
 ### New Features
 
+- Account for common AM/PM typos and off-by-one year timestamps in NWS Prods.
 - Add `backgroundcolor` option to `MapPlot.plot_values`.
 - Add `parse_commas` option to `webutil.ensure_list`, so to allow comma
 delimited CGI params by default.

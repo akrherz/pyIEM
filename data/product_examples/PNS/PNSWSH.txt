@@ -1,0 +1,80 @@
+559 
+NOUS41 KWBC 021420
+PNSWSH
+
+Service Change Notification 24-46
+National Weather Service Headquarters Silver Spring MD
+1020 PM EDT Thu May 2 2024
+
+To:	  Subscribers
+	  -NOAA Weather Wire Service
+	  -Emergency Managers Weather Information Network
+	  -NOAAPORT
+	  Other NWS Partners, Users and Employees
+
+From:	  Geoff Manikin (SMD Chief)
+	  NWS Office of Science and Technology Integration
+	  Meteorological Development Laboratory
+
+Subject:  Correcting Station Locations for KGVW and MMML in the
+National
+	  Blend of Models (NBM) v4.1 Text Message Product, Effective
+	  April 29, 2024
+
+Effective on Monday, April 29, 2024, beginning with the 1200-UTC
+model
+run, the NWS NCEP Central Operations implemented an update to the NBM
+v4.1.  NBM v4.1 was implemented on Jan. 17, 2023 -
+https://www.weather.gov/media/notification/pdf2/scn22-131_nbm_v4.1.pd
+f
+
+This change updates the latitude and longitude of sites in the tables
+used
+to create blend text messages from the NBM gridded forecasts.
+
+The following sites were corrected in the NBM table dictionary:
+
+MMML:	MEXICALI_INTL_ARPT    N32.6306, W115.2414
+
+KGVW:	GALVESTON 209A OIL PLATFORM :TX: :N29.1303, W094.5466
+
+These changes will affect NBM text bulletins on NOAAPORT and the
+following
+NBM text bulletin products on NCEP Web Services (NOMADS/FTPPRD):
+
+1. blend_nbhtx.t[hh]z	  [where hh=00,01,02,...,23]
+2. blend_nbstx.t[hh]z	  [where hh=00,01,02,...,23]
+3. blend_nbetx.t[hh]z	  [where hh=00,01,02,...,23]
+4. blend_nbxtx.t[hh]z	  [where hh=00,01,02,...,23]
+5. blend_nbptx.t[hh]z	  [where hh=00,01,02,...,23]
+
+
+For questions regarding the implementation of NBM guidance or data
+available on Amazon Web Services, please contact:
+
+Geoff Manikin
+SMD Chief
+MDL/Silver Spring, Maryland
+geoffrey.manikin@noaa.gov
+
+or
+
+David Rudack
+NBM Team Lead
+MDL/Silver Spring, Maryland
+david.rudack@noaa.gov
+
+For questions regarding the data flow for NWS/NCEP services, please
+contact:
+
+Tony Salemi
+NCEP Central Operations Acting Dataflow Team Lead
+ncep.pmb.dataflow@noaa.gov
+
+A web page describing the NBM can be found at:
+
+https://vlab.noaa.gov/web/mdl/nbm
+
+National Service Change Notices are online at:
+
+http://www.weather.gov/notification

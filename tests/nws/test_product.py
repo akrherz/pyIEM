@@ -14,6 +14,20 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_240502_future():
+    """Test forgiving of a future timestamp that is a typo."""
+    utcnow = utc(2024, 5, 2, 14, 20)
+    data = get_test_file("PNS/PNSWSH.txt")
+    prod = productparser(data, utcnow=utcnow)
+    assert prod.warnings
+    assert prod.valid == utcnow
+    old = "1020 PM EDT Thu May 2 2024"
+    new = "1020 AM EDT Thu May 2 2023"
+    prod = productparser(data.replace(old, new), utcnow=utcnow)
+    assert prod.warnings
+    assert prod.valid == utcnow
+
+
 def test_gh865_fcster_none():
     """Test that we don't use the generic signature on this product."""
     data = get_test_file("NPW/NPWDMX.txt")
