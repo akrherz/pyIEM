@@ -11,6 +11,34 @@ from pyiem.exceptions import InvalidArguments
 warnings.simplefilter("ignore", RuntimeWarning)
 
 
+def test_temperature_humidity_index():
+    """Test the Temperature Humidity Index calculation."""
+    res = meteorology.temperature_humidity_index(
+        units("degF") * 80, units("percent") * 50
+    )
+    assert abs(res - 73.86) < 0.01
+
+
+def test_comprehensive_climate_index():
+    """Test against some sanity values."""
+    # From the paper
+    res = meteorology.comprehensive_climate_index(
+        units("degC") * 30,
+        units("percent") * 50,
+        units("m/s") * 1,
+        units("W/m^2") * 500,
+    )
+    assert abs(res - 37.93) < 0.01
+    res = meteorology.comprehensive_climate_index(
+        units("degC") * 30,
+        units("percent") * 50,
+        units("m/s") * 1,
+        units("W/m^2") * 500,
+        shade_effect=True,
+    )
+    assert abs(res - 34.58) < 0.01
+
+
 def test_gdd_with_metpy_units():
     """Test that we can handle being provided metpy units."""
     # 62.33F 41F
