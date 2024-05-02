@@ -199,7 +199,9 @@ def test_summary():
     prod.lsrs[0].duplicate = True
     prod.duplicates = 1
     j2 = prod.get_jabbers("")
-    assert (len(j) - len(j2)) == 1
+    assert len(j) == len(j2)
+    assert j[0][0].find("were previously sent") == -1
+    assert j2[0][0].find("were previously sent") > -1
 
 
 def test_issue320_badmnd():

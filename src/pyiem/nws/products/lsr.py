@@ -65,12 +65,13 @@ class LSRProduct(TextProduct):
         wfo = self.source[1:]
         url = self.get_url(uri)
 
-        for mylsr in self.lsrs:
-            if mylsr.duplicate:
-                continue
-            res.append(mylsr.get_jabbers(uri))
+        if len(self.lsrs) < 5:
+            for mylsr in self.lsrs:
+                if mylsr.duplicate:
+                    continue
+                res.append(mylsr.get_jabbers(uri))
 
-        if self.is_summary():
+        if self.is_summary() or len(self.lsrs) >= 5:
             extra_text = ""
             if self.duplicates > 0:
                 extra_text = (
