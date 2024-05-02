@@ -893,6 +893,30 @@ class TextProduct(WMOProduct):
         if not tokens:
             return
         self.z, self.tz, self.valid = date_tokens2datetime(tokens[0])
+        # We want to forgive two easy situations
+        offset = (self.valid - self.wmo_valid).total_seconds()
+        # 1. self.valid is off from WMO by approximately 12 hours (am/pm flip)
+        if 42900 <= offset <= 43800:
+            LOG.info(
+                "Auto correcting AM/PM typo, %s -> %s",
+                self.valid,
+                self.wmo_valid,
+            )
+            self.warnings.append(
+                "Detected AM/PM flip, adjusting product timestamp - 12 hours"
+            )
+            self.valid = self.valid - timedelta(hours=12)
+        # 2. self.valid is off by approximate 1 year (year typo)
+        if offset < -364 * 86400:
+            LOG.info(
+                "Auto correcting year typo, %s -> %s",
+                self.valid,
+                self.wmo_valid,
+            )
+            self.warnings.append(
+                "Detected year typo, adjusting product timestamp + 1 year"
+            )
+            self.valid = self.valid.replace(year=self.valid.year + 1)
 
     def get_affected_wfos(self):
         """Based on the ugc_provider, figure out which WFOs are impacted by
