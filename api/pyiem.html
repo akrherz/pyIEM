@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1209+g6a7237d documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1208+ge66ab38 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
     
-    <script src="../_static/documentation_options.js?v=c619b539"></script>
+    <script src="../_static/documentation_options.js?v=cbbfd4e6"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1209+g6a7237d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1208+ge66ab38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -1337,6 +1337,13 @@ on.  Usually dynamically computed.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.comprehensive_climate_index">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">comprehensive_climate_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">airtemp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windspeed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solarrad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shade_effect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.comprehensive_climate_index" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Comprehensive Climate Index.</p>
+<p>Note: shade_effect multiplies the <code class="docutils literal notranslate"><span class="pre">solarrad</span></code> value by 0.2 (80% reduction)</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.meteorology.dewpoint">
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">dewpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relhumid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.dewpoint" title="Link to this definition">¶</a></dt>
 <dd><p>Compute Dew Point given a temperature and RH%</p>
@@ -1435,6 +1442,26 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <dt class="sig sig-object py" id="pyiem.meteorology.relh">
 <span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">relh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_dewpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.relh" title="Link to this definition">¶</a></dt>
 <dd><p>Compute Relative Humidity based on a temperature and dew point</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.temperature_humidity_index">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">temperature_humidity_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.meteorology.temperature_humidity_index" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Temperature Humidity Index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The Air Temperature</p></li>
+<li><p><strong>humidity</strong> (<a class="reference internal" href="#pyiem.datatypes.humidity" title="pyiem.datatypes.humidity"><em>humidity</em></a>) – The Relative Humidity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The THI</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -2543,6 +2570,7 @@ useful to others!?!?</p>
 </li>
 <li><a class="reference internal" href="#module-pyiem.meteorology">pyiem.meteorology module</a><ul>
 <li><a class="reference internal" href="#pyiem.meteorology.clearsky_shortwave_irradiance_year"><code class="docutils literal notranslate"><span class="pre">clearsky_shortwave_irradiance_year()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.meteorology.comprehensive_climate_index"><code class="docutils literal notranslate"><span class="pre">comprehensive_climate_index()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.dewpoint"><code class="docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.dewpoint_from_pq"><code class="docutils literal notranslate"><span class="pre">dewpoint_from_pq()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.drct"><code class="docutils literal notranslate"><span class="pre">drct()</span></code></a></li>
@@ -2551,6 +2579,7 @@ useful to others!?!?</p>
 <li><a class="reference internal" href="#pyiem.meteorology.mcalc_feelslike"><code class="docutils literal notranslate"><span class="pre">mcalc_feelslike()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.mixing_ratio"><code class="docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.relh"><code class="docutils literal notranslate"><span class="pre">relh()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.meteorology.temperature_humidity_index"><code class="docutils literal notranslate"><span class="pre">temperature_humidity_index()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.uv"><code class="docutils literal notranslate"><span class="pre">uv()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.meteorology.windchill"><code class="docutils literal notranslate"><span class="pre">windchill()</span></code></a></li>
 </ul>
@@ -2733,7 +2762,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1209+g6a7237d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1208+ge66ab38 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
