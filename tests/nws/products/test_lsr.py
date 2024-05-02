@@ -192,6 +192,13 @@ def test_unknown_units():
     assert j[0][2]["twitter"] == ans
 
 
+def test_hailsize():
+    """Test the hail size logic."""
+    prod = parser(get_test_file("LSR/LSROUN_hail.txt"))
+    j = prod.get_jabbers("")
+    assert j[0][0].find("half dollar size") > -1
+
+
 def test_summary():
     """Test that our summary logic works."""
     prod = parser(get_test_file("LSR/LSR.txt"))

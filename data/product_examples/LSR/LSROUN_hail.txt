@@ -1,0 +1,22 @@
+128 
+NWUS54 KOUN 012113
+LSROUN
+
+Preliminary Local Storm Report
+National Weather Service Norman OK
+413 PM CDT Wed May 1 2024
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0915 AM     Hail             4 E Wapanucka           34.37N 96.36W
+05/01/2024  M1.25 Inch       Atoka              OK   Emergency Mngr   
+
+            Delayed report. Relayed images. Radar 
+            estimated time. 
+
+
+&&
+
+$$
