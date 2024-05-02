@@ -65,21 +65,21 @@ class LSRProduct(TextProduct):
         wfo = self.source[1:]
         url = self.get_url(uri)
 
-        for mylsr in self.lsrs:
-            if mylsr.duplicate:
-                continue
-            res.append(mylsr.get_jabbers(uri))
+        if len(self.lsrs) < 5:
+            for mylsr in self.lsrs:
+                if mylsr.duplicate:
+                    continue
+                res.append(mylsr.get_jabbers(uri))
 
-        if self.is_summary():
-            extra_text = ""
+        if self.is_summary() or len(self.lsrs) >= 5:
+            extra_text = " "
             if self.duplicates > 0:
                 extra_text = (
                     f", {self.duplicates} out of {len(self.lsrs)} reports "
-                    "were previously sent and not repeated here."
+                    "were previously sent and not repeated here. "
                 )
             text = (
-                f"{wfo}: {wfo} issues Summary Local Storm Report "
-                f"{extra_text} {url}"
+                f"{wfo} issues Summary Local Storm Report" f"{extra_text}{url}"
             )
 
             html = (
@@ -89,6 +89,7 @@ class LSRProduct(TextProduct):
             xtra = {
                 "product_id": self.get_product_id(),
                 "channels": f"LSR{wfo}",
+                "twitter": text,
                 "twitter_media": (
                     "https://mesonet.agron.iastate.edu/plotting/auto/plot/242/"
                     f"pid:{self.get_product_id()}.png"

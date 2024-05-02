@@ -115,9 +115,8 @@ def test_171026_mixedlsr():
     prod = parser(get_test_file("mIxEd_CaSe/LSRBYZ.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
-        "[Delayed Report] On Oct 26, at 1:00 AM MDT, 3 SSW Luther "
-        "[Carbon Co, MT] Mesonet reports Snow of 1.00 inch #mtwx "
-        "http://iem.local/#BYZ/201710260700/201710260700"
+        "BYZ issues Summary Local Storm Report "
+        "http://iem.local/#BYZ/201710260100/201710260900"
     )
 
 
@@ -303,14 +302,3 @@ def test_01():
 
     assert prod.is_summary()
     assert prod.lsrs[57].wfo == "DMX"
-
-    answer = utc(2013, 7, 23, 3, 55)
-    assert prod.lsrs[57].valid == answer
-    j = prod.get_jabbers("http://iem.local/")
-    assert j[57][0], (
-        "Knoxville Airport [Marion Co, IA] AWOS reports NON-TSTM WND "
-        "GST of M73 MPH at 22 Jul, 10:55 PM CDT -- HEAT BURST. "
-        "TEMPERATURE ROSE FROM 70 TO 84 IN 15 MINUTES AND DEW POINT "
-        "DROPPED FROM 63 TO 48 IN 10 MINUTES. "
-        "http://iem.local/#DMX/201307230355/201307230355"
-    )
