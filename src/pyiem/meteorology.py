@@ -12,6 +12,62 @@ import pyiem.datatypes as dt
 from pyiem.exceptions import InvalidArguments
 
 
+def temperature_humidity_index(temperature, humidity):
+    """Compute the Temperature Humidity Index
+
+    Args:
+      temperature (temperature): The Air Temperature
+      humidity (humidity): The Relative Humidity
+
+    Returns:
+      temperature (temperature): The THI
+    """
+    tmpc = temperature.to(units("degC")).m
+    rh = humidity.to(units("percent")).m
+    thi = 0.8 * tmpc + (rh / 100.0) * (tmpc - 14.4) + 46.4
+    return thi
+
+
+def comprehensive_climate_index(
+    airtemp,
+    rh,
+    windspeed,
+    solarrad,
+    shade_effect: bool = False,
+):
+    """Compute the Comprehensive Climate Index.
+
+    Note: shade_effect multiplies the ``solarrad`` value by 0.2 (80% reduction)
+    """
+    tmpc = airtemp.to(units("degC")).m
+    rh = rh.to(units("percent")).m
+    ws = windspeed.to(units("m/s")).m
+    srad = solarrad.to(units("W/m^2")).m
+    if shade_effect:
+        srad *= 0.2
+    term2 = (1.0 / np.power(2.26 * ws + 0.23, 0.45)) * (
+        2.9
+        + 0.000_001_14 * np.power(ws, 2.5)
+        - np.log(np.power(2.26 * ws + 0.33, -2)) / np.log(0.3)
+    )
+    return (
+        tmpc
+        + (
+            np.exp(0.00182 * rh + 0.000018 * tmpc * rh)
+            * (0.000054 * tmpc * tmpc + 0.00192 * tmpc - 0.0246)
+            * (rh - 30.0)
+        )
+        + (-6.56 / np.exp(term2) - 0.00566 * np.power(ws, 2) + 3.33)
+        + (
+            0.0076 * srad
+            - 0.00002 * srad * tmpc
+            + 0.00005 * tmpc * tmpc * np.sqrt(srad)
+            + 0.1 * tmpc
+            - 2.0
+        )
+    )
+
+
 def clearsky_shortwave_irradiance_year(lat, elevation):
     """Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2
 
