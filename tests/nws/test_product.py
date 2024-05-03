@@ -14,6 +14,13 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_240503_toroun():
+    """Test that we handle a lat...lon at the end without a trailing LF."""
+    utcnow = utc(1991, 3, 26, 23, 7)
+    prod = productparser(get_test_file("TOROUN.txt"), utcnow=utcnow)
+    assert abs(prod.segments[0].sbw.area - 0.14549) < 0.0001
+
+
 def test_240502_future():
     """Test forgiving of a future timestamp that is a typo."""
     utcnow = utc(2024, 5, 2, 14, 20)
