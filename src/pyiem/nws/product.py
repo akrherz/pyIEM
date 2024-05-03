@@ -135,6 +135,10 @@ def str2polygon(strdata):
     pts = []
     partial = None
 
+    # If the last character is a digit, we need to add a space (legacy prods)
+    if strdata[-1].isdigit():
+        strdata += " "
+
     # We have two potential formats, one with 4 or 5 places and one
     # with eight!
     vals = re.findall(LAT_LON, strdata)

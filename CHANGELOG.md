@@ -36,6 +36,8 @@ delimited CGI params by default.
 - Don't allow CF6 data from "today" or the "future" to be parsed, if missing.
 - Fix numeric instability with `pyiem.plot.centered_bins` (#871).
 - Forward propagate sbw database storage of VTEC issuace (#862).
+- Handle edge case with NWS text product having a polygon at the end without
+a trailing newline (ancient text).
 - Improve NWS Text Product signature logic so to more generally match what
 looks like a signature (#865).
 - Improved NWS MND header logic for timestamp retrieval.
