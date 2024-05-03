@@ -8,13 +8,20 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file, utc
 
 
+def test_240503_future_again():
+    """Test that anything from today/future that is Null is not included."""
+    utcnow = utc(2024, 5, 3, 11, 59)
+    prod = parser(get_test_file("CF6/CF6FYV_future.txt"), utcnow=utcnow)
+    assert len(prod.df.index) == 2
+
+
 def test_230628_future():
     """Test the exclusion of data from the future!"""
     # Data from the 27th is taken as it is tricky to get this perfect
     utcnow = utc(2023, 6, 26, 16, 26)
     prod = parser(get_test_file("CF6/CF6ANC.txt"), utcnow=utcnow)
     assert prod.warnings
-    assert len(prod.df.index) == 27
+    assert len(prod.df.index) == 25
 
 
 @pytest.mark.parametrize("database", ["iem"])

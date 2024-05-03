@@ -112,6 +112,9 @@ class CF6Product(TextProduct):
         if indicies.any():
             self.warnings.append(f"{indicies.sum()} rows from the future")
             df = df.loc[~indicies]
+        # Ensure rows that have maxt as nan for "today" or future are removed
+        df = df[~((df["valid"] >= self.utcnow.date()) & df["max"].isna())]
+
         self.df = df.set_index("valid")
 
     def sql(self, cursor):

@@ -1,0 +1,100 @@
+521 
+CXUS54 KTSA 031159
+CF6FYV
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6)
+
+                                          STATION:   FAYETTEVILLE ARKANSAS
+                                          MONTH:     MAY
+                                          YEAR:      2024
+                                          LATITUDE:   36  0 N      
+                                          LONGITUDE:  94 10 W    
+
+  TEMPERATURE IN F:       :PCPN:    SNOW:  WIND      :SUNSHINE: SKY     :PK WND 
+================================================================================
+1   2   3   4   5  6A  6B    7    8   9   10  11  12  13   14  15   16   17  18
+                                     12Z  AVG MX 2MIN
+DY MAX MIN AVG DEP HDD CDD  WTR  SNW DPTH SPD SPD DIR MIN PSBL S-S WX    SPD DR
+================================================================================
+
+ 1  78  61  70   9   0   5 0.76  0.0    0  8.5 26 170   M    M   3 13     41 170
+ 2  76  63  70   9   0   5 0.01  0.0    0  7.8 21 170   M    M   4 1      30 170
+ 3   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 4   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 5   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 6   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 7   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 8   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+ 9   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+10   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+11   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+12   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+13   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+14   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+15   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+16   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+17   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+18   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+19   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+20   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+21   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+22   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+23   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+24   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+25   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+26   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+27   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+28   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+29   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+30   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+31   M   M   M   M   M   M    M    M    M    M  M   M   M    M   M         M   M
+================================================================================
+SM  154  124         0  10  0.77  0.0     16.3          M        7              
+================================================================================
+AV 77.0 62.0                               8.1 FASTST   M    M   4    MAX(MPH)  
+                                 MISC ---->    26 170                 41 170   
+================================================================================
+NOTES:
+# LAST OF SEVERAL OCCURRENCES
+
+COLUMN 17 PEAK WIND IN M.P.H.
+
+PRELIMINARY LOCAL CLIMATOLOGICAL DATA (WS FORM: F-6) , PAGE 2
+
+                                          STATION:   FAYETTEVILLE ARKANSAS
+                                          MONTH:     MAY
+                                          YEAR:      2024
+                                          LATITUDE:   36  0 N      
+                                          LONGITUDE:  94 10 W                   
+
+[TEMPERATURE DATA]      [PRECIPITATION DATA]       SYMBOLS USED IN COLUMN 16    
+
+AVERAGE MONTHLY: 69.5   TOTAL FOR MONTH:   0.77    1 = FOG OR MIST              
+DPTR FM NORMAL:   4.2   DPTR FM NORMAL:   -5.12    2 = FOG REDUCING VISIBILITY  
+HIGHEST:    78 ON  1    GRTST 24HR  0.76 ON  1- 1      TO 1/4 MILE OR LESS      
+LOWEST:     61 ON  1                               3 = THUNDER                  
+                        SNOW, ICE PELLETS, HAIL    4 = ICE PELLETS              
+                        TOTAL MONTH:   0.0 INCH    5 = HAIL                     
+                        GRTST 24HR  0.0            6 = FREEZING RAIN OR DRIZZLE 
+                        GRTST DEPTH:  0            7 = DUSTSTORM OR SANDSTORM:  
+                                                       VSBY 1/2 MILE OR LESS    
+                                                   8 = SMOKE OR HAZE            
+[NO. OF DAYS WITH]      [WEATHER - DAYS WITH]      9 = BLOWING SNOW             
+                                                   X = TORNADO                  
+MAX 32 OR BELOW:   0    0.01 INCH OR MORE:   2                      
+MAX 90 OR ABOVE:   0    0.10 INCH OR MORE:   1                      
+MIN 32 OR BELOW:   0    0.50 INCH OR MORE:   1                      
+MIN  0 OR BELOW:   0    1.00 INCH OR MORE:   0                        
+
+[HDD (BASE 65) ]                                                                
+TOTAL THIS MO.     0    CLEAR  (SCALE 0-3)   0                                  
+DPTR FM NORMAL   -86    PTCLDY (SCALE 4-7)   2                                  
+TOTAL FM JUL 1  3181    CLOUDY (SCALE 8-10)  0                                  
+DPTR FM NORMAL  -894                                                            
+
+[CDD (BASE 65) ]                                                                
+TOTAL THIS MO.    10                                                            
+DPTR FM NORMAL   -87    [PRESSURE DATA]                                         
+TOTAL FM JAN 1    82    HIGHEST SLP M ON M        
+DPTR FM NORMAL   -44    LOWEST  SLP 29.75 ON  2        
+
+[REMARKS]

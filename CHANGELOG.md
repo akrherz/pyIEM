@@ -33,6 +33,7 @@ delimited CGI params by default.
 `year1` present.
 - Correct handling of `is_emergency` when done within VTEC correction (#899).
 - Correct `SKC` parsing within TAFs, level is now `None` in this case (#453).
+- Don't allow CF6 data from "today" or the "future" to be parsed, if missing.
 - Fix numeric instability with `pyiem.plot.centered_bins` (#871).
 - Forward propagate sbw database storage of VTEC issuace (#862).
 - Improve NWS Text Product signature logic so to more generally match what
