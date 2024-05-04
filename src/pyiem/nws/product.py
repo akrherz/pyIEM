@@ -911,7 +911,7 @@ class TextProduct(WMOProduct):
             )
             self.valid = self.valid - timedelta(hours=12)
         # 2. self.valid is off by approximate 1 year (year typo)
-        if offset < -364 * 86400:
+        if -367 * 86400 < offset < -364 * 86400:
             LOG.info(
                 "Auto correcting year typo, %s -> %s",
                 self.valid,
