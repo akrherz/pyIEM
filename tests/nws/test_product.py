@@ -14,6 +14,19 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_240505_theoretical_multipolygon():
+    """Test invalid polygon split into three parts is ignored."""
+    utcnow = utc(1991, 3, 26, 23, 7)
+    data = get_test_file("TOROUN.txt")
+    pts = (
+        "1000 9000 1150 8900 1000 8800 1150 8700 1000 8600 1100 8600 "
+        "1100 9000 1000 9000"
+    )
+    data = data[: data.find("LAT...LON")] + f"LAT...LON {pts}\n"
+    prod = productparser(data, utcnow=utcnow)
+    assert prod.segments[0].sbw is None
+
+
 def test_240504_no_polygons():
     """Test that this product has two polygons."""
     utcnow = utc(2012, 12, 26, 5, 6)
