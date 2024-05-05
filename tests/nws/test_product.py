@@ -14,6 +14,14 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_240504_no_polygons():
+    """Test that this product has two polygons."""
+    utcnow = utc(2012, 12, 26, 5, 6)
+    prod = productparser(get_test_file("SVSMOB.txt"), utcnow=utcnow)
+    assert abs(prod.segments[0].sbw.area - 0.1422) < 0.0001
+    assert abs(prod.segments[1].sbw.area - 0.1422) < 0.0001
+
+
 def test_240503_toroun():
     """Test that we handle a lat...lon at the end without a trailing LF."""
     utcnow = utc(1991, 3, 26, 23, 7)

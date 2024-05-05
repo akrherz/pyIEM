@@ -378,10 +378,10 @@ def test_210304_notimezone():
 
 @pytest.mark.parametrize("database", ["postgis"])
 def test_210302_multipolygon(dbcursor):
-    """Test that buffer(0) producing a multipolygon is culled."""
+    """Test that buffer(0) producing a multipolygon is handled."""
     prod = vtecparser(get_test_file("FLW/FLWJKL_multipolygon.txt"))
     prod.sql(dbcursor)
-    assert any("culling" in x for x in prod.warnings)
+    assert any("buffer" in x for x in prod.warnings)
 
 
 @pytest.mark.parametrize("database", ["postgis"])
