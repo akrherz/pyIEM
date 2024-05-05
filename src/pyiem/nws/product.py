@@ -533,12 +533,15 @@ class TextProductSegment:
                 # very small, we should cull it and just use the larger side
                 polys = list(poly.geoms)
                 polys = sorted(polys, key=lambda x: x.area)
-                if polys[0].is_valid and polys[1].is_valid:
-                    if polys[0].area * 10 < polys[1].area:
-                        self.tp.warnings.append(
-                            "LAT...LON buffer(0) made 2 polys, taking biggest."
-                        )
-                        return polys[1]
+                if (
+                    polys[0].is_valid
+                    and polys[1].is_valid
+                    and polys[0].area * 10 < polys[1].area
+                ):
+                    self.tp.warnings.append(
+                        "LAT...LON buffer(0) made 2 polys, taking biggest."
+                    )
+                    return polys[1]
                 self.tp.warnings.append(
                     "LAT...LON buffer(0) made 2 polys with invalids."
                 )
