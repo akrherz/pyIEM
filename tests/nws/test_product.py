@@ -32,6 +32,7 @@ def test_240504_no_polygons():
     utcnow = utc(2012, 12, 26, 5, 6)
     prod = productparser(get_test_file("SVSMOB.txt"), utcnow=utcnow)
     assert abs(prod.segments[0].sbw.area - 0.1422) < 0.0001
+    assert prod.segments[0].giswkt is not None
     assert abs(prod.segments[1].sbw.area - 0.1422) < 0.0001
 
 
