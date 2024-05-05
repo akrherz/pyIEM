@@ -524,8 +524,26 @@ class TextProductSegment:
             poly = poly.buffer(0)
             # Careful, this could return a multipolygon
             if isinstance(poly, MultiPolygon):
+                if len(poly.geoms) > 2:
+                    self.tp.warnings.append(
+                        "LAT...LON buffer(0) returned 3+ polygon, culling."
+                    )
+                    return None
+                # Life choices here, if we have a bowtie and the one side is
+                # very small, we should cull it and just use the larger side
+                polys = list(poly.geoms)
+                polys = sorted(polys, key=lambda x: x.area)
+                if (
+                    polys[0].is_valid
+                    and polys[1].is_valid
+                    and polys[0].area * 10 < polys[1].area
+                ):
+                    self.tp.warnings.append(
+                        "LAT...LON buffer(0) made 2 polys, taking biggest."
+                    )
+                    return polys[1]
                 self.tp.warnings.append(
-                    "LAT...LON buffer(0) returned multipolygon, culling."
+                    "LAT...LON buffer(0) made 2 polys with invalids."
                 )
                 return None
             self.tp.warnings.append(
