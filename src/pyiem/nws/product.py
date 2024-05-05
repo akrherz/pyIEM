@@ -541,14 +541,16 @@ class TextProductSegment:
                     self.tp.warnings.append(
                         "LAT...LON buffer(0) made 2 polys, taking biggest."
                     )
-                    return polys[1]
+                    poly = polys[1]
+                else:
+                    self.tp.warnings.append(
+                        "LAT...LON buffer(0) made 2 polys with invalids."
+                    )
+                    return None
+            else:
                 self.tp.warnings.append(
-                    "LAT...LON buffer(0) made 2 polys with invalids."
+                    "LAT...LON polygon is invalid, but buffer(0) fixed it!"
                 )
-                return None
-            self.tp.warnings.append(
-                "LAT...LON polygon is invalid, but buffer(0) fixed it!"
-            )
         # check 2, is the exterior ring of the polygon clockwise?
         if poly.exterior.is_ccw:
             # No longer a warning as it was too much noise
