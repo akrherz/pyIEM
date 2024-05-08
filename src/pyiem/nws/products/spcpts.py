@@ -6,6 +6,7 @@ My life was not supposed to end like this, what a brutal format.
 import datetime
 import re
 import tempfile
+from typing import Optional
 
 from shapely.geometry import (
     MultiPolygon,
@@ -36,6 +37,40 @@ THRESHOLD_ORDER = (
     "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH "
     "MDT HIGH IDRT SDRT ELEV CRIT EXTM"
 ).split()
+
+
+def imgsrc_from_row(row: dict) -> Optional[str]:
+    """Compute the SPC image source for a given database row."""
+    if row["cycle"] == -1 or row["cycle"] is None:
+        return None
+    if row["day"] > 3:
+        # Le Sigh
+        return (
+            "https://www.spc.noaa.gov/products/exper/day4-8/archive/"
+            f"{row['product_issue'].year}/day{row['day']}prob_"
+            f"{row['product_issue']:%Y%m%d}_1200.gif"
+        )
+    url = "https://www.spc.noaa.gov/products/outlook/archive/"
+    # year is based on the issue date
+    url += f"{row['product_issue'].year}/day{row['day']}"
+    if row["category"] == "CATEGORICAL":
+        url += "otlk"
+    elif row["day"] == 3:
+        url += "prob"
+    else:
+        url += "probotlk"
+    url += f"_{row['product_issue']:%Y%m%d}_"
+    conv = {}
+    if row["day"] == 1:
+        conv = {6: "1200", 16: "1630"}
+    elif row["day"] == 2:
+        conv = {7: "0600", 17: "1730"}
+    elif row["day"] == 3:
+        conv = {8: "0730"}
+    url += conv.get(row["cycle"], f"{row['cycle']:02.0f}00") + "_"
+    if row["category"] in ["TORNADO", "HAIL", "WIND"]:
+        url += f"{row['category'].lower()[:4]}_"
+    return f"{url}prt.gif"
 
 
 def compute_times(afos, issue, expire, day):
