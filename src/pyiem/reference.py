@@ -68,7 +68,7 @@ FIGSIZES_NAMES = {
 LATLON = pyproj.CRS.from_epsg(4326)
 EPSG = {}
 # 3467 Alaska Albers
-for _epsg in [2163, 3857, 4326, 5070, 3467]:
+for _epsg in [2163, 9311, 3857, 4326, 5070, 3467]:
     EPSG[_epsg] = pyproj.CRS.from_epsg(_epsg)
 
 IA_WEST = -96.7
