@@ -377,7 +377,7 @@ def sector_setter(mp, axbounds, **kwargs):
             axbounds,
             mp.fig,
             [-4.5e6, 4.3e6, -3.9e6, 3.8e6],
-            reference.EPSG[2163],
+            reference.EPSG[9311],
             "auto",
             sector_label=mp.sector,
             **kwargs,
