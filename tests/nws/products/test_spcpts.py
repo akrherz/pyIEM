@@ -6,10 +6,24 @@ from pyiem.nws.products._outlook_util import debug_draw
 from pyiem.nws.products.spcpts import (
     SPCPTS,
     THRESHOLD_ORDER,
+    imgsrc_from_row,
     load_conus_data,
     str2multipolygon,
 )
 from pyiem.util import get_test_file, utc
+
+
+def test_imgsrc():
+    """Test the various combos, I guess."""
+    row = {"product_issue": utc(), "cycle": -1}
+    assert imgsrc_from_row(row) is None
+    for cycle in [6, 7]:
+        row["cycle"] = cycle
+        for category in ["TORNADO", "CATEGORICAL"]:
+            row["category"] = category
+            for day in range(1, 9):
+                row["day"] = day
+                assert imgsrc_from_row(row) is not None
 
 
 def test_220404_threshold_order():
