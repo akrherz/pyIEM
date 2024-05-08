@@ -1,0 +1,163 @@
+301 
+NWUS55 KPIH 080339
+LSRPIH
+
+Preliminary Local Storm Report
+National Weather Service Pocatello ID
+939 PM MDT Tue May 7 2024
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0145 PM     Non-Tstm Wnd Gst 3 ESE Idahome           42.41N 113.32W
+05/07/2024  M63 MPH          Cassia             ID   Dept of Highways 
+
+            Idahome ITD site. 
+
+0110 PM     Non-Tstm Wnd Gst 6 NW Minidoka           42.80N 113.59W
+05/07/2024  M57 MPH          Minidoka           ID   Mesonet          
+
+            Mesonet station MIN 6 NW Minidoka. 
+
+0840 PM     Non-Tstm Wnd Gst 9 NW Small              44.31N 112.52W
+05/07/2024  M56 MPH          Clark              ID   Mesonet          
+
+            Mesonet station PC371 Medicine Lodge. 
+
+0830 AM     Non-Tstm Wnd Gst 7 NNW Idahome           42.52N 113.43W
+05/07/2024  M56 MPH          Cassia             ID   Dept of Highways 
+
+            Yale ITD site. 
+
+0730 AM     Non-Tstm Wnd Gst 2 NW Idahome            42.44N 113.41W
+05/07/2024  M55 MPH          Cassia             ID   Mesonet          
+
+            Malta Agrimet site. 
+
+1230 PM     Non-Tstm Wnd Gst 3 WSW Paul              42.59N 113.84W
+05/07/2024  M54 MPH          Minidoka           ID   Mesonet          
+
+            Mesonet station RPTI 3 WSW Paul. 
+
+0240 PM     Non-Tstm Wnd Gst 13 WNW Monteview        44.03N 112.75W
+05/07/2024  M54 MPH          Clark              ID   Mesonet          
+
+            Mesonet station PC374 Reno Gulch. 
+
+0145 PM     Non-Tstm Wnd Gst 2 WSW Cold Water        42.61N 113.15W
+05/07/2024  M52 MPH          Power              ID   Dept of Highways 
+
+            Coldwater ITD site. 
+
+0206 PM     Non-Tstm Wnd Gst Heyburn                 42.55N 113.77W
+05/07/2024  M52 MPH          Minidoka           ID   ASOS             
+
+            ASOS station KBYI Burley Municipal Airport. 
+
+0800 AM     Non-Tstm Wnd Gst 4 NNW Black Pine        42.07N 113.02W
+05/07/2024  M52 MPH          Cassia             ID   Mesonet          
+
+            Mesonet station MSI04 Pilot Gold. 
+
+0455 PM     Non-Tstm Wnd Gst 18 NNE Berenice         44.07N 112.84W
+05/07/2024  M51 MPH          Clark              ID   Mesonet          
+
+            Mesonet station BLU Blue Dome. 
+
+0215 PM     Non-Tstm Wnd Gst 2 NW Idahome            42.44N 113.41W
+05/07/2024  M51 MPH          Cassia             ID   Mesonet          
+
+            Mesonet station MALI 2 NW Idahome. 
+
+0219 PM     Non-Tstm Wnd Gst 8 NW Heglar             42.55N 113.26W
+05/07/2024  M51 MPH          Cassia             ID   Mesonet          
+
+            Mesonet station RFTI1 Raft River RAWS. 
+
+0845 AM     Non-Tstm Wnd Gst 8 N Black Pine          42.14N 112.98W
+05/07/2024  M50 MPH          Oneida             ID   Dept of Highways 
+
+            Juniper ITD site. 
+
+0145 PM     Non-Tstm Wnd Gst 1 NW Holbrook           42.17N 112.66W
+05/07/2024  M49 MPH          Oneida             ID   Dept of Highways 
+
+            Holbrook ITD site. 
+
+0444 PM     Non-Tstm Wnd Gst 5 N Owinza              42.97N 114.06W
+05/07/2024  M49 MPH          Lincoln            ID   Mesonet          
+
+            Mesonet station ROCI1 5 N Owinza. 
+
+0430 PM     Non-Tstm Wnd Gst 1 ENE Richfield         43.06N 114.13W
+05/07/2024  M48 MPH          Lincoln            ID   Mesonet          
+
+            Mesonet station RIC 1 ENE Richfield. 
+
+0445 PM     Non-Tstm Wnd Gst 2 SW Lund               42.63N 111.92W
+05/07/2024  M48 MPH          Caribou            ID   Dept of Highways 
+
+            Fish Creek Summit ITD site. 
+
+0445 PM     Non-Tstm Wnd Gst 11 WSW Monteview        43.86N 112.73W
+05/07/2024  M48 MPH          Butte              ID   Mesonet          
+
+            Mesonet station LOF INL Specific 
+            Manufacturing. 
+
+0420 PM     Non-Tstm Wnd Gst 1 NE Aberdeen           42.95N 112.82W
+05/07/2024  M48 MPH          Bingham            ID   Mesonet          
+
+            Mesonet station ABE 1 NE Aberdeen. 
+
+0445 PM     Non-Tstm Wnd Gst 4 NNW Humphrey          44.53N 112.27W
+05/07/2024  M47 MPH          Clark              ID   Dept of Highways 
+
+            Monida ITD site. 
+
+0247 PM     Non-Tstm Wnd Gst 17 W Aberdeen           42.99N 113.18W
+05/07/2024  M46 MPH          Power              ID   Mesonet          
+
+            Mesonet station CYFI1 17 W Aberdeen. 
+
+0250 PM     Non-Tstm Wnd Gst 1 S Michaud             42.92N 112.57W
+05/07/2024  M46 MPH          Power              ID   ASOS             
+
+            ASOS station KPIH Pocatello Regional 
+            Airport. 
+
+0145 PM     Non-Tstm Wnd Gst 7 W Paul                42.59N 113.91W
+05/07/2024  M46 MPH          Minidoka           ID   Mesonet          
+
+            Mesonet station DVI10589 Paul. 
+
+0845 PM     Non-Tstm Wnd Gst 8 NNW Dickey            44.23N 113.98W
+05/07/2024  M46 MPH          Custer             ID   Dept of Highways 
+
+            Willow Creek Summit ITD site. 
+
+1015 AM     Non-Tstm Wnd Gst 9 SSE Sublett           42.21N 113.04W
+05/07/2024  M46 MPH          Cassia             ID   Dept of Highways 
+
+            Sweetzer Summit ITD site. 
+
+0445 PM     Non-Tstm Wnd Gst 10 SE Acequia           42.58N 113.44W
+05/07/2024  M46 MPH          Cassia             ID   Dept of Highways 
+
+            Raft River ITD site. 
+
+0215 PM     Non-Tstm Wnd Gst 2 SE Palisades          43.33N 111.20W
+05/07/2024  M46 MPH          Bonneville         ID   Dept of Highways 
+
+            ITD site near Irwin. 
+
+0445 PM     Non-Tstm Wnd Gst 4 NNW Sterling          43.08N 112.78W
+05/07/2024  M46 MPH          Bingham            ID   Dept of Highways 
+
+            Sterling ITD site. 
+
+
+&&
+
+$$

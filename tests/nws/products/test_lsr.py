@@ -6,6 +6,14 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_240508_summary_link():
+    """Test that the summary line is in UTC!"""
+    prod = parser(get_test_file("LSR/LSRPIH_summary.txt"))
+    jmsgs = prod.get_jabbers("http://localhost/")
+    ans = "202405071330/202405080245"
+    assert jmsgs[0][0].find(ans) > -1
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_240120_trace_snow(dbcursor):
     """Test that Trace snowfall reports can be round tripped."""

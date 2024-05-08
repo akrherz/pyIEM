@@ -116,7 +116,7 @@ def test_171026_mixedlsr():
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "BYZ issues Summary Local Storm Report "
-        "http://iem.local/#BYZ/201710260100/201710260900"
+        "http://iem.local/#BYZ/201710260700/201710261500"
     )
 
 

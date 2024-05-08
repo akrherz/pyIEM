@@ -32,6 +32,7 @@ delimited CGI params by default.
 
 - Allow for pydantic field validation to work when there's legacy `year` vs
 `year1` present.
+- Correct generated LSR summary link to have timestamps in UTC.
 - Correct handling of `is_emergency` when done within VTEC correction (#899).
 - Correct `SKC` parsing within TAFs, level is now `None` in this case (#453).
 - Don't allow CF6 data from "today" or the "future" to be parsed, if missing.
