@@ -1,8 +1,8 @@
 """NWS Local Storm Report (LSR) Parsing."""
 
-import datetime
 import math
 import re
+from datetime import datetime, timedelta, timezone
 
 from shapely.geometry import Point as ShapelyPoint
 
@@ -13,7 +13,7 @@ from pyiem.util import utc
 
 # Don't permit LSRs that are more than 1 hour newer than product time
 # or future of the current time
-FUTURE_THRESHOLD = datetime.timedelta(hours=1)
+FUTURE_THRESHOLD = timedelta(hours=1)
 SPLITTER = re.compile(
     r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)", re.MULTILINE
 )
@@ -44,7 +44,7 @@ class LSRProduct(TextProduct):
         """Return the min and max timestamps of lsrs"""
         if not self.lsrs:
             return None, None
-        valids = [lsr.valid for lsr in self.lsrs]
+        valids = [lsr.valid.astimezone(timezone.utc) for lsr in self.lsrs]
         return min(valids), max(valids)
 
     def is_summary(self):
@@ -147,7 +147,7 @@ def parse_lsr(prod, text):
     mm = tokens[0][-2:]
     ampm = tokens[1]
     dstr = f"{h12}:{mm} {ampm} {lines[1][:10]}"
-    lsr.valid = datetime.datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
+    lsr.valid = datetime.strptime(dstr, "%I:%M %p %m/%d/%Y")
     lsr.assign_timezone(prod.tz, prod.z)
     # Check that we are within bounds
     if lsr.utcvalid > (prod.valid + FUTURE_THRESHOLD) or lsr.utcvalid > (
