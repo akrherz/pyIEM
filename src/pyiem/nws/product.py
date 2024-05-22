@@ -107,11 +107,11 @@ def damage_survey_pns(prod, data):
         # More for testing than anything
         if maxf > 5:
             raise ValueError(f"Bad EF of {maxf} found")
-        data["maxf"] = f" (Max: EF{maxf}) "
+        data["maxf"] = f" (Max: EF{maxf})"
     # approx and headline has starting space already :/
     hdl = " " if len(data["headline"]) > 90 else f"{data['headline']} "
     plain = (
-        f"{data['source']} issues Damage Survey PNS{data['maxf']}at "
+        f"{data['source']} issues Damage Survey PNS{data['maxf']} at "
         f"{data['stamp']}{hdl}{data['url']}"
     )
     html = (

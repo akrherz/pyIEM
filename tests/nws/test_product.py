@@ -85,6 +85,19 @@ def test_ahdnwc():
     assert "KRF" in res[0][2]["channels"].split(",")
 
 
+def test_damage_pns_noe():
+    """Ensure the wordsmithing is OK."""
+    data = get_test_file("PNS/PNS_damage_noe.txt")
+    prod = productparser(data)
+    res = prod.get_jabbers("")
+    ans = (
+        "DMX issues Damage Survey PNS at May 22, 12:07 PM CDT ...NWS Damage "
+        "Survey for 05/21/2024 Tornado Event... "
+        "?pid=202405221707-KDMX-NOUS43-PNSDMX"
+    )
+    assert res[0][2]["twitter"] == ans
+
+
 def test_damage_pns():
     """Test the result we get from a damage PNS statement."""
     data = get_test_file("PNS/PNS_damage.txt")
