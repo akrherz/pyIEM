@@ -1,0 +1,40 @@
+390 
+NOUS43 KDMX 221707
+PNSDMX
+IAZ004>007-015>017-023>028-033>039-044>050-057>062-070>075-
+081>086-092>097-230515-
+
+Public Information Statement
+National Weather Service Des Moines IA
+1207 PM CDT Wed May 22 2024
+
+...NWS Damage Survey for 05/21/2024 Tornado Event...
+
+.Greenfield Tornado...
+
+Initial storm surveys have confirmed at least EF-3 damage in
+Greenfield, Iowa. Additional damage assessment evaluation will
+continue over the next several days and results are subject to
+change. 
+
+Additional tornado paths and ratings will be added as data
+continues to be collected. 
+
+&&
+
+EF Scale: The Enhanced Fujita Scale classifies tornadoes into the
+following categories:
+
+EF0.....65 to 85 mph
+EF1.....86 to 110 mph
+EF2.....111 to 135 mph
+EF3.....136 to 165 mph
+EF4.....166 to 200 mph
+EF5.....>200 mph
+
+NOTE:
+The information in this statement is preliminary and subject to
+change pending final review of the event and publication in NWS
+Storm Data.
+
+$$
