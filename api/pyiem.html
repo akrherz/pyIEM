@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1210+g8c5a2a4 documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1211+gf70a467 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
     
-    <script src="../_static/documentation_options.js?v=b3d2bc59"></script>
+    <script src="../_static/documentation_options.js?v=799ff34d"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1210+g8c5a2a4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+gf70a467 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -2270,11 +2270,16 @@ bundled into the environ with keys of <cite>iemdb.&lt;name&gt;.conn</cite> and
 <cite>iemdb.&lt;name&gt;.cursor</cite>.  No commit is performed. You can specify a
 single cursor name with <cite>iemdb_cursorname=&lt;name&gt;</cite>.</p></li>
 <li><p>schema (BaseModel): A Pydantic model to parse the form with.</p></li>
+<li><p>memcachekey (str or callable): A memcache key to use for caching
+the response.</p></li>
+<li><p>memcacheexpire (int): The number of seconds to cache the response.</p></li>
 </ul>
 </dd>
 <dt>What all this does:</dt><dd><ol class="arabic simple">
 <li><p>Attempts to catch database connection errors and handle nicely</p></li>
 <li><p>Updates <cite>environ</cite> with some auto-parsed values + form content.</p></li>
+<li><p>If the wrapped function returns a str or bytes, it will be encoded
+and made into a list for the WSGI response.</p></li>
 </ol>
 </dd>
 </dl>
@@ -2762,7 +2767,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1210+g8c5a2a4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+gf70a467 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
