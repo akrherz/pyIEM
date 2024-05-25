@@ -22,6 +22,7 @@ from pydantic import (
     WithJsonSchema,
     field_validator,
 )
+from pymemcache.client import Client
 from sqlalchemy import text
 from typing_extensions import Annotated
 
@@ -349,6 +350,20 @@ def _debracket(form):
     return res
 
 
+def _mcall(func, environ, start_response, memcachekey, expire):
+    """Call the function with memcachekey handling."""
+    if memcachekey is None:
+        return func(environ, start_response)
+    key = memcachekey if isinstance(memcachekey, str) else memcachekey(environ)
+    mc = Client("iem-memcached:11211")
+    res = mc.get(key)
+    if not res:
+        res = func(environ, start_response)
+        mc.set(key, res, expire)
+    mc.close()
+    return res
+
+
 def iemapp(**kwargs):
     """Attempt to do all kinds of nice things for the user and the developer.
 
@@ -363,10 +378,15 @@ def iemapp(**kwargs):
           `iemdb.<name>.cursor`.  No commit is performed. You can specify a
           single cursor name with `iemdb_cursorname=<name>`.
         - schema (BaseModel): A Pydantic model to parse the form with.
+        - memcachekey (str or callable): A memcache key to use for caching
+          the response.
+        - memcacheexpire (int): The number of seconds to cache the response.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
         2) Updates `environ` with some auto-parsed values + form content.
+        3) If the wrapped function returns a str or bytes, it will be encoded
+           and made into a list for the WSGI response.
 
     Notes
     -----
@@ -420,7 +440,13 @@ def iemapp(**kwargs):
                 # Important this is set before calling add_to_environ
                 form["tz"] = TZ_TYPOS.get(form["tz"], form["tz"])
                 add_to_environ(environ, form, **kwargs)
-                res = func(environ, start_response)
+                res = _mcall(
+                    func,
+                    environ,
+                    start_response,
+                    kwargs.get("memcachekey"),
+                    kwargs.get("memcacheexpire", 3600),
+                )
                 # you know what assumptions do
                 status_code = 200
             except IncompleteWebRequest as exp:
@@ -459,6 +485,12 @@ def iemapp(**kwargs):
                     if not environ[key.replace(".conn", ".cursor")].closed:
                         environ[key.replace(".conn", ".cursor")].close()
                     environ[key].close()
+            # Need to be careful here and ensure we are returning a list
+            # of bytes
+            if isinstance(res, str):
+                return [res.encode("utf-8")]
+            if isinstance(res, bytes):
+                return [res]
             return res
 
         return _wrapped

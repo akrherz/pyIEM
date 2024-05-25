@@ -1,5 +1,6 @@
 """Tests for webutil."""
 
+import random
 from datetime import datetime
 from typing import Optional, Union
 from zoneinfo import ZoneInfo
@@ -23,6 +24,42 @@ from pyiem.webutil import (
     iemapp,
     write_telemetry,
 )
+
+
+def test_iemapp_memcache_keychanged():
+    """Test the memcache option."""
+
+    @iemapp(memcachekey=lambda: f"{random.random()}")
+    def application(_environ, _start_response):
+        """Test."""
+        return f"{random.random()}".encode("ascii")
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "",
+    }
+    sr = mock.MagicMock()
+    res1 = application(env, sr)[0]
+    res2 = application(env, sr)[0]
+    assert res1 != res2
+
+
+def test_iemapp_memcache():
+    """Test the memcache option."""
+
+    @iemapp(memcachekey="iem")
+    def application(_environ, _start_response):
+        """Test."""
+        return f"{random.random()}"
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "",
+    }
+    sr = mock.MagicMock()
+    res1 = application(env, sr)[0]
+    res2 = application(env, sr)[0]
+    assert res1 == res2
 
 
 def test_iemapp_year_year1():
