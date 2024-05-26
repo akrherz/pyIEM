@@ -359,6 +359,9 @@ def _mcall(func, environ, start_response, memcachekey, expire):
     if not res:
         res = func(environ, start_response)
         mc.set(key, res, expire)
+    else:
+        # since our function never got called, we need to start_response
+        start_response("200 OK", [("Content-type", "application/json")])
     cb = environ.get("callback")
     if cb is not None:
         if isinstance(res, str):
