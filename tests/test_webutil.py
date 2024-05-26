@@ -29,10 +29,10 @@ from pyiem.webutil import (
 def test_iemapp_memcache_keychanged():
     """Test the memcache option."""
 
-    @iemapp(memcachekey=lambda: f"{random.random()}")
+    @iemapp(memcachekey=lambda e: f"{random.random()}")
     def application(_environ, _start_response):
         """Test."""
-        return f"{random.random()}".encode("ascii")
+        return f"aa{random.random()}".encode("ascii")
 
     env = {
         "wsgi.input": mock.MagicMock(),
@@ -40,7 +40,13 @@ def test_iemapp_memcache_keychanged():
     }
     sr = mock.MagicMock()
     res1 = application(env, sr)[0]
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "",
+    }
     res2 = application(env, sr)[0]
+    assert res1.startswith(b"aa")
+    assert res2.startswith(b"aa")
     assert res1 != res2
 
 
@@ -48,17 +54,22 @@ def test_iemapp_memcache():
     """Test the memcache option."""
 
     @iemapp(memcachekey="iem")
-    def application(_environ, _start_response):
+    def application(environ, _start_response):
         """Test."""
         return f"{random.random()}"
 
     env = {
         "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "",
+        "QUERY_STRING": "callback=gotData",
     }
     sr = mock.MagicMock()
     res1 = application(env, sr)[0]
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "callback=gotData",
+    }
     res2 = application(env, sr)[0]
+    assert res1.decode("ascii").startswith("gotData")
     assert res1 == res2
 
 
