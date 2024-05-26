@@ -278,10 +278,9 @@ def add_to_environ(environ, form, **kwargs):
         pgconn, cursor = get_dbconnc(dbname, cursor_name=cursor_name)
         environ[f"iemdb.{dbname}.conn"] = pgconn
         environ[f"iemdb.{dbname}.cursor"] = cursor
-    for key in form:
+    for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
-            val = form[key]
             # We should only have either lists or strings
             if isinstance(val, list):
                 for va in val:
@@ -360,6 +359,12 @@ def _mcall(func, environ, start_response, memcachekey, expire):
     if not res:
         res = func(environ, start_response)
         mc.set(key, res, expire)
+    cb = environ.get("callback")
+    if cb is not None:
+        if isinstance(res, str):
+            res = f"{cb}({res})"
+        elif isinstance(res, bytes):
+            res = f"{cb}({res.decode('utf-8')})"
     mc.close()
     return res
 
