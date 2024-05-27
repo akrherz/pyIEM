@@ -349,7 +349,7 @@ def _debracket(form):
     return res
 
 
-def _mcall(func, environ, start_response, memcachekey, expire):
+def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     """Call the function with memcachekey handling."""
     if memcachekey is None:
         return func(environ, start_response)
@@ -361,7 +361,12 @@ def _mcall(func, environ, start_response, memcachekey, expire):
         mc.set(key, res, expire)
     else:
         # since our function never got called, we need to start_response
-        start_response("200 OK", [("Content-type", "application/json")])
+        ct = (
+            content_type
+            if isinstance(content_type, str)
+            else content_type(environ)
+        )
+        start_response("200 OK", [("Content-type", ct)])
     cb = environ.get("callback")
     if cb is not None:
         if isinstance(res, str):
@@ -389,6 +394,8 @@ def iemapp(**kwargs):
         - memcachekey (str or callable): A memcache key to use for caching
           the response.
         - memcacheexpire (int): The number of seconds to cache the response.
+        - content_type (str or callable): The content type to use for the
+          response.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -454,6 +461,7 @@ def iemapp(**kwargs):
                     start_response,
                     kwargs.get("memcachekey"),
                     kwargs.get("memcacheexpire", 3600),
+                    kwargs.get("content_type", "application/json"),
                 )
                 # you know what assumptions do
                 status_code = 200
