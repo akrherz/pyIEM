@@ -1,0 +1,43 @@
+174 
+ACUS11 KWNS 251939
+SWOMCD
+SPC MCD 251938 
+IAZ000-MOZ000-NEZ000-252145-
+
+Mesoscale Discussion 0301
+NWS Storm Prediction Center Norman OK
+0238 PM CDT Mon Mar 25 2024
+
+Areas affected...southwestern Iowa and far northwestern Missouri
+
+Concerning...Severe potential...Watch unlikely 
+
+Valid 251938Z - 252145Z
+
+Probability of Watch Issuance...5 percent
+
+SUMMARY...Storms capable of hail, gusty wind, and an isolated
+tornado possible through the afternoon.
+
+DISCUSSION...Low top thunderstorm development has been ongoing near
+the surface low and front across western Iowa into northwestern
+Missouri. Surface observations have shown slow warming and
+moistening of a relatively cool and stable boundary layer through
+the morning, with temperatures now in the upper 50s to mid 60s and
+dew points in the 50s. Though the thermal profile is marginal
+(around 500 J/kg MUCAPE), steep low-level lapse rates around 7-8
+C/km will continue to nose into southern Iowa through the afternoon.
+Given the proximity of the low, steep lapse rates, and modest
+low-level curvature of hodographs, a funnel cloud or isolated
+tornado could be possible. A few instances of gusty winds or hail
+will be possible. A watch is unlikely to be needed at this time.
+
+..Thornton/Hart.. 03/25/2024
+
+...Please see www.spc.noaa.gov for graphic product...
+
+ATTN...WFO...DMX...EAX...FSD...OAX...
+
+LAT...LON   41439629 41699622 42379593 42829519 42649468 42359435
+            41779425 41489424 40829441 40329464 40209511 40269555
+            40589588 41439629 

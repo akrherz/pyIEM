@@ -6,6 +6,27 @@ from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc
 
 
+@pytest.mark.parametrize("database", ["postgis"])
+def test_corrections(dbcursor):
+    """Test that corrections are handled properly."""
+    prod = parser(get_test_file("MCD_MPD/SWOMCD_301.txt"))
+    prod.database_save(dbcursor)
+    prod = parser(get_test_file("MCD_MPD/SWOMCD_301_COR.txt"))
+    prod.database_save(dbcursor)
+    dbcursor.execute(
+        "SELECT concerning from mcd where year = 2024 and num = 301",
+    )
+    assert dbcursor.rowcount == 1
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_correction_warning(dbcursor):
+    """Test that we get a warning."""
+    prod = parser(get_test_file("MCD_MPD/SWOMCD_301_COR.txt"))
+    prod.database_save(dbcursor)
+    assert prod.warnings
+
+
 def test_gh528_concerning():
     """Test how we deal with the MPD concerning field."""
     orig = get_test_file("MCD_MPD/MPD_noconfidence.txt")
