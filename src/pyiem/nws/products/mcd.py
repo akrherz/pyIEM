@@ -13,6 +13,7 @@ from pyiem.nws.product import TextProduct
 from pyiem.reference import TWEET_CHARS, TWEET_URL_CHARS
 from pyiem.util import LOG, html_escape
 
+CORRECTION = re.compile(r"SPC\s+MCD\s+([0-9]{6})\s+COR", re.IGNORECASE)
 LATLON = re.compile(r"LAT\.\.\.LON\s+((?:[0-9]{8}\s+)+)")
 DISCUSSIONNUM = re.compile(
     r"MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)", re.IGNORECASE
@@ -44,7 +45,12 @@ class MCDProduct(TextProduct):
         self.concerning = self.parse_concerning()
         self.watch_prob = self.find_watch_probability()
         self.sts, self.ets = self.find_valid_times()
+        self.is_correction = self.parse_correction()
         self.cwsus = []
+
+    def parse_correction(self) -> bool:
+        """Look for the correction flag."""
+        return bool(CORRECTION.search(self.unixtext))
 
     def find_valid_times(self):
         """Figure out when this product is valid for"""
@@ -92,8 +98,9 @@ class MCDProduct(TextProduct):
         concerning_text = ""
         if self.concerning is not None:
             concerning_text = f" concerning {self.concerning}"
-        attempt = ("#%s issues %s %s%s%s: %s ") % (
+        attempt = ("#%s %s %s %s%s%s: %s ") % (
             center,
+            "issues" if not self.is_correction else "corrects",
             self.afos[3:],
             self.discussion_num,
             concerning_text,
@@ -154,11 +161,12 @@ class MCDProduct(TextProduct):
             spcuri,
         )
         html = (
-            '<p>%s issues <a href="%s">'
+            '<p>%s %s <a href="%s">'
             "Mesoscale %sDiscussion #%s</a>%s%s"
             '(<a href="%s?pid=%s">View text</a>)</p>'
         ) % (
             center,
+            "issues" if not self.is_correction else "corrects",
             spcuri,
             pextra,
             self.discussion_num,
@@ -209,6 +217,15 @@ class MCDProduct(TextProduct):
     def database_save(self, txn):
         """Save this product to the database"""
         table = "mcd" if self.afos == "SWOMCD" else "mpd"
+        if self.is_correction:
+            txn.execute(
+                f"delete from {table} where year = %s and num = %s",
+                (self.valid.year, self.discussion_num),
+            )
+            if txn.rowcount == 0:
+                self.warnings.append(
+                    "Correction product, but no original found in database."
+                )
         # Remove any previous entries
         sql = f"DELETE from {table} where product_id = %s and num = %s"
         txn.execute(sql, (self.get_product_id(), self.discussion_num))
