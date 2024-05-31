@@ -135,7 +135,9 @@ def jabber_messages(valid, outlook_collections) -> list:
         list: a list of Jabber messages [(plain, html, xtradict), ...]
     """
     res = []
-    url = "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
+    url = (
+        "https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php"
+    )
     product_descript = "Excessive Rainfall Outlook"
     jdict = {
         "title": product_descript,
