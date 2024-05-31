@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Use less confusing landing page at WPC for ERO.
+
 ## **1.20.0** (31 May 2024)
 
 ### API Changes

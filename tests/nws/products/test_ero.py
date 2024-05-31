@@ -48,7 +48,7 @@ def test_get_jabbers():
     ans = (
         "The Weather Prediction Center issues Day 1 Excessive Rainfall "
         "Outlook at Jul 13, 21:56z "
-        "https://www.wpc.ncep.noaa.gov/archives/web_pages/ero/ero.shtml"
+        "https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php"
     )
     assert j[-1][0] == ans
     assert "ERODY1" in j[-1][2]["channels"]
