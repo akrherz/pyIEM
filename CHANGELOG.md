@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Discontinue persisting raw test product into {mcd,mpd} table storage.
+
 ### New Features
 
 ### Bug Fixes
