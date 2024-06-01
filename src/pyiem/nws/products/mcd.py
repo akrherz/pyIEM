@@ -238,12 +238,11 @@ class MCDProduct(TextProduct):
             )
         giswkt = f"SRID=4326;{self.geometry.wkt}"
         sql = (
-            f"INSERT into {table} (product, product_id, geom, issue, expire, "
+            f"INSERT into {table} (product_id, geom, issue, expire, "
             "num, year, watch_confidence, concerning) "
-            "values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            "values (%s, %s, %s, %s, %s, %s, %s, %s)"
         )
         args = (
-            self.text,
             self.get_product_id(),
             giswkt,
             self.sts,
