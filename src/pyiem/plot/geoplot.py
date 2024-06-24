@@ -154,7 +154,7 @@ class MapPlot:
               only option currently.
         """
         self.debug = kwargs.get("debug", False)
-        self.fig = kwargs.get("fig")
+        self.fig = kwargs.pop("fig", None)
         figsize = kwargs.get("figsize", FIGSIZES["43"])
         if kwargs.get("twitter", False) is True:
             figsize = TWITTER_RESOLUTION_INCH
