@@ -13,6 +13,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Pop kwargs `fig` on `MapPlot`.
 - Use less confusing landing page at WPC for ERO.
 
 ## **1.20.0** (31 May 2024)
