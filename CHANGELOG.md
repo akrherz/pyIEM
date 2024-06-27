@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Cross check WCNs against watch database storage for PDS status (#925).
+
 ### Bug Fixes
 
 - Pop kwargs `fig` on `MapPlot`.

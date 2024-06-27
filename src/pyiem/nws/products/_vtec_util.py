@@ -7,6 +7,7 @@ from datetime import timedelta, timezone
 import pandas as pd
 from psycopg.sql import SQL
 
+from pyiem.nws.product import TextProductSegment
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
 
@@ -358,6 +359,23 @@ def _resent_match(prod, txn, vtec):
     return False
 
 
+def _cross_check_watch_pds(prod, txn, segment: TextProductSegment, vtec):
+    """Lookup the watch information."""
+    txn.execute(
+        """
+        select is_pds from watches where num = %s
+        and extract(year from issued at time zone 'UTC') = %s
+        """,
+        (vtec.etn, prod.valid.year),
+    )
+    if txn.rowcount != 1:
+        prod.warnings.append(
+            f"Failed to cross check PDS status {prod.valid.year}[{vtec.etn}]"
+        )
+        return
+    segment.is_pds = txn.fetchone()["is_pds"]
+
+
 def _do_sql_vtec_new(prod, txn, segment, vtec):
     """Do the NEW style actions."""
     bts = prod.valid if vtec.begints is None else vtec.begints
@@ -365,6 +383,9 @@ def _do_sql_vtec_new(prod, txn, segment, vtec):
     ets = vtec.endts
     if vtec.endts is None:
         ets = bts + DEFAULT_EXPIRE_DELTA
+    # akrherz/pyIEM#925 Need to cross-check watches for PDS status
+    if vtec.phenomena in ["TO", "SV"] and vtec.significance == "A":
+        _cross_check_watch_pds(prod, txn, segment, vtec)
 
     # For each UGC code in this segment, we create a database entry
     for ugc in segment.ugcs:
