@@ -8,6 +8,7 @@ import pytest
 from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
+from pyiem.nws.products.wwp import parser as wwp_parser
 from pyiem.nws.ugc import UGC, UGCParseException, UGCProvider
 from pyiem.nws.vtec import parse
 
@@ -39,6 +40,18 @@ def filter_warnings(ar, startswith="get_gid"):
     for the purposes of this testing
     """
     return [a for a in ar if not a.startswith(startswith)]
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_gh925_wcn_pds(dbcursor):
+    """Test that the cross check gets this as a PDS."""
+    # Insert the watch
+    prod = wwp_parser(get_test_file("WWP/WWP9_PDS.txt"))
+    prod.sql(dbcursor)
+    # Ingest the WCN
+    prod = _vtecparser(get_test_file("WCN/WCNMPX.txt"))
+    prod.sql(dbcursor)
+    assert prod.segments[0].is_pds
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -228,9 +241,11 @@ def test_220617_parishes():
     assert j[0][2]["twitter"] == ans
 
 
-def test_220608_bad_tweet():
+@pytest.mark.parametrize("database", ["postgis"])
+def test_220608_bad_tweet(dbcursor):
     """Test what is emitted from a shortened tweet message."""
     prod = vtecparser(get_test_file("WCN/WCNTSA.txt"))
+    prod.sql(dbcursor)
     j = prod.get_jabbers("")
     ans = (
         "TSA updates Severe Thunderstorm Watch (expands area to include 9 "
