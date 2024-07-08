@@ -7,7 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
-- Discontinue persisting raw test product into {mcd,mpd} table storage.
+- Discontinue persisting text product into {mcd,mpd} table storage.
+- Discontinue storage of text product into sigmets, use `product_id` instead.
 
 ### New Features
 
