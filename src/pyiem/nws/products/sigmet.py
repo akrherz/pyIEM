@@ -266,13 +266,13 @@ class SIGMETProduct(TextProduct):
                 txn.execute(sql, args)
                 sql = (
                     f"INSERT into {table} (sigmet_type, label, issue, "
-                    "expire, raw, geom) VALUES ('C',%s, %s, %s, %s, %s)"
+                    "expire, product_id, geom) VALUES ('C',%s, %s, %s, %s, %s)"
                 )
                 args = (
                     sigmet.label,
                     self.valid,
                     sigmet.ets,
-                    sigmet.raw,
+                    self.get_product_id(),
                     sqlwkt,
                 )
                 txn.execute(sql, args)
