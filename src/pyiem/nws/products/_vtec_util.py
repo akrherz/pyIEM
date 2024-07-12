@@ -7,7 +7,7 @@ from datetime import timedelta, timezone
 import pandas as pd
 from psycopg.sql import SQL
 
-from pyiem.nws.product import TextProductSegment
+from pyiem.nws.product import TextProduct, TextProductSegment
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
 
@@ -130,6 +130,42 @@ def which_year(txn, prod, segment, vtec) -> int:
             f"  {list_rows(txn, table, vtec)}"
         )
     return prod.valid.year
+
+
+def _check_dueling_tropics(prod: TextProduct) -> bool:
+    """Check that we don't have overlapping tropical products.
+
+    A requested quality control check.
+
+    Args:
+        prod: Product object to check.
+
+    Returns:
+        True if overlapping tropical products, False if not.
+    """
+    sentinel = False
+    for i, seg in enumerate(prod.segments, start=1):
+        keys = [f"{v.phenomena}.{v.significance}" for v in seg.vtec]
+        if "TR.A" not in keys and "TR.W" not in keys:
+            continue
+        for sig in ["A", "W"]:
+            if f"TR.{sig}" not in keys or f"HU.{sig}" not in keys:
+                continue
+            # We have a potential overlap
+            active = 0
+            for vtec in seg.vtec:
+                if (
+                    vtec.phenomena in ["TR", "HU"]
+                    and vtec.significance == sig
+                    and vtec.action not in ["UPG", "CAN", "EXP"]
+                ):
+                    active += 1
+            if active > 1:
+                prod.warnings.append(
+                    f"Dueling tropical VTEC for segment {i} {seg.vtec}"
+                )
+                sentinel = True
+    return sentinel
 
 
 def _check_unique_ugc(prod) -> bool:

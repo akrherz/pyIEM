@@ -5,6 +5,7 @@ from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
     DEFAULT_EXPIRE_DELTA,
     _associate_vtec_year,
+    _check_dueling_tropics,
     _check_unique_ugc,
     _check_vtec_polygon,
     _do_sql_vtec_can,
@@ -53,6 +54,7 @@ class VTECProduct(TextProduct):
         # Arb checks
         _check_unique_ugc(self)
         _check_vtec_polygon(self)
+        _check_dueling_tropics(self)
 
     def sql(self, txn):
         """Persist to the database

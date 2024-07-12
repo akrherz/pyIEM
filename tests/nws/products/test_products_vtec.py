@@ -42,6 +42,12 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh930_dueling_tropics():
+    """Test that we get a special warning for this."""
+    prod = _vtecparser(get_test_file("TCV/TCVHGX.txt"))
+    assert any(a.startswith("Dueling tropical") for a in prod.warnings)
+
+
 @pytest.mark.parametrize("database", ["postgis"])
 def test_gh925_wcn_pds(dbcursor):
     """Test that the cross check gets this as a PDS."""
