@@ -456,7 +456,9 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                         value += " 0000"
                 _dtfmt = "%Y-%m-%d %H%M"
                 try:
-                    value = datetime.strptime(value[:15], "%Y-%m-%d %H%M")
+                    value = datetime.strptime(
+                        value[:15].replace("/", "-"), "%Y-%m-%d %H%M"
+                    )
                 except ValueError as exp:
                     if kwargs.get("rectify_dates", False):
                         value = handle_date_err(exp, value, _dtfmt)
