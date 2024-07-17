@@ -354,6 +354,9 @@ def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     if memcachekey is None:
         return func(environ, start_response)
     key = memcachekey if isinstance(memcachekey, str) else memcachekey(environ)
+    if key is None:
+        # An appside short circuit when we programatically do not want cache
+        return func(environ, start_response)
     mc = Client("iem-memcached:11211")
     res = mc.get(key)
     if not res:
@@ -392,7 +395,7 @@ def iemapp(**kwargs):
           single cursor name with `iemdb_cursorname=<name>`.
         - schema (BaseModel): A Pydantic model to parse the form with.
         - memcachekey (str or callable): A memcache key to use for caching
-          the response.
+          the response. If the callable returns `None`, no caching is done.
         - memcacheexpire (int): The number of seconds to cache the response.
         - content_type (str or callable): The content type to use for the
           response.

@@ -26,6 +26,23 @@ from pyiem.webutil import (
 )
 
 
+def test_memcachekey_is_none():
+    """Test that we can handle a None memcachekey."""
+
+    @iemapp(memcachekey=lambda _e: None)
+    def application(_environ, _start_response):
+        """Test."""
+        return f"aa{random.random()}".encode("ascii")
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "",
+    }
+    sr = mock.MagicMock()
+    res1 = application(env, sr)[0]
+    assert res1.startswith(b"aa")
+
+
 def test_iemapp_memcache_keychanged():
     """Test the memcache option."""
 
