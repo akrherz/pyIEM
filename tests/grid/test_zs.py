@@ -7,6 +7,18 @@ from pyiem.grid import zs
 from shapely.geometry import Polygon
 
 
+def test_polygon_to_left():
+    """Test that we don't get an artifact in the first column."""
+    affine = Affine(10.0, 0.0, 0.0, 0.0, -10, 90)
+    grid = np.reshape(np.arange(100), (10, 10))
+    sq1 = Polygon([(-50, -50), (-50, 0), (-40, 0), (-40, -50)])
+    sq2 = Polygon([(90, 50), (100, 50), (100, 40), (90, 40)])
+    geometries = GeoSeries([sq1, sq2])
+    czs = zs.CachingZonalStats(affine)
+    res = czs.gen_stats(np.flipud(grid), geometries)
+    assert len(res) == 2
+
+
 def test_gen_stats():
     """Run a test"""
     affine = Affine(10.0, 0.0, 0.0, 0.0, -10, 100)
