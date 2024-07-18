@@ -3,7 +3,7 @@
 from collections import namedtuple
 
 import numpy as np
-from rasterstats import zonal_stats
+from rasterstats import gen_zonal_stats
 
 from pyiem.util import LOG
 
@@ -40,7 +40,7 @@ class CachingZonalStats:
             )
             return
         # TODO: check nodata usage here
-        zs = zonal_stats(
+        zs = gen_zonal_stats(
             geometries,
             grid,
             affine=self.affine,
@@ -49,15 +49,12 @@ class CachingZonalStats:
             raster_out=True,
         )
         (gridysz, gridxsz) = grid.shape
-        LOG.debug("in grid size y: %s x: %s", gridysz, gridxsz)
         for entry in zs:
             aff = entry["mini_raster_affine"]
-            LOG.debug(aff)
-            x0 = int((aff.c - self.affine.c) / self.affine.a)
-            y0 = int((self.affine.f - aff.f) / abs(self.affine.e))
+            x0 = round((aff.c - self.affine.c) / self.affine.a)
+            y0 = round((self.affine.f - aff.f) / abs(self.affine.e))
             (ysz, xsz) = entry["mini_raster_array"].mask.shape
             mask = entry["mini_raster_array"].mask
-            LOG.debug("IN: x0: %s y0: %s xsz: %s ysz: %s", x0, y0, xsz, ysz)
             if x0 >= gridxsz or y0 >= gridysz:
                 LOG.debug("out of bounds, skipping")
                 self.gridnav.append(None)

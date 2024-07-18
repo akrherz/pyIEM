@@ -21,6 +21,7 @@ memcache is short circuited.
 
 - Pop kwargs `fig` on `MapPlot`.
 - Use less confusing landing page at WPC for ERO.
+- Use `round` instead of `int` to compute zonal stats grid navigation.
 
 ## **1.20.0** (31 May 2024)
 
