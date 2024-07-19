@@ -15,7 +15,7 @@ from shapely.geometry import (
 
 # Local
 from pyiem.nws.product import TextProduct
-from pyiem.util import LOG, load_geodf
+from pyiem.util import LOG, load_geodf, utc
 
 from ._outlook_util import (
     CONUS,
@@ -66,7 +66,7 @@ def imgsrc_from_row(row: dict) -> Optional[str]:
     elif row["day"] == 2:
         conv = {7: "0600", 17: "1730"}
     elif row["day"] == 3:
-        conv = {8: "0730"}
+        conv = {8: "0730", 20: "1930"}
     url += conv.get(row["cycle"], f"{row['cycle']:02.0f}00") + "_"
     if row["category"] in ["TORNADO", "HAIL", "WIND"]:
         url += f"{row['category'].lower()[:4]}_"
@@ -181,6 +181,8 @@ def _compute_cycle(prod):
         return 21 if prod.outlook_type == "F" else 10
     day = int(prod.afos[5])
     if day == 3:  # has to be convective
+        if prod.valid.hour in range(18, 23) and prod.valid > utc(2024, 8, 20):
+            return 20
         return 8
     # Day 2 are based on the product issuance time
     if day == 2:
