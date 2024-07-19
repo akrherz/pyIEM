@@ -16,6 +16,7 @@ All notable changes to this library are documented in this file.
 - Cross check WCNs against watch database storage for PDS status (#925).
 - For `iemapp` if the `memcachekey=` callable returns `None`, the check of
 memcache is short circuited.
+- Support SPC afternoon Day 3 outlook (cycle assigned as 20) (#936).
 
 ### Bug Fixes
 

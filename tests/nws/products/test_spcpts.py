@@ -13,6 +13,15 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_gh936_day3_20z():
+    """Test that this gets a 20z cycle."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSDY3_20z.txt"),
+        utcnow=utc(2024, 8, 21),
+    )
+    assert prod.cycle == 20
+
+
 def test_imgsrc():
     """Test the various combos, I guess."""
     row = {"product_issue": utc(), "cycle": -1}
