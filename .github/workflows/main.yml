@@ -46,12 +46,13 @@ jobs:
 
     - name: Setup Postgres
       run: |
+        set -e
         git clone --depth 1 https://github.com/akrherz/iem-database.git database
         git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
         . .ci_tooling/postgres.sh
         cd database; sh bootstrap.sh
         python schema_manager.py
-        python store_test_data.py
+        python store_test_data.py $(which psql)
         psql -f data/postgis/cwsu.db -U mesonet postgis
 
     - name: Setup Memcached
