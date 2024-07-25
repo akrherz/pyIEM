@@ -11,7 +11,7 @@ jobs:
     defaults:
       run:
         # Ensures environment gets sourced right
-        shell: bash -l {0}
+        shell: bash -l -e {0}
     name: Python (${{ matrix.PYTHON_VERSION }})
     runs-on: ubuntu-latest
     strategy:
@@ -46,7 +46,6 @@ jobs:
 
     - name: Setup Postgres
       run: |
-        set -e
         git clone --depth 1 https://github.com/akrherz/iem-database.git database
         git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
         . .ci_tooling/postgres.sh
@@ -61,12 +60,10 @@ jobs:
 
     - name: Install pyiem
       run: |
-        set -e
         python -m pip install . --upgrade --no-deps
 
     - name: Populate Data
       run: |
-        set -e
         sudo ln -s /home/runner/micromamba /opt/miniconda3
         python util/create_transformed_parquet.py --justgeodf
         python util/insert_testing_data.py
@@ -75,7 +72,6 @@ jobs:
 
     - name: Run Tests
       run: |
-        set -e
         # get pqinsert available as a dummy command
         export PATH=$PATH:$(pwd)/tests/bin
         # xdist and coverage seems to necessitate this
@@ -101,7 +97,6 @@ jobs:
     - name: Build Docs
       if: ${{ matrix.PYTHON_VERSION == '3.12' }}
       run: |
-        set -e
         cd docs
         make html
         touch build/html/.nojekyll
