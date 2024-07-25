@@ -173,11 +173,11 @@ def test_windrose_hads_wind():
     """Test the database filtering with actual database data."""
     # Faked from iem-database repo store_test_data
     fig = windrose(
-        "XXXX",
+        "EOKI4",
         database="hads",
         months=[4, 5, 6],
-        sts=utc(2020, 1, 5),
-        ets=utc(2020, 9, 5),
+        sts=utc(2024, 1, 5),
+        ets=utc(2024, 9, 5),
         tzname="America/Chicago",
         nogenerated=True,
     )
