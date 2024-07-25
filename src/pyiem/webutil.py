@@ -361,7 +361,9 @@ def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     res = mc.get(key)
     if not res:
         res = func(environ, start_response)
-        mc.set(key, res, expire)
+        mc.set(
+            key, res, expire if isinstance(expire, int) else expire(environ)
+        )
     else:
         # since our function never got called, we need to start_response
         ct = (
@@ -396,7 +398,8 @@ def iemapp(**kwargs):
         - schema (BaseModel): A Pydantic model to parse the form with.
         - memcachekey (str or callable): A memcache key to use for caching
           the response. If the callable returns `None`, no caching is done.
-        - memcacheexpire (int): The number of seconds to cache the response.
+        - memcacheexpire (int or callable): The number of seconds to cache
+          the response, defaults to 3600.
         - content_type (str or callable): The content type to use for the
           response.
 
