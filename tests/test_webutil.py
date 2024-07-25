@@ -29,7 +29,7 @@ from pyiem.webutil import (
 def test_memcachekey_is_none():
     """Test that we can handle a None memcachekey."""
 
-    @iemapp(memcachekey=lambda _e: None)
+    @iemapp(memcachekey=lambda _e: None, memcacheexpire=lambda _e: 60)
     def application(_environ, _start_response):
         """Test."""
         return f"aa{random.random()}".encode("ascii")
