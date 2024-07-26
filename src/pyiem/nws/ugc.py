@@ -100,7 +100,7 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
                 raise UGCParseException(
                     f'WHOA, bad UGC encoding detected "{"-".join(parts)}"'
                 )
-        this_part = parts[i].strip()
+        this_part = part.strip()
         if len(this_part) == 6:  # We have a new state ID
             state_code = this_part[:3]
             ugcs.append(_construct(this_part))
