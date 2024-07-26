@@ -444,9 +444,7 @@ def read_cli(filename, compute_rfactor=False, return_rfactor_metric=True):
         for i in range(1, len(times)):
             dt = times[i] - times[i - 1]
             dr = points[i] - points[i - 1]
-            rate = dr / dt
-            if rate > maxr:
-                maxr = rate
+            maxr = max(maxr, dr / dt)
         linenum += breakpoints + 1
         dates.append(datetime.date(int(year), int(mo), int(da)))
         rows.append(
