@@ -17,6 +17,7 @@ All notable changes to this library are documented in this file.
 - Cross check WCNs against watch database storage for PDS status (#925).
 - For `iemapp` if the `memcachekey=` callable returns `None`, the check of
 memcache is short circuited.
+- Store `product_id` for PIREPs and do some faked AFOS assignments to help.
 - Support SPC afternoon Day 3 outlook (cycle assigned as 20) (#936).
 
 ### Bug Fixes

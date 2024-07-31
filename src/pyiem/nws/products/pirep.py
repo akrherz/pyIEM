@@ -131,7 +131,7 @@ def _parse_lonlat(text):
 
 
 class Pirep(product.TextProduct):
-    """Class for parsing and representing Space Wx Products."""
+    """Class for parsing and representing PIREPs found in NWS text products."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
@@ -144,6 +144,8 @@ class Pirep(product.TextProduct):
             ugc_provider=ugc_provider,
             nwsli_provider=nwsli_provider,
         )
+        if self.afos is None:
+            self.afos = "PIREP"
         self.reports = []
         self.parse_reports()
 
@@ -327,8 +329,8 @@ class Pirep(product.TextProduct):
             txn.execute(
                 f"""
                 INSERT into pireps(valid, geom, is_urgent, aircraft_type,
-                report, artcc) VALUES (%s,
-                ST_GeographyFromText(%s), %s, %s, %s, {artcc})
+                report, artcc, product_id) VALUES (%s,
+                ST_GeographyFromText(%s), %s, %s, %s, {artcc}, %s)
                 """,
                 (
                     report.valid,
@@ -336,6 +338,7 @@ class Pirep(product.TextProduct):
                     report.priority == Priority.UUA,
                     report.aircraft_type,
                     report.text,
+                    self.get_product_id(),
                 ),
             )
 
