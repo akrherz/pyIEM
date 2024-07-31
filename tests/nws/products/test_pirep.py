@@ -5,6 +5,24 @@ from pyiem.nws.products.pirep import parser as pirepparser
 from pyiem.util import get_test_file, utc
 
 
+def test_fake_afos():
+    """Test assignment of the fake AFOS identifier."""
+    prod = pirepparser(
+        get_test_file("PIREPS/PRCUS.txt"),
+        utcnow=utc(2016, 10, 1, 1, 35),
+    )
+    assert prod.afos == "PRCUS"
+
+
+def test_fake_afos_pirep():
+    """Test assignment of the fake AFOS identifier."""
+    prod = pirepparser(
+        get_test_file("PIREPS/PIREP.txt"),
+        utcnow=utc(2015, 1, 9, 0, 0),
+    )
+    assert prod.afos == "PIREP"
+
+
 def test_210121_int_latlon():
     """Test successful parsing of an integer lat lon value, tricky."""
     utcnow = utc(2020, 1, 21, 10, 22)
