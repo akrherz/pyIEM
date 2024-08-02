@@ -213,8 +213,8 @@ def find_ij(lon, lat):
     if lon < WEST or lon >= EAST or lat < SOUTH or lat >= NORTH:
         return None, None
 
-    i = np.digitize([lon], XAXIS)[0] - 1
-    j = np.digitize([lat], YAXIS)[0] - 1
+    i = np.digitize(lon, XAXIS) - 1
+    j = np.digitize(lat, YAXIS) - 1
 
     return i, j
 
