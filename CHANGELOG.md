@@ -22,6 +22,7 @@ memcache is short circuited.
 
 ### Bug Fixes
 
+- Fix and refactor SPC `saw` parsing of watch replacement number.
 - Pop kwargs `fig` on `MapPlot`.
 - Use less confusing landing page at WPC for ERO.
 - Use `round` instead of `int` to compute zonal stats grid navigation.
