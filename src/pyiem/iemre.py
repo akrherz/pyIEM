@@ -9,6 +9,7 @@
 
 from datetime import datetime, timezone
 from typing import Optional, Tuple
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pyproj
@@ -47,6 +48,7 @@ DOMAINS = {
         "ny": NY,
         "affine": AFFINE,
         "affine_native": AFFINE_NATIVE,
+        "tzinfo": ZoneInfo("America/Chicago"),
     },
     "china": {
         "west": 70,
@@ -57,6 +59,7 @@ DOMAINS = {
         "ny": 320,
         "affine": Affine(DX, 0.0, 70, 0.0, 0 - DY, 55),
         "affine_native": Affine(DX, 0.0, 70, 0.0, DY, 15),
+        "tzinfo": ZoneInfo("Asia/Shanghai"),
     },
     "europe": {
         "west": -10,
@@ -67,6 +70,7 @@ DOMAINS = {
         "ny": 280,
         "affine": Affine(DX, 0.0, -10, 0.0, 0 - DY, 70),
         "affine_native": Affine(DX, 0.0, -10, 0.0, DY, 35),
+        "tzinfo": ZoneInfo("Europe/Paris"),
     },
 }
 
