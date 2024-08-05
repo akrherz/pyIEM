@@ -10,6 +10,11 @@ from pyiem import database, iemre
 from pyiem.util import get_test_filepath, utc
 
 
+def test_d2l():
+    """Test our logic."""
+    assert iemre.d2l("europe") == "iemre_europe"
+
+
 def test_grb2iemre():
     """Test that we can take a grib file and do magic."""
     grbs = pygrib.open(get_test_filepath("grib/hrrr_srad.grib2"))
