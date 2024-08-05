@@ -6,6 +6,16 @@ from pyiem.nws.products.saw import parser as sawparser
 from pyiem.util import get_test_file, utc
 
 
+def test_240805_bad_time():
+    """Test what we parse this as."""
+    utcnow = utc(2024, 8, 5, 11)
+    prod = parser(get_test_file("SAW/SAW6.txt"), utcnow=utcnow)
+    assert prod.ww_num == 596
+    assert prod.sts == utc(2024, 8, 5, 9, 55)
+    assert prod.ets == utc(2024, 8, 5, 20, 0)
+    assert prod.replaces_num == 595
+
+
 def test_220502_jabber():
     """Test that we can generate fancy messages."""
     utcnow = utc(2021, 7, 29, 0)
@@ -80,14 +90,15 @@ def test_181231_linkisok():
 @pytest.mark.parametrize("database", ["postgis"])
 def test_replacement(dbcursor):
     """Can we do replacements?"""
-    utcnow = utc(2017, 8, 21, 9, 17)
+    utcnow = utc(2017, 4, 21, 9, 17)
     prod = sawparser(get_test_file("SAW/SAW-replaces.txt"), utcnow=utcnow)
+    assert prod.replaces_num == 152
     prod.sql(dbcursor)
     jmsgs = prod.get_jabbers("")
     assert len(jmsgs) == 1
     ans = (
         "SPC issues Severe Thunderstorm Watch"
-        " 153 till 17:00Z, new watch replaces WW 1 "
+        " 153 till 17:00Z, new watch replaces WW 152 "
         "https://www.spc.noaa.gov/products/watch/2017/ww0153.html"
     )
     assert jmsgs[0][0] == ans

@@ -5,6 +5,7 @@ This does not process the legacy SAW products that did not have LAT...LON
 
 import datetime
 import re
+from typing import Optional
 
 from shapely.geometry import MultiPolygon
 from shapely.geometry import Polygon as ShapelyPolygon
@@ -42,7 +43,15 @@ class SAWProduct(TextProduct):
         self.ww_num = self.find_ww_num()
         (self.sts, self.ets) = self.find_time()
         self.ww_type = self.find_ww_type()
+        self.replaces_num = self.find_replaces()
         self.affected_wfos = []
+
+    def find_replaces(self) -> Optional[int]:
+        """Figure out what this watch replaces."""
+        tokens = REPLACES_RE.findall(self.unixtext)
+        if not tokens:
+            return None
+        return int(tokens[0])
 
     def find_action(self):
         """Figure out if this is an issuance or cancells statement
@@ -114,12 +123,11 @@ class SAWProduct(TextProduct):
             )
             txn.execute(sql, args)
             # Is this a replacement?
-            if REPLACES_RE.findall(self.unixtext):
-                rnum = REPLACES_RE.findall(self.unixtext)[0][0]
+            if self.replaces_num is not None:
                 txn.execute(
                     "UPDATE watches SET expired = %s "
                     "WHERE num = %s and extract(year from expired) = %s",
-                    (self.valid, rnum, self.sts.year),
+                    (self.valid, self.replaces_num, self.sts.year),
                 )
         elif self.action == self.CANCELS:
             for table in ("watches", "watches_current"):
@@ -288,12 +296,9 @@ class SAWProduct(TextProduct):
                 f"Watch {self.ww_num}</a> {pds_extra}"
                 f"till {self.ets:%-H:%M} UTC"
             )
-            if REPLACES_RE.findall(self.unixtext):
-                rtext = (
-                    f"WW {REPLACES_RE.findall(self.unixtext)[0][0].strip()} "
-                )
-                plain += ", new watch replaces " + rtext
-                html += ", new watch replaces " + rtext
+            if self.replaces_num is not None:
+                plain += f", new watch replaces WW {self.replaces_num}"
+                html += f", new watch replaces WW {self.replaces_num}"
 
             plain2 = f"{plain} {url}"
             plain2 = " ".join(plain2.split())
