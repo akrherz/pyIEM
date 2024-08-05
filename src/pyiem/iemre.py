@@ -8,6 +8,7 @@
 """
 
 from datetime import datetime, timezone
+from typing import Optional, Tuple
 
 import numpy as np
 import pyproj
@@ -19,22 +20,62 @@ from rasterio.warp import Resampling, reproject
 from pyiem.database import get_dbconn
 from pyiem.util import LOG, utc
 
+# Legacy constants prior to addition of other IEMRE domains
 # 1/8 degree grid, grid cell is the lower left corner
 SOUTH = 23.0
 WEST = -126.0
 NORTH = 50.0
 EAST = -65.0
-
 DX = 0.125
 DY = 0.125
-# hard coding these to prevent flakey behaviour with dynamic computation
-NX = 488  # int((EAST - WEST) / DX)
-NY = 216  # int((NORTH - SOUTH) / DY)
+NX = 488
+NY = 216
 XAXIS = np.arange(WEST, EAST, DX)
 YAXIS = np.arange(SOUTH, NORTH, DY)
 AFFINE = Affine(DX, 0.0, WEST, 0.0, 0 - DY, NORTH)
 AFFINE_NATIVE = Affine(DX, 0.0, WEST, 0.0, DY, SOUTH)
 MRMS_AFFINE = Affine(0.01, 0.0, WEST, 0.0, -0.01, NORTH)
+
+# Definition of analysis domains for IEMRE
+DOMAINS = {
+    "": {
+        "west": WEST,
+        "east": EAST,
+        "south": SOUTH,
+        "north": NORTH,
+        "nx": NX,
+        "ny": NY,
+        "affine": AFFINE,
+        "affine_native": AFFINE_NATIVE,
+    },
+    "china": {
+        "west": 70,
+        "east": 140,
+        "south": 15,
+        "north": 55,
+        "nx": 560,
+        "ny": 320,
+        "affine": Affine(DX, 0.0, 70, 0.0, 0 - DY, 55),
+        "affine_native": Affine(DX, 0.0, 70, 0.0, DY, 15),
+    },
+    "europe": {
+        "west": -10,
+        "east": 40,
+        "south": 35,
+        "north": 70,
+        "nx": 400,
+        "ny": 280,
+        "affine": Affine(DX, 0.0, -10, 0.0, 0 - DY, 70),
+        "affine_native": Affine(DX, 0.0, -10, 0.0, DY, 35),
+    },
+}
+
+
+def d2l(val) -> str:
+    """Convert a domain label to a string used within filenames."""
+    if val is None or val == "":
+        return "iemre"
+    return f"iemre_{val}"
 
 
 def get_table(valid):
@@ -154,14 +195,14 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
     return ds
 
 
-def get_dailyc_ncname():
+def get_dailyc_ncname(domain: str = "") -> str:
     """Return the filename of the daily climatology netcdf file"""
-    return "/mesonet/data/iemre/iemre_dailyc.nc"
+    return f"/mesonet/data/{d2l(domain)}/{d2l(domain)}_dailyc.nc"
 
 
-def get_daily_ncname(year):
+def get_daily_ncname(year, domain: str = "") -> str:
     """Get the daily netcdf filename for the given year"""
-    return f"/mesonet/data/iemre/{year}_iemre_daily.nc"
+    return f"/mesonet/data/{d2l(domain)}/{year}_{d2l(domain)}_daily.nc"
 
 
 def get_dailyc_mrms_ncname():
@@ -174,9 +215,9 @@ def get_daily_mrms_ncname(year):
     return f"/mesonet/data/mrms/{year}_mrms_daily.nc"
 
 
-def get_hourly_ncname(year):
+def get_hourly_ncname(year, domain: str = "") -> str:
     """Get the daily netcdf filename for the given year"""
-    return f"/mesonet/data/iemre/{year}_iemre_hourly.nc"
+    return f"/mesonet/data/{d2l(domain)}/{year}_{d2l(domain)}_hourly.nc"
 
 
 def daily_offset(ts):
@@ -208,26 +249,32 @@ def hourly_offset(dtobj):
     return int(seconds / 3600.0)
 
 
-def find_ij(lon, lat):
+def find_ij(lon, lat, domain: str = "") -> Tuple[Optional[int], Optional[int]]:
     """Compute which grid cell this lon, lat resides within"""
-    if lon < WEST or lon >= EAST or lat < SOUTH or lat >= NORTH:
+    dom = DOMAINS[domain]
+    if (
+        lon < dom["west"]
+        or lon >= dom["east"]
+        or lat < dom["south"]
+        or lat >= dom["north"]
+    ):
         return None, None
 
-    i = np.digitize(lon, XAXIS) - 1
-    j = np.digitize(lat, YAXIS) - 1
+    i = np.digitize(lon, np.arange(dom["west"], dom["east"], DX)) - 1
+    j = np.digitize(lat, np.arange(dom["south"], dom["north"], DY)) - 1
 
     return i, j
 
 
-def get_gid(lon, lat):
+def get_gid(lon, lat, domain: str = "") -> Optional[int]:
     """Compute the grid id for the given location."""
-    i, j = find_ij(lon, lat)
+    i, j = find_ij(lon, lat, domain)
     if i is None:
         return None
-    return j * NX + i
+    return j * DOMAINS[domain]["nx"] + i
 
 
-def grb2iemre(grb, resampling=None) -> np.ndarray:
+def grb2iemre(grb, resampling=None, domain: str = "") -> np.ndarray:
     """Reproject a grib message onto the IEMRE grid.
 
     A helper frontend to ``reproject2iemre``.
@@ -235,6 +282,7 @@ def grb2iemre(grb, resampling=None) -> np.ndarray:
     Args:
         grb (pygrib.gribmessage): single message to reproject
         resampling (rasterio.warp.Resampling,optional): defaults to nearest
+        domain (str): IEMRE domain to reproject onto
 
     Returns:
         numpy.ma.array of reprojected grid oriented S to N like IEMRE
@@ -252,10 +300,14 @@ def grb2iemre(grb, resampling=None) -> np.ndarray:
         -grb["DyInMetres"],
         lly + grb["DyInMetres"] * grb["Ny"],
     )
-    return reproject2iemre(np.flipud(grb.values), aff, pparams, resampling)
+    return reproject2iemre(
+        np.flipud(grb.values), aff, pparams, resampling, domain
+    )
 
 
-def reproject2iemre(grid, affine_in, crs_in: str, resampling=None):
+def reproject2iemre(
+    grid, affine_in, crs_in: str, resampling=None, domain: str = ""
+):
     """Reproject the given grid to IEMRE grid, returning S to N oriented grid.
 
     Note: If the affine_in is dy > 0 then the grid is assumed to be S to N.
@@ -265,11 +317,13 @@ def reproject2iemre(grid, affine_in, crs_in: str, resampling=None):
         affine_in (affine.Affine): affine transform of input grid
         crs_in (pyproj.Proj): projection of input grid
         resampling (rasterio.warp.Resampling,optional): defaults to nearest
+        domain (str): IEMRE domain to reproject onto
 
     Returns:
         numpy.ma.array of reprojected grid oriented S to N like IEMRE
     """
-    data = np.zeros((NY, NX), float)
+    dom = DOMAINS[domain]
+    data = np.zeros((dom["ny"], dom["nx"]), float)
     # If source is a masked array, we need to fill it
     src_is_masked = hasattr(grid, "mask")
     if src_is_masked:
@@ -279,7 +333,9 @@ def reproject2iemre(grid, affine_in, crs_in: str, resampling=None):
         data,
         src_transform=affine_in,
         src_crs=crs_in,
-        dst_transform=AFFINE if affine_in.e < 0 else AFFINE_NATIVE,
+        dst_transform=(
+            dom["affine"] if affine_in.e < 0 else dom["affine_native"]
+        ),
         dst_crs={"init": "EPSG:4326"},
         dst_nodata=np.nan,
         resampling=(
