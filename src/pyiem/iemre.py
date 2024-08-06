@@ -192,7 +192,7 @@ def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
     cursor.execute(
         f"SELECT (gid / %s)::int as y, gid %% %s as x, {colsql} "
         f"from {table} WHERE valid = %s",
-        (dom["nx"], dom["ny"], valid),
+        (dom["ny"], dom["nx"], valid),
     )
     data = {
         key: np.full((dom["ny"], dom["nx"]), np.nan) for key in use_columns
