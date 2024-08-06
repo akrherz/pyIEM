@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.1.dev1215+g01a1253 documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.1.dev1217+g9faa9bf documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
     
-    <script src="../_static/documentation_options.js?v=3e091a62"></script>
+    <script src="../_static/documentation_options.js?v=3654f429"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1215+g01a1253 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1217+g9faa9bf documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -1207,6 +1207,12 @@ default is <cite>False</cite>.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.iemre.get_domain">
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#pyiem.iemre.get_domain" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the domain that contains the given point.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_gid">
 <span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_gid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#pyiem.iemre.get_gid" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the grid id for the given location.</p>
@@ -1214,7 +1220,7 @@ default is <cite>False</cite>.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_grids">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.get_grids" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.get_grids" title="Link to this definition">¶</a></dt>
 <dd><p>Fetch grid(s) from the database, returning xarray.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1225,6 +1231,7 @@ defaults to all available</p></li>
 <li><p><strong>cursor</strong> (<em>database cursor</em><em>,</em><em>optional</em>) – cursor to use for query</p></li>
 <li><p><strong>table</strong> (<em>str</em><em>,</em><em>optional</em>) – Hard coded table to fetch data from, useful in the
 case of forecast data.</p></li>
+<li><p><strong>domain</strong> (<em>str</em><em>,</em><em>optional</em>) – IEMRE domain to fetch data from</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1309,7 +1316,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.set_grids">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">¶</a></dt>
 <dd><p>Update the database with a given <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1318,6 +1325,7 @@ case of forecast data.</p></li>
 <li><p><strong>ds</strong> (<em>xarray.Dataset</em>) – The xarray dataset to save</p></li>
 <li><p><strong>table</strong> (<em>str</em><em>,</em><em>optional</em>) – hard coded database table to use to set the data
 on.  Usually dynamically computed.</p></li>
+<li><p><strong>domain</strong> (<em>str</em><em>,</em><em>optional</em>) – IEMRE domain to save data to</p></li>
 </ul>
 </dd>
 </dl>
@@ -2575,6 +2583,7 @@ useful to others!?!?</p>
 <li><a class="reference internal" href="#pyiem.iemre.get_daily_ncname"><code class="docutils literal notranslate"><span class="pre">get_daily_ncname()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.iemre.get_dailyc_mrms_ncname"><code class="docutils literal notranslate"><span class="pre">get_dailyc_mrms_ncname()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.iemre.get_dailyc_ncname"><code class="docutils literal notranslate"><span class="pre">get_dailyc_ncname()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.iemre.get_domain"><code class="docutils literal notranslate"><span class="pre">get_domain()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.iemre.get_gid"><code class="docutils literal notranslate"><span class="pre">get_gid()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.iemre.get_grids"><code class="docutils literal notranslate"><span class="pre">get_grids()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.iemre.get_hourly_ncname"><code class="docutils literal notranslate"><span class="pre">get_hourly_ncname()</span></code></a></li>
@@ -2779,7 +2788,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1215+g01a1253 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1217+g9faa9bf documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
