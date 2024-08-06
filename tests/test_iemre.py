@@ -98,6 +98,7 @@ def test_get_table():
 def test_get_domain():
     """Test the get_domain method."""
     assert iemre.get_domain(100, 30) == "china"
+    assert iemre.get_domain(-1000, 30) is None
 
 
 def test_get_gid():
