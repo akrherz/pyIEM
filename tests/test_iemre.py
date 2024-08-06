@@ -114,8 +114,12 @@ def test_writing_grids():
     cursor = pgconn.cursor()
     valid = datetime.date.today() + datetime.timedelta(days=120)
     ds = iemre.get_grids(valid, varnames=["high_tmpk"], domain=domain)
+    # Set a sentinel value to see if it approximately round-trips
+    sentinel = 251
+    ds["high_tmpk"].values[140, 130] = sentinel
     iemre.set_grids(valid, ds, domain=domain)
     ds = iemre.get_grids(valid, varnames=["high_tmpk"], domain=domain)
+    assert abs(ds["high_tmpk"].values[140, 130] - sentinel) < 0.1
     assert ds["high_tmpk"].lat[0] > 0
     # Cleanup after ourself
     cursor.execute(
