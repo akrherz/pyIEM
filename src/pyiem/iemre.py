@@ -99,7 +99,7 @@ def get_table(valid):
     return table
 
 
-def set_grids(valid, ds, table=None):
+def set_grids(valid, ds, table=None, domain: str = ""):
     """Update the database with a given ``xarray.Dataset``.
 
     Args:
@@ -107,9 +107,11 @@ def set_grids(valid, ds, table=None):
       ds (xarray.Dataset): The xarray dataset to save
       table (str,optional): hard coded database table to use to set the data
         on.  Usually dynamically computed.
+      domain (str,optional): IEMRE domain to save data to
     """
     table = Identifier(table if table is not None else get_table(valid))
-    pgconn = get_dbconn("iemre")
+    dom = DOMAINS[domain]
+    pgconn = get_dbconn(d2l(domain))
     cursor = pgconn.cursor()
     # Do we currently have database entries?
     cursor.execute(
@@ -141,17 +143,19 @@ def set_grids(valid, ds, table=None):
 
     # Implementation notes: seems quite fast
     pig = {v: ds[v].values.ravel().tolist() for v in ds}
-    pig["valid"] = [f"{valid:%Y-%m-%d}"] * (NX * NY)
-    pig["gid"] = list(range(NX * NY))
+    pig["valid"] = [f"{valid:%Y-%m-%d}"] * (dom["nx"] * dom["ny"])
+    pig["gid"] = list(range(dom["nx"] * dom["ny"]))
 
     sts = utc()
     cursor.executemany(query, zip(*pig.values()))
     cursor.close()
     pgconn.commit()
-    LOG.info("timing %.2f/s", NX * NY / (utc() - sts).total_seconds())
+    LOG.info(
+        "timing %.2f/s", dom["nx"] * dom["ny"] / (utc() - sts).total_seconds()
+    )
 
 
-def get_grids(valid, varnames=None, cursor=None, table=None):
+def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
     """Fetch grid(s) from the database, returning xarray.
 
     Args:
@@ -161,12 +165,14 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
       cursor (database cursor,optional): cursor to use for query
       table (str,optional): Hard coded table to fetch data from, useful in the
         case of forecast data.
+      domain (str,optional): IEMRE domain to fetch data from
 
     Returns:
       ``xarray.Dataset``"""
     table = table if table is not None else get_table(valid)
+    dom = DOMAINS[domain]
     if cursor is None:
-        pgconn = get_dbconn("iemre")
+        pgconn = get_dbconn(d2l(domain))
         cursor = pgconn.cursor()
     # rectify varnames
     if isinstance(varnames, str):
@@ -186,15 +192,20 @@ def get_grids(valid, varnames=None, cursor=None, table=None):
     cursor.execute(
         f"SELECT (gid / %s)::int as y, gid %% %s as x, {colsql} "
         f"from {table} WHERE valid = %s",
-        (NX, NX, valid),
+        (dom["nx"], dom["ny"], valid),
     )
-    data = dict((key, np.full((NY, NX), np.nan)) for key in use_columns)
+    data = {
+        key: np.full((dom["ny"], dom["nx"]), np.nan) for key in use_columns
+    }
     for row in cursor:
         for i, col in enumerate(use_columns):
             data[col][row[0], row[1]] = row[2 + i]
     ds = xr.Dataset(
         dict((key, (["y", "x"], data[key])) for key in data),
-        coords={"lon": (["x"], XAXIS), "lat": (["y"], YAXIS)},
+        coords={
+            "lon": (["x"], np.arange(dom["west"], dom["east"], DX)),
+            "lat": (["y"], np.arange(dom["south"], dom["north"], DY)),
+        },
     )
     return ds
 
@@ -268,6 +279,17 @@ def find_ij(lon, lat, domain: str = "") -> Tuple[Optional[int], Optional[int]]:
     j = np.digitize(lat, np.arange(dom["south"], dom["north"], DY)) - 1
 
     return i, j
+
+
+def get_domain(lon: float, lat: float) -> Optional[str]:
+    """Compute the domain that contains the given point."""
+    for domain, dom in DOMAINS.items():
+        if (
+            dom["west"] <= lon < dom["east"]
+            and dom["south"] <= lat < dom["north"]
+        ):
+            return domain
+    return None
 
 
 def get_gid(lon, lat, domain: str = "") -> Optional[int]:
