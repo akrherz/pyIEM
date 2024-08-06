@@ -95,6 +95,11 @@ def test_get_table():
     assert iemre.get_table(d2) == "iemre_hourly_200009"
 
 
+def test_get_domain():
+    """Test the get_domain method."""
+    assert iemre.get_domain(100, 30) == "china"
+
+
 def test_get_gid():
     """Can we get a gid?"""
     assert iemre.get_gid(-96, 44) is not None
@@ -103,12 +108,13 @@ def test_get_gid():
 
 def test_writing_grids():
     """Test letting the API write data from the future."""
-    pgconn = database.get_dbconn("iemre")
+    domain = "china"
+    pgconn = database.get_dbconn(iemre.d2l(domain))
     cursor = pgconn.cursor()
     valid = datetime.date.today() + datetime.timedelta(days=120)
-    ds = iemre.get_grids(valid, varnames=["high_tmpk"])
-    iemre.set_grids(valid, ds)
-    ds = iemre.get_grids(valid, varnames=["high_tmpk"])
+    ds = iemre.get_grids(valid, varnames=["high_tmpk"], domain=domain)
+    iemre.set_grids(valid, ds, domain=domain)
+    ds = iemre.get_grids(valid, varnames=["high_tmpk"], domain=domain)
     assert ds["high_tmpk"].lat[0] > 0
     # Cleanup after ourself
     cursor.execute(
