@@ -194,9 +194,9 @@ def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
         f"from {table} WHERE valid = %s",
         (dom["nx"], dom["ny"], valid),
     )
-    data = dict(
-        (key, np.full((dom["ny"], dom["nx"]), np.nan)) for key in use_columns
-    )
+    data = {
+        key: np.full((dom["ny"], dom["nx"]), np.nan) for key in use_columns
+    }
     for row in cursor:
         for i, col in enumerate(use_columns):
             data[col][row[0], row[1]] = row[2 + i]
@@ -285,10 +285,8 @@ def get_domain(lon: float, lat: float) -> Optional[str]:
     """Compute the domain that contains the given point."""
     for domain, dom in DOMAINS.items():
         if (
-            lon >= dom["west"]
-            and lon < dom["east"]
-            and lat >= dom["south"]
-            and lat < dom["north"]
+            dom["west"] <= lon < dom["east"]
+            and dom["south"] <= lat < dom["north"]
         ):
             return domain
     return None
