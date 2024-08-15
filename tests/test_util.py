@@ -332,12 +332,13 @@ def test_get_autoplot_context_dates():
     }
     opts = dict(
         arguments=[
-            dict(
-                type="date",
-                name="d",
-                default="2011/11/12",
-                maxval="2022/01/01",
-            ),
+            {
+                "type": "date",
+                "name": "d",
+                "default": "2011/11/12",
+                "max": "2022/01/01",
+                "min": "2011/01/01",
+            },
             dict(type="datetime", name="d2", default="2011/11/12 1213"),
             {"type": "datetime", "name": "d3", "default": "2011/11/12 1213"},
         ]
