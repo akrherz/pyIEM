@@ -1,6 +1,7 @@
 """Can we parse UGC strings"""
 
 import pytest
+
 from pyiem.exceptions import UGCParseException
 from pyiem.nws import ugc
 from pyiem.util import utc

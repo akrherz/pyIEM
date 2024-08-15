@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import mock
 import pytest
 from pydantic import AwareDatetime, Field
+
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
     BadWebRequest,

@@ -3,6 +3,7 @@
 from unittest import mock
 
 import pytest
+
 from pyiem.nws.products import metarcollect
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file, utc

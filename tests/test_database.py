@@ -3,6 +3,7 @@
 # third party
 import numpy as np
 import pytest
+
 from pyiem import database
 from pyiem.exceptions import NewDatabaseConnectionFailure
 

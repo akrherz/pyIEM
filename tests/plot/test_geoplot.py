@@ -10,6 +10,7 @@ import matplotlib.colors as mpcolors
 import mock
 import numpy as np
 import pytest
+from shapely.geometry import Polygon
 
 # Local
 from pyiem.dep import RAMPS
@@ -25,7 +26,6 @@ from pyiem.plot.geoplot import MapPlot, load_bounds
 from pyiem.plot.util import mask_outside_geom
 from pyiem.reference import LATLON, TWITTER_RESOLUTION_INCH
 from pyiem.util import load_geodf, utc
-from shapely.geometry import Polygon
 
 # Increased threshold with matplotlib 3.6 tweaks
 PAIN = 4.1

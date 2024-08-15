@@ -4,6 +4,7 @@ We use a pickled protocol=2, which is compat binary.
 """
 
 import pandas as pd
+
 from pyiem.database import get_dbconnstr
 from pyiem.util import logger
 

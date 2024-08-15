@@ -5,6 +5,7 @@ import datetime
 
 import pandas as pd
 import pytest
+
 from pyiem.nws.nwsli import NWSLI
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser

@@ -2,6 +2,7 @@
 # pylint: disable=redefined-outer-name
 
 import numpy as np
+
 from pyiem.ncei import ds3505
 from pyiem.util import get_test_filepath, utc
 

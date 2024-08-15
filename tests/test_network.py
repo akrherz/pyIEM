@@ -4,6 +4,7 @@
 from datetime import date
 
 import pytest
+
 from pyiem import network
 
 

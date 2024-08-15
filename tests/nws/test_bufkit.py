@@ -5,6 +5,7 @@ from io import StringIO
 
 # third party
 import pytest
+
 from pyiem.nws.bufkit import read_bufkit
 
 # Local

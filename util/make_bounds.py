@@ -1,10 +1,11 @@
 """Generate the _ccw files used in pyIEM."""
 
 import numpy as np
-from pyiem.database import get_dbconn
-from pyiem.plot.geoplot import MapPlot
 from shapely.geometry import MultiPolygon
 from shapely.wkb import loads
+
+from pyiem.database import get_dbconn
+from pyiem.plot.geoplot import MapPlot
 
 
 def main():

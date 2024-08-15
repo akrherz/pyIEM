@@ -5,6 +5,7 @@ import warnings
 import numpy as np
 import pytest
 from metpy.units import masked_array, units
+
 from pyiem import datatypes, meteorology
 from pyiem.exceptions import InvalidArguments
 

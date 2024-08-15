@@ -1,6 +1,7 @@
 """Test our pyiem.datatypes hack."""
 
 import pytest
+
 from pyiem import datatypes
 
 

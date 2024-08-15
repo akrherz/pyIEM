@@ -3,6 +3,7 @@
 import datetime
 
 import pytest
+
 from pyiem.nws.products import cli
 from pyiem.nws.products import parser as cliparser
 from pyiem.nws.products.cli import CLIException, get_number

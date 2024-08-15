@@ -6,6 +6,7 @@ from io import BytesIO
 import pytest
 from metpy.units import units
 from pandas import read_csv
+
 from pyiem.plot.windrose import PLOT_CONVENTION_TO
 from pyiem.util import utc
 from pyiem.windrose_utils import windrose

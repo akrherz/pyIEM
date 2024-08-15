@@ -1,6 +1,7 @@
 """Unit Tests"""
 
 import pytest
+
 from pyiem.nws.products import parser
 from pyiem.nws.products._outlook_util import debug_draw
 from pyiem.nws.products.spcpts import (

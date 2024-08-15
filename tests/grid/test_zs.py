@@ -3,8 +3,9 @@
 import numpy as np
 from affine import Affine
 from geopandas import GeoSeries
-from pyiem.grid import zs
 from shapely.geometry import Polygon
+
+from pyiem.grid import zs
 
 
 def test_polygon_to_left():

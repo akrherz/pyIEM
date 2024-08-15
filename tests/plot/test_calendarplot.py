@@ -3,6 +3,7 @@
 import datetime
 
 import pytest
+
 from pyiem.plot.calendarplot import calendar_plot
 
 PAIN = 0.02  # how much do we care, sigh.

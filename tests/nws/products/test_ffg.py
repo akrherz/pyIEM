@@ -1,6 +1,7 @@
 """Testing FFG parsing."""
 
 import pytest
+
 from pyiem.nws.products.ffg import parser as ffgparser
 from pyiem.util import get_test_file
 
