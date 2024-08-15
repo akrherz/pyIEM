@@ -1,6 +1,5 @@
 """Utility functions for iemwebfarm applications."""
 
-import datetime
 import random
 import re
 import string
@@ -8,6 +7,7 @@ import sys
 import traceback
 import warnings
 from collections import namedtuple
+from datetime import datetime
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -237,7 +237,7 @@ def compute_ts_from_string(form, key):
         fmt += ".%f"
     if len(tstr.split(":")) == 2:
         fmt = "%Y-%m-%d %H:%M"
-    return datetime.datetime.strptime(tstr, fmt).replace(tzinfo=tz)
+    return datetime.strptime(tstr, fmt).replace(tzinfo=tz)
 
 
 def compute_ts(form, suffix):
@@ -260,7 +260,7 @@ def compute_ts(form, suffix):
         else:
             day = 28
 
-    return datetime.datetime(
+    return datetime(
         int(yearval),
         month,
         day,
@@ -447,7 +447,7 @@ def iemapp(**kwargs):
                 )
                 return [msg.encode("ascii")]
 
-            start_time = datetime.datetime.utcnow()
+            start_time = datetime.utcnow()
             status_code = 500
             try:
                 # mixed convers this to a regular dict
@@ -489,7 +489,7 @@ def iemapp(**kwargs):
                 )
             except Exception:
                 res = _handle_exp(traceback.format_exc())
-            end_time = datetime.datetime.utcnow()
+            end_time = datetime.utcnow()
             if kwargs.get("enable_telemetry", True):
                 write_telemetry(
                     TELEMETRY(
