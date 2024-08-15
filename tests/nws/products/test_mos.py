@@ -1,6 +1,7 @@
 """Test MOS Parsing."""
 
 import pytest
+
 from pyiem.nws.products.mos import parser as mosparser
 from pyiem.util import get_test_file, utc
 

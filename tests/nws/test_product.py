@@ -1,6 +1,7 @@
 """Testing!"""
 
 import pytest
+
 from pyiem.nws import product, ugc
 from pyiem.nws.product import (
     TextProduct,

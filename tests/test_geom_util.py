@@ -2,8 +2,9 @@
 
 # Third Party
 # Local
-from pyiem import geom_util
 from shapely.geometry import LineString, Polygon
+
+from pyiem import geom_util
 
 SQUARE = Polygon([(0, 0), (0, 1), (1, 1), (1, 0), (0, 0)])
 

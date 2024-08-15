@@ -9,6 +9,7 @@ import warnings
 import numpy as np
 import pandas as pd
 import pytest
+
 from pyiem import observation
 from pyiem.database import get_dbconnc
 from pyiem.util import utc

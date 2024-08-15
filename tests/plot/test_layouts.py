@@ -2,6 +2,7 @@
 
 # third party
 import pytest
+
 from pyiem.plot.layouts import figure, figure_axes
 
 # local

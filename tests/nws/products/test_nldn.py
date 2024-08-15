@@ -1,6 +1,7 @@
 """Test NLDN."""
 
 import pytest
+
 from pyiem.nws.products.nldn import parser
 from pyiem.util import get_test_filepath
 

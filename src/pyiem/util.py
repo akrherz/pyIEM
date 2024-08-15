@@ -53,6 +53,18 @@ class CustomFormatter(logging.Formatter):
         )
 
 
+def _strptime(ins: str, fmt: str, rectify: bool = False) -> datetime:
+    """Wrapper around strptime."""
+    try:
+        return datetime.strptime(ins, fmt)
+    except ValueError as exp:
+        if rectify:
+            return handle_date_err(exp, ins, fmt)
+        raise IncompleteWebRequest(
+            f"String provided: `{ins}` does not match format: `{fmt}`"
+        ) from exp
+
+
 def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     """Download a URL and insert into LDM.
 
@@ -321,7 +333,8 @@ def handle_date_err(exp, value, fmt):
     res = lastday.strftime("%Y-%m-%d")
     if len(tokens) > 1:
         res += " " + tokens[1]
-    return datetime.strptime(res, fmt)
+    # Careful here, we don't want a recursive loop
+    return _strptime(res, fmt, rectify=False)
 
 
 def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
@@ -442,11 +455,11 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
         elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.strptime(default, "%Y/%m/%d %H%M")
+                default = _strptime(default, "%Y/%m/%d %H%M")
             if minval is not None:
-                minval = datetime.strptime(minval, "%Y/%m/%d %H%M")
+                minval = _strptime(minval, "%Y/%m/%d %H%M")
             if maxval is not None:
-                maxval = datetime.strptime(maxval, "%Y/%m/%d %H%M")
+                maxval = _strptime(maxval, "%Y/%m/%d %H%M")
             if value is not None:
                 # A common problem is for the space to be missing
                 if value.find(" ") == -1:
@@ -455,50 +468,40 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                     else:
                         value += " 0000"
                 _dtfmt = "%Y-%m-%d %H%M"
-                try:
-                    value = datetime.strptime(
-                        value[:15].replace("/", "-"), "%Y-%m-%d %H%M"
-                    )
-                except ValueError as exp:
-                    if kwargs.get("rectify_dates", False):
-                        value = handle_date_err(exp, value, _dtfmt)
-                    else:
-                        # If we are not rectifying dates, we just raise the
-                        # exception
-                        raise
+                value = _strptime(
+                    value[:15].replace("/", "-"),
+                    "%Y-%m-%d %H%M",
+                    rectify=kwargs.get("rectify_dates", False),
+                )
 
         elif typ == "sday":
             # supports legacy uris with yyyy-mm-dd, before migration to sday
             if default is not None:
-                default = datetime.strptime(f"2000{default}", "%Y%m%d").date()
+                default = _strptime(f"2000{default}", "%Y%m%d").date()
             if minval is not None:
-                minval = datetime.strptime(f"2000{minval}", "%Y%m%d").date()
+                minval = _strptime(f"2000{minval}", "%Y%m%d").date()
             if maxval is not None:
-                maxval = datetime.strptime(f"2000{maxval}", "%Y%m%d").date()
+                maxval = _strptime(f"2000{maxval}", "%Y%m%d").date()
             if value is not None:
                 if value.find("-") > -1:
-                    value = datetime.strptime(value, "%Y-%m-%d").date()
+                    value = _strptime(value, "%Y-%m-%d").date()
                 else:
-                    value = datetime.strptime(f"2000{value}", "%Y%m%d").date()
+                    value = _strptime(f"2000{value}", "%Y%m%d").date()
 
         elif typ == "date":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if default is not None:
-                default = datetime.strptime(default, "%Y/%m/%d").date()
+                default = _strptime(default, "%Y/%m/%d").date()
             if minval is not None:
-                minval = datetime.strptime(minval, "%Y/%m/%d").date()
+                minval = _strptime(minval, "%Y/%m/%d").date()
             if maxval is not None:
-                maxval = datetime.strptime(maxval, "%Y/%m/%d").date()
+                maxval = _strptime(maxval, "%Y/%m/%d").date()
             if value is not None:
-                try:
-                    value = datetime.strptime(value, "%Y-%m-%d").date()
-                except ValueError as exp:
-                    if kwargs.get("rectify_dates", False):
-                        value = handle_date_err(exp, value, "%Y-%m-%d").date()
-                    else:
-                        # If we are not rectifying dates, we just raise the
-                        # exception
-                        raise
+                value = _strptime(
+                    value,
+                    "%Y-%m-%d",
+                    rectify=kwargs.get("rectify_dates", False),
+                ).date()
         elif typ == "vtec_ps":
             # VTEC phenomena and significance
             defaults = {}

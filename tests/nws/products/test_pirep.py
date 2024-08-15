@@ -1,6 +1,7 @@
 """PIREP."""
 
 import pytest
+
 from pyiem.nws.products.pirep import parser as pirepparser
 from pyiem.util import get_test_file, utc
 

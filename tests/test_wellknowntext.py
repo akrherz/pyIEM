@@ -1,8 +1,9 @@
 """tests"""
 
 import pytest
-from pyiem import wellknowntext
 from shapely.geometry import LineString, Point, Polygon
+
+from pyiem import wellknowntext
 
 
 def test_bad_well_known_text():

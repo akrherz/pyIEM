@@ -1,6 +1,7 @@
 """Can we process the SCP"""
 
 import pytest
+
 from pyiem.nws.products.scp import parser
 from pyiem.util import get_test_file, utc
 

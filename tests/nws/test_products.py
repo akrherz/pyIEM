@@ -1,6 +1,7 @@
 """Massive omnibus of testing for pyiem.nws.products."""
 
 import pytest
+
 from pyiem.exceptions import HWOException, TextProductException
 from pyiem.nws.products import parser
 from pyiem.util import get_test_file, utc

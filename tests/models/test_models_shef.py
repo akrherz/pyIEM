@@ -2,6 +2,7 @@
 # pylint: disable=redefined-outer-name
 
 import pytest
+
 from pyiem.models.shef import SHEFElement
 from pyiem.util import utc
 

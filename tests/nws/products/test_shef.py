@@ -6,6 +6,7 @@ from datetime import timedelta
 
 import mock
 import pytest
+
 from pyiem.exceptions import InvalidSHEFEncoding, InvalidSHEFValue
 from pyiem.nws.products.shef import (
     make_date,

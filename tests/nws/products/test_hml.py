@@ -3,6 +3,7 @@
 import datetime
 
 import pytest
+
 from pyiem.nws.products.hml import parser as hmlparser
 from pyiem.util import get_test_file, utc
 

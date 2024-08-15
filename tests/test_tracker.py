@@ -4,6 +4,7 @@
 from datetime import date, datetime, timedelta, timezone
 
 import pytest
+
 from pyiem.database import get_dbconnc
 from pyiem.network import Table as NetworkTable
 from pyiem.tracker import TrackerEngine, loadqc

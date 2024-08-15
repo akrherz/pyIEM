@@ -4,6 +4,7 @@ import datetime
 from zoneinfo import ZoneInfo
 
 import pytest
+
 from pyiem.nws.products.dsm import compute_time, parser, process
 from pyiem.util import get_test_file, utc
 

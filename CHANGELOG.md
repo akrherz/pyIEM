@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 - Discontinue persisting text product into {mcd,mpd} table storage.
 - Discontinue storage of text product into sigmets, use `product_id` instead.
+- Raise `IncompleteWebRequest` exception when autoplot datetime parsing fails.
 
 ### New Features
 

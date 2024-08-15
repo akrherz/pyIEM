@@ -1,6 +1,7 @@
 """Test pyiem.plot.utils."""
 
 import pytest
+
 from pyiem.plot.util import centered_bins, draw_logo, fitbox, pretty_bins
 
 
