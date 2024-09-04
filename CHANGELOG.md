@@ -15,6 +15,7 @@ All notable changes to this library are documented in this file.
 
 - Add `_check_dueling_tropics` VTEC check looking for TR+HU overlap (#930).
 - Add IEMRE DOMAINS to support upcoming expansion.
+- Add `pyiem.grid.util.grid_smear` to shift masked data to fill in missing.
 - Allow `iemapp(memcachexpire)` to be a callable, called back with environ.
 - Cross check WCNs against watch database storage for PDS status (#925).
 - For `iemapp` if the `memcachekey=` callable returns `None`, the check of
