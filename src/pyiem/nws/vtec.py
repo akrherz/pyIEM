@@ -107,6 +107,7 @@ VTEC_PHENOMENA = {
     "WI": "Wind",
     "WS": "Winter Storm",
     "WW": "Winter Weather",
+    "XH": "Extreme Heat",  # March 2025
     "ZF": "Freezing Fog",
     "ZR": "Freezing Rain",
 }
@@ -217,6 +218,8 @@ NWS_COLORS = {
     "WS.A": "#4682B4",
     "WS.W": "#FF69B4",
     "WW.Y": "#7B68EE",
+    "XH.A": "#800000",  # maroon
+    "XH.W": "#C71585",  # medium violet red
     "ZF.Y": "#008080",
     "ZR.Y": "#DA70D6",
 }
