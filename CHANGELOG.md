@@ -22,6 +22,7 @@ All notable changes to this library are documented in this file.
 memcache is short circuited.
 - Store `product_id` for PIREPs and do some faked AFOS assignments to help.
 - Support SPC afternoon Day 3 outlook (cycle assigned as 20) (#936).
+- Support VTEC significance addition of Extreme Heat (XH) (#953).
 
 ### Bug Fixes
 
