@@ -5,6 +5,7 @@ import sys
 import warnings
 
 import geopandas as gpd
+from sqlalchemy import text
 
 from pyiem.database import get_sqlalchemy_conn
 from pyiem.reference import state_bounds
@@ -102,6 +103,20 @@ def dump_iowawfo(fn):
     df.to_parquet(fn)
 
 
+def dump_fema_regions(fn):
+    """Dump fema regions."""
+    with get_sqlalchemy_conn("postgis", user="nobody") as conn:
+        df = gpd.read_postgis(
+            text(""" SELECT region, states,
+                ST_MakeValid(ST_Simplify(geom, 0.01)) as geom
+            from fema_regions"""),
+            conn,
+            geom_col="geom",
+            index_col="region",
+        )
+    df.to_parquet(fn)
+
+
 def dump_ugc(gtype, fn, is_firewx=False):
     """UGCS."""
     source_limiter = "source != 'fz'"
@@ -146,6 +161,8 @@ def getfn(prefix):
 
 def main():
     """Go Main"""
+    dump_fema_regions(getfn("fema_regions"))
+    check_file(getfn("fema_regions"))
     dump_conus(getfn("conus"))
     check_file(getfn("conus"))
     dump_iowawfo(getfn("iowawfo"))

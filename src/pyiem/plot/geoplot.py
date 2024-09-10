@@ -165,6 +165,7 @@ class MapPlot:
         # Storage of axes within this plot
         self.state = None
         self.cwa = None
+        self.fema_region = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
         self.cax = plt.axes(CAX_BOUNDS, frameon=False, yticks=[], xticks=[])
@@ -992,6 +993,7 @@ class MapPlot:
             "state",
             "iowawfo",
             "cwa",
+            "fema_region",
         ):
             return
         # in lon,lat
@@ -1002,6 +1004,10 @@ class MapPlot:
         if sector == "cwa":
             s = load_geodf("cwa")
             mask_outside_geom(self.panels[0], s.at[self.cwa, "geom"])
+            return
+        if sector == "fema_region":
+            s = load_geodf("fema_region")
+            mask_outside_geom(self.panels[0], s.at[self.fema_region, "geom"])
             return
         if sector == "conus":
             s = load_geodf("conus")
@@ -1153,6 +1159,27 @@ class MapPlot:
             geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3
             st = ["VT", "DE"]
             geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3
+        polygon_fill(self, geodf, data, **kwargs)
+
+    def draw_fema_regions(self, color: str = "k", **kwargs):
+        """Overlay FEMA Regions."""
+        kwargs["edgecolor"] = color
+        regions = load_geodf("fema_regions")
+        for gp in self.panels:
+            regions.to_crs(gp.crs).plot(
+                ax=gp.ax,
+                aspect=None,
+                zorder=Z_POLITICAL,
+                facecolor="None",
+                **kwargs,
+            )
+
+    def fill_fema_regions(self, data, **kwargs):
+        """Add overlay of filled polygons for FEMA Regions.
+
+        Data is dictionary-ish and keys should be ints!
+        """
+        geodf = load_geodf("fema_regions")
         polygon_fill(self, geodf, data, **kwargs)
 
     def draw_cwas(self, color="k", **kwargs):

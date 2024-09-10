@@ -309,6 +309,24 @@ def sector_setter(mp, axbounds, **kwargs):
             **kwargs,
         )
         mp.panels.append(gp)
+    elif mp.sector == "fema_region":
+        mp.fema_region = int(kwargs.get("fema_region", 7))
+        gp = make_panel(
+            axbounds,
+            mp.fig,
+            [
+                reference.fema_region_bounds[mp.fema_region][0],
+                reference.fema_region_bounds[mp.fema_region][2],
+                reference.fema_region_bounds[mp.fema_region][1],
+                reference.fema_region_bounds[mp.fema_region][3],
+            ],
+            reference.EPSG[3857],
+            aspect,
+            is_geoextent=True,
+            sector_label=f"fema_region_{mp.fema_region}",
+            **kwargs,
+        )
+        mp.panels.append(gp)
     elif mp.sector == "state":
         mp.state = kwargs.get("state", "IA")
         gp = make_panel(
