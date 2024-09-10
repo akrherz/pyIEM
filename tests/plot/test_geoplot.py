@@ -235,6 +235,7 @@ def test_fema_region6():
     )
     mp.fill_fema_regions({6: 10})
     mp.draw_fema_regions()
+    mp.draw_mask()
     return mp.fig
 
 

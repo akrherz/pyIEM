@@ -1006,7 +1006,7 @@ class MapPlot:
             mask_outside_geom(self.panels[0], s.at[self.cwa, "geom"])
             return
         if sector == "fema_region":
-            s = load_geodf("fema_region")
+            s = load_geodf("fema_regions")
             mask_outside_geom(self.panels[0], s.at[self.fema_region, "geom"])
             return
         if sector == "conus":
