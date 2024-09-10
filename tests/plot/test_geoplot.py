@@ -223,6 +223,23 @@ def test_nws_sector_twitter_res():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fema_region6():
+    """Test drawing fema regions."""
+    mp = MapPlot(
+        figsize=(8, 6),
+        nocaption=True,
+        fema_region=6,
+        sector="fema_region",
+        title="FEMA Region 6",
+        nostates=True,
+    )
+    mp.fill_fema_regions({6: 10})
+    mp.draw_fema_regions()
+    mp.draw_mask()
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nashville():
     """Test that Benton County, TNC005 does not show for OHX."""
     mp = MapPlot(

@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+### New Features
+
+- Add support for plotting by FEMA Regions.
+
+### Bug Fixes
+
 ## **1.21.0** (6 Sep 2024)
 
 ### API Changes
