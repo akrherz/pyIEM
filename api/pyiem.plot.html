@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.plot package &#8212; pyIEM 0.0.post1211+g94df398 documentation</title>
+    <title>pyiem.plot package &#8212; pyIEM 0.0.post1211+gebd7333 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
     
-    <script src="../_static/documentation_options.js?v=f7d1eaff"></script>
+    <script src="../_static/documentation_options.js?v=865f8521"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+g94df398 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+gebd7333 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
@@ -273,6 +273,12 @@ accordingly to allow this text to fit, no multiline please!</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_fema_regions">
+<span class="sig-name descname"><span class="pre">draw_fema_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_fema_regions" title="Link to this definition">¶</a></dt>
+<dd><p>Overlay FEMA Regions.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_mask">
 <span class="sig-name descname"><span class="pre">draw_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_mask" title="Link to this definition">¶</a></dt>
 <dd><p>Draw a mask on the main axes.</p>
@@ -374,6 +380,13 @@ are the K ones.</p></li>
 <span class="sig-name descname"><span class="pre">fill_cwsu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_cwsu" title="Link to this definition">¶</a></dt>
 <dd><p>Add overlay of filled polygons for NWS CWSUs.</p>
 <p>Data is dictionary-ish.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_fema_regions">
+<span class="sig-name descname"><span class="pre">fill_fema_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_fema_regions" title="Link to this definition">¶</a></dt>
+<dd><p>Add overlay of filled polygons for FEMA Regions.</p>
+<p>Data is dictionary-ish and keys should be ints!</p>
 </dd></dl>
 
 <dl class="py method">
@@ -949,6 +962,7 @@ rose into.  The first sector is centered on north.</p></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.contourf"><code class="docutils literal notranslate"><span class="pre">MapPlot.contourf()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_colorbar"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_colorbar()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_cwas()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_fema_regions()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_mask"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_mask()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_usdm"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_usdm()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.drawcities"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcities()</span></code></a></li>
@@ -956,6 +970,7 @@ rose into.  The first sector is centered on north.</p></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_climdiv"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_climdiv()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwas()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_cwsu"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwsu()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_fema_regions()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_rfc"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_rfc()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_states"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_states()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_ugcs"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_ugcs()</span></code></a></li>
@@ -1058,7 +1073,7 @@ rose into.  The first sector is centered on north.</p></li>
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+g94df398 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1211+gebd7333 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
