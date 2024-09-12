@@ -756,7 +756,9 @@ def mask_outside_geom(gp, geom):
         geom = MultiPolygon([geom])
     trans = Transformer.from_crs(LATLON, gp.crs, always_xy=True)
     for geo in geom.geoms:
-        ccw = np.asarray(geo.exterior.coords)[::-1]
+        ccw = np.asarray(geo.exterior.coords)
+        if not geo.exterior.is_ccw:
+            ccw = ccw[::-1]
         points = trans.transform(ccw[:, 0], ccw[:, 1])
         # pylint: disable=unsubscriptable-object
         ar = np.column_stack([*points])[:-1]

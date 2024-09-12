@@ -240,6 +240,28 @@ def test_fema_region6():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fema_region_pcolormesh():
+    """Test problem found in production."""
+    mp = MapPlot(
+        figsize=(8, 6),
+        nocaption=True,
+        fema_region=7,
+        sector="fema_region",
+        title="FEMA Region 7",
+        nostates=True,
+    )
+    lons = np.arange(-100, -80, 0.25)
+    lats = np.arange(40, 50, 0.25)
+    vals = np.linspace(0, 1, lats.shape[0] * lons.shape[0]).reshape(
+        [lats.shape[0], lons.shape[0]]
+    )
+    lons, lats = np.meshgrid(lons, lats)
+    res = mp.pcolormesh(lons, lats, vals, np.arange(0, 1, 0.1))
+    res.set_rasterized(True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nashville():
     """Test that Benton County, TNC005 does not show for OHX."""
     mp = MapPlot(

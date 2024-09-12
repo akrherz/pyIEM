@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Ensure geometries going into masking helper are CCW, to mask outside of.
+
 ## **1.21.0** (6 Sep 2024)
 
 ### API Changes
