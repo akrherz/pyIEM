@@ -402,6 +402,7 @@ def iemapp(**kwargs):
           the response, defaults to 3600.
         - content_type (str or callable): The content type to use for the
           response.
+        - allow_list (bool): Allow lists in the form, default True.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -451,7 +452,14 @@ def iemapp(**kwargs):
             status_code = 500
             try:
                 # mixed convers this to a regular dict
-                form = clean_form(parse_formvars(environ).mixed())
+                form = parse_formvars(environ).mixed()
+                if not kwargs.get("allow_list", True):
+                    for key in form:
+                        if isinstance(form[key], list):
+                            raise BadWebRequest(
+                                f"Key {key} is a list, but not allowed"
+                            )
+                form = clean_form(form)
                 if "help" in form:
                     return _handle_help(start_response, **kwargs)
                 if "schema" in kwargs:
