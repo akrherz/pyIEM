@@ -37,14 +37,14 @@ def test_allowed_as_list():
 
     env = {
         "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&q=2",
+        "QUERY_STRING": "q=1&q=2&f=1",
     }
     sr = mock.MagicMock()
     res = application(env, sr)
     assert res[0].find(b"Oopsy") == -1
     env = {
         "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&q=2&f=1&f=2",
+        "QUERY_STRING": "q=1&f=1&f=2",
     }
     sr = mock.MagicMock()
     res = application(env, sr)
@@ -324,7 +324,9 @@ def test_iemapp_help():
 def test_iemapp_iemdb_cursor():
     """Test with a cursor set."""
 
-    @iemapp(iemdb="mesosite", iemdb_cursorname="magic")
+    @iemapp(
+        iemdb="mesosite", iemdb_cursorname="magic", allowed_as_list=["year"]
+    )
     def application(environ, _start_response):
         """Test."""
         environ["iemdb.mesosite.cursor"].execute("SELECT 1 as test")
