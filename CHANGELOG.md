@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `allow_list` option to `iemapp()` helper to stop lists.
 - Add support for plotting by FEMA Regions.
 
 ### Bug Fixes

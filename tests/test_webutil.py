@@ -27,6 +27,23 @@ from pyiem.webutil import (
 )
 
 
+def test_allow_list():
+    """Test that we don't allow a list in the parsed form."""
+
+    @iemapp(allow_list=False)
+    def application(environ, _start_response):
+        """Test."""
+        return f"{random.random()}"
+
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "f=1&f=2",
+    }
+    sr = mock.MagicMock()
+    res = application(env, sr)
+    assert res[0].find(b"Oopsy") > -1
+
+
 def test_memcachekey_is_none():
     """Test that we can handle a None memcachekey."""
 
