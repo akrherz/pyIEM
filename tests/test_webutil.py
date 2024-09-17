@@ -27,17 +27,24 @@ from pyiem.webutil import (
 )
 
 
-def test_allow_list():
+def test_allowed_as_list():
     """Test that we don't allow a list in the parsed form."""
 
-    @iemapp(allow_list=False)
+    @iemapp(allowed_as_list=["q"])
     def application(environ, _start_response):
         """Test."""
         return f"{random.random()}"
 
     env = {
         "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "f=1&f=2",
+        "QUERY_STRING": "q=1&q=2",
+    }
+    sr = mock.MagicMock()
+    res = application(env, sr)
+    assert res[0].find(b"Oopsy") == -1
+    env = {
+        "wsgi.input": mock.MagicMock(),
+        "QUERY_STRING": "q=1&q=2&f=1&f=2",
     }
     sr = mock.MagicMock()
     res = application(env, sr)

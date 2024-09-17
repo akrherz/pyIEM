@@ -402,7 +402,8 @@ def iemapp(**kwargs):
           the response, defaults to 3600.
         - content_type (str or callable): The content type to use for the
           response.
-        - allow_list (bool): Allow lists in the form, default True.
+        - allowed_as_list (list): CGI parameters that are permitted to be
+          lists.
 
     What all this does:
         1) Attempts to catch database connection errors and handle nicely
@@ -453,9 +454,12 @@ def iemapp(**kwargs):
             try:
                 # mixed convers this to a regular dict
                 form = parse_formvars(environ).mixed()
-                if not kwargs.get("allow_list", True):
+                allowed = kwargs.get("allowed_as_list", [])
+                if allowed:
                     for key in form:
-                        if isinstance(form[key], list):
+                        if not isinstance(form[key], list):
+                            continue
+                        if key not in allowed:
                             raise BadWebRequest(
                                 f"Key {key} is a list, but not allowed"
                             )
