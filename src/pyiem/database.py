@@ -3,12 +3,15 @@
 # stdlib
 import getpass
 from contextlib import contextmanager
+from typing import Generator
 
 # third party
 import numpy as np
 import psycopg
 from psycopg.adapt import Dumper
-from psycopg.rows import dict_row
+from psycopg.rows import DictRow, dict_row
+from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Connection
 
 # NB: Careful of cyclic imports here...
 from pyiem.exceptions import NewDatabaseConnectionFailure
@@ -106,8 +109,12 @@ def get_dbconn(database="mesosite", user=None, host=None, port=5432, **kwargs):
 
 
 def get_dbconnc(
-    database="mesosite", user=None, host=None, cursor_name=None, **kwargs
-):
+    database: str = "mesosite",
+    user: str = None,
+    host: str = None,
+    cursor_name: str = None,
+    **kwargs,
+) -> tuple[psycopg.Connection[DictRow], psycopg.ServerCursor[DictRow]]:
     """Helper function to get a database connection + dict_row cursor.
 
     Note that this helper could return a read-only database connection if the
@@ -123,10 +130,6 @@ def get_dbconnc(
       port (int,optional): the TCP port that PostgreSQL is listening
         defaults to 5432
       password (str,optional): the password to use.
-
-    Returns:
-      psycopg2 database connection
-      psycopg2 database cursor
     """
     conn = get_dbconn(database, user=user, host=host, **kwargs)
     conn.row_factory = dict_row
@@ -134,26 +137,27 @@ def get_dbconnc(
 
 
 @contextmanager
-def get_sqlalchemy_conn(text, **kwargs):
+def get_sqlalchemy_conn(
+    name: str, **kwargs
+) -> Generator[Connection, None, None]:
     """An auto-disposing sqlalchemy context-manager helper.
 
     This is used for when we really do not want to manage having pools of
     database connections open.  So this isn't something that is fast!
 
     Args:
-        text (str): the database to connect to, passed to get_dbconnstr
+        name (str): the database to connect to, passed to get_dbconnstr
         **kwargs: any additional arguments to pass to get_dbconnstr
     """
-    from sqlalchemy import create_engine
-
     # Le Sigh
-    connstr = get_dbconnstr(text, **kwargs).replace(
+    connstr = get_dbconnstr(name, **kwargs).replace(
         "postgresql",
         "postgresql+psycopg",
     )
     engine = create_engine(connstr)
     try:
-        # Unsure if this is trouble or not.
+        # This seems to be a best practice as the finally will always clean
+        # up the connection
         with engine.connect() as conn:
             yield conn
     finally:
