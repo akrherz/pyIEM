@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.plot package &#8212; pyIEM 0.1.dev1212+g26922b4 documentation</title>
+    <title>pyiem.plot package &#8212; pyIEM 0.1.dev1212+g31f417f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=def86cc0" />
     
-    <script src="../_static/documentation_options.js?v=70e42ed4"></script>
+    <script src="../_static/documentation_options.js?v=4b552011"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+g26922b4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+g31f417f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
@@ -124,6 +124,12 @@ apctx (dict): autoplot context.</p></li>
 <dt class="sig sig-object py" id="pyiem.plot.colormaps.nwssnow">
 <span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">nwssnow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.nwssnow" title="Link to this definition">¶</a></dt>
 <dd><p>A Color Ramp Suggested by the NWS for Snowfall</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.plot.colormaps.radar_ptype">
+<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">radar_ptype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyiem.plot.colormaps.radar_ptype" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a dictionary of colors for HRRR Ptype.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -290,6 +296,12 @@ masking the user wants.</p>
 happen.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend">
+<span class="sig-name descname"><span class="pre">draw_radar_ptype_legend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend" title="Link to this definition">¶</a></dt>
+<dd><p>Draw a legend for radar precipitation type.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -950,6 +962,7 @@ rose into.  The first sector is centered on north.</p></li>
 <li><a class="reference internal" href="#pyiem.plot.colormaps.maue"><code class="docutils literal notranslate"><span class="pre">maue()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.colormaps.nwsprecip"><code class="docutils literal notranslate"><span class="pre">nwsprecip()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.colormaps.nwssnow"><code class="docutils literal notranslate"><span class="pre">nwssnow()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.plot.colormaps.radar_ptype"><code class="docutils literal notranslate"><span class="pre">radar_ptype()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.colormaps.stretch_cmap"><code class="docutils literal notranslate"><span class="pre">stretch_cmap()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.colormaps.whitebluegreenyellowred"><code class="docutils literal notranslate"><span class="pre">whitebluegreenyellowred()</span></code></a></li>
 </ul>
@@ -964,6 +977,7 @@ rose into.  The first sector is centered on north.</p></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_cwas()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_fema_regions()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_mask"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_mask()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_radar_ptype_legend()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_usdm"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_usdm()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.drawcities"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcities()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.drawcounties"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcounties()</span></code></a></li>
@@ -1073,7 +1087,7 @@ rose into.  The first sector is centered on north.</p></li>
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+g26922b4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+g31f417f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
