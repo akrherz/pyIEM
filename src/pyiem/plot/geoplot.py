@@ -46,7 +46,7 @@ from scipy.interpolate import NearestNDInterpolator
 from scipy.signal import convolve2d
 from shapely.geometry import shape
 
-from pyiem.plot.colormaps import stretch_cmap
+from pyiem.plot.colormaps import radar_ptype, stretch_cmap
 
 # local
 from pyiem.plot.use_agg import plt
@@ -408,6 +408,47 @@ class MapPlot:
             )
             return datetime.datetime.strptime(usdm_valid, "%Y-%m-%d")
         return None
+
+    def draw_radar_ptype_legend(self):
+        """Draw a legend for radar precipitation type."""
+        ramps = radar_ptype()
+        pos = self.cax.get_position()
+        w75 = pos.width * 0.75
+        x0 = pos.x0 + 0.015
+        axes = [
+            self.fig.add_axes((x0, pos.y0, w75, pos.height / 5)),
+            self.fig.add_axes(
+                (x0, pos.y0 + pos.height / 4, w75, pos.height / 5)
+            ),
+            self.fig.add_axes(
+                (x0, pos.y0 + pos.height / 2, w75, pos.height / 5)
+            ),
+            self.fig.add_axes(
+                (x0, pos.y0 + pos.height * 0.75, w75, pos.height / 5)
+            ),
+        ]
+        levels = np.arange(0, 55.1, 2.5)
+        norm = mpcolors.BoundaryNorm(levels, 22)
+        for i, (name, colors) in enumerate(ramps.items()):
+            cmap = mpcolors.ListedColormap(colors, name=name)
+            cb = plt.colorbar(
+                mpcm.ScalarMappable(norm=norm, cmap=cmap),
+                cax=axes[i],
+                boundaries=levels,
+                ticks=range(0, 51, 10),
+                spacing="uniform",
+                orientation="vertical",
+            )
+            # Remove minor ticks
+            cb.ax.yaxis.set_tick_params(which="minor", width=0)
+            cb.ax.text(
+                -0.03,
+                0.5,
+                name if name != "icep" else "sleet",
+                va="center",
+                ha="right",
+                rotation=90,
+            )
 
     def draw_colorbar(self, clevs, cmap, norm, **kwargs):
         """Draw the colorbar on the structed plot using `self.cax`.

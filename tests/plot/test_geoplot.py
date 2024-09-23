@@ -53,6 +53,14 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_radar_ptype_legend():
+    """Test the plotting of the ptype reflectivity legend."""
+    mp = MapPlot(nocaption=True, sector="iowa")
+    mp.draw_radar_ptype_legend()
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_nws_with_axes_position_set():
     """Test that the inset axes work out."""
     mp = MapPlot(
