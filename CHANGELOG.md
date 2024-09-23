@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Discontinue raw SPS product text within the database.
+
 ### New Features
 
 - Add `allowed_as_list` option to `iemapp()` helper to stop lists.

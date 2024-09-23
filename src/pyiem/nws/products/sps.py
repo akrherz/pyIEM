@@ -52,14 +52,13 @@ def _sql_segment(prod, txn, seg):
 
     empty = "POLYGON EMPTY"
     txn.execute(
-        "INSERT into sps(product_id, product, pil, wfo, issue, expire, "
+        "INSERT into sps(product_id, pil, wfo, issue, expire, "
         "geom, ugcs, landspout, waterspout, max_hail_size, max_wind_gust, "
         f"tml_valid, tml_direction, tml_sknt, {tml_column}, segmentnum) "
-        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+        "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
         "%s, %s, %s)",
         (
             prod.get_product_id(),
-            prod.unixtext,
             prod.afos,
             prod.source[1:],
             prod.valid,
