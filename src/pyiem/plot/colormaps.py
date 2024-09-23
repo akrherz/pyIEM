@@ -174,3 +174,35 @@ def maue():
     cmap3 = mpcolors.ListedColormap(cpool, "maue")
     _register_cmap(cmap=cmap3)
     return cmap3
+
+
+def radar_ptype() -> dict[str, list]:
+    """Generate a dictionary of colors for HRRR Ptype."""
+    return {
+        "rain": (
+            # 0-40 by 2.5, Green
+            "#eef8ea #e5f5e0 #d6efd0 #c7e9c0 #b4e1ad #a0d99b #8ace88 #73c476 "
+            "#5ab769 #40aa5d #319a50 #228a44 #117b38 #006c2c #005723 #00441b "
+            # 40-55 by 2.5, Wistia
+            "#ffe81a #ffd710 #ffc505 #ffb700 #ffab00 #ffa000"
+        ).split(),
+        "snow": (
+            # 0-40 by 2.5, 16 colors from ocean_r
+            "#b4dae6 #99ccdd #81c0d5 #66b3cc #4ea6c4 #3399bb #1b8db3 #0080aa "
+            "#0073a2 #006699 #005a91 #004d88 #003f7f #003377 #00266e #001a66 "
+            # 40-55 by 2.5, 6 colors from PuRd_r
+            "#8d003b #b80b4e #d81b6a #e53592 #df66b0 #cd8bc2"
+        ).split(),
+        "frzr": (
+            # 0-55 by 2.5, 22 colors Reds
+            "#ffeee6 #fee6da #fedecf #fdd0bc #fcc2aa #fcb499 #fca588 #fc9576 "
+            "#fc8767 #fb7858 #fb694a #f7593f #f24734 #ec382b #de2b25 #d11e1f "
+            "#c4161c #b61319 #a81016 #940b13 #7c0510 #67000d"
+        ).split(),
+        "icep": (
+            # 0-55 by 2.5, 22 colors Purples
+            "#f8f6fa #f3f1f7 #eeecf4 #e6e5f1 #dedded #d5d5e9 #cacae3 #bebfdd "
+            "#b4b4d7 #a9a7cf #9e9ac8 #9390c3 #8885be #7e79b8 #7669af #6e58a7 "
+            "#66499f #5e3a98 #552a90 #4e1c8a #460d83 #3f007d"
+        ).split(),
+    }
