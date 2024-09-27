@@ -7,6 +7,13 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_240926_nolsrs():
+    """Test that this processes a LSR!"""
+    prod = parser(get_test_file("LSR/LSRFWD.txt"))
+    assert not prod.warnings
+    assert len(prod.lsrs) == 1
+
+
 def test_240508_summary_link():
     """Test that the summary line is in UTC!"""
     prod = parser(get_test_file("LSR/LSRPIH_summary.txt"))

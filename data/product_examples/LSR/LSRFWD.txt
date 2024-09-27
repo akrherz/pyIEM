@@ -1,0 +1,16 @@
+513 
+NWUS54 KFWD 242201
+LSRFWD
+
+PRELIMINARY LOCAL STORM REPORT
+NATIONAL WEATHER SERVICE FORT WORTH TX
+401 PM CST TUE JAN 24 2012
+
+..TIME..    ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE..    ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0309 PM     HAIL             EUREKA                  32.02N  96.30W
+01/24/2012  E0.75 INCH       NAVARRO            TX   PUBLIC          
+
+$$

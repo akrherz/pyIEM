@@ -22,6 +22,9 @@ class WMOProduct:
     def __init__(self, text, utcnow=None):
         """Constructor."""
         self.warnings = []
+        # For better or worse, ensure the text string ends with a newline
+        if not text.endswith("\n"):
+            text = text + "\n"
         self.text = text
         self.source = None
         self.wmo = None

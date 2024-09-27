@@ -658,6 +658,7 @@ class TextProduct(WMOProduct):
         @param parse_segments should the segments be parsed as well? True
         """
         super().__init__(text, utcnow=utcnow)
+        # NB: Don't use text as it could have been munged by this point
         self.afos = None
         if ugc_provider is None:
             ugc_provider = {}
@@ -665,7 +666,7 @@ class TextProduct(WMOProduct):
             nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
-        self.unixtext = text.replace("\r", "")
+        self.unixtext = self.text.replace("\r", "")
         self.sections = self.unixtext.split("\n\n")
         # The "truth" timestamp
         self.valid = None
