@@ -164,6 +164,10 @@ class LSR:
 
     def consume_magnitude(self, text):
         """Convert LSR magnitude text into something atomic"""
+        # Brute force this special case, which trips up the regex
+        if text.upper().strip().startswith("TRACE"):
+            self.magnitude_f = TRACE_VALUE
+            return
         self.magnitude_str = text
         tokens = MAG_UNITS.findall(text)
         if not tokens:

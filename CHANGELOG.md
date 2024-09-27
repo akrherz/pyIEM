@@ -19,6 +19,7 @@ generating plots of HRRR ptype.
 
 ### Bug Fixes
 
+- Accomodate ancient LSRs using `TRACE` as the magnitude field.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
 
 ## **1.21.0** (6 Sep 2024)
