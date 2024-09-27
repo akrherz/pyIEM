@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Discontinue raw SPS product text within the database.
+- Ensure raw text products into `WMOProduct` end with a line feed.
 
 ### New Features
 

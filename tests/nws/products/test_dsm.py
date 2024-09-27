@@ -53,10 +53,7 @@ KHKS DS 31/12 661152/ 470316// 66/ 46//0021509/45/00/00/00/00/00/05/
 
 def test_junk():
     """Test that we gracefully handle GIGO."""
-    text = "000 \nCDUS27 KISU 020200\nBLAH BLAH="
-    with pytest.raises(ValueError):
-        parser(text)
-    text += "\nBLAH BLAH BLAH=\n"
+    text = "000 \nCDUS27 KISU 020200\nBLAH BLAH=\nBLAH BLAH BLAH=\n"
     prod = parser(text)
     assert prod.warnings
 

@@ -196,8 +196,6 @@ class DSMCollective(WMOProduct):
         # hold our parsing results
         self.data = []
         lines = self.text.replace("\r", "").split("\n")
-        if len(lines) < 4:
-            raise ValueError("Impossibly small DSM Text Product?")
         if len(lines[3]) < 10:
             meat = ("".join(lines[4:])).split("=")
         else:
