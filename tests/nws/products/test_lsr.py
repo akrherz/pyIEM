@@ -7,6 +7,13 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_240927_bad_qualifier():
+    """Test a product that generates an invalid qualifier."""
+    prod = parser(get_test_file("LSR/LSRSEW.txt"))
+    assert prod.lsrs[0].magnitude_qualifier is None
+    assert abs(TRACE_VALUE - prod.lsrs[0].magnitude_f) < TRACE_VALUE
+
+
 def test_240926_nolsrs():
     """Test that this processes a LSR!"""
     prod = parser(get_test_file("LSR/LSRFWD.txt"))
