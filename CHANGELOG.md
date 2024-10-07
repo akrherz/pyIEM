@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 - Discontinue raw SPS product text within the database.
 - Ensure raw text products into `WMOProduct` end with a line feed.
+- Stop postprocessing the `MapPlot` figure into 8bit colorspace.
 
 ### New Features
 
@@ -21,6 +22,7 @@ generating plots of HRRR ptype.
 
 - Accomodate ancient LSRs using `TRACE` as the magnitude field.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
+- Properly check USDM service response prior to parsing it.
 
 ## **1.21.0** (6 Sep 2024)
 
