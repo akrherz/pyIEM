@@ -1357,31 +1357,19 @@ class MapPlot:
         """
         with BytesIO() as ram:
             self.fig.savefig(ram, format="png")
-            ram.seek(0)
-            im = Image.open(ram)
-            im2 = im.convert("RGB").convert(
-                "P", palette=Image.Palette.ADAPTIVE
+            imgdata = ram.getvalue()
+        if kwargs.get("memcache") and kwargs.get("memcachekey"):
+            kwargs["memcache"].set(
+                kwargs["memcachekey"],
+                imgdata,
+                time=kwargs.get("memcacheexpire", 300),
             )
-            im.close()
-            if kwargs.get("memcache") and kwargs.get("memcachekey"):
-                ram = BytesIO()
-                im2.save(ram, format="png")
-                ram.seek(0)
-                r = ram.read()
-                kwargs["memcache"].set(
-                    kwargs["memcachekey"],
-                    r,
-                    time=kwargs.get("memcacheexpire", 300),
-                )
         if kwargs.get("web", False):
             ssw("Content-Type: image/png\n\n")
-            im2.save(getattr(sys.stdout, "buffer", sys.stdout), format="png")
-            im2.close()
+            sys.stdout.buffer.write(imgdata)
             return
-        tmpfd = tempfile.NamedTemporaryFile(delete=False)
-        im2.save(tmpfd, format="PNG")
-        im2.close()
-        tmpfd.close()
+        with tempfile.NamedTemporaryFile(delete=False) as tmpfd:
+            tmpfd.write(imgdata)
         if kwargs.get("pqstr") is not None:
             subprocess.call(["pqinsert", "-p", kwargs["pqstr"], tmpfd.name])
         if kwargs.get("filename") is not None:
