@@ -296,8 +296,9 @@ class MapPlot:
             valid = valid.strftime("%Y-%m-%d")
         url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
         try:
-            req = requests.get(url, timeout=30)
-            df = gpd.GeoDataFrame().from_features(req.json())
+            resp = requests.get(url, timeout=30)
+            resp.raise_for_status()
+            df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
             warnings.warn(
                 f"draw_usdm IEM USDM Webservice failed: {exp}", stacklevel=1
