@@ -537,7 +537,7 @@ class CLIProduct(TextProduct):
         for section in text.split("&&"):
             if not HEADLINE_RE.findall(section.replace("\n", " ")):
                 continue
-            tokens = re.findall("^WEATHER ITEM.*$", section, re.M)
+            tokens = re.findall(r"^\s?WEATHER ITEM.*$", section, re.M)
             if not tokens:
                 raise CLIException("Could not find 'WEATHER ITEM' within text")
             if len(tokens) == 1:
@@ -554,7 +554,7 @@ class CLIProduct(TextProduct):
 
     def compute_diction(self, text):
         """Try to determine what we have for a format"""
-        tokens = re.findall("^WEATHER ITEM.*$", text, re.M)
+        tokens = re.findall(r"^\s?WEATHER ITEM.*$", text, re.M)
         diction = tokens[0].strip()
         if diction not in REGIMES:
             raise CLIException(

@@ -31,6 +31,12 @@ def factory(fn):
     return cliparser(get_test_file(fn), nwsli_provider=NWSLI_PROVIDER)
 
 
+def test_241020_2007cli():
+    """Test a CLI with stray spaces from 2007."""
+    prod = cliparser(get_test_file("CLI/CLICVG_2007.txt"))
+    assert abs(prod.data[0]["data"]["snow_jul1"] - 17.1) < 0.01
+
+
 def test_231025_tabs():
     """Test that a line with tabs gets ignored (best we can do)."""
     prod = cliparser(get_test_file("CLI/CLICVG_tab.txt"))
