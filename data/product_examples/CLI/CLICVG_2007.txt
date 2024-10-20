@@ -1,0 +1,101 @@
+000 
+CDUS41 KILN 010557
+CLICVG
+
+
+CLIMATE REPORT
+NATIONAL WEATHER SERVICE WILMINGTON OH                               
+155 AM EDT SUN JUL 1 2007
+
+
+ ................................... 
+
+...THE CINCINNATI CLIMATE SUMMARY FOR JUNE 30 2007...
+
+CLIMATE NORMAL PERIOD 1971 TO 2000
+CLIMATE RECORD PERIOD 1869 TO 2007
+
+
+ WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST     
+                VALUE   (LST)  VALUE       VALUE  FROM      YEAR     
+                                                  NORMAL             
+..................................................................
+TEMPERATURE (F)                                                     
+ YESTERDAY                                                           
+  MAXIMUM         82    403 PM  98    1953  85     -3       82       
+  MINIMUM         67    727 AM  47    1923  65      2       55       
+  AVERAGE         75                        75      0       69      
+                                                                     
+PRECIPITATION (IN)                                                   
+  YESTERDAY        0.00          1.36 1933   0.13  -0.13      T      
+  MONTH TO DATE    1.74                      4.42  -2.68     3.67    
+  SINCE JUN 1      1.74                      4.42  -2.68     3.67    
+  SINCE JAN 1     16.22                     22.54  -6.32    24.33    
+                                                                     
+SNOWFALL (IN)                                                        
+  YESTERDAY        0.0                       0.0    0.0      0.0     
+  MONTH TO DATE    0.0                       0.0    0.0      0.0     
+  SINCE JUN 1      0.0                       0.0    0.0      0.0     
+  SINCE JUL 1     17.1                      23.6   -6.5     17.5     
+  SNOW DEPTH       0                                                 
+                                                                     
+DEGREE DAYS                                                          
+ HEATING                                                             
+  YESTERDAY        0                         0      0        0       
+  MONTH TO DATE    0                        19    -19        9       
+  SINCE JUN 1      0                        19    -19        9       
+  SINCE JUL 1   4785                      5148   -363     4624       
+                                                                     
+ COOLING                                                             
+  YESTERDAY       10                        10      0        4       
+  MONTH TO DATE  286                       215     71      167       
+  SINCE JUN 1    286                       215     71      167       
+  SINCE JAN 1    474                       304    170      263       
+..................................................................
+
+
+ WIND (MPH)                                                           
+  RESULTANT WIND SPEED   5   RESULTANT WIND DIRECTION  NE (50)       
+  HIGHEST WIND SPEED    15   HIGHEST WIND DIRECTION    NE (30)       
+  HIGHEST GUST SPEED    18   HIGHEST GUST DIRECTION    NE (30)       
+  AVERAGE WIND SPEED     6.0                                         
+
+                                                                      
+SKY COVER                                                            
+  POSSIBLE SUNSHINE  MM                                              
+  AVERAGE SKY COVER 0.8                                              
+
+                                                                      
+WEATHER CONDITIONS                                                  
+ THE FOLLOWING WEATHER WAS RECORDED YESTERDAY.                        
+  NO SIGNIFICANT WEATHER WAS OBSERVED.                               
+
+                                                                      
+RELATIVE HUMIDITY (PERCENT)                                          
+ HIGHEST    78           100 AM                                     
+ LOWEST     30           100 PM                                     
+ AVERAGE    54                                                       
+
+ ..........................................................
+
+                                                                      
+THE CINCINNATI CLIMATE NORMALS FOR TODAY
+                         NORMAL    RECORD    YEAR                    
+ MAXIMUM TEMPERATURE (F)   85        98      1970                    
+ MINIMUM TEMPERATURE (F)   65        49      1988                    
+
+                                                                      
+SUNRISE AND SUNSET                                                   
+JULY  1 2007..........SUNRISE   616 AM EDT   SUNSET   908 PM EDT   
+JULY  2 2007..........SUNRISE   617 AM EDT   SUNSET   908 PM EDT   
+
+                                                                     
+-  INDICATES NEGATIVE NUMBERS.                                      
+R  INDICATES RECORD WAS SET OR TIED.                                
+MM INDICATES DATA IS MISSING.                                       
+T  INDICATES TRACE AMOUNT.                                          
+
+ 
+
+
+ $$
