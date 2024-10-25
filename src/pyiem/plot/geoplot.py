@@ -1197,9 +1197,9 @@ class MapPlot:
         """Add overlay of filled state polygons"""
         geodf = load_geodf("us_states")
         if self.sector in ["nws", "conus"]:
-            st = ["NH", "MD", "CT"]
+            st = ("NH", "MD", "CT")
             geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3
-            st = ["VT", "DE"]
+            st = ("VT", "DE")
             geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3
         polygon_fill(self, geodf, data, **kwargs)
 
@@ -1520,7 +1520,7 @@ class MapPlot:
         ).set_rasterized(True)
         pos = self.panels[0].ax.get_position()
         cax = self.fig.add_axes(
-            caxpos or [pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015]
+            caxpos or (pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015)
         )
         # pylint: disable=unsubscriptable-object
         cb = plt.colorbar(
