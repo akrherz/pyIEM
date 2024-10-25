@@ -1198,10 +1198,29 @@ class MapPlot:
         geodf = load_geodf("us_states")
         if self.sector in ["nws", "conus"]:
             st = ["NH", "MD", "CT"]
-            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3
+            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3  # type: ignore
             st = ["VT", "DE"]
-            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3
+            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3  # type: ignore
         polygon_fill(self, geodf, data, **kwargs)
+        if self.sector != "nws":
+            return
+        # States that may have data, but are not plotted within sector=nws
+        msg = ["Not Plotted:"]
+        for st in "VI MH MP DC".split():  # eh, are there more?
+            if st in data:
+                val = kwargs.get("lblformat", "%s") % (data[st],)
+                msg.append(f"{st}: {val}")
+        if len(msg) > 1:
+            self.ax.text(
+                0.99,
+                0.4,
+                "\n".join(msg),
+                ha="right",
+                va="top",
+                fontsize=10,
+                bbox=dict(color="white"),
+                transform=self.ax.transAxes,
+            )
 
     def draw_fema_regions(self, color: str = "k", **kwargs):
         """Overlay FEMA Regions."""
@@ -1520,7 +1539,7 @@ class MapPlot:
         ).set_rasterized(True)
         pos = self.panels[0].ax.get_position()
         cax = self.fig.add_axes(
-            caxpos or [pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015]
+            caxpos or (pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015)
         )
         # pylint: disable=unsubscriptable-object
         cb = plt.colorbar(
