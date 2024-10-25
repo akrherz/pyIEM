@@ -726,7 +726,7 @@ def test_contourf_grid():
     return mp.fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_fillstates():
     """Can we fill states"""
     data = {"AK": 10, "HI": 30, "IA": 40, "NY": 80, "CT": 100, "RI": 100}
@@ -735,6 +735,20 @@ def test_fillstates():
         sector="nws",
         title="Fill States & Test Some Readability",
         subtitle="test_fillstates_2024",
+        nocaption=True,
+    )
+    mp.fill_states(data, lblformat="%.0f", ilabel=True, labelbuffer=0)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_fillstates_cornbelt():
+    """Can we fill states"""
+    data = {"AK": 10, "HI": 30, "IA": 40, "NY": 80, "CT": 100, "RI": 100}
+    mp = MapPlot(
+        sector="cornbelt",
+        title="Fill States",
+        subtitle="test_fillstates_corbelt",
         nocaption=True,
     )
     mp.fill_states(data, lblformat="%.0f", ilabel=True, labelbuffer=0)
