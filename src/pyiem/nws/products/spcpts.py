@@ -3,9 +3,9 @@
 My life was not supposed to end like this, what a brutal format.
 """
 
-import datetime
 import re
 import tempfile
+from datetime import timedelta
 from typing import Optional
 
 from shapely.geometry import (
@@ -87,8 +87,8 @@ def compute_times(afos, issue, expire, day):
     if afos not in ["PTSD48", "PFWF38"]:
         return issue, expire
     baseday = 3 if afos == "PFWF38" else 4
-    issue = issue + datetime.timedelta(days=day - baseday)
-    return issue, issue + datetime.timedelta(hours=24)
+    issue = issue + timedelta(days=day - baseday)
+    return issue, issue + timedelta(hours=24)
 
 
 def get_day(prod, text):
@@ -404,10 +404,10 @@ class SPCPTS(TextProduct):
         expire = self.valid.replace(day=day2, hour=hour2, minute=min2)
         # NB: outlooks can go out more than just one day
         if day1 < self.valid.day:
-            issue = self.valid + datetime.timedelta(days=25)
+            issue = self.valid + timedelta(days=25)
             issue = issue.replace(day=day1, hour=hour1, minute=min1)
         if day2 < self.valid.day:
-            expire = self.valid + datetime.timedelta(days=25)
+            expire = self.valid + timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
         self.issue = issue
         self.expire = expire
@@ -593,6 +593,7 @@ class SPCPTS(TextProduct):
             ".png"
         ).replace(" ", "%%20")
         res = []
+        max_category = None
         for day, collect in self.outlook_collections.items():
             wfos = {
                 "TSTM": [],
@@ -639,6 +640,7 @@ class SPCPTS(TextProduct):
                     f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
                 )
                 for wfo in wfos[cat]:
+                    max_category = cat
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [
                         (
@@ -676,16 +678,21 @@ class SPCPTS(TextProduct):
         jdict["t220"] = "conus"
         if len(self.outlook_collections) > 1:
             jdict["day"] = "0"
+        jdict["catmsg"] = (
+            ""
+            if max_category is None
+            else f" (Max Risk: {THRESHOLD2TEXT[max_category]})"
+        )
         res.append(
             [
                 (
-                    "%(name)s issues %(title)s %(outlooktype)s Outlook at "
-                    "%(tstamp)s %(url)s"
+                    "%(name)s issues %(title)s %(outlooktype)s Outlook"
+                    "%(catmsg)s at %(tstamp)s %(url)s"
                 )
                 % jdict,
                 (
                     '<p>%(name)s issues <a href="%(url)s">%(title)s '
-                    "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
+                    "%(outlooktype)s Outlook</a>%(catmsg)s at %(tstamp)s</p>"
                 )
                 % jdict,
                 {
@@ -694,7 +701,8 @@ class SPCPTS(TextProduct):
                     "twitter_media": twmedia % jdict,
                     "twitter": (
                         "%(name)s issues %(title)s "
-                        "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
+                        "%(outlooktype)s Outlook%(catmsg)s "
+                        "at %(tstamp)s %(url)s"
                     )
                     % jdict,
                 },

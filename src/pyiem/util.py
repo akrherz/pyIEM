@@ -259,9 +259,9 @@ def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
 
     if mode != "w" and not os.path.isfile(ncfn):
         raise IOError(f"No such file {ncfn}")
-    sts = datetime.utcnow()
+    sts = datetime.now(timezone.utc)
     nc = None
-    while (datetime.utcnow() - sts).total_seconds() < timeout:
+    while (datetime.now(timezone.utc) - sts).total_seconds() < timeout:
         try:
             nc = netCDF4.Dataset(ncfn, mode)
             nc.set_auto_scale(True)
@@ -275,13 +275,13 @@ def ncopen(ncfn, mode="r", timeout=60, _sleep=5):
 def utc(year=None, month=1, day=1, hour=0, minute=0, second=0, microsecond=0):
     """Create a datetime instance with tzinfo=timezone.utc
 
-    When no arguments are provided, returns `datetime.utcnow()`.
+    When no arguments are provided, returns `datetime.now(timezone.utc)`.
 
     Returns:
       datetime with tzinfo set
     """
     if year is None:
-        return datetime.utcnow().replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc)
     return datetime(
         year, month, day, hour, minute, second, microsecond
     ).replace(tzinfo=timezone.utc)
