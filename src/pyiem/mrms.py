@@ -42,7 +42,7 @@ def get_url(center, valid, product):
     return uri
 
 
-def fetch(product, valid, tmpdir="/mesonet/tmp"):
+def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
     """Get a desired MRMS product.
 
     Applies the following logic:
@@ -70,9 +70,9 @@ def fetch(product, valid, tmpdir="/mesonet/tmp"):
             fd.write(req.content)
         return tmpfn
     # Option 3, we go look at MRMS website, if timestamp is recent
-    utcnow = datetime.utcnow()
-    if valid.tzinfo is not None:
-        utcnow = utcnow.replace(tzinfo=timezone.utc)
+    utcnow = datetime.now(timezone.utc)
+    if valid.tzinfo is None:
+        utcnow = utcnow.replace(tzinfo=None)
     if (utcnow - valid).total_seconds() > 86400:
         # Can't do option 3!
         return None

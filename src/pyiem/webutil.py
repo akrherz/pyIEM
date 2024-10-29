@@ -7,7 +7,7 @@ import sys
 import traceback
 import warnings
 from collections import namedtuple
-from datetime import datetime
+from datetime import datetime, timezone
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -449,7 +449,7 @@ def iemapp(**kwargs):
                 )
                 return [msg.encode("ascii")]
 
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
             status_code = 500
             try:
                 # mixed convers this to a regular dict
@@ -501,7 +501,7 @@ def iemapp(**kwargs):
                 )
             except Exception:
                 res = _handle_exp(traceback.format_exc())
-            end_time = datetime.utcnow()
+            end_time = datetime.now(timezone.utc)
             if kwargs.get("enable_telemetry", True):
                 write_telemetry(
                     TELEMETRY(

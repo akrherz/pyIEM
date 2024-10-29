@@ -191,7 +191,7 @@ def test_utc():
     answer = datetime(2017, 2, 1, 2, 20).replace(tzinfo=timezone.utc)
     res = util.utc(2017, 2, 1, 2, 20)
     assert answer == res
-    answer = datetime.utcnow().replace(tzinfo=timezone.utc)
+    answer = datetime.now(timezone.utc)
     assert answer.year == util.utc().year
 
 

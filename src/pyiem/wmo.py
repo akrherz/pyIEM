@@ -3,6 +3,7 @@
 # Be frugal with the imports to keep speed and memory down!
 import re
 from datetime import datetime, timezone
+from typing import Optional
 
 from pyiem.exceptions import TextProductException
 
@@ -19,7 +20,7 @@ KNOWN_BAD_TTAAII = ["KAWN"]
 class WMOProduct:
     """Base class for Products with a WMO Header."""
 
-    def __init__(self, text, utcnow=None):
+    def __init__(self, text, utcnow: Optional[datetime] = None):
         """Constructor."""
         self.warnings = []
         # For better or worse, ensure the text string ends with a newline
@@ -34,9 +35,10 @@ class WMOProduct:
         self.wmo_valid = None
         self.utcnow = utcnow
         if utcnow is None:
-            self.utcnow = datetime.utcnow().replace(tzinfo=timezone.utc)
-        # make sure this is actualing in UTC
-        self.utcnow = self.utcnow.astimezone(timezone.utc)
+            self.utcnow = datetime.now(timezone.utc)
+        else:
+            # make sure this is actualing in UTC
+            self.utcnow = self.utcnow.astimezone(timezone.utc)
         self.parse_wmo()
 
     def parse_wmo(self):

@@ -52,8 +52,7 @@ def test_workflow(pcursor, icursor):
     nt.sts[sid2] = dict(
         name="YYY Site Name", network="IA_XXXX", tzname="America/Chicago"
     )
-    valid = datetime.utcnow()
-    valid = valid.replace(tzinfo=timezone.utc)
+    valid = datetime.now(timezone.utc)
     threshold = valid - timedelta(hours=3)
     obs = {
         sid1: {"valid": valid},

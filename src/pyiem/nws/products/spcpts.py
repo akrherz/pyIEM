@@ -3,9 +3,9 @@
 My life was not supposed to end like this, what a brutal format.
 """
 
-import datetime
 import re
 import tempfile
+from datetime import timedelta
 from typing import Optional
 
 from shapely.geometry import (
@@ -87,8 +87,8 @@ def compute_times(afos, issue, expire, day):
     if afos not in ["PTSD48", "PFWF38"]:
         return issue, expire
     baseday = 3 if afos == "PFWF38" else 4
-    issue = issue + datetime.timedelta(days=day - baseday)
-    return issue, issue + datetime.timedelta(hours=24)
+    issue = issue + timedelta(days=day - baseday)
+    return issue, issue + timedelta(hours=24)
 
 
 def get_day(prod, text):
@@ -404,10 +404,10 @@ class SPCPTS(TextProduct):
         expire = self.valid.replace(day=day2, hour=hour2, minute=min2)
         # NB: outlooks can go out more than just one day
         if day1 < self.valid.day:
-            issue = self.valid + datetime.timedelta(days=25)
+            issue = self.valid + timedelta(days=25)
             issue = issue.replace(day=day1, hour=hour1, minute=min1)
         if day2 < self.valid.day:
-            expire = self.valid + datetime.timedelta(days=25)
+            expire = self.valid + timedelta(days=25)
             expire = expire.replace(day=day2, hour=hour2, minute=min2)
         self.issue = issue
         self.expire = expire
