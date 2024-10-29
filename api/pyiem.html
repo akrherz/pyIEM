@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.1.dev1211+g49673a3 documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.1.dev1211+g4b7ca75 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=486b0cee"></script>
+    <script src="../_static/documentation_options.js?v=691ea76a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1211+g49673a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1211+g4b7ca75 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -1517,7 +1517,7 @@ Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
 <p>Hopefully useful functions to help with the processing of MRMS data</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.mrms.fetch">
-<span class="sig-prename descclassname"><span class="pre">pyiem.mrms.</span></span><span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmpdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/mesonet/tmp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.fetch" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.mrms.</span></span><span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmpdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/mesonet/tmp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.mrms.fetch" title="Link to this definition">¶</a></dt>
 <dd><p>Get a desired MRMS product.</p>
 <dl class="simple">
 <dt>Applies the following logic:</dt><dd><ul class="simple">
@@ -2122,7 +2122,7 @@ lock files is problematic.</p>
 <dt class="sig sig-object py" id="pyiem.util.utc">
 <span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">utc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">microsecond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.utc" title="Link to this definition">¶</a></dt>
 <dd><p>Create a datetime instance with tzinfo=timezone.utc</p>
-<p>When no arguments are provided, returns <cite>datetime.utcnow()</cite>.</p>
+<p>When no arguments are provided, returns <cite>datetime.now(timezone.utc)</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>datetime with tzinfo set</p>
@@ -2443,7 +2443,7 @@ only impacts the plot, the provided data should still follow <cite>from</cite>.<
 <p>Very light weight WMO header parser.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.wmo.WMOProduct">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.wmo.</span></span><span class="sig-name descname"><span class="pre">WMOProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.wmo.</span></span><span class="sig-name descname"><span class="pre">WMOProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for Products with a WMO Header.</p>
 <dl class="py method">
@@ -2790,7 +2790,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1211+g49673a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1211+g4b7ca75 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
