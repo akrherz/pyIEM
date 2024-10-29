@@ -47,7 +47,7 @@ def test_get_jabbers():
     j = prod.get_jabbers("")
     ans = (
         "The Weather Prediction Center issues Day 1 Excessive Rainfall "
-        "Outlook at Jul 13, 21:56z "
+        "Outlook (Max Risk: Slight) at Jul 13, 21:56z "
         "https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php"
     )
     assert j[-1][0] == ans

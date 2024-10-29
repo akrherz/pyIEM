@@ -648,7 +648,7 @@ def test_bug_140506_day2():
     j = spc.get_jabbers("localhost", "localhost")
     ans = (
         "The Storm Prediction Center issues Day 2 "
-        "Convective Outlook at May 6, 17:31z "
+        "Convective Outlook (Max Risk: Slight) at May 6, 17:31z "
         "https://www.spc.noaa.gov/products/outlook/archive/2014/"
         "day2otlk_20140506_1730.html"
     )

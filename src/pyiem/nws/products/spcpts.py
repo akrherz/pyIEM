@@ -593,6 +593,7 @@ class SPCPTS(TextProduct):
             ".png"
         ).replace(" ", "%%20")
         res = []
+        max_category = None
         for day, collect in self.outlook_collections.items():
             wfos = {
                 "TSTM": [],
@@ -639,6 +640,7 @@ class SPCPTS(TextProduct):
                     f"{THRESHOLD2TEXT[cat]} {product_descript} Risk"
                 )
                 for wfo in wfos[cat]:
+                    max_category = cat
                     jdict["wfo"] = wfo
                     wfomsgs[wfo] = [
                         (
@@ -676,16 +678,21 @@ class SPCPTS(TextProduct):
         jdict["t220"] = "conus"
         if len(self.outlook_collections) > 1:
             jdict["day"] = "0"
+        jdict["catmsg"] = (
+            ""
+            if max_category is None
+            else f" (Max Risk: {THRESHOLD2TEXT[max_category]})"
+        )
         res.append(
             [
                 (
-                    "%(name)s issues %(title)s %(outlooktype)s Outlook at "
-                    "%(tstamp)s %(url)s"
+                    "%(name)s issues %(title)s %(outlooktype)s Outlook"
+                    "%(catmsg)s at %(tstamp)s %(url)s"
                 )
                 % jdict,
                 (
                     '<p>%(name)s issues <a href="%(url)s">%(title)s '
-                    "%(outlooktype)s Outlook</a> at %(tstamp)s</p>"
+                    "%(outlooktype)s Outlook</a>%(catmsg)s at %(tstamp)s</p>"
                 )
                 % jdict,
                 {
@@ -694,7 +701,8 @@ class SPCPTS(TextProduct):
                     "twitter_media": twmedia % jdict,
                     "twitter": (
                         "%(name)s issues %(title)s "
-                        "%(outlooktype)s Outlook at %(tstamp)s %(url)s"
+                        "%(outlooktype)s Outlook%(catmsg)s "
+                        "at %(tstamp)s %(url)s"
                     )
                     % jdict,
                 },

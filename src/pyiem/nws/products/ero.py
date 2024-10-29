@@ -155,6 +155,7 @@ def jabber_messages(valid, outlook_collections) -> list:
         f"csector:conus::valid:{valid.strftime('%Y-%m-%d %H%M')}"
         ".png"
     ).replace(" ", "%%20")
+    max_category = None
     for day, collect in outlook_collections.items():
         wfos = {
             "MRGL": [],
@@ -181,6 +182,7 @@ def jabber_messages(valid, outlook_collections) -> list:
         ]:
             jdict["ttext"] = f"{THRESHOLD2TEXT[cat]} Risk {product_descript}"
             for wfo in wfos[cat]:
+                max_category = cat
                 jdict["wfo"] = wfo
                 wfomsgs[wfo] = [
                     (
@@ -216,18 +218,24 @@ def jabber_messages(valid, outlook_collections) -> list:
     # Generic for WPC
     jdict["t220"] = "conus"
     jdict["title2"] = "%(name)s issues Day %(day)s %(title)s" % jdict
+    jdict["catmsg"] = (
+        ""
+        if max_category is None
+        else f" (Max Risk: {THRESHOLD2TEXT[max_category]})"
+    )
     res.append(
         [
-            "%(title2)s at %(tstamp)s %(url)s" % jdict,
+            "%(title2)s%(catmsg)s at %(tstamp)s %(url)s" % jdict,
             (
                 '<p>%(name)s issues <a href="%(url)s">Day %(day)s '
-                "%(title)s</a> at %(tstamp)s</p>"
+                "%(title)s</a>%(catmsg)s at %(tstamp)s</p>"
             )
             % jdict,
             {
                 "channels": ["WPC", "ERODY%(day)s" % jdict],
                 "twitter_media": twmedia % jdict,
-                "twitter": "%(title2)s at %(tstamp)s %(url)s" % jdict,
+                "twitter": "%(title2)s%(catmsg)s at %(tstamp)s %(url)s"
+                % jdict,
             },
         ],
     )
