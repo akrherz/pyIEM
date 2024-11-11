@@ -18,6 +18,7 @@ No functional code found within this module, just a bunch of statics
 import os
 import sys
 from datetime import date
+from enum import Enum
 
 import pyproj
 
@@ -113,6 +114,28 @@ SECTORS_NAME = {
     "southernplains": "Southern Plains US",
     "southwest": "Southwestern US",
 }
+
+
+# Labels for Station Attributes
+class StationAttributes(Enum):
+    """Used within mesosite station_attributes table."""
+
+    CEILING = "CEILING"
+    ERA5LAND_SOILTYPE = "ERA5LAND_SOILTYPE"
+    FLOOR = "FLOOR"
+    HAS1MIN = "HAS1MIN"
+    HAS_HML = "HAS_HML"
+    HASTAF = "HASTAF"
+    IS_AWOS = "IS_AWOS"
+    IS_CCOOP = "IS_CCOOP"
+    MAPS_TO = "MAPS_TO"
+    METAR_RESET_MINUTE = "METAR_RESET_MINUTE"
+    NO_4INCH = "NO_4INCH"
+    PEDTS = "PEDTS"
+    SHEF_6HR_SRC = "SHEF_6HR_SRC"
+    TRACKS_STATION = "TRACKS_STATION"
+    WAS = "WAS"
+
 
 txt2drct = {
     "N": 360,

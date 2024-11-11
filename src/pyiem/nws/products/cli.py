@@ -6,7 +6,7 @@ import re
 from pyiem.exceptions import CLIException
 from pyiem.nws.product import TextProduct
 from pyiem.observation import Observation
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, StationAttributes
 from pyiem.util import LOG
 
 AMPM_COLON = re.compile(r"\s\d?\d:\d\d\s[AP]M")
@@ -387,7 +387,11 @@ def _compute_station_ids(prod, cli_station_name, is_multi):
     access_station = None
     access_network = None
     # See if our network table provides an attribute that maps us to an ASOS
-    val = prod.nwsli_provider[station].get("attributes", {}).get("MAPS_TO")
+    val = (
+        prod.nwsli_provider[station]
+        .get("attributes", {})
+        .get(StationAttributes.MAPS_TO)
+    )
     if val is not None:
         tokens = val.split("|")
         if len(tokens) == 2:

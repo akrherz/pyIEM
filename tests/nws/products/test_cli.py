@@ -7,12 +7,14 @@ import pytest
 from pyiem.nws.products import cli
 from pyiem.nws.products import parser as cliparser
 from pyiem.nws.products.cli import CLIException, get_number
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, StationAttributes
 from pyiem.util import get_test_file, utc
 
 NWSLI_PROVIDER = {
     "KIAD": dict(name="HOUSTON INTERCONTINENTAL", access_network="ZZ_ASOS"),
-    "KDMH": dict(name="", attributes={"MAPS_TO": "QQQ|ZZ_ASOS"}),
+    "KDMH": dict(
+        name="", attributes={StationAttributes.MAPS_TO: "QQQ|ZZ_ASOS"}
+    ),
     "KHOU": dict(name="HOUSTON/HOBBY AIRPORT", access_network="ZZ_ASOS"),
     "KRDU": dict(name="RALEIGH-DURHAM", access_network="NC_ASOS"),
     "PADQ": dict(name="KODIAK", access_network="AK_ASOS"),
