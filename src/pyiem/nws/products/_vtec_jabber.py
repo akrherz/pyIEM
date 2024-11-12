@@ -181,7 +181,7 @@ def _get_jabbers(prod, uri, river_uri=None):
                 xtra["twitter_media"] += prod.valid.strftime(
                     "%Y-%m-%d%%20%H%M"
                 )
-            xtra["twitter_media"] += ".png"
+            xtra["twitter_media"] += "::_r:86.png"
             jmsg_dict["ets"] = vtec.get_end_string(prod)
 
             # Include the special bulletin for Tornado Warnings
