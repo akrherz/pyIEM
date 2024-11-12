@@ -18,7 +18,6 @@ No functional code found within this module, just a bunch of statics
 import os
 import sys
 from datetime import date
-from enum import Enum
 
 import pyproj
 
@@ -117,7 +116,7 @@ SECTORS_NAME = {
 
 
 # Labels for Station Attributes
-class StationAttributes(Enum):
+class StationAttributes:
     """Used within mesosite station_attributes table."""
 
     CEILING = "CEILING"
