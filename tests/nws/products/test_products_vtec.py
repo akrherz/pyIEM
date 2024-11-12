@@ -1444,7 +1444,7 @@ def test_tornado_emergency():
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/"
         "network:WFO::wfo:ICT::year:2012::phenomenav:TO::significancev:W"
-        "::etn:35::valid:2012-04-15%200327.png"
+        "::etn:35::valid:2012-04-15%200327::_r:86.png"
     )
     assert j[0][2]["twitter_media"] == ans
     # Remove catastrophic tag
@@ -1671,7 +1671,7 @@ def test_wcn():
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/208/network:"
         "WFO::wfo:DMX::year:2014::phenomenav:SV::significancev:W::etn:143::"
-        "valid:2014-06-04%200331.png"
+        "valid:2014-06-04%200331::_r:86.png"
     )
     assert j[0][2]["twitter_media"] == ans
 
