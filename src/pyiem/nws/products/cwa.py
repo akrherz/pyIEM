@@ -269,7 +269,7 @@ class CWAProduct(TextProduct):
         apurl = (
             "https://mesonet.agron.iastate.edu/plotting/auto/plot/226/"
             f"network:CWSU::cwsu:{data.center}::num:{data.num}::"
-            f"issue:{data.issue:%Y-%m-%d%%20%H%M}::_r:t.png"
+            f"issue:{data.issue:%Y-%m-%d%%20%H%M}::_r:86.png"
         )
         texturl = (
             "https://mesonet.agron.iastate.edu/"

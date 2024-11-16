@@ -454,7 +454,7 @@ def test_170417_empty(dbcursor):
     assert jabber[-1][0] == ans
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-        "cat:categorical::which:0C::t:conus::network:WFO::wfo:DMX::"
+        "cat:categorical::which:0C::t:conus::network:WFO::wfo:DMX::_r:86::"
         "csector:conus::valid:2008-12-25%200941.png"
     )
     assert jabber[-1][2]["twitter_media"] == ans
@@ -655,7 +655,7 @@ def test_bug_140506_day2():
     assert j[-1][0] == ans
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-        "cat:categorical::which:2C::t:conus::network:WFO::wfo:TSA::"
+        "cat:categorical::which:2C::t:conus::network:WFO::wfo:TSA::_r:86::"
         "csector:conus::valid:2014-05-06%201731.png"
     )
     assert j[-1][2]["twitter_media"] == ans
