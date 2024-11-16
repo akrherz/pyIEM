@@ -588,7 +588,7 @@ class SPCPTS(TextProduct):
         twmedia = (
             "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
             "cat:categorical::which:%(day)s%(cat)s::t:%(t220)s::network:WFO::"
-            "wfo:%(wfo)s::"
+            "wfo:%(wfo)s::_r:86::"
             f"csector:conus::valid:{self.valid.strftime('%Y-%m-%d %H%M')}"
             ".png"
         ).replace(" ", "%%20")
