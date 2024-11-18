@@ -8,16 +8,18 @@ import pandas as pd
 
 # Local
 from pyiem.nws.ugc import ugcs_to_text
-from pyiem.nws.vtec import get_action_string
+from pyiem.nws.vtec import VTEC, get_action_string
 from pyiem.reference import TWEET_CHARS
 
 
-def build_channels(prod, segment, vtec) -> list:
+def build_channels(prod, segment, vtec: VTEC) -> list:
     """Build a list of channels for the given segment/vtec."""
     ps = f"{vtec.phenomena}.{vtec.significance}"
     channels = []
-    # Two noisey products that don't default to the main WFO channel
-    if prod.afos[:3] in ["MWW", "RFW"]:
+    # Noisey products that don't default to the main WFO channel
+    if prod.afos[:3] == "RFW" or (
+        prod.afos[:3] == "MWW" and vtec.phenomena in ("SC", "GL", "MF")
+    ):
         channels.append(f"{prod.afos[:3]}{prod.source[1:]}")
     else:
         channels.append(prod.source[1:])
