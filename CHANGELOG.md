@@ -27,6 +27,8 @@ generating plots of HRRR ptype.
 - Accomodate ancient LSRs using `TRACE` as the magnitude field.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
 - Properly check USDM service response prior to parsing it.
+- Refine which `MWW` products are not defaulted into the main WFO Channels,
+  those being VTEC codes `SC`, `MF`, and `GL`.
 - Support parsing `CLI` products circa 2007 with a bad space.
 
 ## **1.21.0** (6 Sep 2024)
