@@ -29,6 +29,7 @@ generating plots of HRRR ptype.
 - Properly check USDM service response prior to parsing it.
 - Refine which `MWW` products are not defaulted into the main WFO Channels,
   those being VTEC codes `SC`, `MF`, and `GL`.
+- Require valid wind speed and direction values going into `windrose_utils`.
 - Support parsing `CLI` products circa 2007 with a bad space.
 
 ## **1.21.0** (6 Sep 2024)

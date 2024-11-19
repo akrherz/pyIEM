@@ -120,9 +120,12 @@ def _get_data(station, **kwargs):
         sqlargs["hours"] = kwargs["hours"]
         tlimit += f" and extract(hour from valid{te}) = ANY(:hours) "
     sql = text(
-        "SELECT sknt, drct, valid at time zone 'UTC' as valid "
-        "from alldata WHERE station = :station "
-        f"and valid > :sts and valid < :ets {tlimit} {rlimiter}"
+        f"""
+        SELECT sknt, drct, valid at time zone 'UTC' as valid
+        from alldata WHERE station = :station
+        and valid > :sts and valid < :ets and sknt >= 0 and drct >= 0
+        {tlimit} {rlimiter}
+        """
     )
     sqlargs["station"] = station
     sqlargs["sts"] = sts
