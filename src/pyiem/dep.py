@@ -1,8 +1,8 @@
 """Utilities for the Daily Erosion Project"""
 
-import datetime
 import math
 import re
+from datetime import date, timedelta
 
 import numpy as np
 import pandas as pd
@@ -80,12 +80,10 @@ def read_yld(filename):
         xref[cropcode] = label  # noqa
     rows = []
     for cropcode, doy, ofe, yld, year in YLD_DATA.findall(data):
-        date = datetime.date(int(year), 1, 1) + datetime.timedelta(
-            days=(int(doy) - 1)
-        )
+        dt = date(int(year), 1, 1) + timedelta(days=int(doy) - 1)
         rows.append(
             dict(
-                valid=date,
+                valid=dt,
                 year=int(year),
                 yield_kgm2=float(yld),
                 crop=xref[cropcode],
@@ -160,9 +158,7 @@ def man2df(mandict: dict, year1: int = 1) -> pd.DataFrame:
                     > -1
                 ):
                     doy = surfeff["mdate"]
-                    plant_date = datetime.date(
-                        year, 1, 1
-                    ) + datetime.timedelta(days=doy - 1)
+                    plant_date = date(year, 1, 1) + timedelta(days=doy - 1)
             rows.append(
                 {
                     "year": year,
@@ -446,7 +442,7 @@ def read_cli(filename, compute_rfactor=False, return_rfactor_metric=True):
             dr = points[i] - points[i - 1]
             maxr = max(maxr, dr / dt)
         linenum += breakpoints + 1
-        dates.append(datetime.date(int(year), int(mo), int(da)))
+        dates.append(date(int(year), int(mo), int(da)))
         rows.append(
             {
                 "tmax": float(tmax),

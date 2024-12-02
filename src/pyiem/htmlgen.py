@@ -1,4 +1,6 @@
-"""Utility functions that generate HTML."""
+"""
+Utility functions that generate HTML.
+"""
 
 from pyiem.network import Table as NetworkTable
 
@@ -43,15 +45,15 @@ def make_select(
 ) -> str:
     """Generate a HTML select element.
 
-    The trick here is what `data` looks like.  The basic form is a ``dict``.
-    You can get `optgroup`s by having the dictionary keys be additional
+    The trick here is what ``data`` looks like. The basic form is a ``dict``.
+    You can get ``optgroup`` by having the dictionary keys be additional
     lists or dicts.
 
     Args:
       name (str): The select name attribute to assign.
       selected (mixed): The option value that should be set to selected.
       data (dict): The structure to build our select from.
-      jscallback (str): javascript to place in the `onChange` attribute.
+      jscallback (str): javascript to place in the ``onChange`` attribute.
       cssclass (str): CSS class to assign to the select element.
       showvalue (bool): Should option label be prepended by key label.
 
