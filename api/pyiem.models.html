@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.models package &#8212; pyIEM 0.1.dev1212+ga0f894a documentation</title>
+    <title>pyiem.models package &#8212; pyIEM 0.1.dev1214+gb120443 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=626fc743"></script>
+    <script src="../_static/documentation_options.js?v=ea44a9aa"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.grid.html" title="pyiem.grid package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+ga0f894a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1214+gb120443 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.models package</a></li> 
@@ -84,23 +84,9 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'center':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'expire':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'geom':</span> <span class="pre">FieldInfo(annotation=Polygon,</span> <span class="pre">required=True),</span> <span class="pre">'is_corrected':</span> <span class="pre">FieldInfo(annotation=bool,</span> <span class="pre">required=True),</span> <span class="pre">'issue':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'narrative':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'num':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -145,23 +131,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'geom':</span> <span class="pre">FieldInfo(annotation=Polygon,</span> <span class="pre">required=True),</span> <span class="pre">'gml_id':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'hazard_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'label':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'status':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'valid_at':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'weather_conditions':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -207,23 +179,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'geom':</span> <span class="pre">FieldInfo(annotation=MultiLineString,</span> <span class="pre">required=True),</span> <span class="pre">'gml_id':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'level':</span> <span class="pre">FieldInfo(annotation=Union[int,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'lower_level':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True),</span> <span class="pre">'upper_level':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True),</span> <span class="pre">'valid_at':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -259,23 +217,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'airmets':</span> <span class="pre">FieldInfo(annotation=List[AIRMETRecord],</span> <span class="pre">required=False,</span> <span class="pre">default=[]),</span> <span class="pre">'freezing_levels':</span> <span class="pre">FieldInfo(annotation=List[FreezingLevelRecord],</span> <span class="pre">required=False,</span> <span class="pre">default=[]),</span> <span class="pre">'issuetime':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'valid_from':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'valid_to':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -300,23 +244,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>SPC Watch Probability.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.sel.SELModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'num':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">description='Watch</span> <span class="pre">number</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">year'),</span> <span class="pre">'typ':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='Type</span> <span class="pre">of</span> <span class="pre">watch')}</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -388,23 +318,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'validate_assignment':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'basevalid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'comment':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'data_created':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'depth':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=32767)]),</span> <span class="pre">'duration':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'dv_interval':</span> <span class="pre">FieldInfo(annotation=Union[timedelta,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'extremum':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='Z'),</span> <span class="pre">'narrative':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'num_value':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'physical_element':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'probability':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='Z'),</span> <span class="pre">'qualifier':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'raw':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='Z'),</span> <span class="pre">'station':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'str_value':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=''),</span> <span class="pre">'type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='R'),</span> <span class="pre">'unit_convention':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='E'),</span> <span class="pre">'valid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -503,23 +419,9 @@ returns the un-scaled value.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'level':</span> <span class="pre">FieldInfo(annotation=Union[int,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=100000)])}</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 </dd></dl>
@@ -550,23 +452,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'drct':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=360)]),</span> <span class="pre">'end_valid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'gust':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=199)]),</span> <span class="pre">'istempo':</span> <span class="pre">FieldInfo(annotation=bool,</span> <span class="pre">required=False,</span> <span class="pre">default=False),</span> <span class="pre">'presentwx':</span> <span class="pre">FieldInfo(annotation=List[str],</span> <span class="pre">required=False,</span> <span class="pre">default=[]),</span> <span class="pre">'raw':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'shear':</span> <span class="pre">FieldInfo(annotation=WindShear,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'sknt':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=199)]),</span> <span class="pre">'sky':</span> <span class="pre">FieldInfo(annotation=List[SkyCondition],</span> <span class="pre">required=False,</span> <span class="pre">default=[]),</span> <span class="pre">'valid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True),</span> <span class="pre">'visibility':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=6)])}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -617,23 +505,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'forecasts':</span> <span class="pre">FieldInfo(annotation=List[TAFForecast],</span> <span class="pre">required=False,</span> <span class="pre">default=[]),</span> <span class="pre">'observation':</span> <span class="pre">FieldInfo(annotation=TAFForecast,</span> <span class="pre">required=True),</span> <span class="pre">'product_id':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">metadata=[MinLen(min_length=28),</span> <span class="pre">MaxLen(max_length=35)]),</span> <span class="pre">'station':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">metadata=[MinLen(min_length=4),</span> <span class="pre">MaxLen(max_length=4)]),</span> <span class="pre">'valid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -674,23 +548,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.taf.WindShear.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'drct':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=360)]),</span> <span class="pre">'level':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=100000)]),</span> <span class="pre">'sknt':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">metadata=[Ge(ge=0),</span> <span class="pre">Le(le=199)])}</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -745,23 +605,9 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'hail_10m':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Hail</span> <span class="pre">10m'),</span> <span class="pre">'hail_1m_2inch':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Hail</span> <span class="pre">1m</span> <span class="pre">2inch'),</span> <span class="pre">'hail_wind_6m':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Hail</span> <span class="pre">wind</span> <span class="pre">6m'),</span> <span class="pre">'is_pds':</span> <span class="pre">FieldInfo(annotation=bool,</span> <span class="pre">required=True,</span> <span class="pre">description='Is</span> <span class="pre">PDS'),</span> <span class="pre">'max_hail_size':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Max</span> <span class="pre">hail</span> <span class="pre">size'),</span> <span class="pre">'max_tops_feet':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Max</span> <span class="pre">tops</span> <span class="pre">feet'),</span> <span class="pre">'max_wind_gust_knots':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Max</span> <span class="pre">wind</span> <span class="pre">gust</span> <span class="pre">knots'),</span> <span class="pre">'num':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">description='Watch</span> <span class="pre">number</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">year'),</span> <span class="pre">'storm_motion_drct':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Storm</span> <span class="pre">motion</span> <span class="pre">drct'),</span> <span class="pre">'storm_motion_sknt':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Storm</span> <span class="pre">motion</span> <span class="pre">sknt'),</span> <span class="pre">'tornadoes_1m_strong':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Tornadoes</span> <span class="pre">1m</span> <span class="pre">strong'),</span> <span class="pre">'tornadoes_2m':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Tornadoes</span> <span class="pre">2m'),</span> <span class="pre">'typ':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">description='Type</span> <span class="pre">of</span> <span class="pre">watch'),</span> <span class="pre">'wind_10m':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Wind</span> <span class="pre">10m'),</span> <span class="pre">'wind_1m_65kt':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=False,</span> <span class="pre">default=None,</span> <span class="pre">description='Wind</span> <span class="pre">1m</span> <span class="pre">65kt')}</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -832,9 +678,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.geom"><code class="docutils literal notranslate"><span class="pre">CWAModel.geom</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.is_corrected"><code class="docutils literal notranslate"><span class="pre">CWAModel.is_corrected</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.issue"><code class="docutils literal notranslate"><span class="pre">CWAModel.issue</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">CWAModel.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.model_config"><code class="docutils literal notranslate"><span class="pre">CWAModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.model_fields"><code class="docutils literal notranslate"><span class="pre">CWAModel.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.narrative"><code class="docutils literal notranslate"><span class="pre">CWAModel.narrative</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.num"><code class="docutils literal notranslate"><span class="pre">CWAModel.num</span></code></a></li>
 </ul>
@@ -847,9 +691,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.gml_id</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.hazard_type</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.label"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.label</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.model_config"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.model_fields"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.status"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.status</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.valid_at</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.weather_conditions</span></code></a></li>
@@ -860,9 +702,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.gml_id</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.level</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.lower_level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.model_fields"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.upper_level</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.valid_at</span></code></a></li>
 </ul>
@@ -871,9 +711,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.airmets"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.airmets</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.freezing_levels</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.issuetime"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.issuetime</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.model_config"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.model_fields"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_from"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_from</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_to"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_to</span></code></a></li>
 </ul>
@@ -882,9 +720,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 </li>
 <li><a class="reference internal" href="#module-pyiem.models.sel">pyiem.models.sel module</a><ul>
 <li><a class="reference internal" href="#pyiem.models.sel.SELModel"><code class="docutils literal notranslate"><span class="pre">SELModel</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SELModel.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.sel.SELModel.model_config"><code class="docutils literal notranslate"><span class="pre">SELModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel.model_fields"><code class="docutils literal notranslate"><span class="pre">SELModel.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.sel.SELModel.num"><code class="docutils literal notranslate"><span class="pre">SELModel.num</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.sel.SELModel.typ"><code class="docutils literal notranslate"><span class="pre">SELModel.typ</span></code></a></li>
 </ul>
@@ -902,9 +738,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.dv_interval"><code class="docutils literal notranslate"><span class="pre">SHEFElement.dv_interval</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.extremum"><code class="docutils literal notranslate"><span class="pre">SHEFElement.extremum</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.lonlat"><code class="docutils literal notranslate"><span class="pre">SHEFElement.lonlat()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SHEFElement.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.model_config"><code class="docutils literal notranslate"><span class="pre">SHEFElement.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.model_fields"><code class="docutils literal notranslate"><span class="pre">SHEFElement.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.narrative"><code class="docutils literal notranslate"><span class="pre">SHEFElement.narrative</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.num_value"><code class="docutils literal notranslate"><span class="pre">SHEFElement.num_value</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.physical_element"><code class="docutils literal notranslate"><span class="pre">SHEFElement.physical_element</span></code></a></li>
@@ -927,9 +761,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.taf.SkyCondition"><code class="docutils literal notranslate"><span class="pre">SkyCondition</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.amount"><code class="docutils literal notranslate"><span class="pre">SkyCondition.amount</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.level"><code class="docutils literal notranslate"><span class="pre">SkyCondition.level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SkyCondition.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.model_config"><code class="docutils literal notranslate"><span class="pre">SkyCondition.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.model_fields"><code class="docutils literal notranslate"><span class="pre">SkyCondition.model_fields</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast"><code class="docutils literal notranslate"><span class="pre">TAFForecast</span></code></a><ul>
@@ -937,9 +769,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.end_valid"><code class="docutils literal notranslate"><span class="pre">TAFForecast.end_valid</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.gust"><code class="docutils literal notranslate"><span class="pre">TAFForecast.gust</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.istempo"><code class="docutils literal notranslate"><span class="pre">TAFForecast.istempo</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">TAFForecast.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.model_config"><code class="docutils literal notranslate"><span class="pre">TAFForecast.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.model_fields"><code class="docutils literal notranslate"><span class="pre">TAFForecast.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.presentwx"><code class="docutils literal notranslate"><span class="pre">TAFForecast.presentwx</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.raw"><code class="docutils literal notranslate"><span class="pre">TAFForecast.raw</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.shear"><code class="docutils literal notranslate"><span class="pre">TAFForecast.shear</span></code></a></li>
@@ -951,9 +781,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 </li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport"><code class="docutils literal notranslate"><span class="pre">TAFReport</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport.forecasts"><code class="docutils literal notranslate"><span class="pre">TAFReport.forecasts</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">TAFReport.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport.model_config"><code class="docutils literal notranslate"><span class="pre">TAFReport.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.model_fields"><code class="docutils literal notranslate"><span class="pre">TAFReport.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport.observation"><code class="docutils literal notranslate"><span class="pre">TAFReport.observation</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport.product_id"><code class="docutils literal notranslate"><span class="pre">TAFReport.product_id</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.TAFReport.station"><code class="docutils literal notranslate"><span class="pre">TAFReport.station</span></code></a></li>
@@ -963,9 +791,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.taf.WindShear"><code class="docutils literal notranslate"><span class="pre">WindShear</span></code></a><ul>
 <li><a class="reference internal" href="#pyiem.models.taf.WindShear.drct"><code class="docutils literal notranslate"><span class="pre">WindShear.drct</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.WindShear.level"><code class="docutils literal notranslate"><span class="pre">WindShear.level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">WindShear.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.WindShear.model_config"><code class="docutils literal notranslate"><span class="pre">WindShear.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.model_fields"><code class="docutils literal notranslate"><span class="pre">WindShear.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.taf.WindShear.sknt"><code class="docutils literal notranslate"><span class="pre">WindShear.sknt</span></code></a></li>
 </ul>
 </li>
@@ -980,9 +806,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_hail_size"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_hail_size</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_tops_feet"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_tops_feet</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_wind_gust_knots"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_wind_gust_knots</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">WWPModel.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.model_config"><code class="docutils literal notranslate"><span class="pre">WWPModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.model_fields"><code class="docutils literal notranslate"><span class="pre">WWPModel.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.num"><code class="docutils literal notranslate"><span class="pre">WWPModel.num</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.storm_motion_drct"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_drct</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.storm_motion_sknt"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_sknt</span></code></a></li>
@@ -1047,7 +871,7 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] ob
         <li class="right" >
           <a href="pyiem.grid.html" title="pyiem.grid package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+ga0f894a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1214+gb120443 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.models package</a></li> 

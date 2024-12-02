@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.nws.products package &#8212; pyIEM 0.1.dev1212+ga0f894a documentation</title>
+    <title>pyiem.nws.products package &#8212; pyIEM 0.1.dev1214+gb120443 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=626fc743"></script>
+    <script src="../_static/documentation_options.js?v=ea44a9aa"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="pyiem.nws package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+ga0f894a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1214+gb120443 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">pyiem.nws package</a> &#187;</li>
@@ -1088,23 +1088,9 @@ this data contains a bunch of formatting errors.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.nws.products.pirep.PilotReport.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.model_computed_fields" title="Link to this definition">¶</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.nws.products.pirep.PilotReport.model_config">
 <span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.model_config" title="Link to this definition">¶</a></dt>
 <dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.nws.products.pirep.PilotReport.model_fields">
-<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'aircraft_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'base_loc':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'cwsu':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'is_duplicate':</span> <span class="pre">FieldInfo(annotation=bool,</span> <span class="pre">required=False,</span> <span class="pre">default=False),</span> <span class="pre">'latitude':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'longitude':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'priority':</span> <span class="pre">FieldInfo(annotation=Priority,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'text':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default=None),</span> <span class="pre">'valid':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=False,</span> <span class="pre">default=None)}</span></em><a class="headerlink" href="#pyiem.nws.products.pirep.PilotReport.model_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Metadata about the fields defined on the model,
-mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo] objects.</p>
-<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2555,9 +2541,7 @@ allow lookup of geographic information for station identifiers.</p></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.is_duplicate"><code class="docutils literal notranslate"><span class="pre">PilotReport.is_duplicate</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.latitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.latitude</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.longitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.longitude</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_computed_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.model_config"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.model_fields"><code class="docutils literal notranslate"><span class="pre">PilotReport.model_fields</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.priority"><code class="docutils literal notranslate"><span class="pre">PilotReport.priority</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.text"><code class="docutils literal notranslate"><span class="pre">PilotReport.text</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.pirep.PilotReport.valid"><code class="docutils literal notranslate"><span class="pre">PilotReport.valid</span></code></a></li>
@@ -2829,7 +2813,7 @@ allow lookup of geographic information for station identifiers.</p></li>
         <li class="right" >
           <a href="pyiem.nws.html" title="pyiem.nws package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1212+ga0f894a documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1214+gb120443 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >pyiem.nws package</a> &#187;</li>
