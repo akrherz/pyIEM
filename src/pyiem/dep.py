@@ -80,7 +80,7 @@ def read_yld(filename):
         xref[cropcode] = label  # noqa
     rows = []
     for cropcode, doy, ofe, yld, year in YLD_DATA.findall(data):
-        dt = date(int(year), 1, 1) + timedelta(days=(int(doy) - 1))
+        dt = date(int(year), 1, 1) + timedelta(days=int(doy) - 1)
         rows.append(
             dict(
                 valid=dt,
