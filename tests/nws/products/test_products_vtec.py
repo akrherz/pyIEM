@@ -43,6 +43,19 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh978_tsunami_warning_channels():
+    """Test that we get a proper WFO channel assignment for this."""
+    ugc_provider = {
+        "CAZ101": UGC("CA", "Z", "101", name="Coast", wfos=["EKA"]),
+    }
+    prod = _vtecparser(
+        get_test_file("TSU/TSUWCA_2024.txt"),
+        ugc_provider=ugc_provider,
+    )
+    j = prod.get_jabbers("")
+    assert "EKA" in j[0][2]["channels"]
+
+
 def test_gh930_dueling_tropics():
     """Test that we get a special warning for this."""
     prod = _vtecparser(get_test_file("TCV/TCVHGX.txt"))
