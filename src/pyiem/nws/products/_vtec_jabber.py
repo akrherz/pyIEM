@@ -31,8 +31,8 @@ def build_channels(prod, segment, vtec: VTEC) -> list:
     channels.append(prod.afos)
     channels.append(f"{prod.afos[:3]}...")
     channels.append(f"{ps}.{vtec.office}{suffix}")
-    # Tsunami Warning is a special case
-    if ps == "TS.W":
+    # Tsunami Warning, Watch is a special case
+    if vtec.phenomena == "TS":
         for ugc in segment.ugcs:
             for wfo in prod.ugc_provider[str(ugc)].wfos:
                 if wfo not in channels:
