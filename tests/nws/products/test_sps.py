@@ -66,7 +66,7 @@ def test_sps_ibw1(dbcursor):
 
 def test_sps_ibw2():
     """Test the jabber message generated."""
-    prod = spsparser(get_test_file("SPS/SPSBMX_IBW2.txt"))
+    prod = spsparser(get_test_file("SPS/SPSBMX_IBW2.txt"), ugc_provider={})
     j = prod.get_jabbers("")
     ans = (
         "BMX issues SIGNIFICANT WEATHER ADVISORY FOR SOUTHWESTERN MARENGO "

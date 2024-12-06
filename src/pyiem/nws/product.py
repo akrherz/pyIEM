@@ -3,7 +3,7 @@
 import re
 from collections import OrderedDict
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Optional, Union
 from zoneinfo import ZoneInfo
 
 from shapely.geometry import MultiPolygon, Polygon
@@ -264,7 +264,7 @@ def qc_is_emergency(seg):
 class TextProductSegment:
     """A segment of a Text Product"""
 
-    def __init__(self, text, tp):
+    def __init__(self, text, tp: "TextProduct"):
         """Constructor"""
         self.unixtext = text
         self.tp = tp  # Reference to parent
@@ -627,16 +627,14 @@ class TextProductSegment:
         ]
         return headlines
 
-    def get_affected_wfos(self):
+    def get_affected_wfos(self) -> list[str]:
         """Based on the ugc_provider, figure out which WFOs are impacted by
         this product segment"""
         affected_wfos = []
         for _ugc in self.ugcs:
-            for wfo in _ugc.wfos:
-                if wfo not in affected_wfos:
-                    affected_wfos.append(wfo)
+            affected_wfos.extend(_ugc.wfos)
 
-        return affected_wfos
+        return list(set(affected_wfos))
 
 
 class TextProduct(WMOProduct):
@@ -646,7 +644,7 @@ class TextProduct(WMOProduct):
         self,
         text,
         utcnow=None,
-        ugc_provider=None,
+        ugc_provider: Optional[Union[ugc.UGCProvider, dict]] = None,
         nwsli_provider=None,
         parse_segments=True,
     ):
@@ -654,14 +652,16 @@ class TextProduct(WMOProduct):
         Constructor
         @param text string single text product
         @param utcnow used to compute offsets for when this product my be valid
-        @param ugc_provider a dictionary of UGC objects already setup
+        @param ugc_provider dict or UGCProvider instance
         @param parse_segments should the segments be parsed as well? True
         """
         super().__init__(text, utcnow=utcnow)
         # NB: Don't use text as it could have been munged by this point
         self.afos = None
+        if isinstance(ugc_provider, dict):
+            ugc_provider = ugc.UGCProvider(legacy_dict=ugc_provider)
         if ugc_provider is None:
-            ugc_provider = {}
+            ugc_provider = ugc.UGCProvider()
         if nwsli_provider is None:
             nwsli_provider = {}
         self.ugc_provider = ugc_provider

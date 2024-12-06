@@ -43,9 +43,22 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh978_tsunami_warning_channels():
+    """Test that we get a proper WFO channel assignment for this."""
+    ugc_provider = {
+        "CAZ101": UGC("CA", "Z", "101", name="Coast", wfos=["EKA"]),
+    }
+    prod = _vtecparser(
+        get_test_file("TSU/TSUWCA_2024.txt"),
+        ugc_provider=ugc_provider,
+    )
+    j = prod.get_jabbers("")
+    assert "EKA" in j[0][2]["channels"]
+
+
 def test_gh930_dueling_tropics():
     """Test that we get a special warning for this."""
-    prod = _vtecparser(get_test_file("TCV/TCVHGX.txt"))
+    prod = vtecparser(get_test_file("TCV/TCVHGX.txt"))
     assert any(a.startswith("Dueling tropical") for a in prod.warnings)
 
 
@@ -56,7 +69,7 @@ def test_gh925_wcn_pds(dbcursor):
     prod = wwp_parser(get_test_file("WWP/WWP9_PDS.txt"))
     prod.sql(dbcursor)
     # Ingest the WCN
-    prod = _vtecparser(get_test_file("WCN/WCNMPX.txt"))
+    prod = vtecparser(get_test_file("WCN/WCNMPX.txt"))
     prod.sql(dbcursor)
     assert prod.segments[0].is_pds
 
@@ -65,7 +78,7 @@ def test_gh925_wcn_pds(dbcursor):
 def test_gh899_cor_emergency(dbcursor):
     """Test that we can handle a COR product that is an emergency."""
     for i in range(4):
-        prod = _vtecparser(get_test_file(f"TOROAX/{i}.txt"))
+        prod = vtecparser(get_test_file(f"TOROAX/{i}.txt"))
         prod.sql(dbcursor)
     dbcursor.execute(
         "select is_emergency from warnings where vtec_year = 2024 and "
@@ -78,7 +91,7 @@ def test_gh899_cor_emergency(dbcursor):
 @pytest.mark.parametrize("database", ["postgis"])
 def test_240428_too_long_fcster(dbcursor):
     """Test handling a too long signature"""
-    prod = _vtecparser(get_test_file("WSW/WSWDLH.txt"))
+    prod = vtecparser(get_test_file("WSW/WSWDLH.txt"))
     prod.sql(dbcursor)
 
 
@@ -86,7 +99,7 @@ def test_240428_too_long_fcster(dbcursor):
 def test_gh888_dont_store_can(dbcursor):
     """Test that CAN polygons are not stored in case of two segment."""
     for i in range(3):
-        prod = _vtecparser(get_test_file(f"SVRMEG/SVRMEG_{i}.txt"))
+        prod = vtecparser(get_test_file(f"SVRMEG/SVRMEG_{i}.txt"))
         prod.sql(dbcursor)
         dbcursor.execute(
             "select count(*) from sbw where vtec_year = 2024 and wfo = 'MEG' "
@@ -101,9 +114,9 @@ def test_gh888_dont_store_can(dbcursor):
 @pytest.mark.parametrize("database", ["postgis"])
 def test_gh862_longfuse_polygons(dbcursor):
     """Test that we more sensibly handle polygon times."""
-    prod = _vtecparser(get_test_file("FLWMEG/FLWMEG.txt"))
+    prod = vtecparser(get_test_file("FLWMEG/FLWMEG.txt"))
     prod.sql(dbcursor)
-    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_0.txt"))
+    prod = vtecparser(get_test_file("FLWMEG/FLSMEG_0.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
         "select issue, polygon_begin, product_signature from sbw "
@@ -115,7 +128,7 @@ def test_gh862_longfuse_polygons(dbcursor):
     row = dbcursor.fetchone()
     assert row["polygon_begin"] == utc(2024, 2, 11, 12, 36)
     assert row["product_signature"] == "ARS"
-    prod = _vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
+    prod = vtecparser(get_test_file("FLWMEG/FLSMEG_1.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
         "select issue, polygon_begin from sbw "
@@ -132,13 +145,13 @@ def test_gh862_longfuse_polygons(dbcursor):
 def test_FLScrosses(dbcursor):
     """Test theoretical overlap of FLS over the new year."""
     # 2015
-    prod = _vtecparser(get_test_file("FLScrosses/FLW_0.txt"))
+    prod = vtecparser(get_test_file("FLScrosses/FLW_0.txt"))
     prod.sql(dbcursor)
     # 2016
-    prod = _vtecparser(get_test_file("FLScrosses/FLW_1.txt"))
+    prod = vtecparser(get_test_file("FLScrosses/FLW_1.txt"))
     prod.sql(dbcursor)
     # updates the 2015 one, but ambiguous
-    prod = _vtecparser(get_test_file("FLScrosses/FLS_0.txt"))
+    prod = vtecparser(get_test_file("FLScrosses/FLS_0.txt"))
     prod.sql(dbcursor)
     assert prod.segments[0].vtec[0].year == 2015
 
@@ -163,13 +176,13 @@ def test_230628_ibwthunderstorm():
 @pytest.mark.parametrize("database", ["postgis"])
 def test_230418_index_error(dbcursor):
     """Test this product for not generating an index error."""
-    prod = _vtecparser(get_test_file("FLS/FLSTFX_indexerror.txt"))
+    prod = vtecparser(get_test_file("FLS/FLSTFX_indexerror.txt"))
     prod.sql(dbcursor)
 
 
 def test_230217_tore_false_positive():
     """Test that this event is not an emergency."""
-    prod = _vtecparser(get_test_file("TORE/TORHGX_false_positive.txt"))
+    prod = vtecparser(get_test_file("TORE/TORHGX_false_positive.txt"))
     assert not prod.segments[0].is_emergency
 
 
@@ -179,7 +192,7 @@ def test_flwmtr_dueling_etns(dbcursor):
     # 4. New FA.W issued for 2023
     # 5. Is a CON for the 2022 event and where the bug is...
     for i in range(9):
-        prod = _vtecparser(get_test_file(f"FLWMTR/FLWMTR_{i}.txt"))
+        prod = vtecparser(get_test_file(f"FLWMTR/FLWMTR_{i}.txt"))
         prod.sql(dbcursor)
         assert not filter_warnings(prod.warnings)
 
@@ -188,7 +201,7 @@ def test_flwmtr_dueling_etns(dbcursor):
 def test_gh676_emergency(dbcursor):
     """Test that the database flags this as an emergency."""
     for i in range(2):
-        prod = _vtecparser(get_test_file(f"FFW/FFWFFC_{i}.txt"))
+        prod = vtecparser(get_test_file(f"FFW/FFWFFC_{i}.txt"))
         prod.sql(dbcursor)
     dbcursor.execute(
         "SELECT is_emergency from warnings where vtec_year = 2022 and "
@@ -201,14 +214,14 @@ def test_gh676_emergency(dbcursor):
 def test_gh660_no_polygon_warnings():
     """Test that warnings are emitted for a product without a polygon."""
     text = get_test_file("SQW/SQWBTV.txt").replace("LAT...LON", "")
-    prod = _vtecparser(text)
+    prod = vtecparser(text)
     ans = "Segment 1 missing required polygon for VTEC: SQ.W"
     assert ans in prod.warnings
 
 
 def test_gh493_sqwtags():
     """Test the processing of snow squall warning tags!"""
-    prod = _vtecparser(get_test_file("SQW/SQWBTV.txt"))
+    prod = vtecparser(get_test_file("SQW/SQWBTV.txt"))
     j = prod.get_jabbers("")
     ans = (
         "BTV issues Snow Squall Warning [snow squall: RADAR INDICATED] for "
@@ -221,7 +234,7 @@ def test_gh493_sqwtags():
 @pytest.mark.parametrize("database", ["postgis"])
 def test_gh493_sqwtags_db(dbcursor):
     """Test the processing of snow squall warning tags!"""
-    prod = _vtecparser(get_test_file("SQW/SQWDVN.txt"))
+    prod = vtecparser(get_test_file("SQW/SQWDVN.txt"))
     prod.sql(dbcursor)
     dbcursor.execute(
         "SELECT damagetag, squalltag from sbw where vtec_year = 2022 and "

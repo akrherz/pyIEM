@@ -2,8 +2,17 @@
 
 from __future__ import absolute_import
 
+from typing import Optional, Union
 
-def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+from pyiem.nws.ugc import UGCProvider
+
+
+def parser(
+    text,
+    utcnow=None,
+    ugc_provider: Optional[Union[UGCProvider, dict]] = None,
+    nwsli_provider=None,
+):
     """Omnibus parser of NWS Text Data
 
     This is intended to be a catch-all parser of text data.  As it currently
@@ -17,8 +26,8 @@ def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
         for when ingesting old data.  Many times, the product does not contain
         enough information to assign a current valid timestamp to it.  So we
         need to know the current timestamp to do the relative computation.
-      ugc_provider (dict, optional): Provides NWS UGC metadata, the dictionary
-        keys are UGC codes.
+      ugc_provider (UGCProvider, optional): Provides UGC information for
+        product parsing.
       nwsli_provider (dict, optional): Provides NWS Location Identifiers to
         allow lookup of geographic information for station identifiers.
 

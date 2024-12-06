@@ -10,6 +10,16 @@ STR1 = "DCZ001-170200-"
 STR2 = "DCZ001-MDZ004>007-009>011-013-014-016>018-VAZ036>042-050>057-170200-"
 
 
+def test_contains():
+    """Test that we can handle various is in scenarios."""
+    ugc_provider = ugc.UGCProvider(
+        legacy_dict={"IAZ001": ugc.UGC("IA", "Z", "001")}
+    )
+    assert ugc.UGC("IA", "Z", "001") in ugc_provider
+    assert "IAZ001" in ugc_provider
+    assert "IAZ002" not in ugc_provider
+
+
 def test_missed_ugc():
     """Invalid encoded county string, check that NMC006 was not included"""
     text = (

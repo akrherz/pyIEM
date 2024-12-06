@@ -6,6 +6,7 @@ Something to store UGC information!
 import datetime
 import re
 from collections import OrderedDict
+from typing import Optional, Union
 
 # third party
 import pandas as pd
@@ -13,7 +14,7 @@ import pandas as pd
 # local
 from pyiem.database import get_dbconnstr
 from pyiem.exceptions import UGCParseException
-from pyiem.util import utc
+from pyiem.util import LOG, utc
 
 UGC_RE = re.compile(
     r"^(([A-Z]?[A-Z]?[C,Z]?[0-9]{3}[>\-]\s?\n?)+)([0-9]{6})-\s*$", re.M
@@ -63,7 +64,166 @@ def str2time(text, valid):
     return valid.replace(day=day, hour=hour, minute=minute)
 
 
-def parse(text, valid, ugc_provider=None, is_firewx=False):
+def _load_from_database(pgconn=None, valid=None):
+    """Build dataframe from a IEM Schema database.
+
+    Args:
+        pgconn (database engine): something pandas can query
+        valid (timestamp, optional): timestamp version of database to use.
+    """
+    pgconn = (
+        pgconn
+        if pgconn is not None
+        else get_dbconnstr("postgis").replace(
+            "postgresql", "postgresql+psycopg"
+        )
+    )
+    valid = valid if valid is not None else utc()
+    return pd.read_sql(
+        "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
+        "from ugcs WHERE begin_ts <= %s and "
+        "(end_ts is null or end_ts > %s)",
+        pgconn,
+        params=(valid, valid),
+        index_col=None,
+    )
+
+
+class UGC:
+    """Representation of a single UGC"""
+
+    def __init__(self, state, geoclass, number, name=None, wfos=None):
+        """
+        Constructor for UGC instances
+        """
+        self.state = state
+        self.geoclass = geoclass
+        self.number = int(number)
+        self.name = name if name is not None else f"(({self.__str__()}))"
+        self.wfos = wfos if wfos is not None else []
+
+    def __str__(self):
+        """Override str()"""
+        return f"{self.state}{self.geoclass}{self.number:03.0f}"
+
+    def __repr__(self):
+        """Override repr()"""
+        return f"{self.state}{self.geoclass}{self.number:03.0f}"
+
+    def __eq__(self, other):
+        """Compare this UGC with another"""
+        return (
+            self.state == other.state
+            and self.geoclass == other.geoclass
+            and self.number == other.number
+        )
+
+    def __ne__(self, other):
+        """Compare this UGC with another"""
+        return not self == other
+
+    __hash__ = None  # unhashable
+
+
+class UGCProvider:
+    """Wrapper around dataframe to provide UGC information."""
+
+    def __init__(self, legacy_dict=None, pgconn=None, valid=None):
+        """Constructor.
+
+        Args:
+          legacy_dict(dict, optional): Build based on legacy dictionary.
+          pgconn (database engine): something to query to get ugc data.
+          valid (timestamp): database version to use.
+        """
+        rows = []
+        if legacy_dict is not None:
+            for key, _ugc in legacy_dict.items():
+                rows.append(
+                    {
+                        "ugc": key,
+                        "name": _ugc.name.replace("...", " "),
+                        "wfo": "".join(_ugc.wfos),
+                        "source": "",
+                    }
+                )
+            df = pd.DataFrame(rows, columns=["ugc", "name", "wfo", "source"])
+        else:
+            df = _load_from_database(pgconn, valid)
+        self.df = df
+
+    def __contains__(self, key: Union[str, UGC]) -> bool:
+        """Check if this provider knows about this UGC.
+
+        Args:
+            key (str or UGC): the UGC to lookup
+
+        Returns:
+            bool
+        """
+        return not self.df[self.df["ugc"] == str(key)].empty
+
+    def get(self, key: Union[str, UGC], is_firewx=False) -> UGC:
+        """Return what this provider knows about a given UGC.
+
+        The complication is that we always want something, either a newly
+        created `UGC` instance or a new one materialized by the internal
+        dataframe stored metadata.
+
+        Args:
+            key (str or UGC): the UGC to lookup
+            is_firewx (bool): is this a fire weather product, so firewx zones
+
+        Returns:
+            UGC instance
+        """
+        # Our internal storage is based on a string key
+        ugc_code: str = key if isinstance(key, str) else str(key)
+
+        matchedrows = self.df[self.df["ugc"] == ugc_code]
+
+        # If the UGC is unknown
+        if matchedrows.empty:
+            # Return the original UGC if it is already an object
+            if isinstance(key, UGC):
+                return key
+            # Otherwise, we need to create a new UGC instance
+            return UGC(key[:2], key[2], int(key[3:]))
+
+        def _gen(row: dict) -> "UGC":
+            """helper"""
+            return UGC(
+                ugc_code[:2],
+                ugc_code[2],
+                int(ugc_code[3:]),
+                name=row["name"],
+                wfos=re.findall(r"([A-Z][A-Z][A-Z])", row["wfo"]),
+            )
+
+        # If we have a single match, we can just return that
+        if len(matchedrows) == 1:
+            return _gen(matchedrows.iloc[0])
+        # Ambiguous
+        for _idx, row in matchedrows.iterrows():
+            if is_firewx and row["source"] == "fz":
+                return _gen(row)
+            if not is_firewx and row["source"] != "fz":
+                return _gen(row)
+        # This really should not happen
+        LOG.warning("Ambiguous UGC lookup for %s, please review.", ugc_code)
+        return UGC(ugc_code[:2], ugc_code[2], int(ugc_code[3:]))
+
+    def __getitem__(self, key):
+        """Dictionary access helper."""
+        return self.get(key)
+
+
+def parse(
+    text: str,
+    valid: datetime.datetime,
+    ugc_provider: Optional[UGCProvider] = None,
+    is_firewx: bool = False,
+) -> tuple[list[UGC], Optional[datetime.datetime]]:
     """Return UGC list and expiration time.
 
     Arguments:
@@ -72,10 +232,10 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
       ugc_provider (UGCProvider): what will generate UGC instances for us.
       is_firewx (bool): is this product a fire weather product.
     """
-    if ugc_provider is None or isinstance(ugc_provider, dict):
-        ugc_provider = UGCProvider(legacy_dict=ugc_provider)
+    if ugc_provider is None:
+        ugc_provider = UGCProvider()
 
-    def _construct(code):
+    def _construct(code: str) -> UGC:
         return ugc_provider.get(code, is_firewx=is_firewx)
 
     ugcs = []
@@ -133,125 +293,3 @@ def parse(text, valid, ugc_provider=None, is_firewx=False):
                         )
                     )
     return ugcs, expire
-
-
-def _load_from_database(pgconn=None, valid=None):
-    """Build dataframe from a IEM Schema database.
-
-    Args:
-        pgconn (database engine): something pandas can query
-        valid (timestamp, optional): timestamp version of database to use.
-    """
-    pgconn = (
-        pgconn
-        if pgconn is not None
-        else get_dbconnstr("postgis").replace(
-            "postgresql", "postgresql+psycopg"
-        )
-    )
-    valid = valid if valid is not None else utc()
-    return pd.read_sql(
-        "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
-        "from ugcs WHERE begin_ts <= %s and "
-        "(end_ts is null or end_ts > %s)",
-        pgconn,
-        params=(valid, valid),
-        index_col=None,
-    )
-
-
-class UGCProvider:
-    """Wrapper around dataframe to provide UGC information."""
-
-    def __init__(self, legacy_dict=None, pgconn=None, valid=None):
-        """Constructor.
-
-        Args:
-          legacy_dict(dict, optional): Build based on legacy dictionary.
-          pgconn (database engine): something to query to get ugc data.
-          valid (timestamp): database version to use.
-        """
-        rows = []
-        if legacy_dict is not None:
-            for key, _ugc in legacy_dict.items():
-                rows.append(
-                    {
-                        "ugc": key,
-                        "name": _ugc.name.replace("...", " "),
-                        "wfo": "".join(_ugc.wfos),
-                        "source": "",
-                    }
-                )
-            self.df = pd.DataFrame(
-                rows, columns=["ugc", "name", "wfo", "source"]
-            )
-        else:
-            self.df = _load_from_database(pgconn, valid)
-
-    def get(self, key, is_firewx=False):
-        """Return a UGC instance."""
-        df2 = self.df[self.df["ugc"] == key]
-        if df2.empty:
-            return UGC(key[:2], key[2], int(key[3:]))
-
-        def _gen(row):
-            """helper"""
-            return UGC(
-                key[:2],
-                key[2],
-                int(key[3:]),
-                name=row["name"],
-                wfos=re.findall(r"([A-Z][A-Z][A-Z])", row["wfo"]),
-            )
-
-        if len(df2.index) == 1:
-            row = df2.iloc[0]
-            return _gen(row)
-        # Ambiguous
-        for _idx, row in df2.iterrows():
-            if is_firewx and row["source"] == "fz":
-                return _gen(row)
-            if not is_firewx and row["source"] != "fz":
-                return _gen(row)
-        # This really should not happen
-        return UGC(key[:2], key[2], int(key[3:]))
-
-    def __getitem__(self, key):
-        """Dictionary access helper."""
-        return self.get(key)
-
-
-class UGC:
-    """Representation of a single UGC"""
-
-    def __init__(self, state, geoclass, number, name=None, wfos=None):
-        """
-        Constructor for UGC instances
-        """
-        self.state = state
-        self.geoclass = geoclass
-        self.number = int(number)
-        self.name = name if name is not None else f"(({self.__str__()}))"
-        self.wfos = wfos if wfos is not None else []
-
-    def __str__(self):
-        """Override str()"""
-        return f"{self.state}{self.geoclass}{self.number:03.0f}"
-
-    def __repr__(self):
-        """Override repr()"""
-        return f"{self.state}{self.geoclass}{self.number:03.0f}"
-
-    def __eq__(self, other):
-        """Compare this UGC with another"""
-        return (
-            self.state == other.state
-            and self.geoclass == other.geoclass
-            and self.number == other.number
-        )
-
-    def __ne__(self, other):
-        """Compare this UGC with another"""
-        return not self == other
-
-    __hash__ = None  # unhashable

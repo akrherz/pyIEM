@@ -7,12 +7,13 @@ from datetime import timedelta
 import pandas as pd
 
 # Local
+from pyiem.nws.product import TextProduct
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.nws.vtec import VTEC, get_action_string
 from pyiem.reference import TWEET_CHARS
 
 
-def build_channels(prod, segment, vtec: VTEC) -> list:
+def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
     """Build a list of channels for the given segment/vtec."""
     ps = f"{vtec.phenomena}.{vtec.significance}"
     channels = []
@@ -31,6 +32,12 @@ def build_channels(prod, segment, vtec: VTEC) -> list:
     channels.append(prod.afos)
     channels.append(f"{prod.afos[:3]}...")
     channels.append(f"{ps}.{vtec.office}{suffix}")
+    # Tsunami Warning, Watch is a special case
+    if vtec.phenomena == "TS":
+        for ugc in segment.ugcs:
+            for wfo in prod.ugc_provider[ugc].wfos:
+                if wfo not in channels:
+                    channels.append(wfo)
     for ugc in segment.ugcs:
         # per state channels
         candidate = f"{ps}.{ugc.state}{suffix}"
