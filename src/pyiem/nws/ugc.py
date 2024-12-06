@@ -148,14 +148,8 @@ class UGCProvider:
                     }
                 )
             df = pd.DataFrame(rows, columns=["ugc", "name", "wfo", "source"])
-        elif pgconn is not None:
-            df = _load_from_database(pgconn, valid)
         else:
-            df = pd.DataFrame(
-                [],
-                columns=["ugc", "name", "wfo", "source"],
-                dtype=str,
-            )
+            df = _load_from_database(pgconn, valid)
         self.df = df
 
     def __contains__(self, key: Union[str, UGC]) -> bool:
