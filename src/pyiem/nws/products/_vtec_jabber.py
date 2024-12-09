@@ -19,7 +19,7 @@ def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
     channels = []
     # Noisey products that don't default to the main WFO channel
     if prod.afos[:3] == "RFW" or (
-        prod.afos[:3] == "MWW" and vtec.phenomena in ("SC", "GL", "MF")
+        prod.afos[:3] == "MWW" and vtec.phenomena in ("SC", "GL", "MF", "SE")
     ):
         channels.append(f"{prod.afos[:3]}{prod.source[1:]}")
     else:
