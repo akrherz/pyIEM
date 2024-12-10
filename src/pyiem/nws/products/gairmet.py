@@ -14,7 +14,7 @@ from pyiem.models.gairmet import (
     FreezingLevelRecord,
     GAIRMETModel,
 )
-from pyiem.nws import product
+from pyiem.nws.product import TextProduct
 
 GMET = {
     "LWGE86": "GMTIFR",
@@ -139,15 +139,14 @@ def process_airmet(prod, airmet):
     )
 
 
-class GAIRMET(product.TextProduct):
+class GAIRMET(TextProduct):
     """Class for parsing the G-AIRMET product"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        product.TextProduct.__init__(
-            self,
+        super().__init__(
             text,
             utcnow=utcnow,
             ugc_provider=ugc_provider,

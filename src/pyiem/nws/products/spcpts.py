@@ -309,7 +309,7 @@ class SPCPTS(TextProduct):
           ugc_provider (dict, optional): unused in this class
           nwsli_provider (dict, optional): unused in this class
         """
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         LOG.warning("==== SPCPTS Processing: %s", self.get_product_id())
         load_conus_data(self.valid)
         self.issue = None

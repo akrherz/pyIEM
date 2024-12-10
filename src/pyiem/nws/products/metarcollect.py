@@ -357,7 +357,7 @@ class METARCollective(TextProduct):
 
         Args:
           text (string): the raw string to process"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.metars = []
         self.split_and_parse()
 

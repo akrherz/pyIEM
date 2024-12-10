@@ -852,7 +852,7 @@ class SHEFProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """Construct."""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         # Storage of SHEFElements (one variable, one time, one station).
         self.data = []
         _parse(self)

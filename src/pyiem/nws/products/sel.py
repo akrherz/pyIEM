@@ -33,7 +33,7 @@ class SELProduct(TextProduct):
         Args:
           text (str): text to parse
         """
-        TextProduct.__init__(self, text, utcnow=utcnow)
+        super().__init__(text, utcnow=utcnow)
         self.data = _parse_data(self)
 
     def is_test(self):

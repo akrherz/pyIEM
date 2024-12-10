@@ -246,7 +246,7 @@ class SIGMETProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.sigmets = []
         if self.afos in ["SIGC", "SIGW", "SIGE", "SIGAK1", "SIGAK2"]:
             self.process_SIGC()

@@ -1,18 +1,16 @@
 """Space Weather Center processor"""
 
-import pyiem.nws.product as product
+from pyiem.nws.product import TextProduct
 
 
-class SpaceWxProduct(product.TextProduct):
+class SpaceWxProduct(TextProduct):
     """Class for parsing and representing Space Wx Products"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        product.TextProduct.__init__(
-            self, text, utcnow, ugc_provider, nwsli_provider
-        )
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.title = f"Unknown (AWIPSID: {self.afos})"
         if len(self.sections) >= 2:
             self.title = self.sections[2].split("\n")[0]

@@ -81,7 +81,7 @@ class XTEUSProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.data = _parse_xml(self)
 
     def sql(self, cursor):

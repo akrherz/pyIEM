@@ -36,7 +36,7 @@ class SAWProduct(TextProduct):
         Args:
           text (str): text to parse
         """
-        TextProduct.__init__(self, text, utcnow=utcnow)
+        super().__init__(text, utcnow=utcnow)
         self.saw = int(self.afos[3:].strip())
         self.action = self.find_action()
         self.geometry = self.find_polygon()
