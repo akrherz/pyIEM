@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 import defusedxml.ElementTree as ET
 import pandas as pd
 
-from pyiem.nws import product
+from pyiem.nws.product import TextProduct
 from pyiem.util import LOG
 
 DELIMITER = r"""\<\?xml version="1.0" standalone="yes"\?\>"""
@@ -103,15 +103,14 @@ class HMLData:
         }
 
 
-class HML(product.TextProduct):
+class HML(TextProduct):
     """Class for parsing and representing Space Wx Products"""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        product.TextProduct.__init__(
-            self,
+        super().__init__(
             text,
             utcnow=utcnow,
             ugc_provider=ugc_provider,

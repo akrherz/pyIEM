@@ -71,7 +71,7 @@ class FDProduct(TextProduct):
     ):
         """constructor"""
         text = text.replace("\x1e", "")  # Aviation Control
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.df = None
         self.obtime = compute_time(
             self.valid, BASED_ON_RE.findall(self.unixtext)

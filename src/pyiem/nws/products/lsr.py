@@ -32,8 +32,7 @@ class LSRProduct(TextProduct):
         """constructor"""
         self.lsrs = []
         self.duplicates = 0
-        TextProduct.__init__(
-            self,
+        super().__init__(
             text,
             utcnow=utcnow,
             ugc_provider=ugc_provider,

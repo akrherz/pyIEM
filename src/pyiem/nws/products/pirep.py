@@ -24,7 +24,7 @@ from metpy.units import units
 from pydantic import BaseModel
 
 # Local
-import pyiem.nws.product as product
+from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, html_escape
 
 OV_LATLON = re.compile(
@@ -130,15 +130,14 @@ def _parse_lonlat(text):
     return lon, lat
 
 
-class Pirep(product.TextProduct):
+class Pirep(TextProduct):
     """Class for parsing and representing PIREPs found in NWS text products."""
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        product.TextProduct.__init__(
-            self,
+        super().__init__(
             text,
             utcnow=utcnow,
             ugc_provider=ugc_provider,

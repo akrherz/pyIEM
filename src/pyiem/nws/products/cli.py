@@ -500,7 +500,7 @@ class CLIProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        TextProduct.__init__(self, text, utcnow, ugc_provider, nwsli_provider)
+        super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         # Hold our parsing results as an array of dicts
         self.data = []
         self.regime = None
