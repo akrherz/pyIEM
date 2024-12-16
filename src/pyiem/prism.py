@@ -8,15 +8,24 @@ NX = 1405
 NY = 621
 
 # This is the center of the upper left pixel
-NORTH = 49.92
-SOUTH = 24.04
+NORTH = 49.91666666667
 WEST = -125.0
-EAST = -66.46
-DX = 0.0417
-DY = 0.0417
 
-XAXIS = WEST + np.arange(NX) * DX
-YAXIS = SOUTH + np.arange(NY) * DY
+# This is the center of the lower right pixel
+SOUTH = 24.08333333333
+EAST = -66.50
+DX = 1 / 24.0
+DY = 1 / 24.0
+
+# For the netcdf storage, we care about the lower left corner edge
+SOUTH_EDGE = SOUTH - DY / 2.0
+WEST_EDGE = WEST - DX / 2.0
+EAST_EDGE = EAST + DX / 2.0
+NORTH_EDGE = NORTH + DY / 2.0
+
+# Definition of left and bottom edges of grid cells
+XAXIS = WEST_EDGE + np.arange(NX) * DX
+YAXIS = SOUTH_EDGE + np.arange(NY) * DY
 
 
 def daily_offset(ts):
@@ -28,7 +37,12 @@ def daily_offset(ts):
 
 def find_ij(lon, lat):
     """Compute which grid cell this lon, lat resides within"""
-    if lon < WEST or lon >= EAST or lat < SOUTH or lat >= NORTH:
+    if (
+        lon < WEST_EDGE
+        or lon >= EAST_EDGE
+        or lat < SOUTH_EDGE
+        or lat >= NORTH_EDGE
+    ):
         return None, None
 
     i = np.digitize(lon, XAXIS) - 1
