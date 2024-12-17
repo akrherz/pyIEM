@@ -329,14 +329,14 @@ def grb2iemre(grb, resampling=None, domain: str = "") -> np.ndarray:
     lat1 = grb["latitudeOfFirstGridPointInDegrees"]
     lon1 = grb["longitudeOfFirstGridPointInDegrees"]
     llx, lly = pyproj.Proj(pparams)(lon1, lat1)
-    # NB: likely making assumptions that will fail, sometimes
+    # The reprojected first grid cell is the centroid, not the outer edge
     aff = Affine(
         grb["DxInMetres"],
         0.0,
-        llx,
+        llx - grb["DxInMetres"] / 2.0,
         0.0,
         -grb["DyInMetres"],
-        lly + grb["DyInMetres"] * grb["Ny"],
+        lly + grb["DyInMetres"] * grb["Ny"] + grb["DyInMetres"] / 2.0,
     )
     return reproject2iemre(
         np.flipud(grb.values), aff, pparams, resampling, domain
