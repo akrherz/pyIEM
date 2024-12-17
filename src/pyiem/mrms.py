@@ -10,13 +10,22 @@ from datetime import datetime, timezone
 
 import numpy as np
 import requests
+from affine import Affine
 
-WEST = -130.0
-EAST = -60.0
-NORTH = 55.0
-SOUTH = 20.0
-XAXIS = np.arange(WEST, EAST, 0.01)
-YAXIS = np.arange(SOUTH, NORTH, 0.01)
+# This is the center of the corner pixels
+WEST = -129.995
+NORTH = 54.995
+SOUTH = 20.005
+EAST = -60.005
+
+# These are the edges of the domain
+WEST_EDGE = -130.0
+EAST_EDGE = -60.0
+NORTH_EDGE = 55.0
+SOUTH_EDGE = 20.0
+XAXIS = np.arange(WEST, EAST + 0.0001, 0.01)
+YAXIS = np.arange(SOUTH, NORTH + 0.0001, 0.01)
+AFFINE = Affine(0.01, 0.0, WEST_EDGE, 0.0, -0.01, NORTH_EDGE)
 
 
 def is_gzipped(text):
@@ -199,5 +208,6 @@ def write_worldfile(filename):
     Args:
       filename (str): filename to write the world file information to
     """
+    # World file defines the center of the upper left pixel
     with open(filename, "w", encoding="utf8") as fd:
         fd.write(f"0.01\n0.00\n0.00\n-0.01\n{WEST}\n{NORTH}")

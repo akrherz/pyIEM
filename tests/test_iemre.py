@@ -11,6 +11,12 @@ from pyiem import database, iemre
 from pyiem.util import get_test_filepath, utc
 
 
+def test_axis_size():
+    """Ensure that our legacy axis sizes are correct."""
+    assert iemre.NX == len(iemre.XAXIS)
+    assert iemre.NY == len(iemre.YAXIS)
+
+
 def test_d2l():
     """Test our logic."""
     assert iemre.d2l("europe") == "iemre_europe"
@@ -133,7 +139,7 @@ def test_writing_grids():
 
 def test_simple():
     """Get nulls for right and top values"""
-    i, j = iemre.find_ij(iemre.EAST, iemre.NORTH)
+    i, j = iemre.find_ij(iemre.EAST_EDGE, iemre.NORTH_EDGE)
     assert i is None
     assert j is None
 
