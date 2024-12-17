@@ -35,6 +35,8 @@ YAXIS = np.arange(SOUTH, NORTH + 0.001, DY)
 AFFINE = Affine(DX, 0.0, WEST_EDGE, 0.0, 0 - DY, NORTH_EDGE)
 AFFINE_NATIVE = Affine(DX, 0.0, WEST_EDGE, 0.0, DY, SOUTH_EDGE)
 
+MRMS4IEMRE_AFFINE = Affine(0.01, 0.0, -126, 0.0, -0.01, 50.0)
+
 # Definition of analysis domains for IEMRE
 DOMAINS = {
     "": {
