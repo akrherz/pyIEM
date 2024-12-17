@@ -1,11 +1,4 @@
-"""Support library for the IEM Reanalysis code
-
-.. data:: SOUTH
-
-    Latitude of the southern edge of the IEM Reanalysis.
-
-
-"""
+"""Support library for the IEM Reanalysis code."""
 
 from datetime import datetime, timezone
 from typing import Optional, Tuple
@@ -22,20 +15,25 @@ from pyiem.database import get_dbconn
 from pyiem.util import LOG, utc
 
 # Legacy constants prior to addition of other IEMRE domains
-# 1/8 degree grid, grid cell is the lower left corner
+# 1/8 degree grid
+# This is the center of the grid cells at the corners of the grid
 SOUTH = 23.0
 WEST = -126.0
-NORTH = 50.0
-EAST = -65.0
+NORTH = 49.875
+EAST = -65.125
+# These are the outside edges of the domain
+SOUTH_EDGE = 22.9375
+WEST_EDGE = -126.0625
+NORTH_EDGE = 49.9375
+EAST_EDGE = -65.0625
 DX = 0.125
 DY = 0.125
 NX = 488
 NY = 216
-XAXIS = np.arange(WEST, EAST, DX)
-YAXIS = np.arange(SOUTH, NORTH, DY)
-AFFINE = Affine(DX, 0.0, WEST, 0.0, 0 - DY, NORTH)
-AFFINE_NATIVE = Affine(DX, 0.0, WEST, 0.0, DY, SOUTH)
-MRMS_AFFINE = Affine(0.01, 0.0, WEST, 0.0, -0.01, NORTH)
+XAXIS = np.arange(WEST, EAST + 0.001, DX)
+YAXIS = np.arange(SOUTH, NORTH + 0.001, DY)
+AFFINE = Affine(DX, 0.0, WEST_EDGE, 0.0, 0 - DY, NORTH_EDGE)
+AFFINE_NATIVE = Affine(DX, 0.0, WEST_EDGE, 0.0, DY, SOUTH_EDGE)
 
 # Definition of analysis domains for IEMRE
 DOMAINS = {
@@ -44,6 +42,10 @@ DOMAINS = {
         "east": EAST,
         "south": SOUTH,
         "north": NORTH,
+        "south_edge": SOUTH - DY / 2.0,
+        "north_edge": NORTH + DY / 2.0,
+        "west_edge": WEST - DX / 2.0,
+        "east_edge": EAST + DX / 2.0,
         "nx": NX,
         "ny": NY,
         "affine": AFFINE,
@@ -52,24 +54,32 @@ DOMAINS = {
     },
     "china": {
         "west": 70,
-        "east": 140,
+        "east": 139.875,
         "south": 15,
-        "north": 55,
+        "north": 54.875,
+        "west_edge": 69.9375,
+        "east_edge": 139.9375,
+        "south_edge": 14.9375,
+        "north_edge": 54.9375,
         "nx": 560,
         "ny": 320,
-        "affine": Affine(DX, 0.0, 70, 0.0, 0 - DY, 55),
-        "affine_native": Affine(DX, 0.0, 70, 0.0, DY, 15),
+        "affine": Affine(DX, 0.0, 69.9375, 0.0, 0 - DY, 54.9375),
+        "affine_native": Affine(DX, 0.0, 69.9375, 0.0, DY, 14.9375),
         "tzinfo": ZoneInfo("Asia/Shanghai"),
     },
     "europe": {
         "west": -10,
-        "east": 40,
+        "east": 39.875,
         "south": 35,
-        "north": 70,
+        "north": 69.875,
+        "west_edge": -10.0625,
+        "east_edge": 39.9375,
+        "south_edge": 34.9375,
+        "north_edge": 69.9375,
         "nx": 400,
         "ny": 280,
-        "affine": Affine(DX, 0.0, -10, 0.0, 0 - DY, 70),
-        "affine_native": Affine(DX, 0.0, -10, 0.0, DY, 35),
+        "affine": Affine(DX, 0.0, -10.0625, 0.0, 0 - DY, 69.9375),
+        "affine_native": Affine(DX, 0.0, -10.0625, 0.0, DY, 34.9375),
         "tzinfo": ZoneInfo("Europe/Paris"),
     },
 }
@@ -203,8 +213,8 @@ def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
     ds = xr.Dataset(
         dict((key, (["y", "x"], data[key])) for key in data),
         coords={
-            "lon": (["x"], np.arange(dom["west"], dom["east"], DX)),
-            "lat": (["y"], np.arange(dom["south"], dom["north"], DY)),
+            "lon": (["x"], np.arange(dom["west"], dom["east"] + 0.001, DX)),
+            "lat": (["y"], np.arange(dom["south"], dom["north"] + 0.001, DY)),
         },
     )
     return ds
@@ -268,15 +278,15 @@ def find_ij(lon, lat, domain: str = "") -> Tuple[Optional[int], Optional[int]]:
     """Compute which grid cell this lon, lat resides within"""
     dom = DOMAINS[domain]
     if (
-        lon < dom["west"]
-        or lon >= dom["east"]
-        or lat < dom["south"]
-        or lat >= dom["north"]
+        lon < dom["west_edge"]
+        or lon >= dom["east_edge"]
+        or lat < dom["south_edge"]
+        or lat >= dom["north_edge"]
     ):
         return None, None
 
-    i = np.digitize(lon, np.arange(dom["west"], dom["east"], DX)) - 1
-    j = np.digitize(lat, np.arange(dom["south"], dom["north"], DY)) - 1
+    i = np.digitize(lon, dom["west_edge"] + np.arange(dom["nx"]) * DX) - 1
+    j = np.digitize(lat, dom["south_edge"] + np.arange(dom["ny"]) * DY) - 1
 
     return i, j
 
@@ -285,8 +295,8 @@ def get_domain(lon: float, lat: float) -> Optional[str]:
     """Compute the domain that contains the given point."""
     for domain, dom in DOMAINS.items():
         if (
-            dom["west"] <= lon < dom["east"]
-            and dom["south"] <= lat < dom["north"]
+            dom["west_edge"] <= lon < dom["east_edge"]
+            and dom["south_edge"] <= lat < dom["north_edge"]
         ):
             return domain
     return None

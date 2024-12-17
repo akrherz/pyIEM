@@ -18,6 +18,7 @@ All notable changes to this library are documented in this file.
 
 - Add `allowed_as_list` option to `iemapp()` helper to stop lists.
 - Add maximum risk threshold within SPC outlook message (#969).
+- Add `pyiem.stage4` with grid reference information.
 - Add support for plotting by FEMA Regions.
 - Assign base WFO jabber channel to Tsunami Warnings (#978).
 - Include simple table of un-plotted states for `MapPlot(sector="nws")` #967.
@@ -29,6 +30,7 @@ generating plots of HRRR ptype.
 - Accomodate ancient LSRs using `TRACE` as the magnitude field.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
 - Improve dev experience using `ugc.UGCProvider` (#980).
+- Fix grid and affine definitions for IEMRE and MRMS.
 - Properly check USDM service response prior to parsing it.
 - Refine which `MWW` products are not defaulted into the main WFO Channels,
   those being VTEC codes `SC`, `MF`, and `GL`.
