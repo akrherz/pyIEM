@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.plot package &#8212; pyIEM 0.1.dev1221+g9738c5e documentation</title>
+    <title>pyiem.plot package &#8212; pyIEM 0.1.dev1223+g3c60e8a documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=04d15f55"></script>
+    <script src="../_static/documentation_options.js?v=7eababf9"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1221+g9738c5e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1223+g3c60e8a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
@@ -451,6 +451,30 @@ missing values, defaults to ‘-‘.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>draw_colorbar</strong> (<em>bool</em><em>,</em><em>optional</em>) – Draw colorbar default True.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.imshow">
+<span class="sig-name descname"><span class="pre">imshow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.imshow" title="Link to this definition">¶</a></dt>
+<dd><p>Reprojects an image onto each MapPanel and then draws it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid</strong> (<em>np.ndarray</em>) – The 2-D data to draw</p></li>
+<li><p><strong>affine</strong> (<em>Affine</em>) – The affine transformation of the image</p></li>
+<li><p><strong>crs</strong> (<em>str</em>) – The CRS of the image</p></li>
+<li><p><strong>clevs</strong> (<em>list</em><em>, </em><em>Optional</em>) – The levels to use for the colormap</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>draw_colorbar</strong> (<em>bool</em><em>,</em><em>optional</em>) – Draw colorbar default True.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>,</em><em>optional</em>) – The colormap to use, default jet.</p></li>
+<li><p><strong>extend</strong> (<em>str</em><em>,</em><em>optional</em>) – The extend value for the colormap.</p></li>
+<li><p><strong>clip_on</strong> (<em>bool</em><em>,</em><em>optional</em>) – Clip the image to the map region.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -989,6 +1013,7 @@ rose into.  The first sector is centered on north.</p></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_states"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_states()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_ugcs"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_ugcs()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.hexbin"><code class="docutils literal notranslate"><span class="pre">MapPlot.hexbin()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.imshow"><code class="docutils literal notranslate"><span class="pre">MapPlot.imshow()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.overlay_nexrad"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_nexrad()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.overlay_roadcond"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_roadcond()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.pcolormesh"><code class="docutils literal notranslate"><span class="pre">MapPlot.pcolormesh()</span></code></a></li>
@@ -1087,7 +1112,7 @@ rose into.  The first sector is centered on north.</p></li>
         <li class="right" >
           <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1221+g9738c5e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.1.dev1223+g3c60e8a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
