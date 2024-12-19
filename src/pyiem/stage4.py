@@ -52,7 +52,7 @@ ARCHIVE_FLIP = datetime(2002, 1, 1, tzinfo=timezone.utc)
 
 def find_ij(lon: float, lat: float) -> tuple[Optional[int], Optional[int]]:
     """Find the grid cell index for a given lon/lat (assuming modern grid)."""
-    x, y = PROJ(lon, lat)
+    x, y = PROJ(lon, lat)  # skipcq
     i = int((x - AFFINE_NATIVE.c) / AFFINE_NATIVE.a)
     j = int((y - AFFINE_NATIVE.f) / AFFINE_NATIVE.e)
     if i < 0 or j < 0 or i >= NX or j >= NY:
