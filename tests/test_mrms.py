@@ -12,6 +12,18 @@ PRODUCT = "PrecipRate"
 CENTERS = ["mtarchive", "", "bldr", "cprk"]
 
 
+def test_find_ij():
+    """Test the find_ij function."""
+    i, j = mrms.find_ij(-42.0, 95.0)
+    assert i is None
+    assert j is None
+    i, j = mrms.find_ij(
+        mrms.MRMS4IEMRE_WEST_EDGE + 0.0001, mrms.MRMS4IEMRE_SOUTH_EDGE + 0.0001
+    )
+    assert i == 0
+    assert j == 0
+
+
 def test_2001_mrms():
     """Test that we can fetch older MRMS data in a bit different location."""
     # NB archive starts at 12z on the 1rst day of 2001

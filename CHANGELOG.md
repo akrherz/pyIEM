@@ -21,6 +21,7 @@ All notable changes to this library are documented in this file.
 - Add `pyiem.stage4` with grid reference information.
 - Add support for plotting by FEMA Regions.
 - Assign base WFO jabber channel to Tsunami Warnings (#978).
+- Improvements for IEM netcdf grid navigation and handling.
 - Include simple table of un-plotted states for `MapPlot(sector="nws")` #967.
 - Introduce `radar_ptype` color ramp and `draw_radar_ptype_legend` for
 generating plots of HRRR ptype.
