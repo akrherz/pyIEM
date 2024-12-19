@@ -27,6 +27,7 @@ import sys
 import tempfile
 import warnings
 from io import BytesIO
+from typing import Optional
 
 import geopandas as gpd
 import matplotlib.cm as mpcm
@@ -37,6 +38,7 @@ import numpy as np
 # third party
 import rasterio
 import requests
+from affine import Affine
 from matplotlib.patches import Wedge
 from metpy.calc import wind_components
 from metpy.units import units
@@ -973,6 +975,77 @@ class MapPlot:
             self.draw_colorbar(clevs, cmap, norm, **kwargs)
         return _hex
 
+    def imshow(
+        self,
+        grid: np.ndarray,
+        affine: Affine,
+        crs: str,
+        clevs: Optional[list] = None,
+        **kwargs,
+    ):
+        """Reprojects an image onto each MapPanel and then draws it.
+
+        Args:
+            grid (np.ndarray): The 2-D data to draw
+            affine (Affine): The affine transformation of the image
+            crs (str): The CRS of the image
+            clevs (list, Optional): The levels to use for the colormap
+
+        Keyword Args:
+            draw_colorbar (bool,optional): Draw colorbar default True.
+            cmap (str,optional): The colormap to use, default jet.
+            extend (str,optional): The extend value for the colormap.
+            clip_on (bool,optional): Clip the image to the map region.
+        """
+        if kwargs.get("norm") is None:
+            cmap = stretch_cmap(
+                kwargs.get("cmap", "jet"), clevs, extend=kwargs.get("extend")
+            )
+            norm = mpcolors.BoundaryNorm(clevs, cmap.N)
+        else:
+            cmap = kwargs.get("cmap", "jet")
+            norm = kwargs["norm"]
+        # masked array is trouble with rasterio, at least for me
+        if isinstance(grid, np.ma.MaskedArray):
+            grid = grid.filled(np.nan)
+
+        with rasterio.Env():
+            for panel in self.panels:
+                # Get the extent of the map region
+                (west, east, south, north) = panel.get_extent()
+                pbbox = panel.ax.get_window_extent()
+                pdx = (east - west) / pbbox.width
+                pdy = (north - south) / pbbox.height
+                dest_aff = rasterio.Affine(pdx, 0, west, 0, pdy, south)
+                reprojected = np.zeros((int(pbbox.height), int(pbbox.width)))
+                # Reproject the image onto each panel
+                reproject(
+                    grid,
+                    reprojected,
+                    src_transform=affine,
+                    src_crs=crs,
+                    dst_transform=dest_aff,
+                    dst_crs=panel.crs,
+                    resampling=Resampling.nearest,
+                    dst_nodata=np.nan,
+                )
+                # Draw the image
+                panel.ax.imshow(
+                    reprojected,
+                    extent=(west, east, south, north),
+                    origin="lower",
+                    zorder=Z_FILL,
+                    cmap=cmap,
+                    norm=norm,
+                    interpolation="nearest",
+                ).set_rasterized(True)
+        if kwargs.get("clip_on", True):
+            self.draw_mask()
+        kwargs.pop("cmap", None)
+        kwargs.pop("norm", None)
+        if kwargs.pop("draw_colorbar", True):
+            self.draw_colorbar(clevs, cmap, norm, **kwargs)
+
     def pcolormesh(self, lons, lats, vals, clevs, **kwargs):
         """Opinionated mpl.pcolormesh wrapper.
 
@@ -1501,42 +1574,21 @@ class MapPlot:
             # RGB instead of mode=P
             _zeros = np.zeros((100, 100))
             im = np.asarray(pilimg) if pilimg.size != (100, 100) else _zeros
-        # Use rasterio to reproject this grid into the crs of axes
-        with rasterio.Env():
-            src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
-            src_crs = {"init": "EPSG:4326"}
-            (px0, px1, py0, py1) = self.panels[0].get_extent()
-            pbbox = self.panels[0].ax.get_window_extent()
-            pdx = (px1 - px0) / pbbox.width
-            pdy = (py1 - py0) / pbbox.height
-            dest_aff = rasterio.Affine(pdx, 0, px0, 0, pdy, py0)
-            res = np.zeros(
-                (int(pbbox.height), int(pbbox.width)), dtype=im.dtype
-            )
-            reproject(
-                im,
-                res,
-                src_transform=src_aff,
-                src_crs=src_crs,
-                src_nodata=0,
-                dst_transform=dest_aff,
-                dst_crs=self.panels[0].crs,
-                resampling=Resampling.nearest,
-            )
 
         ramp = ramp2df(f"composite_{product.lower()}")
         cmap = mpcolors.ListedColormap(ramp[["r", "g", "b"]].to_numpy() / 256)
         cmap.set_under((0, 0, 0, 0))
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
-        self.panels[0].ax.imshow(
-            res,
-            interpolation="nearest",  # prevents artifacts
-            extent=(px0, px1, py0, py1),
+        self.imshow(
+            im,
+            Affine(dx, 0, west, 0, dy, north),
+            "EPSG:4326",
             cmap=cmap,
             norm=norm,
-            zorder=Z_FILL,
-            origin="lower",
-        ).set_rasterized(True)
+            draw_colorbar=False,
+            clip_on=False,
+        )
+
         pos = self.panels[0].ax.get_position()
         cax = self.fig.add_axes(
             caxpos or (pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015)
