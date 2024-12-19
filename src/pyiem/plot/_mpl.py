@@ -159,9 +159,12 @@ def draw_background(panel, background):
             full = os.sep.join([datadirs[0], rasterfn])
             src_epsg = "EPSG:4326"
     worldfn = f"{full[:-4]}.wld"
+    # World file defines the center of the upper left pixel
     with open(worldfn, encoding="ascii") as fh:
         (dx, _, _, dy, west, north) = [float(x) for x in fh]
-    src_aff = rasterio.Affine(dx, 0, west, 0, dy, north)
+    west_edge = west - dx / 2.0
+    north_edge = north + dy / 2.0
+    src_aff = rasterio.Affine(dx, 0, west_edge, 0, dy, north_edge)
     src_crs = {"init": src_epsg}
     (px0, px1, py0, py1) = panel.get_extent()
     pbbox = panel.ax.get_window_extent()

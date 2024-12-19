@@ -30,6 +30,7 @@ generating plots of HRRR ptype.
 ### Bug Fixes
 
 - Accomodate ancient LSRs using `TRACE` as the magnitude field.
+- Correct `MapPanel` GIS worldfile logic as upper left is center of grid cell.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
 - Improve dev experience using `ugc.UGCProvider` (#980).
 - Fix grid and affine definitions for IEMRE and MRMS.

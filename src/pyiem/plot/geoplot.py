@@ -1564,9 +1564,12 @@ class MapPlot:
         if req_wld is None or req_wld.status_code != 200:
             LOG.debug("Failed to fetch %swld", baseurl)
             return None
+        # World file defines the center of the upper left pixel
         (dx, _, _, dy, west, north) = [
             float(x) for x in req_wld.content.decode("ascii").split("\n")
         ]
+        west_edge = west - dx / 2.0
+        north_edge = north + dy / 2.0
         bio = BytesIO(req_png.content)
         bio.seek(0)
         with Image.open(bio) as pilimg:
@@ -1581,7 +1584,7 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(ramp["coloridx"].values, cmap.N)
         self.imshow(
             im,
-            Affine(dx, 0, west, 0, dy, north),
+            Affine(dx, 0, west_edge, 0, dy, north_edge),
             "EPSG:4326",
             cmap=cmap,
             norm=norm,
