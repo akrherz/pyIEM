@@ -7,25 +7,70 @@ import gzip
 import os
 import struct
 from datetime import datetime, timezone
+from typing import Optional
 
 import numpy as np
 import requests
 from affine import Affine
 
+# NOTE: This is the info for the MRMS grib products, NOT the IEM netcdf
 # This is the center of the corner pixels
 WEST = -129.995
 NORTH = 54.995
 SOUTH = 20.005
 EAST = -60.005
+DX = 0.01
+DY = 0.01
+NX = 7000
+NY = 3500
 
 # These are the edges of the domain
 WEST_EDGE = -130.0
 EAST_EDGE = -60.0
 NORTH_EDGE = 55.0
 SOUTH_EDGE = 20.0
-XAXIS = np.arange(WEST, EAST + 0.0001, 0.01)
-YAXIS = np.arange(SOUTH, NORTH + 0.0001, 0.01)
+XAXIS = np.linspace(WEST, EAST, NX)
+YAXIS = np.linspace(SOUTH, NORTH, NY)
 AFFINE = Affine(0.01, 0.0, WEST_EDGE, 0.0, -0.01, NORTH_EDGE)
+
+# NOTE: These are the values for the IEM netcdf files, a smaller domain
+MRMS4IEMRE_WEST_EDGE = -126.0
+MRMS4IEMRE_EAST_EDGE = -65.0
+MRMS4IEMRE_NORTH_EDGE = 50.0
+MRMS4IEMRE_SOUTH_EDGE = 23.0
+MRMS4IEMRE_WEST = -125.995
+MRMS4IEMRE_EAST = -65.005
+MRMS4IEMRE_NORTH = 49.995
+MRMS4IEMRE_SOUTH = 23.005
+MRMS4IEMRE_DX = 0.01
+MRMS4IEMRE_DY = 0.01
+MRMS4IEMRE_NX = 6100
+MRMS4IEMRE_NY = 2700
+MRMS4IEMRE_AFFINE = Affine(
+    DX, 0.0, MRMS4IEMRE_WEST_EDGE, 0.0, -DY, MRMS4IEMRE_NORTH_EDGE
+)
+# How the netcdf files are stored
+MRMS4IEMRE_AFFINE_NC = Affine(
+    DX, 0.0, MRMS4IEMRE_WEST_EDGE, 0.0, DY, MRMS4IEMRE_SOUTH_EDGE
+)
+MRMS4IEMRE_XAXIS = np.linspace(MRMS4IEMRE_WEST, MRMS4IEMRE_EAST, MRMS4IEMRE_NX)
+MRMS4IEMRE_YAXIS = np.linspace(
+    MRMS4IEMRE_SOUTH, MRMS4IEMRE_NORTH, MRMS4IEMRE_NY
+)
+
+
+def find_ij(lon: float, lat: float) -> tuple[Optional[int], Optional[int]]:
+    """CAUTION: This is for the netcdf files, not grib2 files."""
+    if (
+        lon < MRMS4IEMRE_WEST_EDGE
+        or lon >= MRMS4IEMRE_EAST_EDGE
+        or lat < MRMS4IEMRE_SOUTH_EDGE
+        or lat >= MRMS4IEMRE_NORTH_EDGE
+    ):
+        return None, None
+    j = int((lat - MRMS4IEMRE_SOUTH_EDGE) / DY)
+    i = int((lon - MRMS4IEMRE_WEST_EDGE) / DX)
+    return i, j
 
 
 def is_gzipped(text):

@@ -30,12 +30,10 @@ DX = 0.125
 DY = 0.125
 NX = 488
 NY = 216
-XAXIS = np.arange(WEST, EAST + 0.001, DX)
-YAXIS = np.arange(SOUTH, NORTH + 0.001, DY)
+XAXIS = np.linspace(WEST, EAST, NX)
+YAXIS = np.linspace(SOUTH, NORTH, NY)
 AFFINE = Affine(DX, 0.0, WEST_EDGE, 0.0, 0 - DY, NORTH_EDGE)
 AFFINE_NATIVE = Affine(DX, 0.0, WEST_EDGE, 0.0, DY, SOUTH_EDGE)
-
-MRMS4IEMRE_AFFINE = Affine(0.01, 0.0, -126, 0.0, -0.01, 50.0)
 
 # Definition of analysis domains for IEMRE
 DOMAINS = {
@@ -276,8 +274,10 @@ def hourly_offset(dtobj):
     return int(seconds / 3600.0)
 
 
-def find_ij(lon, lat, domain: str = "") -> Tuple[Optional[int], Optional[int]]:
-    """Compute which grid cell this lon, lat resides within"""
+def find_ij(
+    lon: float, lat: float, domain: str = ""
+) -> Tuple[Optional[int], Optional[int]]:
+    """Return the i, j grid indices (based 0) for given lat/lon."""
     dom = DOMAINS[domain]
     if (
         lon < dom["west_edge"]
@@ -287,8 +287,8 @@ def find_ij(lon, lat, domain: str = "") -> Tuple[Optional[int], Optional[int]]:
     ):
         return None, None
 
-    i = np.digitize(lon, dom["west_edge"] + np.arange(dom["nx"]) * DX) - 1
-    j = np.digitize(lat, dom["south_edge"] + np.arange(dom["ny"]) * DY) - 1
+    i = int((lon - dom["west_edge"]) / DX)
+    j = int((lat - dom["south_edge"]) / DY)
 
     return i, j
 

@@ -3,6 +3,7 @@
 import datetime
 
 import numpy as np
+from affine import Affine
 
 NX = 1405
 NY = 621
@@ -26,6 +27,11 @@ NORTH_EDGE = NORTH + DY / 2.0
 # Definition of left and bottom edges of grid cells
 XAXIS = WEST_EDGE + np.arange(NX) * DX
 YAXIS = SOUTH_EDGE + np.arange(NY) * DY
+
+# This is the affine from the PRISM BIL file
+AFFINE_NATIVE = Affine(DX, 0.0, WEST_EDGE, 0.0, -DY, NORTH_EDGE)
+# This is the affine for the netcdf file
+AFFINE_NC = Affine(DX, 0.0, WEST_EDGE, 0.0, DY, SOUTH_EDGE)
 
 
 def daily_offset(ts):
