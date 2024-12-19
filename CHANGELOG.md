@@ -17,6 +17,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add `allowed_as_list` option to `iemapp()` helper to stop lists.
+- Add `MapPlot.imshow` with some optimized panel plotting.
 - Add maximum risk threshold within SPC outlook message (#969).
 - Add `pyiem.stage4` with grid reference information.
 - Add support for plotting by FEMA Regions.
@@ -29,6 +30,7 @@ generating plots of HRRR ptype.
 ### Bug Fixes
 
 - Accomodate ancient LSRs using `TRACE` as the magnitude field.
+- Correct `MapPanel` GIS worldfile logic as upper left is center of grid cell.
 - Ensure geometries going into masking helper are CCW, to mask outside of.
 - Improve dev experience using `ugc.UGCProvider` (#980).
 - Fix grid and affine definitions for IEMRE and MRMS.

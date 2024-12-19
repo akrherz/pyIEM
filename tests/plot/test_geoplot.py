@@ -9,7 +9,9 @@ import tempfile
 import matplotlib.colors as mpcolors
 import mock
 import numpy as np
+import pygrib
 import pytest
+from affine import Affine
 from shapely.geometry import Polygon
 
 # Local
@@ -25,7 +27,7 @@ from pyiem.plot.colormaps import (
 from pyiem.plot.geoplot import MapPlot, load_bounds
 from pyiem.plot.util import mask_outside_geom
 from pyiem.reference import LATLON, TWITTER_RESOLUTION_INCH
-from pyiem.util import load_geodf, utc
+from pyiem.util import c2f, get_test_filepath, load_geodf, utc
 
 # Increased threshold with matplotlib 3.6 tweaks
 PAIN = 4.1
@@ -51,6 +53,31 @@ def test_close():
 def test_invalid_file():
     """Test that we don't error out on an invalid filename."""
     assert load_bounds("this shall not work") is None
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_gfs_imshow():
+    """Test imshow functionality with GFS plotting over 5 panels."""
+    # Some boilerplate
+    with pygrib.open(get_test_filepath("grib/gfstmpk.grib2")) as grbs:
+        grb = grbs[1]
+    dx = grb["iDirectionIncrementInDegrees"]
+    aff = Affine(
+        dx,
+        0.0,
+        0 - dx / 2.0,
+        0.0,
+        -dx,
+        grb["latitudeOfFirstGridPointInDegrees"] + dx / 2.0,
+    )
+    mp = MapPlot(nocaption=True, sector="nws", title="GFS")
+    mp.imshow(
+        c2f(grb.values - 273.15),
+        aff,
+        "EPSG:4326",
+        list(range(0, 100, 10)),
+    )
+    return mp.fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
