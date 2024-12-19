@@ -26,8 +26,7 @@ def _rounddown(val: float) -> float:
 
 DOMAINS = {"": {}, "china": {}, "europe": {}}
 
-for _dom in DOMAINS.keys():
-    meta = DOMAINS[_dom]
+for _dom, meta in DOMAINS.items():
     meta["WEST"] = _roundup(iemre.DOMAINS[_dom]["west_edge"])
     meta["EAST"] = _rounddown(iemre.DOMAINS[_dom]["east_edge"])
     meta["SOUTH"] = _roundup(iemre.DOMAINS[_dom]["south_edge"])
@@ -57,14 +56,14 @@ def find_ij(
     lon: float, lat: float, domain: str = ""
 ) -> tuple[Optional[int], Optional[int]]:
     """Find the grid cell for the provided lon/lat"""
-    meta = DOMAINS[domain]
+    _meta = DOMAINS[domain]
     if (
-        lon < meta["WEST_EDGE"]
-        or lon > meta["EAST_EDGE"]
-        or lat < meta["SOUTH_EDGE"]
-        or lat > meta["NORTH_EDGE"]
+        lon < _meta["WEST_EDGE"]
+        or lon > _meta["EAST_EDGE"]
+        or lat < _meta["SOUTH_EDGE"]
+        or lat > _meta["NORTH_EDGE"]
     ):
         return None, None
-    i = int((lon - meta["WEST_EDGE"]) / DX)
-    j = int((lat - meta["SOUTH_EDGE"]) / DY)
+    i = int((lon - _meta["WEST_EDGE"]) / DX)
+    j = int((lat - _meta["SOUTH_EDGE"]) / DY)
     return i, j
