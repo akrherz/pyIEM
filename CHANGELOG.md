@@ -19,6 +19,7 @@ All notable changes to this library are documented in this file.
 - Add `allowed_as_list` option to `iemapp()` helper to stop lists.
 - Add `MapPlot.imshow` with some optimized panel plotting.
 - Add maximum risk threshold within SPC outlook message (#969).
+- Add `pyiem.era5land` with IEM grid reference information.
 - Add `pyiem.stage4` with grid reference information.
 - Add support for plotting by FEMA Regions.
 - Assign base WFO jabber channel to Tsunami Warnings (#978).
