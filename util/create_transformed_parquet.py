@@ -24,7 +24,7 @@ def main(writepath, justgeodf):
         os.path.dirname(__file__), "..", "src", "pyiem", "data", "geodf"
     )
     for filename in os.listdir(pyiem_geodf):
-        LOG.info("processing %s", filename)
+        LOG.warning("processing %s", filename)
         df = gpd.read_parquet(f"{pyiem_geodf}/{filename}")
         if df.crs is None:
             df = df.set_crs("EPSG:4326")
@@ -39,7 +39,7 @@ def main(writepath, justgeodf):
             if justgeodf and shapefilefn != "ne_10m_land.shp":
                 continue
             ppath = root.replace(cartopy_shapefiles, "")
-            LOG.info("%s/%s", root, shapefilefn)
+            LOG.warning("%s/%s", root, shapefilefn)
             df = gpd.read_file(f"{root}/{shapefilefn}", engine="pyogrio")
             if df.crs is None:
                 df = df.set_crs("EPSG:4326")
