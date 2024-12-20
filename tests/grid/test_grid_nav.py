@@ -14,3 +14,9 @@ def test_api():
 def test_prism_calc():
     """Test that PRISM works out to what we expect."""
     assert (nav.PRISM.right - -66.50) < 0.01
+
+
+def test_get_nav():
+    """Test that we can get a helper."""
+    assert nav.get_nav("iemRE", "")
+    assert nav.get_nav("era5LAND", "china")

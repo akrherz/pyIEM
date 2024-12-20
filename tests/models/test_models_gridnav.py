@@ -31,9 +31,23 @@ def test_non_even_spacing():
         )
 
 
+def test_computing_dxdy():
+    """Test that we can get a dx and dy."""
+    _cgn = CartesianGridNavigation(
+        left_edge=0,
+        bottom_edge=0,
+        nx=10,
+        ny=10,
+        right_edge=10,
+        top_edge=10,
+    )
+    assert _cgn.dx == 1
+    assert _cgn.dy == 1
+
+
 def test_computing_nxny():
     """Test that ny and ny can be computed."""
-    cgn = CartesianGridNavigation(
+    _cgn = CartesianGridNavigation(
         left_edge=0,
         bottom_edge=0,
         dx=1,
@@ -41,8 +55,8 @@ def test_computing_nxny():
         right_edge=10,
         top_edge=10,
     )
-    assert cgn.nx == 10
-    assert cgn.ny == 10
+    assert _cgn.nx == 10
+    assert _cgn.ny == 10
 
 
 def test_api(cgn):

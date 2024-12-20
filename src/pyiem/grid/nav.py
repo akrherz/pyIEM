@@ -95,6 +95,13 @@ _GRID_CONFIGS = {
 }
 
 
+def get_nav(name: str, dom: str) -> CartesianGridNavigation:
+    """Helper to remove some boilerplate for fetching gridnav."""
+    extra = f"_{dom.upper()}" if dom != "" else ""
+    key = f"{name.upper()}{extra}"
+    return CartesianGridNavigation(**_GRID_CONFIGS[key])
+
+
 def __getattr__(name: str):
     """Build stuff on the fly."""
     if name in _GRID_CONFIGS:
