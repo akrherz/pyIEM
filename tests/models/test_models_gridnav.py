@@ -18,6 +18,33 @@ def cgn() -> CartesianGridNavigation:
     )
 
 
+def test_non_even_spacing():
+    """Test that this errors."""
+    with pytest.raises(ValueError):
+        CartesianGridNavigation(
+            left_edge=0,
+            bottom_edge=0,
+            top_edge=10,
+            right_edge=10,
+            dx=2.2,
+            dy=0.7,
+        )
+
+
+def test_computing_nxny():
+    """Test that ny and ny can be computed."""
+    cgn = CartesianGridNavigation(
+        left_edge=0,
+        bottom_edge=0,
+        dx=1,
+        dy=1,
+        right_edge=10,
+        top_edge=10,
+    )
+    assert cgn.nx == 10
+    assert cgn.ny == 10
+
+
 def test_api(cgn):
     """Test basic things."""
     assert cgn.bottom == 0.5

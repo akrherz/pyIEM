@@ -6,6 +6,9 @@ from pyiem.grid import nav
 def test_api():
     """Test basic things."""
     assert nav.IEMRE.bottom == 23.0
+    assert nav.IEMRE_CHINA.top == 54.875
+    assert nav.IEMRE.affine
+    assert nav.IEMRE_EUROPE.affine_image
 
 
 def test_prism_calc():
