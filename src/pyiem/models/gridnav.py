@@ -107,7 +107,7 @@ class CartesianGridNavigation(BaseModel):
     @property
     def affine_image(self):
         """Return the transformation associated with upper left origin."""
-        return from_origin(self.left_edge, self.top_edge, self.dx, -self.dy)
+        return from_origin(self.left_edge, self.top_edge, self.dx, 0 - self.dy)
 
     @model_validator(mode="before")
     def complete_definition(cls, values):
@@ -149,7 +149,7 @@ class CartesianGridNavigation(BaseModel):
         self, lon: float, lat: float
     ) -> tuple[Optional[int], Optional[int]]:
         """Find the grid cell that contains the given lon/lat (EPSG: 4326)."""
-        x, y = Proj(self.crs)(lon, lat)
+        x, y = Proj(self.crs)(lon, lat)  # skipcq
         if (
             x < self.left_edge
             or x >= self.right_edge
