@@ -3,9 +3,9 @@
 from typing import Optional, Union
 
 import numpy as np
+from affine import Affine
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pyproj import CRS, Proj
-from rasterio.transform import from_origin
 
 
 class CartesianGridNavigation(BaseModel):
@@ -102,12 +102,14 @@ class CartesianGridNavigation(BaseModel):
     @property
     def affine(self):
         """Return the affine transformation."""
-        return from_origin(self.left_edge, self.bottom_edge, self.dx, self.dy)
+        return Affine(self.dx, 0, self.left_edge, 0, self.dy, self.bottom_edge)
 
     @property
     def affine_image(self):
         """Return the transformation associated with upper left origin."""
-        return from_origin(self.left_edge, self.top_edge, self.dx, 0 - self.dy)
+        return Affine(
+            self.dx, 0, self.left_edge, 0, 0 - self.dy, self.top_edge
+        )
 
     @model_validator(mode="before")
     def complete_definition(cls, values):
