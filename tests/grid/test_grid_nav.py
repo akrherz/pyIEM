@@ -1,6 +1,14 @@
 """Test pyiem.grid.nav"""
 
+from pyproj import Proj
+
 from pyiem.grid import nav
+
+
+def test_crs_construction():
+    """Test that pyproj is happy with the CRS."""
+    for name in nav._GRID_CONFIGS:  # skipcq
+        assert Proj(getattr(nav, name).crs)
 
 
 def test_api():
