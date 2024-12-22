@@ -3,6 +3,7 @@
 # pylint: disable=unsubscriptable-object
 import re
 from datetime import timedelta, timezone
+from urllib.parse import quote
 
 from pyiem import reference
 from pyiem.reference import TRACE_VALUE
@@ -130,8 +131,8 @@ class LSR:
         self.valid = None
         self.typetext = None
         self.geometry = None
-        self.city = None
-        self.county = None
+        self.city: str = None
+        self.county: str = None
         self.source = None
         self.remark = None
         self.magnitude_f = None
@@ -307,7 +308,8 @@ class LSR:
             "long": str(self.get_lon()),
             "twitter_media": (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/242/"
-                f"pid:{self.product.get_product_id()}.png"
+                f"pid:{self.product.get_product_id()}"
+                f"::_:{quote(self.city)}.png"
             ),
         }
         html = (
