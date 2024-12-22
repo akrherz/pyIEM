@@ -55,7 +55,7 @@ _GRID_CONFIGS = {
     "STAGE4": {
         "crs": (
             "+proj=stere +a=6371200 +b=6371200 +lat_0=90 "
-            "+lon_0=-105, +lat_ts=60"
+            "+lon_0=-105 +lat_ts=60"
         ),
         "left_edge": -1_904_912.924,
         "bottom_edge": -7_619_986.180,
@@ -67,7 +67,7 @@ _GRID_CONFIGS = {
     "STAGE4_PRE2002": {
         "crs": (
             "+proj=stere +a=6371200 +b=6371200 +lat_0=90 "
-            "+lon_0=-105, +lat_ts=60"
+            "+lon_0=-105 +lat_ts=60"
         ),
         "left_edge": -2_097_827.439,
         "bottom_edge": -7_622_315.608,
