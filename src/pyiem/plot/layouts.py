@@ -1,13 +1,17 @@
 """Standardized layouts."""
 
-# local
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+
 from pyiem.plot.use_agg import plt
 from pyiem.plot.util import draw_logo, fitbox, update_kwargs_apctx
 from pyiem.reference import TWITTER_RESOLUTION_INCH
 
 
 @update_kwargs_apctx
-def figure(logo="iem", title=None, subtitle=None, **kwargs):
+def figure(
+    logo: str = "iem", title: str = None, subtitle: str = None, **kwargs
+) -> Figure:
     """Return an opinionated matplotlib figure.
 
     Parameters:
@@ -37,7 +41,9 @@ def figure(logo="iem", title=None, subtitle=None, **kwargs):
     return fig
 
 
-def figure_axes(logo="iem", title=None, subtitle=None, **kwargs):
+def figure_axes(
+    logo: str = "iem", title: str = None, subtitle: str = None, **kwargs
+) -> tuple[Figure, Axes]:
     """Return an opinionated matplotlib figure and one axes.
 
     Parameters:
@@ -49,5 +55,5 @@ def figure_axes(logo="iem", title=None, subtitle=None, **kwargs):
       subtitle (str): SubTitle to place on the figure.
     """
     fig = figure(logo=logo, title=title, subtitle=subtitle, **kwargs)
-    ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    ax = fig.add_axes((0.1, 0.1, 0.8, 0.8))
     return fig, ax
