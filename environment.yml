@@ -13,6 +13,7 @@ dependencies:
   - gdal
   - geopandas
   - geos
+  - httpx
   # templating
   - jinja2
   - matplotlib-base

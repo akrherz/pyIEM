@@ -30,14 +30,14 @@ from io import BytesIO
 from typing import Optional
 
 import geopandas as gpd
+
+# third party
+import httpx
 import matplotlib.cm as mpcm
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 import numpy as np
-
-# third party
 import rasterio
-import requests
 from affine import Affine
 from matplotlib.patches import Wedge
 from metpy.calc import wind_components
@@ -77,7 +77,7 @@ from pyiem.reference import (
     Z_OVERLAY2,
     Z_POLITICAL,
 )
-from pyiem.util import LOG, exponential_backoff, load_geodf, ssw, utc
+from pyiem.util import LOG, load_geodf, ssw, utc
 
 # geopandas currently emits this as parquet is unstable.
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
@@ -298,7 +298,7 @@ class MapPlot:
             valid = valid.strftime("%Y-%m-%d")
         url = f"http://mesonet.agron.iastate.edu/geojson/usdm.py?date={valid}"
         try:
-            resp = requests.get(url, timeout=30)
+            resp = httpx.get(url, timeout=30)
             resp.raise_for_status()
             df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
@@ -1485,11 +1485,12 @@ class MapPlot:
         )
         tstamp = valid.strftime("%Y-%m-%d %H:%M")
         try:
-            req = requests.get(url, params={"valid": tstamp}, timeout=30)
-        except requests.ConnectionError as exp:
+            resp = httpx.get(url, params={"valid": tstamp}, timeout=30)
+            resp.raise_for_status()
+            df = gpd.GeoDataFrame().from_features(resp.json())
+        except Exception as exp:
             warnings.warn(f"overlay_roadcond failed: {exp}", stacklevel=1)
             return None
-        df = gpd.GeoDataFrame().from_features(req.json())
         labels = []
         for _, row in df.iterrows():
             for geo in row["geometry"].geoms:
@@ -1552,25 +1553,21 @@ class MapPlot:
             "https://mesonet.agron.iastate.edu/archive/data/%Y/%m/%d/"
             f"GIS/{compsector}comp/{product.lower()}_%Y%m%d%H%M."
         )
-        req_png = exponential_backoff(
-            requests.get, baseurl + "png", timeout=10
-        )
-        req_wld = exponential_backoff(
-            requests.get, baseurl + "wld", timeout=10
-        )
-        if req_png is None or req_png.status_code != 200:
-            LOG.debug("Failed to fetch %spng", baseurl)
-            return None
-        if req_wld is None or req_wld.status_code != 200:
-            LOG.debug("Failed to fetch %swld", baseurl)
+        try:
+            resp_png = httpx.get(f"{baseurl}png", timeout=10)
+            resp_png.raise_for_status()
+            resp_wld = httpx.get(f"{baseurl}wld", timeout=10)
+            resp_wld.raise_for_status()
+        except Exception as exp:
+            LOG.warning(exp)
             return None
         # World file defines the center of the upper left pixel
         (dx, _, _, dy, west, north) = [
-            float(x) for x in req_wld.content.decode("ascii").split("\n")
+            float(x) for x in resp_wld.content.decode("ascii").split("\n")
         ]
         west_edge = west - dx / 2.0
         north_edge = north + dy / 2.0
-        bio = BytesIO(req_png.content)
+        bio = BytesIO(resp_png.content)
         bio.seek(0)
         with Image.open(bio) as pilimg:
             # Horrid hack, the IEM archive added a placeholder file that was

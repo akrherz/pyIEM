@@ -8,6 +8,7 @@ dependencies = [
     "defusedxml",
     "docutils",
     "geopandas",
+    "httpx",
     "jinja2",
     "matplotlib>=3.5.0",
     "metar",
