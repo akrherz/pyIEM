@@ -1490,7 +1490,7 @@ class MapPlot:
             df = gpd.GeoDataFrame().from_features(resp.json())
         except Exception as exp:
             warnings.warn(f"overlay_roadcond failed: {exp}", stacklevel=1)
-            return None
+            return
         labels = []
         for _, row in df.iterrows():
             for geo in row["geometry"].geoms:

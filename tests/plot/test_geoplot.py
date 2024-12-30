@@ -2,9 +2,9 @@
 
 # pylint: disable=too-many-lines
 import copy
-import datetime
 import os
 import tempfile
+from datetime import date, timedelta
 
 import matplotlib.colors as mpcolors
 import mock
@@ -31,6 +31,19 @@ from pyiem.util import c2f, get_test_filepath, load_geodf, utc
 
 # Increased threshold with matplotlib 3.6 tweaks
 PAIN = 4.1
+
+
+def test_overlay_roadcond_failure():
+    """Test an invalid timestamp."""
+    mp = MapPlot()
+    assert mp.overlay_roadcond(utc(1, 1, 1)) is None
+
+
+def test_overlay_nexrad_failure():
+    """Test something that should fail."""
+    mp = MapPlot()
+    valid = utc() + timedelta(hours=3)
+    assert mp.overlay_nexrad(valid) is None
 
 
 def test_exercise_usdm():
@@ -614,7 +627,7 @@ def test_dep():
 def test_usdm():
     """Can we plot the current USDM"""
     mp = MapPlot(sector="conus", nocaption=True)
-    mp.draw_usdm(valid=datetime.date(2018, 5, 7), hatched=True, filled=False)
+    mp.draw_usdm(valid=date(2018, 5, 7), hatched=True, filled=False)
     return mp.fig
 
 
@@ -622,7 +635,7 @@ def test_usdm():
 def test_usdm_filled():
     """Can we plot the USDM filled."""
     mp = MapPlot(sector="southwest", nocaption=True)
-    mp.draw_usdm(valid=datetime.date(2018, 5, 7), hatched=False, filled=True)
+    mp.draw_usdm(valid=date(2018, 5, 7), hatched=False, filled=True)
     return mp.fig
 
 
