@@ -27,6 +27,14 @@ _GRID_CONFIGS = {
         "nx": 400,
         "ny": 280,
     },
+    "IFC": {
+        "left_edge": -97.1562505,
+        "bottom_edge": 40.1312475,
+        "dx": 0.004167,
+        "dy": 0.004167,
+        "nx": 1057,
+        "ny": 1741,
+    },
     # Lamely hardcoded for now
     "ERA5LAND": {
         "left_edge": -126.05,
