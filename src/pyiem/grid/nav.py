@@ -32,8 +32,8 @@ _GRID_CONFIGS = {
         "bottom_edge": 40.1312475,
         "dx": 0.004167,
         "dy": 0.004167,
-        "nx": 1057,
-        "ny": 1741,
+        "nx": 1741,
+        "ny": 1057,
     },
     # Lamely hardcoded for now
     "ERA5LAND": {
