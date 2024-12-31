@@ -519,6 +519,9 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 label2 = label + name
                 ctx[label2] = fdict.get(label2, defaults.get(label))
             continue
+        elif typ == "dat":
+            # Damage Assessment Toolkit
+            ctx["datglobalid"] = fdict.get("datglobalid")
         # validation
         if minval is not None and value is not None and value < minval:
             value = default

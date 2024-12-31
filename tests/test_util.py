@@ -263,6 +263,7 @@ def test_get_apctx_sday():
             {"type": "sday", "name": "sdate", "max": "1001"},
             {"type": "sday", "name": "edate", "min": "0201"},
             {"type": "sday", "name": "odate", "default": "0210"},
+            {"type": "dat", "name": "dat", "default": "Bah"},
         ]
     }
     ctx = util.get_autoplot_context(form, cfg)
