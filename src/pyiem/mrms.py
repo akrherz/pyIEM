@@ -9,8 +9,8 @@ import struct
 from datetime import datetime, timezone
 from typing import Optional
 
+import httpx
 import numpy as np
-import requests
 from affine import Affine
 
 # NOTE: This is the info for the MRMS grib products, NOT the IEM netcdf
@@ -116,12 +116,13 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
         return tmpfn
     # Option 2, go fetch it from mtarchive
     try:
-        req = requests.get(get_url("mtarchive", valid, product), timeout=30)
+        resp = httpx.get(get_url("mtarchive", valid, product), timeout=30)
+        resp.raise_for_status()
     except Exception:
-        req = None
-    if req and req.status_code == 200 and is_gzipped(req.content):
+        resp = None
+    if resp and is_gzipped(resp.content):
         with open(tmpfn, "wb") as fd:
-            fd.write(req.content)
+            fd.write(resp.content)
         return tmpfn
     # Option 3, we go look at MRMS website, if timestamp is recent
     utcnow = datetime.now(timezone.utc)
@@ -133,12 +134,13 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
     # Loop over all IDP data centers
     for center in ["", "-bldr", "-cprk"]:
         try:
-            req = requests.get(get_url(center, valid, product), timeout=30)
+            resp = httpx.get(get_url(center, valid, product), timeout=30)
+            resp.raise_for_status()
         except Exception:
-            req = None
-        if req and req.status_code == 200 and is_gzipped(req.content):
+            resp = None
+        if resp and is_gzipped(resp.content):
             with open(tmpfn, "wb") as fd:
-                fd.write(req.content)
+                fd.write(resp.content)
             return tmpfn
     return None
 

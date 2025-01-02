@@ -28,7 +28,6 @@ dependencies = [
     "psycopg",
     "rasterio",
     "rasterstats",
-    "requests",
     "scipy",
     "shapely",
     # since psycopg 3 support requires it

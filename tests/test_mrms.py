@@ -3,7 +3,9 @@
 import datetime
 import os
 
-import requests
+import httpx
+import pytest
+from pytest_httpx import HTTPXMock
 
 from pyiem import mrms
 from pyiem.util import utc
@@ -31,39 +33,29 @@ def test_2001_mrms():
     assert fn is not None
 
 
-def test_nofailback(requests_mock):
+def test_nofailback(httpx_mock: HTTPXMock):
     """Test that code bails on old date."""
+    httpx_mock.add_response(status_code=404)
     valid = utc() - datetime.timedelta(days=20)
-    requests_mock.get(
-        mrms.get_url("mtarchive", valid, PRODUCT), status_code=404
-    )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is None
 
 
-def test_failback(requests_mock):
+def test_failback(httpx_mock: HTTPXMock):
     """Test that we can do option 3."""
+    httpx_mock.add_response(status_code=404)
+    httpx_mock.add_response(content=b"\x1f\x8bHello")
     valid = utc() + datetime.timedelta(hours=1)
-    requests_mock.get(
-        mrms.get_url("mtarchive", valid, PRODUCT), status_code=404
-    )
-    for center in CENTERS[1:]:
-        requests_mock.get(
-            mrms.get_url(center, valid, PRODUCT), content=b"\x1f\x8bHello"
-        )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is not None
     os.unlink(fn)
 
 
-def test_exception(requests_mock):
+@pytest.mark.httpx_mock(can_send_already_matched_responses=True)
+def test_exception(httpx_mock: HTTPXMock):
     """Test what happens when we raise an exception."""
+    httpx_mock.add_exception(httpx.TimeoutException)
     valid = utc() + datetime.timedelta(hours=1)
-    for center in CENTERS:
-        requests_mock.get(
-            mrms.get_url(center, valid, PRODUCT),
-            exc=requests.exceptions.ConnectTimeout,
-        )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is None
 
@@ -79,24 +71,20 @@ def test_existing_file():
     os.unlink(fn)
 
 
-def test_fetch_failback(requests_mock):
+@pytest.mark.httpx_mock(can_send_already_matched_responses=True)
+def test_fetch_failback(httpx_mock: HTTPXMock):
     """Can we get files that we don't have."""
+    httpx_mock.add_response(status_code=404)
     # A file from the future suffices
     valid = utc() + datetime.timedelta(hours=1)
-    for center in CENTERS:
-        requests_mock.get(
-            mrms.get_url(center, valid, PRODUCT), status_code=404
-        )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is None
 
 
-def test_fetch(requests_mock):
+def test_fetch(httpx_mock: HTTPXMock):
     """Can we fetch MRMS files?  Yes we can!"""
+    httpx_mock.add_response(content=b"\x1f\x8bHello")
     valid = utc()
-    requests_mock.get(
-        mrms.get_url("mtarchive", valid, PRODUCT), content=b"\x1f\x8bHello"
-    )
     fn = mrms.fetch(PRODUCT, valid, tmpdir="/tmp")
     assert fn is not None
     with open(fn, "rb") as fh:
