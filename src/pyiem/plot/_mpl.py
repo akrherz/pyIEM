@@ -8,9 +8,9 @@ from io import BytesIO
 import geopandas as gpd
 
 # Third party libraries
+import httpx
 import numpy as np
 import rasterio
-import requests
 from PIL import Image
 from pymemcache.client import Client
 from pyproj import Transformer
@@ -69,8 +69,9 @@ def get_tile_data(url):
     res = mc.get(key)
     if res is None:
         LOG.info("Fetching %s", url)
-        req = requests.get(url, timeout=10)
-        res = req.content
+        resp = httpx.get(url, timeout=10)
+        resp.raise_for_status()
+        res = resp.content
         mc.set(key, res)
     mc.close()
     bio = BytesIO(res)

@@ -20,6 +20,7 @@ from html import escape
 # !important
 # Lazy import everything possible here, since this module is imported by
 # most everything.
+import httpx
 import numpy as np  # used too many places
 
 # NB: careful with circular imports!
@@ -81,14 +82,11 @@ def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     Returns:
       bool - success of this workflow.
     """
-    import requests
-
-    req = requests.get(url, timeout=60)
-    if req.status_code != 200:
+    resp = httpx.get(url, timeout=60)
+    if resp.status_code != 200:
         return False
-    tmp = tempfile.NamedTemporaryFile(mode="wb", delete=False)
-    tmp.write(req.content)
-    tmp.close()
+    with tempfile.NamedTemporaryFile(mode="wb", delete=False) as tmp:
+        tmp.write(resp.content)
     args = [pqinsert, "-p", ldm_product_name, tmp.name]
     if md5_from_name:
         args.insert(1, "-i")
@@ -735,16 +733,14 @@ def archive_fetch(partialpath: str, localdir: str = "/mesonet/ARCHIVE/data"):
         return
 
     url = f"http://mesonet.agron.iastate.edu/archive/data/{partialpath}"
-    import requests
 
     tmp = None
     suffix = "." + os.path.basename(partialpath).split(".")[-1]
     try:
-        req = requests.get(url, timeout=30)
-        if req.status_code != 200:
-            raise ValueError(f"Got HTTP {req.status_code}")
+        resp = httpx.get(url, timeout=30)
+        resp.raise_for_status()
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(req.content)
+            tmp.write(resp.content)
         yield tmp.name
         return
     except Exception as exp:
