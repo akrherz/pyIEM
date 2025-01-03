@@ -237,7 +237,7 @@ def test_tcp():
     ans = (
         "Post-Tropical Cyclone "
         "#Arthur ADVISORY 19 issued. Strong winds and heavy rains to "
-        "continue over portions of southeastern canada through tonight "
+        "continue over portions of southeastern canada through tonight. "
         "http://go.usa.gov/W3H"
     )
     assert j[0][2]["twitter"] == ans
