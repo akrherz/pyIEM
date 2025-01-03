@@ -467,7 +467,12 @@ def iemapp(**kwargs):
                 if "help" in form:
                     return _handle_help(start_response, **kwargs)
                 if "schema" in kwargs:
-                    form = kwargs["schema"](**_debracket(form)).model_dump()
+                    # Retain a reference to the Schema instance as it may have
+                    # private / computed attributes that are needed
+                    environ["_cgimodel_schema"] = kwargs["schema"](
+                        **_debracket(form)
+                    )
+                    form = environ["_cgimodel_schema"].model_dump()
                 if "tz" not in form:
                     form["tz"] = kwargs.get("default_tz", "America/Chicago")
                 # Important this is set before calling add_to_environ
