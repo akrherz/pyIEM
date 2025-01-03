@@ -618,14 +618,18 @@ class TextProductSegment:
 
     def parse_headlines(self):
         """Find headlines in this segment"""
-        headlines = re.findall(
-            r"^\.\.\.(.*?)\.\.\.[ ]?\n\n", self.unixtext, re.M | re.S
-        )
-        headlines = [
-            " ".join(h.replace("...", ", ").replace("\n", " ").split())
-            for h in headlines
-        ]
-        return headlines
+        res = []
+        candidate = ""
+        for line in [s.strip() for s in self.unixtext.split("\n")]:
+            if line.startswith("..."):
+                candidate = line
+            elif candidate != "":
+                candidate += " " + line
+            if line.endswith("..."):
+                if 6 < len(candidate) < 160:  # arb
+                    res.append(candidate.replace("...", ""))
+                candidate = ""
+        return res
 
     def get_affected_wfos(self) -> list[str]:
         """Based on the ugc_provider, figure out which WFOs are impacted by

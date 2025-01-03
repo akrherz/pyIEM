@@ -15,6 +15,16 @@ from pyiem.util import get_test_file, utc
 from pyiem.wmo import WMO_RE
 
 
+def test_250103_two_headline():
+    """Test that we get two distinct headlines from this segment."""
+    utcnow = utc(2025, 1, 3, 9, 54)
+    data = get_test_file("CWF/CWF_twoheadline.txt")
+    prod = productparser(data, utcnow=utcnow)
+    a = "HEAVY FREEZING SPRAY WARNING IN EFFECT THROUGH EARLY SATURDAY MORNING"
+    b = "SMALL CRAFT ADVISORY IN EFFECT THROUGH EARLY SATURDAY MORNING"
+    assert prod.segments[0].headlines == [a, b]
+
+
 def test_240505_theoretical_multipolygon():
     """Test invalid polygon split into three parts is ignored."""
     utcnow = utc(1991, 3, 26, 23, 7)

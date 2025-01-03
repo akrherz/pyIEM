@@ -13,6 +13,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Attempt more robust NWS product headline gleaning.
+
 ## **1.22.0** (2 Jan 2025)
 
 ### API Changes
