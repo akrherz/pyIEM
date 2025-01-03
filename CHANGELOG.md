@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Retain reference to `CGIModel` schema as `environ["_cgimodel_schema"]`.
+
 ### Bug Fixes
 
 ## **1.22.0** (2 Jan 2025)

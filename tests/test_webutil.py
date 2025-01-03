@@ -137,6 +137,7 @@ def test_iemapp_year_year1():
     }
     sr = mock.MagicMock()
     assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert "_cgimodel_schema" in env
 
 
 def test_iemapp_times_notime():
