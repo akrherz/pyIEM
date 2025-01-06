@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `nwsice` color ramp per suggestion.
 - Retain reference to `CGIModel` schema as `environ["_cgimodel_schema"]`.
 
 ### Bug Fixes

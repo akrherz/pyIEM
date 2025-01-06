@@ -97,6 +97,25 @@ def nwsprecip():
     return cmap
 
 
+def nwsice():
+    """A Color Ramp Suggested by the NWS for Ice Accumulation."""
+    cpool = [
+        "#f4ea3b",  # 0-0.1
+        "#ffc000",  # 0.1-0.25
+        "#fe0000",  # 0.25-0.5
+        "#c00000",  # 0.5-0.75
+        "#9966ff",  # 0.75-1
+        "#730ac7",  # 1-2
+        "#25045b",  # 2+
+    ]
+    cmap = mpcolors.ListedColormap(cpool, "nwsice")
+    cmap.set_over("#25045b")
+    cmap.set_under("#FFFFFF")
+    cmap.set_bad("#FFFFFF")
+    _register_cmap(cmap)
+    return cmap
+
+
 def nwssnow():
     """A Color Ramp Suggested by the NWS for Snowfall"""
     cpool = [
