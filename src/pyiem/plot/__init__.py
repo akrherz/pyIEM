@@ -4,6 +4,7 @@
 from .calendarplot import calendar_plot  # noqa
 from .colormaps import (
     get_cmap,  # noqa
+    nwsice,  # noqa
     nwsprecip,  # noqa
     nwssnow,  # noqa
 )

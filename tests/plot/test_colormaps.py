@@ -1,6 +1,12 @@
 """test our colormaps.py"""
 
-from pyiem.plot.colormaps import dep_erosion, get_cmap, nwsprecip, stretch_cmap
+from pyiem.plot.colormaps import (
+    dep_erosion,
+    get_cmap,
+    nwsice,
+    nwsprecip,
+    stretch_cmap,
+)
 
 
 def test_get_cmap():
@@ -8,6 +14,7 @@ def test_get_cmap():
     cmap = get_cmap("jet")
     assert cmap is not None
     assert nwsprecip() is not None
+    assert nwsice() is not None
 
 
 def test_stretch():
