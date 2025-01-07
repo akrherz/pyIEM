@@ -26,6 +26,17 @@ jobs:
         # we need a reasonable depth so that the most recent tag is available
         fetch-depth: 500
 
+    - name: Run IEM Database container
+      run: |
+        docker run -d --name iem_database -p 5432:5432 ghcr.io/akrherz/iem_database:test_data
+        until docker exec iem_database pg_isready -h localhost; do
+          sleep 6
+        done
+
+    - name: Run Memcached container
+      run: |
+        docker run -d --name iem_memcached -p 11211:11211 memcached:1.6.9
+
     - name: Add /etc/hosts entries
       run: |
         cat .github/workflows/etchosts.txt | sudo tee -a /etc/hosts
@@ -43,20 +54,6 @@ jobs:
           python=${{ env.PYTHON_VERSION }}
         environment-name: prod
         cache-environment: true
-
-    - name: Setup Postgres
-      run: |
-        git clone --depth 1 https://github.com/akrherz/iem-database.git database
-        git clone --depth 1 https://github.com/akrherz/ci_tooling.git .ci_tooling
-        . .ci_tooling/postgres.sh
-        cd database; sh bootstrap.sh
-        python schema_manager.py
-        python store_test_data.py $(which psql)
-        psql -f data/postgis/cwsu.db -U mesonet postgis
-
-    - name: Setup Memcached
-      run: |
-        . .ci_tooling/memcached.sh
 
     - name: Install pyiem
       run: |
