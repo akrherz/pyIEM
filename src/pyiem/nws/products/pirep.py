@@ -23,6 +23,7 @@ from pyiem.models.pirep import PilotReport, Priority
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, html_escape
 
+FLIGHT_LEVEL = re.compile(r"FL(?P<levelx100>[0-9]{3})")
 OV_LATLON = re.compile(
     (
         r"\s?(?P<lat>[0-9]{2,4})(?P<latsign>[NS])"
@@ -160,6 +161,12 @@ class Pirep(TextProduct):
                     _pr.base_loc = parts[0]
                     if len(_pr.base_loc) == 4 and _pr.base_loc[0] == "K":
                         _pr.base_loc = _pr.base_loc[1:]
+                continue
+            # Flight Level
+            if token.startswith("FL"):
+                m = re.match(FLIGHT_LEVEL, token)
+                if m:
+                    _pr.flight_level = int(m.group("levelx100")) * 100
                 continue
             # Aircraft Type
             if token.startswith("TP "):
@@ -299,8 +306,8 @@ class Pirep(TextProduct):
             txn.execute(
                 f"""
                 INSERT into pireps(valid, geom, is_urgent, aircraft_type,
-                report, artcc, product_id) VALUES (%s,
-                ST_GeographyFromText(%s), %s, %s, %s, {artcc}, %s)
+                report, artcc, product_id, flight_level) VALUES (%s,
+                ST_GeographyFromText(%s), %s, %s, %s, {artcc}, %s, %s)
                 """,
                 (
                     report.valid,
@@ -309,6 +316,7 @@ class Pirep(TextProduct):
                     report.aircraft_type,
                     report.text,
                     self.get_product_id(),
+                    report.flight_level,
                 ),
             )
 

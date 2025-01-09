@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Priority(str, Enum):
@@ -21,6 +21,12 @@ class PilotReport(BaseModel):
     """A Pilot Report."""
 
     base_loc: str = None
+    flight_level: int = Field(
+        default=None,
+        description="The flight level of the aircraft in feet.",
+        gt=0,
+        lt=100000,  # 100k feet, arb
+    )
     text: str = None
     priority: Priority = None
     latitude: float = None

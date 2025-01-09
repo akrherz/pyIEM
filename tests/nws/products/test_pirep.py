@@ -30,6 +30,7 @@ def test_210121_int_latlon():
     prod = pirepparser(get_test_file("PIREPS/latlonint.txt"), utcnow=utcnow)
     assert prod.reports[0].latitude == 47
     assert prod.reports[0].longitude == -51
+    assert prod.reports[0].flight_level == 35_000
 
 
 def test_210110_canada():
