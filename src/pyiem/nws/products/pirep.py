@@ -16,6 +16,7 @@ this data contains a bunch of formatting errors.
 import datetime
 import math
 import re
+from typing import List
 
 from metpy.units import units
 
@@ -117,7 +118,7 @@ class Pirep(TextProduct):
         )
         if self.afos is None:
             self.afos = "PIREP"
-        self.reports = []
+        self.reports: List[PilotReport] = []
         self.parse_reports()
 
     def parse_reports(self):
@@ -171,6 +172,7 @@ class Pirep(TextProduct):
             # Aircraft Type
             if token.startswith("TP "):
                 _pr.aircraft_type = token[3:]
+                continue
 
             # Location
             if token.startswith("OV "):
@@ -325,11 +327,10 @@ class Pirep(TextProduct):
         for report in self.reports:
             if report.latitude is None:
                 continue
-            giswkt = f"SRID=4326;POINT({report.longitude} {report.latitude})"
             txn.execute(
                 "select id from cwsu WHERE "
-                "st_contains(geom, geomFromEWKT(%s))",
-                (giswkt,),
+                "st_contains(geom, ST_Point(%s, %s, 4326))",
+                (report.longitude, report.latitude),
             )
             if txn.rowcount > 0:
                 report.cwsu = txn.fetchone()["id"]
