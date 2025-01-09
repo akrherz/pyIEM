@@ -13,17 +13,13 @@ this data contains a bunch of formatting errors.
 
 """
 
-# stdlib
 import datetime
 import math
 import re
-from enum import Enum
 
-# Third Party
 from metpy.units import units
-from pydantic import BaseModel
 
-# Local
+from pyiem.models.pirep import PilotReport, Priority
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, html_escape
 
@@ -69,31 +65,6 @@ DRCT2DIR = {
     "SOUTH": 180,
     "WEST": 270,
 }
-
-
-class Priority(str, Enum):
-    """Types of reports."""
-
-    def __str__(self):
-        """When we want the str repr."""
-        return str(self.value)
-
-    UA = "UA"
-    UUA = "UUA"
-
-
-class PilotReport(BaseModel):
-    """A Pilot Report."""
-
-    base_loc: str = None
-    text: str = None
-    priority: Priority = None
-    latitude: float = None
-    longitude: float = None
-    valid: datetime.datetime = None
-    cwsu: str = None
-    aircraft_type: str = None
-    is_duplicate: bool = False
 
 
 def _rectify_identifier(station, textprod):

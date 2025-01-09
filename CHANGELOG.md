@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Refactored PIREP data model to `pyiem.models.pirep`.
+
 ### New Features
 
 - Add `nwsice` color ramp per suggestion.
