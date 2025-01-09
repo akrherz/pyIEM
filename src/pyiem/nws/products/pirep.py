@@ -13,20 +13,18 @@ this data contains a bunch of formatting errors.
 
 """
 
-# stdlib
 import datetime
 import math
 import re
-from enum import Enum
+from typing import List
 
-# Third Party
 from metpy.units import units
-from pydantic import BaseModel
 
-# Local
+from pyiem.models.pirep import PilotReport, Priority
 from pyiem.nws.product import TextProduct
 from pyiem.util import LOG, html_escape
 
+FLIGHT_LEVEL = re.compile(r"FL(?P<levelx100>[0-9]{3})")
 OV_LATLON = re.compile(
     (
         r"\s?(?P<lat>[0-9]{2,4})(?P<latsign>[NS])"
@@ -69,31 +67,6 @@ DRCT2DIR = {
     "SOUTH": 180,
     "WEST": 270,
 }
-
-
-class Priority(str, Enum):
-    """Types of reports."""
-
-    def __str__(self):
-        """When we want the str repr."""
-        return str(self.value)
-
-    UA = "UA"
-    UUA = "UUA"
-
-
-class PilotReport(BaseModel):
-    """A Pilot Report."""
-
-    base_loc: str = None
-    text: str = None
-    priority: Priority = None
-    latitude: float = None
-    longitude: float = None
-    valid: datetime.datetime = None
-    cwsu: str = None
-    aircraft_type: str = None
-    is_duplicate: bool = False
 
 
 def _rectify_identifier(station, textprod):
@@ -145,7 +118,7 @@ class Pirep(TextProduct):
         )
         if self.afos is None:
             self.afos = "PIREP"
-        self.reports = []
+        self.reports: List[PilotReport] = []
         self.parse_reports()
 
     def parse_reports(self):
@@ -190,9 +163,16 @@ class Pirep(TextProduct):
                     if len(_pr.base_loc) == 4 and _pr.base_loc[0] == "K":
                         _pr.base_loc = _pr.base_loc[1:]
                 continue
+            # Flight Level
+            if token.startswith("FL"):
+                m = re.match(FLIGHT_LEVEL, token)
+                if m:
+                    _pr.flight_level = int(m.group("levelx100")) * 100
+                continue
             # Aircraft Type
             if token.startswith("TP "):
                 _pr.aircraft_type = token[3:]
+                continue
 
             # Location
             if token.startswith("OV "):
@@ -328,8 +308,8 @@ class Pirep(TextProduct):
             txn.execute(
                 f"""
                 INSERT into pireps(valid, geom, is_urgent, aircraft_type,
-                report, artcc, product_id) VALUES (%s,
-                ST_GeographyFromText(%s), %s, %s, %s, {artcc}, %s)
+                report, artcc, product_id, flight_level) VALUES (%s,
+                ST_GeographyFromText(%s), %s, %s, %s, {artcc}, %s, %s)
                 """,
                 (
                     report.valid,
@@ -338,6 +318,7 @@ class Pirep(TextProduct):
                     report.aircraft_type,
                     report.text,
                     self.get_product_id(),
+                    report.flight_level,
                 ),
             )
 
@@ -346,11 +327,10 @@ class Pirep(TextProduct):
         for report in self.reports:
             if report.latitude is None:
                 continue
-            giswkt = f"SRID=4326;POINT({report.longitude} {report.latitude})"
             txn.execute(
                 "select id from cwsu WHERE "
-                "st_contains(geom, geomFromEWKT(%s))",
-                (giswkt,),
+                "st_contains(geom, ST_Point(%s, %s, 4326))",
+                (report.longitude, report.latitude),
             )
             if txn.rowcount > 0:
                 report.cwsu = txn.fetchone()["id"]
