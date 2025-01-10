@@ -77,9 +77,7 @@ class LSRProduct(TextProduct):
                     f", {self.duplicates} out of {len(self.lsrs)} reports "
                     "were previously sent and not repeated here. "
                 )
-            text = (
-                f"{wfo} issues Summary Local Storm Report" f"{extra_text}{url}"
-            )
+            text = f"{wfo} issues Summary Local Storm Report{extra_text}{url}"
 
             html = (
                 f"<p>{wfo} issues <a href='{url}'>"

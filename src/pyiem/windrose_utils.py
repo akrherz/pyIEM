@@ -198,9 +198,7 @@ def _make_textresult(station, df, **kwargs):
         speed, direction, bins, kwargs.get("nsector", 36)
     )
     sn = kwargs.get("sname", f"(({station}))")
-    res = (
-        "# Windrose Data Table (Percent Frequency) " f"for {sn} ({station})\n"
-    )
+    res = f"# Windrose Data Table (Percent Frequency) for {sn} ({station})\n"
     res += (
         f"# Observations Used/Missing/Total: {len(df2.index)}/"
         f"{len(df.index) - len(df2.index)}/{len(df.index)}\n"
