@@ -1326,8 +1326,8 @@ def gen_metar(data):
             _t = "1" if tmpc < 0 else "0"
             _d = "1" if dwpc < 0 else "0"
             tgroup = (
-                f"T{_t}{(abs(tmpc) * 10.):03.0f}"
-                f"{_d}{(abs(dwpc) * 10.):03.0f}"
+                f"T{_t}{(abs(tmpc) * 10.0):03.0f}"
+                f"{_d}{(abs(dwpc) * 10.0):03.0f}"
             )
         mtr += " "
     # altimeter

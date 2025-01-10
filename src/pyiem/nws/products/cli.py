@@ -591,7 +591,7 @@ class CLIProduct(TextProduct):
             )
             htmlmess = (
                 f'{data["cli_station"]} <a href="{url}">'
-                f'{data["cli_valid"]:%b %-d} Climate Report</a>: {msg}'
+                f"{data['cli_valid']:%b %-d} Climate Report</a>: {msg}"
             )
             xtra["twitter_media"] = (
                 "https://mesonet.agron.iastate.edu/plotting/auto/plot/218/"

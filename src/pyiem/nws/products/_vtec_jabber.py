@@ -367,11 +367,11 @@ def _get_jabbers(prod, uri, river_uri=None):
         # 25 is an aggressive reservation for URLs, which may not be needed
         if len(xtra["twitter"]) > (TWEET_CHARS - 25):
             xtra["twitter"] = (
-                "%(wfo)s %(action)s %(product)s%(sts)s " "(%(as)s) %(ets)s"
+                "%(wfo)s %(action)s %(product)s%(sts)s (%(as)s) %(ets)s"
             ) % jdict
             if len(xtra["twitter"]) > (TWEET_CHARS - 25):
                 xtra["twitter"] = (
-                    "%(wfo)s %(action)s %(product)s%(sts)s " "%(ets)s"
+                    "%(wfo)s %(action)s %(product)s%(sts)s %(ets)s"
                 ) % jdict
         xtra["twitter"] += " %(url)s" % jdict
         html = (
