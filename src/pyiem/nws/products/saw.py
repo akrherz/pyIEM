@@ -3,8 +3,8 @@
 This does not process the legacy SAW products that did not have LAT...LON
 """
 
-import datetime
 import re
+from datetime import timedelta
 from typing import Optional
 
 from shapely.geometry import MultiPolygon
@@ -168,10 +168,10 @@ class SAWProduct(TextProduct):
 
         # If we are near the end of the month and the day1 is 1, add 1 month
         if self.utcnow.day > 27 and day1 == 1:
-            sts += datetime.timedelta(days=+35)
+            sts += timedelta(days=+35)
             sts = sts.replace(day=1)
         if self.utcnow.day > 27 and day2 == 1:
-            ets += datetime.timedelta(days=+35)
+            ets += timedelta(days=+35)
             ets = ets.replace(day=1)
         return (sts, ets)
 

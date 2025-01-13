@@ -1,7 +1,7 @@
 """Parser for the FD (Temp Wind Aloft Forecasts)."""
 
-import datetime
 import re
+from datetime import timedelta
 
 import numpy as np
 import pandas as pd
@@ -41,9 +41,9 @@ def compute_time(valid, tokens):
     dd, hh, mi = int(tokens[0][:2]), int(tokens[0][2:4]), int(tokens[0][4:6])
     valid2 = valid.replace(hour=hh, minute=mi)
     if valid.day > 25 and dd < 5:
-        valid2 += datetime.timedelta(days=10)
+        valid2 += timedelta(days=10)
     if valid.day < 5 and dd > 25:
-        valid2 -= datetime.timedelta(days=10)
+        valid2 -= timedelta(days=10)
     valid2 = valid2.replace(day=dd)
     # In theory, we should not be far apart
     if abs((valid2 - valid).days) > 5:

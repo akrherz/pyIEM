@@ -3,9 +3,9 @@ Something to store UGC information!
 """
 
 # stdlib
-import datetime
 import re
 from collections import OrderedDict
+from datetime import datetime, timedelta
 from typing import Optional, Union
 
 # third party
@@ -59,7 +59,7 @@ def str2time(text, valid):
     hour = int(text[2:4])
     minute = int(text[4:])
     if day < 5 and valid.day > 25:  # Next month
-        valid = valid + datetime.timedelta(days=25)
+        valid = valid + timedelta(days=25)
 
     return valid.replace(day=day, hour=hour, minute=minute)
 
@@ -220,10 +220,10 @@ class UGCProvider:
 
 def parse(
     text: str,
-    valid: datetime.datetime,
+    valid: datetime,
     ugc_provider: Optional[UGCProvider] = None,
     is_firewx: bool = False,
-) -> tuple[list[UGC], Optional[datetime.datetime]]:
+) -> tuple[list[UGC], Optional[datetime]]:
     """Return UGC list and expiration time.
 
     Arguments:

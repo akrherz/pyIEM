@@ -1,7 +1,7 @@
 """Special Weather Statement"""
 
-import datetime
 import re
+from datetime import timedelta
 
 from pyiem import reference
 from pyiem.nws.product import TextProduct
@@ -40,7 +40,7 @@ def dedup_headline(headline, ugcs, counties, expire):
 def _sql_segment(prod, txn, seg):
     """Do the database insert for this segment."""
     ugcs = [str(s) for s in seg.ugcs]
-    ets = prod.valid + datetime.timedelta(hours=1)
+    ets = prod.valid + timedelta(hours=1)
     if seg.ugcexpire is not None:
         ets = seg.ugcexpire
     tml_valid = None
@@ -126,7 +126,7 @@ class SPSProduct(TextProduct):
             counties = f" for {ugcs_to_text(seg.ugcs)}"
             expire = ""
             if seg.ugcexpire is not None:
-                _d = seg.ugcexpire - datetime.timedelta(
+                _d = seg.ugcexpire - timedelta(
                     hours=reference.offsets.get(self.z, 0)
                 )
                 expire = f" till {_d:%-I:%M %p} {self.z}"

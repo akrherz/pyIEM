@@ -21,6 +21,7 @@ USERNAME_MAPPER = {
     "apache": "nobody",
     "www-data": "nobody",
     "akrherz": "mesonet",
+    "runner": "mesonet",  # github actions
     "meteor_ldm": "ldm",
 }
 
