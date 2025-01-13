@@ -1,7 +1,7 @@
 """Parser and object storage of information within NWS CLI Product."""
 
-import datetime
 import re
+from datetime import date, datetime
 
 from pyiem.exceptions import CLIException
 from pyiem.nws.product import TextProduct
@@ -152,7 +152,7 @@ def trace_r(val):
 def get_number_year(text):
     """Ensure we get a year that makes sense."""
     val = get_number(text)
-    if val is None or val < 1700 or val > (datetime.date.today().year + 1):
+    if val is None or val < 1700 or val > (date.today().year + 1):
         return None
     return val
 
@@ -341,7 +341,7 @@ def parse_headline(section):
     """Figure out when this product is valid for"""
     tokens = HEADLINE_RE.findall(section.replace("\n", " "))
     myfmt = "%b %d %Y" if len(tokens[0][2].split()[0]) == 3 else "%B %d %Y"
-    cli_valid = datetime.datetime.strptime(tokens[0][2], myfmt).date()
+    cli_valid = datetime.strptime(tokens[0][2], myfmt).date()
     cli_station = (tokens[0][0]).strip().upper()
     return (cli_valid, cli_station)
 

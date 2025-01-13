@@ -1,9 +1,9 @@
 """Parse SIGMETs"""
 
 # Stdlib imports
-import datetime
 import math
 import re
+from datetime import timedelta
 
 # Third Party
 from shapely.geometry import Point, Polygon
@@ -99,7 +99,7 @@ def figure_expire(ptime, hour, minute):
     """
     expire = ptime
     if hour < ptime.hour:
-        expire += datetime.timedelta(days=1)
+        expire += timedelta(days=1)
     return expire.replace(hour=hour, minute=minute)
 
 
@@ -292,7 +292,7 @@ class SIGMETProduct(TextProduct):
         minute = int(ddhhmi[4:6])
         ts = self.valid
         if self.valid.day > 25 and day < 5:  # next month
-            ts += datetime.timedelta(days=15)
+            ts += timedelta(days=15)
 
         return ts.replace(day=day, hour=hour, minute=minute)
 

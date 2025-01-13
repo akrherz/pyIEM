@@ -2,8 +2,8 @@
 Supports parsing of Textual Model Output Statistics files
 """
 
-import datetime
 import re
+from datetime import timedelta
 
 from pyiem.util import utc
 from pyiem.wmo import WMOProduct
@@ -46,14 +46,14 @@ def section_parser(sect):
         hrs = lines[2].split()
     for i, hr in enumerate(hrs[1:]):
         if model == "LAV" and hrs[0] == "HR":
-            ts = initts + datetime.timedelta(hours=int(hr))
+            ts = initts + timedelta(hours=int(hr))
         elif model == "LAV":
-            ts = initts + datetime.timedelta(hours=i + 1)
+            ts = initts + timedelta(hours=i + 1)
             assert ts.hour == int(hr)
         elif model in ["MEX", "NBE", "NBS"]:
-            ts = initts + datetime.timedelta(hours=int(hr))
+            ts = initts + timedelta(hours=int(hr))
         elif hr == "00":
-            ts = times[-1] + datetime.timedelta(days=1)
+            ts = times[-1] + timedelta(days=1)
             ts = ts.replace(hour=0)
         else:
             ts = times[-1].replace(hour=int(hr))

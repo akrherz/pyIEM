@@ -4,10 +4,10 @@ Eh, I am able to parse the SPC PTS now, so why not add more pain.
 Weather Prediction Center Excessive Rainfall Outlook.
 """
 
-import datetime
 import math
 import re
 import tempfile
+from datetime import datetime, timezone
 
 from metpy.units import units
 from shapely.geometry import MultiPolygon
@@ -353,14 +353,14 @@ class ERO(TextProduct):
         else:
             hour2 = int(m[4])
             minute2 = 0
-        self.issue = datetime.datetime.strptime(
+        self.issue = datetime.strptime(
             f"{hour1}:{minute1} {m[1]} {m[2]} {m[3]}",
             "%H:%M %b %d %Y",
-        ).replace(tzinfo=datetime.timezone.utc)
-        self.expire = datetime.datetime.strptime(
+        ).replace(tzinfo=timezone.utc)
+        self.expire = datetime.strptime(
             f"{hour2}:{minute2} {m[5]} {m[6]} {m[7]}",
             "%H:%M %b %d %Y",
-        ).replace(tzinfo=datetime.timezone.utc)
+        ).replace(tzinfo=timezone.utc)
 
     def find_outlooks(self):
         """Find the outlook sections within the text product!"""

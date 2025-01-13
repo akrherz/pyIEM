@@ -13,9 +13,9 @@ this data contains a bunch of formatting errors.
 
 """
 
-import datetime
 import math
 import re
+from datetime import timedelta
 from typing import List
 
 from metpy.units import units
@@ -287,7 +287,7 @@ class Pirep(TextProduct):
             hour=hour, minute=minute, second=0, microsecond=0
         )
         if hour > self.utcnow.hour:
-            res -= datetime.timedelta(hours=24)
+            res -= timedelta(hours=24)
         return res
 
     def sql(self, txn):

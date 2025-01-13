@@ -1,8 +1,8 @@
 """Parser for the CF6 Product."""
 
 import calendar
-import datetime
 import re
+from datetime import date, datetime, timedelta
 from io import StringIO
 
 import pandas as pd
@@ -78,7 +78,7 @@ class CF6Product(TextProduct):
                 break
         if year is None or month is None:
             raise ValueError("Failed to find required month and year values")
-        day1 = datetime.datetime.strptime(
+        day1 = datetime.strptime(
             f"{year} {month} 1",
             "%Y %B %d" if len(month) > 3 else "%Y %b %d",
         )
@@ -104,10 +104,10 @@ class CF6Product(TextProduct):
                 continue
             df[col] = pd.to_numeric(df[col], errors="coerce")
         df["valid"] = df["dy"].apply(
-            lambda x: datetime.date(day1.year, day1.month, int(x))
+            lambda x: date(day1.year, day1.month, int(x))
         )
         # Ensure we don't have data from utcnow + 1 day
-        ceiling = (self.utcnow + datetime.timedelta(days=1)).date()
+        ceiling = (self.utcnow + timedelta(days=1)).date()
         indicies = pd.to_datetime(df["valid"]) > pd.Timestamp(ceiling)
         if indicies.any():
             self.warnings.append(f"{indicies.sum()} rows from the future")
