@@ -3,10 +3,11 @@
 
 All notable changes to this library are documented in this file.
 
-## Unreleased Version
+## **1.22.1** (14 Jan 2025)
 
 ### API Changes
 
+- Map `runner` user to `mesonet` for CI database support.
 - Refactored PIREP data model to `pyiem.models.pirep`.
 
 ### New Features
