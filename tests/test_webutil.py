@@ -595,6 +595,19 @@ def test_xss():
     assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
 
 
+def test_iemapp_generator():
+    """Test that we can wrap a generator."""
+
+    @iemapp()
+    def application(environ, start_response):
+        """Test."""
+        yield b"Content-type: text/plain\n\nHello!"
+
+    env = {"wsgi.input": mock.MagicMock()}
+    res = list(application(env, None))
+    assert res == [b"Content-type: text/plain\n\nHello!"]
+
+
 def test_iemapp_decorator():
     """Try the API."""
 

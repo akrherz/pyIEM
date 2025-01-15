@@ -542,7 +542,7 @@ def iemapp(**kwargs):
                 for r in res:
                     yield r
                 return
-            yield res
+            yield from res
 
         return _wrapped
 
