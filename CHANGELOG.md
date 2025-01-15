@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Support decorated `webutil.iemapp` functions that return generators.
+
 ### Bug Fixes
 
 - Constrain FEMA Region 9 to CA, NV, AZ (#1007).

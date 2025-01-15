@@ -40,14 +40,14 @@ def test_allowed_as_list():
         "QUERY_STRING": "q=1&q=2&f=1",
     }
     sr = mock.MagicMock()
-    res = application(env, sr)
+    res = list(application(env, sr))
     assert res[0].find(b"Oopsy") == -1
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "q=1&f=1&f=2",
     }
     sr = mock.MagicMock()
-    res = application(env, sr)
+    res = list(application(env, sr))
     assert res[0].find(b"Oopsy") > -1
 
 
@@ -64,7 +64,7 @@ def test_memcachekey_is_none():
         "QUERY_STRING": "",
     }
     sr = mock.MagicMock()
-    res1 = application(env, sr)[0]
+    res1 = list(application(env, sr))[0]
     assert res1.startswith(b"aa")
 
 
@@ -81,12 +81,12 @@ def test_iemapp_memcache_keychanged():
         "QUERY_STRING": "",
     }
     sr = mock.MagicMock()
-    res1 = application(env, sr)[0]
+    res1 = list(application(env, sr))[0]
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "",
     }
-    res2 = application(env, sr)[0]
+    res2 = list(application(env, sr))[0]
     assert res1.startswith(b"aa")
     assert res2.startswith(b"aa")
     assert res1 != res2
@@ -105,12 +105,12 @@ def test_iemapp_memcache():
         "QUERY_STRING": "callback=gotData",
     }
     sr = mock.MagicMock()
-    res1 = application(env, sr)[0]
+    res1 = list(application(env, sr))[0]
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "callback=gotData",
     }
-    res2 = application(env, sr)[0]
+    res2 = list(application(env, sr))[0]
     assert res1.decode("ascii").startswith("gotData")
     assert res1 == res2
 
@@ -136,7 +136,7 @@ def test_iemapp_year_year1():
         "QUERY_STRING": "year=2022&month1=2&day1=3",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
     assert "_cgimodel_schema" in env
 
 
@@ -161,7 +161,7 @@ def test_iemapp_times_notime():
         "QUERY_STRING": "recent=yes",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
 
 
 def test_iemapp_bracket_variable():
@@ -183,7 +183,7 @@ def test_iemapp_bracket_variable():
         "QUERY_STRING": "wfo[]=DMX",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
 
 
 def test_schema_with_parse_times():
@@ -210,7 +210,7 @@ def test_schema_with_parse_times():
         "QUERY_STRING": "year1=2022&month1=2&day1=3",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
 
 
 def test_listorcsvtype():
@@ -239,23 +239,28 @@ def test_listorcsvtype():
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello") > -1
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "help",
     }
-    assert application(env, sr)[0].decode("ascii").find("CGI") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("CGI") > -1
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&valid=Foo",
     }
-    assert application(env, sr)[0].decode("ascii").find("datetime_from_d") > -1
+    assert (
+        list(application(env, sr))[0].decode("ascii").find("datetime_from_d")
+        > -1
+    )
 
     env = {
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>",
     }
-    assert application(env, sr)[0].decode("ascii").find("XSS detected") > -1
+    assert (
+        list(application(env, sr))[0].decode("ascii").find("XSS detected") > -1
+    )
 
 
 def test_disable_parse_times():
@@ -319,7 +324,7 @@ def test_iemapp_help():
         "QUERY_STRING": "help",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("FINDME") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("FINDME") > -1
 
 
 def test_iemapp_iemdb_cursor():
@@ -339,7 +344,7 @@ def test_iemapp_iemdb_cursor():
         "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
     }
     sr = mock.MagicMock()
-    application(env, sr)
+    list(application(env, sr))
     # ensure that the connection was closed
     assert env["iemdb.mesosite.conn"].closed
     assert env["iemdb.mesosite.cursor"].closed
@@ -360,7 +365,7 @@ def test_iemapp_iemdb():
         "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
     }
     sr = mock.MagicMock()
-    application(env, sr)
+    list(application(env, sr))
     # ensure that the connection was closed
     assert env["iemdb.mesosite.conn"].closed
     assert env["iemdb.postgis.conn"].closed
@@ -379,7 +384,7 @@ def test_duplicated_year_in_form():
         "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
     }
     sr = mock.MagicMock()
-    application(env, sr)
+    list(application(env, sr))
     assert env["sts"].year == 2021
 
 
@@ -396,7 +401,7 @@ def test_forgive_duplicate_tz():
         "QUERY_STRING": "tz=etc/utc&tz=etc/utc",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("Hello!") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("Hello!") > -1
 
 
 def test_duplicated_tz_in_form():
@@ -412,7 +417,7 @@ def test_duplicated_tz_in_form():
         "QUERY_STRING": "tz=etc/utc&tz=etc/UTC",
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("twice") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("twice") > -1
 
 
 def test_forgive_feb29():
@@ -541,7 +546,7 @@ def test_incomplete():
         "wsgi.input": mock.MagicMock(),
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find(msg) > -1
+    assert list(application(env, sr))[0].decode("ascii").find(msg) > -1
 
 
 def test_newdatabase():
@@ -556,7 +561,7 @@ def test_newdatabase():
         "wsgi.input": mock.MagicMock(),
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
 
 
 def test_nodatafound():
@@ -572,7 +577,7 @@ def test_nodatafound():
         "wsgi.input": mock.MagicMock(),
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii") == res
+    assert list(application(env, sr))[0].decode("ascii") == res
 
 
 def test_xss():
@@ -587,7 +592,7 @@ def test_xss():
         "wsgi.input": mock.MagicMock(),
     }
     sr = mock.MagicMock()
-    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
 
 
 def test_iemapp_decorator():
@@ -599,7 +604,9 @@ def test_iemapp_decorator():
         return [b"Content-type: text/plain\n\nHello!"]
 
     env = {"wsgi.input": mock.MagicMock()}
-    assert application(env, None) == [b"Content-type: text/plain\n\nHello!"]
+    assert list(application(env, None)) == [
+        b"Content-type: text/plain\n\nHello!"
+    ]
 
 
 def test_typoed_tz():
@@ -614,7 +621,9 @@ def test_typoed_tz():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
     }
-    assert application(env, None) == [b"Content-type: text/plain\n\nHello!"]
+    assert list(application(env, None)) == [
+        b"Content-type: text/plain\n\nHello!"
+    ]
 
 
 def test_iemapp_raises_newdatabaseconnectionfailure():
@@ -632,7 +641,7 @@ def test_iemapp_raises_newdatabaseconnectionfailure():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
     }
-    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
 
 
 def test_iemapp_catches_vanilla_exception():
@@ -649,4 +658,4 @@ def test_iemapp_catches_vanilla_exception():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
     }
-    assert application(env, sr)[0].decode("ascii").find("akrherz") > -1
+    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
