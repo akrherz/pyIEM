@@ -1,5 +1,6 @@
 """Utility functions for iemwebfarm applications."""
 
+import inspect
 import random
 import re
 import string
@@ -335,7 +336,7 @@ def _handle_help(start_response, **kwargs):
     html = publish_string(source=sdoc, writer_name="html").decode("utf-8")
     # Get the content between the body tags
     res = {"content": html.split("<body>")[1].split("</body>")[0]}
-    return [TEMPLATE.render(res).encode("utf-8")]
+    return TEMPLATE.render(res).encode("utf-8")
 
 
 def _debracket(form):
@@ -354,8 +355,9 @@ def _mcall(func, environ, start_response, memcachekey, expire, content_type):
     if memcachekey is None:
         return func(environ, start_response)
     key = memcachekey if isinstance(memcachekey, str) else memcachekey(environ)
-    if key is None:
+    if key is None or inspect.isgeneratorfunction(func):
         # An appside short circuit when we programatically do not want cache
+        # or we are dealing with a generator
         return func(environ, start_response)
     mc = Client("iem-memcached:11211")
     res = mc.get(key)
@@ -447,7 +449,7 @@ def iemapp(**kwargs):
                     f"{code} {HTTPStatus(code).phrase}",
                     [("Content-type", "text/plain")],
                 )
-                return [msg.encode("ascii")]
+                return msg.encode("ascii")
 
             start_time = datetime.now(timezone.utc)
             status_code = 500
@@ -465,7 +467,8 @@ def iemapp(**kwargs):
                             )
                 form = clean_form(form)
                 if "help" in form:
-                    return _handle_help(start_response, **kwargs)
+                    yield _handle_help(start_response, **kwargs)
+                    return
                 if "schema" in kwargs:
                     # Retain a reference to the Schema instance as it may have
                     # private / computed attributes that are needed
@@ -486,6 +489,9 @@ def iemapp(**kwargs):
                     kwargs.get("memcacheexpire", 3600),
                     kwargs.get("content_type", "application/json"),
                 )
+                # If res is a generator, we should yield from it here
+                if inspect.isgenerator(res):
+                    yield from res
                 # you know what assumptions do
                 status_code = 200
             except IncompleteWebRequest as exp:
@@ -527,10 +533,16 @@ def iemapp(**kwargs):
             # Need to be careful here and ensure we are returning a list
             # of bytes
             if isinstance(res, str):
-                return [res.encode("utf-8")]
+                yield res.encode("utf-8")
+                return
             if isinstance(res, bytes):
-                return [res]
-            return res
+                yield res
+                return
+            if isinstance(res, (tuple, list)):
+                for r in res:
+                    yield r
+                return
+            yield from res
 
         return _wrapped
 
