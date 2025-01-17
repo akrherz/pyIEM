@@ -128,6 +128,17 @@ class UGC:
 class UGCProvider:
     """Wrapper around dataframe to provide UGC information."""
 
+    # We only hold an instance, if we loaded from the database.
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        """Singleton, if the price is right."""
+        if kwargs.get("legacy_dict") is not None:
+            return super(UGCProvider, cls).__new__(cls)
+        if not cls._instance:
+            cls._instance = super(UGCProvider, cls).__new__(cls)
+        return cls._instance
+
     def __init__(self, legacy_dict=None, pgconn=None, valid=None):
         """Constructor.
 

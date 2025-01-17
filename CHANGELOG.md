@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Constrain FEMA Region 9 to CA, NV, AZ (#1007).
+- Prevent `UGCProvider` from constantly reloading from database (#1010).
 
 ## **1.22.1** (14 Jan 2025)
 

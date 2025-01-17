@@ -10,6 +10,20 @@ STR1 = "DCZ001-170200-"
 STR2 = "DCZ001-MDZ004>007-009>011-013-014-016>018-VAZ036>042-050>057-170200-"
 
 
+def test_gh1010_ugc_provider_singleton():
+    """Test that we get singletons."""
+    ugc_provider = ugc.UGCProvider()
+    ugc_provider2 = ugc.UGCProvider()
+    assert ugc_provider is ugc_provider2
+
+
+def test_gh1010_ugc_provider_not_singleton():
+    """Test that we do not get singletons."""
+    ugc_provider = ugc.UGCProvider(legacy_dict={})
+    ugc_provider2 = ugc.UGCProvider(legacy_dict={})
+    assert ugc_provider is not ugc_provider2
+
+
 def test_contains():
     """Test that we can handle various is in scenarios."""
     ugc_provider = ugc.UGCProvider(
