@@ -127,6 +127,7 @@ NWS_COLORS = {
     "CF.S": "#6B8E23",
     "CF.W": "#228B22",
     "CF.Y": "#7CFC00",
+    "CW.Y": "#AFEEEE",
     "DS.W": "#FFE4C4",
     "DS.Y": "#BDB76B",
     "DU.W": "#FFE4C4",
