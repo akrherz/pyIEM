@@ -245,6 +245,8 @@ def test_gh493_sqwtags_db(dbcursor):
     row = dbcursor.fetchone()
     assert row["damagetag"] == "SIGNIFICANT"
     assert row["squalltag"] == "OBSERVED"
+    jmsg = prod.get_jabbers("http://localhost")
+    assert "impact threat" in jmsg[0][2]["twitter"]
 
 
 def test_220617_parishes():

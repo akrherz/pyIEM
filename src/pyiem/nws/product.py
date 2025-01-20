@@ -482,7 +482,10 @@ class TextProductSegment:
         if self.landspouttag is not None:
             parts.append(f"landspout: {self.landspouttag}")
         if self.damagetag is not None:
-            parts.append(f"damage threat: {self.damagetag}")
+            if self.vtec and self.vtec[0].phenomena == "SQ":
+                parts.append(f"impact threat: {self.damagetag}")
+            else:
+                parts.append(f"damage threat: {self.damagetag}")
         if self.windtag is not None:
             _p1 = self.winddirtag.replace(">", "&gt;").replace("<", "&lt;")
             _p2 = "" if self.windthreat is None else f" ({self.windthreat})"
