@@ -16,6 +16,7 @@ All notable changes to this library are documented in this file.
 - Add color for Cold Weather Advisory (AFEEEE).
 - Constrain FEMA Region 9 to CA, NV, AZ (#1007).
 - Prevent `UGCProvider` from constantly reloading from database (#1010).
+- Wordsmith message for Snow Squall Warnings (#1013).
 
 ## **1.22.1** (14 Jan 2025)
 
