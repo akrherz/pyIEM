@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1227+gd8f577e documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <title>pyiem package &#8212; pyIEM 0.0.post1230+g175194a documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=835060a2"></script>
+    <script src="../_static/documentation_options.js?v=9f41263a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1227+gd8f577e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g175194a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -586,6 +586,27 @@ database connections open.  So this isn’t something that is fast!</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – the database to connect to, passed to get_dbconnstr</p></li>
 <li><p><strong>**kwargs</strong> – any additional arguments to pass to get_dbconnstr</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.database.sql_helper">
+<span class="sig-prename descclassname"><span class="pre">pyiem.database.</span></span><span class="sig-name descname"><span class="pre">sql_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TextClause</span></span></span><a class="headerlink" href="#pyiem.database.sql_helper" title="Link to this definition">¶</a></dt>
+<dd><p>Run string through psycopg.sql machinery destined for sqlalchemy.Allows
+for removal of boilerplate and appease SQL injection detection.</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">sql</span> <span class="pre">=</span> <span class="pre">&quot;select</span> <span class="pre">bah</span> <span class="pre">from</span> <span class="pre">{table}</span> <span class="pre">where</span> <span class="pre">{limiter}</span> <span class="pre">foo</span> <span class="pre">=</span> <span class="pre">:bar&quot;</span>
+<span class="pre">stm</span> <span class="pre">=</span> <span class="pre">sql_helper(sql,</span> <span class="pre">table='foo',</span> <span class="pre">limiter='a</span> <span class="pre">=</span> <span class="pre">:a</span> <span class="pre">and</span> <span class="pre">')</span>
+<span class="pre">pd.read_sql(stm,</span> <span class="pre">conn,</span> <span class="pre">params={'bar':</span> <span class="pre">'baz',</span> <span class="pre">'a':</span> <span class="pre">1})</span>
+<span class="pre">`</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sql</strong> (<em>str</em>) – the SQL statement to process</p></li>
+<li><p><strong>**kwargs</strong> – arguments needed to build the string.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2448,6 +2469,7 @@ useful to others!?!?</p>
 <li><a class="reference internal" href="#pyiem.database.get_dbconnc"><code class="docutils literal notranslate"><span class="pre">get_dbconnc()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.database.get_dbconnstr"><code class="docutils literal notranslate"><span class="pre">get_dbconnstr()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.database.get_sqlalchemy_conn"><code class="docutils literal notranslate"><span class="pre">get_sqlalchemy_conn()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.database.sql_helper"><code class="docutils literal notranslate"><span class="pre">sql_helper()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-pyiem.datatypes">pyiem.datatypes module</a><ul>
@@ -2754,7 +2776,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1227+gd8f577e documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g175194a documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
