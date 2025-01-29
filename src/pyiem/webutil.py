@@ -24,10 +24,9 @@ from pydantic import (
     field_validator,
 )
 from pymemcache.client import Client
-from sqlalchemy import text
 from typing_extensions import Annotated
 
-from pyiem.database import get_dbconnc, get_sqlalchemy_conn
+from pyiem.database import get_dbconnc, get_sqlalchemy_conn, sql_helper
 from pyiem.exceptions import (
     BadWebRequest,
     IncompleteWebRequest,
@@ -159,7 +158,7 @@ def write_telemetry(data: TELEMETRY) -> bool:
     try:
         with get_sqlalchemy_conn("mesosite") as conn:
             conn.execute(
-                text(
+                sql_helper(
                     """
                 insert into website_telemetry(timing, status_code,
                 client_addr, app, request_uri, vhost)
@@ -209,7 +208,7 @@ def log_request(environ):
     """Log the request to database for future processing."""
     with get_sqlalchemy_conn("mesosite") as conn:
         conn.execute(
-            text(
+            sql_helper(
                 """
             INSERT into weblog(client_addr, uri, referer, http_status)
             VALUES (:client_addr, :uri, :referer, :http_status)

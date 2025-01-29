@@ -4,13 +4,26 @@
 import numpy as np
 import pytest
 
-from pyiem import database
+from pyiem.database import (
+    get_dbconn,
+    get_dbconnc,
+    get_dbconnstr,
+    get_sqlalchemy_conn,
+    sql_helper,
+)
 from pyiem.exceptions import NewDatabaseConnectionFailure
+
+
+def test_sql_helper():
+    """Test that we can do a contextmanager with this API."""
+    sql = "SELECT * FROM {table} WHERE {limiter} state_abbr = :state"
+    sql = sql_helper(sql, table="states", limiter="")
+    assert str(sql).find(":state") > 0
 
 
 def test_get_dbconnc_cursory_name():
     """Test getting with a cursor name set."""
-    conn, cursor = database.get_dbconnc("mesosite", cursor_name="test")
+    conn, cursor = get_dbconnc("mesosite", cursor_name="test")
     cursor.execute("SELECT 1 as test")
     assert cursor.rowcount == -1
     conn.close()
@@ -18,7 +31,7 @@ def test_get_dbconnc_cursory_name():
 
 def test_get_dbconnc_cursory_noname():
     """Test getting with a cursor name set."""
-    conn, cursor = database.get_dbconnc("mesosite")
+    conn, cursor = get_dbconnc("mesosite")
     cursor.execute("SELECT 1 as test")
     assert cursor.rowcount == 1
     conn.close()
@@ -42,30 +55,30 @@ def test_get_dbconn_for_user(monkeypatch):
         ["nobody", "mesonet", "ldm", "xyz"],
     ):
         monkeypatch.setattr("getpass.getuser", lambda i=ins: i)
-        res = database.get_dbconnstr("bogus")
+        res = get_dbconnstr("bogus")
         assert res.find(outs) > 0
 
 
 def test_get_sqlalchemy():
     """Test that we can do a contextmanager with this API."""
-    with database.get_sqlalchemy_conn("coop") as conn:
+    with get_sqlalchemy_conn("coop") as conn:
         assert conn is not None
 
 
 @pytest.mark.parametrize("dbname", ["mos", "hads", "iemre", "postgis"])
 def test_get_dbconn(dbname):  # noqa
     """Does our code work for various database names."""
-    pgconn = database.get_dbconn(dbname)
+    pgconn = get_dbconn(dbname)
     assert pgconn is not None
 
 
 def test_get_dbconn_bad():
     """Test that we raise a warning."""
     with pytest.raises(NewDatabaseConnectionFailure):
-        database.get_dbconn("bogus")
+        get_dbconn("bogus")
 
 
 def test_get_dbconn_failover():
     """See if failover works?"""
     with pytest.raises(NewDatabaseConnectionFailure):
-        database.get_dbconn("mesosite", host="b")
+        get_dbconn("mesosite", host="b")
