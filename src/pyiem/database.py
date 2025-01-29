@@ -181,7 +181,7 @@ def sql_helper(sql: str, **kwargs) -> TextClause:
         sql (str): the SQL statement to process
         **kwargs: arguments needed to build the string.
     """
-    args = {"table": Identifier(kwargs.pop("table"))}
+    args = {"table": Identifier(kwargs.pop("table", ""))}
     for key, value in kwargs.items():
         args[key] = SQL(value)
     return text(SQL(sql).format(**args).as_string())
