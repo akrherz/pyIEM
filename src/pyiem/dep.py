@@ -7,10 +7,9 @@ from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
-from sqlalchemy import text
 
 # Local
-from pyiem.database import get_sqlalchemy_conn
+from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.iemre import EAST, NORTH, SOUTH, WEST
 
 YLD_CROPTYPE = re.compile(r"Crop Type #\s+(?P<num>\d+)\s+is (?P<name>[^\s]+)")
@@ -41,7 +40,7 @@ def load_scenarios():
     """Build a dataframe of DEP scenarios."""
     with get_sqlalchemy_conn("idep") as conn:
         df = pd.read_sql(
-            text("SELECT * from scenarios ORDER by id ASC"),
+            sql_helper("SELECT * from scenarios ORDER by id ASC"),
             conn,
             index_col="id",
         )

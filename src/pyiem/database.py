@@ -10,7 +10,8 @@ import numpy as np
 import psycopg
 from psycopg.adapt import Dumper
 from psycopg.rows import DictRow, dict_row
-from sqlalchemy import create_engine
+from psycopg.sql import SQL, Identifier
+from sqlalchemy import TextClause, create_engine, text
 from sqlalchemy.engine.base import Connection
 
 # NB: Careful of cyclic imports here...
@@ -163,3 +164,24 @@ def get_sqlalchemy_conn(
             yield conn
     finally:
         engine.dispose()
+
+
+def sql_helper(sql: str, **kwargs) -> TextClause:
+    """Run string through psycopg.sql machinery destined for sqlalchemy.Allows
+    for removal of boilerplate and appease SQL injection detection.
+
+    Example:
+        ```python
+        sql = "select bah from {table} where {limiter} foo = :bar"
+        stm = sql_helper(sql, table='foo', limiter='a = :a and ')
+        pd.read_sql(stm, conn, params={'bar': 'baz', 'a': 1})
+        ```
+
+    Args:
+        sql (str): the SQL statement to process
+        **kwargs: arguments needed to build the string.
+    """
+    args = {"table": Identifier(kwargs.pop("table"))}
+    for key, value in kwargs.items():
+        args[key] = SQL(value)
+    return text(SQL(sql).format(**args).as_string())

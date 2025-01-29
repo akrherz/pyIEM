@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Introduce `database.sql_helper` as a hacky attempt to ease my ignorance
+  with psycopg + sqlalchemy + pandas usage.
 - Support decorated `webutil.iemapp` functions that return generators.
 
 ### Bug Fixes

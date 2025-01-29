@@ -5,9 +5,8 @@ import sys
 import warnings
 
 import geopandas as gpd
-from sqlalchemy import text
 
-from pyiem.database import get_sqlalchemy_conn
+from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.reference import state_bounds
 from pyiem.util import logger
 
@@ -107,7 +106,7 @@ def dump_fema_regions(fn):
     """Dump fema regions."""
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
         df = gpd.read_postgis(
-            text(""" SELECT region, states,
+            sql_helper("""SELECT region, states,
                 ST_MakeValid(ST_Simplify(geom, 0.01)) as geom
             from fema_regions"""),
             conn,

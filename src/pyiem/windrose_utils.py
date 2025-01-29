@@ -7,10 +7,9 @@ from zoneinfo import ZoneInfo
 import numpy as np
 import pandas as pd
 from metpy.units import units as mpunits
-from sqlalchemy import text
 
 # Local
-from pyiem.database import get_sqlalchemy_conn
+from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.network import Table as NetworkTable
 from pyiem.plot.util import fitbox
 from pyiem.plot.windrose import (
@@ -119,13 +118,15 @@ def _get_data(station, **kwargs):
     if kwargs.get("hours") is not None and len(kwargs["hours"]) < 24:
         sqlargs["hours"] = kwargs["hours"]
         tlimit += f" and extract(hour from valid{te}) = ANY(:hours) "
-    sql = text(
-        f"""
+    sql = sql_helper(
+        """
         SELECT sknt, drct, valid at time zone 'UTC' as valid
         from alldata WHERE station = :station
         and valid > :sts and valid < :ets and sknt >= 0 and drct >= 0
         {tlimit} {rlimiter}
-        """
+        """,
+        tlimit=tlimit,
+        rlimiter=rlimiter,
     )
     sqlargs["station"] = station
     sqlargs["sts"] = sts
@@ -143,14 +144,15 @@ def _get_data(station, **kwargs):
                 .strip()
                 .split(" ")
             )
-        sql = text(
-            f"""SELECT p.smps * 1.94384 as sknt, p.drct,
+        sql = sql_helper(
+            """SELECT p.smps * 1.94384 as sknt, p.drct,
         f.valid at time zone 'UTC' as valid from
         raob_flights f JOIN raob_profile p on (f.fid = p.fid) WHERE
         f.station = ANY(:stations) and p.pressure = :level and
         p.smps is not null
         and p.drct is not null and valid >= :sts and valid < :ets
-        {tlimit}"""
+        {tlimit}""",
+            tlimit=tlimit,
         )
         sqlargs["level"] = kwargs["level"]
     with get_sqlalchemy_conn(database) as conn:
