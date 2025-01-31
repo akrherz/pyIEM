@@ -8,6 +8,7 @@ import pandas as pd
 from psycopg.sql import SQL
 
 from pyiem.nws.product import TextProduct, TextProductSegment
+from pyiem.nws.vtec import VTEC
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
 
@@ -412,7 +413,7 @@ def _cross_check_watch_pds(prod, txn, segment: TextProductSegment, vtec):
     segment.is_pds = txn.fetchone()["is_pds"]
 
 
-def _do_sql_vtec_new(prod, txn, segment, vtec):
+def _do_sql_vtec_new(prod, txn, segment, vtec: VTEC):
     """Do the NEW style actions."""
     bts = prod.valid if vtec.begints is None else vtec.begints
     # If this product has no expiration time, but db needs a value
@@ -420,7 +421,12 @@ def _do_sql_vtec_new(prod, txn, segment, vtec):
     if vtec.endts is None:
         ets = bts + DEFAULT_EXPIRE_DELTA
     # akrherz/pyIEM#925 Need to cross-check watches for PDS status
-    if vtec.phenomena in ["TO", "SV"] and vtec.significance == "A":
+    # Hawaii "rolls their own", so no cross check is possible
+    if (
+        vtec.phenomena in ["TO", "SV"]
+        and vtec.significance == "A"
+        and vtec.office4 != "PHFO"
+    ):
         _cross_check_watch_pds(prod, txn, segment, vtec)
 
     # For each UGC code in this segment, we create a database entry
