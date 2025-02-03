@@ -40,7 +40,7 @@ VTEC_SIGNIFICANCE = {
     "F": "Forecast",
 }
 
-# https://www.nws.noaa.gov/directives/sym/pd01017003curr.pdf
+# https://www.weather.gov/media/directives/010_pdfs/pd01017003curr.pdf
 VTEC_PHENOMENA = {
     "AF": "Ashfall",
     "AS": "Air Stagnation",
