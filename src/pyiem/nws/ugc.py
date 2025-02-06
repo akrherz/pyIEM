@@ -12,7 +12,7 @@ from typing import Optional, Union
 import pandas as pd
 
 # local
-from pyiem.database import get_dbconnstr
+from pyiem.database import get_dbconnstr, sql_helper
 from pyiem.exceptions import UGCParseException
 from pyiem.util import LOG, utc
 
@@ -79,12 +79,15 @@ def _load_from_database(pgconn=None, valid=None):
         )
     )
     valid = valid if valid is not None else utc()
+    # UGC is **not** unique here, so we sort by area attempting to at least
+    # default to the most 'important' UGC  see fun in akrherz/pyIEM#997
     return pd.read_sql(
-        "SELECT ugc, replace(name, '...', ' ') as name, wfo, source "
-        "from ugcs WHERE begin_ts <= %s and "
-        "(end_ts is null or end_ts > %s)",
+        sql_helper("""
+    SELECT ugc, replace(name, '...', ' ') as name, wfo, source
+    from ugcs WHERE begin_ts <= :valid and
+    (end_ts is null or end_ts > :valid) ORDER by area2163 desc"""),
         pgconn,
-        params=(valid, valid),
+        params={"valid": valid},
         index_col=None,
     )
 
