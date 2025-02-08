@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1230+g6a2c565 documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1231+g7d25bab documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=3dce3c76"></script>
+    <script src="../_static/documentation_options.js?v=374cbb23"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g6a2c565 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1231+g7d25bab documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -607,6 +607,27 @@ for removal of boilerplate and appease SQL injection detection.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sql</strong> (<em>str</em>) – the SQL statement to process</p></li>
 <li><p><strong>**kwargs</strong> – arguments needed to build the string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.database.with_sqlalchemy_conn">
+<span class="sig-prename descclassname"><span class="pre">pyiem.database.</span></span><span class="sig-name descname"><span class="pre">with_sqlalchemy_conn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.database.with_sqlalchemy_conn" title="Link to this definition">¶</a></dt>
+<dd><p>Decorator variant of get_sqlalchemy_conn adding <cite>conn=</cite> to the function.</p>
+<dl class="simple">
+<dt>Usage:</dt><dd><p>&#64;with_sqlalchemy_conn(“dbname”)
+def foo(args, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs, conn=None)</p>
+</dd>
+</dl>
+<p>NOTE: Be sure to commit any transactions before returning from the
+decorated function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the database to connect to, passed to get_dbconnstr</p></li>
+<li><p><strong>**kwargs</strong> – any additional arguments to pass to get_dbconnstr</p></li>
 </ul>
 </dd>
 </dl>
@@ -2470,6 +2491,7 @@ useful to others!?!?</p>
 <li><a class="reference internal" href="#pyiem.database.get_dbconnstr"><code class="docutils literal notranslate"><span class="pre">get_dbconnstr()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.database.get_sqlalchemy_conn"><code class="docutils literal notranslate"><span class="pre">get_sqlalchemy_conn()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.database.sql_helper"><code class="docutils literal notranslate"><span class="pre">sql_helper()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.database.with_sqlalchemy_conn"><code class="docutils literal notranslate"><span class="pre">with_sqlalchemy_conn()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-pyiem.datatypes">pyiem.datatypes module</a><ul>
@@ -2776,7 +2798,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g6a2c565 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1231+g7d25bab documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
