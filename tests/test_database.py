@@ -10,8 +10,21 @@ from pyiem.database import (
     get_dbconnstr,
     get_sqlalchemy_conn,
     sql_helper,
+    with_sqlalchemy_conn,
 )
 from pyiem.exceptions import NewDatabaseConnectionFailure
+
+
+def test_with_sqlalchemy_conn():
+    """Test that we can do a contextmanager with this API."""
+
+    @with_sqlalchemy_conn("coop")
+    def foo(arg1, kwarg1=None, conn=None):
+        assert arg1 == 1
+        assert kwarg1 == 2
+        assert conn is not None
+
+    foo(1, kwarg1=2)
 
 
 def test_sql_helper():

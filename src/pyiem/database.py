@@ -166,6 +166,31 @@ def get_sqlalchemy_conn(
         engine.dispose()
 
 
+def with_sqlalchemy_conn(name: str, **kwargs):
+    """Decorator variant of get_sqlalchemy_conn adding `conn=` to the function.
+
+    Usage:
+        @with_sqlalchemy_conn("dbname")
+        def foo(args, **kwargs, conn=None)
+
+    NOTE: Be sure to commit any transactions before returning from the
+    decorated function.
+
+    Args:
+        name (str): the database to connect to, passed to get_dbconnstr
+        **kwargs: any additional arguments to pass to get_dbconnstr
+    """
+
+    def decorator(func):
+        def wrapper(*args, **kwds):
+            with get_sqlalchemy_conn(name, **kwargs) as conn:
+                return func(*args, **kwds, conn=conn)
+
+        return wrapper
+
+    return decorator
+
+
 def sql_helper(sql: str, **kwargs) -> TextClause:
     """Run string through psycopg.sql machinery destined for sqlalchemy.Allows
     for removal of boilerplate and appease SQL injection detection.
