@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `text` `pattern` support within `get_autoplot_context`.
 - Introduce `database.sql_helper` as a hacky attempt to ease my ignorance
   with psycopg + sqlalchemy + pandas usage.
 - Introduce `database.with_sqlalchemy_conn` decorator helper.
