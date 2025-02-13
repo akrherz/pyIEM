@@ -195,6 +195,23 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_text_pattern():
+    """Test the pattern validation."""
+    form = {"rng": "1960"}
+    cfg = {
+        "arguments": [
+            {
+                "type": "text",
+                "name": "rng",
+                "default": "1960-2020",
+                "pattern": r"^\d{4}\s*-\s*\d{4}$",
+            }
+        ]
+    }
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["rng"] == cfg["arguments"][0]["default"]
+
+
 def test_get_autoplot_context_bad_float():
     """Test that we handle bad floats."""
     form = {"thres": "Qq"}

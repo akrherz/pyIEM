@@ -392,7 +392,11 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
             )
         ):
             continue
-        if typ in ["station", "zstation", "sid", "networkselect"]:
+        if typ == "text":
+            pattern = opt.get("pattern")
+            if pattern is not None and not re.match(pattern, value):
+                value = default
+        elif typ in ["station", "zstation", "sid", "networkselect"]:
             # A bit of hackery here if we have a name ending in a number
             _n = name[-1] if name[-1] in ["1", "2", "3", "4", "5"] else ""
             netname = f"network{_n}"
