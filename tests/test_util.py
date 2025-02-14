@@ -325,6 +325,20 @@ def test_get_autoplot_context_network():
         util.get_autoplot_context(form, cfg)
 
 
+def test_apctx_empty_datetime():
+    """Test this edge case."""
+    form = {
+        "d": "",
+    }
+    opts = {
+        "arguments": [
+            {"type": "datetime", "name": "d", "default": "2011/11/12 0000"},
+        ]
+    }
+    res = util.get_autoplot_context(form, opts, rectify_dates=True)
+    assert res["d"] == datetime(2011, 11, 12)
+
+
 def test_apctx_datetime():
     """Test some edge cases."""
     form = {

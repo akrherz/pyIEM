@@ -456,6 +456,8 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = [subval for subval in value if subval in options]
         elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
+            if value is not None and value.strip() == "":
+                value = default
             if default is not None:
                 default = _strptime(default, "%Y/%m/%d %H%M")
             if minval is not None:
