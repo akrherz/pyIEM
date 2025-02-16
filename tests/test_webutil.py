@@ -327,50 +327,6 @@ def test_iemapp_help():
     assert list(application(env, sr))[0].decode("ascii").find("FINDME") > -1
 
 
-def test_iemapp_iemdb_cursor():
-    """Test with a cursor set."""
-
-    @iemapp(
-        iemdb="mesosite", iemdb_cursorname="magic", allowed_as_list=["year"]
-    )
-    def application(environ, _start_response):
-        """Test."""
-        environ["iemdb.mesosite.cursor"].execute("SELECT 1 as test")
-        assert environ["iemdb.mesosite.cursor"].rowcount == -1
-        return [b"Content-type: text/plain\n\nHello!"]
-
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
-    }
-    sr = mock.MagicMock()
-    list(application(env, sr))
-    # ensure that the connection was closed
-    assert env["iemdb.mesosite.conn"].closed
-    assert env["iemdb.mesosite.cursor"].closed
-
-
-def test_iemapp_iemdb():
-    """Test the request of a database connection."""
-
-    @iemapp(iemdb=["mesosite", "postgis"])
-    def application(environ, _start_response):
-        """Test."""
-        environ["iemdb.mesosite.cursor"].execute("SELECT 1 as test")
-        environ["iemdb.postgis.cursor"].execute("SELECT 1 as test")
-        return [b"Content-type: text/plain\n\nHello!"]
-
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "year=2021&year=2021&month1=2&day1=3",
-    }
-    sr = mock.MagicMock()
-    list(application(env, sr))
-    # ensure that the connection was closed
-    assert env["iemdb.mesosite.conn"].closed
-    assert env["iemdb.postgis.conn"].closed
-
-
 def test_duplicated_year_in_form():
     """Test the forgiveness."""
 

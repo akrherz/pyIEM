@@ -26,7 +26,7 @@ from pydantic import (
 from pymemcache.client import Client
 from typing_extensions import Annotated
 
-from pyiem.database import get_dbconnc, get_sqlalchemy_conn, sql_helper
+from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.exceptions import (
     BadWebRequest,
     IncompleteWebRequest,
@@ -54,8 +54,6 @@ TZ_TYPOS = {
     "etc/utc": "UTC",
     "utc": "UTC",
 }
-# Key matching iemdb.<name>.conn
-DBKEY_RE = re.compile(r"^iemdb\.(.*)\.conn$")
 # Match something that looks like a four digit year
 YEAR_RE = re.compile(r"^\d{4}")
 TELEMETRY = namedtuple(
@@ -272,12 +270,6 @@ def compute_ts(form, suffix):
 
 def add_to_environ(environ, form, **kwargs):
     """Build out some things auto-parsed from the request."""
-    # Process database connection requests
-    for dbname in ensure_list(kwargs, "iemdb"):
-        cursor_name = kwargs.get("iemdb_cursorname")
-        pgconn, cursor = get_dbconnc(dbname, cursor_name=cursor_name)
-        environ[f"iemdb.{dbname}.conn"] = pgconn
-        environ[f"iemdb.{dbname}.cursor"] = cursor
     for key, val in form.items():
         if key not in environ:
             # check for XSS and other naughty things
@@ -392,10 +384,6 @@ def iemapp(**kwargs):
         - enable_telemetry: Enable telemetry logging, default ``True``.
         - help: Default help text, default ``Help not available``.
         - parse_times: Parse the form for timestamps, default ``True``.
-        - iemdb: (str or list) The database(s) to connect to, these will be
-          bundled into the environ with keys of `iemdb.<name>.conn` and
-          `iemdb.<name>.cursor`.  No commit is performed. You can specify a
-          single cursor name with `iemdb_cursorname=<name>`.
         - schema (BaseModel): A Pydantic model to parse the form with.
         - memcachekey (str or callable): A memcache key to use for caching
           the response. If the callable returns `None`, no caching is done.
@@ -523,12 +511,6 @@ def iemapp(**kwargs):
                         environ.get("HTTP_HOST"),
                     )
                 )
-            # Ensure we close any database connections
-            for key in environ:
-                if DBKEY_RE.match(key):
-                    if not environ[key.replace(".conn", ".cursor")].closed:
-                        environ[key.replace(".conn", ".cursor")].close()
-                    environ[key].close()
             # Need to be careful here and ensure we are returning a list
             # of bytes
             if isinstance(res, str):

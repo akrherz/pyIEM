@@ -7,6 +7,8 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Drop poorly designed `iemdb` support within `webutil.iemapp`.
+
 ### New Features
 
 - Add `text` `pattern` support within `get_autoplot_context`.
