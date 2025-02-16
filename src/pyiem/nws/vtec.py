@@ -132,7 +132,7 @@ NWS_COLORS = {
     "DS.Y": "#BDB76B",
     "DU.W": "#FFE4C4",
     "DU.Y": "#BDB76B",
-    "EC.A": "#0000FF",
+    "EC.A": "#5F9EA0",
     "EC.W": "#0000FF",
     "EH.A": "#800000",
     "EH.W": "#C71585",
