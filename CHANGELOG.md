@@ -8,7 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Drop `summary` database table processing of `max_tmpf_qc`, `min_tmpf_qc`,
-  `pday_qc`, and `snow_qc`.  These will ill-designed and unused.
+  `pday_qc`, and `snow_qc`.  These are ill-designed and unused.
 - Drop poorly designed `iemdb` support within `webutil.iemapp`.
 
 ### New Features
