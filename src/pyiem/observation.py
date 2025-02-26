@@ -15,7 +15,7 @@ from metpy.units import units as munits
 # Track which columns are in the summary table for the null_ check below
 SUMMARY_COLS = (
     "max_tmpf min_tmpf max_sknt max_gust max_sknt_ts max_gust_ts max_dwpf "
-    "min_dwpf pday pmonth snow snowd max_tmpf_qc min_tmpf_qc pday_qc snow_qc "
+    "min_dwpf pday pmonth snow snowd "
     "snoww max_drct max_srad coop_tmpf coop_valid et_inch srad_mj avg_sknt "
     "vector_avg_drct avg_rh min_rh max_rh max_water_tmpf min_water_tmpf "
     "max_feel avg_feel min_feel min_rstage max_rstage report"
