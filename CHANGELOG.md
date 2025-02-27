@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 - Drop `summary` database table processing of `max_tmpf_qc`, `min_tmpf_qc`,
   `pday_qc`, and `snow_qc`.  These are ill-designed and unused.
 - Drop poorly designed `iemdb` support within `webutil.iemapp`.
+- Internal refactor of `WMOProduct` timestamp processing in parent class.
 
 ### New Features
 
