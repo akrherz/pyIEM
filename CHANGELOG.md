@@ -20,6 +20,7 @@ All notable changes to this library are documented in this file.
 - Introduce `util.ddhhmm2datetime` helper to convert a WMO header timestamp
   to a UTC timestamp.
 - Support decorated `webutil.iemapp` functions that return generators.
+- Write DSM product_id to IEMAccess summary table.
 
 ### Bug Fixes
 

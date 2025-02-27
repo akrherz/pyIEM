@@ -89,6 +89,13 @@ def test_collective(dbcursor):
     # first database insert should work from above
     assert res[0]
 
+    # See what got written to the database as a report
+    dbcursor.execute(
+        "SELECT report from summary_2015 where iemid = -100 and "
+        "day = '2015-11-26'"
+    )
+    assert dbcursor.fetchone()["report"] == "201511270616-KZME-CDUS27-DSMHKS"
+
 
 @pytest.mark.parametrize("database", ["iem"])
 def test_allmissing(dbcursor):
