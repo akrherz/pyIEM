@@ -1,10 +1,10 @@
 """A class representing an observation stored in the IEM database"""
 
-# pylint: disable=no-member
 import math
 import warnings
 from collections import defaultdict
-from datetime import date, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
+from typing import Any
 from zoneinfo import ZoneInfo
 
 import metpy.calc as mcalc
@@ -99,7 +99,7 @@ def summary_update(txn, data):
     snowd = coalesce(%(snowd)s, snowd),
     snoww = coalesce(%(snoww)s, snoww),
     max_drct = coalesce(%(max_drct)s, max_drct),
-    max_srad = coalesce(%(max_srad)s, max_srad),
+    max_srad = greatest(%(max_srad)s, %(srad)s, max_srad),
     coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),
     coop_valid = coalesce(%(coop_valid)s, coop_valid),
     et_inch = %(et_inch)s,
@@ -108,7 +108,7 @@ def summary_update(txn, data):
     min_rh = least(%(min_rh)s, %(relh)s, min_rh),
     max_rstage = greatest(%(max_rstage)s, %(rstage)s, max_rstage),
     min_rstage = least(%(min_rstage)s, %(rstage)s, min_rstage),
-    srad_mj = %(srad_mj)s,
+    srad_mj = coalesce(%(srad_mj)s, srad_mj),
     avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),
     vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)
     WHERE s.iemid = %(iemid)s and s.day = {dateconst}
@@ -134,7 +134,12 @@ class Observation:
 
     # NB: Keep positional argment order to limit API breakage
     def __init__(
-        self, station=None, network=None, valid=None, iemid=None, tzname=None
+        self,
+        station: str = None,
+        network: str = None,
+        valid: datetime = None,
+        iemid: int = None,
+        tzname: str = None,
     ):
         """
         Constructor for the Observation.  Note you need to provide either
@@ -157,7 +162,7 @@ class Observation:
             if isinstance(valid, np.datetime64):
                 valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)
-        self.data = defaultdict(lambda: None)
+        self.data: dict[str, Any] = defaultdict(lambda: None)
         self.data.update(
             {
                 "station": station,
