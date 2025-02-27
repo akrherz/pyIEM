@@ -1,10 +1,10 @@
 """A class representing an observation stored in the IEM database"""
 
-# pylint: disable=no-member
 import math
 import warnings
 from collections import defaultdict
-from datetime import date, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
+from typing import Any
 from zoneinfo import ZoneInfo
 
 import metpy.calc as mcalc
@@ -134,7 +134,12 @@ class Observation:
 
     # NB: Keep positional argment order to limit API breakage
     def __init__(
-        self, station=None, network=None, valid=None, iemid=None, tzname=None
+        self,
+        station: str = None,
+        network: str = None,
+        valid: datetime = None,
+        iemid: int = None,
+        tzname: str = None,
     ):
         """
         Constructor for the Observation.  Note you need to provide either
@@ -157,7 +162,7 @@ class Observation:
             if isinstance(valid, np.datetime64):
                 valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)
-        self.data = defaultdict(lambda: None)
+        self.data: dict[str, Any] = defaultdict(lambda: None)
         self.data.update(
             {
                 "station": station,
