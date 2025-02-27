@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from pyiem.exceptions import TextProductException
+from pyiem.util import ddhhmm2datetime
 
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(
@@ -52,6 +53,7 @@ class WMOProduct:
         self.wmo = gdict["ttaaii"]
         self.source = gdict["cccc"]
         self.ddhhmm = gdict["ddhhmm"]
+        self.wmo_valid = ddhhmm2datetime(self.ddhhmm, self.utcnow)
         self.bbb = gdict["bbb"]
         if len(self.wmo) == 4:
             # Don't whine about known problems

@@ -66,6 +66,30 @@ def _strptime(ins: str, fmt: str, rectify: bool = False) -> datetime:
         ) from exp
 
 
+def ddhhmm2datetime(ddhhmm: str, utcnow: datetime) -> datetime:
+    """Do the nasty WMO header timestamp conversion."""
+    wmo_day = int(ddhhmm[:2])
+    wmo_hour = int(ddhhmm[2:4])
+    wmo_minute = int(ddhhmm[4:])
+
+    wmo_valid = utcnow.replace(
+        hour=wmo_hour, minute=wmo_minute, second=0, microsecond=0
+    )
+    if wmo_day != utcnow.day:
+        if wmo_day - utcnow.day == 1:  # Tomorrow
+            wmo_valid = wmo_valid.replace(day=wmo_day)
+        elif wmo_day > 25 and utcnow.day < 15:  # Previous month!
+            wmo_valid = wmo_valid + timedelta(days=-10)
+            wmo_valid = wmo_valid.replace(day=wmo_day)
+        elif wmo_day < 5 and utcnow.day >= 15:  # next month
+            wmo_valid = wmo_valid + timedelta(days=10)
+            wmo_valid = wmo_valid.replace(day=wmo_day)
+        else:
+            wmo_valid = wmo_valid.replace(day=wmo_day)
+
+    return wmo_valid
+
+
 def web2ldm(url, ldm_product_name, md5_from_name=False, pqinsert="pqinsert"):
     """Download a URL and insert into LDM.
 

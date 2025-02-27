@@ -17,6 +17,8 @@ All notable changes to this library are documented in this file.
 - Introduce `database.sql_helper` as a hacky attempt to ease my ignorance
   with psycopg + sqlalchemy + pandas usage.
 - Introduce `database.with_sqlalchemy_conn` decorator helper.
+- Introduce `util.ddhhmm2datetime` helper to convert a WMO header timestamp
+  to a UTC timestamp.
 - Support decorated `webutil.iemapp` functions that return generators.
 
 ### Bug Fixes

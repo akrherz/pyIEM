@@ -12,7 +12,7 @@ from shapely.wkt import dumps
 from pyiem import reference
 from pyiem.exceptions import InvalidPolygon, TextProductException
 from pyiem.nws import hvtec, ugc, vtec
-from pyiem.util import LOG
+from pyiem.util import LOG, ddhhmm2datetime
 from pyiem.wmo import WMOProduct
 
 # The AWIPS Product Identifier is supposed to be 6chars as per directive,
@@ -899,24 +899,7 @@ class TextProduct(WMOProduct):
         # Search out the WMO header, this had better always be there
         # We only care about the first hit in the file, searching from top
         # Take the first hit, ignore others
-        wmo_day = int(self.ddhhmm[:2])
-        wmo_hour = int(self.ddhhmm[2:4])
-        wmo_minute = int(self.ddhhmm[4:])
-
-        self.wmo_valid = self.utcnow.replace(
-            hour=wmo_hour, minute=wmo_minute, second=0, microsecond=0
-        )
-        if wmo_day != self.utcnow.day:
-            if wmo_day - self.utcnow.day == 1:  # Tomorrow
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
-                self.wmo_valid = self.wmo_valid + timedelta(days=-10)
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
-                self.wmo_valid = self.wmo_valid + timedelta(days=10)
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            else:
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
+        self.wmo_valid = ddhhmm2datetime(self.ddhhmm, self.utcnow)
 
         # we can do no better
         self.valid = self.wmo_valid
