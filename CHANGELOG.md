@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 - Drop `summary` database table processing of `max_tmpf_qc`, `min_tmpf_qc`,
   `pday_qc`, and `snow_qc`.  These are ill-designed and unused.
 - Drop poorly designed `iemdb` support within `webutil.iemapp`.
+- Internal refactor of `WMOProduct` timestamp processing in parent class.
 
 ### New Features
 
@@ -17,7 +18,10 @@ All notable changes to this library are documented in this file.
 - Introduce `database.sql_helper` as a hacky attempt to ease my ignorance
   with psycopg + sqlalchemy + pandas usage.
 - Introduce `database.with_sqlalchemy_conn` decorator helper.
+- Introduce `util.ddhhmm2datetime` helper to convert a WMO header timestamp
+  to a UTC timestamp.
 - Support decorated `webutil.iemapp` functions that return generators.
+- Write DSM product_id to IEMAccess summary table.
 
 ### Bug Fixes
 

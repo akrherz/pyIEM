@@ -7,12 +7,11 @@ from pyiem.nws.product import (
     TextProduct,
     TextProductException,
     checker,
-    date_tokens2datetime,
     str2polygon,
 )
 from pyiem.nws.products import parser as productparser
 from pyiem.util import get_test_file, utc
-from pyiem.wmo import WMO_RE
+from pyiem.wmo import WMO_RE, date_tokens2datetime
 
 
 def test_250103_two_headline():

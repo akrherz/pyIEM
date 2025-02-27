@@ -119,7 +119,7 @@ class DSMProduct:
             self.date, self.groupdict.get("time_sped_gust_max")
         )
 
-    def sql(self, txn):
+    def sql(self, txn, product_id: str = None):
         """Persist to database given the transaction object."""
         cols = []
         args = []
@@ -167,13 +167,15 @@ class DSMProduct:
             return False
         cs = ", ".join([f"{c} = %s" for c in cols])
         slicer = slice(0, 4) if self.station[0] != "K" else slice(1, 4)
-        args.extend([self.station[slicer], self.date])
+        args.extend([product_id, product_id, self.station[slicer], self.date])
         txn.execute(
-            (
-                f"UPDATE summary_{self.date.year} s SET {cs} FROM stations t "
-                "WHERE s.iemid = t.iemid and t.network ~* 'ASOS' "
-                "and t.id = %s and s.day = %s"
-            ),
+            f"""
+    UPDATE summary_{self.date:%Y} s SET {cs}
+    , report = trim(case when %s::text is null then report else
+        coalesce(report, '') || %s::text || ' ' end)
+    FROM stations t
+    WHERE s.iemid = t.iemid and t.network ~* 'ASOS'
+    and t.id = %s and s.day = %s""",
             args,
         )
         return txn.rowcount == 1
@@ -194,7 +196,7 @@ class DSMCollective(WMOProduct):
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
         # hold our parsing results
-        self.data = []
+        self.data: list[DSMProduct] = []
         lines = self.text.replace("\r", "").split("\n")
         if len(lines[3]) < 10:
             meat = ("".join(lines[4:])).split("=")
@@ -219,9 +221,19 @@ class DSMCollective(WMOProduct):
                 continue
             dsm.tzlocalize(tzinfo)
 
-    def sql(self, txn):
+    def sql(self, txn) -> list[bool]:
         """Do databasing."""
-        return [dsm.sql(txn) for dsm in self.data]
+        res = []
+        for dsm in self.data:
+            # Some magic is happening here to construct a product_id
+            # that is unique for this DSM and based on the pyWWA splitting of
+            # DSMs that is done
+            product_id = (
+                f"{self.wmo_valid:%Y%m%d%H%M}-{self.source}-{self.wmo}-"
+                f"DSM{dsm.station[1:]}"
+            )
+            res.append(dsm.sql(txn, product_id))
+        return res
 
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):

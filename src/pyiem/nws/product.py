@@ -2,9 +2,8 @@
 
 import re
 from collections import OrderedDict
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta, timezone
 from typing import Optional, Union
-from zoneinfo import ZoneInfo
 
 from shapely.geometry import MultiPolygon, Polygon
 from shapely.wkt import dumps
@@ -19,22 +18,6 @@ from pyiem.wmo import WMOProduct
 # but in practice it is sometimes something between 4 and 6 chars
 # We need to be careful this does not match the LDM sequence identifier
 AFOSRE = re.compile(r"^([A-Z0-9]{4,6})\s*\t*$", re.M)
-TIME_FMT = (
-    "([0-9:]+) (AM|PM) ([A-Z][A-Z][A-Z]?T) ([A-Z][A-Z][A-Z]) "
-    "([A-Z][A-Z][A-Z]) ([0-9]+) ([1-2][0-9][0-9][0-9])"
-)
-TIME_RE = re.compile(f"^{TIME_FMT}$", re.M | re.IGNORECASE)
-TIME_UTC_RE = re.compile(
-    TIME_FMT.replace("(AM|PM) ([A-Z][A-Z][A-Z]?T)", r"(AM|PM)?\s?(UTC)"),
-    re.M | re.I,
-)
-# Sometimes products have a duplicated timestamp in another tz
-TIME_EXT_RE = re.compile(
-    rf"^{TIME_FMT}\s?/\s?{TIME_FMT}\s?/$", re.M | re.IGNORECASE
-)
-# Without the line start and end requirement
-TIME_RE_ANYWHERE = re.compile(f"{TIME_FMT}", re.IGNORECASE)
-TIME_STARTS_LINE = re.compile(r"^([0-9:]+) (AM|PM)")
 
 TIME_MOT_LOC = re.compile(
     r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
@@ -169,54 +152,6 @@ def str2polygon(strdata):
     if len(pts) < 3:
         raise InvalidPolygon(f"Less than three points for polygon {pts}")
     return Polygon(pts)
-
-
-def date_tokens2datetime(tokens):
-    """Convert tokens from MND regex to a valid time, if possible.
-
-    Returns:
-      z (str): 3-4 char timezone string
-      tz (datetime.timezone): of this product
-      utcvalid (datetimetz): of this product
-    """
-    tokens = list(tokens)  # ensure mutable
-    z = tokens[2].upper()
-    tz = ZoneInfo(reference.name2pytz.get(z, "UTC"))
-    hhmi = tokens[0]
-    # False positive from regex
-    if hhmi[0] == ":":
-        hhmi = hhmi.replace(":", "")
-    if hhmi.find(":") > -1:
-        (hh, mi) = hhmi.split(":")
-    elif len(hhmi) < 3:
-        hh = hhmi
-        mi = 0
-    else:
-        hh = hhmi[:-2]
-        mi = hhmi[-2:]
-    # Workaround another 24 hour clock issue
-    if (
-        tokens[2] in ["UTC", "GMT"]
-        and tokens[1].upper() == "AM"
-        and int(hh) == 12
-    ):
-        hh = 0
-    # Workaround 24 hour clock abuse
-    if int(hh) >= 12 and (
-        tokens[1].upper() == "PM" or tokens[2] in ["UTC", "GMT"]
-    ):
-        # this is a hack to ensure this is PM when we are in UTC
-        tokens[1] = "PM"
-        hh = int(hh) - 12
-    dstr = (
-        f"{hh if int(hh) > 0 else 12}:{mi} "
-        f"{tokens[1] if tokens[1] != '' else 'AM'} "
-        f"{tokens[4]} {tokens[5]} {tokens[6]}"
-    )
-    # Careful here, need to go to UTC time first then come back!
-    now = datetime.strptime(dstr, "%I:%M %p %b %d %Y")
-    now += timedelta(hours=reference.offsets.get(z, 0))
-    return z, tz, now.replace(tzinfo=timezone.utc)
 
 
 def qc_is_emergency(seg):
@@ -675,15 +610,10 @@ class TextProduct(WMOProduct):
         self.nwsli_provider = nwsli_provider
         self.unixtext = self.text.replace("\r", "")
         self.sections = self.unixtext.split("\n\n")
-        # The "truth" timestamp
-        self.valid = None
         self.segments = []
-        self.z = None
-        self.tz = None
         self.geometry = None
 
         self.parse_afos()
-        self._parse_valid(utcnow)
         if parse_segments:
             self.parse_segments()
 
@@ -855,100 +785,6 @@ class TextProduct(WMOProduct):
         if self.bbb:
             pid += f"-{self.bbb}"
         return pid.strip()
-
-    def _parse_valid(self, provided_utcnow):
-        """Figure out the timestamp of this product.
-
-        Args:
-          provided_utcnow (datetime): What our library was provided for the UTC
-            timestamp, it could be None
-        """
-        # The MND header hopefully has a full timestamp that is the best
-        # truth that we can have for this product.
-        tokens = TIME_RE.findall(self.unixtext)
-        if not tokens:
-            tokens = TIME_EXT_RE.findall(self.unixtext)
-            if not tokens:
-                tokens = TIME_RE_ANYWHERE.findall(self.unixtext)
-                if not tokens:
-                    tokens = TIME_UTC_RE.findall(self.unixtext)
-                    if not tokens:
-                        # We are very desperate at this point, evasive action
-                        for line in self.unixtext.split("\n")[:15]:
-                            if TIME_STARTS_LINE.match(line):
-                                # Remove anything inside of () or //
-                                line = re.sub(r" \(.*?\)", "", line)
-                                line = re.sub(r" /.*?/", "", line)
-                                tokens = TIME_RE.findall(line)
-                                break
-        if provided_utcnow is None and tokens:
-            try:
-                z, _tz, valid = date_tokens2datetime(tokens[0])
-                if z not in reference.offsets:
-                    self.warnings.append(f"product timezone '{z}' unknown")
-            except ValueError as exp:
-                msg = (
-                    f"Invalid timestamp [{' '.join(tokens[0])}] found in "
-                    f"product [{self.wmo} {self.source} {self.afos}] header"
-                )
-                raise TextProductException(self.source[1:], msg) from exp
-
-            # Set the utcnow based on what we found by looking at the header
-            self.utcnow = valid
-
-        # Search out the WMO header, this had better always be there
-        # We only care about the first hit in the file, searching from top
-        # Take the first hit, ignore others
-        wmo_day = int(self.ddhhmm[:2])
-        wmo_hour = int(self.ddhhmm[2:4])
-        wmo_minute = int(self.ddhhmm[4:])
-
-        self.wmo_valid = self.utcnow.replace(
-            hour=wmo_hour, minute=wmo_minute, second=0, microsecond=0
-        )
-        if wmo_day != self.utcnow.day:
-            if wmo_day - self.utcnow.day == 1:  # Tomorrow
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            elif wmo_day > 25 and self.utcnow.day < 15:  # Previous month!
-                self.wmo_valid = self.wmo_valid + timedelta(days=-10)
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            elif wmo_day < 5 and self.utcnow.day >= 15:  # next month
-                self.wmo_valid = self.wmo_valid + timedelta(days=10)
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-            else:
-                self.wmo_valid = self.wmo_valid.replace(day=wmo_day)
-
-        # we can do no better
-        self.valid = self.wmo_valid
-
-        # If we don't find anything, lets default to now, its the best
-        if not tokens:
-            return
-        self.z, self.tz, self.valid = date_tokens2datetime(tokens[0])
-        # We want to forgive two easy situations
-        offset = (self.valid - self.wmo_valid).total_seconds()
-        # 1. self.valid is off from WMO by approximately 12 hours (am/pm flip)
-        if 42900 <= offset <= 43800:
-            LOG.info(
-                "Auto correcting AM/PM typo, %s -> %s",
-                self.valid,
-                self.wmo_valid,
-            )
-            self.warnings.append(
-                "Detected AM/PM flip, adjusting product timestamp - 12 hours"
-            )
-            self.valid = self.valid - timedelta(hours=12)
-        # 2. self.valid is off by approximate 1 year (year typo)
-        if -367 * 86400 < offset < -364 * 86400:
-            LOG.info(
-                "Auto correcting year typo, %s -> %s",
-                self.valid,
-                self.wmo_valid,
-            )
-            self.warnings.append(
-                "Detected year typo, adjusting product timestamp + 1 year"
-            )
-            self.valid = self.valid.replace(year=self.valid.year + 1)
 
     def get_affected_wfos(self):
         """Based on the ugc_provider, figure out which WFOs are impacted by
