@@ -112,6 +112,7 @@ class CartesianGridNavigation(BaseModel):
         )
 
     @model_validator(mode="before")
+    @classmethod
     def complete_definition(cls, values):
         """Use information that was provided to compute other fields."""
         # We have required fields left_edge, bottom_edge
