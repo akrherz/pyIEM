@@ -98,6 +98,7 @@ class CGIModel(BaseModel):
             raise IncompleteWebRequest(errors) from e
 
     @field_validator("*", mode="before")
+    @classmethod
     def xss_protect(cls, v):
         """Protect against XSS attacks."""
         if isinstance(v, str) and nh3.clean(v) != v:

@@ -3,7 +3,6 @@
 https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf
 """
 
-# pylint: disable=too-many-lines
 import json
 import re
 import warnings
@@ -1445,8 +1444,8 @@ def parser(msg, call_id, add_metar=False):
     data["extra"] = {}
     try:
         parse_extra(data, msg[105:])
-    except Exception:
-        pass
+    except Exception as exp:
+        LOG.exception(exp)
     if add_metar:
         try:
             gen_metar(data)
