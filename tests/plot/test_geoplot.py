@@ -960,13 +960,13 @@ def test_ugcs_lwx_zones():
     mp = MapPlot(
         sector="cwa",
         cwa="LWX",
-        title="Two Maryland zones (MDZ001, MDZ008) xfered to LWX",
+        title="Two Maryland zones (MDZ509, MDZ008) xfered to LWX",
         subtitle="test_ugcs_lwx",
         nocaption=True,
     )
-    labels = {"MDZ001": "MDZ001", "MDZ008": "MDZ008"}
+    labels = {"MDZ509": "MDZ509", "MDZ008": "MDZ008"}
     mp.fill_ugcs(
-        {"MDZ001": 1, "MDZ008": 40},
+        {"MDZ509": 1, "MDZ008": 40},
         bins=list(range(0, 101, 10)),
         labels=labels,
         ilabel=True,
