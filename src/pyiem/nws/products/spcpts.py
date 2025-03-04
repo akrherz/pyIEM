@@ -520,7 +520,7 @@ class SPCPTS(TextProduct):
         elif self.afos == "PTSDY2":
             day = "Day 2"
             product_descript = "Convective"
-            hhmm = "1730" if self.valid.hour > 11 else "0600"
+            hhmm = "1730" if self.valid.hour > 11 else "0700"
             url = (
                 "https://www.spc.noaa.gov/products/outlook/archive/"
                 f"{self.valid.year}/day2otlk_{self.valid:%Y%m%d}_{hhmm}.html"
