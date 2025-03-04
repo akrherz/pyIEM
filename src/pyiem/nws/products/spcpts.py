@@ -529,6 +529,8 @@ class SPCPTS(TextProduct):
             # 0730 when in CDT, 0830 when in CST
             hhmm = "0730" if self.z == "CDT" else "0830"
             day = "Day 3"
+            if self.cycle == 20:
+                hhmm = "1930"
             product_descript = "Convective"
             url = (
                 "https://www.spc.noaa.gov/products/outlook/archive/"

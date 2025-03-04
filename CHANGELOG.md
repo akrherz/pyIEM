@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+### New Features
+
+### Bug Fixes
+
+- Correct web link for SPC day 3 convective outlook.
+
 ## **1.23.0** (1 Mar 2025)
 
 ### API Changes

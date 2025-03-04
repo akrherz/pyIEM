@@ -21,6 +21,8 @@ def test_gh936_day3_20z():
         utcnow=utc(2024, 8, 21),
     )
     assert prod.cycle == 20
+    jmsgs = prod.get_jabbers("", "")
+    assert jmsgs[-1][0].find("day3otlk_20240820_1930") > -1
 
 
 def test_imgsrc():
