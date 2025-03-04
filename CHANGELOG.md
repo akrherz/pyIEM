@@ -7,6 +7,16 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+### New Features
+
+### Bug Fixes
+
+- Correct web link for SPC day 3 convective outlook.
+
+## **1.23.0** (1 Mar 2025)
+
+### API Changes
+
 - Drop `summary` database table processing of `max_tmpf_qc`, `min_tmpf_qc`,
   `pday_qc`, and `snow_qc`.  These are ill-designed and unused.
 - Drop poorly designed `iemdb` support within `webutil.iemapp`.
