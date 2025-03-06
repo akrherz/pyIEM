@@ -209,16 +209,18 @@ def log_request(environ):
         conn.execute(
             sql_helper(
                 """
-            INSERT into weblog(client_addr, uri, referer, http_status)
-            VALUES (:client_addr, :uri, :referer, :http_status)
+    INSERT into weblog
+    (client_addr, uri, referer, http_status, x_forwarded_for)
+    VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for)
             """
             ),
-            dict(
-                client_addr=environ.get("REMOTE_ADDR"),
-                uri=environ.get("REQUEST_URI"),
-                referer=environ.get("HTTP_REFERER"),
-                http_status=404,
-            ),
+            {
+                "client_addr": environ.get("REMOTE_ADDR"),
+                "uri": environ.get("REQUEST_URI"),
+                "referer": environ.get("HTTP_REFERER"),
+                "http_status": 404,
+                "x_forwarded_for": environ.get("HTTP_X_FORWARDED_FOR"),
+            },
         )
         conn.commit()
 
