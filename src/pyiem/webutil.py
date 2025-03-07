@@ -210,8 +210,9 @@ def log_request(environ):
             sql_helper(
                 """
     INSERT into weblog
-    (client_addr, uri, referer, http_status, x_forwarded_for)
-    VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for)
+    (client_addr, uri, referer, http_status, x_forwarded_for, domain)
+    VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for,
+    :domain)
             """
             ),
             {
@@ -220,6 +221,7 @@ def log_request(environ):
                 "referer": environ.get("HTTP_REFERER"),
                 "http_status": 404,
                 "x_forwarded_for": environ.get("HTTP_X_FORWARDED_FOR"),
+                "domain": environ.get("HTTP_HOST"),
             },
         )
         conn.commit()
