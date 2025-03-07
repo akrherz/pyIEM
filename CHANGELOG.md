@@ -9,6 +9,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add `iailmo` (Iowa + Illinois + Missouri) `MapPlot` sector.
+
 ### Bug Fixes
 
 - Correct web links for SPC day 2,3 convective outlook.
