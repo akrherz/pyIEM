@@ -251,6 +251,7 @@ RVS Hydrologic Statement
 RVU RVU
 RWR RWR
 RWS Regional Weather Summary
+SAB Special Avalanche Bulletin
 SAF SAF
 SAG SAG
 SAT SAT
