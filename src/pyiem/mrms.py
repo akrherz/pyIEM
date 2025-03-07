@@ -13,6 +13,8 @@ import httpx
 import numpy as np
 from affine import Affine
 
+from pyiem.util import LOG
+
 # NOTE: This is the info for the MRMS grib products, NOT the IEM netcdf
 # This is the center of the corner pixels
 WEST = -129.995
@@ -92,7 +94,7 @@ def get_url(center, valid, product):
                 f"/mrms/reanalysis/{product}/{fn}"
             )
     else:
-        uri = f"https://mrms{center}.ncep.noaa.gov/data/2D/{product}/MRMS_{fn}"
+        uri = f"https://mrms{center}.ncep.noaa.gov/2D/{product}/MRMS_{fn}"
     return uri
 
 
@@ -113,12 +115,15 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
     tmpfn = os.path.join(tmpdir, fn)
     # Option 1, we have this file already in cache!
     if os.path.isfile(tmpfn):
+        LOG.info("Found %s in tmpdir cache", tmpfn)
         return tmpfn
     # Option 2, go fetch it from mtarchive
+    url = get_url("mtarchive", valid, product)
     try:
-        resp = httpx.get(get_url("mtarchive", valid, product), timeout=30)
+        resp = httpx.get(url, timeout=30)
         resp.raise_for_status()
     except Exception:
+        LOG.info("Failed to fetch %s", url)
         resp = None
     if resp and is_gzipped(resp.content):
         with open(tmpfn, "wb") as fd:
@@ -133,10 +138,12 @@ def fetch(product, valid: datetime, tmpdir="/mesonet/tmp"):
         return None
     # Loop over all IDP data centers
     for center in ["", "-bldr", "-cprk"]:
+        url = get_url(center, valid, product)
         try:
-            resp = httpx.get(get_url(center, valid, product), timeout=30)
+            resp = httpx.get(url, timeout=30)
             resp.raise_for_status()
         except Exception:
+            LOG.info("Failed to fetch %s", url)
             resp = None
         if resp and is_gzipped(resp.content):
             with open(tmpfn, "wb") as fd:

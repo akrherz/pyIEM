@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Correct web links for SPC day 2,3 convective outlook.
+- Update NCEP MRMS base URL for real-time downloads.
 
 ## **1.23.0** (1 Mar 2025)
 
