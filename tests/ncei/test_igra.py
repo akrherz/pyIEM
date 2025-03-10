@@ -12,6 +12,12 @@ def test_simple():
     assert obj.model.header.station == "USM00072558"
 
 
+def test_krme_24070400_zero_rh():
+    """Test a profile with 0 RH."""
+    obj = process_sounding(get_test_file("IGRA/KRME_24070400.txt"))
+    assert obj.model.records[22].rh is None
+
+
 def test_cwpl_21041212():
     """Test missing release time."""
     obj = process_sounding(get_test_file("IGRA/CWPL_21041212.txt"))
