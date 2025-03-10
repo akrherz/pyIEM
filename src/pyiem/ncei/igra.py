@@ -197,12 +197,18 @@ def convert_height(text: str) -> int:
     return height
 
 
-def convert_float(text: str) -> Optional[float]:
+def convert_float(
+    text: str, gt: Optional[float] = None, lt: Optional[float] = None
+) -> Optional[float]:
     """Convert the temperature value."""
-    temp = float(text) / 10.0
-    if temp < -100:
+    val = float(text) / 10.0
+    if (
+        val < -100
+        or (gt is not None and val <= gt)
+        or (lt is not None and val >= lt)
+    ):
         return None
-    return temp
+    return val
 
 
 def convert_wind(text: str) -> Optional[int]:
@@ -231,7 +237,7 @@ def process_sounding(text: str) -> Sounding:
             "zflag": line[21:22],
             "temp": convert_float(line[22:27].strip()),
             "tflag": line[27:28],
-            "rh": convert_float(line[28:33].strip()),
+            "rh": convert_float(line[28:33].strip(), gt=0, lt=104),
             "dpdp": convert_float(line[34:39].strip()),
             "wdir": convert_wind(line[40:45].strip()),
             "wspd": convert_float(line[46:51].strip()),
