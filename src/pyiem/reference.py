@@ -815,6 +815,7 @@ class Wrapper:
     """Some Magic Here."""
 
     _onthefly_dict = [
+        "igra2icao",
         "shef_english_units",
         "shef_standard_units",
         "shef_physical_codes",
