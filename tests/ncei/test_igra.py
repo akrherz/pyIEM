@@ -16,6 +16,8 @@ def test_krme_24070400_zero_rh():
     """Test a profile with 0 RH."""
     obj = process_sounding(get_test_file("IGRA/KRME_24070400.txt"))
     assert obj.model.records[22].rh is None
+    # Manually inserted a dwpc out of bounds, so the length should be one less
+    assert len(obj.model.records) == 25
 
 
 def test_cwpl_21041212():

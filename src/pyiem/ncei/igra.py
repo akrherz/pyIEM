@@ -47,6 +47,7 @@ WSPD           47- 51   Integer
 from datetime import datetime, timedelta
 from typing import Optional
 
+from pydantic import ValidationError
 from shapely.geometry import Point
 
 from pyiem.models.igra import SoundingHeader, SoundingModel, SoundingRecord
@@ -57,11 +58,11 @@ from pyiem.util import LOG, utc
 class Sounding:
     """Encapsulate a sounding."""
 
-    def __init__(self, header: SoundingHeader, records: list):
+    def __init__(self, header: SoundingHeader, records: list[SoundingRecord]):
         """Create a Sounding object."""
         self.model: SoundingModel = SoundingModel(
             header=header,
-            records=[SoundingRecord(**record) for record in records],
+            records=records,
         )
 
     def sql(self, txn, overwrite=False):
@@ -251,7 +252,10 @@ def process_sounding(text: str) -> Sounding:
             "wdir": convert_wind(line[40:45].strip()),
             "wspd": convert_float(line[46:51].strip()),
         }
-        records.append(record)
+        try:
+            records.append(SoundingRecord(**record))
+        except ValidationError as exp:
+            LOG.info("Record: %s failed valdiation: %s", record, exp)
     return Sounding(header, records)
 
 
