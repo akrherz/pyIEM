@@ -36,8 +36,8 @@ class SoundingRecord(BaseModel):
     rh: Optional[float] = Field(
         None, description="Relative Humidity", gt=0, lt=105
     )
-    dpdp: Optional[float] = Field(
-        None, description="Dewpoint Depression", ge=-100
+    dewp: Optional[float] = Field(
+        None, description="Dewpoint Temperature", ge=-100
     )
     wdir: Optional[int] = Field(
         None, description="Wind Direction", ge=0, le=360

@@ -121,7 +121,7 @@ class Sounding:
                     record.press,
                     record.gph,
                     record.temp,
-                    record.dpdp,
+                    record.dewp,
                     record.wdir,
                     record.wspd,
                 ),
@@ -197,6 +197,14 @@ def convert_height(text: str) -> int:
     return height
 
 
+def calc_dewp(tmpc: Optional[float], text: str) -> Optional[float]:
+    """Compute the dewpoint from the dew point depression."""
+    dpdp = convert_float(text)
+    if tmpc is None or dpdp is None:
+        return None
+    return tmpc - dpdp
+
+
 def convert_float(
     text: str, gt: Optional[float] = None, lt: Optional[float] = None
 ) -> Optional[float]:
@@ -227,6 +235,7 @@ def process_sounding(text: str) -> Sounding:
         if header is None:
             header = parse_header(line)
             continue
+        tmpc = convert_float(line[22:27].strip())
         record = {
             "lvltyp1": int(line[0:1]),
             "lvltyp2": int(line[1:2]),
@@ -235,10 +244,10 @@ def process_sounding(text: str) -> Sounding:
             "pflag": line[15:16],
             "gph": convert_height(line[16:21].strip()),
             "zflag": line[21:22],
-            "temp": convert_float(line[22:27].strip()),
+            "temp": tmpc,
             "tflag": line[27:28],
             "rh": convert_float(line[28:33].strip(), gt=0, lt=104),
-            "dpdp": convert_float(line[34:39].strip()),
+            "dewp": calc_dewp(tmpc, line[34:39].strip()),
             "wdir": convert_wind(line[40:45].strip()),
             "wspd": convert_float(line[46:51].strip()),
         }
