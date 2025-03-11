@@ -129,7 +129,7 @@ class Sounding:
         txn.execute(
             """
     UPDATE raob_flights SET release_time = %s, ingested_at = now(),
-    tropo_level = %s WHERE fid = %s""",
+    tropo_level = %s, computed = 'f' WHERE fid = %s""",
             (self.model.header.release_valid, tropo_level, fid),
         )
         LOG.info(
