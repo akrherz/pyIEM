@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.nws.products package &#8212; pyIEM 0.0.post1230+g24f4d94 documentation</title>
+    <title>pyiem.nws.products package &#8212; pyIEM 0.0.post1229+g2c1762d documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=36349fec"></script>
+    <script src="../_static/documentation_options.js?v=4043c24a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.nws.html" title="pyiem.nws package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g24f4d94 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1229+g2c1762d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" accesskey="U">pyiem.nws package</a> &#187;</li>
@@ -799,6 +799,12 @@ parsing of Weather Prediction Center’s MPD</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.mcd.MCDProduct.get_prob_extra">
+<span class="sig-name descname"><span class="pre">get_prob_extra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.mcd.MCDProduct.get_prob_extra" title="Link to this definition">¶</a></dt>
+<dd><p>Return some text.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.products.mcd.MCDProduct.get_url">
 <span class="sig-name descname"><span class="pre">get_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.mcd.MCDProduct.get_url" title="Link to this definition">¶</a></dt>
 <dd><p>Return the URL for SPC’s website</p>
@@ -832,6 +838,12 @@ parsing of Weather Prediction Center’s MPD</p>
 <dt class="sig sig-object py" id="pyiem.nws.products.mcd.MCDProduct.parse_geometry">
 <span class="sig-name descname"><span class="pre">parse_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.products.mcd.MCDProduct.parse_geometry" title="Link to this definition">¶</a></dt>
 <dd><p>Find the polygon that’s in this MCD product</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.mcd.MCDProduct.parse_most_prob_tags">
+<span class="sig-name descname"><span class="pre">parse_most_prob_tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MostProbableTags</span></span></span><a class="headerlink" href="#pyiem.nws.products.mcd.MCDProduct.parse_most_prob_tags" title="Link to this definition">¶</a></dt>
+<dd><p>Glean what we can for these tags.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2401,12 +2413,14 @@ allow lookup of geographic information for station identifiers.</p></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.find_valid_times"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_valid_times()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.find_watch_probability"><code class="docutils literal notranslate"><span class="pre">MCDProduct.find_watch_probability()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_jabbers()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.get_prob_extra"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_prob_extra()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.get_url"><code class="docutils literal notranslate"><span class="pre">MCDProduct.get_url()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_areas_affected"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_areas_affected()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_concerning"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_concerning()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_correction"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_correction()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_discussion_num"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_discussion_num()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_geometry"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_geometry()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.parse_most_prob_tags"><code class="docutils literal notranslate"><span class="pre">MCDProduct.parse_most_prob_tags()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.products.mcd.MCDProduct.tweet"><code class="docutils literal notranslate"><span class="pre">MCDProduct.tweet()</span></code></a></li>
 </ul>
 </li>
@@ -2720,7 +2734,7 @@ allow lookup of geographic information for station identifiers.</p></li>
         <li class="right" >
           <a href="pyiem.nws.html" title="pyiem.nws package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1230+g24f4d94 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1229+g2c1762d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="pyiem.nws.html" >pyiem.nws package</a> &#187;</li>
