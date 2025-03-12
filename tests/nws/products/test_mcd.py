@@ -8,6 +8,23 @@ from pyiem.util import get_test_file, utc
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh1042_mcd_tags(dbcursor):
+    """Test the processing of newly added tags."""
+    prod = parser(get_test_file("MCD_MPD/SWOMCD_tags.txt"))
+    assert prod.most_prob_tags.tornado == "85-115 MPH"
+    assert prod.most_prob_tags.hail == "1.00-1.75 INCHES"
+    assert prod.most_prob_tags.gust == "55-70 MPH"
+    prod.database_save(dbcursor)
+    j = prod.get_jabbers("http://localhost")
+    assert j[0][0] == (
+        "Storm Prediction Center issues Mesoscale Discussion #2237 "
+        "[watch prob: 60%] [Most Prob: Tornado: 85-115 MPH, Hail: "
+        "1.00-1.75 INCHES, Gust: 55-70 MPH] "
+        "https://www.spc.noaa.gov/products/md/2024/md2237.html"
+    )
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_corrections(dbcursor):
     """Test that corrections are handled properly."""
     prod = parser(get_test_file("MCD_MPD/SWOMCD_301.txt"))
@@ -139,7 +156,7 @@ def test_mcdparser(dbcursor):
         '<a href="https://www.spc.noaa.gov/'
         'products/md/2013/md1678.html">Mesoscale Discussion #1678</a> '
         "concerning SEVERE POTENTIAL...WATCH UNLIKELY "
-        "[watch probability: 20%] "
+        "[watch prob: 20%] "
         '(<a href="http://localhost'
         '?pid=201308091725-KWNS-ACUS11-SWOMCD">View text</a>)</p>'
     )
@@ -147,7 +164,7 @@ def test_mcdparser(dbcursor):
     ans = (
         "Storm Prediction Center issues Mesoscale Discussion #1678 "
         "concerning SEVERE POTENTIAL...WATCH UNLIKELY "
-        "[watch probability: 20%] "
+        "[watch prob: 20%] "
         "https://www.spc.noaa.gov/products/md/2013/md1678.html"
     )
     assert jmsg[0][0] == ans
