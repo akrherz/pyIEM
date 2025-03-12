@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 
 - Add `iailmo` (Iowa + Illinois + Missouri) `MapPlot` sector.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
+- Support new MCD most probabe tags (#1042).
 
 ### Bug Fixes
 

@@ -9,6 +9,7 @@ from datetime import timedelta, timezone
 from shapely.geometry import Polygon as ShapelyPolygon
 
 from pyiem.exceptions import MCDException
+from pyiem.models.mcd import MostProbableTags
 from pyiem.nws.product import TextProduct
 from pyiem.reference import TWEET_CHARS, TWEET_URL_CHARS
 from pyiem.util import LOG, html_escape
@@ -23,6 +24,11 @@ WATCH_PROB = re.compile(
 )
 VALID_TIME = re.compile(r"VALID\s+([0-9]{6})Z?\s?-\s?([0-9]{6})Z?", re.I)
 CONCERNING = re.compile(r"CONCERNING\s?\.\.\.(.*?)\n\n", re.I)
+MOST_PROB_TAGS = re.compile(
+    r"^MOST PROBABLE PEAK (TORNADO INTENSITY|WIND GUST|HAIL SIZE)\s*"
+    r"\.\.\.\s*(.*)$",
+    re.MULTILINE,
+)
 
 
 class MCDProduct(TextProduct):
@@ -44,9 +50,25 @@ class MCDProduct(TextProduct):
         self.areas_affected = self.parse_areas_affected()
         self.concerning = self.parse_concerning()
         self.watch_prob = self.find_watch_probability()
+        self.most_prob_tags: MostProbableTags = self.parse_most_prob_tags()
         self.sts, self.ets = self.find_valid_times()
         self.is_correction = self.parse_correction()
         self.cwsus = []
+
+    def parse_most_prob_tags(self) -> MostProbableTags:
+        """Glean what we can for these tags."""
+        tokens = MOST_PROB_TAGS.findall(self.unixtext)
+        hail = None
+        tornado = None
+        gust = None
+        for token in tokens:
+            if token[0] == "HAIL SIZE":
+                hail = token[1].strip()
+            elif token[0] == "TORNADO INTENSITY":
+                tornado = token[1].strip()
+            elif token[0] == "WIND GUST":
+                gust = token[1].strip()
+        return MostProbableTags(hail=hail, tornado=tornado, gust=gust)
 
     def parse_correction(self) -> bool:
         """Look for the correction flag."""
@@ -85,6 +107,22 @@ class MCDProduct(TextProduct):
             return None
         return int(tokens[0])
 
+    def get_prob_extra(self):
+        """Return some text."""
+        prob_extra = ""
+        if self.watch_prob is not None:
+            prob_extra = f" [watch prob: {self.watch_prob:.0f}%]"
+        most_probs = []
+        if self.most_prob_tags.tornado:
+            most_probs.append(f"Tornado: {self.most_prob_tags.tornado}")
+        if self.most_prob_tags.hail:
+            most_probs.append(f"Hail: {self.most_prob_tags.hail}")
+        if self.most_prob_tags.gust:
+            most_probs.append(f"Gust: {self.most_prob_tags.gust}")
+        if most_probs:
+            prob_extra += f" [Most Prob: {', '.join(most_probs)}]"
+        return prob_extra
+
     def tweet(self):
         """Return twitter message"""
         charsleft = TWEET_CHARS - TWEET_URL_CHARS - 1
@@ -92,12 +130,10 @@ class MCDProduct(TextProduct):
             center = "SPC"
         else:
             center = "WPC"
-        prob_extra = ""
-        if self.watch_prob is not None:
-            prob_extra = f" [watch prob: {self.watch_prob:.0f}%]"
         concerning_text = ""
         if self.concerning is not None:
             concerning_text = f" concerning {self.concerning}"
+        prob_extra = self.get_prob_extra()
         attempt = ("#%s %s %s %s%s%s: %s ") % (
             center,
             "issues" if not self.is_correction else "corrects",
@@ -146,9 +182,7 @@ class MCDProduct(TextProduct):
         if self.afos == "FFGMPD":
             center = "Weather Prediction Center"
             pextra = "Precipitation "
-        prob_extra = " "
-        if self.watch_prob is not None:
-            prob_extra = " [watch probability: %.0f%%] " % (self.watch_prob,)
+        prob_extra = self.get_prob_extra() + " "
         concerning_text = ""
         if self.concerning is not None:
             concerning_text = f" concerning {self.concerning}"
@@ -239,8 +273,9 @@ class MCDProduct(TextProduct):
         giswkt = f"SRID=4326;{self.geometry.wkt}"
         sql = (
             f"INSERT into {table} (product_id, geom, issue, expire, "
-            "num, year, watch_confidence, concerning) "
-            "values (%s, %s, %s, %s, %s, %s, %s, %s)"
+            "num, year, watch_confidence, concerning, most_prob_tornado, "
+            "most_prob_hail, most_prob_gust) "
+            "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
         args = (
             self.get_product_id(),
@@ -251,6 +286,9 @@ class MCDProduct(TextProduct):
             self.valid.year,
             self.find_watch_probability(),
             self.concerning,
+            self.most_prob_tags.tornado,
+            self.most_prob_tags.hail,
+            self.most_prob_tags.gust,
         )
         txn.execute(sql, args)
 

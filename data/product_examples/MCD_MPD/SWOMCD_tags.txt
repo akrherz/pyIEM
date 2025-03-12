@@ -1,0 +1,39 @@
+174 
+ACUS11 KWNS 181749
+SWOMCD
+SPC MCD 181749 
+MSZ000-252145-
+
+Mesoscale Discussion 2237
+NWS Storm Prediction Center Norman OK
+1149 PM CST Mon Nov 18 2024
+
+Areas affected...Lower Mississippi Valley
+Concerning...Severe potential...Watch possible
+Valid 190549Z - 190715Z
+Probability of Watch Issuance...60 percent
+
+SUMMARY...Strong/damaging winds, large hail and a couple tornadoes are possible with thunderstorms
+that will move across the lower Mississippi Valley through the early morning hours.
+DISCUSSION...Surface front continues to advance slowly east across LA into western MS late this
+evening. This boundary is becoming less forced with time as the primary upper trough is lifting
+north-northeast across western IA. Some semblance of a LLJ persists ahead of the front from southeast
+LA into MS, and this appears to be aiding frontal convection that is currently concentrated from
+western MS into southwest LA. Latest radar data suggests some organization to the squall line and a few
+bow-type structures are evident along the leading edge of convection. Strong/damaging gusts will be the
+primary severe hazard, with some risk for a couple of tornadoes given strong low-level shear and
+potential for embedded QLCS circulations. Additionally, any semi-discrete and persistent storm ahead of
+the line will also pose some risk for large hail as storms move east into the early morning hours. Current
+thinking is that a watch may be needed in the next 1 to 2 hours.
+
+..Darrow/Hart.. 11/18/2024
+
+...Please see www.spc.noaa.gov for graphic product...
+
+ATTN...WFO...JAN...LIX...LCH...
+
+LAT...LON 30199264 32449081 32119008 30229160 30199264
+
+MOST PROBABLE PEAK TORNADO INTENSITY...85-115 MPH
+MOST PROBABLE PEAK WIND GUST...55-70 MPH
+MOST PROBABLE PEAK HAIL SIZE...1.00-1.75 INCHES
