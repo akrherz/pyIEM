@@ -82,6 +82,21 @@ DOMAINS = {
         "affine_native": Affine(DX, 0.0, -10.0625, 0.0, DY, 34.9375),
         "tzinfo": ZoneInfo("Europe/Paris"),
     },
+    "sa": {
+        "west": -81.5,
+        "east": -34.125,
+        "south": -55.875,
+        "north": 12.5,
+        "west_edge": -81.5625,
+        "east_edge": -34.0625,
+        "south_edge": -55.9375,
+        "north_edge": 12.5625,
+        "nx": 380,
+        "ny": 548,
+        "affine": Affine(DX, 0.0, -81.5625, 0.0, 0 - DY, 12.5625),
+        "affine_native": Affine(DX, 0.0, -81.5625, 0.0, DY, -55.9375),
+        "tzinfo": ZoneInfo("America/Sao_Paulo"),
+    },
 }
 
 

@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add `iailmo` (Iowa + Illinois + Missouri) `MapPlot` sector.
+- Add `sa` IEMRE domain per DEP needs akrherz/iem#1173.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
 - Support new MCD most probabe tags (#1042).
 
