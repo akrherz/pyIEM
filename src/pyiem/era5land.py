@@ -24,7 +24,7 @@ def _rounddown(val: float) -> float:
     return np.floor(val / 0.1) * 0.1
 
 
-DOMAINS = {"": {}, "china": {}, "europe": {}}
+DOMAINS = {"": {}, "china": {}, "europe": {}, "sa": {}}
 
 for _dom, meta in DOMAINS.items():
     meta["WEST"] = _roundup(iemre.DOMAINS[_dom]["west_edge"])
