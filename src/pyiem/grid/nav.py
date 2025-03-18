@@ -27,6 +27,14 @@ _GRID_CONFIGS = {
         "nx": 400,
         "ny": 280,
     },
+    "IEMRE_SA": {
+        "left_edge": -81.5625,
+        "bottom_edge": -55.9375,
+        "dx": 0.125,
+        "dy": 0.125,
+        "nx": 380,
+        "ny": 548,
+    },
     "IFC": {
         "left_edge": -97.1562505,
         "bottom_edge": 40.1312475,
@@ -59,6 +67,14 @@ _GRID_CONFIGS = {
         "dy": 0.1,
         "nx": 500,
         "ny": 350,
+    },
+    "ERA5LAND_SA": {
+        "left_edge": -81.55,
+        "bottom_edge": -55.95,
+        "dx": 0.1,
+        "dy": 0.1,
+        "nx": 480,
+        "ny": 690,
     },
     "STAGE4": {
         "crs": (
