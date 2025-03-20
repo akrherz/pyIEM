@@ -659,6 +659,8 @@ def polygon_fill(mymap, geodf, data, **kwargs):
     to_label = {"x": [], "y": [], "vals": []}
     # Merge data into the data frame
     geodf["val"] = pd.Series(data)
+    # Sort the frame, placing the missing values at the beginning
+    geodf = geodf.sort_values("val", na_position="first")
     if not plotmissing:
         geodf = geodf[pd.notna(geodf["val"])].copy()
     for gp in mymap.panels:
