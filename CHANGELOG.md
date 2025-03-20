@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 - Add `iailmo` (Iowa + Illinois + Missouri) `MapPlot` sector.
 - Add `sa` IEMRE domain per DEP needs akrherz/iem#1173.
+- Bundle GeoDataframes of discontinued NWS UGC Counties/Zones.  Add
+  `discontinued=bool` option to `MapPlot.fill_ugcs()` to enable.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
 - Support new MCD most probabe tags (#1042).
 

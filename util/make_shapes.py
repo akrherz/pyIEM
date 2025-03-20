@@ -8,7 +8,7 @@ import geopandas as gpd
 
 from pyiem.database import get_sqlalchemy_conn, sql_helper
 from pyiem.reference import state_bounds
-from pyiem.util import logger
+from pyiem.util import logger, utc
 
 warnings.filterwarnings("ignore", message=".*implementation of Parquet.*")
 
@@ -116,25 +116,55 @@ def dump_fema_regions(fn):
     df.to_parquet(fn)
 
 
-def dump_ugc(gtype, fn, is_firewx=False):
-    """UGCS."""
+def dump_ugc(
+    gtype: str, fn: str, is_firewx: bool = False, discontinued: bool = False
+):
+    """Dump UGCs.
+
+    Args:
+        gtype (str): C or Z
+        fn (str): filename to write
+        is_firewx (bool): is this for fire weather
+        discontinued (bool): include discontinued UGCs
+    """
+    params = {"gtype": gtype, "valid": utc()}
     source_limiter = "source != 'fz'"
     if is_firewx:
         source_limiter = "source = 'fz'"
+    sql = """
+    SELECT ugc, wfo as cwa, simple_geom as geom,
+    ST_x(centroid) as lon, ST_Y(centroid) as lat
+    from ugcs WHERE begin_ts < :valid and
+    (end_ts is null or end_ts > :valid) and substr(ugc, 3, 1) = :gtype
+    and {source_limiter} ORDER by ugc ASC
+    """
+    if discontinued:
+        # Life choice here is just to include the most recent version
+        sql = """
+    with discontinued as (
+        SELECT ugc from ugcs WHERE ugc not in (
+            select ugc from ugcs where begin_ts < :valid and
+            (end_ts is null or end_ts > :valid))
+        and substr(ugc, 3, 1) = :gtype
+        and {source_limiter}),
+    agg as (
+        select ugc, rank() OVER (PARTITION by ugc ORDER by end_ts DESC),
+        wfo as cwa, simple_geom as geom,
+        st_x(centroid) as lon, st_y(centroid) as lat
+        from ugcs where ugc in (select ugc from discontinued) and
+        {source_limiter})
+    SELECT * from agg where rank = 1 ORDER by ugc ASC
+        """
 
     # We want UGCs valid for the time of running this script
     with get_sqlalchemy_conn("postgis", user="nobody") as conn:
         df = gpd.read_postgis(
-            "SELECT ugc, wfo as cwa, simple_geom as geom, "
-            "ST_x(centroid) as lon, ST_Y(centroid) as lat "
-            "from ugcs WHERE begin_ts < now() and "
-            "(end_ts is null or end_ts > now()) and substr(ugc, 3, 1) = %s "
-            f"and {source_limiter}",
+            sql_helper(sql, source_limiter=source_limiter),
             conn,
-            params=(gtype,),
+            params=params,
             index_col="ugc",
             geom_col="geom",
-        )
+        )  # type: ignore
     df.to_parquet(fn)
 
 
@@ -160,17 +190,33 @@ def getfn(prefix):
 
 def main():
     """Go Main"""
+    dump_ugc("C", getfn("ugcs_county"))
+    check_file(getfn("ugcs_county"))
+    dump_ugc("Z", getfn("ugcs_zone"), is_firewx=False)
+    check_file(getfn("ugcs_zone"))
+    dump_ugc("Z", getfn("ugcs_firewx"), is_firewx=True)
+    check_file(getfn("ugcs_firewx"))
+    dump_ugc("C", getfn("ugcs_county_discontinued"), discontinued=True)
+    check_file(getfn("ugcs_county_discontinued"))
+    dump_ugc(
+        "Z",
+        getfn("ugcs_zone_discontinued"),
+        is_firewx=False,
+        discontinued=True,
+    )
+    check_file(getfn("ugcs_zone_discontinued"))
+    dump_ugc(
+        "Z",
+        getfn("ugcs_firewx_discontinued"),
+        is_firewx=True,
+        discontinued=True,
+    )
+    check_file(getfn("ugcs_firewx_discontinued"))
     dump_fema_regions(getfn("fema_regions"))
     check_file(getfn("fema_regions"))
     dump_conus(getfn("conus"))
     check_file(getfn("conus"))
     dump_iowawfo(getfn("iowawfo"))
-    dump_ugc("C", getfn("ugcs_county"))
-    dump_ugc("Z", getfn("ugcs_zone"), is_firewx=False)
-    dump_ugc("Z", getfn("ugcs_firewx"), is_firewx=True)
-    check_file(getfn("ugcs_county"))
-    check_file(getfn("ugcs_zone"))
-    check_file(getfn("ugcs_firewx"))
     dump_cwa(getfn("cwa"))
     check_file(getfn("cwa"))
     dump_climdiv(getfn("climdiv"))

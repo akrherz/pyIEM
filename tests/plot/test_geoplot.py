@@ -69,6 +69,20 @@ def test_invalid_file():
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
+def test_gh1046_alaska_discontinued():
+    """Test plotting of discontinued Alaska zones."""
+    data = {"AKZ145": 33, "AKZ155": 4, "AKZ181": 1, "AKZ152": 3, "AKZ125": 16}
+    mp = MapPlot(
+        sector="cwa",
+        cwa="AFC",
+        title="Alaska Discontinued Zones",
+        nocaption=True,
+    )
+    mp.fill_ugcs(data, discontinued=True)
+    return mp.fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_gfs_imshow():
     """Test imshow functionality with GFS plotting over 5 panels."""
     # Some boilerplate

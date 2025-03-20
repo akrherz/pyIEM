@@ -37,6 +37,7 @@ import matplotlib.cm as mpcm
 import matplotlib.colors as mpcolors
 import matplotlib.patheffects as PathEffects
 import numpy as np
+import pandas as pd
 import rasterio
 from affine import Affine
 from matplotlib.patches import Wedge
@@ -1240,6 +1241,8 @@ class MapPlot:
           bins(list, optional): Bins to use for cloropleth, default 0:101:10
           color(dict, optional): Hard code what each UGC should display as
             for color.
+          discontinued(bool, optional): Should we include discontinued UGCs
+            within the baseline geodata for plotting, default is `False`.
           is_firewx(bool, optional): Are we plotting fire weather zones?
           draw_colorbar (bool, optional): Should a color bar be generated,
             default is `True`.
@@ -1256,10 +1259,13 @@ class MapPlot:
                 counties = False
             break
         zonesfn = "firewx" if kwargs.get("is_firewx", False) else "zone"
-        geodf = load_geodf(
-            "ugcs_county" if counties else f"ugcs_{zonesfn}",
-            self.panels[0].crs.to_epsg(),
-        )
+        geofn = "ugcs_county" if counties else f"ugcs_{zonesfn}"
+        geodf = load_geodf(geofn, self.panels[0].crs.to_epsg())
+        if kwargs.get("discontinued", False):
+            geodf2 = load_geodf(
+                f"{geofn}_discontinued", self.panels[0].crs.to_epsg()
+            ).to_crs(geodf.crs)
+            geodf = pd.concat([geodf, geodf2])
         if self.sector == "state":
             geodf = geodf[geodf.index.str.slice(0, 2) == self.state]
         elif self.sector == "cwa":
