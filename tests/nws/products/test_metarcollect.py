@@ -5,6 +5,7 @@ from unittest import mock
 import pytest
 
 from pyiem.nws.products import metarcollect
+from pyiem.nws.products.metar_util import metar_from_dict
 from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file, utc
 
@@ -324,3 +325,58 @@ def test_basic(dbcursor):
 
     # Run twice to trigger skip
     prod.get_jabbers("localhost")
+
+
+def get_example_metars():
+    """Return some example METARs."""
+    to_test = [
+        "25004KT 10SM CLR M04/M07 A3004 RMK AO2 SLP180 T10391072",
+        "17005KT 4SM RA BR OVC005 08/08 A2908 RMK "
+        + "AO2 SLP849 P0008 T00830083",
+        "28090G102KT 0SM -SN FZFG BLSN VV000 M14/M14 RMK AO2 T11401140",
+        "///04KT 10SM CLR M01/M10 A2986 RMK AO2 T10061102",
+        "26010KT 9SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "12005KT 10SM OVC025 08/05 A3041 RMK AO2 "
+        + "SLP297 P0000 60003 70003 T00780050",
+        "12005KT 10SM 08/05 A3041 RMK AO2 SLP297 P0000 60003 70003 T00780050",
+        "06014KT BKN025 06/M03 A3043 RMK AO2 T00611035",
+        "26010KT 1/16SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 1/8SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 1/4SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 3/8SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 1/2SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 1SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 1 1/2SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 2SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "26010KT 2 1/2SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        # Theoretical
+        "260//KT 2 1/2SM -SN OVC037 M02/M08 A2978 "
+        + "RMK AO2 SLP091 P0000 60000 T10221078",
+        "260//KT 2 1/2SM -SN OVC037 A2978 RMK AO2 SLP091 P0000 60000",
+    ]
+    for ans in to_test:
+        yield f"METAR QQQQ 221253Z AUTO {ans}"
+
+
+@pytest.mark.parametrize("database", ["iem"])
+@pytest.mark.parametrize("ans", get_example_metars())
+def test_metar_roundtrip(dbcursor, ans):
+    """Test the roundtripping of METARs."""
+    create_entries(dbcursor)
+    prod = mock.Mock()
+    prod.valid = utc(2025, 3, 22, 13)
+    prod.utcnow = prod.valid
+    mtr = metarcollect.to_metar(prod, ans)
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
+    iemob.data["station"] = "QQQQ"
+    assert metar_from_dict(iemob.data) == ans
