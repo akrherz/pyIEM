@@ -14,6 +14,8 @@ All notable changes to this library are documented in this file.
 - Bundle GeoDataframes of discontinued NWS UGC Counties/Zones.  Add
   `discontinued=bool` option to `MapPlot.fill_ugcs()` to enable.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
+- Introduce `pyiem.nws.products.metar_util` with `metar_from_dict` helper to
+  create METAR strings from dicts of data.
 - Support new MCD most probabe tags (#1042).
 
 ### Bug Fixes
