@@ -56,7 +56,7 @@ def metar_format_pgroup(
     prefix = "P" if hours == 1 else "6"
     if hours == 24:
         prefix = "7"
-    if 0 < phour < 0.005:
+    if phour < 0.005:
         return f"{prefix}0000"
     return f"{prefix}{phour * 100.0:04.0f}"
 
