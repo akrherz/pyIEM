@@ -363,6 +363,7 @@ def get_example_metars():
         "260//KT 2 1/2SM -SN OVC037 M02/M08 A2978 "
         + "RMK AO2 SLP091 P0000 60000 T10221078",
         "260//KT 2 1/2SM -SN OVC037 A2978 RMK AO2 SLP091 P0000 60000",
+        "00000KT 10SM CLR M37/ A3037 RMK AO2 SLP307 T1367",
     ]
     for ans in to_test:
         yield f"METAR QQQQ 221253Z AUTO {ans}"

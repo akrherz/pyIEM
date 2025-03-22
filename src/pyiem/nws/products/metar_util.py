@@ -87,17 +87,21 @@ def metar_format_temperature(
     tmpf: Optional[float], dwpf: Optional[float], tgroup: bool = False
 ) -> Optional[str]:
     """Format the temperature."""
-    if tmpf is None or dwpf is None:
+    # Understanding is that temperature is required
+    if tmpf is None:
         return None
     tmpc = (units.degF * tmpf).to(units.degC).m
-    dwpc = (units.degF * dwpf).to(units.degC).m
-    tf = "M" if tmpc < 0 else ""
-    df = "M" if dwpc < 0 else ""
-    if tgroup:
-        tf = "1" if tmpc < 0 else "0"
-        df = "1" if dwpc < 0 else "0"
-        return f"T{tf}{abs(tmpc) * 10.0:03.0f}{df}{abs(dwpc) * 10.0:03.0f}"
-    return f"{tf}{abs(tmpc):02.0f}/{df}{abs(dwpc):02.0f}"
+    df = "M" if tmpc < 0 else ""
+    tf = "1" if tmpc < 0 else "0"
+    metarmsg = f"{df}{abs(tmpc):02.0f}/"
+    tmsg = f"T{tf}{abs(tmpc) * 10.0:03.0f}"
+    if dwpf is not None:
+        dwpc = (units.degF * dwpf).to(units.degC).m
+        df = "M" if dwpc < 0 else ""
+        tf = "1" if dwpc < 0 else "0"
+        metarmsg += f"{df}{abs(dwpc):02.0f}"
+        tmsg += f"{tf}{abs(dwpc) * 10.0:03.0f}"
+    return tmsg if tgroup else metarmsg
 
 
 def metar_format_visibility(vsby: Optional[float]) -> Optional[str]:
