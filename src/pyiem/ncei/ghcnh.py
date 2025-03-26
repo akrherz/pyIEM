@@ -85,8 +85,9 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
     # The six values are value, measure, qc, report_type, source_code, station
     if tokens[startpos] in ["", "9999"]:
         return None
-    # Presently our QC codes we cull data for, theoretically attm
-    if tokens[startpos + 4] == "335" and tokens[startpos + 2] in ["2", "3"]:
+    # Presently, code 3 and 7 are erroneous, but uffties, this may be
+    # dropping good data on the floor as well :(
+    if tokens[startpos + 2] in ["3", "7"]:
         return None
     if tokens[startpos + 1] == "2-Trace":
         return TRACE_VALUE
