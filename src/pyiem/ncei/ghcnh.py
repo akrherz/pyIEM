@@ -193,7 +193,7 @@ def process_line(line: str, dialect: dict[str, int]) -> dict:
 
 def process_file(filename: str) -> Generator[dict]:
     """Process the provided file."""
-    with open(filename) as fh:
+    with open(filename) as fh:  # skipcq
         for linenum, line in enumerate(fh):
             if linenum == 0:
                 dialect = build_dialect(line)
