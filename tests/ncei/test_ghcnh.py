@@ -23,3 +23,10 @@ def test_kokc():
     assert abs(res[1]["p24i"] - 0.07) < 0.0001
     assert res[2]["tmpf"] is None
     assert abs(res[3]["p06i"] - TRACE_VALUE) < 0.0001
+
+
+def test_ntat():
+    """Test example with bad VSBY."""
+    fn = get_test_filepath("GHCNh/GHCNh_FPI0000NTAT_por.psv")
+    res = list(process_file(fn))
+    assert res[0]["vsby"] is None

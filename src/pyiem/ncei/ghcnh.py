@@ -139,7 +139,7 @@ def process_line(line: str, dialect: dict[str, int]) -> dict:
         ob["gust"] = normalize_temp((MPS * val).to(KTS).m)
 
     val = parse_packet(tokens, dialect["vsby_km"])
-    if val is not None:
+    if val is not None and (0 <= val < 100):  # Arbitrary limit of 100km
         ob["vsby"] = (KM * val).to(MILE).m
         if ob["vsby"] > 2.9:
             ob["vsby"] = round(ob["vsby"], 0)
