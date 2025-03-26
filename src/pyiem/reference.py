@@ -124,6 +124,7 @@ class StationAttributes:
     CEILING = "CEILING"
     ERA5LAND_SOILTYPE = "ERA5LAND_SOILTYPE"
     FLOOR = "FLOOR"
+    GHCNH_ID = "GHCNH_ID"
     HAS1MIN = "HAS1MIN"
     HAS_HML = "HAS_HML"
     HASTAF = "HASTAF"
