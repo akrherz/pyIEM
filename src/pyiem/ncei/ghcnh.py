@@ -96,7 +96,13 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
 
 def clean_metar(raw: str) -> str:
     """Clean up the METAR string."""
-    return raw.split(";")[0].split("$")[0].replace(" KT ", " ").strip()
+    return (
+        raw.split(";")[0]
+        .split("$")[0]
+        .split("=")[0]
+        .replace(" KT ", " ")
+        .strip()
+    )
 
 
 def process_line(line: str, dialect: dict[str, int]) -> dict:
