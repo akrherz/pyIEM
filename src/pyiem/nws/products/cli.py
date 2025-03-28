@@ -82,7 +82,9 @@ COLS = [
     [16, 23, 31, 37, 46, 52, 61, 72],
 ]
 # Allow manual provision of IDS
-HARDCODED = {}
+HARDCODED = {
+    "DODGE CITY KS": "KDDC",  # Comes as CLIDGC
+}
 
 
 def update_iemaccess(txn, entry):
