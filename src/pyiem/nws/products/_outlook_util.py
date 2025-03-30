@@ -374,7 +374,6 @@ def quality_control(prod):
                         "discarded"
                     )
                     LOG.warning(msg)
-                    prod.warnings.append(msg)
                     continue
                 intersect = CONUS["poly"].intersection(poly)
                 # Current belief is that we can only return a (multi)poly
