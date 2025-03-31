@@ -21,11 +21,6 @@ MILE = units("mile")
 M = units("meter")
 FT = units("feet")
 
-SENTINELS = {
-    "2-Trace": TRACE_VALUE,
-    "V-Variable": VARIABLE_WIND_DIRECTION,
-}
-
 # For those we don't take verbatim
 PRESWX_TO_METAR = {
     "FG:44": "FG",
@@ -94,7 +89,13 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
     # dropping good data on the floor as well :(
     if tokens[startpos + 2] in ["3", "7"]:
         return None
-    return SENTINELS.get(tokens[startpos + 1]) or float(tokens[startpos])
+    if tokens[startpos + 1] == "2-Trace":
+        # This is a sentinel value for trace precipitation
+        return TRACE_VALUE
+    if tokens[startpos] == "VRB":
+        # This is a sentinel value for variable wind direction
+        return VARIABLE_WIND_DIRECTION
+    return float(tokens[startpos])
 
 
 def clean_metar(raw: str) -> str:
