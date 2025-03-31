@@ -94,7 +94,7 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
     # dropping good data on the floor as well :(
     if tokens[startpos + 2] in ["3", "7"]:
         return None
-    return SENTINELS.get(tokens[startpos + 1], None) or float(tokens[startpos])
+    return SENTINELS.get(tokens[startpos + 1]) or float(tokens[startpos])
 
 
 def clean_metar(raw: str) -> str:
