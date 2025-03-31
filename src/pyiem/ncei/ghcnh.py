@@ -7,7 +7,7 @@ from typing import Optional
 from metpy.units import units
 
 from pyiem.nws.products.metarcollect import normalize_temp
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, VARIABLE_WIND_DIRECTION
 from pyiem.util import c2f, utc
 
 MB = units("millibar")
@@ -90,7 +90,11 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
     if tokens[startpos + 2] in ["3", "7"]:
         return None
     if tokens[startpos + 1] == "2-Trace":
+        # This is a sentinel value for trace precipitation
         return TRACE_VALUE
+    if tokens[startpos] == "VRB":
+        # This is a sentinel value for variable wind direction
+        return VARIABLE_WIND_DIRECTION
     return float(tokens[startpos])
 
 

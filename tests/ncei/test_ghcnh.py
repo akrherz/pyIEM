@@ -1,8 +1,15 @@
 """Test GHCNh parsing, joy."""
 
 from pyiem.ncei.ghcnh import process_file
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, VARIABLE_WIND_DIRECTION
 from pyiem.util import get_test_filepath
+
+
+def test_variable_wind():
+    """Test when VRB is provided as the value, which I think is a bug."""
+    fn = get_test_filepath("GHCNh/GHCNh_USW00026442_por.psv")
+    res = list(process_file(fn))
+    assert res[0]["drct"] == VARIABLE_WIND_DIRECTION
 
 
 def test_kbtm():
