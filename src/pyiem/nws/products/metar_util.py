@@ -6,6 +6,8 @@ from typing import Optional
 import numpy as np
 from metpy.units import units
 
+from pyiem.reference import VARIABLE_WIND_DIRECTION
+
 
 def metar_from_dict(ob: dict) -> str:
     """Format a METAR from a dictionary like pyiem.Observation."""
@@ -149,6 +151,8 @@ def metar_format_wind(
     # Wind Direction
     if drct is None:
         res += "///"
+    elif drct == VARIABLE_WIND_DIRECTION:
+        res += "VRB"
     else:
         res += f"{drct:03.0f}"
     if sknt is None:

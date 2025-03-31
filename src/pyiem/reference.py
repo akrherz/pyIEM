@@ -41,6 +41,8 @@ ISO8601 = "%Y-%m-%dT%H:%M:%SZ"
 
 TAF_VIS_OVER_6SM = 6.01
 TRACE_VALUE = 0.0001
+# Sentinel value for a VRB wind direction found in METARs
+VARIABLE_WIND_DIRECTION = 0.0001
 # https://github.com/twitter/twitter-text/tree/master/config
 TWEET_CHARS = 280
 TWEET_URL_CHARS = 23

@@ -7,7 +7,7 @@ from typing import Optional
 from metpy.units import units
 
 from pyiem.nws.products.metarcollect import normalize_temp
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, VARIABLE_WIND_DIRECTION
 from pyiem.util import c2f, utc
 
 MB = units("millibar")
@@ -20,6 +20,11 @@ KM = units("kilometer")
 MILE = units("mile")
 M = units("meter")
 FT = units("feet")
+
+SENTINELS = {
+    "2-Trace": TRACE_VALUE,
+    "V-Variable": VARIABLE_WIND_DIRECTION,
+}
 
 # For those we don't take verbatim
 PRESWX_TO_METAR = {
@@ -89,9 +94,7 @@ def parse_packet(tokens: list[str], startpos: int) -> Optional[float]:
     # dropping good data on the floor as well :(
     if tokens[startpos + 2] in ["3", "7"]:
         return None
-    if tokens[startpos + 1] == "2-Trace":
-        return TRACE_VALUE
-    return float(tokens[startpos])
+    return SENTINELS.get(tokens[startpos + 1], None) or float(tokens[startpos])
 
 
 def clean_metar(raw: str) -> str:

@@ -1,12 +1,13 @@
 """Make sure our METAR parsing works!"""
 
+from collections import defaultdict
 from unittest import mock
 
 import pytest
 
 from pyiem.nws.products import metarcollect
 from pyiem.nws.products.metar_util import metar_from_dict
-from pyiem.reference import TRACE_VALUE
+from pyiem.reference import TRACE_VALUE, VARIABLE_WIND_DIRECTION
 from pyiem.util import get_test_file, utc
 
 PARSER = metarcollect.parser
@@ -381,3 +382,18 @@ def test_metar_roundtrip(dbcursor, ans):
     iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
     iemob.data["station"] = "QQQQ"
     assert metar_from_dict(iemob.data) == ans
+
+
+def test_metar_from_dict_with_variable_wind():
+    """Test the METAR from dict with variable wind."""
+    values = defaultdict(lambda: None)
+    values.update(
+        **{
+            "valid": utc(2025, 1, 1, 0),
+            "station": "KOKC",
+            "drct": VARIABLE_WIND_DIRECTION,
+            "sknt": 3,
+        }
+    )
+
+    assert metar_from_dict(values) == "METAR KOKC 010000Z AUTO VRB03KT RMK AO2"
