@@ -34,6 +34,17 @@ LOCS = {
 }
 
 
+def test_250403_flight_level():
+    """Test handling of FLxxx-yyyy"""
+    utcnow = utc(2025, 4, 3, 20, 54)
+    prod = parser(
+        get_test_file("CWA/CWAZAN_fl.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert not prod.warnings
+
+
 def test_220721_lalo():
     """Test handling of CWA with lat/lon points."""
     utcnow = utc(2022, 7, 21, 14, 54)
