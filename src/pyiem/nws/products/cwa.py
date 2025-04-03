@@ -126,6 +126,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
             )
             if d["leftover"]:
                 narrative = d["leftover"].strip()
+                break
             continue
         s = FROM_RE.match(token.strip())
         if s:
