@@ -441,7 +441,7 @@ def iemapp(**kwargs):
                     f"{code} {HTTPStatus(code).phrase}",
                     [("Content-type", "text/plain")],
                 )
-                return msg.encode("ascii")
+                return msg.encode("ascii", errors="replace")
 
             start_time = datetime.now(timezone.utc)
             status_code = 500
