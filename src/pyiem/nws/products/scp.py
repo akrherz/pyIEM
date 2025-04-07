@@ -67,7 +67,7 @@ class SCPProduct(TextProduct):
         Args:
           text (str): text to parse
         """
-        super().__init__(text, utcnow=utcnow)
+        super().__init__(text, utcnow=utcnow, ugc_provider={})
         self.data = _processor(self)
 
     def sql(self, txn):
