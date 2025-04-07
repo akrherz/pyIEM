@@ -71,6 +71,9 @@ def _load_from_database(pgconn=None, valid=None):
         pgconn (database engine): something pandas can query
         valid (timestamp, optional): timestamp version of database to use.
     """
+    # This is sometimes autoloaded and we should alert folks when it is
+    # happening
+    LOG.warning("UGC load with valid: %s", valid)
     pgconn = (
         pgconn
         if pgconn is not None
