@@ -39,13 +39,20 @@ def safe(val):
 class FFGProduct(TextProduct):
     """Class representing a FFG Product"""
 
-    def __init__(self, text, utcnow=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """Constructor
 
         Args:
           text (str): text to parse
         """
-        super().__init__(text, utcnow=utcnow, ugc_provider={})
+        super().__init__(
+            text,
+            utcnow=utcnow,
+            ugc_provider=ugc_provider,
+            nwsli_provider=nwsli_provider,
+        )
         self.data = None
         self.issue = None
         self.do_parsing()
@@ -119,7 +126,7 @@ class FFGProduct(TextProduct):
             )
 
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """parser of raw SPC SAW Text
 
     Args:
@@ -129,4 +136,4 @@ def parser(text, utcnow=None):
     Returns:
       SAWProduct instance
     """
-    return FFGProduct(text, utcnow=utcnow)
+    return FFGProduct(text, utcnow, ugc_provider, nwsli_provider)

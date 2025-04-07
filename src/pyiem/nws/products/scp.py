@@ -61,13 +61,20 @@ def _processor(textprod):
 class SCPProduct(TextProduct):
     """Class representing a SCP Product"""
 
-    def __init__(self, text, utcnow=None):
+    def __init__(
+        self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
+    ):
         """Constructor
 
         Args:
           text (str): text to parse
         """
-        super().__init__(text, utcnow=utcnow, ugc_provider={})
+        super().__init__(
+            text,
+            utcnow=utcnow,
+            ugc_provider=ugc_provider,
+            nwsli_provider=nwsli_provider,
+        )
         self.data = _processor(self)
 
     def sql(self, txn):
@@ -97,7 +104,7 @@ class SCPProduct(TextProduct):
         return inserts
 
 
-def parser(text, utcnow=None):
+def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """parser of raw SCP Text.
 
     Args:
@@ -107,4 +114,4 @@ def parser(text, utcnow=None):
     Returns:
       SCPProduct instance
     """
-    return SCPProduct(text, utcnow=utcnow)
+    return SCPProduct(text, utcnow, ugc_provider, nwsli_provider)
