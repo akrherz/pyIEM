@@ -45,7 +45,7 @@ class FFGProduct(TextProduct):
         Args:
           text (str): text to parse
         """
-        super().__init__(text, utcnow=utcnow)
+        super().__init__(text, utcnow=utcnow, ugc_provider={})
         self.data = None
         self.issue = None
         self.do_parsing()
