@@ -56,6 +56,8 @@ class CustomFormatter(logging.Formatter):
 
 def _strptime(ins: str, fmt: str, rectify: bool = False) -> datetime:
     """Wrapper around strptime."""
+    # Forgive an encoded space
+    ins = ins.replace("+", " ")
     try:
         return datetime.strptime(ins, fmt)
     except ValueError as exp:
@@ -495,7 +497,6 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                         value = f"{value[:10]} {value[10:]}"
                     else:
                         value += " 0000"
-                _dtfmt = "%Y-%m-%d %H%M"
                 value = _strptime(
                     value[:15].replace("/", "-"),
                     "%Y-%m-%d %H%M",
