@@ -94,7 +94,16 @@ def test_collective(dbcursor):
         "SELECT report from summary_2015 where iemid = -100 and "
         "day = '2015-11-26'"
     )
-    assert dbcursor.fetchone()["report"] == "201511270616-KZME-CDUS27-DSMHKS"
+    ans = "201511270616-KZME-CDUS27-DSMHKS"
+    assert dbcursor.fetchone()["report"] == ans
+
+    # send it again to test the string append
+    assert prod.sql(dbcursor)[0]
+    dbcursor.execute(
+        "SELECT report from summary_2015 where iemid = -100 and "
+        "day = '2015-11-26'"
+    )
+    assert dbcursor.fetchone()["report"] == f"{ans} {ans}"
 
 
 @pytest.mark.parametrize("database", ["iem"])
