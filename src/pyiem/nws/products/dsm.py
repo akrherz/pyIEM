@@ -171,8 +171,8 @@ class DSMProduct:
         txn.execute(
             f"""
     UPDATE summary_{self.date:%Y} s SET {cs}
-    , report = trim(case when %s::text is null then report else
-        coalesce(report, '') || %s::text || ' ' end)
+    , report = case when %s::text is null then report else
+        coalesce(report || ' ', '') || %s::text end
     FROM stations t
     WHERE s.iemid = t.iemid and t.network ~* 'ASOS'
     and t.id = %s and s.day = %s""",
