@@ -98,7 +98,7 @@ def test_collective(dbcursor):
     assert dbcursor.fetchone()["report"] == ans
 
     # send it again to test the string append
-    res = prod.sql(dbcursor)
+    assert prod.sql(dbcursor)[0]
     dbcursor.execute(
         "SELECT report from summary_2015 where iemid = -100 and "
         "day = '2015-11-26'"
