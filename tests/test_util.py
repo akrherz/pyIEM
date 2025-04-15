@@ -332,7 +332,7 @@ def test_apctx_empty_datetime():
     }
     opts = {
         "arguments": [
-            {"type": "datetime", "name": "d", "default": "2011/11/12 0000"},
+            {"type": "datetime", "name": "d", "default": "2011/11/12+0000"},
         ]
     }
     res = util.get_autoplot_context(form, opts, rectify_dates=True)
@@ -359,7 +359,7 @@ def test_get_autoplot_context_dates():
     """Test how we deal with all kinds of date cruft."""
     form = {
         "d": "2016-06-31",
-        "d2": "2016-09-31 1314",
+        "d2": "2016-09-31+1314",
         "d3": "2016-09-301314",
     }
     opts = dict(
