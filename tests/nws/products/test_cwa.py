@@ -34,6 +34,18 @@ LOCS = {
 }
 
 
+def test_250417_none_groupdict():
+    """Test that we at least get a nice warning about this."""
+    utcnow = utc(2025, 4, 17, 2, 8)
+    prod = parser(
+        get_test_file("CWA/CWAAN1.txt"),
+        utcnow=utcnow,
+        nwsli_provider=LOCS,
+    )
+    assert prod.warnings
+    assert prod.data is None
+
+
 def test_250403_flight_level():
     """Test handling of FLxxx-yyyy"""
     utcnow = utc(2025, 4, 3, 20, 54)

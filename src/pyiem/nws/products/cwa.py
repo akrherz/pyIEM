@@ -198,8 +198,11 @@ def parse_product(prod: TextProduct) -> CWAModel:
         m = CANCEL_LINE.findall(lines[ln])
         if m:
             return None
-    # Could fail, but this is a requirement anyway
-    res3 = LINE3.match(lines[2]).groupdict()
+    m = LINE3.match(lines[2])
+    if m is None:
+        prod.warnings.append(f"Line 3 `{lines[2]}` not {LINE3.pattern}")
+        return None
+    res3 = m.groupdict()
     issue = str2time(res3["ddhhmi"], prod.valid)
     # Could fail, but this is a requirement anyway
     res4 = LINE4.match(lines[3]).groupdict()
