@@ -300,4 +300,7 @@ class CWAProduct(TextProduct):
 
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Helper function"""
+    # Prevent an unnecessary ugc database load
+    if ugc_provider is None:
+        ugc_provider = {}
     return CWAProduct(text, utcnow, ugc_provider, nwsli_provider)
