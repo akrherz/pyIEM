@@ -61,13 +61,14 @@ class Table:
         for row in _cursor:
             self.sts[row["id"]] = dict(row)
             self.sts[row["id"]]["attributes"] = dict(
-                zip(row["attrs"] or [], row["attr_values"] or [])
+                zip(row["attrs"] or [], row["attr_values"] or [], strict=False)
             )
             td = self.sts[row["id"]].setdefault("threading", [])
             for i, s, e in zip(
                 row["threading_sources"] or [],
                 row["threading_begin_dates"] or [],
                 row["threading_end_dates"] or [],
+                strict=False,
             ):
                 td.append({"iemid": i, "begin_date": s, "end_date": e})
         if cursor is None:

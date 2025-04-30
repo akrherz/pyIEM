@@ -75,7 +75,7 @@ def make_select(
     )
     for key, val in data.items():
         if isinstance(val, (tuple, list)):
-            val = dict(list(zip(val, val)))
+            val = dict(list(zip(val, val, strict=False)))
         if not isinstance(val, dict):  # simple
             s += '<option value="%s"%s>%s%s</option>\n' % (
                 key,

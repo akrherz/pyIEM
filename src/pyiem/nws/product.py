@@ -497,7 +497,11 @@ class TextProductSegment:
                 poly.exterior.xy,
             )
             poly = Polygon(
-                zip(poly.exterior.xy[0][::-1], poly.exterior.xy[1][::-1])
+                zip(
+                    poly.exterior.xy[0][::-1],
+                    poly.exterior.xy[1][::-1],
+                    strict=False,
+                )
             )
         # NB: the encoding parsed above should always have just two decimals
         self.giswkt = (
@@ -548,7 +552,7 @@ class TextProductSegment:
             self.tml_giswkt = f"SRID=4326;POINT({lons[0]} {lats[0]})"
         else:
             pairs = []
-            for lat, lon in zip(lats, lons):
+            for lat, lon in zip(lats, lons, strict=False):
                 pairs.append(f"{lon} {lat}")
             self.tml_giswkt = f"SRID=4326;LINESTRING({','.join(pairs)})"
         self.tml_sknt = int(gdict["sknt"])

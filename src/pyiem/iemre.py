@@ -172,7 +172,7 @@ def set_grids(valid, ds, table=None, domain: str = ""):
     pig["gid"] = list(range(dom["nx"] * dom["ny"]))
 
     sts = utc()
-    cursor.executemany(query, zip(*pig.values()))
+    cursor.executemany(query, zip(*pig.values(), strict=False))
     cursor.close()
     pgconn.commit()
     LOG.info(
