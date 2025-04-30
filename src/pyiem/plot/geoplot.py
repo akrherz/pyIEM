@@ -1137,7 +1137,7 @@ class MapPlot:
             ccw = load_bounds(f"{sector}_ccw")
         # in map coords
         x, y = self.panels[0].transform_lonlat(ccw[:, 0], ccw[:, 1])
-        mask_outside_polygon(list(zip(x, y)), self.panels[0])
+        mask_outside_polygon(list(zip(x, y, strict=False)), self.panels[0])
 
     def contourf(self, lons, lats, vals, clevs, **kwargs):
         """Contourf

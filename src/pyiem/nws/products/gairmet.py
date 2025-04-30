@@ -54,7 +54,9 @@ def process_airmet(prod, airmet):
     status = elem.attrib["{http://www.w3.org/1999/xlink}title"]
     elem = airmet.find("hazardType", NS)
     hazardtype = elem.attrib["{http://www.w3.org/1999/xlink}title"]
-    xy = [(float(x), float(y)) for x, y in zip(pts[1::2], pts[::2])]
+    xy = [
+        (float(x), float(y)) for x, y in zip(pts[1::2], pts[::2], strict=False)
+    ]
     if gml_id.startswith("FZLVL") or gml_id.startswith("M_FZLVL"):
         ls = LineString(xy)
         ul = int(airmet.find(".//aixm:upperLimit", NS).text)

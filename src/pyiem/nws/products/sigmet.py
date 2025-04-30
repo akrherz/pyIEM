@@ -365,7 +365,7 @@ class SIGMETProduct(TextProduct):
             if len(lons) <= 2:
                 continue
             pts = []
-            for lon, lat in zip(lons, lats):
+            for lon, lat in zip(lons, lats, strict=False):
                 pts.append((lon, lat))
             if lats[0] != lats[-1] or lons[0] != lons[-1]:
                 pts.append((lons[0], lats[0]))

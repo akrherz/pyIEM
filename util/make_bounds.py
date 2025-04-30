@@ -40,7 +40,7 @@ def main():
                 continue
             (lons, lats) = geo.exterior.xy
 
-            ar = list(zip(lons, lats))
+            ar = list(zip(lons, lats, strict=False))
             ar.reverse()
             np.save("iailin_ccw.npy", ar)
 

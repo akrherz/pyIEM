@@ -66,6 +66,7 @@ def test_get_dbconn_for_user(monkeypatch):
     for ins, outs in zip(
         ["apache", "akrherz", "mesonet_ldm", "xyz"],
         ["nobody", "mesonet", "ldm", "xyz"],
+        strict=False,
     ):
         monkeypatch.setattr("getpass.getuser", lambda i=ins: i)
         res = get_dbconnstr("bogus")

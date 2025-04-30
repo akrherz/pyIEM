@@ -357,7 +357,7 @@ def parse_wind(lines, data):
     for token in tokens:
         content = content.replace(" ".join(token), ";")
     vals = content[1:].split(";")
-    for token, val in zip(tokens, vals):
+    for token, val in zip(tokens, vals, strict=False):
         data[("_".join(token)).lower()] = get_number(val)
 
 
