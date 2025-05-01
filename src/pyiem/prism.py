@@ -1,9 +1,17 @@
 """Helper for PRISM BIL data"""
 
 import datetime
+import warnings
 
 import numpy as np
 from affine import Affine
+
+# Mark this module for deprecation
+warnings.warn(
+    "This module is deprecated and will be removed in a future release",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 NX = 1405
 NY = 621

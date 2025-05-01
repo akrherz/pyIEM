@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Define `PRISM800` grid navigation for updated PRISM 800m grid.
+- Mark `pyiem.prism` for removal in next release.
 - Reclassify LSR `SNOW/ICE DMG` typetext to code `5` (ice related).
 
 ### New Features
