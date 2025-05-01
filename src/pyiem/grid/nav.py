@@ -108,13 +108,21 @@ _GRID_CONFIGS = {
         "nx": 6100,
         "ny": 2700,
     },
-    "PRISM": {
+    "PRISM": {  # Legacy 4km grid
         "left_edge": -125.0 - (1 / 24.0) / 2.0,
         "bottom_edge": 24.083333 - (1 / 24.0) / 2.0,
         "dx": 1 / 24.0,
         "dy": 1 / 24.0,
         "nx": 1405,
         "ny": 621,
+    },
+    "PRISM800": {  # New 800m grid, which is a simple 5x of the 4km grid
+        "left_edge": -125.0 - (1 / 24.0) / 2.0,
+        "bottom_edge": 24.083333 - (1 / 24.0) / 2.0,
+        "dx": 1 / 120.0,
+        "dy": 1 / 120.0,
+        "nx": 7025,
+        "ny": 3105,
     },
 }
 

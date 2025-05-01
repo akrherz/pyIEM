@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Define `PRISM800` grid navigation for updated PRISM 800m grid.
 - Reclassify LSR `SNOW/ICE DMG` typetext to code `5` (ice related).
 
 ### New Features
