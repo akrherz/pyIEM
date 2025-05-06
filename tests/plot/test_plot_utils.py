@@ -2,7 +2,29 @@
 
 import pytest
 
-from pyiem.plot.util import centered_bins, draw_logo, fitbox, pretty_bins
+from pyiem.plot.use_agg import plt
+from pyiem.plot.util import (
+    centered_bins,
+    draw_logo,
+    fitbox,
+    fontscale,
+    pretty_bins,
+)
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.01, savefig_kwargs={"dpi": 200})
+def test_fontscale():
+    """Test that fontscale makes sense"""
+    fig = plt.figure(dpi=200)
+    ax = fig.add_axes((0, 0, 1, 1))
+    ax.plot((0, 1), (0.25, 0.25))
+    ax.plot((0, 1), (0.75, 0.75))
+    fontsize = fontscale(0.5, fig)
+    assert abs(fontsize - 216.0) < 0.1
+    ax.text(0.5, 0.5, "Qig 0.5", ha="center", va="center", fontsize=fontsize)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    return fig
 
 
 def test_gh871_not_a_zero_in_middle():
