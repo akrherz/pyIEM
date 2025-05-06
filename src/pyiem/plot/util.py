@@ -191,7 +191,8 @@ def fontscale(ratio, fig=None):
 
         fig = plt.gcf()
     bbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    return bbox.height * fig.dpi * ratio
+    # point size is 72 pts per inch
+    return bbox.height * 72.0 * ratio
 
 
 def fitbox(fig, text, x0, x1, y0, y1, **kwargs):
