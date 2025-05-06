@@ -181,12 +181,14 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     row = 0
     dy = 0.9 / float(weeks)
     dx = 1.0 / 7.0
+    dow_fontsize = fontscale(ndcwidth / 8.0 * 0.4)
+    day_fontsize = fontscale(ndcheight / 5.0 * 0.33)
     for i, dow in enumerate(["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]):
         axes.text(
             1.0 / 7.0 * (i + 0.5),
             0.94,
             dow,
-            fontsize=fontscale(ndcwidth / 8.0 * 0.4),
+            fontsize=dow_fontsize,
             ha="center",
             va="center",
             zorder=Z_OVERLAY_LABEL,
@@ -203,7 +205,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
             offx * dx + 0.01,
             0.9 - row * dy - 0.01,
             f"{now.day}",
-            fontsize=fontscale(ndcheight / 5.0 * 0.25),
+            fontsize=day_fontsize,
             color="tan",
             va="top",
             zorder=Z_OVERLAY2_LABEL,
