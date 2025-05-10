@@ -31,6 +31,7 @@ All notable changes to this library are documented in this file.
 - Correct metadata for a number of NCEI IGRA2 sites.
 - Fix appending `product_id` to IEM Access summary table for DSM parsing.
 - Fix CWA parsing issue when lat/lon box is found.
+- Fix SPC Day2 outlook link.
 - Update NCEP MRMS base URL for real-time downloads.
 
 ## **1.23.0** (1 Mar 2025)
