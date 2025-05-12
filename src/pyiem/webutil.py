@@ -203,27 +203,28 @@ def clean_form(form):
     return form
 
 
-def log_request(environ):
+def log_request(environ: dict, multiplier: int = 1):
     """Log the request to database for future processing."""
     with get_sqlalchemy_conn("mesosite") as conn:
-        conn.execute(
-            sql_helper(
+        for _ in range(multiplier):
+            conn.execute(
+                sql_helper(
+                    """
+        INSERT into weblog
+        (client_addr, uri, referer, http_status, x_forwarded_for, domain)
+        VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for,
+        :domain)
                 """
-    INSERT into weblog
-    (client_addr, uri, referer, http_status, x_forwarded_for, domain)
-    VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for,
-    :domain)
-            """
-            ),
-            {
-                "client_addr": environ.get("REMOTE_ADDR"),
-                "uri": environ.get("REQUEST_URI"),
-                "referer": environ.get("HTTP_REFERER"),
-                "http_status": 404,
-                "x_forwarded_for": environ.get("HTTP_X_FORWARDED_FOR"),
-                "domain": environ.get("HTTP_HOST"),
-            },
-        )
+                ),
+                {
+                    "client_addr": environ.get("REMOTE_ADDR"),
+                    "uri": environ.get("REQUEST_URI"),
+                    "referer": environ.get("HTTP_REFERER"),
+                    "http_status": 404,
+                    "x_forwarded_for": environ.get("HTTP_X_FORWARDED_FOR"),
+                    "domain": environ.get("HTTP_HOST"),
+                },
+            )
         conn.commit()
 
 
@@ -491,7 +492,7 @@ def iemapp(**kwargs):
                 res = _handle_exp(str(exp), routine=True, code=status_code)
             except BadWebRequest as exp:
                 status_code = 422
-                log_request(environ)
+                log_request(environ, multiplier=10)
                 res = _handle_exp(str(exp), code=status_code)
             except NoDataFound as exp:
                 status_code = 200
