@@ -31,6 +31,17 @@ def test_opairs():
         )
 
 
+def test_250513_sige_210s_cew():
+    """Test an offset that got compute invalidly."""
+    utcnow = utc(2024, 4, 3, 12)
+    tp = parser(
+        get_test_file("SIGMETS/SIGE_210S_CEW.txt"),
+        utcnow,
+        nwsli_provider=NWSLI_PROVIDER,
+    )
+    assert abs(tp.sigmets[0].geom.area - 0.47944) < 0.01
+
+
 def test_190503_badgeom():
     """This SIGMET produced a traceback in prod."""
     utcnow = utc(2019, 5, 3, 18, 25)
@@ -105,7 +116,7 @@ def test_150915_line():
         ugc_provider,
         nwsli_provider,
     )
-    assert abs(tp.sigmets[0].geom.area - 0.47) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 0.3622) < 0.01
 
 
 def test_150915_isol():
@@ -185,7 +196,7 @@ def test_50e(dbcursor):
         ugc_provider,
         nwsli_provider,
     )
-    assert abs(tp.sigmets[0].geom.area - 2.15) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 2.64652) < 0.01
     tp.sql(dbcursor)
 
 
