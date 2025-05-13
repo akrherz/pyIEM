@@ -237,6 +237,21 @@ def compute_esol(pts, distance):
     return newpts
 
 
+def _parse_sections(text: str) -> list[str]:
+    """Build list of sections with gleaned text."""
+    # Remove the WMO header and AFOS ID
+    if text.startswith("\001"):
+        text = "\n".join(text.split("\n")[4:])  # assumptions here...
+    elif text[0].isdigit():
+        text = "\n".join(text.split("\n")[3:])
+    sections = []
+    for section in text.split("\n\n"):
+        section = section.strip()
+        if section:
+            sections.append(section)
+    return sections
+
+
 class SIGMETProduct(TextProduct):
     """
     Represents a Storm Prediction Center Mesoscale Convective Discussion
@@ -247,6 +262,7 @@ class SIGMETProduct(TextProduct):
     ):
         """constructor"""
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
+        self.sections = _parse_sections(self.unixtext)
         self.sigmets: list[SIGMET] = []
         if self.afos in ["SIGC", "SIGW", "SIGE", "SIGAK1", "SIGAK2"]:
             self.process_SIGC()
@@ -344,7 +360,7 @@ class SIGMETProduct(TextProduct):
 
     def process_SIGC(self):
         """Process this type of SIGMET"""
-        for section in self.unixtext.split("\n\n"):
+        for section in self.sections:
             s = CS_RE.search(section.replace("\n", " "))
             if s is None:
                 continue
@@ -371,7 +387,8 @@ class SIGMETProduct(TextProduct):
             if lats[0] != lats[-1] or lons[0] != lons[-1]:
                 pts.append((lons[0], lats[0]))
             sig.geom = Polygon(pts)
-            sig.raw = section
+            pos = section.find("CONVECTIVE")
+            sig.raw = section[pos:]
 
             self.sigmets.append(sig)
 
