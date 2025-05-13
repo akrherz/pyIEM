@@ -247,7 +247,7 @@ class SIGMETProduct(TextProduct):
     ):
         """constructor"""
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
-        self.sigmets = []
+        self.sigmets: list[SIGMET] = []
         if self.afos in ["SIGC", "SIGW", "SIGE", "SIGAK1", "SIGAK2"]:
             self.process_SIGC()
         elif self.afos[:2] == "WS":
@@ -260,22 +260,24 @@ class SIGMETProduct(TextProduct):
         txn.execute("DELETE from sigmets_current where expire < now()")
         for sigmet in self.sigmets:
             sqlwkt = f"SRID=4326;{sigmet.geom.wkt}"
-            for table in ("sigmets_current", "sigmets_archive"):
-                sql = f"DELETE from {table} where label = %s and expire = %s"
-                args = (sigmet.label, sigmet.ets)
-                txn.execute(sql, args)
-                sql = (
-                    f"INSERT into {table} (sigmet_type, label, issue, "
-                    "expire, product_id, geom) VALUES ('C',%s, %s, %s, %s, %s)"
-                )
-                args = (
-                    sigmet.label,
-                    self.valid,
-                    sigmet.ets,
-                    self.get_product_id(),
-                    sqlwkt,
-                )
-                txn.execute(sql, args)
+            table = f"sigmets_{self.valid:%Y}"
+            sql = f"DELETE from {table} where label = %s and expire = %s"
+            args = (sigmet.label, sigmet.ets)
+            txn.execute(sql, args)
+            sql = (
+                f"INSERT into {table} (sigmet_type, label, issue, "
+                "expire, product_id, geom, narrative) "
+                "VALUES ('C', %s, %s, %s, %s, %s, %s)"
+            )
+            args = (
+                sigmet.label,
+                self.valid,
+                sigmet.ets,
+                self.get_product_id(),
+                sqlwkt,
+                sigmet.raw,
+            )
+            txn.execute(sql, args)
             # Compute who is impacted by this SIGMET
             txn.execute(
                 "SELECT distinct id from cwsu WHERE "
