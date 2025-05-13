@@ -257,7 +257,6 @@ class SIGMETProduct(TextProduct):
 
     def sql(self, txn):
         """Do SQL related stuff that is required"""
-        txn.execute("DELETE from sigmets_current where expire < now()")
         for sigmet in self.sigmets:
             sqlwkt = f"SRID=4326;{sigmet.geom.wkt}"
             table = f"sigmets_{self.valid:%Y}"
