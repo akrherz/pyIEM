@@ -9,7 +9,7 @@ import pytest
 # this
 from pyiem.exceptions import SIGMETException
 from pyiem.nws.products.sigmet import compute_esol, parser
-from pyiem.util import get_test_file, utc
+from pyiem.util import get_test_file, noaaport_text, utc
 
 
 def mydict():
@@ -25,7 +25,7 @@ def test_opairs():
     utcnow = utc(2021, 1, 9, 7, 58)
     with pytest.raises(SIGMETException):
         parser(
-            get_test_file("SIGMETS/SIGAK3.txt"),
+            noaaport_text(get_test_file("SIGMETS/SIGAK3.txt")),
             utcnow,
             nwsli_provider=NWSLI_PROVIDER,
         )
@@ -40,6 +40,8 @@ def test_250513_sige_210s_cew():
         nwsli_provider=NWSLI_PROVIDER,
     )
     assert abs(tp.sigmets[0].geom.area - 0.47944) < 0.01
+    for sig in tp.sigmets:
+        assert sig.raw.startswith("CONVECTIVE")
 
 
 def test_190503_badgeom():
