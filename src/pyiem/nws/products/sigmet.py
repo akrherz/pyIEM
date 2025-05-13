@@ -110,7 +110,7 @@ def go2lonlat(lon0, lat0, direction, displacement):
     # Bearing is 90 degrees converted to radians.
     brng = math.radians(dirs.get(direction, 0))
     # Distance in km
-    d = displacement / KM_SM
+    d = displacement * KM_SM
 
     # Current lat point converted to radians
     lat1 = math.radians(lat0)
