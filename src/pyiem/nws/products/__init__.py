@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from typing import Optional, Union
 
 from pyiem.nws.ugc import UGCProvider
+from pyiem.wmo import WMOProduct
 
 
 def parser(
@@ -36,11 +37,9 @@ def parser(
 
     """
     from pyiem.nws.product import (
-        AFOSRE,
         TextProduct,
         TextProductException,
     )
-    from pyiem.wmo import WMO_RE
 
     from . import (
         cli,
@@ -75,16 +74,11 @@ def parser(
         "TCP": nhc.parser,
         "WWP": wwp.parser,
     }
-    tmp = text[:100].replace("\r\r\n", "\n")
-    m = WMO_RE.search(tmp)
-    if m is not None:
-        d = m.groupdict()
-        if d["cccc"] == "KWNP":
-            return spacewx.parser(text, utcnow, ugc_provider, nwsli_provider)
-
-    tokens = AFOSRE.findall(tmp)
-    if not tokens:
+    # Kind of wasteful, but alas
+    wmo = WMOProduct(text, utcnow)
+    if wmo.source == "KWNP":
+        return spacewx.parser(text, utcnow, ugc_provider, nwsli_provider)
+    if wmo.afos is None:
         raise TextProductException("Could not locate AFOS Identifier")
-    afos = tokens[0]
-    func = XREF.get(afos[:3], TextProduct)
+    func = XREF.get(wmo.afos[:3], TextProduct)
     return func(text, utcnow, ugc_provider, nwsli_provider)

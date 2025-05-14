@@ -124,13 +124,8 @@ class Pirep(TextProduct):
     def parse_reports(self):
         """Actually do the parsing of the product that generates the reports
         stored within the self.reports list"""
-        txt = (
-            self.unixtext
-            if self.unixtext[:2] != "\001\n"
-            else self.unixtext[2:]
-        )
-
-        lines = txt.split("\n")
+        # unixtext is conditioned at this point, so LDM, WMO and perhaps AFOS
+        lines = self.unixtext.split("\n")
         # There may be an AWIPSID in line 3 or silly aviation control char
         pos = 3 if len(lines[2]) < 10 or lines[2].startswith("\x1e") else 2
         meat = "".join(lines[pos:])

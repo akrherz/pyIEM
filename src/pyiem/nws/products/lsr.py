@@ -30,14 +30,14 @@ class LSRProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        self.lsrs = []
-        self.duplicates = 0
         super().__init__(
             text,
             utcnow=utcnow,
             ugc_provider=ugc_provider,
             nwsli_provider=nwsli_provider,
         )
+        self.lsrs = []
+        self.duplicates = 0
 
     def get_temporal_domain(self):
         """Return the min and max timestamps of lsrs"""
