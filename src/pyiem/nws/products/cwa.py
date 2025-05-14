@@ -192,7 +192,7 @@ def parse_polygon(prod: TextProduct, line: str) -> Tuple[Polygon, str]:
 
 def parse_product(prod: TextProduct) -> CWAModel:
     """Do the parsing we need for the data model."""
-    lines = prod.unixtext.replace("\001\n", "").split("\n")
+    lines = prod.unixtext.split("\n")
     # This is not tenable at the moment
     for ln in [4, 5]:
         m = CANCEL_LINE.findall(lines[ln])

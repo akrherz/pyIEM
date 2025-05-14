@@ -445,17 +445,12 @@ class METARCollective(TextProduct):
 
     def split_and_parse(self):
         """Create METAR objects as we find products in the text"""
-        # skip the top three lines
+        # unixtext is conditioned, so first line is LDM, WMO
+        # the question is what is on the third line
         lines = self.unixtext.split("\n")
-        if lines[0] == "\001":
-            content = "\n".join(lines[3:])
-        elif len(lines[0]) < 5:
-            content = "\n".join(lines[2:])
-        else:
-            self.warnings.append(
-                f"WMO header split_and_parse fail: {self.unixtext}"
-            )
-            content = "\n".join(lines)
+        # not METAR or SPECI, so take it
+        linenum = 2 if len(lines[2].strip()) > 5 else 3
+        content = "\n".join(lines[linenum:])
         # Tokenize on the '=', which splits a product with METARs
         tokens = content.split("=")
         for token in tokens:

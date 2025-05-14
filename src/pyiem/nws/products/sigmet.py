@@ -239,11 +239,8 @@ def compute_esol(pts, distance):
 
 def _parse_sections(text: str) -> list[str]:
     """Build list of sections with gleaned text."""
-    # Remove the WMO header and AFOS ID
-    if text.startswith("\001"):
-        text = "\n".join(text.split("\n")[4:])  # assumptions here...
-    elif text[0].isdigit():
-        text = "\n".join(text.split("\n")[3:])
+    # text is conditioned, so LDM, WMO and AFOS
+    text = "\n".join(text.split("\n")[3:])
     sections = []
     for section in text.split("\n\n"):
         section = section.strip()
