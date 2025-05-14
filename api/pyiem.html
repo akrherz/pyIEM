@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1220+g8bcdd0d documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1222+ga2157a8 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=8a5c8b40"></script>
+    <script src="../_static/documentation_options.js?v=a711e430"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1220+g8bcdd0d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1222+ga2157a8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -326,11 +326,9 @@
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_jabbers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.get_main_headline"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_main_headline()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.get_nicedate"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_nicedate()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.get_product_id"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_product_id()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.get_signature"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_signature()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.is_correction"><code class="docutils literal notranslate"><span class="pre">TextProduct.is_correction()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.is_resent"><code class="docutils literal notranslate"><span class="pre">TextProduct.is_resent()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.parse_afos"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_afos()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.parse_attn_rfc"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_attn_rfc()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.parse_attn_wfo"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_attn_wfo()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.html#pyiem.nws.product.TextProduct.parse_segments"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_segments()</span></code></a></li>
@@ -2452,9 +2450,21 @@ only impacts the plot, the provided data should still follow <cite>from</cite>.<
 <p>Very light weight WMO header parser.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyiem.wmo.WMOProduct">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.wmo.</span></span><span class="sig-name descname"><span class="pre">WMOProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.wmo.</span></span><span class="sig-name descname"><span class="pre">WMOProduct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for Products with a WMO Header.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.wmo.WMOProduct.get_product_id">
+<span class="sig-name descname"><span class="pre">get_product_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct.get_product_id" title="Link to this definition">¶</a></dt>
+<dd><p>Get an identifier of this product used by the IEM</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.wmo.WMOProduct.parse_afos">
+<span class="sig-name descname"><span class="pre">parse_afos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct.parse_afos" title="Link to this definition">¶</a></dt>
+<dd><p>Figure out what the AFOS PIL is</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pyiem.wmo.WMOProduct.parse_wmo">
 <span class="sig-name descname"><span class="pre">parse_wmo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.wmo.WMOProduct.parse_wmo" title="Link to this definition">¶</a></dt>
@@ -2759,6 +2769,8 @@ useful to others!?!?</p>
 </li>
 <li><a class="reference internal" href="#module-pyiem.wmo">pyiem.wmo module</a><ul>
 <li><a class="reference internal" href="#pyiem.wmo.WMOProduct"><code class="docutils literal notranslate"><span class="pre">WMOProduct</span></code></a><ul>
+<li><a class="reference internal" href="#pyiem.wmo.WMOProduct.get_product_id"><code class="docutils literal notranslate"><span class="pre">WMOProduct.get_product_id()</span></code></a></li>
+<li><a class="reference internal" href="#pyiem.wmo.WMOProduct.parse_afos"><code class="docutils literal notranslate"><span class="pre">WMOProduct.parse_afos()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.wmo.WMOProduct.parse_wmo"><code class="docutils literal notranslate"><span class="pre">WMOProduct.parse_wmo()</span></code></a></li>
 </ul>
 </li>
@@ -2817,7 +2829,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1220+g8bcdd0d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1222+ga2157a8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>

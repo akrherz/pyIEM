@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.nws package &#8212; pyIEM 0.0.post1220+g8bcdd0d documentation</title>
+    <title>pyiem.nws package &#8212; pyIEM 0.0.post1222+ga2157a8 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=8a5c8b40"></script>
+    <script src="../_static/documentation_options.js?v=a711e430"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.ncei.html" title="pyiem.ncei package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1220+g8bcdd0d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1222+ga2157a8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
@@ -775,12 +775,6 @@ this product</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_product_id">
-<span class="sig-name descname"><span class="pre">get_product_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_product_id" title="Link to this definition">¶</a></dt>
-<dd><p>Get an identifier of this product used by the IEM</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.get_signature">
 <span class="sig-name descname"><span class="pre">get_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#pyiem.nws.product.TextProduct.get_signature" title="Link to this definition">¶</a></dt>
 <dd><p>Attempt to glean the free form text that is a signature.</p>
@@ -808,12 +802,6 @@ some further checking…</p>
 <dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.is_resent">
 <span class="sig-name descname"><span class="pre">is_resent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.is_resent" title="Link to this definition">¶</a></dt>
 <dd><p>Check to see if this product is a …RESENT product</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.nws.product.TextProduct.parse_afos">
-<span class="sig-name descname"><span class="pre">parse_afos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.product.TextProduct.parse_afos" title="Link to this definition">¶</a></dt>
-<dd><p>Figure out what the AFOS PIL is</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1197,11 +1185,9 @@ terminology.</p>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_jabbers()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_main_headline"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_main_headline()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_nicedate"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_nicedate()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_product_id"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_product_id()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.get_signature"><code class="docutils literal notranslate"><span class="pre">TextProduct.get_signature()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.is_correction"><code class="docutils literal notranslate"><span class="pre">TextProduct.is_correction()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.is_resent"><code class="docutils literal notranslate"><span class="pre">TextProduct.is_resent()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.nws.product.TextProduct.parse_afos"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_afos()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.parse_attn_rfc"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_attn_rfc()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.parse_attn_wfo"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_attn_wfo()</span></code></a></li>
 <li><a class="reference internal" href="#pyiem.nws.product.TextProduct.parse_segments"><code class="docutils literal notranslate"><span class="pre">TextProduct.parse_segments()</span></code></a></li>
@@ -1313,7 +1299,7 @@ terminology.</p>
         <li class="right" >
           <a href="pyiem.ncei.html" title="pyiem.ncei package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1220+g8bcdd0d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1222+ga2157a8 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
