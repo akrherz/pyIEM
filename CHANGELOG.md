@@ -31,6 +31,7 @@ All notable changes to this library are documented in this file.
 - Correct offset calculation in SIGMETs.
 - Correct web links for SPC day 2,3 convective outlook.
 - Correct metadata for a number of NCEI IGRA2 sites.
+- Correct SIGMET offset computation to use nautical miles.
 - Fix appending `product_id` to IEM Access summary table for DSM parsing.
 - Fix CWA parsing issue when lat/lon box is found.
 - Fix SPC Day2 outlook link.

@@ -39,7 +39,7 @@ def test_250513_sige_210s_cew():
         utcnow,
         nwsli_provider=NWSLI_PROVIDER,
     )
-    assert abs(tp.sigmets[0].geom.area - 0.47944) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 0.6300) < 0.01
     for sig in tp.sigmets:
         assert sig.raw.startswith("CONVECTIVE")
 
@@ -118,7 +118,7 @@ def test_150915_line():
         ugc_provider,
         nwsli_provider,
     )
-    assert abs(tp.sigmets[0].geom.area - 0.3622) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 0.33718) < 0.01
 
 
 def test_150915_isol():
@@ -150,7 +150,7 @@ def test_140907_circle():
     """See about parsing a SIGMET that is circle?"""
     utcnow = utc(2014, 9, 6, 22, 15)
     tp = parser(get_test_file("SIGMETS/SIGP0H.txt"), utcnow)
-    assert abs(tp.sigmets[0].geom.area - 11.70) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 15.4916) < 0.01
 
 
 def test_140813_line():
@@ -198,7 +198,7 @@ def test_50e(dbcursor):
         ugc_provider,
         nwsli_provider,
     )
-    assert abs(tp.sigmets[0].geom.area - 2.64652) < 0.01
+    assert abs(tp.sigmets[0].geom.area - 2.76127) < 0.01
     tp.sql(dbcursor)
 
 
