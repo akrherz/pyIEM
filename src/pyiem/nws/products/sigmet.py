@@ -1,14 +1,12 @@
 """Parse SIGMETs"""
 
-# Stdlib imports
 import math
 import re
 from datetime import timedelta
 
-# Third Party
+from metpy.units import units
 from shapely.geometry import Point, Polygon
 
-# Local stuff
 from pyiem.exceptions import SIGMETException
 from pyiem.nws.product import TextProduct
 
@@ -76,8 +74,6 @@ dirs = {
     "": 0,
 }
 
-KM_SM = 1.609347
-
 
 class SIGMET:
     """Data Structure."""
@@ -109,8 +105,8 @@ def go2lonlat(lon0, lat0, direction, displacement):
     R = 6378.1
     # Bearing is 90 degrees converted to radians.
     brng = math.radians(dirs.get(direction, 0))
-    # Distance in km
-    d = displacement * KM_SM
+    # Convert nautical miles to km
+    d = (units("nautical_mile") * displacement).to("km").magnitude
 
     # Current lat point converted to radians
     lat1 = math.radians(lat0)
@@ -348,7 +344,12 @@ class SIGMETProduct(TextProduct):
         if m is not None and len(pts) == 1:
             d = m.groupdict()
             # buffer a point, approximate 1 deg as 100 km :/
-            s.geom = Point(pts[0]).buffer(float(d["distance"]) * KM_SM / 100.0)
+            buffer = (
+                (units("nautical_mile") * float(d["distance"]))
+                .to("km")
+                .magnitude
+            )
+            s.geom = Point(pts[0]).buffer(buffer / 100.0)
         else:
             s.geom = Polygon(pts)
 
