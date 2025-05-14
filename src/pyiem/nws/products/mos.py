@@ -116,11 +116,7 @@ class MOSProduct(WMOProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
-        super().__init__(
-            text,
-            utcnow,
-        )
-        self.unixtext = self.text.replace("\r", "")
+        super().__init__(text, utcnow)
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
         self.data = []

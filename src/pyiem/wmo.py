@@ -27,6 +27,9 @@ TIME_EXT_RE = re.compile(
 TIME_RE_ANYWHERE = re.compile(f"{TIME_FMT}", re.IGNORECASE)
 TIME_STARTS_LINE = re.compile(r"^([0-9:]+) (AM|PM)")
 
+# It is supposed to have a blank space, but alas
+LDM_SEQUENCE_RE = re.compile(r"^\d\d\d\s?")
+
 # Note that bbb of RTD is supported here, but does not appear to be allowed
 WMO_RE = re.compile(
     "^(?P<ttaaii>[A-Z0-9]{4,6}) (?P<cccc>[A-Z]{4}) "
@@ -34,6 +37,11 @@ WMO_RE = re.compile(
     r"(?P<bbb>[ACR][ACMORT][A-Z])?\s*$",
     re.M,
 )
+# The AWIPS Product Identifier is supposed to be 6chars as per directive,
+# but in practice it is sometimes something between 4 and 6 chars
+# We need to be careful this does not match the LDM sequence identifier
+AFOSRE = re.compile(r"^([A-Z0-9]{4,6})\s*\t*$", re.M)
+
 KNOWN_BAD_TTAAII = ["KAWN"]
 
 
@@ -85,20 +93,55 @@ def date_tokens2datetime(tokens):
     return z, tz, now.replace(tzinfo=timezone.utc)
 
 
+def _condition_text(text: str) -> str:
+    """Condition the text to better match expections on what this should be.
+
+    Args:
+      text (str): The text to condition
+
+    Returns:
+      str: The conditioned text
+    """
+    # Remove all Carriage Returns
+    text = text.replace("\r", "")
+    # Remove all leading and trailing whitespace
+    text = text.strip()
+    # Remove the line if it starts with a start of product marker
+    if text.startswith("\001"):
+        text = text.split("\n", 1)[1]
+    # Now the first line should be the LDM sequence number
+    if not LDM_SEQUENCE_RE.match(text):
+        # If not, add it
+        text = f"000 \n{text}"
+    # The second line should match the WMO header, this is FATAL
+    line2 = text.split("\n")[1]
+    if not WMO_RE.match(line2):
+        msg = f"FATAL: Could not parse WMO header! `{line2}`"
+        raise TextProductException(msg)
+    # Remove the end of product marker
+    text = text.rstrip("\003")
+    # Ensure we have a newline at the end
+    if not text.endswith("\n"):
+        text = text + "\n"
+    # Profit
+    return text
+
+
 class WMOProduct:
     """Base class for Products with a WMO Header."""
 
-    def __init__(self, text, utcnow: Optional[datetime] = None):
+    def __init__(self, text: str, utcnow: Optional[datetime] = None):
         """Constructor."""
         self.warnings = []
-        # For better or worse, ensure the text string ends with a newline
-        if not text.endswith("\n"):
-            text = text + "\n"
+        # Maintain the original text
         self.text = text
+        # This is where opinionated things happen
+        self.unixtext = _condition_text(text)
         self.source = None
         self.wmo = None
         self.ddhhmm = None
         self.bbb = None
+        self.afos = None
         # A potentially localized timestamp
         self.valid = None
         # The WMO header based timestamp
@@ -112,18 +155,31 @@ class WMOProduct:
         self.z = None
         self.tz = None
         self.parse_wmo()
+        self.parse_afos()
         # Here lies dragons
         # We sometimes need the MND header to figure out the timestamp
         # of the WMO header.
         self._parse_valid(utcnow)
 
+    def parse_afos(self):
+        """Figure out what the AFOS PIL is"""
+        # We have one shot to get this right
+        line3 = self.unixtext.split("\n")[2]
+        tokens = AFOSRE.findall(line3)
+        if tokens:
+            self.afos = tokens[0].strip()
+
+    def get_product_id(self):
+        """Get an identifier of this product used by the IEM"""
+        pid = f"{self.valid:%Y%m%d%H%M}-{self.source}-{self.wmo}-{self.afos}"
+        if self.bbb:
+            pid += f"-{self.bbb}"
+        return pid.strip()
+
     def parse_wmo(self):
         """Parse things related to the WMO header"""
-        search = WMO_RE.search(self.text[:100])
-        if search is None:
-            raise TextProductException(
-                f"FATAL: Could not parse WMO header! '{self.text[:100]}'"
-            )
+        # The conditioning step in init should ensure this works
+        search = WMO_RE.search(self.unixtext[:100])
         gdict = search.groupdict()
         self.wmo = gdict["ttaaii"]
         self.source = gdict["cccc"]

@@ -14,11 +14,6 @@ from pyiem.nws import hvtec, ugc, vtec
 from pyiem.util import LOG
 from pyiem.wmo import WMOProduct
 
-# The AWIPS Product Identifier is supposed to be 6chars as per directive,
-# but in practice it is sometimes something between 4 and 6 chars
-# We need to be careful this does not match the LDM sequence identifier
-AFOSRE = re.compile(r"^([A-Z0-9]{4,6})\s*\t*$", re.M)
-
 TIME_MOT_LOC = re.compile(
     r"TIME\.\.\.MOT\.\.\.LOC\s+(?P<ztime>[0-9]{4})Z\s+"
     r"(?P<dir>[0-9]{1,3})DEG\s+"
@@ -201,6 +196,7 @@ class TextProductSegment:
 
     def __init__(self, text, tp: "TextProduct"):
         """Constructor"""
+        # Poor name shadow to self.tp, but different
         self.unixtext = text
         self.tp = tp  # Reference to parent
         self.vtec = vtec.parse(text)
@@ -602,8 +598,6 @@ class TextProduct(WMOProduct):
         @param parse_segments should the segments be parsed as well? True
         """
         super().__init__(text, utcnow=utcnow)
-        # NB: Don't use text as it could have been munged by this point
-        self.afos = None
         if isinstance(ugc_provider, dict):
             ugc_provider = ugc.UGCProvider(legacy_dict=ugc_provider)
         if ugc_provider is None:
@@ -612,12 +606,10 @@ class TextProduct(WMOProduct):
             nwsli_provider = {}
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
-        self.unixtext = self.text.replace("\r", "")
         self.sections = self.unixtext.split("\n\n")
         self.segments = []
         self.geometry = None
 
-        self.parse_afos()
         if parse_segments:
             self.parse_segments()
 
@@ -783,13 +775,6 @@ class TextProduct(WMOProduct):
         for seg in segs:
             self.segments.append(TextProductSegment(seg, self))
 
-    def get_product_id(self):
-        """Get an identifier of this product used by the IEM"""
-        pid = f"{self.valid:%Y%m%d%H%M}-{self.source}-{self.wmo}-{self.afos}"
-        if self.bbb:
-            pid += f"-{self.bbb}"
-        return pid.strip()
-
     def get_affected_wfos(self):
         """Based on the ugc_provider, figure out which WFOs are impacted by
         this product"""
@@ -801,13 +786,3 @@ class TextProduct(WMOProduct):
                         affected_wfos.append(wfo)
 
         return affected_wfos
-
-    def parse_afos(self):
-        """Figure out what the AFOS PIL is"""
-        # at most, only look at the top four lines, skipping the first
-        data = "\n".join(
-            [line.strip() for line in self.sections[0].split("\n")[1:4]]
-        )
-        tokens = AFOSRE.findall(data)
-        if tokens:
-            self.afos = tokens[0].strip()

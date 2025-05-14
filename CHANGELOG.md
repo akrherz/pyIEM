@@ -9,6 +9,7 @@ All notable changes to this library are documented in this file.
 
 - Define `PRISM800` grid navigation for updated PRISM 800m grid.
 - Mark `pyiem.prism` for removal in next release.
+- Move `get_product_id()` up one class level to `WMOProduct`.
 - Reclassify LSR `SNOW/ICE DMG` typetext to code `5` (ice related).
 
 ### New Features
@@ -33,6 +34,7 @@ All notable changes to this library are documented in this file.
 - Fix appending `product_id` to IEM Access summary table for DSM parsing.
 - Fix CWA parsing issue when lat/lon box is found.
 - Fix SPC Day2 outlook link.
+- Implement better conditioning on inbound text for `WMOProduct#unixtext`
 - Update NCEP MRMS base URL for real-time downloads.
 
 ## **1.23.0** (1 Mar 2025)
