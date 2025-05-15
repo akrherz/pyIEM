@@ -36,6 +36,7 @@ All notable changes to this library are documented in this file.
 - Fix CWA parsing issue when lat/lon box is found.
 - Fix SPC Day2 outlook link.
 - Implement better conditioning on inbound text for `WMOProduct#unixtext`
+- Improve multi-line PIREP report join when there is no front spaces.
 - Update NCEP MRMS base URL for real-time downloads.
 
 ## **1.23.0** (1 Mar 2025)

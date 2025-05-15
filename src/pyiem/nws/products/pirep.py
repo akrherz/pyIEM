@@ -128,7 +128,7 @@ class Pirep(TextProduct):
         lines = self.unixtext.split("\n")
         # There may be an AWIPSID in line 3 or silly aviation control char
         pos = 3 if len(lines[2]) < 10 or lines[2].startswith("\x1e") else 2
-        meat = "".join(lines[pos:])
+        meat = " ".join(lines[pos:])
         for report in meat.split("="):
             if report.strip() == "":
                 continue

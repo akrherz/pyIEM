@@ -24,6 +24,19 @@ def test_fake_afos_pirep():
     assert prod.afos == "PIREP"
 
 
+def test_250515_no_newline_space():
+    """Test that a space is inserted properly."""
+    utcnow = utc(2005, 1, 4, 0, 12)
+    prod = pirepparser(
+        get_test_file("PIREPS/no_newline_space.txt"), utcnow=utcnow
+    )
+    ans = (
+        "PMD UA /OV PMD36010 /TM 0002 /FL 170 /TP UNK /TA M18 /WV 16345 /TB "
+        "NEG /IC NEC /RM PMD-PSP"
+    )
+    assert prod.reports[4].text == ans
+
+
 def test_210121_int_latlon():
     """Test successful parsing of an integer lat lon value, tricky."""
     utcnow = utc(2020, 1, 21, 10, 22)
