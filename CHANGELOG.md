@@ -29,6 +29,7 @@ All notable changes to this library are documented in this file.
 
 - Correct fontscale calculation.
 - Correct offset calculation in SIGMETs.
+- Correct timezone offsets for some Atlantic timezones.
 - Correct web links for SPC day 2,3 convective outlook.
 - Correct metadata for a number of NCEI IGRA2 sites.
 - Correct SIGMET offset computation to use nautical miles.

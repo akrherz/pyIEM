@@ -1,0 +1,26 @@
+789 
+NWUS52 TJSJ 142104
+LSRSJU
+
+Preliminary Local Storm Report
+National Weather Service San Juan PR
+504 PM AST Wed May 14 2025
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0420 PM     Funnel Cloud     1 SE Sabana Seca        18.42N 66.17W
+05/14/2025                   Bayamon            PR   Cocorahs         
+
+            A CoCoRaHS observer reported the sight of a 
+            funnel cloud around Bayamón. The funnel 
+            cloud last less than 5 minutes and it was 
+            observed moving west-northwestward. 
+
+
+&&
+
+$$
+
+CAM
