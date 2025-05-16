@@ -203,6 +203,8 @@ def parse_lsr(prod, text):
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Helper function that actually converts the raw text and emits an
     LSRProduct instance or returns an exception"""
+    if ugc_provider is None:
+        ugc_provider = {}
     prod = LSRProduct(
         text, utcnow, ugc_provider=ugc_provider, nwsli_provider=nwsli_provider
     )

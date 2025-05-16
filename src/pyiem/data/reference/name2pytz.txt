@@ -3,11 +3,11 @@ CVT Atlantic/Cape_Verde
 CHDT Etc/GMT-8
 CHST Etc/GMT-9
 LST Etc/GMT-10
-ADT Etc/GMT-3
-VDT Etc/GMT-3
-VST Etc/GMT-4
+ADT Etc/GMT+3
+VDT Etc/GMT+3
+VST Etc/GMT+4
 EDT US/Eastern
-AST Etc/GMT-4
+AST Etc/GMT+4
 CDT US/Central
 EST US/Eastern
 MDT US/Mountain

@@ -7,6 +7,20 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_250516_lsrsju():
+    """Test the generated timezone message for something in AST."""
+    prod = parser(get_test_file("LSR/LSRSJU.txt"))
+    jmsgs = prod.get_jabbers("http://localhost/")
+    ans = (
+        "1 SE Sabana Seca [Bayamon Co, PR] Cocorahs reports Funnel Cloud at "
+        "4:20 PM AST -- A CoCoRaHS observer reported the sight of a "
+        "funnel cloud around Bayamón. The funnel cloud last less than 5 "
+        "minutes and it was observed moving west-northwestward. "
+        "http://localhost/#JSJ/202505142020/202505142020"
+    )
+    assert jmsgs[0][0] == ans
+
+
 def test_240927_bad_qualifier():
     """Test a product that generates an invalid qualifier."""
     prod = parser(get_test_file("LSR/LSRSEW.txt"))
