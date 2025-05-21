@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 - Mark `pyiem.prism` for removal in next release.
 - Move `get_product_id()` up one class level to `WMOProduct`.
 - Reclassify LSR `SNOW/ICE DMG` typetext to code `5` (ice related).
+- Update LSR web links within Jabber messages per new
+  [IEM LSR App](https://mesonet.agron.iastate.edu/lsr/).
 
 ### New Features
 

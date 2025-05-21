@@ -36,10 +36,10 @@ class LSRProduct(TextProduct):
             ugc_provider=ugc_provider,
             nwsli_provider=nwsli_provider,
         )
-        self.lsrs = []
+        self.lsrs: list[LSR] = []
         self.duplicates = 0
 
-    def get_temporal_domain(self):
+    def get_temporal_domain(self) -> tuple[datetime | None, datetime | None]:
         """Return the min and max timestamps of lsrs"""
         if not self.lsrs:
             return None, None
@@ -50,11 +50,14 @@ class LSRProduct(TextProduct):
         """Returns is this LSR is a summary or not"""
         return self.unixtext.upper().find("...SUMMARY") > 0
 
-    def get_url(self, baseuri):
+    def get_url(self, baseuri: str) -> str:
         """Get the URL of this product"""
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
-        return f"{baseuri}#{wfo}/{min_time:%Y%m%d%H%M}/{max_time:%Y%m%d%H%M}"
+        return (
+            f"{baseuri}?by=wfo&wfo={wfo}&sts={min_time:%Y%m%d%H%M}"
+            f"&ets={max_time:%Y%m%d%H%M}"
+        )
 
     def get_jabbers(self, uri, _uri2=None):
         """return a text and html variant for Jabber stuff"""
