@@ -59,7 +59,7 @@ def test_180917_issue63_tweet_length():
         "reports FLOOD. ROAD CLOSURE FM 1944 BETWEEN U.S. HIGHWAY 77 AND "
         "SODVILLE ROAD (TEXAS DEPARTMENT OF TRANSPORATION. DRIVETEXAS.ORG.) "
         "LATITUDE/LONGITUDE MARKS APPROXIMATE POSITION... #txwx "
-        "http://iem.local/#CRP/201809151145/201809151145"
+        "http://iem.local/?by=wfo&wfo=CRP&sts=201809151145&ets=201809151145"
     )
 
 
@@ -71,7 +71,7 @@ def test_170116_mixedlsr():
     assert j[0][2]["twitter"] == (
         "At 11:00 AM MST, Akron [Washington Co, CO] ASOS reports "
         "High Wind of M63 MPH #cowx "
-        "http://iem.local/#BOU/201611291800/201611291800"
+        "http://iem.local/?by=wfo&wfo=BOU&sts=201611291800&ets=201611291800"
     )
 
 
@@ -84,14 +84,14 @@ def test_180710_issue58():
         "At 3:57 PM MST, 5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER "
         "reports FLASH FLOOD. STREET FLOODING WITH WATER OVER THE CURBS "
         "IN THE MERRILL RANCH DEVELOPMENT OF FLORENCE. #azwx "
-        "http://iem.local/#PSR/201807092257/201807092257"
+        "http://iem.local/?by=wfo&wfo=PSR&sts=201807092257&ets=201807092257"
     )
     assert j[0][2]["twitter"] == ans
     ans = (
         "5 WNW Florence [Pinal Co, AZ] TRAINED SPOTTER reports FLASH FLOOD "
         "at 3:57 PM MST -- STREET FLOODING WITH WATER OVER THE CURBS IN "
         "THE MERRILL RANCH DEVELOPMENT OF FLORENCE. "
-        "http://iem.local/#PSR/201807092257/201807092257"
+        "http://iem.local/?by=wfo&wfo=PSR&sts=201807092257&ets=201807092257"
     )
     assert j[0][0] == ans
 
@@ -106,7 +106,7 @@ def test_180705_iembot_issue9():
         "reports TSTM WND GST of E61 MPH. SPOTTER MEASURED 61 MPH WIND GUST. "
         "HIS CAR DOOR WAS ALSO CAUGHT BY THE WIND WHEN HE WAS OPENING "
         "THE DOOR, PUSHING THE DOOR INTO HIS FACE. THIS... #iawx "
-        "http://iem.local/#DMX/201807041830/201807041830"
+        "http://iem.local/?by=wfo&wfo=DMX&sts=201807041830&ets=201807041830"
     )
 
 
@@ -117,7 +117,7 @@ def test_171026_mixedlsr():
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
         "BYZ issues Summary Local Storm Report "
-        "http://iem.local/#BYZ/201710260700/201710261500"
+        "http://iem.local/?by=wfo&wfo=BYZ&sts=201710260700&ets=201710261500"
     )
 
 
@@ -153,7 +153,8 @@ def test_170324_ampersand():
     ans = (
         "Lunenberg [Worcester Co, MA] HAM RADIO reports SNOW of 2.00 INCH "
         "at 11:36 AM EST -- HAM RADIO AND THIS DARYL ADDED &amp; and &lt; "
-        "and &gt; http://iem.local/#BOX/201512291636/201512291636"
+        "and &gt; "
+        "http://iem.local/?by=wfo&wfo=BOX&sts=201512291636&ets=201512291636"
     )
     assert j[0][0] == ans
 
@@ -187,7 +188,8 @@ def test_150422_tornadomag():
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][1] == (
         "<p>[Delayed Report] 4 W Bruce [Walton Co, FL] NWS EMPLOYEE "
-        '<a href="http://iem.local/#TAE/201504191322/201504191322">'
+        '<a href="'
+        'http://iem.local/?by=wfo&wfo=TAE&sts=201504191322&ets=201504191322">'
         "reports TORNADO of EF0</a> at 19 Apr, 9:22 AM EDT -- "
         "SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL POL RADAR DEBRIS "
         "SIGNATURE IN A RURAL AREA WEST OF BRUCE. DAMAGE LIKELY CONFINED "
@@ -200,7 +202,7 @@ def test_150422_tornadomag():
         "TORNADO of EF0. SHORT EF0 TORNADO PATH CONFIRMED BY NWS DUAL "
         "POL RADAR DEBRIS SIGNATURE IN A RURAL AREA WEST OF BRUCE. "
         "DAMAGE LIKELY CONFINED TO TREES.... #flwx "
-        "http://iem.local/#TAE/201504191322/201504191322"
+        "http://iem.local/?by=wfo&wfo=TAE&sts=201504191322&ets=201504191322"
     )
 
 
@@ -268,8 +270,9 @@ def test_jabber_lsrtime():
     j = prod.get_jabbers("http://iem.local")
     ans = (
         "<p>[Delayed Report] 2 SSE Harrisburg [Lincoln Co, SD] "
-        'TRAINED SPOTTER <a href="http://iem.local#FSD/201406052040/'
-        '201406052040">reports TORNADO</a> at 5 Jun, 3:40 PM CDT -- '
+        'TRAINED SPOTTER <a href="http://iem.local?by=wfo&wfo=FSD&'
+        "sts=201406052040"
+        '&ets=201406052040">reports TORNADO</a> at 5 Jun, 3:40 PM CDT -- '
         "ON GROUND ALONG HIGHWAY 11 NORTH OF 275TH ST</p>"
     )
     assert j[0][1] == ans
