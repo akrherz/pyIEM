@@ -133,10 +133,10 @@ class WMOProduct:
     def __init__(self, text: str, utcnow: Optional[datetime] = None):
         """Constructor."""
         self.warnings = []
-        # Maintain the original text
-        self.text = text
+        # Maintain the original text minus the null byte
+        self.text = text.replace("\x00", "")
         # This is where opinionated things happen
-        self.unixtext = _condition_text(text)
+        self.unixtext = _condition_text(self.text)
         self.source = None
         self.wmo = None
         self.ddhhmm = None

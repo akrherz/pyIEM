@@ -25,6 +25,7 @@ All notable changes to this library are documented in this file.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
 - Introduce `pyiem.nws.products.metar_util` with `metar_from_dict` helper to
   create METAR strings from dicts of data.
+- Remove null byte 0x00 from WMO Products.
 - Support new MCD most probabe tags (#1042).
 
 ### Bug Fixes
