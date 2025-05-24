@@ -257,8 +257,8 @@ class LSR:
     def get_jabbers(self, uri):
         """Return a Jabber formatted message tuple."""
         url = (
-            f"{uri}?by=wfo&wfo={self.wfo}&sts={self.utcvalid:%Y%m%d%H%M}"
-            f"&ets={self.utcvalid:%Y%m%d%H%M}"
+            f"{uri}?by=wfo&amp;wfo={self.wfo}&amp;sts={self.utcvalid:%Y%m%d%H%M}"
+            f"&amp;ets={self.utcvalid:%Y%m%d%H%M}"
         )
         time_fmt = "%-I:%M %p"
         # Is this a delayed report?

@@ -55,8 +55,8 @@ class LSRProduct(TextProduct):
         min_time, max_time = self.get_temporal_domain()
         wfo = self.source[1:]
         return (
-            f"{baseuri}?by=wfo&wfo={wfo}&sts={min_time:%Y%m%d%H%M}"
-            f"&ets={max_time:%Y%m%d%H%M}"
+            f"{baseuri}?by=wfo&amp;wfo={wfo}&amp;sts={min_time:%Y%m%d%H%M}"
+            f"&amp;ets={max_time:%Y%m%d%H%M}"
         )
 
     def get_jabbers(self, uri, _uri2=None):
