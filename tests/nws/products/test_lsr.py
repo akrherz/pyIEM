@@ -16,7 +16,7 @@ def test_250516_lsrsju():
         "4:20 PM AST -- A CoCoRaHS observer reported the sight of a "
         "funnel cloud around Bayamón. The funnel cloud last less than 5 "
         "minutes and it was observed moving west-northwestward. "
-        "http://localhost/?by=wfo&wfo=JSJ&sts=202505142020&ets=202505142020"
+        "http://localhost/?by=wfo&amp;wfo=JSJ&amp;sts=202505142020&amp;ets=202505142020"
     )
     assert jmsgs[0][0] == ans
 
@@ -39,7 +39,7 @@ def test_240508_summary_link():
     """Test that the summary line is in UTC!"""
     prod = parser(get_test_file("LSR/LSRPIH_summary.txt"))
     jmsgs = prod.get_jabbers("http://localhost/")
-    ans = "sts=202405071330&ets=202405080245"
+    ans = "sts=202405071330&amp;ets=202405080245"
     assert jmsgs[0][0].find(ans) > -1
 
 
@@ -62,7 +62,7 @@ def test_240120_trace_snow(dbcursor):
         "At 7:00 AM PST, Mt. Rose Ski Base [Washoe Co, NV] Public reports "
         "Trace of Snow. Mt. Rose reported a trace of snowfall in the "
         "past 24 hours. #nvwx "
-        "?by=wfo&wfo=REV&sts=202401201500&ets=202401201500"
+        "?by=wfo&amp;wfo=REV&amp;sts=202401201500&amp;ets=202401201500"
     )
     assert jmgs[1][2]["twitter"] == ans
 
@@ -161,7 +161,7 @@ def test_220427_lsr_length(dbcursor):
         "WATER SPOUT. AN NWS EMPLOYEE REPRTED A WATERSPOUT THAT WAS VISIBLE "
         "FROM KEY WEST AROUND 7 AM EDT. IT LASTED AROUND 5 MINUTES.IT WAS "
         "REPORTED TO EXTEND HALFWAY DOWN FROM THE... #flwx "
-        "http://localhost/?by=wfo&wfo=KEY&sts=202204271058&ets=202204271058"
+        "http://localhost/?by=wfo&amp;wfo=KEY&amp;sts=202204271058&amp;ets=202204271058"
     )
     assert j[0][2]["twitter"] == ans
     prod.lsrs[0].sql(dbcursor)
@@ -193,7 +193,7 @@ def test_tweetlen():
         "reports FREEZING RAIN of U0.00 INCH. MULTIPLE REPORTS RECEIVED VIA "
         "DRIVETEXAS.ORG OF ICE AND SNOW ACCUMLATION OCCURRING ON BRIDGES AND "
         "OVERPASSES ON HIGHWAY 83, FM1017, FM2686,... #txwx "
-        "?by=wfo&wfo=BRO&sts=202102150645&ets=202102150645"
+        "?by=wfo&amp;wfo=BRO&amp;sts=202102150645&amp;ets=202102150645"
     )
     assert j[0][2]["twitter"] == ans
 
@@ -225,7 +225,7 @@ def test_unknown_units():
     ans = (
         "At 11:37 AM CST, Yokena [Warren Co, MS] AMATEUR RADIO reports "
         "HAIL of 40 C. FAKED LSR FOR TESTING PURPOSES. #mswx "
-        "?by=wfo&wfo=JAN&sts=201912161737&ets=201912161737"
+        "?by=wfo&amp;wfo=JAN&amp;sts=201912161737&amp;ets=201912161737"
     )
     assert j[0][2]["twitter"] == ans
 
@@ -302,7 +302,7 @@ def test_issue277_oldlsr():
         "[Linn Co, IA] PUBLIC reports "
         "TSTM WND GST of E130 MPH. ROOF REMOVED FROM SMALL "
         "STRIP MALL. SOME EXTERIOR WALLS COLLAPSED. #iawx "
-        "?by=wfo&wfo=DVN&sts=202008101728&ets=202008101728"
+        "?by=wfo&amp;wfo=DVN&amp;sts=202008101728&amp;ets=202008101728"
     )
     assert j[0][2]["twitter"] == ans
 
