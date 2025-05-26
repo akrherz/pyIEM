@@ -254,7 +254,7 @@ lsr_events = {
     "NON-TSTM WND": "O",
     "HIGH WINDS": "O",
     "WND DAMAGE": "O",
-    "LANDSLIDE": "0",
+    "LANDSLIDE": "x",
     "RIP CURRENTS": "P",
     "RIP CURRENT": "P",
     "HIGH SURF": "P",
