@@ -31,6 +31,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Account for empty strings in `vtec_ps` autoplot form type.
 - Correct fontscale calculation.
 - Correct offset calculation in SIGMETs.
 - Correct timezone offsets for some Atlantic timezones.

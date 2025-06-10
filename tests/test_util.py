@@ -563,6 +563,13 @@ def test_vtecps():
                 optional=True,
                 label="VTEC Phenomena and Significance 5",
             ),
+            dict(
+                type="vtec_ps",
+                name="v6",
+                default="UNUSED",
+                optional=True,
+                label="VTEC Phenomena and Significance 6",
+            ),
         ]
     )
     form = dict(
@@ -571,6 +578,8 @@ def test_vtecps():
         _opt_v4="on",
         phenomenav4="TO",
         significancev4="W",
+        phenomenav6="",
+        significancev6=None,
     )
     ctx = util.get_autoplot_context(form, cfg)
     # For v1, we were explicitly provided by from the form
@@ -584,6 +593,8 @@ def test_vtecps():
     assert ctx["significancev4"] == "W"
     # For v5, we have a bad default set
     assert ctx.get("phenomenav5") is None
+    # For v6, we have empty strings, so should be None
+    assert ctx.get("phenomenav6") is None
 
 
 @pytest.mark.parametrize("database", ["mesosite"])
