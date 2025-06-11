@@ -6,7 +6,7 @@
 
 {% block sites %}
 <div class="container-fluid">
-<div class="hidden-print">
+<div class="d-print-none">
 {% set pages = [
 {"key": "base",
  "vals": {"name": "Information", "uri": "site.php?",
@@ -48,8 +48,8 @@
 ]
 %}
 {% for item in pages %}
-    <a href="{{ item['vals']['uri'] }}" class="btn btn-default">
-        <span class="fa fa-{{ item['vals']['icon'] }}"></span>
+    <a href="{{ item['vals']['uri'] }}" class="btn btn-outline-secondary">
+        <span class="fas fa-{{ item['vals']['icon'] }}"></span>
         {{ item['vals']['name'] }}</a>
 {% endfor %}
 

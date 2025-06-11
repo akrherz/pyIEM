@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Bundled IEM website template migrated to Bootstrap 5.
 - Define `PRISM800` grid navigation for updated PRISM 800m grid.
 - Mark `pyiem.prism` for removal in next release.
 - Move `get_product_id()` up one class level to `WMOProduct`.
