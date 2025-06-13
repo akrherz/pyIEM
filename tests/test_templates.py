@@ -6,7 +6,7 @@ from pyiem.templates.iem import TEMPLATE, get_template
 def test_appmode():
     """Test that appmode disables global CSS/JS from being included."""
     res = TEMPLATE.render({"appmode": True})
-    assert "iastate-iem.css" not in res
+    assert "font-awesome" not in res
     assert "iastate-iem.js" not in res
 
 
