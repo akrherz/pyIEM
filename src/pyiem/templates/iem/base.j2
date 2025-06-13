@@ -23,6 +23,13 @@
 
 	<!-- Any page specific headextra content here -->
 	{{ headextra }}
+
+    {% if appmode is defined %}
+    <!-- We still need the default styling for the IEM, but after headextra -->
+    <link href="/css/iastate-iem.css" rel="stylesheet">
+    {% endif %}
+
+
 {% if iemss is defined %}
     <link rel="stylesheet" href="/vendor/openlayers/3.9.0/ol.css" type="text/css">
 {% endif %}
