@@ -23,6 +23,7 @@ All notable changes to this library are documented in this file.
 - Bundle GeoDataframes of discontinued NWS UGC Counties/Zones.  Add
   `discontinued=bool` option to `MapPlot.fill_ugcs()` to enable.
 - Forgive encoded space as `+` in datetime to autoplot context.
+- Introduce `appmode` flag on IEM template to control default CSS/JS inclusion.
 - Introduce `pyiem.ncei.ghcnh` to process NCEI GHCNh data.
 - Introduce `pyiem.ncei.igra` to process NCEI IGRA2.2 Data (#1036).
 - Introduce `pyiem.nws.products.metar_util` with `metar_from_dict` helper to
