@@ -51,12 +51,11 @@
 </footer>
 
 <!-- /footer -->
-
-<!-- Placed at the end of the document so the pages load faster -->
+    {% if appmode is not defined %}
     <script src="/vendor/bootstrap/5.3.6/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery/3.2.1/jquery-3.2.1.min.js"></script>
     <script src="/js/iastate-iem.js"></script>
-
+    {% endif %}
 
     {{ jsextra }}
 
