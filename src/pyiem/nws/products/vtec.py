@@ -1,6 +1,10 @@
 """A NWS TextProduct that contains VTEC information."""
 
-from pyiem.nws.product import TextProduct, TextProductException
+from pyiem.nws.product import (
+    TextProduct,
+    TextProductException,
+    TextProductSegment,
+)
 from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
     DEFAULT_EXPIRE_DELTA,
@@ -154,7 +158,7 @@ class VTECProduct(TextProduct):
                 f"do_sql_vtec() encountered {vtec.action} VTEC status"
             )
 
-    def do_sbw_geometry(self, txn, segment, vtec):
+    def do_sbw_geometry(self, txn, segment: TextProductSegment, vtec):
         """Storage of Storm Based Warning geometry
 
         The IEM uses a seperate table for the Storm Based Warning geometries.
@@ -336,7 +340,7 @@ class VTECProduct(TextProduct):
             vtec.etn,
             vtec.significance,
             vtec.phenomena,
-            issueval,
+            issueval if issueval is not None else self.valid,
             vtec.endts if vtec.endts is not None else polygon_end,
             vtec.endts if vtec.endts is not None else polygon_end,
             polygon_begin,  # polygon_begin
