@@ -46,6 +46,8 @@ All notable changes to this library are documented in this file.
 - Implement better conditioning on inbound text for `WMOProduct#unixtext`
 - Improve multi-line PIREP report join when there is no front spaces.
 - Update NCEP MRMS base URL for real-time downloads.
+- Use text product issuance time, in leiu of ambiguity with invalid VTEC
+  series (ie issuance was missing).
 
 ## **1.23.0** (1 Mar 2025)
 
