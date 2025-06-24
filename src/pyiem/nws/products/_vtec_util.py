@@ -660,8 +660,8 @@ def _do_sql_vtec_con(prod, txn, segment, vtec):
         ),
     )
     if txn.rowcount != len(segment.ugcs):
+        ugcs_out = [row["ugc"] for row in txn.fetchall()]
         prod.warnings.append(_debug_warning(prod, txn, vtec, segment, ets))
-        ugcs_out = txn.fetchall()
         # Here lies CON creates logic.  Better to have a database entry than
         # not
         added = []

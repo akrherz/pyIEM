@@ -6,7 +6,7 @@ URGENT - WEATHER MESSAGE
 National Weather Service Morristown TN
 637 AM EDT Tue Jun 24 2025
 
-TNZ016-017-036>040-042-044-067>071-073-083>086-099>101-241800-
+TNZ016-017-036>040-042-044-067>071-083>086-099>101-241800-
 /O.CON.KMRX.HT.Y.0001.250624T1700Z-250625T2300Z/
 Hawkins-Sullivan-Anderson-Union-Grainger-Hamblen-Northwest Cocke-
 Northwest Greene-Washington TN-Roane-Loudon-Knox-Jefferson-
@@ -49,7 +49,7 @@ the sun, and check up on relatives and neighbors.
 
 $$
 
-TNZ081-082-098-241800-
+TNZ073-081-082-098-241800-
 /O.CON.KMRX.HT.Y.0001.250624T1700Z-250625T2300Z/
 Sequatchie-Bledsoe-Marion-
 Including the cities of Martin Springs, Cartwright, Brayton,
@@ -57,6 +57,8 @@ Palio, Mount Crest, Monteagle, Whitwell, South Pittsburg, Jasper,
 Cagle, Dunlap, Lone Oak, Haletown (Guild), Melvine, Pikeville,
 Powells Crossroads, and Old Cumberland
 537 AM CDT Tue Jun 24 2025
+
+...PYIEM GOOSED TO BRING TNZ073 HERE...
 
 ...HEAT ADVISORY REMAINS IN EFFECT FROM NOON TODAY TO 6 PM CDT 
 WEDNESDAY...
