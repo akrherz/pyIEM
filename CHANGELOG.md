@@ -30,6 +30,9 @@ All notable changes to this library are documented in this file.
   create METAR strings from dicts of data.
 - Remove null byte 0x00 from WMO Products.
 - Support new MCD most probabe tags (#1042).
+- VTEC events are now created in the unfortunate case of a missed expansion
+  or creation product in the time series.  This is a life choice made in the
+  face of increasing NWS dissemination problems.
 
 ### Bug Fixes
 
