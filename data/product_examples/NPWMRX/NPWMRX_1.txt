@@ -1,0 +1,84 @@
+316 
+WWUS74 KMRX 241037
+NPWMRX
+
+URGENT - WEATHER MESSAGE
+National Weather Service Morristown TN
+637 AM EDT Tue Jun 24 2025
+
+TNZ016-017-036>040-042-044-067>071-083>086-099>101-241800-
+/O.CON.KMRX.HT.Y.0001.250624T1700Z-250625T2300Z/
+Hawkins-Sullivan-Anderson-Union-Grainger-Hamblen-Northwest Cocke-
+Northwest Greene-Washington TN-Roane-Loudon-Knox-Jefferson-
+Northwest Blount-North Sevier-Rhea-Meigs-McMinn-Northwest Monroe-
+Hamilton-Bradley-West Polk-
+Including the cities of Luttrell, Johnson City, Strawberry
+Plains, Russellville, Kodak, Bullet Creek, Alcoa, Bybee,
+Parksville, Mooresburg, Chestnut Hill, Fairview, Seymour,
+Maryville, Sharps Chapel, Newport, Oliver Springs, Conasauga,
+Chattanooga, Grandview, Evensville, Reliance, Sevierville,
+Bearden, Etowah, Clinton, Lookout Mountain, Lenoir City, Eagle
+Furnace, Rockwood, Kingsport, Spring City, Pigeon Forge, Athens,
+Dandridge, Lake Forest, Alpha, Loudon, Maynardville, Dentville,
+Benton, Harrisburg, Signal Mountain, McMahan, Clear Water, Tasso,
+Kingston, Happy Valley, Morristown, Greeneville, Paulette,
+Cleveland, Madisonville, Bristol TN, Bean Station, Bradbury,
+Harriman, White Pine, Big Spring, Dayton, Norris Lake, Rose Hill,
+Old Washington, Jefferson City, South Holston Dam, Archville,
+Sweetwater, Knoxville, and Oak Ridge
+637 AM EDT Tue Jun 24 2025
+
+...HEAT ADVISORY REMAINS IN EFFECT FROM 1 PM THIS AFTERNOON TO 7 PM 
+EDT WEDNESDAY...
+
+* WHAT...Heat index values up to 107 expected.
+
+* WHERE...A portion of east Tennessee.
+
+* WHEN...From 1 PM this afternoon to 7 PM EDT Wednesday.
+
+* IMPACTS...Hot temperatures and high humidity may cause heat 
+  illnesses.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Drink plenty of fluids, stay in an air-conditioned room, stay out of 
+the sun, and check up on relatives and neighbors.
+
+&&
+
+$$
+
+TNZ073-081-082-098-241800-
+/O.CON.KMRX.HT.Y.0001.250624T1700Z-250625T2300Z/
+Sequatchie-Bledsoe-Marion-
+Including the cities of Martin Springs, Cartwright, Brayton,
+Palio, Mount Crest, Monteagle, Whitwell, South Pittsburg, Jasper,
+Cagle, Dunlap, Lone Oak, Haletown (Guild), Melvine, Pikeville,
+Powells Crossroads, and Old Cumberland
+537 AM CDT Tue Jun 24 2025
+
+...PYIEM GOOSED TO BRING TNZ073 HERE...
+
+...HEAT ADVISORY REMAINS IN EFFECT FROM NOON TODAY TO 6 PM CDT 
+WEDNESDAY...
+
+* WHAT...Heat index values up to 105 expected.
+
+* WHERE...Bledsoe, Marion, and Sequatchie Counties.
+
+* WHEN...From noon today to 6 PM CDT Wednesday.
+
+* IMPACTS...Hot temperatures and high humidity may cause heat 
+  illnesses.
+
+PRECAUTIONARY/PREPAREDNESS ACTIONS...
+
+Drink plenty of fluids, stay in an air-conditioned room, stay out of 
+the sun, and check up on relatives and neighbors.
+
+&&
+
+$$
+
+DGS

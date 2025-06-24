@@ -2,12 +2,13 @@
 
 # pylint: disable=too-many-arguments
 import itertools
-from datetime import timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 from psycopg.sql import SQL
 
 from pyiem.nws.product import TextProduct, TextProductSegment
+from pyiem.nws.ugc import UGC
 from pyiem.nws.vtec import VTEC
 from pyiem.reference import VTEC_POLYGON_DATES
 from pyiem.util import LOG
@@ -413,6 +414,54 @@ def _cross_check_watch_pds(prod, txn, segment: TextProductSegment, vtec):
     segment.is_pds = txn.fetchone()["is_pds"]
 
 
+def create_warning_record(
+    txn,
+    prod: TextProduct,
+    segment: TextProductSegment,
+    vtec: VTEC,
+    ugc: UGC,
+    bts: datetime,
+    ets: datetime,
+):
+    """Create a new warning record in the database."""
+    txn.execute(
+        "INSERT into warnings (vtec_year, issue, expire, updated, "
+        "wfo, eventid, status, fcster, ugc, phenomena, "
+        "significance, gid, init_expire, product_issue, "
+        "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
+        "is_emergency, is_pds, purge_time, product_ids) "
+        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
+        "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+        "RETURNING gid",
+        (
+            vtec.year,
+            bts,
+            ets,
+            prod.valid,
+            vtec.office,
+            vtec.etn,
+            vtec.action,
+            prod.get_signature(),
+            str(ugc),
+            vtec.phenomena,
+            vtec.significance,
+            str(ugc),
+            prod.valid,
+            vtec.phenomena == "FW",
+            ets,
+            prod.valid,
+            segment.get_hvtec_nwsli(),
+            segment.get_hvtec_severity(),
+            segment.get_hvtec_cause(),
+            segment.get_hvtec_record(),
+            segment.is_emergency,
+            segment.is_pds,
+            segment.ugcexpire,
+            [prod.get_product_id()],
+        ),
+    )
+
+
 def _do_sql_vtec_new(prod, txn, segment, vtec: VTEC):
     """Do the NEW style actions."""
     bts = prod.valid if vtec.begints is None else vtec.begints
@@ -478,41 +527,14 @@ def _do_sql_vtec_new(prod, txn, segment, vtec: VTEC):
                     "Duplicate(s) WWA found, "
                     f"rowcount: {txn.rowcount} for UGC: {ugc}"
                 )
-        txn.execute(
-            "INSERT into warnings (vtec_year, issue, expire, updated, "
-            "wfo, eventid, status, fcster, ugc, phenomena, "
-            "significance, gid, init_expire, product_issue, "
-            "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
-            "is_emergency, is_pds, purge_time, product_ids) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-            "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
-            "RETURNING gid",
-            (
-                vtec.year,
-                bts,
-                ets,
-                prod.valid,
-                vtec.office,
-                vtec.etn,
-                vtec.action,
-                prod.get_signature(),
-                str(ugc),
-                vtec.phenomena,
-                vtec.significance,
-                str(ugc),
-                prod.valid,
-                vtec.phenomena == "FW",
-                ets,
-                prod.valid,
-                segment.get_hvtec_nwsli(),
-                segment.get_hvtec_severity(),
-                segment.get_hvtec_cause(),
-                segment.get_hvtec_record(),
-                segment.is_emergency,
-                segment.is_pds,
-                segment.ugcexpire,
-                [prod.get_product_id()],
-            ),
+        create_warning_record(
+            txn,
+            prod,
+            segment,
+            vtec,
+            ugc,
+            bts,
+            ets,
         )
         # For unit tests, these mostly get filtered out
         if txn.fetchone().get("gid") is None:
@@ -609,6 +631,7 @@ def _do_sql_vtec_con(prod, txn, segment, vtec):
         ets = prod.valid + DEFAULT_EXPIRE_DELTA
 
     # Offices have 1 hour to expire something :), actually 30 minutes
+    ugcs_in = segment.get_ugcs_list()
     txn.execute(
         "UPDATE warnings SET status = %s, updated = %s, "
         "expire = %s, purge_time = %s, "
@@ -618,7 +641,7 @@ def _do_sql_vtec_con(prod, txn, segment, vtec):
         "WHERE vtec_year = %s and wfo = %s and eventid = %s and ugc = any(%s) "
         "and significance = %s and phenomena = %s and "
         "status not in ('CAN', 'UPG') and "
-        "(expire + '1 hour'::interval) >= %s",
+        "(expire + '1 hour'::interval) >= %s returning ugc",
         (
             vtec.action,
             prod.valid,
@@ -630,11 +653,32 @@ def _do_sql_vtec_con(prod, txn, segment, vtec):
             vtec.year,
             vtec.office,
             vtec.etn,
-            segment.get_ugcs_list(),
+            ugcs_in,
             vtec.significance,
             vtec.phenomena,
             prod.valid,
         ),
     )
     if txn.rowcount != len(segment.ugcs):
+        ugcs_out = [row["ugc"] for row in txn.fetchall()]
         prod.warnings.append(_debug_warning(prod, txn, vtec, segment, ets))
+        # Here lies CON creates logic.  Better to have a database entry than
+        # not
+        added = []
+        for ugc in ugcs_in:
+            if ugc in ugcs_out:
+                continue
+            added.append(ugc)
+            create_warning_record(
+                txn,
+                prod,
+                segment,
+                vtec,
+                ugc,
+                prod.valid if vtec.begints is None else vtec.begints,
+                ets,
+            )
+        prod.warnings.append(
+            f"CON create for {vtec.s3()} added {len(added)} new rows for "
+            f"UGCs: {','.join(added)}"
+        )

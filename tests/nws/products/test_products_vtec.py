@@ -63,6 +63,22 @@ def test_gh930_dueling_tropics():
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_con_creates(dbcursor):
+    """Test that entries are added for CONs without history."""
+    prod = vtecparser(get_test_file("NPWMRX/NPWMRX_0.txt"))
+    prod.sql(dbcursor)
+    prod = vtecparser(get_test_file("NPWMRX/NPWMRX_1.txt"))
+    prod.sql(dbcursor)
+    assert any("CON create" in x for x in prod.warnings)
+    dbcursor.execute(
+        "select ugc from warnings_2025 where wfo = 'MRX' and phenomena = 'HT' "
+        "and significance = 'Y' and eventid = 1 and ugc in "
+        "('TNZ081', 'TNZ082', 'TNZ098')"
+    )
+    assert dbcursor.rowcount == 3
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_gh925_wcn_pds(dbcursor):
     """Test that the cross check gets this as a PDS."""
     # Insert the watch
