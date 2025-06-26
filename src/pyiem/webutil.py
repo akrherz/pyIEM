@@ -337,18 +337,14 @@ def _handle_help(start_response, **kwargs):
     css_path = os.path.join(
         os.path.dirname(__file__), "data", "docutils-help.css"
     )
-    try:
-        with open(css_path, "r", encoding="utf-8") as f:
-            css_content = f.read()
-        docutils_css = f"<style>\n{css_content}\n</style>"
-    except FileNotFoundError:
-        LOG.warning("docutils-help.css not found, using minimal styling")
-        docutils_css = "<style>.docutils { font-family: sans-serif; }</style>"
+    with open(css_path, "r", encoding="utf-8") as fh:
+        css_content = fh.read()
 
     # Get the content between the body tags and wrap with responsive container
     body_content = html.split("<body>")[1].split("</body>")[0]
     styled_content = (
-        f'{docutils_css}<div class="container-fluid">{body_content}</div>'
+        f"<style>\n{css_content}\n</style>"
+        f'<div class="container-fluid">{body_content}</div>'
     )
 
     res = {"content": styled_content}
