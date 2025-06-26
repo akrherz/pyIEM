@@ -38,7 +38,7 @@ description = "Collection of things that may help with processing weather data."
 dynamic = ["version"]
 keywords = ["meteorology"]
 license = "MIT"
-name = "pyIEM"
+name = "pyiem"
 readme = "README.md"
 
 [project.urls]

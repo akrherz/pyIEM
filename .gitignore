@@ -5,7 +5,7 @@
 /MANIFEST
 /.settings/
 /.coverage
-**/pyIEM.egg-info/
+src/pyiem.egg-info/
 /.pytest_cache/
 /.vscode/
 /docs/build
