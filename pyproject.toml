@@ -37,7 +37,7 @@ dependencies = [
 description = "Collection of things that may help with processing weather data."
 dynamic = ["version"]
 keywords = ["meteorology"]
-license = {text = "Apache"}
+license = "MIT"
 name = "pyIEM"
 readme = "README.md"
 

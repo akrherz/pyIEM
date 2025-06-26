@@ -20,6 +20,7 @@ All notable changes to this library are documented in this file.
 
 - Add `iailmo` (Iowa + Illinois + Missouri) `MapPlot` sector.
 - Add `sa` IEMRE domain per DEP needs akrherz/iem#1173.
+- Bundle a docutils based CSS to improve the iemapp help rendered HTML.
 - Bundle GeoDataframes of discontinued NWS UGC Counties/Zones.  Add
   `discontinued=bool` option to `MapPlot.fill_ugcs()` to enable.
 - Forgive encoded space as `+` in datetime to autoplot context.
