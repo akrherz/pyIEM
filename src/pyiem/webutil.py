@@ -1,6 +1,7 @@
 """Utility functions for iemwebfarm applications."""
 
 import inspect
+import os
 import random
 import re
 import string
@@ -13,6 +14,7 @@ from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import nh3
+from docutils.core import publish_string
 from paste.request import parse_formvars
 from pydantic import (
     AfterValidator,
@@ -325,14 +327,31 @@ def _handle_help(start_response, **kwargs):
     """
     start_response("200 OK", [("Content-type", "text/html")])
     # return the module docstring for the func
-    from docutils.core import publish_string
 
     sdoc = kwargs.get("help", "Help not available") + (
         "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
     )
     html = publish_string(source=sdoc, writer_name="html").decode("utf-8")
-    # Get the content between the body tags
-    res = {"content": html.split("<body>")[1].split("</body>")[0]}
+
+    # Load external CSS file for styling docutils-generated content
+    css_path = os.path.join(
+        os.path.dirname(__file__), "data", "docutils-help.css"
+    )
+    try:
+        with open(css_path, "r", encoding="utf-8") as f:
+            css_content = f.read()
+        docutils_css = f"<style>\n{css_content}\n</style>"
+    except FileNotFoundError:
+        LOG.warning("docutils-help.css not found, using minimal styling")
+        docutils_css = "<style>.docutils { font-family: sans-serif; }</style>"
+
+    # Get the content between the body tags and wrap with responsive container
+    body_content = html.split("<body>")[1].split("</body>")[0]
+    styled_content = (
+        f'{docutils_css}<div class="container-fluid">{body_content}</div>'
+    )
+
+    res = {"content": styled_content}
     return TEMPLATE.render(res).encode("utf-8")
 
 
