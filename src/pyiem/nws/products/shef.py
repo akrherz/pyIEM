@@ -801,7 +801,12 @@ def compute_num_value(element) -> bool:
     if element.physical_element in PAIRED_PHYSICAL_CODES:
         tokens = element.str_value.split(".")
         if len(tokens) == 1:
-            element.depth = int(tokens[0])
+            depth = int(tokens[0])
+            if depth < 0:
+                raise InvalidSHEFEncoding(
+                    f"Negative depth {depth} for {element.physical_element}"
+                )
+            element.depth = depth
             return True
         # <depth>.<value>
         # where value is hundreds place, tens, ones, tenths, hundredths

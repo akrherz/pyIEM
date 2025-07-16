@@ -37,6 +37,13 @@ def prod():
     return res
 
 
+def test_250716_demote_warning():
+    """Test that we get no warning from this."""
+    utcnow = utc(2025, 7, 16, 12)
+    prod = parser(get_test_file("SHEF/RR3ACR.txt"), utcnow=utcnow)
+    assert not prod.warnings
+
+
 def test_231220_random_nan():
     """Test that a random nan can be handled."""
     utcnow = utc(2023, 12, 20, 12)
