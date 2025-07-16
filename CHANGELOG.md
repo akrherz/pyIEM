@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased version
+
+### API Changes
+
+### New Features
+
+### Bug Fixes
+
+- Demote a SHEF warning for a poorly encoded paired depth value.
+
 ## **1.24.0** (26 Jun 2025)
 
 ### API Changes
