@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Demote a SHEF warning for a poorly encoded paired depth value.
+- Workaround a spacing issue within LSRs that may not be fixed upstream.
 
 ## **1.24.0** (26 Jun 2025)
 

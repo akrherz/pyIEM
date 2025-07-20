@@ -181,6 +181,10 @@ def parse_lsr(prod, text):
     if lsr.magnitude_f is not None and math.isnan(lsr.magnitude_f):
         prod.warnings.append(f"LSR has NAN magnitude\n{text}")
         return None
+    # Condition for a specific spacing case we want to workaround
+    if lines[1][47] != " " and lines[1][52] != " ":
+        prod.warnings.append(f"Workaround LSR spacing for |{lines[1][47:53]}|")
+        lines[1] = lines[1][:47] + " " + lines[1][47:]
     lsr.county = lines[1][29:48].strip()
     if lsr.county == "":
         prod.warnings.append(f"LSR has empty county\n{text}")
