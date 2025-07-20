@@ -1,0 +1,28 @@
+090 
+NWUS51 KPHI 100458
+LSRPHI
+
+Preliminary Local Storm Report...Summary
+National Weather Service Mount Holly NJ
+1258 AM EDT Thu Jul 10 2025
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0730 PM     Tstm Wnd Gst     6 NW Wittman            38.86N 76.37W
+07/09/2025  M59 MPH          Queen Annes       MD   Public           
+
+            Personal Weather Station: KMDSTEVE76 gusted 
+            to 59.3 mph. 
+
+0737 PM     Flash Flood      West Grove              39.82N 75.83W
+07/09/2025                   Chester            PA   Trained Spotter  
+
+            Flooding on Summit Ave at the bottom of the 
+            hill is underwater. Time given in report. 
+&&
+
+$$
+
+Staarmann

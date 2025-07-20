@@ -7,6 +7,13 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_250719_spacing():
+    """Test that we can handle a formatting bug without much hope of fixing."""
+    prod = parser(get_test_file("LSR/LSRPHI.txt"))
+    assert prod.warnings
+    assert prod.lsrs[0].state == "MD"
+
+
 def test_250516_lsrsju():
     """Test the generated timezone message for something in AST."""
     prod = parser(get_test_file("LSR/LSRSJU.txt"))
