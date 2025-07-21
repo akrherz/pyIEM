@@ -84,6 +84,23 @@ def test_future_crosses():
 
 
 @pytest.mark.parametrize("database", ["iem"])
+def test_250721_wind_date(dbcursor):
+    """Test that the peak wind date we get is correct."""
+    create_entries(dbcursor)
+    code = (
+        "QQQQ 302355Z AUTO 02028G45KT 010V080 1 3/4SM RA BKN006 BKN007 08/07 "
+        "A2975 RMK AO2 PK WND 32046/2301 RAB2255 SLP077 P0035 60151 T00760067 "
+        "10085 20067 58016 $"
+    )
+    prod = mock.Mock()
+    prod.valid = utc(2025, 7, 1, 0, 10)
+    prod.utcnow = prod.valid
+    mtr = metarcollect.to_metar(prod, code)
+    iemob, _ = metarcollect.to_iemaccess(dbcursor, mtr, -1, "America/Chicago")
+    assert iemob.data["peak_wind_time"] == utc(2025, 6, 30, 23, 1)
+
+
+@pytest.mark.parametrize("database", ["iem"])
 def test_corrected(dbcursor):
     """Test that the COR does not get dropped from the raw METAR."""
     create_entries(dbcursor)
