@@ -57,6 +57,11 @@ def wind_logic(iem, mtr: Metar):
     if mtr.wind_dir_peak:
         iem.data["peak_wind_drct"] = mtr.wind_dir_peak.value()
     if mtr.peak_wind_time:
+        # python-metar has an edge case for events crossing a month
+        if mtr.peak_wind_time > mtr.time:
+            mtr.peak_wind_time = mtr.peak_wind_time.replace(
+                year=mtr.time.year, month=mtr.time.month
+            )
         iem.data["peak_wind_time"] = mtr.peak_wind_time.replace(
             tzinfo=timezone.utc
         )

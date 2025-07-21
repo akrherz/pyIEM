@@ -11,6 +11,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Account for `python-metar` edge case with peak wind time being in the future.
 - Demote a SHEF warning for a poorly encoded paired depth value.
 - Workaround a spacing issue within LSRs that may not be fixed upstream.
 
