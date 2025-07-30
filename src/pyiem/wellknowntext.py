@@ -111,3 +111,4 @@ def convert_well_known_text(wkt):
             if part.startswith(geotype):
                 return function(part[len(geotype) :])
         raise ValueError(f"Unsupported WKT-part {repr(part[:20])}")
+    return None

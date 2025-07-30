@@ -26,14 +26,15 @@ def rectify(sid):
 def process(gemtbl, outfn):
     """Do the processing work!"""
     rows = []
-    for line in open(GEMPAKDIR + gemtbl):
-        if line.strip() == "" or line.startswith("#") or line.startswith("!"):
-            continue
-        sid = rectify(line[:4].strip())
-        name = line[16:47].strip()
-        lat = float(line[56:60]) / 100.0
-        lon = float(line[61:67]) / 100.0
-        rows.append({"sid": sid, "name": name, "lon": lon, "lat": lat})
+    with open(GEMPAKDIR + gemtbl) as fh:
+        for line in fh:
+            if line.strip() == "" or line.startswith(("#", "!")):
+                continue
+            sid = rectify(line[:4].strip())
+            name = line[16:47].strip()
+            lat = float(line[56:60]) / 100.0
+            lon = float(line[61:67]) / 100.0
+            rows.append({"sid": sid, "name": name, "lon": lon, "lat": lat})
 
     LOG.info("Found %s rows in GEMPAK table %s", len(rows), gemtbl)
     df = pd.DataFrame(rows).groupby("sid").first()

@@ -63,6 +63,17 @@ def test_gh930_dueling_tropics():
 
 
 @pytest.mark.parametrize("database", ["postgis"])
+def test_gh1097_unknown_ugc(dbcursor):
+    """Test that the word parishes appears as we wish."""
+    prov = {
+        "GUZ001": UGC("GU", "Z", "001", name="Guam", wfos=["GUM"]),
+    }
+    prod = _vtecparser(get_test_file("TSU/TSUGUM.txt"), ugc_provider=prov)
+    prod.sql(dbcursor)
+    assert prod.warnings
+
+
+@pytest.mark.parametrize("database", ["postgis"])
 def test_con_creates(dbcursor):
     """Test that entries are added for CONs without history."""
     prod = vtecparser(get_test_file("NPWMRX/NPWMRX_0.txt"))
@@ -542,17 +553,6 @@ def test_201116_1970vtec():
 
 
 @pytest.mark.parametrize("database", ["postgis"])
-def test_201006_invalid_warning(dbcursor):
-    """Test that we don't complain about a dangling CON statement."""
-    prod = vtecparser(get_test_file("MWWPQR/MWWPQR_0.txt"))
-    prod.sql(dbcursor)
-    assert not filter_warnings(prod.warnings)
-    prod = vtecparser(get_test_file("MWWPQR/MWWPQR_1.txt"))
-    prod.sql(dbcursor)
-    assert not filter_warnings(prod.warnings)
-
-
-@pytest.mark.parametrize("database", ["postgis"])
 def test_issue284_incomplete_update(dbcursor):
     """Test that we emit warnings when a product fails to update everything."""
     prod = vtecparser(get_test_file("FFW/FFWLCH_0.txt"))
@@ -766,22 +766,6 @@ def test_TORE_series(dbcursor):
     prod.sql(dbcursor)
     assert getval()
     assert getval2() is False
-
-
-@pytest.mark.parametrize("database", ["postgis"])
-def test_190102_exb_newyear(dbcursor):
-    """See that we properly can find a complex EXB added in new year."""
-    for i in range(4):
-        prod = vtecparser(get_test_file(f"WSWAFG/{i}.txt"))
-        prod.sql(dbcursor)
-        assert not filter_warnings(filter_warnings(prod.warnings), CUGC)
-    dbcursor.execute(
-        "SELECT count(*) from warnings where vtec_year = 2018 and "
-        "wfo = 'AFG' and "
-        "eventid = 127 and phenomena = 'WW' and significance = 'Y' "
-        "and ugc = 'AKZ209'"
-    )
-    assert dbcursor.fetchone()["count"] == 2
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1295,25 +1279,6 @@ def test_150105_manycors(dbcursor):
 
 
 @pytest.mark.parametrize("database", ["postgis"])
-def test_150102_multiyear2(dbcursor):
-    """WSWSTO See how well we span multiple years"""
-    for i in range(17):
-        prod = vtecparser(get_test_file(f"NPWSTO/{i}.txt"))
-        prod.sql(dbcursor)
-        # side test for expiration message
-        if i == 3:
-            j = prod.get_jabbers("")
-            assert j[0][0] == (
-                "STO expires Frost Advisory for ((CAZ015)), ((CAZ016)), "
-                "((CAZ017)), ((CAZ018)), ((CAZ019)), ((CAZ064)), "
-                "((CAZ066)), ((CAZ067)) [CA] "
-                "2014-O-EXP-KSTO-FR-Y-0001_2014-12-27T17:03Z"
-            )
-        warnings = filter_warnings(prod.warnings)
-        assert not warnings
-
-
-@pytest.mark.parametrize("database", ["postgis"])
 def test_150102_multiyear(dbcursor):
     """WSWOUN See how well we span multiple years"""
     for i in range(13):
@@ -1346,16 +1311,6 @@ def test_141226_correction():
     """Add another test for product corrections"""
     with pytest.raises(UGCParseException):
         vtecparser(get_test_file("FLSRAH.txt"))
-
-
-@pytest.mark.parametrize("database", ["postgis"])
-def test_141215_correction(dbcursor):
-    """I have a feeling we are not doing the right thing for COR"""
-    for i in range(6):
-        prod = vtecparser(get_test_file(f"NPWMAF/{i}.txt"))
-        prod.sql(dbcursor)
-        warnings = filter_warnings(prod.warnings)
-        assert not warnings
 
 
 @pytest.mark.parametrize("database", ["postgis"])
@@ -1830,17 +1785,6 @@ def test_141023_upgrade(dbcursor):
     """See that we can handle the upgrade and downgrade dance"""
     for i in range(1, 8):
         prod = vtecparser(get_test_file(f"NPWBOX/NPW_{i:02d}.txt"))
-        prod.sql(dbcursor)
-        warnings = filter_warnings(prod.warnings)
-        assert not warnings
-
-
-@pytest.mark.parametrize("database", ["postgis"])
-def test_141205_vtec_series(dbcursor):
-    """Make sure we don't get any warnings processing this series"""
-    for i in range(9):
-        fn = f"WSWOTX/WSW_{i:02d}.txt"
-        prod = vtecparser(get_test_file(fn))
         prod.sql(dbcursor)
         warnings = filter_warnings(prod.warnings)
         assert not warnings

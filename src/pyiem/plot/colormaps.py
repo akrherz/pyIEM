@@ -31,8 +31,7 @@ def _load_local_cmap_colors(name):
     """Return list of colors for this cmap from local file."""
     fn = os.path.join(DATADIR, "..", "cmap", f"{name}.txt")
     with open(fn, encoding="utf8") as fh:
-        res = fh.read().strip().split("\n")
-    return res
+        return fh.read().strip().split("\n")
 
 
 def get_cmap(name):

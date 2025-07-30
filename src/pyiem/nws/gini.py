@@ -200,11 +200,10 @@ class GINIZFile:
 
     def __str__(self):
         """return a string representation"""
-        text = (
+        return (
             f"{self.wmo} Line Size: {self.metadata['linesize']} "
             f"Num Lines: {self.metadata['numlines']}"
         )
-        return text
 
     def awips_grid(self):
         """

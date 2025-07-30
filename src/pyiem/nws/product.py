@@ -307,8 +307,7 @@ class TextProductSegment:
                 bullets.append(piece)
             bullets.append(" ".join(part.replace("\n", "").split()))
         # Cleanup
-        bullets = [" ".join(b.split()) for b in bullets]
-        return bullets
+        return [" ".join(b.split()) for b in bullets]
 
     def process_tags(self):
         """Find various tags in this segment"""

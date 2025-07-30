@@ -422,8 +422,21 @@ def create_warning_record(
     ugc: UGC,
     bts: datetime,
     ets: datetime,
-):
+) -> None:
     """Create a new warning record in the database."""
+    # Since we are in a transaction and a null gid will cause a rollback,
+    # we need to pre-flight check this and return if it is None.
+    txn.execute(
+        "select get_gid(%s, %s, %s) as gid",
+        (str(ugc), prod.valid, vtec.phenomena == "FW"),
+    )
+    gid = txn.fetchone()["gid"]
+    if gid is None:
+        prod.warnings.append(
+            f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
+            "was null, cannot create warning record"
+        )
+        return
     txn.execute(
         "INSERT into warnings (vtec_year, issue, expire, updated, "
         "wfo, eventid, status, fcster, ugc, phenomena, "
@@ -431,7 +444,7 @@ def create_warning_record(
         "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
         "is_emergency, is_pds, purge_time, product_ids) "
         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-        "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+        "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
         "RETURNING gid",
         (
             vtec.year,
@@ -445,9 +458,7 @@ def create_warning_record(
             str(ugc),
             vtec.phenomena,
             vtec.significance,
-            str(ugc),
-            prod.valid,
-            vtec.phenomena == "FW",
+            gid,
             ets,
             prod.valid,
             segment.get_hvtec_nwsli(),
@@ -536,12 +547,6 @@ def _do_sql_vtec_new(prod, txn, segment, vtec: VTEC):
             bts,
             ets,
         )
-        # For unit tests, these mostly get filtered out
-        if txn.fetchone().get("gid") is None:
-            prod.warnings.append(
-                f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
-                "was null"
-            )
 
 
 def _do_sql_vtec_cor(prod, txn, segment, vtec):

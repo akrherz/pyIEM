@@ -90,11 +90,10 @@ def build_df(prod):
                     vtec.etn,
                 ]
                 rows.append(entry)
-    df = pd.DataFrame(
+    return pd.DataFrame(
         rows,
         columns=["ugc", "phenomena", "significance", "action", "etn"],
     )
-    return df
 
 
 def _get_jabbers(prod, uri, river_uri=None):

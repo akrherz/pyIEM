@@ -451,10 +451,9 @@ class VTECProduct(TextProduct):
 def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
     """Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception"""
-    prod = VTECProduct(
+    return VTECProduct(
         text,
         utcnow=utcnow,
         ugc_provider=ugc_provider,
         nwsli_provider=nwsli_provider,
     )
-    return prod

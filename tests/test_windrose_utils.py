@@ -95,7 +95,7 @@ def test_windrose_with_units():
 def test_windrose_plot_convention():
     """Test the plotting convention option."""
     valid, sknt, drct = faux_data()
-    fig = windrose(
+    return windrose(
         "AMW2",
         sknt=sknt,
         drct=drct,
@@ -104,14 +104,13 @@ def test_windrose_plot_convention():
         generated_string="Generated @ Forever",
         plot_convention=PLOT_CONVENTION_TO,
     )
-    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_month_limiter():
     """Test that we can filter by month."""
     valid, sknt, drct = faux_data()
-    fig = windrose(
+    return windrose(
         "AMW2",
         sknt=sknt,
         drct=drct,
@@ -119,14 +118,13 @@ def test_windrose_month_limiter():
         months=[4, 5, 6],
         nogenerated=True,
     )
-    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_hour_limiter():
     """Test that we can filter by hour."""
     valid, sknt, drct = faux_data()
-    fig = windrose(
+    return windrose(
         "AMW2",
         sknt=sknt,
         drct=drct,
@@ -134,14 +132,13 @@ def test_windrose_hour_limiter():
         hours=list(range(6, 16)),
         nogenerated=True,
     )
-    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
-    fig = windrose(
+    return windrose(
         "_XXX",
         sknt=sknt,
         drct=drct,
@@ -150,13 +147,12 @@ def test_windrose_upperair():
         nogenerated=True,
         tzname="UTC",
     )
-    return fig
 
 
 def test_windrose_upperair_text():
     """Test the magic that happens when level= is set."""
     valid, sknt, drct = faux_data()
-    res = windrose(
+    return windrose(
         "_XXX",
         sknt=sknt,
         drct=drct,
@@ -166,14 +162,13 @@ def test_windrose_upperair_text():
         justdata=True,
         tzname="UTC",
     )
-    assert res
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_hads_wind():
     """Test the database filtering with actual database data."""
     # Faked from iem-database repo store_test_data
-    fig = windrose(
+    return windrose(
         "EOKI4",
         database="hads",
         months=[4, 5, 6],
@@ -182,13 +177,12 @@ def test_windrose_hads_wind():
         tzname="America/Chicago",
         nogenerated=True,
     )
-    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=PAIN)
 def test_windrose_upperair_nodata():
     """Test what happens with upperair logic and no data found."""
-    fig = windrose(
+    return windrose(
         "_XXX",
         level=500,
         months=[
@@ -196,7 +190,6 @@ def test_windrose_upperair_nodata():
         ],
         nogenerated=True,
     )
-    return fig
 
 
 def test_windrose_upperair_nodata_text():
@@ -227,7 +220,7 @@ def test_windrose():
     res = windrose("XXXXX")
     assert res is not None
 
-    fig = windrose(
+    return windrose(
         "AMW2",
         sknt=sknt,
         drct=drct,
@@ -236,4 +229,3 @@ def test_windrose():
         ets=datetime.datetime(2016, 1, 1),
         nogenerated=True,
     )
-    return fig

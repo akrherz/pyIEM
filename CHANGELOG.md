@@ -13,6 +13,7 @@ All notable changes to this library are documented in this file.
 
 - Account for `python-metar` edge case with peak wind time being in the future.
 - Demote a SHEF warning for a poorly encoded paired depth value.
+- Prevent unknown UGC from causing a full database write failure (#1097).
 - Workaround a spacing issue within LSRs that may not be fixed upstream.
 
 ## **1.24.0** (26 Jun 2025)

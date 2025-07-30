@@ -36,15 +36,14 @@ RAMPS = {
 }
 
 
-def load_scenarios():
+def load_scenarios() -> pd.DataFrame:
     """Build a dataframe of DEP scenarios."""
     with get_sqlalchemy_conn("idep") as conn:
-        df = pd.read_sql(
+        return pd.read_sql(
             sql_helper("SELECT * from scenarios ORDER by id ASC"),
             conn,
             index_col="id",
         )
-    return df
 
 
 def get_cli_fname(lon, lat, scenario=0):
