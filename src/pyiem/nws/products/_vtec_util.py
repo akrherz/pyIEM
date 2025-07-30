@@ -18,6 +18,9 @@ from pyiem.util import LOG
 # seems to be enough time to ensure a WFO issues some followup statement.
 DEFAULT_EXPIRE_DELTA = timedelta(hours=21 * 24)
 
+# This is a horrible hack for now due to lame daryl issues
+ARM_CREATE_RETURN = True
+
 
 def _check_vtec_polygon(prod):
     """Emit warnings for segments that should have a polygon."""
@@ -422,8 +425,20 @@ def create_warning_record(
     ugc: UGC,
     bts: datetime,
     ets: datetime,
-):
+) -> None:
     """Create a new warning record in the database."""
+    # Check if the gid is known to the database
+    txn.execute(
+        "select get_gid(%s, %s, %s) as gid",
+        (str(ugc), prod.valid, vtec.phenomena == "FW"),
+    )
+    if txn.fetchone()["gid"] is None:
+        prod.warnings.append(
+            f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
+            "was null, cannot create warning record"
+        )
+        if ARM_CREATE_RETURN:
+            return
     txn.execute(
         "INSERT into warnings (vtec_year, issue, expire, updated, "
         "wfo, eventid, status, fcster, ugc, phenomena, "
@@ -536,12 +551,6 @@ def _do_sql_vtec_new(prod, txn, segment, vtec: VTEC):
             bts,
             ets,
         )
-        # For unit tests, these mostly get filtered out
-        if txn.fetchone().get("gid") is None:
-            prod.warnings.append(
-                f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
-                "was null"
-            )
 
 
 def _do_sql_vtec_cor(prod, txn, segment, vtec):

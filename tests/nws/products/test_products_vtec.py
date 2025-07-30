@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from pyiem.nws.nwsli import NWSLI
+from pyiem.nws.products import _vtec_util as VU
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
 from pyiem.nws.products.wwp import parser as wwp_parser
@@ -17,6 +18,7 @@ from pyiem.nws.vtec import parse
 from pyiem.util import get_test_file, utc
 
 CUGC = "Product failed to cover all UGC"
+VU.ARM_CREATE_RETURN = False
 
 
 class FakeObject:
@@ -60,6 +62,17 @@ def test_gh930_dueling_tropics():
     """Test that we get a special warning for this."""
     prod = vtecparser(get_test_file("TCV/TCVHGX.txt"))
     assert any(a.startswith("Dueling tropical") for a in prod.warnings)
+
+
+@pytest.mark.parametrize("database", ["postgis"])
+def test_gh1097_unknown_ugc(dbcursor):
+    """Test that the word parishes appears as we wish."""
+    prov = {
+        "GUZ001": UGC("GU", "Z", "001", name="Guam", wfos=["GUM"]),
+    }
+    prod = _vtecparser(get_test_file("TSU/TSUGUM.txt"), ugc_provider=prov)
+    prod.sql(dbcursor)
+    assert prod.warnings
 
 
 @pytest.mark.parametrize("database", ["postgis"])
