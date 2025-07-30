@@ -24,8 +24,7 @@ def temperature_humidity_index(temperature, humidity):
     """
     tmpc = temperature.to(units("degC")).m
     rh = humidity.to(units("percent")).m
-    thi = 0.8 * tmpc + (rh / 100.0) * (tmpc - 14.4) + 46.4
-    return thi
+    return 0.8 * tmpc + (rh / 100.0) * (tmpc - 14.4) + 46.4
 
 
 def comprehensive_climate_index(

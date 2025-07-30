@@ -1423,11 +1423,11 @@ def parser(msg, call_id, add_metar=False):
     """
     match = DS3505_RE.match(msg)
     if not match:
-        return
+        return None
     data = match.groupdict()
     # Seems like these obs with this flag are 'bad'
     if data["srcflag"] in ["A", "B"]:
-        return
+        return None
     data["valid"] = datetime.strptime(
         f"{data['yyyymmdd']} {data['hhmi']}", "%Y%m%d %H%M"
     ).replace(tzinfo=timezone.utc)

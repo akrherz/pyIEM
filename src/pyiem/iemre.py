@@ -225,14 +225,13 @@ def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
     for row in cursor:
         for i, col in enumerate(use_columns):
             data[col][row[0], row[1]] = row[2 + i]
-    ds = xr.Dataset(
+    return xr.Dataset(
         dict((key, (["y", "x"], data[key])) for key in data),
         coords={
             "lon": (["x"], np.arange(dom["west"], dom["east"] + 0.001, DX)),
             "lat": (["y"], np.arange(dom["south"], dom["north"] + 0.001, DY)),
         },
     )
-    return ds
 
 
 def get_dailyc_ncname(domain: str = "") -> str:

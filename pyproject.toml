@@ -65,6 +65,7 @@ select = [
     "I",  # imports
     "PERF",  # performance
     "PLR0203",  # staticmethod
+    "RET",  # return
     "T",  # types
 ]
 ignore = [

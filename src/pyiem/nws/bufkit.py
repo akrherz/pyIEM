@@ -27,8 +27,7 @@ def _read_station(text):
         format="%y%m%d/%H%M",
         utc=True,
     )
-    df = df.drop("YYMMDD/HHMM", axis=1).astype(float, False, "ignore")
-    return df
+    return df.drop("YYMMDD/HHMM", axis=1).astype(float, False, "ignore")
 
 
 def _read_sounding(text):

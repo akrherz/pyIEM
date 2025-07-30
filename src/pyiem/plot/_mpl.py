@@ -77,8 +77,7 @@ def get_tile_data(url):
     bio = BytesIO(res)
     bio.seek(0)
     with Image.open(bio) as pilimg:
-        im = np.asarray(pilimg)
-    return im
+        return np.asarray(pilimg)
 
 
 def draw_wmts(panel, background):

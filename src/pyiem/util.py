@@ -174,8 +174,7 @@ def convert_value(val, units_in, units_out):
     """
     from metpy.units import masked_array, units
 
-    fval = masked_array(val, units(units_in)).to(units(units_out)).m
-    return fval
+    return masked_array(val, units(units_in)).to(units(units_out)).m
 
 
 def c2f(val):
@@ -215,8 +214,7 @@ def get_test_filepath(name: str) -> str:
 def get_test_file(name):
     """Helper to get data for test usage."""
     with open(get_test_filepath(name), "rb") as fp:
-        content = fp.read().decode("utf-8")
-    return content
+        return fp.read().decode("utf-8")
 
 
 def logger(name="pyiem", level=None):
