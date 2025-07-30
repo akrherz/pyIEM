@@ -18,9 +18,6 @@ from pyiem.util import LOG
 # seems to be enough time to ensure a WFO issues some followup statement.
 DEFAULT_EXPIRE_DELTA = timedelta(hours=21 * 24)
 
-# This is a horrible hack for now due to lame daryl issues
-ARM_CREATE_RETURN = True
-
 
 def _check_vtec_polygon(prod):
     """Emit warnings for segments that should have a polygon."""
@@ -427,18 +424,19 @@ def create_warning_record(
     ets: datetime,
 ) -> None:
     """Create a new warning record in the database."""
-    # Check if the gid is known to the database
+    # Since we are in a transaction and a null gid will cause a rollback,
+    # we need to pre-flight check this and return if it is None.
     txn.execute(
         "select get_gid(%s, %s, %s) as gid",
         (str(ugc), prod.valid, vtec.phenomena == "FW"),
     )
-    if txn.fetchone()["gid"] is None:
+    gid = txn.fetchone()["gid"]
+    if gid is None:
         prod.warnings.append(
             f"get_gid({str(ugc)}, {prod.valid}, {vtec.phenomena == 'FW'}) "
             "was null, cannot create warning record"
         )
-        if ARM_CREATE_RETURN:
-            return
+        return
     txn.execute(
         "INSERT into warnings (vtec_year, issue, expire, updated, "
         "wfo, eventid, status, fcster, ugc, phenomena, "
@@ -446,7 +444,7 @@ def create_warning_record(
         "hvtec_nwsli, hvtec_severity, hvtec_cause, hvtec_record, "
         "is_emergency, is_pds, purge_time, product_ids) "
         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-        "get_gid(%s, %s, %s), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+        "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
         "RETURNING gid",
         (
             vtec.year,
@@ -460,9 +458,7 @@ def create_warning_record(
             str(ugc),
             vtec.phenomena,
             vtec.significance,
-            str(ugc),
-            prod.valid,
-            vtec.phenomena == "FW",
+            gid,
             ets,
             prod.valid,
             segment.get_hvtec_nwsli(),

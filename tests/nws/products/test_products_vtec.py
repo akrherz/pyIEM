@@ -7,7 +7,6 @@ import pandas as pd
 import pytest
 
 from pyiem.nws.nwsli import NWSLI
-from pyiem.nws.products import _vtec_util as VU
 from pyiem.nws.products.vtec import check_dup_ps
 from pyiem.nws.products.vtec import parser as _vtecparser
 from pyiem.nws.products.wwp import parser as wwp_parser
@@ -18,7 +17,6 @@ from pyiem.nws.vtec import parse
 from pyiem.util import get_test_file, utc
 
 CUGC = "Product failed to cover all UGC"
-VU.ARM_CREATE_RETURN = False
 
 
 class FakeObject:
