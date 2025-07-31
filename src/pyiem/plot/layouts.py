@@ -3,7 +3,7 @@
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from pyiem.plot.use_agg import plt
+from pyiem.plot.use_agg import figure as _figure
 from pyiem.plot.util import draw_logo, fitbox, update_kwargs_apctx
 from pyiem.reference import TWITTER_RESOLUTION_INCH
 
@@ -29,7 +29,7 @@ def figure(
     kwargs["figsize"] = kwargs.get("figsize", TWITTER_RESOLUTION_INCH)
     fig = kwargs.pop("fig", None)
     if fig is None:
-        fig = plt.figure(**kwargs)
+        fig = _figure(**kwargs)
     else:
         fig.set_size_inches(kwargs["figsize"])
     draw_logo(fig, logo)

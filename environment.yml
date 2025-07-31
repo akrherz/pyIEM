@@ -53,8 +53,8 @@ dependencies:
   - scipy
   - setuptools_scm
   - shapely
-  # lazy to do this right
-  - sphinx
+  # prevent bad conda solve
+  - sphinx>=8
   - sphinxcontrib-napoleon
   - sqlalchemy
   # iemre

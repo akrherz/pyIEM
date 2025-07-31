@@ -19,7 +19,6 @@ Example:
 
 # stdlib
 import datetime
-import gc
 import os
 import shutil
 import subprocess
@@ -40,7 +39,7 @@ import numpy as np
 import pandas as pd
 import rasterio
 from affine import Affine
-from matplotlib.patches import Wedge
+from matplotlib.patches import Rectangle, Wedge
 from metpy.calc import wind_components
 from metpy.units import units
 from PIL import Image
@@ -52,7 +51,7 @@ from shapely.geometry import shape
 from pyiem.plot.colormaps import radar_ptype, stretch_cmap
 
 # local
-from pyiem.plot.use_agg import plt
+from pyiem.plot.use_agg import figure
 from pyiem.plot.util import (
     draw_features_from_shapefile,
     draw_logo,
@@ -143,7 +142,7 @@ class MapPlot:
             continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
             aspect (str): plot aspect, defaults to auto
-            fig (matplotlib.pyplot.figure,optional): provide a figure instance
+            fig (matplotlib.figure.Figure,optional): provide a figure instance
               for more advanced plot control.
             logo (str,optional): logo name to slap on the plot.
             twitter (bool): Set an image resolution that is favorable to
@@ -162,16 +161,16 @@ class MapPlot:
         if kwargs.get("twitter", False) is True:
             figsize = TWITTER_RESOLUTION_INCH
         if self.fig is None:
-            self.fig = plt.figure(
-                num=None, figsize=figsize, dpi=kwargs.get("dpi", 100)
-            )
+            self.fig = figure(figsize=figsize, dpi=kwargs.get("dpi", 100))
         # Storage of axes within this plot
         self.state = None
         self.cwa = None
         self.fema_region = None
         self.textmask = None  # For our plot_values magic, to prevent overlap
         self.sector = sector
-        self.cax = plt.axes(CAX_BOUNDS, frameon=False, yticks=[], xticks=[])
+        self.cax = self.fig.add_axes(
+            CAX_BOUNDS, frameon=False, yticks=[], xticks=[]
+        )
         self.panels = []
         self.ax = None  # Main plot axes, will be set later, hacky
         # hack around sector=iowa
@@ -268,11 +267,8 @@ class MapPlot:
 
     def close(self):
         """Close the figure in the case of batch processing"""
-        plt.close(self.fig)
-        # https://github.com/matplotlib/matplotlib/issues/25406
         # this is ugly, but it seems effective
         del self.fig
-        gc.collect()
 
     def draw_usdm(self, valid=None, filled=True, hatched=False, **kwargs):
         """Overlay the US Drought Monitor
@@ -435,7 +431,7 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(levels, 22)
         for i, (name, colors) in enumerate(ramps.items()):
             cmap = mpcolors.ListedColormap(colors, name=name)
-            cb = plt.colorbar(
+            cb = self.fig.colorbar(
                 mpcm.ScalarMappable(norm=norm, cmap=cmap),
                 cax=axes[i],
                 boundaries=levels,
@@ -490,7 +486,7 @@ class MapPlot:
         else:
             blevels = clevs
         stride = slice(None, None, int(kwargs.get("clevstride", 1)))
-        cb2 = plt.colorbar(
+        cb2 = self.fig.colorbar(
             mpcm.ScalarMappable(norm=norm, cmap=cmap),
             cax=self.cax,
             boundaries=blevels,
@@ -827,7 +823,7 @@ class MapPlot:
                         )
                     continue
                 if self.debug:
-                    rec = plt.Rectangle(
+                    rec = Rectangle(
                         [imgx0, imgy0],
                         (imgx1 - imgx0),
                         (imgy1 - imgy0),
@@ -882,7 +878,7 @@ class MapPlot:
                     t0.set_backgroundcolor(row["backgroundcolor"])
                 bbox = t0.get_window_extent(self.fig.canvas.get_renderer())
                 if self.debug:
-                    rec = plt.Rectangle(
+                    rec = Rectangle(
                         [bbox.x0, bbox.y0],
                         bbox.width,
                         bbox.height,
@@ -1600,7 +1596,7 @@ class MapPlot:
             caxpos or (pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015)
         )
         # pylint: disable=unsubscriptable-object
-        cb = plt.colorbar(
+        cb = self.fig.colorbar(
             mpcm.ScalarMappable(norm=norm, cmap=cmap),
             cax=cax,
             ticks=ramp.loc[ramp["value"] % 20 == 0]["coloridx"].values,
