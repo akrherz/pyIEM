@@ -2,7 +2,7 @@
 
 import pytest
 
-from pyiem.plot.use_agg import plt
+from pyiem.plot.use_agg import figure
 from pyiem.plot.util import (
     centered_bins,
     draw_logo,
@@ -15,7 +15,7 @@ from pyiem.plot.util import (
 @pytest.mark.mpl_image_compare(tolerance=0.01, savefig_kwargs={"dpi": 200})
 def test_fontscale():
     """Test that fontscale makes sense"""
-    fig = plt.figure(dpi=200)
+    fig = figure(dpi=200)
     ax = fig.add_axes((0, 0, 1, 1))
     ax.plot((0, 1), (0.25, 0.25))
     ax.plot((0, 1), (0.75, 0.75))

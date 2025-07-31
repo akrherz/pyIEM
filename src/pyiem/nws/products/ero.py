@@ -303,11 +303,11 @@ class ERO(TextProduct):
     def draw_outlooks(self):
         """For debugging, draw the outlooks on a simple map for inspection!"""
         # pylint: disable=import-outside-toplevel
-        import matplotlib.pyplot as plt
+        from pyiem.plot.use_agg import figure
 
         for day, collect in self.outlook_collections.items():
             for outlook in collect.outlooks:
-                fig = plt.figure(figsize=(12, 8))
+                fig = figure(figsize=(12, 8))
                 ax = fig.add_subplot(111)
                 # pylint: disable=unsubscriptable-object
                 ax.plot(
@@ -334,7 +334,6 @@ class ERO(TextProduct):
                 ).replace(" ", "_")
                 LOG.info(":: creating plot %s", fn)
                 fig.savefig(fn)
-                plt.close()
 
     def find_issue_expire(self):
         """

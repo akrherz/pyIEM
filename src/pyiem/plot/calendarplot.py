@@ -11,7 +11,6 @@ from matplotlib.patches import Rectangle
 
 from pyiem.plot.colormaps import get_cmap
 from pyiem.plot.layouts import figure
-from pyiem.plot.use_agg import plt
 from pyiem.plot.util import fitbox, fontscale, update_kwargs_apctx
 from pyiem.reference import (
     TWITTER_RESOLUTION_INCH,
@@ -82,7 +81,7 @@ def _compute_bounds(sts, ets):
     return bounds
 
 
-def _do_cell(axes, now, data, row, dx, dy, kwargs):
+def _do_cell(fig, axes, now, data, row, dx, dy, kwargs):
     """Do what work is necessary within the cell"""
     val = data.get(now, {}).get("val")
     cellcolor = (
@@ -124,7 +123,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
     ytop = bbox.y0 + (bbox.y1 - bbox.y0) * 0.9
     y0 = ytop - (row + 1) * sdy
     fitbox(
-        plt.gcf(),
+        fig,
         val,
         x0,
         x0 + sdx,
@@ -138,7 +137,7 @@ def _do_cell(axes, now, data, row, dx, dy, kwargs):
     )
 
 
-def _do_month(month, axes, data, in_sts, in_ets, kwargs):
+def _do_month(month, fig, axes, data, in_sts, in_ets, kwargs):
     """Place data on this axes"""
     # No ticks
     axes.get_xaxis().set_visible(False)
@@ -151,7 +150,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     ndcwidth = pos.x1 - pos.x0
 
     fitbox(
-        plt.gcf(),
+        fig,
         month.strftime("%B %Y"),
         pos.x0,
         pos.x1,
@@ -181,8 +180,8 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
     row = 0
     dy = 0.9 / float(weeks)
     dx = 1.0 / 7.0
-    dow_fontsize = fontscale(ndcwidth / 8.0 * 0.4)
-    day_fontsize = fontscale(ndcheight / 5.0 * 0.33)
+    dow_fontsize = fontscale(ndcwidth / 8.0 * 0.4, fig)
+    day_fontsize = fontscale(ndcheight / 5.0 * 0.33, fig)
     for i, dow in enumerate(["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]):
         axes.text(
             1.0 / 7.0 * (i + 0.5),
@@ -210,7 +209,7 @@ def _do_month(month, axes, data, in_sts, in_ets, kwargs):
             va="top",
             zorder=Z_OVERLAY2_LABEL,
         )
-        _do_cell(axes, now, data, row, dx, dy, kwargs)
+        _do_cell(fig, axes, now, data, row, dx, dy, kwargs)
         now += datetime.timedelta(days=1)
 
 
@@ -256,7 +255,7 @@ def calendar_plot(sts, ets, data, **kwargs):
         )
     for month in bounds:
         ax = fig.add_axes(bounds[month])
-        _do_month(month, ax, data, sts, ets, kwargs)
+        _do_month(month, fig, ax, data, sts, ets, kwargs)
 
     title = kwargs.get("title")
     if title is not None:

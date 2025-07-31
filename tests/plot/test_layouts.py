@@ -5,13 +5,10 @@ import pytest
 
 from pyiem.plot.layouts import figure, figure_axes
 
-# local
-from pyiem.plot.use_agg import plt
-
 
 def test_provided_fig():
     """Test that figsize gets set properly."""
-    fig = plt.figure()
+    fig = figure()
     figure(fig=fig, apctx={"_r": "169"})
     assert fig.get_size_inches()[0] == 12.8
 

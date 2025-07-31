@@ -174,7 +174,7 @@ def draw_logo(fig, logoname):
     ax.imshow(logo, aspect="equal", zorder=-1)
 
 
-def fontscale(ratio, fig=None):
+def fontscale(ratio, fig):
     """Return a font size suitable for this NDC ratio.
 
     Args:
@@ -185,11 +185,6 @@ def fontscale(ratio, fig=None):
     -------
       float: font size
     """
-    if fig is None:
-        # Lazy import to prevent default backend setting
-        import matplotlib.pyplot as plt
-
-        fig = plt.gcf()
     bbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
     # point size is 72 pts per inch
     return bbox.height * 72.0 * ratio

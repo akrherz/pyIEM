@@ -113,9 +113,10 @@ def debug_draw(i, segment):
     """Draw this for debugging purposes."""
     segment = np.array(segment)
     # pylint: disable=import-outside-toplevel
-    from pyiem.plot.use_agg import plt
+    from pyiem.plot.use_agg import figure
 
-    (fig, ax) = plt.subplots(1, 1)
+    fig = figure(figsize=(10, 10), dpi=100)
+    ax = fig.add_subplot(111)
     ax.plot(segment[:, 0], segment[:, 1], c="b")
     ax.plot(CONUS["poly"].exterior.xy[0], CONUS["poly"].exterior.xy[1], c="r")
     mydir = tempfile.gettempdir()
