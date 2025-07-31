@@ -40,7 +40,6 @@ import pandas as pd
 import rasterio
 from affine import Affine
 from matplotlib.patches import Rectangle, Wedge
-from matplotlib.pyplot import colorbar
 from metpy.calc import wind_components
 from metpy.units import units
 from PIL import Image
@@ -143,7 +142,7 @@ class MapPlot:
             continentalcolor (color): color to use for continental coloring
             debug (bool): enable debugging
             aspect (str): plot aspect, defaults to auto
-            fig (matplotlib.pyplot.figure,optional): provide a figure instance
+            fig (matplotlib.figure.Figure,optional): provide a figure instance
               for more advanced plot control.
             logo (str,optional): logo name to slap on the plot.
             twitter (bool): Set an image resolution that is favorable to
@@ -432,7 +431,7 @@ class MapPlot:
         norm = mpcolors.BoundaryNorm(levels, 22)
         for i, (name, colors) in enumerate(ramps.items()):
             cmap = mpcolors.ListedColormap(colors, name=name)
-            cb = colorbar(
+            cb = self.fig.colorbar(
                 mpcm.ScalarMappable(norm=norm, cmap=cmap),
                 cax=axes[i],
                 boundaries=levels,
@@ -487,7 +486,7 @@ class MapPlot:
         else:
             blevels = clevs
         stride = slice(None, None, int(kwargs.get("clevstride", 1)))
-        cb2 = colorbar(
+        cb2 = self.fig.colorbar(
             mpcm.ScalarMappable(norm=norm, cmap=cmap),
             cax=self.cax,
             boundaries=blevels,
@@ -1597,7 +1596,7 @@ class MapPlot:
             caxpos or (pos.x1 - 0.35, pos.y1 - 0.01, 0.35, 0.015)
         )
         # pylint: disable=unsubscriptable-object
-        cb = colorbar(
+        cb = self.fig.colorbar(
             mpcm.ScalarMappable(norm=norm, cmap=cmap),
             cax=cax,
             ticks=ramp.loc[ramp["value"] % 20 == 0]["coloridx"].values,

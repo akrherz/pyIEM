@@ -1,8 +1,4 @@
-"""A utility to load matplotlib and set the backend to AGG
-
-This module provides matplotlib's object-oriented API functions to avoid
-memory leaks associated with pyplot's global state management.
-"""
+"""A utility to load matplotlib and set the backend to AGG."""
 
 # pylint: disable=unused-import,wrong-import-position
 import os
@@ -21,11 +17,8 @@ if "TEST_DATA_DIR" not in os.environ:
     os.environ["TEST_DATA_DIR"] = "/tmp"
 
 
-# Object-oriented API functions to replace pyplot
 def figure(**kwargs) -> Figure:
-    """Create a new figure using matplotlib's OO API instead of pyplot.
-
-    This avoids pyplot's global state management that can cause memory leaks.
+    """Create a new figure using matplotlib's OO API.
 
     Args:
         **kwargs: Arguments to pass to Figure constructor
@@ -36,7 +29,6 @@ def figure(**kwargs) -> Figure:
     from matplotlib.backends.backend_agg import FigureCanvasAgg
 
     fig = matplotlib.figure.Figure(**kwargs)
-    # Set up the canvas to match pyplot behavior
     canvas = FigureCanvasAgg(fig)
     fig.set_canvas(canvas)
     return fig
