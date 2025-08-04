@@ -73,12 +73,13 @@ def test_gh1046_alaska_discontinued():
     """Test plotting of discontinued Alaska zones."""
     data = {"AKZ145": 33, "AKZ155": 4, "AKZ181": 1, "AKZ152": 3, "AKZ125": 16}
     mp = MapPlot(
-        sector="cwa",
-        cwa="AFC",
+        sector="state",
+        state="AK",
         title="Alaska Discontinued Zones",
         nocaption=True,
     )
     mp.fill_ugcs(data, discontinued=True)
+    mp.draw_cwas()
     return mp.fig
 
 

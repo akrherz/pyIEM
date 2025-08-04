@@ -657,7 +657,7 @@ def test_bug_140506_day2():
     assert j[-1][0] == ans
     ans = (
         "https://mesonet.agron.iastate.edu/plotting/auto/plot/220/"
-        "cat:categorical::which:2C::t:conus::network:WFO::wfo:TSA::_r:86::"
+        "cat:categorical::which:2C::t:conus::network:WFO::wfo:UNR::_r:86::"
         "csector:conus::valid:2014-05-06%201731.png"
     )
     assert j[-1][2]["twitter_media"] == ans
