@@ -595,6 +595,12 @@ def test_vtecps():
     assert ctx.get("phenomenav5") is None
     # For v6, we have empty strings, so should be None
     assert ctx.get("phenomenav6") is None
+    # Test empty strings
+    form["phenomenav1"] = ""
+    form["significancev1"] = ""
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["phenomenav1"] == "TO"
+    assert ctx["significancev1"] == "W"
 
 
 @pytest.mark.parametrize("database", ["mesosite"])
