@@ -547,7 +547,7 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 ctx[label2] = fdict.get(label2, defaults.get(label))
                 # Prevent empty strings from being set
                 if ctx[label2] is not None and ctx[label2] == "":
-                    ctx[label2] = None
+                    ctx[label2] = defaults.get(label)
             continue
         elif typ == "dat":
             # Damage Assessment Toolkit
