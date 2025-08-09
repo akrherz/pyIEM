@@ -14,6 +14,17 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_d48_crosses_month():
+    """Test that the right month is assigned to this."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSD48_crosses.txt"),
+        utcnow=utc(2015, 3, 30, 10),
+    )
+    for day in range(4, 9):
+        outlookcollect = prod.get_outlookcollection(day)
+        assert outlookcollect.issue.month == 4
+
+
 def test_gh936_day3_20z():
     """Test that this gets a 20z cycle."""
     prod = parser(
