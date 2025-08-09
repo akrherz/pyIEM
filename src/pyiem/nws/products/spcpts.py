@@ -158,7 +158,7 @@ def str2multipolygon(s):
     return MultiPolygon(polygons)
 
 
-def init_days(prod):
+def init_days(prod) -> dict[int, "SPCOutlookCollection"]:
     """Figure out which days this product should have based on the AFOS."""
 
     def f(day):
@@ -324,7 +324,7 @@ class SPCPTS(TextProduct):
         self.compute_wfos()
         self.cycle = _compute_cycle(self)
 
-    def get_outlookcollection(self, day):
+    def get_outlookcollection(self, day: int) -> SPCOutlookCollection | None:
         """Return the SPCOutlookCollection for a given day."""
         return self.outlook_collections.get(day)
 
