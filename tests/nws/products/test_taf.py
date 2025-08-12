@@ -11,6 +11,15 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_tafjxn():
+    """Test that we get the prob in this TAF."""
+    utcnow = utc(2025, 8, 4, 0)
+    prod = real_tafparser(get_test_file("TAF/TAFJXN.txt"), utcnow=utcnow)
+    assert prod.data.forecasts
+    ans = "0318/0418 29013G21KT P6SM BKN025"
+    assert prod.data.observation.raw == ans
+
+
 def test_tafpam():
     """Test what was likely a mis-fire."""
     utcnow = utc(2025, 8, 7, 0)

@@ -123,13 +123,22 @@ def ddhhmi2valid(prod, text):
     return valid
 
 
-def parse_prod(prod):
+def parse_prod(prod: TextProduct):
     """Generate a data object from this product."""
     m = STID_VALID.search(prod.unixtext)
     d = m.groupdict()
-    meat = ""
-    tokens = []
-    parts = prod.unixtext[m.end() : prod.unixtext.find("=")].split("\n")
+    lines = []
+    meat = prod.unixtext[m.end() : prod.unixtext.find("=")]
+    accum = ""
+    for token in [x.strip() for x in meat.splitlines()]:
+        if token.startswith(("FM", "TEMPO", "BECMG", "PROB")):
+            if accum != "":
+                lines.append(accum)
+            accum = token
+        else:
+            accum += f" {token}"
+    if accum != "":
+        lines.append(accum)
     # Deal with the observation
     valid = ddhhmi2valid(prod, d["ddhhmi"])
     data = TAFReport(
@@ -138,24 +147,20 @@ def parse_prod(prod):
         product_id=prod.get_product_id(),
         observation=TAFForecast(
             valid=valid,
-            raw=parts[0].strip(),
+            raw=lines[0],
             ftype=FTYPE["OB"],
         ),  # type: ignore
     )
-    add_forecast_info(data.observation, parts[0])
+    add_forecast_info(data.observation, lines[0])
 
-    # Deal with the forecast detail
-    for line in parts[1:]:
-        ls = line.strip()
-        if ls.startswith(("FM", "TEMPO", "BECMG")):
-            if meat != "":
-                tokens.append(meat.strip())
-            meat = line
-        else:
-            meat += line
-    if meat != "":
-        tokens.append(meat.strip())
-    for token in tokens:
+    # Double check lines[0] for stuff
+    parts = re.split(r"(TEMPO|PROB30|PROB40|BECMG)", lines[0])
+    if len(parts) > 1:
+        data.observation.raw = parts[0].strip()
+        # Insert into lines
+        lines.insert(1, f"{parts[1]} {parts[2]}")
+
+    for token in lines[1:]:
         diction = None
         for part in re.split(r"(TEMPO|PROB30|PROB40|BECMG)", token):
             if part == "":
