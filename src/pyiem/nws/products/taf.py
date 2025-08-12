@@ -20,6 +20,16 @@ SHEAR_RE = re.compile(
     r" WS(?P<level>\d{3})/(?P<drct>\d{3})(?P<sknt>\d{2,3})KT"
 )
 
+# Lame redefinition of what's in the database for ftype column
+FTYPE = {
+    "OB": 0,
+    "FM": 1,
+    "TEMPO": 2,
+    "PROB30": 3,
+    "PROB40": 4,
+    "BECMG": 5,
+}
+
 
 def add_forecast_info(fx, text):
     """Common things."""
@@ -57,9 +67,9 @@ def add_forecast_info(fx, text):
         )
 
 
-def make_tempo(prod, text):
+def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
     """Parse a tempo group."""
-    text = text.replace("TEMPO ", "")
+    text = text.replace(f"{ftype_str} ", "")
     # Convert the ddhr/ddhr
     m = TEMPO_TIME.search(text)
     if m is None:
@@ -69,11 +79,11 @@ def make_tempo(prod, text):
     ets = ddhhmi2valid(prod, d["ddhh2"] + "00")
 
     fx = TAFForecast(
+        ftype=FTYPE[ftype_str],
         valid=sts,
         end_valid=ets,
-        raw=text.replace("=", "").strip(),
-        istempo=True,
-    )
+        raw=f"{ftype_str} {' '.join(text.split()).replace('=', '').strip()}",
+    )  # type: ignore
     add_forecast_info(fx, text)
     return fx
 
@@ -83,8 +93,9 @@ def make_forecast(prod, text):
     valid = ddhhmi2valid(prod, text[2:8])
     fx = TAFForecast(
         valid=valid,
-        raw=text.replace("=", "").strip(),
-    )
+        raw=" ".join(text.split()).replace("=", "").strip(),
+        ftype=FTYPE["FM"],
+    )  # type: ignore
     add_forecast_info(fx, text)
     return fx
 
@@ -128,14 +139,15 @@ def parse_prod(prod):
         observation=TAFForecast(
             valid=valid,
             raw=parts[0].strip(),
-        ),
+            ftype=FTYPE["OB"],
+        ),  # type: ignore
     )
     add_forecast_info(data.observation, parts[0])
 
     # Deal with the forecast detail
     for line in parts[1:]:
         ls = line.strip()
-        if ls.startswith("FM") or ls.startswith("TEMPO"):
+        if ls.startswith(("FM", "TEMPO", "BECMG")):
             if meat != "":
                 tokens.append(meat.strip())
             meat = line
@@ -144,10 +156,22 @@ def parse_prod(prod):
     if meat != "":
         tokens.append(meat.strip())
     for token in tokens:
-        func = make_forecast if token.startswith("FM") else make_tempo
-        forecast = func(prod, token)
-        if forecast is not None:
-            data.forecasts.append(forecast)
+        diction = None
+        for part in re.split(r"(TEMPO|PROB30|PROB40|BECMG)", token):
+            if part == "":
+                continue
+            if part.startswith("FM"):
+                forecast = make_forecast(prod, part.strip())
+                if forecast is not None:
+                    data.forecasts.append(forecast)
+                continue
+            if diction is not None:
+                forecast = make_qualifier(prod, part.strip(), diction)
+                if forecast is not None:
+                    data.forecasts.append(forecast)
+                diction = None
+                continue
+            diction = part.strip()
 
     return data
 
@@ -161,6 +185,9 @@ class TAFProduct(TextProduct):
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
     ):
         """constructor"""
+        # Prevent expensive and unnecessary dblookup
+        if ugc_provider is None:
+            ugc_provider = {}
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
         self.data = parse_prod(self)
 
@@ -186,13 +213,14 @@ class TAFProduct(TextProduct):
             txn.execute(
                 "INSERT into taf_forecast(taf_id, valid, raw, is_tempo, "
                 "end_valid, sknt, drct, gust, visibility, presentwx, skyc, "
-                "skyl, ws_level, ws_drct, ws_sknt) VALUES (%s, %s, %s, %s, "
-                "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                "skyl, ws_level, ws_drct, ws_sknt, ftype) VALUES "
+                "(%s, %s, %s, %s, "
+                "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     taf_id,
                     entry.valid,
                     entry.raw,
-                    entry.istempo,
+                    entry.ftype == FTYPE["TEMPO"],
                     entry.end_valid,
                     entry.sknt,
                     entry.drct,
@@ -204,6 +232,7 @@ class TAFProduct(TextProduct):
                     None if entry.shear is None else entry.shear.level,
                     None if entry.shear is None else entry.shear.drct,
                     None if entry.shear is None else entry.shear.sknt,
+                    entry.ftype,
                 ),
             )
 

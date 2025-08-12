@@ -28,7 +28,7 @@ class TAFForecast(BaseModel):
 
     valid: datetime
     raw: str
-    istempo: bool = False
+    ftype: int = Field(..., ge=0, le=5)
     end_valid: datetime = None
     sknt: int = Field(None, ge=0, le=199)
     drct: int = Field(None, ge=0, le=360)
