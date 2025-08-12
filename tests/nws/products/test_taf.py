@@ -15,9 +15,11 @@ def test_250812_tafgrr():
     """Test that the PROB gets properly parsed here."""
     utcnow = utc(2025, 8, 12, 18)
     prod = real_tafparser(get_test_file("TAF/TAFGRR.txt"), utcnow=utcnow)
+    ans = "1219/1318 23009KT P6SM VCTS SCT040CB"
+    assert prod.data.observation.raw == ans
     assert prod.data.forecasts[0].visibility == 2
-    assert len(prod.data.forecasts) == 4
-    ans = "PROB30 1219/1223 2SM +TSRA BKN035CB"
+    assert len(prod.data.forecasts) == 6
+    ans = "TEMPO 1219/1221 2SM TSRA BKN040CB"
     assert prod.data.forecasts[0].raw == ans
 
 

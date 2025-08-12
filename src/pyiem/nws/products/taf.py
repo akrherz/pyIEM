@@ -147,7 +147,7 @@ def parse_prod(prod: TextProduct):
         product_id=prod.get_product_id(),
         observation=TAFForecast(
             valid=valid,
-            raw=lines[0],
+            raw=" ".join(lines[0].split()).strip(),
             ftype=FTYPE["OB"],
         ),  # type: ignore
     )
