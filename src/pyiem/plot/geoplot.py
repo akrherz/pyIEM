@@ -1273,9 +1273,9 @@ class MapPlot:
         geodf = load_geodf("us_states")
         if self.sector in ["nws", "conus"]:
             st = ["NH", "MD", "CT"]
-            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3  # type: ignore
+            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] - 0.3
             st = ["VT", "DE"]
-            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3  # type: ignore
+            geodf.loc[st, "lat"] = geodf.loc[st, "lat"] + 0.3
         polygon_fill(self, geodf, data, **kwargs)
         if self.sector != "nws":
             return

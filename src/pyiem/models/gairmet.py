@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 # third party
 from shapely.geometry import MultiLineString, Polygon
@@ -43,5 +43,5 @@ class GAIRMETModel(BaseModel):
     valid_from: datetime
     valid_to: datetime
     issuetime: datetime
-    airmets: List[AIRMETRecord] = []
-    freezing_levels: List[FreezingLevelRecord] = []
+    airmets: List[AIRMETRecord] = Field(default_factory=list)
+    freezing_levels: List[FreezingLevelRecord] = Field(default_factory=list)

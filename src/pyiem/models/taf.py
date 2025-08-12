@@ -29,14 +29,14 @@ class TAFForecast(BaseModel):
     valid: datetime
     raw: str
     ftype: int = Field(..., ge=0, le=5)
-    end_valid: datetime = None
-    sknt: int = Field(None, ge=0, le=199)
-    drct: int = Field(None, ge=0, le=360)
-    gust: int = Field(None, ge=0, le=199)
-    visibility: float = Field(None, ge=0, le=6)
-    presentwx: List[str] = []
-    sky: List[SkyCondition] = []
-    shear: WindShear = None
+    end_valid: Optional[datetime] = None
+    sknt: Optional[int] = Field(default=None, ge=0, le=199)
+    drct: Optional[int] = Field(default=None, ge=0, le=360)
+    gust: Optional[int] = Field(default=None, ge=0, le=199)
+    visibility: Optional[float] = Field(default=None, ge=0, le=6)
+    presentwx: List[str] = Field(default_factory=list)
+    sky: List[SkyCondition] = Field(default_factory=list)
+    shear: Optional[WindShear] = None
 
 
 class TAFReport(BaseModel):
@@ -46,4 +46,4 @@ class TAFReport(BaseModel):
     valid: datetime
     product_id: str = Field(..., min_length=28, max_length=35)
     observation: TAFForecast
-    forecasts: List[TAFForecast] = []
+    forecasts: List[TAFForecast] = Field(default_factory=list)

@@ -83,7 +83,7 @@ def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
         valid=sts,
         end_valid=ets,
         raw=f"{ftype_str} {' '.join(text.split()).replace('=', '').strip()}",
-    )  # type: ignore
+    )
     add_forecast_info(fx, text)
     return fx
 
@@ -95,7 +95,7 @@ def make_forecast(prod, text):
         valid=valid,
         raw=" ".join(text.split()).replace("=", "").strip(),
         ftype=FTYPE["FM"],
-    )  # type: ignore
+    )
     add_forecast_info(fx, text)
     return fx
 
@@ -149,7 +149,7 @@ def parse_prod(prod: TextProduct):
             valid=valid,
             raw=" ".join(lines[0].split()).strip(),
             ftype=FTYPE["OB"],
-        ),  # type: ignore
+        ),
     )
     add_forecast_info(data.observation, lines[0])
 
