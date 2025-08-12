@@ -11,6 +11,26 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_tafpam():
+    """Test what was likely a mis-fire."""
+    utcnow = utc(2025, 8, 7, 0)
+    prod = real_tafparser(get_test_file("TAF/TAFPAM.txt"), utcnow=utcnow)
+    assert prod.data.observation.ftype == 0
+    assert prod.data.forecasts[0].ftype == 2
+    assert prod.data.forecasts[1].ftype == 5
+
+
+def test_gh1104_tafhky():
+    """Test that we deal with PROB30."""
+    utcnow = utc(2025, 8, 15, 0)
+    prod = real_tafparser(get_test_file("TAF/TAFHKY.txt"), utcnow=utcnow)
+    assert prod.data.observation.ftype == 0
+    answers = [2, 1, 1, 3, 1]
+    for idx in range(5):
+        assert prod.data.forecasts[idx].ftype == answers[idx]
+    assert prod.data.forecasts[3].visibility == 4
+
+
 @pytest.mark.parametrize("database", ["asos"])
 def test_gh453_skc(dbcursor):
     """Test that SKC gets encoded as clear and not present weather."""
