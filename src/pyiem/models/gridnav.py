@@ -1,6 +1,6 @@
 """Grid Navigation Metadata."""
 
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 import numpy as np
 from affine import Affine
@@ -30,30 +30,30 @@ class CartesianGridNavigation(BaseModel):
         default=...,
         description="The bottom edge of the grid in projection units",
     )
-    top_edge: float = Field(
+    top_edge: Optional[float] = Field(
         default=None,
         description="The top edge of the grid in projection units",
     )
-    right_edge: float = Field(
+    right_edge: Optional[float] = Field(
         default=None,
         description="The right edge of the grid in projection units",
     )
-    dx: float = Field(
+    dx: Optional[float] = Field(
         default=None,
         description="The grid cell width in projection units",
         gt=0,
     )
-    dy: float = Field(
+    dy: Optional[float] = Field(
         default=None,
         description="The grid cell height in projection units",
         gt=0,
     )
-    nx: int = Field(
+    nx: Optional[int] = Field(
         default=None,
         description="The number of grid cells in the x direction",
         gt=0,
     )
-    ny: int = Field(
+    ny: Optional[int] = Field(
         default=None,
         description="The number of grid cells in the y direction",
         gt=0,
@@ -62,53 +62,73 @@ class CartesianGridNavigation(BaseModel):
     @property
     def x_points(self) -> np.ndarray:
         """These are the centers of the cells in the x direction."""
-        return np.arange(self.nx) * self.dx + self.left
+        return np.arange(cast(int, self.nx)) * cast(float, self.dx) + self.left
 
     @property
     def y_points(self) -> np.ndarray:
         """These are the centers of the cells in the y direction."""
-        return np.arange(self.ny) * self.dy + self.bottom
+        return (
+            np.arange(cast(int, self.ny)) * cast(float, self.dy) + self.bottom
+        )
 
     @property
     def x_edges(self) -> np.ndarray:
         """These are the edges of the x cells (n=NX + 1)."""
-        return np.arange(self.nx + 1) * self.dx + self.left_edge
+        return (
+            np.arange(cast(int, self.nx) + 1) * cast(float, self.dx)
+            + self.left_edge
+        )
 
     @property
     def y_edges(self) -> np.ndarray:
         """These are the edges of the y cells (n=NY + 1)."""
-        return np.arange(self.ny + 1) * self.dy + self.bottom_edge
+        return (
+            np.arange(cast(int, self.ny) + 1) * cast(float, self.dy)
+            + self.bottom_edge
+        )
 
     @property
     def left(self) -> float:
         """The centroid of the left most grid cell."""
-        return self.left_edge + (self.dx / 2.0)
+        return self.left_edge + (cast(float, self.dx) / 2.0)
 
     @property
     def right(self) -> float:
         """The centroid of the right most grid cell."""
-        return self.right_edge - (self.dx / 2.0)
+        return self.right_edge - (cast(float, self.dx) / 2.0)
 
     @property
     def bottom(self) -> float:
         """The centroid of the bottom most grid cell."""
-        return self.bottom_edge + (self.dy / 2.0)
+        return self.bottom_edge + (cast(float, self.dy) / 2.0)
 
     @property
     def top(self) -> float:
         """The centroid of the top most grid cell."""
-        return self.top_edge - (self.dy / 2.0)
+        return cast(float, self.top_edge) - (cast(float, self.dy) / 2.0)
 
     @property
     def affine(self):
         """Return the affine transformation."""
-        return Affine(self.dx, 0, self.left_edge, 0, self.dy, self.bottom_edge)
+        return Affine(
+            cast(float, self.dx),
+            0,
+            self.left_edge,
+            0,
+            cast(float, self.dy),
+            self.bottom_edge,
+        )
 
     @property
     def affine_image(self):
         """Return the transformation associated with upper left origin."""
         return Affine(
-            self.dx, 0, self.left_edge, 0, 0 - self.dy, self.top_edge
+            cast(float, self.dx),
+            0,
+            self.left_edge,
+            0,
+            0 - cast(float, self.dy),
+            cast(float, self.top_edge),
         )
 
     @model_validator(mode="before")

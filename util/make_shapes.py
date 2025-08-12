@@ -112,7 +112,7 @@ def dump_fema_regions(fn):
             conn,
             geom_col="geom",
             index_col="region",
-        )
+        )  # type: ignore
     df.to_parquet(fn)
 
 

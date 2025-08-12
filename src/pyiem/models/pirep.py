@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -20,18 +21,18 @@ class Priority(str, Enum):
 class PilotReport(BaseModel):
     """A Pilot Report."""
 
-    base_loc: str = None
-    flight_level: int = Field(
+    base_loc: Optional[str] = None
+    flight_level: Optional[int] = Field(
         default=None,
         description="The flight level of the aircraft in feet.",
         gt=0,
         lt=100000,  # 100k feet, arb
     )
-    text: str = None
-    priority: Priority = None
-    latitude: float = None
-    longitude: float = None
-    valid: datetime = None
-    cwsu: str = None
-    aircraft_type: str = None
+    text: Optional[str] = None
+    priority: Optional[Priority] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    valid: Optional[datetime] = None
+    cwsu: Optional[str] = None
+    aircraft_type: Optional[str] = None
     is_duplicate: bool = False
