@@ -216,16 +216,15 @@ class TAFProduct(TextProduct):
         # Insert obs / forecast
         for entry in [taf.observation, *taf.forecasts]:
             txn.execute(
-                "INSERT into taf_forecast(taf_id, valid, raw, is_tempo, "
+                "INSERT into taf_forecast(taf_id, valid, raw, "
                 "end_valid, sknt, drct, gust, visibility, presentwx, skyc, "
                 "skyl, ws_level, ws_drct, ws_sknt, ftype) VALUES "
                 "(%s, %s, %s, %s, "
-                "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     taf_id,
                     entry.valid,
                     entry.raw,
-                    entry.ftype == FTYPE["TEMPO"],
                     entry.end_valid,
                     entry.sknt,
                     entry.drct,
