@@ -11,6 +11,14 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_egrr():
+    """Test some cruft."""
+    utcnow = utc(1998, 7, 1, 12)
+    prod = real_tafparser(get_test_file("TAF/TAF_EGRR.txt"), utcnow=utcnow)
+    # Bad PROB30 sections
+    assert prod.warnings
+
+
 def test_taf_amd():
     """Test an old TAF with a variant for a timestamp."""
     utcnow = utc(1999, 1, 1, 2)
