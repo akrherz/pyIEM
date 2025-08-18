@@ -11,6 +11,29 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_250818_tafags():
+    """Test a TAF found in 2018 that fails."""
+    utcnow = utc(2018, 1, 1, 6)
+    prod = real_tafparser(get_test_file("TAF/TAFAGS.txt"), utcnow=utcnow)
+    # TEMPO is invalid
+    assert prod.warnings
+    assert len(prod.data.forecasts) == 3
+
+
+def test_250818_tafags_2():
+    """Test a TAF found in 2018 that fails."""
+    utcnow = utc(2018, 1, 1, 6)
+    prod = real_tafparser(get_test_file("TAF/TAFAGS_2.txt"), utcnow=utcnow)
+    assert len(prod.data.forecasts) == 4
+
+
+def test_250818_taftop():
+    """Test something found in the wild."""
+    utcnow = utc(2025, 8, 18, 12)
+    prod = real_tafparser(get_test_file("TAF/TAFTOP.txt"), utcnow=utcnow)
+    assert len(prod.data.forecasts) == 3
+
+
 def test_250812_tafgrr():
     """Test that the PROB gets properly parsed here."""
     utcnow = utc(2025, 8, 12, 18)

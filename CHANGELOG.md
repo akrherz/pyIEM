@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Support `BECMG`, `PROB30`, and `PROB40` TAF forecast elements (#1104).
+- Support more TAF quirks and poor formatting.
 
 ### Bug Fixes
 

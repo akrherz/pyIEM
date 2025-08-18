@@ -2,7 +2,7 @@
 
 # stdlib
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from pyiem import reference
 from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
@@ -11,7 +11,9 @@ from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
 from pyiem.nws.product import TextProduct
 
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
-STID_VALID = re.compile(r"(?P<station>[A-Z0-9]{4}) (?P<ddhhmi>\d{6})Z")
+STID_VALID = re.compile(
+    r"^(?P<station>[A-Z0-9]{3,4}) (?P<ddhhmi>\d{6})Z", re.MULTILINE
+)
 WIND_RE = re.compile(r"(?P<dir>\d{3})(?P<sknt>\d{2,3})G?(?P<gust>\d{2,3})?KT")
 VIS_RE = re.compile(r" (?P<over>P?)(?P<miles>[1-6])?\s?(?P<frac>\d/\d+)?SM")
 WX_RE = re.compile(r"^([\-\+A-Z]+)$")
@@ -88,7 +90,7 @@ def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
     return fx
 
 
-def make_forecast(prod, text):
+def make_forecast(prod: TextProduct, text: str) -> TAFForecast:
     """Build a TAFForecast data model."""
     valid = ddhhmi2valid(prod, text[2:8])
     fx = TAFForecast(
@@ -100,11 +102,15 @@ def make_forecast(prod, text):
     return fx
 
 
-def ddhhmi2valid(prod, text):
+def ddhhmi2valid(prod: TextProduct, text: str) -> datetime:
     """Figure out what valid time this is."""
     dd = int(text[:2])
     hr = int(text[2:4])
-    mi = int(text[4:6])
+    # Account for 4 character timestamp :/
+    if text[4] == " ":
+        mi = 0
+    else:
+        mi = int(text[4:6])
     if hr == 24:
         valid = prod.valid.replace(day=dd, hour=0, minute=mi) + timedelta(
             days=1
@@ -142,7 +148,7 @@ def parse_prod(prod: TextProduct):
     # Deal with the observation
     valid = ddhhmi2valid(prod, d["ddhhmi"])
     data = TAFReport(
-        station=d["station"],
+        station=d["station"] if len(d["station"]) == 4 else f"K{d['station']}",
         valid=valid,
         product_id=prod.get_product_id(),
         observation=TAFForecast(
@@ -172,6 +178,10 @@ def parse_prod(prod: TextProduct):
                 continue
             if diction is not None:
                 forecast = make_qualifier(prod, part.strip(), diction)
+                if forecast is None:
+                    prod.warnings.append(
+                        f"Failed to parse {part.strip()} with {diction}"
+                    )
                 if forecast is not None:
                     data.forecasts.append(forecast)
                 diction = None
