@@ -11,6 +11,14 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_taf_amd():
+    """Test an old TAF with a variant for a timestamp."""
+    utcnow = utc(1999, 1, 1, 2)
+    prod = real_tafparser(get_test_file("TAF/TAF_amd.txt"), utcnow=utcnow)
+    assert not prod.warnings
+    assert len(prod.data[0].forecasts) == 4
+
+
 def test_taf_collective():
     """Test that we can process a legacy TAF collective :/"""
     utcnow = utc(2000, 4, 6, 20)
