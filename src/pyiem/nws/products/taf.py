@@ -13,7 +13,8 @@ from pyiem.nws.product import TextProduct
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
 TEMPO_TIME_LEGACY = re.compile(r"^(?P<hrhr2>\d{4}) ")
 STID_VALID = re.compile(
-    r"^(?P<station>[A-Z0-9]{3,4}) (AMD )?(?P<ddhhmi>\d{6})Z? ", re.MULTILINE
+    r"^(?P<station>[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P<ddhhmi>\d{6})Z? ",
+    re.MULTILINE,
 )
 WIND_RE = re.compile(r"(?P<dir>\d{3})(?P<sknt>\d{2,3})G?(?P<gust>\d{2,3})?KT")
 VIS_RE = re.compile(r" (?P<over>P?)(?P<miles>[1-6])?\s?(?P<frac>\d/\d+)?SM")
