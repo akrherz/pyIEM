@@ -11,6 +11,7 @@ from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
 from pyiem.nws.product import TextProduct
 
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
+TEMPO_TIME_LEGACY = re.compile(r"^(?P<hrhr2>\d{4}) ")
 STID_VALID = re.compile(
     r"^(?P<station>[A-Z0-9]{3,4}) (?P<ddhhmi>\d{6})Z", re.MULTILINE
 )
@@ -74,11 +75,17 @@ def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
     text = text.replace(f"{ftype_str} ", "")
     # Convert the ddhr/ddhr
     m = TEMPO_TIME.search(text)
-    if m is None:
-        return None
-    d = m.groupdict()
-    sts = ddhhmi2valid(prod, d["ddhh1"] + "00")
-    ets = ddhhmi2valid(prod, d["ddhh2"] + "00")
+    if m:
+        d = m.groupdict()
+        sts = ddhhmi2valid(prod, d["ddhh1"] + "00", prod.valid)
+        ets = ddhhmi2valid(prod, d["ddhh2"] + "00", prod.valid)
+    else:
+        m = TEMPO_TIME_LEGACY.search(text)
+        if m is None:
+            return None
+        d = m.groupdict()
+        sts = ambiguous_hour_magic(d["hrhr2"][:2] + "00", prod.valid)
+        ets = ambiguous_hour_magic(d["hrhr2"][2:] + "00", prod.valid)
 
     fx = TAFForecast(
         ftype=FTYPE[ftype_str],
@@ -90,9 +97,11 @@ def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
     return fx
 
 
-def make_forecast(prod: TextProduct, text: str) -> TAFForecast:
+def make_forecast(
+    prod: TextProduct, text: str, obvalid: datetime
+) -> TAFForecast:
     """Build a TAFForecast data model."""
-    valid = ddhhmi2valid(prod, text[2:8])
+    valid = ddhhmi2valid(prod, text[2:8], obvalid)
     fx = TAFForecast(
         valid=valid,
         raw=" ".join(text.split()).replace("=", "").strip(),
@@ -102,15 +111,27 @@ def make_forecast(prod: TextProduct, text: str) -> TAFForecast:
     return fx
 
 
-def ddhhmi2valid(prod: TextProduct, text: str) -> datetime:
+def ambiguous_hour_magic(text: str, obvalid: datetime) -> datetime:
+    """Make some magic happen for ambiguous dates."""
+    hr = int(text[:2])
+    mi = int(text[2:4])
+    if hr == 24:
+        valid = obvalid.replace(hour=0, minute=mi) + timedelta(days=1)
+    else:
+        valid = obvalid.replace(hour=hr, minute=mi)
+    if valid.hour < obvalid.hour:
+        valid += timedelta(days=1)
+    return valid
+
+
+def ddhhmi2valid(prod: TextProduct, text: str, obvalid: datetime) -> datetime:
     """Figure out what valid time this is."""
+    # Account for 4 character timestamp, likely hour and minute
+    if text[4] == " ":
+        return ambiguous_hour_magic(text[:4], obvalid)
     dd = int(text[:2])
     hr = int(text[2:4])
-    # Account for 4 character timestamp :/
-    if text[4] == " ":
-        mi = 0
-    else:
-        mi = int(text[4:6])
+    mi = int(text[4:6])
     if hr == 24:
         valid = prod.valid.replace(day=dd, hour=0, minute=mi) + timedelta(
             days=1
@@ -129,12 +150,12 @@ def ddhhmi2valid(prod: TextProduct, text: str) -> datetime:
     return valid
 
 
-def parse_prod(prod: TextProduct):
+def parse_prod(prod: TextProduct, segtext: str) -> TAFReport:
     """Generate a data object from this product."""
-    m = STID_VALID.search(prod.unixtext)
+    m = STID_VALID.search(segtext)
     d = m.groupdict()
     lines = []
-    meat = prod.unixtext[m.end() : prod.unixtext.find("=")]
+    meat = segtext[m.end() : segtext.find("=")]
     accum = ""
     for token in [x.strip() for x in meat.splitlines()]:
         if token.startswith(("FM", "TEMPO", "BECMG", "PROB")):
@@ -146,7 +167,7 @@ def parse_prod(prod: TextProduct):
     if accum != "":
         lines.append(accum)
     # Deal with the observation
-    valid = ddhhmi2valid(prod, d["ddhhmi"])
+    valid = ddhhmi2valid(prod, d["ddhhmi"], prod.valid)
     data = TAFReport(
         station=d["station"] if len(d["station"]) == 4 else f"K{d['station']}",
         valid=valid,
@@ -172,7 +193,9 @@ def parse_prod(prod: TextProduct):
             if part == "":
                 continue
             if part.startswith("FM"):
-                forecast = make_forecast(prod, part.strip())
+                forecast = make_forecast(
+                    prod, part.strip(), data.observation.valid
+                )
                 if forecast is not None:
                     data.forecasts.append(forecast)
                 continue
@@ -204,51 +227,55 @@ class TAFProduct(TextProduct):
         if ugc_provider is None:
             ugc_provider = {}
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
-        self.data = parse_prod(self)
+        self.data: list[TAFReport] = []
+        for token in self.unixtext.split("="):
+            if len(token) < 10:  # arb
+                continue
+            self.data.append(parse_prod(self, token.strip().lstrip("TAF ")))
 
-    def get_channels(self):
+    def get_channels_for_report(self, report: TAFReport) -> list[str]:
         """Return a list of channels"""
-        return [f"TAF{self.data.station[1:]}", "TAF...", f"{self.source}.TAF"]
+        return [f"TAF{report.station[1:]}", "TAF...", f"{self.source}.TAF"]
 
     def sql(self, txn):
         """Persist to the database."""
-        taf = self.data
-        # Product corrections are not really accounted for here due to
-        # performance worries
+        for taf in self.data:
+            # Product corrections are not really accounted for here due to
+            # performance worries
 
-        # Create an entry
-        txn.execute(
-            "INSERT into taf(station, valid, product_id) VALUES (%s, %s, %s) "
-            "RETURNING id",
-            (taf.station, taf.valid, self.get_product_id()),
-        )
-        taf_id = txn.fetchone()["id"]
-        # Insert obs / forecast
-        for entry in [taf.observation, *taf.forecasts]:
+            # Create an entry
             txn.execute(
-                "INSERT into taf_forecast(taf_id, valid, raw, "
-                "end_valid, sknt, drct, gust, visibility, presentwx, skyc, "
-                "skyl, ws_level, ws_drct, ws_sknt, ftype) VALUES "
-                "(%s, %s, %s, %s, "
-                "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (
-                    taf_id,
-                    entry.valid,
-                    entry.raw,
-                    entry.end_valid,
-                    entry.sknt,
-                    entry.drct,
-                    entry.gust,
-                    entry.visibility,
-                    entry.presentwx,
-                    [x.amount for x in entry.sky],
-                    [x.level for x in entry.sky],
-                    None if entry.shear is None else entry.shear.level,
-                    None if entry.shear is None else entry.shear.drct,
-                    None if entry.shear is None else entry.shear.sknt,
-                    entry.ftype,
-                ),
+                "INSERT into taf(station, valid, product_id) "
+                "VALUES (%s, %s, %s) RETURNING id",
+                (taf.station, taf.valid, self.get_product_id()),
             )
+            taf_id = txn.fetchone()["id"]
+            # Insert obs / forecast
+            for entry in [taf.observation, *taf.forecasts]:
+                txn.execute(
+                    "INSERT into taf_forecast(taf_id, valid, raw, "
+                    "end_valid, sknt, drct, gust, visibility, presentwx, "
+                    "skyc, skyl, ws_level, ws_drct, ws_sknt, ftype) VALUES "
+                    "(%s, %s, %s, %s, "
+                    "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (
+                        taf_id,
+                        entry.valid,
+                        entry.raw,
+                        entry.end_valid,
+                        entry.sknt,
+                        entry.drct,
+                        entry.gust,
+                        entry.visibility,
+                        entry.presentwx,
+                        [x.amount for x in entry.sky],
+                        [x.level for x in entry.sky],
+                        None if entry.shear is None else entry.shear.level,
+                        None if entry.shear is None else entry.shear.drct,
+                        None if entry.shear is None else entry.shear.sknt,
+                        entry.ftype,
+                    ),
+                )
 
     def get_jabbers(self, uri, _uri2=None):
         """Get the jabber variant of this message"""
@@ -257,25 +284,27 @@ class TAFProduct(TextProduct):
         aaa = "TAF"
         nicedate = self.get_nicedate()
         label = reference.prodDefinitions.get(aaa, aaa)
-        plain = (
-            f"{self.source[1:]} issues {label} ({aaa}) at {nicedate} for "
-            f"{self.data.station[1:]} {url}"
-        )
-        html = (
-            f'<p>{self.source[1:]} issues <a href="{url}">{label} ({aaa})</a> '
-            f"at {nicedate} for {self.data.station[1:]}</p>"
-        )
-        xtra = {
-            "channels": ",".join(self.get_channels()),
-            "product_id": self.get_product_id(),
-            "twitter": plain,
-            "twitter_media": (
-                "https://mesonet.agron.iastate.edu/plotting/auto/plot/219/"
-                f"station:{self.data.station}::valid:"
-                f"{self.data.valid.strftime('%Y-%m-%d%%20%H%M')}.png"
-            ),
-        }
-        res.append((plain, html, xtra))
+        for taf in self.data:
+            plain = (
+                f"{self.source[1:]} issues {label} ({aaa}) at {nicedate} for "
+                f"{taf.station[1:]} {url}"
+            )
+            html = (
+                f"<p>{self.source[1:]} issues "
+                f'<a href="{url}">{label} ({aaa})</a> '
+                f"at {nicedate} for {taf.station[1:]}</p>"
+            )
+            xtra = {
+                "channels": ",".join(self.get_channels_for_report(taf)),
+                "product_id": self.get_product_id(),
+                "twitter": plain,
+                "twitter_media": (
+                    "https://mesonet.agron.iastate.edu/plotting/auto/plot/219/"
+                    f"station:{taf.station}::valid:"
+                    f"{taf.valid.strftime('%Y-%m-%d%%20%H%M')}.png"
+                ),
+            }
+            res.append((plain, html, xtra))
         return res
 
 
