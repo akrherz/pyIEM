@@ -2,7 +2,7 @@
 
 # stdlib
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from pyiem import reference
 from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
@@ -90,7 +90,7 @@ def make_qualifier(prod: TextProduct, text: str, ftype_str: str):
     return fx
 
 
-def make_forecast(prod, text):
+def make_forecast(prod: TextProduct, text: str) -> TAFForecast:
     """Build a TAFForecast data model."""
     valid = ddhhmi2valid(prod, text[2:8])
     fx = TAFForecast(
@@ -102,11 +102,15 @@ def make_forecast(prod, text):
     return fx
 
 
-def ddhhmi2valid(prod, text):
+def ddhhmi2valid(prod: TextProduct, text: str) -> datetime:
     """Figure out what valid time this is."""
     dd = int(text[:2])
     hr = int(text[2:4])
-    mi = int(text[4:6])
+    # Account for 4 character timestamp :/
+    if text[4] == " ":
+        mi = 0
+    else:
+        mi = int(text[4:6])
     if hr == 24:
         valid = prod.valid.replace(day=dd, hour=0, minute=mi) + timedelta(
             days=1
@@ -174,6 +178,10 @@ def parse_prod(prod: TextProduct):
                 continue
             if diction is not None:
                 forecast = make_qualifier(prod, part.strip(), diction)
+                if forecast is None:
+                    prod.warnings.append(
+                        f"Failed to parse {part.strip()} with {diction}"
+                    )
                 if forecast is not None:
                     data.forecasts.append(forecast)
                 diction = None
