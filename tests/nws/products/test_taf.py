@@ -12,8 +12,8 @@ from pyiem.util import get_test_file, utc
 
 
 def test_250818_tafags():
-    """Test a TAF found in 2018 that fails."""
-    utcnow = utc(2018, 1, 1, 6)
+    """Test a TAF found in 2008 that fails."""
+    utcnow = utc(2008, 1, 1, 6)
     prod = real_tafparser(get_test_file("TAF/TAFAGS.txt"), utcnow=utcnow)
     # TEMPO is invalid
     assert prod.warnings
@@ -21,8 +21,8 @@ def test_250818_tafags():
 
 
 def test_250818_tafags_2():
-    """Test a TAF found in 2018 that fails."""
-    utcnow = utc(2018, 1, 1, 6)
+    """Test a TAF found in 2008 that fails."""
+    utcnow = utc(2008, 1, 1, 6)
     prod = real_tafparser(get_test_file("TAF/TAFAGS_2.txt"), utcnow=utcnow)
     assert len(prod.data.forecasts) == 4
 
