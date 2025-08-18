@@ -233,7 +233,7 @@ class TAFProduct(TextProduct):
                 continue
             self.data.append(parse_prod(self, token.strip().lstrip("TAF ")))
 
-    def get_channels(self, report: TAFReport) -> list[str]:
+    def get_channels_for_report(self, report: TAFReport) -> list[str]:
         """Return a list of channels"""
         return [f"TAF{report.station[1:]}", "TAF...", f"{self.source}.TAF"]
 
@@ -295,7 +295,7 @@ class TAFProduct(TextProduct):
                 f"at {nicedate} for {taf.station[1:]}</p>"
             )
             xtra = {
-                "channels": ",".join(self.get_channels(taf)),
+                "channels": ",".join(self.get_channels_for_report(taf)),
                 "product_id": self.get_product_id(),
                 "twitter": plain,
                 "twitter_media": (
