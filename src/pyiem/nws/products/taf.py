@@ -11,7 +11,9 @@ from pyiem.models.taf import SkyCondition, TAFForecast, TAFReport, WindShear
 from pyiem.nws.product import TextProduct
 
 TEMPO_TIME = re.compile(r"^(?P<ddhh1>\d{4})/(?P<ddhh2>\d{4}) ")
-STID_VALID = re.compile(r"(?P<station>[A-Z0-9]{4}) (?P<ddhhmi>\d{6})Z")
+STID_VALID = re.compile(
+    r"^(?P<station>[A-Z0-9]{3,4}) (?P<ddhhmi>\d{6})Z", re.MULTILINE
+)
 WIND_RE = re.compile(r"(?P<dir>\d{3})(?P<sknt>\d{2,3})G?(?P<gust>\d{2,3})?KT")
 VIS_RE = re.compile(r" (?P<over>P?)(?P<miles>[1-6])?\s?(?P<frac>\d/\d+)?SM")
 WX_RE = re.compile(r"^([\-\+A-Z]+)$")
@@ -142,7 +144,7 @@ def parse_prod(prod: TextProduct):
     # Deal with the observation
     valid = ddhhmi2valid(prod, d["ddhhmi"])
     data = TAFReport(
-        station=d["station"],
+        station=d["station"] if len(d["station"]) == 4 else f"K{d['station']}",
         valid=valid,
         product_id=prod.get_product_id(),
         observation=TAFForecast(
