@@ -7,7 +7,9 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
-- Remove `pyiem.plot.use_agg.plt` (pyplot) as it is a walking memory leak,
+- Remove `pyiem.plot.use_agg.plt` (pyplot) as it is a walking memory leak.
+- Support TAF Collectives by changing `prod.data: TAFReport` to
+  `prod.data: list[TAFReport]` (#913).
 
 ### New Features
 

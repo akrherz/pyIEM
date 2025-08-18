@@ -11,27 +11,37 @@ from pyiem.reference import TAF_VIS_OVER_6SM
 from pyiem.util import get_test_file, utc
 
 
+def test_taf_collective():
+    """Test that we can process a legacy TAF collective :/"""
+    utcnow = utc(2000, 4, 6, 20)
+    prod = real_tafparser(
+        get_test_file("TAF/TAF_collective.txt"), utcnow=utcnow
+    )
+    assert prod.data[0].forecasts[0].valid == utc(2000, 4, 6, 19)
+    assert prod.data[0].forecasts[1].valid == utc(2000, 4, 7, 4)
+    assert prod.data[0].forecasts[3].valid == utc(2000, 4, 7, 9)
+
+
 def test_250818_tafags():
     """Test a TAF found in 2008 that fails."""
     utcnow = utc(2008, 1, 1, 6)
     prod = real_tafparser(get_test_file("TAF/TAFAGS.txt"), utcnow=utcnow)
-    # TEMPO is invalid
-    assert prod.warnings
-    assert len(prod.data.forecasts) == 3
+    assert not prod.warnings
+    assert len(prod.data[0].forecasts) == 4
 
 
 def test_250818_tafags_2():
     """Test a TAF found in 2008 that fails."""
     utcnow = utc(2008, 1, 1, 6)
     prod = real_tafparser(get_test_file("TAF/TAFAGS_2.txt"), utcnow=utcnow)
-    assert len(prod.data.forecasts) == 4
+    assert len(prod.data[0].forecasts) == 5
 
 
 def test_250818_taftop():
     """Test something found in the wild."""
     utcnow = utc(2025, 8, 18, 12)
     prod = real_tafparser(get_test_file("TAF/TAFTOP.txt"), utcnow=utcnow)
-    assert len(prod.data.forecasts) == 3
+    assert len(prod.data[0].forecasts) == 3
 
 
 def test_250812_tafgrr():
@@ -39,40 +49,42 @@ def test_250812_tafgrr():
     utcnow = utc(2025, 8, 12, 18)
     prod = real_tafparser(get_test_file("TAF/TAFGRR.txt"), utcnow=utcnow)
     ans = "1219/1318 23009KT P6SM VCTS SCT040CB"
-    assert prod.data.observation.raw == ans
-    assert prod.data.forecasts[0].visibility == 2
-    assert len(prod.data.forecasts) == 6
+    taf = prod.data[0]
+    assert taf.observation.raw == ans
+    assert taf.forecasts[0].visibility == 2
+    assert len(taf.forecasts) == 6
     ans = "TEMPO 1219/1221 2SM TSRA BKN040CB"
-    assert prod.data.forecasts[0].raw == ans
+    assert taf.forecasts[0].raw == ans
 
 
 def test_tafjxn():
     """Test that we get the prob in this TAF."""
     utcnow = utc(2025, 8, 4, 0)
     prod = real_tafparser(get_test_file("TAF/TAFJXN.txt"), utcnow=utcnow)
-    assert prod.data.forecasts
+    assert prod.data[0].forecasts
     ans = "0318/0418 29013G21KT P6SM BKN025"
-    assert prod.data.observation.raw == ans
+    assert prod.data[0].observation.raw == ans
 
 
 def test_tafpam():
     """Test what was likely a mis-fire."""
     utcnow = utc(2025, 8, 7, 0)
     prod = real_tafparser(get_test_file("TAF/TAFPAM.txt"), utcnow=utcnow)
-    assert prod.data.observation.ftype == 0
-    assert prod.data.forecasts[0].ftype == 2
-    assert prod.data.forecasts[1].ftype == 5
+    taf = prod.data[0]
+    assert taf.observation.ftype == 0
+    assert taf.forecasts[0].ftype == 2
+    assert taf.forecasts[1].ftype == 5
 
 
 def test_gh1104_tafhky():
     """Test that we deal with PROB30."""
     utcnow = utc(2025, 8, 15, 0)
     prod = real_tafparser(get_test_file("TAF/TAFHKY.txt"), utcnow=utcnow)
-    assert prod.data.observation.ftype == 0
+    assert prod.data[0].observation.ftype == 0
     answers = [2, 1, 1, 3, 1]
     for idx in range(5):
-        assert prod.data.forecasts[idx].ftype == answers[idx]
-    assert prod.data.forecasts[3].visibility == 4
+        assert prod.data[0].forecasts[idx].ftype == answers[idx]
+    assert prod.data[0].forecasts[3].visibility == 4
 
 
 @pytest.mark.parametrize("database", ["asos"])
@@ -80,9 +92,9 @@ def test_gh453_skc(dbcursor):
     """Test that SKC gets encoded as clear and not present weather."""
     utcnow = utc(2024, 3, 26, 6)
     prod = real_tafparser(get_test_file("TAF/TAFOLF.txt"), utcnow=utcnow)
-    assert prod.data.observation.presentwx == []
-    assert prod.data.observation.sky[0].amount == "SKC"
-    assert prod.data.observation.sky[0].level is None
+    assert prod.data[0].observation.presentwx == []
+    assert prod.data[0].observation.sky[0].amount == "SKC"
+    assert prod.data[0].observation.sky[0].level is None
     prod.sql(dbcursor)
 
 
@@ -100,7 +112,7 @@ def test_210428_issue449():
         " P6SM OVC008", " 6SM OVC008"
     )
     prod = tafparser(data, utcnow=utc(2000))
-    assert prod.data.observation.visibility == 6
+    assert prod.data[0].observation.visibility == 6
 
 
 def test_210328_badtaf():
@@ -115,34 +127,35 @@ def test_210323_timestamps():
     """Test that our timestamps generated are right, sigh."""
     utcnow = utc(2017, 7, 25)
     prod = tafparser(get_test_file("TAF/TAFJFK.txt"), utcnow=utcnow)
-    assert prod.data.observation.valid == utc(2017, 7, 25, 13, 41)
-    assert prod.data.forecasts[0].valid == utc(2017, 7, 25, 16)
-    assert prod.data.forecasts[1].valid == utc(2017, 7, 25, 22)
-    assert prod.data.forecasts[2].valid == utc(2017, 7, 26, 5)
-    assert prod.data.forecasts[3].valid == utc(2017, 7, 26, 14)
-    assert prod.data.forecasts[4].valid == utc(2017, 7, 26, 17)
+    taf = prod.data[0]
+    assert taf.observation.valid == utc(2017, 7, 25, 13, 41)
+    assert taf.forecasts[0].valid == utc(2017, 7, 25, 16)
+    assert taf.forecasts[1].valid == utc(2017, 7, 25, 22)
+    assert taf.forecasts[2].valid == utc(2017, 7, 26, 5)
+    assert taf.forecasts[3].valid == utc(2017, 7, 26, 14)
+    assert taf.forecasts[4].valid == utc(2017, 7, 26, 17)
 
 
 def test_jan1():
     """Test when TAF crosses 1 Jan."""
     utcnow = utc(2020, 12, 31, 17, 21)
     prod = tafparser(get_test_file("TAF/TAFDSM.txt"), utcnow=utcnow)
-    assert prod.data.forecasts[2].valid == utc(2021, 1, 1, 9)
+    assert prod.data[0].forecasts[2].valid == utc(2021, 1, 1, 9)
 
 
 def test_feb29():
     """Test when TAF crosses 1 Jan."""
     utcnow = utc(2020, 3, 1, 0, 5)
     prod = tafparser(get_test_file("TAF/TAFDSM_2.txt"), utcnow=utcnow)
-    assert prod.data.observation.valid == utc(2020, 2, 29, 23, 54)
+    assert prod.data[0].observation.valid == utc(2020, 2, 29, 23, 54)
 
 
 def test_24hour():
     """Test that we can handle a 24 hour value."""
     utcnow = utc(2021, 3, 22, 20, 19)
     prod = tafparser(get_test_file("TAF/TAFGRI.txt"), utcnow=utcnow)
-    assert prod.data.valid == utcnow
-    assert prod.data.forecasts[0].end_valid == utc(2021, 3, 23)
+    assert prod.data[0].valid == utcnow
+    assert prod.data[0].forecasts[0].end_valid == utc(2021, 3, 23)
 
 
 @pytest.mark.parametrize("database", ["asos"])
@@ -163,16 +176,17 @@ def test_datamodel():
     """Test the resulting datamodel we get"""
     utcnow = utc(2017, 7, 25)
     prod = tafparser(get_test_file("TAF/TAFHPN.txt"), utcnow=utcnow)
-    assert prod.data.forecasts[6].gust == 20
-    assert prod.data.forecasts[5].visibility == TAF_VIS_OVER_6SM
-    assert prod.data.forecasts[0].presentwx[1] == "VCSH"
-    assert prod.data.forecasts[0].sky[0].amount == "OVC"
-    assert prod.data.forecasts[0].shear.level == 2000
-    assert prod.data.observation.presentwx[0] == "BR"
-    assert prod.data.observation.sky[0].amount == "SCT"
+    taf = prod.data[0]
+    assert taf.forecasts[6].gust == 20
+    assert taf.forecasts[5].visibility == TAF_VIS_OVER_6SM
+    assert taf.forecasts[0].presentwx[1] == "VCSH"
+    assert taf.forecasts[0].sky[0].amount == "OVC"
+    assert taf.forecasts[0].shear.level == 2000
+    assert taf.observation.presentwx[0] == "BR"
+    assert taf.observation.sky[0].amount == "SCT"
     lens = [[0, 2], [1, 1], [2, 2], [3, 1]]
     for pos, _len in lens:
-        assert len(prod.data.forecasts[pos].presentwx) == _len
+        assert len(taf.forecasts[pos].presentwx) == _len
 
 
 def test_parse():
