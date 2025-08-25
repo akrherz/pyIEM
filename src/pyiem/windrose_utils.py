@@ -128,6 +128,19 @@ def _get_data(station, **kwargs):
         tlimit=tlimit,
         rlimiter=rlimiter,
     )
+    if database == "rwis":
+        sql = sql_helper(
+            """
+            SELECT sknt, drct, valid at time zone 'UTC' as valid
+            from alldata a JOIN stations t on (a.iemid = t.iemid)
+            WHERE t.id = :station and t.network ~* 'RWIS'
+            and valid > :sts and valid < :ets and sknt >= 0 and drct >= 0
+            {tlimit} {rlimiter}
+            """,
+            tlimit=tlimit,
+            rlimiter=rlimiter,
+        )
+
     sqlargs["station"] = station
     sqlargs["sts"] = sts
     sqlargs["ets"] = ets

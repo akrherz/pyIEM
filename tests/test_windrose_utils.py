@@ -28,6 +28,12 @@ def faux_data():
     return valid, sknt, drct
 
 
+def test_rwis():
+    """Test that RWIS archive data can be fetched."""
+    wr = windrose("RAMI4", database="rwis", justdata=True)
+    assert wr is not None
+
+
 def test_database():
     """Test that we can read data from the database."""
     windrose("AMW2", justdata=True, hours=[1, 2])
