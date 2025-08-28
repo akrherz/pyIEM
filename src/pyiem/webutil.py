@@ -502,16 +502,15 @@ def iemapp(**kwargs):
                     yield from res
                 # you know what assumptions do
                 status_code = 200
-            except IncompleteWebRequest as exp:
+            except (IncompleteWebRequest, NoDataFound) as exp:
+                # Intention is to tell the client that the server understood
+                # the request, but something is missing
                 status_code = 422
                 res = _handle_exp(str(exp), routine=True, code=status_code)
             except BadWebRequest as exp:
                 status_code = 422
                 log_request(environ, multiplier=10)
                 res = _handle_exp(str(exp), code=status_code)
-            except NoDataFound as exp:
-                status_code = 200
-                res = _handle_exp(str(exp), routine=True, code=status_code)
             except NewDatabaseConnectionFailure as exp:
                 status_code = 503
                 res = _handle_exp(

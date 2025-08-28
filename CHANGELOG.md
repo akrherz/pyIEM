@@ -7,6 +7,7 @@ All notable changes to this library are documented in this file.
 
 ### API Changes
 
+- Change `NoDataFound` exception in `iemapp` to HTTP status 422.
 - Remove `pyiem.plot.use_agg.plt` (pyplot) as it is a walking memory leak.
 - Support TAF Collectives by changing `prod.data: TAFReport` to
   `prod.data: list[TAFReport]` (#913).
