@@ -21,8 +21,8 @@ def test_api():
 
 def test_prism_calc():
     """Test that PRISM works out to what we expect."""
-    assert (nav.PRISM.right_edge - -66.4791667) < 0.001
-    assert (nav.PRISM800.right_edge - nav.PRISM.right_edge) < 0.001
+    assert (nav.PRISM4KM.right_edge - -66.4791667) < 0.001
+    assert (nav.PRISM.right_edge - nav.PRISM4KM.right_edge) < 0.001
 
 
 def test_get_nav():
