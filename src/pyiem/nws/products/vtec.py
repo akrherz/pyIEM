@@ -414,8 +414,8 @@ class VTECProduct(TextProduct):
         keys = []
         for segment in self.segments:
             for vtec in segment.vtec:
-                # Upgrades do not count in this calculation
-                if vtec.action == "UPG":
+                # Upgrades do not count in some cases :/
+                if vtec.action == "UPG" and len(self.segments) > 4:
                     continue
                 key = vtec.s3()
                 if key not in keys:
