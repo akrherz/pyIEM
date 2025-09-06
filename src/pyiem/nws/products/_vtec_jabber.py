@@ -296,8 +296,6 @@ def _get_jabbers(
         psextra = f" {get_ps_string(vtec.phenomena, vtec.significance)}"
         for s3, ugcs in actions.items():
             (va, vp, vs) = s3.split(".")
-            if va == "UPG":
-                continue
             this_psextra = f" {get_ps_string(vp, vs)}"
             if this_psextra == psextra:
                 this_psextra = ""
