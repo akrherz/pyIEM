@@ -10,7 +10,9 @@ from shapely.wkt import dumps
 
 from pyiem import reference
 from pyiem.exceptions import InvalidPolygon, TextProductException
-from pyiem.nws import hvtec, ugc, vtec
+from pyiem.nws import hvtec, ugc
+from pyiem.nws.vtec import VTEC
+from pyiem.nws.vtec import parse as vtec_parse
 from pyiem.util import LOG
 from pyiem.wmo import WMOProduct
 
@@ -199,7 +201,7 @@ class TextProductSegment:
         # Poor name shadow to self.tp, but different
         self.unixtext = text
         self.tp = tp  # Reference to parent
-        self.vtec = vtec.parse(text)
+        self.vtec: list[VTEC] = vtec_parse(text)
         self.ugcs, self.ugcexpire = ugc.parse(
             text,
             tp.valid,
@@ -606,7 +608,7 @@ class TextProduct(WMOProduct):
         self.ugc_provider = ugc_provider
         self.nwsli_provider = nwsli_provider
         self.sections = self.unixtext.split("\n\n")
-        self.segments = []
+        self.segments: list[TextProductSegment] = []
         self.geometry = None
 
         if parse_segments:

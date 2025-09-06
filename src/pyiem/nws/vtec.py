@@ -226,11 +226,6 @@ NWS_COLORS = {
 }
 
 
-def parse(text):
-    """I look for and return vtec objects as I find them"""
-    return [VTEC(token) for token in re.findall(VTEC_RE, text)]
-
-
 def contime(text):
     """Convert text into a UTC datetime."""
     # The 0000 is the standard VTEC undefined time
@@ -354,3 +349,8 @@ class VTEC:
     def product_string(self):
         """Return the combination of action and phenomena+significance"""
         return f"{self.get_action_string()} {self.get_ps_string()}"
+
+
+def parse(text: str) -> list[VTEC]:
+    """I look for and return vtec objects as I find them"""
+    return [VTEC(token) for token in re.findall(VTEC_RE, text)]

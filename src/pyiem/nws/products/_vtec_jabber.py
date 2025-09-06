@@ -1,19 +1,17 @@
 """Consolidate VTEC to jabber logic."""
 
-# Standard Library Imports
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
-# Third Party
-import pandas as pd
-
-# Local
-from pyiem.nws.product import TextProduct
 from pyiem.nws.ugc import ugcs_to_text
-from pyiem.nws.vtec import VTEC, get_action_string
+from pyiem.nws.vtec import VTEC, get_action_string, get_ps_string
 from pyiem.reference import TWEET_CHARS
 
+if TYPE_CHECKING:
+    from pyiem.nws.products.vtec import VTECProduct
 
-def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
+
+def build_channels(prod: "VTECProduct", segment, vtec: VTEC) -> list:
     """Build a list of channels for the given segment/vtec."""
     ps = f"{vtec.phenomena}.{vtec.significance}"
     channels = []
@@ -48,10 +46,14 @@ def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
     return channels
 
 
-def _get_action(df: pd.DataFrame) -> str:
+def _get_action(prod: "VTECProduct") -> str:
     """How to describe the action of this product"""
-    if df.action.unique().size == 1:
-        return get_action_string(df.action.iloc[0])
+    actions = set()
+    for segment in prod.segments:
+        for vtec in segment.vtec:
+            actions.add(vtec.action)
+    if len(actions) == 1:
+        return get_action_string(actions.pop())
     return "updates"
 
 
@@ -76,42 +78,19 @@ def _ulabel(ugcs):
     return res
 
 
-def build_df(prod):
-    """Build a dataframe for the given product."""
-    rows = []
-    for segment in prod.segments:
-        for vtec in segment.vtec:
-            for ugc in segment.ugcs:
-                entry = [
-                    str(ugc),
-                    vtec.phenomena,
-                    vtec.significance,
-                    vtec.action,
-                    vtec.etn,
-                ]
-                rows.append(entry)
-    return pd.DataFrame(
-        rows,
-        columns=["ugc", "phenomena", "significance", "action", "etn"],
-    )
-
-
-def _get_jabbers(prod, uri, river_uri=None):
+def _get_jabbers(
+    prod: "VTECProduct", uri: str, river_uri: str | None = None
+) -> list[tuple[str, str, dict]]:
     """Return a list of triples representing how this goes to social
-    Arguments:
-    uri -- The URL for the VTEC Browser
-    river_uri -- The URL of the River App
 
     Returns:
     [[plain, html, xtra]] -- A list of triples of plain text, html, xtra
     """
-    df = build_df(prod)
     wfo = prod.source[1:]
-    wfo4 = wfo if prod.source.startswith("K") else prod.source
-    if prod.skip_con:
+    if prod.is_skip_con():
         xtra = {
             "product_id": prod.get_product_id(),
-            "channels": ",".join(prod.get_affected_wfos()) + ",FLS" + wfo,
+            "channels": ",".join(prod.get_affected_wfos()) + f",FLS{wfo}",
             "twitter": (
                 f"{wfo} issues updated FLS product {river_uri}?wfo={wfo}"
             ),
@@ -128,13 +107,14 @@ def _get_jabbers(prod, uri, river_uri=None):
             "details.</p>"
         )
         return [(text, html, xtra)]
-    msgs = []
 
+    wfo4 = wfo if prod.source.startswith("K") else prod.source
+    msgs = []
     actions = {}
 
     for segment in prod.segments:
-        for vtec in segment.vtec:
-            if vtec.action == "ROU" or vtec.status == "T":
+        for vtec_index, vtec in enumerate(segment.vtec):
+            if vtec.action in ["ROU", "UPG"] or vtec.status == "T":
                 continue
             linkyear = vtec.year if vtec.year is not None else prod.valid.year
             xtra = {
@@ -153,7 +133,8 @@ def _get_jabbers(prod, uri, river_uri=None):
                 ),
             }
             # collect up ugcs against VTEC actions
-            (actions.setdefault(vtec.action, []).extend(segment.ugcs))
+            action_key = f"{vtec.action}.{vtec.phenomena}.{vtec.significance}"
+            actions.setdefault(action_key, []).extend(segment.ugcs)
             if segment.giswkt is not None:
                 xtra["category"] = "SBW"
                 xtra["geometry"] = segment.giswkt.replace("SRID=4326;", "")
@@ -175,6 +156,15 @@ def _get_jabbers(prod, uri, river_uri=None):
                 "significance": vtec.significance,
                 "url": f"{uri}{vtec.url(prod.valid.year)}",
             }
+            if vtec_index > 0 and segment.vtec[vtec_index - 1].action == "UPG":
+                vtec_last = segment.vtec[vtec_index - 1]
+                ps_last = get_ps_string(
+                    vtec_last.phenomena, vtec_last.significance
+                )
+                jmsg_dict["product"] = (
+                    f"upgrades {ps_last} to "
+                    f"{get_ps_string(vtec.phenomena, vtec.significance)}"
+                )
             if segment.hvtec and segment.hvtec[0].nwsli.id != "00000":
                 jmsg_dict["county"] = segment.hvtec[0].nwsli.get_name()
             if vtec.begints is not None:
@@ -303,17 +293,23 @@ def _get_jabbers(prod, uri, river_uri=None):
         short_actions = []
         long_actions = []
         html_long_actions = []
-        for va, ugcs in actions.items():
+        psextra = f" {get_ps_string(vtec.phenomena, vtec.significance)}"
+        for s3, ugcs in actions.items():
+            (va, vp, vs) = s3.split(".")
+            this_psextra = f" {get_ps_string(vp, vs)}"
+            if this_psextra == psextra:
+                this_psextra = ""
             long_actions.append(
-                f"{get_action_string(va)} {ugcs_to_text(ugcs)}"
+                f"{get_action_string(va)}{this_psextra} {ugcs_to_text(ugcs)}"
             )
             html_long_actions.append(
                 "<span style='font-weight: bold;'>"
-                f"{get_action_string(va)}</span> "
+                f"{get_action_string(va)}{this_psextra}</span> "
                 f"{ugcs_to_text(ugcs)}"
             )
             short_actions.append(
-                f"{get_action_string(va)} {len(ugcs)} {_ulabel(ugcs)}"
+                f"{get_action_string(va)}{this_psextra} "
+                f"{len(ugcs)} {_ulabel(ugcs)}"
             )
         if len(short_actions) == 1:
             _, ugcs = list(actions.items())[0]
@@ -336,7 +332,7 @@ def _get_jabbers(prod, uri, river_uri=None):
             "svr_special": segment.special_tags_to_text(),
             "svs_special": "",
             "sts": "",
-            "action": _get_action(df),
+            "action": _get_action(prod),
             "product": vtec.get_ps_string(),
             "url": (
                 f"{uri}{vtec.url(prod.valid.year)}_{stamp:%Y-%m-%dT%H:%MZ}"

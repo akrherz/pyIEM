@@ -43,6 +43,25 @@ def filter_warnings(ar, startswith="get_gid"):
     return [a for a in ar if not a.startswith(startswith)]
 
 
+def test_gh1119_upgrade_wordsmithing():
+    """Test the jabber message here makes some sense."""
+    ugc_provider = {
+        "WAZ658": UGC("WA", "Z", "658", name="West Side", wfos=["SEW"]),
+        "WAZ659": UGC("WA", "Z", "659", name="East Side", wfos=["SEW"]),
+    }
+    prod = _vtecparser(
+        get_test_file("RFWSEW.txt"),
+        ugc_provider=ugc_provider,
+    )
+    j = prod.get_jabbers("")
+    ans = (
+        "SEW upgrades Fire Weather Watch to Red Flag Warning valid at Sep 3, "
+        "12:00 PM PDT for East Side, West Side [WA] till Sep 3, 9:00 PM PDT "
+        "2025-O-NEW-KSEW-FW-W-0004_2025-09-03T19:00Z"
+    )
+    assert j[0][0] == ans
+
+
 def test_gh978_tsunami_warning_channels():
     """Test that we get a proper WFO channel assignment for this."""
     ugc_provider = {
@@ -1039,8 +1058,7 @@ def test_gh614_messages():
     prod = vtecparser(get_test_file("TCV/TCVAKQ.txt"))
     j = prod.get_jabbers("")
     ans = (
-        "AKQ updates Tropical Storm Warning (issues 36 zones, "
-        "issues upgrade to 26 zones)  "
+        "AKQ updates Tropical Storm Warning (36 zones)  "
         "2016-O-NEW-KAKQ-TR-W-1009_2016-09-02T15:55Z"
     )
     assert len(j) == 1
@@ -1328,6 +1346,7 @@ def test_141211_null_expire(dbcursor):
     for i in range(0, 13):
         prod = vtecparser(get_test_file(f"FLSIND/{i}.txt"))
         prod.sql(dbcursor)
+        prod.get_jabbers("", "")
         warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not filter_warnings(warnings, "LAT...LON")
 
@@ -1875,7 +1894,7 @@ def test_vtec(dbcursor):
         ugc_provider=ugc_provider,
         nwsli_provider=nwsli_provider,
     )
-    assert not prod.skip_con
+    assert not prod.is_skip_con()
     assert abs(prod.segments[0].sbw.area - 0.3053) < 0.0001
 
     prod.sql(dbcursor)
