@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.nws package &#8212; pyIEM 0.0.post1226+g58c46e7a3 documentation</title>
+    <title>pyiem.nws package &#8212; pyIEM 0.0.post1228+g5f16f97c7 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=54881f7e"></script>
+    <script src="../_static/documentation_options.js?v=8b918be7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="pyiem.ncei.html" title="pyiem.ncei package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1226+g58c46e7a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1228+g5f16f97c7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
@@ -452,9 +452,9 @@
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_segment"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_segment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_vtec"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_first_non_cancel_vtec()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_jabbers"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_jabbers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.get_skip_con"><code class="docutils literal notranslate"><span class="pre">VTECProduct.get_skip_con()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_homogeneous"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_homogeneous()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_single_action"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_single_action()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.is_skip_con"><code class="docutils literal notranslate"><span class="pre">VTECProduct.is_skip_con()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pyiem.nws.products.html#pyiem.nws.products.vtec.VTECProduct.sql"><code class="docutils literal notranslate"><span class="pre">VTECProduct.sql()</span></code></a></li>
 </ul>
 </li>
@@ -1102,7 +1102,7 @@ datetime
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.nws.vtec.parse">
-<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.nws.vtec.parse" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.vtec.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.nws.vtec.VTEC" title="pyiem.nws.vtec.VTEC"><span class="pre">VTEC</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyiem.nws.vtec.parse" title="Link to this definition">¶</a></dt>
 <dd><p>I look for and return vtec objects as I find them</p>
 </dd></dl>
 
@@ -1300,7 +1300,7 @@ terminology.</p>
         <li class="right" >
           <a href="pyiem.ncei.html" title="pyiem.ncei package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1226+g58c46e7a3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1228+g5f16f97c7 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem.nws package</a></li> 
