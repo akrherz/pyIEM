@@ -43,7 +43,6 @@ class VTECProduct(TextProduct):
         text = "\r\r\n".join([a.rstrip() for a in text.split("\r\r\n")])
 
         super().__init__(text, utcnow, ugc_provider, nwsli_provider)
-        self.skip_con = self.get_skip_con()
         # If there was no/bad MND header, a backwards way to know is that the
         # product time zone will be None, add a warning
         if self.z is None:
@@ -437,18 +436,18 @@ class VTECProduct(TextProduct):
                 return segment
         return None
 
-    def get_skip_con(self):
+    def is_skip_con(self) -> bool:
         """Should this product be skipped from generating jabber messages"""
-        if (
+        return (
             self.afos is not None
             and self.afos[:3] == "FLS"
             and len(self.segments) > 4
-        ):
-            return True
-        return False
+        )
 
 
-def parser(text, utcnow=None, ugc_provider=None, nwsli_provider=None):
+def parser(
+    text: str, utcnow=None, ugc_provider=None, nwsli_provider=None
+) -> VTECProduct:
     """Helper function that actually converts the raw text and emits an
     VTECProduct instance or returns an exception"""
     return VTECProduct(

@@ -10,6 +10,7 @@ All notable changes to this library are documented in this file.
 - Change `NoDataFound` exception in `iemapp` to HTTP status 422.
 - Remove `pyiem.plot.use_agg.plt` (pyplot) as it is a walking memory leak.
 - Remove `pyiem.prism` per previous deprecation.
+- Rename `pyiem.nws.products.vtec.skip_con` to `is_skip_con` (meh, internal).
 - Support TAF Collectives by changing `prod.data: TAFReport` to
   `prod.data: list[TAFReport]` (#913).
 

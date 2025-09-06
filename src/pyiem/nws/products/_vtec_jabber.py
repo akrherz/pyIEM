@@ -1,14 +1,17 @@
 """Consolidate VTEC to jabber logic."""
 
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
-from pyiem.nws.product import TextProduct
 from pyiem.nws.ugc import ugcs_to_text
 from pyiem.nws.vtec import VTEC, get_action_string, get_ps_string
 from pyiem.reference import TWEET_CHARS
 
+if TYPE_CHECKING:
+    from pyiem.nws.products.vtec import VTECProduct
 
-def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
+
+def build_channels(prod: "VTECProduct", segment, vtec: VTEC) -> list:
     """Build a list of channels for the given segment/vtec."""
     ps = f"{vtec.phenomena}.{vtec.significance}"
     channels = []
@@ -43,7 +46,7 @@ def build_channels(prod: TextProduct, segment, vtec: VTEC) -> list:
     return channels
 
 
-def _get_action(prod: TextProduct) -> str:
+def _get_action(prod: "VTECProduct") -> str:
     """How to describe the action of this product"""
     actions = set()
     for segment in prod.segments:
@@ -76,16 +79,15 @@ def _ulabel(ugcs):
 
 
 def _get_jabbers(
-    prod: TextProduct, uri: str, river_uri: str | None = None
-) -> list[list[str, str, dict]]:
+    prod: "VTECProduct", uri: str, river_uri: str | None = None
+) -> list[tuple[str, str, dict]]:
     """Return a list of triples representing how this goes to social
 
     Returns:
     [[plain, html, xtra]] -- A list of triples of plain text, html, xtra
     """
     wfo = prod.source[1:]
-    wfo4 = wfo if prod.source.startswith("K") else prod.source
-    if prod.skip_con:
+    if prod.is_skip_con():
         xtra = {
             "product_id": prod.get_product_id(),
             "channels": ",".join(prod.get_affected_wfos()) + f",FLS{wfo}",
@@ -105,8 +107,9 @@ def _get_jabbers(
             "details.</p>"
         )
         return [(text, html, xtra)]
-    msgs = []
 
+    wfo4 = wfo if prod.source.startswith("K") else prod.source
+    msgs = []
     actions = {}
 
     for segment in prod.segments:

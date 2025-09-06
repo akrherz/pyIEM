@@ -1893,7 +1893,7 @@ def test_vtec(dbcursor):
         ugc_provider=ugc_provider,
         nwsli_provider=nwsli_provider,
     )
-    assert not prod.skip_con
+    assert not prod.is_skip_con()
     assert abs(prod.segments[0].sbw.area - 0.3053) < 0.0001
 
     prod.sql(dbcursor)
