@@ -1346,6 +1346,7 @@ def test_141211_null_expire(dbcursor):
     for i in range(0, 13):
         prod = vtecparser(get_test_file(f"FLSIND/{i}.txt"))
         prod.sql(dbcursor)
+        prod.get_jabbers("", "")
         warnings = filter_warnings(filter_warnings(prod.warnings), "HVTEC")
         assert not filter_warnings(warnings, "LAT...LON")
 
