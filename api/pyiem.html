@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem package &#8212; pyIEM 0.0.post1228+g5f16f97c7 documentation</title>
+    <title>pyiem package &#8212; pyIEM 0.0.post1229+g3e2aff304 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
     
-    <script src="../_static/documentation_options.js?v=8b918be7"></script>
+    <script src="../_static/documentation_options.js?v=1b382fc9"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="modules.html" title="pyiem"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1228+g5f16f97c7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1229+g3e2aff304 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
@@ -1829,13 +1829,17 @@ the minimum time a site is considered to be ‘online’ within</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.util.archive_fetch">
-<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">archive_fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partialpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">localdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/mesonet/ARCHIVE/data'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.archive_fetch" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.util.</span></span><span class="sig-name descname"><span class="pre">archive_fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partialpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">localdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/mesonet/ARCHIVE/data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'get'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.util.archive_fetch" title="Link to this definition">¶</a></dt>
 <dd><p>Helper to fetch a file from the archive, by first looking at the filesystem
 and then going to the website.  This returns a filename.  If a temporary
 file is created, it is deleted after the context manager exits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>partialpath</strong> (<em>str</em>) – Typically a path that starts with /YYYY/mm/dd</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>partialpath</strong> (<em>str</em>) – Typically a path that starts with /YYYY/mm/dd</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – HTTP method to use, default ‘get’, in the case of head,
+we only check the existence and return an empty string if found.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>filename of the file found and available for use</p>
@@ -2815,7 +2819,7 @@ useful to others!?!?</p>
         <li class="right" >
           <a href="modules.html" title="pyiem"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1228+g5f16f97c7 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1229+g3e2aff304 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">pyiem package</a></li> 
       </ul>
