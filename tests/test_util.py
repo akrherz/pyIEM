@@ -43,6 +43,22 @@ def test_archive_fetch_invalid_remote():
         assert ctx is None
 
 
+def test_archive_fetch_invalid_remote_head():
+    """Test what happens when the remote file does not exist."""
+    with util.archive_fetch(
+        "pyiem_testing_doesnotexist", method="head"
+    ) as ctx:
+        assert ctx is None
+
+
+def test_archive_fetch_head():
+    """Test what happens when the remote file does exist."""
+    with util.archive_fetch(
+        "2024/02/09/mesonet_1200.gif", method="head"
+    ) as ctx:
+        assert ctx == ""
+
+
 def test_archive_fetch_remote_exists():
     """Test what happens when the remote file does exist."""
     with util.archive_fetch("2024/02/09/mesonet_1200.gif") as ctx:
