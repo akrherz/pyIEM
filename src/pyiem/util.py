@@ -744,7 +744,11 @@ def grid_bounds(lons, lats, bounds):
 
 
 @contextmanager
-def archive_fetch(partialpath: str, localdir: str = "/mesonet/ARCHIVE/data"):
+def archive_fetch(
+    partialpath: str,
+    localdir: str = "/mesonet/ARCHIVE/data",
+    method: str = "get",
+):
     """
     Helper to fetch a file from the archive, by first looking at the filesystem
     and then going to the website.  This returns a filename.  If a temporary
@@ -752,6 +756,8 @@ def archive_fetch(partialpath: str, localdir: str = "/mesonet/ARCHIVE/data"):
 
     Args:
         partialpath (str): Typically a path that starts with /YYYY/mm/dd
+        method (str): HTTP method to use, default 'get', in the case of head,
+          we only check the existence and return an empty string if found.
 
     Returns:
         str: filename of the file found and available for use
@@ -769,8 +775,11 @@ def archive_fetch(partialpath: str, localdir: str = "/mesonet/ARCHIVE/data"):
     tmp = None
     suffix = "." + os.path.basename(partialpath).split(".")[-1]
     try:
-        resp = httpx.get(url, timeout=30)
+        resp = httpx.request(method.upper(), url, timeout=30)
         resp.raise_for_status()
+        if method.lower() == "head":
+            yield ""
+            return
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             tmp.write(resp.content)
         yield tmp.name
