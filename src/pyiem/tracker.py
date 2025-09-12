@@ -1,7 +1,7 @@
 """IEM Tracker Related Stuff."""
 
-import datetime
 import smtplib
+from datetime import date as dateobj
 from email.mime.text import MIMEText
 from zoneinfo import ZoneInfo
 
@@ -35,6 +35,8 @@ class TrackerEngine:
         """Send out those SPAM emails!"""
         # Don't do anything if we have exceeded maxoffline
         if self.action_count >= self.maxactions and self.maxactions > 0:
+            return
+        if not self.emails:
             return
         with smtplib.SMTP() as s:
             try:
@@ -270,7 +272,7 @@ def loadqc(cursor=None, date=None):
       date (date,optional): Defaults to today, which tickets are valid for now
     """
     if date is None:
-        date = datetime.date.today()
+        date = dateobj.today()
     qdict = {}
     if cursor is None:
         portfolio, _cursor = get_dbconnc("portfolio")
