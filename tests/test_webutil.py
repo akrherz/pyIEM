@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import mock
 import pytest
 from pydantic import AwareDatetime, Field
+from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
@@ -31,24 +32,16 @@ def test_allowed_as_list():
     """Test that we don't allow a list in the parsed form."""
 
     @iemapp(allowed_as_list=["q"])
-    def application(environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&q=2&f=1",
-    }
-    sr = mock.MagicMock()
-    res = list(application(env, sr))
-    assert res[0].find(b"Oopsy") == -1
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&f=1&f=2",
-    }
-    sr = mock.MagicMock()
-    res = list(application(env, sr))
-    assert res[0].find(b"Oopsy") > -1
+    c = Client(application)
+    resp = c.get("/?q=1&q=2&f=1")
+    assert resp.status_code == 200
+    resp = c.get("/?q=1&f=2&f=1")
+    assert resp.status_code == 422
 
 
 def test_memcachekey_is_none():
@@ -258,9 +251,7 @@ def test_listorcsvtype():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>",
     }
-    assert (
-        list(application(env, sr))[0].decode("ascii").find("XSS detected") > -1
-    )
+    assert "akrherz" in list(application(env, sr))[0].decode("ascii")
 
 
 def test_disable_parse_times():
@@ -534,21 +525,6 @@ def test_nodatafound():
     }
     sr = mock.MagicMock()
     assert list(application(env, sr))[0].decode("ascii") == res
-
-
-def test_xss():
-    """Test that the XSS runs."""
-
-    @iemapp()
-    def application(environ, start_response):
-        """Test."""
-        raise BadWebRequest("This is a test")
-
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
 
 
 def test_iemapp_generator():

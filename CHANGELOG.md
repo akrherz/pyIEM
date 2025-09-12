@@ -26,6 +26,7 @@ All notable changes to this library are documented in this file.
 - Demote a SHEF warning for a poorly encoded paired depth value.
 - Fix edge case with empty scripts in autoplot vtecps type.
 - Prevent unknown UGC from causing a full database write failure (#1097).
+- Rework XSS detection within `webutil.iemapp`.
 - Update bundled NWS CWAs (18 Mar 2025) (#1100).
 - Workaround a spacing issue within LSRs that may not be fixed upstream.
 

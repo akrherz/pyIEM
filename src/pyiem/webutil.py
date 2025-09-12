@@ -1,5 +1,6 @@
 """Utility functions for iemwebfarm applications."""
 
+import html
 import inspect
 import os
 import random
@@ -62,6 +63,7 @@ TELEMETRY = namedtuple(
     "TELEMETRY",
     ["timing", "status_code", "client_addr", "app", "request_uri", "vhost"],
 )
+XSS_SENTINEL = "XSS"
 
 
 def _conv2list(mixed) -> list:
@@ -84,6 +86,26 @@ ListOrCSVType = Annotated[
 ]
 
 
+def _is_xss_payload(val: str) -> bool:
+    """Return True if the provided string appears to contain XSS payloads.
+
+    We first normalize entities with `html.unescape` and then let `nh3.clean`
+    inspect it. If `nh3.clean` changes the normalized text and the normalized
+    text contains HTML tag-like patterns or javascript: URIs, treat it as
+    naughty.
+    """
+    normalized = html.unescape(val)
+    if nh3.clean(normalized) == normalized:
+        return False
+    # Detect tag-like content (e.g. <script>, <img src=...>, etc.)
+    if re.search(r"<\s*/?\s*[a-zA-Z]", normalized):
+        return True
+    # Detect javascript: URIs which nh3 may also alter
+    if re.search(r"javascript\s*:", normalized, re.I):
+        return True
+    return False
+
+
 # https://github.com/tiangolo/fastapi/discussions/8143#discussioncomment-5147698
 class CGIModel(BaseModel):
     """A Pydantic model that parses CGI arguments."""
@@ -97,14 +119,30 @@ class CGIModel(BaseModel):
             errors = e.errors()
             for error in errors:
                 error["loc"] = ("query",) + error["loc"]
+                if str(error.get("ctx", {}).get("error", "")) == XSS_SENTINEL:
+                    raise BadWebRequest(
+                        f"XSS Key: {error['loc']} Value: {error.get('input')}"
+                    ) from e
             raise IncompleteWebRequest(errors) from e
 
     @field_validator("*", mode="before")
     @classmethod
     def xss_protect(cls, v):
         """Protect against XSS attacks."""
-        if isinstance(v, str) and nh3.clean(v) != v:
-            raise ValueError("XSS detected")
+        # We want pydantic to *fail* validation when naughty HTML/JS is
+        # provided, but avoid false-positives for benign strings that only
+        # differ because of entity escaping (e.g. '&amp;'). Unescape first
+        # and only raise when the normalized value looks like real HTML/JS
+        # that `nh3.clean` changes.
+        if isinstance(v, str):
+            if _is_xss_payload(v):
+                raise ValueError(XSS_SENTINEL)
+            return v
+        if isinstance(v, list):
+            for x in v:
+                if isinstance(x, str) and _is_xss_payload(x):
+                    raise ValueError(XSS_SENTINEL)
+            return v
         return v
 
 
@@ -284,10 +322,10 @@ def add_to_environ(environ, form, **kwargs):
             # We should only have either lists or strings
             if isinstance(val, list):
                 for va in val:
-                    if nh3.clean(va) != va:
+                    if isinstance(va, str) and _is_xss_payload(va):
                         raise BadWebRequest(f"XSS Key: {key} Value: {va}")
             elif isinstance(val, str):
-                if nh3.clean(val) != val:
+                if _is_xss_payload(val):
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
             environ[key] = form[key]
         else:

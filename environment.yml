@@ -57,5 +57,7 @@ dependencies:
   - sphinx>=8
   - sphinxcontrib-napoleon
   - sqlalchemy
+  # testing
+  - werkzeug
   # iemre
   - xarray
