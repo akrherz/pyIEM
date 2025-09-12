@@ -1,6 +1,5 @@
 """Test pyiem.tracker."""
 
-# pylint: disable=redefined-outer-name
 from datetime import date, datetime, timedelta, timezone
 
 import pytest
@@ -110,4 +109,5 @@ def test_workflow(pcursor, icursor):
     obs[sid1]["valid"] = valid - timedelta(hours=6)
     obs[sid2]["valid"] = valid
     tracker.process_network(obs, pnetwork, nt, threshold)
+    tracker.send_emails()
     assert not tracker.emails

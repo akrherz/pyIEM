@@ -1,7 +1,7 @@
 """IEM Tracker Related Stuff."""
 
-import datetime
 import smtplib
+from datetime import date as dateobj
 from email.mime.text import MIMEText
 from zoneinfo import ZoneInfo
 
@@ -272,7 +272,7 @@ def loadqc(cursor=None, date=None):
       date (date,optional): Defaults to today, which tickets are valid for now
     """
     if date is None:
-        date = datetime.date.today()
+        date = dateobj.today()
     qdict = {}
     if cursor is None:
         portfolio, _cursor = get_dbconnc("portfolio")
