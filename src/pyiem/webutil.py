@@ -369,7 +369,7 @@ def _handle_help(start_response, **kwargs):
     sdoc = kwargs.get("help", "Help not available") + (
         "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
     )
-    html = publish_string(source=sdoc, writer_name="html").decode("utf-8")
+    rendered = publish_string(source=sdoc, writer_name="html").decode("utf-8")
 
     # Load external CSS file for styling docutils-generated content
     css_path = os.path.join(
@@ -379,7 +379,7 @@ def _handle_help(start_response, **kwargs):
         css_content = fh.read()
 
     # Get the content between the body tags and wrap with responsive container
-    body_content = html.split("<body>")[1].split("</body>")[0]
+    body_content = rendered.split("<body>")[1].split("</body>")[0]
     styled_content = (
         f"<style>\n{css_content}\n</style>"
         f'<div class="container-fluid">{body_content}</div>'

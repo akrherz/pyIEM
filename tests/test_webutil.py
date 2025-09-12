@@ -489,26 +489,22 @@ def test_incomplete():
         """Test."""
         raise IncompleteWebRequest(msg)
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find(msg) > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 422
 
 
 def test_newdatabase():
     """Test that the NewDatabaseConnectionError runs."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         raise NewDatabaseConnectionFailure()
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert "akrherz" in resp.text
 
 
 def test_nodatafound():
@@ -520,24 +516,23 @@ def test_nodatafound():
         """Test."""
         raise NoDataFound(res)
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii") == res
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == res
 
 
 def test_iemapp_generator():
     """Test that we can wrap a generator."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, start_response):
         """Test."""
-        yield b"Content-type: text/plain\n\nHello!"
+        start_response("200 OK", [("Content-type", "text/plain")])
+        yield b"Hello!"
 
-    env = {"wsgi.input": mock.MagicMock()}
-    res = list(application(env, None))
-    assert res == [b"Content-type: text/plain\n\nHello!"]
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == "Hello!"
 
 
 def test_iemapp_decorator():
@@ -546,12 +541,12 @@ def test_iemapp_decorator():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {"wsgi.input": mock.MagicMock()}
-    assert list(application(env, None)) == [
-        b"Content-type: text/plain\n\nHello!"
-    ]
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == "Hello!"
 
 
 def test_typoed_tz():
@@ -560,33 +555,26 @@ def test_typoed_tz():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, None)) == [
-        b"Content-type: text/plain\n\nHello!"
-    ]
+    c = Client(application)
+    resp = c.get("/?tz=America/Chicage")
+    assert resp.status_code == 200
 
 
 def test_iemapp_raises_newdatabaseconnectionfailure():
     """Test catch a raised exception."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         get_dbconn("this will fail")
         return [b"Content-type: text/plain\n\nHello!"]
 
-    # mock a start_response function
-    sr = mock.MagicMock()
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 503
 
 
 def test_iemapp_catches_vanilla_exception():
