@@ -306,16 +306,15 @@ def test_iemapp_help():
     """Test that help works."""
 
     @iemapp(help="FINDME")
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "help",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("FINDME") > -1
+    c = Client(application)
+    resp = c.get("/?help")
+    assert resp.status_code == 200
+    assert "FINDME" in resp.text
 
 
 def test_duplicated_year_in_form():
@@ -341,30 +340,26 @@ def test_forgive_duplicate_tz():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&tz=etc/utc",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello!") > -1
+    c = Client(application)
+    resp = c.get("/?tz=etc/utc&tz=etc/utc")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
 def test_duplicated_tz_in_form():
     """Test that this is handled."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         return [b"Content-type: text/plain\n\nHello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&tz=etc/UTC",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("twice") > -1
+    c = Client(application)
+    resp = c.get("/?tz=etc/utc&tz=etc/UTC")
+    assert "twice" in resp.text
 
 
 def test_forgive_feb29():
@@ -585,10 +580,40 @@ def test_iemapp_catches_vanilla_exception():
         """Test."""
         raise Exception("This is a test")
 
-    # mock a start_response function
-    sr = mock.MagicMock()
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert "akrherz" in resp.text
+
+
+def test_iemapp_xss_javascript():
+    """Test that javascript payload triggers XSS protection."""
+
+    @iemapp()
+    def application(_environ, _start_response):
+        """Test."""
+        return [b"Hello!"]
+
+    c = Client(application)
+    resp = c.get("/?q=<script>alert('xss')</script>")
+    assert resp.status_code == 422
+    assert "akrherz" in resp.text
+
+
+def test_iemapp_xss_in_list():
+    """Test that a list with javascript payload triggers XSS protection."""
+
+    class MySchema(CGIModel):
+        """Test."""
+
+        q: ListOrCSVType = Field(...)
+
+    @iemapp(schema=MySchema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = Client(application)
+    resp = c.get("/?q=1&q=<script>alert('xss')</script>")
+    assert resp.status_code == 422
+    assert "akrherz" in resp.text
