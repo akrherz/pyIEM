@@ -36,6 +36,8 @@ class TrackerEngine:
         # Don't do anything if we have exceeded maxoffline
         if self.action_count >= self.maxactions and self.maxactions > 0:
             return
+        if not self.emails:
+            return
         with smtplib.SMTP() as s:
             try:
                 s.connect()
