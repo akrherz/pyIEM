@@ -14,7 +14,6 @@ dependencies = [
     "metar",
     "metpy",
     "netCDF4",
-    "nh3",
     "numpy",
     "pandas",
     "paste",

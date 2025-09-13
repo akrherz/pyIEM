@@ -1,5 +1,6 @@
 """Utility functions for iemwebfarm applications."""
 
+import html
 import inspect
 import os
 import random
@@ -13,7 +14,6 @@ from datetime import datetime, timezone
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-import nh3
 from docutils.core import publish_string
 from paste.request import parse_formvars
 from pydantic import (
@@ -62,6 +62,7 @@ TELEMETRY = namedtuple(
     "TELEMETRY",
     ["timing", "status_code", "client_addr", "app", "request_uri", "vhost"],
 )
+XSS_SENTINEL = "XSS"
 
 
 def _conv2list(mixed) -> list:
@@ -84,6 +85,23 @@ ListOrCSVType = Annotated[
 ]
 
 
+def _is_xss_payload(val: str) -> bool:
+    """Return True if the provided string appears to contain XSS payloads.
+
+    We first normalize entities with `html.unescape` and then inspect it. If
+    the normalized text contains HTML tag-like patterns or javascript: URIs,
+    treat it as naughty.
+    """
+    normalized = html.unescape(val)
+    # Detect tag-like content (e.g. <script>, <img src=...>, etc.)
+    if re.search(r"<\s*/?\s*[a-zA-Z]", normalized):
+        return True
+    # Detect javascript: URIs which may be used as payloads
+    if re.search(r"javascript\s*:", normalized, re.I):
+        return True
+    return False
+
+
 # https://github.com/tiangolo/fastapi/discussions/8143#discussioncomment-5147698
 class CGIModel(BaseModel):
     """A Pydantic model that parses CGI arguments."""
@@ -97,14 +115,27 @@ class CGIModel(BaseModel):
             errors = e.errors()
             for error in errors:
                 error["loc"] = ("query",) + error["loc"]
+                if str(error.get("ctx", {}).get("error", "")) == XSS_SENTINEL:
+                    raise BadWebRequest(
+                        f"XSS Key: {error['loc']} Value: {error.get('input')}"
+                    ) from e
             raise IncompleteWebRequest(errors) from e
 
     @field_validator("*", mode="before")
     @classmethod
     def xss_protect(cls, v):
         """Protect against XSS attacks."""
-        if isinstance(v, str) and nh3.clean(v) != v:
-            raise ValueError("XSS detected")
+        # We want pydantic to *fail* validation when naughty HTML/JS is
+        # provided, but avoid false-positives for benign strings that only
+        # differ because of entity escaping (e.g. '&amp;').
+        if isinstance(v, list):
+            for x in v:
+                if isinstance(x, str) and _is_xss_payload(x):
+                    raise ValueError(XSS_SENTINEL)
+            return v
+        # Can only be str at this point?
+        if _is_xss_payload(v):
+            raise ValueError(XSS_SENTINEL)
         return v
 
 
@@ -284,10 +315,10 @@ def add_to_environ(environ, form, **kwargs):
             # We should only have either lists or strings
             if isinstance(val, list):
                 for va in val:
-                    if nh3.clean(va) != va:
+                    if isinstance(va, str) and _is_xss_payload(va):
                         raise BadWebRequest(f"XSS Key: {key} Value: {va}")
             elif isinstance(val, str):
-                if nh3.clean(val) != val:
+                if _is_xss_payload(val):
                     raise BadWebRequest(f"XSS Key: {key} Value: {val}")
             environ[key] = form[key]
         else:
@@ -331,7 +362,7 @@ def _handle_help(start_response, **kwargs):
     sdoc = kwargs.get("help", "Help not available") + (
         "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
     )
-    html = publish_string(source=sdoc, writer_name="html").decode("utf-8")
+    rendered = publish_string(source=sdoc, writer_name="html").decode("utf-8")
 
     # Load external CSS file for styling docutils-generated content
     css_path = os.path.join(
@@ -341,7 +372,7 @@ def _handle_help(start_response, **kwargs):
         css_content = fh.read()
 
     # Get the content between the body tags and wrap with responsive container
-    body_content = html.split("<body>")[1].split("</body>")[0]
+    body_content = rendered.split("<body>")[1].split("</body>")[0]
     styled_content = (
         f"<style>\n{css_content}\n</style>"
         f'<div class="container-fluid">{body_content}</div>'

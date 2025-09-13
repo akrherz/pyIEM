@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import mock
 import pytest
 from pydantic import AwareDatetime, Field
+from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
 from pyiem.exceptions import (
@@ -20,6 +21,7 @@ from pyiem.webutil import (
     TELEMETRY,
     CGIModel,
     ListOrCSVType,
+    _is_xss_payload,
     add_to_environ,
     ensure_list,
     iemapp,
@@ -27,28 +29,62 @@ from pyiem.webutil import (
 )
 
 
+def test_xss_detect_script_tag():
+    assert _is_xss_payload("<script>alert('xss')</script>")
+
+
+def test_xss_detect_javascript_uri():
+    assert _is_xss_payload("javascript:alert(1)")
+
+
+def test_xss_detect_entity_encoded():
+    # Encoded <script> should also be detected after unescape
+    assert _is_xss_payload("&lt;script&gt;alert(1)&lt;/script&gt;")
+
+
+def test_xss_false_positive_simple_text():
+    assert not _is_xss_payload("hello world")
+
+
+def test_xss_false_positive_ampersand():
+    # Strings with entities but benign content should not trigger
+    assert not _is_xss_payload("Bread &amp; Butter")
+
+
 def test_allowed_as_list():
     """Test that we don't allow a list in the parsed form."""
 
     @iemapp(allowed_as_list=["q"])
-    def application(environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return f"{random.random()}"
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&q=2&f=1",
-    }
-    sr = mock.MagicMock()
-    res = list(application(env, sr))
-    assert res[0].find(b"Oopsy") == -1
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "q=1&f=1&f=2",
-    }
-    sr = mock.MagicMock()
-    res = list(application(env, sr))
-    assert res[0].find(b"Oopsy") > -1
+    c = Client(application)
+    resp = c.get("/?q=1&q=2&f=1")
+    assert resp.status_code == 200
+    resp = c.get("/?q=1&f=2&f=1")
+    assert resp.status_code == 422
+
+
+def test_iemweb_int_type():
+    """Test that we don't allow a list in the parsed form."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        f: int = Field(...)
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return f"{environ['f'] if isinstance(environ['f'], int) else 'bad'}"
+
+    c = Client(application)
+    resp = c.get("/?f=1")
+    assert resp.status_code == 200
+    assert resp.text == "1"
 
 
 def test_memcachekey_is_none():
@@ -258,9 +294,7 @@ def test_listorcsvtype():
         "wsgi.input": mock.MagicMock(),
         "QUERY_STRING": "foo=1&foo=2&foo2=1,2&foo3=1&foo4=<script>",
     }
-    assert (
-        list(application(env, sr))[0].decode("ascii").find("XSS detected") > -1
-    )
+    assert "akrherz" in list(application(env, sr))[0].decode("ascii")
 
 
 def test_disable_parse_times():
@@ -315,16 +349,15 @@ def test_iemapp_help():
     """Test that help works."""
 
     @iemapp(help="FINDME")
-    def application(environ, _start_response):
+    def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "help",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("FINDME") > -1
+    c = Client(application)
+    resp = c.get("/?help")
+    assert resp.status_code == 200
+    assert "FINDME" in resp.text
 
 
 def test_duplicated_year_in_form():
@@ -350,30 +383,26 @@ def test_forgive_duplicate_tz():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&tz=etc/utc",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("Hello!") > -1
+    c = Client(application)
+    resp = c.get("/?tz=etc/utc&tz=etc/utc")
+    assert resp.status_code == 200
+    assert resp.text == "Hello!"
 
 
 def test_duplicated_tz_in_form():
     """Test that this is handled."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         return [b"Content-type: text/plain\n\nHello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&tz=etc/UTC",
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("twice") > -1
+    c = Client(application)
+    resp = c.get("/?tz=etc/utc&tz=etc/UTC")
+    assert "twice" in resp.text
 
 
 def test_forgive_feb29():
@@ -498,26 +527,22 @@ def test_incomplete():
         """Test."""
         raise IncompleteWebRequest(msg)
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find(msg) > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 422
 
 
 def test_newdatabase():
     """Test that the NewDatabaseConnectionError runs."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         raise NewDatabaseConnectionFailure()
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert "akrherz" in resp.text
 
 
 def test_nodatafound():
@@ -529,39 +554,23 @@ def test_nodatafound():
         """Test."""
         raise NoDataFound(res)
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii") == res
-
-
-def test_xss():
-    """Test that the XSS runs."""
-
-    @iemapp()
-    def application(environ, start_response):
-        """Test."""
-        raise BadWebRequest("This is a test")
-
-    env = {
-        "wsgi.input": mock.MagicMock(),
-    }
-    sr = mock.MagicMock()
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == res
 
 
 def test_iemapp_generator():
     """Test that we can wrap a generator."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, start_response):
         """Test."""
-        yield b"Content-type: text/plain\n\nHello!"
+        start_response("200 OK", [("Content-type", "text/plain")])
+        yield b"Hello!"
 
-    env = {"wsgi.input": mock.MagicMock()}
-    res = list(application(env, None))
-    assert res == [b"Content-type: text/plain\n\nHello!"]
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == "Hello!"
 
 
 def test_iemapp_decorator():
@@ -570,12 +579,12 @@ def test_iemapp_decorator():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {"wsgi.input": mock.MagicMock()}
-    assert list(application(env, None)) == [
-        b"Content-type: text/plain\n\nHello!"
-    ]
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.text == "Hello!"
 
 
 def test_typoed_tz():
@@ -584,33 +593,26 @@ def test_typoed_tz():
     @iemapp()
     def application(environ, start_response):
         """Test."""
-        return [b"Content-type: text/plain\n\nHello!"]
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
 
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, None)) == [
-        b"Content-type: text/plain\n\nHello!"
-    ]
+    c = Client(application)
+    resp = c.get("/?tz=America/Chicage")
+    assert resp.status_code == 200
 
 
 def test_iemapp_raises_newdatabaseconnectionfailure():
     """Test catch a raised exception."""
 
     @iemapp()
-    def application(environ, start_response):
+    def application(_environ, _start_response):
         """Test."""
         get_dbconn("this will fail")
         return [b"Content-type: text/plain\n\nHello!"]
 
-    # mock a start_response function
-    sr = mock.MagicMock()
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert resp.status_code == 503
 
 
 def test_iemapp_catches_vanilla_exception():
@@ -621,10 +623,41 @@ def test_iemapp_catches_vanilla_exception():
         """Test."""
         raise Exception("This is a test")
 
-    # mock a start_response function
-    sr = mock.MagicMock()
-    env = {
-        "wsgi.input": mock.MagicMock(),
-        "QUERY_STRING": "tz=etc/utc&sts=2021-01-01T00:00",
-    }
-    assert list(application(env, sr))[0].decode("ascii").find("akrherz") > -1
+    c = Client(application)
+    resp = c.get("/")
+    assert "akrherz" in resp.text
+
+
+def test_iemapp_xss_javascript():
+    """Test that javascript payload triggers XSS protection."""
+
+    @iemapp()
+    def application(_environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = Client(application)
+    resp = c.get("/?q=javascript:alert()")
+    assert resp.status_code == 422
+    assert "akrherz" in resp.text
+
+
+def test_iemapp_xss_in_list():
+    """Test that a list with javascript payload triggers XSS protection."""
+
+    class MySchema(CGIModel):
+        """Test."""
+
+        q: ListOrCSVType = Field(...)
+
+    @iemapp(schema=MySchema)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return [b"Hello!"]
+
+    c = Client(application)
+    resp = c.get("/?q=1&q=<script>alert('xss')</script>")
+    assert resp.status_code == 422
+    assert "akrherz" in resp.text

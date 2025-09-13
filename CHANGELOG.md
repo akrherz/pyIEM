@@ -17,6 +17,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add `method=head` option to `archive_fetch` so to do quick checks.
+- Drop `nh3` requirement.
 - Support `BECMG`, `PROB30`, and `PROB40` TAF forecast elements (#1104).
 - Support more TAF quirks and poor formatting.
 
@@ -26,6 +27,7 @@ All notable changes to this library are documented in this file.
 - Demote a SHEF warning for a poorly encoded paired depth value.
 - Fix edge case with empty scripts in autoplot vtecps type.
 - Prevent unknown UGC from causing a full database write failure (#1097).
+- Rework XSS detection within `webutil.iemapp`.
 - Update bundled NWS CWAs (18 Mar 2025) (#1100).
 - Workaround a spacing issue within LSRs that may not be fixed upstream.
 
