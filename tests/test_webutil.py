@@ -67,6 +67,26 @@ def test_allowed_as_list():
     assert resp.status_code == 422
 
 
+def test_iemweb_int_type():
+    """Test that we don't allow a list in the parsed form."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        f: int = Field(...)
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        return f"{environ['f'] if isinstance(environ['f'], int) else 'bad'}"
+
+    c = Client(application)
+    resp = c.get("/?f=1")
+    assert resp.status_code == 200
+    assert resp.text == "1"
+
+
 def test_memcachekey_is_none():
     """Test that we can handle a None memcachekey."""
 
