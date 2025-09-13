@@ -22,8 +22,6 @@ dependencies:
   - metar>=1.7.0
   - mock
   - netCDF4
-  # xss
-  - nh3
   - numpy
   - pandas
   # webutil

@@ -14,7 +14,6 @@ from datetime import datetime, timezone
 from http import HTTPStatus
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-import nh3
 from docutils.core import publish_string
 from paste.request import parse_formvars
 from pydantic import (
@@ -89,18 +88,15 @@ ListOrCSVType = Annotated[
 def _is_xss_payload(val: str) -> bool:
     """Return True if the provided string appears to contain XSS payloads.
 
-    We first normalize entities with `html.unescape` and then let `nh3.clean`
-    inspect it. If `nh3.clean` changes the normalized text and the normalized
-    text contains HTML tag-like patterns or javascript: URIs, treat it as
-    naughty.
+    We first normalize entities with `html.unescape` and then inspect it. If
+    the normalized text contains HTML tag-like patterns or javascript: URIs,
+    treat it as naughty.
     """
     normalized = html.unescape(val)
-    if nh3.clean(normalized) == normalized:
-        return False
     # Detect tag-like content (e.g. <script>, <img src=...>, etc.)
     if re.search(r"<\s*/?\s*[a-zA-Z]", normalized):
         return True
-    # Detect javascript: URIs which nh3 may also alter
+    # Detect javascript: URIs which may be used as payloads
     if re.search(r"javascript\s*:", normalized, re.I):
         return True
     return False
@@ -131,9 +127,7 @@ class CGIModel(BaseModel):
         """Protect against XSS attacks."""
         # We want pydantic to *fail* validation when naughty HTML/JS is
         # provided, but avoid false-positives for benign strings that only
-        # differ because of entity escaping (e.g. '&amp;'). Unescape first
-        # and only raise when the normalized value looks like real HTML/JS
-        # that `nh3.clean` changes.
+        # differ because of entity escaping (e.g. '&amp;').
         if isinstance(v, str):
             if _is_xss_payload(v):
                 raise ValueError(XSS_SENTINEL)

@@ -21,11 +21,34 @@ from pyiem.webutil import (
     TELEMETRY,
     CGIModel,
     ListOrCSVType,
+    _is_xss_payload,
     add_to_environ,
     ensure_list,
     iemapp,
     write_telemetry,
 )
+
+
+def test_xss_detect_script_tag():
+    assert _is_xss_payload("<script>alert('xss')</script>")
+
+
+def test_xss_detect_javascript_uri():
+    assert _is_xss_payload("javascript:alert(1)")
+
+
+def test_xss_detect_entity_encoded():
+    # Encoded <script> should also be detected after unescape
+    assert _is_xss_payload("&lt;script&gt;alert(1)&lt;/script&gt;")
+
+
+def test_xss_false_positive_simple_text():
+    assert not _is_xss_payload("hello world")
+
+
+def test_xss_false_positive_ampersand():
+    # Strings with entities but benign content should not trigger
+    assert not _is_xss_payload("Bread &amp; Butter")
 
 
 def test_allowed_as_list():
@@ -589,12 +612,13 @@ def test_iemapp_xss_javascript():
     """Test that javascript payload triggers XSS protection."""
 
     @iemapp()
-    def application(_environ, _start_response):
+    def application(_environ, start_response):
         """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
         return [b"Hello!"]
 
     c = Client(application)
-    resp = c.get("/?q=<script>alert('xss')</script>")
+    resp = c.get("/?q=javascript:alert()")
     assert resp.status_code == 422
     assert "akrherz" in resp.text
 
