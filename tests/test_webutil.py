@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 import mock
 import pytest
-from pydantic import AwareDatetime, Field
+from pydantic import AwareDatetime, Field, field_validator
 from werkzeug.test import Client
 
 from pyiem.database import get_dbconn
@@ -65,6 +65,40 @@ def test_allowed_as_list():
     assert resp.status_code == 200
     resp = c.get("/?q=1&f=2&f=1")
     assert resp.status_code == 422
+
+
+def test_iemweb_datetime_type():
+    """Test the handling of a datetime schema field."""
+
+    class MyModel(CGIModel):
+        """Test."""
+
+        state: str = Field(...)
+        dt: datetime = Field(default=None)
+
+        # This is important to get the dt type to datetime prior to going to
+        # XSS
+        @field_validator("dt", mode="before")
+        @classmethod
+        def parse_valid(cls, value, _info):
+            """Ensure we have a valid time."""
+            fmt = "%Y%m%d%H%M"
+            if value.find("T") > 0 and len(value) >= 16:
+                fmt = "%Y-%m-%dT%H:%M"
+                value = value[:16]
+            return datetime.strptime(value, fmt)
+
+    @iemapp(schema=MyModel)
+    def application(environ, start_response):
+        """Test."""
+        start_response("200 OK", [("Content-type", "text/plain")])
+        is_dt = isinstance(environ["dt"], datetime)
+        return f"{environ['dt'].year if is_dt else 'bad'}"
+
+    c = Client(application)
+    resp = c.get("/?state=IA&dt=2022-01-01T00:00:00Z")
+    assert resp.status_code == 200
+    assert resp.text == "2022"
 
 
 def test_iemweb_int_type():
