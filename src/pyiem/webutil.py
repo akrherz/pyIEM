@@ -128,15 +128,14 @@ class CGIModel(BaseModel):
         # We want pydantic to *fail* validation when naughty HTML/JS is
         # provided, but avoid false-positives for benign strings that only
         # differ because of entity escaping (e.g. '&amp;').
-        if isinstance(v, str):
-            if _is_xss_payload(v):
-                raise ValueError(XSS_SENTINEL)
-            return v
         if isinstance(v, list):
             for x in v:
                 if isinstance(x, str) and _is_xss_payload(x):
                     raise ValueError(XSS_SENTINEL)
             return v
+        # Can only be str at this point?
+        if _is_xss_payload(v):
+            raise ValueError(XSS_SENTINEL)
         return v
 
 
