@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import warnings
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 from html import escape
@@ -27,12 +28,6 @@ import numpy as np  # used too many places
 from pyiem import database
 from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 from pyiem.network import Table as NetworkTable
-
-# API compat
-get_dbconn = database.get_dbconn
-get_dbconnc = database.get_dbconnc
-get_dbconnstr = database.get_dbconnstr
-get_sqlalchemy_conn = database.get_sqlalchemy_conn
 
 SEQNUM = re.compile(r"^[0-9]{3}\s?$")
 # Setup a default logging instance for this module
@@ -592,7 +587,7 @@ def delete_property(name, cursor=None):
       cursor (psycopg2.cursor): Optional database cursor to use
     """
     if cursor is None:
-        pgconn, _cursor = get_dbconnc("mesosite")
+        pgconn, _cursor = database.get_dbconnc("mesosite")
     else:
         _cursor = cursor
     _cursor.execute("DELETE from properties WHERE propname = %s", (name,))
@@ -608,7 +603,7 @@ def get_properties(cursor=None):
       dict: a dictionary of property names and values (both str)
     """
     if cursor is None:
-        pgconn, _cursor = get_dbconnc("mesosite")
+        pgconn, _cursor = database.get_dbconnc("mesosite")
     else:
         _cursor = cursor
     _cursor.execute("SELECT propname, propvalue from properties")
@@ -632,7 +627,7 @@ def set_property(name, value, cursor=None):
     from pyiem.reference import ISO8601
 
     if cursor is None:
-        pgconn, _cursor = get_dbconnc("mesosite")
+        pgconn, _cursor = database.get_dbconnc("mesosite")
     else:
         _cursor = cursor
     # auto convert datetime to ISO8601 string
@@ -790,3 +785,15 @@ def archive_fetch(
     finally:
         if tmp is not None:
             os.unlink(tmp.name)
+
+
+def __getattr__(name: str):
+    """Shim to allow deprecation notices to start."""
+    if name.startswith("get_dbconn") or name == "get_sqlalchemy_conn":
+        warnings.warn(
+            f"{name} has been moved to pyiem.database.{name}, removed in 1.26",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return getattr(database, name)
+    raise AttributeError(f"module {__name__} has no attribute {name}")
