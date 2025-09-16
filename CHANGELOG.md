@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Change `NoDataFound` exception in `iemapp` to HTTP status 422.
+- Mark `pyiem.util.{get_dbconn*,get_sqlalchemy_conn}` for removal in 1.26.0
 - Remove `pyiem.plot.use_agg.plt` (pyplot) as it is a walking memory leak.
 - Remove `pyiem.prism` per previous deprecation.
 - Rename `pyiem.nws.products.vtec.skip_con` to `is_skip_con` (meh, internal).

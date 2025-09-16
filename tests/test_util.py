@@ -20,6 +20,13 @@ from pyiem.exceptions import IncompleteWebRequest, UnknownStationException
 from pyiem.reference import ISO8601
 
 
+def test_deprecated_database():
+    """Test that we get a DeprecationWarning"""
+    with pytest.warns(DeprecationWarning):
+        database = util.get_dbconn("mesosite")
+        assert database is not None
+
+
 def test_logger_level():
     """That that we get the right logger level when running a tty."""
     # Mock sys.stdout.isatty
