@@ -156,6 +156,8 @@ def parse_prod(prod: TextProduct, segtext: str) -> TAFReport:
     m = STID_VALID.search(segtext)
     d = m.groupdict()
     lines = []
+    if "=" not in segtext:
+        segtext += "="
     meat = segtext[m.end() : segtext.find("=")]
     accum = ""
     for token in [x.strip() for x in meat.splitlines()]:
