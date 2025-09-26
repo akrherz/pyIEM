@@ -25,6 +25,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Account for `python-metar` edge case with peak wind time being in the future.
+- Correct TAF parsing edge case when segment has no equals.
 - Demote a SHEF warning for a poorly encoded paired depth value.
 - Fix edge case with empty scripts in autoplot vtecps type.
 - Prevent unknown UGC from causing a full database write failure (#1097).

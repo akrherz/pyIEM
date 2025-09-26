@@ -38,6 +38,14 @@ def test_taf_collective():
     assert prod.data[0].forecasts[3].valid == utc(2000, 4, 7, 9)
 
 
+def test_250926_taflan_badfinal():
+    """Test the parsing with the file FEW being cut off."""
+    utcnow = utc(2025, 9, 26, 18)
+    prod = real_tafparser(get_test_file("TAF/TAFLAN.txt"), utcnow=utcnow)
+    assert prod.data[0].forecasts[-1].sky[0].amount == "FEW"
+    assert prod.data[0].forecasts[-1].sky[0].level == 4_000
+
+
 def test_250818_tafags():
     """Test a TAF found in 2008 that fails."""
     utcnow = utc(2008, 1, 1, 6)
