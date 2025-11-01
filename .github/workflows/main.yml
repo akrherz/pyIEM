@@ -79,7 +79,7 @@ jobs:
 
     - name: Upload Test Results, if failed
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: mplresults-${{ matrix.PYTHON_VERSION }}
         path: mplresults-${{ matrix.PYTHON_VERSION }}
