@@ -5,7 +5,6 @@ from pyiem.nws.product import (
     TextProductException,
     TextProductSegment,
 )
-from pyiem.nws.products._vtec_jabber import _get_jabbers
 from pyiem.nws.products._vtec_util import (
     DEFAULT_EXPIRE_DELTA,
     _associate_vtec_year,
@@ -30,7 +29,14 @@ class VTECProductException(TextProductException):
 class VTECProduct(TextProduct):
     """A TextProduct that contains VTEC information."""
 
-    get_jabbers = _get_jabbers
+    def get_jabbers(self, uri: str, river_uri: str | None = None):
+        """Return a list of triples representing how this goes to social.
+
+        This is a lazy-loaded wrapper to avoid circular imports.
+        """
+        from pyiem.nws.products._vtec_jabber import _get_jabbers
+
+        return _get_jabbers(self, uri, river_uri)
 
     def __init__(
         self, text, utcnow=None, ugc_provider=None, nwsli_provider=None
