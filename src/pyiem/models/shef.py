@@ -30,7 +30,7 @@ class SHEFElement(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
-    station: str = Field(...)
+    station: str = Field(..., max_length=8)
     basevalid: datetime = Field(...)  # Prevent multiple DH24 from trouble
     valid: datetime = Field(...)
     dv_interval: Optional[timedelta] = Field(None)  # DV
