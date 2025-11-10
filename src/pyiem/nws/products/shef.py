@@ -560,6 +560,10 @@ def process_message_b(prod, message) -> List[SHEFElement]:
                         continue
                     text = parts[1]
                 elem = diction.model_copy()
+                if len(station) > 8:
+                    raise InvalidSHEFEncoding(
+                        f"4.1.2 Station ID len>8 '{station}'"
+                    )
                 elem.station = station
                 elem.str_value = text.strip()
                 elem.raw = headerline + "\n" + section

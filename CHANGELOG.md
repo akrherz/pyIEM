@@ -3,6 +3,16 @@
 
 All notable changes to this library are documented in this file.
 
+## **Unreleased Version**
+
+### API Changes
+
+- Enforce a SHEF data model limit of 8 characters for a station identifier.
+
+### New Features
+
+### Bug Fixes
+
 ## **1.25.0** (30 Sep 2025)
 
 ### API Changes

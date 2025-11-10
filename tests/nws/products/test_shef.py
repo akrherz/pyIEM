@@ -37,6 +37,14 @@ def prod():
     return res
 
 
+def test_251110_rr1lch_no_station():
+    """Test how some GIGO is handled."""
+    utcnow = utc(2025, 11, 10, 18)
+    prod = parser(get_test_file("SHEF/RR1LCH.txt"), utcnow=utcnow)
+    assert not prod.warnings
+    assert len(prod.data) == 32
+
+
 def test_250716_demote_warning():
     """Test that we get no warning from this."""
     utcnow = utc(2025, 7, 16, 12)
