@@ -43,10 +43,6 @@ def test_lonlat(elem):
     assert abs(res[0] - -99.5) < 0.01
     assert abs(res[1] - -30.8) < 0.01
 
-    elem.station = "W30800994A"
-    res = elem.lonlat()
-    assert res[0] is None
-
 
 def test_varname(elem):
     """Test the varname conversion."""

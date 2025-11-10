@@ -33,26 +33,28 @@ class SHEFElement(BaseModel):
     station: str = Field(..., max_length=8)
     basevalid: datetime = Field(...)  # Prevent multiple DH24 from trouble
     valid: datetime = Field(...)
-    dv_interval: Optional[timedelta] = Field(None)  # DV
-    physical_element: Optional[str] = Field(None)  # PE
-    duration: Optional[str] = Field(None)
-    type: str = Field("R")  # Table 7
-    source: str = Field("Z")  # Table 7
-    extremum: str = Field("Z")  # Table 7
-    probability: str = Field("Z")  # Table 7
-    str_value: str = Field("")
-    num_value: Optional[float] = Field(None)
-    data_created: Optional[datetime] = Field(None)
+    dv_interval: Optional[timedelta] = Field(default=None)  # DV
+    physical_element: Optional[str] = Field(default=None)  # PE
+    duration: Optional[str] = Field(default=None)
+    type: str = Field(default="R")  # Table 7
+    source: str = Field(default="Z")  # Table 7
+    extremum: str = Field(default="Z")  # Table 7
+    probability: str = Field(default="Z")  # Table 7
+    str_value: str = Field(default="")
+    num_value: Optional[float] = Field(default=None)
+    data_created: Optional[datetime] = Field(default=None)
     depth: Optional[int] = Field(
         default=None, ge=0, le=32767
     )  # database as smallint
-    unit_convention: str = Field("E")  # DU
-    qualifier: Optional[str] = Field(None)  # DQ
-    comment: Optional[str] = Field(None)  # This is found after the value
+    unit_convention: str = Field(default="E")  # DU
+    qualifier: Optional[str] = Field(default=None)  # DQ
+    comment: Optional[str] = Field(
+        default=None
+    )  # This is found after the value
     narrative: Optional[str] = Field(
-        None
+        default=None
     )  # Free text after some Wxcoder/IVROCS
-    raw: Optional[str] = Field(None)  # The SHEF message
+    raw: Optional[str] = Field(default=None)  # The SHEF message
 
     def to_english(self) -> float:
         """Return an English value representation.
