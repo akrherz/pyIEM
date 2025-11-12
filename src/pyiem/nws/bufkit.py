@@ -1,23 +1,33 @@
 """A BUFKIT File Reader."""
 
-# stdlib
 import re
 from io import StringIO
 
-# third party
 import numpy as np
 import pandas as pd
+
+from pyiem.util import LOG
 
 KEY_VAL_RE = re.compile(r"(?P<key>[A-Z0-9]{4}) = (?P<value>[0-9\-\./]+)")
 
 
-def _read_station(text):
+def _read_station(text: str):
     """our station data reader."""
     # GEMPAK variables always start with letters
     keys = [t for t in text[:1000].split() if t[0].isalpha()]
     # Split on the last key above to get just numbers
     numbers = text.split(keys[-1])[1].split()
-    assert len(numbers) % len(keys) == 0
+    if len(numbers) % len(keys) != 0:
+        LOG.info(
+            "BUFKIT reader found len(numbers)[%s] %% len(keys)[%s] != 0",
+            len(numbers),
+            len(keys),
+        )
+        # Likely a corrupted file, so an evasive hack
+        meat = text.split(keys[-1])[1]
+        pos = meat.find("STID")
+        meat = meat[:pos]
+        numbers = meat.strip().split()
     rows = [
         numbers[i : (i + len(keys))] for i in range(0, len(numbers), len(keys))
     ]
