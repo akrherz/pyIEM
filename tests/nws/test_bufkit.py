@@ -22,6 +22,12 @@ def test_reader(model):
     assert sndf["STIM"].max() == stndf.index.values[-1]
 
 
+def test_251112_hrrr_klax():
+    """Test a failure found parsing a BUFKIT file from 2020."""
+    fp = get_test_filepath("BUFKIT/hrrr_klax.buf")
+    sndf, stndf = read_bufkit(fp)
+
+
 def test_values():
     """Test that we get values we expect."""
     fp = get_test_filepath("BUFKIT/namm_kdsm.buf")
