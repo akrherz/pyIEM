@@ -50,9 +50,6 @@ def _read_sounding(text):
             snparm = line.split("=")[1].strip().split(";")
         elif not stnprm and line.startswith("STNPRM"):
             stnprm = line.split("=")[1].strip().split(";")
-    # Make sure we have data
-    assert snparm
-    assert stnprm
     rows = []
     stnrows = []
     # Split into sections, skipping the already parsed header
@@ -63,7 +60,14 @@ def _read_sounding(text):
         # split based on the last snparm
         numbers = section.split(snparm[-1])[-1].split()
         # should be a multiple of snparm
-        assert len(numbers) % len(snparm) == 0
+        if len(numbers) % len(snparm) != 0:
+            LOG.info(
+                "BUFKIT reader found len(numbers)[%s] %% len(snparm)[%s] != 0",
+                len(numbers),
+                len(snparm),
+            )
+            # Likely a corrupted file, just skip it
+            continue
         for i in range(0, len(numbers), len(snparm)):
             rows.append([settings["STIM"], *numbers[i : (i + len(snparm))]])  # noqa
     cols = ["STIM", *snparm]
