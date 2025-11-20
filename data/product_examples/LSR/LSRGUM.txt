@@ -1,0 +1,31 @@
+878 
+NWGM59 PGUM 030548
+LSRGUM
+
+Preliminary Local Storm Report
+National Weather Service Tiyan GU
+348 PM ChST Wed Apr 3 2024
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+1240 PM     Wildfire         1 N Toto                13.47N 144.78E
+03/31/2024                   Guam               GU   NWS Employee     
+
+            A wildfire developed on the southeast corner 
+            of the Bensen storage lot along the brush 
+            line. It grew in size and crossed the fence 
+            line into the backyards of residents on East 
+            Malate St. Heard at least 2 different 
+            arrivals of fire trucks temporarily with 
+            event duration just under 5 hours. Several 
+            hundred feet of brush and grass burned, with 
+            embers landing 1/10 of a mile away. 
+
+
+&&
+
+$$
+
+PD

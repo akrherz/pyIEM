@@ -171,7 +171,13 @@ def parse_lsr(prod, text):
 
     tokens = lines[0][53:].strip().split()
     lat = float(tokens[0][:-1])
+    lat_sign = tokens[0][-1]
+    if lat_sign == "S":
+        lat = 0 - lat
     lon = 0 - float(tokens[1][:-1])
+    lon_sign = tokens[1][-1]
+    if lon_sign == "E":
+        lon = 0 - lon
     if lon <= -180 or lon >= 180 or lat >= 90 or lat <= -90:
         prod.warnings.append(f"Invalid Geometry Lat: {lat} Lon: {lon}\n{text}")
         return None
