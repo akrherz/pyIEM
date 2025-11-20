@@ -1,0 +1,23 @@
+191 
+NWZS50 NSTU 201929
+LSRPPG
+
+Preliminary Local Storm Report
+National Weather Service Pago Pago AS
+829 AM SST Thu Nov 20 2025
+
+..TIME...   ...EVENT...      ...CITY LOCATION...     ...LAT.LON...
+..DATE...   ....MAG....      ..COUNTY LOCATION..ST.. ...SOURCE....
+            ..REMARKS..
+
+0827 AM     Landslide        1 NW Leone              14.33S 170.79W
+11/20/2025                   Western            AS   NWS Employee     
+
+    
+
+
+&&
+
+$$
+
+DS

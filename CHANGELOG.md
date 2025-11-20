@@ -14,6 +14,7 @@ All notable changes to this library are documented in this file.
 ### Bug Fixes
 
 - Account for a corrupted HRRR bufkit file found in MTArchive.
+- Correct LSR location parsing for Guam and Pago Pago.
 
 ## **1.25.0** (30 Sep 2025)
 

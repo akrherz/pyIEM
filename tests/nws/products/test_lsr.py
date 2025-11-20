@@ -7,6 +7,18 @@ from pyiem.reference import TRACE_VALUE
 from pyiem.util import get_test_file
 
 
+def test_251120_lsrppg():
+    """Test that we can handle a south latitude, gasp."""
+    prod = parser(get_test_file("LSR/LSRPPG.txt"))
+    assert abs(prod.lsrs[0].geometry.y + 14.33) < 0.01
+
+
+def test_251120_lsrgum():
+    """Test that we can handle a east longitude, gasp."""
+    prod = parser(get_test_file("LSR/LSRGUM.txt"))
+    assert abs(prod.lsrs[0].geometry.x - 144.78) < 0.01
+
+
 def test_250719_spacing():
     """Test that we can handle a formatting bug without much hope of fixing."""
     prod = parser(get_test_file("LSR/LSRPHI.txt"))
