@@ -10,23 +10,22 @@ Formats
 
 Implementation Notes
 --------------------
-
 - The IEM uses a nomenclature of 0.0001 float value to represent Trace values,
-not the 0.001 that SHEF does.
-- When `DH` is blank or `DHM`, this generates a SHEFElement with a None valid
-attribute.  This is ambiguous behavior to consider further.
+  not the 0.001 that SHEF does.
+- When ``DH`` is blank or ``DHM``, this generates a SHEFElement with a None
+  valid attribute. This is ambiguous behavior to consider further.
 
-TODO List
----------
- - 4.4.4 DIE special end-of-month specifier
- - 5.1.4 how to handle repeated data
- - Handle when R is being specified in the AR BR ER
- - 5.1.6 revision of a missing value
- - 5.2.1 DR codes, DRE end of month
- - Table 9a D codes
- - 4.4.1 ugly time logic and DN support
- - Handle UQ variable SSS.SDDD
- - Handle UR (tens of degrees)
+Known Limitations
+-----------------
+- 4.4.4 DIE special end-of-month specifier not implemented
+- 5.1.4 how to handle repeated data not implemented
+- Handle when R is being specified in the AR BR ER
+- 5.1.6 revision of a missing value not implemented
+- 5.2.1 DR codes, DRE end of month not implemented
+- Table 9a D codes not implemented
+- 4.4.1 ugly time logic and DN support
+- Handle UQ variable SSS.SDDD
+- Handle UR (tens of degrees)
 
 """
 

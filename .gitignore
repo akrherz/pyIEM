@@ -9,5 +9,6 @@ src/pyiem.egg-info/
 /.pytest_cache/
 /.vscode/
 /docs/build
+/docs/source/api
 /.eggs
 /cov.xml
