@@ -1,0 +1,1127 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.webutil &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/webutil';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.webutil</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.webutil</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions for iemwebfarm applications.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPStatus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">docutils.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">publish_string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">paste.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_formvars</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AfterValidator</span><span class="p">,</span>
+    <span class="n">BaseModel</span><span class="p">,</span>
+    <span class="n">BeforeValidator</span><span class="p">,</span>
+    <span class="n">ConfigDict</span><span class="p">,</span>
+    <span class="n">ValidationError</span><span class="p">,</span>
+    <span class="n">WithJsonSchema</span><span class="p">,</span>
+    <span class="n">field_validator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymemcache.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sqlalchemy_conn</span><span class="p">,</span> <span class="n">sql_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BadWebRequest</span><span class="p">,</span>
+    <span class="n">IncompleteWebRequest</span><span class="p">,</span>
+    <span class="n">NewDatabaseConnectionFailure</span><span class="p">,</span>
+    <span class="n">NoDataFound</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.templates.iem</span><span class="w"> </span><span class="kn">import</span> <span class="n">TEMPLATE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="c1"># Forgive some typos</span>
+<span class="n">TZ_TYPOS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;central&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CST&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CDT&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MST&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Denver&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MDT&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Denver&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PST&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Los_Angeles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PDT&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Los_Angeles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AKST&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Anchorage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AKDT&quot;</span><span class="p">:</span> <span class="s2">&quot;America/Anchorage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HST&quot;</span><span class="p">:</span> <span class="s2">&quot;Pacific/Honolulu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HDT&quot;</span><span class="p">:</span> <span class="s2">&quot;Pacific/Honolulu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GMT&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UT&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;etc/utc&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utc&quot;</span><span class="p">:</span> <span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># Match something that looks like a four digit year</span>
+<span class="n">YEAR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{4}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">TELEMETRY</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;TELEMETRY&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;timing&quot;</span><span class="p">,</span> <span class="s2">&quot;status_code&quot;</span><span class="p">,</span> <span class="s2">&quot;client_addr&quot;</span><span class="p">,</span> <span class="s2">&quot;app&quot;</span><span class="p">,</span> <span class="s2">&quot;request_uri&quot;</span><span class="p">,</span> <span class="s2">&quot;vhost&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">XSS_SENTINEL</span> <span class="o">=</span> <span class="s2">&quot;XSS&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_conv2list</span><span class="p">(</span><span class="n">mixed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert to a list.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mixed</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mixed</span>
+    <span class="k">return</span> <span class="n">mixed</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_all_strings</span><span class="p">(</span><span class="n">mixed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure we have all strings.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">mixed</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)]</span>
+
+
+<span class="n">ListOrCSVType</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="nb">list</span><span class="p">,</span>
+    <span class="n">BeforeValidator</span><span class="p">(</span><span class="n">_conv2list</span><span class="p">),</span>
+    <span class="n">AfterValidator</span><span class="p">(</span><span class="n">_ensure_all_strings</span><span class="p">),</span>
+    <span class="n">WithJsonSchema</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;serialization&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_xss_payload</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the provided string appears to contain XSS payloads.</span>
+
+<span class="sd">    We first normalize entities with `html.unescape` and then inspect it. If</span>
+<span class="sd">    the normalized text contains HTML tag-like patterns or javascript: URIs,</span>
+<span class="sd">    treat it as naughty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="c1"># Detect tag-like content (e.g. &lt;script&gt;, &lt;img src=...&gt;, etc.)</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;\s*/?\s*[a-zA-Z]&quot;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="c1"># Detect javascript: URIs which may be used as payloads</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;javascript\s*:&quot;</span><span class="p">,</span> <span class="n">normalized</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="c1"># https://github.com/tiangolo/fastapi/discussions/8143#discussioncomment-5147698</span>
+<div class="viewcode-block" id="CGIModel">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.CGIModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CGIModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Pydantic model that parses CGI arguments.&quot;&quot;&quot;</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">errors</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">error</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ctx&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="n">XSS_SENTINEL</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;XSS Key: </span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Value: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+<div class="viewcode-block" id="CGIModel.xss_protect">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.CGIModel.xss_protect">[docs]</a>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xss_protect</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Protect against XSS attacks.&quot;&quot;&quot;</span>
+        <span class="c1"># We want pydantic to *fail* validation when naughty HTML/JS is</span>
+        <span class="c1"># provided, but avoid false-positives for benign strings that only</span>
+        <span class="c1"># differ because of entity escaping (e.g. &#39;&amp;amp;&#39;).</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_is_xss_payload</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">XSS_SENTINEL</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_is_xss_payload</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">XSS_SENTINEL</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="c1"># Another field_validator may have run at this point and we have</span>
+        <span class="c1"># a non-str datatype</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="model_to_rst">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.model_to_rst">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_to_rst</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a Pydantic model to a reStructuredText table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: The Pydantic model to convert</span>
+
+<span class="sd">    Returns: A reStructuredText table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rst</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;CGI Arguments&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-------------&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The following table lists the CGI arguments that are accepted by this service.</span>
+<span class="sd">A HTTP ``GET`` request is required. Fields of type</span>
+<span class="sd">**Multi-Params or CSV value** can accept either a comma separated list or</span>
+<span class="sd">multiple parameter and value combinations.  For example, ``?foo=1&amp;foo=2`` is</span>
+<span class="sd">equivalent to ``?foo=1,2``.</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.. list-table::&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;   :header-rows: 1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;   :widths: 15 15 70&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;   * - Field&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;     - Type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;     - Description&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">required</span> <span class="o">=</span> <span class="s2">&quot; (required)&quot;</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;required&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;anyOf&quot;</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">:</span>
+            <span class="n">typetext</span> <span class="o">=</span> <span class="s2">&quot; or &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">[</span><span class="s2">&quot;anyOf&quot;</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">typetext</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">typetext</span> <span class="o">==</span> <span class="s2">&quot;array&quot;</span><span class="p">:</span>
+                <span class="n">typetext</span> <span class="o">=</span> <span class="s2">&quot;Multi-Params or CSV value&quot;</span>
+        <span class="n">rst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;   * - </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;     - </span><span class="si">{</span><span class="n">typetext</span><span class="si">}{</span><span class="n">required</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;     - </span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="write_telemetry">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.write_telemetry">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_telemetry</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">TELEMETRY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write telemetry to the database.&quot;&quot;&quot;</span>
+    <span class="c1"># Yes, this blocks, but if this database is not working, we are in trouble</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="n">sql_helper</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                insert into website_telemetry(timing, status_code,</span>
+<span class="sd">                client_addr, app, request_uri, vhost)</span>
+<span class="sd">                values (:timing, :status_code, :client_addr,</span>
+<span class="sd">                :app, :request_uri, :vhost)</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">_asdict</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_list">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.ensure_list">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_list</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">parse_commas</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure that we get something that is at least an empty list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        environ: the WSGI environ</span>
+<span class="sd">        key: the key to look for</span>
+<span class="sd">        parse_commas: split each found value based on commas, default True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="n">parse_commas</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">res</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="clean_form">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.clean_form">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_form</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Opinionated cleaning of form data.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;tz&quot;</span> <span class="ow">in</span> <span class="n">form</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataFound</span><span class="p">(</span><span class="s2">&quot;GET variable tz specified twice, please fix.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">form</span></div>
+
+
+
+<div class="viewcode-block" id="log_request">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.log_request">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_request</span><span class="p">(</span><span class="n">environ</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log the request to database for future processing.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">get_sqlalchemy_conn</span><span class="p">(</span><span class="s2">&quot;mesosite&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">multiplier</span><span class="p">):</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="n">sql_helper</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        INSERT into weblog</span>
+<span class="sd">        (client_addr, uri, referer, http_status, x_forwarded_for, domain)</span>
+<span class="sd">        VALUES (:client_addr, :uri, :referer, :http_status, :x_forwarded_for,</span>
+<span class="sd">        :domain)</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="p">),</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;client_addr&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;referer&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_REFERER&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;http_status&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+                    <span class="s2">&quot;x_forwarded_for&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_X_FORWARDED_FOR&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="compute_ts_from_string">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.compute_ts_from_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a string to a timestamp.&quot;&quot;&quot;</span>
+    <span class="c1"># Support various ISO8601 formats</span>
+    <span class="n">tstr</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">tz</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tz&quot;</span><span class="p">,</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">tstr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">):</span>
+        <span class="n">tz</span> <span class="o">=</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">)</span>
+        <span class="n">tstr</span> <span class="o">=</span> <span class="n">tstr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">tstr</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">+=</span> <span class="s2">&quot;.</span><span class="si">%f</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tstr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">tstr</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tz</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="compute_ts">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.compute_ts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out the timestamp.&quot;&quot;&quot;</span>
+    <span class="c1"># NB: form[&quot;tz&quot;] should always be set by this point, but alas</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;month</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;month&quot;</span><span class="p">)))</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;day</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">))),</span> <span class="mi">31</span><span class="p">)</span>
+    <span class="c1"># Forgive bad day of the month combinations</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span> <span class="ow">and</span> <span class="n">day</span> <span class="o">==</span> <span class="mi">31</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="c1"># Forgive specification of two years, with pydantic, this could be NOne</span>
+    <span class="n">yearval</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;year</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">yearval</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">yearval</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">yearval</span> <span class="o">=</span> <span class="n">yearval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Forgive February 29ths on non-leap years</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">day</span> <span class="o">&gt;</span> <span class="mi">28</span><span class="p">:</span>
+        <span class="c1"># Check for leap year, close enough</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">yearval</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">yearval</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1800</span><span class="p">,</span> <span class="mi">1900</span><span class="p">]:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="mi">29</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="mi">28</span>
+
+    <span class="k">return</span> <span class="n">datetime</span><span class="p">(</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">yearval</span><span class="p">),</span>
+        <span class="n">month</span><span class="p">,</span>
+        <span class="n">day</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hour</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;minute</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="n">tzinfo</span><span class="o">=</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tz&quot;</span><span class="p">,</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">)),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="add_to_environ">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.add_to_environ">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build out some things auto-parsed from the request.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">environ</span><span class="p">:</span>
+            <span class="c1"># check for XSS and other naughty things</span>
+            <span class="c1"># We should only have either lists or strings</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">va</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_is_xss_payload</span><span class="p">(</span><span class="n">va</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;XSS Key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> Value: </span><span class="si">{</span><span class="n">va</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">_is_xss_payload</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;XSS Key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> Value: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Refusing to over-write environ key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parse_times&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Le Sigh, darly used sts for stations in the past, so ensure</span>
+            <span class="c1"># that sts starts with something that looks like a year</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sts&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">YEAR_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]):</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;sts&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ets&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">YEAR_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]):</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts_from_string</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;ets&quot;</span><span class="p">)</span>
+            <span class="c1"># NB: The usage of a schema may have already parsed a sts or ets,</span>
+            <span class="c1"># but it will be None if it was not provided</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day1&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sts&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;sts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;day2&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ets&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ts</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">&quot;Invalid timestamp specified&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="n">ZoneInfoNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncompleteWebRequest</span><span class="p">(</span><span class="s2">&quot;Invalid timezone specified&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exp</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_handle_help</span><span class="p">(</span><span class="n">start_response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle the help request.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start_response: the WSGI start_response function</span>
+<span class="sd">        kwargs: the keyword arguments passed to the decorator</span>
+
+<span class="sd">    Returns The HTML response</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;200 OK&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/html&quot;</span><span class="p">)])</span>
+    <span class="c1"># return the module docstring for the func</span>
+
+    <span class="n">sdoc</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;Help not available&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="s2">&quot;schema&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">model_to_rst</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">rendered</span> <span class="o">=</span> <span class="n">publish_string</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">sdoc</span><span class="p">,</span> <span class="n">writer_name</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Load external CSS file for styling docutils-generated content</span>
+    <span class="n">css_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;docutils-help.css&quot;</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">css_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">css_content</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="c1"># Get the content between the body tags and wrap with responsive container</span>
+    <span class="n">body_content</span> <span class="o">=</span> <span class="n">rendered</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&lt;body&gt;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&lt;/body&gt;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">styled_content</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&lt;style&gt;</span><span class="se">\n</span><span class="si">{</span><span class="n">css_content</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;/style&gt;&quot;</span>
+        <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;container-fluid&quot;&gt;</span><span class="si">{</span><span class="n">body_content</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">styled_content</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_debracket</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove brackets from form keys.&quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;[]&quot;</span><span class="p">):</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">key</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mcall</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">,</span> <span class="n">memcachekey</span><span class="p">,</span> <span class="n">expire</span><span class="p">,</span> <span class="n">content_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Call the function with memcachekey handling.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">memcachekey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">memcachekey</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memcachekey</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">memcachekey</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="c1"># An appside short circuit when we programatically do not want cache</span>
+        <span class="c1"># or we are dealing with a generator</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+    <span class="n">mc</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;iem-memcached:11211&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+        <span class="n">mc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">expire</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expire</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">expire</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># since our function never got called, we need to start_response</span>
+        <span class="n">ct</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">content_type</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">content_type</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;200 OK&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="n">ct</span><span class="p">)])</span>
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;callback&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cb</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cb</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="n">mc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="iemapp">
+<a class="viewcode-back" href="../../api/pyiem.webutil.html#pyiem.webutil.iemapp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iemapp</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempt to do all kinds of nice things for the user and the developer.</span>
+
+<span class="sd">    kwargs:</span>
+<span class="sd">        - default_tz: The default timezone to use for timestamps, the default</span>
+<span class="sd">          is ``America/Chicago``.</span>
+<span class="sd">        - enable_telemetry: Enable telemetry logging, default ``True``.</span>
+<span class="sd">        - help: Default help text, default ``Help not available``.</span>
+<span class="sd">        - parse_times: Parse the form for timestamps, default ``True``.</span>
+<span class="sd">        - schema (BaseModel): A Pydantic model to parse the form with.</span>
+<span class="sd">        - memcachekey (str or callable): A memcache key to use for caching</span>
+<span class="sd">          the response. If the callable returns `None`, no caching is done.</span>
+<span class="sd">        - memcacheexpire (int or callable): The number of seconds to cache</span>
+<span class="sd">          the response, defaults to 3600.</span>
+<span class="sd">        - content_type (str or callable): The content type to use for the</span>
+<span class="sd">          response.</span>
+<span class="sd">        - allowed_as_list (list): CGI parameters that are permitted to be</span>
+<span class="sd">          lists.</span>
+
+<span class="sd">    What all this does:</span>
+<span class="sd">        1) Attempts to catch database connection errors and handle nicely</span>
+<span class="sd">        2) Updates `environ` with some auto-parsed values + form content.</span>
+<span class="sd">        3) If the wrapped function returns a str or bytes, it will be encoded</span>
+<span class="sd">           and made into a list for the WSGI response.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">        - raise `NoDataFound` to have a nice error message generated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorate a function to catch exceptions and do nice things.&quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_wrapped</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Decorate function.&quot;&quot;&quot;</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_handle_exp</span><span class="p">(</span><span class="n">errormsg</span><span class="p">,</span> <span class="n">routine</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+                <span class="c1"># generate a random string so we can track this request</span>
+                <span class="n">uid</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;Oopsy, something failed on our end, but fear not.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Please contact akrherz@iastate.edu and reference &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;this unique identifier: </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Or wait a day for daryl to review the web logs and fix &quot;</span>
+                    <span class="s2">&quot;the bugs he wrote.  What a life.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">routine</span><span class="p">:</span>
+                    <span class="c1"># Nicely log things about this actual request</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;=</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> URL: </span><span class="si">{</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;REQUEST_URI&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">errormsg</span>
+                <span class="n">start_response</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">HTTPStatus</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">phrase</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">[(</span><span class="s2">&quot;Content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)],</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># mixed convers this to a regular dict</span>
+                <span class="n">form</span> <span class="o">=</span> <span class="n">parse_formvars</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span><span class="o">.</span><span class="n">mixed</span><span class="p">()</span>
+                <span class="n">allowed</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allowed_as_list&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">if</span> <span class="n">allowed</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="k">continue</span>
+                        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">BadWebRequest</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is a list, but not allowed&quot;</span>
+                            <span class="p">)</span>
+                <span class="n">form</span> <span class="o">=</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;help&quot;</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">_handle_help</span><span class="p">(</span><span class="n">start_response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">if</span> <span class="s2">&quot;schema&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="c1"># Retain a reference to the Schema instance as it may have</span>
+                    <span class="c1"># private / computed attributes that are needed</span>
+                    <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;schema&quot;</span><span class="p">](</span>
+                        <span class="o">**</span><span class="n">_debracket</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">form</span> <span class="o">=</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;_cgimodel_schema&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s2">&quot;tz&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">form</span><span class="p">:</span>
+                    <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default_tz&quot;</span><span class="p">,</span> <span class="s2">&quot;America/Chicago&quot;</span><span class="p">)</span>
+                <span class="c1"># Important this is set before calling add_to_environ</span>
+                <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TZ_TYPOS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">],</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;tz&quot;</span><span class="p">])</span>
+                <span class="n">add_to_environ</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_mcall</span><span class="p">(</span>
+                    <span class="n">func</span><span class="p">,</span>
+                    <span class="n">environ</span><span class="p">,</span>
+                    <span class="n">start_response</span><span class="p">,</span>
+                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcachekey&quot;</span><span class="p">),</span>
+                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memcacheexpire&quot;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">),</span>
+                    <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content_type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="c1"># If res is a generator, we should yield from it here</span>
+                <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+                    <span class="k">yield from</span> <span class="n">res</span>
+                <span class="c1"># you know what assumptions do</span>
+                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">IncompleteWebRequest</span><span class="p">,</span> <span class="n">NoDataFound</span><span class="p">)</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="c1"># Intention is to tell the client that the server understood</span>
+                <span class="c1"># the request, but something is missing</span>
+                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span> <span class="n">routine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">BadWebRequest</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">422</span>
+                <span class="n">log_request</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NewDatabaseConnectionFailure</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="n">status_code</span> <span class="o">=</span> <span class="mi">503</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;get_dbconn() failed with `</span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">,</span>
+                    <span class="n">code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">_handle_exp</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;enable_telemetry&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="n">write_telemetry</span><span class="p">(</span>
+                    <span class="n">TELEMETRY</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                        <span class="n">status_code</span><span class="p">,</span>
+                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">),</span>
+                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIPT_NAME&quot;</span><span class="p">),</span>
+                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REQUEST_URI&quot;</span><span class="p">),</span>
+                        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_HOST&quot;</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="c1"># Need to be careful here and ensure we are returning a list</span>
+            <span class="c1"># of bytes</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">res</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">res</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">r</span>
+                <span class="k">return</span>
+            <span class="k">yield from</span> <span class="n">res</span>
+
+        <span class="k">return</span> <span class="n">_wrapped</span>
+
+    <span class="k">return</span> <span class="n">_decorator</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

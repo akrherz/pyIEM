@@ -1,0 +1,7 @@
+pyiem.database module
+=====================
+
+.. automodule:: pyiem.database
+   :members:
+   :show-inheritance:
+   :undoc-members:

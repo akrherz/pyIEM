@@ -1,885 +1,814 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
+
+<html lang="en" data-content_root="../" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.models package &#8212; pyIEM 0.0.post1238+g79f512947 documentation</title>
+    <title>pyiem.models package &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
-    
-    <script src="../_static/documentation_options.js?v=573015cd"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.models';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyiem.ncei package" href="pyiem.ncei.html" />
-    <link rel="prev" title="pyiem.grid package" href="pyiem.grid.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.ncei.html" title="pyiem.ncei package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.grid.html" title="pyiem.grid package"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.models package</a></li> 
-      </ul>
-    </div>  
+    <link rel="next" title="pyiem.models.cwa module" href="pyiem.models.cwa.html" />
+    <link rel="prev" title="pyiem.grid.zs module" href="pyiem.grid.zs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
             
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.cwa.html">pyiem.models.cwa module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.gairmet.html">pyiem.models.gairmet module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.gridnav.html">pyiem.models.gridnav module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.igra.html">pyiem.models.igra module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.mcd.html">pyiem.models.mcd module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.pirep.html">pyiem.models.pirep module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.sel.html">pyiem.models.sel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.shef.html">pyiem.models.shef module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.taf.html">pyiem.models.taf module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.wwp.html">pyiem.models.wwp module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.models package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="pyiem-models-package">
-<h1>pyiem.models package<a class="headerlink" href="#pyiem-models-package" title="Link to this heading">¶</a></h1>
+<h1>pyiem.models package<a class="headerlink" href="#pyiem-models-package" title="Link to this heading">#</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-pyiem.models.cwa">
-<span id="pyiem-models-cwa-module"></span><h2>pyiem.models.cwa module<a class="headerlink" href="#module-pyiem.models.cwa" title="Link to this heading">¶</a></h2>
-<p>Data Model for CWA.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.cwa.</span></span><span class="sig-name descname"><span class="pre">CWAModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_corrected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">narrative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.cwa.CWAModel" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A Center Weather Advisory.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.center">
-<span class="sig-name descname"><span class="pre">center</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.center" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.expire">
-<span class="sig-name descname"><span class="pre">expire</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.expire" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.geom">
-<span class="sig-name descname"><span class="pre">geom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Polygon</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.geom" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.is_corrected">
-<span class="sig-name descname"><span class="pre">is_corrected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.is_corrected" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.issue">
-<span class="sig-name descname"><span class="pre">issue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.issue" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.narrative">
-<span class="sig-name descname"><span class="pre">narrative</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.narrative" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.cwa.CWAModel.num">
-<span class="sig-name descname"><span class="pre">num</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.cwa.CWAModel.num" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-pyiem.models.gairmet">
-<span id="pyiem-models-gairmet-module"></span><h2>pyiem.models.gairmet module<a class="headerlink" href="#module-pyiem.models.gairmet" title="Link to this heading">¶</a></h2>
-<p>Data Model for GAIRMET.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">AIRMETRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">gml_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hazard_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Polygon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A single AIRMET Record.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.geom">
-<span class="sig-name descname"><span class="pre">geom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Polygon</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.geom" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.gml_id">
-<span class="sig-name descname"><span class="pre">gml_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.gml_id" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.hazard_type">
-<span class="sig-name descname"><span class="pre">hazard_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.label">
-<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.label" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.status">
-<span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.status" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.valid_at">
-<span class="sig-name descname"><span class="pre">valid_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.valid_at" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.weather_conditions">
-<span class="sig-name descname"><span class="pre">weather_conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">FreezingLevelRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">gml_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MultiLineString</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A single FreezingLevel Record.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.geom">
-<span class="sig-name descname"><span class="pre">geom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MultiLineString</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.geom" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.gml_id">
-<span class="sig-name descname"><span class="pre">gml_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.level">
-<span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.lower_level">
-<span class="sig-name descname"><span class="pre">lower_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.upper_level">
-<span class="sig-name descname"><span class="pre">upper_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.valid_at">
-<span class="sig-name descname"><span class="pre">valid_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">GAIRMETModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_from:</span> <span class="pre">~datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_to:</span> <span class="pre">~datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issuetime:</span> <span class="pre">~datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">airmets:</span> <span class="pre">~typing.List[~pyiem.models.gairmet.AIRMETRecord]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freezing_levels:</span> <span class="pre">~typing.List[~pyiem.models.gairmet.FreezingLevelRecord]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A G-AIRMET.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.airmets">
-<span class="sig-name descname"><span class="pre">airmets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord" title="pyiem.models.gairmet.AIRMETRecord"><span class="pre">AIRMETRecord</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.airmets" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.freezing_levels">
-<span class="sig-name descname"><span class="pre">freezing_levels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord" title="pyiem.models.gairmet.FreezingLevelRecord"><span class="pre">FreezingLevelRecord</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.issuetime">
-<span class="sig-name descname"><span class="pre">issuetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.issuetime" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.valid_from">
-<span class="sig-name descname"><span class="pre">valid_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_from" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.valid_to">
-<span class="sig-name descname"><span class="pre">valid_to</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_to" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-pyiem.models.sel">
-<span id="pyiem-models-sel-module"></span><h2>pyiem.models.sel module<a class="headerlink" href="#module-pyiem.models.sel" title="Link to this heading">¶</a></h2>
-<p>Pydantic data model for SPC Watch (SEL).</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.sel.</span></span><span class="sig-name descname"><span class="pre">SELModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.sel.SELModel" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>SPC Watch Probability.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel.num">
-<span class="sig-name descname"><span class="pre">num</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.num" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.sel.SELModel.typ">
-<span class="sig-name descname"><span class="pre">typ</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.sel.SELModel.typ" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-pyiem.models.shef">
-<span id="pyiem-models-shef-module"></span><h2>pyiem.models.shef module<a class="headerlink" href="#module-pyiem.models.shef" title="Link to this heading">¶</a></h2>
-<p>SHEF Data Model.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.shef.</span></span><span class="sig-name descname"><span class="pre">SHEFElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">MaxLen</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basevalid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dv_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physical_element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'R'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extremum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_created</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">32767</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_convention</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'E'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">narrative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.shef.SHEFElement" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A PEDTSEP Element.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.basevalid">
-<span class="sig-name descname"><span class="pre">basevalid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.basevalid" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.comment">
-<span class="sig-name descname"><span class="pre">comment</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.comment" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.consume_code">
-<span class="sig-name descname"><span class="pre">consume_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pyiem.models.shef.SHEFElement.consume_code" title="Link to this definition">¶</a></dt>
-<dd><p>Fill out element based on provided text.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.data_created">
-<span class="sig-name descname"><span class="pre">data_created</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.data_created" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.depth">
-<span class="sig-name descname"><span class="pre">depth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.depth" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.duration">
-<span class="sig-name descname"><span class="pre">duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.duration" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.dv_interval">
-<span class="sig-name descname"><span class="pre">dv_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">timedelta</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.dv_interval" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.extremum">
-<span class="sig-name descname"><span class="pre">extremum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.extremum" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.lonlat">
-<span class="sig-name descname"><span class="pre">lonlat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyiem.models.shef.SHEFElement.lonlat" title="Link to this definition">¶</a></dt>
-<dd><p>For ‘Stranger Locations’, return longitude and latitude.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'validate_assignment':</span> <span class="pre">True}</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.narrative">
-<span class="sig-name descname"><span class="pre">narrative</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.narrative" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.num_value">
-<span class="sig-name descname"><span class="pre">num_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.num_value" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.physical_element">
-<span class="sig-name descname"><span class="pre">physical_element</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.physical_element" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.probability">
-<span class="sig-name descname"><span class="pre">probability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.probability" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.qualifier">
-<span class="sig-name descname"><span class="pre">qualifier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.qualifier" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.raw">
-<span class="sig-name descname"><span class="pre">raw</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.raw" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.source">
-<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.source" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.station">
-<span class="sig-name descname"><span class="pre">station</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.station" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.str_value">
-<span class="sig-name descname"><span class="pre">str_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.str_value" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.to_english">
-<span class="sig-name descname"><span class="pre">to_english</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pyiem.models.shef.SHEFElement.to_english" title="Link to this definition">¶</a></dt>
-<dd><p>Return an English value representation.</p>
-<p>Implementation Note: In the case of wind direction (UH, UR), this
-returns the un-scaled value.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.type">
-<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.type" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.unit_convention">
-<span class="sig-name descname"><span class="pre">unit_convention</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.unit_convention" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.valid">
-<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.shef.SHEFElement.valid" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.models.shef.SHEFElement.varname">
-<span class="sig-name descname"><span class="pre">varname</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#pyiem.models.shef.SHEFElement.varname" title="Link to this definition">¶</a></dt>
-<dd><p>Return the Full SHEF Code.</p>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-pyiem.models.taf">
-<span id="pyiem-models-taf-module"></span><h2>pyiem.models.taf module<a class="headerlink" href="#module-pyiem.models.taf" title="Link to this heading">¶</a></h2>
-<p>TAF Data Model.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">SkyCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">100000</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.taf.SkyCondition" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>The Sky condition.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.amount">
-<span class="sig-name descname"><span class="pre">amount</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.amount" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.level">
-<span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.SkyCondition.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.SkyCondition.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">TAFForecast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*,</span> <span class="pre">valid:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">raw:</span> <span class="pre">str,</span> <span class="pre">ftype:</span> <span class="pre">~typing.Annotated[int,</span> <span class="pre">~annotated_types.Ge(ge=0),</span> <span class="pre">~annotated_types.Le(le=5)],</span> <span class="pre">end_valid:</span> <span class="pre">~datetime.datetime</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">sknt:</span> <span class="pre">~typing.Annotated[int</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">~annotated_types.Ge(ge=0),</span> <span class="pre">~annotated_types.Le(le=199)]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">drct:</span> <span class="pre">~typing.Annotated[int</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">~annotated_types.Ge(ge=0),</span> <span class="pre">~annotated_types.Le(le=360)]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">gust:</span> <span class="pre">~typing.Annotated[int</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">~annotated_types.Ge(ge=0),</span> <span class="pre">~annotated_types.Le(le=199)]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">visibility:</span> <span class="pre">~typing.Annotated[float</span> <span class="pre">|</span> <span class="pre">None,</span> <span class="pre">~annotated_types.Ge(ge=0),</span> <span class="pre">~annotated_types.Le(le=6)]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">presentwx:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">sky:</span> <span class="pre">~typing.List[~pyiem.models.taf.SkyCondition]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">shear:</span> <span class="pre">~pyiem.models.taf.WindShear</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.taf.TAFForecast" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A TAF forecast.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.drct">
-<span class="sig-name descname"><span class="pre">drct</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.drct" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.end_valid">
-<span class="sig-name descname"><span class="pre">end_valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.end_valid" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.ftype">
-<span class="sig-name descname"><span class="pre">ftype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.ftype" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.gust">
-<span class="sig-name descname"><span class="pre">gust</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.gust" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.presentwx">
-<span class="sig-name descname"><span class="pre">presentwx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.presentwx" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.raw">
-<span class="sig-name descname"><span class="pre">raw</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.raw" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.shear">
-<span class="sig-name descname"><span class="pre">shear</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyiem.models.taf.WindShear" title="pyiem.models.taf.WindShear"><span class="pre">WindShear</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.shear" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.sknt">
-<span class="sig-name descname"><span class="pre">sknt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.sknt" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.sky">
-<span class="sig-name descname"><span class="pre">sky</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.taf.SkyCondition" title="pyiem.models.taf.SkyCondition"><span class="pre">SkyCondition</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.sky" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.valid">
-<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.valid" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFForecast.visibility">
-<span class="sig-name descname"><span class="pre">visibility</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.taf.TAFForecast.visibility" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">TAFReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*,</span> <span class="pre">station:</span> <span class="pre">~typing.Annotated[str,</span> <span class="pre">~annotated_types.MinLen(min_length=4),</span> <span class="pre">~annotated_types.MaxLen(max_length=4)],</span> <span class="pre">valid:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">product_id:</span> <span class="pre">~typing.Annotated[str,</span> <span class="pre">~annotated_types.MinLen(min_length=28),</span> <span class="pre">~annotated_types.MaxLen(max_length=35)],</span> <span class="pre">observation:</span> <span class="pre">~pyiem.models.taf.TAFForecast,</span> <span class="pre">forecasts:</span> <span class="pre">~typing.List[~pyiem.models.taf.TAFForecast]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.taf.TAFReport" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A TAF Report consisting of forecasts.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.forecasts">
-<span class="sig-name descname"><span class="pre">forecasts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.taf.TAFForecast" title="pyiem.models.taf.TAFForecast"><span class="pre">TAFForecast</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.forecasts" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.observation">
-<span class="sig-name descname"><span class="pre">observation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pyiem.models.taf.TAFForecast" title="pyiem.models.taf.TAFForecast"><span class="pre">TAFForecast</span></a></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.observation" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.product_id">
-<span class="sig-name descname"><span class="pre">product_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.product_id" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.station">
-<span class="sig-name descname"><span class="pre">station</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.station" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.TAFReport.valid">
-<span class="sig-name descname"><span class="pre">valid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#pyiem.models.taf.TAFReport.valid" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.taf.</span></span><span class="sig-name descname"><span class="pre">WindShear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">100000</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">360</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sknt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ge</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">ge</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Le</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">le</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">199</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.taf.WindShear" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>A Wind Shear Value.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.drct">
-<span class="sig-name descname"><span class="pre">drct</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.drct" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.level">
-<span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.taf.WindShear.sknt">
-<span class="sig-name descname"><span class="pre">sknt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.taf.WindShear.sknt" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-pyiem.models.wwp">
-<span id="pyiem-models-wwp-module"></span><h2>pyiem.models.wwp module<a class="headerlink" href="#module-pyiem.models.wwp" title="Link to this heading">¶</a></h2>
-<p>Pydantic data model for SPC Watch Probabilities (WWP).</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.wwp.</span></span><span class="sig-name descname"><span class="pre">WWPModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">typ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tornadoes_2m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tornadoes_1m_strong</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_10m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_1m_65kt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hail_10m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hail_1m_2inch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hail_wind_6m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_hail_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_wind_gust_knots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tops_feet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storm_motion_drct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storm_motion_sknt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.models.wwp.WWPModel" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>SPC Watch Probability.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.hail_10m">
-<span class="sig-name descname"><span class="pre">hail_10m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.hail_10m" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.hail_1m_2inch">
-<span class="sig-name descname"><span class="pre">hail_1m_2inch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.hail_1m_2inch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.hail_wind_6m">
-<span class="sig-name descname"><span class="pre">hail_wind_6m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.hail_wind_6m" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.is_pds">
-<span class="sig-name descname"><span class="pre">is_pds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.is_pds" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.max_hail_size">
-<span class="sig-name descname"><span class="pre">max_hail_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.max_hail_size" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.max_tops_feet">
-<span class="sig-name descname"><span class="pre">max_tops_feet</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.max_tops_feet" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.max_wind_gust_knots">
-<span class="sig-name descname"><span class="pre">max_wind_gust_knots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.max_wind_gust_knots" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.num">
-<span class="sig-name descname"><span class="pre">num</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.num" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.storm_motion_drct">
-<span class="sig-name descname"><span class="pre">storm_motion_drct</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.storm_motion_drct" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.storm_motion_sknt">
-<span class="sig-name descname"><span class="pre">storm_motion_sknt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.storm_motion_sknt" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.tornadoes_1m_strong">
-<span class="sig-name descname"><span class="pre">tornadoes_1m_strong</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.tornadoes_1m_strong" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.tornadoes_2m">
-<span class="sig-name descname"><span class="pre">tornadoes_2m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.tornadoes_2m" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.typ">
-<span class="sig-name descname"><span class="pre">typ</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.typ" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.wind_10m">
-<span class="sig-name descname"><span class="pre">wind_10m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.wind_10m" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.models.wwp.WWPModel.wind_1m_65kt">
-<span class="sig-name descname"><span class="pre">wind_1m_65kt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.wwp.WWPModel.wind_1m_65kt" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.cwa.html">pyiem.models.cwa module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel"><code class="docutils literal notranslate"><span class="pre">CWAModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.center"><code class="docutils literal notranslate"><span class="pre">CWAModel.center</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.expire"><code class="docutils literal notranslate"><span class="pre">CWAModel.expire</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.geom"><code class="docutils literal notranslate"><span class="pre">CWAModel.geom</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.issue"><code class="docutils literal notranslate"><span class="pre">CWAModel.issue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.is_corrected"><code class="docutils literal notranslate"><span class="pre">CWAModel.is_corrected</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.narrative"><code class="docutils literal notranslate"><span class="pre">CWAModel.narrative</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.cwa.html#pyiem.models.cwa.CWAModel.num"><code class="docutils literal notranslate"><span class="pre">CWAModel.num</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.gairmet.html">pyiem.models.gairmet module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.gml_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.label"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.status"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.status</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.hazard_type"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.hazard_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.valid_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.weather_conditions"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.weather_conditions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.AIRMETRecord.geom"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.geom</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.gml_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.valid_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.geom"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.geom</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.level</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.lower_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.lower_level</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.FreezingLevelRecord.upper_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.upper_level</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel.valid_from"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_from</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel.valid_to"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_to</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel.issuetime"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.issuetime</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel.airmets"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.airmets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gairmet.html#pyiem.models.gairmet.GAIRMETModel.freezing_levels"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.freezing_levels</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.gridnav.html">pyiem.models.gridnav module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.crs"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.crs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.left_edge"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.left_edge</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.bottom_edge"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.bottom_edge</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.top_edge"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.top_edge</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.right_edge"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.right_edge</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.dx"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.dx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.dy"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.dy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.nx"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.nx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.ny"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.ny</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.x_points"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.x_points</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.y_points"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.y_points</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.x_edges"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.x_edges</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.y_edges"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.y_edges</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.left"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.left</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.right"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.right</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.bottom"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.bottom</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.top"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.top</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.affine"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.affine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.affine_image"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.affine_image</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.complete_definition"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.complete_definition</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.gridnav.html#pyiem.models.gridnav.CartesianGridNavigation.find_ij"><code class="docutils literal notranslate"><span class="pre">CartesianGridNavigation.find_ij()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.igra.html">pyiem.models.igra module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader"><code class="docutils literal notranslate"><span class="pre">SoundingHeader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.station"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.station</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.valid"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.release_valid"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.release_valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.p_src"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.p_src</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.np_src"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.np_src</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingHeader.geom"><code class="docutils literal notranslate"><span class="pre">SoundingHeader.geom</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord"><code class="docutils literal notranslate"><span class="pre">SoundingRecord</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.lvltyp1"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.lvltyp1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.lvltyp2"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.lvltyp2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.valid"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.press"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.press</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.pflag"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.pflag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.gph"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.gph</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.zflag"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.zflag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.temp"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.temp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.tflag"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.tflag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.rh"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.rh</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.dewp"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.dewp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.wdir"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.wdir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingRecord.wspd"><code class="docutils literal notranslate"><span class="pre">SoundingRecord.wspd</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingModel"><code class="docutils literal notranslate"><span class="pre">SoundingModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingModel.header"><code class="docutils literal notranslate"><span class="pre">SoundingModel.header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.igra.html#pyiem.models.igra.SoundingModel.records"><code class="docutils literal notranslate"><span class="pre">SoundingModel.records</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.mcd.html">pyiem.models.mcd module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.mcd.html#pyiem.models.mcd.MostProbableTags"><code class="docutils literal notranslate"><span class="pre">MostProbableTags</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.mcd.html#pyiem.models.mcd.MostProbableTags.hail"><code class="docutils literal notranslate"><span class="pre">MostProbableTags.hail</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.mcd.html#pyiem.models.mcd.MostProbableTags.tornado"><code class="docutils literal notranslate"><span class="pre">MostProbableTags.tornado</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.mcd.html#pyiem.models.mcd.MostProbableTags.gust"><code class="docutils literal notranslate"><span class="pre">MostProbableTags.gust</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.pirep.html">pyiem.models.pirep module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.Priority"><code class="docutils literal notranslate"><span class="pre">Priority</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.Priority.__str__"><code class="docutils literal notranslate"><span class="pre">Priority.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.Priority.UA"><code class="docutils literal notranslate"><span class="pre">Priority.UA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.Priority.UUA"><code class="docutils literal notranslate"><span class="pre">Priority.UUA</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport"><code class="docutils literal notranslate"><span class="pre">PilotReport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.base_loc"><code class="docutils literal notranslate"><span class="pre">PilotReport.base_loc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.flight_level"><code class="docutils literal notranslate"><span class="pre">PilotReport.flight_level</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.text"><code class="docutils literal notranslate"><span class="pre">PilotReport.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.priority"><code class="docutils literal notranslate"><span class="pre">PilotReport.priority</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.latitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.latitude</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.longitude"><code class="docutils literal notranslate"><span class="pre">PilotReport.longitude</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.valid"><code class="docutils literal notranslate"><span class="pre">PilotReport.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.cwsu"><code class="docutils literal notranslate"><span class="pre">PilotReport.cwsu</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.aircraft_type"><code class="docutils literal notranslate"><span class="pre">PilotReport.aircraft_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.pirep.html#pyiem.models.pirep.PilotReport.is_duplicate"><code class="docutils literal notranslate"><span class="pre">PilotReport.is_duplicate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.sel.html">pyiem.models.sel module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.sel.html#pyiem.models.sel.SELModel"><code class="docutils literal notranslate"><span class="pre">SELModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.sel.html#pyiem.models.sel.SELModel.typ"><code class="docutils literal notranslate"><span class="pre">SELModel.typ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.sel.html#pyiem.models.sel.SELModel.num"><code class="docutils literal notranslate"><span class="pre">SELModel.num</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.shef.html">pyiem.models.shef module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement"><code class="docutils literal notranslate"><span class="pre">SHEFElement</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.station"><code class="docutils literal notranslate"><span class="pre">SHEFElement.station</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.basevalid"><code class="docutils literal notranslate"><span class="pre">SHEFElement.basevalid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.valid"><code class="docutils literal notranslate"><span class="pre">SHEFElement.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.dv_interval"><code class="docutils literal notranslate"><span class="pre">SHEFElement.dv_interval</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.physical_element"><code class="docutils literal notranslate"><span class="pre">SHEFElement.physical_element</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.duration"><code class="docutils literal notranslate"><span class="pre">SHEFElement.duration</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.type"><code class="docutils literal notranslate"><span class="pre">SHEFElement.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.source"><code class="docutils literal notranslate"><span class="pre">SHEFElement.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.extremum"><code class="docutils literal notranslate"><span class="pre">SHEFElement.extremum</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.probability"><code class="docutils literal notranslate"><span class="pre">SHEFElement.probability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.str_value"><code class="docutils literal notranslate"><span class="pre">SHEFElement.str_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.num_value"><code class="docutils literal notranslate"><span class="pre">SHEFElement.num_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.data_created"><code class="docutils literal notranslate"><span class="pre">SHEFElement.data_created</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.depth"><code class="docutils literal notranslate"><span class="pre">SHEFElement.depth</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.unit_convention"><code class="docutils literal notranslate"><span class="pre">SHEFElement.unit_convention</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.qualifier"><code class="docutils literal notranslate"><span class="pre">SHEFElement.qualifier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.comment"><code class="docutils literal notranslate"><span class="pre">SHEFElement.comment</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.narrative"><code class="docutils literal notranslate"><span class="pre">SHEFElement.narrative</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.raw"><code class="docutils literal notranslate"><span class="pre">SHEFElement.raw</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.to_english"><code class="docutils literal notranslate"><span class="pre">SHEFElement.to_english()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.varname"><code class="docutils literal notranslate"><span class="pre">SHEFElement.varname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.consume_code"><code class="docutils literal notranslate"><span class="pre">SHEFElement.consume_code()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.shef.html#pyiem.models.shef.SHEFElement.lonlat"><code class="docutils literal notranslate"><span class="pre">SHEFElement.lonlat()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.taf.html">pyiem.models.taf module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.WindShear"><code class="docutils literal notranslate"><span class="pre">WindShear</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.WindShear.level"><code class="docutils literal notranslate"><span class="pre">WindShear.level</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.WindShear.drct"><code class="docutils literal notranslate"><span class="pre">WindShear.drct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.WindShear.sknt"><code class="docutils literal notranslate"><span class="pre">WindShear.sknt</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.SkyCondition"><code class="docutils literal notranslate"><span class="pre">SkyCondition</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.SkyCondition.amount"><code class="docutils literal notranslate"><span class="pre">SkyCondition.amount</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.SkyCondition.level"><code class="docutils literal notranslate"><span class="pre">SkyCondition.level</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast"><code class="docutils literal notranslate"><span class="pre">TAFForecast</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.valid"><code class="docutils literal notranslate"><span class="pre">TAFForecast.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.raw"><code class="docutils literal notranslate"><span class="pre">TAFForecast.raw</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.ftype"><code class="docutils literal notranslate"><span class="pre">TAFForecast.ftype</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.end_valid"><code class="docutils literal notranslate"><span class="pre">TAFForecast.end_valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.sknt"><code class="docutils literal notranslate"><span class="pre">TAFForecast.sknt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.drct"><code class="docutils literal notranslate"><span class="pre">TAFForecast.drct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.gust"><code class="docutils literal notranslate"><span class="pre">TAFForecast.gust</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.visibility"><code class="docutils literal notranslate"><span class="pre">TAFForecast.visibility</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.presentwx"><code class="docutils literal notranslate"><span class="pre">TAFForecast.presentwx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.sky"><code class="docutils literal notranslate"><span class="pre">TAFForecast.sky</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFForecast.shear"><code class="docutils literal notranslate"><span class="pre">TAFForecast.shear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport"><code class="docutils literal notranslate"><span class="pre">TAFReport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport.station"><code class="docutils literal notranslate"><span class="pre">TAFReport.station</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport.valid"><code class="docutils literal notranslate"><span class="pre">TAFReport.valid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport.product_id"><code class="docutils literal notranslate"><span class="pre">TAFReport.product_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport.observation"><code class="docutils literal notranslate"><span class="pre">TAFReport.observation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.taf.html#pyiem.models.taf.TAFReport.forecasts"><code class="docutils literal notranslate"><span class="pre">TAFReport.forecasts</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.models.wwp.html">pyiem.models.wwp module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel"><code class="docutils literal notranslate"><span class="pre">WWPModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.typ"><code class="docutils literal notranslate"><span class="pre">WWPModel.typ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.num"><code class="docutils literal notranslate"><span class="pre">WWPModel.num</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.tornadoes_2m"><code class="docutils literal notranslate"><span class="pre">WWPModel.tornadoes_2m</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.tornadoes_1m_strong"><code class="docutils literal notranslate"><span class="pre">WWPModel.tornadoes_1m_strong</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.wind_10m"><code class="docutils literal notranslate"><span class="pre">WWPModel.wind_10m</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.wind_1m_65kt"><code class="docutils literal notranslate"><span class="pre">WWPModel.wind_1m_65kt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.hail_10m"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_10m</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.hail_1m_2inch"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_1m_2inch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.hail_wind_6m"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_wind_6m</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.max_hail_size"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_hail_size</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.max_wind_gust_knots"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_wind_gust_knots</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.max_tops_feet"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_tops_feet</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.storm_motion_drct"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_drct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.storm_motion_sknt"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_sknt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.models.wwp.html#pyiem.models.wwp.WWPModel.is_pds"><code class="docutils literal notranslate"><span class="pre">WWPModel.is_pds</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 </section>
 <section id="module-pyiem.models">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.models" title="Link to this heading">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.models" title="Link to this heading">#</a></h2>
 <p>pyiem data models.</p>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
-          </div>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.grid.zs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.grid.zs module</p>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">pyiem.models package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pyiem.models.cwa">pyiem.models.cwa module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel"><code class="docutils literal notranslate"><span class="pre">CWAModel</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.center"><code class="docutils literal notranslate"><span class="pre">CWAModel.center</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.expire"><code class="docutils literal notranslate"><span class="pre">CWAModel.expire</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.geom"><code class="docutils literal notranslate"><span class="pre">CWAModel.geom</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.is_corrected"><code class="docutils literal notranslate"><span class="pre">CWAModel.is_corrected</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.issue"><code class="docutils literal notranslate"><span class="pre">CWAModel.issue</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.model_config"><code class="docutils literal notranslate"><span class="pre">CWAModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.narrative"><code class="docutils literal notranslate"><span class="pre">CWAModel.narrative</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.cwa.CWAModel.num"><code class="docutils literal notranslate"><span class="pre">CWAModel.num</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models.gairmet">pyiem.models.gairmet module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.geom"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.geom</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.gml_id</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.hazard_type</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.label"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.label</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.model_config"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.status"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.status</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.valid_at</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.weather_conditions</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.geom"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.geom</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.gml_id</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.lower_level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.upper_level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.valid_at</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.airmets"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.airmets</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.freezing_levels</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.issuetime"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.issuetime</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.model_config"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_from"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_from</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_to"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.valid_to</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models.sel">pyiem.models.sel module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel"><code class="docutils literal notranslate"><span class="pre">SELModel</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel.model_config"><code class="docutils literal notranslate"><span class="pre">SELModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel.num"><code class="docutils literal notranslate"><span class="pre">SELModel.num</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.sel.SELModel.typ"><code class="docutils literal notranslate"><span class="pre">SELModel.typ</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models.shef">pyiem.models.shef module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement"><code class="docutils literal notranslate"><span class="pre">SHEFElement</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.basevalid"><code class="docutils literal notranslate"><span class="pre">SHEFElement.basevalid</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.comment"><code class="docutils literal notranslate"><span class="pre">SHEFElement.comment</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.consume_code"><code class="docutils literal notranslate"><span class="pre">SHEFElement.consume_code()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.data_created"><code class="docutils literal notranslate"><span class="pre">SHEFElement.data_created</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.depth"><code class="docutils literal notranslate"><span class="pre">SHEFElement.depth</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.duration"><code class="docutils literal notranslate"><span class="pre">SHEFElement.duration</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.dv_interval"><code class="docutils literal notranslate"><span class="pre">SHEFElement.dv_interval</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.extremum"><code class="docutils literal notranslate"><span class="pre">SHEFElement.extremum</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.lonlat"><code class="docutils literal notranslate"><span class="pre">SHEFElement.lonlat()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.model_config"><code class="docutils literal notranslate"><span class="pre">SHEFElement.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.narrative"><code class="docutils literal notranslate"><span class="pre">SHEFElement.narrative</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.num_value"><code class="docutils literal notranslate"><span class="pre">SHEFElement.num_value</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.physical_element"><code class="docutils literal notranslate"><span class="pre">SHEFElement.physical_element</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.probability"><code class="docutils literal notranslate"><span class="pre">SHEFElement.probability</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.qualifier"><code class="docutils literal notranslate"><span class="pre">SHEFElement.qualifier</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.raw"><code class="docutils literal notranslate"><span class="pre">SHEFElement.raw</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.source"><code class="docutils literal notranslate"><span class="pre">SHEFElement.source</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.station"><code class="docutils literal notranslate"><span class="pre">SHEFElement.station</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.str_value"><code class="docutils literal notranslate"><span class="pre">SHEFElement.str_value</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.to_english"><code class="docutils literal notranslate"><span class="pre">SHEFElement.to_english()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.type"><code class="docutils literal notranslate"><span class="pre">SHEFElement.type</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.unit_convention"><code class="docutils literal notranslate"><span class="pre">SHEFElement.unit_convention</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.valid"><code class="docutils literal notranslate"><span class="pre">SHEFElement.valid</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.shef.SHEFElement.varname"><code class="docutils literal notranslate"><span class="pre">SHEFElement.varname()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models.taf">pyiem.models.taf module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition"><code class="docutils literal notranslate"><span class="pre">SkyCondition</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.amount"><code class="docutils literal notranslate"><span class="pre">SkyCondition.amount</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.level"><code class="docutils literal notranslate"><span class="pre">SkyCondition.level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.SkyCondition.model_config"><code class="docutils literal notranslate"><span class="pre">SkyCondition.model_config</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast"><code class="docutils literal notranslate"><span class="pre">TAFForecast</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.drct"><code class="docutils literal notranslate"><span class="pre">TAFForecast.drct</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.end_valid"><code class="docutils literal notranslate"><span class="pre">TAFForecast.end_valid</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.ftype"><code class="docutils literal notranslate"><span class="pre">TAFForecast.ftype</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.gust"><code class="docutils literal notranslate"><span class="pre">TAFForecast.gust</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.model_config"><code class="docutils literal notranslate"><span class="pre">TAFForecast.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.presentwx"><code class="docutils literal notranslate"><span class="pre">TAFForecast.presentwx</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.raw"><code class="docutils literal notranslate"><span class="pre">TAFForecast.raw</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.shear"><code class="docutils literal notranslate"><span class="pre">TAFForecast.shear</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.sknt"><code class="docutils literal notranslate"><span class="pre">TAFForecast.sknt</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.sky"><code class="docutils literal notranslate"><span class="pre">TAFForecast.sky</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.valid"><code class="docutils literal notranslate"><span class="pre">TAFForecast.valid</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFForecast.visibility"><code class="docutils literal notranslate"><span class="pre">TAFForecast.visibility</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport"><code class="docutils literal notranslate"><span class="pre">TAFReport</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.forecasts"><code class="docutils literal notranslate"><span class="pre">TAFReport.forecasts</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.model_config"><code class="docutils literal notranslate"><span class="pre">TAFReport.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.observation"><code class="docutils literal notranslate"><span class="pre">TAFReport.observation</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.product_id"><code class="docutils literal notranslate"><span class="pre">TAFReport.product_id</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.station"><code class="docutils literal notranslate"><span class="pre">TAFReport.station</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.TAFReport.valid"><code class="docutils literal notranslate"><span class="pre">TAFReport.valid</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear"><code class="docutils literal notranslate"><span class="pre">WindShear</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.drct"><code class="docutils literal notranslate"><span class="pre">WindShear.drct</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.level"><code class="docutils literal notranslate"><span class="pre">WindShear.level</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.model_config"><code class="docutils literal notranslate"><span class="pre">WindShear.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.taf.WindShear.sknt"><code class="docutils literal notranslate"><span class="pre">WindShear.sknt</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models.wwp">pyiem.models.wwp module</a><ul>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel"><code class="docutils literal notranslate"><span class="pre">WWPModel</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.hail_10m"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_10m</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.hail_1m_2inch"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_1m_2inch</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.hail_wind_6m"><code class="docutils literal notranslate"><span class="pre">WWPModel.hail_wind_6m</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.is_pds"><code class="docutils literal notranslate"><span class="pre">WWPModel.is_pds</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_hail_size"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_hail_size</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_tops_feet"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_tops_feet</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.max_wind_gust_knots"><code class="docutils literal notranslate"><span class="pre">WWPModel.max_wind_gust_knots</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.model_config"><code class="docutils literal notranslate"><span class="pre">WWPModel.model_config</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.num"><code class="docutils literal notranslate"><span class="pre">WWPModel.num</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.storm_motion_drct"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_drct</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.storm_motion_sknt"><code class="docutils literal notranslate"><span class="pre">WWPModel.storm_motion_sknt</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.tornadoes_1m_strong"><code class="docutils literal notranslate"><span class="pre">WWPModel.tornadoes_1m_strong</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.tornadoes_2m"><code class="docutils literal notranslate"><span class="pre">WWPModel.tornadoes_2m</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.typ"><code class="docutils literal notranslate"><span class="pre">WWPModel.typ</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.wind_10m"><code class="docutils literal notranslate"><span class="pre">WWPModel.wind_10m</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.models.wwp.WWPModel.wind_1m_65kt"><code class="docutils literal notranslate"><span class="pre">WWPModel.wind_1m_65kt</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.models">Module contents</a></li>
-</ul>
-</li>
-</ul>
+    </a>
+    <a class="right-next"
+       href="pyiem.models.cwa.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.models.cwa module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="pyiem.grid.html"
-                          title="previous chapter">pyiem.grid package</a></p>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyiem.models">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="pyiem.ncei.html"
-                          title="next chapter">pyiem.ncei package</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/pyiem.models.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.ncei.html" title="pyiem.ncei package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.grid.html" title="pyiem.grid package"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.models package</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2015-2025, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
-    </div>
+  
+</div>
+
+  </footer>
   </body>
 </html>

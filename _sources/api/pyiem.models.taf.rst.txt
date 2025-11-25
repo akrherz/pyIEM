@@ -1,0 +1,7 @@
+pyiem.models.taf module
+=======================
+
+.. automodule:: pyiem.models.taf
+   :members:
+   :show-inheritance:
+   :undoc-members:

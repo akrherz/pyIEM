@@ -1,0 +1,7 @@
+pyiem.nws.products.spacewx module
+=================================
+
+.. automodule:: pyiem.nws.products.spacewx
+   :members:
+   :show-inheritance:
+   :undoc-members:

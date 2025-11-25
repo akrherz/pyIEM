@@ -1,0 +1,7 @@
+pyiem.models.gairmet module
+===========================
+
+.. automodule:: pyiem.models.gairmet
+   :members:
+   :show-inheritance:
+   :undoc-members:

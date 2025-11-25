@@ -1,0 +1,7 @@
+pyiem.models.mcd module
+=======================
+
+.. automodule:: pyiem.models.mcd
+   :members:
+   :show-inheritance:
+   :undoc-members:

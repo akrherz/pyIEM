@@ -4,58 +4,24 @@ pyiem.models package
 Submodules
 ----------
 
-pyiem.models.cwa module
------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyiem.models.cwa
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyiem.models.gairmet module
----------------------------
-
-.. automodule:: pyiem.models.gairmet
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyiem.models.sel module
------------------------
-
-.. automodule:: pyiem.models.sel
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyiem.models.shef module
-------------------------
-
-.. automodule:: pyiem.models.shef
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyiem.models.taf module
------------------------
-
-.. automodule:: pyiem.models.taf
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyiem.models.wwp module
------------------------
-
-.. automodule:: pyiem.models.wwp
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyiem.models.cwa
+   pyiem.models.gairmet
+   pyiem.models.gridnav
+   pyiem.models.igra
+   pyiem.models.mcd
+   pyiem.models.pirep
+   pyiem.models.sel
+   pyiem.models.shef
+   pyiem.models.taf
+   pyiem.models.wwp
 
 Module contents
 ---------------
 
 .. automodule:: pyiem.models
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

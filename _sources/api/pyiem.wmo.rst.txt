@@ -1,0 +1,7 @@
+pyiem.wmo module
+================
+
+.. automodule:: pyiem.wmo
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.taf &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/taf';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.taf</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.taf</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;TAF Parsing&quot;&quot;&quot;</span>
+
+<span class="c1"># stdlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">reference</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.taf</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCondition</span><span class="p">,</span> <span class="n">TAFForecast</span><span class="p">,</span> <span class="n">TAFReport</span><span class="p">,</span> <span class="n">WindShear</span>
+
+<span class="c1"># local</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
+
+<span class="n">TEMPO_TIME</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;ddhh1&gt;\d</span><span class="si">{4}</span><span class="s2">)/(?P&lt;ddhh2&gt;\d</span><span class="si">{4}</span><span class="s2">) &quot;</span><span class="p">)</span>
+<span class="n">TEMPO_TIME_LEGACY</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;hrhr2&gt;\d</span><span class="si">{4}</span><span class="s2">) &quot;</span><span class="p">)</span>
+<span class="n">STID_VALID</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;station&gt;[A-Z0-9]{3,4}) (AMD|TAF)?\s?(?P&lt;ddhhmi&gt;\d</span><span class="si">{6}</span><span class="s2">)Z? &quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">WIND_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;dir&gt;\d</span><span class="si">{3}</span><span class="s2">)(?P&lt;sknt&gt;\d{2,3})G?(?P&lt;gust&gt;\d{2,3})?KT&quot;</span><span class="p">)</span>
+<span class="n">VIS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; (?P&lt;over&gt;P?)(?P&lt;miles&gt;[1-6])?\s?(?P&lt;frac&gt;\d/\d+)?SM&quot;</span><span class="p">)</span>
+<span class="n">WX_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^([\-\+A-Z]+)$&quot;</span><span class="p">)</span>
+<span class="n">CLOUD_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; (?P&lt;skyc&gt;SCT|OVC|VV|BKN|FEW)(?P&lt;skyl&gt;\d</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="n">SHEAR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot; WS(?P&lt;level&gt;\d</span><span class="si">{3}</span><span class="s2">)/(?P&lt;drct&gt;\d</span><span class="si">{3}</span><span class="s2">)(?P&lt;sknt&gt;\d{2,3})KT&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Lame redefinition of what&#39;s in the database for ftype column</span>
+<span class="n">FTYPE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;OB&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;FM&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;TEMPO&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;PROB30&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;PROB40&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;BECMG&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="add_forecast_info">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.add_forecast_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_forecast_info</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Common things.&quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">WIND_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">sknt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">])</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">drct</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">])</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">gust</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;gust&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">VIS_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;miles&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;over&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;P&quot;</span> <span class="ow">and</span> <span class="n">fx</span><span class="o">.</span><span class="n">visibility</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">fx</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">TAF_VIS_OVER_6SM</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;frac&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">fx</span><span class="o">.</span><span class="n">visibility</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># This may be too clever and saying anything without a number is presentwx</span>
+    <span class="n">fx</span><span class="o">.</span><span class="n">presentwx</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">WX_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="s2">&quot;SKC&quot;</span> <span class="ow">in</span> <span class="n">fx</span><span class="o">.</span><span class="n">presentwx</span><span class="p">:</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">presentwx</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;SKC&quot;</span><span class="p">)</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">sky</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SkyCondition</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="s2">&quot;SKC&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">CLOUD_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">fx</span><span class="o">.</span><span class="n">sky</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">SkyCondition</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">SHEAR_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="n">fx</span><span class="o">.</span><span class="n">shear</span> <span class="o">=</span> <span class="n">WindShear</span><span class="p">(</span>
+            <span class="n">level</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="n">drct</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">sknt</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_qualifier">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.make_qualifier">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_qualifier</span><span class="p">(</span><span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ftype_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a tempo group.&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ftype_str</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="c1"># Convert the ddhr/ddhr</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">TEMPO_TIME</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="n">sts</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhh1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+        <span class="n">ets</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhh2&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">TEMPO_TIME_LEGACY</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="n">sts</span> <span class="o">=</span> <span class="n">ambiguous_hour_magic</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;hrhr2&quot;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+        <span class="n">ets</span> <span class="o">=</span> <span class="n">ambiguous_hour_magic</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;hrhr2&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span> <span class="o">+</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">TAFForecast</span><span class="p">(</span>
+        <span class="n">ftype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">[</span><span class="n">ftype_str</span><span class="p">],</span>
+        <span class="n">valid</span><span class="o">=</span><span class="n">sts</span><span class="p">,</span>
+        <span class="n">end_valid</span><span class="o">=</span><span class="n">ets</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ftype_str</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">add_forecast_info</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fx</span></div>
+
+
+
+<div class="viewcode-block" id="make_forecast">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.make_forecast">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_forecast</span><span class="p">(</span>
+    <span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obvalid</span><span class="p">:</span> <span class="n">datetime</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TAFForecast</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a TAFForecast data model.&quot;&quot;&quot;</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">8</span><span class="p">],</span> <span class="n">obvalid</span><span class="p">)</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">TAFForecast</span><span class="p">(</span>
+        <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="n">ftype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">[</span><span class="s2">&quot;FM&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">add_forecast_info</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fx</span></div>
+
+
+
+<div class="viewcode-block" id="ambiguous_hour_magic">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.ambiguous_hour_magic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ambiguous_hour_magic</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obvalid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make some magic happen for ambiguous dates.&quot;&quot;&quot;</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">hr</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">obvalid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">obvalid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">hr</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;</span> <span class="n">obvalid</span><span class="o">.</span><span class="n">hour</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">valid</span></div>
+
+
+
+<div class="viewcode-block" id="ddhhmi2valid">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.ddhhmi2valid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obvalid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out what valid time this is.&quot;&quot;&quot;</span>
+    <span class="c1"># Account for 4 character timestamp, likely hour and minute</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ambiguous_hour_magic</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">obvalid</span><span class="p">)</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">hr</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">dd</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span>
+            <span class="n">days</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">hr</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">hr</span> <span class="o">&gt;</span> <span class="mi">23</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found invalid hr: </span><span class="si">{</span><span class="n">hr</span><span class="si">}</span><span class="s2"> from &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">hr</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span>
+    <span class="c1"># Next month</span>
+    <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">dd</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">dd</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">-=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hr</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">:</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">dd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">valid</span></div>
+
+
+
+<div class="viewcode-block" id="parse_prod">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.parse_prod">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_prod</span><span class="p">(</span><span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">segtext</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TAFReport</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a data object from this product.&quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">STID_VALID</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">segtext</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">segtext</span><span class="p">:</span>
+        <span class="n">segtext</span> <span class="o">+=</span> <span class="s2">&quot;=&quot;</span>
+    <span class="n">meat</span> <span class="o">=</span> <span class="n">segtext</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">()</span> <span class="p">:</span> <span class="n">segtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)]</span>
+    <span class="n">accum</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">meat</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()]:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;FM&quot;</span><span class="p">,</span> <span class="s2">&quot;TEMPO&quot;</span><span class="p">,</span> <span class="s2">&quot;BECMG&quot;</span><span class="p">,</span> <span class="s2">&quot;PROB&quot;</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">accum</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accum</span><span class="p">)</span>
+            <span class="n">accum</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">accum</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">accum</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accum</span><span class="p">)</span>
+    <span class="c1"># Deal with the observation</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">ddhhmi2valid</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ddhhmi&quot;</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">TAFReport</span><span class="p">(</span>
+        <span class="n">station</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">4</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;K</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
+        <span class="n">product_id</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+        <span class="n">observation</span><span class="o">=</span><span class="n">TAFForecast</span><span class="p">(</span>
+            <span class="n">valid</span><span class="o">=</span><span class="n">valid</span><span class="p">,</span>
+            <span class="n">raw</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="n">ftype</span><span class="o">=</span><span class="n">FTYPE</span><span class="p">[</span><span class="s2">&quot;OB&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">add_forecast_info</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">observation</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Double check lines[0] for stuff</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(TEMPO|PROB30|PROB40|BECMG)&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c1"># Insert into lines</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">diction</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(TEMPO|PROB30|PROB40|BECMG)&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">part</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;FM&quot;</span><span class="p">):</span>
+                <span class="n">forecast</span> <span class="o">=</span> <span class="n">make_forecast</span><span class="p">(</span>
+                    <span class="n">prod</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">observation</span><span class="o">.</span><span class="n">valid</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">forecast</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">forecasts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">diction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">forecast</span> <span class="o">=</span> <span class="n">make_qualifier</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">diction</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">forecast</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Failed to parse </span><span class="si">{</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">diction</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">forecast</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">forecasts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span>
+                <span class="n">diction</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">continue</span>
+            <span class="n">diction</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="TAFProduct">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.TAFProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TAFProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a TAF</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+        <span class="c1"># Prevent expensive and unnecessary dblookup</span>
+        <span class="k">if</span> <span class="n">ugc_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ugc_provider</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TAFReport</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>  <span class="c1"># arb</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_prod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;TAF &quot;</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="TAFProduct.get_channels_for_report">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.TAFProduct.get_channels_for_report">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_channels_for_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report</span><span class="p">:</span> <span class="n">TAFReport</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of channels&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;TAF</span><span class="si">{</span><span class="n">report</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;TAF...&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">.TAF&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TAFProduct.sql">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.TAFProduct.sql">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist to the database.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">taf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="c1"># Product corrections are not really accounted for here due to</span>
+            <span class="c1"># performance worries</span>
+
+            <span class="c1"># Create an entry</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT into taf(station, valid, product_id) &quot;</span>
+                <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) RETURNING id&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">taf</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()),</span>
+            <span class="p">)</span>
+            <span class="n">taf_id</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="c1"># Insert obs / forecast</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="p">[</span><span class="n">taf</span><span class="o">.</span><span class="n">observation</span><span class="p">,</span> <span class="o">*</span><span class="n">taf</span><span class="o">.</span><span class="n">forecasts</span><span class="p">]:</span>
+                <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                    <span class="s2">&quot;INSERT into taf_forecast(taf_id, valid, raw, &quot;</span>
+                    <span class="s2">&quot;end_valid, sknt, drct, gust, visibility, presentwx, &quot;</span>
+                    <span class="s2">&quot;skyc, skyl, ws_level, ws_drct, ws_sknt, ftype) VALUES &quot;</span>
+                    <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &quot;</span>
+                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="n">taf_id</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">end_valid</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">sknt</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">drct</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">gust</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">visibility</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">presentwx</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">amount</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">sky</span><span class="p">],</span>
+                        <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">level</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">sky</span><span class="p">],</span>
+                        <span class="kc">None</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span><span class="o">.</span><span class="n">level</span><span class="p">,</span>
+                        <span class="kc">None</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span><span class="o">.</span><span class="n">drct</span><span class="p">,</span>
+                        <span class="kc">None</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">entry</span><span class="o">.</span><span class="n">shear</span><span class="o">.</span><span class="n">sknt</span><span class="p">,</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">ftype</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TAFProduct.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.TAFProduct.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the jabber variant of this message&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">aaa</span> <span class="o">=</span> <span class="s2">&quot;TAF&quot;</span>
+        <span class="n">nicedate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nicedate</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">prodDefinitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aaa</span><span class="p">,</span> <span class="n">aaa</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">taf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2"> issues </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">aaa</span><span class="si">}</span><span class="s2">) at </span><span class="si">{</span><span class="n">nicedate</span><span class="si">}</span><span class="s2"> for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&lt;p&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2"> issues &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">aaa</span><span class="si">}</span><span class="s1">)&lt;/a&gt; &#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;at </span><span class="si">{</span><span class="n">nicedate</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_channels_for_report</span><span class="p">(</span><span class="n">taf</span><span class="p">)),</span>
+                <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">plain</span><span class="p">,</span>
+                <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/219/&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;station:</span><span class="si">{</span><span class="n">taf</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2">::valid:&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">taf</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d%%</span><span class="s1">20%H%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.png&quot;</span>
+                <span class="p">),</span>
+            <span class="p">}</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">plain</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">xtra</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.taf.html#pyiem.nws.products.taf.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TAFProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

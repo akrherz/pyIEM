@@ -4,18 +4,17 @@ pyiem.grid package
 Submodules
 ----------
 
-pyiem.grid.zs module
---------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyiem.grid.zs
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyiem.grid.nav
+   pyiem.grid.util
+   pyiem.grid.zs
 
 Module contents
 ---------------
 
 .. automodule:: pyiem.grid
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

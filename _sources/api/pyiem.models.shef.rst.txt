@@ -1,0 +1,7 @@
+pyiem.models.shef module
+========================
+
+.. automodule:: pyiem.models.shef
+   :members:
+   :show-inheritance:
+   :undoc-members:

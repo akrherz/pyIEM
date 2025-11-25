@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.observation &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/observation';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.observation</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.observation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A class representing an observation stored in the IEM database&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zoneinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZoneInfo</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">metpy.calc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcalc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">munits</span>
+
+<span class="c1"># Track which columns are in the summary table for the null_ check below</span>
+<span class="n">SUMMARY_COLS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;max_tmpf min_tmpf max_sknt max_gust max_sknt_ts max_gust_ts max_dwpf &quot;</span>
+    <span class="s2">&quot;min_dwpf pday pmonth snow snowd &quot;</span>
+    <span class="s2">&quot;snoww max_drct max_srad coop_tmpf coop_valid et_inch srad_mj avg_sknt &quot;</span>
+    <span class="s2">&quot;vector_avg_drct avg_rh min_rh max_rh max_water_tmpf min_water_tmpf &quot;</span>
+    <span class="s2">&quot;max_feel avg_feel min_feel min_rstage max_rstage report&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_summary_table">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.get_summary_table">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_summary_table</span><span class="p">(</span><span class="n">valid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimize the summary table we potentially use.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      valid (datetime with time zone): Datetime</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      str table to query</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">valid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;summary&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">valid</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">12</span> <span class="ow">and</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="n">valid</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">3</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;summary&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;summary_</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="bounded">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.bounded">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bounded</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">ceiling</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make sure this is not NaN and between some value.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">is_masked</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="c1"># belt and suspenders check here</span>
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="n">floor</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="n">ceiling</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+
+<div class="viewcode-block" id="summary_update">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.summary_update">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">summary_update</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Updates the summary table and returns affected rows.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      txn (psycopg.transaction)</span>
+<span class="sd">      data (dict)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      int: affected rows count</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># NB with the coalesce func, we prioritize if we have explicit max/min vals</span>
+    <span class="c1"># But, some of these max values are not tru max daily values</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">get_summary_table</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">])</span>
+    <span class="n">dateconst</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot; </span><span class="si">%(localdate)s</span><span class="s2"> &quot;</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_isdaily&quot;</span><span class="p">]</span>
+        <span class="k">else</span> <span class="s2">&quot; date(</span><span class="si">%(valid)s</span><span class="s2"> at time zone </span><span class="si">%(tzname)s</span><span class="s2">) &quot;</span>
+    <span class="p">)</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;UPDATE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> s SET</span>
+<span class="s2">    max_water_tmpf = coalesce(%(max_water_tmpf)s,</span>
+<span class="s2">        greatest(max_water_tmpf, %(water_tmpf)s)),</span>
+<span class="s2">    min_water_tmpf = coalesce(%(min_water_tmpf)s,</span>
+<span class="s2">        least(min_water_tmpf, %(water_tmpf)s)),</span>
+<span class="s2">    max_tmpf = coalesce(%(max_tmpf)s,</span>
+<span class="s2">        greatest(max_tmpf, %(max_tmpf_cond)s, %(tmpf)s)),</span>
+<span class="s2">    max_dwpf = coalesce(%(max_dwpf)s,</span>
+<span class="s2">        greatest(max_dwpf, %(dwpf)s)),</span>
+<span class="s2">    min_tmpf = coalesce(%(min_tmpf)s,</span>
+<span class="s2">        least(min_tmpf, %(min_tmpf_cond)s, %(tmpf)s)),</span>
+<span class="s2">    min_dwpf = coalesce(%(min_dwpf)s, least(min_dwpf, %(dwpf)s)),</span>
+<span class="s2">    min_feel = coalesce(%(min_feel)s, least(min_feel, %(feel)s)),</span>
+<span class="s2">    max_feel = coalesce(%(max_feel)s, greatest(max_feel, %(feel)s)),</span>
+<span class="s2">    max_sknt = greatest(%(max_sknt)s, max_sknt, %(sknt)s),</span>
+<span class="s2">    max_gust = greatest(%(max_gust)s, max_gust, %(gust)s),</span>
+<span class="s2">    max_sknt_ts = CASE WHEN %(sknt)s &gt; max_sknt or %(max_sknt)s &gt; max_sknt</span>
+<span class="s2">            or (max_sknt is null and %(sknt)s &gt; 0)</span>
+<span class="s2">            THEN coalesce(%(max_sknt_ts)s, %(valid)s)::timestamptz</span>
+<span class="s2">            ELSE max_sknt_ts END,</span>
+<span class="s2">    max_gust_ts = CASE WHEN %(gust)s &gt; max_gust or %(max_gust)s &gt; max_gust</span>
+<span class="s2">            or (max_gust is null and %(gust)s &gt; 0)</span>
+<span class="s2">            THEN coalesce(%(max_gust_ts)s, %(valid)s)::timestamptz</span>
+<span class="s2">            ELSE max_gust_ts END,</span>
+<span class="s2">    pday = coalesce(%(pday)s, pday),</span>
+<span class="s2">    pmonth = coalesce(%(pmonth)s, pmonth),</span>
+<span class="s2">    snow = coalesce(%(snow)s, snow),</span>
+<span class="s2">    snowd = coalesce(%(snowd)s, snowd),</span>
+<span class="s2">    snoww = coalesce(%(snoww)s, snoww),</span>
+<span class="s2">    max_drct = coalesce(%(max_drct)s, max_drct),</span>
+<span class="s2">    max_srad = greatest(%(max_srad)s, %(srad)s, max_srad),</span>
+<span class="s2">    coop_tmpf = coalesce(%(coop_tmpf)s, coop_tmpf),</span>
+<span class="s2">    coop_valid = coalesce(%(coop_valid)s, coop_valid),</span>
+<span class="s2">    et_inch = %(et_inch)s,</span>
+<span class="s2">    report = coalesce(%(report)s, report),</span>
+<span class="s2">    max_rh = greatest(%(max_rh)s, %(relh)s, max_rh),</span>
+<span class="s2">    min_rh = least(%(min_rh)s, %(relh)s, min_rh),</span>
+<span class="s2">    max_rstage = greatest(%(max_rstage)s, %(rstage)s, max_rstage),</span>
+<span class="s2">    min_rstage = least(%(min_rstage)s, %(rstage)s, min_rstage),</span>
+<span class="s2">    srad_mj = coalesce(%(srad_mj)s, srad_mj),</span>
+<span class="s2">    avg_sknt = coalesce(%(avg_sknt)s, avg_sknt),</span>
+<span class="s2">    vector_avg_drct = coalesce(%(vector_avg_drct)s, vector_avg_drct)</span>
+<span class="s2">    WHERE s.iemid = %(iemid)s and s.day = </span><span class="si">{</span><span class="n">dateconst</span><span class="si">}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># Check to see if we have any hard coded nulls</span>
+    <span class="n">updates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;null_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">col</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="ow">in</span> <span class="n">SUMMARY_COLS</span><span class="p">:</span>
+            <span class="n">updates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span><span class="si">}</span><span class="s2"> = null&quot;</span><span class="p">)</span>  <span class="c1"># noqa</span>
+    <span class="k">if</span> <span class="n">updates</span><span class="p">:</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;UPDATE </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> s SET </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">updates</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;WHERE s.iemid = %(iemid)s and s.day = </span><span class="si">{</span><span class="n">dateconst</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span></div>
+
+
+
+<div class="viewcode-block" id="Observation">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.Observation">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Observation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;my observation object&quot;&quot;&quot;</span>
+
+    <span class="c1"># NB: Keep positional argment order to limit API breakage</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">station</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">iemid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tzname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the Observation.  Note you need to provide either</span>
+<span class="sd">        a iemid + tzname or a station + network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          station (str): Station identifier</span>
+<span class="sd">          network (str): Network identifier</span>
+<span class="sd">          valid (datetime): Datetime object with tzinfo set or date.</span>
+<span class="sd">          iemid (int): IEM internal identifier</span>
+<span class="sd">          tzname (str): time zone string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This is somewhat hacky to ensure that we *only* get date objects</span>
+        <span class="c1"># to trigger the isdaily logic</span>
+        <span class="n">isdaily</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;date&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isdaily</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="s2">&quot;tzinfo&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;tzinfo is not set on valid, defaulting to UTC&quot;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+                <span class="n">valid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;station&quot;</span><span class="p">:</span> <span class="n">station</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">network</span><span class="p">,</span>
+                <span class="s2">&quot;iemid&quot;</span><span class="p">:</span> <span class="n">iemid</span><span class="p">,</span>
+                <span class="s2">&quot;tzname&quot;</span><span class="p">:</span> <span class="n">tzname</span><span class="p">,</span>
+                <span class="s2">&quot;valid&quot;</span><span class="p">:</span> <span class="n">valid</span><span class="p">,</span>
+                <span class="s2">&quot;localdate&quot;</span><span class="p">:</span> <span class="n">valid</span> <span class="k">if</span> <span class="n">isdaily</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;_isdaily&quot;</span><span class="p">:</span> <span class="n">isdaily</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Observation.load">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.Observation.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the current observation for this site and time</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_iemid</span><span class="p">(</span><span class="n">txn</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">get_summary_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;_isdaily&quot;</span><span class="p">]:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SELECT * from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE iemid = %(iemid)s and &quot;</span>
+                <span class="s2">&quot;day = </span><span class="si">%(valid)s</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SELECT * from current c, </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> s WHERE s.iemid = c.iemid &quot;</span>
+                <span class="s2">&quot;and s.iemid = </span><span class="si">%(iemid)s</span><span class="s2"> and &quot;</span>
+                <span class="s2">&quot;s.day = date(</span><span class="si">%(valid)s</span><span class="s2"> at time zone </span><span class="si">%(tzname)s</span><span class="s2">) and &quot;</span>
+                <span class="s2">&quot;c.valid = </span><span class="si">%(valid)s</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Observation.calc">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.Observation.calc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute things not usually computed&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">],</span>
+        <span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bounded</span><span class="p">(</span>
+                <span class="n">mcalc</span><span class="o">.</span><span class="n">relative_humidity_from_dewpoint</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">percent</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="mf">0.5</span><span class="p">,</span>
+                <span class="mf">100.5</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]]</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">100</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;dwpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bounded</span><span class="p">(</span>
+                <span class="n">mcalc</span><span class="o">.</span><span class="n">dewpoint_from_relative_humidity</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">100.0</span><span class="p">,</span>
+                <span class="mf">100.0</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;feel&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">],</span>
+        <span class="p">]:</span>
+            <span class="c1"># sknt is not a hard requirement</span>
+            <span class="n">sk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;feel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bounded</span><span class="p">(</span>
+                <span class="n">mcalc</span><span class="o">.</span><span class="n">apparent_temperature</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tmpf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;relh&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span>
+                    <span class="n">sk</span> <span class="o">*</span> <span class="n">munits</span><span class="o">.</span><span class="n">knots</span><span class="p">,</span>
+                    <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># less confusion this way</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="o">-</span><span class="mf">150.0</span><span class="p">,</span>
+                <span class="mf">200.0</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Observation.compute_iemid">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.Observation.compute_iemid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_iemid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load in what our metadata is to save future queries&quot;&quot;&quot;</span>
+        <span class="c1"># Require iemid and tzname be set</span>
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;iemid&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tzname&quot;</span><span class="p">]]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT iemid, tzname from stations where id = %(station)s and</span>
+<span class="sd">        network = %(network)s</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;iemid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;iemid&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tzname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tzname&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Observation.save">
+<a class="viewcode-back" href="../../api/pyiem.observation.html#pyiem.observation.Observation.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">force_current_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_current</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save this observation to the database via a psycopg transaction</span>
+<span class="sd">        @param txn is a psycopg transaction</span>
+<span class="sd">        @param force_current_log boolean - make sure this observation goes to</span>
+<span class="sd">        the current_log table in the case that it is old, this allows</span>
+<span class="sd">        reprocessing by the METAR ingestor et al</span>
+<span class="sd">        @param skip_current boolean - optionally skip updating the current</span>
+<span class="sd">        table.  This is useful for partial obs</span>
+<span class="sd">        @return: boolean if this updated one row each</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_iemid</span><span class="p">(</span><span class="n">txn</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc</span><span class="p">()</span>
+        <span class="c1"># Update current table</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;UPDATE current c SET</span>
+<span class="s2">        tmpf = </span><span class="si">%(tmpf)s</span><span class="s2">,  dwpf = </span><span class="si">%(dwpf)s</span><span class="s2">,  drct = </span><span class="si">%(drct)s</span><span class="s2">,  sknt = </span><span class="si">%(sknt)s</span><span class="s2">,</span>
+<span class="s2">        tsf0 = </span><span class="si">%(tsf0)s</span><span class="s2">, tsf1 = </span><span class="si">%(tsf1)s</span><span class="s2">,</span>
+<span class="s2">        tsf2 = </span><span class="si">%(tsf2)s</span><span class="s2">,  tsf3 = </span><span class="si">%(tsf3)s</span><span class="s2">,  rwis_subf = </span><span class="si">%(rwis_subf)s</span><span class="s2">,</span>
+<span class="s2">        scond0 = </span><span class="si">%(scond0)s</span><span class="s2">,  scond1 = </span><span class="si">%(scond1)s</span><span class="s2">,  scond2 = </span><span class="si">%(scond2)s</span><span class="s2">,</span>
+<span class="s2">        scond3 = </span><span class="si">%(scond3)s</span><span class="s2">,  pday = </span><span class="si">%(pday)s</span><span class="s2">,  c1smv = </span><span class="si">%(c1smv)s</span><span class="s2">,</span>
+<span class="s2">        c2smv = </span><span class="si">%(c2smv)s</span><span class="s2">,  c3smv = </span><span class="si">%(c3smv)s</span><span class="s2">,  c4smv = </span><span class="si">%(c4smv)s</span><span class="s2">,</span>
+<span class="s2">        c5smv = </span><span class="si">%(c5smv)s</span><span class="s2">,  c1tmpf = </span><span class="si">%(c1tmpf)s</span><span class="s2">,  c2tmpf = </span><span class="si">%(c2tmpf)s</span><span class="s2">,</span>
+<span class="s2">        c3tmpf = </span><span class="si">%(c3tmpf)s</span><span class="s2">,  c4tmpf = </span><span class="si">%(c4tmpf)s</span><span class="s2">,  c5tmpf = </span><span class="si">%(c5tmpf)s</span><span class="s2">,</span>
+<span class="s2">        pres = </span><span class="si">%(pres)s</span><span class="s2">,  relh = </span><span class="si">%(relh)s</span><span class="s2">,  srad = </span><span class="si">%(srad)s</span><span class="s2">,  vsby = </span><span class="si">%(vsby)s</span><span class="s2">,</span>
+<span class="s2">        phour = </span><span class="si">%(phour)s</span><span class="s2">,  gust = </span><span class="si">%(gust)s</span><span class="s2">,  raw = </span><span class="si">%(raw)s</span><span class="s2">,  alti = </span><span class="si">%(alti)s</span><span class="s2">,</span>
+<span class="s2">        mslp = </span><span class="si">%(mslp)s</span><span class="s2">, rstage = </span><span class="si">%(rstage)s</span><span class="s2">,</span>
+<span class="s2">        pmonth = </span><span class="si">%(pmonth)s</span><span class="s2">,  skyc1 = </span><span class="si">%(skyc1)s</span><span class="s2">,  skyc2 = </span><span class="si">%(skyc2)s</span><span class="s2">,</span>
+<span class="s2">        skyc3 = </span><span class="si">%(skyc3)s</span><span class="s2">,  skyc4 = </span><span class="si">%(skyc4)s</span><span class="s2">,  skyl1 = </span><span class="si">%(skyl1)s</span><span class="s2">,</span>
+<span class="s2">        skyl2 = </span><span class="si">%(skyl2)s</span><span class="s2">,  skyl3 = </span><span class="si">%(skyl3)s</span><span class="s2">,  skyl4 = </span><span class="si">%(skyl4)s</span><span class="s2">,</span>
+<span class="s2">        pcounter = </span><span class="si">%(pcounter)s</span><span class="s2">,  discharge = </span><span class="si">%(discharge)s</span><span class="s2">,  p03i = </span><span class="si">%(p03i)s</span><span class="s2">,</span>
+<span class="s2">        p06i = </span><span class="si">%(p06i)s</span><span class="s2">,  p24i = </span><span class="si">%(p24i)s</span><span class="s2">,  max_tmpf_6hr = </span><span class="si">%(max_tmpf_6hr)s</span><span class="s2">,</span>
+<span class="s2">        min_tmpf_6hr = </span><span class="si">%(min_tmpf_6hr)s</span><span class="s2">,  max_tmpf_24hr = </span><span class="si">%(max_tmpf_24hr)s</span><span class="s2">,</span>
+<span class="s2">        min_tmpf_24hr = </span><span class="si">%(min_tmpf_24hr)s</span><span class="s2">, wxcodes = </span><span class="si">%(wxcodes)s</span><span class="s2">,</span>
+<span class="s2">        battery = </span><span class="si">%(battery)s</span><span class="s2">, water_tmpf = </span><span class="si">%(water_tmpf)s</span><span class="s2">,</span>
+<span class="s2">        ice_accretion_1hr = </span><span class="si">%(ice_accretion_1hr)s</span><span class="s2">,</span>
+<span class="s2">        ice_accretion_3hr = </span><span class="si">%(ice_accretion_3hr)s</span><span class="s2">,</span>
+<span class="s2">        ice_accretion_6hr = </span><span class="si">%(ice_accretion_6hr)s</span><span class="s2">,</span>
+<span class="s2">        feel = </span><span class="si">%(feel)s</span><span class="s2">, valid = </span><span class="si">%(valid)s</span><span class="s2">,</span>
+<span class="s2">        peak_wind_gust = </span><span class="si">%(peak_wind_gust)s</span><span class="s2">,</span>
+<span class="s2">        peak_wind_drct = </span><span class="si">%(peak_wind_drct)s</span><span class="s2">,</span>
+<span class="s2">        peak_wind_time = </span><span class="si">%(peak_wind_time)s</span><span class="s2">,</span>
+<span class="s2">        snowdepth = </span><span class="si">%(snowdepth)s</span><span class="s2">, srad_1h_j = </span><span class="si">%(srad_1h_j)s</span><span class="s2">,</span>
+<span class="s2">        tsoil_4in_f = </span><span class="si">%(tsoil_4in_f)s</span><span class="s2">, tsoil_8in_f = </span><span class="si">%(tsoil_8in_f)s</span><span class="s2">,</span>
+<span class="s2">        tsoil_16in_f = </span><span class="si">%(tsoil_16in_f)s</span><span class="s2">, tsoil_20in_f = </span><span class="si">%(tsoil_20in_f)s</span><span class="s2">,</span>
+<span class="s2">        tsoil_32in_f = </span><span class="si">%(tsoil_32in_f)s</span><span class="s2">, tsoil_40in_f = </span><span class="si">%(tsoil_40in_f)s</span><span class="s2">,</span>
+<span class="s2">        tsoil_64in_f = </span><span class="si">%(tsoil_64in_f)s</span><span class="s2">, tsoil_128in_f = </span><span class="si">%(tsoil_128in_f)s</span><span class="s2">,</span>
+<span class="s2">        updated = now()</span>
+<span class="s2">        WHERE c.iemid = </span><span class="si">%(iemid)s</span><span class="s2"> and </span><span class="si">%(valid)s</span><span class="s2"> &gt;= c.valid &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;_isdaily&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">skip_current</span><span class="p">:</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">skip_current</span> <span class="ow">or</span> <span class="p">(</span><span class="n">force_current_log</span> <span class="ow">and</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT into current_log</span>
+<span class="s2">            (iemid, tmpf, dwpf, drct, sknt,</span>
+<span class="s2">            tsf0, tsf1, tsf2, tsf3, rwis_subf, scond0, scond1, scond2, scond3,</span>
+<span class="s2">            valid, pday, c1smv, c2smv, c3smv, c4smv, c5smv, c1tmpf, c2tmpf,</span>
+<span class="s2">            c3tmpf, c4tmpf, c5tmpf, pres, relh, srad, vsby, phour, gust, raw,</span>
+<span class="s2">            alti, mslp, rstage, pmonth, skyc1,</span>
+<span class="s2">            skyc2, skyc3, skyc4, skyl1, skyl2, skyl3, skyl4, pcounter,</span>
+<span class="s2">            discharge, p03i, p06i, p24i, max_tmpf_6hr, min_tmpf_6hr,</span>
+<span class="s2">            max_tmpf_24hr, min_tmpf_24hr, wxcodes, battery,</span>
+<span class="s2">            ice_accretion_1hr, ice_accretion_3hr, ice_accretion_6hr,</span>
+<span class="s2">            water_tmpf, feel, peak_wind_gust, peak_wind_drct,</span>
+<span class="s2">            peak_wind_time, snowdepth, srad_1h_j, tsoil_4in_f, tsoil_8in_f,</span>
+<span class="s2">            tsoil_16in_f, tsoil_20in_f, tsoil_32in_f, tsoil_40in_f,</span>
+<span class="s2">            tsoil_64in_f, tsoil_128in_f) VALUES(</span>
+<span class="s2">            </span><span class="si">%(iemid)s</span><span class="s2">, </span><span class="si">%(tmpf)s</span><span class="s2">, </span><span class="si">%(dwpf)s</span><span class="s2">, </span><span class="si">%(drct)s</span><span class="s2">, </span><span class="si">%(sknt)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(tsf0)s</span><span class="s2">, </span><span class="si">%(tsf1)s</span><span class="s2">, </span><span class="si">%(tsf2)s</span><span class="s2">, </span><span class="si">%(tsf3)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(rwis_subf)s</span><span class="s2">, </span><span class="si">%(scond0)s</span><span class="s2">, </span><span class="si">%(scond1)s</span><span class="s2">, </span><span class="si">%(scond2)s</span><span class="s2">, </span><span class="si">%(scond3)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(valid)s</span><span class="s2">, </span><span class="si">%(pday)s</span><span class="s2">, </span><span class="si">%(c1smv)s</span><span class="s2">, </span><span class="si">%(c2smv)s</span><span class="s2">, </span><span class="si">%(c3smv)s</span><span class="s2">, </span><span class="si">%(c4smv)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(c5smv)s</span><span class="s2">, </span><span class="si">%(c1tmpf)s</span><span class="s2">, </span><span class="si">%(c2tmpf)s</span><span class="s2">, </span><span class="si">%(c3tmpf)s</span><span class="s2">, </span><span class="si">%(c4tmpf)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(c5tmpf)s</span><span class="s2">, </span><span class="si">%(pres)s</span><span class="s2">, </span><span class="si">%(relh)s</span><span class="s2">, </span><span class="si">%(srad)s</span><span class="s2">, </span><span class="si">%(vsby)s</span><span class="s2">, </span><span class="si">%(phour)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(gust)s</span><span class="s2">, </span><span class="si">%(raw)s</span><span class="s2">, </span><span class="si">%(alti)s</span><span class="s2">, </span><span class="si">%(mslp)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(rstage)s</span><span class="s2">, </span><span class="si">%(pmonth)s</span><span class="s2">, </span><span class="si">%(skyc1)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(skyc2)s</span><span class="s2">, </span><span class="si">%(skyc3)s</span><span class="s2">, </span><span class="si">%(skyc4)s</span><span class="s2">, </span><span class="si">%(skyl1)s</span><span class="s2">, </span><span class="si">%(skyl2)s</span><span class="s2">, </span><span class="si">%(skyl3)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(skyl4)s</span><span class="s2">, </span><span class="si">%(pcounter)s</span><span class="s2">, </span><span class="si">%(discharge)s</span><span class="s2">, </span><span class="si">%(p03i)s</span><span class="s2">, </span><span class="si">%(p06i)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(p24i)s</span><span class="s2">, </span><span class="si">%(max_tmpf_6hr)s</span><span class="s2">, </span><span class="si">%(min_tmpf_6hr)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(max_tmpf_24hr)s</span><span class="s2">, </span><span class="si">%(min_tmpf_24hr)s</span><span class="s2">, </span><span class="si">%(wxcodes)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(battery)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(ice_accretion_1hr)s</span><span class="s2">, </span><span class="si">%(ice_accretion_3hr)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(ice_accretion_6hr)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(water_tmpf)s</span><span class="s2">, </span><span class="si">%(feel)s</span><span class="s2">, </span><span class="si">%(peak_wind_gust)s</span><span class="s2">, </span><span class="si">%(peak_wind_drct)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(peak_wind_time)s</span><span class="s2">, </span><span class="si">%(snowdepth)s</span><span class="s2">, </span><span class="si">%(srad_1h_j)s</span><span class="s2">, </span><span class="si">%(tsoil_4in_f)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(tsoil_8in_f)s</span><span class="s2">, </span><span class="si">%(tsoil_16in_f)s</span><span class="s2">, </span><span class="si">%(tsoil_20in_f)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(tsoil_32in_f)s</span><span class="s2">, </span><span class="si">%(tsoil_40in_f)s</span><span class="s2">, </span><span class="si">%(tsoil_64in_f)s</span><span class="s2">,</span>
+<span class="s2">            </span><span class="si">%(tsoil_128in_f)s</span>
+<span class="s2">            )</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;_isdaily&quot;</span><span class="p">]:</span>
+                <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">rowcount</span> <span class="o">=</span> <span class="n">summary_update</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rowcount</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tomorrow</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;_isdaily&quot;</span><span class="p">]:</span>
+                <span class="n">localvalid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Create a new entry</span>
+                <span class="n">localvalid</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">ZoneInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;tzname&quot;</span><span class="p">]))</span>
+                    <span class="o">.</span><span class="n">date</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="c1"># we don&#39;t want dates into the future as this will foul others</span>
+            <span class="k">if</span> <span class="n">localvalid</span> <span class="o">&gt;</span> <span class="n">tomorrow</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;INSERT into summary_</span><span class="si">{</span><span class="n">localvalid</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;(iemid, day) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;iemid&quot;</span><span class="p">],</span> <span class="n">localvalid</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="c1"># try once more</span>
+            <span class="n">summary_update</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

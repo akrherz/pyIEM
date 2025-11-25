@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.mrms &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/mrms';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.mrms</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.mrms</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Multi-RADAR Multi-Sensor (MRMS) Helper Functions.</span>
+
+<span class="sd">Hopefully useful functions to help with the processing of MRMS data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">affine</span><span class="w"> </span><span class="kn">import</span> <span class="n">Affine</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="c1"># NOTE: This is the info for the MRMS grib products, NOT the IEM netcdf</span>
+<span class="c1"># This is the center of the corner pixels</span>
+<span class="n">WEST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">129.995</span>
+<span class="n">NORTH</span> <span class="o">=</span> <span class="mf">54.995</span>
+<span class="n">SOUTH</span> <span class="o">=</span> <span class="mf">20.005</span>
+<span class="n">EAST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">60.005</span>
+<span class="n">DX</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">DY</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">NX</span> <span class="o">=</span> <span class="mi">7000</span>
+<span class="n">NY</span> <span class="o">=</span> <span class="mi">3500</span>
+
+<span class="c1"># These are the edges of the domain</span>
+<span class="n">WEST_EDGE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">130.0</span>
+<span class="n">EAST_EDGE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">60.0</span>
+<span class="n">NORTH_EDGE</span> <span class="o">=</span> <span class="mf">55.0</span>
+<span class="n">SOUTH_EDGE</span> <span class="o">=</span> <span class="mf">20.0</span>
+<span class="n">XAXIS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">WEST</span><span class="p">,</span> <span class="n">EAST</span><span class="p">,</span> <span class="n">NX</span><span class="p">)</span>
+<span class="n">YAXIS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">SOUTH</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">,</span> <span class="n">NY</span><span class="p">)</span>
+<span class="n">AFFINE</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">WEST_EDGE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">NORTH_EDGE</span><span class="p">)</span>
+
+<span class="c1"># NOTE: These are the values for the IEM netcdf files, a smaller domain</span>
+<span class="n">MRMS4IEMRE_WEST_EDGE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">126.0</span>
+<span class="n">MRMS4IEMRE_EAST_EDGE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.0</span>
+<span class="n">MRMS4IEMRE_NORTH_EDGE</span> <span class="o">=</span> <span class="mf">50.0</span>
+<span class="n">MRMS4IEMRE_SOUTH_EDGE</span> <span class="o">=</span> <span class="mf">23.0</span>
+<span class="n">MRMS4IEMRE_WEST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">125.995</span>
+<span class="n">MRMS4IEMRE_EAST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.005</span>
+<span class="n">MRMS4IEMRE_NORTH</span> <span class="o">=</span> <span class="mf">49.995</span>
+<span class="n">MRMS4IEMRE_SOUTH</span> <span class="o">=</span> <span class="mf">23.005</span>
+<span class="n">MRMS4IEMRE_DX</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">MRMS4IEMRE_DY</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">MRMS4IEMRE_NX</span> <span class="o">=</span> <span class="mi">6100</span>
+<span class="n">MRMS4IEMRE_NY</span> <span class="o">=</span> <span class="mi">2700</span>
+<span class="n">MRMS4IEMRE_AFFINE</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
+    <span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">MRMS4IEMRE_WEST_EDGE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">DY</span><span class="p">,</span> <span class="n">MRMS4IEMRE_NORTH_EDGE</span>
+<span class="p">)</span>
+<span class="c1"># How the netcdf files are stored</span>
+<span class="n">MRMS4IEMRE_AFFINE_NC</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span>
+    <span class="n">DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">MRMS4IEMRE_WEST_EDGE</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">DY</span><span class="p">,</span> <span class="n">MRMS4IEMRE_SOUTH_EDGE</span>
+<span class="p">)</span>
+<span class="n">MRMS4IEMRE_XAXIS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">MRMS4IEMRE_WEST</span><span class="p">,</span> <span class="n">MRMS4IEMRE_EAST</span><span class="p">,</span> <span class="n">MRMS4IEMRE_NX</span><span class="p">)</span>
+<span class="n">MRMS4IEMRE_YAXIS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+    <span class="n">MRMS4IEMRE_SOUTH</span><span class="p">,</span> <span class="n">MRMS4IEMRE_NORTH</span><span class="p">,</span> <span class="n">MRMS4IEMRE_NY</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="find_ij">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.find_ij">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span><span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CAUTION: This is for the netcdf files, not grib2 files.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">MRMS4IEMRE_WEST_EDGE</span>
+        <span class="ow">or</span> <span class="n">lon</span> <span class="o">&gt;=</span> <span class="n">MRMS4IEMRE_EAST_EDGE</span>
+        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">MRMS4IEMRE_SOUTH_EDGE</span>
+        <span class="ow">or</span> <span class="n">lat</span> <span class="o">&gt;=</span> <span class="n">MRMS4IEMRE_NORTH_EDGE</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lat</span> <span class="o">-</span> <span class="n">MRMS4IEMRE_SOUTH_EDGE</span><span class="p">)</span> <span class="o">/</span> <span class="n">DY</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">lon</span> <span class="o">-</span> <span class="n">MRMS4IEMRE_WEST_EDGE</span><span class="p">)</span> <span class="o">/</span> <span class="n">DX</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span></div>
+
+
+
+<div class="viewcode-block" id="is_gzipped">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.is_gzipped">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_gzipped</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that we have gzipped content.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x1f\x8b</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_url">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.get_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the URL given the provided options.&quot;&quot;&quot;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz&quot;</span>
+    <span class="k">if</span> <span class="n">center</span> <span class="o">==</span> <span class="s2">&quot;mtarchive&quot;</span><span class="p">:</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;/mrms/ncep/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="mi">2000</span> <span class="o">&lt;</span> <span class="n">valid</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2012</span> <span class="ow">and</span> <span class="n">product</span> <span class="o">==</span> <span class="s2">&quot;PrecipRate&quot;</span><span class="p">:</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;https://mtarchive.geol.iastate.edu/</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y/%m/%d</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/mrms/reanalysis/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://mrms</span><span class="si">{</span><span class="n">center</span><span class="si">}</span><span class="s2">.ncep.noaa.gov/2D/</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">/MRMS_</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">uri</span></div>
+
+
+
+<div class="viewcode-block" id="fetch">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.fetch">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">valid</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tmpdir</span><span class="o">=</span><span class="s2">&quot;/mesonet/tmp&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a desired MRMS product.</span>
+
+<span class="sd">    Applies the following logic:</span>
+<span class="sd">        - does the file exist in `tmpdir`?</span>
+<span class="sd">        - can I fetch it from mtarchive?</span>
+<span class="sd">        - if recent, can I fetch it from NOAA MRMS website</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      product(str): MRMS product type</span>
+<span class="sd">      valid(datetime): Datetime object for desired timestamp</span>
+<span class="sd">      tmpdir(str,optional): location to check/place the downloaded file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_00.00_</span><span class="si">{</span><span class="n">valid</span><span class="si">:</span><span class="s2">%Y%m%d-%H%M</span><span class="si">}</span><span class="s2">00.grib2.gz&quot;</span>
+    <span class="n">tmpfn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="c1"># Option 1, we have this file already in cache!</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%s</span><span class="s2"> in tmpdir cache&quot;</span><span class="p">,</span> <span class="n">tmpfn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tmpfn</span>
+    <span class="c1"># Option 2, go fetch it from mtarchive</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">get_url</span><span class="p">(</span><span class="s2">&quot;mtarchive&quot;</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Failed to fetch </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">is_gzipped</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tmpfn</span>
+    <span class="c1"># Option 3, we go look at MRMS website, if timestamp is recent</span>
+    <span class="n">utcnow</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">utcnow</span> <span class="o">=</span> <span class="n">utcnow</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">utcnow</span> <span class="o">-</span> <span class="n">valid</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">86400</span><span class="p">:</span>
+        <span class="c1"># Can&#39;t do option 3!</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># Loop over all IDP data centers</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;-bldr&quot;</span><span class="p">,</span> <span class="s2">&quot;-cprk&quot;</span><span class="p">]:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">get_url</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">product</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Failed to fetch </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">is_gzipped</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+                <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">tmpfn</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="make_colorramp">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.make_colorramp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_colorramp</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make me a crude color ramp.&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Ramp blue</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">37</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">77</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">77</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">196</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">160</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">196</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">254</span>
+    <span class="c1"># Ramp Green up</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">37</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">116</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">254</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="mi">156</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">156</span> <span class="o">-</span> <span class="n">g</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">196</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span> <span class="o">-</span> <span class="mi">196</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="c1"># and Red</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="mi">117</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">77</span><span class="p">)</span> <span class="o">*</span> <span class="mf">6.0</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">117</span><span class="p">,</span> <span class="mi">256</span><span class="p">):</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">254</span>
+
+    <span class="c1"># Gray for missing</span>
+    <span class="n">c</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">144</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="mi">144</span><span class="p">]</span>
+    <span class="c1"># Black to remove, eventually</span>
+    <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="reader">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.reader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reader</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return metadata and the data.&quot;&quot;&quot;</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="p">(</span>
+        <span class="n">year</span><span class="p">,</span>
+        <span class="n">month</span><span class="p">,</span>
+        <span class="n">day</span><span class="p">,</span>
+        <span class="n">hour</span><span class="p">,</span>
+        <span class="n">minute</span><span class="p">,</span>
+        <span class="n">second</span><span class="p">,</span>
+        <span class="n">nx</span><span class="p">,</span>
+        <span class="n">ny</span><span class="p">,</span>
+        <span class="n">nz</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">ul_lon_cc</span><span class="p">,</span>
+        <span class="n">ul_lat_cc</span><span class="p">,</span>
+        <span class="n">_</span><span class="p">,</span>
+        <span class="n">scale_lon</span><span class="p">,</span>
+        <span class="n">scale_lat</span><span class="p">,</span>
+        <span class="n">grid_scale</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;9i4c10i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">80</span><span class="p">))</span>
+
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lon_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lon</span><span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ul_lat_cc</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_lat</span><span class="p">)</span>
+    <span class="c1"># Calculate</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat_cc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">ny</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lat_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lat</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ll_lon_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="p">)</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ul_lon_cc&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">scale_lon</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">grid_scale</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="p">)</span>
+
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nz</span><span class="si">}</span><span class="s2">i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">nz</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># levels</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>  <span class="c1"># z_scale</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;10i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span>  <span class="c1"># bogus</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;20c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>  <span class="c1"># varname</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;6c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">var_scale</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">num_radars</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;3i&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
+    <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_radars</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="si">}</span><span class="s2">c&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">num_radars</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># rad_list</span>
+    <span class="n">sz</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span> <span class="o">*</span> <span class="n">nz</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sz</span><span class="si">}</span><span class="s2">h&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sz</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="p">(</span><span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_scale</span><span class="p">)</span>
+
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="write_worldfile">
+<a class="viewcode-back" href="../../api/pyiem.mrms.html#pyiem.mrms.write_worldfile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_worldfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a worldfile to the given filename.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      filename (str): filename to write the world file information to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># World file defines the center of the upper left pixel</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;0.01</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">0.00</span><span class="se">\n</span><span class="s2">-0.01</span><span class="se">\n</span><span class="si">{</span><span class="n">WEST</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">NORTH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyiem.exceptions module &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.exceptions';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyiem.geom_util module" href="pyiem.geom_util.html" />
+    <link rel="prev" title="pyiem.era5land module" href="pyiem.era5land.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.grid.html">pyiem.grid package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.nav.html">pyiem.grid.nav module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.util.html">pyiem.grid.util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.zs.html">pyiem.grid.zs module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.models.html">pyiem.models package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.cwa.html">pyiem.models.cwa module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gairmet.html">pyiem.models.gairmet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gridnav.html">pyiem.models.gridnav module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.igra.html">pyiem.models.igra module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.mcd.html">pyiem.models.mcd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.pirep.html">pyiem.models.pirep module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.sel.html">pyiem.models.sel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.shef.html">pyiem.models.shef module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html">pyiem.models.taf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.wwp.html">pyiem.models.wwp module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.ncei.html">pyiem.ncei package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html">pyiem.ncei.ds3505 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html">pyiem.ncei.ghcnh module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html">pyiem.ncei.igra module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.nws.html">pyiem.nws package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pyiem.nws.products.html">pyiem.nws.products package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cf6.html">pyiem.nws.products.cf6 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cli.html">pyiem.nws.products.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cwa.html">pyiem.nws.products.cwa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.dsm.html">pyiem.nws.products.dsm module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.ero.html">pyiem.nws.products.ero module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.fd.html">pyiem.nws.products.fd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.ffg.html">pyiem.nws.products.ffg module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.gairmet.html">pyiem.nws.products.gairmet module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.hml.html">pyiem.nws.products.hml module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.hwo.html">pyiem.nws.products.hwo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.lsr.html">pyiem.nws.products.lsr module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.mcd.html">pyiem.nws.products.mcd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.metar_util.html">pyiem.nws.products.metar_util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.metarcollect.html">pyiem.nws.products.metarcollect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.mos.html">pyiem.nws.products.mos module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.nhc.html">pyiem.nws.products.nhc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.nldn.html">pyiem.nws.products.nldn module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.pirep.html">pyiem.nws.products.pirep module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.saw.html">pyiem.nws.products.saw module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.scp.html">pyiem.nws.products.scp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sel.html">pyiem.nws.products.sel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.shef.html">pyiem.nws.products.shef module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sigmet.html">pyiem.nws.products.sigmet module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.spacewx.html">pyiem.nws.products.spacewx module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.spcpts.html">pyiem.nws.products.spcpts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sps.html">pyiem.nws.products.sps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.taf.html">pyiem.nws.products.taf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.vtec.html">pyiem.nws.products.vtec module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.wwp.html">pyiem.nws.products.wwp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.xteus.html">pyiem.nws.products.xteus module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.bufkit.html">pyiem.nws.bufkit module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.gini.html">pyiem.nws.gini module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.hvtec.html">pyiem.nws.hvtec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.lsr.html">pyiem.nws.lsr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.nwsli.html">pyiem.nws.nwsli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.product.html">pyiem.nws.product module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.ugc.html">pyiem.nws.ugc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.vtec.html">pyiem.nws.vtec module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.plot.html">pyiem.plot package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.calendarplot.html">pyiem.plot.calendarplot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html">pyiem.plot.colormaps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.geoplot.html">pyiem.plot.geoplot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.layouts.html">pyiem.plot.layouts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.use_agg.html">pyiem.plot.use_agg module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html">pyiem.plot.util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.windrose.html">pyiem.plot.windrose module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.templates.html">pyiem.templates package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.templates.iem.html">pyiem.templates.iem package</a></li>
+</ul>
+</details></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.database.html">pyiem.database module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.datatypes.html">pyiem.datatypes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.dep.html">pyiem.dep module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.era5land.html">pyiem.era5land module</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyiem.exceptions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.geom_util.html">pyiem.geom_util module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.htmlgen.html">pyiem.htmlgen module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.iemre.html">pyiem.iemre module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.meteorology.html">pyiem.meteorology module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.mrms.html">pyiem.mrms module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.network.html">pyiem.network module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.observation.html">pyiem.observation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.reference.html">pyiem.reference module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.stage4.html">pyiem.stage4 module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.tracker.html">pyiem.tracker module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.util.html">pyiem.util module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.webutil.html">pyiem.webutil module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.wellknowntext.html">pyiem.wellknowntext module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.windrose_utils.html">pyiem.windrose_utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.wmo.html">pyiem.wmo module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.exceptions module</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyiem.exceptions">
+<span id="pyiem-exceptions-module"></span><h1>pyiem.exceptions module<a class="headerlink" href="#module-pyiem.exceptions" title="Link to this heading">#</a></h1>
+<p>Custom Exceptions.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.BadWebRequest">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">BadWebRequest</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#BadWebRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.BadWebRequest" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raised when a bad web request is made.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.CLIException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">CLIException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#CLIException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.CLIException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Custom Exception for CLI Parsing Issues</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.HWOException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">HWOException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#HWOException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.HWOException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for HWO Parsing.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.IncompleteWebRequest">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">IncompleteWebRequest</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#IncompleteWebRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.IncompleteWebRequest" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raised for a HTTP GET request without required params (422).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.InvalidArguments">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidArguments</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#InvalidArguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.InvalidArguments" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Provided method arguments were not valid (invalid units).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.InvalidPolygon">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidPolygon</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#InvalidPolygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.InvalidPolygon" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Parsing of polygon raised a known error condition.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.InvalidSHEFEncoding">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidSHEFEncoding</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#InvalidSHEFEncoding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.InvalidSHEFEncoding" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Product is not encoded to SHEF standard specification.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.InvalidSHEFValue">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidSHEFValue</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#InvalidSHEFValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.InvalidSHEFValue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>SHEF element value fails to be processed to a float.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.MCDException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">MCDException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#MCDException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.MCDException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.NHCException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">NHCException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#NHCException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.NHCException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.NewDatabaseConnectionFailure">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">NewDatabaseConnectionFailure</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#NewDatabaseConnectionFailure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.NewDatabaseConnectionFailure" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for when a new database connection fails.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.NoDataFound">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoDataFound</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#NoDataFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.NoDataFound" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for when no data was found for request.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.SAWException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">SAWException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#SAWException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.SAWException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Custom local exception</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.SIGMETException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">SIGMETException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#SIGMETException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.SIGMETException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Custom SIGMET Parsing Exception.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.TextProductException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">TextProductException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#TextProductException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.TextProductException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for Text Parsing.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.UGCParseException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">UGCParseException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#UGCParseException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.UGCParseException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Custom Exception this parser can raise</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.UnitsError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">UnitsError</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#UnitsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.UnitsError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for bad Units.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pyiem.exceptions.UnknownStationException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.exceptions.</span></span><span class="sig-name descname"><span class="pre">UnknownStationException</span></span><a class="reference internal" href="../_modules/pyiem/exceptions.html#UnknownStationException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.exceptions.UnknownStationException" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception for unknown station.</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.era5land.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.era5land module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pyiem.geom_util.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.geom_util module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.BadWebRequest"><code class="docutils literal notranslate"><span class="pre">BadWebRequest</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.CLIException"><code class="docutils literal notranslate"><span class="pre">CLIException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.HWOException"><code class="docutils literal notranslate"><span class="pre">HWOException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.IncompleteWebRequest"><code class="docutils literal notranslate"><span class="pre">IncompleteWebRequest</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.InvalidArguments"><code class="docutils literal notranslate"><span class="pre">InvalidArguments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.InvalidPolygon"><code class="docutils literal notranslate"><span class="pre">InvalidPolygon</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.InvalidSHEFEncoding"><code class="docutils literal notranslate"><span class="pre">InvalidSHEFEncoding</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.InvalidSHEFValue"><code class="docutils literal notranslate"><span class="pre">InvalidSHEFValue</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.MCDException"><code class="docutils literal notranslate"><span class="pre">MCDException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.NHCException"><code class="docutils literal notranslate"><span class="pre">NHCException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.NewDatabaseConnectionFailure"><code class="docutils literal notranslate"><span class="pre">NewDatabaseConnectionFailure</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.NoDataFound"><code class="docutils literal notranslate"><span class="pre">NoDataFound</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.SAWException"><code class="docutils literal notranslate"><span class="pre">SAWException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.SIGMETException"><code class="docutils literal notranslate"><span class="pre">SIGMETException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.TextProductException"><code class="docutils literal notranslate"><span class="pre">TextProductException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.UGCParseException"><code class="docutils literal notranslate"><span class="pre">UGCParseException</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.UnitsError"><code class="docutils literal notranslate"><span class="pre">UnitsError</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.exceptions.UnknownStationException"><code class="docutils literal notranslate"><span class="pre">UnknownStationException</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

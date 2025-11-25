@@ -1,0 +1,1395 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.product &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/product';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.product</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.product</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base Class encapsulating a NWS Text Product&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiPolygon</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.wkt</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem</span><span class="w"> </span><span class="kn">import</span> <span class="n">reference</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidPolygon</span><span class="p">,</span> <span class="n">TextProductException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws</span><span class="w"> </span><span class="kn">import</span> <span class="n">hvtec</span><span class="p">,</span> <span class="n">ugc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.vtec</span><span class="w"> </span><span class="kn">import</span> <span class="n">VTEC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.vtec</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">vtec_parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.wmo</span><span class="w"> </span><span class="kn">import</span> <span class="n">WMOProduct</span>
+
+<span class="n">TIME_MOT_LOC</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;TIME\.\.\.MOT\.\.\.LOC\s+(?P&lt;ztime&gt;[0-9]</span><span class="si">{4}</span><span class="s2">)Z\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;dir&gt;[0-9]{1,3})DEG\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;sknt&gt;[0-9]{1,3})KT\s+(?P&lt;loc&gt;[0-9 ]+)&quot;</span>
+<span class="p">)</span>
+<span class="n">LAT_LON_PREFIX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;LAT\.\.\.LON&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+<span class="n">LAT_LON</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([0-9]{4,8})\s+&quot;</span><span class="p">)</span>
+<span class="c1"># This is a legacy tag that is no longer used, but we want to continue to</span>
+<span class="c1"># parse it.</span>
+<span class="n">WINDHAIL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*WIND\.\.\.HAIL (?P&lt;winddir&gt;[&gt;&lt;]?)(?P&lt;wind&gt;[0-9]+)&quot;</span>
+    <span class="s2">&quot;(?P&lt;windunits&gt;MPH|KTS) &quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;haildir&gt;[&gt;&lt;]?)(?P&lt;hail&gt;[0-9\.]+)IN&quot;</span>
+<span class="p">)</span>
+<span class="n">HAILTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*(HAIL|MAX HAIL SIZE)\.\.\.(?P&lt;haildir&gt;[&gt;&lt;]?)(?P&lt;hail&gt;[0-9\.]+)\s?IN&quot;</span>
+<span class="p">)</span>
+<span class="n">WINDTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*(WIND|MAX WIND GUST)\.\.\.(?P&lt;winddir&gt;[&gt;&lt;]?)\s?(?P&lt;wind&gt;[0-9]+)\s?&quot;</span>
+    <span class="s2">&quot;(?P&lt;windunits&gt;MPH|KTS)&quot;</span>
+<span class="p">)</span>
+<span class="n">TORNADOTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*TORNADO\.\.\.(?P&lt;tornado&gt;RADAR INDICATED|OBSERVED|POSSIBLE)&quot;</span>
+<span class="p">)</span>
+<span class="n">SPOUTTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*(?P&lt;species&gt;LAND|WATER)SPOUT\.\.\.&quot;</span>
+    <span class="s2">&quot;(?P&lt;spout&gt;RADAR INDICATED|OBSERVED|POSSIBLE)&quot;</span>
+<span class="p">)</span>
+<span class="n">DAMAGETAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*(?P&lt;species&gt;TORNADO|THUNDERSTORM) DAMAGE THREAT\.\.\.&quot;</span>
+    <span class="s2">&quot;(?P&lt;damage&gt;CONSIDERABLE|SIGNIFICANT|CATASTROPHIC|DESTRUCTIVE)&quot;</span>
+<span class="p">)</span>
+<span class="n">THREATTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;species&gt;HAIL|WIND) THREAT\.\.\.&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;tag&gt;RADAR INDICATED|OBSERVED|POSSIBLE)&quot;</span>
+<span class="p">)</span>
+<span class="n">FLOOD_TAGS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*(?P&lt;key&gt;FLASH FLOOD|FLASH FLOOD DAMAGE THREAT|EXPECTED RAINFALL|&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;DAM FAILURE|LEVEE FAILURE)\.\.\.(?P&lt;value&gt;.*?)\n&quot;</span>
+<span class="p">)</span>
+<span class="n">TORNADO</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^AT |^\* AT&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">RESENT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.\.\.(RESENT|RETRANSMITTED|CORRECTED)&quot;</span><span class="p">)</span>
+<span class="n">EMERGENCY_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(TORNADO|FLASH\s+FLOOD)\s+EMERGENCY&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">PDS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;THIS\s+IS\s+A\s+PARTICULARLY\s+DANGEROUS\s+SITUATION&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span>
+<span class="p">)</span>
+<span class="n">SQUALLTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*SNOW\s?SQUALL\.\.\.(?P&lt;tag&gt;RADAR INDICATED|OBSERVED)&quot;</span>
+<span class="p">)</span>
+<span class="n">SQUALLIMPACTTAG</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;.*SNOW\s?SQUALL IMPACT\.\.\.(?P&lt;tag&gt;SIGNIFICANT|GENERAL)&quot;</span>
+<span class="p">)</span>
+<span class="n">EF_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^Rating:\s*EF\s?\-?(?P&lt;num&gt;\d)\s*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">ATTN_WFO</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;ATTN\.\.\.WFO\.\.\.([\.A-Z]*?)(?:LAT\.\.\.LON|ATTN\.\.\.RFC)&quot;</span>
+<span class="p">)</span>
+<span class="n">ATTN_RFC</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ATTN\.\.\.RFC\.\.\.([\.A-Z]*)&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="damage_survey_pns">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.damage_survey_pns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">damage_survey_pns</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Glean out things, hopefully.&quot;&quot;&quot;</span>
+    <span class="n">ffs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">EF_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">ffs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">),</span> <span class="p">[])</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;maxf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ffs</span><span class="p">:</span>
+        <span class="n">maxf</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ffs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1"># More for testing than anything</span>
+        <span class="k">if</span> <span class="n">maxf</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bad EF of </span><span class="si">{</span><span class="n">maxf</span><span class="si">}</span><span class="s2"> found&quot;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;maxf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; (Max: EF</span><span class="si">{</span><span class="n">maxf</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="c1"># approx and headline has starting space already :/</span>
+    <span class="n">hdl</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;headline&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;headline&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> issues Damage Survey PNS</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;maxf&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> at &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">hdl</span><span class="si">}{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&gt;Damage Survey PNS&#39;</span>
+        <span class="sa">f</span><span class="s2">&quot;&lt;/a&gt;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;maxf&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;stamp&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">hdl</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">plain</span><span class="p">,</span> <span class="n">html</span></div>
+
+
+
+<div class="viewcode-block" id="checker">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.checker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">checker</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">strdata</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;make sure our values are within physical bounds&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lat</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">or</span> <span class="n">lat</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">90</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TextProductException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid latitude </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">strdata</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="mi">180</span> <span class="ow">or</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TextProductException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid longitude </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">strdata</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="str2polygon">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.str2polygon">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">str2polygon</span><span class="p">(</span><span class="n">strdata</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert some string data into a polygon&quot;&quot;&quot;</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">partial</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># If the last character is a digit, we need to add a space (legacy prods)</span>
+    <span class="k">if</span> <span class="n">strdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="n">strdata</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+
+    <span class="c1"># We have two potential formats, one with 4 or 5 places and one</span>
+    <span class="c1"># with eight!</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">LAT_LON</span><span class="p">,</span> <span class="n">strdata</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.00</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span> <span class="o">/</span> <span class="mf">100.00</span>
+            <span class="k">if</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">:</span>
+                <span class="n">lon</span> <span class="o">+=</span> <span class="mf">100.0</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">lon</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">checker</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">strdata</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.00</span>
+            <span class="k">if</span> <span class="n">partial</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># we have lat</span>
+                <span class="n">partial</span> <span class="o">=</span> <span class="n">fval</span>
+                <span class="k">continue</span>
+            <span class="c1"># we have a lon</span>
+            <span class="k">if</span> <span class="n">fval</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">:</span>
+                <span class="n">fval</span> <span class="o">+=</span> <span class="mf">100.0</span>
+            <span class="n">fval</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">fval</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">checker</span><span class="p">(</span><span class="n">fval</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">strdata</span><span class="p">))</span>
+            <span class="n">partial</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidPolygon</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Less than three points for polygon </span><span class="si">{</span><span class="n">pts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="qc_is_emergency">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.qc_is_emergency">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">qc_is_emergency</span><span class="p">(</span><span class="n">seg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Belt + Suspenders check that this segment is an emergency.&quot;&quot;&quot;</span>
+    <span class="n">ffdt</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FLASH FLOOD DAMAGE THREAT&quot;</span><span class="p">)</span>
+    <span class="c1"># NOOPS</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span>
+        <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">damagetag</span> <span class="o">!=</span> <span class="s2">&quot;CATASTROPHIC&quot;</span>
+        <span class="ow">and</span> <span class="n">ffdt</span> <span class="o">!=</span> <span class="s2">&quot;CATASTROPHIC&quot;</span>
+    <span class="p">):</span>
+        <span class="k">return</span>
+    <span class="c1"># Auto qualifier</span>
+    <span class="n">tag_confirms</span> <span class="o">=</span> <span class="s2">&quot;CATASTROPHIC&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">seg</span><span class="o">.</span><span class="n">damagetag</span><span class="p">,</span> <span class="n">ffdt</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">tag_confirms</span><span class="p">:</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span>
+    <span class="c1"># It is 2023, we need to be tag confirmed.</span>
+    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tag_confirms</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2023</span><span class="p">:</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;Segment indicated emergency, but tags did not confirm and &quot;</span>
+            <span class="s2">&quot;product is &gt;= 2023, so setting no emergency.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span>
+    <span class="c1"># Oh, we have work to do</span>
+    <span class="n">has_tags</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">damagetag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ffdt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="c1"># tags do not confirm the emergency</span>
+    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="ow">and</span> <span class="n">has_tags</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tag_confirms</span><span class="p">:</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;Segment indicated emergency, but tags negated it.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;tag_confirms: </span><span class="si">{</span><span class="n">tag_confirms</span><span class="si">}</span><span class="s2"> damagetag: </span><span class="si">{</span><span class="n">seg</span><span class="o">.</span><span class="n">damagetag</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;ffdt: </span><span class="si">{</span><span class="n">ffdt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span>
+    <span class="c1"># this segment is a CAN, EXP VTEC sole action</span>
+    <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">vtec</span> <span class="ow">and</span> <span class="n">seg</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CAN&quot;</span><span class="p">,</span> <span class="s2">&quot;EXP&quot;</span><span class="p">]:</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;Segment indicated emergency, but VTEC action is expiring.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">seg</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="TextProductSegment">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextProductSegment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A segment of a Text Product&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tp</span><span class="p">:</span> <span class="s2">&quot;TextProduct&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
+        <span class="c1"># Poor name shadow to self.tp, but different</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tp</span> <span class="o">=</span> <span class="n">tp</span>  <span class="c1"># Reference to parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VTEC</span><span class="p">]</span> <span class="o">=</span> <span class="n">vtec_parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ugcs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcexpire</span> <span class="o">=</span> <span class="n">ugc</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">tp</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+            <span class="n">ugc_provider</span><span class="o">=</span><span class="n">tp</span><span class="o">.</span><span class="n">ugc_provider</span><span class="p">,</span>
+            <span class="n">is_firewx</span><span class="o">=</span><span class="nb">any</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">phenomena</span> <span class="o">==</span> <span class="s2">&quot;FW&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headlines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_headlines</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span> <span class="o">=</span> <span class="n">hvtec</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tp</span><span class="o">=</span><span class="n">tp</span><span class="p">)</span>
+
+        <span class="c1"># TIME...MOT...LOC Stuff!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_sknt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_dir</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_time_mot_loc</span><span class="p">()</span>
+
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">giswkt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_latlon</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">InvalidPolygon</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+            <span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbw</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># tags</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windtag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windtagunits</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windthreat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">haildirtag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hailthreat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">winddirtag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tornadotag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waterspouttag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landspouttag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">squalltag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># allows for deterministic testing of results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flood_tags</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_pds</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_tags</span><span class="p">()</span>
+        <span class="n">qc_is_emergency</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bullets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_bullets</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TextProductSegment.get_ugcs_tuple">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_ugcs_tuple">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ugcs_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper to return a tuple useful for SQL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ugcs_list</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_ugcs_list">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_ugcs_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ugcs_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper to return a list useful for SQL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcs</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_hvtec_nwsli">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_hvtec_nwsli">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_hvtec_nwsli</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first hvtec NWSLI entry, if it exists&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">nwsli</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_hvtec_cause">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_hvtec_cause">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_hvtec_cause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first hvtec cause entry, if it exists&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cause</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_hvtec_severity">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_hvtec_severity">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_hvtec_severity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first hvtec severity entry, if it exists&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">severity</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_hvtec_record">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_hvtec_record">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_hvtec_record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first hvtec record entry, if it exists&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hvtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">record</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.svs_search">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.svs_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">svs_search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Special search the product for special text&quot;&quot;&quot;</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">TORNADO</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.process_bullets">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.process_bullets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_bullets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out the bulleted segments&quot;&quot;&quot;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\*([^\*]*)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+        <span class="n">bullets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
+            <span class="c1"># look for subheadings :/</span>
+            <span class="n">piece</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;- &quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">piece</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                        <span class="n">bullets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+                    <span class="n">piece</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;- &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">piece</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                    <span class="n">piece</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="k">if</span> <span class="n">piece</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">bullets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+            <span class="n">bullets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="c1"># Cleanup</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bullets</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.process_tags">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.process_tags">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find various tags in this segment&quot;&quot;&quot;</span>
+        <span class="n">nolf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">EMERGENCY_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+            <span class="c1"># Ensure that the emergency RE matches the segment phenomena</span>
+            <span class="c1"># We later double check this based on the found tags</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;FLASH FLOOD&quot;</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">phenomena</span> <span class="o">==</span> <span class="s2">&quot;FF&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;TORNADO&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">phenomena</span> <span class="o">==</span> <span class="s2">&quot;TO&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_emergency</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">PDS_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_pds</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">WINDHAIL</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">windtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;wind&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">windtagunits</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;windunits&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">haildirtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;haildir&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">winddirtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;winddir&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;hail&quot;</span><span class="p">]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">WINDTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">winddirtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;winddir&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">windtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;wind&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">windtagunits</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;windunits&quot;</span><span class="p">]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">HAILTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">haildirtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;haildir&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;hail&quot;</span><span class="p">]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">TORNADOTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tornadotag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;tornado&quot;</span><span class="p">]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">DAMAGETAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;damage&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">species</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">THREATTAG</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">nolf</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">species</span> <span class="o">==</span> <span class="s2">&quot;HAIL&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hailthreat</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="k">elif</span> <span class="n">species</span> <span class="o">==</span> <span class="s2">&quot;WIND&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">windthreat</span> <span class="o">=</span> <span class="n">tag</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">SQUALLTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">squalltag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">SQUALLIMPACTTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">SPOUTTAG</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">nolf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">gdict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WATER&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">waterspouttag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;spout&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">landspouttag</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;spout&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">FLOOD_TAGS</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flood_tags</span><span class="p">[</span><span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.special_tags_to_text">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.special_tags_to_text">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">special_tags_to_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the special tags into a nice text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">windtag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tornadotag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">waterspouttag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">landspouttag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">squalltag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flood_tags</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">squalltag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;snow squall: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">squalltag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tornadotag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tornado: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tornadotag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waterspouttag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;waterspout: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">waterspouttag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">landspouttag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;landspout: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">landspouttag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">phenomena</span> <span class="o">==</span> <span class="s2">&quot;SQ&quot;</span><span class="p">:</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;impact threat: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;damage threat: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">damagetag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">windtag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winddirtag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span>
+            <span class="n">_p2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">windthreat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">windthreat</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wind: </span><span class="si">{</span><span class="n">_p1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">windtag</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">windtagunits</span><span class="si">}{</span><span class="n">_p2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">haildirtag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span>
+            <span class="n">_p2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hailthreat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hailthreat</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hail: </span><span class="si">{</span><span class="n">_p1</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">hailtag</span><span class="si">}</span><span class="s2"> IN</span><span class="si">{</span><span class="n">_p2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot; [</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="si">}</span><span class="s2">] &quot;</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.process_latlon">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.process_latlon">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_latlon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the segment looking for the &#39;standard&#39; LAT...LON encoding&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">LAT_LON_PREFIX</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">newdata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">9</span> <span class="p">:]</span>
+        <span class="c1"># Go find our next non-digit, non-space character, if we find it, we</span>
+        <span class="c1"># should truncate our string, this could be improved, I suspect</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^\s0-9]&quot;</span><span class="p">,</span> <span class="n">newdata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pos2</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="n">newdata</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[:</span><span class="n">pos2</span><span class="p">]</span>
+
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">str2polygon</span><span class="p">(</span><span class="n">newdata</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">poly</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># check 0, PGUM polygons are east longitude akrherz/pyIEM#74</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;PGUM&quot;</span><span class="p">:</span>
+            <span class="n">newpts</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">]</span>
+            <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">newpts</span><span class="p">)</span>
+
+        <span class="c1"># check 1, is the polygon valid?</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+            <span class="n">poly</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># Careful, this could return a multipolygon</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">MultiPolygon</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">geoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="s2">&quot;LAT...LON buffer(0) returned 3+ polygon, culling.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+                <span class="c1"># Life choices here, if we have a bowtie and the one side is</span>
+                <span class="c1"># very small, we should cull it and just use the larger side</span>
+                <span class="n">polys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">geoms</span><span class="p">)</span>
+                <span class="n">polys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">polys</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">polys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_valid</span>
+                    <span class="ow">and</span> <span class="n">polys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_valid</span>
+                    <span class="ow">and</span> <span class="n">polys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">area</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">&lt;</span> <span class="n">polys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">area</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="s2">&quot;LAT...LON buffer(0) made 2 polys, taking biggest.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">poly</span> <span class="o">=</span> <span class="n">polys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="s2">&quot;LAT...LON buffer(0) made 2 polys with invalids.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;LAT...LON polygon is invalid, but buffer(0) fixed it!&quot;</span>
+                <span class="p">)</span>
+        <span class="c1"># check 2, is the exterior ring of the polygon clockwise?</span>
+        <span class="k">if</span> <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">is_ccw</span><span class="p">:</span>
+            <span class="c1"># No longer a warning as it was too much noise</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;LAT...LON polygon exterior is CCW, reversing</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># NB: the encoding parsed above should always have just two decimals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">giswkt</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;SRID=4326;</span><span class="si">{</span><span class="n">dumps</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">([</span><span class="n">poly</span><span class="p">]),</span><span class="w"> </span><span class="n">rounding_precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">poly</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.process_time_mot_loc">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.process_time_mot_loc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_time_mot_loc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Try to parse the TIME...MOT...LOC&quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;TIME...MOT...LOC&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">[</span><span class="n">pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;process_time_mot_loc segment likely has &quot;</span>
+                <span class="s2">&quot;poorly formatted TIME...MOT...LOC&quot;</span>
+            <span class="p">)</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">TIME_MOT_LOC</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">search</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;process_time_mot_loc segment find OK, but regex failed...&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">gdict</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;ztime&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcexpire</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">hh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;ztime&quot;</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">mi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;ztime&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcexpire</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="n">hh</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">mi</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hh</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcexpire</span><span class="o">.</span><span class="n">hour</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tml_valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">lats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">lats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+            <span class="n">lons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;POINT(</span><span class="si">{</span><span class="n">lons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;LINESTRING(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_sknt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;sknt&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tml_dir</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdict</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.parse_headlines">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.parse_headlines">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_headlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find headlines in this segment&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">):</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="n">line</span>
+            <span class="k">elif</span> <span class="n">candidate</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">candidate</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">line</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="mi">6</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">160</span><span class="p">:</span>  <span class="c1"># arb</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="TextProductSegment.get_affected_wfos">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProductSegment.get_affected_wfos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_affected_wfos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Based on the ugc_provider, figure out which WFOs are impacted by</span>
+<span class="sd">        this product segment&quot;&quot;&quot;</span>
+        <span class="n">affected_wfos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_ugc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
+            <span class="n">affected_wfos</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_ugc</span><span class="o">.</span><span class="n">wfos</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">affected_wfos</span><span class="p">))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TextProduct">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextProduct</span><span class="p">(</span><span class="n">WMOProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;class representing a NWS Text Product&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ugc_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ugc</span><span class="o">.</span><span class="n">UGCProvider</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">parse_segments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        @param text string single text product</span>
+<span class="sd">        @param utcnow used to compute offsets for when this product my be valid</span>
+<span class="sd">        @param ugc_provider dict or UGCProvider instance</span>
+<span class="sd">        @param parse_segments should the segments be parsed as well? True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ugc_provider</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">ugc_provider</span> <span class="o">=</span> <span class="n">ugc</span><span class="o">.</span><span class="n">UGCProvider</span><span class="p">(</span><span class="n">legacy_dict</span><span class="o">=</span><span class="n">ugc_provider</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ugc_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ugc_provider</span> <span class="o">=</span> <span class="n">ugc</span><span class="o">.</span><span class="n">UGCProvider</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nwsli_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nwsli_provider</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ugc_provider</span> <span class="o">=</span> <span class="n">ugc_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwsli_provider</span> <span class="o">=</span> <span class="n">nwsli_provider</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TextProductSegment</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">parse_segments</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_segments</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TextProduct.suv_iter">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.suv_iter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">suv_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yield [(segment, ugcs, vtec)] combos found in product.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">_vtec</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_vtec</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="ow">or</span> <span class="n">_vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;ROU&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">,</span> <span class="n">_vtec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.is_resent">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.is_resent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_resent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check to see if this product is a ...RESENT product&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;...RESENT&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.is_correction">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.is_correction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this product a correction?</span>
+
+<span class="sd">        Sadly, this is not as easy as it should be.  It turns out that some</span>
+<span class="sd">        products do not have a proper correction mechanism, so offices will</span>
+<span class="sd">        just brute force in a note into the MND header.  So we have to do</span>
+<span class="sd">        some further checking...</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          bool: Is this product a correction?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># OK, go looking for RESENT style tags, assume it happens within first</span>
+        <span class="c1"># 300 chars</span>
+        <span class="k">if</span> <span class="n">RESENT</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">300</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbb</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbb</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.parse_attn_rfc">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.parse_attn_rfc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_attn_rfc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out which RFCs this product is seeking attention&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">ATTN_RFC</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">rfcs</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;([A-Z]{3,5})&quot;</span><span class="p">,</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># le sigh</span>
+        <span class="k">if</span> <span class="s2">&quot;LAT&quot;</span> <span class="ow">in</span> <span class="n">rfcs</span><span class="p">:</span>
+            <span class="n">rfcs</span> <span class="o">=</span> <span class="n">rfcs</span><span class="p">[:</span> <span class="n">rfcs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;LAT&quot;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">rfcs</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.parse_attn_wfo">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.parse_attn_wfo">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_attn_wfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out which WFOs this product is seeking attention&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">ATTN_WFO</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;([A-Z]</span><span class="si">{3}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_channels">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_channels">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of channels&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;TCU&quot;</span><span class="p">,</span> <span class="s2">&quot;TCD&quot;</span><span class="p">,</span> <span class="s2">&quot;TCM&quot;</span><span class="p">,</span> <span class="s2">&quot;TCP&quot;</span><span class="p">,</span> <span class="s2">&quot;TWO&quot;</span><span class="p">]:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;AHDNWC&quot;</span><span class="p">:</span>
+            <span class="c1"># Get the ATTN</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_attn_wfo</span><span class="p">())</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_attn_rfc</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_nicedate">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_nicedate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_nicedate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nicely format the issuance time of this product&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;(unknown issuance time)&quot;</span>
+        <span class="n">localts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %H:%M UTC&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">localts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+            <span class="c1"># A bit of complexity as offices may not implement daylight saving</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ST&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">localts</span><span class="o">.</span><span class="n">dst</span><span class="p">():</span>
+                <span class="n">localts</span> <span class="o">-=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-I:%M %p &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span>
+        <span class="k">return</span> <span class="n">localts</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_main_headline">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_main_headline">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_main_headline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string for the main headline, if it exists&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">headlines</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">segment</span><span class="o">.</span><span class="n">headlines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">default</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_jabbers">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a tuple of jabber messages [(plain, html, xtra_dict)]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          uri (str): the base URI to use to construct links</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          [(str, str, dict)]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;</span><span class="si">%(source)s</span><span class="s2"> issues </span><span class="si">%(name)s</span><span class="s2"> (</span><span class="si">%(aaa)s</span><span class="s2">) at </span><span class="si">%(stamp)s%(headline)s</span><span class="s2"> &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="si">%(source)s</span><span class="s2"> issues </span><span class="si">%(name)s</span><span class="s2"> (</span><span class="si">%(aaa)s</span><span class="s2">) at </span><span class="si">%(stamp)s</span><span class="s2"> &quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">aaa</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">hdl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_main_headline</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;headline&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot; ...</span><span class="si">{</span><span class="n">hdl</span><span class="si">}</span><span class="s2">...&quot;</span> <span class="k">if</span> <span class="n">hdl</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+            <span class="s2">&quot;aaa&quot;</span><span class="p">:</span> <span class="n">aaa</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="o">.</span><span class="n">prodDefinitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">prodDefinitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aaa</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;stamp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nicedate</span><span class="p">(),</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span><span class="n">templates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%(url)s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">data</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;p&gt;</span><span class="si">%(source)s</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;</span><span class="si">%(name)s</span><span class="s1"> (</span><span class="si">%(aaa)s</span><span class="s1">)&lt;/a&gt;&#39;</span>
+            <span class="s2">&quot; at </span><span class="si">%(stamp)s</span><span class="s2">&lt;/p&gt;&quot;</span>
+        <span class="p">)</span> <span class="o">%</span> <span class="n">data</span>
+        <span class="n">tweet</span> <span class="o">=</span> <span class="n">templates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="n">data</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">reference</span><span class="o">.</span><span class="n">TWEET_CHARS</span><span class="p">:</span>
+            <span class="n">tweet</span> <span class="o">=</span> <span class="n">templates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="n">data</span>
+        <span class="n">tweet</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
+        <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_channels</span><span class="p">()),</span>
+            <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+            <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">tweet</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sbw</span><span class="p">:</span>
+            <span class="c1"># Generic product has a polygon, so we add special twitter message</span>
+            <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter_media&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/227/&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;pid:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">::segnum:0.png&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;PNS&quot;</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;DAMAGE SURVEY&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">plain</span><span class="p">,</span> <span class="n">html</span> <span class="o">=</span> <span class="n">damage_survey_pns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plain</span>
+                <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot;,DAMAGEPNS&quot;</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hit exception </span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2"> in damage_survey&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">plain</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">xtra</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_signature">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_signature">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_signature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to glean the free form text that is a signature.&quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="c1"># We found something that should have come before the signature</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;$$&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;&amp;&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;&quot;</span><span class="p">]:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">line</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.parse_segments">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.parse_segments">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split the product by its $$&quot;&quot;&quot;</span>
+        <span class="n">segs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;$$&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">segs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TextProductSegment</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TextProduct.get_affected_wfos">
+<a class="viewcode-back" href="../../../api/pyiem.nws.product.html#pyiem.nws.product.TextProduct.get_affected_wfos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_affected_wfos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Based on the ugc_provider, figure out which WFOs are impacted by</span>
+<span class="sd">        this product&quot;&quot;&quot;</span>
+        <span class="n">affected_wfos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ugcs</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">wfo</span> <span class="ow">in</span> <span class="n">ugcs</span><span class="o">.</span><span class="n">wfos</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">wfo</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">affected_wfos</span><span class="p">:</span>
+                        <span class="n">affected_wfos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wfo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">affected_wfos</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

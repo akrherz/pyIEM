@@ -1,0 +1,7 @@
+pyiem.nws.products.sel module
+=============================
+
+.. automodule:: pyiem.nws.products.sel
+   :members:
+   :show-inheritance:
+   :undoc-members:

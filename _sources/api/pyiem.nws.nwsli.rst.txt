@@ -1,0 +1,7 @@
+pyiem.nws.nwsli module
+======================
+
+.. automodule:: pyiem.nws.nwsli
+   :members:
+   :show-inheritance:
+   :undoc-members:

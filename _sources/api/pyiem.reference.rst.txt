@@ -1,0 +1,7 @@
+pyiem.reference module
+======================
+
+.. automodule:: pyiem.reference
+   :members:
+   :show-inheritance:
+   :undoc-members:

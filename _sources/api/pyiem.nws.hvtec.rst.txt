@@ -1,0 +1,7 @@
+pyiem.nws.hvtec module
+======================
+
+.. automodule:: pyiem.nws.hvtec
+   :members:
+   :show-inheritance:
+   :undoc-members:

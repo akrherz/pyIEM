@@ -1,0 +1,7 @@
+pyiem.dep module
+================
+
+.. automodule:: pyiem.dep
+   :members:
+   :show-inheritance:
+   :undoc-members:

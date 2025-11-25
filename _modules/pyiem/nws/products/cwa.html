@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.cwa &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/cwa';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.cwa</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.cwa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Center Weather Advisories (CWA)&quot;&quot;&quot;</span>
+
+<span class="c1"># Stdlib imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="c1"># Third Party</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span>
+
+<span class="c1"># Local stuff</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.cwa</span><span class="w"> </span><span class="kn">import</span> <span class="n">CWAModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.ugc</span><span class="w"> </span><span class="kn">import</span> <span class="n">str2time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="n">LINE3</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;loc&gt;[A-Z1-9]</span><span class="si">{4}</span><span class="s2">) CWA (?P&lt;ddhhmi&gt;[0-9]</span><span class="si">{6}</span><span class="s2">)\s?(?P&lt;cor&gt;COR)?&quot;</span>
+<span class="p">)</span>
+<span class="n">LINE4</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;loc&gt;[A-Z1-9]{3,4}) CWA (?P&lt;num&gt;\d+) VALID UNTIL (?P&lt;ddhhmi&gt;[0-9]</span><span class="si">{6}</span><span class="s2">)&quot;</span>
+<span class="p">)</span>
+<span class="n">LALO_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;d1&gt;[NEWS])\s?(?P&lt;v1&gt;[\d]{4,5})\s*(?P&lt;d2&gt;[NEWS])\s?(?P&lt;v2&gt;[\d]{4,5})&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;leftover&gt;.*)$&quot;</span>
+<span class="p">)</span>
+
+<span class="n">FROM_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">^(?P&lt;offset&gt;[0-9]+)?\s?</span>
+<span class="sd">(?P&lt;drct&gt;N|NE|NNE|ENE|E|ESE|SE|SSE|S|SSW|SW|WSW|W|WNW|NW|NNW)?\s?</span>
+<span class="sd">(?P&lt;loc&gt;[A-Z0-9]{3})\s?(?P&lt;leftover&gt;.*)$</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">NM_WIDE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\s|\.)(?P&lt;width&gt;\d+)\s?NM WIDE&quot;</span><span class="p">)</span>
+<span class="n">DIAMETER</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;DIAM (?P&lt;diameter&gt;\d+)\s?NM&quot;</span><span class="p">)</span>
+<span class="n">CANCEL_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(CANCEL|ERROR)&quot;</span><span class="p">)</span>
+
+
+<span class="n">dirs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;NNE&quot;</span><span class="p">:</span> <span class="mf">22.5</span><span class="p">,</span>
+    <span class="s2">&quot;ENE&quot;</span><span class="p">:</span> <span class="mf">67.5</span><span class="p">,</span>
+    <span class="s2">&quot;NE&quot;</span><span class="p">:</span> <span class="mf">45.0</span><span class="p">,</span>
+    <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span>
+    <span class="s2">&quot;ESE&quot;</span><span class="p">:</span> <span class="mf">112.5</span><span class="p">,</span>
+    <span class="s2">&quot;SSE&quot;</span><span class="p">:</span> <span class="mf">157.5</span><span class="p">,</span>
+    <span class="s2">&quot;SE&quot;</span><span class="p">:</span> <span class="mf">135.0</span><span class="p">,</span>
+    <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mf">180.0</span><span class="p">,</span>
+    <span class="s2">&quot;SSW&quot;</span><span class="p">:</span> <span class="mf">202.5</span><span class="p">,</span>
+    <span class="s2">&quot;WSW&quot;</span><span class="p">:</span> <span class="mf">247.5</span><span class="p">,</span>
+    <span class="s2">&quot;SW&quot;</span><span class="p">:</span> <span class="mf">225.0</span><span class="p">,</span>
+    <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="mf">270.0</span><span class="p">,</span>
+    <span class="s2">&quot;WNW&quot;</span><span class="p">:</span> <span class="mf">292.5</span><span class="p">,</span>
+    <span class="s2">&quot;NW&quot;</span><span class="p">:</span> <span class="mf">315.0</span><span class="p">,</span>
+    <span class="s2">&quot;NNW&quot;</span><span class="p">:</span> <span class="mf">337.5</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">KM_NM</span> <span class="o">=</span> <span class="mf">1.852</span>
+
+
+<div class="viewcode-block" id="go2lonlat">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.go2lonlat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">go2lonlat</span><span class="p">(</span><span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">displacement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;http://stackoverflow.com/questions/7222382&quot;&quot;&quot;</span>
+    <span class="c1"># Radius of the Earth</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mf">6378.1</span>
+    <span class="c1"># Bearing is 90 degrees converted to radians.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">dirs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">brng</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+    <span class="c1"># Distance in km</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">displacement</span> <span class="o">*</span> <span class="n">KM_NM</span>
+
+    <span class="c1"># Current lat point converted to radians</span>
+    <span class="n">lat1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat0</span><span class="p">)</span>
+    <span class="c1"># Current long point converted to radians</span>
+    <span class="n">lon1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon0</span><span class="p">)</span>
+
+    <span class="n">lat2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">R</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">R</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">brng</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">lon2</span> <span class="o">=</span> <span class="n">lon1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">brng</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">R</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">),</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">R</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat2</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">lat2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span>
+    <span class="n">lon2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lon2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span></div>
+
+
+
+<div class="viewcode-block" id="parse_polygon">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.parse_polygon">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_polygon</span><span class="p">(</span><span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Polygon</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out what the polygon is!&quot;&quot;&quot;</span>
+    <span class="c1"># condition, and yes, le sigh</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;FFROM &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;FROM &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="c1"># Account for quasi common FROM typo</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ROM &quot;</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+    <span class="c1"># Condense multiple spaces</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">narrative</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">workdone</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">LALO_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;v1&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="n">v1</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;d1&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">v1</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;v2&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">v2</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;d2&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">v2</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">v2</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;d2&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">v1</span><span class="p">,</span>
+                    <span class="n">v1</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;d1&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="n">v2</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;leftover&quot;</span><span class="p">]:</span>
+                <span class="n">narrative</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;leftover&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="k">continue</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">FROM_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;offset&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">)</span> <span class="o">=</span> <span class="n">go2lonlat</span><span class="p">(</span>
+                    <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]][</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                    <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]][</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+                    <span class="n">d</span><span class="p">[</span><span class="s2">&quot;drct&quot;</span><span class="p">],</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;offset&quot;</span><span class="p">]),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]][</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+                    <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]][</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="n">workdone</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">lon1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lat1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;leftover&quot;</span><span class="p">]:</span>
+                <span class="c1"># Could have a stray dash in here, so need to do some tricks</span>
+                <span class="n">lookfor</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;offset&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">lookfor</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;drct&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lookfor</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">narrative</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">lookfor</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">narrative</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>
+            <span class="k">break</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">NM_WIDE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">narrative</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="c1"># approx</span>
+        <span class="n">width_deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">KM_NM</span> <span class="o">/</span> <span class="mf">111.0</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">LineString</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">parallel_offset</span><span class="p">(</span><span class="n">width_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">parallel_offset</span><span class="p">(</span><span class="n">width_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># NB This may be brittle to GEOS library version</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">coords</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># We have a point</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">DIAMETER</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="c1"># approx</span>
+        <span class="n">diameter_deg</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;diameter&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="n">KM_NM</span> <span class="o">/</span> <span class="mf">111.0</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="o">*</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">diameter_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workdone</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="p">[</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">),</span> <span class="ow">not</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_valid</span><span class="p">,</span> <span class="n">poly</span><span class="o">.</span><span class="n">is_empty</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polygon is not valid</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">narrative</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Polygon is not valid, but buffer(0) fixed it...</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">poly</span><span class="p">,</span> <span class="n">narrative</span></div>
+
+
+
+<div class="viewcode-block" id="parse_product">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.parse_product">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_product</span><span class="p">(</span><span class="n">prod</span><span class="p">:</span> <span class="n">TextProduct</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CWAModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do the parsing we need for the data model.&quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># This is not tenable at the moment</span>
+    <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">CANCEL_LINE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">ln</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">LINE3</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line 3 `</span><span class="si">{</span><span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">` not </span><span class="si">{</span><span class="n">LINE3</span><span class="o">.</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">res3</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+    <span class="n">issue</span> <span class="o">=</span> <span class="n">str2time</span><span class="p">(</span><span class="n">res3</span><span class="p">[</span><span class="s2">&quot;ddhhmi&quot;</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="c1"># Could fail, but this is a requirement anyway</span>
+    <span class="n">res4</span> <span class="o">=</span> <span class="n">LINE4</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+    <span class="n">expire</span> <span class="o">=</span> <span class="n">str2time</span><span class="p">(</span><span class="n">res4</span><span class="p">[</span><span class="s2">&quot;ddhhmi&quot;</span><span class="p">],</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+    <span class="c1"># line work is not straight foward and could span multiple lines, sigh</span>
+    <span class="n">poly</span><span class="p">,</span> <span class="n">narrative</span> <span class="o">=</span> <span class="n">parse_polygon</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">:]))</span>
+    <span class="k">if</span> <span class="n">poly</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;CWA: No points found in polygon&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">CWAModel</span><span class="p">(</span>
+        <span class="n">center</span><span class="o">=</span><span class="n">res4</span><span class="p">[</span><span class="s2">&quot;loc&quot;</span><span class="p">],</span>
+        <span class="n">issue</span><span class="o">=</span><span class="n">issue</span><span class="p">,</span>
+        <span class="n">expire</span><span class="o">=</span><span class="n">expire</span><span class="p">,</span>
+        <span class="n">geom</span><span class="o">=</span><span class="n">poly</span><span class="p">,</span>
+        <span class="n">is_corrected</span><span class="o">=</span><span class="p">(</span><span class="n">res3</span><span class="p">[</span><span class="s2">&quot;cor&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">narrative</span><span class="o">=</span><span class="n">narrative</span><span class="p">,</span>
+        <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">res4</span><span class="p">[</span><span class="s2">&quot;num&quot;</span><span class="p">]),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CWAProduct">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.CWAProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWAProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a Center Weather Advsiory (CWA) product.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">parse_product</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Need to do our faked AFOS, so other things work below</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CWA</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="CWAProduct.sql">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.CWAProduct.sql">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do SQL related stuff that is required&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">is_corrected</span><span class="p">:</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">&quot;DELETE from cwas where issue = </span><span class="si">%s</span><span class="s2"> and num = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                <span class="s2">&quot;center = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Corrected CWA updated no rows&quot;</span><span class="p">)</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT into cwas (issue, expire, center, num, narrative, &quot;</span>
+            <span class="s2">&quot;product_id, geom) VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &quot;</span>
+            <span class="s2">&quot;ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">expire</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">narrative</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">wkt</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CWAProduct.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.CWAProduct.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the Jabber for this sigmet&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">apurl</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/226/&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;network:CWSU::cwsu:</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s2">::num:</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="si">}</span><span class="s2">::&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;issue:</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y-%m-%d%%20%H%M</span><span class="si">}</span><span class="s2">::_r:86.png&quot;</span>
+        <span class="p">)</span>
+        <span class="n">texturl</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;https://mesonet.agron.iastate.edu/&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;p.php?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">till</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">expire</span><span class="si">:</span><span class="s2">%-d %b %H%M</span><span class="si">}</span><span class="s2">Z&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s2"> issues CWA </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="si">}</span><span class="s2"> till </span><span class="si">{</span><span class="n">till</span><span class="si">}</span><span class="s2"> ... &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">narrative</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">texturl</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">{</span><span class="n">texturl</span><span class="si">}</span><span class="s1">&quot;&gt;CWA </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">num</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot; till </span><span class="si">{</span><span class="n">till</span><span class="si">}</span><span class="s2">&lt;br/&gt;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">narrative</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CWA...&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;CWA</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+            <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="n">apurl</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">[(</span><span class="n">text</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">xtra</span><span class="p">)]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cwa.html#pyiem.nws.products.cwa.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+    <span class="c1"># Prevent an unnecessary ugc database load</span>
+    <span class="k">if</span> <span class="n">ugc_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ugc_provider</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">CWAProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+pyiem.plot.calendarplot module
+==============================
+
+.. automodule:: pyiem.plot.calendarplot
+   :members:
+   :show-inheritance:
+   :undoc-members:

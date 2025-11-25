@@ -1,0 +1,7 @@
+pyiem.models.igra module
+========================
+
+.. automodule:: pyiem.models.igra
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+pyiem.iemre module
+==================
+
+.. automodule:: pyiem.iemre
+   :members:
+   :show-inheritance:
+   :undoc-members:

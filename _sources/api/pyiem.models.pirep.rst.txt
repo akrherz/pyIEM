@@ -1,0 +1,7 @@
+pyiem.models.pirep module
+=========================
+
+.. automodule:: pyiem.models.pirep
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+pyiem.htmlgen module
+====================
+
+.. automodule:: pyiem.htmlgen
+   :members:
+   :show-inheritance:
+   :undoc-members:

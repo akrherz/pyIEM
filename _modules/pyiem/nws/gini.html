@@ -1,0 +1,1027 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.gini &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/gini';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.gini</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.gini</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Processing of GINI formatted data found on NOAAPORT</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="n">DATADIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../data&quot;</span><span class="p">])</span>
+<span class="n">M_PI_2</span> <span class="o">=</span> <span class="mf">1.57079632679489661923</span>
+<span class="n">M_PI</span> <span class="o">=</span> <span class="mf">3.14159265358979323846</span>
+<span class="n">RE_METERS</span> <span class="o">=</span> <span class="mf">6371200.0</span>
+<span class="n">ENTITIES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;UNK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MISC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JERS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ERS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;POES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;COMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DMSP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GMS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;METEOSAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES11&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES12&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES13&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES14&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES15&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">LABELS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;UNK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UNK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MISC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JERS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ERS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;POES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;COMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DMSP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GMS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;METEOSAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GOES&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">CHANNELS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VIS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3.9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WV&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;12&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;13.3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1.3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U11&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U12&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PW&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SKIN&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CAPE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TSURF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WINDEX&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">_u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">CHANNELS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;U</span><span class="si">{</span><span class="n">_u</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># noqa</span>
+<span class="n">SECTORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;NHCOMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AKNAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HINAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PRNAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SUPER&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NHCOMP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CCONUS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EFLOAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WFLOAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CFLOAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PFLOAT&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">AWIPS_GRID_GUESS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">207</span><span class="p">,</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">203</span><span class="p">,</span>
+    <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span>
+    <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="mi">208</span><span class="p">,</span>
+    <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="mi">204</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mi">210</span><span class="p">,</span>
+    <span class="s2">&quot;Q&quot;</span><span class="p">:</span> <span class="mi">205</span><span class="p">,</span>
+    <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">AWIPS_GRID</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;TIGB&quot;</span><span class="p">:</span> <span class="mi">203</span><span class="p">,</span>
+    <span class="s2">&quot;TIGE&quot;</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span>
+    <span class="s2">&quot;TIGW&quot;</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span>
+    <span class="s2">&quot;TIGH&quot;</span><span class="p">:</span> <span class="mi">208</span><span class="p">,</span>
+    <span class="s2">&quot;TIGP&quot;</span><span class="p">:</span> <span class="mi">210</span><span class="p">,</span>
+    <span class="s2">&quot;TIGA&quot;</span><span class="p">:</span> <span class="mi">207</span><span class="p">,</span>
+    <span class="s2">&quot;TIGI&quot;</span><span class="p">:</span> <span class="mi">204</span><span class="p">,</span>
+    <span class="s2">&quot;TIGQ&quot;</span><span class="p">:</span> <span class="mi">205</span><span class="p">,</span>
+    <span class="s2">&quot;TICF&quot;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="uint24">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.uint24">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uint24</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert three byte data that represents an unsigned int&quot;&quot;&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">u</span></div>
+
+
+
+<div class="viewcode-block" id="int24">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.int24">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">int24</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert to int.&quot;&quot;&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">127</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span>
+    <span class="n">u</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">128</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">u</span></div>
+
+
+
+<div class="viewcode-block" id="get_ir_ramp">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.get_ir_ramp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ir_ramp</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a np 256x3 array of colors to use for IR&quot;&quot;&quot;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATADIR</span><span class="p">,</span> <span class="s2">&quot;gini_ir_ramp.txt&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fh</span><span class="p">):</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="GINIZFile">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GINIZFile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deal with compressed GINI files, which are the standard on NOAAPORT</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fobj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a GNIFile instance with a compressed file object</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          fobj (file): A fileobject</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># WMO HEADER</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wmo</span> <span class="o">=</span> <span class="p">(</span><span class="n">fobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">21</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompressobj</span><span class="p">()</span>
+        <span class="n">hdata</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">fobj</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_header</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">21</span><span class="p">:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_projection</span><span class="p">()</span>
+        <span class="n">totsz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">unused_data</span><span class="p">)</span>
+        <span class="c1"># 5120 value chunks, so we need to be careful!</span>
+        <span class="n">sdata</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;x</span><span class="se">\xda</span><span class="s2">&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">unused_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;x</span><span class="se">\xda</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">part</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">chunk</span> <span class="o">+=</span> <span class="n">part</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sdata</span> <span class="o">+=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">totsz</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;x</span><span class="se">\xda</span><span class="s2">&quot;</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">chunk</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&quot;x</span><span class="se">\xda</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">totsz</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Totalsize left: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">totsz</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;numlines&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;linesize&quot;</span><span class="p">]),</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="GINIZFile.__str__">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.__str__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return a string representation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="si">}</span><span class="s2"> Line Size: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;linesize&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Num Lines: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;numlines&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.awips_grid">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.awips_grid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">awips_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the awips grid number based on the WMO header</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">try1</span> <span class="o">=</span> <span class="n">AWIPS_GRID</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">try1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">try1</span>
+        <span class="k">return</span> <span class="n">AWIPS_GRID_GUESS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.current_filename">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.current_filename">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a filename for this product, we&#39;ll use the format</span>
+<span class="sd">        {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LABELS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;creating_entity&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">_&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SECTORS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sector&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">_&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CHANNELS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">.png&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.get_bird">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.get_bird">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bird</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a string label for this satellite</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ENTITIES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;creating_entity&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.get_sector">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.get_sector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sector.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SECTORS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;sector&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.get_channel">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.get_channel">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the channel.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">CHANNELS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.archive_filename">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.archive_filename">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">archive_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a filename for this product, we&#39;ll use the format</span>
+<span class="sd">        {SOURCE}_{SECTOR}_{CHANNEL}_{VALID}.png</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LABELS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;creating_entity&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">_&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SECTORS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sector&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">_&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CHANNELS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]]</span><span class="si">}</span><span class="s2">_&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">.png&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.init_llc">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.init_llc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_llc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Lambert Conic Comformal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span>
+            <span class="n">proj</span><span class="o">=</span><span class="s2">&quot;lcc&quot;</span><span class="p">,</span>
+            <span class="n">lat_0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="n">lat_1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="n">lat_2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="n">lon_0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">],</span>
+            <span class="n">a</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">psi</span> <span class="o">=</span> <span class="n">M_PI_2</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">]))</span>
+        <span class="n">cos_psi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">psi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">cos_psi</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">])</span>
+
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ul&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">])</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span>
+            <span class="s2">&quot;proj&quot;</span>
+        <span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">],</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;lat1: </span><span class="si">%.5f</span><span class="s2"> y0: %5.f y1: </span><span class="si">%.5f</span><span class="s2"> lat_ul: </span><span class="si">%.3f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;lat_ur: </span><span class="si">%.3f</span><span class="s2"> lon_ur: </span><span class="si">%.3f</span><span class="s2"> alpha: </span><span class="si">%.5f</span><span class="s2"> dy: </span><span class="si">%.3f</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">],</span>
+            <span class="n">y0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ur&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ur&quot;</span><span class="p">],</span>
+            <span class="n">alpha</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.init_mercator">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.init_mercator">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_mercator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute mercator projection stuff</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span>
+            <span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span>
+            <span class="n">lat_ts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="n">x_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">y_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon2&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]</span>
+
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ul&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">])</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span>
+            <span class="s2">&quot;proj&quot;</span>
+        <span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">],</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;latin: </span><span class="si">%.2f</span><span class="s2"> lat_ul: </span><span class="si">%.3f</span><span class="s2"> lon_ul: </span><span class="si">%.3f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;y0: %5.f y1: </span><span class="si">%.5f</span><span class="s2"> dx: </span><span class="si">%.3f</span><span class="s2"> dy: </span><span class="si">%.3f</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ul&quot;</span><span class="p">],</span>
+            <span class="n">y0</span><span class="p">,</span>
+            <span class="n">y1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.init_stereo">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.init_stereo">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_stereo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute Polar Stereographic</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span>
+            <span class="n">proj</span><span class="o">=</span><span class="s2">&quot;stere&quot;</span><span class="p">,</span>
+            <span class="n">lat_ts</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+            <span class="n">lat_0</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+            <span class="n">lon_0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">],</span>
+            <span class="n">x_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">y_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">a</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+            <span class="n">b</span><span class="o">=</span><span class="mf">6371200.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># First point!</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;proj&quot;</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;x0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">])</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ul&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">])</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span>
+            <span class="s2">&quot;proj&quot;</span>
+        <span class="p">](</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">],</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;lon_ul: </span><span class="si">%.2f</span><span class="s2"> lat_ul: </span><span class="si">%.2f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;lon_ll: </span><span class="si">%.2f</span><span class="s2"> lat_ll: </span><span class="si">%.2f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot; lov: </span><span class="si">%.2f</span><span class="s2"> latin: </span><span class="si">%.2f</span><span class="s2"> lat1: </span><span class="si">%.2f</span><span class="s2"> lat2: </span><span class="si">%.2f</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;y0: %5.f y1: </span><span class="si">%.5f</span><span class="s2"> dx: </span><span class="si">%.3f</span><span class="s2"> dy: </span><span class="si">%.3f</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_ul&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_ul&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">],</span>
+            <span class="n">y0</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.init_projection">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.init_projection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup Grid and projection details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_llc</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_mercator</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_stereo</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Unknown Projection: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GINIZFile.read_header">
+<a class="viewcode-back" href="../../../api/pyiem.nws.gini.html#pyiem.nws.gini.GINIZFile.read_header">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hdata</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;read the header!&quot;&quot;&quot;</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;creating_entity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;sector&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">4</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;numlines&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;linesize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">yr</span> <span class="o">=</span> <span class="mi">1900</span> <span class="o">+</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">9</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mo</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">10</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">11</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">hh</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">12</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mi</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">13</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">13</span><span class="p">:</span><span class="mi">14</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span> <span class="n">mo</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">hh</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">ss</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span>
+        <span class="p">)</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">16</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;proj_center_flag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">36</span><span class="p">:</span><span class="mi">37</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;scan_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt; B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">37</span><span class="p">:</span><span class="mi">38</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">18</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">20</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;res&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;B&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">41</span><span class="p">:</span><span class="mi">42</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Is Calibration Info included?</span>
+        <span class="c1"># http://www.nws.noaa.gov/noaaport/document/ICD%20CH5-2005-1.pdf</span>
+        <span class="c1"># page24</span>
+        <span class="c1"># Mercator</span>
+        <span class="k">if</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;map_projection&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">23</span><span class="p">:</span><span class="mi">26</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">33</span><span class="p">:</span><span class="mi">35</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span> <span class="n">hdata</span><span class="p">[</span><span class="mi">35</span><span class="p">:</span><span class="mi">37</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">38</span><span class="p">:</span><span class="mi">41</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">30</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">30</span><span class="p">:</span><span class="mi">33</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">55</span><span class="p">:</span><span class="mi">58</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">58</span><span class="p">:</span><span class="mi">61</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">23</span><span class="p">:</span><span class="mi">26</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">27</span><span class="p">:</span><span class="mi">30</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uint24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">30</span><span class="p">:</span><span class="mi">33</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uint24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">33</span><span class="p">:</span><span class="mi">36</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">38</span><span class="p">:</span><span class="mi">41</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">55</span><span class="p">:</span><span class="mi">58</span><span class="p">])</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int24</span><span class="p">(</span><span class="n">hdata</span><span class="p">[</span><span class="mi">58</span><span class="p">:</span><span class="mi">61</span><span class="p">])</span>
+
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat1&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon1&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lov&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;latin&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat2&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon2&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lat_ur&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon_ur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;lon_ur&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10000.0</span>
+
+        <span class="k">return</span> <span class="n">meta</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

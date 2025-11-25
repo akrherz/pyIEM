@@ -1,0 +1,7 @@
+pyiem.nws.products.pirep module
+===============================
+
+.. automodule:: pyiem.nws.products.pirep
+   :members:
+   :show-inheritance:
+   :undoc-members:

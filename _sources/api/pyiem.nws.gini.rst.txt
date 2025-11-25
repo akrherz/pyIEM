@@ -1,0 +1,7 @@
+pyiem.nws.gini module
+=====================
+
+.. automodule:: pyiem.nws.gini
+   :members:
+   :show-inheritance:
+   :undoc-members:

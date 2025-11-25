@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.mcd &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/mcd';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.mcd</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.mcd</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Supports parsing of Storm Prediction Center&#39;s MCD and</span>
+<span class="sd">parsing of Weather Prediction Center&#39;s MPD</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">ShapelyPolygon</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCDException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.models.mcd</span><span class="w"> </span><span class="kn">import</span> <span class="n">MostProbableTags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TWEET_CHARS</span><span class="p">,</span> <span class="n">TWEET_URL_CHARS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">html_escape</span>
+
+<span class="n">CORRECTION</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;SPC\s+MCD\s+([0-9]</span><span class="si">{6}</span><span class="s2">)\s+COR&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+<span class="n">LATLON</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;LAT\.\.\.LON\s+((?:[0-9]</span><span class="si">{8}</span><span class="s2">\s+)+)&quot;</span><span class="p">)</span>
+<span class="n">DISCUSSIONNUM</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;MESOSCALE (?:PRECIPITATION )?DISCUSSION\s+([0-9]+)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
+<span class="p">)</span>
+<span class="n">WATCH_PROB</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;PROBABILITY OF WATCH ISSUANCE\s?\.\.\.\s?([0-9]+) PERCENT&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
+<span class="p">)</span>
+<span class="n">VALID_TIME</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;VALID\s+([0-9]</span><span class="si">{6}</span><span class="s2">)Z?\s?-\s?([0-9]</span><span class="si">{6}</span><span class="s2">)Z?&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">CONCERNING</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;CONCERNING\s?\.\.\.(.*?)\n\n&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">MOST_PROB_TAGS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^MOST PROBABLE PEAK (TORNADO INTENSITY|WIND GUST|HAIL SIZE)\s*&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;\.\.\.\s*(.*)$&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="MCDProduct">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MCDProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a Storm Prediction Center Mesoscale Convective Discussion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_geometry</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_discussion_num</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn_wfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_attn_wfo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_wfo</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MCDException</span><span class="p">(</span><span class="s2">&quot;Could not parse attention WFOs&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn_rfc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_attn_rfc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas_affected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_areas_affected</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">concerning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_concerning</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">watch_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_watch_probability</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="p">:</span> <span class="n">MostProbableTags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_most_prob_tags</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_valid_times</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_correction</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cwsus</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="MCDProduct.parse_most_prob_tags">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_most_prob_tags">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_most_prob_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MostProbableTags</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Glean what we can for these tags.&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">MOST_PROB_TAGS</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+        <span class="n">hail</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">tornado</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">gust</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HAIL SIZE&quot;</span><span class="p">:</span>
+                <span class="n">hail</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;TORNADO INTENSITY&quot;</span><span class="p">:</span>
+                <span class="n">tornado</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WIND GUST&quot;</span><span class="p">:</span>
+                <span class="n">gust</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">MostProbableTags</span><span class="p">(</span><span class="n">hail</span><span class="o">=</span><span class="n">hail</span><span class="p">,</span> <span class="n">tornado</span><span class="o">=</span><span class="n">tornado</span><span class="p">,</span> <span class="n">gust</span><span class="o">=</span><span class="n">gust</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.parse_correction">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_correction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Look for the correction flag.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">CORRECTION</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.find_valid_times">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.find_valid_times">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_valid_times</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out when this product is valid for&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">VALID_TIME</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;failed to find VALID...&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">day1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">hour1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">min1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">:])</span>
+        <span class="n">day2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">hour2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">min2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">:])</span>
+        <span class="n">issue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">day1</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="n">hour1</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">min1</span><span class="p">)</span>
+        <span class="n">expire</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">day2</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="n">hour2</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">min2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">day1</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="ow">and</span> <span class="n">day1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">issue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+            <span class="n">issue</span> <span class="o">=</span> <span class="n">issue</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">day1</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="n">hour1</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">min1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">day2</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">day</span> <span class="ow">and</span> <span class="n">day2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">expire</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+            <span class="n">expire</span> <span class="o">=</span> <span class="n">expire</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="n">day2</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="n">hour2</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="n">min2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">issue</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+            <span class="n">expire</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.find_watch_probability">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.find_watch_probability">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_watch_probability</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the probability of watch issuance for SPC MCD&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">WATCH_PROB</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.get_prob_extra">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.get_prob_extra">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_prob_extra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return some text.&quot;&quot;&quot;</span>
+        <span class="n">prob_extra</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">watch_prob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prob_extra</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; [watch prob: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">watch_prob</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">%]&quot;</span>
+        <span class="n">most_probs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">tornado</span><span class="p">:</span>
+            <span class="n">most_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tornado: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">tornado</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">hail</span><span class="p">:</span>
+            <span class="n">most_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hail: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">hail</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">gust</span><span class="p">:</span>
+            <span class="n">most_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gust: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">gust</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">most_probs</span><span class="p">:</span>
+            <span class="n">prob_extra</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; [Most Prob: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">most_probs</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">return</span> <span class="n">prob_extra</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.tweet">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.tweet">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return twitter message&quot;&quot;&quot;</span>
+        <span class="n">charsleft</span> <span class="o">=</span> <span class="n">TWEET_CHARS</span> <span class="o">-</span> <span class="n">TWEET_URL_CHARS</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;SWOMCD&quot;</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;SPC&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;WPC&quot;</span>
+        <span class="n">concerning_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">concerning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">concerning_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; concerning </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">concerning</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">prob_extra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prob_extra</span><span class="p">()</span>
+        <span class="n">attempt</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;#</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s%s%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">center</span><span class="p">,</span>
+            <span class="s2">&quot;issues&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_correction</span> <span class="k">else</span> <span class="s2">&quot;corrects&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+            <span class="n">concerning_text</span><span class="p">,</span>
+            <span class="n">prob_extra</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">areas_affected</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attempt</span><span class="p">[:</span><span class="n">charsleft</span><span class="p">]</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.get_url">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.get_url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the URL for SPC&#39;s website&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;SWOMCD&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;https://www.spc.noaa.gov/products/md/</span><span class="si">%s</span><span class="s2">/md</span><span class="si">%04i</span><span class="s2">.html&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;https://www.wpc.ncep.noaa.gov/metwatch/&quot;</span>
+            <span class="s2">&quot;metwatch_mpd_multi.php?md=</span><span class="si">%s</span><span class="s2">&amp;yr=</span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.parse_areas_affected">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_areas_affected">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_areas_affected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the areas affected&quot;&quot;&quot;</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">section</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;AREAS AFFECTED...&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">section</span><span class="p">[</span><span class="mi">17</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return plain text and html variants for a Jabber msg</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          uri (str): URL number one needed for constructing the URI</span>
+<span class="sd">          _uri2 (str): not used, but needed for the over-ride</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          (list): List of lists, plain text, html text, xtra dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert htmlentities</span>
+        <span class="n">spcuri</span> <span class="o">=</span> <span class="n">html_escape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">())</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;Storm Prediction Center&quot;</span>
+        <span class="n">pextra</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;FFGMPD&quot;</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;Weather Prediction Center&quot;</span>
+            <span class="n">pextra</span> <span class="o">=</span> <span class="s2">&quot;Precipitation &quot;</span>
+        <span class="n">prob_extra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prob_extra</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+        <span class="n">concerning_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">concerning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">concerning_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; concerning </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">concerning</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> issues Mesoscale </span><span class="si">%s</span><span class="s2">Discussion #</span><span class="si">%s%s%s%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">center</span><span class="p">,</span>
+            <span class="n">pextra</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+            <span class="n">concerning_text</span><span class="p">,</span>
+            <span class="n">prob_extra</span><span class="p">,</span>
+            <span class="n">spcuri</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;p&gt;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> &lt;a href=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span>
+            <span class="s2">&quot;Mesoscale </span><span class="si">%s</span><span class="s2">Discussion #</span><span class="si">%s</span><span class="s2">&lt;/a&gt;</span><span class="si">%s%s</span><span class="s2">&quot;</span>
+            <span class="s1">&#39;(&lt;a href=&quot;</span><span class="si">%s</span><span class="s1">?pid=</span><span class="si">%s</span><span class="s1">&quot;&gt;View text&lt;/a&gt;)&lt;/p&gt;&#39;</span>
+        <span class="p">)</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">center</span><span class="p">,</span>
+            <span class="s2">&quot;issues&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_correction</span> <span class="k">else</span> <span class="s2">&quot;corrects&quot;</span><span class="p">,</span>
+            <span class="n">spcuri</span><span class="p">,</span>
+            <span class="n">pextra</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+            <span class="n">concerning_text</span><span class="p">,</span>
+            <span class="n">prob_extra</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_channels</span><span class="p">()</span>
+        <span class="n">channels</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_wfo</span><span class="p">])</span>
+        <span class="n">channels</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn_rfc</span><span class="p">])</span>
+        <span class="n">channels</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cwsus</span><span class="p">])</span>
+        <span class="n">xtra</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">channels</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+            <span class="n">product_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+            <span class="n">twitter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tweet</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">plain</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">xtra</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.parse_concerning">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_concerning">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_concerning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out the concerning text, if it exists.&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">CONCERNING</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.parse_discussion_num">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_discussion_num">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_discussion_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Figure out what discussion number this is&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">DISCUSSIONNUM</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MCDException</span><span class="p">(</span><span class="s2">&quot;Could not parse discussion number&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.parse_geometry">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.parse_geometry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the polygon that&#39;s in this MCD product&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">LATLON</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MCDException</span><span class="p">(</span><span class="s2">&quot;Could not parse LAT...LON geometry&quot;</span><span class="p">)</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">pair</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span> <span class="o">/</span> <span class="mf">100.0</span>
+            <span class="k">if</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">40</span><span class="p">:</span>
+                <span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span> <span class="o">-</span> <span class="mf">100.0</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ShapelyPolygon</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MCDProduct.database_save">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.MCDProduct.database_save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">database_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save this product to the database&quot;&quot;&quot;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s2">&quot;mcd&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;SWOMCD&quot;</span> <span class="k">else</span> <span class="s2">&quot;mpd&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_correction</span><span class="p">:</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;delete from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> where year = %s and num = %s&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;Correction product, but no original found in database.&quot;</span>
+                <span class="p">)</span>
+        <span class="c1"># Remove any previous entries</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DELETE from </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> where product_id = %s and num = %s&quot;</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;mcd.database_save </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> removed </span><span class="si">%s</span><span class="s2"> entries&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+                <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">wkt</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;INSERT into </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> (product_id, geom, issue, expire, &quot;</span>
+            <span class="s2">&quot;num, year, watch_confidence, concerning, most_prob_tornado, &quot;</span>
+            <span class="s2">&quot;most_prob_hail, most_prob_gust) &quot;</span>
+            <span class="s2">&quot;values (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+            <span class="n">giswkt</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sts</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ets</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">discussion_num</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find_watch_probability</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">concerning</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">tornado</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">hail</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">most_prob_tags</span><span class="o">.</span><span class="n">gust</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.mcd.html#pyiem.nws.products.mcd.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">MCDProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

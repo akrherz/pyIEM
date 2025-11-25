@@ -1,0 +1,7 @@
+pyiem.nws.products.cf6 module
+=============================
+
+.. automodule:: pyiem.nws.products.cf6
+   :members:
+   :show-inheritance:
+   :undoc-members:

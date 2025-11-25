@@ -1,0 +1,7 @@
+pyiem.meteorology module
+========================
+
+.. automodule:: pyiem.meteorology
+   :members:
+   :show-inheritance:
+   :undoc-members:

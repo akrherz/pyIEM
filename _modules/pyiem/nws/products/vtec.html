@@ -1,0 +1,1004 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.vtec &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/vtec';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.vtec</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.vtec</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A NWS TextProduct that contains VTEC information.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TextProduct</span><span class="p">,</span>
+    <span class="n">TextProductException</span><span class="p">,</span>
+    <span class="n">TextProductSegment</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.products._vtec_jabber</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_jabbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.products._vtec_util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_EXPIRE_DELTA</span><span class="p">,</span>
+    <span class="n">_associate_vtec_year</span><span class="p">,</span>
+    <span class="n">_check_dueling_tropics</span><span class="p">,</span>
+    <span class="n">_check_unique_ugc</span><span class="p">,</span>
+    <span class="n">_check_vtec_polygon</span><span class="p">,</span>
+    <span class="n">_do_sql_vtec_can</span><span class="p">,</span>
+    <span class="n">_do_sql_vtec_con</span><span class="p">,</span>
+    <span class="n">_do_sql_vtec_cor</span><span class="p">,</span>
+    <span class="n">_do_sql_vtec_new</span><span class="p">,</span>
+    <span class="n">_load_database_status</span><span class="p">,</span>
+    <span class="n">_resent_match</span><span class="p">,</span>
+    <span class="n">check_dup_ps</span><span class="p">,</span>
+    <span class="n">do_sql_hvtec</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="VTECProductException">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProductException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VTECProductException</span><span class="p">(</span><span class="n">TextProductException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Something we can raise when bad things happen!&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="VTECProduct">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VTECProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A TextProduct that contains VTEC information.&quot;&quot;&quot;</span>
+
+    <span class="n">get_jabbers</span> <span class="o">=</span> <span class="n">_get_jabbers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+        <span class="c1"># Make sure we are CRLF above all else</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\r\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#  Get rid of extraneous whitespace on right hand side only</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\r\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\r\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="c1"># If there was no/bad MND header, a backwards way to know is that the</span>
+        <span class="c1"># product time zone will be None, add a warning</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Could not find local timezone in text.&quot;</span><span class="p">)</span>
+        <span class="c1"># Special check for truncated TSUs</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TSU&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;$$&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Aborting processing of TSU without $$&quot;</span><span class="p">)</span>
+        <span class="c1"># Arb checks</span>
+        <span class="n">_check_unique_ugc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">_check_vtec_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">_check_dueling_tropics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VTECProduct.sql">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.sql">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist to the database</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          txn (psycopg.transaction): A database transaction object that we can</span>
+<span class="sd">            exec() database calls against.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Associate a year to each VTEC found in the product, this informs</span>
+        <span class="c1"># which database table to use</span>
+        <span class="n">_associate_vtec_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">)</span>
+        <span class="c1"># Build a pandas dataframe to track what we are doing here.</span>
+        <span class="n">dbdf</span> <span class="o">=</span> <span class="n">_load_database_status</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;missed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">check_dup_ps</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;Segment has duplicated VTEC for a &quot;</span>
+                    <span class="s2">&quot;single phenomena / significance&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">giswkt</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MWS&quot;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="s2">&quot;Product segment has LAT...LON, &quot;</span>
+                        <span class="s2">&quot;but does not have VTEC?&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span> <span class="ow">and</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;UGC is missing for segment that has VTEC!&quot;</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">vtec</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span> <span class="ow">or</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;ROU&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="c1"># Send all products to the SBW method in case this segment</span>
+                <span class="c1"># should of had a polygon and did not.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_sbw_geometry</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+                <span class="c1"># Check for Hydro-VTEC stuff</span>
+                <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">hvtec</span> <span class="ow">and</span> <span class="n">segment</span><span class="o">.</span><span class="n">hvtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">nwsli</span> <span class="o">!=</span> <span class="s2">&quot;00000&quot;</span><span class="p">:</span>
+                    <span class="n">do_sql_hvtec</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_sql_vtec</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dbdf</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">ugc</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">ugcs</span><span class="p">:</span>
+                    <span class="n">dbdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                        <span class="p">(</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;ugc&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">ugc</span><span class="p">))</span>
+                        <span class="o">&amp;</span> <span class="p">(</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;phenomena&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">)</span>
+                        <span class="o">&amp;</span> <span class="p">(</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;significance&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">)</span>
+                        <span class="o">&amp;</span> <span class="p">(</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;etn&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">)</span>
+                        <span class="o">&amp;</span> <span class="p">(</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
+                        <span class="s2">&quot;missed&quot;</span><span class="p">,</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">dbdf</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">dbdf</span><span class="p">[</span><span class="n">dbdf</span><span class="p">[</span><span class="s2">&quot;missed&quot;</span><span class="p">]]</span>
+        <span class="c1"># Tropical and Earthquake products with ETNs over 1000 are too complex</span>
+        <span class="c1"># to check in this manner, I suppose an office could issue 1000 SVRs,</span>
+        <span class="c1"># but alas.  See akrherz/pyIEM#316</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;etn&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product failed to cover all UGC</span><span class="se">\n</span><span class="si">{</span><span class="n">df</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.do_sql_vtec">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.do_sql_vtec">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">do_sql_vtec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Persist the non-SBW stuff to the database</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">        txn -- A psycopg transaction</span>
+<span class="sd">        segment -- A TextProductSegment instance</span>
+<span class="sd">        vtec -- A vtec instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If this product is ...RESENT, lets check to make sure we did not</span>
+        <span class="c1"># already get it</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_resent</span><span class="p">()</span> <span class="ow">and</span> <span class="n">_resent_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">vtec</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NEW&quot;</span><span class="p">,</span> <span class="s2">&quot;EXB&quot;</span><span class="p">,</span> <span class="s2">&quot;EXA&quot;</span><span class="p">]:</span>
+            <span class="n">_do_sql_vtec_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;COR&quot;</span><span class="p">]:</span>
+            <span class="n">_do_sql_vtec_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CAN&quot;</span><span class="p">,</span> <span class="s2">&quot;UPG&quot;</span><span class="p">,</span> <span class="s2">&quot;EXT&quot;</span><span class="p">]:</span>
+            <span class="n">_do_sql_vtec_can</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CON&quot;</span><span class="p">,</span> <span class="s2">&quot;EXP&quot;</span><span class="p">,</span> <span class="s2">&quot;ROU&quot;</span><span class="p">]:</span>
+            <span class="n">_do_sql_vtec_con</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;do_sql_vtec() encountered </span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">action</span><span class="si">}</span><span class="s2"> VTEC status&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.do_sbw_geometry">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.do_sbw_geometry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">do_sbw_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">segment</span><span class="p">:</span> <span class="n">TextProductSegment</span><span class="p">,</span> <span class="n">vtec</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Storage of Storm Based Warning geometry</span>
+
+<span class="sd">        The IEM uses a seperate table for the Storm Based Warning geometries.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          txn (psycopg): Database transaction/cursor</span>
+<span class="sd">          segment (TextProduct.TextProductSegment): Segment</span>
+<span class="sd">          vtec (pyiem.vtec.VTEC): VTEC instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The following time columns are set in the database</span>
+        <span class="c1"># issue         - VTEC encoded issuance time, can be null</span>
+        <span class="c1"># init_expire   - VTEC encoded expiration</span>
+        <span class="c1"># expire        - VTEC encoded expiration</span>
+        <span class="c1"># polygon_begin - Time domain this polygon is valid for inclusive</span>
+        <span class="c1"># polygon_end   - Time domain this polygon is valid for exclusive</span>
+        <span class="c1"># updated       - Product time of this product</span>
+
+        <span class="c1"># Life choice to drop the polygon if two segment and CAN/CON combo</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;CAN&quot;</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_homogeneous</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_single_action</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>  <span class="c1"># belt and suspenders</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vtec</span>  <span class="c1"># belt and suspenders</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;CON&quot;</span>
+        <span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Figure out when this polygon begins and ends</span>
+        <span class="n">polygon_begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span>
+        <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;NEW&quot;</span> <span class="ow">and</span> <span class="n">vtec</span><span class="o">.</span><span class="n">begints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">polygon_begin</span> <span class="o">=</span> <span class="n">vtec</span><span class="o">.</span><span class="n">begints</span>
+        <span class="n">polygon_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span>
+        <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CAN&quot;</span><span class="p">,</span> <span class="s2">&quot;UPG&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">polygon_end</span> <span class="o">=</span> <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">polygon_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">DEFAULT_EXPIRE_DELTA</span>
+
+        <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">sbw</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_correction</span><span class="p">()</span> <span class="ow">and</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;NEW&quot;</span><span class="p">:</span>
+            <span class="c1"># Go delete the previous NEW polygon</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">&quot;DELETE from sbw WHERE vtec_year = </span><span class="si">%s</span><span class="s2"> and status = &#39;NEW&#39; and &quot;</span>
+                <span class="s2">&quot;eventid = </span><span class="si">%s</span><span class="s2"> and wfo = </span><span class="si">%s</span><span class="s2"> and phenomena = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                <span class="s2">&quot;significance = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> product is a correction, but SBW delete &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;removed </span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="si">}</span><span class="s2"> rows instead of 1&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Lets go find the initial warning (status == NEW)</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT issue, expire, st_astext(geom) as giswkt &quot;</span>
+            <span class="s2">&quot;from sbw WHERE vtec_year = </span><span class="si">%s</span><span class="s2"> and status = &#39;NEW&#39; and &quot;</span>
+            <span class="s2">&quot;eventid = </span><span class="si">%s</span><span class="s2"> and wfo = </span><span class="si">%s</span><span class="s2"> and phenomena = </span><span class="si">%s</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;and significance = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">sbw</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> should have contained a polygon and did not.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">is_homogeneous</span><span class="p">()</span>
+                    <span class="ow">and</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;CAN&quot;</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_single_action</span><span class="p">()</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> adding polygon from issuance to product&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">segment</span><span class="o">.</span><span class="n">giswkt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SRID=4326;</span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="s1">&#39;giswkt&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;NEW&quot;</span><span class="p">:</span>  <span class="c1"># Uh-oh, we have a duplicate</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> is a SBW duplicate! </span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="s2">&quot;other row(s) found.&quot;</span>
+                <span class="p">)</span>
+        <span class="c1"># We are done with our piggybacked checks :(  akrherz/pyIEM#203</span>
+        <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">giswkt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Lets go find our current active polygon</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT issue, polygon_begin, polygon_end from sbw WHERE &quot;</span>
+            <span class="s2">&quot;vtec_year = </span><span class="si">%s</span><span class="s2"> and eventid = </span><span class="si">%s</span><span class="s2"> and wfo = </span><span class="si">%s</span><span class="s2"> and phenomena = </span><span class="si">%s</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;and significance = </span><span class="si">%s</span><span class="s2"> and polygon_begin != polygon_end &quot;</span>
+            <span class="s2">&quot;ORDER by updated DESC LIMIT 1&quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+                <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">!=</span> <span class="s2">&quot;NEW&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;SBW </span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> searched for </span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> and no result found&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+        <span class="c1"># If ncessary, lets find the current active polygon and truncate it</span>
+        <span class="c1"># to when our new polygon starts</span>
+        <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">!=</span> <span class="s2">&quot;NEW&quot;</span> <span class="ow">and</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Long fuse polygon, we want to avoid having a polygon_begin</span>
+            <span class="c1"># that is after the truncation time of this polygon.  So we cull</span>
+            <span class="c1"># it back too</span>
+            <span class="n">old_polygon_begin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">current</span><span class="p">[</span><span class="s2">&quot;polygon_begin&quot;</span><span class="p">],</span> <span class="n">polygon_begin</span><span class="p">)</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;UPDATE sbw SET polygon_begin = </span><span class="si">%s</span><span class="s2">, polygon_end = </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                    <span class="s2">&quot;WHERE vtec_year = </span><span class="si">%s</span><span class="s2"> and eventid = </span><span class="si">%s</span><span class="s2"> and wfo = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                    <span class="s2">&quot;phenomena = </span><span class="si">%s</span><span class="s2"> and significance = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                    <span class="s2">&quot;polygon_end != polygon_begin &quot;</span>
+                    <span class="s2">&quot;and polygon_end = </span><span class="si">%s</span><span class="s2"> and status != &#39;CAN&#39;&quot;</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="n">old_polygon_begin</span><span class="p">,</span>
+                    <span class="n">polygon_begin</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+                    <span class="n">current</span><span class="p">[</span><span class="s2">&quot;polygon_end&quot;</span><span class="p">],</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> SBW prev polygon update resulted in update &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span><span class="si">}</span><span class="s2"> rows, should be 1&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Prepare the TIME...MOT...LOC information</span>
+        <span class="n">tml_valid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">&quot;tml_geom&quot;</span>
+        <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">tml_giswkt</span> <span class="ow">and</span> <span class="n">segment</span><span class="o">.</span><span class="n">tml_giswkt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;LINE&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tml_column</span> <span class="o">=</span> <span class="s2">&quot;tml_geom_line&quot;</span>
+        <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">tml_valid</span><span class="p">:</span>
+            <span class="n">tml_valid</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">tml_valid</span>
+
+        <span class="n">issueval</span> <span class="o">=</span> <span class="n">vtec</span><span class="o">.</span><span class="n">begints</span>
+        <span class="k">if</span> <span class="n">issueval</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">issueval</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="s2">&quot;issue&quot;</span><span class="p">]</span>
+        <span class="c1"># OK, ready to insert away!</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;INSERT into sbw (vtec_year, wfo, eventid, &quot;</span>
+            <span class="s2">&quot;significance, phenomena, issue, expire, init_expire, &quot;</span>
+            <span class="s2">&quot;polygon_begin, polygon_end, geom, status, windtag, &quot;</span>
+            <span class="s2">&quot;hailtag, tornadotag, damagetag, product_signature, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;tml_valid, tml_direction, tml_sknt, </span><span class="si">{</span><span class="n">tml_column</span><span class="si">}</span><span class="s2">, updated, &quot;</span>
+            <span class="s2">&quot;waterspouttag, is_emergency, is_pds, floodtag_heavyrain, &quot;</span>
+            <span class="s2">&quot;floodtag_flashflood, floodtag_damage, floodtag_leeve, &quot;</span>
+            <span class="s2">&quot;floodtag_dam, hvtec_nwsli, hvtec_severity, hvtec_cause, &quot;</span>
+            <span class="s2">&quot;hvtec_record, windthreat, hailthreat, squalltag, product_id) &quot;</span>
+            <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,&quot;</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">myargs</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+            <span class="n">issueval</span> <span class="k">if</span> <span class="n">issueval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span> <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">polygon_end</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span> <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">endts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">polygon_end</span><span class="p">,</span>
+            <span class="n">polygon_begin</span><span class="p">,</span>  <span class="c1"># polygon_begin</span>
+            <span class="n">polygon_end</span><span class="p">,</span>  <span class="c1"># polygon_end</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">giswkt</span><span class="p">,</span>
+            <span class="n">vtec</span><span class="o">.</span><span class="n">action</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">windtag</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">hailtag</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">tornadotag</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">damagetag</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_signature</span><span class="p">(),</span>
+            <span class="n">tml_valid</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">tml_dir</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">tml_sknt</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">tml_giswkt</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">waterspouttag</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">is_emergency</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">is_pds</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;EXPECTED RAINFALL&quot;</span><span class="p">),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FLASH FLOOD&quot;</span><span class="p">),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FLASH FLOOD DAMAGE THREAT&quot;</span><span class="p">),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LEVEE FAILURE&quot;</span><span class="p">),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">flood_tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DAM FAILURE&quot;</span><span class="p">),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">get_hvtec_nwsli</span><span class="p">(),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">get_hvtec_severity</span><span class="p">(),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">get_hvtec_cause</span><span class="p">(),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">get_hvtec_record</span><span class="p">(),</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">windthreat</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">hailthreat</span><span class="p">,</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">squalltag</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">myargs</span><span class="p">)</span>
+
+        <span class="c1"># If this is a CAN, UPG action and single purpose, update expiration</span>
+        <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CAN&quot;</span><span class="p">,</span> <span class="s2">&quot;UPG&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_single_action</span><span class="p">():</span>
+            <span class="n">txn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;UPDATE sbw SET expire = </span><span class="si">%s</span><span class="s2"> WHERE vtec_year = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                    <span class="s2">&quot;wfo = </span><span class="si">%s</span><span class="s2"> and &quot;</span>
+                    <span class="s2">&quot;phenomena = </span><span class="si">%s</span><span class="s2"> and significance = </span><span class="si">%s</span><span class="s2"> and eventid = </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                    <span class="s2">&quot;and expire &gt;= </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">office</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">significance</span><span class="p">,</span>
+                    <span class="n">vtec</span><span class="o">.</span><span class="n">etn</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span><span class="si">}</span><span class="s2"> sbw CAN,UPG update &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;resulted in 0 rows updated, valid: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.is_single_action">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.is_single_action">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_single_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this product just 1 VTEC action?&quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">vtec</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vtec</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>  <span class="c1"># noqa</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.is_homogeneous">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.is_homogeneous">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_homogeneous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test to see if this product contains just one VTEC event&quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">vtec</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="c1"># Upgrades do not count in some cases :/</span>
+                <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;UPG&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">vtec</span><span class="o">.</span><span class="n">s3</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                    <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.get_first_non_cancel_vtec">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_vtec">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_first_non_cancel_vtec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first non-CANcel VTEC&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">vtec</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">vtec</span><span class="o">.</span><span class="n">action</span> <span class="o">!=</span> <span class="s2">&quot;CAN&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">vtec</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.get_first_non_cancel_segment">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.get_first_non_cancel_segment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_first_non_cancel_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the first segment that is a non-CAN&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span> <span class="ow">and</span> <span class="n">segment</span><span class="o">.</span><span class="n">vtec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">action</span> <span class="o">!=</span> <span class="s2">&quot;CAN&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">segment</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="VTECProduct.is_skip_con">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.VTECProduct.is_skip_con">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_skip_con</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Should this product be skipped from generating jabber messages&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">afos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">afos</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;FLS&quot;</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.vtec.html#pyiem.nws.products.vtec.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VTECProduct</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function that actually converts the raw text and emits an</span>
+<span class="sd">    VTECProduct instance or returns an exception&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">VTECProduct</span><span class="p">(</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">utcnow</span><span class="o">=</span><span class="n">utcnow</span><span class="p">,</span>
+        <span class="n">ugc_provider</span><span class="o">=</span><span class="n">ugc_provider</span><span class="p">,</span>
+        <span class="n">nwsli_provider</span><span class="o">=</span><span class="n">nwsli_provider</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

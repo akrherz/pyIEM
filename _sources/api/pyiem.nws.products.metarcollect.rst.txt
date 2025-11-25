@@ -1,0 +1,7 @@
+pyiem.nws.products.metarcollect module
+======================================
+
+.. automodule:: pyiem.nws.products.metarcollect
+   :members:
+   :show-inheritance:
+   :undoc-members:

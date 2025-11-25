@@ -1,0 +1,911 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.vtec &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/vtec';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.vtec</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.vtec</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Support NWS VTEC encoding&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="n">VTEC_RE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(/([A-Z])\.([A-Z]+)\.([A-Z]+)\.([A-Z]+)\.([A-Z])\.&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;([0-9]+)\.([0-9TZ]+)-([0-9TZ]+)/)&quot;</span>
+<span class="p">)</span>
+
+<span class="n">VTEC_CLASS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="s2">&quot;Operational&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="s2">&quot;Experimental&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="s2">&quot;Experimental VTEC&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">VTEC_ACTION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;NEW&quot;</span><span class="p">:</span> <span class="s2">&quot;issues&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CON&quot;</span><span class="p">:</span> <span class="s2">&quot;continues&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EXA&quot;</span><span class="p">:</span> <span class="s2">&quot;expands area to include&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EXT&quot;</span><span class="p">:</span> <span class="s2">&quot;extends time of&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EXB&quot;</span><span class="p">:</span> <span class="s2">&quot;extends time and expands area to include&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UPG&quot;</span><span class="p">:</span> <span class="s2">&quot;issues upgrade to&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CAN&quot;</span><span class="p">:</span> <span class="s2">&quot;cancels&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EXP&quot;</span><span class="p">:</span> <span class="s2">&quot;expires&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ROU&quot;</span><span class="p">:</span> <span class="s2">&quot;routine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;COR&quot;</span><span class="p">:</span> <span class="s2">&quot;corrects&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">VTEC_SIGNIFICANCE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="s2">&quot;Advisory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;Watch&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="s2">&quot;Statement&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="s2">&quot;Outlook&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;Synopsis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="s2">&quot;Forecast&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># https://www.weather.gov/media/directives/010_pdfs/pd01017003curr.pdf</span>
+<span class="n">VTEC_PHENOMENA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;AF&quot;</span><span class="p">:</span> <span class="s2">&quot;Ashfall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AS&quot;</span><span class="p">:</span> <span class="s2">&quot;Air Stagnation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BH&quot;</span><span class="p">:</span> <span class="s2">&quot;Beach Hazard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BS&quot;</span><span class="p">:</span> <span class="s2">&quot;Blowing Snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BW&quot;</span><span class="p">:</span> <span class="s2">&quot;Brisk Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BZ&quot;</span><span class="p">:</span> <span class="s2">&quot;Blizzard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF&quot;</span><span class="p">:</span> <span class="s2">&quot;Coastal Flood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CW&quot;</span><span class="p">:</span> <span class="s2">&quot;Cold Weather&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DF&quot;</span><span class="p">:</span> <span class="s2">&quot;Debris Flow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DS&quot;</span><span class="p">:</span> <span class="s2">&quot;Dust Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DU&quot;</span><span class="p">:</span> <span class="s2">&quot;Blowing Dust&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EC&quot;</span><span class="p">:</span> <span class="s2">&quot;Extreme Cold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EH&quot;</span><span class="p">:</span> <span class="s2">&quot;Excessive Heat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EW&quot;</span><span class="p">:</span> <span class="s2">&quot;Extreme Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FA&quot;</span><span class="p">:</span> <span class="s2">&quot;Flood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FF&quot;</span><span class="p">:</span> <span class="s2">&quot;Flash Flood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FG&quot;</span><span class="p">:</span> <span class="s2">&quot;Dense Fog&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FL&quot;</span><span class="p">:</span> <span class="s2">&quot;Flood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FR&quot;</span><span class="p">:</span> <span class="s2">&quot;Frost&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FW&quot;</span><span class="p">:</span> <span class="s2">&quot;Red Flag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FZ&quot;</span><span class="p">:</span> <span class="s2">&quot;Freeze&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UP&quot;</span><span class="p">:</span> <span class="s2">&quot;Freezing Spray&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GL&quot;</span><span class="p">:</span> <span class="s2">&quot;Gale&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HF&quot;</span><span class="p">:</span> <span class="s2">&quot;Hurricane Force Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HI&quot;</span><span class="p">:</span> <span class="s2">&quot;Inland Hurricane&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HS&quot;</span><span class="p">:</span> <span class="s2">&quot;Heavy Snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HT&quot;</span><span class="p">:</span> <span class="s2">&quot;Heat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HU&quot;</span><span class="p">:</span> <span class="s2">&quot;Hurricane&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HW&quot;</span><span class="p">:</span> <span class="s2">&quot;High Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HY&quot;</span><span class="p">:</span> <span class="s2">&quot;Hydrologic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HZ&quot;</span><span class="p">:</span> <span class="s2">&quot;Hard Freeze&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IP&quot;</span><span class="p">:</span> <span class="s2">&quot;Sleet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IS&quot;</span><span class="p">:</span> <span class="s2">&quot;Ice Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LB&quot;</span><span class="p">:</span> <span class="s2">&quot;Lake Effect Snow and Blowing Snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LE&quot;</span><span class="p">:</span> <span class="s2">&quot;Lake Effect Snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LO&quot;</span><span class="p">:</span> <span class="s2">&quot;Low Water&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LS&quot;</span><span class="p">:</span> <span class="s2">&quot;Lakeshore Flood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LW&quot;</span><span class="p">:</span> <span class="s2">&quot;Lake Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MA&quot;</span><span class="p">:</span> <span class="s2">&quot;Marine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MF&quot;</span><span class="p">:</span> <span class="s2">&quot;Marine Dense Fog&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MH&quot;</span><span class="p">:</span> <span class="s2">&quot;Marine Ashfall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MS&quot;</span><span class="p">:</span> <span class="s2">&quot;Marine Dense Smoke&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RB&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Craft for Rough&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RP&quot;</span><span class="p">:</span> <span class="s2">&quot;Rip Currents&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SB&quot;</span><span class="p">:</span> <span class="s2">&quot;Snow and Blowing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SC&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Craft&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SE&quot;</span><span class="p">:</span> <span class="s2">&quot;Hazardous Seas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SI&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Craft for Winds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SM&quot;</span><span class="p">:</span> <span class="s2">&quot;Dense Smoke&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SN&quot;</span><span class="p">:</span> <span class="s2">&quot;Snow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SQ&quot;</span><span class="p">:</span> <span class="s2">&quot;Snow Squall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SR&quot;</span><span class="p">:</span> <span class="s2">&quot;Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SS&quot;</span><span class="p">:</span> <span class="s2">&quot;Storm Surge&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SU&quot;</span><span class="p">:</span> <span class="s2">&quot;High Surf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SV&quot;</span><span class="p">:</span> <span class="s2">&quot;Severe Thunderstorm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SW&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Craft for Hazardous Seas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TI&quot;</span><span class="p">:</span> <span class="s2">&quot;Inland Tropical Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TO&quot;</span><span class="p">:</span> <span class="s2">&quot;Tornado&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TR&quot;</span><span class="p">:</span> <span class="s2">&quot;Tropical Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TS&quot;</span><span class="p">:</span> <span class="s2">&quot;Tsunami&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TY&quot;</span><span class="p">:</span> <span class="s2">&quot;Typhoon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WC&quot;</span><span class="p">:</span> <span class="s2">&quot;Wind Chill&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WI&quot;</span><span class="p">:</span> <span class="s2">&quot;Wind&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WS&quot;</span><span class="p">:</span> <span class="s2">&quot;Winter Storm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WW&quot;</span><span class="p">:</span> <span class="s2">&quot;Winter Weather&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;XH&quot;</span><span class="p">:</span> <span class="s2">&quot;Extreme Heat&quot;</span><span class="p">,</span>  <span class="c1"># March 2025</span>
+    <span class="s2">&quot;ZF&quot;</span><span class="p">:</span> <span class="s2">&quot;Freezing Fog&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ZR&quot;</span><span class="p">:</span> <span class="s2">&quot;Freezing Rain&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Taken from http://www.weather.gov/help-map</span>
+<span class="c1"># Not all of these are an exact match.</span>
+<span class="n">NWS_COLORS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;AF.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#A9A9A9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AF.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#696969&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AS.O&quot;</span><span class="p">:</span> <span class="s2">&quot;#808080&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AS.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#808080&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BH.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#40E0D0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BW.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BZ.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#ADFF2F&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BZ.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF4500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#66CDAA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#6B8E23&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#228B22&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#7CFC00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CW.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#AFEEEE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFE4C4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DS.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#BDB76B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DU.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFE4C4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DU.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#BDB76B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EC.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#5F9EA0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EC.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#0000FF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EH.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#800000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EH.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#C71585&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EH.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#800000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EW.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF8C00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FA.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#2E8B57&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FA.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FA.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF7F&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FF.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#2E8B57&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FF.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#8B0000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FF.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#8B0000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FG.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#708090&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FL.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#2E8B57&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FL.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FL.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FL.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF7F&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FR.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#6495ED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FW.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFDEAD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FW.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF1493&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FZ.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FFFF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FZ.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#483D8B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GL.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFC0CB&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GL.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#DDA0DD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HF.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#9932CC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HF.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#CD5C5C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HT.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF7F50&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HU.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF00FF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HU.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFE4B5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HU.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#DC143C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HW.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#B8860B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HW.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#DAA520&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HY.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#00FF7F&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HZ.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#4169E1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HZ.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#9400D3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#8B008B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LE.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#87CEFA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LE.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#008B8B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LE.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#48D1CC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LO.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#A52A2A&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LS.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#66CDAA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LS.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#6B8E23&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#228B22&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LS.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#7CFC00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LW.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D2B48C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MA.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFDAB9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MA.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFA500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MF.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#708090&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MH.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#696969&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MS.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#F0E68C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RB.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RP.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#40E0D0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SC.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SE.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#483D8B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SE.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SI.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SM.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#F0E68C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SQ.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#C71585&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SR.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFE4B5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SR.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#9400D3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SS.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#DB7FF7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#C0C0C0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SU.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#228B22&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SU.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#BA55D3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SV.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#DB7093&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SV.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFA500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SW.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D8BFD8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TO.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFFF00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TO.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF0000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TR.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#F08080&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TR.S&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFE4B5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TR.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#B22222&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TS.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF00FF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FD6347&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TS.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D2691E&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TY.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF00FF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TY.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#DC143C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UP.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#4682B4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UP.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#8B008B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UP.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#8B008B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WC.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#5F9EA0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WC.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#B0C4DE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WC.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#AFEEEE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WI.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#D2B48C&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WS.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#4682B4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WS.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#FF69B4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WW.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#7B68EE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;XH.A&quot;</span><span class="p">:</span> <span class="s2">&quot;#800000&quot;</span><span class="p">,</span>  <span class="c1"># maroon</span>
+    <span class="s2">&quot;XH.W&quot;</span><span class="p">:</span> <span class="s2">&quot;#C71585&quot;</span><span class="p">,</span>  <span class="c1"># medium violet red</span>
+    <span class="s2">&quot;ZF.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#008080&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ZR.Y&quot;</span><span class="p">:</span> <span class="s2">&quot;#DA70D6&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="contime">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.contime">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">contime</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert text into a UTC datetime.&quot;&quot;&quot;</span>
+    <span class="c1"># The 0000 is the standard VTEC undefined time</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;0000&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">T%H%MZ&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># NWS has a bug sometimes whereby 1969 or 1970s timestamps are emitted</span>
+    <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">year</span> <span class="o">&lt;</span> <span class="mi">1971</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_ps_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.get_ps_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ps_string</span><span class="p">(</span><span class="n">phenomena</span><span class="p">,</span> <span class="n">significance</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the combination of Phenomena + Significance as string&quot;&quot;&quot;</span>
+    <span class="n">pstr</span> <span class="o">=</span> <span class="n">VTEC_PHENOMENA</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">phenomena</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown </span><span class="si">{</span><span class="n">phenomena</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">astr</span> <span class="o">=</span> <span class="n">VTEC_SIGNIFICANCE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">significance</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown </span><span class="si">{</span><span class="n">significance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Hack for special FW case</span>
+    <span class="k">if</span> <span class="n">significance</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span> <span class="ow">and</span> <span class="n">phenomena</span> <span class="o">==</span> <span class="s2">&quot;FW&quot;</span><span class="p">:</span>
+        <span class="n">pstr</span> <span class="o">=</span> <span class="s2">&quot;Fire Weather&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pstr</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">astr</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_action_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.get_action_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_action_string</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the action string&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">VTEC_ACTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;unknown </span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="VTEC">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VTEC</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A single VTEC encoding instance&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">office</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">office4</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">significance</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">etn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">begints</span> <span class="o">=</span> <span class="n">contime</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endts</span> <span class="o">=</span> <span class="n">contime</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+        <span class="c1"># Not explicitly defined, but set later by product parsing logic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="VTEC.s3">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.s3">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">s3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a commonly used string representation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">significance</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">etn</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="VTEC.s2">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.s2">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">s2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a commonly used string representation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">significance</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="VTEC.get_end_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.get_end_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_end_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an appropriate end string for this VTEC&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;CAN&quot;</span><span class="p">,</span> <span class="s2">&quot;EXP&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;until further notice&quot;</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-I:%M %p&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endts</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%-I:%M %p&quot;</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">tz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-H:%M&quot;</span>
+        <span class="n">localts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endts</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">tz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">localts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endts</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+        <span class="c1"># A bit of complexity as offices may not implement daylight saving</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ST&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">localts</span><span class="o">.</span><span class="n">dst</span><span class="p">():</span>
+            <span class="n">localts</span> <span class="o">-=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span> <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;UTC&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;till </span><span class="si">{</span><span class="n">localts</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">tt</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="VTEC.get_begin_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.get_begin_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_begin_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prod</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an appropriate beginning string for this VTEC&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">begints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-I:%M %p&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">begints</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">valid</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)):</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;%-I:%M %p&quot;</span>
+        <span class="n">localts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">begints</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+        <span class="c1"># A bit of complexity as offices may not implement daylight saving</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;ST&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">localts</span><span class="o">.</span><span class="n">dst</span><span class="p">():</span>
+            <span class="n">localts</span> <span class="o">-=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;valid at </span><span class="si">{</span><span class="n">localts</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">prod</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="VTEC.url">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a VTEC url string needed&quot;&quot;&quot;</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">year</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tt</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">office4</span><span class="si">}</span><span class="s2">-&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">significance</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">etn</span><span class="si">:</span><span class="s2">04.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTEC.get_id">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.get_id">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a custom string identifier for this VTEC product</span>
+
+<span class="sd">        This is used by the Live client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">year</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tt</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">office4</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">significance</span><span class="si">}</span><span class="s2">-&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">etn</span><span class="si">:</span><span class="s2">04.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTEC.__str__">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.__str__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return string representation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span></div>
+
+
+<div class="viewcode-block" id="VTEC.get_ps_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.get_ps_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ps_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the combination of Phenomena + Significance as string&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_ps_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phenomena</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">significance</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTEC.get_action_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.get_action_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_action_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the action string&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_action_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VTEC.product_string">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.VTEC.product_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">product_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the combination of action and phenomena+significance&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_action_string</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ps_string</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parse">
+<a class="viewcode-back" href="../../../api/pyiem.nws.vtec.html#pyiem.nws.vtec.parse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">VTEC</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I look for and return vtec objects as I find them&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">VTEC</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">VTEC_RE</span><span class="p">,</span> <span class="n">text</span><span class="p">)]</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

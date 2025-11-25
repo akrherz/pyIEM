@@ -1,0 +1,7 @@
+pyiem.plot.layouts module
+=========================
+
+.. automodule:: pyiem.plot.layouts
+   :members:
+   :show-inheritance:
+   :undoc-members:

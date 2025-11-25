@@ -1,0 +1,7 @@
+pyiem.windrose\_utils module
+============================
+
+.. automodule:: pyiem.windrose_utils
+   :members:
+   :show-inheritance:
+   :undoc-members:

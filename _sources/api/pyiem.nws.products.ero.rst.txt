@@ -1,0 +1,7 @@
+pyiem.nws.products.ero module
+=============================
+
+.. automodule:: pyiem.nws.products.ero
+   :members:
+   :show-inheritance:
+   :undoc-members:

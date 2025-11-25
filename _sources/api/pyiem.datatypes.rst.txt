@@ -1,0 +1,7 @@
+pyiem.datatypes module
+======================
+
+.. automodule:: pyiem.datatypes
+   :members:
+   :show-inheritance:
+   :undoc-members:

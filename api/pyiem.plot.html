@@ -1,1153 +1,673 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
+
+<html lang="en" data-content_root="../" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.plot package &#8212; pyIEM 0.0.post1238+g79f512947 documentation</title>
+    <title>pyiem.plot package &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
-    
-    <script src="../_static/documentation_options.js?v=573015cd"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.plot';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyiem.templates package" href="pyiem.templates.html" />
-    <link rel="prev" title="pyiem.nws.products package" href="pyiem.nws.products.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.templates.html" title="pyiem.templates package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
-      </ul>
-    </div>  
+    <link rel="next" title="pyiem.plot.calendarplot module" href="pyiem.plot.calendarplot.html" />
+    <link rel="prev" title="pyiem.nws.vtec module" href="pyiem.nws.vtec.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
             
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.calendarplot.html">pyiem.plot.calendarplot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.colormaps.html">pyiem.plot.colormaps module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.geoplot.html">pyiem.plot.geoplot module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.layouts.html">pyiem.plot.layouts module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.use_agg.html">pyiem.plot.use_agg module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.util.html">pyiem.plot.util module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.windrose.html">pyiem.plot.windrose module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.plot package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="pyiem-plot-package">
-<h1>pyiem.plot package<a class="headerlink" href="#pyiem-plot-package" title="Link to this heading">¶</a></h1>
+<h1>pyiem.plot package<a class="headerlink" href="#pyiem-plot-package" title="Link to this heading">#</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-pyiem.plot.calendarplot">
-<span id="pyiem-plot-calendarplot-module"></span><h2>pyiem.plot.calendarplot module<a class="headerlink" href="#module-pyiem.plot.calendarplot" title="Link to this heading">¶</a></h2>
-<p>Calendar Plot.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.calendarplot.calendar_plot">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.calendarplot.</span></span><span class="sig-name descname"><span class="pre">calendar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.calendarplot.calendar_plot" title="Link to this definition">¶</a></dt>
-<dd><p>Create a plot that looks like a calendar</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sts</strong> (<em>datetime.date</em>) – start date of this plot</p></li>
-<li><p><strong>ets</strong> (<em>datetime.date</em>) – end date of this plot (inclusive)</p></li>
-<li><p><strong>data</strong> (<em>dict</em><em>[</em><em>dict</em><em>]</em>) – dictionary with keys of dates and dicts for
-<cite>val</cite> value and optionally <cite>color</cite> for color</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em>) – heatmap (bool): background color for cells based on <cite>val</cite>, False
-cmap (str): color map to use for norm
-apctx (dict): autoplot context.</p></li>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.calendarplot.html">pyiem.plot.calendarplot module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.calendarplot.html#pyiem.plot.calendarplot.calendar_plot"><code class="docutils literal notranslate"><span class="pre">calendar_plot()</span></code></a></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.colormaps">
-<span id="pyiem-plot-colormaps-module"></span><h2>pyiem.plot.colormaps module<a class="headerlink" href="#module-pyiem.plot.colormaps" title="Link to this heading">¶</a></h2>
-<p>Definition of colormaps</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.dep_erosion">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">dep_erosion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.dep_erosion" title="Link to this definition">¶</a></dt>
-<dd><p>DEP Erosion ramp yelllow to brown (jump at 5T) <cite>cool</cite></p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.get_cmap">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">get_cmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.get_cmap" title="Link to this definition">¶</a></dt>
-<dd><p>Helper to workaround matplotlib complexity.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.james">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">james</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.james" title="Link to this definition">¶</a></dt>
-<dd><p>David James suggested color ramp Yellow to Blue</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.james2">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">james2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.james2" title="Link to this definition">¶</a></dt>
-<dd><p>David James suggested color ramp Yellow to Brown</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.maue">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">maue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.maue" title="Link to this definition">¶</a></dt>
-<dd><p>Pretty color ramp Dr Ryan Maue uses</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.nwsice">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">nwsice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.nwsice" title="Link to this definition">¶</a></dt>
-<dd><p>A Color Ramp Suggested by the NWS for Ice Accumulation.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.nwsprecip">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">nwsprecip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.nwsprecip" title="Link to this definition">¶</a></dt>
-<dd><p>A color ramp used by NWS on NTP plots</p>
-<dl class="simple">
-<dt>Changes</dt><dd><ul class="simple">
-<li><p>modified the reds a bit to provide a larger gradient</p></li>
-<li><p>added two light brown colors at the low end to allow for more levels</p></li>
-<li><p>removed perhaps a bad orange color and remove top white color</p></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.colormaps.html">pyiem.plot.colormaps module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.get_cmap"><code class="docutils literal notranslate"><span class="pre">get_cmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.stretch_cmap"><code class="docutils literal notranslate"><span class="pre">stretch_cmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwsprecip"><code class="docutils literal notranslate"><span class="pre">nwsprecip()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwsice"><code class="docutils literal notranslate"><span class="pre">nwsice()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.nwssnow"><code class="docutils literal notranslate"><span class="pre">nwssnow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.dep_erosion"><code class="docutils literal notranslate"><span class="pre">dep_erosion()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.james2"><code class="docutils literal notranslate"><span class="pre">james2()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.james"><code class="docutils literal notranslate"><span class="pre">james()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.whitebluegreenyellowred"><code class="docutils literal notranslate"><span class="pre">whitebluegreenyellowred()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.maue"><code class="docutils literal notranslate"><span class="pre">maue()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html#pyiem.plot.colormaps.radar_ptype"><code class="docutils literal notranslate"><span class="pre">radar_ptype()</span></code></a></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.nwssnow">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">nwssnow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.nwssnow" title="Link to this definition">¶</a></dt>
-<dd><p>A Color Ramp Suggested by the NWS for Snowfall</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.radar_ptype">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">radar_ptype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyiem.plot.colormaps.radar_ptype" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a dictionary of colors for HRRR Ptype.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.stretch_cmap">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">stretch_cmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.stretch_cmap" title="Link to this definition">¶</a></dt>
-<dd><p>Return a cmap with appropriate over,under,bad settings.</p>
-<p>The issue at hand is that default color ramps do not properly extend to
-cover over and under using values from the color ramp.  That is desired
-behaviour of this library.  If over,under,bad is already set, those
-settings are retained.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cmap</strong> (<em>cm.ColorMap</em>) – inbound colormap</p></li>
-<li><p><strong>bins</strong> (<em>list</em>) – values for binning</p></li>
-<li><p><strong>extend</strong> (<em>str</em>) – either ‘both’, ‘neither’, ‘min’, ‘max’ to control cbar</p></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.geoplot.html">pyiem.plot.geoplot module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.load_bounds"><code class="docutils literal notranslate"><span class="pre">load_bounds()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot"><code class="docutils literal notranslate"><span class="pre">MapPlot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fig"><code class="docutils literal notranslate"><span class="pre">MapPlot.fig</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.ax"><code class="docutils literal notranslate"><span class="pre">MapPlot.ax</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.close"><code class="docutils literal notranslate"><span class="pre">MapPlot.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_usdm"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_usdm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_radar_ptype_legend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_colorbar"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_colorbar()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.plot_station"><code class="docutils literal notranslate"><span class="pre">MapPlot.plot_station()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.plot_values"><code class="docutils literal notranslate"><span class="pre">MapPlot.plot_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.scatter"><code class="docutils literal notranslate"><span class="pre">MapPlot.scatter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.hexbin"><code class="docutils literal notranslate"><span class="pre">MapPlot.hexbin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.imshow"><code class="docutils literal notranslate"><span class="pre">MapPlot.imshow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.pcolormesh"><code class="docutils literal notranslate"><span class="pre">MapPlot.pcolormesh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_mask"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.contourf"><code class="docutils literal notranslate"><span class="pre">MapPlot.contourf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_climdiv"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_climdiv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_ugcs"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_ugcs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_states"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_states()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_fema_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_fema_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.draw_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_cwas()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_rfc"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_rfc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_cwsu"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwsu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.fill_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwas()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.drawcities"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.drawcounties"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcounties()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.postprocess"><code class="docutils literal notranslate"><span class="pre">MapPlot.postprocess()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.overlay_roadcond"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_roadcond()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.geoplot.html#pyiem.plot.geoplot.MapPlot.overlay_nexrad"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_nexrad()</span></code></a></li>
 </ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Retuns:</dt><dd><p>cm.ColorMap</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.colormaps.whitebluegreenyellowred">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.colormaps.</span></span><span class="sig-name descname"><span class="pre">whitebluegreenyellowred</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.colormaps.whitebluegreenyellowred" title="Link to this definition">¶</a></dt>
-<dd><p>Rip off NCL’s WhiteBlueGreenYellowRed</p>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.geoplot">
-<span id="pyiem-plot-geoplot-module"></span><h2>pyiem.plot.geoplot module<a class="headerlink" href="#module-pyiem.plot.geoplot" title="Link to this heading">¶</a></h2>
-<p>Plotting utility for generating maps, windroses and everything else under
-the sun.</p>
-<p>This module provides a wrapper around <cite>Basemap</cite> and <cite>windrose</cite> packages.  It
-tries to be general so to work for others, but may contain some unfortunate
-hard coded values.  Bad daryl!</p>
-<p class="rubric">Example</p>
-<p>Here is a basic example of usage.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.plot.geoplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapPlot</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">MapPlot</span><span class="p">(</span><span class="n">sector</span><span class="o">=</span><span class="s1">&#39;conus&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;My Fancy Title&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;myplot.png&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.layouts.html">pyiem.plot.layouts module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.layouts.html#pyiem.plot.layouts.figure"><code class="docutils literal notranslate"><span class="pre">figure()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.layouts.html#pyiem.plot.layouts.figure_axes"><code class="docutils literal notranslate"><span class="pre">figure_axes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.use_agg.html">pyiem.plot.use_agg module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.use_agg.html#pyiem.plot.use_agg.figure"><code class="docutils literal notranslate"><span class="pre">figure()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.util.html">pyiem.plot.util module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.update_kwargs_apctx"><code class="docutils literal notranslate"><span class="pre">update_kwargs_apctx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.draw_features_from_shapefile"><code class="docutils literal notranslate"><span class="pre">draw_features_from_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.ramp2df"><code class="docutils literal notranslate"><span class="pre">ramp2df()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.pretty_bins"><code class="docutils literal notranslate"><span class="pre">pretty_bins()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.centered_bins"><code class="docutils literal notranslate"><span class="pre">centered_bins()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.draw_logo"><code class="docutils literal notranslate"><span class="pre">draw_logo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.fontscale"><code class="docutils literal notranslate"><span class="pre">fontscale()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.fitbox"><code class="docutils literal notranslate"><span class="pre">fitbox()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.make_panel"><code class="docutils literal notranslate"><span class="pre">make_panel()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.sector_setter"><code class="docutils literal notranslate"><span class="pre">sector_setter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.mask_outside_polygon"><code class="docutils literal notranslate"><span class="pre">mask_outside_polygon()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.polygon_fill"><code class="docutils literal notranslate"><span class="pre">polygon_fill()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html#pyiem.plot.util.mask_outside_geom"><code class="docutils literal notranslate"><span class="pre">mask_outside_geom()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.plot.windrose.html">pyiem.plot.windrose module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot"><code class="docutils literal notranslate"><span class="pre">WindrosePlot</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.barplot"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.barplot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.plot_calm"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.plot_calm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.draw_logo"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.draw_logo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.WindrosePlot.draw_arrows"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.draw_arrows()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.histogram"><code class="docutils literal notranslate"><span class="pre">histogram()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.windrose.html#pyiem.plot.windrose.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
 </div>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.plot.geoplot.</span></span><span class="sig-name descname"><span class="pre">MapPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'iowa'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>An object representing a matplotlib figure.</p>
-<p>An object that allows one to quickly and easily generate map plots of data
-with some customization possible.  This is what drives most of the plots
-you see on the IEM website.</p>
-<p class="rubric">Example</p>
-<p>Here is an example of usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mplot</span> <span class="o">=</span> <span class="n">MapPlot</span><span class="p">(</span><span class="n">sector</span><span class="o">=</span><span class="s1">&#39;midwest&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;My Plot Title&#39;</span><span class="p">)</span>
-<span class="n">mplot</span><span class="o">.</span><span class="n">plot_values</span><span class="p">([</span><span class="o">-</span><span class="mi">99</span><span class="p">,</span><span class="o">-</span><span class="mi">95</span><span class="p">],</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span><span class="mi">45</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span><span class="s1">&#39;there&#39;</span><span class="p">])</span>
-<span class="n">mplot</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;test.png&#39;</span><span class="p">)</span>
-<span class="n">mplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fig">
-<span class="sig-name descname"><span class="pre">fig</span></span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fig" title="Link to this definition">¶</a></dt>
-<dd><p>figure object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>matplotlib.Figure</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.ax">
-<span class="sig-name descname"><span class="pre">ax</span></span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.ax" title="Link to this definition">¶</a></dt>
-<dd><p>main figure plot axes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>matplotlib.Axes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.close" title="Link to this definition">¶</a></dt>
-<dd><p>Close the figure in the case of batch processing</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.contourf">
-<span class="sig-name descname"><span class="pre">contourf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.contourf" title="Link to this definition">¶</a></dt>
-<dd><p>Contourf</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ilabel</strong> (<em>boolean</em><em>,</em><em>optional</em>) – Should we label contours</p></li>
-<li><p><strong>iline</strong> (<em>boolean</em><em>,</em><em>optional</em>) – should we draw contour lines</p></li>
-<li><p><strong>lblformat</strong> (<em>str</em><em>,</em><em>optional</em>) – Format string for labeling contours, %.0f.
-draw_colorbar (bool,optional): Draw colorbar default True.</p></li>
-<li><p><strong>linewidths</strong> (<em>float</em><em>,</em><em>optional</em>) – Line width(s) for contour lines</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The values used for plotting, maybe after gridding</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>vals (np.array)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_colorbar">
-<span class="sig-name descname"><span class="pre">draw_colorbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clevs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_colorbar" title="Link to this definition">¶</a></dt>
-<dd><p>Draw the colorbar on the structed plot using <cite>self.cax</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>clevs</strong> (<em>list</em>) – The levels used in the classification</p></li>
-<li><p><strong>cmap</strong> (<em>matplotlib.colormap</em>) – The colormap</p></li>
-<li><p><strong>norm</strong> (<em>normalize</em>) – The value normalizer</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>,</em><em>optional</em>) – Place a label on the side, adjusts the plot
-accordingly to allow this text to fit, no multiline please!</p></li>
-<li><p><strong>spacing</strong> (<em>str</em><em>,</em><em>optional</em>) – should the colorbar be <cite>uniform</cite> or
-<cite>proportional</cite>, defaults to <cite>uniform</cite></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_cwas">
-<span class="sig-name descname"><span class="pre">draw_cwas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_cwas" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay CWA Borders</p>
-<p>Draw the CWA border lines on the map.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str</em>) – The color to draw the CWA borders with</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Parameters passed to matplotlib for plotting</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_fema_regions">
-<span class="sig-name descname"><span class="pre">draw_fema_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_fema_regions" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay FEMA Regions.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_mask">
-<span class="sig-name descname"><span class="pre">draw_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_mask" title="Link to this definition">¶</a></dt>
-<dd><p>Draw a mask on the main axes.</p>
-<p>If <cite>sector</cite> is not provided, this attempts to intelligently to the
-masking the user wants.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sector</strong> (<em>str</em><em>,</em><em>optional</em>) – Hard code what type of sector masking should
-happen.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend">
-<span class="sig-name descname"><span class="pre">draw_radar_ptype_legend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend" title="Link to this definition">¶</a></dt>
-<dd><p>Draw a legend for radar precipitation type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.draw_usdm">
-<span class="sig-name descname"><span class="pre">draw_usdm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatched</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.draw_usdm" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay the US Drought Monitor</p>
-<p>This utilizes a GeoJSON web service provided by the IEM.  The provided
-date to this method is passed to the web service which rectifies the
-date to provide the USDM analysis valid for that date.  If no date
-is specified, the current analysis is plotted.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>valid</strong> (<em>str</em><em> or </em><em>datetime.date</em>) – The valid time to plot this USDM</p></li>
-<li><p><strong>filled</strong> (<em>boolean</em>) – Should we draw lines or filled polygons</p></li>
-<li><p><strong>hatched</strong> (<em>boolean</em>) – Should we use hatch filling</p></li>
-<li><p><strong>alpha</strong> (<em>float</em>) – Alpha value for the polygons, default 0.5.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>date that the USDM is valid for</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.drawcities">
-<span class="sig-name descname"><span class="pre">drawcities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.drawcities" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay some cities</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>minpop</strong> (<em>int</em><em>,</em><em>optional</em>) – Minimum population to consider for plotting.</p></li>
-<li><p><strong>labelbuffer</strong> (<em>int</em>) – approximate number of pixels to compute overlap</p></li>
-<li><p><strong>textsize</strong> (<em>int</em>) – size of the text</p></li>
-<li><p><strong>color</strong> (<em>str</em>) – color to plot the text with</p></li>
-<li><p><strong>outlinecolor</strong> (<em>str</em>) – color to outline the text with</p></li>
-<li><p><strong>isolated</strong> (<em>bool</em>) – Cause <cite>plot_values</cite> to do label collision against
-only labels from drawing cities. Default False.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.drawcounties">
-<span class="sig-name descname"><span class="pre">drawcounties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.drawcounties" title="Link to this definition">¶</a></dt>
-<dd><p>Draw counties onto the map</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>color</strong> (<em>color</em><em>,</em><em>optional</em>) – line color to use</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_climdiv">
-<span class="sig-name descname"><span class="pre">fill_climdiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_climdiv" title="Link to this definition">¶</a></dt>
-<dd><p>Fill climate divisions using provided data dictionary</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – A dictionary of climate division IDs and values</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_cwas">
-<span class="sig-name descname"><span class="pre">fill_cwas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_cwas" title="Link to this definition">¶</a></dt>
-<dd><p>Add overlay of filled polygons for NWS Forecast Offices.</p>
-<p>Method adds a colorized overlay of NWS Forecast Offices based on a
-data dictionary of values provided. This method also places a color
-bar on the image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – Dictionary of values with keys representing the 3 char
-or 4 char idenitifer for the WFO.  This assumes the 3 char sites
-are the K ones.</p></li>
-<li><p><strong>ilabel</strong> (<em>bool</em>) – Should we label?</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_cwsu">
-<span class="sig-name descname"><span class="pre">fill_cwsu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_cwsu" title="Link to this definition">¶</a></dt>
-<dd><p>Add overlay of filled polygons for NWS CWSUs.</p>
-<p>Data is dictionary-ish.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_fema_regions">
-<span class="sig-name descname"><span class="pre">fill_fema_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_fema_regions" title="Link to this definition">¶</a></dt>
-<dd><p>Add overlay of filled polygons for FEMA Regions.</p>
-<p>Data is dictionary-ish and keys should be ints!</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_rfc">
-<span class="sig-name descname"><span class="pre">fill_rfc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_rfc" title="Link to this definition">¶</a></dt>
-<dd><p>Add overlay of filled polygons for NWS RFCs.</p>
-<p>Data is dictionary-ish.  Note that the ids used here are the WMO
-center IDs (ie TAR) and not basin ids (ie NERFC)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_states">
-<span class="sig-name descname"><span class="pre">fill_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_states" title="Link to this definition">¶</a></dt>
-<dd><p>Add overlay of filled state polygons</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.fill_ugcs">
-<span class="sig-name descname"><span class="pre">fill_ugcs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.fill_ugcs" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay filled UGC geometries using bundled geometries.</p>
-<p>Note the importance of the <cite>is_firewx</cite> flag.  This determines which
-UGC database to look at in the face of ambiquity.</p>
-<p>Note that this will fail when provided a <cite>data</cite> dictionary that has
-both zones and counties.  It is recommended to plot from application
-logic with your own geometries in this instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>dict</em>) – A dictionary of 6 char UGC code keys and values</p></li>
-<li><p><strong>bins</strong> (<em>list</em><em>, </em><em>optional</em>) – Bins to use for cloropleth, default 0:101:10</p></li>
-<li><p><strong>color</strong> (<em>dict</em><em>, </em><em>optional</em>) – Hard code what each UGC should display as
-for color.</p></li>
-<li><p><strong>discontinued</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should we include discontinued UGCs
-within the baseline geodata for plotting, default is <cite>False</cite>.</p></li>
-<li><p><strong>is_firewx</strong> (<em>bool</em><em>, </em><em>optional</em>) – Are we plotting fire weather zones?</p></li>
-<li><p><strong>draw_colorbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should a color bar be generated,
-default is <cite>True</cite>.</p></li>
-<li><p><strong>plotmissing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should missing UGC data be plotted?</p></li>
-<li><p><strong>labels</strong> (<em>dict</em><em>, </em><em>optional</em>) – UGC indexed dictionary to use for labeling.</p></li>
-<li><p><strong>lblformat</strong> (<em>str</em><em>, </em><em>optional</em>) – Format string for labels, default %s.</p></li>
-<li><p><strong>missingval</strong> (<em>str</em><em>, </em><em>optional</em>) – value to use when labelling UGCs with
-missing values, defaults to ‘-‘.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.hexbin">
-<span class="sig-name descname"><span class="pre">hexbin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.hexbin" title="Link to this definition">¶</a></dt>
-<dd><p>hexbin wrapper.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>draw_colorbar</strong> (<em>bool</em><em>,</em><em>optional</em>) – Draw colorbar default True.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.imshow">
-<span class="sig-name descname"><span class="pre">imshow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Affine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.imshow" title="Link to this definition">¶</a></dt>
-<dd><p>Reprojects an image onto each MapPanel and then draws it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>grid</strong> (<em>np.ndarray</em>) – The 2-D data to draw</p></li>
-<li><p><strong>affine</strong> (<em>Affine</em>) – The affine transformation of the image</p></li>
-<li><p><strong>crs</strong> (<em>str</em>) – The CRS of the image</p></li>
-<li><p><strong>clevs</strong> (<em>list</em><em>, </em><em>Optional</em>) – The levels to use for the colormap</p></li>
-</ul>
-</dd>
-<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>draw_colorbar</strong> (<em>bool</em><em>,</em><em>optional</em>) – Draw colorbar default True.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em><em>,</em><em>optional</em>) – The colormap to use, default jet.</p></li>
-<li><p><strong>extend</strong> (<em>str</em><em>,</em><em>optional</em>) – The extend value for the colormap.</p></li>
-<li><p><strong>clip_on</strong> (<em>bool</em><em>,</em><em>optional</em>) – Clip the image to the map region.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.overlay_nexrad">
-<span class="sig-name descname"><span class="pre">overlay_nexrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N0Q'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caxpos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.overlay_nexrad" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay an IEM NEXRAD Composite Image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>valid</strong> (<em>datetime.datetime</em>) – Valid time for NEXRAD overlay.</p></li>
-<li><p><strong>product</strong> (<em>str</em>) – either N0Q or N0R for the mosaic type.</p></li>
-<li><p><strong>caxpos</strong> (<em>array-like</em>) – <cite>matplotlib.axes.set_position</cite> value for the
-colorbar.  Defaults to something in the upper-right.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>valid time of the NEXRAD, or None if not found.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.overlay_roadcond">
-<span class="sig-name descname"><span class="pre">overlay_roadcond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.overlay_roadcond" title="Link to this definition">¶</a></dt>
-<dd><p>Overlay Iowa Winter Road Conditions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>valid</strong> (<em>datetime.datetime</em>) – Valid time for NEXRAD overlay.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.pcolormesh">
-<span class="sig-name descname"><span class="pre">pcolormesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.pcolormesh" title="Link to this definition">¶</a></dt>
-<dd><p>Opinionated mpl.pcolormesh wrapper.</p>
-<p>If you supply a lons in the same shape of the vals, this method will
-tack on an extra row and column to make matplotlib happy. If you do
-not want this, then pass your own lons + lats that is 1 column and 1
-row greater than vals.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>draw_colorbar</strong> (<em>bool</em><em>,</em><em>optional</em>) – Draw colorbar default True.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.plot_station">
-<span class="sig-name descname"><span class="pre">plot_station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.plot_station" title="Link to this definition">¶</a></dt>
-<dd><p>Plot values on a map in a station plot like manner.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>list</em>) – list of dicts with station data to plot</p></li>
-<li><p><strong>fontsize</strong> (<em>int</em>) – font size to use for plotted text</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.plot_values">
-<span class="sig-name descname"><span class="pre">plot_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valmask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#000000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeltextsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#000000'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showmarker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelbuffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlinecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'#FFFFFF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.plot_values" title="Link to this definition">¶</a></dt>
-<dd><p>Plot values onto the map</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lons</strong> (<em>list</em>) – longitude values to use for placing <cite>vals</cite></p></li>
-<li><p><strong>lats</strong> (<em>list</em>) – latitude values to use for placing <cite>vals</cite></p></li>
-<li><p><strong>vals</strong> (<em>list</em>) – actual values to place on the map</p></li>
-<li><p><strong>fmt</strong> (<em>str</em><em>, </em><em>optional</em>) – Format specification to use for representing the
-values. For example, the default is ‘%s’.</p></li>
-<li><p><strong>valmask</strong> (<em>list</em><em>, </em><em>optional</em>) – Boolean list to use as masking of the
-<cite>vals</cite> while adding to the map.</p></li>
-<li><p><strong>color</strong> (<em>str</em><em>, </em><em>list</em><em>, </em><em>optional</em>) – Color to use while plotting the <cite>vals</cite>.
-This can be a list to specify each color to use with each value.</p></li>
-<li><p><strong>textsize</strong> (<em>str</em><em>, </em><em>optional</em>) – Font size to draw text.
-labels (list, optional): Optional list of labels to place below the
-plotting of <cite>vals</cite></p></li>
-<li><p><strong>labeltextsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the label text</p></li>
-<li><p><strong>labelcolor</strong> (<em>str</em><em>, </em><em>optional</em>) – Color to use for drawing labels</p></li>
-<li><p><strong>showmarker</strong> (<em>bool</em><em>, </em><em>optional</em>) – Place a marker on the map for the label</p></li>
-<li><p><strong>labelbuffer</strong> (<em>int</em>) – pixel buffer around labels, a value of <cite>0</cite>
-disables the label culling logic.</p></li>
-<li><p><strong>outlinecolor</strong> (<em>color</em>) – color to use for text outlines</p></li>
-<li><p><strong>zorder</strong> (<em>int</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – zorder to use for plotting.</p></li>
-<li><p><strong>textoutlinewidth</strong> (<em>int</em>) – width of the font outline, default 3. A value
-&lt;= 0 disables text outlines.</p></li>
-<li><p><strong>isolated</strong> (<em>bool</em>) – Only compute label collision against labels within
-this plot_values call. Default <cite>false</cite></p></li>
-<li><p><strong>backgroundcolor</strong> (<em>color</em>) – color to use for the background of the label
-text, default is None.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.postprocess">
-<span class="sig-name descname"><span class="pre">postprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.postprocess" title="Link to this definition">¶</a></dt>
-<dd><p>Postprocessing.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – file to save output to.</p></li>
-<li><p><strong>web</strong> (<em>bool</em>) – Write result to sys.stdout, default False.</p></li>
-<li><p><strong>memcache</strong> (<em>obj</em>) – write image to memcache</p></li>
-<li><p><strong>memcachekey</strong> (<em>str</em>) – key to use when writing to memcache.</p></li>
-<li><p><strong>memcacheexpire</strong> (<em>int</em>) – how long should we persist in memcache,
-default is 300.</p></li>
-<li><p><strong>pqstr</strong> (<em>str</em>) – Do pqinsert with the following LDM product name.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.MapPlot.scatter">
-<span class="sig-name descname"><span class="pre">scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.MapPlot.scatter" title="Link to this definition">¶</a></dt>
-<dd><p>Draw points on the map</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lons</strong> (<em>list</em>) – longitude values</p></li>
-<li><p><strong>lats</strong> (<em>list</em>) – latitude values</p></li>
-<li><p><strong>vals</strong> (<em>list</em>) – Data values for the points to use for colormapping</p></li>
-<li><p><strong>clevs</strong> (<em>list</em>) – Levels to use for ramp</p></li>
-<li><p><strong>**kwargs</strong> – additional options
-draw_colorbar (bool, optional): Draw a colorbar, default True.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.geoplot.load_bounds">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.geoplot.</span></span><span class="sig-name descname"><span class="pre">load_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filebase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.geoplot.load_bounds" title="Link to this definition">¶</a></dt>
-<dd><p>Load bounds file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filebase</strong> (<em>str</em>) – the basename of the file containing the data</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>numpy 2d array of the data</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.layouts">
-<span id="pyiem-plot-layouts-module"></span><h2>pyiem.plot.layouts module<a class="headerlink" href="#module-pyiem.plot.layouts" title="Link to this heading">¶</a></h2>
-<p>Standardized layouts.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.layouts.figure">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.layouts.</span></span><span class="sig-name descname"><span class="pre">figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'iem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtitle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="headerlink" href="#pyiem.plot.layouts.figure" title="Link to this definition">¶</a></dt>
-<dd><p>Return an opinionated matplotlib figure.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>figsize</strong> (<em>width</em><em>, </em><em>height</em>) – in inches for the figure, defaults to something
-good for twitter.</p></li>
-<li><p><strong>dpi</strong> (<em>int</em>) – dots per inch</p></li>
-<li><p><strong>logo</strong> (<em>str</em>) – Currently, ‘iem’, ‘dep’ is supported. <cite>None</cite> disables.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – Title to place on the figure.</p></li>
-<li><p><strong>subtitle</strong> (<em>str</em>) – SubTitle to place on the figure.</p></li>
-<li><p><strong>apctx</strong> (<em>dict</em><em>, </em><em>optional</em>) – autoplot context.</p></li>
-<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – Figure passed in for modification for
-figsize only currently.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.layouts.figure_axes">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.layouts.</span></span><span class="sig-name descname"><span class="pre">figure_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'iem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtitle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Figure</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pyiem.plot.layouts.figure_axes" title="Link to this definition">¶</a></dt>
-<dd><p>Return an opinionated matplotlib figure and one axes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>figsize</strong> (<em>width</em><em>, </em><em>height</em>) – in inches for the figure, defaults to something
-good for twitter.</p></li>
-<li><p><strong>dpi</strong> (<em>int</em>) – dots per inch</p></li>
-<li><p><strong>logo</strong> (<em>str</em>) – Currently, ‘iem’, ‘dep’ is supported. <cite>None</cite> disables.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – Title to place on the figure.</p></li>
-<li><p><strong>subtitle</strong> (<em>str</em>) – SubTitle to place on the figure.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.use_agg">
-<span id="pyiem-plot-use-agg-module"></span><h2>pyiem.plot.use_agg module<a class="headerlink" href="#module-pyiem.plot.use_agg" title="Link to this heading">¶</a></h2>
-<p>A utility to load matplotlib and set the backend to AGG.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.use_agg.figure">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.use_agg.</span></span><span class="sig-name descname"><span class="pre">figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="headerlink" href="#pyiem.plot.use_agg.figure" title="Link to this definition">¶</a></dt>
-<dd><p>Create a new figure using matplotlib’s OO API.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – Arguments to pass to Figure constructor</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The created figure</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>matplotlib.figure.Figure</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.util">
-<span id="pyiem-plot-util-module"></span><h2>pyiem.plot.util module<a class="headerlink" href="#module-pyiem.plot.util" title="Link to this heading">¶</a></h2>
-<p>pyiem.plot.util Plotting Utilities.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.centered_bins">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">centered_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.centered_bins" title="Link to this definition">¶</a></dt>
-<dd><p>Return a <strong>smooth</strong> binning around some number.</p>
-<p>The returned array is +1 in size of the bins specified, since we want the
-bin edges.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>absmax</strong> (<em>real</em>) – positive distance from the <cite>on</cite> value for bins to enclose.</p></li>
-<li><p><strong>on</strong> (<em>real</em>) – where to center these bins.</p></li>
-<li><p><strong>bins</strong> (<em>int</em>) – number of bins to generate</p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:
-<code class="docutils literal notranslate"><span class="pre">np.array</span></code> of bins</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.draw_features_from_shapefile">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">draw_features_from_shapefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.draw_features_from_shapefile" title="Link to this definition">¶</a></dt>
-<dd><p>Add features as we need to.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.draw_logo">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">draw_logo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logoname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.draw_logo" title="Link to this definition">¶</a></dt>
-<dd><p>Place the logo.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.fitbox">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">fitbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.fitbox" title="Link to this definition">¶</a></dt>
-<dd><p>Fit text into a NDC box.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>textsize</strong> (<em>int</em><em>, </em><em>optional</em>) – First attempt this textsize to see if it fits.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.fontscale">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">fontscale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.fontscale" title="Link to this definition">¶</a></dt>
-<dd><p>Return a font size suitable for this NDC ratio.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ratio</strong> (<em>float</em>) – value between 0 and 1</p></li>
-<li><p><strong>fig</strong> (<em>matplotlib.Figure</em><em>,</em><em>optional</em>) – The Figure of interest</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>float</strong></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>font size</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.make_panel">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">make_panel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ndc_axbounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aspect</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_geoextent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">GeoPanel</span></span></span><a class="headerlink" href="#pyiem.plot.util.make_panel" title="Link to this definition">¶</a></dt>
-<dd><p>Make a GeoPanel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ndc_axbounds</strong> (<em>list</em>) – the NDC coordinates of axes to create</p></li>
-<li><p><strong>extent</strong> (<em>list</em>) – x0,x1,y0,y1 <em>in projected space</em> plot extent, unless
-<cite>is_geoextent</cite> is based as True, then it is Geodetic.</p></li>
-<li><p><strong>crs</strong> (<em>pyproj.CRS</em>) – the crs of the axes</p></li>
-<li><p><strong>aspect</strong> (<em>str</em>) – matplotlib’s aspect of axes</p></li>
-<li><p><strong>is_geoextent</strong> (<em>bool</em>) – is the passed extent Geodetic?</p></li>
-<li><p><strong>sector_label</strong> (<em>bool</em>) – A Label that tracks what this is called</p></li>
-<li><p><strong>background</strong> (<em>str</em>) – background to use.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>GeoPanel</strong></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the panel</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.mask_outside_geom">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">mask_outside_geom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.mask_outside_geom" title="Link to this definition">¶</a></dt>
-<dd><p>Create a white patch over the plot for what we want to ask out.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gp</strong> (<em>GeoPanel</em>) – The GeoPanel instance</p></li>
-<li><p><strong>geom</strong> (<em>geometry</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.mask_outside_polygon">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">mask_outside_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poly_verts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.mask_outside_polygon" title="Link to this definition">¶</a></dt>
-<dd><p>Make outside of a polygon.</p>
-<p>POLY_VERTS is in CCW order, as this is the interior of the polygon</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.polygon_fill">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">polygon_fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mymap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geodf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.polygon_fill" title="Link to this definition">¶</a></dt>
-<dd><p>Generalize function for overlaying filled polygons on the map.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mymap</strong> (<a class="reference internal" href="#pyiem.plot.geoplot.MapPlot" title="pyiem.plot.geoplot.MapPlot"><em>MapPlot</em></a>) – The MapPlot instance</p></li>
-<li><p><strong>geodf</strong> (<em>GeoDataFrame</em>) – A GeoDataFrame with a <cite>geom</cite> column.</p></li>
-<li><p><strong>data</strong> (<em>dict</em>) – The dictionary of keys and values used for picking colors</p></li>
-</ul>
-</dd>
-<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>ilabel</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – should values be labelled? Defaults to <cite>False</cite></p></li>
-<li><p><strong>lblfmt</strong> (<em>str</em><em>,</em><em>optional</em>) – format string for labels. Defaults to %s.</p></li>
-<li><p><strong>plotmissing</strong> (<em>bool</em>) – should geometries not included in the <cite>data</cite>
-be mapped? Defaults to <cite>True</cite></p></li>
-<li><p><strong>color</strong> (<em>str</em><em> or </em><em>dict</em>) – Providing an explicit color (used for both edge
-and fill).  Either provide one color or a dictionary to lookup a
-color by the mapping key.</p></li>
-<li><p><strong>fc</strong> (<em>str</em><em> or </em><em>dict</em>) – Same as <cite>color</cite>, but controls the fill color.
-Providing this value will over-ride any <cite>color</cite> setting.</p></li>
-<li><p><strong>ec</strong> (<em>str</em><em> or </em><em>dict</em>) – Same as <cite>color</cite>, but controls the edge color.
-Providing this value will over-ride any <cite>color</cite> setting.</p></li>
-<li><p><strong>zorder</strong> (<em>int</em>) – The zorder to use for this layer, default <cite>Z_FILL</cite></p></li>
-<li><p><strong>lw</strong> (<em>float</em>) – polygon outline width</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.pretty_bins">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">pretty_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxval</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.pretty_bins" title="Link to this definition">¶</a></dt>
-<dd><p>Return a <strong>smooth</strong> binning that encloses the min and max value.</p>
-<p>The returned array is at most the specified bins + 1 in size, but could
-be smaller given this algorithm and the data range.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>minval</strong> (<em>real</em>) – minimum value to enclose.</p></li>
-<li><p><strong>maxval</strong> (<em>real</em>) – maximum value to enclose.</p></li>
-<li><p><strong>bins</strong> (<em>int</em>) – maximum number of bins to generate</p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:
-<code class="docutils literal notranslate"><span class="pre">np.array</span></code> of bins</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.ramp2df">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">ramp2df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#pyiem.plot.util.ramp2df" title="Link to this definition">¶</a></dt>
-<dd><p>Load pyIEM color ramp into a Pandas DataFrame.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – the name of the bundled color ramp.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.sector_setter">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">sector_setter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axbounds</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.sector_setter" title="Link to this definition">¶</a></dt>
-<dd><p>Use kwargs to set the MapPlot sector.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.util.update_kwargs_apctx">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.util.</span></span><span class="sig-name descname"><span class="pre">update_kwargs_apctx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.util.update_kwargs_apctx" title="Link to this definition">¶</a></dt>
-<dd><p>Decorate things provided by an autoplot context dict.</p>
-</dd></dl>
-
-</section>
-<section id="module-pyiem.plot.windrose">
-<span id="pyiem-plot-windrose-module"></span><h2>pyiem.plot.windrose module<a class="headerlink" href="#module-pyiem.plot.windrose" title="Link to this heading">¶</a></h2>
-<p>A WindrosePlot.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.WindrosePlot">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.plot.windrose.</span></span><span class="sig-name descname"><span class="pre">WindrosePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.WindrosePlot" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A plot that has a single windrose on it.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.WindrosePlot.barplot">
-<span class="sig-name descname"><span class="pre">barplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsector</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.WindrosePlot.barplot" title="Link to this definition">¶</a></dt>
-<dd><p>Do the bar plotting work.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cmap</strong> (<em>colormap</em><em>,</em><em>optional</em>) – Use matplotlib cmap for bars.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.WindrosePlot.draw_arrows">
-<span class="sig-name descname"><span class="pre">draw_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.WindrosePlot.draw_arrows" title="Link to this definition">¶</a></dt>
-<dd><p>Place arrows on the border.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.WindrosePlot.draw_logo">
-<span class="sig-name descname"><span class="pre">draw_logo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.WindrosePlot.draw_logo" title="Link to this definition">¶</a></dt>
-<dd><p>Brand the plot.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.WindrosePlot.plot_calm">
-<span class="sig-name descname"><span class="pre">plot_calm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.WindrosePlot.plot_calm" title="Link to this definition">¶</a></dt>
-<dd><p>Clear out the center and plot the calm value.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.histogram">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.windrose.</span></span><span class="sig-name descname"><span class="pre">histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.histogram" title="Link to this definition">¶</a></dt>
-<dd><p>Create the histogram on the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>speed</strong> (<em>pint.Quantity</em>) – wind speed with units attached.</p></li>
-<li><p><strong>direction</strong> (<em>pint.Quantity</em>) – wind direction from North.</p></li>
-<li><p><strong>bins</strong> (<em>pint.Quantity</em>) – wind thresholds to use for bining.  Any value below
-the first value is considered calm.  The last value is extended to
-infinity to represent the last bin.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the percentage of reports below first bin value.
-dir_centers (list): the center of the direction bins.
-table (np.ndarray): The &lt;direction&gt;, &lt;speed&gt; histogram in percent.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>calm_percent (float)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.plot.windrose.plot">
-<span class="sig-prename descclassname"><span class="pre">pyiem.plot.windrose.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.plot.windrose.plot" title="Link to this definition">¶</a></dt>
-<dd><p>Create a WindrosePlot, add bars and other standard things.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>direction</strong> (<em>pint.Quantity</em>) – wind direction from North.</p></li>
-<li><p><strong>speed</strong> (<em>pint.Quantity</em>) – wind speeds with units attached.</p></li>
-<li><p><strong>bins</strong> (<em>pint.Quantity</em>) – wind speed bins to produce the histogram for.</p></li>
-<li><p><strong>nsector</strong> (<em>int</em>) – The number of directional centers to divide the wind
-rose into.  The first sector is centered on north.</p></li>
-<li><p><strong>rmax</strong> (<em>float</em>) – Hard codes the max radius value for the polar plot.</p></li>
-<li><p><strong>cmap</strong> (<em>colormap</em>) – Matplotlib colormap to use.</p></li>
-<li><p><strong>plot_convention</strong> (<em>str</em>) – Either <cite>from</cite> (default) or <cite>to</cite>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>WindrosePlot</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="module-pyiem.plot">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.plot" title="Link to this heading">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.plot" title="Link to this heading">#</a></h2>
 <p>Plotting</p>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
-          </div>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.nws.vtec.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.nws.vtec module</p>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">pyiem.plot package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pyiem.plot.calendarplot">pyiem.plot.calendarplot module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.calendarplot.calendar_plot"><code class="docutils literal notranslate"><span class="pre">calendar_plot()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.colormaps">pyiem.plot.colormaps module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.dep_erosion"><code class="docutils literal notranslate"><span class="pre">dep_erosion()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.get_cmap"><code class="docutils literal notranslate"><span class="pre">get_cmap()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.james"><code class="docutils literal notranslate"><span class="pre">james()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.james2"><code class="docutils literal notranslate"><span class="pre">james2()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.maue"><code class="docutils literal notranslate"><span class="pre">maue()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.nwsice"><code class="docutils literal notranslate"><span class="pre">nwsice()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.nwsprecip"><code class="docutils literal notranslate"><span class="pre">nwsprecip()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.nwssnow"><code class="docutils literal notranslate"><span class="pre">nwssnow()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.radar_ptype"><code class="docutils literal notranslate"><span class="pre">radar_ptype()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.stretch_cmap"><code class="docutils literal notranslate"><span class="pre">stretch_cmap()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.colormaps.whitebluegreenyellowred"><code class="docutils literal notranslate"><span class="pre">whitebluegreenyellowred()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.geoplot">pyiem.plot.geoplot module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot"><code class="docutils literal notranslate"><span class="pre">MapPlot</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fig"><code class="docutils literal notranslate"><span class="pre">MapPlot.fig</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.ax"><code class="docutils literal notranslate"><span class="pre">MapPlot.ax</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.close"><code class="docutils literal notranslate"><span class="pre">MapPlot.close()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.contourf"><code class="docutils literal notranslate"><span class="pre">MapPlot.contourf()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_colorbar"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_colorbar()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_cwas()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_fema_regions()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_mask"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_mask()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_radar_ptype_legend"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_radar_ptype_legend()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.draw_usdm"><code class="docutils literal notranslate"><span class="pre">MapPlot.draw_usdm()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.drawcities"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcities()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.drawcounties"><code class="docutils literal notranslate"><span class="pre">MapPlot.drawcounties()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_climdiv"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_climdiv()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_cwas"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwas()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_cwsu"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_cwsu()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_fema_regions"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_fema_regions()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_rfc"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_rfc()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_states"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_states()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.fill_ugcs"><code class="docutils literal notranslate"><span class="pre">MapPlot.fill_ugcs()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.hexbin"><code class="docutils literal notranslate"><span class="pre">MapPlot.hexbin()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.imshow"><code class="docutils literal notranslate"><span class="pre">MapPlot.imshow()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.overlay_nexrad"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_nexrad()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.overlay_roadcond"><code class="docutils literal notranslate"><span class="pre">MapPlot.overlay_roadcond()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.pcolormesh"><code class="docutils literal notranslate"><span class="pre">MapPlot.pcolormesh()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.plot_station"><code class="docutils literal notranslate"><span class="pre">MapPlot.plot_station()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.plot_values"><code class="docutils literal notranslate"><span class="pre">MapPlot.plot_values()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.postprocess"><code class="docutils literal notranslate"><span class="pre">MapPlot.postprocess()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.MapPlot.scatter"><code class="docutils literal notranslate"><span class="pre">MapPlot.scatter()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.plot.geoplot.load_bounds"><code class="docutils literal notranslate"><span class="pre">load_bounds()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.layouts">pyiem.plot.layouts module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.layouts.figure"><code class="docutils literal notranslate"><span class="pre">figure()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.layouts.figure_axes"><code class="docutils literal notranslate"><span class="pre">figure_axes()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.use_agg">pyiem.plot.use_agg module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.use_agg.figure"><code class="docutils literal notranslate"><span class="pre">figure()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.util">pyiem.plot.util module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.util.centered_bins"><code class="docutils literal notranslate"><span class="pre">centered_bins()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.draw_features_from_shapefile"><code class="docutils literal notranslate"><span class="pre">draw_features_from_shapefile()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.draw_logo"><code class="docutils literal notranslate"><span class="pre">draw_logo()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.fitbox"><code class="docutils literal notranslate"><span class="pre">fitbox()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.fontscale"><code class="docutils literal notranslate"><span class="pre">fontscale()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.make_panel"><code class="docutils literal notranslate"><span class="pre">make_panel()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.mask_outside_geom"><code class="docutils literal notranslate"><span class="pre">mask_outside_geom()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.mask_outside_polygon"><code class="docutils literal notranslate"><span class="pre">mask_outside_polygon()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.polygon_fill"><code class="docutils literal notranslate"><span class="pre">polygon_fill()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.pretty_bins"><code class="docutils literal notranslate"><span class="pre">pretty_bins()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.ramp2df"><code class="docutils literal notranslate"><span class="pre">ramp2df()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.sector_setter"><code class="docutils literal notranslate"><span class="pre">sector_setter()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.util.update_kwargs_apctx"><code class="docutils literal notranslate"><span class="pre">update_kwargs_apctx()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot.windrose">pyiem.plot.windrose module</a><ul>
-<li><a class="reference internal" href="#pyiem.plot.windrose.WindrosePlot"><code class="docutils literal notranslate"><span class="pre">WindrosePlot</span></code></a><ul>
-<li><a class="reference internal" href="#pyiem.plot.windrose.WindrosePlot.barplot"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.barplot()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.windrose.WindrosePlot.draw_arrows"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.draw_arrows()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.windrose.WindrosePlot.draw_logo"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.draw_logo()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.windrose.WindrosePlot.plot_calm"><code class="docutils literal notranslate"><span class="pre">WindrosePlot.plot_calm()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pyiem.plot.windrose.histogram"><code class="docutils literal notranslate"><span class="pre">histogram()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.plot.windrose.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.plot">Module contents</a></li>
-</ul>
-</li>
-</ul>
+    </a>
+    <a class="right-next"
+       href="pyiem.plot.calendarplot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.plot.calendarplot module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="pyiem.nws.products.html"
-                          title="previous chapter">pyiem.nws.products package</a></p>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyiem.plot">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="pyiem.templates.html"
-                          title="next chapter">pyiem.templates package</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/pyiem.plot.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.templates.html" title="pyiem.templates package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.nws.products.html" title="pyiem.nws.products package"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.plot package</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2015-2025, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
-    </div>
+  
+</div>
+
+  </footer>
   </body>
 </html>

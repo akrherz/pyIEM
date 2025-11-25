@@ -1,0 +1,7 @@
+pyiem.nws.products.cli module
+=============================
+
+.. automodule:: pyiem.nws.products.cli
+   :members:
+   :show-inheritance:
+   :undoc-members:

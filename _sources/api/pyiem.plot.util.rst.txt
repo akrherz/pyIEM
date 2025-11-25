@@ -1,0 +1,7 @@
+pyiem.plot.util module
+======================
+
+.. automodule:: pyiem.plot.util
+   :members:
+   :show-inheritance:
+   :undoc-members:

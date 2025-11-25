@@ -1,0 +1,7 @@
+pyiem.nws.products.dsm module
+=============================
+
+.. automodule:: pyiem.nws.products.dsm
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyiem.meteorology module &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.meteorology';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyiem.mrms module" href="pyiem.mrms.html" />
+    <link rel="prev" title="pyiem.iemre module" href="pyiem.iemre.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.grid.html">pyiem.grid package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.nav.html">pyiem.grid.nav module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.util.html">pyiem.grid.util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.grid.zs.html">pyiem.grid.zs module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.models.html">pyiem.models package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.cwa.html">pyiem.models.cwa module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gairmet.html">pyiem.models.gairmet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.gridnav.html">pyiem.models.gridnav module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.igra.html">pyiem.models.igra module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.mcd.html">pyiem.models.mcd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.pirep.html">pyiem.models.pirep module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.sel.html">pyiem.models.sel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.shef.html">pyiem.models.shef module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.taf.html">pyiem.models.taf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.models.wwp.html">pyiem.models.wwp module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.ncei.html">pyiem.ncei package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html">pyiem.ncei.ds3505 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html">pyiem.ncei.ghcnh module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html">pyiem.ncei.igra module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.nws.html">pyiem.nws package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pyiem.nws.products.html">pyiem.nws.products package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cf6.html">pyiem.nws.products.cf6 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cli.html">pyiem.nws.products.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.cwa.html">pyiem.nws.products.cwa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.dsm.html">pyiem.nws.products.dsm module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.ero.html">pyiem.nws.products.ero module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.fd.html">pyiem.nws.products.fd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.ffg.html">pyiem.nws.products.ffg module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.gairmet.html">pyiem.nws.products.gairmet module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.hml.html">pyiem.nws.products.hml module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.hwo.html">pyiem.nws.products.hwo module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.lsr.html">pyiem.nws.products.lsr module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.mcd.html">pyiem.nws.products.mcd module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.metar_util.html">pyiem.nws.products.metar_util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.metarcollect.html">pyiem.nws.products.metarcollect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.mos.html">pyiem.nws.products.mos module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.nhc.html">pyiem.nws.products.nhc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.nldn.html">pyiem.nws.products.nldn module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.pirep.html">pyiem.nws.products.pirep module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.saw.html">pyiem.nws.products.saw module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.scp.html">pyiem.nws.products.scp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sel.html">pyiem.nws.products.sel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.shef.html">pyiem.nws.products.shef module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sigmet.html">pyiem.nws.products.sigmet module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.spacewx.html">pyiem.nws.products.spacewx module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.spcpts.html">pyiem.nws.products.spcpts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.sps.html">pyiem.nws.products.sps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.taf.html">pyiem.nws.products.taf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.vtec.html">pyiem.nws.products.vtec module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.wwp.html">pyiem.nws.products.wwp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.nws.products.xteus.html">pyiem.nws.products.xteus module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.bufkit.html">pyiem.nws.bufkit module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.gini.html">pyiem.nws.gini module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.hvtec.html">pyiem.nws.hvtec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.lsr.html">pyiem.nws.lsr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.nwsli.html">pyiem.nws.nwsli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.product.html">pyiem.nws.product module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.ugc.html">pyiem.nws.ugc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.vtec.html">pyiem.nws.vtec module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.plot.html">pyiem.plot package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.calendarplot.html">pyiem.plot.calendarplot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.colormaps.html">pyiem.plot.colormaps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.geoplot.html">pyiem.plot.geoplot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.layouts.html">pyiem.plot.layouts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.use_agg.html">pyiem.plot.use_agg module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.util.html">pyiem.plot.util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.plot.windrose.html">pyiem.plot.windrose module</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyiem.templates.html">pyiem.templates package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.templates.iem.html">pyiem.templates.iem package</a></li>
+</ul>
+</details></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.database.html">pyiem.database module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.datatypes.html">pyiem.datatypes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.dep.html">pyiem.dep module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.era5land.html">pyiem.era5land module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.exceptions.html">pyiem.exceptions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.geom_util.html">pyiem.geom_util module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.htmlgen.html">pyiem.htmlgen module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.iemre.html">pyiem.iemre module</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pyiem.meteorology module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.mrms.html">pyiem.mrms module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.network.html">pyiem.network module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.observation.html">pyiem.observation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.reference.html">pyiem.reference module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.stage4.html">pyiem.stage4 module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.tracker.html">pyiem.tracker module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.util.html">pyiem.util module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.webutil.html">pyiem.webutil module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.wellknowntext.html">pyiem.wellknowntext module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.windrose_utils.html">pyiem.windrose_utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.wmo.html">pyiem.wmo module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.meteorology module</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyiem.meteorology">
+<span id="pyiem-meteorology-module"></span><h1>pyiem.meteorology module<a class="headerlink" href="#module-pyiem.meteorology" title="Link to this heading">#</a></h1>
+<p>We do meteorological things, when necessary</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.temperature_humidity_index">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">temperature_humidity_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#temperature_humidity_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.temperature_humidity_index" title="Link to this definition">#</a></dt>
+<dd><p>Compute the Temperature Humidity Index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The Air Temperature</p></li>
+<li><p><strong>humidity</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.humidity" title="pyiem.datatypes.humidity"><em>humidity</em></a>) – The Relative Humidity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The THI</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.comprehensive_climate_index">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">comprehensive_climate_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">airtemp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">windspeed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solarrad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shade_effect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#comprehensive_climate_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.comprehensive_climate_index" title="Link to this definition">#</a></dt>
+<dd><p>Compute the Comprehensive Climate Index.</p>
+<p>Note: shade_effect multiplies the <code class="docutils literal notranslate"><span class="pre">solarrad</span></code> value by 0.2 (80% reduction)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shade_effect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.clearsky_shortwave_irradiance_year">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">clearsky_shortwave_irradiance_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#clearsky_shortwave_irradiance_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.clearsky_shortwave_irradiance_year" title="Link to this definition">#</a></dt>
+<dd><p>Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – latitude</p></li>
+<li><p><strong>elevation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – location elevation in meters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>irradiance (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.drct">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">drct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#drct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.drct" title="Link to this definition">#</a></dt>
+<dd><p>Compute the wind direction given a u and v wind speed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>dt.speed</em>) – u component wind speed</p></li>
+<li><p><strong>v</strong> (<em>dt.speed</em>) – v component wind speed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dt.direction value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.uv">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">uv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#uv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.uv" title="Link to this definition">#</a></dt>
+<dd><p>Compute the u and v components of the wind
+&#64;param wind speed in whatever units
+&#64;param dir wind direction with zero as north
+&#64;return u and v components</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.mcalc_feelslike">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">mcalc_feelslike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmpf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dwpf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_undefined</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#mcalc_feelslike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.mcalc_feelslike" title="Link to this definition">#</a></dt>
+<dd><p>Compute a feels like temperature</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dry bulb temperature</p></li>
+<li><p><strong>dewpoint</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The dew point temperature</p></li>
+<li><p><strong>speed</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.speed" title="pyiem.datatypes.speed"><em>speed</em></a>) – the wind speed</p></li>
+<li><p><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, mask values where feels like is undef.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The feels like temperature</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.windchill">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">windchill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#windchill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.windchill" title="Link to this definition">#</a></dt>
+<dd><p>Compute the wind chill temperature</p>
+<p><a class="reference external" href="http://www.ofcm.gov/publications/reports2.htm">http://www.ofcm.gov/publications/reports2.htm</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – The Air Temperature</p></li>
+<li><p><strong>speed</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.speed" title="pyiem.datatypes.speed"><em>speed</em></a>) – The Wind Speed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Wind Chill Temperature</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature">temperature</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.heatindex">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">heatindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#heatindex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.heatindex" title="Link to this definition">#</a></dt>
+<dd><p>Compute the heat index based on</p>
+<p>Stull, Richard (2000). Meteorology for Scientists and Engineers,
+Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</p>
+<p>Another opinion on appropriate equation:
+<a class="reference external" href="http://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml">http://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml</a></p>
+<p><a class="reference external" href="http://www.weather.gov/media/ffc/ta_htindx.PDF">http://www.weather.gov/media/ffc/ta_htindx.PDF</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.dewpoint_from_pq">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">dewpoint_from_pq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixingratio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#dewpoint_from_pq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.dewpoint_from_pq" title="Link to this definition">#</a></dt>
+<dd><p>Compute the Dew Point given a Pressure and Mixing Ratio</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.dewpoint">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">dewpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relhumid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#dewpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.dewpoint" title="Link to this definition">#</a></dt>
+<dd><p>Compute Dew Point given a temperature and RH%</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.relh">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">relh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#relh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.relh" title="Link to this definition">#</a></dt>
+<dd><p>Compute Relative Humidity based on a temperature and dew point</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.mixing_ratio">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">mixing_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dewpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#mixing_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.mixing_ratio" title="Link to this definition">#</a></dt>
+<dd><p>Compute the mixing ratio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dewpoint</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a>) – Dew Point temperature</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mixing ratio</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.meteorology.gdd">
+<span class="sig-prename descclassname"><span class="pre">pyiem.meteorology.</span></span><span class="sig-name descname"><span class="pre">gdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ceiling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">86.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/meteorology.html#gdd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.meteorology.gdd" title="Link to this definition">#</a></dt>
+<dd><p>Compute Growing Degree Days</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em>, or </em><em>metpy.units</em>) – High Temperature</p></li>
+<li><p><strong>low</strong> (<a class="reference internal" href="pyiem.datatypes.html#pyiem.datatypes.temperature" title="pyiem.datatypes.temperature"><em>temperature</em></a><em> or </em><em>metpy.units</em>) – Low Temperature</p></li>
+<li><p><strong>base</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Base to use in GDD Computation (F)</p></li>
+<li><p><strong>ceiling</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Ceiling to use in GDD Computation (F)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>float value for GDDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.iemre.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.iemre module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pyiem.mrms.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.mrms module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.temperature_humidity_index"><code class="docutils literal notranslate"><span class="pre">temperature_humidity_index()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.comprehensive_climate_index"><code class="docutils literal notranslate"><span class="pre">comprehensive_climate_index()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.clearsky_shortwave_irradiance_year"><code class="docutils literal notranslate"><span class="pre">clearsky_shortwave_irradiance_year()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.drct"><code class="docutils literal notranslate"><span class="pre">drct()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.uv"><code class="docutils literal notranslate"><span class="pre">uv()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.mcalc_feelslike"><code class="docutils literal notranslate"><span class="pre">mcalc_feelslike()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.windchill"><code class="docutils literal notranslate"><span class="pre">windchill()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.heatindex"><code class="docutils literal notranslate"><span class="pre">heatindex()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.dewpoint_from_pq"><code class="docutils literal notranslate"><span class="pre">dewpoint_from_pq()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.dewpoint"><code class="docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.relh"><code class="docutils literal notranslate"><span class="pre">relh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.mixing_ratio"><code class="docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.meteorology.gdd"><code class="docutils literal notranslate"><span class="pre">gdd()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

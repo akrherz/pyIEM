@@ -1,0 +1,7 @@
+pyiem.plot.windrose module
+==========================
+
+.. automodule:: pyiem.plot.windrose
+   :members:
+   :show-inheritance:
+   :undoc-members:

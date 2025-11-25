@@ -1,0 +1,7 @@
+pyiem.nws.products.ffg module
+=============================
+
+.. automodule:: pyiem.nws.products.ffg
+   :members:
+   :show-inheritance:
+   :undoc-members:

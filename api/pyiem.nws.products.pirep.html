@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyiem.nws.products.pirep module &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.nws.products.pirep';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyiem.nws.products.saw module" href="pyiem.nws.products.saw.html" />
+    <link rel="prev" title="pyiem.nws.products.nldn module" href="pyiem.nws.products.nldn.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pyiem.nws.products.html">pyiem.nws.products package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.cf6.html">pyiem.nws.products.cf6 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.cli.html">pyiem.nws.products.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.cwa.html">pyiem.nws.products.cwa module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.dsm.html">pyiem.nws.products.dsm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.ero.html">pyiem.nws.products.ero module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.fd.html">pyiem.nws.products.fd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.ffg.html">pyiem.nws.products.ffg module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.gairmet.html">pyiem.nws.products.gairmet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.hml.html">pyiem.nws.products.hml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.hwo.html">pyiem.nws.products.hwo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.lsr.html">pyiem.nws.products.lsr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.mcd.html">pyiem.nws.products.mcd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.metar_util.html">pyiem.nws.products.metar_util module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.metarcollect.html">pyiem.nws.products.metarcollect module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.mos.html">pyiem.nws.products.mos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.nhc.html">pyiem.nws.products.nhc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.nldn.html">pyiem.nws.products.nldn module</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">pyiem.nws.products.pirep module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.saw.html">pyiem.nws.products.saw module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.scp.html">pyiem.nws.products.scp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.sel.html">pyiem.nws.products.sel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.shef.html">pyiem.nws.products.shef module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.sigmet.html">pyiem.nws.products.sigmet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.spacewx.html">pyiem.nws.products.spacewx module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.spcpts.html">pyiem.nws.products.spcpts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.sps.html">pyiem.nws.products.sps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.taf.html">pyiem.nws.products.taf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.vtec.html">pyiem.nws.products.vtec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.wwp.html">pyiem.nws.products.wwp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.nws.products.xteus.html">pyiem.nws.products.xteus module</a></li>
+</ul>
+</details></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.bufkit.html">pyiem.nws.bufkit module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.gini.html">pyiem.nws.gini module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.hvtec.html">pyiem.nws.hvtec module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.lsr.html">pyiem.nws.lsr module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.nwsli.html">pyiem.nws.nwsli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.product.html">pyiem.nws.product module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.ugc.html">pyiem.nws.ugc module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.nws.vtec.html">pyiem.nws.vtec module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="pyiem.nws.html" class="nav-link">pyiem.nws package</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="pyiem.nws.products.html" class="nav-link">pyiem.nws.products package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.pirep module</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pyiem.nws.products.pirep">
+<span id="pyiem-nws-products-pirep-module"></span><h1>pyiem.nws.products.pirep module<a class="headerlink" href="#module-pyiem.nws.products.pirep" title="Link to this heading">#</a></h1>
+<p>Pilot Reports (PIREP)</p>
+<p>This module attempts to process and store atomic data from PIREPs.  These are
+encoded products that look like so:</p>
+<blockquote>
+<div><p>UBUS01 KMSC 221700
+EAU UA /OV EAU360030/TM 1715/FL350/TP B737/TB CONT LGT-MOD CHOP =
+EHY UA /OV MBW253036 /TM 1729 /FL105 /TP C206 /SK FEW250 /TA M06
+/TB NEG /RM SMTH=</p>
+</div></blockquote>
+<p>Unfortunately, there is not much documentation of this format and the feed of
+this data contains a bunch of formatting errors.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.nws.products.pirep.</span></span><span class="sig-name descname"><span class="pre">Pirep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyiem.nws.product.html#pyiem.nws.product.TextProduct" title="pyiem.nws.product.TextProduct"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextProduct</span></code></a></p>
+<p>Class for parsing and representing PIREPs found in NWS text products.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.parse_reports">
+<span class="sig-name descname"><span class="pre">parse_reports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.parse_reports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.parse_reports" title="Link to this definition">#</a></dt>
+<dd><p>Actually do the parsing of the product that generates the reports
+stored within the self.reports list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.process_pirep">
+<span class="sig-name descname"><span class="pre">process_pirep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.process_pirep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.process_pirep" title="Link to this definition">#</a></dt>
+<dd><p>Convert this report text into an actual PIREP object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.compute_loc">
+<span class="sig-name descname"><span class="pre">compute_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.compute_loc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.compute_loc" title="Link to this definition">#</a></dt>
+<dd><p>Figure out the lon/lat for this location</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.compute_pirep_valid">
+<span class="sig-name descname"><span class="pre">compute_pirep_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.compute_pirep_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.compute_pirep_valid" title="Link to this definition">#</a></dt>
+<dd><p>Based on what utcnow is set to, compute when this is valid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.sql">
+<span class="sig-name descname"><span class="pre">sql</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.sql"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.sql" title="Link to this definition">#</a></dt>
+<dd><p>Save the reports to the database via the transaction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.assign_cwsu">
+<span class="sig-name descname"><span class="pre">assign_cwsu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.assign_cwsu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.assign_cwsu" title="Link to this definition">#</a></dt>
+<dd><p>Use this transaction object to assign CWSUs for the pireps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.Pirep.get_jabbers">
+<span class="sig-name descname"><span class="pre">get_jabbers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_uri2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#Pirep.get_jabbers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.Pirep.get_jabbers" title="Link to this definition">#</a></dt>
+<dd><p>get jabber messages</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyiem.nws.products.pirep.parser">
+<span class="sig-prename descclassname"><span class="pre">pyiem.nws.products.pirep.</span></span><span class="sig-name descname"><span class="pre">parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utcnow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ugc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nwsli_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/nws/products/pirep.html#parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.nws.products.pirep.parser" title="Link to this definition">#</a></dt>
+<dd><p>A parser implementation</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.nws.products.nldn.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.nws.products.nldn module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pyiem.nws.products.saw.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.nws.products.saw module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep"><code class="docutils literal notranslate"><span class="pre">Pirep</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.parse_reports"><code class="docutils literal notranslate"><span class="pre">Pirep.parse_reports()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.process_pirep"><code class="docutils literal notranslate"><span class="pre">Pirep.process_pirep()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.compute_loc"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_loc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.compute_pirep_valid"><code class="docutils literal notranslate"><span class="pre">Pirep.compute_pirep_valid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.sql"><code class="docutils literal notranslate"><span class="pre">Pirep.sql()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.assign_cwsu"><code class="docutils literal notranslate"><span class="pre">Pirep.assign_cwsu()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.Pirep.get_jabbers"><code class="docutils literal notranslate"><span class="pre">Pirep.get_jabbers()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.nws.products.pirep.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

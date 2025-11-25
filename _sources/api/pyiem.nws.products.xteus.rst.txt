@@ -1,0 +1,7 @@
+pyiem.nws.products.xteus module
+===============================
+
+.. automodule:: pyiem.nws.products.xteus
+   :members:
+   :show-inheritance:
+   :undoc-members:

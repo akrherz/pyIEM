@@ -1,0 +1,1240 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.cli &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/cli';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.cli</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.cli</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Parser and object storage of information within NWS CLI Product.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">CLIException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.observation</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRACE_VALUE</span><span class="p">,</span> <span class="n">StationAttributes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span>
+
+<span class="n">AMPM_COLON</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s\d?\d:\d\d\s[AP]M&quot;</span><span class="p">)</span>
+<span class="n">HEADLINE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;\.\.\.THE ([A-Z_\.\-\(\)\/\,\s]+) &quot;</span>
+        <span class="sa">r</span><span class="s2">&quot;CLIMATE SUMMARY (FOR|FROM)\s+&quot;</span>
+        <span class="sa">r</span><span class="s2">&quot;([A-Z]+\s[0-9]+\s+[0-9]</span><span class="si">{4}</span><span class="s2">)( CORRECTION)?\.\.\.&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">WIND_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;(HIGHEST|AVERAGE|RESULTANT)\s(WIND|GUST)\s(SPEED|DIRECTION)&quot;</span>
+<span class="p">)</span>
+
+<span class="n">REGIMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME    RECORD YEAR NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD YEAR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL DEPARTURE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED RECORD YEAR NORMAL DEPARTURE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED RECORD YEAR NORMAL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD YEAR NORMAL  LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME       LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   NORMAL  LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD YEAR     LAST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   NORMAL DEPARTURE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED NORMAL DEPARTURE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED TIME   RECORD NORMAL DEPARTURE LAST&quot;</span><span class="p">,</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;WEATHER ITEM   OBSERVED    TIME     RECORD    YEAR    NORMAL    &quot;</span>
+        <span class="s2">&quot;DEPARTURE    LAST&quot;</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED RECORD YEAR     LAST&quot;</span><span class="p">,</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;WEATHER ITEM  OBSERVED    TIME      RECORD    YEAR    NORMAL   &quot;</span>
+        <span class="s2">&quot;DEPARTURE   LAST&quot;</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;WEATHER ITEM   OBSERVED     LAST&quot;</span><span class="p">,</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;WEATHER ITEM  OBSERVED   TIME   RECORD   YEAR   NORMAL   &quot;</span>
+        <span class="s2">&quot;DEPARTURE   LAST&quot;</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+<span class="c1"># label, value, time, record, year, normal, departure, last</span>
+<span class="n">COLS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">53</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">58</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">57</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">39</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">46</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">45</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">51</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">80</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">44</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">79</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">72</span><span class="p">],</span>
+<span class="p">]</span>
+<span class="c1"># Allow manual provision of IDS</span>
+<span class="n">HARDCODED</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DODGE CITY KS&quot;</span><span class="p">:</span> <span class="s2">&quot;KDDC&quot;</span><span class="p">,</span>  <span class="c1"># Comes as CLIDGC</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="update_iemaccess">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.update_iemaccess">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_iemaccess</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the IEM Access Database.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_network&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">ob</span> <span class="o">=</span> <span class="n">Observation</span><span class="p">(</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_station&quot;</span><span class="p">],</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_network&quot;</span><span class="p">],</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">ob</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">txn</span><span class="p">)</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">logmsg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">climax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;temperature_maximum&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">climax</span> <span class="o">!=</span> <span class="n">current</span><span class="p">[</span><span class="s2">&quot;max_tmpf&quot;</span><span class="p">]:</span>
+            <span class="n">logmsg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MaxT O:</span><span class="si">{</span><span class="n">current</span><span class="p">[</span><span class="s1">&#39;max_tmpf&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> N:</span><span class="si">{</span><span class="n">climax</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">current</span><span class="p">[</span><span class="s2">&quot;max_tmpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">climax</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">climin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;temperature_minimum&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">climin</span> <span class="o">!=</span> <span class="n">current</span><span class="p">[</span><span class="s2">&quot;min_tmpf&quot;</span><span class="p">]:</span>
+            <span class="n">logmsg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MinT O:</span><span class="si">{</span><span class="n">current</span><span class="p">[</span><span class="s1">&#39;min_tmpf&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> N:</span><span class="si">{</span><span class="n">climin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">current</span><span class="p">[</span><span class="s2">&quot;min_tmpf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">climin</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_month&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;precip_month&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">current</span><span class="p">[</span><span class="s2">&quot;pmonth&quot;</span><span class="p">]:</span>
+            <span class="n">logmsg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PMonth O:</span><span class="si">{</span><span class="n">current</span><span class="p">[</span><span class="s1">&#39;pmonth&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> N:</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">current</span><span class="p">[</span><span class="s2">&quot;pmonth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_today&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;precip_today&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">current</span><span class="p">[</span><span class="s2">&quot;pday&quot;</span><span class="p">]:</span>
+            <span class="n">logmsg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDay O:</span><span class="si">{</span><span class="n">current</span><span class="p">[</span><span class="s1">&#39;pday&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> N:</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">current</span><span class="p">[</span><span class="s2">&quot;pday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">for</span> <span class="n">dkey</span><span class="p">,</span> <span class="n">ikey</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;snow_today&quot;</span><span class="p">:</span> <span class="s2">&quot;snow&quot;</span><span class="p">,</span> <span class="s2">&quot;snowdepth&quot;</span><span class="p">:</span> <span class="s2">&quot;snowd&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dkey</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">dkey</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">current</span><span class="p">[</span><span class="n">ikey</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">!=</span> <span class="n">current</span><span class="p">[</span><span class="n">ikey</span><span class="p">]:</span>
+                <span class="n">logmsg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ikey</span><span class="si">}</span><span class="s2"> O:</span><span class="si">{</span><span class="n">current</span><span class="p">[</span><span class="n">ikey</span><span class="p">]</span><span class="si">}</span><span class="s2"> N:</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">current</span><span class="p">[</span><span class="n">ikey</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">logmsg</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="n">skip_current</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) </span><span class="si">%s</span><span class="s2"> ob.save: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_station&quot;</span><span class="p">],</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">logmsg</span><span class="p">),</span>
+        <span class="n">res</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="trace_r">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.trace_r">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_r</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert our value back into meaningful string&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Missing&quot;</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">TRACE_VALUE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Trace&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&quot;&#39;</span></div>
+
+
+
+<div class="viewcode-block" id="get_number_year">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.get_number_year">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_number_year</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure we get a year that makes sense.&quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">1700</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+
+<div class="viewcode-block" id="get_number">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.get_number">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_number</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a string into a number, preferable a float!&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;MM&quot;</span><span class="p">:</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="n">TRACE_VALUE</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\-\+]?\d*\.\d+|[\-\+]?\d+&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">retval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">number</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">retval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;get_number() failed for |</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">retval</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">retval</span></div>
+
+
+
+<div class="viewcode-block" id="convert_key">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.convert_key">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_key</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a key value to something we store&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;YESTERDAY&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;today&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;TODAY&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;today&quot;</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;MONTH TO DATE&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;month&quot;</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SINCE &quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;SINCE &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;convert_key() failed for |</span><span class="si">%s</span><span class="s2">|&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;fail&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="make_tokens">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.make_tokens">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_tokens</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a line into tokens based on a regime&quot;&quot;&quot;</span>
+    <span class="n">mycols</span> <span class="o">=</span> <span class="n">COLS</span><span class="p">[</span><span class="n">regime</span><span class="p">]</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">mycols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">line</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">e</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;R &quot;</span><span class="p">):</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;R &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tokens</span></div>
+
+
+
+<div class="viewcode-block" id="parse_snowfall">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_snowfall">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_snowfall</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the snowfall data&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="c1"># skipme</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">make_tokens</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SNOW DEPTH&quot;</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;snowdepth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">continue</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">convert_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">yeartest</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">yeartest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">yeartest</span><span class="p">]</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_normal&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_departure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;today&quot;</span>
+            <span class="ow">and</span> <span class="n">yeartest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;snow_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;snow_today_record_years&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="parse_precipitation">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_precipitation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_precipitation</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the precipitation data&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">make_tokens</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">convert_key</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">yeartest</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">yeartest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">yeartest</span><span class="p">]</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_normal&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_departure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;today&quot;</span>
+            <span class="ow">and</span> <span class="n">yeartest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;precip_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;precip_today_record_years&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="parse_temperature">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_temperature">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_temperature</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Here we parse a temperature section&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c1"># Repair a broken (E) product, see akrherz/pyIEM#08</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;(E)&quot;</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">38</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+            <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid line repaired |</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(E)&quot;</span><span class="p">,</span> <span class="s2">&quot;E &quot;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">make_tokens</span><span class="p">(</span><span class="n">regime</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MAXIMUM&quot;</span><span class="p">,</span> <span class="s2">&quot;MINIMUM&quot;</span><span class="p">,</span> <span class="s2">&quot;AVERAGE&quot;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;MM&quot;</span><span class="p">]:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found invalid year |</span><span class="si">{</span><span class="n">tokens</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_normal&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="c1"># Check next line(s) for more years</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">line2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">get_number_year</span><span class="p">(</span><span class="n">line2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;temperature_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_record_years&quot;</span><span class="p">,</span>
+                    <span class="p">[],</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found invalid year |</span><span class="si">{</span><span class="n">line2</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
+            <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="parse_sky_coverage">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_sky_coverage">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_sky_coverage</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn section into data.&quot;&quot;&quot;</span>
+    <span class="n">asc</span> <span class="o">=</span> <span class="s2">&quot;AVERAGE SKY COVER&quot;</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">asc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;average_sky_cover&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">pos</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">asc</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Convert &#39;</span><span class="si">%s</span><span class="s2">&#39; to float failed&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_headline">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_headline">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_headline</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out when this product is valid for&quot;&quot;&quot;</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">HEADLINE_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+    <span class="n">myfmt</span> <span class="o">=</span> <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2"> %Y&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2"> %Y&quot;</span>
+    <span class="n">cli_valid</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">myfmt</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="n">cli_station</span> <span class="o">=</span> <span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">cli_valid</span><span class="p">,</span> <span class="n">cli_station</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_wind">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parse_wind">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_wind</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse any wind information.&quot;&quot;&quot;</span>
+    <span class="c1"># hold your nose here</span>
+    <span class="c1"># make everything space seperated</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">WIND_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">token</span><span class="p">),</span> <span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[(</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">token</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">get_number</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_station_ids</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">cli_station_name</span><span class="p">,</span> <span class="n">is_multi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute needed station IDs.&quot;&quot;&quot;</span>
+    <span class="c1"># Consult the HARDCODED list</span>
+    <span class="k">if</span> <span class="n">cli_station_name</span> <span class="ow">in</span> <span class="n">HARDCODED</span><span class="p">:</span>
+        <span class="n">station</span> <span class="o">=</span> <span class="n">HARDCODED</span><span class="p">[</span><span class="n">cli_station_name</span><span class="p">]</span>
+    <span class="c1"># Can&#39;t always use the AFOS as the station ID :(</span>
+    <span class="k">elif</span> <span class="n">is_multi</span><span class="p">:</span>
+        <span class="n">station</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">st</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">cli_station_name</span><span class="p">:</span>
+                <span class="n">station</span> <span class="o">=</span> <span class="n">st</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">station</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CLIException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown CLI Station Text: |</span><span class="si">{</span><span class="n">cli_station_name</span><span class="si">}</span><span class="s2">|&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">station</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+    <span class="c1"># We have computed a four character station ID, is it known?</span>
+    <span class="k">if</span> <span class="n">station</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">:</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Station not known to NWSCLI Network |</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">|&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">station</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">access_station</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">access_network</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># See if our network table provides an attribute that maps us to an ASOS</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">station</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">StationAttributes</span><span class="o">.</span><span class="n">MAPS_TO</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">access_station</span><span class="p">,</span> <span class="n">access_network</span> <span class="o">=</span> <span class="n">tokens</span>
+    <span class="k">if</span> <span class="n">access_station</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Our default mapping</span>
+        <span class="n">access_station</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">station</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">station</span>
+        <span class="n">access_network</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prod</span><span class="o">.</span><span class="n">nwsli_provider</span><span class="p">[</span><span class="n">station</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">_ASOS&quot;</span>
+
+    <span class="k">return</span> <span class="n">station</span><span class="p">,</span> <span class="n">access_station</span><span class="p">,</span> <span class="n">access_network</span>
+
+
+<div class="viewcode-block" id="sql_data">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.sql_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sql_data</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Do an individual data entry.&quot;&quot;&quot;</span>
+    <span class="c1"># See what we currently have stored.</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;SELECT product from cli_data where station = </span><span class="si">%s</span><span class="s2"> and valid = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;db_station&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">pid</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;DELETE from cli_data WHERE station = </span><span class="si">%s</span><span class="s2"> and valid = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;db_station&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">]),</span>
+        <span class="p">)</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        INSERT into cli_data(station, product, valid, high, high_normal,</span>
+<span class="sd">        high_record, high_record_years, low, low_normal, low_record,</span>
+<span class="sd">        low_record_years, precip, precip_month, precip_jan1, precip_jul1,</span>
+<span class="sd">        precip_normal, precip_record, precip_record_years, precip_month_normal,</span>
+<span class="sd">        snow, snow_month, snow_jun1, snow_jul1, snow_normal, snow_dec1,</span>
+<span class="sd">        precip_dec1, precip_dec1_normal, precip_jan1_normal, high_time,</span>
+<span class="sd">        low_time, snow_record_years, snow_record, snow_jun1_normal,</span>
+<span class="sd">        snow_jul1_normal, snow_dec1_normal, snow_month_normal, precip_jun1,</span>
+<span class="sd">        precip_jun1_normal, average_sky_cover, resultant_wind_speed,</span>
+<span class="sd">        resultant_wind_direction, highest_wind_speed, highest_wind_direction,</span>
+<span class="sd">        highest_gust_speed, highest_gust_direction, average_wind_speed,</span>
+<span class="sd">        snowdepth)</span>
+<span class="sd">        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,</span>
+<span class="sd">        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,</span>
+<span class="sd">        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="p">(</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;db_station&quot;</span><span class="p">],</span>
+            <span class="n">prod</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">],</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum_record&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum_record_years&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum_record&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum_record_years&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_today&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_month&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_jan1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_jul1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_today_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_today_record&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_today_record_years&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_month_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_today&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_month&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_jun1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_jul1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_today_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_dec1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_dec1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_dec1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_jan1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_maximum_time&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperature_minimum_time&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_today_record_years&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_today_record&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_jun1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_jul1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_dec1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snow_month_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_jun1&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;precip_jun1_normal&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;average_sky_cover&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultant_wind_speed&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resultant_wind_direction&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;highest_wind_speed&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;highest_wind_direction&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;highest_gust_speed&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;highest_gust_direction&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;average_wind_speed&quot;</span><span class="p">),</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snowdepth&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CLIProduct">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CLIProduct</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a CLI Daily Climate Report Product</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;constructor&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="c1"># Hold our parsing results as an array of dicts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regime</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Sometimes, we get products that are not really in CLI format but</span>
+        <span class="c1"># are RER (record event reports) with a CLI AWIPS ID</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wmo</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;CD&quot;</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Product </span><span class="si">%s</span><span class="s2"> skipped due to wrong header&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_sections</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="c1"># We have meat!</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_diction</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;cli_valid&quot;</span><span class="p">],</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;cli_station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_headline</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="p">(</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;db_station&quot;</span><span class="p">],</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_station&quot;</span><span class="p">],</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;access_network&quot;</span><span class="p">],</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_compute_station_ids</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;cli_station&quot;</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_data</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CLIProduct.find_sections">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct.find_sections">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Some trickery to figure out if we have multiple reports</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          list of text sections</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unixtext</span>
+        <span class="c1"># Correct bad encoding of colons due to new NWS software</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">AMPM_COLON</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&amp;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">HEADLINE_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">section</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s?WEATHER ITEM.*$&quot;</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CLIException</span><span class="p">(</span><span class="s2">&quot;Could not find &#39;WEATHER ITEM&#39; within text&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="c1"># Uh oh, we need to do some manual splitting</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">HEADLINE_RE</span><span class="p">,</span> <span class="n">section</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)):</span>
+                <span class="n">pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>  <span class="c1"># noqa</span>
+            <span class="n">pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">section</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pos</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">10</span><span class="p">])</span> <span class="p">:</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">sections</span></div>
+
+
+<div class="viewcode-block" id="CLIProduct.compute_diction">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct.compute_diction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_diction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Try to determine what we have for a format&quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s?WEATHER ITEM.*$&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">diction</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">diction</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">REGIMES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CLIException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown diction found in &#39;WEATHER ITEM&#39;</span><span class="se">\n</span><span class="s2">|</span><span class="si">{</span><span class="n">diction</span><span class="si">}</span><span class="s2">|&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">regime</span> <span class="o">=</span> <span class="n">REGIMES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">diction</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CLIProduct.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override the jabber message formatter&quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">?pid=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">xtra</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_channels</span><span class="p">(),</span>
+            <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;High: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;temperature_maximum&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Low: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;temperature_minimum&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Precip: </span><span class="si">{</span><span class="n">trace_r</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;precip_today&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Snow: </span><span class="si">{</span><span class="n">trace_r</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;snow_today&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">sd</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;snowdepth&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; Snow Depth: </span><span class="si">{</span><span class="n">trace_r</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">mess</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_valid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Climate Report: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">htmlmess</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;cli_station&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &lt;a href=&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_valid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> Climate Report&lt;/a&gt;: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter_media&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/218/&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;network:NWSCLI::station:</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;db_station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">::&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;date:</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_valid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">::&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;_:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">()</span><span class="si">}</span><span class="s2">.png&quot;</span>
+            <span class="p">)</span>
+            <span class="n">xtra</span><span class="p">[</span><span class="s2">&quot;twitter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cli_valid&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">%b %-d</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Climate: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">mess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TRACE_VALUE</span><span class="p">),</span> <span class="s2">&quot;Trace&quot;</span><span class="p">),</span>
+                    <span class="n">htmlmess</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TRACE_VALUE</span><span class="p">),</span> <span class="s2">&quot;Trace&quot;</span><span class="p">),</span>
+                    <span class="n">xtra</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="CLIProduct.parse_data">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct.parse_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actually do the parsing of this silly format&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># We need to first search down the section to look for where the</span>
+        <span class="c1"># first TEMPERATURE section starts.</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^TEMPERATURE&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CLIException</span><span class="p">(</span><span class="s2">&quot;Failed to find TEMPERATURE, aborting&quot;</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="c1"># Strip extraneous spaces</span>
+        <span class="n">meat</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">section</span><span class="p">[</span><span class="n">pos</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+        <span class="c1"># replace any 2+ \n with just two</span>
+        <span class="n">meat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\n{2,}&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">meat</span><span class="p">)</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="n">meat</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">ll</span> <span class="k">for</span> <span class="n">ll</span> <span class="ow">in</span> <span class="n">_section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">ll</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TEMPERATURE&quot;</span><span class="p">):</span>
+                <span class="n">parse_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PRECIPITATION&quot;</span><span class="p">):</span>
+                <span class="n">parse_precipitation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SNOWFALL&quot;</span><span class="p">):</span>
+                <span class="n">parse_snowfall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regime</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SKY COVER&quot;</span><span class="p">]:</span>
+                <span class="n">parse_sky_coverage</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;WIND (MPH)&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">parse_wind</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="CLIProduct.sql">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.CLIProduct.sql">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do the database update!&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">sql_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">update_iemaccess</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;IEMAccess Update failed </span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;access_network&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;access_station&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;cli_valid&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.cli.html#pyiem.nws.products.cli.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse CLI Text Products.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      nwsli_provider (dict): This dictionary provider in the form of the</span>
+<span class="sd">        `pyiem.network.Table` object should contain additional attributes of</span>
+<span class="sd">        `access_station` and `access_network` to map back to IEMAccess.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Careful here, see if we have two CLIs in one product!</span>
+    <span class="k">return</span> <span class="n">CLIProduct</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+pyiem.nws.products.cwa module
+=============================
+
+.. automodule:: pyiem.nws.products.cwa
+   :members:
+   :show-inheritance:
+   :undoc-members:

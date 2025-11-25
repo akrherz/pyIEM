@@ -1,0 +1,7 @@
+pyiem.exceptions module
+=======================
+
+.. automodule:: pyiem.exceptions
+   :members:
+   :show-inheritance:
+   :undoc-members:

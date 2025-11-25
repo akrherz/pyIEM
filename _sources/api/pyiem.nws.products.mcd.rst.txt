@@ -1,0 +1,7 @@
+pyiem.nws.products.mcd module
+=============================
+
+.. automodule:: pyiem.nws.products.mcd
+   :members:
+   :show-inheritance:
+   :undoc-members:

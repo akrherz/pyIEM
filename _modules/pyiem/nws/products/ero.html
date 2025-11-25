@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.nws.products.ero &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/products/ero';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../products.html" class="nav-link">pyiem.nws.products</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.nws.products.ero</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.nws.products.ero</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Eh, I am able to parse the SPC PTS now, so why not add more pain.</span>
+
+<span class="sd">Weather Prediction Center Excessive Rainfall Outlook.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiPolygon</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.product</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextProduct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.products.spcpts</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPCOutlook</span> <span class="k">as</span> <span class="n">Outlook</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.nws.products.spcpts</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPCOutlookCollection</span> <span class="k">as</span> <span class="n">OutlookCollection</span>
+
+<span class="c1"># Local</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">txt2drct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOG</span><span class="p">,</span> <span class="n">load_geodf</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._outlook_util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CONUS</span><span class="p">,</span>
+    <span class="n">THRESHOLD2TEXT</span><span class="p">,</span>
+    <span class="n">compute_layers</span><span class="p">,</span>
+    <span class="n">condition_segment</span><span class="p">,</span>
+    <span class="n">convert_segments</span><span class="p">,</span>
+    <span class="n">load_conus_data</span><span class="p">,</span>
+    <span class="n">quality_control</span><span class="p">,</span>
+    <span class="n">sql_day_collect</span><span class="p">,</span>
+    <span class="n">winding_logic</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">RISK_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;cat&gt;MARGINAL|SLIGHT|MODERATE|HIGH)&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">VALID_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;Valid\s+(?P&lt;start&gt;[0-9]{1,4})Z?\s+...\s+(?P&lt;smonth&gt;[A-Z]</span><span class="si">{3}</span><span class="s2">)\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;sday&gt;\d+)\s+(?P&lt;syear&gt;\d\d\d\d)\s+\-\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;end&gt;[0-9]{1,4})Z?\s+...\s+(?P&lt;emonth&gt;[A-Z]</span><span class="si">{3}</span><span class="s2">)\s+&quot;</span>
+    <span class="sa">r</span><span class="s2">&quot;(?P&lt;eday&gt;\d+)\s+(?P&lt;eyear&gt;\d\d\d\d)&quot;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">TEXT2THRESHOLD</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;MARGINAL&quot;</span><span class="p">:</span> <span class="s2">&quot;MRGL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SLIGHT&quot;</span><span class="p">:</span> <span class="s2">&quot;SLGT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ENHANCED&quot;</span><span class="p">:</span> <span class="s2">&quot;ENH&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MODERATE&quot;</span><span class="p">:</span> <span class="s2">&quot;MDT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="init_days">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.init_days">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">init_days</span><span class="p">(</span><span class="n">prod</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out which days this product should have based on the AFOS.&quot;&quot;&quot;</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;RBG98E&quot;</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">prod</span><span class="o">.</span><span class="n">afos</span> <span class="o">==</span> <span class="s2">&quot;RBG99E&quot;</span><span class="p">:</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">day</span><span class="p">,</span> <span class="p">{</span><span class="n">day</span><span class="p">:</span> <span class="n">OutlookCollection</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">issue</span><span class="p">,</span> <span class="n">prod</span><span class="o">.</span><span class="n">expire</span><span class="p">,</span> <span class="n">day</span><span class="p">)}</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_cycle</span><span class="p">(</span><span class="n">prod</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Figure out an integer cycle that identifies this product.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">day</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">8</span>
+        <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">16</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">8</span>
+    <span class="k">if</span> <span class="n">prod</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">22</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">20</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+<div class="viewcode-block" id="compute_loc">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.compute_loc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_loc</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">bearing</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate a lat/lon&quot;&quot;&quot;</span>
+    <span class="n">meters</span> <span class="o">=</span> <span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;mile&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">dist</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">northing</span> <span class="o">=</span> <span class="n">meters</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">bearing</span><span class="p">))</span> <span class="o">/</span> <span class="mf">111111.0</span>
+    <span class="n">easting</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">meters</span>
+        <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">bearing</span><span class="p">))</span>
+        <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+        <span class="o">/</span> <span class="mf">111111.0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">lon</span> <span class="o">+</span> <span class="n">easting</span><span class="p">,</span> <span class="n">lat</span> <span class="o">+</span> <span class="n">northing</span></div>
+
+
+
+<div class="viewcode-block" id="sid_rectify">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.sid_rectify">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sid_rectify</span><span class="p">(</span><span class="n">sid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure it matches our nomenclature.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sid</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">sid</span></div>
+
+
+
+<div class="viewcode-block" id="meat2segment">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.meat2segment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">meat2segment</span><span class="p">(</span><span class="n">meat</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert into a list of points.&quot;&quot;&quot;</span>
+    <span class="n">asos</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">&quot;sfstns&quot;</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">meat</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">sz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">gc</span> <span class="o">=</span> <span class="s2">&quot;geometry&quot;</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">:</span>
+            <span class="n">miles</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+            <span class="n">drct</span> <span class="o">=</span> <span class="n">txt2drct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">sid</span> <span class="o">=</span> <span class="n">sid_rectify</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">asos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_loc</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">gc</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">gc</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">miles</span><span class="p">,</span> <span class="n">drct</span><span class="p">))</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">3</span>
+            <span class="k">continue</span>
+        <span class="n">sid</span> <span class="o">=</span> <span class="n">sid_rectify</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">asos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">row</span><span class="p">[</span><span class="n">gc</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">gc</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">pts</span></div>
+
+
+
+<div class="viewcode-block" id="jabber_messages">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.jabber_messages">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">jabber_messages</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">outlook_collections</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a list of Jabber messages to send.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        valid (datetime): the valid time of the outlook</span>
+<span class="sd">        outlook_collections (dict): a list of OutlookCollection objects</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: a list of Jabber messages [(plain, html, xtradict), ...]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php&quot;</span>
+    <span class="p">)</span>
+    <span class="n">product_descript</span> <span class="o">=</span> <span class="s2">&quot;Excessive Rainfall Outlook&quot;</span>
+    <span class="n">jdict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">product_descript</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;The Weather Prediction Center&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tstamp&quot;</span><span class="p">:</span> <span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b </span><span class="si">%-d</span><span class="s2">, %-H:%Mz&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+        <span class="s2">&quot;wfo&quot;</span><span class="p">:</span> <span class="s2">&quot;DMX&quot;</span><span class="p">,</span>  <span class="c1"># autoplot expects something valid here</span>
+        <span class="s2">&quot;cat&quot;</span><span class="p">:</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;t220&quot;</span><span class="p">:</span> <span class="s2">&quot;cwa&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">twmedia</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://mesonet.agron.iastate.edu/plotting/auto/plot/220/&quot;</span>
+        <span class="s2">&quot;cat:categorical::which:</span><span class="si">%(day)s%(cat)s</span><span class="s2">::t:</span><span class="si">%(t220)s</span><span class="s2">::network:WFO::&quot;</span>
+        <span class="s2">&quot;wfo:</span><span class="si">%(wfo)s</span><span class="s2">::_r:86::&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;csector:conus::valid:</span><span class="si">{</span><span class="n">valid</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;.png&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">20&quot;</span><span class="p">)</span>
+    <span class="n">max_category</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">wfos</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;MRGL&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;SLGT&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;ENH&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;MDT&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
+            <span class="n">_d</span> <span class="o">=</span> <span class="n">wfos</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">_d</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">)</span>
+
+        <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">day</span>
+        <span class="n">wfomsgs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># We order in least to greatest, so that the highest threshold</span>
+        <span class="c1"># overwrites lower ones</span>
+        <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;MRGL&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SLGT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ENH&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;MDT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;ttext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">cat</span><span class="p">]</span><span class="si">}</span><span class="s2"> Risk </span><span class="si">{</span><span class="n">product_descript</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">wfo</span> <span class="ow">in</span> <span class="n">wfos</span><span class="p">[</span><span class="n">cat</span><span class="p">]:</span>
+                <span class="n">max_category</span> <span class="o">=</span> <span class="n">cat</span>
+                <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;wfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wfo</span>
+                <span class="n">wfomsgs</span><span class="p">[</span><span class="n">wfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">(</span>
+                        <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2"> issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> &quot;</span>
+                        <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="s2">&quot;&lt;p&gt;</span><span class="si">%(name)s</span><span class="s2"> issues &quot;</span>
+                        <span class="s1">&#39;&lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;Day </span><span class="si">%(day)s</span><span class="s1"> </span><span class="si">%(ttext)s</span><span class="s1">&lt;/a&gt; &#39;</span>
+                        <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for portions of </span><span class="si">%(wfo)s</span><span class="s2">&#39;s area&lt;/p&gt;&quot;</span>
+                    <span class="p">)</span>
+                    <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span>
+                            <span class="n">wfo</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.ERODY</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wfo</span><span class="si">}</span><span class="s2">.ERODY</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">],</span>
+                        <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                        <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;WPC issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(ttext)s</span><span class="s2"> &quot;</span>
+                            <span class="s2">&quot;at </span><span class="si">%(tstamp)s</span><span class="s2"> for </span><span class="si">%(wfo)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                        <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">]</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wfomsgs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">wfo</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wfomsgs</span><span class="p">[</span><span class="n">wfo</span><span class="p">])</span>  <span class="c1"># noqa</span>
+
+    <span class="c1"># Generic for WPC</span>
+    <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;t220&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
+    <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;title2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(name)s</span><span class="s2"> issues Day </span><span class="si">%(day)s</span><span class="s2"> </span><span class="si">%(title)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">jdict</span>
+    <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;catmsg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">max_category</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot; (Max Risk: </span><span class="si">{</span><span class="n">THRESHOLD2TEXT</span><span class="p">[</span><span class="n">max_category</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;</span><span class="si">%(title2)s%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="s1">&#39;&lt;p&gt;</span><span class="si">%(name)s</span><span class="s1"> issues &lt;a href=&quot;</span><span class="si">%(url)s</span><span class="s1">&quot;&gt;Day </span><span class="si">%(day)s</span><span class="s1"> &#39;</span>
+                <span class="s2">&quot;</span><span class="si">%(title)s</span><span class="s2">&lt;/a&gt;</span><span class="si">%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2">&lt;/p&gt;&quot;</span>
+            <span class="p">)</span>
+            <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;WPC&quot;</span><span class="p">,</span> <span class="s2">&quot;ERODY</span><span class="si">%(day)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">],</span>
+                <span class="s2">&quot;twitter_media&quot;</span><span class="p">:</span> <span class="n">twmedia</span> <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+                <span class="s2">&quot;twitter&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%(title2)s%(catmsg)s</span><span class="s2"> at </span><span class="si">%(tstamp)s</span><span class="s2"> </span><span class="si">%(url)s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="n">jdict</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="compute_wfos">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.compute_wfos">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_wfos</span><span class="p">(</span><span class="n">outlook_collections</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the WFOs affected for each outlook in collection.&quot;&quot;&quot;</span>
+    <span class="n">geodf</span> <span class="o">=</span> <span class="n">load_geodf</span><span class="p">(</span><span class="s2">&quot;cwa&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
+            <span class="n">df2</span> <span class="o">=</span> <span class="n">geodf</span><span class="p">[</span><span class="n">geodf</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">geometry_layers</span><span class="p">)]</span>
+            <span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Day: </span><span class="si">%s</span><span class="s2"> Category: </span><span class="si">%s</span><span class="s2"> Threshold: </span><span class="si">%s</span><span class="s2"> #WFOS: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">day</span><span class="p">,</span>
+                <span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">),</span>
+                <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outlook</span><span class="o">.</span><span class="n">wfos</span><span class="p">),</span>
+            <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ERO">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ERO</span><span class="p">(</span><span class="n">TextProduct</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing the polygons and metadata in WPC ERO Product&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          text (string): the raw PTS product that is to be parsed</span>
+<span class="sd">          utcnow (datetime, optional): in case of ambuigity with time</span>
+<span class="sd">          ugc_provider (dict, optional): unused in this class</span>
+<span class="sd">          nwsli_provider (dict, optional): unused in this class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;==== ERO Processing: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_product_id</span><span class="p">())</span>
+        <span class="n">load_conus_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expire</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outlook_type</span> <span class="o">=</span> <span class="s2">&quot;E&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_issue_expire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span> <span class="o">=</span> <span class="n">init_days</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_outlooks</span><span class="p">()</span>
+        <span class="n">quality_control</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">compute_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">compute_wfos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cycle</span> <span class="o">=</span> <span class="n">_compute_cycle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ERO.get_outlookcollection">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.get_outlookcollection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_outlookcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the OutlookCollection for a given day&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">day</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ERO.get_outlook">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.get_outlook">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_outlook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an outlook by category and threshold&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">day</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">[</span><span class="n">day</span><span class="p">]</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">outlook</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span> <span class="ow">and</span> <span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span> <span class="o">==</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">outlook</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ERO.draw_outlooks">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.draw_outlooks">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_outlooks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;For debugging, draw the outlooks on a simple map for inspection!&quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.plot.use_agg</span><span class="w"> </span><span class="kn">import</span> <span class="n">figure</span>
+
+        <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">outlook</span> <span class="ow">in</span> <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="p">:</span>
+                <span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+                <span class="c1"># pylint: disable=unsubscriptable-object</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">CONUS</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Conus&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">outlook</span><span class="o">.</span><span class="n">geometry_layers</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                        <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Day </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2"> Category </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Threshold </span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">:</span><span class="s2">%Y%m%d%H%M</span><span class="si">}</span><span class="s2">_&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">outlook</span><span class="o">.</span><span class="n">threshold</span><span class="si">}</span><span class="s2">.png&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;:: creating plot </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ERO.find_issue_expire">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.find_issue_expire">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_issue_expire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine the period this product is valid for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">VALID_RE</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">hour1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">minute1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hour1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">minute1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">hour2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">][:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">minute2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hour2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">minute2</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hour1</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minute1</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;%H:%M %b </span><span class="si">%d</span><span class="s2"> %Y&quot;</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expire</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hour2</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minute2</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;%H:%M %b </span><span class="si">%d</span><span class="s2"> %Y&quot;</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ERO.find_outlooks">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.find_outlooks">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_outlooks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the outlook sections within the text product!&quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">point_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">section</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">RISK_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">TEXT2THRESHOLD</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()[</span><span class="s2">&quot;cat&quot;</span><span class="p">]]</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">point_data</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">meat</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; FROM &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">meat2segment</span><span class="p">(</span><span class="n">meat</span><span class="p">))</span>
+        <span class="n">collect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_outlookcollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">pdata</span> <span class="ow">in</span> <span class="n">point_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pdata</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">condition_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="n">segments</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="n">polygons</span><span class="p">,</span> <span class="n">_interiors</span><span class="p">,</span> <span class="n">linestrings</span> <span class="o">=</span> <span class="n">convert_segments</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+            <span class="c1"># we do our winding logic now</span>
+            <span class="n">polygons</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">winding_logic</span><span class="p">(</span><span class="n">linestrings</span><span class="p">))</span>
+            <span class="n">mp</span> <span class="o">=</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
+            <span class="n">collect</span><span class="o">.</span><span class="n">outlooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Outlook</span><span class="p">(</span><span class="s2">&quot;CATEGORICAL&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">mp</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ERO.sql">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.sql">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Do database work</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          txn (psycopg.cursor): database cursor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sql_day_collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txn</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">collect</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ERO.get_jabbers">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.ERO.get_jabbers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_jabbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">_uri2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wordsmith the Jabber/Twitter Messaging&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jabber_messages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outlook_collections</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="parser">
+<a class="viewcode-back" href="../../../../api/pyiem.nws.products.ero.html#pyiem.nws.products.ero.parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse this text!&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ERO</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">utcnow</span><span class="p">,</span> <span class="n">ugc_provider</span><span class="p">,</span> <span class="n">nwsli_provider</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

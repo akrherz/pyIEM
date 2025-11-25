@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyiem.meteorology &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a865d000"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/meteorology';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.ncei.html">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.meteorology</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pyiem.meteorology</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">We do meteorological things, when necessary</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">metpy.calc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcalc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metpy.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyiem.datatypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyiem.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidArguments</span>
+
+
+<div class="viewcode-block" id="temperature_humidity_index">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.temperature_humidity_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">temperature_humidity_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">humidity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Temperature Humidity Index</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      temperature (temperature): The Air Temperature</span>
+<span class="sd">      humidity (humidity): The Relative Humidity</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      temperature (temperature): The THI</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmpc</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">rh</span> <span class="o">=</span> <span class="n">humidity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;percent&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">return</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">+</span> <span class="p">(</span><span class="n">rh</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">tmpc</span> <span class="o">-</span> <span class="mf">14.4</span><span class="p">)</span> <span class="o">+</span> <span class="mf">46.4</span></div>
+
+
+
+<div class="viewcode-block" id="comprehensive_climate_index">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.comprehensive_climate_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">comprehensive_climate_index</span><span class="p">(</span>
+    <span class="n">airtemp</span><span class="p">,</span>
+    <span class="n">rh</span><span class="p">,</span>
+    <span class="n">windspeed</span><span class="p">,</span>
+    <span class="n">solarrad</span><span class="p">,</span>
+    <span class="n">shade_effect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Comprehensive Climate Index.</span>
+
+<span class="sd">    Note: shade_effect multiplies the ``solarrad`` value by 0.2 (80% reduction)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmpc</span> <span class="o">=</span> <span class="n">airtemp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degC&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">rh</span> <span class="o">=</span> <span class="n">rh</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;percent&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">windspeed</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;m/s&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="n">srad</span> <span class="o">=</span> <span class="n">solarrad</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;W/m^2&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">if</span> <span class="n">shade_effect</span><span class="p">:</span>
+        <span class="n">srad</span> <span class="o">*=</span> <span class="mf">0.2</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">2.26</span> <span class="o">*</span> <span class="n">ws</span> <span class="o">+</span> <span class="mf">0.23</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="mf">2.9</span>
+        <span class="o">+</span> <span class="mf">0.000_001_14</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">2.26</span> <span class="o">*</span> <span class="n">ws</span> <span class="o">+</span> <span class="mf">0.33</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">tmpc</span>
+        <span class="o">+</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.00182</span> <span class="o">*</span> <span class="n">rh</span> <span class="o">+</span> <span class="mf">0.000018</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
+            <span class="o">*</span> <span class="p">(</span><span class="mf">0.000054</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">+</span> <span class="mf">0.00192</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">-</span> <span class="mf">0.0246</span><span class="p">)</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">rh</span> <span class="o">-</span> <span class="mf">30.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mf">6.56</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">term2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.00566</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">3.33</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span>
+            <span class="mf">0.0076</span> <span class="o">*</span> <span class="n">srad</span>
+            <span class="o">-</span> <span class="mf">0.00002</span> <span class="o">*</span> <span class="n">srad</span> <span class="o">*</span> <span class="n">tmpc</span>
+            <span class="o">+</span> <span class="mf">0.00005</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">*</span> <span class="n">tmpc</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">srad</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">tmpc</span>
+            <span class="o">-</span> <span class="mf">2.0</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="clearsky_shortwave_irradiance_year">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.clearsky_shortwave_irradiance_year">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clearsky_shortwave_irradiance_year</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">elevation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Clear Sky Shortwave Irradiance for year in MJ m**-2</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      lat (float): latitude</span>
+<span class="sd">      elevation (float): location elevation in meters</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      irradiance (list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Mean pressure in kPa</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="mf">101.3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mi">0</span> <span class="o">-</span> <span class="n">elevation</span><span class="p">)</span> <span class="o">/</span> <span class="mf">8200.0</span><span class="p">)</span>
+    <span class="c1"># TOA radiation Wm**2</span>
+    <span class="n">spo</span> <span class="o">=</span> <span class="mf">1360.0</span>
+    <span class="c1"># assume clearsky</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.75</span>
+    <span class="c1"># julian days</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">366</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># solar declination</span>
+    <span class="n">_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">356.6</span> <span class="o">+</span> <span class="mf">0.9856</span> <span class="o">*</span> <span class="n">j</span><span class="p">))</span>
+    <span class="n">_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">278.97</span> <span class="o">+</span> <span class="mf">0.9856</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="mf">1.9165</span> <span class="o">*</span> <span class="n">_a</span><span class="p">))</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="mf">0.39785</span> <span class="o">*</span> <span class="n">_b</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">jday</span> <span class="ow">in</span> <span class="n">j</span><span class="p">:</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">12.001</span><span class="p">,</span> <span class="mf">5.0</span> <span class="o">/</span> <span class="mf">60.0</span><span class="p">):</span>
+            <span class="n">_a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mi">12</span><span class="p">)))</span>
+            <span class="n">_b</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+            <span class="n">_c</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">jday</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]))</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span>
+                <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span>
+                    <span class="n">_b</span> <span class="o">*</span> <span class="n">_c</span>
+                    <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">jday</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]))</span>
+                    <span class="o">*</span> <span class="n">_a</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">theta</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">pa</span> <span class="o">/</span> <span class="p">(</span><span class="mf">101.3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>
+            <span class="n">direct</span> <span class="o">=</span> <span class="n">spo</span> <span class="o">*</span> <span class="n">tau</span><span class="o">**</span><span class="n">m</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            <span class="n">diffuse</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tau</span><span class="o">**</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">spo</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            <span class="n">running</span> <span class="o">+=</span> <span class="p">(</span><span class="mf">5.0</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">direct</span> <span class="o">+</span> <span class="n">diffuse</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">running</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000000.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="drct">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.drct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">drct</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the wind direction given a u and v wind speed</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      u (dt.speed): u component wind speed</span>
+<span class="sd">      v (dt.speed): v component wind speed</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dt.direction value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">umps</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;MPS&quot;</span><span class="p">)</span>
+    <span class="n">vmps</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;MPS&quot;</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">umps</span><span class="p">,</span> <span class="n">vmps</span><span class="p">)</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mi">180</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">direction</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">&quot;DEG&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="uv">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.uv">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uv</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the u and v components of the wind</span>
+<span class="sd">    @param wind speed in whatever units</span>
+<span class="sd">    @param dir wind direction with zero as north</span>
+<span class="sd">    @return u and v components</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">direction</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">direction</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InvalidArguments</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;uv() needs speed and direction objects as args&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># Get radian units</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;RAD&quot;</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">())</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">())</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">speed</span><span class="o">.</span><span class="n">get_units</span><span class="p">()),</span> <span class="n">dt</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">speed</span><span class="o">.</span><span class="n">get_units</span><span class="p">()))</span></div>
+
+
+
+<div class="viewcode-block" id="mcalc_feelslike">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.mcalc_feelslike">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mcalc_feelslike</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">dwpf</span><span class="p">,</span> <span class="n">smps</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute a feels like temperature</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      temperature (temperature): The dry bulb temperature</span>
+<span class="sd">      dewpoint (temperature): The dew point temperature</span>
+<span class="sd">      speed (speed): the wind speed</span>
+<span class="sd">      mask_undefined (bool): If True, mask values where feels like is undef.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      temperature (temperature): The feels like temperature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_scalar</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tmpf</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">mcalc</span><span class="o">.</span><span class="n">apparent_temperature</span><span class="p">(</span>
+        <span class="n">tmpf</span><span class="p">,</span>
+        <span class="n">mcalc</span><span class="o">.</span><span class="n">relative_humidity_from_dewpoint</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="n">dwpf</span><span class="p">),</span>
+        <span class="n">smps</span><span class="p">,</span>
+        <span class="n">mask_undefined</span><span class="o">=</span><span class="n">mask_undefined</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Ensures we roundtrip a scalar</span>
+    <span class="k">return</span> <span class="n">app</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_scalar</span> <span class="k">else</span> <span class="n">app</span></div>
+
+
+
+<div class="viewcode-block" id="windchill">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.windchill">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">windchill</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the wind chill temperature</span>
+
+<span class="sd">    http://www.ofcm.gov/publications/reports2.htm</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      temperature (temperature): The Air Temperature</span>
+<span class="sd">      speed (speed): The Wind Speed</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      temperature (temperature): The Wind Chill Temperature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmpf</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+    <span class="n">sknt</span> <span class="o">=</span> <span class="n">speed</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;KT&quot;</span><span class="p">)</span>
+    <span class="n">wci</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">35.74</span>
+        <span class="o">+</span> <span class="mf">0.6215</span> <span class="o">*</span> <span class="n">tmpf</span>
+        <span class="o">-</span> <span class="mf">35.75</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sknt</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mf">0.4275</span> <span class="o">*</span> <span class="n">tmpf</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sknt</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">wci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">sknt</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">tmpf</span><span class="p">,</span> <span class="mi">50</span><span class="p">)),</span> <span class="n">tmpf</span><span class="p">,</span> <span class="n">wci</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">wci</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="heatindex">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.heatindex">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">heatindex</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">polyarg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the heat index based on</span>
+
+<span class="sd">    Stull, Richard (2000). Meteorology for Scientists and Engineers,</span>
+<span class="sd">    Second Edition. Brooks/Cole. p. 60. ISBN 9780534372149.</span>
+
+<span class="sd">    Another opinion on appropriate equation:</span>
+<span class="sd">    http://www.wpc.ncep.noaa.gov/html/heatindex_equation.shtml</span>
+
+<span class="sd">    http://www.weather.gov/media/ffc/ta_htindx.PDF</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InvalidArguments</span><span class="p">(</span><span class="s2">&quot;heatindex() needs temperature obj as arg&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">polyarg</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">):</span>  <span class="c1"># We have dewpoint</span>
+        <span class="n">polyarg</span> <span class="o">=</span> <span class="n">relh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">polyarg</span><span class="p">)</span>
+    <span class="n">rh</span> <span class="o">=</span> <span class="n">polyarg</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">t</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">rh2</span> <span class="o">=</span> <span class="n">rh</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">rh3</span> <span class="o">=</span> <span class="n">rh</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">hdx</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">16.923</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">1.85212e-1</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mf">5.37941</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">((</span><span class="mf">1.00254e-1</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">9.41695e-3</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">7.28898e-3</span><span class="p">)</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">3.45372e-4</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">((</span><span class="mf">8.14971e-4</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">1.02102e-5</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">((</span><span class="mf">3.8646e-5</span><span class="p">)</span> <span class="o">*</span> <span class="n">t3</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">2.91583e-5</span><span class="p">)</span> <span class="o">*</span> <span class="n">rh3</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">1.42721e-6</span><span class="p">)</span> <span class="o">*</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">rh</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">1.97483e-7</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">rh3</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">((</span><span class="mf">2.18429e-8</span><span class="p">)</span> <span class="o">*</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">((</span><span class="mf">8.43296e-10</span><span class="p">)</span> <span class="o">*</span> <span class="n">t2</span> <span class="o">*</span> <span class="n">rh3</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">((</span><span class="mf">4.81975e-11</span><span class="p">)</span> <span class="o">*</span> <span class="n">t3</span> <span class="o">*</span> <span class="n">rh3</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">hdx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">120</span><span class="p">)),</span> <span class="n">t</span><span class="p">,</span> <span class="n">hdx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">hdx</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="dewpoint_from_pq">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.dewpoint_from_pq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dewpoint_from_pq</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">mixingratio</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the Dew Point given a Pressure and Mixing Ratio</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pressure</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;hPa&quot;</span><span class="p">)</span>
+    <span class="n">mr</span> <span class="o">=</span> <span class="n">mixingratio</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;kg/kg&quot;</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">mr</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">0.622</span> <span class="o">+</span> <span class="n">mr</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mf">26.66082</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">b</span> <span class="o">-</span> <span class="mf">223.1986</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.0182758048</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="dewpoint">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.dewpoint">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dewpoint</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relhumid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Dew Point given a temperature and RH%</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tmpk</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">)</span>
+    <span class="n">_relh</span> <span class="o">=</span> <span class="n">relhumid</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+    <span class="n">dwpk</span> <span class="o">=</span> <span class="n">tmpk</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.000425</span> <span class="o">*</span> <span class="n">tmpk</span> <span class="o">*</span> <span class="o">-</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">_relh</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">dwpk</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="relh">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.relh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">relh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">_dewpoint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Relative Humidity based on a temperature and dew point</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get temperature in Celsius</span>
+    <span class="n">tmpc</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="n">dwpc</span> <span class="o">=</span> <span class="n">_dewpoint</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+    <span class="n">e</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">17.67</span> <span class="o">*</span> <span class="n">dwpc</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">dwpc</span> <span class="o">+</span> <span class="mf">243.5</span><span class="p">))</span>
+    <span class="n">es</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">17.67</span> <span class="o">*</span> <span class="n">tmpc</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">tmpc</span> <span class="o">+</span> <span class="mf">243.5</span><span class="p">))</span>
+    <span class="n">_relh</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">/</span> <span class="n">es</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.00</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">humidity</span><span class="p">(</span><span class="n">_relh</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mixing_ratio">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.mixing_ratio">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mixing_ratio</span><span class="p">(</span><span class="n">_dewpoint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the mixing ratio</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      dewpoint (temperature): Dew Point temperature</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      mixing ratio</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dwpc</span> <span class="o">=</span> <span class="n">_dewpoint</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">17.67</span> <span class="o">*</span> <span class="n">dwpc</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">dwpc</span> <span class="o">+</span> <span class="mf">243.5</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">mixingratio</span><span class="p">(</span><span class="mf">0.62197</span> <span class="o">*</span> <span class="n">e</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1000.0</span> <span class="o">-</span> <span class="n">e</span><span class="p">),</span> <span class="s2">&quot;KG/KG&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gdd">
+<a class="viewcode-back" href="../../api/pyiem.meteorology.html#pyiem.meteorology.gdd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gdd</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mf">50.0</span><span class="p">,</span> <span class="n">ceiling</span><span class="o">=</span><span class="mf">86.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute Growing Degree Days</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      high (temperature, or metpy.units): High Temperature</span>
+<span class="sd">      low (temperature or metpy.units): Low Temperature</span>
+<span class="sd">      base (int): Base to use in GDD Computation (F)</span>
+<span class="sd">      ceiling (int): Ceiling to use in GDD Computation (F)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      float value for GDDs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">):</span>
+        <span class="n">highf</span> <span class="o">=</span> <span class="n">high</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degF&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">lowf</span> <span class="o">=</span> <span class="n">low</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="p">(</span><span class="s2">&quot;degF&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">highf</span> <span class="o">=</span> <span class="n">high</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+        <span class="n">lowf</span> <span class="o">=</span> <span class="n">low</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+    <span class="n">highf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">highf</span><span class="p">,</span> <span class="n">base</span><span class="p">),</span> <span class="n">base</span><span class="p">,</span> <span class="n">highf</span><span class="p">)</span>
+    <span class="n">lowf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">lowf</span><span class="p">,</span> <span class="n">base</span><span class="p">),</span> <span class="n">base</span><span class="p">,</span> <span class="n">lowf</span><span class="p">)</span>
+    <span class="n">highf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">highf</span><span class="p">,</span> <span class="n">ceiling</span><span class="p">),</span> <span class="n">ceiling</span><span class="p">,</span> <span class="n">highf</span><span class="p">)</span>
+    <span class="n">lowf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">lowf</span><span class="p">,</span> <span class="n">ceiling</span><span class="p">),</span> <span class="n">ceiling</span><span class="p">,</span> <span class="n">lowf</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="n">highf</span> <span class="o">+</span> <span class="n">lowf</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="n">base</span>
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

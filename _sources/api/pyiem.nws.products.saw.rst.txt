@@ -1,0 +1,7 @@
+pyiem.nws.products.saw module
+=============================
+
+.. automodule:: pyiem.nws.products.saw
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+pyiem.models.sel module
+=======================
+
+.. automodule:: pyiem.models.sel
+   :members:
+   :show-inheritance:
+   :undoc-members:

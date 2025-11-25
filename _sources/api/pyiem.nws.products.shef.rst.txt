@@ -1,0 +1,7 @@
+pyiem.nws.products.shef module
+==============================
+
+.. automodule:: pyiem.nws.products.shef
+   :members:
+   :show-inheritance:
+   :undoc-members:

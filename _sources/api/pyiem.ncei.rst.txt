@@ -4,18 +4,17 @@ pyiem.ncei package
 Submodules
 ----------
 
-pyiem.ncei.ds3505 module
-------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyiem.ncei.ds3505
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyiem.ncei.ds3505
+   pyiem.ncei.ghcnh
+   pyiem.ncei.igra
 
 Module contents
 ---------------
 
 .. automodule:: pyiem.ncei
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

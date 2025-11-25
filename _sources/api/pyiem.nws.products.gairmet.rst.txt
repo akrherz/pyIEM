@@ -1,0 +1,7 @@
+pyiem.nws.products.gairmet module
+=================================
+
+.. automodule:: pyiem.nws.products.gairmet
+   :members:
+   :show-inheritance:
+   :undoc-members:

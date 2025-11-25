@@ -1,0 +1,7 @@
+pyiem.models.cwa module
+=======================
+
+.. automodule:: pyiem.models.cwa
+   :members:
+   :show-inheritance:
+   :undoc-members:

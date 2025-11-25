@@ -6,5 +6,5 @@ Module contents
 
 .. automodule:: pyiem.templates.iem
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

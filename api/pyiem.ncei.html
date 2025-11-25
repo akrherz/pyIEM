@@ -1,182 +1,614 @@
+
 <!DOCTYPE html>
 
-<html lang="en" data-content_root="../">
+
+<html lang="en" data-content_root="../" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.ncei package &#8212; pyIEM 0.0.post1238+g79f512947 documentation</title>
+    <title>pyiem.ncei package &#8212; pyIEM 1.25.0.post19+gf83786bf4</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
-    
-    <script src="../_static/documentation_options.js?v=573015cd"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=a865d000"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.ncei';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyiem.nws package" href="pyiem.nws.html" />
-    <link rel="prev" title="pyiem.models package" href="pyiem.models.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.nws.html" title="pyiem.nws package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.models.html" title="pyiem.models package"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" accesskey="U">pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.ncei package</a></li> 
-      </ul>
-    </div>  
+    <link rel="next" title="pyiem.ncei.ds3505 module" href="pyiem.ncei.ds3505.html" />
+    <link rel="prev" title="pyiem.models.wwp module" href="pyiem.models.wwp.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.25.0.post19+gf83786bf4" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pyIEM 1.25.0.post19+gf83786bf4</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+                </ul>
+            </li>
             
-  <section id="pyiem-ncei-package">
-<h1>pyiem.ncei package<a class="headerlink" href="#pyiem-ncei-package" title="Link to this heading">¶</a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-pyiem.ncei.ds3505">
-<span id="pyiem-ncei-ds3505-module"></span><h2>pyiem.ncei.ds3505 module<a class="headerlink" href="#module-pyiem.ncei.ds3505" title="Link to this heading">¶</a></h2>
-<p>Implementation of the NCEI DS3505 format</p>
-<p><a class="reference external" href="https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf">https://www1.ncdc.noaa.gov/pub/data/ish/ish-format-document.pdf</a></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.ncei.ds3505.gen_metar">
-<span class="sig-prename descclassname"><span class="pre">pyiem.ncei.ds3505.</span></span><span class="sig-name descname"><span class="pre">gen_metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.ncei.ds3505.gen_metar" title="Link to this definition">¶</a></dt>
-<dd><p>Convert our parsed dictionary into a METAR</p>
-</dd></dl>
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.ncei.ds3505.parse_extra">
-<span class="sig-prename descclassname"><span class="pre">pyiem.ncei.ds3505.</span></span><span class="sig-name descname"><span class="pre">parse_extra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.ncei.ds3505.parse_extra" title="Link to this definition">¶</a></dt>
-<dd><p>Parse the additional data fields</p>
-</dd></dl>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.ncei.ds3505.parser">
-<span class="sig-prename descclassname"><span class="pre">pyiem.ncei.ds3505.</span></span><span class="sig-name descname"><span class="pre">parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_metar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.ncei.ds3505.parser" title="Link to this definition">¶</a></dt>
-<dd><p>Parse the message(single line) into a dict</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>msg</strong> (<em>str</em>) – the single line of data to parse into a dict</p></li>
-<li><p><strong>call_id</strong> (<em>str</em>) – hard coded call_id as the data can’t be trusted, sigh</p></li>
-<li><p><strong>add_metar</strong> (<em>bool</em><em>,</em><em>optional</em>) – should a METAR be generated? Default: False</p></li>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.html">
+    pyiem package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.grid.html">
+    pyiem.grid package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.models.html">
+    pyiem.models package
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    pyiem.ncei package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.nws.html">
+    pyiem.nws package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.plot.html">
+    pyiem.plot package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="pyiem.templates.html">
+    pyiem.templates package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/akrherz/pyIEM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://mesonet.agron.iastate.edu" title="IEM" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-cloud-sun fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">IEM</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.ds3505.html">pyiem.ncei.ds3505 module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.ghcnh.html">pyiem.ncei.ghcnh module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.igra.html">pyiem.ncei.igra module</a></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict or None</p>
-</dd>
-</dl>
-</dd></dl>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.ncei.ds3505.vsbyfmt">
-<span class="sig-prename descclassname"><span class="pre">pyiem.ncei.ds3505.</span></span><span class="sig-name descname"><span class="pre">vsbyfmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyiem.ncei.ds3505.vsbyfmt" title="Link to this definition">¶</a></dt>
-<dd><p>Tricky formatting of vis</p>
-</dd></dl>
 
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="pyiem.html" class="nav-link">pyiem package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pyiem.ncei package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pyiem-ncei-package">
+<h1>pyiem.ncei package<a class="headerlink" href="#pyiem-ncei-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.ds3505.html">pyiem.ncei.ds3505 module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html#pyiem.ncei.ds3505.vsbyfmt"><code class="docutils literal notranslate"><span class="pre">vsbyfmt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html#pyiem.ncei.ds3505.gen_metar"><code class="docutils literal notranslate"><span class="pre">gen_metar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html#pyiem.ncei.ds3505.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ds3505.html#pyiem.ncei.ds3505.parse_extra"><code class="docutils literal notranslate"><span class="pre">parse_extra()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.ghcnh.html">pyiem.ncei.ghcnh module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.build_dialect"><code class="docutils literal notranslate"><span class="pre">build_dialect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.parse_packet"><code class="docutils literal notranslate"><span class="pre">parse_packet()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.clean_metar"><code class="docutils literal notranslate"><span class="pre">clean_metar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.process_line"><code class="docutils literal notranslate"><span class="pre">process_line()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.ghcnh.html#pyiem.ncei.ghcnh.process_file"><code class="docutils literal notranslate"><span class="pre">process_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyiem.ncei.igra.html">pyiem.ncei.igra module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#header-record-format">Header Record Format:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#variable-columns-type">Variable   Columns  Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#data-record-format">Data Record Format:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#id1">Variable        Columns Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.Sounding"><code class="docutils literal notranslate"><span class="pre">Sounding</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.Sounding.sql"><code class="docutils literal notranslate"><span class="pre">Sounding.sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.parse_header"><code class="docutils literal notranslate"><span class="pre">parse_header()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.compute_time"><code class="docutils literal notranslate"><span class="pre">compute_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.convert_pressure"><code class="docutils literal notranslate"><span class="pre">convert_pressure()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.convert_height"><code class="docutils literal notranslate"><span class="pre">convert_height()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.calc_dewp"><code class="docutils literal notranslate"><span class="pre">calc_dewp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.convert_float"><code class="docutils literal notranslate"><span class="pre">convert_float()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.convert_wind"><code class="docutils literal notranslate"><span class="pre">convert_wind()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.process_sounding"><code class="docutils literal notranslate"><span class="pre">process_sounding()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyiem.ncei.igra.html#pyiem.ncei.igra.process_ytd"><code class="docutils literal notranslate"><span class="pre">process_ytd()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
 </section>
 <section id="module-pyiem.ncei">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.ncei" title="Link to this heading">¶</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyiem.ncei" title="Link to this heading">#</a></h2>
 <p>Placeholder</p>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
-          </div>
-        </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pyiem.models.wwp.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiem.models.wwp module</p>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">pyiem.ncei package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-pyiem.ncei.ds3505">pyiem.ncei.ds3505 module</a><ul>
-<li><a class="reference internal" href="#pyiem.ncei.ds3505.gen_metar"><code class="docutils literal notranslate"><span class="pre">gen_metar()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.ncei.ds3505.parse_extra"><code class="docutils literal notranslate"><span class="pre">parse_extra()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.ncei.ds3505.parser"><code class="docutils literal notranslate"><span class="pre">parser()</span></code></a></li>
-<li><a class="reference internal" href="#pyiem.ncei.ds3505.vsbyfmt"><code class="docutils literal notranslate"><span class="pre">vsbyfmt()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-pyiem.ncei">Module contents</a></li>
-</ul>
-</li>
-</ul>
+    </a>
+    <a class="right-next"
+       href="pyiem.ncei.ds3505.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pyiem.ncei.ds3505 module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="pyiem.models.html"
-                          title="previous chapter">pyiem.models package</a></p>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-pyiem.ncei">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="pyiem.nws.html"
-                          title="next chapter">pyiem.nws package</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/pyiem.ncei.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2015-2025, Daryl Herzmann.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
     </div>
-    <div class="related" role="navigation" aria-label="Related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pyiem.nws.html" title="pyiem.nws package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="pyiem.models.html" title="pyiem.models package"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pyIEM 0.0.post1238+g79f512947 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >pyiem</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="pyiem.html" >pyiem package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">pyiem.ncei package</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-    &#169; Copyright 2015-2025, daryl herzmann.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
-    </div>
+  
+</div>
+
+  </footer>
   </body>
 </html>

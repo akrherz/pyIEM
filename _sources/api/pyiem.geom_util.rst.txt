@@ -1,0 +1,7 @@
+pyiem.geom\_util module
+=======================
+
+.. automodule:: pyiem.geom_util
+   :members:
+   :show-inheritance:
+   :undoc-members:

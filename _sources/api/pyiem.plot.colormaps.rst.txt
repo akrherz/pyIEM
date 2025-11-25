@@ -1,0 +1,7 @@
+pyiem.plot.colormaps module
+===========================
+
+.. automodule:: pyiem.plot.colormaps
+   :members:
+   :show-inheritance:
+   :undoc-members:

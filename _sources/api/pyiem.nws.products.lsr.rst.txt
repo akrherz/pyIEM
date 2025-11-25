@@ -1,0 +1,7 @@
+pyiem.nws.products.lsr module
+=============================
+
+.. automodule:: pyiem.nws.products.lsr
+   :members:
+   :show-inheritance:
+   :undoc-members:

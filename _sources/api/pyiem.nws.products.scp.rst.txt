@@ -1,0 +1,7 @@
+pyiem.nws.products.scp module
+=============================
+
+.. automodule:: pyiem.nws.products.scp
+   :members:
+   :show-inheritance:
+   :undoc-members:

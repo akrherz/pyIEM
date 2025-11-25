@@ -1,0 +1,7 @@
+pyiem.webutil module
+====================
+
+.. automodule:: pyiem.webutil
+   :members:
+   :show-inheritance:
+   :undoc-members:

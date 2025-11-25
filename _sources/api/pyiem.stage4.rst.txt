@@ -1,0 +1,7 @@
+pyiem.stage4 module
+===================
+
+.. automodule:: pyiem.stage4
+   :members:
+   :show-inheritance:
+   :undoc-members:

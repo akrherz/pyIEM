@@ -1,0 +1,7 @@
+pyiem.observation module
+========================
+
+.. automodule:: pyiem.observation
+   :members:
+   :show-inheritance:
+   :undoc-members:

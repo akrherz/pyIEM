@@ -1,0 +1,7 @@
+pyiem.ncei.ds3505 module
+========================
+
+.. automodule:: pyiem.ncei.ds3505
+   :members:
+   :show-inheritance:
+   :undoc-members:

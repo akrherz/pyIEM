@@ -1,0 +1,7 @@
+pyiem.nws.products.taf module
+=============================
+
+.. automodule:: pyiem.nws.products.taf
+   :members:
+   :show-inheritance:
+   :undoc-members:

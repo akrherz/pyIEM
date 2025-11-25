@@ -1,0 +1,7 @@
+pyiem.nws.products.sigmet module
+================================
+
+.. automodule:: pyiem.nws.products.sigmet
+   :members:
+   :show-inheritance:
+   :undoc-members:
