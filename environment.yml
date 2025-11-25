@@ -2,6 +2,8 @@ dependencies:
   # Some of these are not hard requirements, but attempting to avoid pip
   # installing these
   - affine
+  # docs
+  - autodoc-pydantic
   - cartopy_offlinedata
   # only a util requirement
   - click
@@ -35,6 +37,8 @@ dependencies:
   - pyarrow
   # Models
   - pydantic
+  # docs
+  - pydata-sphinx-theme
   - pygrib
   - pymemcache
   # Faster shapefile reading

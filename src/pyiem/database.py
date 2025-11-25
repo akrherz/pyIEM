@@ -167,14 +167,17 @@ def get_sqlalchemy_conn(
 
 
 def with_sqlalchemy_conn(name: str, **kwargs):
-    """Decorator variant of get_sqlalchemy_conn adding `conn=` to the function.
+    """Decorator variant of get_sqlalchemy_conn adding ``conn=`` to function.
 
-    Usage:
+    Usage::
+
         @with_sqlalchemy_conn("dbname")
-        def foo(args, **kwargs, conn=None)
+        def foo(args, conn=None, **kwargs):
+            ...
 
-    NOTE: Be sure to commit any transactions before returning from the
-    decorated function.
+    Note:
+        Be sure to commit any transactions before returning from the
+        decorated function.
 
     Args:
         name (str): the database to connect to, passed to get_dbconnstr

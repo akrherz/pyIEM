@@ -41,7 +41,13 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
-html:
+apidoc:
+	sphinx-apidoc -f -o source/api ../src/pyiem --separate
+	@# Remove modules.rst - we reference packages directly in index.rst
+	@rm -f source/api/modules.rst
+	@echo "API docs regenerated in source/api/"
+
+html: apidoc
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
