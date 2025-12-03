@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.iemre &#8212; pyIEM 1.25.0.post21+g870979c21</title>
+    <title>pyiem.iemre &#8212; pyIEM 1.25.0.post24+g687f50437</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=71688d18"></script>
+    <script src="../../_static/documentation_options.js?v=1a1e35ce"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/iemre';</script>
@@ -46,8 +46,8 @@
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post21+g870979c21" />
-    <meta name="docbuild:last-update" content="Dec 01, 2025"/>
+  <meta name="docsearch:version" content="1.25.0.post24+g687f50437" />
+    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post21+g870979c21</p>
+    <p class="title logo__title">pyIEM 1.25.0.post24+g687f50437</p>
   
 </a></div>
     
@@ -534,13 +534,15 @@
         <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/Sao_Paulo&quot;</span><span class="p">),</span>
     <span class="p">},</span>
 <span class="p">}</span>
+<span class="c1"># Hackery alias to support some downstream hackery in DEP</span>
+<span class="n">DOMAINS</span><span class="p">[</span><span class="s2">&quot;conus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="d2l">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.d2l">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">d2l</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a domain label to a string used within filenames.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;conus&quot;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="s2">&quot;iemre&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;iemre_</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
@@ -568,7 +570,7 @@
 
 <div class="viewcode-block" id="set_grids">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.set_grids">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the database with a given ``xarray.Dataset``.</span>
 
 <span class="sd">    Args:</span>
