@@ -98,11 +98,13 @@ DOMAINS = {
         "tzinfo": ZoneInfo("America/Sao_Paulo"),
     },
 }
+# Hackery alias to support some downstream hackery in DEP
+DOMAINS["conus"] = DOMAINS[""]
 
 
 def d2l(val) -> str:
     """Convert a domain label to a string used within filenames."""
-    if val is None or val == "":
+    if val is None or val in ["", "conus"]:
         return "iemre"
     return f"iemre_{val}"
 
@@ -124,7 +126,7 @@ def get_table(valid):
     return table
 
 
-def set_grids(valid, ds, table=None, domain: str = ""):
+def set_grids(valid, ds, table: str | None = None, domain: str = ""):
     """Update the database with a given ``xarray.Dataset``.
 
     Args:

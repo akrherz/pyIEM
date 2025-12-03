@@ -133,6 +133,8 @@ _GRID_CONFIGS = {
         "ny": 621,
     },
 }
+# This is a hacky shim due to some downstream hackery happening in DEP
+_GRID_CONFIGS["IEMRE_CONUS"] = _GRID_CONFIGS["IEMRE"]
 
 
 def get_nav(name: str, dom: str) -> CartesianGridNavigation:
