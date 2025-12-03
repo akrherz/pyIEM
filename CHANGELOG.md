@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Add an IEMRE `CONUS` alias that points back to the default domain="".
+
 ### Bug Fixes
 
 - Account for a corrupted HRRR bufkit file found in MTArchive.
