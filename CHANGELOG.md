@@ -12,6 +12,7 @@ All notable changes to this library are documented in this file.
 ### New Features
 
 - Add an IEMRE `CONUS` alias that points back to the default domain="".
+- Add python 3.14 to CI testing matrix.
 
 ### Bug Fixes
 
