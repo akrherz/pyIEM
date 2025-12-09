@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.grid.nav &#8212; pyIEM 1.25.0.post29+g5378ab4fc</title>
+    <title>pyiem.grid.nav &#8212; pyIEM 1.25.0.post32+g5fa3cdeea</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=3438e3aa"></script>
+    <script src="../../../_static/documentation_options.js?v=7815c318"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/grid/nav';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post29+g5378ab4fc" />
+  <meta name="docsearch:version" content="1.25.0.post32+g5fa3cdeea" />
     <meta name="docbuild:last-update" content="Dec 09, 2025"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post29+g5378ab4fc</p>
+    <p class="title logo__title">pyIEM 1.25.0.post32+g5fa3cdeea</p>
   
 </a></div>
     
@@ -480,7 +480,7 @@
         <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="mi">1057</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="c1"># Lamely hardcoded for now</span>
-    <span class="s2">&quot;ERA5LAND&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;ERA5LAND_CONUS&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;left_edge&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.05</span><span class="p">,</span>
         <span class="s2">&quot;bottom_edge&quot;</span><span class="p">:</span> <span class="mf">22.95</span><span class="p">,</span>
         <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -575,8 +575,10 @@
 
 <div class="viewcode-block" id="get_nav">
 <a class="viewcode-back" href="../../../api/pyiem.grid.nav.html#pyiem.grid.nav.get_nav">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_nav</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dom</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CartesianGridNavigation</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_nav</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dom</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CartesianGridNavigation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to remove some boilerplate for fetching gridnav.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_GRID_CONFIGS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CartesianGridNavigation</span><span class="p">(</span><span class="o">**</span><span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">dom</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">dom</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="s2">&quot;_CONUS&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">extra</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">CartesianGridNavigation</span><span class="p">(</span><span class="o">**</span><span class="n">_GRID_CONFIGS</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
