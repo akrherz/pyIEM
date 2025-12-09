@@ -44,7 +44,7 @@ _GRID_CONFIGS = {
         "ny": 1057,
     },
     # Lamely hardcoded for now
-    "ERA5LAND": {
+    "ERA5LAND_CONUS": {
         "left_edge": -126.05,
         "bottom_edge": 22.95,
         "dx": 0.1,
@@ -139,6 +139,8 @@ _GRID_CONFIGS["IEMRE"] = _GRID_CONFIGS["IEMRE_CONUS"]
 
 def get_nav(name: str, dom: str) -> CartesianGridNavigation:
     """Helper to remove some boilerplate for fetching gridnav."""
+    if name in _GRID_CONFIGS:
+        return CartesianGridNavigation(**_GRID_CONFIGS[name])
     extra = f"_{dom.upper()}" if dom != "" else "_CONUS"
     key = f"{name.upper()}{extra}"
     return CartesianGridNavigation(**_GRID_CONFIGS[key])
