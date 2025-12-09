@@ -114,6 +114,12 @@ def test_get_gid():
     assert iemre.get_gid(-960, 440) is None
 
 
+def test_get_grids_no_domain():
+    """Test that get_grids works without specifying a domain."""
+    valid = datetime.date.today() + datetime.timedelta(days=120)
+    assert iemre.get_grids(valid, varnames=["high_tmpk"])
+
+
 def test_writing_grids():
     """Test letting the API write data from the future."""
     domain = "china"

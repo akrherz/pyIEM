@@ -180,7 +180,9 @@ def set_grids(valid, ds, table: str | None = None, domain: str = "conus"):
     )
 
 
-def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
+def get_grids(
+    valid, varnames=None, cursor=None, table=None, domain: str = "conus"
+):
     """Fetch grid(s) from the database, returning xarray.
 
     Args:
