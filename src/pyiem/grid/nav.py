@@ -137,7 +137,7 @@ _GRID_CONFIGS = {
 _GRID_CONFIGS["IEMRE"] = _GRID_CONFIGS["IEMRE_CONUS"]
 
 
-def get_nav(name: str, dom: str) -> CartesianGridNavigation:
+def get_nav(name: str, dom: str | None = "conus") -> CartesianGridNavigation:
     """Helper to remove some boilerplate for fetching gridnav."""
     if name in _GRID_CONFIGS:
         return CartesianGridNavigation(**_GRID_CONFIGS[name])
