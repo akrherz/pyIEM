@@ -463,16 +463,26 @@ def get_autoplot_context(fdict, cfg, enforce_optional=False, **kwargs):
                 value = default
         elif typ == "select":
             options = opt.get("options", {})
+            # Allow for legacy variable aliases
+            alias = opt.get("alias", {})
             # in case of multi, value could be a list
             if value is None:
                 value = default
             elif isinstance(value, str):
+                if value in alias:
+                    value = alias[value]
                 if value not in options:
                     value = default
                 if opt.get("multiple"):
                     value = [value]
             else:
-                value = [subval for subval in value if subval in options]
+                newvalue = []
+                for subval in value:
+                    if subval in alias:
+                        subval = alias[subval]
+                    if subval in options:
+                        newvalue.append(subval)
+                value = newvalue
         elif typ == "datetime":
             # tricky here, php has YYYY/mm/dd and CGI has YYYY-mm-dd
             if value is not None and value.strip() == "":
