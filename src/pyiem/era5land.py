@@ -24,7 +24,7 @@ def _rounddown(val: float) -> float:
     return np.floor(val / 0.1) * 0.1
 
 
-DOMAINS = {"": {}, "china": {}, "europe": {}, "sa": {}}
+DOMAINS = {"conus": {}, "china": {}, "europe": {}, "sa": {}}
 
 for _dom, meta in DOMAINS.items():
     meta["WEST"] = _roundup(iemre.DOMAINS[_dom]["west_edge"])
@@ -53,7 +53,7 @@ for _dom, meta in DOMAINS.items():
 
 
 def find_ij(
-    lon: float, lat: float, domain: str = ""
+    lon: float, lat: float, domain: str = "conus"
 ) -> tuple[Optional[int], Optional[int]]:
     """Find the grid cell for the provided lon/lat"""
     _meta = DOMAINS[domain]
