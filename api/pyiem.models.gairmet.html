@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.models.gairmet module &#8212; pyIEM 1.25.0.post24+g687f50437</title>
+    <title>pyiem.models.gairmet module &#8212; pyIEM 1.25.0.post29+g5378ab4fc</title>
   
   
   
@@ -39,9 +39,9 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=1a1e35ce"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/documentation_options.js?v=3438e3aa"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.models.gairmet';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.models.cwa module" href="pyiem.models.cwa.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post24+g687f50437" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+  <meta name="docsearch:version" content="1.25.0.post29+g5378ab4fc" />
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post24+g687f50437</p>
+    <p class="title logo__title">pyIEM 1.25.0.post29+g5378ab4fc</p>
   
 </a></div>
     
@@ -465,150 +465,168 @@
   <section id="module-pyiem.models.gairmet">
 <span id="pyiem-models-gairmet-module"></span><h1>pyiem.models.gairmet module<a class="headerlink" href="#module-pyiem.models.gairmet" title="Link to this heading">#</a></h1>
 <p>Data Model for GAIRMET.</p>
-<dl class="py class pydantic_model">
+<dl class="py class">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">AIRMETRecord</span></span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#AIRMETRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">AIRMETRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">gml_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hazard_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weather_conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#AIRMETRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>A single AIRMET Record.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.geom" title="pyiem.models.gairmet.AIRMETRecord.geom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geom</span> <span class="pre">(shapely.geometry.polygon.Polygon)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.gml_id" title="pyiem.models.gairmet.AIRMETRecord.gml_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gml_id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type" title="pyiem.models.gairmet.AIRMETRecord.hazard_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hazard_type</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.label" title="pyiem.models.gairmet.AIRMETRecord.label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.status" title="pyiem.models.gairmet.AIRMETRecord.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.valid_at" title="pyiem.models.gairmet.AIRMETRecord.valid_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_at</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions" title="pyiem.models.gairmet.AIRMETRecord.weather_conditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weather_conditions</span> <span class="pre">(List[str])</span></code></a></p></li>
+<li><p><strong>gml_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>hazard_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>valid_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>weather_conditions</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>)</p></li>
+<li><p><strong>geom</strong> (<a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><em>Polygon</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.gml_id">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gml_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.gml_id" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gml_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.gml_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.label">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.label" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.label" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.status">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.status" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">status</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.status" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.hazard_type">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hazard_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">hazard_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.hazard_type" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.valid_at">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.valid_at" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">valid_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.valid_at" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.weather_conditions">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">weather_conditions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">weather_conditions</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.weather_conditions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.AIRMETRecord.geom">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">geom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><span class="pre">Polygon</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.geom" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">geom</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.Polygon.html#shapely.Polygon" title="(in Shapely)"><span class="pre">Polygon</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.AIRMETRecord.geom" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="py class pydantic_model">
+<dl class="py class">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">FreezingLevelRecord</span></span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#FreezingLevelRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">FreezingLevelRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">gml_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#FreezingLevelRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>A single FreezingLevel Record.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.geom" title="pyiem.models.gairmet.FreezingLevelRecord.geom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geom</span> <span class="pre">(shapely.geometry.multilinestring.MultiLineString)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id" title="pyiem.models.gairmet.FreezingLevelRecord.gml_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gml_id</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.level" title="pyiem.models.gairmet.FreezingLevelRecord.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span> <span class="pre">(int</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level" title="pyiem.models.gairmet.FreezingLevelRecord.lower_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower_level</span> <span class="pre">(int)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level" title="pyiem.models.gairmet.FreezingLevelRecord.upper_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upper_level</span> <span class="pre">(int)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at" title="pyiem.models.gairmet.FreezingLevelRecord.valid_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_at</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
+<li><p><strong>gml_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>valid_at</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>geom</strong> (<a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.MultiLineString.html#shapely.MultiLineString" title="(in Shapely)"><em>MultiLineString</em></a>)</p></li>
+<li><p><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>lower_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
+<li><p><strong>upper_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.gml_id">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gml_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gml_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.valid_at">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">valid_at</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.geom">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">geom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.MultiLineString.html#shapely.MultiLineString" title="(in Shapely)"><span class="pre">MultiLineString</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.geom" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">geom</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://shapely.readthedocs.io/en/stable/reference/shapely.MultiLineString.html#shapely.MultiLineString" title="(in Shapely)"><span class="pre">MultiLineString</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.geom" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.level">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.level" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.level" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.lower_level">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lower_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">lower_level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.lower_level" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.FreezingLevelRecord.upper_level">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upper_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">upper_level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.FreezingLevelRecord.upper_level" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="py class pydantic_model">
+<dl class="py class">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel">
-<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">GAIRMETModel</span></span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#GAIRMETModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.models.gairmet.</span></span><span class="sig-name descname"><span class="pre">GAIRMETModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_from</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_to</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issuetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">airmets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freezing_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/models/gairmet.html#GAIRMETModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
 <p>A G-AIRMET.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.airmets" title="pyiem.models.gairmet.GAIRMETModel.airmets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">airmets</span> <span class="pre">(List[pyiem.models.gairmet.AIRMETRecord])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels" title="pyiem.models.gairmet.GAIRMETModel.freezing_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freezing_levels</span> <span class="pre">(List[pyiem.models.gairmet.FreezingLevelRecord])</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.issuetime" title="pyiem.models.gairmet.GAIRMETModel.issuetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">issuetime</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_from" title="pyiem.models.gairmet.GAIRMETModel.valid_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_from</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pyiem.models.gairmet.GAIRMETModel.valid_to" title="pyiem.models.gairmet.GAIRMETModel.valid_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_to</span> <span class="pre">(datetime.datetime)</span></code></a></p></li>
+<li><p><strong>valid_from</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>valid_to</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>issuetime</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><em>datetime</em></a>)</p></li>
+<li><p><strong>airmets</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><em>List</em></a><em>[</em><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord" title="pyiem.models.gairmet.AIRMETRecord"><em>AIRMETRecord</em></a><em>]</em>)</p></li>
+<li><p><strong>freezing_levels</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><em>List</em></a><em>[</em><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord" title="pyiem.models.gairmet.FreezingLevelRecord"><em>FreezingLevelRecord</em></a><em>]</em>)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.valid_from">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_from" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">valid_from</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_from" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.valid_to">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_to</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_to" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">valid_to</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.valid_to" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.issuetime">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">issuetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.issuetime" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">issuetime</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.14)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.issuetime" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.airmets">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">airmets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord" title="pyiem.models.gairmet.AIRMETRecord"><span class="pre">AIRMETRecord</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.airmets" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">airmets</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.AIRMETRecord" title="pyiem.models.gairmet.AIRMETRecord"><span class="pre">AIRMETRecord</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.airmets" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute pydantic_field">
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.freezing_levels">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">freezing_levels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord" title="pyiem.models.gairmet.FreezingLevelRecord"><span class="pre">FreezingLevelRecord</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">freezing_levels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pyiem.models.gairmet.FreezingLevelRecord" title="pyiem.models.gairmet.FreezingLevelRecord"><span class="pre">FreezingLevelRecord</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyiem.models.gairmet.GAIRMETModel.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="headerlink" href="#pyiem.models.gairmet.GAIRMETModel.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -662,6 +680,7 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.AIRMETRecord"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.AIRMETRecord.model_config"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.model_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.AIRMETRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.gml_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.AIRMETRecord.label"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.label</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.AIRMETRecord.status"><code class="docutils literal notranslate"><span class="pre">AIRMETRecord.status</span></code></a></li>
@@ -672,6 +691,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.FreezingLevelRecord"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.FreezingLevelRecord.model_config"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.model_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.FreezingLevelRecord.gml_id"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.gml_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.FreezingLevelRecord.valid_at"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.valid_at</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.FreezingLevelRecord.geom"><code class="docutils literal notranslate"><span class="pre">FreezingLevelRecord.geom</span></code></a></li>
@@ -686,6 +706,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.GAIRMETModel.issuetime"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.issuetime</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.GAIRMETModel.airmets"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.airmets</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.GAIRMETModel.freezing_levels"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.freezing_levels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.models.gairmet.GAIRMETModel.model_config"><code class="docutils literal notranslate"><span class="pre">GAIRMETModel.model_config</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -725,7 +746,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>

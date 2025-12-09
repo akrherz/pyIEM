@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.era5land &#8212; pyIEM 1.25.0.post24+g687f50437</title>
+    <title>pyiem.era5land &#8212; pyIEM 1.25.0.post29+g5378ab4fc</title>
   
   
   
@@ -38,16 +38,16 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=1a1e35ce"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/documentation_options.js?v=3438e3aa"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/era5land';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post24+g687f50437" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+  <meta name="docsearch:version" content="1.25.0.post29+g5378ab4fc" />
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post24+g687f50437</p>
+    <p class="title logo__title">pyIEM 1.25.0.post29+g5378ab4fc</p>
   
 </a></div>
     
@@ -460,7 +460,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">val</span> <span class="o">/</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
 
 
-<span class="n">DOMAINS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;china&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;europe&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+<span class="n">DOMAINS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;conus&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;china&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;europe&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="p">{}}</span>
 
 <span class="k">for</span> <span class="n">_dom</span><span class="p">,</span> <span class="n">meta</span> <span class="ow">in</span> <span class="n">DOMAINS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;WEST&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_roundup</span><span class="p">(</span><span class="n">iemre</span><span class="o">.</span><span class="n">DOMAINS</span><span class="p">[</span><span class="n">_dom</span><span class="p">][</span><span class="s2">&quot;west_edge&quot;</span><span class="p">])</span>
@@ -491,7 +491,7 @@
 <div class="viewcode-block" id="find_ij">
 <a class="viewcode-back" href="../../api/pyiem.era5land.html#pyiem.era5land.find_ij">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span>
-    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the grid cell for the provided lon/lat&quot;&quot;&quot;</span>
     <span class="n">_meta</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
@@ -556,7 +556,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>

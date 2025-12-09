@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.iemre &#8212; pyIEM 1.25.0.post24+g687f50437</title>
+    <title>pyiem.iemre &#8212; pyIEM 1.25.0.post29+g5378ab4fc</title>
   
   
   
@@ -38,16 +38,16 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=1a1e35ce"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/documentation_options.js?v=3438e3aa"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/iemre';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post24+g687f50437" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+  <meta name="docsearch:version" content="1.25.0.post29+g5378ab4fc" />
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
   </head>
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post24+g687f50437</p>
+    <p class="title logo__title">pyIEM 1.25.0.post29+g5378ab4fc</p>
   
 </a></div>
     
@@ -473,7 +473,7 @@
 
 <span class="c1"># Definition of analysis domains for IEMRE</span>
 <span class="n">DOMAINS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;conus&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;west&quot;</span><span class="p">:</span> <span class="n">WEST</span><span class="p">,</span>
         <span class="s2">&quot;east&quot;</span><span class="p">:</span> <span class="n">EAST</span><span class="p">,</span>
         <span class="s2">&quot;south&quot;</span><span class="p">:</span> <span class="n">SOUTH</span><span class="p">,</span>
@@ -534,8 +534,6 @@
         <span class="s2">&quot;tzinfo&quot;</span><span class="p">:</span> <span class="n">ZoneInfo</span><span class="p">(</span><span class="s2">&quot;America/Sao_Paulo&quot;</span><span class="p">),</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="c1"># Hackery alias to support some downstream hackery in DEP</span>
-<span class="n">DOMAINS</span><span class="p">[</span><span class="s2">&quot;conus&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="d2l">
@@ -570,7 +568,7 @@
 
 <div class="viewcode-block" id="set_grids">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.set_grids">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_grids</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the database with a given ``xarray.Dataset``.</span>
 
 <span class="sd">    Args:</span>
@@ -686,7 +684,7 @@
 
 <div class="viewcode-block" id="get_dailyc_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_dailyc_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_dailyc_ncname</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dailyc_ncname</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the filename of the daily climatology netcdf file&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_dailyc.nc&quot;</span></div>
 
@@ -694,7 +692,7 @@
 
 <div class="viewcode-block" id="get_daily_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_daily_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_daily_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_daily_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the daily netcdf filename for the given year&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_daily.nc&quot;</span></div>
 
@@ -718,7 +716,7 @@
 
 <div class="viewcode-block" id="get_hourly_ncname">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_hourly_ncname">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_hourly_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_hourly_ncname</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the daily netcdf filename for the given year&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/mesonet/data/</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">d2l</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span><span class="si">}</span><span class="s2">_hourly.nc&quot;</span></div>
 
@@ -762,7 +760,7 @@
 <div class="viewcode-block" id="find_ij">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.find_ij">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_ij</span><span class="p">(</span>
-    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the i, j grid indices (based 0) for given lat/lon.&quot;&quot;&quot;</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="n">DOMAINS</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
@@ -797,7 +795,7 @@
 
 <div class="viewcode-block" id="get_gid">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.get_gid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_gid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gid</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the grid id for the given location.&quot;&quot;&quot;</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">find_ij</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -808,7 +806,7 @@
 
 <div class="viewcode-block" id="grb2iemre">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.grb2iemre">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">grb2iemre</span><span class="p">(</span><span class="n">grb</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">grb2iemre</span><span class="p">(</span><span class="n">grb</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject a grib message onto the IEMRE grid.</span>
 
 <span class="sd">    A helper frontend to ``reproject2iemre``.</span>
@@ -843,7 +841,7 @@
 <div class="viewcode-block" id="reproject2iemre">
 <a class="viewcode-back" href="../../api/pyiem.iemre.html#pyiem.iemre.reproject2iemre">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">reproject2iemre</span><span class="p">(</span>
-    <span class="n">grid</span><span class="p">,</span> <span class="n">affine_in</span><span class="p">,</span> <span class="n">crs_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">affine_in</span><span class="p">,</span> <span class="n">crs_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;conus&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject the given grid to IEMRE grid, returning S to N oriented grid.</span>
 
@@ -932,7 +930,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>

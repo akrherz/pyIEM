@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.iemre module &#8212; pyIEM 1.25.0.post24+g687f50437</title>
+    <title>pyiem.iemre module &#8212; pyIEM 1.25.0.post29+g5378ab4fc</title>
   
   
   
@@ -39,9 +39,9 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=1a1e35ce"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/documentation_options.js?v=3438e3aa"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.iemre';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.htmlgen module" href="pyiem.htmlgen.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.25.0.post24+g687f50437" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+  <meta name="docsearch:version" content="1.25.0.post29+g5378ab4fc" />
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.25.0.post24+g687f50437</p>
+    <p class="title logo__title">pyIEM 1.25.0.post29+g5378ab4fc</p>
   
 </a></div>
     
@@ -584,13 +584,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.set_grids">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#set_grids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">set_grids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#set_grids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.set_grids" title="Link to this definition">#</a></dt>
 <dd><p>Update the database with a given <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>valid</strong> (<em>datetime</em><em> or </em><em>date</em>) – If datetime, save hourly, if date, save daily</p></li>
-<li><p><strong>ds</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.11.1)"><em>xarray.Dataset</em></a>) – The xarray dataset to save</p></li>
+<li><p><strong>ds</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.12.0)"><em>xarray.Dataset</em></a>) – The xarray dataset to save</p></li>
 <li><p><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – hard coded database table to use to set the data
 on.  Usually dynamically computed.</p></li>
 <li><p><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>,</em><em>optional</em>) – IEMRE domain to save data to</p></li>
@@ -623,7 +623,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_dailyc_ncname">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_dailyc_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_dailyc_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_dailyc_ncname" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_dailyc_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_dailyc_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_dailyc_ncname" title="Link to this definition">#</a></dt>
 <dd><p>Return the filename of the daily climatology netcdf file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -637,7 +637,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_daily_ncname">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_daily_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_daily_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_daily_ncname" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_daily_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_daily_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_daily_ncname" title="Link to this definition">#</a></dt>
 <dd><p>Get the daily netcdf filename for the given year</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -663,7 +663,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_hourly_ncname">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_hourly_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_hourly_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_hourly_ncname" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_hourly_ncname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_hourly_ncname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_hourly_ncname" title="Link to this definition">#</a></dt>
 <dd><p>Get the daily netcdf filename for the given year</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -697,7 +697,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.find_ij">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">find_ij</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#find_ij"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.find_ij" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">find_ij</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#find_ij"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.find_ij" title="Link to this definition">#</a></dt>
 <dd><p>Return the i, j grid indices (based 0) for given lat/lon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -732,7 +732,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.get_gid">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_gid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_gid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_gid" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">get_gid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#get_gid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.get_gid" title="Link to this definition">#</a></dt>
 <dd><p>Compute the grid id for the given location.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -746,7 +746,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.grb2iemre">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">grb2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#grb2iemre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.grb2iemre" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">grb2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#grb2iemre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.grb2iemre" title="Link to this definition">#</a></dt>
 <dd><p>Reproject a grib message onto the IEMRE grid.</p>
 <p>A helper frontend to <code class="docutils literal notranslate"><span class="pre">reproject2iemre</span></code>.</p>
 <dl class="field-list simple">
@@ -768,7 +768,7 @@ case of forecast data.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyiem.iemre.reproject2iemre">
-<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">reproject2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#reproject2iemre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.reproject2iemre" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyiem.iemre.</span></span><span class="sig-name descname"><span class="pre">reproject2iemre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affine_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conus'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/iemre.html#reproject2iemre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.iemre.reproject2iemre" title="Link to this definition">#</a></dt>
 <dd><p>Reproject the given grid to IEMRE grid, returning S to N oriented grid.</p>
 <p>Note: If the affine_in is dy &gt; 0 then the grid is assumed to be S to N.</p>
 <dl class="field-list simple">
@@ -889,7 +889,7 @@ case of forecast data.</p></li>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
