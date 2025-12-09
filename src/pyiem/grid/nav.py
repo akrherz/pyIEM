@@ -3,7 +3,7 @@
 from pyiem.models.gridnav import CartesianGridNavigation
 
 _GRID_CONFIGS = {
-    "IEMRE": {
+    "IEMRE_CONUS": {
         "left_edge": -126.0625,
         "bottom_edge": 22.9375,
         "dx": 0.125,
@@ -133,13 +133,13 @@ _GRID_CONFIGS = {
         "ny": 621,
     },
 }
-# This is a hacky shim due to some downstream hackery happening in DEP
-_GRID_CONFIGS["IEMRE_CONUS"] = _GRID_CONFIGS["IEMRE"]
+# Internal alias, for now
+_GRID_CONFIGS["IEMRE"] = _GRID_CONFIGS["IEMRE_CONUS"]
 
 
 def get_nav(name: str, dom: str) -> CartesianGridNavigation:
     """Helper to remove some boilerplate for fetching gridnav."""
-    extra = f"_{dom.upper()}" if dom != "" else ""
+    extra = f"_{dom.upper()}" if dom != "" else "_CONUS"
     key = f"{name.upper()}{extra}"
     return CartesianGridNavigation(**_GRID_CONFIGS[key])
 

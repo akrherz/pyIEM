@@ -8,10 +8,12 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Enforce a SHEF data model limit of 8 characters for a station identifier.
+- Ween off `domain=` nomenclature for the default IEMRE domain.
 
 ### New Features
 
 - Add an IEMRE `CONUS` alias that points back to the default domain="".
+- Add IEM autoplot alias option to allow for legacy variable migration.
 
 ### Bug Fixes
 

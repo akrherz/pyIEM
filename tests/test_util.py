@@ -218,6 +218,54 @@ def test_utc():
     assert answer.year == util.utc().year
 
 
+def test_get_autoplot_context_alias():
+    """Test that an alias can be used."""
+    form = {"blah": ""}
+    cfg = {
+        "arguments": [
+            {
+                "type": "select",
+                "name": "blah",
+                "default": "sa",
+                "options": {
+                    "conus": "hi",
+                    "sa": "bye",
+                },
+                "alias": {
+                    "": "conus",
+                },
+            }
+        ]
+    }
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["blah"] == "conus"
+
+
+def test_get_autoplot_context_alias_list():
+    """Test that an alias can be used."""
+    form = {"blah": ["", "two"]}
+    cfg = {
+        "arguments": [
+            {
+                "type": "select",
+                "name": "blah",
+                "default": "sa",
+                "multiple": True,
+                "options": {
+                    "conus": "hi",
+                    "sa": "bye",
+                    "two": "two",
+                },
+                "alias": {
+                    "": "conus",
+                },
+            }
+        ]
+    }
+    ctx = util.get_autoplot_context(form, cfg)
+    assert ctx["blah"] == ["conus", "two"]
+
+
 def test_get_autoplot_context_text_pattern():
     """Test the pattern validation."""
     form = {"rng": "1960"}

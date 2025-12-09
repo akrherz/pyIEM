@@ -37,7 +37,7 @@ AFFINE_NATIVE = Affine(DX, 0.0, WEST_EDGE, 0.0, DY, SOUTH_EDGE)
 
 # Definition of analysis domains for IEMRE
 DOMAINS = {
-    "": {
+    "conus": {
         "west": WEST,
         "east": EAST,
         "south": SOUTH,
@@ -98,8 +98,6 @@ DOMAINS = {
         "tzinfo": ZoneInfo("America/Sao_Paulo"),
     },
 }
-# Hackery alias to support some downstream hackery in DEP
-DOMAINS["conus"] = DOMAINS[""]
 
 
 def d2l(val) -> str:
@@ -126,7 +124,7 @@ def get_table(valid):
     return table
 
 
-def set_grids(valid, ds, table: str | None = None, domain: str = ""):
+def set_grids(valid, ds, table: str | None = None, domain: str = "conus"):
     """Update the database with a given ``xarray.Dataset``.
 
     Args:
@@ -236,12 +234,12 @@ def get_grids(valid, varnames=None, cursor=None, table=None, domain: str = ""):
     )
 
 
-def get_dailyc_ncname(domain: str = "") -> str:
+def get_dailyc_ncname(domain: str = "conus") -> str:
     """Return the filename of the daily climatology netcdf file"""
     return f"/mesonet/data/{d2l(domain)}/{d2l(domain)}_dailyc.nc"
 
 
-def get_daily_ncname(year, domain: str = "") -> str:
+def get_daily_ncname(year, domain: str = "conus") -> str:
     """Get the daily netcdf filename for the given year"""
     return f"/mesonet/data/{d2l(domain)}/{year}_{d2l(domain)}_daily.nc"
 
@@ -256,7 +254,7 @@ def get_daily_mrms_ncname(year):
     return f"/mesonet/data/mrms/{year}_mrms_daily.nc"
 
 
-def get_hourly_ncname(year, domain: str = "") -> str:
+def get_hourly_ncname(year, domain: str = "conus") -> str:
     """Get the daily netcdf filename for the given year"""
     return f"/mesonet/data/{d2l(domain)}/{year}_{d2l(domain)}_hourly.nc"
 
@@ -291,7 +289,7 @@ def hourly_offset(dtobj):
 
 
 def find_ij(
-    lon: float, lat: float, domain: str = ""
+    lon: float, lat: float, domain: str = "conus"
 ) -> Tuple[Optional[int], Optional[int]]:
     """Return the i, j grid indices (based 0) for given lat/lon."""
     dom = DOMAINS[domain]
@@ -320,7 +318,7 @@ def get_domain(lon: float, lat: float) -> Optional[str]:
     return None
 
 
-def get_gid(lon, lat, domain: str = "") -> Optional[int]:
+def get_gid(lon, lat, domain: str = "conus") -> Optional[int]:
     """Compute the grid id for the given location."""
     i, j = find_ij(lon, lat, domain)
     if i is None:
@@ -328,7 +326,7 @@ def get_gid(lon, lat, domain: str = "") -> Optional[int]:
     return j * DOMAINS[domain]["nx"] + i
 
 
-def grb2iemre(grb, resampling=None, domain: str = "") -> np.ndarray:
+def grb2iemre(grb, resampling=None, domain: str = "conus") -> np.ndarray:
     """Reproject a grib message onto the IEMRE grid.
 
     A helper frontend to ``reproject2iemre``.
@@ -360,7 +358,7 @@ def grb2iemre(grb, resampling=None, domain: str = "") -> np.ndarray:
 
 
 def reproject2iemre(
-    grid, affine_in, crs_in: str, resampling=None, domain: str = ""
+    grid, affine_in, crs_in: str, resampling=None, domain: str = "conus"
 ):
     """Reproject the given grid to IEMRE grid, returning S to N oriented grid.
 
