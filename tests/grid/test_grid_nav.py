@@ -27,6 +27,6 @@ def test_prism_calc():
 
 def test_get_nav():
     """Test that we can get a helper."""
-    assert nav.get_nav("iemRE", "")
+    assert nav.get_nav("iemRE")
     assert nav.get_nav("era5LAND", "china")
     assert nav.get_nav("era5LAND", "sa")
