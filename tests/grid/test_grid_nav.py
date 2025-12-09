@@ -30,3 +30,9 @@ def test_get_nav():
     assert nav.get_nav("iemRE")
     assert nav.get_nav("era5LAND", "china")
     assert nav.get_nav("era5LAND", "sa")
+
+
+def test_get_nav_iemre_sa():
+    """Test bug found with bad logic."""
+    nav_obj = nav.get_nav("iemre", "sa")
+    assert nav_obj.bottom < -40
