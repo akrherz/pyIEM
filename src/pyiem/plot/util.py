@@ -3,6 +3,7 @@
 # pylint: disable=import-outside-toplevel
 import functools
 import os
+from pathlib import Path
 
 import geopandas as gpd
 import matplotlib.colors as mpcolors
@@ -39,12 +40,12 @@ def update_kwargs_apctx(func):
                 if _r in FIGSIZES:
                     kwargs["figsize"] = FIGSIZES[_r]
             # Merge in csector, this will override sector
-            csector = apctx.get("csector", None)
+            csector: str | None = apctx.get("csector", None)
             if csector is not None:
                 # Quasi magic
                 if len(csector) == 2:
                     kwargs["sector"] = "state"
-                    kwargs["state"] = csector
+                    kwargs["state"] = csector.upper()
                 else:
                     kwargs["sector"] = csector
             # Merge in dpi, if not set
@@ -56,36 +57,38 @@ def update_kwargs_apctx(func):
     return wrapped
 
 
-def draw_features_from_shapefile(gp, name, **kwargs):
+def draw_features_from_shapefile(gp, name: str, **kwargs):
     """Add features as we need to."""
     name2 = name if name != "borders" else "admin_0_boundary_lines_land"
     boundpoly = gp.get_bounds_polygon()
     # Life choices: which resolution to use?
     threshold = 25 if gp.crs.is_geographic else 3e12
     resolution = "50m" if boundpoly.area > threshold else "10m"
-    # Forward support cartopy_offlinedata variables (0.2 vs 0.20)
-    shpfn = os.path.join(
-        os.environ.get(
-            "CARTOPY_OFFLINE_SHARED", os.environ.get("CARTOPY_DATA_DIR")
-        ),
-        "shapefiles",
-        "natural_earth",
-        "physical" if name != "borders" else "cultural",
-        f"ne_{resolution}_{name2}.shp",
-    )
+
     fastfn = (
-        os.path.join(
-            "/opt/miniconda3/pyiem_data/parquet",
-            str(gp.crs.to_epsg()),
-            *shpfn.split(os.sep)[-3:],
-        ).removesuffix(".shp")
-        + ".parquet"
+        Path("/opt/miniconda3/pyiem_data/parquet")
+        / str(gp.crs.to_epsg())
+        / "natural_earth"
+        / ("physical" if name != "borders" else "cultural")
+        / f"ne_{resolution}_{name2}.parquet"
     )
-    if os.path.isfile(fastfn):
+    if fastfn.exists():
         df = gpd.read_parquet(fastfn).cx[
             slice(*gp.get_xlim()), slice(*gp.get_ylim())
         ]
     else:
+        shpfn = (
+            Path(
+                os.environ.get(
+                    "CARTOPY_OFFLINE_SHARED",
+                    os.environ.get("CARTOPY_DATA_DIR"),
+                )
+            )
+            / "shapefiles"
+            / "natural_earth"
+            / ("physical" if name != "borders" else "cultural")
+            / f"ne_{resolution}_{name2}.shp"
+        )
         df = (
             gpd.read_file(shpfn, engine="pyogrio")
             .to_crs(gp.crs)
