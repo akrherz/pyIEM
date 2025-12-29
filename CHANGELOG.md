@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Update CI testing to include python=3.14
+
 ### Bug Fixes
 
 ## **1.26.0** (9 Dec 2025)
