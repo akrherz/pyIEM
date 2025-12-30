@@ -11,16 +11,13 @@ dependencies:
   - cython
   - defusedxml
   - docutils
-  - fiona
-  - gdal>=3.10,<3.11
+  - gdal
   - geopandas
   - geos
   # downloading stuff
   - httpx
   # templating
   - jinja2
-  # Temporary solver help, REMOVEME
-  - libnetcdf=4.9.2
   - matplotlib-base
   - metpy
   - metar>=1.7.0
