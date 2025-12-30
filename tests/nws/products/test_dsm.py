@@ -38,6 +38,18 @@ def test_none_compute_time():
     assert compute_time(datetime.date(2000, 1, 1), None) is None
 
 
+def test_kadf():
+    """Test that a stray space does not mess us up."""
+    text = """
+882 
+CDUS27 KZME 301207
+KADF DS 0605 30/12  330019/ 200605// 43/ 20//0470213/00/00/-/-/-/-/-/
+-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/07/34090000/32130006/-/NN/N/N/NN/ET=
+"""
+    prod = parser(text, utcnow=utc(2025, 12, 30, 12, 16))
+    assert prod.data[0].date == datetime.date(2025, 12, 30)
+
+
 def test_jan1():
     """Test that a DSM for the previous year works properly."""
     text = """

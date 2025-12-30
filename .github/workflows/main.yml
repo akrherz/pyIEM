@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        PYTHON_VERSION: ["3.10", "3.11", "3.13"]
+        PYTHON_VERSION: ["3.10", "3.13", "3.14"]
     env:
       PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
     steps:
@@ -50,7 +50,6 @@ jobs:
         condarc: |
           channels:
             - conda-forge
-            - defaults
         create-args: >-
           python=${{ env.PYTHON_VERSION }}
         environment-name: prod
@@ -87,20 +86,20 @@ jobs:
         retention-days: 1
 
     - name: Code coverage
-      if: ${{ matrix.PYTHON_VERSION == '3.13' }}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' }}
       uses: codecov/codecov-action@v5
       with:
         files: coverage.xml
 
     - name: Build Docs
-      if: ${{ matrix.PYTHON_VERSION == '3.13' }}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' }}
       run: |
         cd docs
         make html
         touch build/html/.nojekyll
 
     - name: Deploy Docs
-      if: ${{ matrix.PYTHON_VERSION == '3.13' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
+      if: ${{ matrix.PYTHON_VERSION == '3.14' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages # The branch the action should deploy to.

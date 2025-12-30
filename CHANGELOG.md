@@ -3,6 +3,20 @@
 
 All notable changes to this library are documented in this file.
 
+## Unreleased Version
+
+### API Changes
+
+- Clarify in CI environment that ``fiona`` is not an actual dependency.
+
+### New Features
+
+- Update CI testing to include python=3.14
+
+### Bug Fixes
+
+- Increase whitespace forgiveness of DSM parser.
+
 ## **1.26.0** (9 Dec 2025)
 
 ### API Changes

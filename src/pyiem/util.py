@@ -337,7 +337,7 @@ def noaaport_text(text):
 
 def handle_date_err(exp, value, fmt):
     """Attempt to fix up a date string, when possible."""
-    if str(exp).find("day is out of range") == -1:
+    if "day" not in str(exp) and "range" not in str(exp):
         raise exp
     tokens = value.split(" ")
     datepart = tokens[0]
