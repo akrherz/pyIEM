@@ -41,12 +41,26 @@ def get_summary_table(valid):
 
 
 def bounded(val, floor, ceiling):
-    """Make sure this is not NaN and between some value."""
-    if val is None or np.ma.is_masked(val) or math.isnan(val):
+    """Return val if is a finite number within [floor, ceiling], else None."""
+    if val is None:
         return None
-    val = float(val)
-    # belt and suspenders check here
-    if math.isnan(val) or val < floor or val > ceiling:
+    # Fast path for floats and ints
+    if isinstance(val, (float, int)):
+        if not math.isfinite(val) or val < floor or val > ceiling:
+            return None
+        return val
+    if isinstance(val, np.ndarray):
+        if np.ma.is_masked(val):
+            return None
+        if val.size != 1:
+            raise RuntimeError(f"Expected a single value ndarray {val}")
+        val = val.item()
+    # Fallback for other types (e.g., strings)
+    try:
+        val = float(val)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(val) or val < floor or val > ceiling:
         return None
     return val
 

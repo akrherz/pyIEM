@@ -24,6 +24,12 @@ class blah:
     cursor = None
 
 
+def test_bounded_non_scalar():
+    """Test that we get a runtime exception with this."""
+    with pytest.raises(RuntimeError):
+        observation.bounded(np.array([1, 2, 3]), 0, 100)
+
+
 def test_numpy_datetime64():
     """Test that numpy's datetime64 is not considered as daily."""
     ts = np.datetime64("2020-12-30")
