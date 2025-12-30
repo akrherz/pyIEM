@@ -127,9 +127,8 @@ def to_metar(textprod, text) -> Metar:
                 if newtext != text:
                     text = newtext
             # Somewhat brittle logic checking exception message
-            if "day" in str(inst) and "range" in str(inst):
-                if valid.day < 10:
-                    valid = valid.replace(day=1) - timedelta(days=1)
+            if "day" in str(inst) and "range" in str(inst) and valid.day < 10:
+                valid = valid.replace(day=1) - timedelta(days=1)
         attempt += 1
 
     if mtr is not None:
