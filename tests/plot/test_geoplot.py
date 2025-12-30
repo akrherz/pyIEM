@@ -96,11 +96,12 @@ def test_gfs_imshow():
         0 - dx / 2.0,
         0.0,
         -dx,
-        grb["latitudeOfFirstGridPointInDegrees"] + dx / 2.0,
+        min(grb["latitudeOfFirstGridPointInDegrees"] + dx / 2.0, 89.99),
     )
     mp = MapPlot(nocaption=True, sector="nws", title="GFS")
+    # The grid is slightly larger than 180° of latitude, so ignore last row/col
     mp.imshow(
-        c2f(grb.values - 273.15),
+        c2f(grb.values[:-1, :-1] - 273.15),
         aff,
         "EPSG:4326",
         list(range(0, 100, 10)),

@@ -126,7 +126,8 @@ def to_metar(textprod, text) -> Metar:
                     newtext = newtext.replace(f" {token}", "")
                 if newtext != text:
                     text = newtext
-            if str(inst).find("day is out of range for month") > -1:
+            # Somewhat brittle logic checking exception message
+            if "day" in str(inst) and "range" in str(inst):
                 if valid.day < 10:
                     valid = valid.replace(day=1) - timedelta(days=1)
         attempt += 1
