@@ -15,6 +15,8 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Increase whitespace forgiveness of DSM parser.
+
 ## **1.26.0** (9 Dec 2025)
 
 ### API Changes

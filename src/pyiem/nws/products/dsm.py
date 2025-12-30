@@ -43,9 +43,11 @@ PARSER_RE = re.compile(
 )
 
 
-def process(text):
+def process(text: str):
     """Emit DSMProduct object for what we can parse."""
-    m = PARSER_RE.match(text.replace("\r", "").replace("\n", ""))
+    m = PARSER_RE.match(
+        " ".join(text.split()).replace("\r", "").replace("\n", "")
+    )
     if m is None:
         return None
     return DSMProduct(m.groupdict())
