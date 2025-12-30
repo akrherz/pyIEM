@@ -30,6 +30,11 @@ def test_bounded_non_scalar():
         observation.bounded(np.array([1, 2, 3]), 0, 100)
 
 
+def test_bounded_invalid_str():
+    """Test that we get a None when given a bad string."""
+    assert observation.bounded("M", 0, 10) is None
+
+
 def test_numpy_datetime64():
     """Test that numpy's datetime64 is not considered as daily."""
     ts = np.datetime64("2020-12-30")
