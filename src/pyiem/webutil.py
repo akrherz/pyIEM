@@ -365,7 +365,7 @@ def _handle_help(start_response, **kwargs):
     sdoc = kwargs.get("help", "Help not available") + (
         "" if "schema" not in kwargs else model_to_rst(kwargs["schema"])
     )
-    rendered = publish_string(source=sdoc, writer_name="html").decode("utf-8")
+    rendered = publish_string(source=sdoc, writer="html").decode("utf-8")
 
     # Load external CSS file for styling docutils-generated content
     css_path = os.path.join(
