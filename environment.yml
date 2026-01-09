@@ -10,7 +10,7 @@ dependencies:
   - coverage
   - cython
   - defusedxml
-  - docutils
+  - docutils>=0.22
   - gdal
   - geopandas
   - geos
