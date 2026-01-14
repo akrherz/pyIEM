@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pyiem.observation module &#8212; pyIEM 1.26.0.post13+gf4620e852</title>
+    <title>pyiem.observation module &#8212; pyIEM 1.26.0.post16+g413cada80</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4214fd17"></script>
+    <script src="../_static/documentation_options.js?v=2e246a50"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pyiem.observation';</script>
@@ -49,8 +49,8 @@
     <link rel="prev" title="pyiem.network module" href="pyiem.network.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post13+gf4620e852" />
-    <meta name="docbuild:last-update" content="Jan 01, 2026"/>
+  <meta name="docsearch:version" content="1.26.0.post16+g413cada80" />
+    <meta name="docbuild:last-update" content="Jan 14, 2026"/>
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post13+gf4620e852</p>
+    <p class="title logo__title">pyIEM 1.26.0.post16+g413cada80</p>
   
 </a></div>
     
@@ -558,6 +558,57 @@
 <span id="pyiem-observation-module"></span><h1>pyiem.observation module<a class="headerlink" href="#module-pyiem.observation" title="Link to this heading">#</a></h1>
 <p>A class representing an observation stored in the IEM database</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="pyiem.observation.bounded">
+<span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">bounded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ceiling</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#bounded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.bounded" title="Link to this definition">#</a></dt>
+<dd><p>Return val if is a finite number within [floor, ceiling], else None.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyiem.observation.ObservationData">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">ObservationData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#ObservationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.ObservationData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserDict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserDict</span></code></a></p>
+<p>Opinionated dictionary that ensures some QC.</p>
+<dl class="simple">
+<dt>What it does.</dt><dd><ul class="simple">
+<li><p>Returns <cite>None</cite> when asked for a key that does not exist.</p></li>
+<li><p>Checks value bounds when set with a key that exists within VALUE_BOUNDS</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.observation.ObservationData.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#ObservationData.__getitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.ObservationData.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Return None for missing keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyiem.observation.ObservationData.__setitem__">
+<span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#ObservationData.__setitem__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.ObservationData.__setitem__" title="Link to this definition">#</a></dt>
+<dd><p>Set item with bounds checking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>)</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyiem.observation.get_summary_table">
 <span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">get_summary_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#get_summary_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.get_summary_table" title="Link to this definition">#</a></dt>
 <dd><p>Optimize the summary table we potentially use.</p>
@@ -569,12 +620,6 @@
 <dd class="field-even"><p>str table to query</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyiem.observation.bounded">
-<span class="sig-prename descclassname"><span class="pre">pyiem.observation.</span></span><span class="sig-name descname"><span class="pre">bounded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ceiling</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyiem/observation.html#bounded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyiem.observation.bounded" title="Link to this definition">#</a></dt>
-<dd><p>Return val if is a finite number within [floor, ceiling], else None.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -695,8 +740,13 @@ table.  This is useful for partial obs
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.get_summary_table"><code class="docutils literal notranslate"><span class="pre">get_summary_table()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.bounded"><code class="docutils literal notranslate"><span class="pre">bounded()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.ObservationData"><code class="docutils literal notranslate"><span class="pre">ObservationData</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.ObservationData.__getitem__"><code class="docutils literal notranslate"><span class="pre">ObservationData.__getitem__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.ObservationData.__setitem__"><code class="docutils literal notranslate"><span class="pre">ObservationData.__setitem__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.get_summary_table"><code class="docutils literal notranslate"><span class="pre">get_summary_table()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.summary_update"><code class="docutils literal notranslate"><span class="pre">summary_update()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.Observation"><code class="docutils literal notranslate"><span class="pre">Observation</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pyiem.observation.Observation.load"><code class="docutils literal notranslate"><span class="pre">Observation.load()</span></code></a></li>
@@ -742,7 +792,7 @@ table.  This is useful for partial obs
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     <br/>
   </p>
 </div>
