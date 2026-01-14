@@ -24,6 +24,13 @@ class blah:
     cursor = None
 
 
+def test_gigo_converted_to_none():
+    """Test that our observation bounds work."""
+    ob = observation.Observation("XXX", "XXX", utc())
+    ob.data["tmpf"] = -9999.0
+    assert ob.data["tmpf"] is None
+
+
 def test_bounded_non_scalar():
     """Test that we get a runtime exception with this."""
     with pytest.raises(RuntimeError):

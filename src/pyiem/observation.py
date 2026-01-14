@@ -2,7 +2,7 @@
 
 import math
 import warnings
-from collections import defaultdict
+from collections import UserDict
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -21,23 +21,37 @@ SUMMARY_COLS = (
     "max_feel avg_feel min_feel min_rstage max_rstage report"
 ).split()
 
-
-def get_summary_table(valid):
-    """Optimize the summary table we potentially use.
-
-    Args:
-      valid (datetime with time zone): Datetime
-
-    Returns:
-      str table to query
-    """
-    if valid is None:
-        return "summary"
-    if (valid.month == 12 and valid.day >= 30) or (
-        valid.month == 1 and valid.day < 3
-    ):
-        return "summary"
-    return f"summary_{valid.year}"
+VALUE_BOUNDS = {
+    "max_tmpf": (-100.0, 150.0),
+    "min_tmpf": (-100.0, 150.0),
+    "tmpf": (-100.0, 150.0),
+    "max_water_tmpf": (-100.0, 212.0),  # could be some wild sensors
+    "min_water_tmpf": (-100.0, 212.0),
+    "coop_tmpf": (-100.0, 150.0),
+    "dwpf": (-100.0, 150.0),
+    "max_dwpf": (-100.0, 150.0),
+    "min_dwpf": (-100.0, 150.0),
+    "relh": (0.0, 101.0),  # Life choice
+    "min_rh": (0.0, 101.0),
+    "avg_rh": (0.0, 101.0),
+    "max_rh": (0.0, 101.0),
+    "feel": (-150.0, 200.0),
+    "max_feel": (-150.0, 200.0),
+    "avg_feel": (-150.0, 200.0),
+    "min_feel": (-150.0, 200.0),
+    "max_sknt": (0.0, 250.0),  # Life choice, but 255/256 is often bad
+    "max_gust": (0.0, 250.0),
+    "sknt": (0.0, 250.0),
+    "max_drct": (0.0, 360.0),
+    "drct": (0.0, 360.0),
+    "srad": (0.0, 2000.0),
+    "srad_mj": (0.0, 60.0),  # meh
+    "pday": (0, 50.0),
+    "pmonth": (0, 500.0),  # meh
+    "snow": (0, 200.0),
+    "snowd": (0, 2000.0),
+    "et_inch": (0.0, 10.0),
+}
 
 
 def bounded(val, floor, ceiling):
@@ -63,6 +77,44 @@ def bounded(val, floor, ceiling):
     if not math.isfinite(val) or val < floor or val > ceiling:
         return None
     return val
+
+
+class ObservationData(UserDict):
+    """Opinionated dictionary that ensures some QC.
+
+    What it does.
+      - Returns `None` when asked for a key that does not exist.
+      - Checks value bounds when set with a key that exists within VALUE_BOUNDS
+    """
+
+    def __getitem__(self, key: str) -> Any:
+        """Return None for missing keys."""
+        return self.data.get(key, None)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        """Set item with bounds checking."""
+        if key in VALUE_BOUNDS:
+            floor, ceiling = VALUE_BOUNDS[key]
+            value = bounded(value, floor, ceiling)
+        self.data[key] = value
+
+
+def get_summary_table(valid):
+    """Optimize the summary table we potentially use.
+
+    Args:
+      valid (datetime with time zone): Datetime
+
+    Returns:
+      str table to query
+    """
+    if valid is None:
+        return "summary"
+    if (valid.month == 12 and valid.day >= 30) or (
+        valid.month == 1 and valid.day < 3
+    ):
+        return "summary"
+    return f"summary_{valid.year}"
 
 
 def summary_update(txn, data):
@@ -176,7 +228,7 @@ class Observation:
             if isinstance(valid, np.datetime64):
                 valid = pd.Timestamp(valid).to_pydatetime()
             valid = valid.replace(tzinfo=timezone.utc)
-        self.data: dict[str, Any] = defaultdict(lambda: None)
+        self.data: dict[str, Any] = ObservationData()
         self.data.update(
             {
                 "station": station,

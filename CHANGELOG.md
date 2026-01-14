@@ -11,6 +11,8 @@ All notable changes to this library are documented in this file.
 
 ### New Features
 
+- Added crude bounds checking within `pyiem.observation` to prevent out of
+  reasonable bounds data from going to the database.
 - Update CI testing to include python=3.14
 
 ### Bug Fixes
