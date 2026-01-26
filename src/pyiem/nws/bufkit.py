@@ -37,7 +37,7 @@ def _read_station(text: str):
         format="%y%m%d/%H%M",
         utc=True,
     )
-    return df.drop("YYMMDD/HHMM", axis=1).astype(float, False, "ignore")
+    return df.drop(columns="YYMMDD/HHMM").astype(float, errors="ignore")
 
 
 def _read_sounding(text):
@@ -77,7 +77,7 @@ def _read_sounding(text):
         format="%y%m%d/%H%M",
         utc=True,
     )
-    stndf = stndf.drop("TIME", axis=1).astype(float, False, "ignore")
+    stndf = stndf.drop(columns="TIME").astype(float, errors="ignore")
     sndf = pd.DataFrame(rows, columns=cols, dtype=float)
     sndf["STIM"] = sndf["STIM"].astype(int)
     return sndf, stndf

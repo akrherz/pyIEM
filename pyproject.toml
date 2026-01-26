@@ -45,6 +45,7 @@ readme = "README.md"
 
 [tool.pytest.ini_options]
 filterwarnings = [
+    "error::pandas.errors.Pandas4Warning",
     "ignore:numpy.ndarray size changed:RuntimeWarning",
     "ignore:'cgi' is deprecated and slated for removal:DeprecationWarning",
 ]
