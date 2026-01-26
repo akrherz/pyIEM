@@ -129,6 +129,7 @@ class StationAttributes:
     GHCNH_ID = "GHCNH_ID"
     HAS1MIN = "HAS1MIN"
     HAS_HML = "HAS_HML"
+    HAS_PHOUR = "HAS_PHOUR"
     HASTAF = "HASTAF"
     IS_AWOS = "IS_AWOS"
     IS_CCOOP = "IS_CCOOP"
