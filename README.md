@@ -17,7 +17,7 @@ Current release info
 Dependencies
 ------------
 
-Python 3.10+ is required. Python releases 3.10 through 3.13 are actively tested
+Python 3.11+ is required. Python releases 3.11 through 3.14 are actively tested
 and supported within this repository.
 
 The codebase currently makes direct database calls with hardcoded assumptions

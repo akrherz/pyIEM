@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Clarify in CI environment that ``fiona`` is not an actual dependency.
+- Require python 3.11+
 
 ### New Features
 
@@ -18,6 +19,7 @@ All notable changes to this library are documented in this file.
 
 ### Bug Fixes
 
+- Address Pandas 4 deprecation with `copy` parameter in `astype`.
 - Increase whitespace forgiveness of DSM parser.
 
 ## **1.26.0** (9 Dec 2025)
