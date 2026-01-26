@@ -8,6 +8,7 @@ All notable changes to this library are documented in this file.
 ### API Changes
 
 - Clarify in CI environment that ``fiona`` is not an actual dependency.
+- Require python 3.11+
 
 ### New Features
 

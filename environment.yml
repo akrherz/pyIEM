@@ -24,7 +24,8 @@ dependencies:
   - mock
   - netCDF4
   - numpy
-  - pandas
+  # modern
+  - pandas>=3
   # webutil
   - paste
   # geoplot usage
