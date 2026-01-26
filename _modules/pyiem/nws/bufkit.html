@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyiem.nws.bufkit &#8212; pyIEM 1.26.0.post19+gf73b45b9f</title>
+    <title>pyiem.nws.bufkit &#8212; pyIEM 1.26.0.post22+g82357324c</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=40647cb2"></script>
+    <script src="../../../_static/documentation_options.js?v=229a57d2"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pyiem/nws/bufkit';</script>
@@ -46,7 +46,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.26.0.post19+gf73b45b9f" />
+  <meta name="docsearch:version" content="1.26.0.post22+g82357324c" />
     <meta name="docbuild:last-update" content="Jan 26, 2026"/>
   </head>
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">pyIEM 1.26.0.post19+gf73b45b9f</p>
+    <p class="title logo__title">pyIEM 1.26.0.post22+g82357324c</p>
   
 </a></div>
     
@@ -473,7 +473,7 @@
         <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">/%H%M&quot;</span><span class="p">,</span>
         <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;YYMMDD/HHMM&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;YYMMDD/HHMM&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_read_sounding</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
@@ -513,7 +513,7 @@
         <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">/%H%M&quot;</span><span class="p">,</span>
         <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">stndf</span> <span class="o">=</span> <span class="n">stndf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;TIME&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">stndf</span> <span class="o">=</span> <span class="n">stndf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;TIME&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
     <span class="n">sndf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">sndf</span><span class="p">[</span><span class="s2">&quot;STIM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sndf</span><span class="p">[</span><span class="s2">&quot;STIM&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sndf</span><span class="p">,</span> <span class="n">stndf</span>
