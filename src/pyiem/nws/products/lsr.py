@@ -17,6 +17,8 @@ FUTURE_THRESHOLD = timedelta(hours=1)
 SPLITTER = re.compile(
     r"(^[0-9].+?\n^[0-9].+?\n)((?:.*?\n)+?)(?=^[0-9]|$)", re.MULTILINE
 )
+# Limitation on number of new jabber messages possible within a single prod
+MAX_JABBER_MESSAGES = 20
 
 
 class LSRProductException(TextProductException):
@@ -67,13 +69,13 @@ class LSRProduct(TextProduct):
         wfo = self.source[1:]
         url = self.get_url(uri)
 
-        if len(self.lsrs) < 5:
+        if len(self.lsrs) < MAX_JABBER_MESSAGES:
             for mylsr in self.lsrs:
                 if mylsr.duplicate:
                     continue
                 res.append(mylsr.get_jabbers(uri))
 
-        if self.is_summary() or len(self.lsrs) >= 5:
+        if self.is_summary() or len(self.lsrs) >= MAX_JABBER_MESSAGES:
             extra_text = " "
             if self.duplicates > 0:
                 extra_text = (
