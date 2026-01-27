@@ -116,8 +116,10 @@ def test_171026_mixedlsr():
     prod = parser(get_test_file("mIxEd_CaSe/LSRBYZ.txt"), utcnow=utcnow)
     j = prod.get_jabbers("http://iem.local/")
     assert j[0][2]["twitter"] == (
-        "BYZ issues Summary Local Storm Report "
-        "http://iem.local/?by=wfo&amp;wfo=BYZ&amp;sts=201710260700&amp;ets=201710261500"
+        "[Delayed Report] On Oct 26, at 1:00 AM MDT, 3 SSW Luther "
+        "[Carbon Co, MT] Mesonet reports Snow of 1.00 inch #mtwx "
+        "http://iem.local/?by=wfo&amp;wfo=BYZ&amp;"
+        "sts=201710260700&amp;ets=201710260700"
     )
 
 
