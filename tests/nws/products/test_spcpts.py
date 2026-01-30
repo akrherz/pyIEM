@@ -20,6 +20,7 @@ def test_gh1156_cig():
         get_test_file("SPCPTS/PTSDY1_gh1156.txt"),
         utcnow=utc(2025, 3, 15, 15),
     )
+    assert not prod.warnings
     outlook = prod.get_outlook("TORNADO", "CIG1", 1)
     assert outlook.geometry_layers.area > outlook.geometry.area
     outlook = prod.get_outlook("TORNADO", "CIG2", 1)
