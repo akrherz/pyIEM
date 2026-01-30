@@ -14,6 +14,20 @@ from pyiem.nws.products.spcpts import (
 from pyiem.util import get_test_file, utc
 
 
+def test_gh1156_cig():
+    """Test the newly minted CIG thresholds."""
+    prod = parser(
+        get_test_file("SPCPTS/PTSDY1_gh1156.txt"),
+        utcnow=utc(2025, 3, 15, 15),
+    )
+    outlook = prod.get_outlook("TORNADO", "CIG1", 1)
+    assert outlook.geometry_layers.area > outlook.geometry.area
+    outlook = prod.get_outlook("TORNADO", "CIG2", 1)
+    assert outlook.geometry_layers.area > outlook.geometry.area
+    outlook = prod.get_outlook("TORNADO", "CIG3", 1)
+    assert outlook.geometry_layers.area == outlook.geometry.area
+
+
 def test_d48_crosses_month():
     """Test that the right month is assigned to this."""
     prod = parser(

@@ -34,8 +34,8 @@ DAYRE = re.compile(
 )
 DMATCH = re.compile(r"D(?P<day1>[0-9])\-?(?P<day2>[0-9])?")
 THRESHOLD_ORDER = (
-    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 TSTM MRGL SLGT ENH "
-    "MDT HIGH IDRT SDRT ELEV CRIT EXTM"
+    "0.02 0.05 0.10 0.15 0.25 0.30 0.35 0.40 0.45 0.60 0.75 0.90 "
+    "CIG1 CIG2 CIG3 TSTM MRGL SLGT ENH MDT HIGH IDRT SDRT ELEV CRIT EXTM"
 ).split()
 
 
@@ -252,21 +252,28 @@ class SPCOutlookCollection:
         for cat in self.get_categories():
             outlooks = list(filter(lambda x: x.category == cat, self.outlooks))
             for idx in range(0, len(outlooks) - 1):
-                larger = outlooks[idx]
-                smaller = outlooks[idx + 1]
+                this_outlook = outlooks[idx]
+                next_outlook = outlooks[idx + 1]
+                # Figure out when the geometry_layers (full polygon) should be
+                # used.
                 if (
-                    larger.level is None
-                    or smaller.level is None
-                    or larger.threshold in ["SDRT", "IDRT"]  # One Off
+                    this_outlook.level is None
+                    or next_outlook.level is None
+                    or this_outlook.threshold in ["SDRT", "IDRT"]
+                    or next_outlook.threshold == "CIG1"
                 ):
-                    larger.geometry = larger.geometry_layers
+                    this_outlook.geometry = this_outlook.geometry_layers
                     continue
-                larger.geometry = larger.geometry_layers.difference(
-                    smaller.geometry_layers
+                this_outlook.geometry = (
+                    this_outlook.geometry_layers.difference(
+                        next_outlook.geometry_layers
+                    )
                 )
                 # Ensure multipolygon
-                if not isinstance(larger.geometry, MultiPolygon):
-                    larger.geometry = MultiPolygon([larger.geometry])
+                if not isinstance(this_outlook.geometry, MultiPolygon):
+                    this_outlook.geometry = MultiPolygon(
+                        [this_outlook.geometry]
+                    )
             # Last polygon needs duplicated
             if outlooks:
                 outlooks[-1].geometry = outlooks[-1].geometry_layers
@@ -431,7 +438,8 @@ class SPCPTS(TextProduct):
                     re.match(
                         (
                             r"^(D[3-8]\-?[3-8]?|EXTM|MRGL|ENH|SLGT|MDT|ELEV|"
-                            r"HIGH|CRIT|TSTM|SIGN|IDRT|SDRT|0\.[0-9][0-9]) "
+                            r"HIGH|CRIT|TSTM|SIGN|CIG[1-3]|"
+                            r"IDRT|SDRT|0\.[0-9][0-9]) "
                         ),
                         line,
                     )
