@@ -12,3 +12,4 @@ src/pyiem.egg-info/
 /docs/source/api
 /.eggs
 /cov.xml
+/coverage.xml
